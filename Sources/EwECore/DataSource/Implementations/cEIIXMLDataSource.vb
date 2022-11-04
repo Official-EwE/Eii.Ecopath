@@ -395,7 +395,7 @@ Public Class cEIIXMLDataSource
                 ecopathDS.DtImp(iGroup) = CSng(row("DtImports"))
                 ecopathDS.Ex(iGroup) = CSng(row("Export"))
                 ecopathDS.fCatch(iGroup) = CSng(row("Catch"))
-                ecopathDS.DCInput(iGroup, 0) = CSng(row("ImpVar"))
+                ecopathDS.DC(iGroup, 0) = CSng(row("ImpVar"))
                 ecopathDS.GroupIsFish(iGroup) = Me.ParseBoolean(CStr(row("GroupIsFish")))
                 ecopathDS.GroupIsInvert(iGroup) = Me.ParseBoolean(CStr(row("GroupIsInvert")))
                 ecopathDS.Shadow(iGroup) = CSng(row("NonMarketValue"))
@@ -472,7 +472,7 @@ Public Class cEIIXMLDataSource
 
                 ' Set diet to 0 for non-living groups (fixes #878)
                 If (sDiet > 0) And (iPred > ecopathDS.NumLiving) Then sDiet = 0
-                ecopathDS.DCInput(iPred, iPrey) = sDiet
+                ecopathDS.DC(iPred, iPrey) = sDiet
 
                 If iPrey > ecopathDS.NumLiving Then
                     ecopathDS.DF(iPred, iPrey - ecopathDS.NumLiving) = CSng(row("DetritusFate"))
@@ -481,8 +481,8 @@ Public Class cEIIXMLDataSource
                 ' 060528JS: ASSERT on "diet leftovers" from previous incarnations, including 041020VC fix for carbon groups
                 ' The actual data fix is performed once during EwE5 import, and should not reoccur when running EwE6.
                 If ecopathDS.PP(iPred) = 1 And ecopathDS.QB(iPred) <= 0 Then
-                    If (ecopathDS.DCInput(iPred, iPrey) <> 0) Then
-                        cLog.Write(cStringUtils.Localize("Database error on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
+                    If (ecopathDS.DC(iPred, iPrey) <> 0) Then
+                        cLog.Write(cStringUtils.Localize("Database error on DC({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DC(iPred, iPrey)))
                     End If
                 End If
 

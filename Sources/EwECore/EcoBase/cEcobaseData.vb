@@ -437,7 +437,7 @@ Namespace WebServices.Ecobase
             Me.GS = ecopathDS.GS(iGroup)
             Me.DtImp = ecopathDS.DtImp(iGroup)
             Me.Ex = ecopathDS.Ex(iGroup)
-            Me.ImpVar = ecopathDS.DCInput(iGroup, 0)
+            Me.ImpVar = ecopathDS.DC(iGroup, 0)
             'drow("GroupIsFish") = ecopathDS.GroupIsFish(iGroup)
             'drow("GroupIsInvert") = ecopathDS.GroupIsInvert(iGroup)
             Me.Shadow = ecopathDS.Shadow(iGroup)
@@ -488,7 +488,7 @@ Namespace WebServices.Ecobase
 
             Me.Diets.Clear()
             For iPrey As Integer = 1 To core.nGroups
-                Dim dc As Single = ecopathDS.DCInput(iGroup, iPrey)
+                Dim dc As Single = ecopathDS.DC(iGroup, iPrey)
                 Dim df As Single = 0
                 If (iPrey > core.nLivingGroups) Then df = ecopathDS.DF(iGroup, iPrey - core.nLivingGroups)
                 If ((dc + df) > 0) Then

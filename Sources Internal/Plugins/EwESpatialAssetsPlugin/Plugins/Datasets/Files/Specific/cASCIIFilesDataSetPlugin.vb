@@ -221,7 +221,7 @@ Namespace SpatialData
             While (Not reader.EndOfStream) And (Not bIsComplete) And (Not bIsError)
 
                 ' Read a line
-                strLine = reader.ReadLine().Trim
+                strLine = reader.ReadLine().Trim().ToLower()
 
                 ' Be nice
                 If Not String.IsNullOrWhiteSpace(strLine) Then
@@ -232,7 +232,7 @@ Namespace SpatialData
                     strValue = astrBits(1)
 
                     ' Check header field (eliminating tabs etc, lower case)
-                    Select Case strField.Trim().ToLower
+                    Select Case strField.Trim()
 
                         Case "ncols"
                             bIsError = Not Integer.TryParse(strValue, nCols)
@@ -264,13 +264,17 @@ Namespace SpatialData
                             bIsCenterY = True
                             checksum = CByte(checksum Or &H8)
 
-                        Case "cellsize"
+                        Case "cellsize", "dx", "dy"
                             bIsError = Not Single.TryParse(strValue, sCellSize)
                             bIsError = bIsError Or (sCellSize <= 0)
                             checksum = CByte(checksum Or &H10)
 
                         Case "nodatavalue", "nodata_value"
-                            bIsError = Not Single.TryParse(strValue, sValueNone)
+                            If (strValue = "nan" Or strValue = "na") Then
+                                sValueNone = -9999
+                            Else
+                                bIsError = Not Single.TryParse(strValue, sValueNone)
+                            End If
                             checksum = CByte(checksum Or &H20)
 
                         Case Else
@@ -347,8 +351,12 @@ Namespace SpatialData
                         Else
                             ' #Yes: process row data
                             For iCol = 0 To rs.NumColumns - 1
-                                bValueError = bValueError Or Not Double.TryParse(bits(iCol), rs.Value(iRow, iCol))
-                                bDataCorrect = bDataCorrect And Not bValueError
+                                If (bits(iCol) = "nan" Or bits(iCol) = "na") Then
+                                    rs.Value(iRow, iCol) = rs.NoDataValue
+                                Else
+                                    bValueError = bValueError Or Not Double.TryParse(bits(iCol), rs.Value(iRow, iCol))
+                                    bDataCorrect = bDataCorrect And Not bValueError
+                                End If
                             Next iCol
                             iRow += 1
                         End If

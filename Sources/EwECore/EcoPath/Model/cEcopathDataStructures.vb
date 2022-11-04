@@ -207,9 +207,6 @@ Public Class cEcopathDataStructures
     ''' <summary>Sum (per <see cref="NumGroups">NumGroups</see>) of landings + discards.</summary>
     ''' <remarks>Computed in Catch_calculations(). was called Catch but this causes a naming conflict with Try Catch blocks</remarks>
     Public fCatch() As Single '
-    ''' <summary>User input matrix for Diet composition(<see cref="NumGroups">Pred</see>, <see cref="NumGroups">Prey</see>) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
-    ''' matrix of species consumption ratios.</summary>
-    Public DCInput(,) As Single
     ''' <summary>Diet composition(per pred, prey) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
     ''' matrix of species consumption ratios.</summary>
     Public DC(,) As Single
@@ -463,7 +460,6 @@ Public Class cEcopathDataStructures
         ReDim Me.BAInput(Me.NumGroups)
         ReDim Me.BaBi(Me.NumGroups)
         ReDim Me.BA(Me.NumGroups)
-        ReDim Me.DCInput(Me.NumGroups + 1, Me.NumGroups + 1)
         ReDim Me.DC(Me.NumGroups + 1, Me.NumGroups + 1)
         ReDim Me.DCChanged(Me.NumGroups + 1, Me.NumGroups + 1) 'jb added to tell the core which diet comp values where changed
         ReDim Me.PP(Me.NumGroups)
@@ -1064,12 +1060,6 @@ Public Class cEcopathDataStructures
                 End If
             Next
 
-            ' copy dc
-            For i As Integer = 0 To Me.NumGroups
-                For j As Integer = 0 To Me.NumGroups
-                    Me.DC(i, j) = Me.DCInput(i, j)
-                Next
-            Next
             Return True
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -1111,7 +1101,7 @@ Public Class cEcopathDataStructures
                 ' ** DC Impoprt in the calculations - which is stored at index 0.
                 For iPrey As Integer = 0 To Me.NumGroups
                     ' Add consumption to sum
-                    sDCSum += Me.DCInput(iPred, iPrey)
+                    sDCSum += Me.DC(iPred, iPrey)
                 Next iPrey
 
                 ' Is there predation with a need to recalc?
@@ -1120,7 +1110,7 @@ Public Class cEcopathDataStructures
                     ' JS 28Aug15: Rescale imports too!!!
                     For iPrey As Integer = 0 To Me.NumGroups
                         ' Rescale consumption
-                        Me.DCInput(iPred, iPrey) = Me.DCInput(iPred, iPrey) / sDCSum
+                        Me.DC(iPred, iPrey) = Me.DC(iPred, iPrey) / sDCSum
                     Next iPrey
                 End If
             End If ' PP < 1
@@ -1253,7 +1243,7 @@ Public Class cEcopathDataStructures
             Me.BHinput.CopyTo(dest.BHinput, 0)
 
             'min_B_QB = dest.min_B_QB 'minimum B*QB
-            dest.DCInput = Me.DCInput.Clone
+            dest.DC = Me.DC.Clone
             dest.DC = Me.DC.Clone
 
             'dest.currUnitName = currUnitName
@@ -1268,8 +1258,8 @@ Public Class cEcopathDataStructures
             Me.Ex.CopyTo(dest.Ex, 0)
 
             Me.fCatch.CopyTo(dest.fCatch, 0) 'was called Catch but this causes a naming conflict with Try Catch blocks
-            Array.Copy(Me.DCInput, dest.DCInput, Me.DCInput.Length)
-            dest.DCInput = Me.DCInput.Clone
+            Array.Copy(Me.DC, dest.DC, Me.DC.Length)
+            dest.DC = Me.DC.Clone
             dest.DC = Me.DC.Clone
             dest.DF = Me.DF.Clone
             Me.Area.CopyTo(dest.Area, 0)

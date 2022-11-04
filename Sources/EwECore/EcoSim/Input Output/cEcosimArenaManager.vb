@@ -139,7 +139,7 @@ Public Class cEcosimArenaManager
                     If (prop > 0) Then
 
                         ' Sanity check
-                        Debug.Assert(pathdata.DCInput(arena.Pred, arena.Prey) > 0)
+                        Debug.Assert(pathdata.DC(arena.Pred, arena.Prey) > 0)
 
                         ii += 1
                         simdata.IlinkSet(ii) = arena.Prey

@@ -247,9 +247,9 @@ Namespace Database
                     iNextIndex = 0
                     For j = 1 To ecopathDS.NumGroups
 
-                        Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.DCInput(K, j))
-                        ' Input(fnum, ecopathDS.DCInput(K, j))
-                        If ecopathDS.DCInput(K, j) > 0 Then
+                        Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.DC(K, j))
+                        ' Input(fnum, ecopathDS.DC(K, j))
+                        If ecopathDS.DC(K, j) > 0 Then
                             ecopathDS.DietWasChanged(K, j)
                         End If
                     Next j
@@ -520,7 +520,7 @@ Namespace Database
                 'groups
                 For K = 1 To m_data.NumGroups
                     Input(Me.m_iFNum, m_data.GroupName(K)) : Input(Me.m_iFNum, pvar) : Input(Me.m_iFNum, m_data.DtImp(K))
-                    Input(Me.m_iFNum, m_data.Ex(K)) : Input(Me.m_iFNum, m_data.fCatch(K)) : Input(Me.m_iFNum, m_data.DCInput(K, 0))
+                    Input(Me.m_iFNum, m_data.Ex(K)) : Input(Me.m_iFNum, m_data.fCatch(K)) : Input(Me.m_iFNum, m_data.DC(K, 0))
                     Input(Me.m_iFNum, m_data.Binput(K)) : Input(Me.m_iFNum, m_data.PBinput(K)) : Input(Me.m_iFNum, m_data.EEinput(K))
                     Input(Me.m_iFNum, m_data.GEinput(K)) : Input(Me.m_iFNum, m_data.QBinput(K))
 
@@ -538,7 +538,7 @@ Namespace Database
                 ReDim m_data.DietChanged(1, 0)
                 For K = 1 To m_data.NumGroups
                     For j = 1 To m_data.NumGroups
-                        Input(Me.m_iFNum, m_data.DCInput(K, j))
+                        Input(Me.m_iFNum, m_data.DC(K, j))
                     Next j
                 Next K
 
@@ -769,7 +769,7 @@ Namespace Database
                     drow("DtImports") = Me.m_data.DtImp(iGroup)
                     drow("Export") = Me.m_data.Ex(iGroup)
                     drow("Catch") = Me.m_data.fCatch(iGroup)
-                    drow("ImpVar") = Me.m_data.DCInput(iGroup, 0)
+                    drow("ImpVar") = Me.m_data.DC(iGroup, 0)
                     drow("GroupIsFish") = Me.m_data.GroupIsFish(iGroup)
                     drow("GroupIsInvert") = Me.m_data.GroupIsInvert(iGroup)
                     drow("NonMarketValue") = Me.m_data.Shadow(iGroup)
@@ -822,7 +822,7 @@ Namespace Database
 
                         drow("PredID") = iPred
                         drow("PreyID") = iPrey
-                        drow("Diet") = Me.m_data.DCInput(iPred, iPrey)
+                        drow("Diet") = Me.m_data.DC(iPred, iPrey)
                         If iPrey > Me.m_data.NumLiving Then
                             drow("DetritusFate") = Me.m_data.DF(iPred, iPrey - Me.m_data.NumLiving)
                         Else

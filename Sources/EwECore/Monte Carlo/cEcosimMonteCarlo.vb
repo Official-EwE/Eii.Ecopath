@@ -1397,7 +1397,7 @@ Public Class cEcosimMonteCarlo
 
             For iPrey As Integer = 1 To Me.m_core.nGroups
                 Me.m_epdata.DC(iPred, iPrey) = Me.BestFitDiets(iPred, iPrey)
-                Me.m_epdata.DCInput(iPred, iPrey) = Me.BestFitDiets(iPred, iPrey)
+                Me.m_epdata.DC(iPred, iPrey) = Me.BestFitDiets(iPred, iPrey)
             Next
 
             'vc sep 2008: adding vulnerability to MC
@@ -1548,8 +1548,8 @@ Public Class cEcosimMonteCarlo
 
                 If (param = eMCParams.Diets Or param = eMCParams.NotSet) Then
                     For iPred As Integer = 1 To Me.m_core.nLivingGroups
-                        Me.ParLimitDC(0, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DCInput(iPred, iGroup) * (1 - factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
-                        Me.ParLimitDC(1, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DCInput(iPred, iGroup) * (1 + factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
+                        Me.ParLimitDC(0, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DC(iPred, iGroup) * (1 - factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
+                        Me.ParLimitDC(1, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DC(iPred, iGroup) * (1 + factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
                     Next iPred
                 End If
 

@@ -56,7 +56,7 @@ Namespace Ecopath
         Public DtImp As Single
         Public Shadow As Single
 
-        Public DCInput(,) As Single
+        Public DC(,) As Single
 
         Public Discard() As Single
         Public Landing() As Single
@@ -85,10 +85,10 @@ Namespace Ecopath
             ReDim Me.Market(ecopathds.NumFleet)
             ReDim Me.DiscardFate(ecopathds.NumGroups)
 
-            ReDim Me.DCInput(ecopathds.NumGroups, ecopathds.NumGroups)
+            ReDim Me.DC(ecopathds.NumGroups, ecopathds.NumGroups)
             For iPred As Integer = 1 To ecopathds.NumLiving
                 For iPrey As Integer = 0 To ecopathds.NumGroups
-                    Me.DCInput(iPred, iPrey) = ecopathds.DCInput(iPred, iPrey)
+                    Me.DC(iPred, iPrey) = ecopathds.DC(iPred, iPrey)
                 Next
             Next
 

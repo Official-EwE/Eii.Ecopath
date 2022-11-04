@@ -94,7 +94,7 @@ Namespace Samples
                 sb.Append(Me.Hash("GE", ecopatDS.GEinput))
                 sb.Append(Me.Hash("OM", ecopatDS.OtherMortinput))
                 sb.Append(Me.Hash("GS", ecopatDS.GS))
-                sb.Append(Me.Hash("DC", ecopatDS.DCInput))
+                sb.Append(Me.Hash("DC", ecopatDS.DC))
                 sb.Append(Me.Hash("PP", ecopatDS.PP))
                 If (Me.m_core.nStanzas > 0) Then
                     sb.Append(Me.Hash("Sg", ecopatDS.StanzaGroup))
@@ -365,6 +365,7 @@ Namespace Samples
         Public Function StoreEcosimDiagnostics(sample As cEcopathSample, mc As cEcosimMonteCarlo, esdata As cEcosimDatastructures) As Boolean
             If (mc IsNot Nothing And sample IsNot Nothing) Then
                 sample.SS = esdata.SS
+                Me.m_core.Messages.SendMessage(New cMessage("Samples have been updated", eMessageType.DataModified, eCoreComponentType.EcopathSample, eMessageImportance.Maintenance))
             End If
         End Function
 
@@ -665,7 +666,10 @@ Namespace Samples
         Private Function MakeSnapshot(bMustBalance As Boolean, mc As cEcosimMonteCarlo) As cEcopathSample
 
             If (Me.m_core Is Nothing) Then Return Nothing
-            If (bMustBalance And Not Me.m_core.IsModelBalanced()) Then Return Nothing
+
+            ' Some users report samples with negative respiration. That should not happen
+            ' Instead of checking for EE, it's more fail-safe to test for the final balance state
+            If (bMustBalance And Not Me.m_core.StateMonitor.HasEcopathBalanced()) Then Return Nothing
 
             Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim s As New cEcopathSample(Me.m_core, -1, Me.m_data.nSamples + 1)
@@ -737,7 +741,7 @@ Namespace Samples
                 ' Diets
                 For iPred As Integer = 1 To epdata.NumLiving
                     For iPrey As Integer = 0 To epdata.NumGroups
-                        s.DC(iPred, iPrey) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iPrey), cCore.NULL_VALUE)
+                        s.DC(iPred, iPrey) = epdata.DC(iPred, iPrey)
                     Next
                 Next
 
@@ -769,7 +773,7 @@ Namespace Samples
                 ' Diets
                 For iPred As Integer = 1 To epdata.NumLiving
                     For iPrey As Integer = 0 To epdata.NumGroups
-                        s.DC(iPred, iPrey) = epdata.DCInput(iPred, iPrey)
+                        s.DC(iPred, iPrey) = epdata.DC(iPred, iPrey)
                     Next
                 Next
 
@@ -802,50 +806,48 @@ Namespace Samples
             Debug.WriteLine("EcoSampler: Loading " & s.Name)
 
             ' User wants to keep the best fit parameters
-            For iGroup As Integer = 0 To Me.m_core.nGroups
+            For iGroup As Integer = 1 To m_core.nGroups
 
-                If (iGroup >= 1) Then
-
-                    If (s.B(iGroup) > cCore.NULL_VALUE) Then
-                        epdata.Binput(iGroup) = s.B(iGroup)
-                        epdata.BHinput(iGroup) = s.B(iGroup) / epdata.Area(iGroup)
-                    End If
-
-                    If (s.PB(iGroup) > cCore.NULL_VALUE) Then
-                        epdata.PBinput(iGroup) = s.PB(iGroup)
-                    End If
-
-                    If (s.QB(iGroup) > cCore.NULL_VALUE) Then
-                        epdata.QBinput(iGroup) = s.QB(iGroup)
-                    End If
-
-                    If (s.EE(iGroup) > cCore.NULL_VALUE) Then
-                        epdata.EEinput(iGroup) = s.EE(iGroup)
-                        If (epdata.EEinput(1) > 0) Then Stop
-                    End If
-
-                    If (s.BA(iGroup) > cCore.NULL_VALUE) Then
-                        epdata.BAInput(iGroup) = s.BA(iGroup)
-                    End If
-
-                    If (s.BaBi(iGroup) > cCore.NULL_VALUE) Then
-                        epdata.BaBi(iGroup) = s.BaBi(iGroup)
-                    End If
-
-                    For iFleet As Integer = 1 To Me.m_core.nFleets
-                        If (s.Landing(iFleet, iGroup) > cCore.NULL_VALUE) Then
-                            epdata.Landing(iFleet, iGroup) = s.Landing(iFleet, iGroup)
-                        End If
-                        If (s.Discard(iFleet, iGroup) > cCore.NULL_VALUE) Then
-                            epdata.Discard(iFleet, iGroup) = s.Discard(iFleet, iGroup)
-                        End If
-                    Next
-
+                If (s.B(iGroup) > cCore.NULL_VALUE) Then
+                    epdata.Binput(iGroup) = s.B(iGroup)
+                    epdata.BHinput(iGroup) = s.B(iGroup) / epdata.Area(iGroup)
                 End If
 
-                For iPred As Integer = 1 To epdata.NumLiving
+                If (s.PB(iGroup) > cCore.NULL_VALUE) Then
+                    epdata.PBinput(iGroup) = s.PB(iGroup)
+                End If
+
+                If (s.QB(iGroup) > cCore.NULL_VALUE) Then
+                    epdata.QBinput(iGroup) = s.QB(iGroup)
+                End If
+
+                If (s.EE(iGroup) > cCore.NULL_VALUE) Then
+                    epdata.EEinput(iGroup) = s.EE(iGroup)
+                    If (epdata.EEinput(1) > 0) Then Stop
+                End If
+
+                If (s.BA(iGroup) > cCore.NULL_VALUE) Then
+                    epdata.BAInput(iGroup) = s.BA(iGroup)
+                End If
+
+                If (s.BaBi(iGroup) > cCore.NULL_VALUE) Then
+                    epdata.BaBi(iGroup) = s.BaBi(iGroup)
+                End If
+
+                For iFleet As Integer = 1 To Me.m_core.nFleets
+                    If (s.Landing(iFleet, iGroup) > cCore.NULL_VALUE) Then
+                        epdata.Landing(iFleet, iGroup) = s.Landing(iFleet, iGroup)
+                    End If
+                    If (s.Discard(iFleet, iGroup) > cCore.NULL_VALUE) Then
+                        epdata.Discard(iFleet, iGroup) = s.Discard(iFleet, iGroup)
+                    End If
+                Next
+            Next
+
+            For iPred As Integer = 1 To epdata.NumLiving
+                For iGroup As Integer = 0 To m_core.nGroups
                     If (s.DC(iPred, iGroup) > cCore.NULL_VALUE) Then
-                        epdata.DCInput(iPred, iGroup) = s.DC(iPred, iGroup)
+                        epdata.DC(iPred, iGroup) = s.DC(iPred, iGroup)
                     End If
                 Next
             Next
@@ -863,8 +865,8 @@ Namespace Samples
 
             If (s Is Nothing) Then Return
 
-            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            For iGroup As Integer = 1 To Me.m_core.nGroups
+            Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
+            For iGroup As Integer = 1 To m_core.nGroups
 
                 Debug.Assert(epdata.B(iGroup).Approximates(s.B(iGroup)) Or s.B(iGroup) = cCore.NULL_VALUE)
                 Debug.Assert(epdata.BA(iGroup).Approximates(s.BA(iGroup)) Or s.BA(iGroup) = cCore.NULL_VALUE)
@@ -875,10 +877,6 @@ Namespace Samples
                 For iflt As Integer = 1 To Me.m_core.nFleets
                     Debug.Assert(epdata.Landing(iflt, iGroup) = s.Landing(iflt, iGroup) Or s.Landing(iflt, iGroup) = cCore.NULL_VALUE)
                     Debug.Assert(epdata.Discard(iflt, iGroup) = s.Discard(iflt, iGroup) Or s.Discard(iflt, iGroup) = cCore.NULL_VALUE)
-                Next
-
-                For iPred As Integer = 1 To Me.m_core.nLivingGroups
-                    Debug.Assert(epdata.DCInput(iPred, iGroup) = s.DC(iPred, iGroup) Or s.DC(iPred, iGroup) = cCore.NULL_VALUE)
                 Next
             Next
         End Sub
@@ -925,8 +923,8 @@ Namespace Samples
                         s.DBID = id
                         s.AllowValidation = True
                         n += 1
-                    Else
-                        bSuccess = False
+                        Else
+                            bSuccess = False
                     End If
 
                 End If

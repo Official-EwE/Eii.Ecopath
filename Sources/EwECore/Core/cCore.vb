@@ -4104,9 +4104,9 @@ Public Class cCore
                 Dim j As Integer
                 'Diet Comp (DO NOT INCLUDE IMPORT IN THE DC ARRAY - THIS IS SEPARATED IN ECOPATHGROUP!)
                 For j = 1 To m_EcopathData.NumGroups
-                    group.DietComp(j) = m_EcopathData.DCInput(iGroup, j)
+                    group.DietComp(j) = m_EcopathData.DC(iGroup, j)
                 Next
-                group.ImpDiet = m_EcopathData.DCInput(iGroup, 0)
+                group.ImpDiet = m_EcopathData.DC(iGroup, 0)
 
                 'detritus fate
                 For j = 1 To nDetritusGroups
@@ -4216,9 +4216,9 @@ Public Class cCore
                 For i As Integer = 1 To m_EcopathData.NumGroups
                     'Diet Comp is stored by Pred/Prey
                     'so this is the Prey for Predator iGroup
-                    m_EcopathData.DCInput(iGroup, i) = Input.DietComp(i)
+                    m_EcopathData.DC(iGroup, i) = Input.DietComp(i)
                 Next i
-                m_EcopathData.DCInput(iGroup, 0) = Input.ImpDiet()
+                m_EcopathData.DC(iGroup, 0) = Input.ImpDiet()
 
                 For i As Integer = 1 To nDetritusGroups
                     m_EcopathData.DF(iGroup, i) = Input.DetritusFate(i)
@@ -5620,7 +5620,7 @@ Public Class cCore
     Public Sub NormalizeDietInput()
         ' Sanity check
         Debug.Assert(Me.StateMonitor.HasEcopathLoaded())
-        ' Normalize ecopath DCInput
+        ' Normalize ecopath DC
         Me.m_EcopathData.SumDCToOne()
         ' Refresh ecopath groups
         Me.LoadEcopathInputs()
