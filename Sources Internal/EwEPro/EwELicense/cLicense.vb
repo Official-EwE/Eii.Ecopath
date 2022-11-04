@@ -114,7 +114,7 @@ Public Class cLicense
     End Sub
 
     Private Sub Invalidate()
-        Console.WriteLine("L: I")
+        'Console.WriteLine("L: I")
         Me.m_refresh = Date.MinValue
     End Sub
 
@@ -127,7 +127,7 @@ Public Class cLicense
             Me.m_expCached = Date.MinValue
             Me.m_ownCached = ""
 
-            Console.WriteLine("L: R")
+            'Console.WriteLine("L: R")
             Try
                 If (Me.m_engine.OnlineRevocationCheck()) Then
                     Me.m_engine.AsyncSilentReactivation()
@@ -156,7 +156,7 @@ Public Class cLicense
             End If
             Me.m_refresh = Date.Now
         Else
-            Console.WriteLine("L: C")
+            'Console.WriteLine("L: C")
         End If
     End Sub
 
