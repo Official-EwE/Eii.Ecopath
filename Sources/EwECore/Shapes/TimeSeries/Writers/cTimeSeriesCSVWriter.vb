@@ -21,12 +21,9 @@
 
 Option Strict On
 
+Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports System.IO
-Imports System.Text
-Imports System.Globalization
-Imports System.Threading
 
 #End Region ' Imports
 

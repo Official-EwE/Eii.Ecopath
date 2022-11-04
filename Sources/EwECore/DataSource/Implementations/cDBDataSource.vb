@@ -2008,7 +2008,7 @@ Namespace DataSources
                     ecopathDS.DtImp(iGroup) = CSng(reader("DtImports"))
                     ecopathDS.Ex(iGroup) = CSng(reader("Export"))
                     ecopathDS.fCatch(iGroup) = CSng(reader("Catch"))
-                    ecopathDS.DCInput(iGroup, 0) = CSng(reader("ImpVar"))
+                    ecopathDS.DC(iGroup, 0) = CSng(reader("ImpVar"))
                     ecopathDS.GroupIsFish(iGroup) = (CInt(reader("GroupIsFish")) <> 0)
                     ecopathDS.GroupIsInvert(iGroup) = (CInt(reader("GroupIsInvert")) <> 0)
                     ecopathDS.Shadow(iGroup) = CSng(reader("NonMarketValue"))
@@ -2104,7 +2104,7 @@ Namespace DataSources
                     drow("DtImports") = ecopathDS.DtImp(iGroup)
                     drow("Export") = ecopathDS.Ex(iGroup)
                     drow("Catch") = ecopathDS.fCatch(iGroup)
-                    drow("ImpVar") = ecopathDS.DCInput(iGroup, 0)
+                    drow("ImpVar") = ecopathDS.DC(iGroup, 0)
                     drow("GroupIsFish") = ecopathDS.GroupIsFish(iGroup)
                     drow("GroupIsInvert") = ecopathDS.GroupIsInvert(iGroup)
                     drow("NonMarketValue") = ecopathDS.Shadow(iGroup)
@@ -2394,7 +2394,7 @@ Namespace DataSources
 
                     ' Set diet to 0 for non-living groups (fixes #878)
                     If (sDiet > 0) And (iPred > ecopathDS.NumLiving) Then sDiet = 0
-                    ecopathDS.DCInput(iPred, iPrey) = sDiet
+                    ecopathDS.DC(iPred, iPrey) = sDiet
 
                     If iPrey > ecopathDS.NumLiving Then
                         ecopathDS.DF(iPred, iPrey - ecopathDS.NumLiving) = CSng(reader("DetritusFate"))
@@ -2403,8 +2403,8 @@ Namespace DataSources
                     ' 060528JS: ASSERT on "diet leftovers" from previous incarnations, including 041020VC fix for carbon groups
                     ' The actual data fix is performed once during EwE5 import, and should not reoccur when running EwE6.
                     If ecopathDS.PP(iPred) = 1 And ecopathDS.QB(iPred) <= 0 Then
-                        If (ecopathDS.DCInput(iPred, iPrey) <> 0) Then
-                            cLog.Write(String.Format("Database error on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
+                        If (ecopathDS.DC(iPred, iPrey) <> 0) Then
+                            cLog.Write(String.Format("Database error on DC({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DC(iPred, iPrey)))
                         End If
                     End If
 
@@ -2424,7 +2424,7 @@ Namespace DataSources
             reader = Me.m_db.GetReader("SELECT * FROM EcopathGroup ORDER BY Sequence ASC")
             iPred = 1
             While reader.Read()
-                If CSng(reader("ImpVar")) > 0 Then ecopathDS.DCInput(iPred, 0) = CSng(reader("ImpVar"))
+                If CSng(reader("ImpVar")) > 0 Then ecopathDS.DC(iPred, 0) = CSng(reader("ImpVar"))
                 iPred += 1
             End While
             Me.m_db.ReleaseReader(reader)
@@ -2470,7 +2470,7 @@ Namespace DataSources
                         drow = writer.NewRow()
                         drow("PredID") = idPred
                         drow("PreyID") = idPrey
-                        drow("Diet") = ecopathDS.DCInput(iPred, iPrey)
+                        drow("Diet") = ecopathDS.DC(iPred, iPrey)
                         If iPrey > ecopathDS.NumLiving Then
                             drow("DetritusFate") = ecopathDS.DF(iPred, iPrey - ecopathDS.NumLiving)
                         Else

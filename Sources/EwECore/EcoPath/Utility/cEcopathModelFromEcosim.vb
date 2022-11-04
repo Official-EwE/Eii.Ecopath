@@ -219,7 +219,7 @@ Public Class cEcopathModelFromEcosim
                     'Eatenby(pred) is the total biomass eaten by a predator
                     'DC(pred,prey) is the proportion of diet made up by a prey
                     'So get the proportion of diet 
-                    Me.m_data.NextValue("DCInput", iPred, iPrey) = simSrc.simDCAtT(iPred, iPrey) / simSrc.Eatenby(iPred)
+                    Me.m_data.NextValue("DC", iPred, iPrey) = simSrc.simDCAtT(iPred, iPrey) / simSrc.Eatenby(iPred)
                 End If
             Next
         Next
@@ -539,7 +539,7 @@ Public Class cEcopathModelFromEcosim
 
         For iPred As Integer = 1 To Me.m_core.nGroups
             For iPrey As Integer = 1 To Me.m_core.nGroups
-                pathDest.DCInput(iPred, iPrey) = Me.m_data.Mean("DCInput", iPred, iPrey)
+                pathDest.DC(iPred, iPrey) = Me.m_data.Mean("DC", iPred, iPrey)
             Next
         Next
         pathDest.SumDCToOne()

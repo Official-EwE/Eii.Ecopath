@@ -236,7 +236,7 @@ Namespace Ecopath
                     ' Merge amounts that other groups eat of agg1 and agg2
                     For i As Integer = 1 To ecopathds.NumGroups
                         If (i <> agg1 And i <> agg2) Then
-                            Me.m_data.DCInput(i, agg1) = ecopathds.DCInput(i, agg1) + ecopathds.DCInput(i, agg2)
+                            Me.m_data.DC(i, agg1) = ecopathds.DC(i, agg1) + ecopathds.DC(i, agg2)
                         End If
                     Next i
 
@@ -247,10 +247,10 @@ Namespace Ecopath
                         Dim iPreyMerge As Integer = iPrey
                         ' Special case: cannibalism
                         If (iPrey = agg2) Then iPreyMerge = agg1
-                        Me.m_data.DCInput(agg1, iPreyMerge) = (ecopathds.DCInput(agg1, iPrey) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, iPrey) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
+                        Me.m_data.DC(agg1, iPreyMerge) = (ecopathds.DC(agg1, iPrey) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DC(agg2, iPrey) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
                     Next iPrey
 
-                    Me.m_data.DCInput(agg1, 0) = (ecopathds.DCInput(agg1, 0) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, 0) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
+                    Me.m_data.DC(agg1, 0) = (ecopathds.DC(agg1, 0) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DC(agg2, 0) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
 
                 End If
                 Me.m_data.QBinput = Qtot / Btot
@@ -393,7 +393,7 @@ Namespace Ecopath
             ' Diet
             For iPred As Integer = 1 To Me.m_core.nLivingGroups
                 For iPrey As Integer = 0 To Me.m_core.nGroups
-                    ecopathds.DCInput(iPred, iPrey) = Me.m_data.DCInput(iPred, iPrey)
+                    ecopathds.DC(iPred, iPrey) = Me.m_data.DC(iPred, iPrey)
                     ' ecopathds.DietWasChanged(agg1, i) is not needed; Ecopath will reinit
                 Next
             Next

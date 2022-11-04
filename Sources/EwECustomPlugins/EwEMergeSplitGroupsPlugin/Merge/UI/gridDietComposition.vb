@@ -178,7 +178,7 @@ Public Class gridDietComposition
                     If i = -1 Then i = Me.m_data.IndexTarget
                     If j = -1 Then j = Me.m_data.IndexTarget
 
-                    val = Me.m_data.DCInput(i, j)
+                    val = Me.m_data.DC(i, j)
                     style = style Or eStyleFlags.Sum
 
                 Else
@@ -188,7 +188,7 @@ Public Class gridDietComposition
                         val = pred.DietComp(iPrey)
                         style = style Or eStyleFlags.Checked
                     Else
-                        val = Me.m_data.DCInput(iPred, iPrey)
+                        val = Me.m_data.DC(iPred, iPrey)
                         ' Validate if changing
                         If (val - If(iPrey = 0, pred.ImpDiet(), pred.DietComp(iPrey))) > 0.00001 Then
                             ' Unexpected large difference

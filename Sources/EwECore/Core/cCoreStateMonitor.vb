@@ -858,8 +858,7 @@ Public Class cCoreStateMonitor
     ''' <seealso cref="HasEcopathRan()"/>
     ''' -----------------------------------------------------------------------
     Public Function HasEcopathBalanced() As Boolean
-        If HasEcopathBalanced Then Return Me.m_bEcopathBalanced
-        Return False
+        Return HasEcopathRan() And Me.m_bEcopathBalanced
     End Function
 
     ''' -----------------------------------------------------------------------

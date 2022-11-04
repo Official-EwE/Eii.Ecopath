@@ -145,8 +145,14 @@ Public Class cTimeSeriesDataStructures
     Public PoolForceDiscardProp(,,) As Single
     ''' <summary>Proportion of discards that incur mortality. By Fleet,Group,Time</summary>
     Public PoolForceDiscardMort(,,) As Single
-    ''' <summary>Proportion of discards that incur mortality. By Fleet,Group,Time</summary>
+    ''' <summary>Catchabilities. By Fleet,Group,Time</summary>
     Public PoolForceCatchabilities(,,) As Single
+
+    ' - Money -
+    ''' <summary>Ecopath off-vessel price. By Fleet,Group,Time</summary>
+    Public PoolForceOffVesselPrice(,,) As Single
+    ''' <summary>Ecopath CPUE cost. By Fleet,Time</summary>
+    Public PoolForceCPUECost(,) As Single
 
     ''' <summary>
     ''' Index to the current year/datatype
@@ -495,6 +501,9 @@ Public Class cTimeSeriesDataStructures
                 ReDim Me.PoolForceDiscardProp(Me.nFleets, Me.nGroups, npoints)
                 ReDim Me.PoolForceCatchabilities(Me.nFleets, Me.nGroups, npoints)
 
+                ReDim Me.PoolForceOffVesselPrice(Me.nFleets, Me.nGroups, npoints)
+                ReDim Me.PoolForceCPUECost(Me.nFleets, npoints)
+
                 Me.InitForcedDiscards()
                 Return
             End If
@@ -510,6 +519,9 @@ Public Class cTimeSeriesDataStructures
                 ReDim Preserve Me.PoolForceDiscardMort(Me.nFleets, Me.nGroups, npoints)
                 ReDim Preserve Me.PoolForceDiscardProp(Me.nFleets, Me.nGroups, npoints)
                 ReDim Preserve Me.PoolForceCatchabilities(Me.nFleets, Me.nGroups, npoints)
+
+                ReDim Preserve Me.PoolForceOffVesselPrice(Me.nFleets, Me.nGroups, npoints)
+                ReDim Preserve Me.PoolForceCPUECost(Me.nFleets, npoints)
 
                 ReDim Preserve Me.ForcedFs(Me.nGroups, RunLengthYears * cCore.N_MONTHS)
 

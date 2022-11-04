@@ -335,9 +335,9 @@ Public Class cEIIDataSource
                 iNextIndex = 0
                 For j = 1 To ecopathDS.NumGroups
 
-                    Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.DCInput(K, j))
-                    ' Input(fnum, ecopathDS.DCInput(K, j))
-                    If ecopathDS.DCInput(K, j) > 0 Then
+                    Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.DC(K, j))
+                    ' Input(fnum, ecopathDS.DC(K, j))
+                    If ecopathDS.DC(K, j) > 0 Then
                         ecopathDS.DietWasChanged(K, j)
                     End If
                 Next j
@@ -958,8 +958,8 @@ Public Class cEIIDataSource
             ReDim ecopathDS.DietChanged(1, 0)
             For K = 1 To ecopathDS.NumGroups
                 For j = 1 To ecopathDS.NumGroups
-                    Input(fnum, ecopathDS.DCInput(K, j))
-                    If ecopathDS.DCInput(K, j) > 0 Then
+                    Input(fnum, ecopathDS.DC(K, j))
+                    If ecopathDS.DC(K, j) > 0 Then
                         ecopathDS.DietWasChanged(K, j)
                     End If
                 Next j

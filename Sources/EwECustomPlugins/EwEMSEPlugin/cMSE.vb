@@ -79,7 +79,7 @@ Public Class cMSE
 
     Private m_ecosim As EwECore.Ecosim.cEcosimModel
     Private _simdata As cEcosimDatastructures
-    Private _pathdata As cEcopathDataStructures
+    Private m_pathdata As cEcopathDataStructures
     Private m_ecopath As Ecopath.cEcopathModel
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
     Private StrategyIndex As Integer
@@ -265,8 +265,8 @@ Public Class cMSE
 
     Public ReadOnly Property CatchesThroughoutProjection(iGroup As Integer, iFleet As Integer, iTime As Integer) As Single
         Get
-            Return Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.Landings) + _
-                Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.DiscardMortalities) + _
+            Return Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.Landings) +
+                Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.DiscardMortalities) +
                 Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.DiscardSurvivals)
         End Get
     End Property
@@ -285,7 +285,7 @@ Public Class cMSE
 
     Public ReadOnly Property DiscardsThroughoutProjection(iGroup As Integer, iFleet As Integer, iTime As Integer) As Single
         Get
-            Return Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.DiscardMortalities) + _
+            Return Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.DiscardMortalities) +
                 Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.DiscardSurvivals)
         End Get
     End Property
@@ -393,7 +393,7 @@ Public Class cMSE
 
     Public ReadOnly Property EcopathData As cEcopathDataStructures
         Get
-            Return Me._pathdata
+            Return Me.m_pathdata
         End Get
     End Property
 
@@ -572,14 +572,14 @@ Public Class cMSE
 
     Public Sub GenerateDefaultSurviveDistributions()
 
-        Dim TSurvivability As cSurvivability = New cSurvivability(Me, Me.m_core, Me._simdata, Me._pathdata)
+        Dim TSurvivability As cSurvivability = New cSurvivability(Me, Me.m_core, Me._simdata, Me.m_pathdata)
         TSurvivability.Save()
 
     End Sub
 
     Public Sub GenerateSurvivabilities()
 
-        Dim TSurvivability As cSurvivability = New cSurvivability(Me, Me.m_core, Me._simdata, Me._pathdata)
+        Dim TSurvivability As cSurvivability = New cSurvivability(Me, Me.m_core, Me._simdata, Me.m_pathdata)
 
         TSurvivability.Load()
         TSurvivability.SampleParams(Me.NModels)
@@ -800,8 +800,8 @@ Public Class cMSE
 
         'Dim aFilesFleet As String() = New String() {"ChangesInEffortLimits", "QuotaShares"}
         'Dim strRoot As String = cMSEUtils.MSEFolder(Me.DataPath, cMSEUtils.eMSEPaths.Fleet)
-        Dim outParamFiles As String() = New String() {"b_out", "ba_out", "ee_out", "pb_out", "qb_out", "DenDepCatchability_out", _
-                                                      "FeedingTimeAdjustRate_out", "MaxRelFeedingTime_out", "OtherMortFeedingTime_out", _
+        Dim outParamFiles As String() = New String() {"b_out", "ba_out", "ee_out", "pb_out", "qb_out", "DenDepCatchability_out",
+                                                      "FeedingTimeAdjustRate_out", "MaxRelFeedingTime_out", "OtherMortFeedingTime_out",
                                                       "PredEffectFeedingTime_out", "QBMaxxQBio_out", "SwitchingPower_out"}
 
         If (Me.m_tsRunDataCompatibility = TriState.UseDefault) Then
@@ -810,8 +810,8 @@ Public Class cMSE
             Me.m_tsRunDataCompatibility = TriState.True
 
             ' Make sure folder has out CSV files
-            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")) Or _
-                Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Or _
+            If Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "ChangesInEffortLimits.csv")) Or
+                Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.Fleet, "QuotaShares.csv")) Or
                 Not File.Exists(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, "Survivabilities_out.csv")) Then
                 Me.m_tsRunDataCompatibility = TriState.False
             End If
@@ -2169,11 +2169,11 @@ Public Class cMSE
             csvDietMatrix = New CsvReader(strmReader, False)
             If csvDietMatrix.ReadNextRecord() Then
                 For iPred As Integer = 1 To Me.m_core.nLivingGroups
-                    'NOT DCInput because we don't have the support that copies this into DC
+                    'NOT DC because we don't have the support that copies this into DC
                     If cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) < MIN_DIET_PROP Then
-                        Me._pathdata.DC(iPred, 0) = 0
+                        Me.m_pathdata.DC(iPred, 0) = 0
                     Else
-                        Me._pathdata.DC(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                        Me.m_pathdata.DC(iPred, 0) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                     End If
                 Next
             Else
@@ -2187,11 +2187,11 @@ Public Class cMSE
                     For iPred As Integer = 1 To Me.m_core.nLivingGroups
                         'If m_ecopath.EcopathData.DC(iPred, iPrey) > 0 Then
                         'Debug.Assert(cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) > 0)
-                        'NOT DCInput because we don't have the support that copies this into DC
+                        'NOT DC because we don't have the support that copies this into DC
                         If cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1)) < MIN_DIET_PROP Then
-                            Me._pathdata.DC(iPred, iPrey) = 0
+                            Me.m_pathdata.DC(iPred, iPrey) = 0
                         Else
-                            Me._pathdata.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
+                            Me.m_pathdata.DC(iPred, iPrey) = cStringUtils.ConvertToSingle(csvDietMatrix(iPred - 1))
                         End If
                     Next
                 Else
@@ -2200,7 +2200,7 @@ Public Class cMSE
                 End If
             Next
 
-            Me.NormalizeDiet(Me._pathdata.DC)
+            Me.NormalizeDiet(Me.m_pathdata.DC)
 
         Else
             ' Could not read diet matrix for this trial
@@ -2255,7 +2255,7 @@ Public Class cMSE
             strm.WriteLine("-----------------Start Diet Matrix-----------------------")
             For iprey As Integer = 1 To Me.m_core.nGroups
                 For ipred As Integer = 1 To Me.m_core.nLivingGroups
-                    strm.Write(Me._pathdata.DCInput(ipred, iprey).ToString() + ",")
+                    strm.Write(Me.m_pathdata.DC(ipred, iprey).ToString() + ",")
                 Next
                 strm.WriteLine()
             Next
@@ -2469,11 +2469,11 @@ Public Class cMSE
         For igrp = 1 To Me.m_core.nLivingGroups
             Debug.Assert(Not Me.B(itrial - 1, igrp - 1) = cCore.NULL_VALUE, "Oppss something is very wrong with the parameters read from file.")
             If Not Me.B(itrial - 1, igrp - 1) = cCore.NULL_VALUE Then
-                Me._pathdata.B(igrp) = CSng(Me.B(itrial - 1, igrp - 1))
-                Me._pathdata.PB(igrp) = CSng(Me.PB(itrial - 1, igrp - 1))
-                Me._pathdata.QB(igrp) = CSng(Me.QB(itrial - 1, igrp - 1))
-                Me._pathdata.EE(igrp) = CSng(Me.EE(itrial - 1, igrp - 1))
-                Me._pathdata.BA(igrp) = CSng(Me.BA(itrial - 1, igrp - 1))
+                Me.m_pathdata.B(igrp) = CSng(Me.B(itrial - 1, igrp - 1))
+                Me.m_pathdata.PB(igrp) = CSng(Me.PB(itrial - 1, igrp - 1))
+                Me.m_pathdata.QB(igrp) = CSng(Me.QB(itrial - 1, igrp - 1))
+                Me.m_pathdata.EE(igrp) = CSng(Me.EE(itrial - 1, igrp - 1))
+                Me.m_pathdata.BA(igrp) = CSng(Me.BA(itrial - 1, igrp - 1))
                 If Not Me.m_core.EcopathGroupInputs(igrp).IsProducer Then
                     Me._simdata.QmQo(igrp) = CSng(Me.DenDepCatchability(itrial - 1, igrp - 1))
                     Me._simdata.FtimeAdjust(igrp) = CSng(Me.FeedingTimeAdjustRate(itrial - 1, igrp - 1))
@@ -3058,7 +3058,7 @@ Public Class cMSE
 
                         'jb 23-Sept-2014 SampleDietMatrix(...) will truncate values less than a hardwired min (1.0E-6 inside SampleDietMatrix )
                         'If that happens we need to re-normalize the diet matrix
-                        Me.NormalizeDiet(Me._pathdata.DCInput)
+                        Me.NormalizeDiet(Me.m_pathdata.DC)
                         'Me.dumpDietMatrix()
 
                         'Console.WriteLine("Iteration = " & i)
@@ -3066,9 +3066,9 @@ Public Class cMSE
 
                             For iGrp = 1 To Me.m_core.nGroups
                                 If Me.m_core.EcopathGroupInputs(iGrp).IsLiving Then
-                                    If Me._pathdata.GE(iGrp) > PQThreshold Then Console.WriteLine("Group " & iGrp & " failed PQ<0.5 test")
-                                    If Me._pathdata.Resp(iGrp) < RespirThreshold Then Console.WriteLine("Group" & iGrp & " failing the respiration>0 test")
-                                    If Me._pathdata.GE(iGrp) > PQThreshold Or Me._pathdata.Resp(iGrp) < RespirThreshold Then
+                                    If Me.m_pathdata.GE(iGrp) > PQThreshold Then Console.WriteLine("Group " & iGrp & " failed PQ<0.5 test")
+                                    If Me.m_pathdata.Resp(iGrp) < RespirThreshold Then Console.WriteLine("Group" & iGrp & " failing the respiration>0 test")
+                                    If Me.m_pathdata.GE(iGrp) > PQThreshold Or Me.m_pathdata.Resp(iGrp) < RespirThreshold Then
                                         isbalanced = False
                                     End If
                                 End If
@@ -3308,16 +3308,16 @@ Public Class cMSE
         Dim tol As Single = 0.001
         Dim bwarning As Boolean = False
 
-        For iPred = 1 To Me._pathdata.NumLiving
+        For iPred = 1 To Me.m_pathdata.NumLiving
             bwarning = False
-            If Me._pathdata.PP(iPred) < 1 Then
+            If Me.m_pathdata.PP(iPred) < 1 Then
                 dietsum = 0
-                For iPrey = 0 To Me._pathdata.NumGroups
+                For iPrey = 0 To Me.m_pathdata.NumGroups
                     dietsum = dietsum + DietMatrix(iPred, iPrey)
                 Next
                 If dietsum <> 0 And Math.Abs(dietsum - 1) > tol Then
                     bwarning = True
-                    For iPrey = 0 To Me._pathdata.NumGroups
+                    For iPrey = 0 To Me.m_pathdata.NumGroups
                         DietMatrix(iPred, iPrey) = DietMatrix(iPred, iPrey) / dietsum
                     Next
                     'm_Data.DietsModified = True
@@ -3611,7 +3611,7 @@ Public Class cMSE
             If (SumInteractions(iPred) = 0) Then    'No need to do any of this unless there is at least 1 prey for this parameter
                 'Set all values to zero - if running slow might want to consider how this could be skipped - possibly setting whole array to zero at start
                 For iPrey = 0 To Me.m_core.nGroups
-                    ecopathData.DCInput(iPred + 1, iPrey) = 0
+                    ecopathData.DC(iPred + 1, iPrey) = 0
                 Next
             Else
                 ' DirichStopWatch.Start()
@@ -3637,7 +3637,7 @@ Public Class cMSE
                 If InteractsImports(iPred) = 1 Then
                     dProp = TempDirichlet(i)
                     If dProp < MIN_DIET_PROP Then dProp = 0.0F
-                    ecopathData.DCInput(iPred + 1, 0) = dProp
+                    ecopathData.DC(iPred + 1, 0) = dProp
                     i += 1
                 End If 'InteractsImports(iPred) = 1
 
@@ -3645,7 +3645,7 @@ Public Class cMSE
                     If Interacts(iPred, iPrey - 1) = 1 Then
                         dProp = TempDirichlet(i)
                         If dProp < MIN_DIET_PROP Then dProp = 0.0F
-                        ecopathData.DCInput(iPred + 1, iPrey) = dProp
+                        ecopathData.DC(iPred + 1, iPrey) = dProp
                         i += 1
                     End If 'Interacts(iPred, iPrey - 1) = 1
                 Next iPrey
@@ -3665,7 +3665,7 @@ Public Class cMSE
 
         Me.m_regulations = New cRegulations(Me, Me.m_core)
         Me.m_quotashares = New cQuotaShares(Me, Me.m_core)
-        Me.m_survivability = New cSurvivability(Me, Me.m_core, EcosimDatastructures, Me._pathdata)
+        Me.m_survivability = New cSurvivability(Me, Me.m_core, EcosimDatastructures, Me.m_pathdata)
         Me.m_strategies = New Strategies(Me, Me.m_core)
         Me.m_effortlimits = New cEffortLimits(Me, Me.m_core)
         Me.m_StockAssessment = New cStockAssessmentModel(Me)
@@ -3682,7 +3682,7 @@ Public Class cMSE
     End Sub
 
     Public Sub onEcopathInitialized(EcopathData As cEcopathDataStructures)
-        Me._pathdata = EcopathData
+        Me.m_pathdata = EcopathData
     End Sub
 
     Public Sub onEcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, iTime As Integer)
@@ -4800,9 +4800,9 @@ Public Class cMSE
     End Function
 
     Public Function CalcDensityDependency(BiomassAtTimestep() As Single) As Single()
-        Dim Qmult(Me._pathdata.NumGroups) As Single
+        Dim Qmult(Me.m_pathdata.NumGroups) As Single
 
-        For igrp As Integer = 1 To Me._pathdata.NumGroups
+        For igrp As Integer = 1 To Me.m_pathdata.NumGroups
             Qmult(igrp) = Me.DensityDependencyForGroup(igrp, BiomassAtTimestep(igrp))
         Next
 
@@ -4811,10 +4811,10 @@ Public Class cMSE
     End Function
 
     Private Function CalcDensityDependencyAtT(iTime As Integer) As Single()
-        Dim Qmult(Me._pathdata.NumGroups) As Single
+        Dim Qmult(Me.m_pathdata.NumGroups) As Single
         Dim BatT As Single
 
-        For igrp As Integer = 1 To Me._pathdata.NumGroups
+        For igrp As Integer = 1 To Me.m_pathdata.NumGroups
             BatT = Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime)
             Qmult(igrp) = Me.DensityDependencyForGroup(igrp, BatT)
         Next

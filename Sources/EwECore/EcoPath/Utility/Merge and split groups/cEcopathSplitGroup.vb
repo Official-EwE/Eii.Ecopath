@@ -195,12 +195,12 @@ Namespace Ecopath
 
             ' Diet
             For iPrey As Integer = 1 To epdata.NumGroups
-                epdata.DCInput(iTgt, iPrey) = epdata.DCInput(iSrc, iPrey)
+                epdata.DC(iTgt, iPrey) = epdata.DC(iSrc, iPrey)
             Next
             For iPred As Integer = 1 To epdata.NumLiving
-                If epdata.DCInput(iPred, iSrc) > 0 Then epdata.DCInput(iPred, iSrc) /= 2 : epdata.DCInput(iPred, iTgt) = epdata.DCInput(iPred, iSrc)
+                If epdata.DC(iPred, iSrc) > 0 Then epdata.DC(iPred, iSrc) /= 2 : epdata.DC(iPred, iTgt) = epdata.DC(iPred, iSrc)
             Next
-            epdata.DCInput(iTgt, 0) = epdata.DCInput(iSrc, 0)
+            epdata.DC(iTgt, 0) = epdata.DC(iSrc, 0)
 
             ' Detritus fate
             If (iSrc > epdata.NumLiving) Then
