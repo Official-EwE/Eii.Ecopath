@@ -13,7 +13,7 @@
 #define MSPTools 0
 #define RandomizeMPAs 0
 #define ExcludeDeadCells 0
-#define enaR 0
+#define enaR 1
 
 #if Compile64Bit == 0
   #define MyAppVersion "6.7.0 α 32-bit"
@@ -36,7 +36,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.18006
+  VersionInfoVersion=6.7.0.18063
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
