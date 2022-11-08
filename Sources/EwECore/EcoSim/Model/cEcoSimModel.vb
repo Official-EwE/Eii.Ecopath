@@ -381,7 +381,6 @@ Namespace Ecosim
             End Try
         End Function
 
-
         Public Function IsDatTypeDriver(DatType As eTimeSeriesType) As Boolean
             Select Case DatType
                 Case eTimeSeriesType.BiomassRel,
@@ -393,7 +392,8 @@ Namespace Ecosim
                      eTimeSeriesType.CatchesForcing,
                      eTimeSeriesType.DiscardMortality,
                      eTimeSeriesType.DiscardProportion,
-                     eTimeSeriesType.Catchabilities
+                     eTimeSeriesType.Catchabilities,
+                     eTimeSeriesType.OffVesselPrice
                     Return True
             End Select
             Return False
@@ -976,7 +976,7 @@ Namespace Ecosim
                         'set the F using the Predicted and Regulated (if MSE is running) effort
                         Me.SetFtimeFromGear(itime, QYear, True)
 
-                        Me.FindCurrentProfit(Me.BB, itime)
+                        Me.FindCurrentProfit(Me.BB, itime, iyr)
                         Me.PredictCapacityChange()
                     End If
 
@@ -1056,7 +1056,7 @@ Namespace Ecosim
 
                     'Compute time step results if the calling routine set bTimestepOutput to True
                     If Me.m_Data.bTimestepOutput Then
-                        Me.PopulateResults(itime, ipct)
+                        Me.PopulateResults(itime, ipct, iyr)
                         Me.FireOnTimeStep(itime)
                     End If
 
@@ -1193,7 +1193,7 @@ Namespace Ecosim
                 For igrp As Integer = 1 To Me.nGroups
                     For iflt = 1 To Me.m_Data.nGear
                         'Monthly Value = Landings * [mediated price] * [Discount Factor]
-                        Me.m_search.ValCatch(iflt, igrp) += LandingsForValue(igrp, iflt) * Me.PESValue(igrp, iflt) * Me.m_search.DF / 12.0F
+                        Me.m_search.ValCatch(iflt, igrp) += LandingsForValue(igrp, iflt) * Me.LandingsValue(igrp, iflt, iTime, iYear) * Me.m_search.DF / 12.0F
 
                     Next
                 Next
@@ -1226,7 +1226,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="iTime"></param>
         ''' <remarks></remarks>
-        Public Sub CalcValueFromLandings(ByVal iTime As Integer)
+        Public Sub CalcValueFromLandings(ByVal iTime As Integer, ByVal iYear As Integer)
             Dim baseGroupVal As Single
 
             'set PriceMedData.MedVal() for all applied price elasticity functions
@@ -1238,7 +1238,7 @@ Namespace Ecosim
                 baseGroupVal = 0
                 For iflt As Integer = 1 To Me.m_Data.nGear
                     'Landings are the "Ecopath" landings (discards not included) which is the annual landings
-                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.PESValue(igrp, iflt)
+                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.LandingsValue(igrp, iflt, iTime, iYear)
 
                     Me.m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) += value
                     Me.m_Data.ResultsSumValueByGear(iflt, iTime) += value
@@ -1258,19 +1258,23 @@ Namespace Ecosim
 
         End Sub
 
-
-
         ''' <summary>
-        ''' Return market value (off vessel price) as a function of the applied price elasticity functions 
+        ''' Return market value (off vessel price) as a function of the applied price elasticity functions or time series forcing.
         ''' </summary>
         ''' <param name="iGrp">Index of the affected group. This is the group that the price function is applied to in the application grid.</param>
         ''' <param name="iFlt">Index of the affected fleet. This is the fleet that the price function is applied to in the application grid.</param>
-        ''' <returns>[Ecopath market value] * [PES multiplier]</returns>
+        ''' <returns>([Ecopath market value] or [OffVesselPrice time series]) * [PES multiplier]</returns>
         ''' <remarks></remarks>
-        Public Function PESValue(ByVal iGrp As Integer, ByVal iFlt As Integer) As Single
+        Public Function LandingsValue(ByVal iGrp As Integer, ByVal iFlt As Integer, ByVal iTime As Integer, ByVal iYear As Integer) As Single
+
+            Dim value As Single = Me.m_EPData.Market(iFlt, iGrp)
+            Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iTime, iYear)
+            If Me.m_RefData.PoolForceOffVesselPrice(iFlt, iGrp, iForcing) > 0 Then
+                value = Me.m_RefData.PoolForceOffVesselPrice(iFlt, iGrp, iForcing)
+            End If
             'apply the price elasticity multiplier to market value for this Group/Fleet
             'if there is no PES function for this group fleet getPESMult(group,fleet) will return 1
-            Return Me.m_EPData.Market(iFlt, iGrp) * Me.m_Data.PriceMedData.getPESMult(iGrp, iFlt)
+            Return value * Me.m_Data.PriceMedData.getPESMult(iGrp, iFlt)
 
         End Function
 
@@ -2169,7 +2173,7 @@ Namespace Ecosim
         ''' To package/summarize data from the model into an cEcoSimResults object which 
         ''' then gets passed to the Delegate function (mProgressDelegate) that was initialized in InitMultiThreading(...)
         ''' </remarks>
-        Private Sub PopulateResults(ByVal iTime As Integer, ByVal imonth As Integer)
+        Private Sub PopulateResults(ByVal iTime As Integer, ByVal imonth As Integer, ByVal iYear As Integer)
             Try
                 Dim ist As Integer
                 Dim ia As Integer
@@ -2337,7 +2341,7 @@ Namespace Ecosim
 
                 Next igrp
 
-                Me.CalcValueFromLandings(iTime)
+                Me.CalcValueFromLandings(iTime, iYear)
 
                 'effort
                 For iflt = 1 To Me.m_Data.nGear
@@ -5336,7 +5340,7 @@ Namespace Ecosim
 
         End Sub
 
-        Sub FindCurrentProfit(ByVal BB() As Single, ByVal t As Integer)
+        Sub FindCurrentProfit(BB() As Single, t As Integer, y As Integer)
             ' JS 080321: enabled price elasticity
 
             Dim i As Integer, ig As Integer, TotIncome As Single, Fg As Single
@@ -5357,7 +5361,7 @@ Namespace Ecosim
                     'jb use time varing proportion of landings
                     If (1 = 1) Then
                         ' Use price elasticity 
-                        Dim price As Single = Me.PESValue(i, ig)
+                        Dim price As Single = Me.LandingsValue(i, ig, t, y)
                         TotIncome += Fg * BB(i) * price * Me.m_Data.PropLandedTime(ig, i)
                     Else
                         ' Use 'old' version
@@ -5419,7 +5423,7 @@ Namespace Ecosim
                     Me.m_Data.FishRateGear(ig, t) = 1
                 Next
             Next
-            Me.FindCurrentProfit(Me.m_Data.StartBiomass, 0)
+            Me.FindCurrentProfit(Me.m_Data.StartBiomass, 0, 0)
             For ig = 1 To Me.m_Data.nGear
                 Me.EscalePar(ig) = CSng((Me.CapBase(ig) - 1) * Me.CurrentIncome(ig) ^ Me.m_Data.Epower(ig))
                 Me.CapGrowthFactor(ig) = CSng(Me.CapBase(ig) * (Me.m_Data.CapBaseGrowth(ig) + Me.m_Data.CapDepreciate(ig)) / (Me.CurrentProfit(ig) + 1.0E-20))

@@ -698,11 +698,16 @@ Namespace Utilities
             ni.NumberDecimalSeparator = strDecimalSeparator
             ni.NumberGroupSeparator = strThousandsSeparator
 
-            If (iNumDigits > 0) Then ni.NumberDecimalDigits = iNumDigits
-
             ' PLEASE DO NOT USE Convert.Format below!!! Convert.ToString will use ni.NumberDecimalDigits
             ' to determine the number of relevant digits (which is what we want) while Decimal.Format 
             ' rounds to ni.NumberDecimalDigits (which is what we DO NOT want)
+
+            If (iNumDigits > 0) Then
+                ni.NumberDecimalDigits = iNumDigits
+                ' Cast to double as Decimal formatting ignores the requested NumberDecimalDigits
+                Return Convert.ToString(CDbl(decValue), ni)
+            End If
+
             Return Convert.ToString(decValue, ni)
 
         End Function

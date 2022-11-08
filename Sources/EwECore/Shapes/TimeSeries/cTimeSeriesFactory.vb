@@ -69,7 +69,8 @@ Public Class cTimeSeriesFactory
                  eTimeSeriesType.DiscardProportion,
                  eTimeSeriesType.Landings,
                  eTimeSeriesType.Discards,
-                 eTimeSeriesType.Catchabilities
+                 eTimeSeriesType.Catchabilities,
+                 eTimeSeriesType.OffVesselPrice
                 Return eTimeSeriesCategoryType.FleetGroup
 
             Case Else

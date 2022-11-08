@@ -87,7 +87,8 @@ Public Class cFleetTimeSeries
 
     Public ReadOnly Property GroupIndexStatus() As eStatusFlags
         Get
-            If Me.m_timeSeriesType = eTimeSeriesType.DiscardMortality Or Me.m_timeSeriesType = eTimeSeriesType.DiscardProportion Then
+            If (Me.m_timeSeriesType = eTimeSeriesType.DiscardMortality) Or (Me.m_timeSeriesType = eTimeSeriesType.DiscardProportion) Or
+               (Me.m_timeSeriesType = eTimeSeriesType.Catchabilities) Or (Me.m_timeSeriesType = eTimeSeriesType.OffVesselPrice) Then
                 If (Me.DatPoolSec < 1 Or Me.DatPoolSec > Me.m_core.nGroups) Then
                     Return eStatusFlags.ErrorEncountered
                 End If

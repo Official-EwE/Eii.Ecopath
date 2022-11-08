@@ -416,7 +416,8 @@ Namespace MSE
             Dim bOK As Boolean = True
 
             For iTimeSeries As Integer = 1 To Me.m_core.nTimeSeries
-                If Me.m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardProportion Or Me.m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardMortality Then
+                If Me.m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardProportion Or
+                  Me.m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardMortality Then
                     If Me.m_core.EcosimTimeSeries(iTimeSeries).Enabled Then
                         Dim sTypeTimeSeries2Check As String = Me.m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType.ToString
                         Dim fbMess As New cFeedbackMessage(String.Format(My.Resources.CoreMessages.MSE_DISCARD_TIMESERIES_WARNING, sTypeTimeSeries2Check),
