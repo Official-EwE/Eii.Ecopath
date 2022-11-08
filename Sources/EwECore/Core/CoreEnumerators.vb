@@ -336,7 +336,10 @@ Public Enum eTimeSeriesType As Integer
     Landings = 12
     ''' <summary>Absolute discards (fleet x group, reference)</summary>
     Discards = 13
+    ''' <summary>Catchabilities (fleet x group, driver)</summary>
     Catchabilities = 14
+    ''' <summary>Absolute off-vessel price (fleet x group, driver)</summary>
+    OffVesselPrice = 15
     FishingMortalityRef = 104
     NotSet = cCore.NULL_VALUE
 End Enum

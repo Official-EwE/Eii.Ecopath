@@ -193,7 +193,6 @@ Public Class cEcoSpace
     ''' </remarks>
     Private loss() As Single
 
-
     Private pbb() As Single
 
     'movement parameters use for SolveGrid()
@@ -217,6 +216,8 @@ Public Class cEcoSpace
     Private dNomig(,,) As Single
     Private Enomig(,,) As Single
 
+    ' Calculated prices for a time step
+    Private OffVesselPrice(,) As Single
 
     ''' <summary>
     ''' Converts an iGroup into a cumulative stanza index Nvarsplit
@@ -914,6 +915,7 @@ Public Class cEcoSpace
                     'Sets proportion of discards landed and discarded 
                     'With the Ecosim Discards Forcing time series
                     Me.setForcedDiscards(Me.its, Me.EcoSpaceData.YearNow)
+                    Me.updateOffVesselPrices(Me.its, Me.EcoSpaceData.YearNow)
 
                     If Me.its >= 3 And Not Me.bEffortAdjusted Then Me.AdjustTotalEffort()
                     stpwchEffort.Start()
@@ -1316,11 +1318,11 @@ Public Class cEcoSpace
 
     End Sub
 
-   Private Sub SetSpatialTempData(ByVal iTimeStepCounter As Integer)
+    Private Sub SetSpatialTempData(ByVal iTimeStepCounter As Integer)
 
         Dim ReadMutex As Threading.Mutex
-        Dim btimedout As Boolean = false
- 
+        Dim btimedout As Boolean = False
+
         Try
 
             Me.EcoSpaceData.MOLayerChanged.Clear()
@@ -1362,7 +1364,7 @@ Public Class cEcoSpace
             Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
 
         Finally
-              'Make sure the Mutex gets released
+            'Make sure the Mutex gets released
             ' JS 23Sept22: only release if not timed out, otherwise the mutex keeps failing with consequences for future spat temp data
             If Not btimedout Then ReadMutex.ReleaseMutex()
             ReadMutex.Close()
@@ -2627,6 +2629,7 @@ Public Class cEcoSpace
             ReDim Me.EcoSpaceData.jStartCol(Me.EcoSpaceData.InRow)
             ReDim Me.EcoSpaceData.jEndCol(Me.EcoSpaceData.InRow)
 
+            ReDim Me.OffVesselPrice(Me.EcoSpaceData.nFleets, Me.EcoSpaceData.NGroups)
 
             'this finds the start and end rows and columns so that solvegrid doesn't go through every one
             For j = 1 To Me.EcoSpaceData.InCol
@@ -4330,7 +4333,8 @@ exitline:
                                 'mpamonth(Month, MPAType) is false if closed, True if open.
                                 Valt = 0
                                 For isp = 1 To Me.EcoSpaceData.NGroups
-                                    Valt = Valt + Me.EcoPathData.Market(iFlt, isp) * Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(iFlt, isp) * Me.EcoSimData.PropLandedTime(iFlt, isp)
+                                    ' JS: use dynamic price here
+                                    Valt = Valt + Me.OffVesselPrice(iFlt, isp) * Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(iFlt, isp) * Me.EcoSimData.PropLandedTime(iFlt, isp)
                                 Next
 
                                 'VC Sail() above: to avoid dividing with zero
@@ -5066,7 +5070,6 @@ exitline:
 
     End Sub
 
-
     Private Sub setForcedDiscards(ByVal iModelTimeStep As Integer, iYear As Integer)
         Dim bForced As Boolean = False
         Dim bFChanged As Boolean = False
@@ -5130,6 +5133,13 @@ exitline:
 
     End Sub
 
+    Private Sub updateOffVesselPrices(ByVal iModelTimeStep As Integer, iYear As Integer)
+        For ig As Integer = 1 To Me.EcoSpaceData.nFleets
+            For isp As Integer = 1 To Me.EcoSpaceData.NGroups
+                Me.OffVesselPrice(ig, isp) = Me.EcoSim.LandingsValue(isp, ig, iModelTimeStep, iYear)
+            Next
+        Next
+    End Sub
 
     ''' <summary>
     ''' solvetime() is not called at this time. It has been left in for reference
@@ -6155,7 +6165,7 @@ exitline:
 
                 Next igrp
 
-                    For iflt As Integer = 0 To Me.EcoSpaceData.nFleets
+                For iflt As Integer = 0 To Me.EcoSpaceData.nFleets
                     Me.EcoSpaceData.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, Me.itt) += solver.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt)
                     Me.EcoSpaceData.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, Me.itt) += solver.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt)
                     Me.EcoSpaceData.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, Me.itt) += solver.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt)

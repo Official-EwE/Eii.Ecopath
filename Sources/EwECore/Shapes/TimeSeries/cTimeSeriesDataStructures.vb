@@ -203,6 +203,7 @@ Public Class cTimeSeriesDataStructures
     End Property
 
     Public Function toForcingTimeStep(iModelTimeStep As Integer, iModelYear As Integer) As Integer
+
         Dim its As Integer
         If Me.AppliedDataSetInterval = eTSDataSetInterval.Annual Then
             its = iModelYear
@@ -212,13 +213,6 @@ Public Class cTimeSeriesDataStructures
 
         'jb let the forcing index exceed the originaly loaded forcing data
         'If the run length was extened then the data in the forcing arrays will be zero
-        ''Constrain the time step index 
-        ''to the last reference data time step
-        'If its > Me.nDatPoints Then
-        '    'really just for debugging
-        '    its = its
-        'End If
-
         Return its
 
     End Function
@@ -244,6 +238,7 @@ Public Class cTimeSeriesDataStructures
 
         Array.Clear(Me.PoolForceDiscardMort, 0, Me.PoolForceDiscardMort.Length)
         Array.Clear(Me.PoolForceDiscardProp, 0, Me.PoolForceDiscardProp.Length)
+        Array.Clear(Me.PoolForceCatchabilities, 0, Me.PoolForceCatchabilities.Length)
         Array.Clear(Me.PoolForceCatchabilities, 0, Me.PoolForceCatchabilities.Length)
 
         Me.InitForcedDiscards()
@@ -285,6 +280,7 @@ Public Class cTimeSeriesDataStructures
         Erase Me.PoolForceDiscardProp
         Erase Me.PoolForceDiscardMort
         Erase Me.PoolForceCatchabilities
+        Erase Me.PoolForceOffVesselPrice
 
     End Sub
 
@@ -548,13 +544,12 @@ Public Class cTimeSeriesDataStructures
 
                 For iflt As Integer = 0 To Me.nFleets
                     For igrp As Integer = 0 To Me.nGroups
-
                         For ipt As Integer = n + 1 To npoints
                             Me.PoolForceDiscardMort(iflt, igrp, ipt) = cCore.NULL_VALUE
                             Me.PoolForceDiscardProp(iflt, igrp, ipt) = cCore.NULL_VALUE
                             Me.PoolForceCatchabilities(iflt, igrp, ipt) = cCore.NULL_VALUE
+                            Me.PoolForceOffVesselPrice(iflt, igrp, ipt) = cCore.NULL_VALUE
                         Next
-
                     Next
                 Next
             End If
@@ -895,6 +890,13 @@ Public Class cTimeSeriesDataStructures
                             iGrp = Me.AppliedDatPoolSec(iDType)
                             If (iGrp > 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
                                 Me.PoolForceCatchabilities(iFlt, iGrp, iDatPt) = value
+                            End If
+
+                        Case eTimeSeriesType.OffVesselPrice
+                            iFlt = Me.AppliedDatPool(iDType)
+                            iGrp = Me.AppliedDatPoolSec(iDType)
+                            If (iGrp > 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
+                                Me.PoolForceOffVesselPrice(iFlt, iGrp, iDatPt) = value
                             End If
 
                     End Select

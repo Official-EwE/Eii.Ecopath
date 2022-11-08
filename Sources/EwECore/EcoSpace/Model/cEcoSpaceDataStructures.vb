@@ -360,7 +360,7 @@ Public Class cEcospaceDataStructures
 
     ''' <summary>Start time of the first and second summary data period. In Years </summary>
     ''' <remarks> Data is summarized over two time periods set by SumStart(0) and SumStart(1). The number of time steps to summarize over is set in NumStep.
-    ''' Defaults are set in redimTimeVaraibles().
+    ''' Defaults are set in redimTimeVariables().
     ''' Used in cEcospace.summarySetTimeStep() to set the index to store the summary data in. The first or second summary period.
     ''' </remarks>
     Public SumStart(1) As Single
@@ -1111,7 +1111,7 @@ Public Class cEcospaceDataStructures
             Me.MoveScale = 2.0 '0.2
             If Me.TotalTime = 0 Then Me.TotalTime = 50 'default of 50 year simulation
 
-            'redimTimeVaraibles()
+            'redimTimeVariables()
             Me.setDefaultSummaryPeriod()
 
             Me.NoHabitats = 1
