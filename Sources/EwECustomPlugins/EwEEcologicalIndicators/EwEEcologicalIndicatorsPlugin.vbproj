@@ -146,6 +146,11 @@
     <Compile Include="Structure\cIndicatorGroup.vb" />
     <Compile Include="Structure\cIndicatorInfo.vb" />
     <Compile Include="Threading\cIndicatorsComputer.vb" />
+    <Compile Include="User interface\cEcologicalIndEcospaceASCII.vb" />
+    <Compile Include="User interface\cEcologicalIndEcospaceCSV.vb" />
+    <Compile Include="User interface\cEcologicalIndMCMCCSV.vb" />
+    <Compile Include="User interface\cEcologicalIndEcosimCSV.vb" />
+    <Compile Include="User interface\cEcologicalIndEcopathCSV.vb" />
     <Compile Include="User interface\cEcosimGraphWrapper.vb" />
     <Compile Include="User interface\cEcospaceMapDrawer.vb" />
     <Compile Include="User interface\cEcospaceMapWrapper.vb" />
