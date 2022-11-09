@@ -27,7 +27,6 @@ Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports ScientificInterfaceShared.Controls
 
-
 #End Region
 
 ''' <summary>
@@ -83,12 +82,14 @@ Public Class cImportDietsPlugin
 
 #Region " Plug-in points "
 
+    ''' -----------------------------------------------------------------------------
     ''' <summary>
     ''' Every plug-in is told to initialize to the EwE core as soon as it is loaded. 
     ''' Typically, plug-ins use this opportunity to store a reference to the core
     ''' for later use.
     ''' </summary>
     ''' <param name="CoreAsObject">The core, casted to a generic object</param>
+    ''' -----------------------------------------------------------------------------
     Public Sub Initialize(CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
         Try
             Me.m_core = DirectCast(CoreAsObject, cCore)
@@ -97,6 +98,7 @@ Public Class cImportDietsPlugin
         End Try
     End Sub
 
+    ''' -----------------------------------------------------------------------------
     ''' <summary>
     ''' Plug-in point that is called when the core has initialized its models
     ''' Ecopath, Ecosim and Ecospace. This is the only opportunity for plug-ins to grab 
@@ -105,6 +107,7 @@ Public Class cImportDietsPlugin
     ''' <param name="EcopathAsObject"></param>
     ''' <param name="EcoSimAsObject"></param>
     ''' <param name="EcoSpaceAsObject"></param>
+    ''' -----------------------------------------------------------------------------
     Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         Try
 
@@ -121,44 +124,35 @@ Public Class cImportDietsPlugin
 
     End Sub
 
+    ''' -----------------------------------------------------------------------------
     ''' <summary>
     ''' An Ecopath model has loaded.
     ''' </summary>
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
+    ''' -----------------------------------------------------------------------------
     Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
-        Try
-
-            'Cast the datasource 
-            Dim ModelDataBase As DataSources.IEwEDataSource = DirectCast(dataSource, DataSources.IEwEDataSource)
-
-            'System.Console.WriteLine(Me.ToString + ".LoadModel() " + ModelDataBase.FileName)
-
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString + ".LoadModel() Exception " + ex.Message)
-        End Try
-
         Return True
-
     End Function
 
+    ''' -----------------------------------------------------------------------------
     ''' <summary>
     ''' An Ecopath model has been saved.
     ''' </summary>
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
+    ''' -----------------------------------------------------------------------------
     Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
-        ' System.Console.WriteLine(Me.ToString + ".SaveModel()")
         Return True
     End Function
 
+    ''' -----------------------------------------------------------------------------
     ''' <summary>
     ''' An Ecopath model has been closed.
     ''' </summary>
     ''' <returns>True if the plug-in point executed successfully.</returns>
+    ''' -----------------------------------------------------------------------------
     Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
-        System.Console.WriteLine(Me.ToString + ".CloseModel()")
-
         Try
             'A user has closed the database
             'Clear out the old data so that we are 
@@ -173,34 +167,28 @@ Public Class cImportDietsPlugin
             System.Console.WriteLine(Me.ToString + ".CloseModel() Exception " + ex.Message)
             Return False
         End Try
-
         Return True
     End Function
 
+    ''' -----------------------------------------------------------------------------
     ''' <summary>
     ''' An Ecopath model is about to run.
     ''' </summary>
     ''' <param name="EcopathDataAsObject"></param>
     ''' <param name="TaxonDataAsObject"></param>
     ''' <param name="StanzaDataAsObject"></param>
+    ''' -----------------------------------------------------------------------------
     Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
-
         Me.m_EcoPathData = TryCast(EcopathDataAsObject, cEcopathDataStructures)
         Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathRunInitialized() Failed to get EcopathDataStructures.")
-
     End Sub
 
     Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
-        System.Console.WriteLine(Me.ToString + ".EcosimInitialized()")
-
         Me.m_EcoSimData = TryCast(EcosimDatastructures, cEcosimDatastructures)
         Debug.Assert(Me.m_EcoSimData IsNot Nothing, Me.ToString + ".EcosimInitialized() Failed to get EcosimDataStructures.")
-
     End Sub
 
     Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
-        System.Console.WriteLine(Me.ToString + ".EcospaceInitialized()")
-
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
         Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
     End Sub
@@ -338,7 +326,6 @@ Public Class cImportDietsPlugin
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
-            ' As an example, place a navigation tree item under the main 'tools' node.
             Return "ndParameterization\ndEcopathInput\ndEcopathInputTools"
         End Get
     End Property
