@@ -10303,7 +10303,7 @@ Namespace DataSources
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
 
-            ' JS08Dec07: Ideally, this should happen here but both Ecosim and Ecospace
+            ' JS08Dec07: Ideally, this should not happen here but both Ecosim and Ecospace
             '            assume that the tracer data has already been dimensioned to the
             '            number of groups long before a tracer scenario has been loaded.
             '            This needs to change!

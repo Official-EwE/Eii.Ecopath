@@ -117,9 +117,10 @@ Public Class cContaminantTracerDataStructures
     Public ConcMax() As Single
 
     ''' <summary>Ecosim tracer enabled state flag.</summary>
-    Friend EcoSimConSimOn As Boolean
+    Friend Property EcoSimConSimOn As Boolean
+
     ''' <summary>Ecospace tracer enabled state flag.</summary>
-    Friend m_bEcoSpaceConSimOn As Boolean
+    Friend Property EcoSpaceConSimOn As Boolean
 
     Public MaxTimeSteps As Integer
 
@@ -190,31 +191,6 @@ Public Class cContaminantTracerDataStructures
         d.CmetabolismRate = Me.CmetabolismRate
 
     End Sub
-
-    'Public Property EcoSimConSimOn() As Boolean
-    '    Get
-    '        Return Me.m_bEcoSimConSimOn
-    '        'Return ((Me.m_bEcoSimConSimOn = True) And (Me.m_nGroups > 0))
-    '    End Get
-    '    Set(value As Boolean)
-    '        m_bEcoSimConSimOn = value
-    '    End Set
-    'End Property
-
-
-    Public Property EcoSpaceConSimOn() As Boolean
-        Get
-            Return Me.m_bEcoSpaceConSimOn
-            'jb this is not valid for Ecospace
-            'because of the mulithreading Ecospace gets a copy of the data initialized be the database
-            'RedimByNGroups() is never called on the actual object so m_nGroups is never set
-            '  Return ((Me.m_bEcoSpaceConSimOn = True) And (Me.m_nGroups > 0))
-        End Get
-        Set(value As Boolean)
-            Me.m_bEcoSpaceConSimOn = value
-        End Set
-    End Property
-
 
 End Class
 

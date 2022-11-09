@@ -6552,6 +6552,11 @@ exitline:
 
     Private Sub resetSpaceSolverSpinup()
         Try
+            If Me.ContaiminantTracerData.EcoSpaceConSimOn Then
+                Me.EcoSpaceData.RedimConSimVars()
+                Me.ContaiminantTracerData.redimForEcospaceRun(Me.EcoSpaceData.nRegions, Me.EcoSpaceData.NGroups, Me.EcoSpaceData.nTimeSteps)
+            End If
+
             For Each solver As cSpaceSolver In Me.m_spaceSolvers
                 solver.resetSpinup()
                 'discount factor was computed in the main time loop
