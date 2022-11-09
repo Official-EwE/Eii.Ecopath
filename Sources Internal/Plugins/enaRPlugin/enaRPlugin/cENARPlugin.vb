@@ -351,7 +351,7 @@ Public Class cENARPlugin
 #Region " Auto-save plug-in implementation "
 
     Public Function AutoSaveType() As eAutosaveTypes Implements IAutoSavePlugin.AutoSaveType
-        Return eAutosaveTypes.EcospaceResults
+        Return eAutosaveTypes.Ecospace
     End Function
 
     Public Function AutoSaveOutputPath() As String Implements IAutoSavePlugin.AutoSaveOutputPath
@@ -390,7 +390,6 @@ Public Class cENARPlugin
             Return "Write an enaR SCOR format file for each cell at each time step"
         End Get
     End Property
-
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
