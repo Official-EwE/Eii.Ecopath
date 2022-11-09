@@ -71,8 +71,6 @@ Public Class cEcospaceMonteCarloPluginPoint
     Implements EwEPlugin.ISearchPlugin
     Implements EwEPlugin.IMonteCarloBalancedModelWaitLock
 
-
-
 #Region "Local variables"
 
     ''' <summary>The core that this plug-in can use</summary>
@@ -91,9 +89,7 @@ Public Class cEcospaceMonteCarloPluginPoint
     Private m_uic As cUIContext = Nothing
     Private m_form As frmEcospaceMonteCarlo = Nothing
 
-#End Region
-
-#Region "Public Methods"
+    Private m_bCanRun As Boolean
 
 #End Region
 
@@ -108,7 +104,6 @@ Public Class cEcospaceMonteCarloPluginPoint
     Public Sub Initialize(CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
         Try
             Me.m_core = DirectCast(CoreAsObject, cCore)
-
             Me.m_runManager = New cRunManager()
 
         Catch ex As Exception
@@ -131,9 +126,6 @@ Public Class cEcospaceMonteCarloPluginPoint
             Me.m_EcoSim = TryCast(EcoSimAsObject, cEcosimModel)
             Me.m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Debug.Assert((Me.m_EcoPath IsNot Nothing) And (Me.m_EcoSim IsNot Nothing) And (Me.m_EcoSpace IsNot Nothing),
-                         Me.ToString + ".CoreInitialized() Failed to initialize data.")
-
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".CoreInitialized() Exception " + ex.Message)
         End Try
@@ -146,8 +138,6 @@ Public Class cEcospaceMonteCarloPluginPoint
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
     Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
-        'JS: this fails on non-db datasources such as the cEIIXMLDatasource
-        'Dim ModelDataBase As EwECore.DataSources.cDBDataSource = DirectCast(dataSource, EwECore.DataSources.cDBDataSource)
         Return True
     End Function
 
@@ -217,6 +207,15 @@ Public Class cEcospaceMonteCarloPluginPoint
     Public Sub MontCarloInitialized(MonteCarloAsObject As Object) Implements EwEPlugin.IMonteCarloPlugin.MontCarloInitialized
         Try
 
+            If Not Me.Core.StateMonitor.HasEcospaceLoaded Then
+                Me.m_bCanRun = False
+            Else
+                Me.m_bCanRun = Me.m_runManager.isConfigured(False)
+
+            End If
+
+            If Not Me.m_bCanRun Then Return
+
             Me.m_MonteCarlo = DirectCast(MonteCarloAsObject, cEcosimMonteCarlo)
             Me.m_runManager.Init(Me)
 
@@ -229,6 +228,8 @@ Public Class cEcospaceMonteCarloPluginPoint
 
     Public Sub MonteCarloBalancedEcopathModel(TrialNumber As Integer, nIterations As Integer) Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
 
+        If Not Me.m_bCanRun Then Return
+
         If Me.m_runManager.Run(TrialNumber) Then
 
         End If
@@ -239,12 +240,9 @@ Public Class cEcospaceMonteCarloPluginPoint
 
     End Sub
 
-
-
     Public Sub SearchInitialized(SearchDatastructures As Object) Implements EwEPlugin.ISearchPlugin.SearchInitialized
 
     End Sub
-
 
     Public Sub PostRunSearchResults(SearchDatastructures As Object) Implements EwEPlugin.ISearchPlugin.PostRunSearchResults
 
@@ -254,8 +252,8 @@ Public Class cEcospaceMonteCarloPluginPoint
 
     End Sub
 
-
     Public Sub SearchIterationsStarting() Implements EwEPlugin.ISearchPlugin.SearchIterationsStarting
+        If Not Me.m_bCanRun Then Return
         Me.m_runManager.isConfigured()
     End Sub
 

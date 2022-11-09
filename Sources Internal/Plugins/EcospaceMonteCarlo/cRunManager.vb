@@ -72,7 +72,6 @@ Public Class cRunManager
     Private m_MCThread As Thread
 
     Public Property RunParameters As cRunParameters
-
         Get
             Return Me.m_parameters
         End Get
@@ -87,13 +86,16 @@ Public Class cRunManager
         Me.m_bStop = True
     End Sub
 
-    Public Sub isConfigured()
+    Public Function isConfigured(Optional bNoifyUser As Boolean = True) As Boolean
+
         Me.m_isConfig = True
+
 
         Dim msg As String = ""
 
         If Not Directory.Exists(Path.GetDirectoryName(Me.RunParameters.OutputFileName)) Then
             Me.m_isConfig = False
+            ' ToDo: globalize this
             msg = "No output file defined"
         End If
 
@@ -108,10 +110,13 @@ Public Class cRunManager
         '    End If
         'End If
 
-        If Not Me.m_isConfig Then
+        If Not Me.m_isConfig And bNoifyUser Then
+            ' ToDo: globalize this
             MsgBox("Ecospace MonteCarlo is not properly configured. Please stop the search and fix the following issues." + vbCrLf + msg)
         End If
-    End Sub
+        Return Me.m_isConfig
+
+    End Function
 
 
     Public Sub Init(thePlugin As cEcospaceMonteCarloPluginPoint)
