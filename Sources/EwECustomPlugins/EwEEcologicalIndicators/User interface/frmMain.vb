@@ -186,7 +186,11 @@ Public Class frmMain
         Me.m_checker.ManageCheckedStates = True
 
         ' Initialize content of controls
-        Me.m_cbAutoSaveCSV.Checked = My.Settings.AutoSaveCSV
+        Me.m_cbAutoSaveEcopath.Checked = My.Settings.AutoSaveEcopath
+        Me.m_cbAutoSaveEcosim.Checked = My.Settings.AutoSaveEcosim
+        Me.m_cbAutoSaveMCMC.Checked = My.Settings.AutoSaveMCMC
+        Me.m_cbAutoSaveEcospaceCSV.Checked = My.Settings.AutoSaveEcospaceCSV
+        Me.m_cbAutoSaveEcospaceASCII.Checked = My.Settings.AutoSaveEcospaceMaps
         Me.m_cbPlotAtEnd.Checked = My.Settings.PlotAtEnd
         Me.m_sliderNoBins.Value = My.Settings.NunHistBins
 
@@ -262,7 +266,11 @@ Public Class frmMain
             ' #Yes: Update default location because systemwide settings may have changed
             Me.m_bInUpdate = True
             Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
-            Me.m_cbAutoSaveCSV.Checked = My.Settings.AutoSaveCSV
+            Me.m_cbAutoSaveEcopath.Checked = My.Settings.AutoSaveEcopath
+            Me.m_cbAutoSaveEcosim.Checked = My.Settings.AutoSaveEcospaceCSV
+            Me.m_cbAutoSaveMCMC.Checked = My.Settings.AutoSaveMCMC
+            Me.m_cbAutoSaveEcospaceCSV.Checked = My.Settings.AutoSaveEcospaceCSV
+            Me.m_cbAutoSaveEcospaceASCII.Checked = My.Settings.AutoSaveEcospaceMaps
             Me.m_bInUpdate = False
         End If
 
@@ -315,12 +323,14 @@ Public Class frmMain
                 bCanSave = Me.m_settings.RunWithMonteCarlo And Me.m_plugin.HasMonteCarloRan
         End Select
 
-        Me.m_btnSaveToCSV.Enabled = bCanSave And Not csm.IsBusy
-
         Me.m_llStatus.Visible = Not bHasTaxa
         Me.m_pbStatus.Visible = Not bHasTaxa
 
-        Me.m_cbAutoSaveCSV.Enabled = Not bIsRunning
+        Me.m_cbAutoSaveEcopath.Enabled = Not bIsRunning
+        Me.m_cbAutoSaveEcosim.Enabled = Not bIsRunning
+        Me.m_cbAutoSaveMCMC.Enabled = Not bIsRunning
+        Me.m_cbAutoSaveEcospaceCSV.Enabled = Not bIsRunning
+        Me.m_cbAutoSaveEcospaceASCII.Enabled = Not bIsRunning
         Me.m_cbRunWithEcopath.Enabled = Not bIsRunning
         Me.m_cbRunWithEcosim.Enabled = Not bIsRunning
         Me.m_cbRunWithEcospace.Enabled = Not bIsRunning
@@ -333,6 +343,7 @@ Public Class frmMain
         Me.m_rbDefault.Enabled = Not bIsRunning
         Me.m_tbxOutputFolder.Enabled = Not bIsRunning
 
+        Me.m_btnSaveResults.Enabled = bCanSave
         Me.m_tpEcopath.ImageIndex = If(Me.m_settings.RunWithEcopath, 1, 0)
         Me.m_tpEcosim.ImageIndex = If(Me.m_settings.RunWithEcosim, 1, 0)
         Me.m_tpEcospace.ImageIndex = If(Me.m_settings.RunWithEcospace, 1, 0)
@@ -366,7 +377,7 @@ Public Class frmMain
     End Sub
 
     Private Sub OnSaveToCSV(sender As System.Object, e As System.EventArgs) _
-        Handles m_btnSaveToCSV.Click
+
 
         ' Start CSV save process
         cApplicationStatusNotifier.StartProgress(Me.UIContext.Core)
@@ -382,15 +393,44 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnAutoSaveCSVCChanged(sender As Object, e As System.EventArgs) _
-        Handles m_cbAutoSaveCSV.CheckedChanged
-
-        ' User toggled AutoSaveCSV checkbox; update settings
+    Private Sub OnAutoSaveEcopathCSVChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbAutoSaveEcopath.CheckedChanged
         If Me.m_bInUpdate Then Return
-        My.Settings.AutoSaveCSV = Me.m_cbAutoSaveCSV.Checked
+        My.Settings.AutoSaveEcopath = Me.m_cbAutoSaveEcopath.Checked
         My.Settings.Save()
         Me.Core.OnSettingsChanged()
+    End Sub
 
+    Private Sub OnAutoSaveEcosimCSVChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbAutoSaveEcosim.CheckedChanged
+        If Me.m_bInUpdate Then Return
+        My.Settings.AutoSaveEcosim = Me.m_cbAutoSaveEcosim.Checked
+        My.Settings.Save()
+        Me.Core.OnSettingsChanged()
+    End Sub
+
+    Private Sub OnAutoSaveMCMCCSVChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbAutoSaveMCMC.CheckedChanged
+        If Me.m_bInUpdate Then Return
+        My.Settings.AutoSaveMCMC = Me.m_cbAutoSaveMCMC.Checked
+        My.Settings.Save()
+        Me.Core.OnSettingsChanged()
+    End Sub
+
+    Private Sub OnAutoSaveEcospaceCSVChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbAutoSaveEcospaceCSV.CheckedChanged
+        If Me.m_bInUpdate Then Return
+        My.Settings.AutoSaveEcospaceCSV = Me.m_cbAutoSaveEcospaceCSV.Checked
+        My.Settings.Save()
+        Me.Core.OnSettingsChanged()
+    End Sub
+
+    Private Sub OnAutoSaveEcospaceMapsChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbAutoSaveEcospaceASCII.CheckedChanged
+        If Me.m_bInUpdate Then Return
+        My.Settings.AutoSaveEcospaceMaps = Me.m_cbAutoSaveEcospaceASCII.Checked
+        My.Settings.Save()
+        Me.Core.OnSettingsChanged()
     End Sub
 
     Private Sub OnRunWithEcopathChanged(sender As Object, e As System.EventArgs) _

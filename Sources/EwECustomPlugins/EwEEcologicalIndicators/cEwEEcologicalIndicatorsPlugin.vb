@@ -61,7 +61,6 @@ Public Class cEwEEcologicalIndicatorsPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IMonteCarloPlugin
-    Implements EwEPlugin.IAutoSavePlugin
     Implements EwEPlugin.IAutoRunPlugin
 
 #Region " Variables "
@@ -117,7 +116,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
 #Region " Generic "
 
-    Public Const PluginName As String = "EwEBiomassIndicatorsPlugin"
+    Public Const PluginName As String = "EwEEcoINDPlugin"
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -146,7 +145,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return Me.ControlTooltipText
+            Return Me.DisplayName
         End Get
     End Property
 
@@ -307,7 +306,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Me.m_frm.UpdateIndicators(eComponentType.MonteCarlo)
         End If
 
-        If (Me.AutoSave And Me.m_settings.RunWithEcopath) Then
+        If (My.Settings.AutoSaveEcopath And Me.m_settings.RunWithEcopath) Then
             If Me.BeginSave(eComponentType.Ecopath) Then
                 Me.PerformSave(eComponentType.Ecopath)
                 Me.EndSave()
@@ -379,7 +378,9 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Implements EwEPlugin.IEcosimRunCompletedPostPlugin.EcosimRunCompletedPost
 
         If (Not Me.m_bRunWithEcosim) Then Return
+
         ' Do not calculate when Ecosim is running as part of a searches
+        If (Me.m_core.StateMonitor.IsSearching()) Then Return
 
         ' Get ready to calculate
         Me.m_lIndEcosim.Clear()
@@ -391,7 +392,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Next
 
         ' Need to save?
-        If (My.Settings.AutoSaveCSV) Then
+        If (My.Settings.AutoSaveEcosim) Then
             ' #Yes: Save
             If Me.BeginSave(eComponentType.Ecosim) Then
                 Me.PerformSave(eComponentType.Ecosim)
@@ -531,7 +532,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         End If
 
         ' Need to save?
-        If (My.Settings.AutoSaveCSV) Then
+        If (My.Settings.AutoSaveMCMC) Then
             ' #Yes: Save
             If Me.BeginSave(eComponentType.MonteCarlo) Then
                 Me.PerformSave(eComponentType.MonteCarlo)
@@ -606,7 +607,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         ' Preserve old TL calc setting
         Me.m_bCalcExtrasOld = Me.m_ecospaceDS.bCalTrophicLevel
 
-        Me.m_bSavingEcospace = My.Settings.AutoSaveCSV
+        Me.m_bSavingEcospace = My.Settings.AutoSaveEcospaceCSV Or My.Settings.AutoSaveEcospaceMaps
         If Me.m_bSavingEcospace Then Me.BeginSave(eComponentType.Ecospace)
 
     End Sub
@@ -965,7 +966,8 @@ Public Class cEwEEcologicalIndicatorsPlugin
                 Case eComponentType.Ecosim
                     Me.SaveEcosimCSV()
                 Case eComponentType.Ecospace
-                    Me.SaveEcospaceCSV()
+                    If My.Settings.AutoSaveEcospaceCSV Then Me.SaveEcospaceCSV()
+                    If My.Settings.AutoSaveEcospaceMaps Then Me.SaveEcospaceMaps()
                 Case eComponentType.MonteCarlo
                     Me.SaveMCCSV()
             End Select
@@ -1008,7 +1010,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Return cFileUtils.ToValidFileName(String.Format("biodiv_ind_{0}{1}.csv", Me.ComponentName(component), strStep), False)
     End Function
 
-    Private Function ASCFileName(strIndicator As String, strStep As String) As String
+    Private Function ASCMapFileName(strIndicator As String, strStep As String) As String
         Return cFileUtils.ToValidFileName(String.Format("biodiv_ind_{0}-{1}.asc", strIndicator, strStep), False)
     End Function
 
@@ -1044,30 +1046,30 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
         Dim strPath As String = Me.OutputFolder(eComponentType.Ecopath)
         Dim strFile As String = Path.Combine(strPath, Me.CSVFileName(eComponentType.Ecopath, ""))
-        Dim sw As New StreamWriter(strFile)
 
-        If Me.m_core.SaveWithFileHeader Then
-            sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecopath))
-            sw.WriteLine()
-        End If
+        Using sw As New StreamWriter(strFile)
 
-        ' Write header line
-        sw.WriteLine("{0},{1}", cStringUtils.ToCSVField(SharedResources.HEADER_INDICATOR), cStringUtils.ToCSVField(SharedResources.HEADER_VALUE))
+            If Me.m_core.SaveWithFileHeader Then
+                sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecopath))
+                sw.WriteLine()
+            End If
 
-        ' Write a line for each indicator
-        For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
-            For iInfo As Integer = 0 To grp.NumIndicators - 1
-                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                If (info.Enabled) Then
-                    sw.WriteLine("{0},{1},{2}", cStringUtils.ToCSVField(info.OutputName), cStringUtils.FormatSingle(info.GetValue(Me.m_indEcopath)))
-                End If
+            ' Write header line
+            sw.WriteLine("{0},{1}", cStringUtils.ToCSVField(SharedResources.HEADER_INDICATOR), cStringUtils.ToCSVField(SharedResources.HEADER_VALUE))
+
+            ' Write a line for each indicator
+            For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+                Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                For iInfo As Integer = 0 To grp.NumIndicators - 1
+                    Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+                    If (info.Enabled) Then
+                        sw.WriteLine("{0},{1}", cStringUtils.ToCSVField(info.OutputName), cStringUtils.FormatSingle(info.GetValue(Me.m_indEcopath)))
+                    End If
+                Next
             Next
-        Next
-
-        ' Done
-        sw.Flush()
-        sw.Close()
+            ' Done
+            sw.Flush()
+        End Using
 
         Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecopath), strFile), eStatusFlags.OK)
 
@@ -1082,52 +1084,53 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
         Dim strPath As String = Me.OutputFolder(eComponentType.Ecosim)
         Dim strFile As String = Path.Combine(strPath, Me.CSVFileName(eComponentType.Ecosim, ""))
-        Dim sw As New StreamWriter(strFile)
         Dim sb As New StringBuilder()
 
-        If Me.m_core.SaveWithFileHeader Then
-            sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.EcosimResults))
-            sw.WriteLine()
-        End If
+        Using sw As New StreamWriter(strFile)
 
-        ' Write header line
-        sb.Append(SharedResources.HEADER_TIME)
-        For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
-            For iInfo As Integer = 0 To grp.NumIndicators - 1
-                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                If (info.Enabled) Then
-                    sb.Append(",")
-                    sb.Append(cStringUtils.ToCSVField(info.OutputName))
-                End If
-            Next
-        Next
-        sw.WriteLine(sb.ToString())
+            If Me.m_core.SaveWithFileHeader Then
+                sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.EcosimResults))
+                sw.WriteLine()
+            End If
 
-        ' Write a line for each time step
-        For Each ind As cEcosimIndicators In Me.m_lIndEcosim
-
-            ' Sanity check
-            Debug.Assert(ind.IsComputed, "Application flow error, ecosim indicators not calculated yet")
-
-            sb.Length = 0
-            sb.Append(ind.Time)
+            ' Write header line
+            sb.Append(SharedResources.HEADER_TIME)
             For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
                 Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
                 For iInfo As Integer = 0 To grp.NumIndicators - 1
                     Dim info As cIndicatorInfo = grp.Indicator(iInfo)
                     If (info.Enabled) Then
                         sb.Append(",")
-                        sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
+                        sb.Append(cStringUtils.ToCSVField(info.OutputName))
                     End If
-                Next iInfo
-            Next iGrp
+                Next
+            Next
             sw.WriteLine(sb.ToString())
-        Next ind
 
-        ' Done
-        sw.Flush()
-        sw.Close()
+            ' Write a line for each time step
+            For Each ind As cEcosimIndicators In Me.m_lIndEcosim
+
+                ' Sanity check
+                Debug.Assert(ind.IsComputed, "Application flow error, ecosim indicators not calculated yet")
+
+                sb.Length = 0
+                sb.Append(ind.Time)
+                For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+                    Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                    For iInfo As Integer = 0 To grp.NumIndicators - 1
+                        Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+                        If (info.Enabled) Then
+                            sb.Append(",")
+                            sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
+                        End If
+                    Next iInfo
+                Next iGrp
+                sw.WriteLine(sb.ToString())
+            Next ind
+
+            ' Done
+            sw.Flush()
+        End Using
 
         Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecosim), strFile), eStatusFlags.OK)
 
@@ -1148,45 +1151,46 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Dim core As cCore = Me.m_uic.Core
         Dim strPath As String = Me.OutputFolder(eComponentType.MonteCarlo)
         Dim strFile As String = Path.Combine(strPath, Me.CSVFileName(eComponentType.MonteCarlo, "_uncertainty"))
-        Dim sw As New StreamWriter(strFile)
 
-        If core.SaveWithFileHeader Then
-            sw.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecopath))
-            sw.WriteLine()
-        End If
+        Using sw As New StreamWriter(strFile)
 
-        ' Write header line
-        sw.Write(cStringUtils.ToCSVField(SharedResources.HEADER_TRIAL))
-        For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
-            For iInfo As Integer = 0 To grp.NumIndicators - 1
-                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                If (info.Enabled) Then
-                    sw.Write("," & cStringUtils.ToCSVField(info.OutputName))
-                End If
-            Next
-        Next
-        sw.WriteLine()
+            If core.SaveWithFileHeader Then
+                sw.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecopath))
+                sw.WriteLine()
+            End If
 
-        Dim iTrial As Integer = 1
-        For Each ind As cEcopathIndicators In Me.m_lIndMCpath
-            sw.Write(iTrial)
+            ' Write header line
+            sw.Write(cStringUtils.ToCSVField(SharedResources.HEADER_TRIAL))
             For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
                 Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
                 For iInfo As Integer = 0 To grp.NumIndicators - 1
                     Dim info As cIndicatorInfo = grp.Indicator(iInfo)
                     If (info.Enabled) Then
-                        sw.Write("," & cStringUtils.ToCSVField(info.GetValue(ind)))
+                        sw.Write("," & cStringUtils.ToCSVField(info.OutputName))
                     End If
                 Next
             Next
             sw.WriteLine()
-            iTrial += 1
-        Next
 
-        ' Done
-        sw.Flush()
-        sw.Close()
+            Dim iTrial As Integer = 1
+            For Each ind As cEcopathIndicators In Me.m_lIndMCpath
+                sw.Write(iTrial)
+                For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+                    Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                    For iInfo As Integer = 0 To grp.NumIndicators - 1
+                        Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+                        If (info.Enabled) Then
+                            sw.Write("," & cStringUtils.ToCSVField(info.GetValue(ind)))
+                        End If
+                    Next
+                Next
+                sw.WriteLine()
+                iTrial += 1
+            Next
+
+            ' Done
+            sw.Flush()
+        End Using
 
         Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecopath), strFile), eStatusFlags.OK)
 
@@ -1197,60 +1201,61 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Dim core As cCore = Me.m_uic.Core
         Dim strPath As String = Me.OutputFolder(eComponentType.MonteCarlo)
         Dim strFile As String = Path.Combine(strPath, Me.CSVFileName(eComponentType.MonteCarlo, ""))
-        Dim sw As New StreamWriter(strFile)
         Dim sb As New StringBuilder()
 
-        ' Write header 
-        If core.SaveWithFileHeader Then
-            sw.WriteLine(core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
-        End If
-        sw.WriteLine()
+        Using sw As New StreamWriter(strFile)
 
-        sb.Append(My.Resources.HEADER_TRIAL)
-        sb.Append(",")
-        sb.Append(SharedResources.HEADER_TIME)
-        For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
-            For iInfo As Integer = 0 To grp.NumIndicators - 1
-                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                If (info.Enabled) Then
-                    sb.Append(",")
-                    sb.Append(cStringUtils.ToCSVField(info.Name))
-                End If
+            ' Write header 
+            If core.SaveWithFileHeader Then
+                sw.WriteLine(core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
+            End If
+            sw.WriteLine()
+
+            sb.Append(My.Resources.HEADER_TRIAL)
+            sb.Append(",")
+            sb.Append(SharedResources.HEADER_TIME)
+            For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+                Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                For iInfo As Integer = 0 To grp.NumIndicators - 1
+                    Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+                    If (info.Enabled) Then
+                        sb.Append(",")
+                        sb.Append(cStringUtils.ToCSVField(info.Name))
+                    End If
+                Next
             Next
-        Next
-        sw.WriteLine(sb.ToString())
+            sw.WriteLine(sb.ToString())
 
-        ' Write a line for each trial + time step
-        For iTrial As Integer = 0 To Me.m_lIndMCsim.Count - 1
-            Dim lInd As List(Of cMCIndicators) = Me.m_lIndMCsim(iTrial)
-            For Each ind As cMCIndicators In lInd
+            ' Write a line for each trial + time step
+            For iTrial As Integer = 0 To Me.m_lIndMCsim.Count - 1
+                Dim lInd As List(Of cMCIndicators) = Me.m_lIndMCsim(iTrial)
+                For Each ind As cMCIndicators In lInd
 
-                ' Sanity check
-                Debug.Assert(ind.IsComputed, "Application flow error, MC indicators not calculated yet")
+                    ' Sanity check
+                    Debug.Assert(ind.IsComputed, "Application flow error, MC indicators not calculated yet")
 
-                sb.Length = 0
-                sb.Append(iTrial + 1)
-                sb.Append(",")
-                sb.Append(ind.Time)
-                For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-                    Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
-                    For iInfo As Integer = 0 To grp.NumIndicators - 1
-                        Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                        If (info.Enabled) Then
-                            sb.Append(",")
-                            sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
-                        End If
-                    Next iInfo
-                Next iGrp
-                sw.WriteLine(sb.ToString())
+                    sb.Length = 0
+                    sb.Append(iTrial + 1)
+                    sb.Append(",")
+                    sb.Append(ind.Time)
+                    For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+                        Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                        For iInfo As Integer = 0 To grp.NumIndicators - 1
+                            Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+                            If (info.Enabled) Then
+                                sb.Append(",")
+                                sb.Append(cStringUtils.FormatSingle(info.GetValue(ind)))
+                            End If
+                        Next iInfo
+                    Next iGrp
+                    sw.WriteLine(sb.ToString())
 
-            Next ind
-        Next iTrial
+                Next ind
+            Next iTrial
 
-        ' Done
-        sw.Flush()
-        sw.Close()
+            ' Done
+            sw.Flush()
+        End Using
 
         Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.MonteCarlo), strFile), eStatusFlags.OK)
 
@@ -1317,7 +1322,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                Dim fout As String = Path.Combine(pout, Me.ASCFileName(info.OutputName, iTS.ToString("D4")))
+                Dim fout As String = Path.Combine(pout, Me.ASCMapFileName(info.OutputName, iTS.ToString("D4")))
                 Dim exp As New cEcospaceImportExportASCIIData(Me.m_core)
                 For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
                     If (ind.IsComputed) Then
@@ -1334,48 +1339,13 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
 #End Region ' Saving
 
-#Region " Autosave "
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IAutoSavePlugin.AutoSave"/>
-    ''' -----------------------------------------------------------------------
-    Public Property AutoSave As Boolean _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSave
-        Get
-            Return My.Settings.AutoSaveCSV
-        End Get
-        Set(value As Boolean)
-            My.Settings.AutoSaveCSV = value
-            My.Settings.Save()
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath"/>
-    ''' -----------------------------------------------------------------------
-    Public Function AutoSaveSubPath() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
-        ' Not used
-        Return ""
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IAutoSavePlugin.AutoSaveType"/>
-    ''' -----------------------------------------------------------------------
-    Public Function AutoSaveType() As EwEUtils.Core.eAutosaveTypes _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveType
-        Return eAutosaveTypes.NotSet
-    End Function
-
-#End Region ' Autosave
+#Region " AutoRun "
 
     Public ReadOnly Property HasMonteCarloRan As Boolean
         Get
             Return (Me.m_lIndMCsim.Count > 0) And Not Me.m_core.StateMonitor.IsSearching
         End Get
     End Property
-
-#Region " AutoRun "
 
     Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
         Return New eCoreComponentType() {eCoreComponentType.Ecopath, eCoreComponentType.Ecosim, eCoreComponentType.Ecospace, eCoreComponentType.EcoSimMonteCarlo}

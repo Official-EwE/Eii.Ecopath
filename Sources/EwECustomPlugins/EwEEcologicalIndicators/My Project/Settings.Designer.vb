@@ -15,7 +15,7 @@ Option Explicit On
 Namespace My
     
     <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0"),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0"),  _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
     Partial Friend NotInheritable Class MySettings
         Inherits Global.System.Configuration.ApplicationSettingsBase
@@ -57,12 +57,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property AutoSaveCSV() As Boolean
+        Public Property AutoSaveEcopath() As Boolean
             Get
-                Return CType(Me("AutoSaveCSV"),Boolean)
+                Return CType(Me("AutoSaveEcopath"),Boolean)
             End Get
             Set
-                Me("AutoSaveCSV") = value
+                Me("AutoSaveEcopath") = value
             End Set
         End Property
         
@@ -111,6 +111,54 @@ Namespace My
             End Get
             Set
                 Me("NunHistBins") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property AutoSaveEcosim() As Boolean
+            Get
+                Return CType(Me("AutoSaveEcosim"),Boolean)
+            End Get
+            Set
+                Me("AutoSaveEcosim") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property AutoSaveMCMC() As Boolean
+            Get
+                Return CType(Me("AutoSaveMCMC"),Boolean)
+            End Get
+            Set
+                Me("AutoSaveMCMC") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property AutoSaveEcospaceCSV() As Boolean
+            Get
+                Return CType(Me("AutoSaveEcospaceCSV"),Boolean)
+            End Get
+            Set
+                Me("AutoSaveEcospaceCSV") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property AutoSaveEcospaceMaps() As Boolean
+            Get
+                Return CType(Me("AutoSaveEcospaceMaps"),Boolean)
+            End Get
+            Set
+                Me("AutoSaveEcospaceMaps") = value
             End Set
         End Property
     End Class

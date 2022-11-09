@@ -46,31 +46,38 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_tvIndicators = New ScientificInterfaceShared.Controls.cThemedTreeView()
         Me.m_tcOutput = New System.Windows.Forms.TabControl()
         Me.m_tpSettings = New System.Windows.Forms.TabPage()
+        Me.m_tlpSettings = New System.Windows.Forms.TableLayoutPanel()
         Me.m_lblCredits = New System.Windows.Forms.Label()
         Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbIRD = New System.Windows.Forms.PictureBox()
         Me.m_pbEII = New System.Windows.Forms.PictureBox()
         Me.m_pbCSIC = New System.Windows.Forms.PictureBox()
-        Me.m_btnChangeDefault = New System.Windows.Forms.Button()
+        Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrExport = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_plSettingsExport = New System.Windows.Forms.Panel()
+        Me.m_cbAutoSaveEcospaceASCII = New System.Windows.Forms.CheckBox()
+        Me.m_cbAutoSaveEcospaceCSV = New System.Windows.Forms.CheckBox()
+        Me.m_cbAutoSaveMCMC = New System.Windows.Forms.CheckBox()
+        Me.m_cbAutoSaveEcosim = New System.Windows.Forms.CheckBox()
         Me.m_btnChooseFolder = New System.Windows.Forms.Button()
-        Me.m_tbxDefaultLocation = New System.Windows.Forms.TextBox()
         Me.m_tbxOutputFolder = New System.Windows.Forms.TextBox()
+        Me.m_tbxDefaultLocation = New System.Windows.Forms.TextBox()
+        Me.m_btnChangeDefault = New System.Windows.Forms.Button()
+        Me.m_cbAutoSaveEcopath = New System.Windows.Forms.CheckBox()
         Me.m_lblSaveTo = New System.Windows.Forms.Label()
         Me.m_rbCustom = New System.Windows.Forms.RadioButton()
         Me.m_rbDefault = New System.Windows.Forms.RadioButton()
-        Me.m_cbAutoSaveCSV = New System.Windows.Forms.CheckBox()
-        Me.m_cbRunWithMC = New System.Windows.Forms.CheckBox()
-        Me.m_cbRunWithEcospace = New System.Windows.Forms.CheckBox()
-        Me.m_cbRunWithEcosim = New System.Windows.Forms.CheckBox()
-        Me.m_cbEcospaceAnnualOnly = New System.Windows.Forms.CheckBox()
-        Me.m_cbPlotAtEnd = New System.Windows.Forms.CheckBox()
+        Me.m_plExecution = New System.Windows.Forms.Panel()
         Me.m_cbRunWithEcopath = New System.Windows.Forms.CheckBox()
-        Me.m_hdrExport = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_cbPlotAtEnd = New System.Windows.Forms.CheckBox()
+        Me.m_cbEcospaceAnnualOnly = New System.Windows.Forms.CheckBox()
+        Me.m_cbRunWithMC = New System.Windows.Forms.CheckBox()
+        Me.m_cbRunWithEcosim = New System.Windows.Forms.CheckBox()
+        Me.m_cbRunWithEcospace = New System.Windows.Forms.CheckBox()
         Me.m_tpEcopath = New System.Windows.Forms.TabPage()
         Me.m_grid = New EwEEcologicalIndicatorsPlugin.gridEcopath()
         Me.m_tpEcosim = New System.Windows.Forms.TabPage()
@@ -79,7 +86,7 @@ Partial Class frmMain
         Me.m_tlpEcospace = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbEcospaceMap = New System.Windows.Forms.PictureBox()
         Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
-        Me.m_tsEcospace = New cEwEToolstrip()
+        Me.m_tsEcospace = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnEcospaceSaveImage = New System.Windows.Forms.ToolStripButton()
         Me.m_tpMCpath = New System.Windows.Forms.TabPage()
         Me.m_graphMCpath = New ZedGraph.ZedGraphControl()
@@ -89,22 +96,24 @@ Partial Class frmMain
         Me.m_tbxHistNoBins = New System.Windows.Forms.TextBox()
         Me.m_tpMCsim = New System.Windows.Forms.TabPage()
         Me.m_graphMCsim = New ZedGraph.ZedGraphControl()
-        Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
-        Me.m_tlpSettings = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_plSettingsExport = New System.Windows.Forms.Panel()
-        Me.m_plExecution = New System.Windows.Forms.Panel()
-        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SplitContainer1.Panel1.SuspendLayout()
-        Me.SplitContainer1.Panel2.SuspendLayout()
-        Me.SplitContainer1.SuspendLayout()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_plExtra = New System.Windows.Forms.Panel()
+        Me.m_btnSaveResults = New System.Windows.Forms.Button()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_scMain.Panel1.SuspendLayout()
+        Me.m_scMain.Panel2.SuspendLayout()
+        Me.m_scMain.SuspendLayout()
         Me.m_tcOutput.SuspendLayout()
         Me.m_tpSettings.SuspendLayout()
+        Me.m_tlpSettings.SuspendLayout()
         Me.m_tlpCredits.SuspendLayout()
         CType(Me.m_pbIRD, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_plSettingsExport.SuspendLayout()
+        Me.m_plExecution.SuspendLayout()
         Me.m_tpEcopath.SuspendLayout()
         Me.m_tpEcosim.SuspendLayout()
         Me.m_tpEcospace.SuspendLayout()
@@ -115,24 +124,23 @@ Partial Class frmMain
         Me.m_tlpHistSettings.SuspendLayout()
         Me.m_tpMCsim.SuspendLayout()
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_tlpSettings.SuspendLayout()
-        Me.m_plSettingsExport.SuspendLayout()
-        Me.m_plExecution.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.m_plExtra.SuspendLayout()
         Me.SuspendLayout()
         '
-        'SplitContainer1
+        'm_scMain
         '
-        resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
-        Me.SplitContainer1.Name = "SplitContainer1"
+        resources.ApplyResources(Me.m_scMain, "m_scMain")
+        Me.m_scMain.Name = "m_scMain"
         '
-        'SplitContainer1.Panel1
+        'm_scMain.Panel1
         '
-        Me.SplitContainer1.Panel1.Controls.Add(Me.m_tvIndicators)
-        resources.ApplyResources(Me.SplitContainer1.Panel1, "SplitContainer1.Panel1")
+        Me.m_scMain.Panel1.Controls.Add(Me.m_tvIndicators)
+        resources.ApplyResources(Me.m_scMain.Panel1, "m_scMain.Panel1")
         '
-        'SplitContainer1.Panel2
+        'm_scMain.Panel2
         '
-        Me.SplitContainer1.Panel2.Controls.Add(Me.m_tcOutput)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tcOutput)
         '
         'm_tvIndicators
         '
@@ -162,6 +170,17 @@ Partial Class frmMain
         Me.m_tpSettings.Controls.Add(Me.m_tlpSettings)
         resources.ApplyResources(Me.m_tpSettings, "m_tpSettings")
         Me.m_tpSettings.Name = "m_tpSettings"
+        '
+        'm_tlpSettings
+        '
+        resources.ApplyResources(Me.m_tlpSettings, "m_tlpSettings")
+        Me.m_tlpSettings.Controls.Add(Me.m_lblCredits, 0, 4)
+        Me.m_tlpSettings.Controls.Add(Me.m_tlpCredits, 0, 5)
+        Me.m_tlpSettings.Controls.Add(Me.m_hdrExecution, 0, 0)
+        Me.m_tlpSettings.Controls.Add(Me.m_hdrExport, 0, 2)
+        Me.m_tlpSettings.Controls.Add(Me.m_plSettingsExport, 0, 3)
+        Me.m_tlpSettings.Controls.Add(Me.m_plExecution, 0, 1)
+        Me.m_tlpSettings.Name = "m_tlpSettings"
         '
         'm_lblCredits
         '
@@ -201,11 +220,62 @@ Partial Class frmMain
         Me.m_pbCSIC.Name = "m_pbCSIC"
         Me.m_pbCSIC.TabStop = False
         '
-        'm_btnChangeDefault
+        'm_hdrExecution
         '
-        resources.ApplyResources(Me.m_btnChangeDefault, "m_btnChangeDefault")
-        Me.m_btnChangeDefault.Name = "m_btnChangeDefault"
-        Me.m_btnChangeDefault.UseVisualStyleBackColor = True
+        Me.m_hdrExecution.CanCollapseParent = False
+        Me.m_hdrExecution.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrExecution, "m_hdrExecution")
+        Me.m_hdrExecution.IsCollapsed = False
+        Me.m_hdrExecution.Name = "m_hdrExecution"
+        '
+        'm_hdrExport
+        '
+        Me.m_hdrExport.CanCollapseParent = False
+        Me.m_hdrExport.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrExport, "m_hdrExport")
+        Me.m_hdrExport.IsCollapsed = False
+        Me.m_hdrExport.Name = "m_hdrExport"
+        '
+        'm_plSettingsExport
+        '
+        Me.m_plSettingsExport.Controls.Add(Me.m_cbAutoSaveEcospaceASCII)
+        Me.m_plSettingsExport.Controls.Add(Me.m_cbAutoSaveEcospaceCSV)
+        Me.m_plSettingsExport.Controls.Add(Me.m_cbAutoSaveMCMC)
+        Me.m_plSettingsExport.Controls.Add(Me.m_cbAutoSaveEcosim)
+        Me.m_plSettingsExport.Controls.Add(Me.m_btnChooseFolder)
+        Me.m_plSettingsExport.Controls.Add(Me.m_tbxOutputFolder)
+        Me.m_plSettingsExport.Controls.Add(Me.m_tbxDefaultLocation)
+        Me.m_plSettingsExport.Controls.Add(Me.m_btnChangeDefault)
+        Me.m_plSettingsExport.Controls.Add(Me.m_cbAutoSaveEcopath)
+        Me.m_plSettingsExport.Controls.Add(Me.m_lblSaveTo)
+        Me.m_plSettingsExport.Controls.Add(Me.m_rbCustom)
+        Me.m_plSettingsExport.Controls.Add(Me.m_rbDefault)
+        resources.ApplyResources(Me.m_plSettingsExport, "m_plSettingsExport")
+        Me.m_plSettingsExport.Name = "m_plSettingsExport"
+        '
+        'm_cbAutoSaveEcospaceASCII
+        '
+        resources.ApplyResources(Me.m_cbAutoSaveEcospaceASCII, "m_cbAutoSaveEcospaceASCII")
+        Me.m_cbAutoSaveEcospaceASCII.Name = "m_cbAutoSaveEcospaceASCII"
+        Me.m_cbAutoSaveEcospaceASCII.UseVisualStyleBackColor = True
+        '
+        'm_cbAutoSaveEcospaceCSV
+        '
+        resources.ApplyResources(Me.m_cbAutoSaveEcospaceCSV, "m_cbAutoSaveEcospaceCSV")
+        Me.m_cbAutoSaveEcospaceCSV.Name = "m_cbAutoSaveEcospaceCSV"
+        Me.m_cbAutoSaveEcospaceCSV.UseVisualStyleBackColor = True
+        '
+        'm_cbAutoSaveMCMC
+        '
+        resources.ApplyResources(Me.m_cbAutoSaveMCMC, "m_cbAutoSaveMCMC")
+        Me.m_cbAutoSaveMCMC.Name = "m_cbAutoSaveMCMC"
+        Me.m_cbAutoSaveMCMC.UseVisualStyleBackColor = True
+        '
+        'm_cbAutoSaveEcosim
+        '
+        resources.ApplyResources(Me.m_cbAutoSaveEcosim, "m_cbAutoSaveEcosim")
+        Me.m_cbAutoSaveEcosim.Name = "m_cbAutoSaveEcosim"
+        Me.m_cbAutoSaveEcosim.UseVisualStyleBackColor = True
         '
         'm_btnChooseFolder
         '
@@ -213,16 +283,28 @@ Partial Class frmMain
         Me.m_btnChooseFolder.Name = "m_btnChooseFolder"
         Me.m_btnChooseFolder.UseVisualStyleBackColor = True
         '
+        'm_tbxOutputFolder
+        '
+        resources.ApplyResources(Me.m_tbxOutputFolder, "m_tbxOutputFolder")
+        Me.m_tbxOutputFolder.Name = "m_tbxOutputFolder"
+        '
         'm_tbxDefaultLocation
         '
         resources.ApplyResources(Me.m_tbxDefaultLocation, "m_tbxDefaultLocation")
         Me.m_tbxDefaultLocation.Name = "m_tbxDefaultLocation"
         Me.m_tbxDefaultLocation.ReadOnly = True
         '
-        'm_tbxOutputFolder
+        'm_btnChangeDefault
         '
-        resources.ApplyResources(Me.m_tbxOutputFolder, "m_tbxOutputFolder")
-        Me.m_tbxOutputFolder.Name = "m_tbxOutputFolder"
+        resources.ApplyResources(Me.m_btnChangeDefault, "m_btnChangeDefault")
+        Me.m_btnChangeDefault.Name = "m_btnChangeDefault"
+        Me.m_btnChangeDefault.UseVisualStyleBackColor = True
+        '
+        'm_cbAutoSaveEcopath
+        '
+        resources.ApplyResources(Me.m_cbAutoSaveEcopath, "m_cbAutoSaveEcopath")
+        Me.m_cbAutoSaveEcopath.Name = "m_cbAutoSaveEcopath"
+        Me.m_cbAutoSaveEcopath.UseVisualStyleBackColor = True
         '
         'm_lblSaveTo
         '
@@ -243,41 +325,16 @@ Partial Class frmMain
         Me.m_rbDefault.TabStop = True
         Me.m_rbDefault.UseVisualStyleBackColor = True
         '
-        'm_cbAutoSaveCSV
+        'm_plExecution
         '
-        resources.ApplyResources(Me.m_cbAutoSaveCSV, "m_cbAutoSaveCSV")
-        Me.m_cbAutoSaveCSV.Name = "m_cbAutoSaveCSV"
-        Me.m_cbAutoSaveCSV.UseVisualStyleBackColor = True
-        '
-        'm_cbRunWithMC
-        '
-        resources.ApplyResources(Me.m_cbRunWithMC, "m_cbRunWithMC")
-        Me.m_cbRunWithMC.Name = "m_cbRunWithMC"
-        Me.m_cbRunWithMC.UseVisualStyleBackColor = True
-        '
-        'm_cbRunWithEcospace
-        '
-        resources.ApplyResources(Me.m_cbRunWithEcospace, "m_cbRunWithEcospace")
-        Me.m_cbRunWithEcospace.Name = "m_cbRunWithEcospace"
-        Me.m_cbRunWithEcospace.UseVisualStyleBackColor = True
-        '
-        'm_cbRunWithEcosim
-        '
-        resources.ApplyResources(Me.m_cbRunWithEcosim, "m_cbRunWithEcosim")
-        Me.m_cbRunWithEcosim.Name = "m_cbRunWithEcosim"
-        Me.m_cbRunWithEcosim.UseVisualStyleBackColor = True
-        '
-        'm_cbEcospaceAnnualOnly
-        '
-        resources.ApplyResources(Me.m_cbEcospaceAnnualOnly, "m_cbEcospaceAnnualOnly")
-        Me.m_cbEcospaceAnnualOnly.Name = "m_cbEcospaceAnnualOnly"
-        Me.m_cbEcospaceAnnualOnly.UseVisualStyleBackColor = True
-        '
-        'm_cbPlotAtEnd
-        '
-        resources.ApplyResources(Me.m_cbPlotAtEnd, "m_cbPlotAtEnd")
-        Me.m_cbPlotAtEnd.Name = "m_cbPlotAtEnd"
-        Me.m_cbPlotAtEnd.UseVisualStyleBackColor = True
+        Me.m_plExecution.Controls.Add(Me.m_cbRunWithEcopath)
+        Me.m_plExecution.Controls.Add(Me.m_cbPlotAtEnd)
+        Me.m_plExecution.Controls.Add(Me.m_cbEcospaceAnnualOnly)
+        Me.m_plExecution.Controls.Add(Me.m_cbRunWithMC)
+        Me.m_plExecution.Controls.Add(Me.m_cbRunWithEcosim)
+        Me.m_plExecution.Controls.Add(Me.m_cbRunWithEcospace)
+        resources.ApplyResources(Me.m_plExecution, "m_plExecution")
+        Me.m_plExecution.Name = "m_plExecution"
         '
         'm_cbRunWithEcopath
         '
@@ -285,21 +342,35 @@ Partial Class frmMain
         Me.m_cbRunWithEcopath.Name = "m_cbRunWithEcopath"
         Me.m_cbRunWithEcopath.UseVisualStyleBackColor = True
         '
-        'm_hdrExport
+        'm_cbPlotAtEnd
         '
-        Me.m_hdrExport.CanCollapseParent = False
-        Me.m_hdrExport.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrExport, "m_hdrExport")
-        Me.m_hdrExport.IsCollapsed = False
-        Me.m_hdrExport.Name = "m_hdrExport"
+        resources.ApplyResources(Me.m_cbPlotAtEnd, "m_cbPlotAtEnd")
+        Me.m_cbPlotAtEnd.Name = "m_cbPlotAtEnd"
+        Me.m_cbPlotAtEnd.UseVisualStyleBackColor = True
         '
-        'm_hdrExecution
+        'm_cbEcospaceAnnualOnly
         '
-        Me.m_hdrExecution.CanCollapseParent = False
-        Me.m_hdrExecution.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrExecution, "m_hdrExecution")
-        Me.m_hdrExecution.IsCollapsed = False
-        Me.m_hdrExecution.Name = "m_hdrExecution"
+        resources.ApplyResources(Me.m_cbEcospaceAnnualOnly, "m_cbEcospaceAnnualOnly")
+        Me.m_cbEcospaceAnnualOnly.Name = "m_cbEcospaceAnnualOnly"
+        Me.m_cbEcospaceAnnualOnly.UseVisualStyleBackColor = True
+        '
+        'm_cbRunWithMC
+        '
+        resources.ApplyResources(Me.m_cbRunWithMC, "m_cbRunWithMC")
+        Me.m_cbRunWithMC.Name = "m_cbRunWithMC"
+        Me.m_cbRunWithMC.UseVisualStyleBackColor = True
+        '
+        'm_cbRunWithEcosim
+        '
+        resources.ApplyResources(Me.m_cbRunWithEcosim, "m_cbRunWithEcosim")
+        Me.m_cbRunWithEcosim.Name = "m_cbRunWithEcosim"
+        Me.m_cbRunWithEcosim.UseVisualStyleBackColor = True
+        '
+        'm_cbRunWithEcospace
+        '
+        resources.ApplyResources(Me.m_cbRunWithEcospace, "m_cbRunWithEcospace")
+        Me.m_cbRunWithEcospace.Name = "m_cbRunWithEcospace"
+        Me.m_cbRunWithEcospace.UseVisualStyleBackColor = True
         '
         'm_tpEcopath
         '
@@ -323,7 +394,7 @@ Partial Class frmMain
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
         Me.m_grid.DataName = "grid content"
-        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FixedColumnWidths = True
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
@@ -395,6 +466,7 @@ Partial Class frmMain
         '
         'm_tsEcospace
         '
+        Me.m_tsEcospace.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_tsEcospace.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEcospaceSaveImage})
         resources.ApplyResources(Me.m_tsEcospace, "m_tsEcospace")
         Me.m_tsEcospace.Name = "m_tsEcospace"
@@ -473,12 +545,6 @@ Partial Class frmMain
         Me.m_graphMCsim.ScrollMinY = 0R
         Me.m_graphMCsim.ScrollMinY2 = 0R
         '
-        'm_btnSaveToCSV
-        '
-        resources.ApplyResources(Me.m_btnSaveToCSV, "m_btnSaveToCSV")
-        Me.m_btnSaveToCSV.Name = "m_btnSaveToCSV"
-        Me.m_btnSaveToCSV.UseVisualStyleBackColor = True
-        '
         'm_pbStatus
         '
         resources.ApplyResources(Me.m_pbStatus, "m_pbStatus")
@@ -493,63 +559,52 @@ Partial Class frmMain
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
         '
-        'm_tlpSettings
+        'TableLayoutPanel1
         '
-        resources.ApplyResources(Me.m_tlpSettings, "m_tlpSettings")
-        Me.m_tlpSettings.Controls.Add(Me.m_lblCredits, 0, 4)
-        Me.m_tlpSettings.Controls.Add(Me.m_tlpCredits, 0, 5)
-        Me.m_tlpSettings.Controls.Add(Me.m_hdrExecution, 0, 0)
-        Me.m_tlpSettings.Controls.Add(Me.m_hdrExport, 0, 2)
-        Me.m_tlpSettings.Controls.Add(Me.m_plSettingsExport, 0, 3)
-        Me.m_tlpSettings.Controls.Add(Me.m_plExecution, 0, 1)
-        Me.m_tlpSettings.Name = "m_tlpSettings"
+        resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+        Me.TableLayoutPanel1.Controls.Add(Me.m_scMain, 1, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_plExtra, 1, 2)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         '
-        'm_plSettingsExport
+        'm_plExtra
         '
-        Me.m_plSettingsExport.Controls.Add(Me.m_btnChooseFolder)
-        Me.m_plSettingsExport.Controls.Add(Me.m_tbxOutputFolder)
-        Me.m_plSettingsExport.Controls.Add(Me.m_tbxDefaultLocation)
-        Me.m_plSettingsExport.Controls.Add(Me.m_btnChangeDefault)
-        Me.m_plSettingsExport.Controls.Add(Me.m_cbAutoSaveCSV)
-        Me.m_plSettingsExport.Controls.Add(Me.m_lblSaveTo)
-        Me.m_plSettingsExport.Controls.Add(Me.m_rbCustom)
-        Me.m_plSettingsExport.Controls.Add(Me.m_rbDefault)
-        resources.ApplyResources(Me.m_plSettingsExport, "m_plSettingsExport")
-        Me.m_plSettingsExport.Name = "m_plSettingsExport"
+        Me.m_plExtra.Controls.Add(Me.m_btnSaveResults)
+        Me.m_plExtra.Controls.Add(Me.m_pbStatus)
+        Me.m_plExtra.Controls.Add(Me.m_llStatus)
+        resources.ApplyResources(Me.m_plExtra, "m_plExtra")
+        Me.m_plExtra.Name = "m_plExtra"
         '
-        'm_plExecution
+        'm_btnSaveResults
         '
-        Me.m_plExecution.Controls.Add(Me.m_cbRunWithEcopath)
-        Me.m_plExecution.Controls.Add(Me.m_cbPlotAtEnd)
-        Me.m_plExecution.Controls.Add(Me.m_cbEcospaceAnnualOnly)
-        Me.m_plExecution.Controls.Add(Me.m_cbRunWithMC)
-        Me.m_plExecution.Controls.Add(Me.m_cbRunWithEcosim)
-        Me.m_plExecution.Controls.Add(Me.m_cbRunWithEcospace)
-        resources.ApplyResources(Me.m_plExecution, "m_plExecution")
-        Me.m_plExecution.Name = "m_plExecution"
+        resources.ApplyResources(Me.m_btnSaveResults, "m_btnSaveResults")
+        Me.m_btnSaveResults.Name = "m_btnSaveResults"
+        Me.m_btnSaveResults.UseVisualStyleBackColor = True
         '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.Controls.Add(Me.m_llStatus)
-        Me.Controls.Add(Me.m_pbStatus)
-        Me.Controls.Add(Me.m_btnSaveToCSV)
-        Me.Controls.Add(Me.SplitContainer1)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Name = "frmMain"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.TabText = ""
-        Me.SplitContainer1.Panel1.ResumeLayout(False)
-        Me.SplitContainer1.Panel2.ResumeLayout(False)
-        CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.SplitContainer1.ResumeLayout(False)
+        Me.m_scMain.Panel1.ResumeLayout(False)
+        Me.m_scMain.Panel2.ResumeLayout(False)
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_scMain.ResumeLayout(False)
         Me.m_tcOutput.ResumeLayout(False)
         Me.m_tpSettings.ResumeLayout(False)
+        Me.m_tlpSettings.ResumeLayout(False)
+        Me.m_tlpSettings.PerformLayout()
         Me.m_tlpCredits.ResumeLayout(False)
         CType(Me.m_pbIRD, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_plSettingsExport.ResumeLayout(False)
+        Me.m_plSettingsExport.PerformLayout()
+        Me.m_plExecution.ResumeLayout(False)
+        Me.m_plExecution.PerformLayout()
         Me.m_tpEcopath.ResumeLayout(False)
         Me.m_tpEcopath.PerformLayout()
         Me.m_tpEcosim.ResumeLayout(False)
@@ -564,22 +619,17 @@ Partial Class frmMain
         Me.m_tlpHistSettings.PerformLayout()
         Me.m_tpMCsim.ResumeLayout(False)
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_tlpSettings.ResumeLayout(False)
-        Me.m_tlpSettings.PerformLayout()
-        Me.m_plSettingsExport.ResumeLayout(False)
-        Me.m_plSettingsExport.PerformLayout()
-        Me.m_plExecution.ResumeLayout(False)
-        Me.m_plExecution.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.m_plExtra.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
     Private WithEvents m_tvIndicators As ScientificInterfaceShared.Controls.cThemedTreeView
-    Private WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_tcOutput As System.Windows.Forms.TabControl
     Private WithEvents m_tpEcopath As System.Windows.Forms.TabPage
     Private WithEvents m_tpEcosim As System.Windows.Forms.TabPage
     Private WithEvents m_grid As gridEcopath
-    Private WithEvents m_btnSaveToCSV As System.Windows.Forms.Button
     Private WithEvents m_tpSettings As System.Windows.Forms.TabPage
     Private WithEvents m_btnChooseFolder As System.Windows.Forms.Button
     Private WithEvents m_tbxDefaultLocation As System.Windows.Forms.TextBox
@@ -587,7 +637,6 @@ Partial Class frmMain
     Private WithEvents m_lblSaveTo As System.Windows.Forms.Label
     Private WithEvents m_rbCustom As System.Windows.Forms.RadioButton
     Private WithEvents m_rbDefault As System.Windows.Forms.RadioButton
-    Private WithEvents m_cbAutoSaveCSV As System.Windows.Forms.CheckBox
     Private WithEvents m_cbRunWithEcospace As System.Windows.Forms.CheckBox
     Private WithEvents m_cbRunWithEcosim As System.Windows.Forms.CheckBox
     Private WithEvents m_cbRunWithEcopath As System.Windows.Forms.CheckBox
@@ -621,5 +670,13 @@ Partial Class frmMain
     Private WithEvents m_tlpSettings As Windows.Forms.TableLayoutPanel
     Private WithEvents m_plSettingsExport As Windows.Forms.Panel
     Private WithEvents m_plExecution As Windows.Forms.Panel
-    Private WithEvents m_tsEcospace As Windows.Forms.ToolStrip
+    Private WithEvents m_tsEcospace As cEwEToolstrip
+    Private WithEvents m_cbAutoSaveEcospaceASCII As Windows.Forms.CheckBox
+    Private WithEvents m_cbAutoSaveEcospaceCSV As Windows.Forms.CheckBox
+    Private WithEvents m_cbAutoSaveMCMC As Windows.Forms.CheckBox
+    Private WithEvents m_cbAutoSaveEcosim As Windows.Forms.CheckBox
+    Private WithEvents m_cbAutoSaveEcopath As Windows.Forms.CheckBox
+    Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
+    Private WithEvents m_plExtra As Windows.Forms.Panel
+    Private WithEvents m_btnSaveResults As Windows.Forms.Button
 End Class
