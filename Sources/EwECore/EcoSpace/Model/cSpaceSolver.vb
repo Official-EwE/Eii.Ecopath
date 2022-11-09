@@ -263,7 +263,7 @@ Public Class cSpaceSolver
     Public Sub Clear()
 
         Try
-            'each solver get it's own Contaminant Tracer data and model
+            'each solver get its own Contaminant Tracer data and model
             Me.m_TracerData.Clear()
             Me.m_ConTracer = Nothing
         Catch ex As Exception
@@ -307,10 +307,12 @@ Public Class cSpaceSolver
     End Sub
 
     Public Sub resetSpinup()
-        'reset the Fitness Calcualted flag
+        'reset the Fitness Calculated flag
         'this will force the base relative fitness movement to be re-calculated to the first year after the spinup
         'See setRelFitnessBase()
         Me.m_bFitnessSet = New Boolean(Me.m_Data.InRow, Me.m_Data.InCol) {}
+        ' Also reset concentrations accumulated during spin-up
+        Me.m_ConTracer.CInitialize()
     End Sub
 
 
@@ -474,7 +476,9 @@ Public Class cSpaceSolver
                 If Single.IsNaN(Me.m_Data.Bcell(i, j, iGrp)) = True Then Me.m_Data.Bcell(i, j, iGrp) = 0.000001
                 Me.BB(iGrp) = Me.m_Data.Bcell(i, j, iGrp)
 
-                If Me.m_TracerData.EcoSpaceConSimOn Then Me.m_ConTracer.ConcTr(iGrp) = Me.m_Data.Ccell(i, j, iGrp)
+                If Me.m_TracerData.EcoSpaceConSimOn Then
+                    Me.m_ConTracer.ConcTr(iGrp) = Me.m_Data.Ccell(i, j, iGrp)
+                End If
 
                 'sum biomass over all the cells
                 'this is now done individually for each thread, then summed outside the threads
