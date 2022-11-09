@@ -2472,9 +2472,8 @@ Public Class cEcoSpace
                 Me.Basebiomass(0) = 1
                 Me.EcoSpaceData.IsAdvected(0) = True
 
-                ' JS 09Nov22: this is now user-configurable
-                ''VC with CJW 20151124: first detritus group has to be advected for ecotracter environment to be moved around
-                'Me.EcoSpaceData.IsAdvected(Me.EcoPathData.NumLiving + 1) = True
+                'VC with CJW 20151124: first detritus group has to be advected for ecotracter environment to be moved around
+                Me.EcoSpaceData.IsAdvected(Me.EcoPathData.NumLiving + 1) = True
             End If
 
             Dim btot(ip) As Single
