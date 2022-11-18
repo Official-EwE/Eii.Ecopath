@@ -294,7 +294,8 @@ Public Class cEcospaceImportExportASCIIData
                         bIsCenterY = True
                         checksum = CByte(checksum Or &H8)
 
-                    Case "cellsize"
+                    Case "cellsize", "dx", "dy"
+                        ' Also accommodate to Golder Surfer ASCII format, even though most tools (EwE included) ignore different dx and dy values
                         dCellSize = cStringUtils.ConvertToDouble(strValue, cCore.NULL_VALUE)
                         bSuccess = bSuccess And (dCellSize > 0)
                         checksum = CByte(checksum Or &H10)
