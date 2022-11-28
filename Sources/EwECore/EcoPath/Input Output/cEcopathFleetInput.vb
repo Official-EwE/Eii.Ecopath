@@ -53,7 +53,7 @@ Public Class cEcopathFleetInput
         Me.m_values.Add(val.varName, val)
 
         'CPUECost
-        val = New cValue(core, New Single, eVarNameFlags.CPUECost, eStatusFlags.Null, eValueTypes.Sng)
+        val = New cValue(core, New Single, eVarNameFlags.EffortCost, eStatusFlags.Null, eValueTypes.Sng)
         Me.m_values.Add(val.varName, val)
 
         'SailCost
@@ -124,12 +124,12 @@ Public Class cEcopathFleetInput
         End Set
     End Property
 
-    Public Property CPUECost() As Single
+    Public Property EffortCost() As Single
         Get
-            Return CSng(Me.GetVariable(eVarNameFlags.CPUECost))
+            Return CSng(Me.GetVariable(eVarNameFlags.EffortCost))
         End Get
         Set(value As Single)
-            Me.SetVariable(eVarNameFlags.CPUECost, value)
+            Me.SetVariable(eVarNameFlags.EffortCost, value)
         End Set
     End Property
 
@@ -259,12 +259,12 @@ Public Class cEcopathFleetInput
         End Set
     End Property
 
-    Public Property CPUECostStatus() As eStatusFlags
+    Public Property EffortCostStatus() As eStatusFlags
         Get
-            Return Me.GetStatus(eVarNameFlags.CPUECost)
+            Return Me.GetStatus(eVarNameFlags.EffortCost)
         End Get
         Friend Set(value As eStatusFlags)
-            Me.SetStatus(eVarNameFlags.CPUECost, value)
+            Me.SetStatus(eVarNameFlags.EffortCost, value)
         End Set
     End Property
 

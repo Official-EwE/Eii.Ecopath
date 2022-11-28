@@ -150,9 +150,21 @@ Public Class cTimeSeriesDataStructures
 
     ' - Money -
     ''' <summary>Ecopath off-vessel price. By Fleet,Group,Time</summary>
-    Public PoolForceOffVesselPrice(,,) As Single
-    ''' <summary>Ecopath CPUE cost. By Fleet,Time</summary>
-    Public PoolForceCPUECost(,) As Single
+    Public PoolForceOffVesselPriceAbs(,,) As Single
+    ''' <summary>Ecopath off-vessel price multiplier. By Fleet,Group,Time</summary>
+    Public PoolForceOffVesselPriceRel(,,) As Single
+    ''' <summary>Ecopath CUPE cost multiplier. By Fleet,Time</summary>
+    Public PoolForceEffortCostAbs(,) As Single
+    ''' <summary>Ecopath CUPE cost multiplier. By Fleet,Time</summary>
+    Public PoolForceEffortCostRel(,) As Single
+    ''' <summary>Ecopath sail cost multiplier. By Fleet,Time</summary>
+    Public PoolForceSailCostRel(,) As Single
+    ''' <summary>Ecopath sail cost (abs). By Fleet,Time</summary>
+    Public PoolForceSailCostAbs(,) As Single
+    ''' <summary>Ecopath Fixed cost (abs). By Fleet,Time</summary>
+    Public PoolForceFixedCostAbs(,) As Single
+    ''' <summary>Ecopath Fixed cost multiplier. By Fleet,Time</summary>
+    Public PoolForceFixedCostRel(,) As Single
 
     ''' <summary>
     ''' Index to the current year/datatype
@@ -280,7 +292,14 @@ Public Class cTimeSeriesDataStructures
         Erase Me.PoolForceDiscardProp
         Erase Me.PoolForceDiscardMort
         Erase Me.PoolForceCatchabilities
-        Erase Me.PoolForceOffVesselPrice
+        Erase Me.PoolForceOffVesselPriceAbs
+        Erase Me.PoolForceOffVesselPriceRel
+        Erase Me.PoolForceEffortCostRel
+        Erase Me.PoolForceEffortCostAbs
+        Erase Me.PoolForceSailCostAbs
+        Erase Me.PoolForceSailCostRel
+        Erase Me.PoolForceFixedCostAbs
+        Erase Me.PoolForceFixedCostRel
 
     End Sub
 
@@ -497,8 +516,14 @@ Public Class cTimeSeriesDataStructures
                 ReDim Me.PoolForceDiscardProp(Me.nFleets, Me.nGroups, npoints)
                 ReDim Me.PoolForceCatchabilities(Me.nFleets, Me.nGroups, npoints)
 
-                ReDim Me.PoolForceOffVesselPrice(Me.nFleets, Me.nGroups, npoints)
-                ReDim Me.PoolForceCPUECost(Me.nFleets, npoints)
+                ReDim Me.PoolForceOffVesselPriceAbs(Me.nFleets, Me.nGroups, npoints)
+                ReDim Me.PoolForceOffVesselPriceRel(Me.nFleets, Me.nGroups, npoints)
+                ReDim Me.PoolForceEffortCostAbs(Me.nFleets, npoints)
+                ReDim Me.PoolForceEffortCostRel(Me.nFleets, npoints)
+                ReDim Me.PoolForceSailCostAbs(Me.nFleets, npoints)
+                ReDim Me.PoolForceSailCostRel(Me.nFleets, npoints)
+                ReDim Me.PoolForceFixedCostAbs(Me.nFleets, npoints)
+                ReDim Me.PoolForceFixedCostRel(Me.nFleets, npoints)
 
                 Me.InitForcedDiscards()
                 Return
@@ -516,8 +541,14 @@ Public Class cTimeSeriesDataStructures
                 ReDim Preserve Me.PoolForceDiscardProp(Me.nFleets, Me.nGroups, npoints)
                 ReDim Preserve Me.PoolForceCatchabilities(Me.nFleets, Me.nGroups, npoints)
 
-                ReDim Preserve Me.PoolForceOffVesselPrice(Me.nFleets, Me.nGroups, npoints)
-                ReDim Preserve Me.PoolForceCPUECost(Me.nFleets, npoints)
+                ReDim Preserve Me.PoolForceOffVesselPriceAbs(Me.nFleets, Me.nGroups, npoints)
+                ReDim Preserve Me.PoolForceOffVesselPriceRel(Me.nFleets, Me.nGroups, npoints)
+                ReDim Preserve Me.PoolForceEffortCostAbs(Me.nFleets, npoints)
+                ReDim Preserve Me.PoolForceEffortCostRel(Me.nFleets, npoints)
+                ReDim Preserve Me.PoolForceSailCostRel(Me.nFleets, npoints)
+                ReDim Preserve Me.PoolForceSailCostAbs(Me.nFleets, npoints)
+                ReDim Preserve Me.PoolForceFixedCostAbs(Me.nFleets, npoints)
+                ReDim Preserve Me.PoolForceFixedCostRel(Me.nFleets, npoints)
 
                 ReDim Preserve Me.ForcedFs(Me.nGroups, RunLengthYears * cCore.N_MONTHS)
 
@@ -543,13 +574,20 @@ Public Class cTimeSeriesDataStructures
                 End If
 
                 For iflt As Integer = 0 To Me.nFleets
-                    For igrp As Integer = 0 To Me.nGroups
-                        For ipt As Integer = n + 1 To npoints
+                    For ipt As Integer = n + 1 To npoints
+                        For igrp As Integer = 0 To Me.nGroups
                             Me.PoolForceDiscardMort(iflt, igrp, ipt) = cCore.NULL_VALUE
                             Me.PoolForceDiscardProp(iflt, igrp, ipt) = cCore.NULL_VALUE
                             Me.PoolForceCatchabilities(iflt, igrp, ipt) = cCore.NULL_VALUE
-                            Me.PoolForceOffVesselPrice(iflt, igrp, ipt) = cCore.NULL_VALUE
+                            Me.PoolForceOffVesselPriceAbs(iflt, igrp, ipt) = 0
+                            Me.PoolForceOffVesselPriceRel(iflt, igrp, ipt) = 0
                         Next
+                        Me.PoolForceEffortCostAbs(iflt, ipt) = 0
+                        Me.PoolForceEffortCostRel(iflt, ipt) = 0
+                        Me.PoolForceSailCostRel(iflt, ipt) = 0
+                        Me.PoolForceSailCostAbs(iflt, ipt) = 0
+                        Me.PoolForceFixedCostAbs(iflt, ipt) = 0
+                        Me.PoolForceFixedCostRel(iflt, ipt) = 0
                     Next
                 Next
             End If
@@ -896,7 +934,50 @@ Public Class cTimeSeriesDataStructures
                             iFlt = Me.AppliedDatPool(iDType)
                             iGrp = Me.AppliedDatPoolSec(iDType)
                             If (iGrp > 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
-                                Me.PoolForceOffVesselPrice(iFlt, iGrp, iDatPt) = value
+                                Me.PoolForceOffVesselPriceAbs(iFlt, iGrp, iDatPt) = value
+                            End If
+
+                        Case eTimeSeriesType.OffVesselPriceRel
+                            iFlt = Me.AppliedDatPool(iDType)
+                            iGrp = Me.AppliedDatPoolSec(iDType)
+                            If (iGrp > 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
+                                Me.PoolForceOffVesselPriceRel(iFlt, iGrp, iDatPt) = value
+                            End If
+
+                        Case eTimeSeriesType.EffortCost
+                            iFlt = Me.AppliedDatPool(iDType)
+                            If (iFlt > 0 And iFlt <= nFleets) Then
+                                Me.PoolForceEffortCostAbs(iFlt, iDatPt) = value
+                            End If
+
+                        Case eTimeSeriesType.EffortCostRel
+                            iFlt = Me.AppliedDatPool(iDType)
+                            If (iFlt > 0 And iFlt <= nFleets) Then
+                                Me.PoolForceEffortCostRel(iFlt, iDatPt) = value
+                            End If
+
+                        Case eTimeSeriesType.SailCost
+                            iFlt = Me.AppliedDatPool(iDType)
+                            If (iFlt > 0 And iFlt <= nFleets) Then
+                                Me.PoolForceSailCostAbs(iFlt, iDatPt) = value
+                            End If
+
+                        Case eTimeSeriesType.SailCostRel
+                            iFlt = Me.AppliedDatPool(iDType)
+                            If (iFlt > 0 And iFlt <= nFleets) Then
+                                Me.PoolForceSailCostRel(iFlt, iDatPt) = value
+                            End If
+
+                        Case eTimeSeriesType.FixedCost
+                            iFlt = Me.AppliedDatPool(iDType)
+                            If (iFlt > 0 And iFlt <= nFleets) Then
+                                Me.PoolForceFixedCostAbs(iFlt, iDatPt) = value
+                            End If
+
+                        Case eTimeSeriesType.FixedCostRel
+                            iFlt = Me.AppliedDatPool(iDType)
+                            If (iFlt > 0 And iFlt <= nFleets) Then
+                                Me.PoolForceFixedCostRel(iFlt, iDatPt) = value
                             End If
 
                     End Select

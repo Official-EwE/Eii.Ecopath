@@ -279,7 +279,7 @@ Namespace Ecopath.Output
                 alSumFixedCPUESailCost.Add(propFixedCost)
 
                 'Effort related cost
-                propCPUECost = Me.PropertyManager.GetProperty(source, eVarNameFlags.CPUECost)
+                propCPUECost = Me.PropertyManager.GetProperty(source, eVarNameFlags.EffortCost)
                 alSumFixedCPUESailCost.Add(propCPUECost)
 
                 'Sailing related cost

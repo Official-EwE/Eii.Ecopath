@@ -338,8 +338,23 @@ Public Enum eTimeSeriesType As Integer
     Discards = 13
     ''' <summary>Catchabilities (fleet x group, driver)</summary>
     Catchabilities = 14
-    ''' <summary>Absolute off-vessel price (fleet x group, driver)</summary>
+    ''' <summary>Absolute off-vessel price (by fleet x group x driver)</summary>
     OffVesselPrice = 15
+    ''' <summary>Relative off-vessel price (by fleet x group x driver)</summary>
+    OffVesselPriceRel = -OffVesselPrice
+    ''' <summary>Effort cost multiplier (by fleet x driver)</summary>
+    EffortCost = 16
+    ''' <summary>Effort cost multiplier (by fleet x driver)</summary>
+    EffortCostRel = -EffortCost
+    ''' <summary>Absolute Sailing cost (by fleet x driver)</summary>
+    SailCost = 17
+    ''' <summary>Relative sailing cost (multiplier; by fleet x driver)</summary>
+    SailCostRel = -SailCost
+    ''' <summary>Absolute fixed cost (by fleet x driver)</summary>
+    FixedCost = 18
+    ''' <summary>Fixed cost multiplier (by fleet x driver)</summary>
+    FixedCostRel = -FixedCost
+
     FishingMortalityRef = 104
     NotSet = cCore.NULL_VALUE
 End Enum

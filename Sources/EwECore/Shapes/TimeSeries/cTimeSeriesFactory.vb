@@ -62,15 +62,16 @@ Public Class cTimeSeriesFactory
             Case eTimeSeriesType.TimeForcing
                 Return eTimeSeriesCategoryType.Forcing
 
-            Case eTimeSeriesType.FishingEffort
+            Case eTimeSeriesType.FishingEffort,
+                 eTimeSeriesType.EffortCost, eTimeSeriesType.EffortCostRel,
+                 eTimeSeriesType.SailCost, eTimeSeriesType.SailCostRel,
+                 eTimeSeriesType.FixedCost, eTimeSeriesType.FixedCostRel
                 Return eTimeSeriesCategoryType.Fleet
 
-            Case eTimeSeriesType.DiscardMortality,
-                 eTimeSeriesType.DiscardProportion,
-                 eTimeSeriesType.Landings,
-                 eTimeSeriesType.Discards,
+            Case eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion,
+                 eTimeSeriesType.Landings, eTimeSeriesType.Discards,
                  eTimeSeriesType.Catchabilities,
-                 eTimeSeriesType.OffVesselPrice
+                 eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel
                 Return eTimeSeriesCategoryType.FleetGroup
 
             Case Else
