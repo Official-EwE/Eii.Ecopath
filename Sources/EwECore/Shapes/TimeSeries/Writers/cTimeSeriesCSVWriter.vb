@@ -251,7 +251,10 @@ Public Class cTimeSeriesCSVWriter
                 sw.Write("Weight")
                 For iTS As Integer = 1 To nTsT
                     sw.Write(strDelimiter)
-                    sw.Write("""0 to 1""")
+                    Dim t As eTimeSeriesType = tstypes(iTS - 1)
+                    If Not Me.m_core.m_Ecosim.IsDatTypeDriver(t) Then
+                        sw.Write("""0 to 1""")
+                    End If
                 Next
                 sw.WriteLine()
 

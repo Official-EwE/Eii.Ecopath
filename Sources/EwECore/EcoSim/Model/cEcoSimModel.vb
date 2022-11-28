@@ -383,17 +383,17 @@ Namespace Ecosim
 
         Public Function IsDatTypeDriver(DatType As eTimeSeriesType) As Boolean
             Select Case DatType
-                Case eTimeSeriesType.BiomassRel,
-                     eTimeSeriesType.BiomassAbs,
+                Case eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs,
                      eTimeSeriesType.TotalMortality,
                      eTimeSeriesType.AverageWeight,
-                     eTimeSeriesType.Catches,
-                     eTimeSeriesType.CatchesRel,
+                     eTimeSeriesType.Catches, eTimeSeriesType.CatchesRel,
                      eTimeSeriesType.CatchesForcing,
-                     eTimeSeriesType.DiscardMortality,
-                     eTimeSeriesType.DiscardProportion,
+                     eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion,
                      eTimeSeriesType.Catchabilities,
-                     eTimeSeriesType.OffVesselPrice
+                     eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel,
+                     eTimeSeriesType.EffortCost, eTimeSeriesType.EffortCostRel,
+                    eTimeSeriesType.SailCost, eTimeSeriesType.SailCostRel,
+                    eTimeSeriesType.FixedCost, eTimeSeriesType.FixedCostRel
                     Return True
             End Select
             Return False
@@ -1258,19 +1258,33 @@ Namespace Ecosim
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Return market value (off vessel price) as a function of the applied price elasticity functions or time series forcing.
+        ''' Return the Ecopath market value (off vessel price) as a function of 
+        ''' time series forcing and any applied price elasticity function.
         ''' </summary>
-        ''' <param name="iGrp">Index of the affected group. This is the group that the price function is applied to in the application grid.</param>
-        ''' <param name="iFlt">Index of the affected fleet. This is the fleet that the price function is applied to in the application grid.</param>
+        ''' <param name="iGrp">One-based index of the affected group. This is the group 
+        ''' that the price function is applied to in the application grid.</param>
+        ''' <param name="iFlt">One-based index of the affected fleet. This is the fleet 
+        ''' that the price function is applied to in the application grid.</param>
+        ''' <param name="iTime">Cummulative time step.</param>
+        ''' <param name="iYear">Current year.</param>
         ''' <returns>([Ecopath market value] or [OffVesselPrice time series]) * [PES multiplier]</returns>
-        ''' <remarks></remarks>
+        ''' <remarks>Any <see cref="eTimeSeriesType.OffVesselPrice">absolute landings time series</see> are 
+        ''' used if provided. if not, Ecopath base off-vessel prices are multiplied with 
+        ''' <see cref="eTimeSeriesType.OffVesselPriceRel">relative time series</see> 
+        ''' and applied price elasticity functions.</remarks>
+        ''' -------------------------------------------------------------------
         Public Function LandingsValue(ByVal iGrp As Integer, ByVal iFlt As Integer, ByVal iTime As Integer, ByVal iYear As Integer) As Single
 
             Dim value As Single = Me.m_EPData.Market(iFlt, iGrp)
             Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iTime, iYear)
-            If Me.m_RefData.PoolForceOffVesselPrice(iFlt, iGrp, iForcing) > 0 Then
-                value = Me.m_RefData.PoolForceOffVesselPrice(iFlt, iGrp, iForcing)
+            If Me.m_RefData.PoolForceOffVesselPriceAbs(iFlt, iGrp, iForcing) > 0 Then
+                Return Me.m_RefData.PoolForceOffVesselPriceAbs(iFlt, iGrp, iForcing)
+            End If
+
+            If Me.m_RefData.PoolForceOffVesselPriceRel(iFlt, iGrp, iForcing) > 0 Then
+                value = Me.m_RefData.PoolForceOffVesselPriceRel(iFlt, iGrp, iForcing)
             End If
             'apply the price elasticity multiplier to market value for this Group/Fleet
             'if there is no PES function for this group fleet getPESMult(group,fleet) will return 1
@@ -1278,7 +1292,80 @@ Namespace Ecosim
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the Ecopath effort cost value as a function of time series forcing.
+        ''' </summary>
+        ''' <param name="iFlt">One-based index of the fleet.</param>
+        ''' <param name="iTime">Cummulative time step.</param>
+        ''' <param name="iYear">Current year.</param>
+        ''' <returns>Ecopath effort cost value as a function of time series forcing</returns>
+        ''' <remarks>Any <see cref="eTimeSeriesType.EffortCost">absolute landings time series</see> are 
+        ''' used if provided. if not, Ecopath base effort costs are multiplied with 
+        ''' <see cref="eTimeSeriesType.EffortCostRel">relative time series</see>.</remarks>
+        ''' -------------------------------------------------------------------
+        Public Function EffortCost(ByVal iFlt As Integer, ByVal iTime As Integer, ByVal iYear As Integer) As Single
 
+            Dim value As Single = Me.m_EPData.cost(iFlt, eCostIndex.CUPE)
+            Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iTime, iYear)
+            If Me.m_RefData.PoolForceEffortCostAbs(iFlt, iForcing) > 0 Then
+                value = Me.m_RefData.PoolForceEffortCostAbs(iFlt, iForcing)
+            ElseIf Me.m_RefData.PoolForceEffortCostRel(iFlt, iForcing) > 0 Then
+                value *= Me.m_RefData.PoolForceEffortCostRel(iFlt, iForcing)
+            End If
+            Return value
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the Ecopath sail cost value as a function of time series forcing.
+        ''' </summary>
+        ''' <param name="iFlt">One-based index of the fleet.</param>
+        ''' <param name="iTime">Cummulative time step.</param>
+        ''' <param name="iYear">Current year.</param>
+        ''' <returns>Ecopath sail cost value as a function of time series forcing</returns>
+        ''' <remarks>Any <see cref="eTimeSeriesType.SailCost">absolute landings time series</see> are 
+        ''' used if provided. if not, Ecopath base sail costs are multiplied with 
+        ''' <see cref="eTimeSeriesType.SailCostRel">relative time series</see>.</remarks>
+        ''' -------------------------------------------------------------------
+        Public Function SailCost(ByVal iFlt As Integer, ByVal iTime As Integer, ByVal iYear As Integer) As Single
+
+            Dim value As Single = Me.m_EPData.cost(iFlt, eCostIndex.Sail)
+            Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iTime, iYear)
+            If Me.m_RefData.PoolForceSailCostAbs(iFlt, iForcing) > 0 Then
+                value = Me.m_RefData.PoolForceSailCostAbs(iFlt, iForcing)
+            ElseIf Me.m_RefData.PoolForceSailCostRel(iFlt, iForcing) > 0 Then
+                value *= Me.m_RefData.PoolForceSailCostRel(iFlt, iForcing)
+            End If
+            Return value
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the Ecopath fixed cost value as a function of time series forcing.
+        ''' </summary>
+        ''' <param name="iFlt">One-based index of the fleet.</param>
+        ''' <param name="iTime">Cummulative time step.</param>
+        ''' <param name="iYear">Current year.</param>
+        ''' <returns>Ecopath fixed cost value as a function of time series forcing</returns>
+        ''' <remarks>Any <see cref="eTimeSeriesType.FixedCost">absolute landings time series</see> are 
+        ''' used if provided. if not, Ecopath base fixed costs are multiplied with 
+        ''' <see cref="eTimeSeriesType.FixedCost">relative time series</see>.</remarks>
+        ''' -------------------------------------------------------------------
+        Public Function FixedCost(ByVal iFlt As Integer, ByVal iTime As Integer, ByVal iYear As Integer) As Single
+
+            Dim value As Single = Me.m_EPData.cost(iFlt, eCostIndex.Fixed)
+            Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iTime, iYear)
+            If Me.m_RefData.PoolForceSailCostAbs(iFlt, iForcing) > 0 Then
+                value = Me.m_RefData.PoolForceSailCostAbs(iFlt, iForcing)
+            ElseIf Me.m_RefData.PoolForceSailCostRel(iFlt, iForcing) > 0 Then
+                value *= Me.m_RefData.PoolForceSailCostRel(iFlt, iForcing)
+            End If
+            Return value
+
+        End Function
 
         Private Sub setForcedBiomass(ByVal iModelTimeStep As Integer, iYear As Integer)
             Dim iGrp As Integer
@@ -5369,7 +5456,7 @@ Namespace Ecosim
                     End If
                 Next
 
-                TotCost = m_Data.FishRateGear(ig, t) * (m_EPData.cost(ig, eCostIndex.CUPE) + m_EPData.cost(ig, eCostIndex.Sail))
+                TotCost = m_Data.FishRateGear(ig, t) * (Me.EffortCost(ig, t, y) + Me.SailCost(ig, t, y))
                 CurrentProfit(ig) = TotIncome - TotCost
                 'If CurrentProfit(ig) <> CurrentProfit(ig) Then Stop
                 If CurrentProfit(ig) < 0 Then CurrentProfit(ig) = 0

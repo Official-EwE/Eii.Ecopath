@@ -146,7 +146,7 @@ Namespace Core
         ''' <summary>To document</summary>
         FixedCost
         ''' <summary>To document</summary>
-        CPUECost
+        EffortCost
         ''' <summary>To document</summary>
         SailCost
         ''' <summary>To document</summary>

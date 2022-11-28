@@ -53,13 +53,15 @@ Public Class cEcoSpace
         Public iLast As Integer
         Public iCumMonth As Integer
         Public iMonth As Integer
+        Public iYear As Integer
 
-        Public Sub New(ByRef theWaitHandle As AutoResetEvent, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer, ByVal iMonthOfyear As Integer, ByVal iCumMonthIndex As Integer)
+        Public Sub New(ByRef theWaitHandle As AutoResetEvent, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer, ByVal iMonthOfyear As Integer, ByVal iCumMonthIndex As Integer, ByVal iYear As Integer)
             Me.WaitHandle = theWaitHandle
             Me.iFirst = iFirstIndex
             Me.iLast = iLastIndex
             Me.iCumMonth = iCumMonthIndex
             Me.iMonth = iMonthOfyear
+            Me.iYear = iYear
         End Sub
 
         Public Sub New(ByRef theWaitHandle As AutoResetEvent, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer)
@@ -68,6 +70,7 @@ Public Class cEcoSpace
             Me.iLast = iLastIndex
             Me.iCumMonth = cCore.NULL_VALUE
             Me.iMonth = cCore.NULL_VALUE
+            Me.iYear = cCore.NULL_VALUE
         End Sub
 
     End Class
@@ -922,10 +925,10 @@ Public Class cEcoSpace
                     If Me.EcoSpaceData.bUseEffortDistThreshold Then
                         'Run Effort Distribtion on cells with sailing cost < EffortDistThreshold
                         'this version also shares the load between threads
-                        Me.runEffortDistributionLoadShared(Me.EcoSpaceData.MonthNow, Me.its)
+                        Me.runEffortDistributionLoadShared(Me.EcoSpaceData.MonthNow, Me.its, Me.EcoSpaceData.YearNow)
                     Else
                         'Run Effort Distribtion on all map cells
-                        Me.runEffortDistributionNoLoadShare(Me.EcoSpaceData.MonthNow, Me.its)
+                        Me.runEffortDistributionNoLoadShare(Me.EcoSpaceData.MonthNow, Me.its, Me.EcoSpaceData.YearNow)
                     End If
                     stpwchEffort.Stop()
                 End If
@@ -4299,6 +4302,8 @@ exitline:
                 'stpwtch = Stopwatch.StartNew
 
                 ReDim Attract(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
+                Dim iMonth As Integer = arguments.iCumMonth
+                Dim iYear As Integer = arguments.iYear
 
                 For iFlt As Integer = arguments.iFirst To arguments.iLast
                     'check the bounds
@@ -4318,12 +4323,12 @@ exitline:
                     TotAttract = 0.0000000001
 
                     'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
-                    If Me.EcoPathData.cost(iFlt, eCostIndex.CUPE) + Me.EcoPathData.cost(iFlt, eCostIndex.Sail) = 0 Then
+                    If Me.EcoSim.EffortCost(iFlt, iMonth, iYear) + Me.EcoSim.SailCost(iFlt, iMonth, iYear) = 0 Then
                         EffortCost = 0
                         SailCost = 1
                     Else
-                        EffortCost = Me.EcoPathData.cost(iFlt, eCostIndex.CUPE) / (Me.EcoPathData.cost(iFlt, eCostIndex.Fixed) + Me.EcoPathData.cost(iFlt, eCostIndex.CUPE) + Me.EcoPathData.cost(iFlt, eCostIndex.Sail))
-                        SailCost = Me.EcoPathData.cost(iFlt, eCostIndex.Sail) / (Me.EcoPathData.cost(iFlt, eCostIndex.Fixed) + Me.EcoPathData.cost(iFlt, eCostIndex.CUPE) + Me.EcoPathData.cost(iFlt, eCostIndex.Sail))
+                        EffortCost = Me.EcoSim.EffortCost(iFlt, iMonth, iYear) / (Me.EcoSim.FixedCost(iFlt, iMonth, iYear) + Me.EcoSim.EffortCost(iFlt, iMonth, iYear) + Me.EcoSim.SailCost(iFlt, iMonth, iYear))
+                        SailCost = Me.EcoSim.SailCost(iFlt, iMonth, iYear) / (Me.EcoSim.FixedCost(iFlt, iMonth, iYear) + Me.EcoSim.EffortCost(iFlt, iMonth, iYear) + Me.EcoSim.SailCost(iFlt, iMonth, iYear))
                     End If
 
                     For i = 1 To Me.EcoSpaceData.InRow
@@ -4570,6 +4575,8 @@ exitline:
         Try
 
             arguments = DirectCast(obParam, cThreadedCallArgs)
+            Dim iMonth As Integer = arguments.iCumMonth
+            Dim iYear As Integer = arguments.iYear
 
             'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
             'Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
@@ -4597,12 +4604,12 @@ exitline:
                 TotAttract = 0.0000000001
 
                 'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
-                If Me.EcoPathData.cost(iFlt, eCostIndex.CUPE) + Me.EcoPathData.cost(iFlt, eCostIndex.Sail) = 0 Then
+                If Me.EcoSim.EffortCost(iFlt, iMonth, iYear) + Me.EcoSim.SailCost(iFlt, iMonth, iYear) = 0 Then
                     EffortCost = 0
                     SailCost = 1
                 Else
-                    EffortCost = Me.EcoPathData.cost(iFlt, eCostIndex.CUPE) / (Me.EcoPathData.cost(iFlt, eCostIndex.Fixed) + Me.EcoPathData.cost(iFlt, eCostIndex.CUPE) + Me.EcoPathData.cost(iFlt, eCostIndex.Sail))
-                    SailCost = Me.EcoPathData.cost(iFlt, eCostIndex.Sail) / (Me.EcoPathData.cost(iFlt, eCostIndex.Fixed) + Me.EcoPathData.cost(iFlt, eCostIndex.CUPE) + Me.EcoPathData.cost(iFlt, eCostIndex.Sail))
+                    EffortCost = Me.EcoSim.EffortCost(iFlt, iMonth, iYear) / (Me.EcoSim.FixedCost(iFlt, iMonth, iYear) + Me.EcoSim.EffortCost(iFlt, iMonth, iYear) + Me.EcoSim.SailCost(iFlt, iMonth, iYear))
+                    SailCost = Me.EcoSim.SailCost(iFlt, iMonth, iYear) / (Me.EcoSim.FixedCost(iFlt, iMonth, iYear) + Me.EcoSim.EffortCost(iFlt, iMonth, iYear) + Me.EcoSim.SailCost(iFlt, iMonth, iYear))
                 End If
 
                 'Now loop over the fished cells and compute the attraction of each fished cell
@@ -4684,7 +4691,7 @@ exitline:
     ''' <param name="iMonth"></param>
     ''' <param name="iCumMonth"></param>
     ''' <remarks></remarks>
-    Private Sub runEffortDistributionNoLoadShare(ByVal iMonth As Integer, ByVal iCumMonth As Integer)
+    Private Sub runEffortDistributionNoLoadShare(ByVal iMonth As Integer, ByVal iCumMonth As Integer, ByVal iYear As Integer)
         Dim stpwTotRunTime As Stopwatch
         ' Dim stpwF As Stopwatch
         Dim nThrds As Integer
@@ -4723,7 +4730,7 @@ exitline:
 
             'Distribute fishing effort across the map for the fleet indexes iFirstFleet to ilastfleet
             'ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreaded, New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
-            ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreaded, New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
+            ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreaded, New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth, iYear))
             iFirstFleet += nFltsPerThread
         Next ithrd
 
@@ -4804,7 +4811,7 @@ exitline:
     ''' In this version the effort distribution threads will request the next available fleet for effort distribution. 
     ''' Once all the fleets have been completed all the threads will exit.  
     ''' </remarks>
-    Private Sub runEffortDistributionLoadShared(ByVal iMonth As Integer, ByVal iCumMonth As Integer)
+    Private Sub runEffortDistributionLoadShared(ByVal iMonth As Integer, ByVal iCumMonth As Integer, ByVal iYear As Integer)
         Dim stpwTotRunTime As Stopwatch
         ' Dim stpwF As Stopwatch
         Dim nThrds As Integer
@@ -4837,7 +4844,7 @@ exitline:
         'Each thread will spin in a loop reguesting fleets
         'Once all the fleets have been computed waitOb.Set() will be called releasing the waithandle
         For ithrd As Integer = 1 To nThrds
-            ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreadedLoadShared, New cThreadedCallArgs(waitOb, cCore.NULL_VALUE, cCore.NULL_VALUE, iMonth, iCumMonth))
+            ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreadedLoadShared, New cThreadedCallArgs(waitOb, cCore.NULL_VALUE, cCore.NULL_VALUE, iMonth, iCumMonth, iYear))
         Next ithrd
 
         'The Effort Distribtion threads will count down cEcoSpace.m_ThreadIncrementCount
@@ -5008,18 +5015,21 @@ exitline:
 
         ReDim Effort(Me.EcoSpaceData.nFleets)
 
+        Dim iMonth As Integer = Me.EcoSpaceData.MonthNow
+        Dim iYear As Integer = Me.EcoSpaceData.YearNow
+
         For ig = 1 To Me.EcoSpaceData.nFleets
             'jb Attract() gets cleared out for each fleet
             ReDim Attract(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
             TotAttract = 0.0000000001
 
             'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
-            If Me.EcoPathData.cost(ig, eCostIndex.CUPE) + Me.EcoPathData.cost(ig, eCostIndex.Sail) = 0 Then
+            If Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear) = 0 Then
                 EffortCost = 0
                 SailCost = 1
             Else
-                EffortCost = Me.EcoPathData.cost(ig, eCostIndex.CUPE) / (Me.EcoPathData.cost(ig, eCostIndex.Fixed) + Me.EcoPathData.cost(ig, eCostIndex.CUPE) + Me.EcoPathData.cost(ig, eCostIndex.Sail))
-                SailCost = Me.EcoPathData.cost(ig, eCostIndex.Sail) / (Me.EcoPathData.cost(ig, eCostIndex.Fixed) + Me.EcoPathData.cost(ig, eCostIndex.CUPE) + Me.EcoPathData.cost(ig, eCostIndex.Sail))
+                EffortCost = Me.EcoSim.EffortCost(ig, iMonth, iYear) / (Me.EcoSim.FixedCost(ig, iMonth, iYear) + Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear))
+                SailCost = Me.EcoSim.SailCost(ig, iMonth, iYear) / (Me.EcoSim.FixedCost(ig, iMonth, iYear) + Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear))
             End If
 
             CatGear = 0 '*****ecopath base total catch for this gear

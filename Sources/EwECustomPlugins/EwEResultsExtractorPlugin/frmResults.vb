@@ -2267,9 +2267,9 @@ Public Class frmResults
         AInitFishVals(1, y) = My.Resources.TOTAL_COST & "(" & Me.Core.EwEModel.UnitMonetary.ToString & ")"
         MarketValueSum = 0
         For Col = 1 To Me.Core.nFleets
-            SumFixedCPUESailCost = Me.Core.EcopathFleetInputs(Col).FixedCost + _
-                                    Me.Core.EcopathFleetInputs(Col).CPUECost + _
-                                    Me.Core.EcopathFleetInputs(Col).SailCost
+            SumFixedCPUESailCost = Me.Core.EcopathFleetInputs(Col).FixedCost +
+                                   Me.Core.EcopathFleetInputs(Col).EffortCost +
+                                   Me.Core.EcopathFleetInputs(Col).SailCost
             TotalCostFleet(Col) = SumFixedCPUESailCost * TotalValueFleet(Col) * CSng(0.01)
             MarketValueSum += TotalCostFleet(Col)
             AInitFishVals(1 + Col, y) = TotalCostFleet(Col)

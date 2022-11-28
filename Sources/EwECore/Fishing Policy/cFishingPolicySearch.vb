@@ -1595,6 +1595,7 @@ endline:    ' '
                 SumGro = 0
                 nch = 0
                 For i = 1 To Me.m_searchData.NumFleets
+                    ' JS_todo: incorporate ecsim EffortCost and SailCost here?
                     tcost = CSng((epdata.cost(i, eCostIndex.CUPE) + epdata.cost(i, eCostIndex.Sail)) * Math.Exp(X(i)) + CostToI(i) + 0.0000000001)
                     tincome = CSng(BaseIncome(i) + Me.PropToPlaintiff * PaidToJ(i) + 0.0000000001)
 

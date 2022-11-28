@@ -64,7 +64,7 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(eVarNameFlags.Name)
             Me(0, eColumnTypes.NominalEffort) = New cEwEColumnHeaderCell(eVarNameFlags.NominalEffort)
             Me(0, eColumnTypes.FixedCost) = New cEwEColumnHeaderCell(eVarNameFlags.FixedCost)
-            Me(0, eColumnTypes.EffCost) = New cEwEColumnHeaderCell(eVarNameFlags.CPUECost)
+            Me(0, eColumnTypes.EffCost) = New cEwEColumnHeaderCell(eVarNameFlags.EffortCost)
             Me(0, eColumnTypes.SailCost) = New cEwEColumnHeaderCell(eVarNameFlags.SailCost)
             Me(0, eColumnTypes.Profit) = New cEwEColumnHeaderCell(SharedResources.HEADER_PROFIT_PERC, cUnits.MonetaryOverTime)
             Me(0, eColumnTypes.TotalVal) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE_PERC)
@@ -110,7 +110,7 @@ Namespace Ecopath.Input
                 alSumAll.Add(prop)
 
                 'Effort related cost
-                prop = pm.GetProperty(source, eVarNameFlags.CPUECost)
+                prop = pm.GetProperty(source, eVarNameFlags.EffortCost)
                 Me(iRow, eColumnTypes.EffCost) = New cPropertyCell(prop)
                 alSumAll.Add(prop)
 
