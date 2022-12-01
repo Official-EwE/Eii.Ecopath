@@ -291,9 +291,6 @@ Public Class cEcoSpace
     Private _IBMGrowTimer As Stopwatch
     Private _IBMMoveTimer As Stopwatch
 
-
-    Private m_LPSolver As cEcospaceLPSolver
-
 #End Region
 
 #Region "Construction Destruction"
@@ -485,9 +482,6 @@ Public Class cEcoSpace
             Next
 
             Me.UpdateDepthMap()
-
-            Me.m_LPSolver = New cEcospaceLPSolver(EcoSpaceData)
-            '   Me.m_SpaceCatchSemaphor = New System.Threading.Semaphore(1, 1, "EcoSpaceMontlyCatch")
 
             Return True
 
