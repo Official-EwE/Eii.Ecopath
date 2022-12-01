@@ -282,7 +282,6 @@
     <Compile Include="EcoSpace\Input Output\IEcospaceLayerManager.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceResultWriterFactory.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\EcospaceResultsWriterDataSources.vb" />
-    <Compile Include="EcoSpace\Model\cEcospaceLPSolver.vb" />
     <Compile Include="enaR\cENARDataCell.vb" />
     <Compile Include="enaR\cENARDataStructures.vb" />
     <Compile Include="enaR\cSCORFileWriter.vb" />

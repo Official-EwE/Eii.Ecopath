@@ -2169,10 +2169,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EcospaceMonteCarlo\EcospaceMonteCarlo.vbproj">
-      <Project>{df752fa0-b8c1-4de1-9b9b-d1adf678b64e}</Project>
-      <Name>EcospaceMonteCarlo</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Sources Internal\Plugins\enaRPlugin\enaRPlugin\enaRPlugin.vbproj">
       <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
       <Name>enaRPlugin</Name>
