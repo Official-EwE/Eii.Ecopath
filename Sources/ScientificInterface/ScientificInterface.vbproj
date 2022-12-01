@@ -2169,6 +2169,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EcospaceIBMAgeStructureResultsWriter\EcospaceIBMAgeStructureResultsWriter.vbproj">
+      <Project>{f08c7b56-076e-4e1b-bb2e-83f53cae262f}</Project>
+      <Name>EcospaceIBMAgeStructureResultsWriter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sources Internal\Plugins\enaRPlugin\enaRPlugin\enaRPlugin.vbproj">
       <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
       <Name>enaRPlugin</Name>
