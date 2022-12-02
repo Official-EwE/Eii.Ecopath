@@ -16,10 +16,10 @@
 #define enaR 1
 
 #if Compile64Bit == 0
-  #define MyAppVersion "6.7.0 α 32-bit"
+  #define MyAppVersion "6.7.0 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
-  #define MyAppVersion "6.7.0 α 64-bit"
+  #define MyAppVersion "6.7.0 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -153,6 +153,10 @@ Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3RPlugin.dll"; DestDir: "{ap
 Source: "{#DefRoot}{#DefSrc}\EwEEcoengineersPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\analysis\ecoengineers
 Source: "{#DefRoot}{#DefSrc}\UserGuide\Ecoengineer user guide.pdf"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\analysis\ecoengineers
 Source: "{#DefRoot}{#DefSrc}\EwEEcotracerEnvDriverPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\analysis\ecotracer
+
+
+Source: "{#DefRoot}{#DefSrc}\EcospaceIBMAgeStructureResultsWriter.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "{#DefRoot}{#DefSrc}\EcospaceMOResultsWriter.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
 ; - PRO FEATURES --
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
