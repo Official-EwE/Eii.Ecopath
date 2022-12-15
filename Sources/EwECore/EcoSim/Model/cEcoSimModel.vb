@@ -386,7 +386,6 @@ Namespace Ecosim
                 Case eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs,
                      eTimeSeriesType.TotalMortality,
                      eTimeSeriesType.AverageWeight,
-                     eTimeSeriesType.Catches, eTimeSeriesType.CatchesRel,
                      eTimeSeriesType.CatchesForcing,
                      eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion,
                      eTimeSeriesType.Catchabilities,
