@@ -4711,6 +4711,9 @@ exitline:
         'Set the thread increment counter
         cEcoSpace.m_ThreadIncrementCount = nThrds
 
+        ' JS 14dec22: abort when there are no fleets. This rare circumstance would call the WaitOne calls to block forever
+        If (nThrds = 0) Then Return
+
         Dim waitOb As WaitHandle = New AutoResetEvent(False)
 
         stpwTotRunTime = Stopwatch.StartNew
@@ -4830,6 +4833,9 @@ exitline:
 
         'Set the shared fleet counter this is used by GetNextFleet(ifleet) to get the next fleet index to compute
         cEcoSpace.FleetCounter = 0
+
+        ' JS 14dec22: abort when there are no fleets. This rare circumstance would call the WaitOne calls to block forever
+        If (nThrds = 0) Then Return
 
         Dim waitOb As WaitHandle = New AutoResetEvent(False)
 
