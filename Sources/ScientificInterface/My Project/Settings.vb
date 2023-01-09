@@ -16,6 +16,8 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+Option Strict On
+Option Explicit On
 
 Imports System.Configuration
 Imports System.IO

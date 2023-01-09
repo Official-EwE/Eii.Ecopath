@@ -43,10 +43,12 @@ Public Class gridTimeSeries
         Header = 0
         Thumbnail
         Name
+        Type
+        Usage
+        Scaling
         Weight
         PoolPrimary
         PoolSecundary
-        Type
         Interval
         FirstTime
     End Enum
@@ -90,6 +92,8 @@ Public Class gridTimeSeries
         Me(eRowType.PoolPrimary, 0) = New cEwERowHeaderCell(SharedResources.HEADER_TARGET)
         Me(eRowType.PoolSecundary, 0) = New cEwERowHeaderCell(SharedResources.HEADER_TARGET_SECOND)
         Me(eRowType.Type, 0) = New cEwERowHeaderCell(SharedResources.HEADER_TYPE)
+        Me(eRowType.Scaling, 0) = New cEwERowHeaderCell(SharedResources.HEADER_SCALING)
+        Me(eRowType.Usage, 0) = New cEwERowHeaderCell(SharedResources.HEADER_USAGE)
         Me(eRowType.Weight, 0) = New cEwERowHeaderCell(SharedResources.HEADER_WEIGHT)
         Me(eRowType.Interval, 0) = New cEwERowHeaderCell(My.Resources.HEADER_INTERVAL)
         Me(eRowType.Type, 0) = New cEwERowHeaderCell(SharedResources.HEADER_TYPE)
@@ -144,6 +148,9 @@ Public Class gridTimeSeries
             End If
 
             Me(eRowType.Type, i + 1) = New cEwECell(fmtTSType.ToString(ts.TimeSeriesType), cStyleGuide.eStyleFlags.NotEditable)
+
+            Me(eRowType.Scaling, i + 1) = New cEwECell(If(ts.IsRelative, SharedResources.VALUE_GENERIC_RELATIVE, SharedResources.VALUE_GENERIC_ABSOLUTE), cStyleGuide.eStyleFlags.NotEditable)
+            Me(eRowType.Usage, i + 1) = New cEwECell(If(ts.IsReference, SharedResources.VALUE_GENERIC_REFERENCE, SharedResources.VALUE_GENERIC_DRIVER), cStyleGuide.eStyleFlags.NotEditable)
 
             cell = New cEwECell(fmtInterval.ToString(ts.Interval), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             Me(eRowType.Interval, i + 1) = cell

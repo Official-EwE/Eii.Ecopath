@@ -6451,6 +6451,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Scaling.
+        '''</summary>
+        Public ReadOnly Property HEADER_SCALING() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SCALING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Scenario.
         '''</summary>
         Public ReadOnly Property HEADER_SCENARIO() As String
@@ -7050,6 +7059,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_UPPERLIMIT() As String
             Get
                 Return ResourceManager.GetString("HEADER_UPPERLIMIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Usage.
+        '''</summary>
+        Public ReadOnly Property HEADER_USAGE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_USAGE", resourceCulture)
             End Get
         End Property
         
@@ -9081,6 +9099,42 @@ Namespace My.Resources
         Public ReadOnly Property UNIT_TERABYTE() As String
             Get
                 Return ResourceManager.GetString("UNIT_TERABYTE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Absolute.
+        '''</summary>
+        Public ReadOnly Property VALUE_GENERIC_ABSOLUTE() As String
+            Get
+                Return ResourceManager.GetString("VALUE_GENERIC_ABSOLUTE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Driver.
+        '''</summary>
+        Public ReadOnly Property VALUE_GENERIC_DRIVER() As String
+            Get
+                Return ResourceManager.GetString("VALUE_GENERIC_DRIVER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Reference.
+        '''</summary>
+        Public ReadOnly Property VALUE_GENERIC_REFERENCE() As String
+            Get
+                Return ResourceManager.GetString("VALUE_GENERIC_REFERENCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Relative.
+        '''</summary>
+        Public ReadOnly Property VALUE_GENERIC_RELATIVE() As String
+            Get
+                Return ResourceManager.GetString("VALUE_GENERIC_RELATIVE", resourceCulture)
             End Get
         End Property
         
