@@ -61,7 +61,9 @@ Namespace Style
                 Case eTimeSeriesType.DiscardProportion : strType = My.Resources.TS_TYPE_DISCARDPROP
                 Case eTimeSeriesType.Landings : strType = My.Resources.TS_TYPE_LANDINGS
                 Case eTimeSeriesType.Discards : strType = My.Resources.TS_TYPE_DISCARDS
-
+                Case eTimeSeriesType.Catchabilities : strType = My.Resources.TS_TYPE_CATCHABILITIES
+                Case Else
+                    Debug.Assert(False, "cTimeSeriesTypeFormatter does not support time series type " & ts.ToString())
             End Select
 
             Select Case descriptor

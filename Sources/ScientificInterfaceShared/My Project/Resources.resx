@@ -3193,4 +3193,22 @@
   <data name="HEADER_TARGET_SECOND" xml:space="preserve">
     <value>2nd target</value>
   </data>
+  <data name="HEADER_SCALING" xml:space="preserve">
+    <value>Scaling</value>
+  </data>
+  <data name="HEADER_USAGE" xml:space="preserve">
+    <value>Usage</value>
+  </data>
+  <data name="VALUE_GENERIC_ABSOLUTE" xml:space="preserve">
+    <value>Absolute</value>
+  </data>
+  <data name="VALUE_GENERIC_DRIVER" xml:space="preserve">
+    <value>Driver</value>
+  </data>
+  <data name="VALUE_GENERIC_REFERENCE" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="VALUE_GENERIC_RELATIVE" xml:space="preserve">
+    <value>Relative</value>
+  </data>
 </root>
