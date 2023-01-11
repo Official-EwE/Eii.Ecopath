@@ -135,6 +135,7 @@ Friend Class cStyleGuideUpdater
             ' Load item visibility settings from model
             Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("StyleGuide")
             Me.StyleGuide.LoadPeristentSettings(ad.Settings)
+            Me.SetCoreSelectedItems()
 
         Else
 
@@ -205,6 +206,9 @@ Friend Class cStyleGuideUpdater
                 Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("StyleGuide")
                 Me.StyleGuide.SavePeristentSettings(ad.Settings)
             End If
+
+            Me.SetCoreSelectedItems()
+
         End If
 
     End Sub
@@ -278,6 +282,8 @@ Friend Class cStyleGuideUpdater
         Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
         Me.StringToFontSetting(My.Settings.FontSubtitle, cStyleGuide.eApplicationFontType.SubTitle)
         Me.StringToFontSetting(My.Settings.FontScale, cStyleGuide.eApplicationFontType.Scale)
+
+        Me.SetCoreSelectedItems()
 
         Me.StyleGuide.ResumeEvents()
 
@@ -381,6 +387,26 @@ Friend Class cStyleGuideUpdater
         Return sb.ToString()
 
     End Function
+
+    ''' <summary>
+    ''' Inform Core that the group and fleet visibility settings have changed
+    ''' </summary>
+    Private Sub SetCoreSelectedItems()
+
+        Dim c As cCore = Me.m_uic.Core
+
+        If (Me.m_sm.HasEcopathLoaded) Then
+            Dim selGroups(c.nGroups) As Boolean
+            Dim selFleets(c.nFleets) As Boolean
+
+            For i As Integer = 0 To c.nGroups : selGroups(i) = Me.StyleGuide.GroupVisible(i) Or (i = 0) : Next
+            For i As Integer = 0 To c.nFleets : selFleets(i) = Me.StyleGuide.FleetVisible(i) Or (i = 0) : Next
+
+            c.SelectedGroups = selGroups
+            c.SelectedFleets = selFleets
+        End If
+
+    End Sub
 
 #Region " ARGB color ramps "
 

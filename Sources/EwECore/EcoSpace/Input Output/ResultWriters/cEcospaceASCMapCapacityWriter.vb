@@ -40,7 +40,7 @@ Public Class cEcospaceASCMapCapacityWriter
 
     Public Overrides Sub Init(theCore As Object)
         MyBase.Init(theCore)
-        Me.setAllGroupsSelected()
+        Me.SetAllGroupsSelected()
     End Sub
 
     Public Overrides ReadOnly Property DisplayName As String

@@ -64,6 +64,7 @@ Namespace Style
                 Case eTimeSeriesType.Catchabilities : strType = My.Resources.TS_TYPE_CATCHABILITIES
                 Case Else
                     Debug.Assert(False, "cTimeSeriesTypeFormatter does not support time series type " & ts.ToString())
+                    strType = ts.ToString
             End Select
 
             Select Case descriptor

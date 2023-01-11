@@ -454,10 +454,6 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub m_gbIMB_Enter(sender As Object, e As EventArgs) Handles m_gbIMB.Enter
-
-        End Sub
-
 #End Region ' Internals
 
     End Class

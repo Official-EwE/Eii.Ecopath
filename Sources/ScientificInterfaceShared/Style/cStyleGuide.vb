@@ -1987,17 +1987,19 @@ Namespace Style
         ''' <returns></returns>
         Public Property GroupVisible(iGroup As Integer, Optional strPreset As String = "") As Boolean
             Get
+                If (iGroup < 1) Or (iGroup > Me.m_core.nGroups) Then Return False
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
-                Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
-                If (preset Is Nothing) Then Return True
-                Return preset.GroupVisible(Me.m_core.EcopathGroupInputs(iGroup).DBID)
+                Dim pr As cItemVisibilityPreset = Me.Preset(strPreset)
+                If (pr Is Nothing) Then Return True
+                Return pr.GroupVisible(Me.m_core.EcopathGroupInputs(iGroup).DBID)
             End Get
             Set(bVisible As Boolean)
+                If (iGroup < 1) Or (iGroup > Me.m_core.nGroups) Then Return
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
-                Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
-                If (preset IsNot Nothing) Then
-                    preset.GroupVisible(Me.m_core.EcopathGroupInputs(iGroup).DBID) = bVisible
-                    If preset.IsChanged Then Me.FireChangeEvent(eChangeType.GroupVisibility)
+                Dim pr As cItemVisibilityPreset = Me.Preset(strPreset)
+                If (pr IsNot Nothing) Then
+                    pr.GroupVisible(Me.m_core.EcopathGroupInputs(iGroup).DBID) = bVisible
+                    If pr.IsChanged Then Me.FireChangeEvent(eChangeType.GroupVisibility)
                 End If
             End Set
         End Property
@@ -2009,17 +2011,19 @@ Namespace Style
         ''' <returns></returns>
         Public Property FleetVisible(iFleet As Integer, Optional strPreset As String = "") As Boolean
             Get
+                If (iFleet < 1) Or (iFleet > Me.m_core.nFleets) Then Return False
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
-                Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
-                If (preset Is Nothing) Then Return True
-                Return preset.FleetVisible(Me.m_core.EcopathFleetInputs(iFleet).DBID)
+                Dim pr As cItemVisibilityPreset = Me.Preset(strPreset)
+                If (pr Is Nothing) Then Return True
+                Return pr.FleetVisible(Me.m_core.EcopathFleetInputs(iFleet).DBID)
             End Get
             Set(bVisible As Boolean)
+                If (iFleet < 1) Or (iFleet > Me.m_core.nFleets) Then Return
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
-                Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
-                If (preset IsNot Nothing) Then
-                    preset.FleetVisible(Me.m_core.EcopathFleetInputs(iFleet).DBID) = bVisible
-                    If preset.IsChanged Then Me.FireChangeEvent(eChangeType.FleetVisibility)
+                Dim pr As cItemVisibilityPreset = Me.Preset(strPreset)
+                If (pr IsNot Nothing) Then
+                    pr.FleetVisible(Me.m_core.EcopathFleetInputs(iFleet).DBID) = bVisible
+                    If pr.IsChanged Then Me.FireChangeEvent(eChangeType.FleetVisibility)
                 End If
             End Set
         End Property
@@ -2053,9 +2057,9 @@ Namespace Style
         ''' <returns>True if any groups or fleets are hidden.</returns>
         ''' -------------------------------------------------------------------
         Public Function HasHiddenItems() As Boolean
-            Dim preset As cItemVisibilityPreset = Me.Preset(SelectedItemVisibilityPresetName)
-            If (preset Is Nothing) Then Return False
-            Return preset.HasHiddenItems
+            Dim pr As cItemVisibilityPreset = Me.Preset(SelectedItemVisibilityPresetName)
+            If (pr Is Nothing) Then Return False
+            Return pr.HasHiddenItems
         End Function
 
         Public Function LoadPeristentSettings(settings As cXMLSettings) As Boolean
@@ -2127,16 +2131,16 @@ Namespace Style
                         If sbNames.Length > 0 Then sbNames.Append(",")
                         sbNames.Append(cStringUtils.ToCSVField(name))
 
-                        Dim preset As cItemVisibilityPreset = Me.Preset(name)
+                        Dim pr As cItemVisibilityPreset = Me.Preset(name)
                         Dim sbItems As New StringBuilder()
-                        For Each group As Integer In preset.HiddenGroups
+                        For Each group As Integer In pr.HiddenGroups
                             If (sbItems.Length > 0) Then sbItems.Append(",")
                             sbItems.Append(CStr(group))
                         Next
                         settings.WriteSetting(name, "HiddenGroups", sbItems.ToString())
 
                         sbItems.Clear()
-                        For Each fleet As Integer In preset.HiddenGroups
+                        For Each fleet As Integer In pr.HiddenGroups
                             If (sbItems.Length > 0) Then sbItems.Append(",")
                             sbItems.Append(CStr(fleet))
                         Next

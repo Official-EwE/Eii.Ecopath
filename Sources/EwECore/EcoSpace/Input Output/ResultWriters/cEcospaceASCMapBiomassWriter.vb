@@ -40,7 +40,6 @@ Public Class cEcospaceASCMapBiomassWriter
 
     Public Overrides Sub Init(theCore As Object)
         MyBase.Init(theCore)
-        Me.setAllGroupsSelected()
     End Sub
 
     Public Overrides ReadOnly Property DisplayName As String

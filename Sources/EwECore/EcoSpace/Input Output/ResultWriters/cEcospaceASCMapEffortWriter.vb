@@ -45,7 +45,6 @@ Public Class cEcospaceASCMapEffortWriter
 
     Public Overrides Sub Init(theCore As Object)
         MyBase.Init(theCore)
-        Me.SetAllFleetsSelected()
     End Sub
 
     Protected Overrides Function NumMaps() As Integer
