@@ -36,33 +36,36 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.18084
+  VersionInfoVersion=6.7.0.18111
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
 ;   <full path to signtool.exe> /f <cert file> /p <password> /t <path to timestamp server> $f
 ;   "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x86\signtool.exe" sign /a /f "D:\Cloud\Dropbox\EII_cert.pfx" /p <muahaha> /t http://timestamp.comodoca.com/authenticode $f
-SignTool=codesign /d $q{#MyAppName}$q $f
-WizardImageFile=EwE5Logo.bmp
-WizardSmallImageFile=EwE6Header.bmp
-WizardImageStretch=False
+AllowNoIcons=True
+AlwaysShowGroupOnReadyPage=True
+AlwaysShowDirOnReadyPage=True
 AppName={#MyAppName}
-AppVersion={#MyAppVersion}
 AppCopyright={#MyAppPublisher}
 AppId={{113d96bb-5c02-464c-a936-0813ce272e03}
-SetupIconFile=Ecopath_install.ico
-UninstallDisplayIcon={app}\{#MyAppName}
-AllowNoIcons=True
 AppPublisher={#MyAppPublisher}
 AppPublisherURL=https://ecopathinternational.org
 AppSupportURL=mailto:support@ecopath.org
-MinVersion=0,6.1
+AppVersion={#MyAppVersion}
 DefaultDirName={pf}\{#MyAppName} {#MyAppVersion}
 DefaultGroupName={#MyAppName}\Release {#MyAppVersion}
-AlwaysShowGroupOnReadyPage=True
-AlwaysShowDirOnReadyPage=True
+MinVersion=0,6.1
+SetupIconFile=Ecopath_install.ico
+SignTool=codesign /d $q{#MyAppName}$q $f
+UninstallDisplayIcon={app}\{#MyAppName}
+WizardImageFile=EwE5Logo.bmp
+WizardSmallImageFile=EwE6Header.bmp
+WizardImageStretch=False
+WizardStyle=modern
+WizardResizable=True
+WizardSizePercent=120,120
 SolidCompression=True
-Compression=zip 
+Compression=lzma2/max 
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
 OutputBaseFilename=ewe_{#MyAppVersion}
 
