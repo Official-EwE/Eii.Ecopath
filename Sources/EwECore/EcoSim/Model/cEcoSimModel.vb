@@ -1567,7 +1567,7 @@ Namespace Ecosim
                 For iflt As Integer = 1 To Me.m_Data.nGear
                     ' JS: 0 is not a valid value (yet)
                     If Me.m_RefData.PoolForceCatchabilities(iflt, igrp, iForcedTime) > 0.0 Then
-                        Me.m_Data.relQt(iflt, igrp, iModelTimeStep) = Me.m_RefData.PoolForceDiscardMort(iflt, igrp, iForcedTime)
+                        Me.m_Data.relQt(iflt, igrp, iModelTimeStep) = Me.m_RefData.PoolForceCatchabilities(iflt, igrp, iForcedTime)
                         bForced = True
                     End If
                 Next iflt
