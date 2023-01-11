@@ -33,34 +33,19 @@ Public Class cEcospaceASCMapContaminants
         Me.vars = New eVarNameFlags() {eVarNameFlags.Concentration}
     End Sub
 
-
     Public Overrides Sub Init(theCore As Object)
         MyBase.Init(theCore)
-
-        Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
-        'Include the zero index for the environmental concentrations
-        For igrp As Integer = 0 To Me.EcopathData.NumGroups
-            Me.m_selGroups(igrp) = True
-        Next igrp
-
     End Sub
 
-    Protected Overrides Function GetFileName(varname As eVarNameFlags,
-                                                    iGrp As Integer,
-                                                    strExt As String,
-                                                    Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    Protected Overrides Function GetFileName(varname As eVarNameFlags, iGrp As Integer, strExt As String, Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
         Return Me.GetGroupFileName(varname, iGrp, strExt, iModelTimeStep)
     End Function
 
+    Public Overrides Function GetGroupFileName(varname As eVarNameFlags, iGrp As Integer, strExt As String, Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
-    Public Overrides Function GetGroupFileName(varname As eVarNameFlags,
-                                                    iGrp As Integer,
-                                                    strExt As String,
-                                                    Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
-
-        Dim Filename As String
+        Dim fn As String
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-        Dim strTimestep As String
+        Dim timestep As String
         Dim grpName As String
 
         If iGrp > 0 Then
@@ -69,15 +54,12 @@ Public Class cEcospaceASCMapContaminants
             grpName = "Environment"
         End If
 
-        strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
+        timestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
+        fn = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}", cin.GetVarName(varname), grpName, timestep, strExt.Replace(".", "")), False)
 
-        Filename = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
-                                                                        cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
-
-        Return System.IO.Path.Combine(Me.OutputDirectory, Filename.Replace("..", "."))
+        Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
 
     End Function
-
 
     Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
 
@@ -87,7 +69,6 @@ Public Class cEcospaceASCMapContaminants
         End If
 
     End Sub
-
 
     Public Overrides ReadOnly Property DisplayName As String
         Get

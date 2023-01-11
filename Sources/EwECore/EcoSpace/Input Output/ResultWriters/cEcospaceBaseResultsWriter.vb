@@ -46,8 +46,6 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
     Protected vars() As eVarNameFlags
 
-    Protected m_selGroups() As Boolean
-
 #End Region ' Protected data
 
 #Region " Constructor "
@@ -70,6 +68,20 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         ' First save timestep now picked up by writers at initialization
         ' This value does not need to be set externally anymore
         Me.m_FirstStep = Me.m_core.m_EcospaceData.FirstOutputTimeStep
+
+        If (Me.m_core.SelectedGroups Is Nothing) Then
+            Me.SelectedGroups = New Boolean(Me.m_core.nGroups) {}
+            Me.SetAllGroupsSelected()
+        Else
+            Me.SelectedGroups = Me.m_core.SelectedGroups
+        End If
+
+        If (Me.m_core.SelectedFleets Is Nothing) Then
+            Me.SelectedFleets = New Boolean(Me.m_core.nFleets) {}
+            Me.SetAllFleetsSelected()
+        Else
+            Me.SelectedFleets = Me.m_core.SelectedFleets
+        End If
 
     End Sub
 
@@ -165,18 +177,16 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <param name="strExt">Extention of the file.</param>
     ''' <param name="iModelTimeStep">Time step for the current file. If this is 
     ''' not supplied then no time stamp will appear in the filename.</param>
-    ''' <returns>A file name.</returns>
+    ''' <returns>A file name, or an empty string if the specified data is somehow invalid.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function GetGroupFileName(varname As eVarNameFlags,
-                                                    iGrp As Integer,
-                                                    strExt As String,
-                                                    Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    Public Overridable Function GetGroupFileName(varname As eVarNameFlags, iGrp As Integer, strExt As String,
+                                                 Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
-        Dim Filename As String
-        If Me.m_core.PluginManager.EcospaceResultsMapGroupFileName(Filename, varname, iGrp, strExt, iModelTimeStep) Then
+        Dim fn As String = ""
+
+        If Me.m_core.PluginManager.EcospaceResultsMapGroupFileName(fn, varname, iGrp, strExt, iModelTimeStep) Then
             'File was set by the plugin
             'System.Console.WriteLine("Plugin Filename = " + Filename)
-
         Else
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
@@ -184,43 +194,51 @@ Public MustInherit Class cEcospaceBaseResultsWriter
             'Ok Use the default filename
             Dim grpName As String = Me.m_core.m_EcopathData.GroupName(iGrp)
 
+            If (String.IsNullOrWhiteSpace(grpName)) Then Return ""
+
             ' Is there a time step in the file name?
             If (iModelTimeStep > 0) Then
                 ' #Yes: include it in the file name
                 strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
             End If
 
-            Filename = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
+            fn = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
                                                                         cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
         End If
 
-        Return System.IO.Path.Combine(Me.OutputDirectory, Filename.Replace("..", "."))
+        Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
 
     End Function
 
-    Protected Sub setAllGroupsSelected()
-        Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
-        For igrp As Integer = 1 To Me.EcopathData.NumGroups
-            Me.m_selGroups(igrp) = True
+    ''' <summary>
+    ''' Select all groups for writing output
+    ''' </summary>
+    Protected Sub SetAllGroupsSelected()
+        For igrp As Integer = 0 To Me.EcopathData.NumGroups
+            Me.SelectedGroups(igrp) = True
         Next igrp
-
     End Sub
 
-    Protected Sub setCatchSelected()
-        Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
+    ''' <summary>
+    ''' Select all fished groups for writing output
+    ''' </summary>
+    Protected Sub SetCatchSelected()
         For igrp As Integer = 1 To Me.EcopathData.NumGroups
+            Me.SelectedGroups(igrp) = False
             For iflt As Integer = 1 To Me.EcopathData.NumFleet
                 If (Me.EcopathData.Discard(iflt, igrp) + Me.EcopathData.Landing(iflt, igrp)) > 0 Then
-                    Me.m_selGroups(igrp) = True
+                    Me.SelectedGroups(igrp) = True
                 End If
             Next iflt
         Next igrp
     End Sub
 
+    ''' <summary>
+    ''' Select all fleets for writing output
+    ''' </summary>
     Protected Sub SetAllFleetsSelected()
-        Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
         For iflt As Integer = 1 To Me.EcopathData.NumFleet
-            Me.m_selGroups(iflt) = True
+            Me.SelectedFleets(iflt) = True
         Next iflt
     End Sub
 
@@ -319,14 +337,9 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         End Get
     End Property
 
-    Public Overridable Property SelectedGroups As Boolean()
-        Get
-            Return Me.m_selGroups
-        End Get
-        Set(value() As Boolean)
-            Me.m_selGroups = value
-        End Set
-    End Property
+    Public Property SelectedGroups As Boolean()
+
+    Public Property SelectedFleets As Boolean()
 
 #End Region ' Internals
 

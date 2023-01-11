@@ -85,7 +85,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
                         'GetFileName() groups by default, can overridden by derived classes.
                         strFile = Me.GetFileName(varname, iGrp, Me.FileExtension(), tsData.iTimeStep)
                         ' Create directory any time; user may have deleted it during a run
-                        If (cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
+                        If (Not String.IsNullOrWhiteSpace(strFile) AndAlso cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
                             'Handle file exceptions on a per file basis
                             'this way only the offending file will be skipped
                             'all other files will be written 

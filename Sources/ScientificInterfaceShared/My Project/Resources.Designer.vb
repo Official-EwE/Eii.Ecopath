@@ -9112,11 +9112,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Driver.
+        '''  Looks up a localized string similar to Forcing.
         '''</summary>
-        Public ReadOnly Property VALUE_GENERIC_DRIVER() As String
+        Public ReadOnly Property VALUE_GENERIC_FORCING() As String
             Get
-                Return ResourceManager.GetString("VALUE_GENERIC_DRIVER", resourceCulture)
+                Return ResourceManager.GetString("VALUE_GENERIC_FORCING", resourceCulture)
             End Get
         End Property
         

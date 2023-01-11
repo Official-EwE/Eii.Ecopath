@@ -3495,7 +3495,7 @@ Public Class cCore
 
 #End Region ' Variables
 
-#Region "Public Ecopath Varaibles"
+#Region "Public Ecopath Variables"
 
     Public ReadOnly Property EcopathDataStructures As cEcopathDataStructures
         Get
@@ -3503,7 +3503,12 @@ Public Class cCore
         End Get
     End Property
 
-
+    ''' <summary>Flag to affect which groups to auto-save data for.</summary>
+    ''' <remarks>Values are set by the UI. This logic is currently only used by the Ecospace result writers.</remarks>
+    Public Property SelectedGroups As Boolean() = Nothing
+    ''' <summary>Flag to affect which fleets to auto-save data for</summary>
+    ''' <remarks>Values are set by the UI. This logic is currently only used by the Ecospace result writers.</remarks>
+    Public Property SelectedFleets As Boolean() = Nothing
 #End Region
 
 #Region " Model "
@@ -3890,7 +3895,6 @@ Public Class cCore
 
             Me.ClearIOList(Me.m_timeSeriesDatasets)
 
-
             ' Clear scenarios
             Me.m_EcopathData.NumEcotracerScenarios = 0
             Me.m_EcopathData.NumEcospaceScenarios = 0
@@ -3899,6 +3903,9 @@ Public Class cCore
             Me.ClearIOList(Me.m_EcoSimScenarios)
             Me.ClearIOList(Me.m_EcospaceScenarios)
             Me.ClearIOList(Me.m_EcotracerScenarios)
+
+            Me.SelectedGroups = Nothing
+            Me.SelectedFleets = Nothing
 
             'ToDo: add SendEcopathClosedMessage()
             Me.m_publisher.SendMessage(New cMessage("Closed model", eMessageType.DataAddedOrRemoved,
@@ -9748,10 +9755,12 @@ Public Class cCore
 
                 Me.SaveEcospaceENA(m_spaceresults)
 
-                'Save to the current writer always (saveannual = false) or once per year (saveannual=true)
+                'Save to the current writer always (saveannual = false) or once per year (saveannual=true) for the first time step
                 'Default is to save every time step
-                If (iTime Mod CInt(EcospaceModelParameters.NumberOfTimeStepsPerYear) = 0) Or (Me.m_EcospaceData.SaveAnnual = False) Then
-                    Me.SaveEcospaceResults(Me.m_spaceresults)
+                If (iTime >= EcospaceModelParameters.FirstOutputTimeStep) Then
+                    If ((iTime - EcospaceModelParameters.FirstOutputTimeStep) Mod CInt(EcospaceModelParameters.NumberOfTimeStepsPerYear) = 0) Or (Me.m_EcospaceData.SaveAnnual = False) Then
+                        Me.SaveEcospaceResults(Me.m_spaceresults)
+                    End If
                 End If
             End If
 

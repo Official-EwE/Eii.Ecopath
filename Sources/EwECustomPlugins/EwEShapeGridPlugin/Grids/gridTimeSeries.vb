@@ -150,7 +150,7 @@ Public Class gridTimeSeries
             Me(eRowType.Type, i + 1) = New cEwECell(fmtTSType.ToString(ts.TimeSeriesType), cStyleGuide.eStyleFlags.NotEditable)
 
             Me(eRowType.Scaling, i + 1) = New cEwECell(If(ts.IsRelative, SharedResources.VALUE_GENERIC_RELATIVE, SharedResources.VALUE_GENERIC_ABSOLUTE), cStyleGuide.eStyleFlags.NotEditable)
-            Me(eRowType.Usage, i + 1) = New cEwECell(If(ts.IsReference, SharedResources.VALUE_GENERIC_REFERENCE, SharedResources.VALUE_GENERIC_DRIVER), cStyleGuide.eStyleFlags.NotEditable)
+            Me(eRowType.Usage, i + 1) = New cEwECell(If(ts.IsReference, SharedResources.VALUE_GENERIC_REFERENCE, SharedResources.VALUE_GENERIC_FORCING), cStyleGuide.eStyleFlags.NotEditable)
 
             cell = New cEwECell(fmtInterval.ToString(ts.Interval), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             Me(eRowType.Interval, i + 1) = cell

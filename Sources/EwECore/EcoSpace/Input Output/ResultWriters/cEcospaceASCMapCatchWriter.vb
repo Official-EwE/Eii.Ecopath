@@ -41,7 +41,7 @@ Public Class cEcospaceASCMapCatchWriter
 
     Public Overrides Sub Init(theCore As Object)
         MyBase.Init(theCore)
-        Me.setCatchSelected()
+        Me.SetCatchSelected()
     End Sub
 
     Public Overrides ReadOnly Property DisplayName As String

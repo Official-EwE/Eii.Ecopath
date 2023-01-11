@@ -85,7 +85,7 @@ Public Class cEcospaceXYZTResultsWriter
             For Each varname As eVarNameFlags In vars
                 For igrp As Integer = 1 To Me.m_core.m_EcopathData.NumLiving
                     strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension())
-                    If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
+                    If Not String.IsNullOrWhiteSpace(strFile) AndAlso cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
                         'Handle file exceptions on a per file basis
                         'this way only the offending file will be skipped
                         'all other files will be written 
@@ -255,14 +255,16 @@ Public Class cEcospaceXYZTResultsWriter
 
         For igrp As Integer = 1 To Me.m_core.m_EcopathData.NumLiving
             strFN = Me.GetGroupFileName(varname, igrp, "csv")
-            'Create a new file when writing the header
-            'this overwrites the data in the current directory
-            strm = New StreamWriter(strFN)
-            If Me.m_core.SaveWithFileHeader Then
-                Me.WriteHeader(strm, igrp, varname, "Group name", cStringUtils.ToCSVField(Me.EcopathData.GroupName(igrp)))
+            If Not String.IsNullOrWhiteSpace(strFN) AndAlso cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFN), True) Then
+                'Create a new file when writing the header
+                'this overwrites the data in the current directory
+                strm = New StreamWriter(strFN)
+                If Me.m_core.SaveWithFileHeader Then
+                    Me.WriteHeader(strm, igrp, varname, "Group name", cStringUtils.ToCSVField(Me.EcopathData.GroupName(igrp)))
+                End If
+                strm.Close()
+                strm = Nothing
             End If
-            strm.Close()
-            strm = Nothing
         Next
 
     End Sub
