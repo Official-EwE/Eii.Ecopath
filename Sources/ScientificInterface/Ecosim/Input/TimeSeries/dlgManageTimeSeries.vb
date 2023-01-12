@@ -253,11 +253,6 @@ Public Class dlgManageTimeSeries
 
     ' -- DESTINATION --
 
-    Private Sub m_cmbImportDataset_TextChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_cmbImportDataset.TextChanged
-        Me.UpdateControls()
-    End Sub
-
     Private Sub m_cmbImportDataset_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbImportDataset.SelectedIndexChanged
         Me.DatasetName = Me.m_cmbImportDataset.Text
