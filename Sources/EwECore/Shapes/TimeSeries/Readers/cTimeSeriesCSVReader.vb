@@ -66,9 +66,9 @@ Public Class cTimeSeriesCSVReader
     ''' </param>
     ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overloads Function Read(strFileName As String, _
-                                   strDelimiter As String, _
-                                   strDecimalSeparator As String, _
+    Public Overloads Function Read(strFileName As String,
+                                   strDelimiter As String,
+                                   strDecimalSeparator As String,
                                    interval As eTSDataSetInterval) As Boolean
         ' Store file name
         Me.m_strFileName = strFileName
@@ -88,9 +88,9 @@ Public Class cTimeSeriesCSVReader
         If String.IsNullOrEmpty(Me.m_strFileName) Then Return Nothing
         If Not File.Exists(Me.m_strFileName) Then Return Nothing
 
-        Me.m_stream = New FileStream(Me.m_strFileName, _
-                                     FileMode.Open, _
-                                     FileAccess.Read, _
+        Me.m_stream = New FileStream(Me.m_strFileName,
+                                     FileMode.Open,
+                                     FileAccess.Read,
                                      FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable)
         Return New StreamReader(Me.m_stream)
 

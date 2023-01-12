@@ -663,6 +663,9 @@ Public Class dlgManageTimeSeries
         Dim interval As eTSDataSetInterval = DirectCast(Me.m_cmbImportInterval.SelectedItem, eTSDataSetInterval)
         Dim bSucces As Boolean = True
         Dim iNumPoints As Integer = 0
+        Dim iNumTS As Integer = 0
+        Dim iNumForcing As Integer = 0
+        Dim iNumError As Integer = 0
 
         If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return
 
@@ -716,14 +719,16 @@ Public Class dlgManageTimeSeries
 
                             Case eTimeSeriesCategoryType.Forcing
                                 clf = DirectCast(Math.Min(clf, cCore.eBatchChangeLevelFlags.Ecosim), cCore.eBatchChangeLevelFlags)
+                                iNumForcing += 1
 
-                            Case eTimeSeriesCategoryType.Group, _
+                            Case eTimeSeriesCategoryType.Group,
                                  eTimeSeriesCategoryType.Fleet
                                 clf = DirectCast(Math.Min(clf, cCore.eBatchChangeLevelFlags.Ecosim), cCore.eBatchChangeLevelFlags)
-
+                                iNumTS += 1
                         End Select
                     Else
                         bSucces = False
+                        iNumError += 1
                     End If
                 Next
             Catch ex As Exception
@@ -732,7 +737,11 @@ Public Class dlgManageTimeSeries
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         End If
 
-        ' ToDo: send notification message reporting success (or failure)
+        ' ToDo: globalize this
+        Dim msg As New cMessage(cStringUtils.Localize("Imported {0} time serie(s), {1} forcing function(s) into {2}. {3} error(s) occurred", iNumTS, iNumForcing, Me.DatasetName, iNumError),
+                                eMessageType.DataImport, eCoreComponentType.Ecosim, If(iNumError = 0, eMessageImportance.Information, eMessageImportance.Critical))
+        Me.m_uic.Core.Messages.SendMessage(msg)
+
 
         ' Release appropriate level (this will reload the time series definitions)
         Me.m_uic.Core.ReleaseBatchLock(clf, bSucces)
