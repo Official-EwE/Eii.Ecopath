@@ -233,8 +233,8 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' </param>
     ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Read(strDelimiter As String, _
-                                     strDecimalSeparator As String, _
+    Public Overridable Function Read(strDelimiter As String,
+                                     strDecimalSeparator As String,
                                      interval As eTSDataSetInterval) As Boolean
 
         ' Reset reader to clear any previous read results.
