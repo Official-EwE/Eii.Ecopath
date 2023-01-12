@@ -152,6 +152,7 @@
     <Compile Include="frmShapes.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Grids\cShapeDataComparer.vb" />
     <Compile Include="Grids\gridFunctionalResponses.vb">
       <SubType>Component</SubType>
     </Compile>
