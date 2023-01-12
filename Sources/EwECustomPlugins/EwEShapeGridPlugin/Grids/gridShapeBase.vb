@@ -115,6 +115,8 @@ Public MustInherit Class gridShapeBase
                 Next
             End If
 
+            lShapes.Sort(New cShapeDataComparer())
+
             Return lShapes.ToArray
         End Get
     End Property
