@@ -691,10 +691,10 @@ Public Class dlgManageTimeSeries
             ' Need to create a new dataset?
             If (bCreateNewSet) Then
                 ' #Yes: do it
-                bSucces = Me.m_uic.Core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text, _
-                                                                Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text, _
-                                                                Me.m_tr.FirstYear, iNumPoints, _
-                                                                interval, _
+                bSucces = Me.m_uic.Core.AppendTimeSeriesDataset(Me.DatasetName, Me.m_tbImportDescription.Text,
+                                                                Me.m_tbImportAuthor.Text, Me.m_tbImportContact.Text,
+                                                                Me.m_tr.FirstYear, iNumPoints,
+                                                                interval,
                                                                 iDataset)
 
                 ' ToDo: send notification message that a new dataset has been created
