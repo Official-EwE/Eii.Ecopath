@@ -92,9 +92,8 @@ Public Class cFleetTimeSeries
                 If (Me.DatPoolSec < 1 Or Me.DatPoolSec > Me.m_core.nGroups) Then
                     Return eStatusFlags.ErrorEncountered
                 End If
-                Return eStatusFlags.OK
             End If
-            Return eStatusFlags.Null
+            Return eStatusFlags.OK
         End Get
     End Property
 
