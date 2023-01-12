@@ -153,7 +153,7 @@ Partial Class dlgManageTimeSeries
         Me.m_tpDelete.ImageIndex = 3
         Me.m_tpDelete.Location = New System.Drawing.Point(4, 26)
         Me.m_tpDelete.Name = "m_tpDelete"
-        Me.m_tpDelete.Size = New System.Drawing.Size(499, 570)
+        Me.m_tpDelete.Size = New System.Drawing.Size(497, 577)
         Me.m_tpDelete.TabIndex = 4
         Me.m_tpDelete.Text = "Delete"
         Me.m_tpDelete.UseVisualStyleBackColor = True
@@ -168,7 +168,7 @@ Partial Class dlgManageTimeSeries
         Me.m_lvDeleteDatasets.LabelWrap = False
         Me.m_lvDeleteDatasets.Location = New System.Drawing.Point(0, 0)
         Me.m_lvDeleteDatasets.Name = "m_lvDeleteDatasets"
-        Me.m_lvDeleteDatasets.Size = New System.Drawing.Size(499, 570)
+        Me.m_lvDeleteDatasets.Size = New System.Drawing.Size(497, 577)
         Me.m_lvDeleteDatasets.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.m_lvDeleteDatasets.TabIndex = 1
         Me.m_lvDeleteDatasets.UseCompatibleStateImageBehavior = False
@@ -217,7 +217,7 @@ Partial Class dlgManageTimeSeries
         Me.m_tpImport.ImageIndex = 2
         Me.m_tpImport.Location = New System.Drawing.Point(4, 26)
         Me.m_tpImport.Name = "m_tpImport"
-        Me.m_tpImport.Size = New System.Drawing.Size(499, 570)
+        Me.m_tpImport.Size = New System.Drawing.Size(497, 577)
         Me.m_tpImport.TabIndex = 3
         Me.m_tpImport.Text = "Import"
         Me.m_tpImport.UseVisualStyleBackColor = True
@@ -318,7 +318,7 @@ Partial Class dlgManageTimeSeries
         Me.m_hdrSource.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrSource.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrSource.Name = "m_hdrSource"
-        Me.m_hdrSource.Size = New System.Drawing.Size(499, 18)
+        Me.m_hdrSource.Size = New System.Drawing.Size(497, 18)
         Me.m_hdrSource.TabIndex = 0
         Me.m_hdrSource.Text = "Source"
         Me.m_hdrSource.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -431,6 +431,7 @@ Partial Class dlgManageTimeSeries
         '
         Me.m_cmbImportDataset.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_cmbImportDataset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbImportDataset.FormattingEnabled = True
         Me.m_cmbImportDataset.Location = New System.Drawing.Point(77, 419)
         Me.m_cmbImportDataset.Name = "m_cmbImportDataset"
@@ -510,7 +511,7 @@ Partial Class dlgManageTimeSeries
         Me.m_tpWeights.Location = New System.Drawing.Point(4, 26)
         Me.m_tpWeights.Name = "m_tpWeights"
         Me.m_tpWeights.Padding = New System.Windows.Forms.Padding(0, 3, 0, 3)
-        Me.m_tpWeights.Size = New System.Drawing.Size(499, 570)
+        Me.m_tpWeights.Size = New System.Drawing.Size(497, 577)
         Me.m_tpWeights.TabIndex = 1
         Me.m_tpWeights.Text = "Weights"
         Me.m_tpWeights.UseVisualStyleBackColor = True
@@ -528,7 +529,7 @@ Partial Class dlgManageTimeSeries
         Me.m_tlpWeights.Name = "m_tlpWeights"
         Me.m_tlpWeights.RowCount = 1
         Me.m_tlpWeights.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpWeights.Size = New System.Drawing.Size(499, 564)
+        Me.m_tlpWeights.Size = New System.Drawing.Size(497, 571)
         Me.m_tlpWeights.TabIndex = 3
         '
         'm_gridWeights
@@ -555,7 +556,7 @@ Partial Class dlgManageTimeSeries
         Me.m_gridWeights.Location = New System.Drawing.Point(0, 0)
         Me.m_gridWeights.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
         Me.m_gridWeights.Name = "m_gridWeights"
-        Me.m_gridWeights.Size = New System.Drawing.Size(419, 564)
+        Me.m_gridWeights.Size = New System.Drawing.Size(417, 571)
         Me.m_gridWeights.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -573,10 +574,10 @@ Partial Class dlgManageTimeSeries
         Me.m_plWeights.Controls.Add(Me.m_btnApplyCheckAll)
         Me.m_plWeights.Controls.Add(Me.m_btnApplyCheckNone)
         Me.m_plWeights.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plWeights.Location = New System.Drawing.Point(425, 0)
+        Me.m_plWeights.Location = New System.Drawing.Point(423, 0)
         Me.m_plWeights.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
         Me.m_plWeights.Name = "m_plWeights"
-        Me.m_plWeights.Size = New System.Drawing.Size(74, 564)
+        Me.m_plWeights.Size = New System.Drawing.Size(74, 571)
         Me.m_plWeights.TabIndex = 1
         '
         'm_btnApplyCheckAll
