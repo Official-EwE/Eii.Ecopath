@@ -83,6 +83,8 @@ Public Class gridTimeSeries
         Dim styleEditable As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
         Dim styleReadOnly As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
 
+        Array.Sort(Shapes, New cShapeDataComparer())
+
         Me.Redim(nPoints + [Enum].GetValues(GetType(eRowType)).Length, nTS + 1)
 
         ' Create row headers

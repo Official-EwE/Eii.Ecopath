@@ -81,7 +81,8 @@ Namespace Ecospace
         Private WithEvents m_bpAdjustSpace As cBooleanProperty = Nothing
         Private WithEvents m_bpEffort As cBooleanProperty = Nothing
 
-        Private m_fpFirstOutputTimestep As cEwEFormatProvider
+        Private m_fpAutosaveFirstTimestep As cEwEFormatProvider = Nothing
+        Private m_fpAutosaveVisibleGroupsFleetsOnly As cEwEFormatProvider = Nothing
 
 #End Region ' Private vars
 
@@ -133,7 +134,6 @@ Namespace Ecospace
             Me.m_fpNBiomassThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, parms, eVarNameFlags.nSpaceThreads)
             Me.m_fpNEffortThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, parms, eVarNameFlags.nEffortDistThreads)
             Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, parms, eVarNameFlags.PacketsMultiplier)
-            Me.m_fpFirstOutputTimestep = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstTimeStep, parms, eVarNameFlags.EcospaceFirstOutputTimeStep)
 
             ' Model
             Me.m_fpTotalTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTotalTime, parms, eVarNameFlags.TotalTime)
@@ -142,7 +142,9 @@ Namespace Ecospace
             Me.m_fpSOR = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSOR, parms, eVarNameFlags.SOR)
             Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, parms, eVarNameFlags.MaxIterations)
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, parms, eVarNameFlags.UseExact)
-            Me.m_fpAnnualOutput = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAnnualOutput, parms, eVarNameFlags.EcospaceUseAnnualOutput)
+            Me.m_fpAnnualOutput = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAutosaveAnnualOnly, parms, eVarNameFlags.EcospaceAutosaveAnnualOutput)
+            Me.m_fpAutosaveFirstTimestep = New cPropertyFormatProvider(Me.UIContext, Me.m_nudAutosaveFirstTimeStep, parms, eVarNameFlags.EcospaceAutosaveFirstTimeStep)
+            Me.m_fpAutosaveVisibleGroupsFleetsOnly = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAutosaveVisibleOnly, parms, eVarNameFlags.EcospaceAutosaveSelectedGroupsFleetsOnly)
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, parms, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
             Me.m_fpMinCapacity = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxMinCap, parms, eVarNameFlags.EcospaceMinForagingCapacity)
             Me.m_fpAllowHabCapGradCalc = New cPropertyFormatProvider(Me.UIContext, Me.m_cbCalcHabCapGrad, parms, eVarNameFlags.EcospaceAllowHabCapGradCorrections)
@@ -185,7 +187,8 @@ Namespace Ecospace
                 Me.m_fpUseDiscardForcing.Release()
                 Me.m_fpAnnualOutput.Release()
 
-                Me.m_fpFirstOutputTimestep.Release()
+                Me.m_fpAutosaveFirstTimestep.Release()
+                Me.m_fpAutosaveVisibleGroupsFleetsOnly.Release()
 
             Catch ex As Exception
 

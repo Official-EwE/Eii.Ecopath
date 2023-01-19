@@ -3509,6 +3509,7 @@ Public Class cCore
     ''' <summary>Flag to affect which fleets to auto-save data for</summary>
     ''' <remarks>Values are set by the UI. This logic is currently only used by the Ecospace result writers.</remarks>
     Public Property SelectedFleets As Boolean() = Nothing
+
 #End Region
 
 #Region " Model "
@@ -10733,6 +10734,7 @@ Public Class cCore
 
             m_EcospaceModelParams.UseAnnualOuput = m_EcospaceData.SaveAnnual
             m_EcospaceModelParams.UseCoreOutputDirectory = m_EcospaceData.UseCoreOutputDir
+            m_EcospaceModelParams.AutosaveSelectedGroupsFleetsOnly = m_EcospaceData.SaveSelectedGroupsFleetsOnly
 
             m_EcospaceModelParams.IBMMovePacketOnStanza = m_EcospaceData.MovePacketsAtStanzaEntry
 
@@ -10809,6 +10811,7 @@ Public Class cCore
 
         m_EcospaceData.SaveAnnual = m_EcospaceModelParams.UseAnnualOuput
         m_EcospaceData.UseCoreOutputDir = m_EcospaceModelParams.UseCoreOutputDirectory
+        m_EcospaceData.SaveSelectedGroupsFleetsOnly = m_EcospaceModelParams.AutosaveSelectedGroupsFleetsOnly
 
         m_EcospaceData.MovePacketsAtStanzaEntry = m_EcospaceModelParams.IBMMovePacketOnStanza
 
@@ -14521,7 +14524,7 @@ Public Class cCore
                     Case eVarNameFlags.EcospaceRegionNumber
                         Me.EcospaceBasemap.LayerRegion.Invalidate()
 
-                    Case eVarNameFlags.EcospaceFirstOutputTimeStep
+                    Case eVarNameFlags.EcospaceAutosaveFirstTimeStep
                         Me.LoadEcospaceResultsWriters()
 
                     Case eVarNameFlags.EcospaceUseEcosimBiomassForcing, eVarNameFlags.EcospaceUseEcosimDiscardForcing

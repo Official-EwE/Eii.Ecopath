@@ -80,10 +80,10 @@ Namespace Ecospace
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
             Me.m_cbUseExact = New System.Windows.Forms.CheckBox()
-            Me.m_cbAnnualOutput = New System.Windows.Forms.CheckBox()
+            Me.m_cbAutosaveAnnualOnly = New System.Windows.Forms.CheckBox()
             Me.m_clbAutosave = New System.Windows.Forms.CheckedListBox()
-            Me.Label2 = New System.Windows.Forms.Label()
-            Me.m_nudFirstTimeStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblAutosaveFirstTimeStep = New System.Windows.Forms.Label()
+            Me.m_nudAutosaveFirstTimeStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_tbContact = New System.Windows.Forms.TextBox()
             Me.m_tbAuthor = New System.Windows.Forms.TextBox()
             Me.m_lbContact = New System.Windows.Forms.Label()
@@ -99,6 +99,7 @@ Namespace Ecospace
             Me.m_plModel = New System.Windows.Forms.Panel()
             Me.m_tlpRunTime = New System.Windows.Forms.TableLayoutPanel()
             Me.m_gbAutoSave = New System.Windows.Forms.GroupBox()
+            Me.m_cbAutosaveVisibleOnly = New System.Windows.Forms.CheckBox()
             Me.m_plTimeSeries = New System.Windows.Forms.Panel()
             Me.m_lblOutputResidualsFile = New System.Windows.Forms.Label()
             Me.m_tbxlOutputResidualsFile = New System.Windows.Forms.TextBox()
@@ -118,7 +119,7 @@ Namespace Ecospace
             CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbRunTime.SuspendLayout()
-            CType(Me.m_nudFirstTimeStep, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudAutosaveFirstTimeStep, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_plBiomass.SuspendLayout()
             Me.m_tlpStuff.SuspendLayout()
             Me.m_plScenario.SuspendLayout()
@@ -367,13 +368,13 @@ Namespace Ecospace
             Me.m_cbUseExact.Name = "m_cbUseExact"
             Me.m_cbUseExact.UseVisualStyleBackColor = True
             '
-            'm_cbAnnualOutput
+            'm_cbAutosaveAnnualOnly
             '
-            resources.ApplyResources(Me.m_cbAnnualOutput, "m_cbAnnualOutput")
-            Me.m_cbAnnualOutput.Checked = True
-            Me.m_cbAnnualOutput.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_cbAnnualOutput.Name = "m_cbAnnualOutput"
-            Me.m_cbAnnualOutput.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbAutosaveAnnualOnly, "m_cbAutosaveAnnualOnly")
+            Me.m_cbAutosaveAnnualOnly.Checked = True
+            Me.m_cbAutosaveAnnualOnly.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbAutosaveAnnualOnly.Name = "m_cbAutosaveAnnualOnly"
+            Me.m_cbAutosaveAnnualOnly.UseVisualStyleBackColor = True
             '
             'm_clbAutosave
             '
@@ -383,18 +384,24 @@ Namespace Ecospace
             Me.m_clbAutosave.Name = "m_clbAutosave"
             Me.m_clbAutosave.Sorted = True
             '
-            'Label2
+            'm_lblAutosaveFirstTimeStep
             '
-            resources.ApplyResources(Me.Label2, "Label2")
-            Me.Label2.Name = "Label2"
+            resources.ApplyResources(Me.m_lblAutosaveFirstTimeStep, "m_lblAutosaveFirstTimeStep")
+            Me.m_lblAutosaveFirstTimeStep.Name = "m_lblAutosaveFirstTimeStep"
             '
-            'm_nudFirstTimeStep
+            'm_cbAutosaveVisibleOnly
             '
-            Me.m_nudFirstTimeStep.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            resources.ApplyResources(Me.m_nudFirstTimeStep, "m_nudFirstTimeStep")
-            Me.m_nudFirstTimeStep.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
-            Me.m_nudFirstTimeStep.Name = "m_nudFirstTimeStep"
-            Me.m_nudFirstTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            resources.ApplyResources(Me.m_cbAutosaveVisibleOnly, "m_cbAutosaveVisibleOnly")
+            Me.m_cbAutosaveVisibleOnly.Name = "m_cbAutosaveVisibleOnly"
+            Me.m_cbAutosaveVisibleOnly.UseVisualStyleBackColor = True
+            '
+            'm_nudAutosaveFirstTimeStep
+            '
+            Me.m_nudAutosaveFirstTimeStep.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+            resources.ApplyResources(Me.m_nudAutosaveFirstTimeStep, "m_nudAutosaveFirstTimeStep")
+            Me.m_nudAutosaveFirstTimeStep.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+            Me.m_nudAutosaveFirstTimeStep.Name = "m_nudAutosaveFirstTimeStep"
+            Me.m_nudAutosaveFirstTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
             'm_tbContact
             '
@@ -492,10 +499,11 @@ Namespace Ecospace
             '
             'm_gbAutoSave
             '
-            Me.m_gbAutoSave.Controls.Add(Me.m_nudFirstTimeStep)
-            Me.m_gbAutoSave.Controls.Add(Me.m_cbAnnualOutput)
+            Me.m_gbAutoSave.Controls.Add(Me.m_cbAutosaveVisibleOnly)
+            Me.m_gbAutoSave.Controls.Add(Me.m_nudAutosaveFirstTimeStep)
+            Me.m_gbAutoSave.Controls.Add(Me.m_cbAutosaveAnnualOnly)
             Me.m_gbAutoSave.Controls.Add(Me.m_clbAutosave)
-            Me.m_gbAutoSave.Controls.Add(Me.Label2)
+            Me.m_gbAutoSave.Controls.Add(Me.m_lblAutosaveFirstTimeStep)
             resources.ApplyResources(Me.m_gbAutoSave, "m_gbAutoSave")
             Me.m_gbAutoSave.Name = "m_gbAutoSave"
             Me.m_gbAutoSave.TabStop = False
@@ -588,7 +596,7 @@ Namespace Ecospace
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gbRunTime.ResumeLayout(False)
             Me.m_gbRunTime.PerformLayout()
-            CType(Me.m_nudFirstTimeStep, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudAutosaveFirstTimeStep, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_plBiomass.ResumeLayout(False)
             Me.m_plBiomass.PerformLayout()
             Me.m_tlpStuff.ResumeLayout(False)
@@ -642,10 +650,10 @@ Namespace Ecospace
         Private WithEvents m_plScenario As System.Windows.Forms.Panel
         Private WithEvents m_plModel As System.Windows.Forms.Panel
         Private WithEvents m_tlpStuff As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents Label2 As System.Windows.Forms.Label
-        Private WithEvents m_nudFirstTimeStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_lblAutosaveFirstTimeStep As System.Windows.Forms.Label
+        Private WithEvents m_nudAutosaveFirstTimeStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_clbAutosave As System.Windows.Forms.CheckedListBox
-        Private WithEvents m_cbAnnualOutput As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbAutosaveAnnualOnly As System.Windows.Forms.CheckBox
         Private WithEvents m_plTimeSeries As Panel
         Private WithEvents m_hdrTimeSeries As cEwEHeaderLabel
         Private WithEvents m_cbUseEcosimBiomassForcing As CheckBox
@@ -666,6 +674,7 @@ Namespace Ecospace
         Private WithEvents m_cbMovePackets As CheckBox
         Private WithEvents m_lblMinCap As Label
         Private WithEvents m_tbxMinCap As TextBox
+        Private WithEvents m_cbAutosaveVisibleOnly As CheckBox
     End Class
 
 End Namespace
