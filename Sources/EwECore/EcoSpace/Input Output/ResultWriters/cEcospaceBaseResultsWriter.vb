@@ -69,14 +69,14 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         ' This value does not need to be set externally anymore
         Me.m_FirstStep = Me.m_core.m_EcospaceData.FirstOutputTimeStep
 
-        If (Me.m_core.SelectedGroups Is Nothing) Then
+        If (Me.m_core.SelectedGroups Is Nothing) Or (Me.m_core.m_EcospaceData.SaveSelectedGroupsFleetsOnly = False) Then
             Me.SelectedGroups = New Boolean(Me.m_core.nGroups) {}
             Me.SetAllGroupsSelected()
         Else
             Me.SelectedGroups = Me.m_core.SelectedGroups
         End If
 
-        If (Me.m_core.SelectedFleets Is Nothing) Then
+        If (Me.m_core.SelectedFleets Is Nothing) Or (Me.m_core.m_EcospaceData.SaveSelectedGroupsFleetsOnly = False) Then
             Me.SelectedFleets = New Boolean(Me.m_core.nFleets) {}
             Me.SetAllFleetsSelected()
         Else

@@ -100,7 +100,7 @@ Public Class cValidatorManager
         Me.m_validators.Add(eVarNameFlags.VariableName, New cValidatorEnum(GetType(eVarNameFlags)))
 
         validator = New cValidatorCounter(theCore, eCoreCounterTypes.nEcospaceTimeSteps)
-        Me.m_validators.Add(eVarNameFlags.EcospaceFirstOutputTimeStep, validator)
+        Me.m_validators.Add(eVarNameFlags.EcospaceAutosaveFirstTimeStep, validator)
 
         ' Ecospace layers - special cases
         Me.m_validators.Add(eVarNameFlags.LayerRegion, New cValidatorCounter(theCore, eCoreCounterTypes.nRegions))

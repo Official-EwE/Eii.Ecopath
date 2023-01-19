@@ -52,7 +52,7 @@ Public Class cEcotracerResultWriter
 
         Dim sw As StreamWriter = Nothing
         Dim scenario As cEcoSimScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
-        Dim strFile As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecotracer), _
+        Dim strFile As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecotracer),
                                              cFileUtils.ToValidFileName("Ecosim_" & scenario.Name & ".csv", False))
         sw = Me.OpenWriter(strFile)
         If (sw Is Nothing) Then Return False
@@ -73,7 +73,7 @@ Public Class cEcotracerResultWriter
 
         Dim sw As StreamWriter = Nothing
         Dim scenario As cEcospaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
-        Dim strFile As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecotracer), _
+        Dim strFile As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecotracer),
                                              cFileUtils.ToValidFileName("Ecospace_" & scenario.Name & ".csv", False))
         sw = Me.OpenWriter(strFile)
         If (sw Is Nothing) Then Return False
@@ -87,7 +87,7 @@ Public Class cEcotracerResultWriter
         Me.CloseWriter(sw, strFile)
 
         For i As Integer = 1 To Me.m_core.m_tracerData.m_nRegions
-            strFile = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecotracer), _
+            strFile = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecotracer),
                                    cFileUtils.ToValidFileName("Ecospace_" & scenario.Name & " region " & i & ".csv", False))
             sw = Me.OpenWriter(strFile)
             If (sw Is Nothing) Then Return False
@@ -218,7 +218,7 @@ Public Class cEcotracerResultWriter
     ''' <param name="strReason">Reason of failure, most likely the text obtained from an exception.</param>
     ''' -------------------------------------------------------------------
     Protected Sub SendErrorMessage(strPath As String, strReason As String)
-        Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_FAILED, strPath, strReason), _
+        Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_FAILED, strPath, strReason),
                                            eMessageType.DataExport, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
         Me.m_core.Messages.SendMessage(msg)
     End Sub
@@ -230,7 +230,7 @@ Public Class cEcotracerResultWriter
     ''' <param name="strPath">Output file name.</param>
     ''' -------------------------------------------------------------------
     Protected Function SendSuccessMessage(strPath As String) As cMessage
-        Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_SUCCESS, strPath), _
+        Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_SUCCESS, strPath),
                                            eMessageType.DataExport, eCoreComponentType.Ecotracer, eMessageImportance.Information)
         msg.Hyperlink = Path.GetDirectoryName(strPath)
         Me.m_core.Messages.SendMessage(msg)

@@ -84,6 +84,8 @@ Public MustInherit Class gridForcingBase
         Dim bMonthly As Boolean = Me.IsMonthly
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
+        Array.Sort(shapes, New cShapeDataComparer())
+
         If bSeasonal Then
             iNumPoints = cCore.N_MONTHS
         Else

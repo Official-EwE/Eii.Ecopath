@@ -80,6 +80,8 @@ Public Class gridFunctionalResponses
         Dim cell As SourceGrid2.Cells.ICell = Nothing
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
+        Array.Sort(shapes, New cShapeDataComparer())
+
         iNumPoints = Me.XAxisMax
         Me.Redim(iNumPoints + [Enum].GetValues(GetType(eRowType)).Length, iNumShapes + 1)
 

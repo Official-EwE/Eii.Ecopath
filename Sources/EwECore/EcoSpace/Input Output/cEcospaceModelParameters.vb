@@ -169,8 +169,16 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             Me.m_values.Add(val.varName, val)
 
-            ' Save Annual
-            val = New cValue(core, 1, eVarNameFlags.EcospaceUseAnnualOutput, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceAutosaveAnnualOutput, eStatusFlags.Null, eValueTypes.Bool)
+            val.AffectsRunState = False
+            Me.m_values.Add(val.varName, val)
+
+            val = New cValue(core, 1, eVarNameFlags.EcospaceAutosaveFirstTimeStep, eStatusFlags.Null, eValueTypes.Int)
+            val.Stored = False
+            val.AffectsRunState = False
+            Me.m_values.Add(val.varName, val)
+
+            val = New cValue(core, 1, eVarNameFlags.EcospaceAutosaveSelectedGroupsFleetsOnly, eStatusFlags.Null, eValueTypes.Bool)
             val.AffectsRunState = False
             Me.m_values.Add(val.varName, val)
 
@@ -194,11 +202,6 @@ Public Class cEcospaceModelParameters
             val = New cValue(core, "", eVarNameFlags.EcospaceMapOutputDir, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             val.Stored = False
-            Me.m_values.Add(val.varName, val)
-
-            val = New cValue(core, 1, eVarNameFlags.EcospaceFirstOutputTimeStep, eStatusFlags.Null, eValueTypes.Int)
-            val.Stored = False
-            val.AffectsRunState = False
             Me.m_values.Add(val.varName, val)
 
             val = New cValue(core, 1, eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded, eStatusFlags.Null, eValueTypes.Bool)
@@ -581,23 +584,6 @@ Public Class cEcospaceModelParameters
         End Set
     End Property
 
-    ' ''' -----------------------------------------------------------------------
-    ' ''' <summary>
-    ' ''' Set the <see cref="eEcospaceCapacityCalType">inputs</see> that Ecospace uses to calculate capacity.
-    ' ''' </summary>
-    ' ''' -----------------------------------------------------------------------
-    'Public Property CapacityCalculationType() As eEcospaceCapacityCalType
-
-    '    Get
-    '        Return CType(GetVariable(eVarNameFlags.EcospaceCapCalType), eEcospaceCapacityCalType)
-    '    End Get
-
-    '    Set(value As eEcospaceCapacityCalType)
-    '        SetVariable(eVarNameFlags.EcospaceCapCalType, value)
-    '    End Set
-
-    'End Property
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set whether data should be written as annual average values.
@@ -605,12 +591,28 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property UseAnnualOuput() As Boolean
         Get
-            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceUseAnnualOutput))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceAutosaveAnnualOutput))
         End Get
         Set(value As Boolean)
-            Me.SetVariable(eVarNameFlags.EcospaceUseAnnualOutput, value)
+            Me.SetVariable(eVarNameFlags.EcospaceAutosaveAnnualOutput, value)
         End Set
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether data should be written only for groups and fleets that 
+    ''' are selected.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property AutosaveSelectedGroupsFleetsOnly() As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceAutosaveSelectedGroupsFleetsOnly))
+        End Get
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceAutosaveSelectedGroupsFleetsOnly, value)
+        End Set
+    End Property
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -730,10 +732,10 @@ Public Class cEcospaceModelParameters
 
     Public Property FirstOutputTimeStep() As Integer
         Get
-            Return CInt(Me.GetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep))
+            Return CInt(Me.GetVariable(eVarNameFlags.EcospaceAutosaveFirstTimeStep))
         End Get
         Set(value As Integer)
-            Me.SetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep, value)
+            Me.SetVariable(eVarNameFlags.EcospaceAutosaveFirstTimeStep, value)
         End Set
     End Property
 

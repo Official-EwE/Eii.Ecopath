@@ -677,8 +677,6 @@ Namespace Core
         EcospaceCapCalType
         ''' <summary>Use the default Ecospace output directory structure as defined by the core</summary>
         EcospaceUseCoreOutputDir
-        ''' <summary>Save Ecospace out annually only</summary>
-        EcospaceUseAnnualOutput
         ''' <summary>To document</summary>
         UseEffortDistThreshold
         ''' <summary>To document</summary>
@@ -692,7 +690,12 @@ Namespace Core
         ''' <summary>User-defined output directory for Ecospace Area Averaged outputs</summary>
         EcospaceAreaOutputDir
 
-        EcospaceFirstOutputTimeStep
+        ''' <summary>First time step to autosave Ecospace output for.</summary>
+        EcospaceAutosaveFirstTimeStep
+        ''' <summary>Autosave Ecospace visible groups only. This flag is only meaningful in conjunction with the EwE user interface</summary>
+        EcospaceAutosaveSelectedGroupsFleetsOnly
+        ''' <summary>Autosave Ecospace annual output only</summary>
+        EcospaceAutosaveAnnualOutput
 
         ''' <summary>Can Ecospace use Ecosim biomass forcing time series</summary>
         EcospaceUseEcosimBiomassForcing
