@@ -194,15 +194,13 @@ Namespace Controls.Map.Layers
 
             For iRow As Integer = 1 To iRows
                 For iCol As Integer = 1 To iCols
-                    If depth.IsWaterCell(iRow, iCol) Then
+                    If bm.IsModelledCell(iRow, iCol) Then
                         Dim dx As Single = CSng(Me.m_lXVel.Cell(iRow, iCol))
                         Dim dy As Single = CSng(Me.m_lYVel.Cell(iRow, iCol))
                         If (dx <> cCore.NULL_VALUE And dy <> cCore.NULL_VALUE) Then
                             Me.m_sMaxValue = Math.Max(Me.m_sMaxValue, Math.Max(Math.Abs(dx), Math.Abs(dy)))
                             Me.m_sMinValue = Math.Min(Me.m_sMinValue, Math.Max(Math.Abs(dx), Math.Abs(dy)))
-                            If (dx <> 0 And dy <> 0) Then
-                                Me.m_iNumValueCells += 1
-                            End If
+                            Me.m_iNumValueCells += 1
                         End If
                     End If
                 Next iCol
