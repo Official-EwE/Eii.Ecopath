@@ -136,8 +136,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         Public Overrides ReadOnly Property MaxValue() As Single
             Get
-                If Me.m_bInvalidateStats Then Me.RecalcStats()
-                Return Me.m_sMaxValue
+                Return Me.m_lXVel.MaxValue
             End Get
         End Property
 
@@ -146,21 +145,16 @@ Namespace Controls.Map.Layers
         ''' </summary>
         Public Overrides ReadOnly Property MinValue() As Single
             Get
-                Return Me.m_sMinValue
+                Return Me.m_lXVel.MinValue
             End Get
         End Property
 
         ''' <inheritdocs cref="cEcospaceLayer.NumValueCells"/>
         Public Overrides ReadOnly Property NumValueCells As Integer
             Get
-                If Me.m_bInvalidateStats Then Me.RecalcStats()
-                Return Me.m_iNumValueCells
+                Return Me.m_lXVel.NumValueCells
             End Get
         End Property
-
-        Public Overrides Sub Invalidate()
-            Me.m_bInvalidateStats = True
-        End Sub
 
         Public ReadOnly Property VelocityLayers() As cEcospaceLayerSingle()
             Get
@@ -168,49 +162,15 @@ Namespace Controls.Map.Layers
             End Get
         End Property
 
-#End Region ' Cell interaction
-
-#Region " Internals "
+        Public Overrides Sub Invalidate()
+            Me.m_lXVel.Invalidate()
+        End Sub
 
         Protected Overrides Function ValidateCellValue(value As Object) As Boolean
             Return True
         End Function
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Calc max vector size in data layer.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Protected Overridable Sub RecalcStats()
-
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim iRows As Integer = bm.InRow
-            Dim iCols As Integer = bm.InCol
-
-            Me.m_sMaxValue = 0
-            Me.m_sMinValue = Single.MaxValue
-            Me.m_iNumValueCells = 0
-
-            For iRow As Integer = 1 To iRows
-                For iCol As Integer = 1 To iCols
-                    If bm.IsModelledCell(iRow, iCol) Then
-                        Dim dx As Single = CSng(Me.m_lXVel.Cell(iRow, iCol))
-                        Dim dy As Single = CSng(Me.m_lYVel.Cell(iRow, iCol))
-                        If (dx <> cCore.NULL_VALUE And dy <> cCore.NULL_VALUE) Then
-                            Me.m_sMaxValue = Math.Max(Me.m_sMaxValue, Math.Max(Math.Abs(dx), Math.Abs(dy)))
-                            Me.m_sMinValue = Math.Min(Me.m_sMinValue, Math.Max(Math.Abs(dx), Math.Abs(dy)))
-                            Me.m_iNumValueCells += 1
-                        End If
-                    End If
-                Next iCol
-            Next iRow
-
-            Me.m_bInvalidateStats = False
-
-        End Sub
-
-#End Region ' Internals
+#End Region ' Cell interaction
 
     End Class
 
