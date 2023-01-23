@@ -92,9 +92,7 @@ Namespace Ecospace.Basemap
 
             If (Me.m_lLayers.Count = 0) Then
                 For Each layer As cEcospaceLayer In bm.Layers(eVarNameFlags.NotSet)
-                    If Not TypeOf layer Is cEcospaceLayerVelocity Then
-                        Me.m_lLayers.Add(layer)
-                    End If
+                    Me.m_lLayers.Add(layer)
                 Next
             End If
             Me.m_grid.Layers = Me.m_lLayers.ToArray

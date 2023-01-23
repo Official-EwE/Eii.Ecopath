@@ -101,7 +101,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Advection {0}.
+        '''  Looks up a localized string similar to Advection.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_ADVECTION() As String
             Get
@@ -290,7 +290,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Wind ({0}).
+        '''  Looks up a localized string similar to Wind.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_WIND() As String
             Get

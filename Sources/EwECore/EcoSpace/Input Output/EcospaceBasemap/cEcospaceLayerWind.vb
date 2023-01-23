@@ -31,7 +31,7 @@ Imports EwEUtils.Utilities
 ''' Layer providing access to Ecospace vector data.
 ''' </summary>
 Public Class cEcospaceLayerWind
-    Inherits cEcospaceLayerSingle
+    Inherits cEcospaceLayerVelocity
 
 #Region " Construction "
 
@@ -42,33 +42,21 @@ Public Class cEcospaceLayerWind
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, "", eVarNameFlags.LayerWind, iIndex)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap)
+
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerWind)
         Me.m_dataType = eDataTypes.EcospaceLayerWind
         Me.m_ccSecundaryIndex = eCoreCounterTypes.nMonths
+        Me.m_coreComponent = eCoreComponentType.Ecospace
+
     End Sub
 
 #End Region ' Construction
 
 #Region " Overrides "
 
-    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
-        Get
-            If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
-            Return DirectCast(Me.Data, Single(,,))(iRow, iCol, iIndexSec)
-        End Get
-        Set(value As Object)
-            Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
-            Dim s As Single = Convert.ToSingle(value)
-            If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
-            d(iRow, iCol, iIndexSec) = s
-            Me.Invalidate()
-        End Set
-    End Property
-
     Protected Overrides Function DefaultName() As String
-        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_WIND,
-                                     If(Me.Index = 1, My.Resources.CoreDefaults.CORE_DEFAULT_X_VELOCITY, My.Resources.CoreDefaults.CORE_DEFAULT_Y_VELOCITY))
+        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_WIND)
     End Function
 
 #End Region ' Overrides

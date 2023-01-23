@@ -231,11 +231,12 @@ Public MustInherit Class cEcospaceLayer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the metadata associated with the values for a cell.
+    ''' Get the metadata associated with the values for a cell.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property MetadataCell() As cVariableMetaData
         Get
+            If (Me.m_metadata Is Nothing) Then Return cVariableMetaData.Get(Me.VarName)
             Return Me.m_metadata
         End Get
     End Property

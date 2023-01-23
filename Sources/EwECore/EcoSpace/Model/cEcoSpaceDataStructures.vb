@@ -268,10 +268,10 @@ Public Class cEcospaceDataStructures
     Public Xvel(,) As Single, Yvel(,) As Single
     Public Xvloc(,) As Single, Yvloc(,) As Single
     Public UpVel(,) As Single
-    ''' <summary>Wind X velocity (i x j x month)</summary>
-    Public Xv(,,) As Single
-    ''' <summary>Wind Y velocity (i x j x month)</summary>
-    Public Yv(,,) As Single
+    ''' <summary>Wind X velocity (month)(i x j)</summary>
+    Public MonthlyXwind()(,) As Single
+    ''' <summary>Wind Y velocity (month)(i x j)</summary>
+    Public MonthlyYwind()(,) As Single
 
     Public MonthlyXvel()(,) As Single
     Public MonthlyYvel()(,) As Single
@@ -1010,8 +1010,8 @@ Public Class cEcospaceDataStructures
             Me.Xvloc = Nothing
             Me.Yvloc = Nothing
             Me.UpVel = Nothing
-            Me.Xv = Nothing
-            Me.Yv = Nothing
+            Me.MonthlyXwind = Nothing
+            Me.MonthlyYwind = Nothing
             Me.flow = Nothing
             Me.Region = Nothing
             Me.MPA = Nothing
@@ -1988,8 +1988,8 @@ Public Class cEcospaceDataStructures
 
             Me.allocate(Me.PHabType, Me.NoHabitats, Me.InRow, Me.InCol)
 
-            Me.allocate(Me.Xv, Me.InRow + 1, Me.InCol + 1, cCore.N_MONTHS)
-            Me.allocate(Me.Yv, Me.InRow + 1, Me.InCol + 1, cCore.N_MONTHS)
+            Me.allocate(Me.MonthlyXwind, cCore.N_MONTHS, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.MonthlyYwind, cCore.N_MONTHS, Me.InRow + 1, Me.InCol + 1)
             '  For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 
             Me.allocate(Me.DepthInput, Me.InRow + 1, Me.InCol + 1)
