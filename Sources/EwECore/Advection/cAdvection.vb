@@ -269,8 +269,8 @@ Namespace Ecospace.Advection
                     'copy the wind velocity vectors from the 3d array into 2d
                     For ir As Integer = 0 To Me.m_data.InRow + 1
                         For ic As Integer = 0 To Me.m_data.InCol + 1
-                            WindXbase(ir, ic) = Me.m_data.Xv(ir, ic, imon)
-                            WindYbase(ir, ic) = Me.m_data.Yv(ir, ic, imon)
+                            WindXbase(ir, ic) = Me.m_data.MonthlyXwind(imon)(ir, ic)
+                            WindYbase(ir, ic) = Me.m_data.MonthlyYwind(imon)(ir, ic)
                         Next ic
                     Next ir
 

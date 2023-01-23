@@ -244,8 +244,7 @@ Namespace Controls.Map
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorVelocity()
 
-                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.ToString(eVarNameFlags.LayerAdvection), bmd, varName)
-                    layer = New cDisplayLayerRaster(uic, wrap, renderer, editor, bmd, varName)
+                    layer = New cDisplayLayerRaster(uic, core.EcospaceBasemap.LayerAdvection(0), renderer, editor, bmd, varName)
 
                     lLayers.Add(layer)
 
@@ -259,9 +258,7 @@ Namespace Controls.Map
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorVelocity()
 
-                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.ToString(eVarNameFlags.LayerWind), bmd, varName)
-                    layer = New cDisplayLayerRaster(uic, wrap, renderer, editor, bmd, varName)
-
+                    layer = New cDisplayLayerRaster(uic, core.EcospaceBasemap.LayerWind(0), renderer, editor, bmd, varName)
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerUpwelling

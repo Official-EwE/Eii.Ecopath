@@ -315,14 +315,12 @@ Public Class cEcospaceBasemap
 
             ' Advection
             llayers.Clear()
-            llayers.Add(New cEcospaceLayerAdvection(core, Me, 1))
-            llayers.Add(New cEcospaceLayerAdvection(core, Me, 2))
+            llayers.Add(New cEcospaceLayerAdvection(core, Me))
             Me.m_layers(eVarNameFlags.LayerAdvection) = llayers.ToArray()
 
             ' Wind
             llayers.Clear()
-            llayers.Add(New cEcospaceLayerWind(core, Me, 1))
-            llayers.Add(New cEcospaceLayerWind(core, Me, 2))
+            llayers.Add(New cEcospaceLayerWind(core, Me))
             Me.m_layers(eVarNameFlags.LayerWind) = llayers.ToArray()
 
             ' Upwelling
@@ -927,7 +925,7 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerMigration
                 Return Me.m_core.m_EcospaceData.MigMaps
             Case eVarNameFlags.LayerWind
-                Return If(iIndex = 1, Me.m_core.m_EcospaceData.Xv, Me.m_core.m_EcospaceData.Yv)
+                Return If(iIndex = 1, Me.m_core.m_EcospaceData.MonthlyXwind, Me.m_core.m_EcospaceData.MonthlyYwind)
             Case eVarNameFlags.LayerUpwelling
                 Return Me.m_core.m_EcospaceData.MonthlyUpWell
             'Case eVarNameFlags.LayerMLD

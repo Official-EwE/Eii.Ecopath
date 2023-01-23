@@ -45,10 +45,10 @@ Public Class cEcospaceLayerBoolean
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(core As cCore, _
-                   manager As IEcospaceLayerManager, _
-                   strName As String, _
-                   varName As eVarNameFlags, _
+    Public Sub New(core As cCore,
+                   manager As IEcospaceLayerManager,
+                   strName As String,
+                   varName As eVarNameFlags,
                    Optional iIndex As Integer = cCore.NULL_VALUE)
 
         MyBase.New(core, core.m_EcospaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Boolean))

@@ -2318,8 +2318,8 @@ Public Class cEIIXMLDataSource
         For Each drow As DataRow In dtMaps.DefaultView.ToTable.Rows
             iMonth = CInt(Me.ReadSafe(drow, "MonthID", 0))
             If (1 <= iMonth And iMonth <= cCore.N_MONTHS) Then
-                bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "WindXVelMap", ""), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Xv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "WindYVelMap", ""), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Yv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "WindXVelMap", ""), ecospaceDS.MonthlyXwind(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "WindYVelMap", ""), ecospaceDS.MonthlyYwind(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                 bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "AdvectionXVelMap", ""), ecospaceDS.MonthlyXvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                 bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "AdvectionYVelMap", ""), ecospaceDS.MonthlyYvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                 bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "UpwellingMap", ""), ecospaceDS.MonthlyUpWell(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)

@@ -124,8 +124,7 @@
     <value>(default)</value>
   </data>
   <data name="CORE_DEFAULT_ADVECTION" xml:space="preserve">
-    <value>Advection {0}</value>
-    <comment>{0} velocity field name</comment>
+    <value>Advection</value>
   </data>
   <data name="CORE_DEFAULT_COMBINEDFLEETS" xml:space="preserve">
     <value>Combined fleets</value>
@@ -187,8 +186,7 @@
     <value>Upwelling</value>
   </data>
   <data name="CORE_DEFAULT_WIND" xml:space="preserve">
-    <value>Wind ({0})</value>
-    <comment>{0} velocity field name</comment>
+    <value>Wind</value>
   </data>
   <data name="CORE_DEFAULT_X_VELOCITY" xml:space="preserve">
     <value>X velocity</value>

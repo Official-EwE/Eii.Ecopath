@@ -184,7 +184,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Map\cMapSettings.vb" />
-    <Compile Include="Controls\Map\Core wrapper\cEcospaceLayerVelocity.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerArgs.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerBase.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerLayer.vb" />
@@ -1321,6 +1320,7 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controls\Map\Core wrapper\" />
     <Folder Include="Controls\Map\Layers\Rendering\Vector\" />
   </ItemGroup>
   <ItemGroup>
