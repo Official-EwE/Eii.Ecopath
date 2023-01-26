@@ -39,11 +39,18 @@ Public Class cEcospaceLayerAdvectionForcing
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Overriden to include the group name into this layer's name
+    ''' Overriden to include the advection layer name. Indexes are one-based
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function DefaultName() As String
-        Return If(Me.Index = 1, My.Resources.CoreDefaults.CORE_DEFAULT_X_VELOCITY, My.Resources.CoreDefaults.CORE_DEFAULT_Y_VELOCITY)
+        Select Case Me.Index
+            Case 1 : Return My.Resources.CoreDefaults.CORE_DEFAULT_X_VELOCITY
+            Case 2 : Return My.Resources.CoreDefaults.CORE_DEFAULT_Y_VELOCITY
+            Case 3 : Return My.Resources.CoreDefaults.CORE_DEFAULT_UPWELLING
+            Case Else
+                Debug.Assert(False)
+        End Select
+        Return "?"
     End Function
 
 End Class

@@ -44,7 +44,6 @@ Imports ScientificInterface.Ecotracer
 Imports ScientificInterface.Other
 Imports ScientificInterface.Wizard
 Imports ScientificInterfaceShared
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Integration
 Imports WeifenLuo.WinFormsUI.Docking
 Imports SharedResources = ScientificInterfaceShared.My.Resources
