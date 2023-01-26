@@ -318,6 +318,12 @@ Public Class cEcospaceBasemap
             llayers.Add(New cEcospaceLayerAdvection(core, Me))
             Me.m_layers(eVarNameFlags.LayerAdvection) = llayers.ToArray()
 
+            ' Advection forcing
+            llayers.Clear()
+            llayers.Add(New cEcospaceLayerAdvectionForcing(core, Me, 1))
+            llayers.Add(New cEcospaceLayerAdvectionForcing(core, Me, 2))
+            Me.m_layers(eVarNameFlags.LayerAdvectionForcing) = llayers.ToArray()
+
             ' Wind
             llayers.Clear()
             llayers.Add(New cEcospaceLayerWind(core, Me))
@@ -922,6 +928,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.MPAOptData.MPASeed
             Case eVarNameFlags.LayerAdvection
                 Return If(iIndex = 1, Me.m_core.m_EcospaceData.MonthlyXvel, Me.m_core.m_EcospaceData.MonthlyYvel)
+            Case eVarNameFlags.LayerAdvectionForcing
+                Return If(iIndex = 1, Me.m_core.m_EcospaceData.Xvel, Me.m_core.m_EcospaceData.Yvel)
             Case eVarNameFlags.LayerMigration
                 Return Me.m_core.m_EcospaceData.MigMaps
             Case eVarNameFlags.LayerWind

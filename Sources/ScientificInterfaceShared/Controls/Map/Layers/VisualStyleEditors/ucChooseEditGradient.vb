@@ -186,6 +186,7 @@ Namespace Controls
 
             Try
                 Me.m_editor.ColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cColorRamp)
+                FireStyleChangedEvent()
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".OnGradientSelected() Exception " & ex.Message)
