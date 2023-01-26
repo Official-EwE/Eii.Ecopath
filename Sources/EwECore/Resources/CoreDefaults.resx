@@ -527,7 +527,7 @@
     <value>Landings</value>
   </data>
   <data name="VARIABLE_LAYERADVECTION" xml:space="preserve">
-    <value>Advection</value>
+    <value>Advection||Advection by month</value>
   </data>
   <data name="VARIABLE_LAYERBIOMASSFORCING" xml:space="preserve">
     <value>Biomass (abs)||Absolute biomass forcing</value>
@@ -2854,7 +2854,7 @@
     <comment>{0}=OS version, {1}=32 or 64 bit</comment>
   </data>
   <data name="VARIABLE_LAYERIBMAGE1FORCING" xml:space="preserve">
-    <value>IBM Age 0 Forcing</value>
+    <value>IBM forcing||IBM first life stage forcing</value>
   </data>
   <data name="PARAM_LOGISTIC_INFLECTION" xml:space="preserve">
     <value>Inflection</value>
@@ -2917,5 +2917,8 @@
   </data>
   <data name="PARAM_START" xml:space="preserve">
     <value>Start</value>
+  </data>
+  <data name="VARIABLE_LAYERADVECTIONFORCING" xml:space="preserve">
+    <value>Advection||Advection forcing</value>
   </data>
 </root>

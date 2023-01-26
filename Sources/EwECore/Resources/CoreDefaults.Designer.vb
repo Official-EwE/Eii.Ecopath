@@ -4331,11 +4331,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Advection.
+        '''  Looks up a localized string similar to Advection||Advection by month.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERADVECTION() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_LAYERADVECTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Advection||Advection forcing.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERADVECTIONFORCING() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERADVECTIONFORCING", resourceCulture)
             End Get
         End Property
         
@@ -4430,7 +4439,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to IBM Age 0 Forcing.
+        '''  Looks up a localized string similar to IBM forcing||IBM first life stage forcing.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERIBMAGE1FORCING() As String
             Get

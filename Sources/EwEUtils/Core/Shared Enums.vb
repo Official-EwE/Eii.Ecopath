@@ -510,13 +510,15 @@ Namespace Core
         LayerPort
         ''' <summary>Ecospace sailing cost</summary>
         LayerSail
-        ''' <summary>To document</summary>
+        ''' <summary>Ecospace absolute biomass forcing</summary>
         LayerBiomassForcing
-        ''' <summary>To document</summary>
+        ''' <summary>Ecospace relative biomass forcing</summary>
         LayerBiomassRelativeForcing
 
         ''' <summary>Number of age 1 individuals for a stanza group. Used to force recruitment numbers of a mulit-stanza group by the IBM Model ONLY.</summary>
         LayerIBMAge1Forcing
+        ''' <summary>Ecospace advection forcing, directly through the Xvel and Yvel fields</summary>
+        LayerAdvectionForcing
 
         ''' <summary>Ecospace/MPA importance weight of the weight layer</summary>
         ImportanceWeight
@@ -2509,6 +2511,10 @@ Namespace Core
 
         EcosimMortalityResponseFunctionManager = 126
 
+        ''' <summary>
+        ''' Direct forcing of the Ecospace advection fields
+        ''' </summary>
+        EcospaceLayerAdvectionForcing = 127
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
