@@ -97,8 +97,10 @@ Namespace Other
 
             If (cfg IsNot Nothing) Then
                 Me.SetCurrentConfigFile(cfg.FileName)
-                Me.UpdateConfigFileList()
+            Else
+                Me.SetCurrentConfigFile(cSpatialDataSetManager.DefaultConfigFile)
             End If
+            Me.UpdateConfigFileList()
 
         End Sub
 
