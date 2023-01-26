@@ -839,15 +839,6 @@ Public Class cEcoSpace
                 Dim SPSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
 
                 If Me.EcoSpaceData.isAdvectionActive Then
-                    'Update the monthly X and Y velocity vectors
-                    ' do this BEFORE the spatial temporal data is being read; this may overwrite the Xvel and Yvel arrays
-                    For i = 0 To Me.EcoSpaceData.InRow + 1
-                        For j = 0 To Me.EcoSpaceData.InCol + 1
-                            Me.EcoSpaceData.Xvel(i, j) = Me.EcoSpaceData.MonthlyXvel(Me.EcoSpaceData.MonthNow)(i, j)
-                            Me.EcoSpaceData.Yvel(i, j) = Me.EcoSpaceData.MonthlyYvel(Me.EcoSpaceData.MonthNow)(i, j)
-                            Me.EcoSpaceData.UpVel(i, j) = Me.EcoSpaceData.MonthlyUpWell(Me.EcoSpaceData.MonthNow)(i, j)
-                        Next j
-                    Next i
                 End If
 
                 'Read any Spatial Temporal data into memory for this timestep
@@ -879,6 +870,17 @@ Public Class cEcoSpace
                 End If
 
                 If Me.EcoSpaceData.isAdvectionActive Then
+                    ' Is Advection NOT forced externally?
+                    If Not Me.EcoSpaceData.isAdvectionForced Then
+                        'if so, then update actual advection from the monthly X and Y velocity vectors
+                        For i = 0 To Me.EcoSpaceData.InRow + 1
+                            For j = 0 To Me.EcoSpaceData.InCol + 1
+                                Me.EcoSpaceData.Xvel(i, j) = Me.EcoSpaceData.MonthlyXvel(Me.EcoSpaceData.MonthNow)(i, j)
+                                Me.EcoSpaceData.Yvel(i, j) = Me.EcoSpaceData.MonthlyYvel(Me.EcoSpaceData.MonthNow)(i, j)
+                                Me.EcoSpaceData.UpVel(i, j) = Me.EcoSpaceData.MonthlyUpWell(Me.EcoSpaceData.MonthNow)(i, j)
+                            Next j
+                        Next i
+                    End If
                     'set the movement patterns based on velocity vectors for this month set above
                     Me.SetMovementParameters()
                 End If

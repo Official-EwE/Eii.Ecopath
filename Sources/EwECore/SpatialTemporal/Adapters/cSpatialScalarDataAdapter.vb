@@ -39,7 +39,6 @@ Namespace SpatialData
     Public Class cSpatialScalarDataAdapter
         Inherits cSpatialScalarDataAdapterBase
 
-
 #Region " Constructor "
 
         Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
@@ -70,7 +69,6 @@ Namespace SpatialData
 
 #End Region ' Overrides
 
-      
     End Class
 
 #End Region
@@ -86,7 +84,6 @@ Namespace SpatialData
     ''' </summary>
     Public MustInherit Class cSpatialScalarDataAdapterBase
         Inherits cSpatialDataAdapter
-
 
         Friend iScaleLayerIndex As Integer
 

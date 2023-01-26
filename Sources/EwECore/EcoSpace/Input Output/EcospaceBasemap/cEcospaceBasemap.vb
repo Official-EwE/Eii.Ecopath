@@ -166,9 +166,12 @@ Public Class cEcospaceBasemap
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
-            ' Advection interface
             ' LayerAdvection
             val = New cValue(core, 0, eVarNameFlags.LayerAdvection, eStatusFlags.Null, eValueTypes.Sng)
+            val.Stored = False
+            Me.m_values.Add(val.varName, val)
+
+            val = New cValue(core, 0, eVarNameFlags.LayerAdvectionForcing, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
@@ -322,6 +325,7 @@ Public Class cEcospaceBasemap
             llayers.Clear()
             llayers.Add(New cEcospaceLayerAdvectionForcing(core, Me, 1))
             llayers.Add(New cEcospaceLayerAdvectionForcing(core, Me, 2))
+            llayers.Add(New cEcospaceLayerAdvectionForcing(core, Me, 3))
             Me.m_layers(eVarNameFlags.LayerAdvectionForcing) = llayers.ToArray()
 
             ' Wind
@@ -929,7 +933,13 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerAdvection
                 Return If(iIndex = 1, Me.m_core.m_EcospaceData.MonthlyXvel, Me.m_core.m_EcospaceData.MonthlyYvel)
             Case eVarNameFlags.LayerAdvectionForcing
-                Return If(iIndex = 1, Me.m_core.m_EcospaceData.Xvel, Me.m_core.m_EcospaceData.Yvel)
+                Select Case iIndex
+                    Case 1 : Return Me.m_core.m_EcospaceData.Xvel
+                    Case 2 : Return Me.m_core.m_EcospaceData.Yvel
+                    Case 3 : Return Me.m_core.m_EcospaceData.UpVel
+                    Case Else
+                        Debug.Assert(False)
+                End Select
             Case eVarNameFlags.LayerMigration
                 Return Me.m_core.m_EcospaceData.MigMaps
             Case eVarNameFlags.LayerWind
@@ -954,7 +964,6 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcospaceData.Excluded
             Case eVarNameFlags.LayerIBMAge1Forcing
                 Return Me.m_core.m_EcospaceData.Bcell
-
         End Select
         Return Nothing
     End Function

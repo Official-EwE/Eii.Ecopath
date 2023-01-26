@@ -956,6 +956,13 @@ Public Class cEcospaceDataStructures
     End Property
 
     ''' <summary>
+    ''' Get/set whether advection is forced with external data. If so,
+    ''' monthly advection patterns will not be used, and external data is 
+    ''' relied on instead.
+    ''' </summary>
+    Public Property isAdvectionForced As Boolean = False
+
+    ''' <summary>
     ''' Returns whether any group is forced through biomass timeseries in Ecosim.
     ''' </summary>
     Public ReadOnly Property isEcosimBiomassForcingLoaded As Boolean
