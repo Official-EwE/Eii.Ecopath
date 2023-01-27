@@ -109,7 +109,8 @@ Namespace Ecospace.Controls
                 Next
             End If
 
-            Me.m_strDateMask = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern
+            ' Hack - avoid alphanumerical entries
+            Me.m_strDateMask = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern.Replace("MMM", "MM")
             Me.m_strMTBMask = m_strDateMask.Replace("y", "0").Replace("M", "0").Replace("d", "0")
 
         End Sub
