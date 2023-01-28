@@ -476,7 +476,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcospaceGroupValueEnd) = [Default](eValueTypes.Sng, cUnits.MonetaryOverBiomass)
 
         ' fleet int
-        Me.Metadata(eVarNameFlags.EffectivePower) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0)
+        Me.Metadata(eVarNameFlags.EffectivePower) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1)
         Me.Metadata(eVarNameFlags.SEmult) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 1)
         Me.Metadata(eVarNameFlags.HabitatFishery) = New cVariableMetaData(False)
         Me.Metadata(eVarNameFlags.MPAFishery) = New cVariableMetaData(False)
