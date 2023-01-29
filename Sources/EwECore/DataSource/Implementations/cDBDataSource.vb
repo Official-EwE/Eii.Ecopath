@@ -11148,7 +11148,6 @@ Namespace DataSources
             Catch ex As Exception
                 bSucces = False
             End Try
-            Return bSucces
 
             writer = Me.m_db.GetWriter("EcopathGroupSample")
             Try
