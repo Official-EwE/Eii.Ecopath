@@ -732,10 +732,6 @@ Namespace Samples
                         s.Discard(iFleet, iGroup) = epdata.Discard(iFleet, iGroup)
                     Next iFleet
 
-                    For iPred As Integer = 1 To epdata.NumLiving
-                        s.DC(iPred, iGroup) = epdata.DC(iPred, iGroup)
-                    Next iPred
-
                 Next iGroup
 
                 ' Diets
@@ -846,7 +842,7 @@ Namespace Samples
 
             For iPred As Integer = 1 To epdata.NumLiving
                 For iGroup As Integer = 0 To m_core.nGroups
-                    If (s.DC(iPred, iGroup) > cCore.NULL_VALUE) Then
+                    If (s.DC(iPred, iGroup) > 0) Then
                         epdata.DC(iPred, iGroup) = s.DC(iPred, iGroup)
                     End If
                 Next
