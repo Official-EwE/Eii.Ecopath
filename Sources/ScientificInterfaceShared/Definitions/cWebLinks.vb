@@ -35,17 +35,17 @@ Imports EwEUtils.Utilities
 ''' </remarks>
 Public Class cWebLinks
 
-    Private Const g_PostInstall As String = "http://www.ecopath.org/post-install"
-    Private Const g_Start As String = "http://www.ecopath.org/ewestart"
-    Private Const g_Home As String = "http://www.ecopath.org"
+    Private Const g_PostInstall As String = "https://www.ecopath.org/post-install"
+    Private Const g_Start As String = "https://www.ecopath.org/ewestart"
+    Private Const g_Home As String = "https://www.ecopath.org"
     Private Const g_UsersRSS As String = "https://groups.google.com/forum/feed/eweusers/msgs/rss.xml?num=15"
-    Private Const g_Trac As String = "http://sources.ecopath.org/trac/Ecopath/report/1"
-    Private Const g_Course As String = "http://www.ecopath.org/courses"
-    Private Const g_GoPro As String = "http://www.ecopath.org/gopro"
-    Private Const g_Facebook As String = "http://www.facebook.com/eweconsortium"
-    Private Const g_BetaFeedback As String = "http://www.surveymonkey.com/s/5XD6HKC"
-    Private Const g_EcoBase As String = "http://ecobase.ecopath.org/"
-    Private Const g_EcoBaseModelInfo As String = "http://ecobase.ecopath.org/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model={0}"
+    Private Const g_Trac As String = "https://sources.ecopath.org/trac/Ecopath/report/1"
+    Private Const g_Course As String = "https://www.ecopath.org/courses"
+    Private Const g_GoPro As String = "https://www.ecopath.org/gopro"
+    Private Const g_Facebook As String = "https://www.facebook.com/eweconsortium"
+    Private Const g_BetaFeedback As String = "https://www.surveymonkey.com/s/5XD6HKC"
+    Private Const g_EcoBase As String = "https://ecobase.ecopath.org/"
+    Private Const g_EcoBaseModelInfo As String = "https://ecobase.ecopath.org/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model={0}"
     Private Const g_Access2010 As String = "https://www.microsoft.com/en-us/download/details.aspx?id=13255"
 
     Private m_core As cCore = Nothing
