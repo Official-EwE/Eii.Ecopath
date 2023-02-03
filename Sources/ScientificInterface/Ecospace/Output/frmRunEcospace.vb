@@ -1503,40 +1503,30 @@ Namespace Ecospace
             ' ToDo: globalize this
 
             Dim strTitle As String = ""
-            Dim strUnit As String = ""
+            Dim strUnit As String = cUnits.Proportion
             Dim u As New cUnits(Me.Core)
 
             Select Case Me.m_graphPlotType
                 Case ePlotTypes.RelB
                     strTitle = "Relative Biomass"
-                    strUnit = cUnits.CurrencyOverArea
                 Case ePlotTypes.CatchGraph
                     strTitle = "Relative catch"
-                    strUnit = cUnits.CurrencyOverArea
                 Case ePlotTypes.ConsumpRateGraph
                     strTitle = "Relative consumption rates"
-                    strUnit = cUnits.CurrencyOverArea
                 Case ePlotTypes.Contaminant
                     strTitle = "Relative contaminants"
-                    strUnit = cUnits.Proportion
                 Case ePlotTypes.CoverB
                     strTitle = "C/B"
-                    strUnit = cUnits.Proportion
                 Case ePlotTypes.Effort
                     strTitle = "Relative Effort"
-                    strUnit = cUnits.Proportion
                 Case ePlotTypes.F
                     strTitle = "Relative F"
-                    strUnit = cUnits.CurrencyOverArea
                 Case ePlotTypes.FishingMortGraph
                     strTitle = "Relative fishing mortality"
-                    strUnit = cUnits.CurrencyOverArea
                 Case ePlotTypes.FOverB
                     strTitle = "F/B"
-                    strUnit = cUnits.Proportion
                 Case ePlotTypes.PredMortRateGraph
                     strTitle = "Relative predation mortality rate"
-                    strUnit = cUnits.Proportion
                 Case Else
                     Debug.Assert(False)
 
