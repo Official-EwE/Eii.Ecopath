@@ -61,6 +61,10 @@ Public Class cEcospaceASCMapContaminants
 
     End Function
 
+    Protected Overrides Function FirstMap() As Integer
+        Return 0
+    End Function
+
     Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
 
         'Only if Contaminant Tracer is ON

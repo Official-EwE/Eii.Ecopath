@@ -76,14 +76,14 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
             For Each varname As eVarNameFlags In Me.vars
 
                 'NMaps(Number of maps) = NLiving by default but can be Overriden by derived class
-                For iGrp As Integer = 0 To Me.NumMaps
+                For iIndex As Integer = Me.FirstMap To Me.LastMap
 
                     'SelectedGroups() MUST be set in implementation class. Currently in .Init() via cEcospaceBaseResultsWriter.setAllGroupsSelected(), setCatchSelected()...
                     'Or(potentially) via the UI's Group Selections
-                    If Me.SelectedGroups(iGrp) Then
+                    If Me.IsItemSelected(iIndex) Then
 
                         'GetFileName() groups by default, can overridden by derived classes.
-                        strFile = Me.GetFileName(varname, iGrp, Me.FileExtension(), tsData.iTimeStep)
+                        strFile = Me.GetFileName(varname, iIndex, Me.FileExtension(), tsData.iTimeStep)
                         ' Create directory any time; user may have deleted it during a run
                         If (Not String.IsNullOrWhiteSpace(strFile) AndAlso cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
                             'Handle file exceptions on a per file basis
@@ -93,7 +93,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
                             Try
                                 strm = New StreamWriter(strFile, False)
                                 If (strm IsNot Nothing) Then
-                                    Me.SaveASCFile(strm, tsData, iGrp, varname)
+                                    Me.SaveASCFile(strm, tsData, iIndex, varname)
                                     strm.Flush()
                                     strm.Close()
                                     strm = Nothing
@@ -106,7 +106,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
                             End Try
                         End If 'cFileUtils.IsDirectoryAvailable()
                     End If 'Me.SelectedGroups(iGrp)
-                Next iGrp
+                Next iIndex
             Next varname
 
         Catch ex As Exception
@@ -115,18 +115,52 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether the map with a given index should be written to disk. 
+    ''' By default, the <see cref="SelectedGroups"/> array is consulted, but this 
+    ''' can be overridden to check other arrays such as <see cref="SelectedFleets"/>
+    ''' </summary>
+    ''' <param name="iIndex"></param>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Function IsItemSelected(iIndex As Integer) As Boolean
+        Return Me.SelectedGroups(iIndex)
+    End Function
 
-    Protected Overridable Function NumMaps() As Integer
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the index of the first map to write. By default, 1 is returned.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Function FirstMap() As Integer
+        Return 1
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the index of the last map to write. By default, the number
+    ''' of living groups is returned.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Function LastMap() As Integer
         Return Me.m_core.m_EcopathData.NumLiving
     End Function
 
-    Protected Overridable Function GetFileName(varname As eVarNameFlags,
-                                                    iGrp As Integer,
-                                                    strExt As String,
-                                                    Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
-        Return MyBase.GetGroupFileName(varname, iGrp, strExt, iModelTimeStep)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the file name to write a map for. By default, the 
+    ''' <see cref="GetGroupFileName(eVarNameFlags, Integer, String, Integer)"/> 
+    ''' is returned.
+    ''' </summary>
+    ''' <param name="varname"></param>
+    ''' <param name="iIndex"></param>
+    ''' <param name="strExt"></param>
+    ''' <param name="iModelTimeStep"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Function GetFileName(varname As eVarNameFlags, iIndex As Integer, strExt As String, Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+        Return Me.GetGroupFileName(varname, iIndex, strExt, iModelTimeStep)
     End Function
-
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.EndWrite"/>
