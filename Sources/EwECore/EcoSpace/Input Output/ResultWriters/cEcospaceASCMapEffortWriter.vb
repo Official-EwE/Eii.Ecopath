@@ -36,19 +36,22 @@ Public Class cEcospaceASCMapEffortWriter
     Public Sub New()
         MyBase.New()
         Me.vars = New eVarNameFlags() {eVarNameFlags.EcospaceMapEffort}
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        ''For debugging CreateInstance exceptions
-        'Throw New Exception("Test Exception cEcospaceASCMapEffortWriter.New()")
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
     End Sub
 
     Public Overrides Sub Init(theCore As Object)
         MyBase.Init(theCore)
     End Sub
 
-    Protected Overrides Function NumMaps() As Integer
+    Protected Overrides Function FirstMap() As Integer
+        Return 1
+    End Function
+
+    Protected Overrides Function LastMap() As Integer
         Return Me.EcopathData.NumFleet
+    End Function
+
+    Protected Overrides Function IsItemSelected(iIndex As Integer) As Boolean
+        Return Me.SelectedFleets(iIndex)
     End Function
 
     Public Overrides ReadOnly Property DisplayName As String
@@ -58,10 +61,10 @@ Public Class cEcospaceASCMapEffortWriter
     End Property
 
     Protected Overrides Function GetFileName(varname As eVarNameFlags,
-                                             iGrp As Integer,
+                                             iIndex As Integer,
                                              strExt As String,
                                              Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
-        Return MyBase.GetFleetFileName(varname, iGrp, strExt, iModelTimeStep)
+        Return MyBase.GetFleetFileName(varname, iIndex, strExt, iModelTimeStep)
     End Function
 
 End Class

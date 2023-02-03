@@ -47,7 +47,6 @@ Public Class cEcospaceASCMapDiscardsWriter
         Me.SetCatchSelected()
     End Sub
 
-
     Public Overrides ReadOnly Property DisplayName As String
         Get
             Return My.Resources.CoreDefaults.ECOSPACE_WRITER_ASC_DISCARDS
