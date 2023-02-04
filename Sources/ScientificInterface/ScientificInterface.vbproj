@@ -2213,6 +2213,10 @@
       <Project>{ff2c3b42-6872-4841-96ae-b06d88da6f1c}</Project>
       <Name>EwEImportExportLayerDefinitionsPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEKeepSystemAwakePlugin\EwEKeepSystemAwakePlugin.vbproj">
+      <Project>{1b798fde-56cf-427f-9889-9930d34318e9}</Project>
+      <Name>EwEKeepSystemAwakePlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj">
       <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
       <Name>EwEMergeSplitGroupsPlugin</Name>
