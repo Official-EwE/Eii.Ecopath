@@ -44,7 +44,7 @@ Public Class cCoreStateMonitorMonitor
         SyncLock Me.m_timer
 
             ' Re-evaluate if keep alive situation needs to change
-            Dim bIsRunning As Boolean = Me.m_sm.IsBusy And My.Settings.KeepMonitorOn
+            Dim bIsRunning As Boolean = Me.m_sm.IsBusy And My.Settings.KeepOSAwake
 
             ' No changes? Ok, abort
             If (bIsRunning = Me.m_bKeepingAlive) Then Return
