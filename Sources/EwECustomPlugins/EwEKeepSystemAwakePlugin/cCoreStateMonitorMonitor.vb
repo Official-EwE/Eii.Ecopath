@@ -50,9 +50,11 @@ Public Class cCoreStateMonitorMonitor
             If (bIsRunning = Me.m_bKeepingAlive) Then Return
 
             If (Not Me.m_bKeepingAlive) Then
+                Debug.WriteLine("!!!! Start keeping OS awake")
                 Me.m_timer.Start()
                 Me.m_bKeepingAlive = True
             Else
+                Debug.WriteLine("!!!! Stop keeping OS awake")
                 Me.m_timer.Stop()
                 Me.m_bKeepingAlive = False
             End If
