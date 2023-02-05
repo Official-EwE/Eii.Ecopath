@@ -9373,7 +9373,7 @@ Public Class cCore
                 InitEcospaceOutputs()
                 InitEcotracerOutputs()
 
-                If CheckHabitats() Then
+                If CheckHabitats() And CheckVariousParameters() Then
                     If CheckMigrationMapsSet() Then
                         If CheckExternalSpatialTemporalData() Then
 
@@ -9538,8 +9538,7 @@ Public Class cCore
         Try
 
             'get the groups that are below the limit
-            Dim FailedGroups As List(Of Integer)
-            FailedGroups = Me.m_Ecospace.GetHabCapsLessThen(limits)
+            Dim FailedGroups() As Integer = Me.m_Ecospace.GetHabCapsLessThen(limits)
 
             'send a message if there are groups that failed the HabCap test
             If FailedGroups.Count > 0 Then
@@ -9549,11 +9548,9 @@ Public Class cCore
 
                 For Each igrp In FailedGroups
                     Dim avgCap As Single = Me.m_EcospaceData.TotHabCap(igrp) / Me.m_EcospaceData.nWaterCells * 100
-
                     strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP_GROUP, Me.m_EcopathData.GroupName(igrp), avgCap)
                     vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg,
                                              eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.Ecospace, igrp)
-
                     msg.AddVariable(vs)
                 Next
 
@@ -9569,7 +9566,46 @@ Public Class cCore
 
         End Try
 
+        Return True
 
+    End Function
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Check if ecospace parameters may cause trouble.
+    ''' </summary>
+    ''' <returns>True if all ok, False otherwise</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function CheckVariousParameters() As Boolean
+
+        Dim msg As cFeedbackMessage = Nothing
+        Dim vs As cVariableStatus = Nothing
+
+        Try
+            Dim FailedFleets() As Integer = Me.m_Ecospace.GetEffPowerLessThan(0.01!)
+            If FailedFleets.Count > 0 Then
+                Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWEFFPOWER
+                msg = New cFeedbackMessage(strMsg, eCoreComponentType.Ecospace, eMessageType.ErrorEncountered, eMessageImportance.Warning, eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+
+                For Each iflt As Integer In FailedFleets
+                    Dim flt As cEcospaceFleetInput = Me.EcospaceFleetInputs(iflt)
+                    strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_LOWEFFPOWER_FLEET, Me.m_EcopathData.GroupName(iflt), Me.m_EcospaceData.EffPower(iflt))
+                    vs = New cVariableStatus(flt, eStatusFlags.CoreHighlight, strMsg, eVarNameFlags.EffectivePower)
+                    msg.AddVariable(vs)
+                Next
+
+                Me.m_publisher.SendMessage(msg)
+
+                If msg.Reply = eMessageReply.NO Then
+                    Return False
+                End If
+
+            End If
+
+        Catch ex As Exception
+
+        End Try
         Return True
 
     End Function
