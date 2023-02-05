@@ -1491,4 +1491,10 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Management Strategy Evaluation encountered an error. {0}</value>
     <comment>{0}=error</comment>
   </data>
+  <data name="ECOSPACE_LOWEFFPOWER" xml:space="preserve">
+    <value>The following fleets have low Effort Power, effectively disabling effort distributions. Do you want to continue?</value>
+  </data>
+  <data name="ECOSPACE_LOWEFFPOWER_FLEET" xml:space="preserve">
+    <value>Fleet {0} has a effort power of {1}</value>
+  </data>
 </root>

@@ -1166,6 +1166,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The following fleets have low Effort Power, effectively disabling effort distributions. Do you want to continue?.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_LOWEFFPOWER() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LOWEFFPOWER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fleet {0} has a effort power of {1}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_LOWEFFPOWER_FLEET() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LOWEFFPOWER_FLEET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to WARNING: The following group(s) have a low average habitat capacity. Do you want to continue?.
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_LOWHABITAT_CAP() As String

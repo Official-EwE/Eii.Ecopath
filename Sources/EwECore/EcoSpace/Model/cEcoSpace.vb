@@ -8233,8 +8233,22 @@ exitline:
 
     End Function
 
+    ''' <summary>
+    ''' Return the fleet indices with effort power lower than a stipulated limit.
+    ''' </summary>
+    ''' <param name="limit"></param>
+    ''' <returns></returns>
+    Public Function GetEffPowerLessThan(limit As Single) As Integer()
+        Dim failedIndexes As New List(Of Integer)
+        For iflt As Integer = 1 To Me.EcoSpaceData.nFleets
+            If Me.EcoSpaceData.EffPower(iflt) <= limit Then
+                failedIndexes.Add(iflt)
+            End If
+        Next
+        Return failedIndexes.ToArray()
+    End Function
 
-    Public Function GetHabCapsLessThen(ByVal LowerLimits() As Single) As List(Of Integer)
+    Public Function GetHabCapsLessThen(ByVal LowerLimits() As Single) As Integer()
 
         Me.UpdateDepthMap()
 
@@ -8261,7 +8275,7 @@ exitline:
             End If
         Next
 
-        Return failedIndexes
+        Return failedIndexes.ToArray()
 
     End Function
 
