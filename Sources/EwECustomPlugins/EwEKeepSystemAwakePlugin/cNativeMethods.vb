@@ -17,8 +17,12 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
 
+Option Strict On
 Imports System.Runtime.InteropServices
+
+#End Region ' Imports
 
 ''' <summary>
 ''' https://stackoverflow.com/questions/57850624/prevent-a-computer-from-entering-sleep-standby-hibernate-while-program-is-runnin
