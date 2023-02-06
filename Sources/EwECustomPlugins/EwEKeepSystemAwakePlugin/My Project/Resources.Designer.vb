@@ -61,7 +61,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to OS sleep settings.
+        '''  Looks up a localized string similar to Windows integration.
         '''</summary>
         Friend ReadOnly Property Caption() As String
             Get

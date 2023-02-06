@@ -126,7 +126,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdr.Size" type="System.Drawing.Size, System.Drawing">
-    <value>236, 18</value>
+    <value>293, 18</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdr.TabIndex" type="System.Int32, mscorlib">
@@ -157,13 +157,13 @@
     <value>3, 44</value>
   </data>
   <data name="m_cbKeepOSAwake.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 17</value>
+    <value>133, 17</value>
   </data>
   <data name="m_cbKeepOSAwake.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="m_cbKeepOSAwake.Text" xml:space="preserve">
-    <value>Keep OS awake</value>
+    <value>Keep Windows &amp;awake</value>
   </data>
   <data name="&gt;&gt;m_cbKeepOSAwake.Name" xml:space="preserve">
     <value>m_cbKeepOSAwake</value>
@@ -214,13 +214,13 @@
     <value>3, 67</value>
   </data>
   <data name="m_cbKeepMonitorOn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 17</value>
+    <value>146, 17</value>
   </data>
   <data name="m_cbKeepMonitorOn.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="m_cbKeepMonitorOn.Text" xml:space="preserve">
-    <value>Keep monitor on</value>
+    <value>Also, keep the monitor &amp;on</value>
   </data>
   <data name="&gt;&gt;m_cbKeepMonitorOn.Name" xml:space="preserve">
     <value>m_cbKeepMonitorOn</value>
@@ -241,7 +241,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>236, 89</value>
+    <value>293, 89</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucConfig</value>
