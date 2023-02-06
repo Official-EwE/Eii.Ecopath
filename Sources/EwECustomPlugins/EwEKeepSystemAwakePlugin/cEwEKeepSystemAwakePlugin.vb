@@ -107,8 +107,8 @@ Public Class cEwEKeepSystemAwakePlugin
 
 #Region " UI callback "
 
-    Friend Sub Prod()
-        Me.m_mon.Prod()
+    Friend Sub UpdateKeepAliveState()
+        Me.m_mon.UpdateKeepAliveState()
     End Sub
 
 #End Region ' UI callback

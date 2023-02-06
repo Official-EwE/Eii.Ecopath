@@ -16,8 +16,20 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
+
+Option Strict On
 Imports ScientificInterfaceShared.Controls
 
+#End Region ' Imports
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Minimalistic configuration UI for this plug-in. The UI is flagged as an 
+''' <see cref="IOptionsPage"/>, making it discoverable by, and usable in, the 
+''' EwE options interface.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class ucConfig
     Implements IOptionsPage
 
@@ -55,7 +67,7 @@ Public Class ucConfig
         My.Settings.KeepOSAwake = Me.m_cbKeepOSAwake.Checked
         My.Settings.KeepMonitorOn = Me.m_cbKeepMonitorOn.Checked
         Me.Persist()
-        Return True
+        Return IOptionsPage.eApplyResultType.Success
     End Function
 
     Public Function CanSetDefaults() As Boolean Implements IOptionsPage.CanSetDefaults
@@ -73,7 +85,7 @@ Public Class ucConfig
 
     Private Sub Persist()
         My.Settings.Save()
-        Me.m_plugin.Prod()
+        Me.m_plugin.UpdateKeepAliveState()
     End Sub
 
 #End Region ' Internals
