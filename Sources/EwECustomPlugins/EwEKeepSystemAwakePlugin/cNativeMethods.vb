@@ -31,7 +31,7 @@ Friend Class cNativeMethods
 
     Public Shared Sub PreventSleep(bMonitor As Boolean)
         Dim flags As eExecutionState = eExecutionState.ES_CONTINUOUS Or eExecutionState.ES_SYSTEM_REQUIRED
-        If bMonitor Then flags += eExecutionState.ES_DISPLAY_REQUIRED
+        If bMonitor Then flags = flags Or eExecutionState.ES_DISPLAY_REQUIRED
         SetThreadExecutionState(flags)
     End Sub
 
