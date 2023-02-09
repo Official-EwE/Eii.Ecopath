@@ -1,4 +1,4 @@
-﻿' ===============================================================================
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -27,10 +27,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("EwEKeepSystemAwakePlugin")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("EwEKeepSystemAwakePlugin")>
+<Assembly: AssemblyTitle("EwEWindowsIntegrationPlugin")>
+<Assembly: AssemblyDescription("A plug-in that integrates EwE into limited aspects of Windows")>
+<Assembly: AssemblyCompany("Ecopath International Initiative")>
+<Assembly: AssemblyProduct("EwEWindowsIntegrationPlugin")>
 <Assembly: AssemblyCopyright("Copyright ©  2023")>
 <Assembly: AssemblyTrademark("")>
 
@@ -50,5 +50,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("6.7.0.18229")>
+<Assembly: AssemblyFileVersion("6.7.0.18229")>

@@ -88,9 +88,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.EwEKeepSystemAwakePlugin.My.MySettings
+        Friend ReadOnly Property Settings() As Global.EwEWindowsIntegrationPlugin.My.MySettings
             Get
-                Return Global.EwEKeepSystemAwakePlugin.My.MySettings.Default
+                Return Global.EwEWindowsIntegrationPlugin.My.MySettings.Default
             End Get
         End Property
     End Module

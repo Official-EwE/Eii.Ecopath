@@ -2205,6 +2205,10 @@
       <Project>{6536c62f-3ee0-48f6-83c7-fadb5f6ae6aa}</Project>
       <Name>EwEEcotracerEnvDriverPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEIBMAgeStructureResultsWriter\EwEIBMAgeStructureResultsWriterPlugin.vbproj">
+      <Project>{f08c7b56-076e-4e1b-bb2e-83f53cae262f}</Project>
+      <Name>EwEIBMAgeStructureResultsWriterPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEImportDietsPlugin\EwEImportDietsPlugin.vbproj">
       <Project>{289c6948-83e3-4c4c-be02-04d713e9d3f3}</Project>
       <Name>EwEImportDietsPlugin</Name>
@@ -2212,10 +2216,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj">
       <Project>{ff2c3b42-6872-4841-96ae-b06d88da6f1c}</Project>
       <Name>EwEImportExportLayerDefinitionsPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEKeepSystemAwakePlugin\EwEKeepSystemAwakePlugin.vbproj">
-      <Project>{1b798fde-56cf-427f-9889-9930d34318e9}</Project>
-      <Name>EwEKeepSystemAwakePlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj">
       <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
@@ -2280,6 +2280,10 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj">
       <Project>{1e820a5f-bd1a-4ece-9656-6824cf2d537e}</Project>
       <Name>EwEValueChainPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEWindowsIntegrationPlugin\EwEWindowsIntegrationPlugin.vbproj">
+      <Project>{1b798fde-56cf-427f-9889-9930d34318e9}</Project>
+      <Name>EwEWindowsIntegrationPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj">
       <Project>{4b88bf52-04a7-476b-b2f5-153758a62935}</Project>

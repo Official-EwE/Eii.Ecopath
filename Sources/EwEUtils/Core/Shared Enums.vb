@@ -3013,6 +3013,9 @@ Namespace Core
         InvalidModel_QB0_Generic
         InvalidModel_B_Detritus
         InvalidModel_Stanza_Area
+        InvalidModel_EffPower0
+        InvalidModel_HabCapLow
+        InvalidModel_MigMapsMissing
 
         ''' <summary>MSE has completed a model run of some sort</summary>
         MSERunCompleted

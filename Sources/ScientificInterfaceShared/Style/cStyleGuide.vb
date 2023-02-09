@@ -328,6 +328,7 @@ Namespace Style
         ''' Public enumerator stating the visual feedback required for rendering a value.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Flags>
         Public Enum eStyleFlags As Integer
 
             '-----------------------------------------------------------------
