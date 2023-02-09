@@ -958,6 +958,14 @@ Namespace Samples
             Dim iEcospace As Integer = Me.m_core.ActiveEcospaceScenarioIndex
             Dim iEcotracer As Integer = Me.m_core.ActiveEcotracerScenarioIndex
 
+            Dim tracerdata As cContaminantTracerDataStructures = Me.m_core.m_tracerData
+
+            Dim bTracerSim As Boolean = tracerdata.EcoSimConSimOn
+            tracerdata.EcoSimConSimOn = (iEcotracer > 0)
+
+            Dim bTracerSpace As Boolean = tracerdata.EcoSpaceConSimOn
+            tracerdata.EcoSpaceConSimOn = (iEcotracer > 0)
+
             Dim samples As cEcopathSample() = Me.m_data.m_samples.ToArray()
             If (Me.m_bRandomize) Then samples.Shuffle()
 
@@ -1012,6 +1020,10 @@ Namespace Samples
                 End Try
 
                 Me.LogEvent(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_COMPLETED, eMessageImportance.Information)
+
+                ' Restore tracer
+                tracerdata.EcoSimConSimOn = bTracerSim
+                tracerdata.EcoSpaceConSimOn = bTracerSpace
 
                 Me.RestoreEcopath()
                 Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)

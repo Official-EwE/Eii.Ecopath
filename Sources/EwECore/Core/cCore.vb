@@ -9543,14 +9543,13 @@ Public Class cCore
             'send a message if there are groups that failed the HabCap test
             If FailedGroups.Count > 0 Then
                 Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP
-                msg = New cFeedbackMessage(strMsg, eCoreComponentType.Ecospace, eMessageType.ErrorEncountered, eMessageImportance.Warning,
-                                                                    eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+                msg = New cFeedbackMessage(strMsg, eCoreComponentType.Ecospace, eMessageType.InvalidModel_HabCapLow, eMessageImportance.Warning, eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+                msg.Suppressable = True
 
                 For Each igrp In FailedGroups
                     Dim avgCap As Single = Me.m_EcospaceData.TotHabCap(igrp) / Me.m_EcospaceData.nWaterCells * 100
                     strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP_GROUP, Me.m_EcopathData.GroupName(igrp), avgCap)
-                    vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg,
-                                             eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.Ecospace, igrp)
+                    vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.Ecospace, igrp)
                     msg.AddVariable(vs)
                 Next
 
@@ -9586,12 +9585,13 @@ Public Class cCore
             Dim FailedFleets() As Integer = Me.m_Ecospace.GetEffPowerLessThan(0.01!)
             If FailedFleets.Count > 0 Then
                 Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWEFFPOWER
-                msg = New cFeedbackMessage(strMsg, eCoreComponentType.Ecospace, eMessageType.ErrorEncountered, eMessageImportance.Warning, eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+                msg = New cFeedbackMessage(strMsg, eCoreComponentType.Ecospace, eMessageType.InvalidModel_EffPower0, eMessageImportance.Warning, eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+                msg.Suppressable = True
 
                 For Each iflt As Integer In FailedFleets
                     Dim flt As cEcospaceFleetInput = Me.EcospaceFleetInputs(iflt)
                     strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_LOWEFFPOWER_FLEET, Me.m_EcopathData.GroupName(iflt), Me.m_EcospaceData.EffPower(iflt))
-                    vs = New cVariableStatus(flt, eStatusFlags.CoreHighlight, strMsg, eVarNameFlags.EffectivePower)
+                    vs = New cVariableStatus(flt, eStatusFlags.MissingParameter, strMsg, eVarNameFlags.EffectivePower)
                     msg.AddVariable(vs)
                 Next
 
@@ -9618,14 +9618,13 @@ Public Class cCore
 
             If Me.m_Ecospace.getMissingMigrationMaps(MigMapsSet) > 0 Then
                 Dim strMsg As String = My.Resources.CoreMessages.MIGRATION_MISSING_MAPS
-                msg = New cFeedbackMessage(strMsg, eCoreComponentType.Ecospace, eMessageType.ErrorEncountered, eMessageImportance.Warning,
-                                                                    eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+                msg = New cFeedbackMessage(strMsg, eCoreComponentType.Ecospace, eMessageType.InvalidModel_MigMapsMissing, eMessageImportance.Warning, eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+                msg.Suppressable = True
+
                 For igrp As Integer = 1 To Me.nGroups
                     If Not MigMapsSet(igrp) Then
                         strMsg = cStringUtils.Localize(My.Resources.CoreMessages.MIGRATION_MISSING_GROUPS, Me.m_EcopathData.GroupName(igrp))
-                        vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg,
-                                                 eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.Ecospace, igrp)
-
+                        vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.Ecospace, igrp)
                         msg.AddVariable(vs)
                     End If
                 Next
