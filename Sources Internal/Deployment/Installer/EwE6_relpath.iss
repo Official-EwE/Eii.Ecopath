@@ -4,7 +4,7 @@
 
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 1
+#define Compile64Bit 0
 
 ; Optional features
 #define RobertsBank 0
@@ -36,7 +36,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.18176
+  VersionInfoVersion=6.7.0.18236
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -158,6 +158,7 @@ Source: "{#DefRoot}{#DefSrc}\UserGuide\Ecoengineer user guide.pdf"; DestDir: "{a
 Source: "{#DefRoot}{#DefSrc}\EwEEcotracerEnvDriverPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\analysis\ecotracer
 Source: "{#DefRoot}{#DefSrc}\EwEIBMAgeStructureResultsWriterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 ;Source: "{#DefRoot}{#DefSrc}\EcospaceMOResultsWriter.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
+Source: "{#DefRoot}{#DefSrc}\EwEWindowsIntegrationPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\winintegration
 
 ; - PRO FEATURES --
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
@@ -176,7 +177,6 @@ Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.Forms.dll"; DestDir: "{app}\Pl
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Tools.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Topology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\EwEWindowsIntegrationPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\winintegration
 
 #if Compile64Bit == 0
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cairo.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
