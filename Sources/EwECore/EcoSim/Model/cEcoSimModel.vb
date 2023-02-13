@@ -355,7 +355,6 @@ Namespace Ecosim
 
                 Me.BaseValueOfHarvest()
                 Me.BaseValueOfFishMGear()
-
                 Me.SetRelativeCatchabilities()
 
 #If DEBUG Then
@@ -391,8 +390,8 @@ Namespace Ecosim
                      eTimeSeriesType.Catchabilities,
                      eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel,
                      eTimeSeriesType.EffortCost, eTimeSeriesType.EffortCostRel,
-                    eTimeSeriesType.SailCost, eTimeSeriesType.SailCostRel,
-                    eTimeSeriesType.FixedCost, eTimeSeriesType.FixedCostRel
+                     eTimeSeriesType.SailCost, eTimeSeriesType.SailCostRel,
+                     eTimeSeriesType.FixedCost, eTimeSeriesType.FixedCostRel
                     Return True
             End Select
             Return False
@@ -901,7 +900,7 @@ Namespace Ecosim
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For iyr = 1 To NumberOfYears + ExtraTime
                 'Constrain the Ecosim year index to the run length passed in as the arguement NumberOfYears
-                iyf = If(iyr <= NumberOfYears, iyr, NumberOfYears)
+                iyf = Math.Min(iyr, NumberOfYears)
 
                 'set Fgear() fishing effort at timestep that can be modified by a search routine
                 Me.SetFGear(Fgear, RelFopt, QYear, iyr)
@@ -943,10 +942,12 @@ Namespace Ecosim
 
                     itime = itime + 1
                     Me.TimeNow = itime
+                    Dim itt As Integer = Math.Min(itime, NumberOfYears * Me.StepsPerYear)
 
                     'set QMult() multiplier (density dependent catchability) as a function of the current biomass for this timestep
                     Me.setDenDepCatchMult(Me.BB)
 
+                    Me.setForcedCatchabilities(itt, iyr, QYear)
                     Me.m_Data.SetRelQToT(itime, True)
 
                     If (Me.m_pluginManager IsNot Nothing) Then Me.m_pluginManager.EcosimBeginTimeStep(Me.BB, Me.m_Data, itime)
@@ -990,13 +991,6 @@ Namespace Ecosim
                     'Copy FishRateGear() for this time step into the zero time element for SimDetritus
                     For i = 1 To Me.m_Data.nGear : Me.m_Data.FishRateGear(i, 0) = Me.m_Data.FishRateGear(i, itime) : Next
 
-                    Dim itt As Integer
-                    If itime < NumberOfYears * Me.StepsPerYear Then
-                        itt = itime
-                    Else
-                        itt = NumberOfYears * Me.StepsPerYear
-                    End If
-
                     'Set tval(nForcingShapes) to the forcing function values/multipliers for this timestep
                     Me.settval(itt)
 
@@ -1008,7 +1002,6 @@ Namespace Ecosim
                     Me.setForcedBiomass(itt, iyr)
 
                     Me.setForcedDiscards(itt, iyr, QYear)
-                    Me.setForcedCatchabilities(itt, iyr, QYear)
 
                     Me.clearMonthlyStanzaVars()
                     For irk4 As Integer = 1 To Me.m_Data.StepsPerMonth
@@ -1557,7 +1550,6 @@ Namespace Ecosim
 
         End Sub
 
-
         Private Sub setForcedCatchabilities(ByVal iModelTimeStep As Integer, iYear As Integer, QYear() As Single)
 
             Dim bForced As Boolean = False
@@ -1574,7 +1566,7 @@ Namespace Ecosim
             Next igrp
 
             If bForced Then
-                Me.SetFtimeFromGear(iModelTimeStep, QYear, False)
+                'Me.SetFtimeFromGear(iModelTimeStep, QYear, False)
             End If
 
         End Sub
