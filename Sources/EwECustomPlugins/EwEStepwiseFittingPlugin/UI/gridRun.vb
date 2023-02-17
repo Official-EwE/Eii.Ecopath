@@ -26,6 +26,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Linq
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
@@ -134,6 +135,8 @@ Public Class gridRun
         Dim iterations As ISFPIteration() = Me.m_manager.Iterations
         Dim iteration As ISFPIteration = Nothing
         Dim cell As cEwECellBase = Nothing
+
+        If iterations.Count = 0 Then Return
 
         Me.Rows.InsertRange(1, iterations.Length)
 
