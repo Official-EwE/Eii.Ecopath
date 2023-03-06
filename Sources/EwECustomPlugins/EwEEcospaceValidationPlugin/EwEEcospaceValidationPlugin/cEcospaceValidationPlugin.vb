@@ -59,7 +59,7 @@ Public Class cEcospaceValidationPlugin
 
     Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
-            Return "Ecospace validation"
+            Return My.Resources.CAPTION
         End Get
     End Property
 
