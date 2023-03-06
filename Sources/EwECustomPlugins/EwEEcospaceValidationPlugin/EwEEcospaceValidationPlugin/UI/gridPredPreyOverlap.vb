@@ -27,6 +27,7 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
+
 Public Class gridPredPreyOverlap
     Inherits cEwEGrid
 
@@ -63,7 +64,7 @@ Public Class gridPredPreyOverlap
             Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
             If (i <= Me.Core.nLivingGroups) Then
-                Me(0, i) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                Me(0, i + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             End If
 
         Next
@@ -81,46 +82,6 @@ Public Class gridPredPreyOverlap
 
     End Sub
 
-    Public Sub UpdateData(data As Double(,))
-
-        Dim avgMin As Single = If(data Is Nothing, 0, Single.MaxValue)
-        Dim avgMax As Single = 0
-
-        For j As Integer = 1 To Me.Core.nLivingGroups
-            Dim min As Single = If(data Is Nothing, 0, Single.MaxValue)
-            Dim tot As Single = 0
-            Dim max As Single = 0
-            Dim n As Integer = 0
-            Dim pred As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(j)
-
-            For i As Integer = 1 To Me.Core.nGroups
-                If (pred.DietComp(i) > 0) Then
-                    Dim val As Single = 0
-                    If (data IsNot Nothing) Then
-                        ' pred x prey
-                        val = CSng(data(j, i))
-                    End If
-                    min = Math.Min(min, val)
-                    max = Math.Max(max, val)
-                    tot += val
-                    Me(i, j + 1).Value = val
-                End If
-            Next
-
-            Dim mean As Single = tot / Math.Max(n, 1)
-            avgMin = Math.Min(avgMin, mean)
-            avgMax = Math.Max(avgMax, mean)
-
-            Me(Me.Core.nGroups + 1, j + 1).Value = If(n = 0, 0, min)
-            Me(Me.Core.nGroups + 2, j + 1).Value = If(n = 0, 0, mean)
-            Me(Me.Core.nGroups + 3, j + 1).Value = If(n = 0, 0, max)
-        Next
-
-        Me.m_viz.Min = avgMin
-        Me.m_viz.Max = avgMax
-
-    End Sub
-
     Protected Overrides Sub FillData()
 
         Dim styleNull As eStyleFlags = eStyleFlags.OK Or eStyleFlags.NotEditable Or eStyleFlags.Null
@@ -134,18 +95,62 @@ Public Class gridPredPreyOverlap
             Dim pred As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(j)
             For i As Integer = 1 To Me.Core.nGroups
                 Dim style As eStyleFlags = If(pred.DietComp(i) > 0, styleDiet, styleNull)
-                Dim cell As New cEwECell(0, style)
-                cell.SuppressZero(0) = True
+                Dim cell As New cEwECell(0, GetType(Single), style)
+                cell.SuppressZero(0.0!) = True
                 If i = j Then cell.VisualModel = visDiagonal
-                Me(i, j) = cell
+                Me(i, j + 1) = cell
             Next i
             For i As Integer = 1 To 3
-                Dim cell As New cEwECell(0, styleDiet)
+                Dim cell As New cEwECell(0, GetType(Single), styleDiet)
                 If i = 2 Then cell.VisualModel = Me.m_viz
                 Me(Me.Core.nGroups + i, j + 1) = cell
             Next i
         Next j
 
     End Sub
+
+    Public Sub UpdateData(data As Double(,))
+
+        Dim avgMin As Single = If(data Is Nothing, 0, Single.MaxValue)
+        Dim avgMax As Single = 0
+
+        For j As Integer = 1 To Me.Core.nLivingGroups
+            Dim min As Single = If(data Is Nothing, 0, Single.MaxValue)
+            Dim tot As Single = 0
+            Dim max As Single = 0
+            Dim n As Integer = 0
+            Dim pred As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(j)
+
+            If (pred.IsConsumer) Then
+                For i As Integer = 1 To Me.Core.nGroups
+                    If (pred.DietComp(i) > 0) Then
+                        Dim val As Single = 0
+                        If (data IsNot Nothing) Then
+                            ' pred x prey
+                            val = CSng(data(j, i))
+                            n += 1
+                            min = Math.Min(min, val)
+                            max = Math.Max(max, val)
+                            tot += val
+                            Me(i, j + 1).Value = val
+                        End If
+                    End If
+                Next
+
+                Dim mean As Single = tot / Math.Max(n, 1)
+                avgMin = Math.Min(avgMin, mean)
+                avgMax = Math.Max(avgMax, mean)
+
+                Me(Me.Core.nGroups + 1, j + 1).Value = If(n = 0, 0, min)
+                Me(Me.Core.nGroups + 2, j + 1).Value = If(n = 0, 0, mean)
+                Me(Me.Core.nGroups + 3, j + 1).Value = If(n = 0, 0, max)
+            End If
+        Next
+
+        Me.m_viz.Min = avgMin
+        Me.m_viz.Max = avgMax
+
+    End Sub
+
 
 End Class

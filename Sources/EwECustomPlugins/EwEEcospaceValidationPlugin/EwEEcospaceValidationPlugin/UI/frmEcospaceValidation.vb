@@ -18,6 +18,7 @@
 '
 Option Explicit On
 Imports System.Windows.Forms
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Window
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 
@@ -39,6 +40,8 @@ Public Class frmEcospaceValidation
         Me.InitializeComponent()
 
         Me.UIContext = uic
+        Me.Text = My.Resources.CAPTION
+        Me.TabText = My.Resources.CAPTION
 
     End Sub
 
