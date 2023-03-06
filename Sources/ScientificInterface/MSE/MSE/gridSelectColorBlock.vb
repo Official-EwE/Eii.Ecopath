@@ -192,6 +192,12 @@ Public Class gridSelectColorBlock
 
 #Region " Internals "
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Protected Overrides Sub InitStyle()
 
         If Me.m_parentSelector Is Nothing Then Return

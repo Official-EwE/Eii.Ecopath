@@ -3503,6 +3503,13 @@ Public Class cCore
         End Get
     End Property
 
+    Public ReadOnly Property EcospaceDataStructures As cEcospaceDataStructures
+        Get
+            Return Me.m_EcospaceData
+        End Get
+    End Property
+
+
     ''' <summary>Flag to affect which groups to auto-save data for.</summary>
     ''' <remarks>Values are set by the UI. This logic is currently only used by the Ecospace result writers.</remarks>
     Public Property SelectedGroups As Boolean() = Nothing
@@ -9259,7 +9266,7 @@ Public Class cCore
     ''' <param name="iTime">The Ecospace time step to convert.</param>
     ''' <returns>The absolute time represented by a time step.</returns>
     ''' <remarks>The absolute time is based on the <see cref="EcosimFirstYear"/>, to
-    ''' which the time represnted by a given time step is added. The resulting 
+    ''' which the time represented by a given time step is added. The resulting 
     ''' date is rounded to the first day of the month.</remarks>
     ''' -------------------------------------------------------------------
     Public Function EcospaceTimestepToAbsoluteTime(iTime As Integer) As DateTime

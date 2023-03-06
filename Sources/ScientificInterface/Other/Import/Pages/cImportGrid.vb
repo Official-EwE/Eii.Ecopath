@@ -99,6 +99,12 @@ Namespace Import
 
 #Region " Internal overrides "
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Initialize the grid.

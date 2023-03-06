@@ -552,7 +552,6 @@ Partial Class dlgManageTimeSeries
         Me.m_gridWeights.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridWeights.GridToolTipActive = True
         Me.m_gridWeights.IsLayoutSuspended = False
-        Me.m_gridWeights.IsOutputGrid = True
         Me.m_gridWeights.Location = New System.Drawing.Point(0, 0)
         Me.m_gridWeights.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
         Me.m_gridWeights.Name = "m_gridWeights"

@@ -82,7 +82,7 @@ Namespace Ecosim
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
-            Me.m_grid.IsOutputGrid = True
+            
             Me.m_grid.IsPredatorGrid = ScientificInterfaceShared.Definitions.eGroupFilter.Producer
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _

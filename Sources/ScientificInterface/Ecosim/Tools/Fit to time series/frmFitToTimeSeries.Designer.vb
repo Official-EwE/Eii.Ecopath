@@ -199,7 +199,7 @@ Namespace Ecosim
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
-            Me.m_grid.IsOutputGrid = True
+            
             Me.m_grid.Location = New System.Drawing.Point(0, 84)
             Me.m_grid.Manager = Nothing
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
@@ -256,7 +256,6 @@ Namespace Ecosim
             Me.m_gridOutput.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridOutput.GridToolTipActive = True
             Me.m_gridOutput.IsLayoutSuspended = False
-            Me.m_gridOutput.IsOutputGrid = True
             Me.m_gridOutput.Location = New System.Drawing.Point(0, 234)
             Me.m_gridOutput.Margin = New System.Windows.Forms.Padding(0)
             Me.m_gridOutput.Name = "m_gridOutput"

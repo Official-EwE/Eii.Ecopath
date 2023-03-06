@@ -198,7 +198,7 @@ Partial Class frmTFMpolicy
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.HarvestControlRule = Nothing
         Me.m_grid.IsLayoutSuspended = False
-        Me.m_grid.IsOutputGrid = False
+        
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SelectedStrategy = Nothing
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -280,7 +280,6 @@ Partial Class frmTFMpolicy
         Me.m_gridRegulations.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridRegulations.GridToolTipActive = True
         Me.m_gridRegulations.IsLayoutSuspended = False
-        Me.m_gridRegulations.IsOutputGrid = False
         Me.m_gridRegulations.Name = "m_gridRegulations"
         Me.m_gridRegulations.SelectedStrategy = Nothing
         Me.m_gridRegulations.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _

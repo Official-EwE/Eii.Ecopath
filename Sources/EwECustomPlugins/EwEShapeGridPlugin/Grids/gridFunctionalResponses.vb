@@ -68,6 +68,12 @@ Public Class gridFunctionalResponses
         End Get
     End Property
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
     Protected Overrides Sub FillData()
 
         If (Me.UIContext Is Nothing) Then Return

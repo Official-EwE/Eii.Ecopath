@@ -154,7 +154,7 @@ Namespace Ecosim
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
-            Me.m_grid.IsOutputGrid = True
+            
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SelectedGroupIndex = -1

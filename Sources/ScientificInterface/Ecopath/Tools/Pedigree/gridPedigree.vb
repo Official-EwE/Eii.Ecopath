@@ -325,6 +325,12 @@ Namespace Ecopath.Tools
 
 #Region " Grid overrides "
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cEwEGrid.InitLayout"/>
         ''' -------------------------------------------------------------------

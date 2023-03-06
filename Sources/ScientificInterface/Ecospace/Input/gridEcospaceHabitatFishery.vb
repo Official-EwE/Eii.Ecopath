@@ -59,6 +59,12 @@ Namespace Ecospace
 
 #Region " Overrides "
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
         Public Overrides Property UIContext As cUIContext
             Get
                 Return MyBase.UIContext

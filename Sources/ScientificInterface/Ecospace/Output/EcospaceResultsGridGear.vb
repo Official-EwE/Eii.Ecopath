@@ -70,6 +70,12 @@ Namespace Ecospace
 
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         'This method init the cells, its visual and data models. 
         Protected Overrides Sub FillData()
 

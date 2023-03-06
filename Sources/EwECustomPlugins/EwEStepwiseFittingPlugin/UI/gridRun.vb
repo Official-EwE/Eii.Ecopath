@@ -79,6 +79,12 @@ Public Class gridRun
 
     End Sub
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Friend ReadOnly Property SelectedIteration As ISFPIteration
         Get
             Dim iRow As Integer = Me.SelectedRow

@@ -39,7 +39,15 @@ Public Class gridFleetLPEffortBounds
         Me.Text = My.Resources.CAPTION_MSEFLEETREF
     End Sub
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Protected Overrides Sub InitStyle()
+
+        ' ToDo: globalize this
 
         MyBase.InitStyle()
 

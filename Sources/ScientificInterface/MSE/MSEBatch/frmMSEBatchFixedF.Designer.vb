@@ -177,7 +177,6 @@ Partial Class frmMSEBatchFixedF
         Me.grdGroups.GridToolTipActive = True
         Me.grdGroups.iCurIter = 1
         Me.grdGroups.IsLayoutSuspended = False
-        Me.grdGroups.IsOutputGrid = True
         Me.grdGroups.Location = New System.Drawing.Point(0, 28)
         Me.grdGroups.Name = "grdGroups"
         Me.grdGroups.Size = New System.Drawing.Size(874, 406)
@@ -245,7 +244,6 @@ Partial Class frmMSEBatchFixedF
         Me.grdIters.GridToolTipActive = True
         Me.grdIters.iSelGroup = 1
         Me.grdIters.IsLayoutSuspended = False
-        Me.grdIters.IsOutputGrid = True
         Me.grdIters.Location = New System.Drawing.Point(0, 29)
         Me.grdIters.Name = "grdIters"
         Me.grdIters.Size = New System.Drawing.Size(871, 402)

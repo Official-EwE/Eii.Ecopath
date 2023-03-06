@@ -41,6 +41,12 @@ Namespace Ecosim
         Public Sub New()
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
         Public Overrides Property UIContext As cUIContext
             Get
                 Return MyBase.UIContext

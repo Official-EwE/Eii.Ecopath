@@ -76,6 +76,12 @@ Public Class gridEditMultiStanza
 
 #Region " Internals "
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Public Sub CalculateStanzaParameters()
         ' Sanity check
         If (Me.m_stanzagroup Is Nothing) Then Return

@@ -49,6 +49,12 @@ Namespace Ecotracer
             Me.FixedColumnWidths = False
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()

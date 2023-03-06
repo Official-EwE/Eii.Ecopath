@@ -66,6 +66,12 @@ Namespace Ecospace
             Me.m_bmCell = New BehaviorModels.CustomEvents()
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
             Get
                 Return MyBase.UIContext
@@ -135,7 +141,7 @@ Namespace Ecospace
 
                 bHasConnections = (adt.Connections().Count > 0)
 
-                If (((adt.VarName = Me.m_filterVarName) Or (Me.m_filterVarName = eVarNameFlags.NotSet)) And _
+                If (((adt.VarName = Me.m_filterVarName) Or (Me.m_filterVarName = eVarNameFlags.NotSet)) And
                     (bHasConnections Or (Me.m_bOnlyShowConnected = False))) Then
 
                     ' Get group name for the adapter

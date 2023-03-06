@@ -93,6 +93,12 @@ Namespace Ecosim
         Private m_propAIC As cProperty = Nothing
         Private m_iNumAICPoints As Integer = 0
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
             Get
                 Return MyBase.UIContext

@@ -66,9 +66,7 @@ Public Class ucLinkGrid
     ''' </summary>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(uic As cUIContext, _
-                   data As cData, _
-                   t As Type)
+    Public Sub New(uic As cUIContext, data As cData, t As Type)
 
         'Sanity check
         Debug.Assert(GetType(cLink).IsAssignableFrom(t))
@@ -81,6 +79,12 @@ Public Class ucLinkGrid
         Me.UIContext = uic
 
     End Sub
+
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
 
 #Region " Properties "
 

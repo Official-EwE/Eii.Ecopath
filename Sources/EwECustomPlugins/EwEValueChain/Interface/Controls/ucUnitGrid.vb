@@ -56,6 +56,11 @@ Public Class ucUnitGrid
     Private m_dtProps As New Dictionary(Of String, List(Of PropertyInfo))
     Private m_api As PropertyInfo() = Nothing
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' 
@@ -63,9 +68,7 @@ Public Class ucUnitGrid
     ''' <param name="data"></param>
     ''' <param name="unitType"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(uic As cUIContext, _
-                   data As cData, _
-                   unitType As cUnitFactory.eUnitType)
+    Public Sub New(uic As cUIContext, data As cData, unitType As cUnitFactory.eUnitType)
 
         Me.m_data = data
         Me.m_unitType = unitType

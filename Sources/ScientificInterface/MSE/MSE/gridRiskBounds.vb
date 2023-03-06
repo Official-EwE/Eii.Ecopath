@@ -48,6 +48,12 @@ Public Class gridRiskBounds
 
     End Sub
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
     Protected Overrides Sub FillData()
         Try
 

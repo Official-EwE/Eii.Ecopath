@@ -51,13 +51,18 @@ Public Class gridMSEBatchFixedFIter
 
 #End Region ' Internal defs
 
-
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
         Me.m_iSelGroup = 1
     End Sub
 
 #Region " Overrides "
+
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
 
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()

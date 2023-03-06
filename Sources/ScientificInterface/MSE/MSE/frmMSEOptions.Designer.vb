@@ -267,7 +267,6 @@ Partial Class frmMSEOptions
         Me.m_gridEffortControls.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridEffortControls.GridToolTipActive = True
         Me.m_gridEffortControls.IsLayoutSuspended = False
-        Me.m_gridEffortControls.IsOutputGrid = True
         Me.m_gridEffortControls.Name = "m_gridEffortControls"
         Me.m_gridEffortControls.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -299,7 +298,6 @@ Partial Class frmMSEOptions
         Me.m_gridQuotaControls.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridQuotaControls.GridToolTipActive = True
         Me.m_gridQuotaControls.IsLayoutSuspended = False
-        Me.m_gridQuotaControls.IsOutputGrid = True
         Me.m_gridQuotaControls.Name = "m_gridQuotaControls"
         Me.m_gridQuotaControls.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _

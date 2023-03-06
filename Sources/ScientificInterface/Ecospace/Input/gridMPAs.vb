@@ -77,6 +77,12 @@ Namespace Ecospace
 
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
 #Region " Grid interaction "
 
         Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext

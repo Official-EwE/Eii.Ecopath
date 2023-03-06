@@ -501,6 +501,8 @@ Namespace EcospaceTimeSeries
         ''' </summary>
         ''' <param name="itimestep"></param>
         ''' <returns></returns>
+        ''' <remarks>This method is identical to <see cref="cCore.EcospaceTimestepToAbsoluteTime(Integer)"/></remarks>
+        <Obsolete("Use cCore.EcospaceTimestepToAbsoluteTime instead")>
         Private Function TimeStepToDate(itimestep As Integer) As Date
             'convert Ecospace time step into date
             Dim stYear As Integer

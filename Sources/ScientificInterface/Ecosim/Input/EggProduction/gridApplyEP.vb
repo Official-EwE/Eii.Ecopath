@@ -58,6 +58,12 @@ Namespace Ecosim
 
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
             Get
                 Return MyBase.UIContext

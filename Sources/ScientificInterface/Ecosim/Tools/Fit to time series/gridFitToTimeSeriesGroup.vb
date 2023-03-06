@@ -68,6 +68,12 @@ Namespace Ecosim
 
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Protected Overrides Sub FillData()
 
             Dim source As cCoreGroupBase = Nothing

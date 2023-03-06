@@ -133,6 +133,12 @@ Namespace Ecopath.Output
             MyBase.new()
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
@@ -143,7 +149,7 @@ Namespace Ecopath.Output
             Dim source As cCoreGroupBase = Nothing
             Dim iGroup As Integer
 
-            Me.Redim(Me.core.nLivingGroups + 1, 2)
+            Me.Redim(Me.Core.nLivingGroups + 1, 2)
 
             Dim rowCnt As Integer = Me.RowsCount
 
@@ -152,9 +158,9 @@ Namespace Ecopath.Output
 
             Dim columnIndex As Integer = 2
 
-            For iGroup = 1 To Me.core.nLivingGroups
+            For iGroup = 1 To Me.Core.nLivingGroups
                 ' Column displays mixed consumer/producer groups ( PP < 1)
-                source = Me.core.EcopathGroupOutputs(iGroup)
+                source = Me.Core.EcopathGroupOutputs(iGroup)
                 Me(iGroup, 0) = New cEwERowHeaderCell(CStr(iGroup))
                 Me(iGroup, 1) = New cEwERowHeaderCell(source.Name)
 
@@ -167,7 +173,6 @@ Namespace Ecopath.Output
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
-            Me.IsOutputGrid = True
 
         End Sub
 

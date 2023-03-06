@@ -62,6 +62,12 @@ Public Class gridMSEBatchFixedF
 
 #Region " Overrides "
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
@@ -198,6 +204,5 @@ Public Class gridMSEBatchFixedF
     End Function
 
 #End Region ' Overrides
-
 
 End Class

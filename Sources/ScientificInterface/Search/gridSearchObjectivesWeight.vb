@@ -100,6 +100,12 @@ Namespace Ecosim
 
 #Region " Overrides "
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 

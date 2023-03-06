@@ -133,6 +133,12 @@ Public Class gridTargetFishingMortalityPolicy
 
 #Region " Overrides "
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 

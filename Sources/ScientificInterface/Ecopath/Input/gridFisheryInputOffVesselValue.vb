@@ -45,6 +45,12 @@ Namespace Ecopath.Input
             Me.FixedColumnWidths = True
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
@@ -61,8 +67,8 @@ Namespace Ecopath.Input
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet names
-            For fleetIndex As Integer = 1 To Me.core.nFleets
-                source = Me.core.EcopathFleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Me.Core.nFleets
+                source = Me.Core.EcopathFleetInputs(fleetIndex)
                 md = source.GetVariableMetadata(eVarNameFlags.OffVesselPrice)
                 Me(0, fleetIndex + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
 

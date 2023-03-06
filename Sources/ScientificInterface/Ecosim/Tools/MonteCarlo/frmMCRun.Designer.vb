@@ -296,7 +296,6 @@ Namespace Ecosim
             Me.m_gridB.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridB.GridToolTipActive = True
             Me.m_gridB.IsLayoutSuspended = False
-            Me.m_gridB.IsOutputGrid = True
             Me.m_gridB.Name = "m_gridB"
             Me.m_gridB.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -350,7 +349,6 @@ Namespace Ecosim
             Me.m_gridPB.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridPB.GridToolTipActive = True
             Me.m_gridPB.IsLayoutSuspended = False
-            Me.m_gridPB.IsOutputGrid = True
             Me.m_gridPB.Name = "m_gridPB"
             Me.m_gridPB.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -404,7 +402,6 @@ Namespace Ecosim
             Me.m_gridQB.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridQB.GridToolTipActive = True
             Me.m_gridQB.IsLayoutSuspended = False
-            Me.m_gridQB.IsOutputGrid = True
             Me.m_gridQB.Name = "m_gridQB"
             Me.m_gridQB.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -458,7 +455,6 @@ Namespace Ecosim
             Me.m_gridEE.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridEE.GridToolTipActive = True
             Me.m_gridEE.IsLayoutSuspended = False
-            Me.m_gridEE.IsOutputGrid = True
             Me.m_gridEE.Name = "m_gridEE"
             Me.m_gridEE.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -506,7 +502,6 @@ Namespace Ecosim
             Me.m_gridBA.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridBA.GridToolTipActive = True
             Me.m_gridBA.IsLayoutSuspended = False
-            Me.m_gridBA.IsOutputGrid = True
             Me.m_gridBA.Name = "m_gridBA"
             Me.m_gridBA.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -554,7 +549,6 @@ Namespace Ecosim
             Me.m_gridBaBi.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridBaBi.GridToolTipActive = True
             Me.m_gridBaBi.IsLayoutSuspended = False
-            Me.m_gridBaBi.IsOutputGrid = True
             Me.m_gridBaBi.Name = "m_gridBaBi"
             Me.m_gridBaBi.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -602,7 +596,6 @@ Namespace Ecosim
             Me.m_gridDiets.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridDiets.GridToolTipActive = True
             Me.m_gridDiets.IsLayoutSuspended = False
-            Me.m_gridDiets.IsOutputGrid = True
             Me.m_gridDiets.Name = "m_gridDiets"
             Me.m_gridDiets.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -672,7 +665,6 @@ Namespace Ecosim
             Me.m_gridLandings.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridLandings.GridToolTipActive = True
             Me.m_gridLandings.IsLayoutSuspended = False
-            Me.m_gridLandings.IsOutputGrid = True
             Me.m_gridLandings.Name = "m_gridLandings"
             Me.m_gridLandings.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -726,7 +718,6 @@ Namespace Ecosim
             Me.m_gridDiscards.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridDiscards.GridToolTipActive = True
             Me.m_gridDiscards.IsLayoutSuspended = False
-            Me.m_gridDiscards.IsOutputGrid = True
             Me.m_gridDiscards.Name = "m_gridDiscards"
             Me.m_gridDiscards.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -869,7 +860,6 @@ Namespace Ecosim
             Me.m_gridBestFit.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridBestFit.GridToolTipActive = True
             Me.m_gridBestFit.IsLayoutSuspended = False
-            Me.m_gridBestFit.IsOutputGrid = True
             Me.m_gridBestFit.Name = "m_gridBestFit"
             Me.m_gridBestFit.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _

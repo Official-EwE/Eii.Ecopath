@@ -137,6 +137,12 @@ Public Class gridTaxonSearchResults
 
 #Region " Internals "
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 

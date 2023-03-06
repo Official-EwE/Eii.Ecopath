@@ -545,7 +545,6 @@ Namespace Ecosim
             Me.m_gridObjWeights.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridObjWeights.GridToolTipActive = True
             Me.m_gridObjWeights.IsLayoutSuspended = False
-            Me.m_gridObjWeights.IsOutputGrid = True
             Me.m_gridObjWeights.Location = New System.Drawing.Point(0, 0)
             Me.m_gridObjWeights.Manager = Nothing
             Me.m_gridObjWeights.Name = "m_gridObjWeights"
@@ -601,7 +600,6 @@ Namespace Ecosim
             Me.m_gridObjFleet.GridToolTipActive = True
             Me.m_gridObjFleet.IsLayoutSuspended = False
             Me.m_gridObjFleet.IsMaximizeByFleetValue = False
-            Me.m_gridObjFleet.IsOutputGrid = True
             Me.m_gridObjFleet.Location = New System.Drawing.Point(0, 0)
             Me.m_gridObjFleet.Manager = Nothing
             Me.m_gridObjFleet.Name = "m_gridObjFleet"
@@ -637,7 +635,6 @@ Namespace Ecosim
             Me.m_gridObjGroup.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridObjGroup.GridToolTipActive = True
             Me.m_gridObjGroup.IsLayoutSuspended = False
-            Me.m_gridObjGroup.IsOutputGrid = True
             Me.m_gridObjGroup.Location = New System.Drawing.Point(0, 0)
             Me.m_gridObjGroup.Manager = Nothing
             Me.m_gridObjGroup.Name = "m_gridObjGroup"
