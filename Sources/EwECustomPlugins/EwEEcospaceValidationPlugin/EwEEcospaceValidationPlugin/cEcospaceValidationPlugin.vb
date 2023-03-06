@@ -34,7 +34,7 @@ Public Class cEcospaceValidationPlugin
     Implements IUIContextPlugin
     Implements INavigationTreeItemPlugin
 
-    Public Const PLUGIN_NAME As String = "EcospaceValidationPlugin"
+    Public Const PLUGIN_NAME As String = "xxxEcospaceValidationPlugin"
 
 #Region " Private vars "
 
@@ -117,7 +117,7 @@ Public Class cEcospaceValidationPlugin
     End Sub
 
     Public Sub EcospaceInitRunStarted(EcospaceDatastructures As Object) Implements IEcospaceInitRunStartedPlugin.EcospaceInitRunStarted
-        ' Reset admin at start of a run
+        ' Reset stats at start of a run
         Me.m_engine.Clear()
     End Sub
 
