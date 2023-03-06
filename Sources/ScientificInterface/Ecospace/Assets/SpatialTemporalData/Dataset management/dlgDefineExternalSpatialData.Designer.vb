@@ -162,7 +162,6 @@ Namespace Ecospace.Controls
             Me.m_gridDatasets.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridDatasets.GridToolTipActive = True
             Me.m_gridDatasets.IsLayoutSuspended = False
-            Me.m_gridDatasets.IsOutputGrid = True
             Me.m_gridDatasets.Name = "m_gridDatasets"
             Me.m_gridDatasets.SelectedDataset = Nothing
             Me.m_gridDatasets.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _

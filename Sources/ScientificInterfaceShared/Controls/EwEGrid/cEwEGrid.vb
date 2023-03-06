@@ -417,15 +417,14 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether the grid is intended to only show output data,
+        ''' Get whether the grid is intended to only show output data,
         ''' and is not supposed to be used for input. This has mainly implications
         ''' for the behavior of any <see cref="cQuickEditHandler">quick-edit</see>
         ''' toolbar controls attached to the grid. Note that this setting
         ''' does not prevent that editable controls are added to the grid.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)>
-        Public Overridable Property IsOutputGrid As Boolean = False
+        Public MustOverride ReadOnly Property SuppressQuickEdits As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

@@ -279,6 +279,12 @@ Namespace Ecospace.Controls
 
 #End Region ' Internals
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Public Sub Fill(Optional dsSelect As ISpatialDataSet = Nothing)
 
             Me.RefreshContent()

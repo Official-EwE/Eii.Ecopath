@@ -109,7 +109,6 @@ Partial Class frmEcospaceSpinup
         Me.m_gridSpinUpDif.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridSpinUpDif.GridToolTipActive = True
         Me.m_gridSpinUpDif.IsLayoutSuspended = False
-        Me.m_gridSpinUpDif.IsOutputGrid = True
         Me.m_gridSpinUpDif.Name = "m_gridSpinUpDif"
         Me.m_gridSpinUpDif.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _

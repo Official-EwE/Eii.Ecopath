@@ -59,7 +59,6 @@ Partial Class ucCVBlockSelector
         Me.m_gridSelector.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridSelector.GridToolTipActive = True
         Me.m_gridSelector.IsLayoutSuspended = False
-        Me.m_gridSelector.IsOutputGrid = True
         Me.m_gridSelector.Location = New System.Drawing.Point(0, 0)
         Me.m_gridSelector.Name = "m_gridSelector"
         Me.m_gridSelector.SelectedBlock = 1

@@ -112,11 +112,15 @@ Namespace Forms
 
                 If (Me.m_grid IsNot Nothing) Then
                     Me.m_grid.UIContext = Me.UIContext
-                    Me.m_grid.IsOutputGrid = Me.m_grid.IsOutputGrid Or frmEwE.IsOutputForm(Me.CoreExecutionState) Or Me.IsRunForm
                 End If
 
             End Set
         End Property
+
+        Public Function ProhibitQuickEdits() As Boolean
+            If Me.m_grid.SuppressQuickEdits Or frmEwE.IsOutputForm(Me.CoreExecutionState) Or Me.IsRunForm Then Return True
+            Return False
+        End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -252,7 +256,7 @@ Namespace Forms
                     End If
 
                     Me.m_qeHandler = New cQuickEditHandler()
-                    Me.m_qeHandler.Attach(Me.Grid, Me.UIContext, ts, Me.Grid.IsOutputGrid)
+                    Me.m_qeHandler.Attach(Me.Grid, Me.UIContext, ts, Me.ProhibitQuickEdits)
 
                 End If
             Else

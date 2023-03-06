@@ -43,6 +43,12 @@ Public Class gridAboutEwE
         MyBase.New()
     End Sub
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Populate the grid with data.

@@ -612,6 +612,12 @@ Public Class gridDefineGroups
 
     End Sub
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
 #Region " Grid interaction "
 
     ''' -----------------------------------------------------------------------
@@ -1217,8 +1223,8 @@ Public Class gridDefineGroups
         For i As Integer = 0 To Me.m_lgiGroups.Count - 1
             lstrGroupNames.Add(Me.m_lgiGroups(i).Name)
         Next i
-        gi = New cGroupInfo( _
-            cStringUtils.Localize(SharedResources.DEFAULT_NEWGROUP_NUM, _
+        gi = New cGroupInfo(
+            cStringUtils.Localize(SharedResources.DEFAULT_NEWGROUP_NUM,
                           cStringUtils.GetNextNumber(lstrGroupNames.ToArray, SharedResources.DEFAULT_NEWGROUP_NUM)))
         Me.m_lgiGroups.Insert(iGroup, gi)
 
@@ -1359,7 +1365,7 @@ Public Class gridDefineGroups
 
     Public Sub SetDefaultGroupColors()
         Dim gi As cGroupInfo = Nothing
-         For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
+        For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
             If Me.IsGroupRow(iRow) Then
                 gi = Me.m_lgiGroups(iRow - iFIRSTGROUPROW)
                 gi.PoolColor = 0

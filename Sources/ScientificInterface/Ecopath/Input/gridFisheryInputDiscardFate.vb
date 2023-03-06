@@ -38,12 +38,18 @@ Namespace Ecopath.Input
     ''' =======================================================================
     <CLSCompliant(False)> _
     Public Class gridFisheryInputDiscardFate
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.New()
             Me.FixedColumnWidths = False
         End Sub
+
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return False
+            End Get
+        End Property
 
         Protected Overrides Sub InitStyle()
 

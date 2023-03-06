@@ -288,6 +288,12 @@ Namespace Controls
 
 #Region " Grid overrides "
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Initialize the grid.

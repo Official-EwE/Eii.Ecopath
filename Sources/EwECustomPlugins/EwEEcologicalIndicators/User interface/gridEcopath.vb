@@ -72,6 +72,12 @@ Public Class gridEcopath
 
 #Region " Grid overrides "
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Public Shadows Sub RefreshContent(indicators As cIndicators)
         Me.m_indicators = indicators
         MyBase.RefreshContent()

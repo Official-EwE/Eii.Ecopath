@@ -48,6 +48,12 @@ Namespace Ecosim
 
 #Region " Public access "
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Public Overrides Sub ClearAllPairs()
 
             Dim interaction As cMediatedInteraction = Nothing

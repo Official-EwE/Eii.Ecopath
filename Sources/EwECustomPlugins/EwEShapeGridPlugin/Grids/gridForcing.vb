@@ -49,6 +49,12 @@ Public Class gridForcing
         End Get
     End Property
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
     Public Overrides ReadOnly Property Manager() As System.Collections.IEnumerable
         Get
             Return Me.UIContext.Core.ForcingShapeManager

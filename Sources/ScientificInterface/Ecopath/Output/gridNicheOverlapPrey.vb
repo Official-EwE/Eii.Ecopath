@@ -34,11 +34,17 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
     Public Class gridNicheOverlapPrey
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.new()
         End Sub
+
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
 
         Protected Overrides Sub InitStyle()
 
@@ -72,7 +78,6 @@ Namespace Ecopath.Output
                 columnIndex = columnIndex + 1
             Next
             Me.FixedColumnWidths = False
-            Me.IsOutputGrid = True
 
         End Sub
 

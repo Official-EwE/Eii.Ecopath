@@ -267,6 +267,12 @@ Namespace Ecospace
 
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
 #Region " Grid interaction "
 
         ''' -----------------------------------------------------------------------

@@ -56,6 +56,12 @@ Public Class gridFleetRefLevels
 
     End Sub
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
     Protected Overrides Sub FillData()
         Try
 

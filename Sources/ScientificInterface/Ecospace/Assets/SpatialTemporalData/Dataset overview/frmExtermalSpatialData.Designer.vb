@@ -116,7 +116,6 @@ Namespace Ecospace
             Me.m_gridApply.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridApply.GridToolTipActive = True
             Me.m_gridApply.IsLayoutSuspended = False
-            Me.m_gridApply.IsOutputGrid = True
             Me.m_gridApply.Name = "m_gridApply"
             Me.m_gridApply.OnlyShowConnected = True
             Me.m_gridApply.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _

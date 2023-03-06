@@ -38,6 +38,12 @@ Namespace Ecopath.Output
             MyBase.new()
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
@@ -57,9 +63,9 @@ Namespace Ecopath.Output
 
             Dim columnIndex As Integer = 2
             ' For every living groups
-            For i As Integer = 1 To Me.core.nLivingGroups
+            For i As Integer = 1 To Me.Core.nLivingGroups
                 'Get group output
-                source = Me.core.EcopathGroupOutputs(i)
+                source = Me.Core.EcopathGroupOutputs(i)
                 ' Define column header cell
                 Me.Columns.Insert(columnIndex)
                 Me(0, columnIndex) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
@@ -69,7 +75,6 @@ Namespace Ecopath.Output
                 columnIndex = columnIndex + 1
             Next
             Me.FixedColumnWidths = False
-            Me.IsOutputGrid = True
 
         End Sub
 

@@ -40,6 +40,12 @@ Namespace Ecosim
             MyBase.new()
         End Sub
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
@@ -106,7 +112,7 @@ Namespace Ecosim
             Dim totalValue(0 To 11) As Single
             Me.InitTotalArray(totalValue)
 
-            For iFleet As Integer = 1 To Me.core.nFleets
+            For iFleet As Integer = 1 To Me.Core.nFleets
 
                 'Only display selected groups
                 If Me.StyleGuide.FleetVisible(iFleet) Then

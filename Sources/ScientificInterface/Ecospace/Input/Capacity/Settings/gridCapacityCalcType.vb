@@ -58,6 +58,12 @@ Namespace Ecospace
 
         Private m_mhLayers As cMessageHandler = Nothing
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
         Public Overrides Property UIContext As cUIContext
             Get
                 Return MyBase.UIContext

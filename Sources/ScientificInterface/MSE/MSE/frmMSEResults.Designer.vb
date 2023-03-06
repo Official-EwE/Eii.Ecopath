@@ -73,7 +73,7 @@ Partial Class frmMSEResults
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.GridType = ScientificInterface.gridRiskResults.eGridType.Group
         Me.m_grid.IsLayoutSuspended = False
-        Me.m_grid.IsOutputGrid = True
+        
         Me.m_grid.Location = New System.Drawing.Point(3, 28)
         Me.m_grid.Name = "m_grid"
         Me.m_grid.Size = New System.Drawing.Size(633, 394)

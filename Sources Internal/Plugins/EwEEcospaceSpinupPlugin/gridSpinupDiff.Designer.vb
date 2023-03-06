@@ -40,6 +40,12 @@ Partial Class gridSpinupDiff
         End Try
     End Sub
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     'Required by the Component Designer
     Private components As System.ComponentModel.IContainer
 

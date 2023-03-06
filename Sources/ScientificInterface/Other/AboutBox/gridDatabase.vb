@@ -51,6 +51,12 @@ Public Class gridDatabase
 
     Private m_viz As New cDescriptionVisualizer()
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Populate the grid with data.

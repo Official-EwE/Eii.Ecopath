@@ -473,6 +473,12 @@ Imports SourceGrid2.Cells
         End Set
     End Property
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
 #Region " Grid interaction "
 
     ''' -----------------------------------------------------------------------

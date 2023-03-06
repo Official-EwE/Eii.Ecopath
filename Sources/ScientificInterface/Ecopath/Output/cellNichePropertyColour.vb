@@ -88,15 +88,12 @@ Public Class cellNichePropertyColour
     ''' <summary>
     ''' Constructor.
     ''' </summary>
-    ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source.</param>
-    ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces.</param>
-    ''' <param name="SourceSec">An optional secundary index in the VarName, or Nothing when irrelevant.</param>
+    ''' <param name="source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source.</param>
+    ''' <param name="vn">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces.</param>
+    ''' <param name="sourceSec">An optional secundary index in the VarName, or Nothing when irrelevant.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(pm As cPropertyManager, _
-                   Source As cCoreInputOutputBase, _
-                   VarName As eVarNameFlags, _
-                   Optional SourceSec As cCoreInputOutputBase = Nothing)
-        MyBase.new(pm, Source, VarName, SourceSec)
+    Public Sub New(pm As cPropertyManager, source As cCoreInputOutputBase, vn As eVarNameFlags, Optional sourceSec As cCoreInputOutputBase = Nothing)
+        MyBase.New(pm, source, vn, sourceSec)
         ' Set shared visualizer
         Me.VisualModel = g_visualizer
     End Sub

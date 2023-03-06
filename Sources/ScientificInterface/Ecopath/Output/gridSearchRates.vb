@@ -32,11 +32,17 @@ Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
     Public Class gridSearchRates
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
             MyBase.new()
         End Sub
+
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
 
         Protected Overrides Sub InitStyle()
 
@@ -46,15 +52,15 @@ Namespace Ecopath.Output
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.Redim(Me.core.nGroups + 1, 2)
+            Me.Redim(Me.Core.nGroups + 1, 2)
             Me(0, 0) = New cEwEColumnHeaderCell("")
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
             Dim columnIndex As Integer = 2
 
-            For i As Integer = 1 To Me.core.nGroups
+            For i As Integer = 1 To Me.Core.nGroups
                 ' Column displays mixed consumer/producer groups ( PP < 1)
-                source = Me.core.EcopathGroupOutputs(i)
+                source = Me.Core.EcopathGroupOutputs(i)
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
                 Me(i, 1) = New cEwERowHeaderCell(source.Name)
@@ -67,7 +73,6 @@ Namespace Ecopath.Output
 
             Next
             Me.FixedColumnWidths = False
-            Me.IsOutputGrid = True
 
         End Sub
 

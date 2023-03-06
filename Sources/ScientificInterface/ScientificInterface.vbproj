@@ -2201,6 +2201,10 @@
       <Project>{22ed1c02-0c01-460b-9305-0a6fef0032d9}</Project>
       <Name>EwEEcoSamplerPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEEcospaceValidationPlugin\EwEEcospaceValidationPlugin\EwEEcospaceValidationPlugin.vbproj">
+      <Project>{4deddbd4-dfb9-40ae-a8c2-558eb94faf42}</Project>
+      <Name>EwEEcospaceValidationPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotracerEnvDriverPlugin\EwEEcotracerEnvDriverPlugin.vbproj">
       <Project>{6536c62f-3ee0-48f6-83c7-fadb5f6ae6aa}</Project>
       <Name>EwEEcotracerEnvDriverPlugin</Name>

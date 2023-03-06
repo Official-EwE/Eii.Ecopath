@@ -39,6 +39,12 @@ Public Class gridFishingMortality
         MyBase.New()
     End Sub
 
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
     Public Overrides ReadOnly Property Handler() As ScientificInterfaceShared.Controls.cShapeGUIHandler
         Get
             If (Me.m_handler Is Nothing) Then

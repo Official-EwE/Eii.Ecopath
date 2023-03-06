@@ -103,7 +103,6 @@ Partial Class frmRemarkUI
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
-        Me.m_grid.IsOutputGrid = True
         Me.m_grid.Location = New System.Drawing.Point(0, 25)
         Me.m_grid.Name = "m_grid"
         Me.m_grid.Size = New System.Drawing.Size(533, 402)

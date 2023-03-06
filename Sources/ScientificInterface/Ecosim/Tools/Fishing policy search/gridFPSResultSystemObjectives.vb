@@ -49,11 +49,17 @@ Namespace Ecosim
             Total
         End Enum
 
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
             ' Add dynamic cols manually
-            Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length + _
+            Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length +
                         [Enum].GetValues(GetType(eSearchCriteriaResultTypes)).Length)
 
             Me(0, eColumnTypes.Iteration) = New cEwEColumnHeaderCell(SharedResources.HEADER_NUMCALLS)

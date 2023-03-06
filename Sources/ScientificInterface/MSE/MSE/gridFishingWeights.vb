@@ -53,14 +53,19 @@ Public Class gridFishingWeights
 
         For iFleet As Integer = 1 To Me.Core.nFleets
             src = Me.Core.EcopathFleetInputs(iFleet)
-            Me(0, 1 + iFleet) = New cPropertyColumnHeaderCell(Me.PropertyManager,
-                                                             src, eVarNameFlags.Name, Nothing, cUnits.Currency)
+            Me(0, 1 + iFleet) = New cPropertyColumnHeaderCell(Me.PropertyManager, src, eVarNameFlags.Name, Nothing, cUnits.Currency)
         Next
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
 
     End Sub
+
+    Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+        Get
+            Return False
+        End Get
+    End Property
 
     Protected Overrides Sub FillData()
 
