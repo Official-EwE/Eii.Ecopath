@@ -16,14 +16,26 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
 Option Explicit On
 Imports EwEUtils.Core
 
+#End Region ' Imports
+
+''' <summary>
+''' Statistics to aid the validation and calibration of Ecospace.
+''' </summary>
 Public Class cEcospaceValidation
 
+#Region " Internal vars "
+
     Private m_meanBwPrey As New Dictionary(Of Integer, Double(,))
+
+#End Region ' Internal vars
+
+#Region " Construction / destruction "
 
     Public Sub New(core As cCore, ecopathData As cEcopathDataStructures, ecospaceData As cEcospaceDataStructures)
 
@@ -33,10 +45,22 @@ Public Class cEcospaceValidation
 
     End Sub
 
+#End Region ' Construction / destruction
+
+#Region " Public bits "
+
+    ''' <summary>Get the attached core.</summary>
     Friend ReadOnly Property Core As cCore
+    ''' <summary>Get the attached Ecopath data structures.</summary>
     Friend ReadOnly Property EcopathData As cEcopathDataStructures
+    ''' <summary>Get the attached Ecospace data structures.</summary>
     Friend ReadOnly Property EcospaceData As cEcospaceDataStructures
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Clear the stats in preparation for new computations.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Sub Clear()
         Me.m_meanBwPrey.Clear()
     End Sub
@@ -101,20 +125,34 @@ Public Class cEcospaceValidation
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Calculate stats for a given time step.
+    ''' </summary>
+    ''' <param name="bcell">The biomass (row x col x group) to calculate stats from.</param>
+    ''' <param name="iTimeStep">The time step that <paramref name="bcell"/> corresponds to.</param>
+    ''' <returns>Always true. This is a very happy function.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function CalculateStats(bcell(,,) As Single, iTimeStep As Integer) As Boolean
         Me.m_meanBwPrey(iTimeStep) = Me.MeanBwPrey(bcell)
+        Return True
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Weighted mean prey b (pred x prey)
+    ''' Obtain the weighted mean prey b (pred x prey) for a given time step.
     ''' </summary>
     ''' <param name="iTimestep"></param>
-    ''' <returns></returns>
+    ''' <returns>The weighted mean prey b (pred x prey) at <paramref name="iTimestep"/>.
+    ''' If there are no results for the time step, this will return Nothing.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function MeanBwPrey(iTimestep As Integer) As Double(,)
         If (Me.m_meanBwPrey.ContainsKey(iTimestep)) Then
             Return Me.m_meanBwPrey(iTimestep)
         End If
         Return Nothing
     End Function
+
+#End Region ' Public bits
 
 End Class
