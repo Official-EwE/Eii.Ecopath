@@ -32,6 +32,7 @@ Public Class gridPredPreyOverlap
     Inherits cEwEGrid
 
     Private m_viz As cAvgHighlightVisualizer = Nothing
+    Private m_lGroupShown As New List(Of Integer)
 
     Public Sub New()
         ' Prevent flashing while updating
@@ -77,8 +78,10 @@ Public Class gridPredPreyOverlap
             ' Group name row header
             Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
-            ' Group index column header
-            If (i <= Me.Core.nLivingGroups) Then
+            ' Group index column headers
+            If (source.IsConsumer) Then
+                ' Only include consumers
+                Me.m_lGroupShown.Add(i)
                 Me(0, i + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             End If
 
@@ -121,10 +124,12 @@ Public Class gridPredPreyOverlap
         visDiagonal.BackColor = Color.LightGray
         visDiagonal.TextAlignment = ContentAlignment.MiddleCenter
 
-        ' For all predatos
-        For iPred As Integer = 1 To Me.Core.nLivingGroups
-            ' Get the underlying Ecopath group
+        ' For all shown consumers
+        For i As Integer = 0 To Me.m_lGroupShown.Count - 1
+            ' Get predator 
+            Dim iPred As Integer = Me.m_lGroupShown(i)
             Dim pred As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iPred)
+
             ' For all prey
             For iPrey As Integer = 1 To Me.Core.nGroups
                 ' Determine cell style
@@ -140,15 +145,15 @@ Public Class gridPredPreyOverlap
             Next iPrey
 
             ' Define cells for summary rows too (min, mean, max)
-            For i As Integer = 1 To 3
+            For k As Integer = 1 To 3
                 ' Create cell
                 Dim cell As New cEwECell(0, GetType(Single), styleComputed)
                 ' - mean cells use the funky colour scheme that VC used in spreadsheet
-                If i = 2 Then cell.VisualModel = Me.m_viz
+                If k = 2 Then cell.VisualModel = Me.m_viz
                 ' Store cell in the grid
-                Me(Me.Core.nGroups + i, iPred + 1) = cell
-            Next i
-        Next iPred
+                Me(Me.Core.nGroups + k, iPred + 1) = cell
+            Next k
+        Next i
 
     End Sub
 
@@ -169,19 +174,23 @@ Public Class gridPredPreyOverlap
         Dim minAvg As Single = If(data Is Nothing, 0, Single.MaxValue)
         Dim maxAvg As Single = 0
 
-        For iPred As Integer = 1 To Me.Core.nLivingGroups
+        For i As Integer = 0 To Me.m_lGroupShown.Count - 1
+            ' Get predator 
+            Dim iPred As Integer = Me.m_lGroupShown(i)
+            Dim pred As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iPred)
+
+            ' Stuff to compute locally
             Dim min As Single = If(data Is Nothing, 0, Single.MaxValue)
             Dim tot As Single = 0
             Dim max As Single = 0
             Dim n As Integer = 0
-            Dim pred As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iPred)
 
             ' Only worry about consumers
             If (pred.IsConsumer) Then
                 ' For all potential prey
                 For iPrey As Integer = 1 To Me.Core.nGroups
                     ' Mjam?
-                    If (pred.DietComp(iPrey) > 0) Then
+                    If ((pred.DietComp(iPrey) > 0) And (iPred <> iPrey)) Then
                         Dim val As Single = 0
                         ' If there is data, update min, max and tot for this predator
                         If (data IsNot Nothing) Then

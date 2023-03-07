@@ -16,11 +16,15 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
+
 Option Explicit On
 Imports System.Windows.Forms
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.Window
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
+
+#End Region ' Imports
 
 Public Class frmEcospaceValidation
 
@@ -72,6 +76,8 @@ Public Class frmEcospaceValidation
 
         Me.m_bInUpdate = False
 
+        Me.UpdateGrid()
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
@@ -105,6 +111,11 @@ Public Class frmEcospaceValidation
 
         Me.UpdateGrid()
 
+    End Sub
+
+    Friend Sub Poke(iTime As Integer)
+        Dim iTimeStep As Integer = CInt(Me.m_nudTimeStep.Value)
+        If (iTime = iTimeStep) Then UpdateGrid()
     End Sub
 
 #End Region ' Control events
