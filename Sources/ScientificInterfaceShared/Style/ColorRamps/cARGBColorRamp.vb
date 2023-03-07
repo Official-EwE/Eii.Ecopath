@@ -46,39 +46,74 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Initializes a new instance of the ARGBColorRamp class.
+        ''' Initializes a new instance of the cARGBColorRamp class.
         ''' </summary>
+        ''' <param name="name">The name of the color ramp.</param>
         ''' <param name="colors">The colour breaks to use.</param>
         ''' <param name="breaks">The position of each colour break, 
         ''' relative to its predessesor.</param>
+        ''' <param name="iSystemID">Unique system ID if positive and non-zero.
+        ''' System color ramps are not editable and retrievable by ID rather
+        ''' than by color and break locations.</param>
         ''' <remarks>
         ''' The following snippet illustrates how to create a valid ARGB color ramp:
         ''' <code>
         ''' ' Define a three level colour ramp
-        ''' Dim aclr(2) as Color
-        ''' Dim adPositions(2) as Integer
+        ''' Dim colors(2) as Color
+        ''' Dim positions(2) as Integer
         ''' 
         ''' ' Ramp begins with light blue at position 0
-        ''' aclr(0) = Color.FromARGB(255, 200, 200, 255)
-        ''' adPositions(0) = 0
+        ''' colors(0) = Color.FromARGB(255, 200, 200, 255)
+        ''' positions(0) = 0
         ''' ' At 40%, the ramp is a green tone
-        ''' aclr(1) = Color.FromARGB(255, 100, 255, 100)
-        ''' adPositions(1) = 0.4
+        ''' colors(1) = Color.FromARGB(255, 100, 255, 100)
+        ''' positions(1) = 0.4
         ''' ' At 100% (0.4 + 0.6) the ramp is deep red
-        ''' aclr(2) = Color.FromARGB(255, 255, 25, 25)
-        ''' adPositions(2) = 0.6
+        ''' colors(2) = Color.FromARGB(255, 255, 25, 25)
+        ''' positions(2) = 0.6
         ''' 
         ''' ' Create the ramp
-        ''' Dim crARGB as New ARGBColorRamp(aclr, adPositions)
+        ''' Dim ramp As New ARGBColorRamp("test", colors, positions)
         ''' 
-        ''' ' Now get the value at 50%, let's see what happens...
-        ''' Dim clr as Color = crARGB.GetColor(0.5)
+        ''' ' Now get the value at 65%, let's see what happens...
+        ''' Dim clr as Color = ramp.GetColor(0.65)
         ''' </code>
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Sub New(name As String, ByVal colors() As Color, ByVal breaks() As Double, Optional iSystemID As Integer = cCore.NULL_VALUE)
 
             MyBase.New(iSystemID, iSystemID > 0)
+
+            Me.GradientColors = colors
+            Me.GradientBreaks = breaks
+
+            If (String.IsNullOrWhiteSpace(name)) Then name = My.Resources.DEFAULT_COLORRAMP
+            Me.Name = name
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a cARGBColorRamp with the colors equally distributed.
+        ''' </summary>
+        ''' <param name="name"></param>
+        ''' <param name="colors"></param>
+        ''' <param name="iSystemID"></param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(name As String, ByVal colors() As Color, Optional iSystemID As Integer = cCore.NULL_VALUE)
+
+            MyBase.New(iSystemID, iSystemID > 0)
+
+            Dim n As Integer = colors.Length - 1
+            Dim breaks(n) As Double
+            For i As Integer = 1 To n
+                breaks(i) = 1 / n
+            Next
+
+            For i As Integer = 0 To n
+                Dim c As Color = colors(i)
+                If c.A = 0 Then colors(i) = Color.FromArgb(255, c.R, c.G, c.B)
+            Next
 
             Me.GradientColors = colors
             Me.GradientBreaks = breaks
