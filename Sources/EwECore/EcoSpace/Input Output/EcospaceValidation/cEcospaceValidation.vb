@@ -116,7 +116,7 @@ Public Class cEcospaceValidation
                 Next
             Next iPred
         Catch ex As Exception
-            Debug.Assert(False, "Ecospace validation failed to calculate stats")
+            Debug.Assert(False, "Ecospace validation failed to calculate MeanBwPrey")
             cLog.Write(ex)
             Return Nothing
         End Try
