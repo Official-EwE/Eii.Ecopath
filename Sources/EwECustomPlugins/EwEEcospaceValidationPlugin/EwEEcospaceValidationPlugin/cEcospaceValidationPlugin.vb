@@ -124,6 +124,8 @@ Public Class cEcospaceValidationPlugin
     Public Sub EcospaceEndTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
         ' Compute stats
         Me.m_engine.CalculateStats(Me.m_spacedata.Bcell, iTime)
+        ' Poke UI
+        Me.PokeUI(iTime)
     End Sub
 
     Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements IEcospaceRunCompletedPlugin.EcospaceRunCompleted
@@ -139,10 +141,7 @@ Public Class cEcospaceValidationPlugin
     End Sub
 
     Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Windows.Forms.Form) Implements IGUIPlugin.OnControlClick
-        ' Show UI
-        If Not Me.HasUI Then
-            Me.m_ui = GetUI()
-        End If
+        If Not Me.HasUI Then Me.m_ui = GetUI()
         frmPlugin = Me.m_ui
     End Sub
 
@@ -158,6 +157,14 @@ Public Class cEcospaceValidationPlugin
     Private Function GetUI() As frmEcospaceValidation
         Return New frmEcospaceValidation(Me.m_uic, Me.m_engine)
     End Function
+
+    Private Sub PokeUI(iTime As Integer)
+        Try
+            If (Me.HasUI) Then Me.m_ui.Poke(iTime)
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
 #End Region ' Internals
 
