@@ -2311,7 +2311,17 @@ Namespace Style
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.B),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.C),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.D),
-            New cViridisColorRamp(cViridisColorRamp.eViridisOptions.E)
+            New cViridisColorRamp(cViridisColorRamp.eViridisOptions.E),
+            New cARGBColorRamp("Venngage.com vibrant palette 1", New Color() {Color.FromArgb(&HBFD7), Color.FromArgb(&HB4C5), Color.FromArgb(&H73E6), Color.FromArgb(&H2546F0), Color.FromArgb(&H5928ED)}, 21),
+            New cARGBColorRamp("Venngage.com vibrant palette 2", New Color() {Color.FromArgb(&HEDCA84), Color.FromArgb(&HEAEA72), Color.FromArgb(&H9EC767), Color.FromArgb(&H93DBA5), Color.FromArgb(&H64B7A9)}, 22),
+            New cARGBColorRamp("Venngage.com monochromatic palette 1", New Color() {Color.FromArgb(&HB3C7F7), Color.FromArgb(&H8BABF1), Color.FromArgb(&H73E6), Color.FromArgb(&H461CF), Color.FromArgb(&H54FB9)}, 23),
+            New cARGBColorRamp("Venngage.com monochromatic palette 2", New Color() {Color.FromArgb(&HD5E8C7), Color.FromArgb(&HC3DDAE), Color.FromArgb(&H9EC767), Color.FromArgb(&H89B062), Color.FromArgb(&H749B4E)}, 24),
+            New cARGBColorRamp("Venngage.com contrasting palette 1", New Color() {Color.FromArgb(&HC44601), Color.FromArgb(&H57600), Color.FromArgb(&H8BABF1), Color.FromArgb(&H73E6), Color.FromArgb(&H54FB9)}, 25),
+            New cARGBColorRamp("Venngage.com contrasting palette 2", New Color() {Color.FromArgb(&H5BA300), Color.FromArgb(&H89CE00), Color.FromArgb(&H74E6), Color.FromArgb(&HE6308A), Color.FromArgb(&HB51963)}, 26),
+            New cARGBColorRamp("Venngage.com pastel palette 1", New Color() {Color.FromArgb(&H90D8B2), Color.FromArgb(&H8DD2DD), Color.FromArgb(&H8BABF1), Color.FromArgb(&H8B95F6), Color.FromArgb(&H9B8BF4)}, 27),
+            New cARGBColorRamp("Venngage.com pastel palette 2", New Color() {Color.FromArgb(&HFAAF90), Color.FromArgb(&HFCC9B5), Color.FromArgb(&HD9E4FF), Color.FromArgb(&HB3C7F7), Color.FromArgb(&H8BABF1)}, 28),
+            New cARGBColorRamp("Venngage.com dark to light 1", New Color() {Color.FromArgb(&H29356), Color.FromArgb(&H9EB0), Color.FromArgb(&H73E6), Color.FromArgb(&H606FF3), Color.FromArgb(&H9B8BF4)}, 29),
+            New cARGBColorRamp("Venngage.com dark to light 2", New Color() {Color.FromArgb(&HC1975D), Color.FromArgb(&HD5CF5D), Color.FromArgb(&H9EC676), Color.FromArgb(&HA7CAB6), Color.FromArgb(&HA4D4CB)}, 30)
         }
 
         ' ToDo: globalize ramp names
