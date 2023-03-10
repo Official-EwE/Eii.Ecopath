@@ -168,7 +168,7 @@ Public Class gridPredPreyOverlap
     ''' <param name="data">The calculated stats to show. Beware, data may be 
     ''' nothing if not computed yet.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub UpdateData(data As Double(,))
+    Public Sub UpdateData(data As Double(,,), iRegion As Integer)
 
         ' The min and max bounds for the averages colour scale
         Dim minAvg As Single = If(data Is Nothing, 0, Single.MaxValue)
@@ -194,8 +194,8 @@ Public Class gridPredPreyOverlap
                         Dim val As Single = 0
                         ' If there is data, update min, max and tot for this predator
                         If (data IsNot Nothing) Then
-                            ' pred x prey
-                            val = CSng(data(iPred, iPrey))
+                            ' pred x prey x region
+                            val = CSng(data(iPred, iPrey, iRegion))
                             min = Math.Min(min, val)
                             max = Math.Max(max, val)
                             tot += val

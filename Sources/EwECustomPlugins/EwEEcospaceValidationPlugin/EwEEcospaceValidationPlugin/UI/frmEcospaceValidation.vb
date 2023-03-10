@@ -31,15 +31,17 @@ Public Class frmEcospaceValidation
 #Region " Private vars "
 
     Private m_bInUpdate As Boolean = True
+    Private m_nRegions As Integer = 0
 
 #End Region ' Private vars
 
 #Region " Construction / destruction "
 
-    Friend Sub New(uic As cUIContext, engine As cEcospaceValidation)
+    Friend Sub New(uic As cUIContext, engine As cEcospaceValidation, nRegions As Integer)
         MyBase.New()
 
         Me.Engine = engine
+        Me.m_nRegions = nRegions
 
         Me.InitializeComponent()
 
@@ -74,6 +76,16 @@ Public Class frmEcospaceValidation
         Me.m_slTimestep.Minimum = Me.m_nudTimeStep.Minimum
         Me.m_slTimestep.Maximum = Me.m_nudTimeStep.Maximum
 
+        Me.m_nudRegion.Value = 1
+        Me.m_nudRegion.Minimum = 1
+        Me.m_nudRegion.Maximum = Me.m_nRegions
+
+        Me.m_slRegion.Value = Me.m_nudRegion.Value
+        Me.m_slRegion.Minimum = Me.m_nudRegion.Minimum
+        Me.m_slRegion.Maximum = Me.m_nudRegion.Maximum
+
+        Me.m_plRegions.Visible = (m_nRegions > 1)
+
         Me.m_bInUpdate = False
 
         Me.UpdateGrid()
@@ -91,22 +103,24 @@ Public Class frmEcospaceValidation
 
 #Region " Control events "
 
-    Private Sub OnNudValueChanged(sender As Object, e As EventArgs) Handles m_nudTimeStep.ValueChanged
+    Private Sub OnNudValueChanged(sender As Object, e As EventArgs) Handles m_nudTimeStep.ValueChanged, m_nudRegion.ValueChanged
 
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
         Me.m_slTimestep.Value = Me.m_nudTimeStep.Value
+        Me.m_slRegion.Value = Me.m_nudRegion.Value
         Me.m_bInUpdate = False
 
         Me.UpdateGrid()
 
     End Sub
 
-    Private Sub OnSliderValueChanged(sender As Object, e As EventArgs) Handles m_slTimestep.ValueChanged
+    Private Sub OnSliderValueChanged(sender As Object, e As EventArgs) Handles m_slTimestep.ValueChanged, m_slRegion.ValueChanged
 
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
         Me.m_nudTimeStep.Value = Me.m_slTimestep.Value
+        Me.m_nudRegion.Value = Me.m_slRegion.Value
         Me.m_bInUpdate = False
 
         Me.UpdateGrid()
@@ -127,7 +141,8 @@ Public Class frmEcospaceValidation
     Private Sub UpdateGrid()
 
         Dim iTimeStep As Integer = CInt(Me.m_nudTimeStep.Value)
-        Me.m_grid.UpdateData(Me.Engine.MeanBwPrey(iTimeStep))
+        Dim iRegion As Integer = CInt(Me.m_nudRegion.Value)
+        Me.m_grid.UpdateData(Me.Engine.MeanBwPrey(iTimeStep), iRegion)
 
     End Sub
 

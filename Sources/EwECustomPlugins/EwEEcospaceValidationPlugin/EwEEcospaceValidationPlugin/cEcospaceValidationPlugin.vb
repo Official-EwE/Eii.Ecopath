@@ -122,8 +122,8 @@ Public Class cEcospaceValidationPlugin
     End Sub
 
     Public Sub EcospaceEndTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
-        ' Compute stats
-        Me.m_engine.CalculateStats(Me.m_spacedata.Bcell, iTime)
+        ' Compute stats by effort zone
+        Me.m_engine.CalculateStats(iTime, Me.m_spacedata.Bcell, Me.m_spacedata.nEffZones, Me.m_spacedata.EffZones)
         ' Poke UI
         Me.PokeUI(iTime)
     End Sub
@@ -155,7 +155,7 @@ Public Class cEcospaceValidationPlugin
     End Function
 
     Private Function GetUI() As frmEcospaceValidation
-        Return New frmEcospaceValidation(Me.m_uic, Me.m_engine)
+        Return New frmEcospaceValidation(Me.m_uic, Me.m_engine, Me.m_spacedata.nEffZones)
     End Function
 
     Private Sub PokeUI(iTime As Integer)

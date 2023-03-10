@@ -31,7 +31,10 @@ Public Class cEcospaceValidation
 
 #Region " Internal vars "
 
-    Private m_meanBwPrey As New Dictionary(Of Integer, Double(,))
+    ''' <summary>
+    ''' Calculated region x pred x prey overlap by timestep (timestep -> region x pred x prey)
+    ''' </summary>
+    Private m_meanBwPrey As New Dictionary(Of Integer, Double(,,))
 
 #End Region ' Internal vars
 
@@ -67,19 +70,23 @@ Public Class cEcospaceValidation
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Calculate mean weighted prey biomass.
+    ''' Calculate mean weighted prey biomass by region.
     ''' </summary>
     ''' <param name="bcell">Predicted biomass (row x col x grp)</param>
-    ''' <returns>Mean weighted prey biomass (prey x pred), or Nothing if an 
-    ''' error occurred.</returns>
-    ''' <remarks>
-    ''' ToDo: add support for regions
-    ''' </remarks>
+    ''' <param name="nRegions">Optional number of regions to consider.</param>
+    ''' <param name="regions">Optional region map.</param>
+    ''' <returns>
+    ''' Mean weighted prey biomass (prey x pred x region), or Nothing if an 
+    ''' error occurred.
+    ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function MeanBwPrey(bcell(,,) As Single) As Double(,)
+    Public Function CalculateMeanBwPrey(bcell(,,) As Single,
+                                        Optional nRegions As Integer = 0,
+                                        Optional regions(,) As Integer = Nothing) As Double(,,)
 
-        Dim result(EcopathData.NumLiving, EcopathData.NumGroups) As Double
-        Dim Btot(EcopathData.NumGroups) As Double
+        Dim result(EcopathData.NumLiving, EcopathData.NumGroups, nRegions) As Double
+        Dim Btot(nRegions, EcopathData.NumGroups) As Double
+        Dim iRegion As Integer = 0
 
         Try
             'get total biomasses for all groups
@@ -87,7 +94,9 @@ Public Class cEcospaceValidation
                 For row As Integer = 1 To EcospaceData.InRow
                     For col As Integer = 1 To EcospaceData.InCol
                         If EcospaceData.Depth(row, col) > 0 Then
-                            Btot(iGrp) += bcell(row, col, iGrp)
+                            If (regions IsNot Nothing) Then iRegion = regions(row, col)
+                            If iRegion > nRegions Then iRegion = 0
+                            Btot(iRegion, iGrp) += bcell(row, col, iGrp)
                         End If
                     Next col
                 Next row
@@ -98,20 +107,26 @@ Public Class cEcospaceValidation
                 For iPrey As Integer = 1 To EcopathData.NumGroups
                     If EcopathData.DC(iPred, iPrey) > 0 Then 'only look at active diet composition cases
 
-                        Dim BxB As Double = 0
+                        Dim BxB(nRegions) As Double
 
                         For row As Integer = 1 To EcospaceData.InRow
                             For col As Integer = 1 To EcospaceData.InCol
                                 If EcospaceData.Depth(row, col) > 0 Then
-                                    BxB += bcell(row, col, iPred) * bcell(row, col, iPrey)
+                                    If (regions IsNot Nothing) Then iRegion = regions(row, col)
+                                    If iRegion > nRegions Then iRegion = 0
+                                    BxB(iRegion) += bcell(row, col, iPred) * bcell(row, col, iPrey)
                                 End If
                             Next
                         Next
 
-                        'predator biomass weighted mean prey biomass per area
-                        Dim meanprey As Double = BxB / Btot(iPred)
-                        'scale to ecopath base prey biomass B(iprey)		
-                        result(iPred, iPrey) = meanprey / Me.EcopathData.B(iPrey)
+                        For iRegion = 0 To nRegions
+                            If (Btot(iRegion, iPred) > 0) Then
+                                'predator biomass weighted mean prey biomass per area
+                                Dim meanprey As Double = BxB(iRegion) / Btot(iRegion, iPred)
+                                'scale to ecopath base prey biomass B(iprey)		
+                                result(iPred, iPrey, iRegion) = meanprey / Me.EcopathData.B(iPrey)
+                            End If
+                        Next
                     End If
                 Next
             Next iPred
@@ -133,20 +148,21 @@ Public Class cEcospaceValidation
     ''' <param name="iTimeStep">The time step that <paramref name="bcell"/> corresponds to.</param>
     ''' <returns>Always true. This is a very happy function.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function CalculateStats(bcell(,,) As Single, iTimeStep As Integer) As Boolean
-        Me.m_meanBwPrey(iTimeStep) = Me.MeanBwPrey(bcell)
+    Public Function CalculateStats(iTimeStep As Integer, bcell(,,) As Single,
+                                   Optional iRegions As Integer = 0, Optional regions(,) As Integer = Nothing) As Boolean
+        Me.m_meanBwPrey(iTimeStep) = Me.CalculateMeanBwPrey(bcell, iRegions, regions)
         Return True
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Obtain the weighted mean prey b (pred x prey) for a given time step.
+    ''' Obtain the weighted mean prey b (pred x prey x region) for a given time step.
     ''' </summary>
     ''' <param name="iTimestep"></param>
-    ''' <returns>The weighted mean prey b (pred x prey) at <paramref name="iTimestep"/>.
+    ''' <returns>The weighted mean prey b (pred x prey x region) at <paramref name="iTimestep"/>.
     ''' If there are no results for the time step, this will return Nothing.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function MeanBwPrey(iTimestep As Integer) As Double(,)
+    Public Function MeanBwPrey(iTimestep As Integer) As Double(,,)
         If (Me.m_meanBwPrey.ContainsKey(iTimestep)) Then
             Return Me.m_meanBwPrey(iTimestep)
         End If
