@@ -86,21 +86,25 @@ Public Class cEcospaceValidation
 
         Dim result(EcopathData.NumLiving, EcopathData.NumGroups, nRegions) As Double
         Dim Btot(nRegions, EcopathData.NumGroups) As Double
+        Dim Areatot(nRegions) As Double
         Dim iRegion As Integer = 0
 
         Try
             'get total biomasses for all groups
-            For iGrp As Integer = 1 To EcopathData.NumGroups
-                For row As Integer = 1 To EcospaceData.InRow
-                    For col As Integer = 1 To EcospaceData.InCol
-                        If EcospaceData.Depth(row, col) > 0 Then
+            For row As Integer = 1 To EcospaceData.InRow
+                For col As Integer = 1 To EcospaceData.InCol
+                    If EcospaceData.Depth(row, col) > 0 Then
+                        For iGrp As Integer = 1 To EcopathData.NumGroups
                             If (regions IsNot Nothing) Then iRegion = regions(row, col)
-                            If iRegion > nRegions Then iRegion = 0
-                            Btot(iRegion, iGrp) += bcell(row, col, iGrp)
-                        End If
-                    Next col
-                Next row
-            Next iGrp
+                            ' Add to specific region
+                            If (iRegion > 0 And iRegion <= nRegions) Then Btot(iRegion, iGrp) += bcell(row, col, iGrp)
+                            ' Add to total region
+                            Btot(0, iGrp) += bcell(row, col, iGrp)
+                        Next iGrp
+                        Areatot(iRegion) += EcospaceData.CellArea(row, col)
+                    End If
+                Next col
+            Next row
 
             'loop over predators and prey types
             For iPred As Integer = 1 To EcopathData.NumLiving
@@ -113,8 +117,10 @@ Public Class cEcospaceValidation
                             For col As Integer = 1 To EcospaceData.InCol
                                 If EcospaceData.Depth(row, col) > 0 Then
                                     If (regions IsNot Nothing) Then iRegion = regions(row, col)
-                                    If iRegion > nRegions Then iRegion = 0
-                                    BxB(iRegion) += bcell(row, col, iPred) * bcell(row, col, iPrey)
+                                    ' Account for specific region
+                                    If (iRegion > 0 And iRegion <= nRegions) Then BxB(iRegion) += bcell(row, col, iPred) * bcell(row, col, iPrey) * EcospaceData.CellArea(row, col)
+                                    ' Account for total region
+                                    BxB(0) += bcell(row, col, iPred) * bcell(row, col, iPrey) * EcospaceData.CellArea(row, col)
                                 End If
                             Next
                         Next
@@ -122,7 +128,7 @@ Public Class cEcospaceValidation
                         For iRegion = 0 To nRegions
                             If (Btot(iRegion, iPred) > 0) Then
                                 'predator biomass weighted mean prey biomass per area
-                                Dim meanprey As Double = BxB(iRegion) / Btot(iRegion, iPred)
+                                Dim meanprey As Double = BxB(iRegion) / Btot(iRegion, iPred) / Areatot(iRegion)
                                 'scale to ecopath base prey biomass B(iprey)		
                                 result(iPred, iPrey, iRegion) = meanprey / Me.EcopathData.B(iPrey)
                             End If
