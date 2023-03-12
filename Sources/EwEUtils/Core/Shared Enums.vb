@@ -526,6 +526,8 @@ Namespace Core
         HabAreaProportion
         ''' <summary>Ecospace excluded cells layer</summary>
         LayerExclusion
+        ''' <summary>Ecospace cell area layer</summary>
+        LayerCellArea
 
         ''' <summary>Total Effort multiplier</summary>
         SEmult
@@ -2511,10 +2513,9 @@ Namespace Core
 
         EcosimMortalityResponseFunctionManager = 126
 
-        ''' <summary>
-        ''' Direct forcing of the Ecospace advection fields
-        ''' </summary>
+        ''' <summary>Direct forcing of the Ecospace advection fields</summary>
         EcospaceLayerAdvectionForcing = 127
+        EcospaceLayerCellArea = 128
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

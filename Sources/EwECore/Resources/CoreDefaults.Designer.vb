@@ -110,6 +110,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Cell area.
+        '''</summary>
+        Public Shared ReadOnly Property CORE_DEFAULT_CELLAREA() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_CELLAREA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Combined fleets.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_COMBINEDFLEETS() As String

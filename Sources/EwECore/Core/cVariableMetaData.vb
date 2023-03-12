@@ -452,6 +452,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.LayerBiomassForcing) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Biomass)
         Me.Metadata(eVarNameFlags.LayerBiomassRelativeForcing) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerExclusion) = New cVariableMetaData()
+        Me.Metadata(eVarNameFlags.LayerCellArea) = New cVariableMetaData(1, Single.MaxValue, ge, lt, 0, cUnits.Area)
         Me.Metadata(eVarNameFlags.LayerMPA) = New cVariableMetaData(cUnits.PresenceAbsence)
         Me.Metadata(eVarNameFlags.ImportanceWeight) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 0)
 

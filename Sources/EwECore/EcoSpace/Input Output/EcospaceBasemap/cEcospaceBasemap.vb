@@ -171,6 +171,7 @@ Public Class cEcospaceBasemap
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
+            ' LayerAdvectionForcing
             val = New cValue(core, 0, eVarNameFlags.LayerAdvectionForcing, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
@@ -205,8 +206,12 @@ Public Class cEcospaceBasemap
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
+            ' LayerCellArea
+            val = New cValue(core, 0, eVarNameFlags.LayerCellArea, eStatusFlags.Null, eValueTypes.Sng)
+            val.Stored = False
+            Me.m_values.Add(val.varName, val)
 
-            ' LayerDepth
+            ' nCells
             val = New cValue(core, 0, eVarNameFlags.nCells, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
@@ -294,6 +299,9 @@ Public Class cEcospaceBasemap
 
             ' Exclusion
             Me.m_layers(eVarNameFlags.LayerExclusion) = New cEcospaceLayer() {New cEcospaceLayerExclusion(core, Me)}
+
+            ' Cell Area
+            Me.m_layers(eVarNameFlags.LayerCellArea) = New cEcospaceLayer() {New cEcospaceLayerCellArea(core, Me)}
 
             ' Migration
             llayers.Clear()
@@ -854,6 +862,23 @@ Public Class cEcospaceBasemap
             Return DirectCast(Me.m_layers(eVarNameFlags.LayerExclusion)(0), cEcospaceLayerExclusion)
         End Get
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the Ecospace cell area layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerCellArea() As cEcospaceLayerCellArea
+        Get
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerCellArea)(0), cEcospaceLayerCellArea)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the Ecospace Age1 stanza biomass forcing layer. Good luck.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerIBMAge1Forcing(iGroup As Integer) As cEcospaceLayerIBMAge1Forcing
         Get
             Return DirectCast(Me.m_layers(eVarNameFlags.LayerIBMAge1Forcing)(iGroup - 1), cEcospaceLayerIBMAge1Forcing)
@@ -964,6 +989,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcospaceData.Excluded
             Case eVarNameFlags.LayerIBMAge1Forcing
                 Return Me.m_core.m_EcospaceData.Bcell
+            Case eVarNameFlags.LayerCellArea
+                Return Me.m_core.m_EcospaceData.CellArea
         End Select
         Return Nothing
     End Function

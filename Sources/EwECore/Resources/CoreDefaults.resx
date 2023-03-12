@@ -2921,4 +2921,7 @@
   <data name="VARIABLE_LAYERADVECTIONFORCING" xml:space="preserve">
     <value>Advection||Advection forcing</value>
   </data>
+  <data name="CORE_DEFAULT_CELLAREA" xml:space="preserve">
+    <value>Cell area</value>
+  </data>
 </root>

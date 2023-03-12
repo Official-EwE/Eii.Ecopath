@@ -238,13 +238,13 @@ Public Class cEcospaceDataStructures
     Public DepthX(,) As Integer
     Public DepthY(,) As Single
 
+
     ''' <summary>Catch by Row, Col, Group.</summary>
     Public CatchMap(,,) As Single
 
     ''' <summary>Catch by Row, Col, Fleet.</summary>
     Public CatchFleetMap(,,) As Single
 
-    ' DISCARDLESS: explicitly state what this map contains. All discards? Dead discards?
     ''' <summary>Discards (all? mortality?) by Row, Col, Group.</summary>
     ''' <remarks>This is not exposed by the interface at this time. It was included for the Biodiversity plugin and can only be accessed via code.</remarks>
     Public DiscardsMap(,,) As Single
@@ -253,6 +253,8 @@ Public Class cEcospaceDataStructures
     Public DepthInput(,) As Single
     ''' <summary>Is a cell included in modeling by Row, Col.</summary>
     Public Excluded(,) As Boolean
+    ''' <summary>Modeled area, in area units^2 by Row, Col.</summary>
+    Public CellArea(,) As Single
 
     ''' <summary>Trophic Level by Row, Col, Group.</summary>
     Public TL(,,) As Single
@@ -2003,6 +2005,9 @@ Public Class cEcospaceDataStructures
             'Resized basemap should have water everywhere
             Me.DepthInput.Fill(1)
             Me.allocate(Me.Excluded, Me.InRow + 1, Me.InCol + 1)
+            Me.allocate(Me.CellArea, Me.InRow + 1, Me.InCol + 1)
+            ' Cell area default 1
+            Me.CellArea.Fill(1)
 
             Me.allocate(Me.Depth, Me.InRow + 1, Me.InCol + 1)
             Me.allocate(Me.DepthA, Me.InRow + 1, Me.InCol + 1)

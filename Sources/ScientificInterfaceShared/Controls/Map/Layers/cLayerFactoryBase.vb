@@ -350,6 +350,23 @@ Namespace Controls.Map
 
                     lLayers.Add(layer)
 
+                Case eVarNameFlags.LayerCellArea
+
+                    Dim src As cEcospaceLayerCellArea = core.EcospaceBasemap.LayerCellArea
+
+                    ad = Me.GetAuxillaryData(core, varName)
+                    vs = ad.VisualStyle
+
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                    renderer = New cLayerRendererValue(uic, vs)
+                    renderer.ScaleMin = 1
+                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
+                    editor = New cLayerEditorRange()
+                    layer = New cDisplayLayerRaster(uic, src, renderer, editor, src, eVarNameFlags.Name)
+
+
+                    lLayers.Add(layer)
+
                 Case Else
                     Debug.Assert(False, "No layers available for this varname")
 
@@ -366,7 +383,8 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerDepth,
                      eVarNameFlags.LayerExclusion,
-                     eVarNameFlags.LayerRelPP
+                     eVarNameFlags.LayerRelPP,
+                     eVarNameFlags.LayerCellArea
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_BASEMAP
 
                 Case eVarNameFlags.LayerContaminantRelativeDistribution,
