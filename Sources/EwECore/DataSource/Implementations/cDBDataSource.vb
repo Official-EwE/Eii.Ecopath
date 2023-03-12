@@ -7946,6 +7946,7 @@ Namespace DataSources
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "ExclusionMap", "")), ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "CellAreaMap", "")), ecospaceDS.CellArea, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
                 End While
 
@@ -8035,6 +8036,7 @@ Namespace DataSources
                 drow("DepthAMap") = cStringUtils.ArrayToString(ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("RegionMap") = cStringUtils.ArrayToString(ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("ExclusionMap") = cStringUtils.ArrayToString(ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
+                drow("CellAreaMap") = cStringUtils.ArrayToString(ecospaceDS.CellArea, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow.EndEdit()
 
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
@@ -8048,6 +8050,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerAdvection, iActiveScenarioID)
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerPort, iActiveScenarioID)
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerSail, iActiveScenarioID)
+                bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerExclusion, iActiveScenarioID)
 
             Catch ex As Exception
                 ' Don't be alarmed..

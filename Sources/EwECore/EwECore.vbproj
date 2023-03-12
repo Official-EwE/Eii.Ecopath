@@ -194,6 +194,7 @@
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_09.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_08.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_26.vb" />
+    <Compile Include="Database\Updates\Release 6.7\cDBUpdate6_70_00_13.vb" />
     <Compile Include="Database\Updates\Release 6.7\cDBUpdate6_70_00_12.vb" />
     <Compile Include="Database\Updates\Release 6.7\cDBUpdate6_70_00_11.vb" />
     <Compile Include="Database\Updates\Release 6.7\cDBUpdate6_70_00_10.vb" />
@@ -263,6 +264,7 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerVelocity.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerAdvectionForcing.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerCellAreay.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerIBMAge1Forcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerContaminantForcingAbsolute.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesManager.vb" />

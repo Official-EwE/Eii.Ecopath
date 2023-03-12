@@ -2290,6 +2290,7 @@ Public Class cEIIXMLDataSource
             bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "DepthAMap", ""), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "RegionMap", ""), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "ExclusionMap", ""), ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
+            bSucces = bSucces And cStringUtils.StringToArray(Me.ReadSafe(drow, "CellAreaMap", ""), ecospaceDS.CellArea, ecospaceDS.InRow, ecospaceDS.InCol)
 
         Catch ex As Exception
             bSucces = False

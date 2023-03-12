@@ -194,6 +194,8 @@ Namespace Ecospace.Basemap
             ' Clean-up
             Me.RemoveAllLayers()
 
+            ' The order matters for display in the UI
+
             Me.AddData(eVarNameFlags.LayerMPA)
             Me.AddData(eVarNameFlags.LayerPort)
             Me.AddData(eVarNameFlags.LayerSail, False)
@@ -210,6 +212,8 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerContaminantRelativeDistribution, False)
             Me.AddData(eVarNameFlags.LayerExclusion, False)
             Me.AddData(eVarNameFlags.LayerDepth, False)
+            ' Hide cell area until actually used in core
+            'Me.AddData(eVarNameFlags.LayerCellArea, False)
             Me.AddData(eVarNameFlags.LayerAdvection, False)
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput, True)
             Me.AddData(eVarNameFlags.LayerMigration, False)
