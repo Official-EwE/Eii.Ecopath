@@ -86,7 +86,6 @@ Public Class cEcospaceValidation
 
         Dim result(EcopathData.NumLiving, EcopathData.NumGroups, nRegions) As Double
         Dim Btot(nRegions, EcopathData.NumGroups) As Double
-        Dim Areatot(nRegions) As Double
         Dim iRegion As Integer = 0
 
         Try
@@ -101,7 +100,6 @@ Public Class cEcospaceValidation
                             ' Add to total region
                             Btot(0, iGrp) += bcell(row, col, iGrp)
                         Next iGrp
-                        Areatot(iRegion) += EcospaceData.CellArea(row, col)
                     End If
                 Next col
             Next row
@@ -118,9 +116,9 @@ Public Class cEcospaceValidation
                                 If EcospaceData.Depth(row, col) > 0 Then
                                     If (regions IsNot Nothing) Then iRegion = regions(row, col)
                                     ' Account for specific region
-                                    If (iRegion > 0 And iRegion <= nRegions) Then BxB(iRegion) += bcell(row, col, iPred) * bcell(row, col, iPrey) * EcospaceData.CellArea(row, col)
+                                    If (iRegion > 0 And iRegion <= nRegions) Then BxB(iRegion) += bcell(row, col, iPred) * bcell(row, col, iPrey)
                                     ' Account for total region
-                                    BxB(0) += bcell(row, col, iPred) * bcell(row, col, iPrey) * EcospaceData.CellArea(row, col)
+                                    BxB(0) += bcell(row, col, iPred) * bcell(row, col, iPrey)
                                 End If
                             Next
                         Next
@@ -128,7 +126,7 @@ Public Class cEcospaceValidation
                         For iRegion = 0 To nRegions
                             If (Btot(iRegion, iPred) > 0) Then
                                 'predator biomass weighted mean prey biomass per area
-                                Dim meanprey As Double = BxB(iRegion) / Btot(iRegion, iPred) / Areatot(iRegion)
+                                Dim meanprey As Double = BxB(iRegion) / Btot(iRegion, iPred)
                                 'scale to ecopath base prey biomass B(iprey)		
                                 result(iPred, iPrey, iRegion) = meanprey / Me.EcopathData.B(iPrey)
                             End If
