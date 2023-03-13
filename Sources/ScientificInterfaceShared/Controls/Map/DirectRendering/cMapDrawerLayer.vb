@@ -64,7 +64,6 @@ Namespace Controls.Map
             Dim min As Single = map.MinValue
             Dim max As Single = map.MaxValue
             Dim range As Single = max - min
-            If (range = 0) Then range = 1
 
             Try
                 For i As Integer = 1 To Me.InRow
@@ -81,8 +80,14 @@ Namespace Controls.Map
                             ' Is not excluded
                             If (Not excl.IsExcludedCell(i, j)) Then
                                 ' Water Cell
-                                Dim sMapValue As Single = (CSng(map.Cell(i, j)) - min) / range
+                                Dim sMapValue As Single = 0
                                 Dim icc As Single
+
+                                If (range = 0) Then
+                                    sMapValue = 1 ' CSng(map.Cell(i, j))
+                                Else
+                                    sMapValue = (CSng(map.Cell(i, j)) - min) / range
+                                End If
 
                                 If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
                                     icc = Me.Colors.Count
