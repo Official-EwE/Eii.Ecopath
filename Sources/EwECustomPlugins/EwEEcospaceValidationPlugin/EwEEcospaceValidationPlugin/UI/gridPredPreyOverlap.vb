@@ -61,33 +61,40 @@ Public Class gridPredPreyOverlap
             Me.m_viz = New cAvgHighlightVisualizer(Me.UIContext.StyleGuide)
         End If
 
-        ' Resize grid
-        Me.Redim(Me.Core.nGroups + 4, Me.Core.nLivingGroups + 2)
-        Dim rowCnt As Integer = Me.RowsCount
         Dim source As cCoreGroupBase = Nothing
+
+        ' Only include consumers
+        Me.m_lGroupShown.Clear()
+        For i As Integer = 1 To Me.Core.nGroups
+            source = Me.Core.EcopathGroupInputs(i)
+            If (source.IsConsumer()) Then Me.m_lGroupShown.Add(i)
+        Next i
+
+        ' Resize grid
+        Me.Redim(Me.Core.nGroups + 4, Me.m_lGroupShown.Count + 2)
+        Dim rowCnt As Integer = Me.RowsCount
 
         ' Create row and column header cells
         Me(0, 0) = New cEwEColumnHeaderCell("")
         Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
-        For i As Integer = 1 To Me.Core.nGroups
-            source = Me.Core.EcopathGroupInputs(i)
-
-            ' Group index row header
-            Me(i, 0) = New cEwERowHeaderCell(CStr(i))
-            ' Group name row header
-            Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-
-            ' Group index column headers
-            If (source.IsConsumer) Then
-                ' Only include consumers
-                Me.m_lGroupShown.Add(i)
-                Me(0, i + 1) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-            End If
-
+        ' Column headers
+        For iCol As Integer = 0 To Me.m_lGroupShown.Count - 1
+            Dim iGrp As Integer = Me.m_lGroupShown(iCol)
+            source = Me.Core.EcopathGroupInputs(iGrp)
+            Me(0, 2 + iCol) = New cPropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
         Next
 
-        ' Headers for bottom rows: min, mean and max
+        ' Row headers for groups
+        For iRow As Integer = 1 To Me.Core.nGroups
+            source = Me.Core.EcopathGroupInputs(iRow)
+            ' Group index row header
+            Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
+            ' Group name row header
+            Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+        Next iRow
+
+        ' Row headers for bottom rows: min, mean and max
         Me(rowCnt - 3, 0) = New cEwERowHeaderCell()
         Me(rowCnt - 3, 1) = New cEwERowHeaderCell("Min")
 
@@ -141,7 +148,7 @@ Public Class gridPredPreyOverlap
                 ' - set diagonal 
                 If iPrey = iPred Then cell.VisualModel = visDiagonal
                 ' Store cell in the grid
-                Me(iPrey, iPred + 1) = cell
+                Me(iPrey, 2 + i) = cell
             Next iPrey
 
             ' Define cells for summary rows too (min, mean, max)
@@ -151,7 +158,7 @@ Public Class gridPredPreyOverlap
                 ' - mean cells use the funky colour scheme that VC used in spreadsheet
                 If k = 2 Then cell.VisualModel = Me.m_viz
                 ' Store cell in the grid
-                Me(Me.Core.nGroups + k, iPred + 1) = cell
+                Me(Me.Core.nGroups + k, 2 + i) = cell
             Next k
         Next i
 
@@ -199,7 +206,7 @@ Public Class gridPredPreyOverlap
                             min = Math.Min(min, val)
                             max = Math.Max(max, val)
                             tot += val
-                            Me(iPrey, iPred + 1).Value = val
+                            Me(iPrey, 2 + i).Value = val
                             ' Count data point
                             n += 1
                         End If
@@ -210,9 +217,9 @@ Public Class gridPredPreyOverlap
                 Dim mean As Single = tot / Math.Max(n, 1)
 
                 ' Populate summary cells; keep at 0 if there were no data points
-                Me(Me.Core.nGroups + 1, iPred + 1).Value = If(n = 0, 0, min)
-                Me(Me.Core.nGroups + 2, iPred + 1).Value = If(n = 0, 0, mean)
-                Me(Me.Core.nGroups + 3, iPred + 1).Value = If(n = 0, 0, max)
+                Me(Me.Core.nGroups + 1, 2 + i).Value = If(n = 0, 0, min)
+                Me(Me.Core.nGroups + 2, 2 + i).Value = If(n = 0, 0, mean)
+                Me(Me.Core.nGroups + 3, 2 + i).Value = If(n = 0, 0, max)
 
                 ' Update min/max across all predators
                 minAvg = Math.Min(minAvg, mean)
