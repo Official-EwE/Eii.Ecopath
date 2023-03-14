@@ -142,6 +142,21 @@ Namespace Controls.Map
                     layer = New cDisplayLayerRaster(uic, bmd.LayerRegion, renderer, editor, bmd, varName)
                     lLayers.Add(layer)
 
+                Case eVarNameFlags.LayerEffortZone
+
+                    Dim src As cEcospaceLayerEffortZone = core.EcospaceBasemap.LayerEffortZone
+
+                    ad = Me.GetAuxillaryData(core, varName)
+                    vs = ad.VisualStyle
+
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                    renderer = New cLayerRendererValue(uic, vs)
+                    renderer.ScaleMin = 1
+                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
+                    editor = New cLayerEditorRange()
+                    layer = New cDisplayLayerRaster(uic, src, renderer, editor, src, eVarNameFlags.Name)
+
+                    lLayers.Add(layer)
                 Case eVarNameFlags.LayerMPA
 
                     avs = uic.StyleGuide.GetVisualStyles(core.nMPAs, cStyleGuide.eBrushType.HatchPattern)
@@ -364,7 +379,6 @@ Namespace Controls.Map
                     editor = New cLayerEditorRange()
                     layer = New cDisplayLayerRaster(uic, src, renderer, editor, src, eVarNameFlags.Name)
 
-
                     lLayers.Add(layer)
 
                 Case Else
@@ -409,7 +423,8 @@ Namespace Controls.Map
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_MPAS
 
                 Case eVarNameFlags.LayerPort,
-                      eVarNameFlags.LayerSail
+                     eVarNameFlags.LayerSail,
+                     eVarNameFlags.LayerEffortZone
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_FISHING
 
                 Case eVarNameFlags.LayerDriver
