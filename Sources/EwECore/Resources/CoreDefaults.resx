@@ -2924,4 +2924,7 @@
   <data name="CORE_DEFAULT_CELLAREA" xml:space="preserve">
     <value>Cell area</value>
   </data>
+  <data name="CORE_DEFAULT_EFFORTZONE" xml:space="preserve">
+    <value>Effort zones</value>
+  </data>
 </root>

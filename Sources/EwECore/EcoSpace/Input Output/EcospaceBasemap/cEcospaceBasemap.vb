@@ -141,6 +141,11 @@ Public Class cEcospaceBasemap
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
+            ' LayerEffortZone
+            val = New cValue(core, 0, eVarNameFlags.LayerEffortZone, eStatusFlags.Null, eValueTypes.Int)
+            val.Stored = False
+            Me.m_values.Add(val.varName, val)
+
             ' LayerMigration
             val = New cValue(core, 0, eVarNameFlags.LayerMigration, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
@@ -302,6 +307,9 @@ Public Class cEcospaceBasemap
 
             ' Cell Area
             Me.m_layers(eVarNameFlags.LayerCellArea) = New cEcospaceLayer() {New cEcospaceLayerCellArea(core, Me)}
+
+            ' Effort zones
+            Me.m_layers(eVarNameFlags.LayerEffortZone) = New cEcospaceLayer() {New cEcospaceLayerEffortZone(core, Me)}
 
             ' Migration
             llayers.Clear()
@@ -876,6 +884,17 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get the Ecospace effort zone layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerEffortZone() As cEcospaceLayerEffortZone
+        Get
+            Return DirectCast(Me.m_layers(eVarNameFlags.LayerEffortZone)(0), cEcospaceLayerEffortZone)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get the Ecospace Age1 stanza biomass forcing layer. Good luck.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -991,6 +1010,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcospaceData.Bcell
             Case eVarNameFlags.LayerCellArea
                 Return Me.m_core.m_EcospaceData.CellArea
+            Case eVarNameFlags.LayerEffortZone
+                Return Me.m_core.m_EcospaceData.EffZones
         End Select
         Return Nothing
     End Function

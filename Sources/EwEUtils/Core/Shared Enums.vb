@@ -528,6 +528,9 @@ Namespace Core
         LayerExclusion
         ''' <summary>Ecospace cell area layer</summary>
         LayerCellArea
+        ''' <summary>Ecospace effort zones layer</summary>
+        LayerEffortZone
+        EcospaceEffortZoneNumber
 
         ''' <summary>Total Effort multiplier</summary>
         SEmult
@@ -2516,6 +2519,7 @@ Namespace Core
         ''' <summary>Direct forcing of the Ecospace advection fields</summary>
         EcospaceLayerAdvectionForcing = 127
         EcospaceLayerCellArea = 128
+        EcospaceLayerEffortZone = 129
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
