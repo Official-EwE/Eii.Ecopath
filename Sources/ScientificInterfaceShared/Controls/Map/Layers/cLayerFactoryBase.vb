@@ -470,6 +470,9 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerRegion
                     strCommand = cEditRegionsCommand.cCOMMAND_NAME
 
+                Case eVarNameFlags.LayerEffortZone
+                    strCommand = cEditEffortZonesCommand.cCOMMAND_NAME
+
                 Case eVarNameFlags.LayerImportance
                     strCommand = cEditImportanceLayersCommand.cCOMMAND_NAME
 

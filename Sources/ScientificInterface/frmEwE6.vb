@@ -256,6 +256,7 @@ Public Class frmEwE6
     Private WithEvents m_cmdEditBasemap As cCommand = Nothing
     Private WithEvents m_cmdEditHabitats As cCommand = Nothing
     Private WithEvents m_cmdEditRegions As cCommand = Nothing
+    Private WithEvents m_cmdEditEffortZones As cCommand = Nothing
     Private WithEvents m_cmdEditMPAs As cCommand = Nothing
     Private WithEvents m_cmdDefineImportanceMaps As cCommand = Nothing
     Private WithEvents m_cmdDefineInputLayers As cCommand = Nothing
@@ -654,6 +655,8 @@ Public Class frmEwE6
 
         Me.m_cmdEditRegions = New cEditRegionsCommand(cmdh)
         Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceDefineRegions)
+
+        Me.m_cmdEditEffortZones = New cEditEffortZonesCommand(cmdh)
 
         Me.m_cmdDefineImportanceMaps = New cEditImportanceLayersCommand(cmdh)
         Me.m_cmdDefineImportanceMaps.AddControl(Me.m_tsmiEcospaceDefineImportanceLayers)
@@ -4274,6 +4277,22 @@ Public Class frmEwE6
     Private Sub OnEditEcospaceRegions(cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
         Dim dlg As New dlgDefineRegions(Me.UIContext)
         Me.Help.HelpTopic(dlg) = "Edit regions.htm"
+        dlg.ShowDialog(Me)
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; handles access to the Ecospace edit regions dialog.
+    ''' </summary>
+    Private Sub OnUpdateEditEcospaceEffortZOnes(cmd As cCommand) Handles m_cmdEditEffortZones.OnUpdate
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; invokes the Ecospace edit regions dialog.
+    ''' </summary>
+    Private Sub OnEditEcospaceEffortZOnes(cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
+        Dim dlg As New dlgDefineRegions(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 

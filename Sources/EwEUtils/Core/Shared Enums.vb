@@ -2572,6 +2572,8 @@ Namespace Core
         nHabitats
         ''' <summary>Number of Ecospace regions</summary>
         nRegions
+        ''' <summary>Number of Ecospace effort zones</summary>
+        nEffortZones
         ''' <summary>Number of months per year</summary>
         ''' <remarks>Albeit quite obvious and constant, this value is added to facilitate automatic array resizing.</remarks>
         nMonths

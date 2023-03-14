@@ -104,6 +104,7 @@ Public Class cValidatorManager
 
         ' Ecospace layers - special cases
         Me.m_validators.Add(eVarNameFlags.LayerRegion, New cValidatorCounter(theCore, eCoreCounterTypes.nRegions))
+        Me.m_validators.Add(eVarNameFlags.LayerEffortZone, New cValidatorCounter(theCore, eCoreCounterTypes.nEffortZones))
 
         Me.m_validators.Add(eVarNameFlags.EcologyType, New cValidatorEnum(GetType(eEcologyTypes)))
         Me.m_validators.Add(eVarNameFlags.IUCNConservationStatus, New cValidatorEnum(GetType(eIUCNConservationStatusTypes)))
