@@ -3211,4 +3211,7 @@
   <data name="VALUE_GENERIC_RELATIVE" xml:space="preserve">
     <value>Relative</value>
   </data>
+  <data name="COMMAND_DEFINEEFFORTZONES" xml:space="preserve">
+    <value>Define the number of effort distribution zones</value>
+  </data>
 </root>

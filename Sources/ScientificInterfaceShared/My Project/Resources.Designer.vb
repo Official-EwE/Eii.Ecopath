@@ -748,6 +748,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Define the number of effort distribution zones.
+        '''</summary>
+        Public ReadOnly Property COMMAND_DEFINEEFFORTZONES() As String
+            Get
+                Return ResourceManager.GetString("COMMAND_DEFINEEFFORTZONES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Define functional groups.
         '''</summary>
         Public ReadOnly Property COMMAND_DEFINEGROUPS() As String

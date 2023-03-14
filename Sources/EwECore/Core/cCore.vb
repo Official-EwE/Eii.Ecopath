@@ -238,6 +238,8 @@ Public Class cCore
                     Return Me.nHabitats
                 Case eCoreCounterTypes.nRegions
                     Return Me.nRegions
+                Case eCoreCounterTypes.nEffortZones
+                    Return Me.nEffortZones
                 Case eCoreCounterTypes.nMonths
                     Return cCore.N_MONTHS
                 Case eCoreCounterTypes.nMPAs
@@ -425,6 +427,18 @@ Public Class cCore
     Public ReadOnly Property nRegions() As Integer
         Get
             Return m_EcospaceData.nRegions
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Number of Ecospace effort zones.
+    ''' </summary>
+    ''' <remarks>
+    ''' See <see cref="eCoreCounterTypes.nEffortZones"/>.
+    ''' </remarks>
+    Public ReadOnly Property nEffortZones() As Integer
+        Get
+            Return m_EcospaceData.nEffZones
         End Get
     End Property
 
@@ -10754,6 +10768,7 @@ Public Class cCore
             m_EcospaceModelParams.EndSummaryTime = CInt(m_EcospaceData.SumStart(1))
             m_EcospaceModelParams.NumberSummaryTimeSteps = m_EcospaceData.NumStep
             m_EcospaceModelParams.nRegions = m_EcospaceData.nRegions
+            m_EcospaceModelParams.nEffortZones = m_EcospaceData.nEffZones
 
             'Grid threads
             m_EcospaceModelParams.nGridSolverThreads = m_EcospaceData.nGridSolverThreads
@@ -10834,6 +10849,7 @@ Public Class cCore
         m_EcospaceData.NumStep = m_EcospaceModelParams.NumberSummaryTimeSteps
         m_EcospaceData.AdjustSpace = m_EcospaceModelParams.AdjustSpace
         m_EcospaceData.nRegions = m_EcospaceModelParams.nRegions
+        m_EcospaceData.nEffZones = m_EcospaceModelParams.nEffortZones
 
         m_EcospaceData.nGridSolverThreads = m_EcospaceModelParams.nGridSolverThreads
         m_EcospaceData.nEffortDistThreads = m_EcospaceModelParams.nEffortDistThreads

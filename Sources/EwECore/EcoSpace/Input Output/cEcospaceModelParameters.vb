@@ -52,6 +52,10 @@ Public Class cEcospaceModelParameters
             val = New cValue(core, 1, eVarNameFlags.EcospaceRegionNumber, eStatusFlags.Null, eValueTypes.Int)
             Me.m_values.Add(val.varName, val)
 
+            ' Number of effort zones
+            val = New cValue(core, 1, eVarNameFlags.EcospaceEffortZoneNumber, eStatusFlags.Null, eValueTypes.Int)
+            Me.m_values.Add(val.varName, val)
+
             ' PredictEffort
             val = New cValue(core, 1, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool)
             Me.m_values.Add(val.varName, val)
@@ -288,6 +292,20 @@ Public Class cEcospaceModelParameters
         End Get
         Set(value As Integer)
             Me.SetVariable(eVarNameFlags.EcospaceRegionNumber, value)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the number of effort zones for this scenario.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property nEffortZones() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.EcospaceEffortZoneNumber))
+        End Get
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.EcospaceEffortZoneNumber, value)
         End Set
     End Property
 

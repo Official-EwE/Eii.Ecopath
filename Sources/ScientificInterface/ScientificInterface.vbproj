@@ -333,6 +333,12 @@
     <Compile Include="Ecospace\Input\Capacity\Shape\frmEcospaceEnvironmentalResponses.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecospace\Input\dlgDefineEffortZones.Designer.vb">
+      <DependentUpon>dlgDefineEffortZones.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgDefineEffortZones.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\frmEcospaceComputedCapacity.Designer.vb">
       <DependentUpon>frmEcospaceComputedCapacity.vb</DependentUpon>
     </Compile>
@@ -1101,6 +1107,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Capacity\Shape\frmEcospaceEnvironmentalResponses.resx">
       <DependentUpon>frmEcospaceEnvironmentalResponses.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineEffortZones.resx">
+      <DependentUpon>dlgDefineEffortZones.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\frmEcospaceComputedCapacity.resx">
       <DependentUpon>frmEcospaceComputedCapacity.vb</DependentUpon>
