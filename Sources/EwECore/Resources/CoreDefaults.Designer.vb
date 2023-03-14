@@ -146,6 +146,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Effort zones.
+        '''</summary>
+        Public Shared ReadOnly Property CORE_DEFAULT_EFFORTZONE() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_EFFORTZONE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Environment.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_ENVIRONMENT() As String
