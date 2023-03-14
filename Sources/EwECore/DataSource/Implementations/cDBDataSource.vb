@@ -7484,6 +7484,7 @@ Namespace DataSources
                 ecospaceDS.nGridSolverThreads = CInt(reader("NumThreads"))
                 ecospaceDS.nEffortDistThreads = CInt(reader("NumThreads"))
                 ecospaceDS.nRegions = CInt(Me.m_db.ReadSafe(reader, "NumRegions", 0))
+                ecospaceDS.nEffZones = CInt(Me.m_db.ReadSafe(reader, "NumEffortZones", 0))
                 ecospaceDS.AdjustSpace = (CInt(reader("AdjustSpace")) <> 0)
                 ecospaceDS.UseExact = (CInt(reader("UseExact")) <> 0)
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
@@ -7691,7 +7692,7 @@ Namespace DataSources
                 drow("NumThreads") = ecospaceDS.nSpaceSolverThreads
                 drow("NumRegions") = ecospaceDS.nRegions
                 drow("NumPacketsMultiplier") = stanzaDS.NPacketsMultiplier
-                drow("NumRegions") = ecospaceDS.nRegions
+                drow("NumEffortZones") = ecospaceDS.nEffZones
 
                 drow("ModelType") = 0
                 If ecospaceDS.UseIBM Then drow("ModelType") = 1
@@ -7947,6 +7948,7 @@ Namespace DataSources
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "ExclusionMap", "")), ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "CellAreaMap", "")), ecospaceDS.CellArea, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "EffortZoneMap", "")), ecospaceDS.EffZones, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
                 End While
 
@@ -8037,6 +8039,7 @@ Namespace DataSources
                 drow("RegionMap") = cStringUtils.ArrayToString(ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("ExclusionMap") = cStringUtils.ArrayToString(ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
                 drow("CellAreaMap") = cStringUtils.ArrayToString(ecospaceDS.CellArea, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+                drow("EffortZoneMap") = cStringUtils.ArrayToString(ecospaceDS.EffZones, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow.EndEdit()
 
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
