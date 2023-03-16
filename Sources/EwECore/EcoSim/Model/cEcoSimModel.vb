@@ -382,10 +382,9 @@ Namespace Ecosim
 
         Public Function IsDatTypeDriver(DatType As eTimeSeriesType) As Boolean
             Select Case DatType
-                Case eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs,
-                     eTimeSeriesType.TotalMortality,
-                     eTimeSeriesType.AverageWeight,
+                Case eTimeSeriesType.BiomassForcing,
                      eTimeSeriesType.CatchesForcing,
+                     eTimeSeriesType.FishingEffort,
                      eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion,
                      eTimeSeriesType.Catchabilities,
                      eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel,
@@ -393,6 +392,17 @@ Namespace Ecosim
                      eTimeSeriesType.SailCost, eTimeSeriesType.SailCostRel,
                      eTimeSeriesType.FixedCost, eTimeSeriesType.FixedCostRel
                     Return True
+                Case eTimeSeriesType.BiomassRel,
+                     eTimeSeriesType.BiomassAbs,
+                     eTimeSeriesType.TotalMortality,
+                     eTimeSeriesType.AverageWeight,
+                     eTimeSeriesType.Catches,
+                     eTimeSeriesType.CatchesRel,
+                     eTimeSeriesType.Discards,
+                     eTimeSeriesType.Landings
+                    Return False
+                Case Else
+                    Debug.Assert(False, "Time series type " & DatType & " not accounted for")
             End Select
             Return False
         End Function
@@ -2618,6 +2628,8 @@ Namespace Ecosim
 
                     'If there is reference data for this timestep, month, year get the iDYear index(time step index of the data)
                     If Me.m_RefData.setRefDataIndex(iDYear, iTimeStep, iMonth, iYear) Then
+
+                        ' JS16Mar23: Catches forcing is not a reference TS?!
 
                         Debug.Assert(iDYear <> cCore.NULL_VALUE, "Warning: Ecosim.AccumulateDataInfo() failed to find a valid reference data index.")
                         If Me.m_RefData.AppliedDatVal(iDYear, iDType) > 0 And (Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassRel Or
