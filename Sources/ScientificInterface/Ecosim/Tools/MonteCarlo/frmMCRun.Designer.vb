@@ -49,6 +49,8 @@ Namespace Ecosim
             Me.m_btnStop = New System.Windows.Forms.Button()
             Me.m_tcMain = New ScientificInterfaceShared.Controls.ucTabControlEx()
             Me.m_tbpSettings = New System.Windows.Forms.TabPage()
+            Me.m_btnClearAll = New System.Windows.Forms.Button()
+            Me.m_btnSelectAll = New System.Windows.Forms.Button()
             Me.m_lblEnabledVariables = New System.Windows.Forms.Label()
             Me.m_clbEnabledVariables = New ScientificInterfaceShared.Controls.cFlickerFreeCheckedListBox()
             Me.m_cbRetainEstimates = New System.Windows.Forms.CheckBox()
@@ -126,8 +128,8 @@ Namespace Ecosim
             Me.m_lblERunAvg = New System.Windows.Forms.Label()
             Me.m_lblERunAvgValue = New System.Windows.Forms.Label()
             Me.m_cmbSaveFormat = New System.Windows.Forms.ComboBox()
-            Me.m_btnSelectAll = New System.Windows.Forms.Button()
-            Me.m_btnClearAll = New System.Windows.Forms.Button()
+            Me.m_lblFound = New System.Windows.Forms.Label()
+            Me.m_lblFoundValue = New System.Windows.Forms.Label()
             Me.m_tcMain.SuspendLayout()
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -210,6 +212,18 @@ Namespace Ecosim
             Me.m_tbpSettings.Controls.Add(Me.m_tbxEETol)
             Me.m_tbpSettings.Name = "m_tbpSettings"
             Me.m_tbpSettings.UseVisualStyleBackColor = True
+            '
+            'm_btnClearAll
+            '
+            resources.ApplyResources(Me.m_btnClearAll, "m_btnClearAll")
+            Me.m_btnClearAll.Name = "m_btnClearAll"
+            Me.m_btnClearAll.UseVisualStyleBackColor = True
+            '
+            'm_btnSelectAll
+            '
+            resources.ApplyResources(Me.m_btnSelectAll, "m_btnSelectAll")
+            Me.m_btnSelectAll.Name = "m_btnSelectAll"
+            Me.m_btnSelectAll.UseVisualStyleBackColor = True
             '
             'm_lblEnabledVariables
             '
@@ -825,6 +839,7 @@ Namespace Ecosim
             Me.m_lbGroups.SelectedGroupIndex = -1
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueAsc
+            Me.m_lbGroups.VisibleGroups = Nothing
             '
             'm_lblGroups
             '
@@ -977,6 +992,8 @@ Namespace Ecosim
             Me.m_tlpOutputs.Controls.Add(Me.m_lblERunAvgValue, 1, 2)
             Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbest, 3, 2)
             Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbestValue, 4, 2)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblFound, 6, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblFoundValue, 7, 0)
             Me.m_tlpOutputs.Name = "m_tlpOutputs"
             '
             'm_lblERunAvg
@@ -997,17 +1014,15 @@ Namespace Ecosim
             Me.m_cmbSaveFormat.Name = "m_cmbSaveFormat"
             Me.m_cmbSaveFormat.Sorted = True
             '
-            'm_btnSelectAll
+            'm_lblFound
             '
-            resources.ApplyResources(Me.m_btnSelectAll, "m_btnSelectAll")
-            Me.m_btnSelectAll.Name = "m_btnSelectAll"
-            Me.m_btnSelectAll.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_lblFound, "m_lblFound")
+            Me.m_lblFound.Name = "m_lblFound"
             '
-            'm_btnClearAll
+            'm_lblFoundValue
             '
-            resources.ApplyResources(Me.m_btnClearAll, "m_btnClearAll")
-            Me.m_btnClearAll.Name = "m_btnClearAll"
-            Me.m_btnClearAll.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_lblFoundValue, "m_lblFoundValue")
+            Me.m_lblFoundValue.Name = "m_lblFoundValue"
             '
             'frmMCRun
             '
@@ -1162,6 +1177,8 @@ Namespace Ecosim
         Private WithEvents m_lblERunAvgValue As System.Windows.Forms.Label
         Private WithEvents m_btnClearAll As Button
         Private WithEvents m_btnSelectAll As Button
+        Private WithEvents m_lblFound As Windows.Forms.Label
+        Private WithEvents m_lblFoundValue As Windows.Forms.Label
     End Class
 
 End Namespace

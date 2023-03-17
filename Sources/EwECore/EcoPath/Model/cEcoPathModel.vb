@@ -116,6 +116,9 @@ Namespace Ecopath
             Me.RunState = eEcopathRunState.NotRun
         End Sub
 
+        ''' <summary>
+        ''' What does this do, and why only these variables and not the lot?
+        ''' </summary>
         Public Sub Clear()
             Me.NoBQB = Nothing '(m_Data.NumGroups)
             Me.H = Nothing '(m_Data.NumGroups + 3)
@@ -124,10 +127,10 @@ Namespace Ecopath
             Me.Q = Nothing '(m_Data.NumGroups + 10)
             Me.AUL = Nothing '(m_Data.NumGroups + 3, m_Data.NumGroups + 3)
         End Sub
+
         ''' <summary>
         ''' Results of the Parameter Estimation 
         ''' </summary>
-        ''' <value></value>
         ''' <returns></returns>
         ''' <remarks>Parameter Estimation results are done as a Property instead of the return value so that a plugin can do the estimation  </remarks>
         Public ReadOnly Property EstimationStatus() As eStatusFlags
@@ -282,17 +285,16 @@ Namespace Ecopath
                 Me.CalcNewExportCatch(0)
                 Me.Catch_calculations()
 
-                Dim bPluginFailed As Boolean = True
-                'Ask the plugin manager to try and do the mass balance 
-                'if it fails then run the default mass balance 
+                Dim bPluginOverruled As Boolean = False
+                'Ask the plugin manager to try and do the mass balance. If it succeeds then do not run the default mass balance 
                 If Me.PluginManager IsNot Nothing Then
                     If Me.PluginManager.MassBalance(Me.m_Data, Me.ParameterEstimationType, iParamsEstimated) Then
                         Me.m_EstimStatus = DirectCast(iParamsEstimated, eStatusFlags)
-                        bPluginFailed = False
+                        bPluginOverruled = True
                     End If
                 End If
 
-                If bPluginFailed Then
+                If Not bPluginOverruled Then
                     Me.EstimateParameters(Me.ParameterEstimationType, Me.m_EstimStatus)
                 End If
 

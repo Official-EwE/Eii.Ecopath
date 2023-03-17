@@ -294,7 +294,7 @@ Public Class cSFPParameters
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Helper method, digs up all relevant, enabled and non-zero weighted 
-    ''' time series.
+    ''' reference time series.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Function GetRelevantTimeSeries() As cTimeSeries()
@@ -306,21 +306,14 @@ Public Class cSFPParameters
         Dim l As New List(Of cTimeSeries)
         For Each ts As cTimeSeries In lTS
             If (ts.Enabled And ts.WtType > 0) Then
-                Select Case ts.TimeSeriesType
-                    Case eTimeSeriesType.BiomassRel,
-                             eTimeSeriesType.TotalMortality,
-                             eTimeSeriesType.Catches,
-                             eTimeSeriesType.CatchesRel,
-                             eTimeSeriesType.AverageWeight,
-                             eTimeSeriesType.Discards,
-                             eTimeSeriesType.Landings
+                If ts.IsReference Then
+                    If ts.TimeSeriesType = eTimeSeriesType.BiomassAbs And Me.EnableAbsoluteBiomassTimeSeries Then
                         l.Add(ts)
+                    Else
+                        l.Add(ts)
+                    End If
+                End If
 
-                    Case eTimeSeriesType.BiomassAbs
-                        If Me.EnableAbsoluteBiomassTimeSeries Then
-                            l.Add(ts)
-                        End If
-                End Select
             End If
         Next
         Return l.ToArray()
