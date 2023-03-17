@@ -110,6 +110,7 @@ Public Class cEcosimMonteCarlo
 
     Public nEcopathIterations As Integer
     Public nTrialIterations As Integer
+    Public nEcopathModelsFound As Integer
 
     ''' <summary>
     ''' Best fitting Sum of Squares computed by Ecosim
@@ -201,9 +202,9 @@ Public Class cEcosimMonteCarlo
 
     ''' <summary>Original Ecopath parameters before trials were run (trialparam x group)</summary>
     ''' <remarks>This array holds the same data as PMean, and is obsolete</remarks>
-    Private startValues(,) As Single
+    Private StartValues(,) As Single
     ''' <summary>Original Ecopath parameters before trials were run (Pred x Prey)</summary>
-    Private m_startValuesDiets(,) As Single
+    Private StartValuesDiets(,) As Single
 
     'Private orgVul(,) As Single
 
@@ -317,8 +318,8 @@ Public Class cEcosimMonteCarlo
             ReDim Me.PMeanLanding(Me.m_core.nFleets, Me.m_core.nGroups)
             ReDim Me.PMeanDiscard(Me.m_core.nFleets, Me.m_core.nGroups)
             ReDim Me.PMeanDC(Me.m_core.nGroups, Me.m_core.nGroups)
-            ReDim Me.startValues(Me.NumParams(), Me.m_epdata.NumGroups)
-            ReDim Me.m_startValuesDiets(Me.m_epdata.NumGroups, Me.m_epdata.NumGroups)
+            ReDim Me.StartValues(Me.NumParams(), Me.m_epdata.NumGroups)
+            ReDim Me.StartValuesDiets(Me.m_epdata.NumGroups, Me.m_epdata.NumGroups)
             ReDim Me.BestFit(Me.NumParams(), Me.m_core.nGroups)
             ReDim Me.BestFitLanding(Me.m_core.nFleets, Me.m_core.nGroups)
             ReDim Me.BestFitDiscard(Me.m_core.nFleets, Me.m_core.nGroups)
@@ -386,7 +387,7 @@ Public Class cEcosimMonteCarlo
     Public Sub Clear()
 
         Me.Pmean = Nothing : Me.PMeanLanding = Nothing : Me.PMeanDiscard = Nothing
-        Me.startValues = Nothing
+        Me.StartValues = Nothing
         Me.BestFit = Nothing : Me.BestFitLanding = Nothing : Me.BestFitDiscard = Nothing
         Me.BestFitDiets = Nothing
         Me.ParLimit = Nothing
@@ -545,18 +546,11 @@ Public Class cEcosimMonteCarlo
                 Next
             Next
 
+            Me.PreserveOriginalState()
+
             'make a copy for the best fitting data 
             Array.Copy(Me.Pmean, Me.BestFit, Me.Pmean.Length)
             Array.Copy(Me.PMeanDC, Me.BestFitDiets, Me.PMeanDC.Length)
-            'make a copy of the original values so the user can restore the values
-            Array.Copy(Me.Pmean, Me.startValues, Me.Pmean.Length)
-            ' MP Apr 2016 adding diets
-            Array.Copy(Me.PMeanDC, Me.m_startValuesDiets, Me.PMeanDC.Length)
-            'vulnerabilities 
-            'Array.Copy(m_core.m_EcoSimData.VulMult, Me.orgVul, m_core.m_EcoSimData.VulMult.Length)
-
-
-            'Array.Copy(m_epdata.DC, Me.m_startValuesDiets, m_epdata.DC.Length)
 
             'jb Mar-24-2011 Do NOT reset Upper and Lower Parameter Limits 
             'they may have been edited by a user and this will overwrite the edits with defaults
@@ -677,6 +671,8 @@ Public Class cEcosimMonteCarlo
             End If
         Next
 
+        Me.nEcopathModelsFound = 0
+
         System.Console.WriteLine("----------Starting Monte Carlo----------")
         Try
             Me.initForRun()
@@ -723,6 +719,7 @@ Public Class cEcosimMonteCarlo
                 If Me.BalanceEcopathWithNewPars(iter, Me.maxEcopathTries) Then
 
                     Me.BalancedEcopathModel(Me.m_iTrial, iter)
+                    Me.nEcopathModelsFound += 1
 
                     Me.m_ecosim.Init(True)
 
@@ -812,7 +809,7 @@ Public Class cEcosimMonteCarlo
             Next Me.m_iTrial
 
             'restore ecopath back to its original state
-            Me.restoreOriginalState()
+            Me.RestoreOriginalState()
 
             Me.CompletedCallback()
             If Me.m_pluginmanager IsNot Nothing Then
@@ -860,7 +857,7 @@ Public Class cEcosimMonteCarlo
 
                 Me.m_pluginmanager.MonteCarloBalancedEcopathModel(iTrial, iter)
 
-                'This is pontentially problematic. 
+                'This is potentially problematic. 
                 'If a plugin put this into a blocked state and forgets to clear it WaitEvent.Set()
                 'then this will dealock the run.
                 'We could put a time out on this 
@@ -920,10 +917,41 @@ Public Class cEcosimMonteCarlo
     End Function
 
     ''' <summary>
+    ''' Preserve Ecopath original state
+    ''' </summary>
+    Public Sub PreserveOriginalState()
+
+        'Set Ecopath inputs back to original values
+        'VC Oct 02. below was setting, b, pb, ee, ba, but it needs to set input parameters,so I've changed this
+        For i As Integer = 1 To Me.m_epdata.NumLiving
+            If Me.m_epdata.Binput(i) > 0 Then Me.StartValues(eMCParams.Biomass, i) = Me.m_epdata.Binput(i)
+            If Me.m_epdata.PBinput(i) > 0 Then Me.StartValues(eMCParams.PB, i) = Me.m_epdata.PBinput(i)
+            If Me.m_epdata.QBinput(i) > 0 Then Me.StartValues(eMCParams.QB, i) = Me.m_epdata.QBinput(i)
+            If Me.m_epdata.EEinput(i) > 0 Then Me.StartValues(eMCParams.EE, i) = Me.m_epdata.EEinput(i)
+            If Me.m_epdata.OtherMortinput(i) > 0 Then Me.StartValues(eMCParams.OtherMort, i) = Me.m_epdata.OtherMortinput(i)
+
+            Me.StartValues(eMCParams.BA, i) = Me.m_epdata.BA(i)
+            Me.StartValues(eMCParams.BaBi, i) = Me.m_epdata.BaBi(i)
+            ' startValues(eMCParams.Vulnerability, i) = m_esdata.VulnerabilityPredator(i) 
+        Next
+
+        For iGrp As Integer = 1 To Me.m_epdata.NumGroups
+            For iFlt As Integer = 1 To Me.m_epdata.NumFleet
+                Me.PMeanLanding(iFlt, iGrp) = Me.m_epdata.Landing(iFlt, iGrp)
+                Me.PMeanDiscard(iFlt, iGrp) = Me.m_epdata.Discard(iFlt, iGrp)
+            Next
+            For iPrey As Integer = 0 To Me.m_epdata.NumGroups
+                Me.StartValuesDiets(iGrp, iPrey) = Me.m_epdata.DC(iGrp, iPrey)
+            Next
+        Next
+
+    End Sub
+
+    ''' <summary>
     ''' Restore Ecopath to its original state
     ''' </summary>
     ''' <remarks>The Monte Carlo changed the basic input data of Ecopath. This will set it back to the state it was in when the Monte Carlo was run.</remarks>
-    Public Sub restoreOriginalState()
+    Public Sub RestoreOriginalState()
         Dim bSuccess As Boolean
 
         Try
@@ -931,14 +959,14 @@ Public Class cEcosimMonteCarlo
             'Set Ecopath inputs back to original values
             'VC Oct 02. below was setting, b, pb, ee, ba, but it needs to set input parameters,so I've changed this
             For i As Integer = 1 To Me.m_epdata.NumLiving
-                If Me.m_epdata.Binput(i) > 0 Then Me.m_epdata.Binput(i) = Me.startValues(eMCParams.Biomass, i)
-                If Me.m_epdata.PBinput(i) > 0 Then Me.m_epdata.PBinput(i) = Me.startValues(eMCParams.PB, i)
-                If Me.m_epdata.QBinput(i) > 0 Then Me.m_epdata.QBinput(i) = Me.startValues(eMCParams.QB, i)
-                If Me.m_epdata.EEinput(i) > 0 Then Me.m_epdata.EEinput(i) = Me.startValues(eMCParams.EE, i)
-                If Me.m_epdata.OtherMortinput(i) > 0 Then Me.m_epdata.OtherMortinput(i) = Me.startValues(eMCParams.OtherMort, i)
+                If Me.m_epdata.Binput(i) > 0 Then Me.m_epdata.Binput(i) = Me.StartValues(eMCParams.Biomass, i)
+                If Me.m_epdata.PBinput(i) > 0 Then Me.m_epdata.PBinput(i) = Me.StartValues(eMCParams.PB, i)
+                If Me.m_epdata.QBinput(i) > 0 Then Me.m_epdata.QBinput(i) = Me.StartValues(eMCParams.QB, i)
+                If Me.m_epdata.EEinput(i) > 0 Then Me.m_epdata.EEinput(i) = Me.StartValues(eMCParams.EE, i)
+                If Me.m_epdata.OtherMortinput(i) > 0 Then Me.m_epdata.OtherMortinput(i) = Me.StartValues(eMCParams.OtherMort, i)
 
-                Me.m_epdata.BA(i) = Me.startValues(eMCParams.BA, i)
-                Me.m_epdata.BaBi(i) = Me.startValues(eMCParams.BaBi, i)
+                Me.m_epdata.BA(i) = Me.StartValues(eMCParams.BA, i)
+                Me.m_epdata.BaBi(i) = Me.StartValues(eMCParams.BaBi, i)
                 ' m_esdata.VulnerabilityPredator(i) = startValues(eMCParams.Vulnerability, i)
             Next
 
@@ -948,7 +976,7 @@ Public Class cEcosimMonteCarlo
                     Me.m_epdata.Discard(iFlt, iGrp) = Me.PMeanDiscard(iFlt, iGrp)
                 Next
                 For iPrey As Integer = 0 To Me.m_epdata.NumGroups
-                    Me.m_epdata.DC(iGrp, iPrey) = Me.m_startValuesDiets(iGrp, iPrey)
+                    Me.m_epdata.DC(iGrp, iPrey) = Me.StartValuesDiets(iGrp, iPrey)
                 Next
             Next
 
@@ -959,6 +987,8 @@ Public Class cEcosimMonteCarlo
             Me.m_epdata.CopyInputToModelArrays()
 
             'run Ecopath with the original values to reset computed variables
+            'JS 17Mar2023: reset estimation flag to prevent Ecopath tripping on models with 2 legit missing variables
+            Me.m_ecopath.ParameterEstimationType = eEstimateParameterFor.ParameterEstimation
             bSuccess = Me.m_ecopath.Run()
 
             'init stanza groups back to the original values

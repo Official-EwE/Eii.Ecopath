@@ -68,6 +68,7 @@ Namespace Ecosim
         Private m_fpSSorg As cEwEFormatProvider = Nothing
         Private m_fpSS As cEwEFormatProvider = Nothing
         Private m_fpSSBest As cEwEFormatProvider = Nothing
+        Private m_fpNoFound As cEwEFormatProvider = Nothing
 
         Private m_fpEETol As cEwEFormatProvider = Nothing
         Private m_fpFMratio As cEwEFormatProvider = Nothing
@@ -84,6 +85,7 @@ Namespace Ecosim
         ''' </remarks>
         Private m_nTrials As Integer
         Private m_nRunsTot As Long
+        Private m_nRunsSuccess As Long
 
         Private m_sYMax As Single = 1.0!
 
@@ -174,6 +176,9 @@ Namespace Ecosim
 
             Me.m_fpSSBest = New cEwEFormatProvider(Me.UIContext, Me.m_lblSSbestValue, GetType(Single))
             Me.m_fpSSBest.Value = 0.0!
+
+            Me.m_fpNoFound = New cEwEFormatProvider(Me.UIContext, Me.m_lblFoundValue, GetType(Integer))
+            Me.m_fpNoFound.Value = 0.0!
 
             Me.m_fpEETol = New cEwEFormatProvider(Me.UIContext, Me.m_tbxEETol, GetType(Single))
             Me.m_fpEETol.Value = Me.m_mcmanager.EcopathEETolerance
@@ -323,6 +328,7 @@ Namespace Ecosim
                 Me.m_fpSSorg.Release()
                 Me.m_fpSS.Release()
                 Me.m_fpSSBest.Release()
+                Me.m_fpNoFound.Release()
                 RemoveHandler Me.m_fpEETol.OnValueChanged, AddressOf Me.OnEETolChanged
                 Me.m_fpEETol.Release()
                 RemoveHandler Me.m_fpFMratio.OnValueChanged, AddressOf Me.OnFMratioChanged
@@ -643,9 +649,10 @@ Namespace Ecosim
 
             Try
                 Me.m_nRunsTot += Me.m_mcmanager.nEcopathIterations
-
+                Me.m_nRunsSuccess = Me.m_mcmanager.nEcopathModelsFound
                 Me.m_fpERun.Value = Me.m_mcmanager.nEcopathIterations
                 Me.m_fpERunAvg.Value = Me.StyleGuide.FormatNumber(Me.m_nRunsTot / Math.Max(1, Me.m_nTrials))
+                Me.m_fpNoFound.Value = Me.m_mcmanager.nEcopathModelsFound
 
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
@@ -743,6 +750,11 @@ Namespace Ecosim
                 End If
 
             End While
+
+            If Not Me.m_mcmanager.CanRunMCMC Then
+                ' Peep a message
+                Return
+            End If
 
             Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
             Me.m_fpTrial.Value = 0

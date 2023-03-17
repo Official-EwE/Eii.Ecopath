@@ -314,9 +314,13 @@ End Enum
 ''' <remarks>The enumerated values follow the original EwE5 scheme.</remarks>
 ''' ---------------------------------------------------------------------------
 Public Enum eTimeSeriesType As Integer
+    ''' <summary>Relative biomass, reference</summary>
     BiomassRel = 0
+    ''' <summary>Absolute biomass, reference</summary>
     BiomassAbs = 1
+    ''' <summary>Biomass forcing, forcing</summary>
     BiomassForcing = -1
+    ''' <summary>Time forcing, forcing</summary>
     TimeForcing = 2
     FishingEffort = 3
     FishingMortality = 4
