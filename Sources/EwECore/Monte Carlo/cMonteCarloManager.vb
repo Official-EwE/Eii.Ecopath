@@ -614,6 +614,19 @@ Public Class cMonteCarloManager
     ''' the current trial.
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    Public ReadOnly Property nEcopathModelsFound() As Integer
+        Get
+            If (Me.m_mc Is Nothing) Then Return 0
+            Return Me.m_mc.nEcopathModelsFound
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the number of attempts at finding a balanced Ecopath model for
+    ''' the current trial.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property nEcopathIterations() As Integer
         Get
             If (Me.m_mc Is Nothing) Then Return 0

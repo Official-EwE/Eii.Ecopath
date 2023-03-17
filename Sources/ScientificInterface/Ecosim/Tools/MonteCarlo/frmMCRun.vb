@@ -751,11 +751,6 @@ Namespace Ecosim
 
             End While
 
-            If Not Me.m_mcmanager.CanRunMCMC Then
-                ' Peep a message
-                Return
-            End If
-
             Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
             Me.m_fpTrial.Value = 0
             Me.m_fpERun.Value = 0
