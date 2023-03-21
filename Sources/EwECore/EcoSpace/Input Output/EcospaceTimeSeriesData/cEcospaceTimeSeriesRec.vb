@@ -19,7 +19,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
-
+Imports EwEUtils.Utilities
 
 Namespace EcospaceTimeSeries
 
@@ -68,13 +68,13 @@ Namespace EcospaceTimeSeries
             Dim tempTimeStamp As Date
             Try
                 If Me.Parse(strRec, data) Then
-                    Me.Row = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.Row))
-                    Me.Col = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.Col))
-                    Me.iGroupID = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.GroupID))
-                    tempTimeStamp = EwEUtils.Utilities.cStringUtils.ConvertToDate(data(eDataCols.Timestamp), Me.InputTimeStepFormat)
+                    Me.Row = cStringUtils.ConvertToInteger(data(eDataCols.Row))
+                    Me.Col = cStringUtils.ConvertToInteger(data(eDataCols.Col))
+                    Me.iGroupID = cStringUtils.ConvertToInteger(data(eDataCols.GroupID))
+                    tempTimeStamp = cStringUtils.ConvertToDate(data(eDataCols.Timestamp), Me.InputTimeStepFormat)
                     'strip the day off of the timestamp
                     Me.TimeStamp = New Date(tempTimeStamp.Year, tempTimeStamp.Month, 1)
-                    Me.CellValue = EwEUtils.Utilities.cStringUtils.ConvertToSingle(data(eDataCols.Value))
+                    Me.CellValue = cStringUtils.ConvertToSingle(data(eDataCols.Value))
                 End If
             Catch ex As Exception
 
@@ -109,25 +109,24 @@ Namespace EcospaceTimeSeries
             Return New cEcospaceTimeSeriesRec()
         End Function
 
-
         Public Function ToCSVString() As String
             Dim csvStr As New System.Text.StringBuilder()
             Dim delim As String = ","
 
-            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.Row))
+            csvStr.Append(cStringUtils.ToCSVField(Me.Row))
             csvStr.Append(delim)
-            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.Col))
+            csvStr.Append(cStringUtils.ToCSVField(Me.Col))
             csvStr.Append(delim)
-            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.iGroupID))
+            csvStr.Append(cStringUtils.ToCSVField(Me.iGroupID))
             csvStr.Append(delim)
             'Output timestamp format is hard coded
-            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.TimeStamp.ToString("yyyy-MM-dd")))
+            csvStr.Append(cStringUtils.ToCSVField(Me.TimeStamp.ToString("yyyy-MM-dd")))
             csvStr.Append(delim)
-            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.CellValue))
+            csvStr.Append(cStringUtils.ToCSVField(Me.CellValue))
             csvStr.Append(delim)
-            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.PredictedValue))
+            csvStr.Append(cStringUtils.ToCSVField(Me.PredictedValue))
             csvStr.Append(delim)
-            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.PredError))
+            csvStr.Append(cStringUtils.ToCSVField(Me.PredError))
 
             Return csvStr.ToString
         End Function
@@ -150,7 +149,7 @@ Namespace EcospaceTimeSeries
 
         Private Function Parse(recString As String, ByRef data() As String) As Boolean
             Dim bReturn As Boolean = True
-            data = EwEUtils.Utilities.cStringUtils.SplitQualified(recString, ",")
+            data = cStringUtils.SplitQualified(recString, ",")
             If data.Length < 5 Then
                 Me.m_validation = eTimeSeriesRecValidations.MalformedString
                 Return False

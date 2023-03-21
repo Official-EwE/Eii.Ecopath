@@ -232,9 +232,9 @@ Namespace EcospaceTimeSeries
             For Each table As DataTable In Me.m_dataSets.Tables
                 System.Console.WriteLine("----------------" + table.TableName + "----------------")
                 For Each row As DataRow In table.Rows
-                    Dim tsrec As cEcospaceTimeSeriesRec
-                    tsrec = DirectCast(row("Rec"), cEcospaceTimeSeriesRec)
-                    System.Console.WriteLine(tsrec.ToCSVString)
+                    Dim ts As Date = DirectCast(row("Date"), Date)
+                    Dim tsrec As cEcospaceTimeSeriesRec = DirectCast(row("Rec"), cEcospaceTimeSeriesRec)
+                    System.Console.WriteLine(ts.ToShortDateString & ": " & tsrec.ToCSVString)
                 Next
                 System.Console.WriteLine("--------------------------------")
             Next
