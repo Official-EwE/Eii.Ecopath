@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EwEShell.cGame" Collapsed="true">
+    <Position X="3" Y="2.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Pressures" Type="EwEShell.cPressure" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="3" />
+        <Point X="2.062" Y="3" />
+        <Point X="2.062" Y="4" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.337" Y="0.286" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Outputs" Type="EwEShell.cOutput">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.322" Y="0.329" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Drivers(EwEShell.cPressure.eDataTypes)" Type="EwEShell.cDriver" FixedToPoint="true">
+      <Path>
+        <Point X="3.75" Y="3.312" />
+        <Point X="3.75" Y="4" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.295" Y="0.291" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsCollectionAssociation>
+      <Property Name="Pressures" />
+      <Property Name="Outputs" />
+      <Property Name="Drivers(EwEShell.cPressure.eDataTypes)" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEShell.cShellData" Collapsed="true">
+    <Position X="3" Y="1.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Games" Type="EwEShell.cGame">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.256" Y="0.247" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsCollectionAssociation>
+      <Property Name="Games" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="EwEShell.cDriver" Collapsed="true">
+    <Position X="3" Y="4" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEShell.cOutput" Collapsed="true">
+    <Position X="4.75" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEShell.cEffortDriver" Collapsed="true">
+    <Position X="0.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="EwEShell.cEnvironmentalDriver" Collapsed="true">
+    <Position X="2.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="EwEShell.cHabitatDriver" Collapsed="true">
+    <Position X="4" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="EwEShell.cMPADriver" Collapsed="true">
+    <Position X="5.75" Y="5.25" Width="1.5" />
+    <InheritanceLine Type="EwEShell.cDriver" FixedFromPoint="true">
+      <Path>
+        <Point X="3.75" Y="4.562" />
+        <Point X="3.75" Y="4.875" />
+        <Point X="6.5" Y="4.875" />
+        <Point X="6.5" Y="5.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="EwEShell.cPressure" Collapsed="true">
+    <Position X="1.25" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEMSPPlugin.Emulator.cTestSetData" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAIAAACAAAAAAAAAAIAAEAAgACDAAAA=</HashCode>
+      <FileName>Test sets\cTestSetData.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwEMSPPlugin.Emulator.cTestset" Collapsed="true">
+    <Position X="12.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAEAEAAAAAAQAAAAAAAIAAAAAAgAAAAA=</HashCode>
+      <FileName>Test sets\cTestset.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEMSPPlugin.UI.frmGameDesigner" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="m_testdata" Type="EwEMSPPlugin.Emulator.cTestSetData">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.318" Y="-0.109" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Shell" Type="EwEShell.cEwEShell">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.424" Y="-0.079" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="m_gridEmulTestset" Type="EwEMSPPlugin.UI.gridEmulator" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.5" Y="1" />
+        <Point X="11.344" Y="1" />
+        <Point X="11.344" Y="2.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.671" Y="0.498" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="m_gridPressureMappings" Type="EwEMSPPlugin.UI.gridDrivers">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.817" Y="0.498" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="m_gridOutcome" Type="EwEMSPPlugin.UI.gridOutcomes">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.588" Y="0.498" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>KIJ0kLgJ4a3l7f0JGISUbaGCToSFhpb/Q5BKWhsDIcY=</HashCode>
+      <FileName>UI\frmGameDesigner.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_testdata" />
+      <Field Name="m_gridEmulTestset" />
+      <Field Name="m_gridPressureMappings" />
+      <Field Name="m_gridOutcome" />
+      <Property Name="Shell" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EwEMSPPlugin.UI.gridDrivers" Collapsed="true">
+    <Position X="7.25" Y="2.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="EwEMSPPlugin.UI.gridDrivers.eColumnTypes" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>UI\Controls\gridDrivers.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAUAAAIAAAAAAQIAAAAAAAAgAAAAIAAAACgAAAIA=</HashCode>
+      <FileName>UI\Controls\gridDrivers.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwEMSPPlugin.UI.gridEmulator" Collapsed="true">
+    <Position X="10.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIABAUAAIQAAAAAAAAAAAAAAAAgAAAAIAAAACgAAAAQ=</HashCode>
+      <FileName>UI\Controls\gridEmulator.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwEMSPPlugin.UI.gridOutcomes" Collapsed="true">
+    <Position X="9" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAUAAAIAAAAAAAIAIAAAEAAAAAAAIAAAACAAAAIA=</HashCode>
+      <FileName>UI\Controls\gridOutcomes.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EwEShell.cEwEShell" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <AssociationLine Name="Data" Type="EwEShell.cShellData">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.217" Y="0.139" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="Data" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

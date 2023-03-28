@@ -1,0 +1,64 @@
+Version 1.7.2 - 20 February 2018
+=============================
+Added error feedback when trying to load test sets
+Fixed Giovanni R institution info, Magali G is now a MSP tools tester ;)
+
+Version 1.7.1 - 15 February 2018
+=============================
+Fixed minor issue serializing pressure connections without multipliers
+
+Version 1.7 - 22 January 2018
+=============================
+Updated and spell-checked documentation
+Fixed minor usability and update issues in MSP tools
+
+Version 1.65 - 23 October 2017
+==============================
+Added outcome range to emulator panel. This value is NOT saved in the game
+
+Version 1.6 - 04 October 2017
+=============================
+Added maximum value for effort scalars, which allows MEL to specify [0, 1], and scales to real EffMult
+Shell configuration call returns initial effort values, scaled to [0, 1] relative to the max scale. This provides MSP with an effort start value
+Catch output is an aggregation of fleet data, directly obtained from Ecospace
+
+Version 1.5 - 27 September 2017
+===============================
+Updated to changes in the EwE core
+Updated acknowledgments
+Updated documentation
+Ready for acceptance testing
+
+Version 1.4.1 - 23 August 2017
+==============================
+The loaded game can now be assigned to the currently loaded scenario
+
+Version 1.4 - 1 June 2017
+=========================
+Shortened names of tabs (Game settings -> Settings, Game pressures -> Pressures, etc)
+Added new Information tab with Version, Author, Contact, and Description
+Moved game version field from Settings tab to the new Information tab
+Limited the length of names and version field 
+Updated documentation accordingly
+
+Version 1.3 - 26 May 2017
+=========================
+Added validation for unique game names
+Updated documentation accordingly
+Described About section in documentation
+
+Version 1.2 - 25 May 2017
+=========================
+Made MSP tools respond better to deleted games
+Added support for JSON Fishing nodes to define fishing effort scalars
+Localized all string resources (this is an internal thingy)
+
+Version 1.1 - 22 May 2017
+=========================
+Added game version
+ - Version text must contain at least 5 characters
+ - Game version text box added to Game Settings tab
+ - Game settings tab displays error if the version text is missing or is too short
+ - Game version is also exposed to MEL
+Names of items can now contain any character (quotes, etc)
+Help PDF now launches when pressing F1 while the input focus is on MSP tools
