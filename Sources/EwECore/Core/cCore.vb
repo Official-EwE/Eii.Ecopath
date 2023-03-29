@@ -14589,6 +14589,9 @@ Public Class cCore
                         Me.m_publisher.AddMessage(New cMessage("Ecospace use Ecosim forcing.", eMessageType.DataModified,
                                                                   eCoreComponentType.Ecospace, eMessageImportance.Maintenance, eDataTypes.EcospaceModelParameter))
 
+                    Case eVarNameFlags.EcospaceEffortZoneNumber
+                        Me.m_EcospaceData.ReDimEffortZones()
+
                 End Select 'Select Case value.varName
 
 

@@ -1406,9 +1406,6 @@ Public Class cEcospaceDataStructures
             ReDim Me.SEmult(Me.nFleets)
             ReDim Me.EffPower(Me.nFleets)
 
-            'Sets the number of Effort Areas to a default of one
-            Me.ReDimEffortZones(1)
-
             Me.setFleetDefaults()
 
             ReDim Me.FleetSailCells(Me.nFleets)
@@ -1426,12 +1423,10 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Dimensions and sets the number of Effort Zones
     ''' </summary>
-    ''' <param name="NumberOfZones">Number of Effort Zones</param>
     ''' <remarks>Sets PropEffortFleetArea(nFleets,nAreas) to a default of one</remarks>
-    Public Sub ReDimEffortZones(ByVal NumberOfZones As Integer)
-        Debug.Assert(NumberOfZones > 0, "ReDimPropEffortArea(nAreas) NumberOfAreas must be greater than 0.")
+    Public Sub ReDimEffortZones()
+        Debug.Assert(Me.nEffZones > 0, "ReDimPropEffortArea(nAreas) NumberOfAreas must be greater than 0.")
 
-        Me.nEffZones = NumberOfZones
         Me.PropEffortFleetZone = New Single(Me.nFleets, Me.nEffZones) {}
 
         For iflt As Integer = 1 To Me.nFleets
@@ -1488,8 +1483,9 @@ Public Class cEcospaceDataStructures
 
         'Warning
         Debug.Assert(False, "Effort Zones have been set for debugging.")
-        'set the number of zones to 4
-        Me.ReDimEffortZones(4)
+
+        Me.nEffZones = 4
+        Me.ReDimEffortZones()
 
         For iflt As Integer = 1 To Me.nFleets
             For iz As Integer = 1 To Me.nEffZones
@@ -2048,11 +2044,12 @@ Public Class cEcospaceDataStructures
             Me.allocate(Me.MonthlyYvel, 12, Me.InRow + 1, Me.InCol + 1)
             Me.allocate(Me.MonthlyUpWell, 12, Me.InRow + 1, Me.InCol + 1)
 
-
             'jb move this here to set a few defaults this will have to change
             For i = 1 To Me.NGroups                            'CJW had nvar not n1
                 Me.PrefHab(i, 0) = 1.0! ' True
             Next 'set preferred habitat to 1 (pelagic) by default
+
+            Me.ReDimEffortZones()
 
             'Populate the Width() array
             Me.CalculateCellWidth()
