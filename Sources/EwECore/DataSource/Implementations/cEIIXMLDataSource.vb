@@ -2208,7 +2208,7 @@ Public Class cEIIXMLDataSource
             ecospaceDS.nGridSolverThreads = CInt(drow("NumThreads"))
             ecospaceDS.nEffortDistThreads = CInt(drow("NumThreads"))
             ecospaceDS.nRegions = CInt(Me.ReadSafe(drow, "NumRegions", 0))
-            ecospaceDS.nEffZones = CInt(Me.ReadSafe(drow, "NumEffortZones", 0))
+            ecospaceDS.nEffZones = CInt(Me.ReadSafe(drow, "NumEffortZones", 1))
             ecospaceDS.AdjustSpace = (CInt(drow("AdjustSpace")) <> 0)
             ecospaceDS.UseExact = (CInt(drow("UseExact")) <> 0)
             ecospaceDS.Tol = Me.ReadSafe(drow, "Tolerance", 0.01!)

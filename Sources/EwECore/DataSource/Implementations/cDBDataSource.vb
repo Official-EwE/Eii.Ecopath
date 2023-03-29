@@ -7484,7 +7484,7 @@ Namespace DataSources
                 ecospaceDS.nGridSolverThreads = CInt(reader("NumThreads"))
                 ecospaceDS.nEffortDistThreads = CInt(reader("NumThreads"))
                 ecospaceDS.nRegions = CInt(Me.m_db.ReadSafe(reader, "NumRegions", 0))
-                ecospaceDS.nEffZones = CInt(Me.m_db.ReadSafe(reader, "NumEffortZones", 0))
+                ecospaceDS.nEffZones = CInt(Me.m_db.ReadSafe(reader, "NumEffortZones", 1))
                 ecospaceDS.AdjustSpace = (CInt(reader("AdjustSpace")) <> 0)
                 ecospaceDS.UseExact = (CInt(reader("UseExact")) <> 0)
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
