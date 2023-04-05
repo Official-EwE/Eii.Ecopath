@@ -289,7 +289,7 @@ Public Class cEcospaceImportExportASCIIData
                         checksum = CByte(checksum Or &H8)
 
                     Case "yllcenter"
-                        dXLLpos = cStringUtils.ConvertToDouble(strValue, cCore.NULL_VALUE)
+                        dYLLpos = cStringUtils.ConvertToDouble(strValue, cCore.NULL_VALUE)
                         bSuccess = bSuccess And (dYLLpos <> cCore.NULL_VALUE)
                         bIsCenterY = True
                         checksum = CByte(checksum Or &H8)
