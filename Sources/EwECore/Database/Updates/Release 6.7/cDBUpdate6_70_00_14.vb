@@ -20,9 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
 Imports EwEUtils.Database
-Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
@@ -34,7 +32,7 @@ Imports EwEUtils.Utilities
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_70_00_13
+Friend Class cDBUpdate6_70_00_14
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -42,7 +40,7 @@ Friend Class cDBUpdate6_70_00_13
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.700013!
+            Return 6.700014!
         End Get
     End Property
 
