@@ -80,10 +80,10 @@ Namespace Ecospace
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
             Me.m_cbUseExact = New System.Windows.Forms.CheckBox()
-            Me.m_cbAutosaveAnnualOnly = New System.Windows.Forms.CheckBox()
+            Me.m_cbAnnualOutput = New System.Windows.Forms.CheckBox()
             Me.m_clbAutosave = New System.Windows.Forms.CheckedListBox()
-            Me.m_lblAutosaveFirstTimeStep = New System.Windows.Forms.Label()
-            Me.m_nudAutosaveFirstTimeStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.Label2 = New System.Windows.Forms.Label()
+            Me.m_nudFirstTimeStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_tbContact = New System.Windows.Forms.TextBox()
             Me.m_tbAuthor = New System.Windows.Forms.TextBox()
             Me.m_lbContact = New System.Windows.Forms.Label()
@@ -110,6 +110,17 @@ Namespace Ecospace
             Me.m_cbUseEcosimDiscardForcing = New System.Windows.Forms.CheckBox()
             Me.m_cbUseEcosimBiomassForcing = New System.Windows.Forms.CheckBox()
             Me.m_hdrTimeSeries = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_plEffortDistr = New System.Windows.Forms.Panel()
+            Me.m_tbPredEffortRelax = New System.Windows.Forms.TextBox()
+            Me.m_lbEffortRelax = New System.Windows.Forms.Label()
+            Me.m_tbFirstPenaltyMonth = New System.Windows.Forms.TextBox()
+            Me.m_lbFirstMonthPen = New System.Windows.Forms.Label()
+            Me.m_tbPenPow = New System.Windows.Forms.TextBox()
+            Me.m_lbPenPow = New System.Windows.Forms.Label()
+            Me.m_tbEffortAdjustWeight = New System.Windows.Forms.TextBox()
+            Me.m_lbAdjustEffort = New System.Windows.Forms.Label()
+            Me.m_cbUsePenalty = New System.Windows.Forms.CheckBox()
+            Me.m_hdrSpatialPenalty = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -119,7 +130,7 @@ Namespace Ecospace
             CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbRunTime.SuspendLayout()
-            CType(Me.m_nudAutosaveFirstTimeStep, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudFirstTimeStep, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_plBiomass.SuspendLayout()
             Me.m_tlpStuff.SuspendLayout()
             Me.m_plScenario.SuspendLayout()
@@ -127,6 +138,7 @@ Namespace Ecospace
             Me.m_tlpRunTime.SuspendLayout()
             Me.m_gbAutoSave.SuspendLayout()
             Me.m_plTimeSeries.SuspendLayout()
+            Me.m_plEffortDistr.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_gbModel
@@ -368,13 +380,13 @@ Namespace Ecospace
             Me.m_cbUseExact.Name = "m_cbUseExact"
             Me.m_cbUseExact.UseVisualStyleBackColor = True
             '
-            'm_cbAutosaveAnnualOnly
+            'm_cbAnnualOutput
             '
-            resources.ApplyResources(Me.m_cbAutosaveAnnualOnly, "m_cbAutosaveAnnualOnly")
-            Me.m_cbAutosaveAnnualOnly.Checked = True
-            Me.m_cbAutosaveAnnualOnly.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_cbAutosaveAnnualOnly.Name = "m_cbAutosaveAnnualOnly"
-            Me.m_cbAutosaveAnnualOnly.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbAnnualOutput, "m_cbAnnualOutput")
+            Me.m_cbAnnualOutput.Checked = True
+            Me.m_cbAnnualOutput.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbAnnualOutput.Name = "m_cbAnnualOutput"
+            Me.m_cbAnnualOutput.UseVisualStyleBackColor = True
             '
             'm_clbAutosave
             '
@@ -384,24 +396,18 @@ Namespace Ecospace
             Me.m_clbAutosave.Name = "m_clbAutosave"
             Me.m_clbAutosave.Sorted = True
             '
-            'm_lblAutosaveFirstTimeStep
+            'Label2
             '
-            resources.ApplyResources(Me.m_lblAutosaveFirstTimeStep, "m_lblAutosaveFirstTimeStep")
-            Me.m_lblAutosaveFirstTimeStep.Name = "m_lblAutosaveFirstTimeStep"
+            resources.ApplyResources(Me.Label2, "Label2")
+            Me.Label2.Name = "Label2"
             '
-            'm_cbAutosaveVisibleOnly
+            'm_nudFirstTimeStep
             '
-            resources.ApplyResources(Me.m_cbAutosaveVisibleOnly, "m_cbAutosaveVisibleOnly")
-            Me.m_cbAutosaveVisibleOnly.Name = "m_cbAutosaveVisibleOnly"
-            Me.m_cbAutosaveVisibleOnly.UseVisualStyleBackColor = True
-            '
-            'm_nudAutosaveFirstTimeStep
-            '
-            Me.m_nudAutosaveFirstTimeStep.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            resources.ApplyResources(Me.m_nudAutosaveFirstTimeStep, "m_nudAutosaveFirstTimeStep")
-            Me.m_nudAutosaveFirstTimeStep.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
-            Me.m_nudAutosaveFirstTimeStep.Name = "m_nudAutosaveFirstTimeStep"
-            Me.m_nudAutosaveFirstTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudFirstTimeStep.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+            resources.ApplyResources(Me.m_nudFirstTimeStep, "m_nudFirstTimeStep")
+            Me.m_nudFirstTimeStep.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+            Me.m_nudFirstTimeStep.Name = "m_nudFirstTimeStep"
+            Me.m_nudFirstTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
             'm_tbContact
             '
@@ -466,6 +472,7 @@ Namespace Ecospace
             Me.m_tlpStuff.Controls.Add(Me.m_plBiomass, 0, 1)
             Me.m_tlpStuff.Controls.Add(Me.m_plModel, 0, 2)
             Me.m_tlpStuff.Controls.Add(Me.m_plTimeSeries, 0, 3)
+            Me.m_tlpStuff.Controls.Add(Me.m_plEffortDistr, 0, 4)
             Me.m_tlpStuff.Name = "m_tlpStuff"
             '
             'm_plScenario
@@ -500,13 +507,19 @@ Namespace Ecospace
             'm_gbAutoSave
             '
             Me.m_gbAutoSave.Controls.Add(Me.m_cbAutosaveVisibleOnly)
-            Me.m_gbAutoSave.Controls.Add(Me.m_nudAutosaveFirstTimeStep)
-            Me.m_gbAutoSave.Controls.Add(Me.m_cbAutosaveAnnualOnly)
+            Me.m_gbAutoSave.Controls.Add(Me.m_nudFirstTimeStep)
+            Me.m_gbAutoSave.Controls.Add(Me.m_cbAnnualOutput)
             Me.m_gbAutoSave.Controls.Add(Me.m_clbAutosave)
-            Me.m_gbAutoSave.Controls.Add(Me.m_lblAutosaveFirstTimeStep)
+            Me.m_gbAutoSave.Controls.Add(Me.Label2)
             resources.ApplyResources(Me.m_gbAutoSave, "m_gbAutoSave")
             Me.m_gbAutoSave.Name = "m_gbAutoSave"
             Me.m_gbAutoSave.TabStop = False
+            '
+            'm_cbAutosaveVisibleOnly
+            '
+            resources.ApplyResources(Me.m_cbAutosaveVisibleOnly, "m_cbAutosaveVisibleOnly")
+            Me.m_cbAutosaveVisibleOnly.Name = "m_cbAutosaveVisibleOnly"
+            Me.m_cbAutosaveVisibleOnly.UseVisualStyleBackColor = True
             '
             'm_plTimeSeries
             '
@@ -571,15 +584,84 @@ Namespace Ecospace
             'm_hdrTimeSeries
             '
             resources.ApplyResources(Me.m_hdrTimeSeries, "m_hdrTimeSeries")
-            Me.m_hdrTimeSeries.CanCollapseParent = False
+            Me.m_hdrTimeSeries.CanCollapseParent = True
             Me.m_hdrTimeSeries.CollapsedParentHeight = 0
             Me.m_hdrTimeSeries.IsCollapsed = False
             Me.m_hdrTimeSeries.Name = "m_hdrTimeSeries"
             '
+            'm_plEffortDistr
+            '
+            resources.ApplyResources(Me.m_plEffortDistr, "m_plEffortDistr")
+            Me.m_plEffortDistr.Controls.Add(Me.m_tbPredEffortRelax)
+            Me.m_plEffortDistr.Controls.Add(Me.m_lbEffortRelax)
+            Me.m_plEffortDistr.Controls.Add(Me.m_tbFirstPenaltyMonth)
+            Me.m_plEffortDistr.Controls.Add(Me.m_lbFirstMonthPen)
+            Me.m_plEffortDistr.Controls.Add(Me.m_tbPenPow)
+            Me.m_plEffortDistr.Controls.Add(Me.m_lbPenPow)
+            Me.m_plEffortDistr.Controls.Add(Me.m_tbEffortAdjustWeight)
+            Me.m_plEffortDistr.Controls.Add(Me.m_lbAdjustEffort)
+            Me.m_plEffortDistr.Controls.Add(Me.m_cbUsePenalty)
+            Me.m_plEffortDistr.Controls.Add(Me.m_hdrSpatialPenalty)
+            Me.m_plEffortDistr.Name = "m_plEffortDistr"
+            '
+            'm_tbPredEffortRelax
+            '
+            resources.ApplyResources(Me.m_tbPredEffortRelax, "m_tbPredEffortRelax")
+            Me.m_tbPredEffortRelax.Name = "m_tbPredEffortRelax"
+            '
+            'm_lbEffortRelax
+            '
+            resources.ApplyResources(Me.m_lbEffortRelax, "m_lbEffortRelax")
+            Me.m_lbEffortRelax.Name = "m_lbEffortRelax"
+            '
+            'm_tbFirstPenaltyMonth
+            '
+            resources.ApplyResources(Me.m_tbFirstPenaltyMonth, "m_tbFirstPenaltyMonth")
+            Me.m_tbFirstPenaltyMonth.Name = "m_tbFirstPenaltyMonth"
+            '
+            'm_lbFirstMonthPen
+            '
+            resources.ApplyResources(Me.m_lbFirstMonthPen, "m_lbFirstMonthPen")
+            Me.m_lbFirstMonthPen.Name = "m_lbFirstMonthPen"
+            '
+            'm_tbPenPow
+            '
+            resources.ApplyResources(Me.m_tbPenPow, "m_tbPenPow")
+            Me.m_tbPenPow.Name = "m_tbPenPow"
+            '
+            'm_lbPenPow
+            '
+            resources.ApplyResources(Me.m_lbPenPow, "m_lbPenPow")
+            Me.m_lbPenPow.Name = "m_lbPenPow"
+            '
+            'm_tbEffortAdjustWeight
+            '
+            resources.ApplyResources(Me.m_tbEffortAdjustWeight, "m_tbEffortAdjustWeight")
+            Me.m_tbEffortAdjustWeight.Name = "m_tbEffortAdjustWeight"
+            '
+            'm_lbAdjustEffort
+            '
+            resources.ApplyResources(Me.m_lbAdjustEffort, "m_lbAdjustEffort")
+            Me.m_lbAdjustEffort.Name = "m_lbAdjustEffort"
+            '
+            'm_cbUsePenalty
+            '
+            resources.ApplyResources(Me.m_cbUsePenalty, "m_cbUsePenalty")
+            Me.m_cbUsePenalty.Name = "m_cbUsePenalty"
+            Me.m_cbUsePenalty.UseVisualStyleBackColor = True
+            '
+            'm_hdrSpatialPenalty
+            '
+            Me.m_hdrSpatialPenalty.CanCollapseParent = True
+            Me.m_hdrSpatialPenalty.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrSpatialPenalty, "m_hdrSpatialPenalty")
+            Me.m_hdrSpatialPenalty.IsCollapsed = False
+            Me.m_hdrSpatialPenalty.Name = "m_hdrSpatialPenalty"
+            '
             'frmEcospaceParameters
             '
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_tlpStuff)
             Me.Name = "frmEcospaceParameters"
             Me.TabText = ""
@@ -596,7 +678,7 @@ Namespace Ecospace
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gbRunTime.ResumeLayout(False)
             Me.m_gbRunTime.PerformLayout()
-            CType(Me.m_nudAutosaveFirstTimeStep, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudFirstTimeStep, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_plBiomass.ResumeLayout(False)
             Me.m_plBiomass.PerformLayout()
             Me.m_tlpStuff.ResumeLayout(False)
@@ -608,6 +690,8 @@ Namespace Ecospace
             Me.m_gbAutoSave.PerformLayout()
             Me.m_plTimeSeries.ResumeLayout(False)
             Me.m_plTimeSeries.PerformLayout()
+            Me.m_plEffortDistr.ResumeLayout(False)
+            Me.m_plEffortDistr.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -650,10 +734,10 @@ Namespace Ecospace
         Private WithEvents m_plScenario As System.Windows.Forms.Panel
         Private WithEvents m_plModel As System.Windows.Forms.Panel
         Private WithEvents m_tlpStuff As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_lblAutosaveFirstTimeStep As System.Windows.Forms.Label
-        Private WithEvents m_nudAutosaveFirstTimeStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents Label2 As System.Windows.Forms.Label
+        Private WithEvents m_nudFirstTimeStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_clbAutosave As System.Windows.Forms.CheckedListBox
-        Private WithEvents m_cbAutosaveAnnualOnly As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbAnnualOutput As System.Windows.Forms.CheckBox
         Private WithEvents m_plTimeSeries As Panel
         Private WithEvents m_hdrTimeSeries As cEwEHeaderLabel
         Private WithEvents m_cbUseEcosimBiomassForcing As CheckBox
@@ -674,7 +758,18 @@ Namespace Ecospace
         Private WithEvents m_cbMovePackets As CheckBox
         Private WithEvents m_lblMinCap As Label
         Private WithEvents m_tbxMinCap As TextBox
+        Private WithEvents m_plEffortDistr As Panel
+        Private WithEvents m_hdrSpatialPenalty As cEwEHeaderLabel
+        Private WithEvents m_cbUsePenalty As CheckBox
+        Private WithEvents m_lbPenPow As Label
+        Private WithEvents m_tbEffortAdjustWeight As TextBox
+        Private WithEvents m_lbAdjustEffort As Label
+        Private WithEvents m_tbPenPow As TextBox
         Private WithEvents m_cbAutosaveVisibleOnly As CheckBox
+        Private WithEvents m_tbFirstPenaltyMonth As TextBox
+        Private WithEvents m_lbFirstMonthPen As Label
+        Private WithEvents m_tbPredEffortRelax As TextBox
+        Private WithEvents m_lbEffortRelax As Label
     End Class
 
 End Namespace

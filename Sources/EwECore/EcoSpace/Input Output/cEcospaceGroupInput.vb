@@ -79,6 +79,12 @@ Public Class cEcospaceGroupInput
             val = New cValue(core, New Single, eVarNameFlags.KMoveFitness, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
+
+            'FTarget
+            val = New cValue(core, New Single, eVarNameFlags.EcospaceFTarget, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
+
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Array variables
 
@@ -227,6 +233,19 @@ Public Class cEcospaceGroupInput
         End Set
     End Property
 
+    ''' <summary>
+    ''' Fishing Mortality Target for effort distribution penalty
+    ''' </summary>
+    Public Property FTarget() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.EcospaceFTarget))
+        End Get
+
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcospaceFTarget, value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Status by dot (.) operator"
@@ -308,6 +327,16 @@ Public Class cEcospaceGroupInput
 
         Friend Set(value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.KMoveFitness, value)
+        End Set
+    End Property
+
+    Public Property FTargetStatus() As eStatusFlags
+        Get
+            Return Me.GetStatus(eVarNameFlags.EcospaceFTarget)
+        End Get
+
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcospaceFTarget, value)
         End Set
     End Property
 

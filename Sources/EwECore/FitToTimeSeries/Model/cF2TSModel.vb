@@ -1480,6 +1480,10 @@ Namespace FitToTimeSeries
             '        'puts parameter values back into model arrays after altered by estimation
             'On Local Error Resume Next
 
+            'JB how to add penalty to VulMult
+            'Do we just need to penalize vulmut 
+            'or do we also need to penalize par()
+
             Try
 
                 Dim i As Integer, j As Integer, epar As Single, ii As Integer, Yspline() As Single, y2() As Single, Xs As Single, Ys As Single

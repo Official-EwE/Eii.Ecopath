@@ -3116,6 +3116,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ftarget||Target mortality.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_ECOSPACEFTARGET() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_ECOSPACEFTARGET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to EcospaceGroupBiomassEnd.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACEGROUPBIOMASSEND() As String

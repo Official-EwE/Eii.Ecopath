@@ -366,6 +366,9 @@
     <Compile Include="Ecospace\Input\frmMPAs.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecospace\Input\gridEcospaceFTarget.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\gridEcospaceFleetDynamics.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -2220,10 +2223,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotracerEnvDriverPlugin\EwEEcotracerEnvDriverPlugin.vbproj">
       <Project>{6536c62f-3ee0-48f6-83c7-fadb5f6ae6aa}</Project>
       <Name>EwEEcotracerEnvDriverPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEIBMAgeStructureResultsWriter\EwEIBMAgeStructureResultsWriterPlugin.vbproj">
-      <Project>{f08c7b56-076e-4e1b-bb2e-83f53cae262f}</Project>
-      <Name>EwEIBMAgeStructureResultsWriterPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEImportDietsPlugin\EwEImportDietsPlugin.vbproj">
       <Project>{289c6948-83e3-4c4c-be02-04d713e9d3f3}</Project>

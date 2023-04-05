@@ -2950,6 +2950,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Target mortalities.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_ECOSPACE_INPUT_FTARGET() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_ECOSPACE_INPUT_FTARGET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Habitat based foraging.
         '''</summary>
         Public ReadOnly Property LABEL_NAV_ECOSPACE_INPUT_HABCAP() As String

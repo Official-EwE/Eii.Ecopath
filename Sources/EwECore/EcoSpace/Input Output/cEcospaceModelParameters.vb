@@ -233,6 +233,31 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             Me.m_values.Add(val.varName, val)
 
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Spatial effort distribution penalty variables
+            val = New cValue(core, 1, eVarNameFlags.EcospaceDoPenaltysearch, eStatusFlags.Null, eValueTypes.Bool)
+            val.AffectsRunState = False
+            Me.m_values.Add(val.varName, val)
+
+            val = New cValue(core, 1, eVarNameFlags.EcospaceNoFishWeight, eStatusFlags.Null, eValueTypes.Sng)
+            val.AffectsRunState = False
+            Me.m_values.Add(val.varName, val)
+
+            val = New cValue(core, 1, eVarNameFlags.EcospacePenpow, eStatusFlags.Null, eValueTypes.Sng)
+            val.AffectsRunState = False
+            Me.m_values.Add(val.varName, val)
+
+            val = New cValue(core, 1, eVarNameFlags.EcospaceFirstPenaltyMonth, eStatusFlags.Null, eValueTypes.Int)
+            val.AffectsRunState = False
+            Me.m_values.Add(val.varName, val)
+
+            val = New cValue(core, 1, eVarNameFlags.EcospaceEffortRelaxationWeight, eStatusFlags.Null, eValueTypes.Sng)
+            val.AffectsRunState = False
+            Me.m_values.Add(val.varName, val)
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
             'set status flags to default values
             Me.ResetStatusFlags()
 
@@ -765,6 +790,51 @@ Public Class cEcospaceModelParameters
         End Get
         Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.EcospaceSaveThreadingLog, value)
+        End Set
+    End Property
+
+    Public Property UseSpatialEffortPenalty() As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceDoPenaltysearch))
+        End Get
+        Set(value As Boolean)
+            Me.SetVariable(eVarNameFlags.EcospaceDoPenaltysearch, value)
+        End Set
+    End Property
+
+    Public Property PenaltyPower() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.EcospacePenpow))
+        End Get
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcospacePenpow, value)
+        End Set
+    End Property
+
+    Public Property AdjustEffortWeight() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.EcospaceNoFishWeight))
+        End Get
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcospaceNoFishWeight, value)
+        End Set
+    End Property
+
+    Public Property FirstPenaltyMonth() As Integer
+        Get
+            Return CInt(Me.GetVariable(eVarNameFlags.EcospaceFirstPenaltyMonth))
+        End Get
+        Set(value As Integer)
+            Me.SetVariable(eVarNameFlags.EcospaceFirstPenaltyMonth, value)
+        End Set
+    End Property
+
+    Public Property EffortRelaxationWeight() As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.EcospaceEffortRelaxationWeight))
+        End Get
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcospaceEffortRelaxationWeight, value)
         End Set
     End Property
 

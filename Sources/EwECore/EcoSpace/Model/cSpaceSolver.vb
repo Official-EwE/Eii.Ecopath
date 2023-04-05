@@ -511,7 +511,7 @@ Public Class cSpaceSolver
                     Else
                         'Not Predicting Effort
                         'F = Ecopath base F
-                        Me.FishTime(iGrp) = Me.Fish1(iGrp)
+                        Me.FishTime(iGrp) = Me.m_SimData.FishRateNo(iGrp, itt)
 
                         For Me.ig = 1 To Me.m_Data.nFleets
                             'Effort used to calculate Catch and Value in cEcospace.accumCatchData

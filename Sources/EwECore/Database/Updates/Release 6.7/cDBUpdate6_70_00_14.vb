@@ -59,11 +59,12 @@ Friend Class cDBUpdate6_70_00_14
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-        Return db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN UsePenaltySearch BYTE") And
-            db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN NoFishWeight SINGLE") And
-            db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN PenaltyPower SINGLE") And
-            db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN FirstPenaltyMonth SINGLE") And
-            db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN FTarget SINGLE")
+        db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN UsePenaltySearch BYTE")
+        db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN NoFishWeight SINGLE")
+        db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN PenaltyPower SINGLE")
+        db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN FirstPenaltyMonth SINGLE")
+        db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN FTarget SINGLE")
+        Return True
     End Function
 
 End Class
