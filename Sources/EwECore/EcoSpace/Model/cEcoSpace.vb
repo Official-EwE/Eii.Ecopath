@@ -17,6 +17,7 @@
 ' ===============================================================================
 '
 
+Imports System.Data.Linq
 Imports System.Math
 Imports System.Threading
 Imports EwECore.SpatialData
@@ -24,13 +25,16 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
+'TODO: Spatial Penalty Cost test the penalty cost branch against the trunk for same results
+'TODO: Spatial Penalty Cost  Check that AdjustTotalEffort  NoFishWeight is adjusting the total attractiveness correctly
+'TODO: Spatial Penalty Cost Add penalty cost to PredictEffortDistributionThreadedLoadShared()
+
 ''' <summary>
 ''' Definition of Time Step Delegate used for notification of an Ecospace time step
 ''' </summary>
 Public Delegate Sub EcoSpaceTimeStepDelegate(ByVal iTime As Integer)
 
 Public Delegate Sub EcoSpaceRunCompletedDelegate(ByVal Succeeded As Boolean)
-
 
 Public Class cEcoSpace
     Inherits cThreadWaitBase
@@ -823,6 +827,7 @@ Public Class cEcoSpace
                 'Set itt(cumulative timestep counter) and its(monthly index counter)
                 'setTimeStepCounters() also deals with the SpinUp period
                 Me.setTimeStepCounters(Me.itt, Me.its)
+                'System.Console.WriteLine(Me.EcoSpaceData.MonthNow.ToString + ", " + Me.EcoSpaceData.YearNow.ToString + ", " + its.ToString)
 
                 Me.EcoSimData.SetRelQToT(Me.its, False)
 
@@ -921,6 +926,10 @@ Public Class cEcoSpace
                     Me.setForcedDiscards(Me.its, Me.EcoSpaceData.YearNow)
                     Me.updateOffVesselPrices(Me.its, Me.EcoSpaceData.YearNow)
 
+                    'Run the penalty cost 
+                    'If Me.EcoSpaceData.DoPenaltysearch And (Me.its >= Me.EcoSpaceData.FirstPenaltyMonth) Then Me.SetPenaltyConstants()
+
+                    Me.SetPenaltyConstants()
                     If Me.its >= 3 And Not Me.bEffortAdjusted Then Me.AdjustTotalEffort()
                     stpwchEffort.Start()
                     If Me.EcoSpaceData.bUseEffortDistThreshold Then
@@ -1212,6 +1221,8 @@ Public Class cEcoSpace
         iCumTimeStep += 1
 
         'Increment the SpinUp counters
+        'WARNING: iSpinUp is used by the spatial effort distributions penalty cost functions SetPenaltyConstants() and PredictEffortDistributionThreaded()
+        'iSpinUp must keep counting past the end of the spinup peroid
         Me.iSpinUp += 1
         Me.iSpinUpYear += 1
 
@@ -2333,8 +2344,6 @@ Public Class cEcoSpace
                 Me.EcoSpaceData.TotalTime = Me.EcoSimData.NumYears
             End If
 
-
-
             Me.EcoSimData.SetRelQToT(1, False)
 
             '*******************
@@ -2409,8 +2418,9 @@ Public Class cEcoSpace
 
             Next
 
-            'jb 12-May-2010 do a full initialization of Ecosim. This should have been handled by the framework...but sometimes it gets dropped
-            Me.EcoSim.Init(True)
+            ''jb 12-May-2010 do a full initialization of Ecosim. This should have been handled by the framework...but sometimes it gets dropped
+            ' JS 12-Feb-2023: the UI framework and core are now robust enough
+            'Me.EcoSim.Init(True)
 
             'Tell all the capacity map variables that they need to be recomputed
             Me.EcoSpaceData.isCapacityChanged = True
@@ -2857,7 +2867,7 @@ Public Class cEcoSpace
 
             'For debugging Effort Zones code
             'sets up some zones with modified effort
-            'Me.m_Data.DebugTestEffortZones()
+            'Me.EcoSpaceData.DebugTestEffortZones()
 
             Return True
 
@@ -3035,6 +3045,9 @@ Public Class cEcoSpace
             If Me.EcoPathData.isEcospaceModelCoupled Then Me.EcoSpaceData.allocate(Me.EcoSpaceData.GroupDetritus, Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol, Me.EcoSpaceData.NGroups)
 
             ReDim Me.EcoSpaceData.TotEffort(Me.EcoSpaceData.nFleets)
+            ReDim Me.EcoSpaceData.AttractNofish(Me.EcoSpaceData.nFleets)
+            ReDim Me.EcoSpaceData.Pencon(Me.EcoSpaceData.NGroups)
+
 
             ReDim Me.Btime(Me.EcoSpaceData.NGroups)
             ReDim Me.TotLoss(Me.EcoSpaceData.NGroups)
@@ -4278,14 +4291,31 @@ exitline:
     End Sub
 
     Sub PredictEffortDistributionThreaded(ByVal obParam As Object)
-        Dim i As Integer, j As Integer, TotAttract As Single
+        Dim i As Integer, j As Integer ', TotAttract As Single
         Dim Valt As Single, isp As Integer
         Dim EffortCost As Single
         Dim SailCost As Single
         Dim TotE As Single
         Dim Attract(,) As Single
         Dim arguments As cThreadedCallArgs
-        'Dim stpwtch As Stopwatch
+        Dim Pencost As Single
+        Dim EffPred As Single
+        Dim EffRelaxWeight As Single
+        Dim bUsePenalty As Boolean
+        Dim itimestep As Integer
+        bUsePenalty = False
+
+        itimestep = Me.its
+        If Me.EcoSpaceData.UseSpinUp Then
+            itimestep = Me.iSpinUp
+        End If
+
+        If Me.EcoSpaceData.DoPenaltysearch And itimestep >= Me.EcoSpaceData.FirstPenaltyMonth Then
+            EffRelaxWeight = Me.EcoSpaceData.EffortRelaxationWeight
+            bUsePenalty = True
+        Else
+            EffRelaxWeight = 1.0
+        End If
 
         Dim TotAttractZone(Me.EcoSpaceData.nEffZones) As Single
         Dim TotEffortZone(Me.EcoSpaceData.nEffZones) As Single
@@ -4296,11 +4326,6 @@ exitline:
             'Make sure the number of fleets is in bounds
             'This could happen because of rounding error in the number of fleets per thread
             If arguments.iFirst <= Me.EcoSpaceData.nFleets Then
-
-                'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
-                'Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
-                'Console.WriteLine("  N Fleets = " & (arguments.iLast - arguments.iFirst + 1).ToString)
-                'stpwtch = Stopwatch.StartNew
 
                 ReDim Attract(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
                 Dim iMonth As Integer = arguments.iCumMonth
@@ -4313,15 +4338,14 @@ exitline:
 
                     TotE = Me.EcoSpaceData.TotEffort(iFlt) * Me.EcoSpaceData.SEmult(iFlt)
 
-                    'set the total effort by zone
+                    ''set the total effort by zone
                     For iZone As Integer = 0 To Me.EcoSpaceData.nEffZones
                         TotEffortZone(iZone) = TotE * Me.EcoSpaceData.PropEffortFleetZone(iFlt, iZone)
-                        TotAttractZone(iZone) = 1.0E-30
+                        TotAttractZone(iZone) = Me.EcoSpaceData.AttractNofish(iFlt) ' * Me.EcoSpaceData.PropEffortFleetZone(iFlt, iZone)
                     Next iZone
 
                     'jb Attract() gets cleared out for each fleet
                     Array.Clear(Attract, 0, Attract.Length)
-                    TotAttract = 0.0000000001
 
                     'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
                     If Me.EcoSim.EffortCost(iFlt, iMonth, iYear) + Me.EcoSim.SailCost(iFlt, iMonth, iYear) = 0 Then
@@ -4338,14 +4362,38 @@ exitline:
                             If Me.EcoSpaceData.IsFished(iFlt, i, j) Then
                                 'Water and (Not closed by MPA) and (Fished by this gear)
                                 'mpamonth(Month, MPAType) is false if closed, True if open.
-                                Valt = 0
+                                Valt = 0 '
                                 For isp = 1 To Me.EcoSpaceData.NGroups
                                     ' JS: use dynamic price here
                                     Valt = Valt + Me.OffVesselPrice(iFlt, isp) * Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(iFlt, isp) * Me.EcoSimData.PropLandedTime(iFlt, isp)
                                 Next
 
+                                'Then in predicteffortdistributionthreaded, we use these pencon(ig) values to calculate a penalty cost for each gear for 
+                                'fishing in each cell i,j in the loop that calculates Attract(ig,i,j), as:
+                                Pencost = 0
+                                For isp = 1 To EcoSpaceData.NGroups
+                                    Pencost = Pencost + Me.EcoSpaceData.Pencon(isp) * EcoSpaceData.Bcell(i, j, isp) * EcoSimData.relQ(iFlt, isp)
+                                Next
+                                'If Pencost > 1 Then
+                                '    System.Console.WriteLine("Pencost , " + Pencost.ToString)
+                                'End If
+                                'This Pencost Is Then added To the denominator Of the Attract equation (along With Effortcost And sailcost).
+
+                                'This calculation can Throw very high pencost values For any group that Is initially badly overfished (Ftarget(isp)<<F
+                                'predicted by ecospace before applying any penalties For exceeding ftarget.  Such high costs may cause the overall
+                                'optimization search To "chatter" over time, from high To very low To high efforts.  To Stop this chatter, i think
+                                'that all we need Do Is To prevent every Effort from dropping more than about 50% In any time Step.  The simple way To
+                                'Do this Is to replace the effort prediction line:
+                                'm_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract
+                                'With three lines:
+                                'Effpred = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract
+                                'Effmin=0.5*m_Data.Effortspace(iflt,i,j)
+                                'If Effpred < Effmin Then m_Data.EffortSpace(Iflt,i,j)=Effmin Else m_EffortSpace(iflt,i,j)=Effpred
+                                'JB instead we are applying a relaxation scheme to when setting m_EffortSpace(iflt,i,j)
+
+
                                 'VC Sail() above: to avoid dividing with zero
-                                Valt = (Valt ^ Me.EcoSpaceData.EffPower(iFlt)) / (EffortCost + SailCost * Me.EcoSpaceData.Sail(iFlt)(i, j) / Me.EcoSpaceData.SailScale(iFlt))
+                                Valt = (Valt ^ Me.EcoSpaceData.EffPower(iFlt)) / (EffortCost + Pencost + SailCost * Me.EcoSpaceData.Sail(iFlt)(i, j) / Me.EcoSpaceData.SailScale(iFlt))
                                 'jb 9-May-2014 change re Carls email
                                 'What this represents is attractiveness equal to exp(effpower*(I/C-1)), where I/C is profitability, -1 is subtracted to scale to exp(0)=1 for I/C=1.  
                                 'Effpower represents (as before) an effort concentration factor, low values implying less variation in valt with changes in I/C.
@@ -4357,10 +4405,12 @@ exitline:
                                 Attract(i, j) = Valt * Me.EcoSpaceData.PAreaFished(iFlt)(i, j) 'may want to modify this by dividing by a site cost factor for cell i,j
                                 'sum of attractivness by zone
                                 TotAttractZone(Me.EcoSpaceData.EffZones(i, j)) += Attract(i, j)
+                                'TotAttract += Attract(i, j) 
 
                             End If 'Me.m_Data.IsFished(iFlt, i, j)
                         Next j
                     Next i
+
 
                     Dim sumEff As Single = 0, nEf As Integer = 0
                     For i = 1 To Me.EcoSpaceData.InRow
@@ -4369,21 +4419,17 @@ exitline:
                             If Me.EcoSpaceData.IsFished(iFlt, i, j) Then
 
                                 'Effort distribution scaled by Effort Zone
-                                '3-Feb-2014 Villy changed this to use Me.m_Data.EffZones(i, j) which is the index of the zone not the effort in the zone???
-                                'm_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * Me.m_Data.EffZones(i, j) * Attract(i, j) / TotAttractZone(Me.m_Data.EffZones(i, j))
-                                Me.EcoSpaceData.EffortSpace(iFlt, i, j) = Me.EcoSimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.EcoSpaceData.EffZones(i, j)) * Attract(i, j) / TotAttractZone(Me.EcoSpaceData.EffZones(i, j))
-                                'Debug.Assert(Not Single.IsNaN(EcoSpaceData.EffortSpace(iFlt, i, j)))
-                                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                                'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
-                                'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
-                                '        For isp = 1 To m_Data.NGroups
-                                '            'Fishing Mort
-                                '            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(iFlt, i, j) * m_SimData.relQ(iFlt, isp) / Me.m_Data.PAreaFished(i, j, iFlt)
-                                '        Next isp
-                                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                EffPred = Me.EcoSimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.EcoSpaceData.EffZones(i, j)) * Attract(i, j) / TotAttractZone(Me.EcoSpaceData.EffZones(i, j))
+
+                                'Only use the relaxation on predicted effort if we are using the penalty cost
+                                If Not bUsePenalty Then
+                                    EcoSpaceData.EffortSpace(iFlt, i, j) = EffPred
+                                Else
+                                    EcoSpaceData.EffortSpace(iFlt, i, j) = EffRelaxWeight * EcoSpaceData.EffortSpace(iFlt, i, j) + (1 - EffRelaxWeight) * EffPred
+                                End If
 
                                 ''For debugging
-                                'sumEff += m_Data.EffortSpace(iFlt, i, j)
+                                'sumEff += EcoSpaceData.EffortSpace(iFlt, i, j)
                                 'nEf += 1
                             End If
                         Next j
@@ -4392,11 +4438,11 @@ exitline:
                     ''xxxxxxxxxxxxxxxxxxxxxxxxxx
                     ''For debugging
                     'If iFlt = 3 Then
-                    '    sumEff /= nEf
-                    '    System.Console.WriteLine("Effort Distribution Fleet = " + iFlt.ToString _
-                    '                                + ", sim effort = " + m_SimData.FishRateGear(iFlt, arguments.iCumMonth).ToString _
-                    '                                + ", avg effort = " + sumEff.ToString _
-                    '                                + ", error = " + (sumEff / m_SimData.FishRateGear(iFlt, arguments.iCumMonth)).ToString)
+                    'sumEff /= nEf
+                    'System.Console.WriteLine("Effort Distribution Fleet = " + iFlt.ToString _
+                    '                            + ", sim effort = " + EcoSimData.FishRateGear(iFlt, arguments.iCumMonth).ToString _
+                    '                            + ", avg effort = " + sumEff.ToString _
+                    '                            + ", error = " + (sumEff / EcoSimData.FishRateGear(iFlt, arguments.iCumMonth)).ToString)
                     'End If
                     ''xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -4530,7 +4576,7 @@ exitline:
     '            Else ' If arguments.iFirst <= Me.m_Data.nFleets Then
     '            'First Fleet Index > Number of Fleets
     '            'We still need to Decrement the Interlock counter
-    '            System.Console.WriteLine("Effort Dist No fleets to process = " & cEcoSpace.m_ThreadIncrementCount.ToString)
+    '            System.Console.WriteLine("Effort Dist No fleets To process = " & cEcoSpace.m_ThreadIncrementCount.ToString)
     '            End If
 
     '        Catch ex As Exception
@@ -4568,6 +4614,7 @@ exitline:
         Dim arguments As cThreadedCallArgs
         Dim ncells As Integer
         Dim iFlt As Integer
+        Dim Pencost As Single
         'Dim stpwtch As Stopwatch
 
         Dim TotAttractZone(Me.EcoSpaceData.nEffZones) As Single
@@ -4630,7 +4677,16 @@ exitline:
                             'discards will have a value of zero so they will not be included in the total value
                             Valt = Valt + Me.EcoPathData.Market(iFlt, isp) * Me.EcoSpaceData.Bcell(iRow, iCol, isp) * Me.EcoSimData.relQ(iFlt, isp) * Me.EcoSimData.PropLandedTime(iFlt, isp)
                         Next
-                        Valt = (Valt ^ Me.EcoSpaceData.EffPower(iFlt)) / (EffortCost + SailCost * Me.EcoSpaceData.Sail(iFlt)(iRow, iCol) / Me.EcoSpaceData.SailScale(iFlt))
+
+                        'Me.EcoSpaceData.Pencon(isp) calaculated in SetPenaltyConstants() in the 12 month
+                        'it should be zero for the first 12 months and have no effect
+                        'Then in predicteffortdistributionthreaded, we use these pencon(ig) values to calculate a penalty cost for each gear for 
+                        Pencost = 0
+                        For isp = 1 To EcoSpaceData.NGroups
+                            Pencost = Pencost + Me.EcoSpaceData.Pencon(isp) * EcoSpaceData.Bcell(iRow, iCol, isp) * EcoSimData.relQ(iFlt, isp)
+                        Next
+
+                        Valt = (Valt ^ Me.EcoSpaceData.EffPower(iFlt)) / (EffortCost + Pencost + SailCost * Me.EcoSpaceData.Sail(iFlt)(iRow, iCol) / Me.EcoSpaceData.SailScale(iFlt))
 
                         'What this represents is attractiveness equal to exp(effpower*(I/C-1)), where I/C is profitability, -1 is subtracted to scale to exp(0)=1 for I/C=1.  
                         'Effpower represents (as before) an effort concentration factor, low values implying less variation in valt with changes in I/C.
@@ -4701,12 +4757,12 @@ exitline:
         Dim iLastFleet As Integer
         Dim nCompFleets As Integer
 
-        Debug.Assert(Me.EcoSpaceData.bUseEffortDistThreshold = False, Me.ToString + ".runEffortDistributionNoLoadShare() Called with bUseEffortDistThreshold = True.")
+        Debug.Assert(Me.EcoSpaceData.bUseEffortDistThreshold = False, Me.ToString + ".runEffortDistributionNoLoadShare() Called With bUseEffortDistThreshold = True.")
 
         'GC.Collect()
 
         Array.Clear(Me.EcoSpaceData.Ftot, 0, Me.EcoSpaceData.Ftot.Length)
-        Array.Clear(Me.EcoSpaceData.EffortSpace, 0, Me.EcoSpaceData.EffortSpace.Length)
+        'Array.Clear(Me.EcoSpaceData.EffortSpace, 0, Me.EcoSpaceData.EffortSpace.Length)
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'First run the Effort Distrubution threads by Fleet
@@ -4821,7 +4877,7 @@ exitline:
         Dim nThrds As Integer
         Dim distET As Double
 
-        Debug.Assert(Me.EcoSpaceData.bUseEffortDistThreshold, Me.ToString + ".runEffortDistributionNoLoadShare() Called with bUseEffortDistThreshold = True.")
+        Debug.Assert(Me.EcoSpaceData.bUseEffortDistThreshold, Me.ToString + ".runEffortDistributionNoLoadShare() Called With bUseEffortDistThreshold = True.")
 
         'GC.Collect()
         Array.Clear(Me.EcoSpaceData.Ftot, 0, Me.EcoSpaceData.Ftot.Length)
@@ -4906,7 +4962,7 @@ exitline:
 
         Debug.Assert(nCellCompleted = Me.EcoSpaceData.iTotalWaterCells)
 
-        ' System.Console.WriteLine("EffortDistribution Waiting for setFishMortFromEffort()")
+        ' System.Console.WriteLine("EffortDistribution Waiting For setFishMortFromEffort()")
         If Not waitOb.WaitOne() Then
             System.Console.WriteLine("EffortDistribution setFishMortFromEffort() Timed Out WTF!")
             'Ok something has to happen here
@@ -4958,7 +5014,7 @@ exitline:
         Dim args As cThreadedCallArgs
         Try
 
-            Debug.Assert(TypeOf obParam Is cThreadedCallArgs, "Ecospace.setFishMortFromEffort() parameter is not the correct type.")
+            Debug.Assert(TypeOf obParam Is cThreadedCallArgs, "Ecospace.setFishMortFromEffort() parameter Is Not the correct type.")
             args = DirectCast(obParam, cThreadedCallArgs)
 
             For icell As Integer = args.iFirst To args.iLast
@@ -4993,15 +5049,7 @@ exitline:
 
     End Sub
 
-
-
-    ''' <summary>
-    ''' This is a modified version of PredictEffortDistribution, to be called only once at around simulation
-    ''' month 2 or 3; it resets totaleffort(gear) so as to avoid overfishing (relative to ecopath base) on concentrated species
-    ''' modifications to PredictEffortDistribution are ahown as '***
-    ''' </summary>
-    ''' <remarks></remarks>
-    Sub AdjustTotalEffort()
+    Sub AdjustTotalEffort_EWE() 'AdjustTotalEffort() 'AdjustTotalEffort() '
         'Me.bEffortAdjusted = True
         'Debug.Assert(False, "AdjustTotalEffort")
         'Return
@@ -5081,6 +5129,105 @@ exitline:
             '*** finally reset total effort using number of water cells, Ecopath base catch, and WtCat summed catch/effort x attraction weight
             '***note ThabArea below is total number of cells with depth>0 (water cells)
             Me.EcoSpaceData.TotEffort(ig) = Me.EcoSpaceData.ThabArea * CatGear / WtCat  '***
+
+        Next ig
+
+        Me.bEffortAdjusted = True
+
+    End Sub
+
+
+    ''' <summary>
+    ''' This is a modified version of PredictEffortDistribution, to be called only once at around simulation
+    ''' month 2 or 3; it resets totaleffort(gear) so as to avoid overfishing (relative to ecopath base) on concentrated species
+    ''' modifications to PredictEffortDistribution are ahown as '***
+    ''' </summary>
+    ''' <remarks></remarks>
+    Sub AdjustTotalEffort() 'AdjustTotalEffort_penatly() ' AdjustTotalEffort() '
+        Dim ig As Integer, i As Integer, j As Integer, TotAttract As Single
+        Dim Valt As Single, isp As Integer
+        Dim Effort() As Single
+        Dim EffortCost As Single
+        Dim SailCost As Single
+        Dim CatGear As Single, CatLoc(,) As Single, WtCat As Single
+        Dim Attract(,) As Single
+        Dim NoFishWeight As Single
+
+        'Use Ecopath effort
+        If Not Me.EcoSpaceData.PredictEffort Then Return
+        'Don't adjust total effort when using EffortDistThreshold
+        'EffortDistThreshold restricts the fishing to small number of cells
+        If Me.EcoSpaceData.bUseEffortDistThreshold Then Return
+
+        If Me.EcoSpaceData.DoPenaltysearch Then
+            NoFishWeight = Me.EcoSpaceData.NoFishWeight
+        Else
+            NoFishWeight = 0.0
+        End If
+
+        ReDim Effort(Me.EcoSpaceData.nFleets)
+
+        Dim iMonth As Integer = Me.EcoSpaceData.MonthNow
+        Dim iYear As Integer = Me.EcoSpaceData.YearNow
+
+        For ig = 1 To Me.EcoSpaceData.nFleets
+            'jb Attract() gets cleared out for each fleet
+            ReDim Attract(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
+            TotAttract = 0.0000000001
+
+            'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
+            If Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear) = 0 Then
+                EffortCost = 0
+                SailCost = 1
+            Else
+                EffortCost = Me.EcoSim.EffortCost(ig, iMonth, iYear) / (Me.EcoSim.FixedCost(ig, iMonth, iYear) + Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear))
+                SailCost = Me.EcoSim.SailCost(ig, iMonth, iYear) / (Me.EcoSim.FixedCost(ig, iMonth, iYear) + Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear))
+            End If
+
+            CatGear = 0 '*****ecopath base total catch for this gear
+            For isp = 1 To Me.EcoSpaceData.NGroups  '***
+                CatGear = CatGear + Me.EcoPathData.Landing(ig, isp) + Me.EcoPathData.Discard(ig, isp) '****
+            Next  '***
+
+            ReDim CatLoc(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol) '****
+
+            For i = 1 To Me.EcoSpaceData.InRow
+                For j = 1 To Me.EcoSpaceData.InCol
+                    If Me.EcoSpaceData.Depth(i, j) > 0 And (Me.EcoSpaceData.GearHab(ig, 0) Or (Me.EcoSpaceData.PAreaFished(ig)(i, j) > 0)) Then
+                        'This cell is water and it is fished by this gear
+                        Valt = 0
+                        CatLoc(i, j) = 0
+                        For isp = 1 To Me.EcoSpaceData.NGroups
+                            'Catch
+                            CatLoc(i, j) = CatLoc(i, j) + Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(ig, isp) '****
+                            'Value of catch
+                            Valt = Valt + Me.EcoPathData.Market(ig, isp) * Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(ig, isp)
+                        Next
+
+                        If Me.EcoSpaceData.Sail(ig)(i, j) = 0 Then Me.EcoSpaceData.Sail(ig)(i, j) = 0.000001
+                        'VC Sail() above: to avoid dividing with zero
+                        Valt = (Valt ^ Me.EcoSpaceData.EffPower(ig)) / (EffortCost + SailCost * Me.EcoSpaceData.Sail(ig)(i, j) / Me.EcoSpaceData.SailScale(ig))
+                        Attract(i, j) = Valt
+                        TotAttract = TotAttract + Valt
+                    End If
+                Next j
+            Next i
+
+            Me.EcoSpaceData.AttractNofish(ig) = NoFishWeight * TotAttract
+
+            WtCat = 0.0000000001 '****
+            For i = 1 To Me.EcoSpaceData.InRow
+                For j = 1 To Me.EcoSpaceData.InCol
+                    If Me.EcoSpaceData.Depth(i, j) > 0 And (Me.EcoSpaceData.GearHab(ig, 0) Or (Me.EcoSpaceData.PAreaFished(ig)(i, j) > 0)) Then
+                        'This cell is water and it is fished by this gear
+                        WtCat = WtCat + Attract(i, j) / TotAttract * CatLoc(i, j) '***
+                    End If
+                Next j
+            Next i
+
+            '*** finally reset total effort using number of water cells, Ecopath base catch, and WtCat summed catch/effort x attraction weight
+            '***note ThabArea below is total number of cells with depth>0 (water cells)
+            Me.EcoSpaceData.TotEffort(ig) = (1 + NoFishWeight) * Me.EcoSpaceData.ThabArea * CatGear / WtCat  '***
 
         Next ig
 
@@ -6287,7 +6434,7 @@ exitline:
                 'biomass
                 Me.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTimeStep) = Me.Btime(igrp)
                 'relative biomass
-                Me.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Me.Btime(igrp) / Me.EcoSpaceData.BBase(igrp) ' Me.m_EPdata.B(igrp) ' to use Ecopath base '
+                Me.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Me.Btime(igrp) / Me.EcoSpaceData.BBase(igrp) 'Me.EcoPathData.B(igrp) ' to use Ecopath base 'Me.EcoSpaceData.BBase(igrp) '
 
             Next igrp
 
@@ -7093,8 +7240,6 @@ exitline:
 #End Region
 
 #Region " New Multistanza Stuff"
-
-
 
     Private Sub UpdateMultiStanza()
         Dim i As Integer, j As Integer
@@ -8779,13 +8924,103 @@ exitline:
 
 #End Region
 
-#Region "Depreciated Code"
+#Region "Fishing Effort Optimization"
+
+    Sub SetPenaltyConstants()
+        Dim iflt As Integer, ig As Integer, i As Integer, j As Integer, Tc As Double, Tb As Double ', penpow As Double
+        Dim ctarget As Double
+        Dim bFished As Boolean = False
+        Dim iTimeStep As Integer
+
+        'Debug.Assert(Me.EcoSpaceData.DoPenaltysearch And (Me.its >= Me.EcoSpaceData.FirstPenaltyMonth))
+
+        'Me.EcoSpaceData.DoPenaltysearch is set to True by the calling routine when this should be run
+        If Not Me.EcoSpaceData.DoPenaltysearch Then Return
+
+        iTimeStep = Me.its
+        If Me.EcoSpaceData.UseSpinUp Then
+            iTimeStep = Me.iSpinUp
+        End If
+
+        If iTimeStep < Me.EcoSpaceData.FirstPenaltyMonth Then
+            Array.Clear(Me.EcoSpaceData.Pencon, 0, Me.EcoSpaceData.NGroups)
+            Return
+        End If
+
+        For ig = 1 To Me.EcoSpaceData.NGroups 'numgroups  'note can skip calculations in this loop for species with ecopath landings+discards=0
+            Tc = 0
+            Tb = 0
+            For i = 1 To Me.EcoSpaceData.InRow
+                For j = 1 To Me.EcoSpaceData.InCol
+                    If Me.EcoSpaceData.Depth(i, j) > 0 Then
+                        bFished = False
+                        For iflt = 1 To Me.EcoSpaceData.nFleets
+                            If Me.EcoSpaceData.IsFished(iflt, i, j) Then
+                                Tc = Tc + Me.EcoSimData.relQ(iflt, ig) * Me.EcoSpaceData.Bcell(i, j, ig) * Me.EcoSpaceData.EffortSpace(iflt, i, j)
+                                'only sum up the biomass if there is some catch for this fleet and group in this cell
+                                If Me.EcoSimData.relQ(iflt, ig) > 0 Then
+                                    bFished = True
+                                End If
+                            End If
+                        Next iflt
+
+                        If bFished Then
+                            Tb = Tb + Me.EcoSpaceData.Bcell(i, j, ig)
+                        End If
+
+                    End If
+                Next j
+            Next i
+            ctarget = Me.EcoSpaceData.Ftarget(ig) * Tb + 0.0000000001       'need to set target or allowable F for each group, >0 
+            Me.EcoSpaceData.Pencon(ig) = (Me.EcoSpaceData.PenPow / ctarget ^ Me.EcoSpaceData.PenPow) * Tc ^ (Me.EcoSpaceData.PenPow - 1)
+
+            ''For debugging
+            If Me.EcoSpaceData.Pencon(ig) > 0.1 Then
+                System.Console.WriteLine("Effort Penalty for " + ig.ToString + ", " + Me.EcoSpaceData.Pencon(ig).ToString)
+                System.Console.WriteLine("Effort Penalty group, biomass, target catch, actual catch, " + ig.ToString + ", " + Tb.ToString + ", " + ctarget.ToString + ", " + Tc.ToString)
+            End If
+
+        Next ig
+
+    End Sub
+
+#Region "Email from Carl 'code For constraining fishing rates In ecospace' Jan 15, 2023 "
 
 #If 0 Then
 
+    need to dimension global variables Pencon(Numgroups) as double, DoPenaltysearch as logical.  Then before call to 
+    predicteffortdistirbution in findspatial equilibrium, redim Pencon(Numgroups), 
+    And if DoPenaltySearch=True then call the following subroutine to set constants needed for penalty calculations
 
-    
+    Then in predicteffortdistributionthreaded, we use these pencon(ig) values to calculate a penalty cost for each gear for 
+    fishing in each cell i,j in the loop that calculates Attract(ig,i,j), as:
+    	Pencost=0
+    For isp = 1 To EcoSpaceData.NGroups
+                    Pencost = Pencost + Pencon(isp) * m_data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
+            Next
+    This Pencost Is Then added To the denominator Of the Attract equation (along With 
+    Effortcost And sailcost.
 
+    This calculation can Throw very high pencost values For any group that Is initially badly overfished (Ftarget(isp)<<F
+    predicted by ecospace before applying any penalties For exceeding ftarget.  Such high costs may cause the overall
+    optimization search To "chatter" over time, from high To very low To high efforts.  To Stop this chatter, i think
+    that all we need Do Is To prevent every Effort from dropping more than about 50% In any time Step.  The simple way To
+    Do this Is to replace the effort prediction line:
+    m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract
+    With three lines:
+    Effpred = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract
+    Effmin=0.5*m_Data.Effortspace(iflt,i,j)
+    If Effpred < Effmin Then m_Data.EffortSpace(Iflt,i,j)=Effmin Else m_EffortSpace(iflt,i,j)=Effpred
+
+#End If
+
+#End Region
+
+#End Region
+
+#Region "Depreciated Code"
+
+#If 0 Then
     Sub VaryMigMovementParameters_org(ByVal imonth As Integer)
         '20-Jan-2016 Altered to base the migration movement on an area rather than a single point
         'the original code that set the movement based on a single cell is in VaryMigMovementParameters_SinglePoint()
@@ -9975,303 +10210,5 @@ exitline:
 #End If
 #End Region
 
-
-
-
-    Public Class cAgeStructSave
-
-        Private m_StanzaData As cStanzaDatastructures
-        Private EcospaceData As cEcospaceDataStructures
-        Private EcopathData As cEcopathDataStructures
-
-        Private m_bInitialized As Boolean
-        Private m_iTime As Integer
-
-        Private m_lstDataTypes As List(Of cInputDataTypes)
-
-
-        Private Class cInputDataTypes
-            Public ReadOnly Property DataTypeName As String
-            Public ReadOnly Property NumberAtAgeScalar As Single
-
-            'StanzaData.Npacket(isp, iage, ipkt)
-            'or
-            'StanzaData.Wpacket(isp, iage, ipkt)
-            Public InputValues(,,) As Single
-
-            Public SimBaseLineData(,) As Single
-
-            Sub New(Inputs(,,) As Single, EcosimBaseLineData(,) As Single, TypeName As String, ValueScalar As Single)
-                InputValues = Inputs
-                DataTypeName = TypeName
-                NumberAtAgeScalar = ValueScalar
-                SimBaseLineData = EcosimBaseLineData
-            End Sub
-
-        End Class
-
-        Public Sub New(spacedata As cEcospaceDataStructures, stanzaData As cStanzaDatastructures, pathdata As cEcopathDataStructures)
-            Me.EcospaceData = spacedata
-            Me.m_StanzaData = stanzaData
-            Me.EcopathData = pathdata
-
-            '  MyBase.New()
-            '  Me.vars = New eVarNameFlags() {eVarNameFlags.MultiStanzaAgeStructure}
-        End Sub
-
-
-#Region "Implementation"
-
-        Public Sub SaveAgeStructure()
-            Try
-
-                If Not Me.EcospaceData.UseIBM Then
-                    Return
-                End If
-
-                Me.InitOutputTypes()
-                Me.InitBaseFiles()
-
-                For Each InputDataType As cInputDataTypes In Me.m_lstDataTypes
-
-                    'By Region
-                    Dim values()()() As Single
-                    values = ComputeAgeStructureByRegion(InputDataType)
-                    SaveRegionAgeStructureToFile(values, InputDataType)
-                    values = Nothing
-                Next InputDataType
-
-
-            Catch ex As Exception
-                cLog.Write(ex)
-            End Try
-
-        End Sub
-
-
-        Private Function ComputeAgeStructureByRegion(InputData As cInputDataTypes) As Single()()()
-
-            Dim n(Me.m_StanzaData.Nsplit)()() As Single 'n(ngroups)(row,col)(age)
-            Dim RegionValues(Me.m_StanzaData.Nsplit)()() As Single
-
-            Dim iage As Integer
-
-            For isp As Integer = 1 To Me.m_StanzaData.Nsplit
-                'Allocate memory for the 0 region for both values and n
-                RegionValues(isp) = New Single(Me.EcospaceData.nRegions)() {}
-                RegionValues(isp)(0) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
-
-                n(isp) = New Single(Me.EcospaceData.nRegions)() {}
-                n(isp)(0) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
-
-                For ii As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp) ' - 1
-
-                    iage = ii
-                    'iage = Me.m_StanzaData.AgeIndex1(isp) + ii
-                    If iage > Me.m_StanzaData.MaxAgeSpecies(isp) Then
-                        iage = iage - Me.m_StanzaData.MaxAgeSpecies(isp) - 1
-                    End If
-                    'iage = ii + Me.m_StanzaData.MaxAgeSpecies(isp) - Me.m_StanzaData.AgeIndex1(isp)
-                    'If ii >= Me.m_StanzaData.AgeIndex1(isp) Then
-                    '    iage = ii - Me.m_StanzaData.AgeIndex1(isp)
-                    'End If
-
-                    For ipkt As Integer = 1 To Me.m_StanzaData.Npackets
-                        Dim irow As Integer, icol As Integer
-                        irow = CInt(Math.Truncate(Me.m_StanzaData.iPacket(isp, iage, ipkt)))
-                        icol = CInt(Math.Truncate(Me.m_StanzaData.jPacket(isp, iage, ipkt)))
-
-                        Dim iRgn As Integer = Me.EcospaceData.Region(irow, icol)
-                        'Only allocate memory for age arrays if there is some packets in this region
-                        If RegionValues(isp)(iRgn) Is Nothing Then
-                            RegionValues(isp)(iRgn) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
-                            n(isp)(iRgn) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
-                        End If
-
-                        If Me.m_StanzaData.Npacket(isp, iage, ipkt) > 0 Then
-
-                            'this will double count values and n where there are no regions defined
-                            'or the packet is in a zero region
-                            'that won't matter once the values have been averaged
-                            'RegionValues(isp)(iRgn)(ii) += InputData.InputValues(isp, iage, ipkt)
-                            'n(isp)(iRgn)(iage) += 1
-
-                            'zero region will be the total area 
-                            If InputData.NumberAtAgeScalar = 1 Then
-                                RegionValues(isp)(0)(iage) += InputData.InputValues(isp, iage, ipkt) ' / Me.EcospaceData.ThabArea * Me.m_StanzaData.Npackets
-                            Else
-                                RegionValues(isp)(0)(iage) += InputData.InputValues(isp, iage, ipkt) / Me.EcospaceData.ThabArea * Me.m_StanzaData.Npackets
-                            End If
-                            n(isp)(0)(iage) += 1
-
-                            End If
-                    Next ipkt
-                Next ii
-            Next isp
-
-            For isp As Integer = 1 To Me.m_StanzaData.Nsplit
-
-                'For irgn As Integer = 0 To EcospaceData.nRegions
-
-                If RegionValues(isp) IsNot Nothing Then
-                    For ii As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp)
-
-                        'packet initialization in Ecospace
-                        'Me.StanzaData.Npacket(isp, ia, ip) = Me.StanzaData.NageS(isp, ia) / Me.StanzaData.Npackets * Me.EcoSpaceData.ThabArea
-                        'Me.StanzaData.Wpacket(isp, ia, ip) = Me.StanzaData.WageS(isp, ia) + 0.0000000001
-                        If n(isp)(0)(ii) > 0 Then
-                            'If InputData.NumberAtAgeScalar = 1 Then
-                            RegionValues(isp)(0)(ii) = (RegionValues(isp)(0)(ii) / n(isp)(0)(ii))
-                            'Else
-                            'Me.m_StanzaData.Npackets / Me.EcospaceData.ThabArea
-                            'RegionValues(isp)(0)(ii) = (RegionValues(isp)(0)(ii) / n(isp)(0)(ii)) / Me.EcospaceData.ThabArea * Me.m_StanzaData.Npackets
-                            'End If
-
-                        End If
-
-                    Next ii
-                End If 'Weight(ieco)(ir, ic) IsNot Nothing
-
-                'Next irgn
-            Next isp
-            Return RegionValues
-
-        End Function
-
-
-
-        Private Sub InitBaseFiles()
-
-            If Not m_bInitialized Then
-                For Each InputDataType As cInputDataTypes In Me.m_lstDataTypes
-                    Me.CreateBaseFiles(InputDataType)
-                Next InputDataType
-            End If
-
-        End Sub
-
-
-        Private Sub CreateBaseFiles(InputData As cInputDataTypes)
-
-            Try
-                Me.m_bInitialized = False
-                For isp As Integer = 1 To Me.m_StanzaData.Nsplit
-
-                    For irgn As Integer = 0 To EcospaceData.nRegions
-
-                        Dim strm As IO.StreamWriter = New IO.StreamWriter(getRegionFileName(isp, irgn, InputData.DataTypeName))
-                        ' WriteRunInfo(strm)
-
-                        Dim sbAges As Text.StringBuilder = New Text.StringBuilder
-
-                        For iage As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
-                            Dim iEco As Integer = Me.m_StanzaData.EcopathCode(isp, Me.m_StanzaData.StanzaNo(isp, iage))
-                            sbAges.Append("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.EcopathData.GroupName(iEco)) + "_" + CStr(iage))
-                        Next iage
-                        Dim header As String = "Timestep, Region" + sbAges.ToString
-
-
-                        strm.WriteLine("Max Age," + CStr(Me.m_StanzaData.MaxAgeSpecies(isp)))
-                        strm.WriteLine(header)
-
-                        Dim SimAges As Text.StringBuilder = New Text.StringBuilder
-                        SimAges.Append("0,Ecosim Base Values")
-                        For iage As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
-                            'Debug.Assert(Not Single.IsNaN(Values(isp)(irow, icol)(iage)))
-                            SimAges.Append("," + CStr(InputData.SimBaseLineData(isp, iage)))
-                        Next iage
-
-                        strm.WriteLine(SimAges)
-
-                        strm.Close()
-                    Next irgn
-
-                Next isp
-
-                Me.m_bInitialized = True
-
-            Catch ex As Exception
-                Dim msg As cMessage = New cMessage("Error creating IBM Age Structure file " + ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Warning)
-                'Me.m_core.Messages.AddMessage(msg)
-                cLog.Write(ex)
-            End Try
-
-
-        End Sub
-
-
-
-        Private Sub SaveRegionAgeStructureToFile(Values()()() As Single, InputDataType As cInputDataTypes)
-
-            For isp As Integer = 1 To Me.m_StanzaData.Nsplit
-                Try
-
-                    Dim sbAges As Text.StringBuilder = New Text.StringBuilder
-
-                    For irgn As Integer = 0 To Me.EcospaceData.nRegions
-
-                        Dim strm As IO.StreamWriter = New IO.StreamWriter(getRegionFileName(isp, irgn, InputDataType.DataTypeName), True)
-
-                        'Does this group row col contain data
-                        If Values(isp)(irgn) IsNot Nothing Then
-                            'Yes it contains data write it out to file
-                            Dim sb As Text.StringBuilder = New Text.StringBuilder
-
-                            sb.Append(CStr(Me.m_iTime) + "," + CStr(irgn))
-                            For iage As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
-                                'Debug.Assert(Not Single.IsNaN(Values(isp)(irow, icol)(iage)))
-                                sb.Append("," + CStr(Values(isp)(irgn)(iage)))
-                            Next iage
-
-                            strm.WriteLine(sb.ToString)
-                            'may not need to do this as it will go out of scope
-                            sb = Nothing
-                        End If
-
-                        strm.Close()
-                    Next irgn
-
-                Catch ex As Exception
-                    cLog.Write(ex)
-                End Try
-
-            Next isp
-
-        End Sub
-
-
-        Private Function getRegionFileName(isp As Integer, iRegion As Integer, DataType As String) As String
-
-            'Dim region As String = CStr(iRegion)
-            'If iRegion = 0 Then
-            '    region = "All"
-            'End If
-            Dim path As String = "Z:\Projects\EwE\Databases\Dave Chagaris\Output Age Structure\UI-1\"
-            Dim fnTemplate As String = "AgeStructure_{0}_Region_{1}_{2}.csv"
-            Return System.IO.Path.Combine(path, String.Format(fnTemplate, Me.m_StanzaData.StanzaName(isp), "All", DataType))
-
-
-
-
-        End Function
-
-
-        Private Sub InitOutputTypes()
-
-            m_lstDataTypes = New List(Of cInputDataTypes)
-
-            Dim weight As New cInputDataTypes(Me.m_StanzaData.Wpacket, Me.m_StanzaData.WageS, "Weight", 1.0)
-            m_lstDataTypes.Add(weight)
-
-            Dim Number As New cInputDataTypes(Me.m_StanzaData.Npacket, Me.m_StanzaData.NageS, "Number", Me.m_StanzaData.Npackets / Me.EcospaceData.ThabArea)
-            m_lstDataTypes.Add(Number)
-
-        End Sub
-
-
-#End Region
-
-
-    End Class
 
 End Class

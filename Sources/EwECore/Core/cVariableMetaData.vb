@@ -288,7 +288,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.TaxonvbgfK) = New cVariableMetaData(0, Single.MaxValue, gt, lt, cCore.NULL_VALUE)
 
         ' -- Pedigree
-        Me.Metadata(eVarNameFlags.VariableName) = New cVariableMetaData(0, [Enum].GetValues(GetType(eVarNameFlags)).Length, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        Me.Metadata(eVarNameFlags.VariableName) = New cVariableMetaData(0, [Enum].GetValues(GetType(eVarNameFlags)).Length, gt, le)
         Me.Metadata(eVarNameFlags.IndexValue) = New cVariableMetaData(0, 1, gt, le)
         Me.Metadata(eVarNameFlags.Pedigree) = New cVariableMetaData(0, Integer.MaxValue, ge, le, 0)
 
@@ -423,6 +423,10 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcospaceSpinupEnabled) = New cVariableMetaData(False)
         Me.Metadata(eVarNameFlags.EcospaceSpinupYears) = New cVariableMetaData(1, 999, ge, le, 10)
         Me.Metadata(eVarNameFlags.EcospaceIsExternalDataEnabled) = New cVariableMetaData(True)
+        Me.Metadata(eVarNameFlags.EcospaceDoPenaltysearch) = New cVariableMetaData(True)
+        Me.Metadata(eVarNameFlags.EcospacePenpow) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 10)
+        Me.Metadata(eVarNameFlags.EcospaceNoFishWeight) = New cVariableMetaData(0, 1000, gt, le, 0.3)
+        Me.Metadata(eVarNameFlags.EcospaceFirstPenaltyMonth) = New cVariableMetaData(1, 1200, ge, lt, 60)
 
         ' map
         Me.Metadata(eVarNameFlags.InRow) = New cVariableMetaData(1, 10000, ge, le)
@@ -469,6 +473,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcospaceCapCalType) = New cVariableMetaData(0, Integer.MaxValue, ge, le)
         Me.Metadata(eVarNameFlags.InMigAreaMoveWeight) = New cVariableMetaData(0, 1, ge, le, 1)
         Me.Metadata(eVarNameFlags.PreferredHabitat) = New cVariableMetaData(0, 1, ge, le, 1)
+        Me.Metadata(eVarNameFlags.EcospaceFTarget) = New cVariableMetaData(0, 1000, gt, le, 1000)
 
         ' group out
         Me.Metadata(eVarNameFlags.EcospaceGroupBiomassStart) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
@@ -724,9 +729,9 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MSYNumTrialYears) = New cVariableMetaData(1, 1000, ge, le)
         Me.Metadata(eVarNameFlags.MSYEquilibriumStepSize) = New cVariableMetaData(0, 1, ge, le)
 
-#If DUMP_TO_FILE Then
+#If DEBUG Then
         Try
-            Dim sw As New StreamWriter("metadata_log.txt")
+            Dim sw As New System.IO.StreamWriter(".\cVariableMetadata_log.txt")
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             sw.WriteLine("VarNames without registered metadata")
             For Each vn As eVarNameFlags In [Enum].GetValues(GetType(eVarNameFlags))

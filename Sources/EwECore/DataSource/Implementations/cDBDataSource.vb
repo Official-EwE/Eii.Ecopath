@@ -21,6 +21,7 @@
 
 Option Strict On
 
+Imports System.Diagnostics.Eventing
 Imports System.Text
 Imports EwECore.Auxiliary
 Imports EwECore.MSE
@@ -5686,46 +5687,46 @@ Namespace DataSources
 
         End Function
 
-        Private Function LoadFishMortShape(iShapeID As Integer, iForcingShape As Integer) As Boolean
+        'Private Function LoadFishMortShape(iShapeID As Integer, iForcingShape As Integer) As Boolean
 
-            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim readerShape As IDataReader = Nothing
-            Dim strMemo As String = ""
-            Dim astrMemoBits() As String
-            Dim bSucces As Boolean = True
+        '    Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        '    Dim readerShape As IDataReader = Nothing
+        '    Dim strMemo As String = ""
+        '    Dim astrMemoBits() As String
+        '    Dim bSucces As Boolean = True
 
-            If iShapeID = 0 Then Return bSucces
+        '    If iShapeID = 0 Then Return bSucces
 
-            Try
+        '    Try
 
-                readerShape = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimShapeFishMort WHERE (ShapeID={0})", iShapeID))
-                readerShape.Read()
-                ' Store ID
-                ecosimDS.FishRateNoDBID(iForcingShape) = iShapeID
-                ' Store title
-                ecosimDS.FishRateNoTitle(iForcingShape) = CStr(readerShape("Title")).Trim()
-                ' Store points
-                strMemo = CStr(readerShape("zScale"))
-                ' Got points?
-                If Not String.IsNullOrEmpty(strMemo) Then
-                    ' #Yes: split and process
-                    astrMemoBits = strMemo.Trim.Split(CChar(" "))
-                    For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
-                        ecosimDS.FishRateNo(iForcingShape, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 0)
-                    Next
-                End If
+        '        readerShape = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimShapeFishMort WHERE (ShapeID={0})", iShapeID))
+        '        readerShape.Read()
+        '        ' Store ID
+        '        ecosimDS.FishRateNoDBID(iForcingShape) = iShapeID
+        '        ' Store title
+        '        ecosimDS.FishRateNoTitle(iForcingShape) = CStr(readerShape("Title")).Trim()
+        '        ' Store points
+        '        strMemo = CStr(readerShape("zScale"))
+        '        ' Got points?
+        '        If Not String.IsNullOrEmpty(strMemo) Then
+        '            ' #Yes: split and process
+        '            astrMemoBits = strMemo.Trim.Split(CChar(" "))
+        '            For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
+        '                ecosimDS.FishRateNo(iForcingShape, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 0)
+        '            Next
+        '        End If
 
-                Me.m_db.ReleaseReader(readerShape)
-                readerShape = Nothing
+        '        Me.m_db.ReleaseReader(readerShape)
+        '        readerShape = Nothing
 
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading fish mortality shape {1}", ex.Message, iShapeID))
-                bSucces = False
-            End Try
+        '    Catch ex As Exception
+        '        Me.LogMessage(String.Format("Error {0} occurred while reading fish mortality shape {1}", ex.Message, iShapeID))
+        '        bSucces = False
+        '    End Try
 
-            Return bSucces
+        '    Return bSucces
 
-        End Function
+        'End Function
 
 #End Region ' Shape load helpers
 
@@ -7474,6 +7475,10 @@ Namespace DataSources
                 ecospaceDS.ProjectionString = CStr(Me.m_db.ReadSafe(reader, "CoordinateSystemWKT", cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM))
                 ecospaceDS.UseSpinUp = (CInt(Me.m_db.ReadSafe(reader, "UseSpinup", 0)) <> 0)
                 ecospaceDS.SpinUpYears = CInt(Me.m_db.ReadSafe(reader, "SpinupYears", 10))
+                ecospaceDS.DoPenaltysearch = (CInt(Me.m_db.ReadSafe(reader, "UsePenaltySearch", 0)) <> 0)
+                ecospaceDS.NoFishWeight = CSng(Me.m_db.ReadSafe(reader, "NoFishWeight", 0.3))
+                ecospaceDS.PenPow = CSng(Me.m_db.ReadSafe(reader, "PenaltyPower", 10))
+                ecospaceDS.FirstPenaltyMonth = CInt(Me.m_db.ReadSafe(reader, "FirstPenaltyMonth", 60))
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
                 If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
@@ -7686,6 +7691,10 @@ Namespace DataSources
                 drow("CoordinateSystemWKT") = ecospaceDS.ProjectionString
                 drow("UseSpinup") = If(ecospaceDS.UseSpinUp, 1, 0)
                 drow("SpinupYears") = ecospaceDS.SpinUpYears
+                drow("UsePenaltySearch") = ecospaceDS.DoPenaltysearch
+                drow("NoFishWeight") = ecospaceDS.NoFishWeight
+                drow("PenaltyPower") = ecospaceDS.PenPow
+                drow("FirstPenaltyMonth") = ecospaceDS.FirstPenaltyMonth
 
                 drow("TotalTime") = ecospaceDS.TotalTime
                 drow("IFDPower") = ecospaceDS.IFDPower
@@ -8405,6 +8414,7 @@ Namespace DataSources
 
                     ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.m_db.ReadSafe(reader, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
                     ecospaceDS.CapCalType(iGroup) = DirectCast(CInt(Me.m_db.ReadSafe(reader, "CapacityCalType", eEcospaceCapacityCalType.Habitat)), eEcospaceCapacityCalType)
+                    ecospaceDS.Ftarget(iGroup) = CSng(Me.m_db.ReadSafe(reader, "FTarget", 1000))
 
                     strMap = CStr(Me.m_db.ReadSafe(reader, "CapacityMap", ""))
                     cStringUtils.StringToArray(strMap, ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
@@ -8576,6 +8586,7 @@ Namespace DataSources
                     drow("BarrierAvoidanceWeight") = ecospaceDS.barrierAvoidanceWeight(iGroup)
                     drow("CapacityCalType") = ecospaceDS.CapCalType(iGroup)
                     drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                    drow("FTarget") = ecospaceDS.Ftarget(iGroup)
 
                     If bNewRow Then
                         writer.AddRow(drow)

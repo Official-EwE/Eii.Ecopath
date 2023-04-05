@@ -464,6 +464,19 @@ Namespace Core
         RelVulBad
         ''' <summary>Movement rates relative to fitness</summary>
         KMoveFitness
+        ''' <summary>  Target f for effort distribution penalty </summary>
+        EcospaceFTarget
+
+        EcospaceDoPenaltysearch
+
+        EcospaceNoFishWeight
+
+        EcospacePenpow
+
+        EcospaceFirstPenaltyMonth
+
+        EcospaceEffortRelaxationWeight
+
         ''' <summary>To document</summary>
         IsAdvected
         ''' <summary>To document</summary>

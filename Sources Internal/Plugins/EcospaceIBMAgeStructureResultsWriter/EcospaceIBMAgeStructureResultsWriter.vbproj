@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F08C7B56-076E-4E1B-BB2E-83F53CAE262F}</ProjectGuid>
+    <ProjectGuid>{9DA47A02-B17C-42BA-A9CA-36FBE9A0693B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>EcospaceIBMAgeStructureResultsWriter</RootNamespace>
     <AssemblyName>EcospaceIBMAgeStructureResultsWriter</AssemblyName>

@@ -740,6 +740,19 @@ Public Class cEcospaceDataStructures
     ''' </see></remarks>
     Public TotEffort() As Single
 
+
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    'Spatial effort distribution penalty variables
+    Public AttractNofish() As Single
+    Public NoFishWeight As Single
+    Public Ftarget() As Single
+    Public Pencon() As Single
+    Public DoPenaltysearch As Boolean
+    Public PenPow As Single
+    Public FirstPenaltyMonth As Integer
+    Public EffortRelaxationWeight As Single
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     ''' <summary>
     ''' Use a "Spin-Up" period for Ecospace
     ''' </summary>
@@ -1136,11 +1149,22 @@ Public Class cEcospaceDataStructures
 
             Me.SetDefaultMeanVelocityMvel()
 
+
+            Me.DoPenaltysearch = True
+            Me.NoFishWeight = 0.3
+            Me.PenPow = 10.0
+            Me.FirstPenaltyMonth = 5 * 12 ' five years
+            EffortRelaxationWeight = 0.9
+            ReDim Me.Ftarget(Me.NGroups)
             For i = 1 To Me.NGroups                            'CJW had nvar not n1
                 Me.PrefHab(i, 0) = 1.0! ' True
                 Me.InMigAreaMovement(i) = 0.1F
                 Me.Kmovefit(i) = 0
+                Ftarget(i) = 1000.0
             Next 'set preferred habitat to 1 (pelagic) by default
+            'Debug.Assert(False, "Ftarget(3) = 0.05")
+            'If NGroups > 0 Then Ftarget(3) = 0.05
+
 
             Me.ReDimFleets()
 
@@ -1481,6 +1505,8 @@ Public Class cEcospaceDataStructures
 
     Friend Sub DebugTestEffortZones()
 
+        Return
+
         'Warning
         Debug.Assert(False, "Effort Zones have been set for debugging.")
 
@@ -1490,16 +1516,31 @@ Public Class cEcospaceDataStructures
         For iflt As Integer = 1 To Me.nFleets
             For iz As Integer = 1 To Me.nEffZones
                 'Effort by zone
-                Me.PropEffortFleetZone(iflt, iz) = CSng(iz / Me.nEffZones)
+                Me.PropEffortFleetZone(iflt, iz) = CSng(iz ^ 2.0) 'CSng(iz / Me.nEffZones)
             Next
         Next
-        Dim iseq As Integer
+
+        Dim iiz As Integer
         For ir As Integer = 1 To Me.InRow
             For ic As Integer = 1 To Me.InCol
-                iseq += 1
-                Me.EffZones(ir, ic) = 1 + CInt((Me.nEffZones - 1) * (iseq / (Me.InRow * Me.InCol)))
+                iiz = 1
+                If ic > (Me.InCol / 2) Then
+                    iiz = 2
+                End If
+                Me.EffZones(ir, ic) = iiz
             Next
         Next
+
+
+
+
+        'Dim iseq As Integer
+        'For ir As Integer = 1 To Me.InRow
+        '    For ic As Integer = 1 To Me.InCol
+        '        iseq += 1
+        '        Me.EffZones(ir, ic) = 1 + CInt((Me.nEffZones - 1) * (iseq / (Me.InRow * Me.InCol)))
+        '    Next
+        'Next
 
     End Sub
 

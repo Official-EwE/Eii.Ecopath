@@ -33,10 +33,11 @@ Imports EwEUtils.Utilities
 Imports EwECore.MSE
 Imports EwECore.SpatialData
 Imports EwECore.Auxiliary
+Imports System.Diagnostics.Eventing
+
 
 '
 #End Region ' Imports
-
 #Disable Warning CA1063 ' Implement IDisposable Correctly
 ''' ===========================================================================
 ''' <summary>
@@ -2212,8 +2213,12 @@ Public Class cEIIXMLDataSource
             ecospaceDS.AdjustSpace = (CInt(drow("AdjustSpace")) <> 0)
             ecospaceDS.UseExact = (CInt(drow("UseExact")) <> 0)
             ecospaceDS.Tol = Me.ReadSafe(drow, "Tolerance", 0.01!)
-            ecospaceDS.UseSpinUp = CBool(Me.ReadSafe(drow, "UseSpinup", False))
-            ecospaceDS.SpinUpYears = CInt(Me.ReadSafe(drow, "SpinupYears", 10))
+            ecospaceDS.UseSpinUp = Me.ReadSafe(drow, "UseSpinup", False)
+            ecospaceDS.SpinUpYears = Me.ReadSafe(drow, "SpinupYears", 10)
+            ecospaceDS.DoPenaltysearch = Me.ReadSafe(drow, "UsePenaltySearch", False)
+            ecospaceDS.NoFishWeight = Me.ReadSafe(drow, "NoFishWeight", 0.3!)
+            ecospaceDS.PenPow = Me.ReadSafe(drow, "PenaltyPower", 10.0!)
+            ecospaceDS.FirstPenaltyMonth = Me.ReadSafe(drow, "FirstPenaltyMonth", 60)
 
             stanzaDS.NPacketsMultiplier = CSng(drow("NumPacketsMultiplier"))
 
@@ -2451,6 +2456,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.IsMigratory(iGroup) = (CInt(drow("IsMigratory")) <> 0)
                 ecospaceDS.barrierAvoidanceWeight(iGroup) = Me.ReadSafe(drow, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup))
                 ecospaceDS.CapCalType(iGroup) = DirectCast(CInt(Me.ReadSafe(drow, "CapacityCalType", eEcospaceCapacityCalType.Habitat)), eEcospaceCapacityCalType)
+                ecospaceDS.Ftarget(iGroup) = Me.ReadSafe(drow, "FTarget", 1000.0!)
 
                 strMap = Me.ReadSafe(drow, "CapacityMap", "")
                 cStringUtils.StringToArray(strMap, ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
@@ -2695,7 +2701,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.EnvironmentalLayerCapacityDisabled(iLayer) = True
             End If
         Next
-		return True
+        Return True
 
     End Function
 

@@ -2918,6 +2918,9 @@
   <data name="PARAM_START" xml:space="preserve">
     <value>Start</value>
   </data>
+  <data name="VARIABLE_ECOSPACEFTARGET" xml:space="preserve">
+    <value>Ftarget||Target mortality</value>
+  </data>
   <data name="VARIABLE_LAYERADVECTIONFORCING" xml:space="preserve">
     <value>Advection||Advection forcing</value>
   </data>

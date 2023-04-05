@@ -308,6 +308,7 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_MPAENFORCEMENT, "ndEcospaceMPAEnforcement", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceMPAEnforcement), eNodeImages.Input, nodeFolder, "Ecospace Fishery.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_HABFISHERY, "ndEcospaceHabitatFishery", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceHabitatFishery), eNodeImages.Input, nodeFolder, "Ecospace Fishery.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_FLEETDYNAMICS, "ndEcospaceFisheriesDynamics", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceHabitatDyncamis), eNodeImages.Input, nodeFolder, "Ecospace Fishery.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_FTARGET, "ndEcospaceTargetF", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceFTarget), eNodeImages.Input, nodeFolder)
 
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_EXTERNALDATA, "ndEcospaceExtData", eCoreExecutionState.EcospaceLoaded, GetType(frmSpatialTimeSeries), eNodeImages.Input, nodeInput, "")
 

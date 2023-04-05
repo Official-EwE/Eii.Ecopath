@@ -1874,7 +1874,7 @@ Public Class cCore
         ts.ValidationMessage = strStatus
 
     End Sub
-	
+
 #End Region ' Validation
 
 #Region " Public interfaces "
@@ -9367,8 +9367,8 @@ Public Class cCore
 
         If Me.m_StateMonitor.HasEcosimLoaded Then
             If Not Me.m_StateMonitor.HasEcosimInitialized Then
-                'Ecosim is loaded but not initialized do a full initialization
-                If Me.m_Ecosim.Init(True) Then
+                'Ecosim is loaded but not initialized. Do a partial initialization
+                If Me.m_Ecosim.Init(False) Then
                     Me.StateMonitor.SetEcoSimInitialized()
                 Else
                     'Failed to init Ecosim, post a message and return
@@ -9383,7 +9383,6 @@ Public Class cCore
                                       eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Warning))
             Return False
         End If
-
         Try
             ' Dim t As Double = Timer
             System.Console.WriteLine("----------cCore.RunEcospace() Start------------")
@@ -9775,7 +9774,7 @@ Public Class cCore
     ''' <remarks>processEcospaceTimeStep() will populate the cEcospaceTSResults object and send it to an interface</remarks>
     Private Sub onEcospaceTimeStep(iTime As Integer)
         Try
-
+            Dim f As Single
             m_spaceresults.InSpinUp = Me.m_EcospaceData.bInSpinUp
             If Me.m_EcospaceData.bInSpinUp Then
                 m_spaceresults.RunProgress = CSng(Me.m_Ecospace.iSpinUp / Me.m_Ecospace.nSpinUp)
@@ -9797,6 +9796,9 @@ Public Class cCore
 
                     'Make these relative to base values
                     m_spaceresults.FishingMort(igrp) = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, iTime) / Me.m_EcospaceData.BaseFishMort(igrp)
+                    f = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iTime) / CSng((m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime) + 0.0000001))
+                    f = f / (Me.m_EcospaceData.BaseFishMort(igrp) + 1.0E-20F)
+                    'm_spaceresults.FishingMort(igrp) = f / Me.m_EcospaceData.BaseFishMort(igrp)
                     m_spaceresults.ConsumptRate(igrp) = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, iTime) / Me.m_EcospaceData.BaseConsump(igrp)
                     m_spaceresults.PredMortRate(igrp) = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, iTime) / Me.m_EcospaceData.BasePredMort(igrp)
                     m_spaceresults.Catch(igrp) = m_EcospaceData.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iTime) / Me.m_EcospaceData.BaseCatch(igrp)
@@ -9808,6 +9810,7 @@ Public Class cCore
                     For irgn As Integer = 1 To nRegions
                         m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcospaceData.ResultsRegionGroup(irgn, igrp, iTime)
                     Next
+
                 Next igrp
 
                 Me.SaveEcospaceENA(m_spaceresults)
@@ -10823,6 +10826,12 @@ Public Class cCore
             m_EcospaceModelParams.SaveThreadingLog = m_EcospaceData.bSaveThreadingLog
             m_EcospaceModelParams.nIBMMovementThreads = m_EcospaceData.nIBMMovementSolverThreads
 
+            m_EcospaceModelParams.UseSpatialEffortPenalty = m_EcospaceData.DoPenaltysearch
+            m_EcospaceModelParams.PenaltyPower = m_EcospaceData.PenPow
+            m_EcospaceModelParams.AdjustEffortWeight = m_EcospaceData.NoFishWeight
+            m_EcospaceModelParams.FirstPenaltyMonth = m_EcospaceData.FirstPenaltyMonth
+            m_EcospaceModelParams.EffortRelaxationWeight = m_EcospaceData.EffortRelaxationWeight
+
             Me.LoadEcospaceResultsWriters()
 
             m_EcospaceModelParams.ResetStatusFlags()
@@ -10895,6 +10904,12 @@ Public Class cCore
         m_EcospaceData.UseEcosimDiscardForcing = m_EcospaceModelParams.UseEcosimDiscardForcing
 
         m_EcospaceData.bSaveThreadingLog = m_EcospaceModelParams.SaveThreadingLog
+
+        m_EcospaceData.DoPenaltysearch = m_EcospaceModelParams.UseSpatialEffortPenalty
+        m_EcospaceData.PenPow = m_EcospaceModelParams.PenaltyPower
+        m_EcospaceData.NoFishWeight = m_EcospaceModelParams.AdjustEffortWeight
+        m_EcospaceData.FirstPenaltyMonth = m_EcospaceModelParams.FirstPenaltyMonth
+        m_EcospaceData.EffortRelaxationWeight = m_EcospaceModelParams.EffortRelaxationWeight
 
         Return True
 
@@ -11184,6 +11199,7 @@ Public Class cCore
                 grp.CapacityCalculationType = m_EcospaceData.CapCalType(iGroup)
 
                 grp.InMigrationAreaMovement = m_EcospaceData.InMigAreaMovement(iGroup)
+                grp.FTarget = m_EcospaceData.Ftarget(iGroup)
 
                 For i = 0 To nHabitats - 1
                     grp.PreferredHabitat(i) = m_EcospaceData.PrefHab(iGroup, i)
@@ -11227,6 +11243,8 @@ Public Class cCore
             m_EcospaceData.CapCalType(iGroup) = grp.CapacityCalculationType
 
             m_EcospaceData.InMigAreaMovement(iGroup) = grp.InMigrationAreaMovement
+
+            m_EcospaceData.Ftarget(iGroup) = grp.FTarget
 
             For i = 0 To nHabitats - 1
                 m_EcospaceData.PrefHab(iGroup, i) = grp.PreferredHabitat(i)

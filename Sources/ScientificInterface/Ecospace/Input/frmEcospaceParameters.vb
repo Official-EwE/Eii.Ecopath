@@ -81,7 +81,13 @@ Namespace Ecospace
         Private WithEvents m_bpAdjustSpace As cBooleanProperty = Nothing
         Private WithEvents m_bpEffort As cBooleanProperty = Nothing
 
-        Private m_fpAutosaveFirstTimestep As cEwEFormatProvider = Nothing
+        'Spatial distribution penalty
+        Private m_fpUsePenaltySearch As cEwEFormatProvider = Nothing
+        Private m_fpPenPow As cEwEFormatProvider = Nothing
+        Private m_fpEffortAdjust As cEwEFormatProvider = Nothing
+        Private m_fpFirstMonthPenalty As cEwEFormatProvider = Nothing
+        Private m_fpEffortRelax As cEwEFormatProvider = Nothing
+        Private m_fpFirstOutputTimestep As cEwEFormatProvider = Nothing
         Private m_fpAutosaveVisibleGroupsFleetsOnly As cEwEFormatProvider = Nothing
 
 #End Region ' Private vars
@@ -127,13 +133,16 @@ Namespace Ecospace
                 Me.m_clbAutosave.Items.Add(writer, writer.Enabled)
             Next
 
-            Me.UpdateControls()
+            'Me.UpdateControls()
 
             ' Hmm, connecting one control to three live properties - this could be dangerous
             Me.m_fpNGridThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, parms, eVarNameFlags.nGridSolverThreads)
             Me.m_fpNBiomassThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, parms, eVarNameFlags.nSpaceThreads)
             Me.m_fpNEffortThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, parms, eVarNameFlags.nEffortDistThreads)
             Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, parms, eVarNameFlags.PacketsMultiplier)
+            Me.m_fpFirstOutputTimestep = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstTimeStep, parms, eVarNameFlags.EcospaceAutosaveFirstTimeStep)
+
+            Me.m_fpAutosaveVisibleGroupsFleetsOnly = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAutosaveVisibleOnly, parms, eVarNameFlags.EcospaceAutosaveSelectedGroupsFleetsOnly)
 
             ' Model
             Me.m_fpTotalTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTotalTime, parms, eVarNameFlags.TotalTime)
@@ -142,16 +151,22 @@ Namespace Ecospace
             Me.m_fpSOR = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSOR, parms, eVarNameFlags.SOR)
             Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, parms, eVarNameFlags.MaxIterations)
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, parms, eVarNameFlags.UseExact)
-            Me.m_fpAnnualOutput = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAutosaveAnnualOnly, parms, eVarNameFlags.EcospaceAutosaveAnnualOutput)
-            Me.m_fpAutosaveFirstTimestep = New cPropertyFormatProvider(Me.UIContext, Me.m_nudAutosaveFirstTimeStep, parms, eVarNameFlags.EcospaceAutosaveFirstTimeStep)
-            Me.m_fpAutosaveVisibleGroupsFleetsOnly = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAutosaveVisibleOnly, parms, eVarNameFlags.EcospaceAutosaveSelectedGroupsFleetsOnly)
+            Me.m_fpAnnualOutput = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAnnualOutput, parms, eVarNameFlags.EcospaceAutosaveAnnualOutput)
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, parms, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
             Me.m_fpMinCapacity = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxMinCap, parms, eVarNameFlags.EcospaceMinForagingCapacity)
             Me.m_fpAllowHabCapGradCalc = New cPropertyFormatProvider(Me.UIContext, Me.m_cbCalcHabCapGrad, parms, eVarNameFlags.EcospaceAllowHabCapGradCorrections)
 
+            Me.m_fpUsePenaltySearch = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUsePenalty, parms, eVarNameFlags.EcospaceDoPenaltysearch)
+            Me.m_fpPenPow = New cPropertyFormatProvider(Me.UIContext, Me.m_tbPenPow, parms, eVarNameFlags.EcospacePenpow)
+            Me.m_fpEffortAdjust = New cPropertyFormatProvider(Me.UIContext, Me.m_tbEffortAdjustWeight, parms, eVarNameFlags.EcospaceNoFishWeight)
+            Me.m_fpFirstMonthPenalty = New cPropertyFormatProvider(Me.UIContext, Me.m_tbFirstPenaltyMonth, parms, eVarNameFlags.EcospaceFirstPenaltyMonth)
+            Me.m_fpEffortRelax = New cPropertyFormatProvider(Me.UIContext, Me.m_tbPredEffortRelax, parms, eVarNameFlags.EcospaceEffortRelaxationWeight)
+
             Me.UpdateScenarioFormatProviders()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
+
+            Me.UpdateControls()
 
         End Sub
 
@@ -187,7 +202,13 @@ Namespace Ecospace
                 Me.m_fpUseDiscardForcing.Release()
                 Me.m_fpAnnualOutput.Release()
 
-                Me.m_fpAutosaveFirstTimestep.Release()
+                Me.m_fpPenPow.Release()
+                Me.m_fpEffortAdjust.Release()
+                Me.m_fpFirstMonthPenalty.Release()
+                Me.m_fpEffortRelax.Release()
+                Me.m_fpUsePenaltySearch.Release()
+
+                Me.m_fpFirstOutputTimestep.Release()
                 Me.m_fpAutosaveVisibleGroupsFleetsOnly.Release()
 
             Catch ex As Exception
@@ -291,7 +312,6 @@ Namespace Ecospace
 #End Region ' cProperty events
 
 #Region " Control events "
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -456,6 +476,7 @@ Namespace Ecospace
             Me.m_fpContact = New cPropertyFormatProvider(Me.UIContext, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
 
         End Sub
+
 
 #End Region ' Internals
 

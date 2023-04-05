@@ -2226,4 +2226,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Select plots... ({0} of {1})</value>
     <comment>{0}=number of selected plots, {1}=total available plots</comment>
   </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_FTARGET" xml:space="preserve">
+    <value>Target mortalities</value>
+  </data>
 </root>
