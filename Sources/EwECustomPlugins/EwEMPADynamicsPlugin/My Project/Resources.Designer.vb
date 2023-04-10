@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -95,6 +95,24 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("none", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} failed to save MPA statistics to {1}. {2}.
+        '''</summary>
+        Friend ReadOnly Property NOTIFICATION_AUTOSAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("NOTIFICATION_AUTOSAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} save MPA statistics to {1}.
+        '''</summary>
+        Friend ReadOnly Property NOTIFICATION_AUTOSAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("NOTIFICATION_AUTOSAVE_SUCCESS", resourceCulture)
             End Get
         End Property
         

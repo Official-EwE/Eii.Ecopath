@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Drawing
 Imports System.Globalization
 Imports System.IO
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip
@@ -430,6 +431,10 @@ Public Class cMPADynamicsEngine
         Me.m_core.Messages.SendMessage(msg)
     End Sub
 
+    Private Function AutosaveFileName() As String
+        Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), "MPADynamicsStats.csv")
+    End Function
+
     ''' <summary>
     ''' Create streamwriter, and write out the initial state
     ''' </summary>
@@ -438,11 +443,15 @@ Public Class cMPADynamicsEngine
 
         If (Me.m_bAutosaving = False) Then Return False
 
-        Dim pout As String = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace)
-        If Not cFileUtils.IsDirectoryAvailable(pout, True) Then Return False
+        Dim fout As String = Me.AutosaveFileName()
+        Dim pout As String = Path.GetDirectoryName(fout)
+        If Not cFileUtils.IsDirectoryAvailable(pout, True) Then
+            Me.SendStatusMessage(cStringUtils.Localize(My.Resources.NOTIFICATION_AUTOSAVE_FAILED, My.Resources.DISPLAYNAME, fout, ""), eMessageImportance.Critical)
+            Return False
+        End If
 
         Try
-            Me.m_sw = New StreamWriter(Path.Combine(pout, "MPADynamicsStats.csv"))
+            Me.m_sw = New StreamWriter(fout)
             If (Me.m_core.SaveWithFileHeader) Then
                 Me.m_sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
             End If
@@ -456,6 +465,9 @@ Public Class cMPADynamicsEngine
         Catch ex As Exception
             Me.m_sw = Nothing
             Me.m_bAutosaving = False
+
+            Me.SendStatusMessage(cStringUtils.Localize(My.Resources.NOTIFICATION_AUTOSAVE_FAILED, My.Resources.DISPLAYNAME, fout, ex.Message), eMessageImportance.Critical)
+
             Return False
         End Try
         Return Me.Autosave(1)
@@ -521,8 +533,9 @@ Public Class cMPADynamicsEngine
     Private Sub StopAutosaving()
         If (Me.m_bAutosaving = False) Then Return
 
-        ' Ugh, this needs proper handling
-        Me.SendStatusMessage("MPA statistics have been saved to " & Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), eMessageImportance.Information, hyperlink:=Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace))
+        Dim fout As String = Me.AutosaveFileName()
+        Dim pout As String = Path.GetDirectoryName(fout)
+        Me.SendStatusMessage(cStringUtils.Localize(My.Resources.NOTIFICATION_AUTOSAVE_SUCCESS, My.Resources.DISPLAYNAME, fout), eMessageImportance.Information, hyperlink:=pout)
 
         Me.m_sw.Flush()
         Me.m_sw.Close()
