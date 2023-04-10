@@ -29,6 +29,19 @@ Imports EwEUtils.Core
 
 #End Region ' Imports 
 
+' *******************************************************************************
+' Monte Carlo should become multi-threaded, but the full-on approach tried earlier
+' was too ambitious. Rather than running Ecosim on a thread too, it might be smarter
+' to only make the process of finding new balanced parameters threaded, because this
+' is the major performance bottleneck.
+'
+' The cEcosimMonteCarlo code should be rewritten slightly as follows:
+' - In Run, cEcosimMonteCarlo fires up X threads per core to find new balanced parameters
+' - These threads notify cEcosimMonteCarlo when such a set is found
+' - cEcosimMonteCarlo stores the newly found parameter set in a queue for running through Ecosim, and runs them when able
+' - To the UI and any other external code (including cMonteCarloManager), cEcosimMonteCarlo works as normal but is just much more efficient at finding new parameter sets
+' *******************************************************************************
+
 Public Enum eMCParams As Integer
     NotSet = 0
     Biomass = 1
