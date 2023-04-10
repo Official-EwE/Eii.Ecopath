@@ -155,12 +155,10 @@ Public Class cPrebalModel
         Dim iConsumer As Integer = 1
 
         ' Get all living groups
-        For i As Integer = 1 To Me.m_core.nGroups
+        For i As Integer = 1 To Me.m_core.nLivingGroups
             grp = Me.m_core.EcopathGroupOutputs(i)
-            If (grp.IsLiving) Then
-                lgrps.Add(grp)
-                If (grp.IsConsumer) Then nConsumers += 1
-            End If
+            lgrps.Add(grp)
+            If (grp.IsConsumer) Then nConsumers += 1
         Next
 
         ' Sort the groups by trophic level, descending
