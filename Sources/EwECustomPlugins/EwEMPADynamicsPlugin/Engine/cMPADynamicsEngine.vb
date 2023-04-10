@@ -22,9 +22,11 @@
 Option Strict On
 Imports System.Globalization
 Imports System.IO
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -32,22 +34,47 @@ Imports EwEUtils.Utilities
 
 Public Class cMPADynamicsEngine
 
+#Region " Private vars "
+
+    ''' <summary>Cell values considered as True (e.g., for turning options on)</summary>
+    Private Const s_TRUE As String = "1yv+t"
+    ''' <summary>Cell values considered as False (e.g., for turning options off)</summary>
+    Private Const s_FALSE As String = "0nx-f"
+    ''' <summary>Cell values considered as neutral (e.g., for leaving options as they are)</summary>
+    Private Const s_DEFAULT As String = "?="
+
+    ''' <summary>Supported date formats that can be parsed.</summary>
+    Private Shared sFORMATS As String() = New String() {"yyyy/MM", "yyyy-MM", "MM/yyyy", "MM-yyyy", "yyyy/M", "yyyy-M", "M/yyyy", "M-yyyy"}
+    ''' <summary>Supported locales. Sorry.</summary>
+    Private Shared sLOCALE As New CultureInfo("en-US")
+
     Private m_core As cCore = Nothing
     Private m_ds As cEcospaceDataStructures = Nothing
     Private m_dtStates As New Dictionary(Of Date, List(Of cMPAState))
     Private m_lPreserved As New List(Of cMPAState)
+    Private m_bAutosaving As Boolean = False
+
+    Private m_sw As StreamWriter = Nothing
+
+#End Region ' Private vars
+
+#Region " Construction "
 
     Public Sub New(core As cCore, ds As cEcospaceDataStructures)
         Me.m_core = core
         Me.m_ds = ds
     End Sub
 
+#End Region ' Construction
+
+#Region " Public access "
+
     Public Sub Clear()
         Me.Restore()
         Me.m_dtStates.Clear()
     End Sub
 
-    Public Sub Backup()
+    Public Sub Backup(bAutosave As Boolean)
 
         Me.m_lPreserved.Clear()
         Dim timestamp As Date = Me.m_core.EcospaceTimestepToAbsoluteTime(1)
@@ -56,7 +83,8 @@ Public Class cMPADynamicsEngine
             state.Load()
             Me.m_lPreserved.Add(state)
         Next
-
+        Me.m_bAutosaving = bAutosave
+        Me.StartAutosaving()
     End Sub
 
     Public Sub Restore()
@@ -64,13 +92,15 @@ Public Class cMPADynamicsEngine
             state.Apply()
         Next
         Me.m_lPreserved.Clear()
+        Me.StopAutosaving()
     End Sub
 
     Public Sub OnEcospaceTimeStep(iTime As Integer)
 
-        ' ToDo: globalize this method
-
         Dim timestamp As Date = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
+
+        If (Me.m_ds.bInSpinUp) Then Return
+
         If (Me.m_dtStates.ContainsKey(timestamp)) Then
             For Each state As cMPAState In Me.m_dtStates(timestamp)
                 state.Apply()
@@ -81,12 +111,11 @@ Public Class cMPADynamicsEngine
                                                         state.RegulationState()),
                                   eMessageImportance.Information)
             Next
+            ' Autosave when state has changed
+            Me.Autosave(iTime)
         End If
 
     End Sub
-
-    Private Shared sFORMATS As String() = New String() {"yyyy/MM", "yyyy-MM", "MM/yyyy", "MM-yyyy", "yyyy/M", "yyyy-M", "M/yyyy", "M-yyyy"}
-    Private Shared sLOCALE As New CultureInfo("en-US")
 
     ''' <summary>
     ''' Hack 'n slash
@@ -217,6 +246,7 @@ Public Class cMPADynamicsEngine
         End Get
     End Property
 
+
     'Public Function LoadExcel(strExcel As String) As Boolean
     '    Me.Clear()
 
@@ -273,6 +303,8 @@ Public Class cMPADynamicsEngine
 
     '    Return dt
     'End Function
+
+#End Region ' Public access
 
 #Region " Internals "
 
@@ -369,10 +401,6 @@ Public Class cMPADynamicsEngine
 
     End Function
 
-    Private Const s_TRUE As String = "1yv+t"
-    Private Const s_FALSE As String = "0nx-f"
-    Private Const s_DEFAULT As String = "?="
-
     Private Function IsEnforced(strVal As String) As TriState
 
         If (String.IsNullOrWhiteSpace(strVal)) Then Return TriState.UseDefault
@@ -400,6 +428,108 @@ Public Class cMPADynamicsEngine
         End If
         If (Not String.IsNullOrWhiteSpace(hyperlink)) Then msg.Hyperlink = hyperlink
         Me.m_core.Messages.SendMessage(msg)
+    End Sub
+
+    ''' <summary>
+    ''' Create streamwriter, and write out the initial state
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    Private Function StartAutosaving() As Boolean
+
+        If (Me.m_bAutosaving = False) Then Return False
+
+        Dim pout As String = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace)
+        If Not cFileUtils.IsDirectoryAvailable(pout, True) Then Return False
+
+        Try
+            Me.m_sw = New StreamWriter(Path.Combine(pout, "MPADynamicsStats.csv"))
+            If (Me.m_core.SaveWithFileHeader) Then
+                Me.m_sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
+            End If
+
+            Me.m_sw.Write("Timestep,Date,Area,Cells,AreaClosed,CellsClosed")
+            For iMPA As Integer = 1 To Me.m_ds.MPAno
+                Me.m_sw.Write(",MPA_{0}_AreaClosed,MPA_{0}_CellsClosed", iMPA)
+            Next
+            Me.m_sw.WriteLine()
+
+        Catch ex As Exception
+            Me.m_sw = Nothing
+            Me.m_bAutosaving = False
+            Return False
+        End Try
+        Return Me.Autosave(1)
+
+    End Function
+
+    Private Function Autosave(iTime As Integer) As Boolean
+
+        If (Me.m_bAutosaving = False) Then Return False
+
+        Dim nClosed(Me.m_ds.MPAno) As Integer
+        Dim szClosed(Me.m_ds.MPAno) As Double
+        Dim nArea As Integer = 0
+        Dim szArea As Double = 0
+
+        ' This code goes the long way to count cells closed to any form of fishing
+        For irow As Integer = 1 To Me.m_ds.InRow
+            For icol As Integer = 1 To Me.m_ds.InCol
+                If (Me.m_ds.Depth(irow, icol) > 0) Then
+                    Dim bClosed As Boolean = False
+                    Dim sz As Single = Me.m_ds.CellArea(irow, icol)
+                    For iMPA As Integer = 1 To Me.m_ds.MPAno
+                        If (Me.m_ds.IsMPAActive(iMPA)) Then
+                            If (Me.m_ds.MPA(iMPA)(irow, icol) > 0) Then
+                                nClosed(iMPA) += 1
+                                szClosed(iMPA) += sz
+                                bClosed = True
+                            End If
+                        End If
+                    Next
+                    If bClosed Then
+                        nClosed(0) += 1
+                        szClosed(0) += sz
+                    End If
+
+                    szArea += sz
+                    nArea += 1
+                End If
+            Next
+        Next
+
+        'Me.m_sw.Write("Timestep,Date,Area,NumCells")
+        Me.m_sw.Write("{0},{1},{2},{3}",
+                      iTime,
+                      cStringUtils.ToCSVField(cStringUtils.FormatDate(Me.m_core.EcospaceTimestepToAbsoluteTime(iTime))),
+                      cStringUtils.ToCSVField(szArea),
+                      cStringUtils.ToCSVField(nArea))
+        For iMPA As Integer = 0 To Me.m_ds.MPAno
+            'Me.m_sw.Write(",MPA_{0}_AreaClosed,MPA_{0}_CellsClosed", iMPA)
+            Me.m_sw.Write(",{0},{1}",
+                      cStringUtils.ToCSVField(szClosed(iMPA)),
+                      cStringUtils.ToCSVField(nClosed(iMPA)))
+        Next
+        Me.m_sw.WriteLine()
+
+        Return True
+
+    End Function
+
+    ''' <summary>
+    ''' Close streamwriter
+    ''' </summary>
+    Private Sub StopAutosaving()
+        If (Me.m_bAutosaving = False) Then Return
+
+        ' Ugh, this needs proper handling
+        Me.SendStatusMessage("MPA statistics have been saved to " & Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), eMessageImportance.Information, hyperlink:=Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace))
+
+        Me.m_sw.Flush()
+        Me.m_sw.Close()
+        Me.m_sw.Dispose()
+        Me.m_sw = Nothing
+        Me.m_bAutosaving = False
+
     End Sub
 
 #End Region ' Internals

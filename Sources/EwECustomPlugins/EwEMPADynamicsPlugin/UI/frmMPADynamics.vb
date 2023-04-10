@@ -34,14 +34,16 @@ Public Class frmMPADynamics
 #Region " Private vars "
 
     Private m_engine As cMPADynamicsEngine = Nothing
+    Private m_pi As cEwEMPADynamicsPlugin = Nothing
     Private m_bGridInvalid As Boolean = True
 
 #End Region ' Private vars
 
-    Public Sub New(uic As cUIContext, engine As cMPADynamicsEngine)
+    Public Sub New(uic As cUIContext, engine As cMPADynamicsEngine, pi As cEwEMPADynamicsPlugin)
 
         Me.UIContext = uic
         Me.m_engine = engine
+        Me.m_pi = pi
 
         Me.InitializeComponent()
 
@@ -82,6 +84,7 @@ Public Class frmMPADynamics
         Me.m_tsbnShowMonths.Image = SharedResources.CalendarHS
         Me.m_tsbnShowFleets.Image = SharedResources.fishing_gear
         Me.m_tsbnExport.Image = SharedResources.ExportHS
+        Me.m_tsbnAutosave.Image = SharedResources.AutoSaveHS
 
         For i As Integer = 0 To Me.Core.nFleets
             If (i = 0) Then
@@ -95,8 +98,15 @@ Public Class frmMPADynamics
         Me.m_tsbnShowFleets.Checked = My.Settings.ShowFleets
         Me.m_tscmbFleets.SelectedIndex = 0
         Me.UpdateGrid()
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecospace, eCoreComponentType.Core}
 
+        Me.UpdateControls()
+
+    End Sub
+
+    Protected Overrides Sub UpdateControls()
+        MyBase.UpdateControls()
+        Me.m_tsbnAutosave.Checked = Me.m_pi.AutoSave
     End Sub
 
     Public Overrides Sub OnCoreMessage(msg As cMessage)
@@ -108,11 +118,20 @@ Public Class frmMPADynamics
             End If
         End If
 
+        If (msg.Type = eMessageType.GlobalSettingsChanged) Then
+            Me.UpdateControls()
+        End If
+
     End Sub
 
 #End Region ' Overrides
 
 #Region " Event handlers "
+
+    Private Sub OnAutosaveClick(sender As Object, e As EventArgs) Handles m_tsbnAutosave.Click
+        Me.m_pi.AutoSave = Not Me.m_pi.AutoSave
+        Me.UpdateControls()
+    End Sub
 
     Private Sub OnDropFile(sender As Object, e As System.Windows.Forms.DragEventArgs) Handles m_dgvStates.DragDrop
         Try
