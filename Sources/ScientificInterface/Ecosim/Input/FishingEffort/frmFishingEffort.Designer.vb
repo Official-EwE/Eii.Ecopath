@@ -44,8 +44,8 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFishingEffort))
             Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-            Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar()
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad()
+            Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar()
             Me.m_tlpToolbox = New System.Windows.Forms.TableLayoutPanel()
             Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar()
             Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox()
@@ -64,21 +64,13 @@ Namespace Ecosim
             '
             'SplitContainer1.Panel1
             '
-            Me.SplitContainer1.Panel1.Controls.Add(Me.m_sketchPadToolbar)
             Me.SplitContainer1.Panel1.Controls.Add(Me.m_sketchPad)
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_sketchPadToolbar)
             '
             'SplitContainer1.Panel2
             '
             resources.ApplyResources(Me.SplitContainer1.Panel2, "SplitContainer1.Panel2")
             Me.SplitContainer1.Panel2.Controls.Add(Me.m_tlpToolbox)
-            '
-            'm_sketchPadToolbar
-            '
-            Me.m_sketchPadToolbar.BackColor = System.Drawing.SystemColors.Control
-            resources.ApplyResources(Me.m_sketchPadToolbar, "m_sketchPadToolbar")
-            Me.m_sketchPadToolbar.Handler = Nothing
-            Me.m_sketchPadToolbar.Name = "m_sketchPadToolbar"
-            Me.m_sketchPadToolbar.UIContext = Nothing
             '
             'm_sketchPad
             '
@@ -104,10 +96,18 @@ Namespace Ecosim
             Me.m_sketchPad.XAxisMaxValue = -9999
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-            Me.m_sketchPad.YAxisMaxValue = 0.0!
+            Me.m_sketchPad.YAxisMaxValue = 0!
             Me.m_sketchPad.YAxisMinValue = -9999.0!
             Me.m_sketchPad.YMarkLabel = ""
             Me.m_sketchPad.YMarkValue = -9999.0!
+            '
+            'm_sketchPadToolbar
+            '
+            resources.ApplyResources(Me.m_sketchPadToolbar, "m_sketchPadToolbar")
+            Me.m_sketchPadToolbar.BackColor = System.Drawing.SystemColors.Control
+            Me.m_sketchPadToolbar.Handler = Nothing
+            Me.m_sketchPadToolbar.Name = "m_sketchPadToolbar"
+            Me.m_sketchPadToolbar.UIContext = Nothing
             '
             'm_tlpToolbox
             '
@@ -143,6 +143,7 @@ Namespace Ecosim
             Me.Name = "frmFishingEffort"
             Me.TabText = ""
             Me.SplitContainer1.Panel1.ResumeLayout(False)
+            Me.SplitContainer1.Panel1.PerformLayout()
             Me.SplitContainer1.Panel2.ResumeLayout(False)
             CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitContainer1.ResumeLayout(False)
@@ -153,11 +154,10 @@ Namespace Ecosim
         End Sub
         Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Friend WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
-        Friend WithEvents m_sketchPad As ucForcingSketchPad
         Friend WithEvents m_sketchPadToolbar As ucSketchPadToolbar
         Private WithEvents m_shapeToolBox As ScientificInterfaceShared.Controls.ucShapeToolbox
         Private WithEvents m_tlpToolbox As System.Windows.Forms.TableLayoutPanel
-
+        Private WithEvents m_sketchPad As ucForcingSketchPad
     End Class
 End Namespace
 
