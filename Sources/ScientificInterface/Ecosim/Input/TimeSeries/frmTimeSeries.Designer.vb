@@ -82,8 +82,8 @@ Namespace Ecosim
             '
             'm_sketchPadToolbar
             '
-            Me.m_sketchPadToolbar.BackColor = System.Drawing.SystemColors.Control
             resources.ApplyResources(Me.m_sketchPadToolbar, "m_sketchPadToolbar")
+            Me.m_sketchPadToolbar.BackColor = System.Drawing.SystemColors.Control
             Me.m_sketchPadToolbar.Handler = Nothing
             Me.m_sketchPadToolbar.Name = "m_sketchPadToolbar"
             Me.m_sketchPadToolbar.UIContext = Nothing
@@ -91,12 +91,12 @@ Namespace Ecosim
             'm_sketchPad
             '
             Me.m_sketchPad.AllowDragXMark = False
+            resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
             Me.m_sketchPad.CanEditPoints = True
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
-            resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
@@ -112,7 +112,7 @@ Namespace Ecosim
             Me.m_sketchPad.XAxisMaxValue = -9999
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-            Me.m_sketchPad.YAxisMaxValue = 0.0!
+            Me.m_sketchPad.YAxisMaxValue = 0!
             Me.m_sketchPad.YAxisMinValue = -9999.0!
             Me.m_sketchPad.YMarkLabel = ""
             Me.m_sketchPad.YMarkValue = -9999.0!
@@ -155,6 +155,7 @@ Namespace Ecosim
             CType(Me.m_split, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_split.ResumeLayout(False)
             Me.m_tlpSketchpad.ResumeLayout(False)
+            Me.m_tlpSketchpad.PerformLayout()
             Me.m_tlpShapeToolbox.ResumeLayout(False)
             Me.m_tlpShapeToolbox.PerformLayout()
             Me.ResumeLayout(False)
