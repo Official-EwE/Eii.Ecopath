@@ -171,4 +171,12 @@
     <value>MPA Dynamics CSV file saved to '{0}'</value>
     <comment>{0}=file name</comment>
   </data>
+  <data name="NOTIFICATION_AUTOSAVE_FAILED" xml:space="preserve">
+    <value>{0} failed to save MPA statistics to {1}. {2}</value>
+    <comment>{0}=display name; {1}=file; {2}=exception text</comment>
+  </data>
+  <data name="NOTIFICATION_AUTOSAVE_SUCCESS" xml:space="preserve">
+    <value>{0} save MPA statistics to {1}</value>
+    <comment>{0}=display name; {1}=file</comment>
+  </data>
 </root>
