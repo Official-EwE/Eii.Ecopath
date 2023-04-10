@@ -38,6 +38,7 @@ Public Class cEwEMPADynamicsPlugin
     Implements IEcospaceBeginTimestepPlugin
     Implements IEcospaceInitRunCompletedPlugin
     Implements IEcospaceRunCompletedPlugin
+    Implements IAutoSavePlugin
 
 #Region " Private vars "
 
@@ -148,7 +149,7 @@ Public Class cEwEMPADynamicsPlugin
 
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
         ' Make snapshot of MPA states
-        Me.m_engine.Backup()
+        Me.m_engine.Backup(Me.AutoSave)
     End Sub
 
     Public Sub EcospaceBeginTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep
@@ -163,6 +164,20 @@ Public Class cEwEMPADynamicsPlugin
 
 #End Region ' Ecospace integration
 
+#Region " Autosave integration "
+
+    Public Function AutoSaveType() As eAutosaveTypes Implements IAutoSavePlugin.AutoSaveType
+        Return eAutosaveTypes.Ecospace
+    End Function
+
+    Public Function AutoSaveOutputPath() As String Implements IAutoSavePlugin.AutoSaveOutputPath
+        Return ""
+    End Function
+
+    Public Property AutoSave As Boolean Implements IAutoSavePlugin.AutoSave
+
+#End Region ' Autosave integration
+
 #Region " Internals "
 
     Private Function HasUI() As Boolean
@@ -172,7 +187,7 @@ Public Class cEwEMPADynamicsPlugin
 
     Private Function GetUI() As frmMPADynamics
         If (Not Me.HasUI()) Then
-            Me.m_ui = New frmMPADynamics(Me.m_uic, Me.m_engine)
+            Me.m_ui = New frmMPADynamics(Me.m_uic, Me.m_engine, Me)
         End If
         Return Me.m_ui
     End Function
