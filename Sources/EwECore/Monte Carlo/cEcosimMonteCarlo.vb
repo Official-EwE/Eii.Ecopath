@@ -40,6 +40,10 @@ Imports EwEUtils.Core
 ' - These threads notify cEcosimMonteCarlo when such a set is found
 ' - cEcosimMonteCarlo stores the newly found parameter set in a queue for running through Ecosim, and runs them when able
 ' - To the UI and any other external code (including cMonteCarloManager), cEcosimMonteCarlo works as normal but is just much more efficient at finding new parameter sets
+'
+' Practically, this can be organized in different ways
+' - Give each resampling thread its own core (as done for the StepWiseFitting threading). Easy to implement but overkill
+' - Give each resampling thread its own private Ecopath model and data structures (Ecopath, Stanza, etc). A bit more clumsy but much more memory-friendly. Not sure what needs disconnecting.
 ' *******************************************************************************
 
 Public Enum eMCParams As Integer
