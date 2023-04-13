@@ -456,8 +456,8 @@ Namespace Utilities
                                                 Optional strDecimalSeparator As String = ".",
                                                 Optional strThousandsSeparator As String = "") As Integer
 
-            Select Case strNumber.Trim
-                Case "-", "_" : strNumber = ""
+            Select Case strNumber.Trim.ToLower
+                Case "-", "_", "nan" : strNumber = ""
             End Select
 
             If Not String.IsNullOrEmpty(strNumber) Then
@@ -501,8 +501,8 @@ Namespace Utilities
                                                Optional strDecimalSeparator As String = ".",
                                                Optional strThousandsSeparator As String = "") As Single
 
-            Select Case strNumber.Trim
-                Case "-", "_" : strNumber = ""
+            Select Case strNumber.Trim.ToLower
+                Case "-", "_", "nan" : strNumber = ""
             End Select
 
             If Not String.IsNullOrEmpty(strNumber) Then
@@ -545,8 +545,8 @@ Namespace Utilities
                                                Optional strDecimalSeparator As String = ".",
                                                Optional strThousandsSeparator As String = "") As Double
 
-            Select Case strNumber.Trim
-                Case "-", "_" : strNumber = ""
+            Select Case strNumber.Trim.ToLower
+                Case "-", "_", "nan" : strNumber = ""
             End Select
 
             If Not String.IsNullOrEmpty(strNumber) Then
@@ -588,8 +588,8 @@ Namespace Utilities
                                                Optional strDecimalSeparator As String = ".",
                                                Optional strThousandsSeparator As String = "") As Decimal
 
-            Select Case strNumber.Trim
-                Case "-", "_" : strNumber = ""
+            Select Case strNumber.Trim.ToLower
+                Case "-", "_", "nan" : strNumber = ""
             End Select
 
             If Not String.IsNullOrEmpty(strNumber) Then
