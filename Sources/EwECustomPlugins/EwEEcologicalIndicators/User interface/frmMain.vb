@@ -267,7 +267,7 @@ Public Class frmMain
             Me.m_bInUpdate = True
             Me.m_tbxDefaultLocation.Text = Me.m_plugin.DefaultFolder
             Me.m_cbAutoSaveEcopath.Checked = My.Settings.AutoSaveEcopath
-            Me.m_cbAutoSaveEcosim.Checked = My.Settings.AutoSaveEcospaceCSV
+            Me.m_cbAutoSaveEcosim.Checked = My.Settings.AutoSaveEcosim
             Me.m_cbAutoSaveMCMC.Checked = My.Settings.AutoSaveMCMC
             Me.m_cbAutoSaveEcospaceCSV.Checked = My.Settings.AutoSaveEcospaceCSV
             Me.m_cbAutoSaveEcospaceASCII.Checked = My.Settings.AutoSaveEcospaceMaps
