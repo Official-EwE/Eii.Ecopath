@@ -13,7 +13,6 @@
 #define MSPTools 0
 #define RandomizeMPAs 0
 #define ExcludeDeadCells 0
-#define enaR 1
 
 #if Compile64Bit == 0
   #define MyAppVersion "6.7.0 α 32-bit"
@@ -291,9 +290,7 @@ Source: "{#DefRoot}{#DefSrc}\EwERandomizeMPAPlugin.dll"; DestDir: "{app}\Plugins
 #endif
 
 ; -- enaR --
-#if enaR == 1
 Source: "{#DefRoot}{#DefSrc}\enaRPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\enaR
-#endif
 
 ; -- MSPTools --
 #if MSPTools == 1
@@ -382,9 +379,7 @@ Name: "plugin\input\excldeadcells"; Description: "Exclude isolated cells"; Types
 Name: "plugin\input\randomizeMPAs"; Description: "Randomize MPA cells"; Types: full
 #endif
 ; -- enaR --
-#if enaR == 1
 Name: "plugin\output\enaR"; Description: "Ecospace enaR"; Types: full
-#endif
 
 [Tasks]
 Name: "desktopicon"; Description: "Add desktop icon"
