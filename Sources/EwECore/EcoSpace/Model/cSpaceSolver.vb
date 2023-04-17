@@ -737,19 +737,17 @@ Public Class cSpaceSolver
 
     Private Function SolveCellC(ByVal i As Integer, ByVal j As Integer) As Boolean
         Dim iGrp As Integer
-        Dim TimeStep2c As Single
-        Dim CellAreaKM2 As Single
-        ' Dim PopWt As Single
 
         Try
-            'Debug.Assert(Not (i = 1 And j = 1))
 
             ' System.Console.WriteLine("Thread ID, " & Me.ThreadID & ", " & i.ToString & ", " & j.ToString)
             'this changes the timestep for higher order numerical sceme.  the timestep isn't actually different, it's a multiplier
-            TimeStep2c = CSng(Me.TimeStepC * 0.66667)
+            'jb Apr-2023 TimeStep2c is not used any more. Integration done by cEcopace.runContaminantTracerExplicit1()
+            'TimeStep2c = CSng(Me.TimeStepC * 0.66667)
 
             'Cell area in KM2 at the equator * relative width of the cell
-            CellAreaKM2 = CSng(Me.m_Data.CellLength ^ 2.0) * Me.m_Data.Width(i)
+            'jb Apr-2023 CellAreaKM2
+            'CellAreaKM2 = CSng(Me.m_Data.CellLength ^ 2.0) * Me.m_Data.Width(i)
 
             For iGrp = 0 To Me.m_Data.NGroups
                 Me.m_ConTracer.ConcTr(iGrp) = Me.m_Data.Ccell(i, j, iGrp)
@@ -762,6 +760,8 @@ Public Class cSpaceSolver
                 Me.m_Data.Ftr(i, j, iGrp) = Me.Cintotal(iGrp)
                 Me.m_Data.AMmTr(i, j, iGrp) = -Me.Closs(iGrp) - Me.Bcw(i + 1, j, iGrp) - Me.C(i - 1, j, iGrp) - Me.d(i, j, iGrp) - Me.e(i, j, iGrp)
                 If Me.m_Data.AMmTr(i, j, iGrp) >= 0 Then Me.m_Data.AMmTr(i, j, iGrp) = -1.0E+30
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Integration done by cEcopace.runContaminantTracerExplicit1()
                 '   If m_Data.SpaceTime And FastIntegrate(ip) = False Then
                 '  m_data_Cder(i, j, iGrp) = Cintotal(iGrp) + m_Data.AMmTr(i, j, iGrp) + inflows from surrounding cells
                 'old backward euler
@@ -774,8 +774,8 @@ Public Class cSpaceSolver
                 'm_Data.AMmTr(i, j, iGrp) = m_Data.AMmTr(i, j, iGrp) - 1 / TimeStep2c '/ m_Data.TimeStep
 
                 '  End If
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             Next
-
 
             Return True
 

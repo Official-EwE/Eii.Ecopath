@@ -181,14 +181,9 @@ Public Class cContaminantTracer
             Me.m_TracerData.Cinflow(j) = Me.m_TracerData.Cinflow(j) + ConFlow * (1 - Me.m_TracerData.CassimProp(j))
 
             'flow to environment of consumed contaminant excreted over all trophic flows
-            'ExcretToEnv = ExcretToEnv + ConFlow * (1 - m_EPData.GS(j)) * m_TracerData.CassimProp(j)
             ExcretToEnv = ExcretToEnv + ConFlow * Me.m_TracerData.CassimProp(j)
 
-            For K = Me.m_EPData.NumLiving + 1 To Me.m_EPData.NumGroups
-                'm_TracerData.Cinflow(K) = m_TracerData.Cinflow(K) + m_EPData.GS(j) * ConFlow * m_EPData.DF(j, K - m_EPData.NumLiving)
-            Next
-
-        Next
+        Next ii
 
         'flows associated with detritus and discards
         For i = 1 To Me.m_EPData.NumLiving
