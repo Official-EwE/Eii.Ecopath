@@ -880,6 +880,9 @@ Public Class cEcoSpace
                         'if so, then update actual advection from the monthly X and Y velocity vectors
                         For i = 0 To Me.EcoSpaceData.InRow + 1
                             For j = 0 To Me.EcoSpaceData.InCol + 1
+                                'If i = 18 And j = 38 Then Debug.Assert(False)
+
+
                                 Me.EcoSpaceData.Xvel(i, j) = Me.EcoSpaceData.MonthlyXvel(Me.EcoSpaceData.MonthNow)(i, j)
                                 Me.EcoSpaceData.Yvel(i, j) = Me.EcoSpaceData.MonthlyYvel(Me.EcoSpaceData.MonthNow)(i, j)
                                 Me.EcoSpaceData.UpVel(i, j) = Me.EcoSpaceData.MonthlyUpWell(Me.EcoSpaceData.MonthNow)(i, j)
@@ -1058,7 +1061,6 @@ Public Class cEcoSpace
                 If Me.ContaiminantTracerData.EcoSpaceConSimOn Then
                     Dim itc As Integer, ntc As Integer
                     Dim Derivcon(,,) As Single, Derivcon2(,,) As Single
-                    Dim totderivcon As Single
                     ReDim Derivcon(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol, Me.EcoSpaceData.NGroups)
                     ReDim Derivcon2(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol, Me.EcoSpaceData.NGroups)
 
@@ -1069,17 +1071,17 @@ Public Class cEcoSpace
                     For itc = 2 To ntc
                         Me.runSpaceCSolverThreads(CSng(ntc))
 
-                        'Me.runContaminantTracerSolveGrid()
                         Me.runContaminantTracerExplicit1(Derivcon, Derivcon2, ntc)
 
-                        totderivcon = 0
-                        For ip = 0 To Me.EcoSpaceData.NGroups
-                            For i = 1 To Me.EcoSpaceData.InRow
-                                For j = 1 To Me.EcoSpaceData.InCol
-                                    totderivcon = totderivcon + Derivcon(i, j, ip)
-                                Next
-                            Next
-                        Next
+                        'For debugging
+                        'totderivcon = 0
+                        'For ip = 0 To Me.EcoSpaceData.NGroups
+                        '    For i = 1 To Me.EcoSpaceData.InRow
+                        '        For j = 1 To Me.EcoSpaceData.InCol
+                        '            totderivcon = totderivcon + Derivcon(i, j, ip)
+                        '        Next
+                        '    Next
+                        'Next
 
                     Next
                     Me.summarizeContaminantTracer()
@@ -2081,6 +2083,9 @@ Public Class cEcoSpace
             For j = 1 To Me.EcoSpaceData.InCol
                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
                     For iGrp = 0 To Me.EcoSpaceData.NGroups
+
+                        'If i = 18 And j = 38 And Derivcon(i, j, iGrp) > 0.0001 And itt > 13 Then Debug.Assert(False)
+
                         Derivcon(i, j, iGrp) = Me.EcoSpaceData.Ftr(i, j, iGrp) +
                             Me.Bcw(i, j, iGrp) * Me.EcoSpaceData.Ccell(i - 1, j, iGrp) +
                             Me.C(i, j, iGrp) * Me.EcoSpaceData.Ccell(i + 1, j, iGrp) +
@@ -2107,49 +2112,6 @@ Public Class cEcoSpace
 
     End Sub
 
-
-    Private Sub runContaminantTracerExplicit1_NoOffset(ByRef Derivcon As Single(,,), ByRef Derivcon2 As Single(,,), ByVal ntc As Integer)
-        'jb 6-Dec-2016 OK This fixes the issue with the velocity vectors being off set by one cell 
-        'But the model goes unstable after a long run... So not so good ehhh
-        Dim i As Integer, j As Integer, iGrp As Integer
-        Dim Tst As Single
-
-        'set smaller timestep previously calculated in estimateMaxTimeStep
-        Tst = Me.EcoSpaceData.TimeStep / CSng(ntc)
-
-        For i = 1 To Me.EcoSpaceData.InRow
-            For j = 1 To Me.EcoSpaceData.InCol
-                If Me.EcoSpaceData.Depth(i, j) > 0 Then
-                    For iGrp = 0 To Me.EcoSpaceData.NGroups
-
-                        'If iGrp = 41 And i = 3 And j - 1 = 3 Then
-                        '    Debug.Assert(False)
-                        'End If
-                        Derivcon(i, j, iGrp) = Me.EcoSpaceData.Ftr(i, j, iGrp) +
-                            Me.Bcw(i - 1, j, iGrp) * Me.EcoSpaceData.Ccell(i - 1, j, iGrp) +
-                            Me.C(i + 1, j, iGrp) * Me.EcoSpaceData.Ccell(i + 1, j, iGrp) +
-                            Me.d(i, j - 1, iGrp) * Me.EcoSpaceData.Ccell(i, j - 1, iGrp) +
-                            Me.e(i, j + 1, iGrp) * Me.EcoSpaceData.Ccell(i, j + 1, iGrp) +
-                            Me.EcoSpaceData.AMmTr(i, j, iGrp) * Me.EcoSpaceData.Ccell(i, j, iGrp)
-                        'm_Data.Ccell(i, j, iGrp) = m_Data.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
-                        Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
-                    Next
-                End If
-            Next
-        Next
-
-        For i = 1 To Me.EcoSpaceData.InRow
-            For j = 1 To Me.EcoSpaceData.InCol
-                If Me.EcoSpaceData.Depth(i, j) > 0 Then
-                    For iGrp = 0 To Me.EcoSpaceData.NGroups
-                        Me.EcoSpaceData.Ccell(i, j, iGrp) = Me.EcoSpaceData.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
-                        'Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
-                    Next
-                End If
-            Next
-        Next
-
-    End Sub
 
     Private Sub runContaminantTracerExplicit2(ByRef Derivcon As Single(,,), ByRef Derivcon2 As Single(,,), ByVal ntc As Integer)
         Dim i As Integer, j As Integer, iGrp As Integer
