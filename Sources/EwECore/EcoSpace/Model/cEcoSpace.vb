@@ -2076,6 +2076,7 @@ Public Class cEcoSpace
         Dim i As Integer, j As Integer, iGrp As Integer
         Dim Tst As Single
 
+        'Debug.Assert(itt <= 12)
         'set smaller timestep previously calculated in estimateMaxTimeStep
         Tst = Me.EcoSpaceData.TimeStep / CSng(ntc)
 
@@ -2084,7 +2085,7 @@ Public Class cEcoSpace
                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
                     For iGrp = 0 To Me.EcoSpaceData.NGroups
 
-                        'If i = 18 And j = 38 And Derivcon(i, j, iGrp) > 0.0001 And itt > 13 Then Debug.Assert(False)
+                        'If i = 18 And j = 38 And itt >= 13 Then Debug.Assert(False)
 
                         Derivcon(i, j, iGrp) = Me.EcoSpaceData.Ftr(i, j, iGrp) +
                             Me.Bcw(i, j, iGrp) * Me.EcoSpaceData.Ccell(i - 1, j, iGrp) +
@@ -2103,7 +2104,15 @@ Public Class cEcoSpace
             For j = 1 To Me.EcoSpaceData.InCol
                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
                     For iGrp = 0 To Me.EcoSpaceData.NGroups
+
+                        ''If i = 18 And j = 38 And itt >= 13 Then Debug.Assert(False)
                         Me.EcoSpaceData.Ccell(i, j, iGrp) = Me.EcoSpaceData.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
+
+                        'Me.EcoSpaceData.Ccell(i - 1, j, iGrp) -= Me.Bcw(i, j, iGrp) * Me.EcoSpaceData.Ccell(i - 1, j, iGrp) * Tst
+                        'Me.EcoSpaceData.Ccell(i + 1, j, iGrp) -= Me.C(i, j, iGrp) * Me.EcoSpaceData.Ccell(i + 1, j, iGrp) * Tst
+                        'Me.EcoSpaceData.Ccell(i, j - 1, iGrp) -= Me.d(i, j - 1, iGrp) * Me.EcoSpaceData.Ccell(i, j - 1, iGrp) * Tst
+                        'Me.EcoSpaceData.Ccell(i, j + 1, iGrp) -= Me.e(i, j + 1, iGrp) * Me.EcoSpaceData.Ccell(i, j + 1, iGrp) * Tst
+
                         'Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
                     Next
                 End If

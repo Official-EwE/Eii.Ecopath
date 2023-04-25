@@ -177,7 +177,6 @@ Public Class cContaminantTracer
         For ii = 1 To Me.m_ESData.inlinks
             i = Me.m_ESData.ilink(ii) : j = Me.m_ESData.jlink(ii)
             ConFlow = Me.ConKtrophic(ii) * Me.ConcTr(i) '(ConKtrophic(ii) = eat / biomass(iPrey))
-            ' m_TracerData.Cinflow(j) = m_TracerData.Cinflow(j) + ConFlow * (1 - m_EPData.GS(j)) 
             Me.m_TracerData.Cinflow(j) = Me.m_TracerData.Cinflow(j) + ConFlow * (1 - Me.m_TracerData.CassimProp(j))
 
             'flow to environment of consumed contaminant excreted over all trophic flows

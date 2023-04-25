@@ -834,16 +834,6 @@ Public Class cSpaceSolver
             Me.m_Data.RelNutMult(iRow, iCol) = 0.0F
             Me.SaveRelNutFree(Me.NutFree, iRow, iCol)
 
-
-            'jb 29-Apr-2013 removed EcosimData Consumpt
-            ''*************
-            ''Consumpt is NOT threadsafe
-            ''***********
-            'If m_SimData.IndicesOn Then
-            '    ReDim m_SimData.Consumpt(m_Data.NGroups, m_Data.NGroups)
-            'End If
-            '
-
             For j = Me.m_Data.nLiving + 1 To Me.m_Data.NGroups
                 ToDetritus(j - Me.m_Data.nLiving) = 0
             Next j
