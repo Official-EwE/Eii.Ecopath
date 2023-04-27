@@ -20,6 +20,7 @@
 Imports System.Data.Linq
 Imports System.Math
 Imports System.Threading
+Imports System.Threading.Tasks
 Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Core
@@ -2725,7 +2726,9 @@ Public Class cEcoSpace
             Me.InitSpaceSolverThreads()
             If Me.EcoSpaceData.UseIBM Then Me.InitIBMSolverThreads()
 
-            Me.SetMigGrad()
+            ' JS 25April2023: multi-threaded mig gradient calculations
+            'Me.SetMigGrad()
+            Me.SetMigGradThreaded()
 
             If Me.ContaiminantTracerData.EcoSpaceConSimOn Then
                 'initialize the contaminant tracing
@@ -5305,7 +5308,9 @@ exitline:
         Next
     End Sub
 
+#Region " Migration gradient "
 
+    Const minHabCap As Single = 0.001
 
     Private Sub SetMigGrad()
         'set habitat quality gradient maps for all habitat types, for use in biased movement assessments
@@ -5319,7 +5324,6 @@ exitline:
         Dim migIndex() As Integer
         ReDim migIndex(Me.EcoSpaceData.NGroups)
         Dim diagAdjust As Single
-        Dim minHabCap As Single = 0.001
 
         'Me.m_Data.debugSetMigMapsFromPrefRowCol()
 
@@ -5361,7 +5365,6 @@ exitline:
                 Next imonth
             Next iMigGrp
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
             If Me.EcoSpaceData.InRow > Me.EcoSpaceData.InCol Then nsweep = Me.EcoSpaceData.InRow Else nsweep = Me.EcoSpaceData.InCol
             nsweep = nsweep * 2
@@ -5438,6 +5441,126 @@ exitline:
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Multi-threaded version of <see cref="SetMigGrad()"/>
+    ''' </summary>
+    ''' <seealso cref="CalcMigGradThread(Integer, Integer, Integer, Integer)"/>
+    Private Sub SetMigGradThreaded()
+        'set habitat quality gradient maps for all habitat types, for use in biased movement assessments
+        Dim nsweep As Integer
+
+        Dim nMig As Integer
+        Dim migIndex() As Integer
+        ReDim migIndex(Me.EcoSpaceData.NGroups)
+
+        'Me.m_Data.debugSetMigMapsFromPrefRowCol()
+
+        Try
+            For i As Integer = 1 To Me.EcoSpaceData.NGroups
+                If Me.EcoSpaceData.IsMigratory(i) Then
+                    nMig = nMig + 1
+                    migIndex(nMig) = i
+                End If
+            Next
+            ReDim Me.MigGrad(nMig, cCore.N_MONTHS) ' m_Data.InRow + 1, m_Data.InCol + 1, nMig, 12)
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Initialize the MigGrad(row,col,group,month) migration gradient matrix with
+            '0 for cells inside a migration area
+            '1000 for cells outside migration area
+            '2000 for cells in low capacity habitat or land
+            For iMigGrp As Integer = 1 To nMig
+                For imonth As Integer = 1 To cCore.N_MONTHS
+
+                    ' Debug.Assert(imonth <> 6)
+                    Dim grad(Me.EcoSpaceData.InRow + 1, Me.EcoSpaceData.InCol + 1) As Single
+
+                    For i As Integer = 0 To Me.EcoSpaceData.InRow + 1
+                        For j As Integer = 0 To Me.EcoSpaceData.InCol + 1
+                            grad(i, j) = 1000
+
+                            If Me.EcoSpaceData.MigMaps(migIndex(iMigGrp), imonth)(i, j) > MIN_MIG_PROB Then
+                                grad(i, j) = 0
+                            End If
+
+                            If Me.EcoSpaceData.Depth(i, j) = 0 Or Me.EcoSpaceData.HabCap(migIndex(iMigGrp))(i, j) < minHabCap Then
+                                grad(i, j) = 2000
+                            End If
+
+                        Next j
+                    Next i
+                    Me.MigGrad(iMigGrp, imonth) = grad
+                Next imonth
+            Next iMigGrp
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            If Me.EcoSpaceData.InRow > Me.EcoSpaceData.InCol Then nsweep = Me.EcoSpaceData.InRow Else nsweep = Me.EcoSpaceData.InCol
+            nsweep = nsweep * 2
+            Me.iWindow = 1
+            For iMigGrp As Integer = 1 To nMig
+                ' Simple multi-threading with tasks to speed up calculating the migration habitat capacity gradient
+                Dim l As New List(Of Task)
+                For imonth As Integer = 1 To cCore.N_MONTHS
+                    ' To avoid warning BC42324: using iterating variable in lambda expression may have undesired results (and it did!)
+                    Dim a As Integer = iMigGrp
+                    Dim b As Integer = imonth
+                    Dim t As Task = Task.Run(Sub()
+                                                 Me.CalcMigGradThread(nsweep, a, migIndex(a), b)
+                                             End Sub)
+                    l.Add(t)
+                Next imonth 'imonth = 1 To 12
+                Task.WaitAll(l.ToArray())
+            Next iMigGrp 'iMigGrp = 1 To nMig
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+    End Sub
+
+    Private Sub CalcMigGradThread(nsweep As Integer, iMigGrp As Integer, iMigIndex As Integer, imonth As Integer)
+
+        For sweep As Integer = 1 To nsweep
+            For i As Integer = 0 To Me.EcoSpaceData.InRow + 1
+                For j As Integer = 0 To Me.EcoSpaceData.InCol + 1
+                    If Me.MigGrad(iMigGrp, imonth)(i, j) > 0 Then
+                        Dim smallestDist As Single = 2000
+                        Dim diagAdjust As Single = 0
+                        'smallesti = -1
+                        'smallestJ = -1
+                        Dim pathFound As Boolean = False
+                        Dim i1 As Integer = i - Me.iWindow : If i1 < 0 Then i1 = 0
+                        Dim i2 As Integer = i + Me.iWindow : If i2 > Me.EcoSpaceData.InRow + 1 Then i2 = Me.EcoSpaceData.InRow + 1
+                        Dim j1 As Integer = j - Me.iWindow : If j1 < 0 Then j1 = 0
+                        Dim j2 As Integer = j + Me.iWindow : If j2 > Me.EcoSpaceData.InCol + 1 Then j2 = Me.EcoSpaceData.InCol + 1
+                        For ii As Integer = i1 To i2
+                            For jj As Integer = j1 To j2
+                                If ii = i Or jj = j Then
+                                    diagAdjust = 0
+                                Else
+                                    diagAdjust = 0.4142 'sqrt(2)-1
+                                End If
+
+                                If Me.MigGrad(iMigGrp, imonth)(ii, jj) + diagAdjust < smallestDist And
+                                    ((Me.EcoSpaceData.Depth(i, j) > 0 And Me.EcoSpaceData.HabCap(iMigIndex)(i, j) > minHabCap) _
+                                    Or i = 0 Or i = Me.EcoSpaceData.InRow + 1 Or j = 0 Or j = Me.EcoSpaceData.InCol + 1) Then
+
+                                    smallestDist = Me.MigGrad(iMigGrp, imonth)(ii, jj) + diagAdjust
+                                    ' Debug.Assert(Not (ii = 3 And jj > 1 And imonth = 6))
+                                    pathFound = True
+                                End If
+                            Next
+                        Next
+                        If pathFound Then
+                            Me.MigGrad(iMigGrp, imonth)(i, j) = smallestDist + 1
+                            'Debug.Assert(Not ((MigGrad(i, j, iMigGrp, imonth) > 0) And (m_Data.MigMaps(migIndex(iMigGrp), imonth)(i, j) > MIN_MIG_PROB)))
+                        End If
+                    End If
+                Next j
+            Next i
+        Next sweep 'Sweep = 1 To nsweep
+    End Sub
+
+#End Region ' Migration gradient
 
     Private Sub NormalizeMigrationMaps()
         Dim imonth As Integer
