@@ -5448,6 +5448,8 @@ exitline:
     Private Sub SetMigGradThreaded()
         'set habitat quality gradient maps for all habitat types, for use in biased movement assessments
         Dim nsweep As Integer
+        Dim iMigGrp As Integer
+        Dim iMonth As Integer
 
         Dim nMig As Integer
         Dim migIndex() As Integer
@@ -5469,8 +5471,8 @@ exitline:
             '0 for cells inside a migration area
             '1000 for cells outside migration area
             '2000 for cells in low capacity habitat or land
-            For iMigGrp As Integer = 1 To nMig
-                For imonth As Integer = 1 To cCore.N_MONTHS
+            For iMigGrp = 1 To nMig
+                For iMonth = 1 To cCore.N_MONTHS
 
                     ' Debug.Assert(imonth <> 6)
                     Dim grad(Me.EcoSpaceData.InRow + 1, Me.EcoSpaceData.InCol + 1) As Single
@@ -5479,7 +5481,7 @@ exitline:
                         For j As Integer = 0 To Me.EcoSpaceData.InCol + 1
                             grad(i, j) = 1000
 
-                            If Me.EcoSpaceData.MigMaps(migIndex(iMigGrp), imonth)(i, j) > MIN_MIG_PROB Then
+                            If Me.EcoSpaceData.MigMaps(migIndex(iMigGrp), iMonth)(i, j) > MIN_MIG_PROB Then
                                 grad(i, j) = 0
                             End If
 
@@ -5489,28 +5491,43 @@ exitline:
 
                         Next j
                     Next i
-                    Me.MigGrad(iMigGrp, imonth) = grad
-                Next imonth
+                    Me.MigGrad(iMigGrp, iMonth) = grad
+                Next iMonth
             Next iMigGrp
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             If Me.EcoSpaceData.InRow > Me.EcoSpaceData.InCol Then nsweep = Me.EcoSpaceData.InRow Else nsweep = Me.EcoSpaceData.InCol
             nsweep = nsweep * 2
             Me.iWindow = 1
-            For iMigGrp As Integer = 1 To nMig
-                ' Simple multi-threading with tasks to speed up calculating the migration habitat capacity gradient
-                Dim l As New List(Of Task)
-                For imonth As Integer = 1 To cCore.N_MONTHS
-                    ' To avoid warning BC42324: using iterating variable in lambda expression may have undesired results (and it did!)
-                    Dim a As Integer = iMigGrp
-                    Dim b As Integer = imonth
-                    Dim t As Task = Task.Run(Sub()
-                                                 Me.CalcMigGradThread(nsweep, a, migIndex(a), b)
-                                             End Sub)
-                    l.Add(t)
-                Next imonth 'imonth = 1 To 12
-                Task.WaitAll(l.ToArray())
-            Next iMigGrp 'iMigGrp = 1 To nMig
+
+            Dim nThreads As Integer = Me.EcoSpaceData.nGridSolverThreads
+            Dim nExecutions As Integer = nMig * cCore.N_MONTHS
+            Dim l As New List(Of Task)
+            iMigGrp = 1
+            iMonth = 1
+
+            For iExec As Integer = 1 To nExecutions
+
+                ' To avoid warning BC42324: put iterating variable in lambda expression may have undesired results (and it did!)
+                ' - Work around: copy iterating variable value to a var with local scope to ensure that lambda expression uses the correct variable. Gross.
+                Dim a As Integer = iMigGrp
+                Dim b As Integer = iMonth
+                Dim t As Task = Task.Run(Sub()
+                                             Me.CalcMigGradThread(nsweep, a, migIndex(a), b)
+                                         End Sub)
+                l.Add(t)
+
+                If (l.Count = nThreads Or iExec = nExecutions) Then
+                    Task.WaitAll(l.ToArray())
+                    l.Clear()
+                End If
+
+                iMonth += 1
+                If (iMonth > cCore.N_MONTHS) Then
+                    iMonth -= cCore.N_MONTHS
+                    iMigGrp += 1
+                End If
+            Next
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
