@@ -33,6 +33,7 @@ Public Class cEcosimDatastructures
 
     Public Const DEFAULT_N_FORCINGPOINTS As Integer = 1200 'min number of forcing point 100 years * FORCING_POINTS_PER_YEAR
     Public Const FORCING_POINTS_PER_YEAR As Integer = 12
+    Public Const VULNERABILITY_CAP As Integer = 100000000.0#
 
     ''' <summary>
     ''' Enumerated index to the type of Ecosim Data saved over time
@@ -136,6 +137,7 @@ Public Class cEcosimDatastructures
     Public EquilScaleMax As Single
     ''' <summary>Base proportion of free nutrients.</summary>
     Public NutBaseFreeProp As Single
+    Public VulnerabilityCap As Single = VULNERABILITY_CAP
 
     Public ReadOnly Property NumEnvResponseFunctions As Integer
         Get

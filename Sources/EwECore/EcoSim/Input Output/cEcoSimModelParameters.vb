@@ -83,6 +83,11 @@ Public Class cEcoSimModelParameters
             val = New cValue(core, New Single, eVarNameFlags.SystemRecovery, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
+            'VulnerabilityCap
+            val = New cValue(core, New Single, eVarNameFlags.VulnerabilityCap, eStatusFlags.Null, eValueTypes.Sng)
+            val.Stored = False
+            Me.m_values.Add(val.varName, val)
+
             'ForagingTimeLowerLimit
             val = New cValue(core, New Single, eVarNameFlags.ForagingTimeLowerLimit, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
@@ -354,6 +359,18 @@ Public Class cEcoSimModelParameters
 
         Set(value As Single)
             Me.SetVariable(eVarNameFlags.NutPBMax, value)
+        End Set
+
+    End Property
+
+    Public Property VulnerabilityCap() As Single
+
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.VulnerabilityCap))
+        End Get
+
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.VulnerabilityCap, value)
         End Set
 
     End Property

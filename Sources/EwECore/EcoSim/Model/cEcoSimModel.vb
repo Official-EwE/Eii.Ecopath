@@ -5382,7 +5382,7 @@ Namespace Ecosim
                 i = Me.m_Data.Iarena(ii)
                 j = Me.m_Data.Jarena(ii)
                 'Debug.Assert(i <> 8)
-                If Me.m_Data.VulMult(i, j) > 10000000000.0# Then Me.m_Data.VulMult(i, j) = 10000000000.0#
+                If Me.m_Data.VulMult(i, j) > Me.m_Data.VulnerabilityCap Then Me.m_Data.VulMult(i, j) = Me.m_Data.VulnerabilityCap
                 Me.m_Data.VulArena(ii) = CSng((Me.m_Data.VulMult(i, j) + 0.0000000001) * Qarena(ii) / Me.m_Data.StartBiomass(i))
                 If Me.m_Data.VulArena(ii) = 0 Then Me.m_Data.VulArena(ii) = 1
                 If Me.m_Data.BoutFeeding Then
