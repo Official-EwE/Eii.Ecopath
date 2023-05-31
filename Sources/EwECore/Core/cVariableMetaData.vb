@@ -329,6 +329,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.PredictEffort) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.EcosimSORWt) = New cVariableMetaData(0, 1, ge, le)
         Me.Metadata(eVarNameFlags.AdditivePredMortProp) = New cVariableMetaData(0, 1, ge, le, 1, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.VulnerabilityCap) = New cVariableMetaData(10, Single.MaxValue, ge, le, 100000000.0#)
 
         ' groups in
         Me.Metadata(eVarNameFlags.MaxRelPB) = New cVariableMetaData(0, Single.MaxValue, ge, le, 2)

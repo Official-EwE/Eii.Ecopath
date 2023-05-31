@@ -8708,6 +8708,7 @@ Public Class cCore
             m_EcoSimRun.StepSize = m_Ecosim.m_Data.StepSize
             m_EcoSimRun.SystemRecovery = m_Ecosim.m_Data.SystemRecovery
             m_EcoSimRun.UseVarPQ = m_Ecosim.m_Data.UseVarPQ
+            m_EcoSimRun.VulnerabilityCap = m_Ecosim.m_Data.VulnerabilityCap
             m_EcoSimRun.ForagingTimeLowerLimit = m_Ecosim.m_Data.ForagingTimeLowerLimit
 
             m_EcoSimRun.ContaminantTracing = Me.m_tracerData.EcoSimConSimOn
@@ -8747,6 +8748,7 @@ Public Class cCore
             m_Ecosim.m_Data.StepSize = m_EcoSimRun.StepSize
             m_Ecosim.m_Data.SystemRecovery = m_EcoSimRun.SystemRecovery
             m_Ecosim.m_Data.UseVarPQ = m_EcoSimRun.UseVarPQ
+            m_Ecosim.m_Data.VulnerabilityCap = m_EcoSimRun.VulnerabilityCap
             m_Ecosim.m_Data.ForagingTimeLowerLimit = m_EcoSimRun.ForagingTimeLowerLimit
 
             m_tracerData.EcoSimConSimOn = m_EcoSimRun.ContaminantTracing

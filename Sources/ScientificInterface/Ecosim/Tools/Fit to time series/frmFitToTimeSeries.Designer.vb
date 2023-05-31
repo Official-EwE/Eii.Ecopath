@@ -45,26 +45,29 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFitToTimeSeries))
             Me.m_split1 = New System.Windows.Forms.SplitContainer()
-            Me.m_cbResetVs = New System.Windows.Forms.CheckBox()
-            Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button()
-            Me.m_hdrFishingMortality = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_grid = New ScientificInterface.Ecosim.gridFitToTimeSeriesGroup()
-            Me.m_tbxAICDataPts = New System.Windows.Forms.TextBox()
-            Me.m_btnClearOutputs = New System.Windows.Forms.Button()
-            Me.m_gridOutput = New ScientificInterface.Ecosim.gridFitToTimeSeriesOutput()
-            Me.m_lblAICDataPts = New System.Windows.Forms.Label()
-            Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_hdrIterations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lptSettings = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tlpSettings = New System.Windows.Forms.TableLayoutPanel()
             Me.m_btnStop = New System.Windows.Forms.Button()
             Me.m_btnSearch = New System.Windows.Forms.Button()
+            Me.m_hdrIterations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lbResults = New System.Windows.Forms.ListBox()
+            Me.m_grid = New ScientificInterface.Ecosim.gridFitToTimeSeriesGroup()
+            Me.m_hdrFishingMortality = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_gridOutput = New ScientificInterface.Ecosim.gridFitToTimeSeriesOutput()
+            Me.m_plSearchTypes = New System.Windows.Forms.Panel()
+            Me.m_cbResetVs = New System.Windows.Forms.CheckBox()
             Me.m_hdrSearchTypes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnTimeSeriesWeights = New System.Windows.Forms.Button()
             Me.m_cbVulnerabilitySearch = New System.Windows.Forms.CheckBox()
             Me.m_cbAnomalySearch = New System.Windows.Forms.CheckBox()
+            Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_plAIC = New System.Windows.Forms.Panel()
+            Me.m_btnClearOutputs = New System.Windows.Forms.Button()
+            Me.m_tbxAICDataPts = New System.Windows.Forms.TextBox()
+            Me.m_lblAICDataPts = New System.Windows.Forms.Label()
             Me.m_tabSearchOptions = New System.Windows.Forms.TabControl()
             Me.tpVulnerabilitySearch = New System.Windows.Forms.TabPage()
-            Me.m_nudVariance = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lpVulSearch = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tsVulSearchTools = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbSensOfSS2V = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbSearchGroup = New System.Windows.Forms.ToolStripButton()
@@ -73,39 +76,45 @@ Namespace Ecosim
             Me.m_tsbnLoadBlocks = New System.Windows.Forms.ToolStripButton()
             Me.m_vulnerabilityBlockCodeSelector = New ScientificInterface.Ecosim.ucParmBlockCodes()
             Me.m_vulnerabilityBlockMatrix = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks()
+            Me.m_plVariance = New System.Windows.Forms.Panel()
             Me.m_lblVarianceVulnerability = New System.Windows.Forms.Label()
+            Me.m_nudVariance = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_tpAnomalySearch = New System.Windows.Forms.TabPage()
+            Me.m_tlpAnomSearch = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plAnomSearchParam = New System.Windows.Forms.Panel()
+            Me.m_lbLastYear = New System.Windows.Forms.Label()
             Me.m_cbShowAllData = New System.Windows.Forms.CheckBox()
+            Me.m_lbSplinePoints = New System.Windows.Forms.Label()
             Me.m_nudVariancePrimaryProd = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label()
             Me.m_nudLastYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lbFirstYear = New System.Windows.Forms.Label()
             Me.m_nudFirstYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_nudSplinePts = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_splitAnomalyShape = New System.Windows.Forms.SplitContainer()
             Me.m_sketchPad = New ScientificInterface.Ecosim.ucAnomalySearchSketchPad()
             Me.m_shapeToolBox = New ScientificInterfaceShared.Controls.ucShapeToolbox()
             Me.m_hdrAppliedFF = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_lbFirstYear = New System.Windows.Forms.Label()
-            Me.m_lbLastYear = New System.Windows.Forms.Label()
-            Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label()
-            Me.m_lbSplinePoints = New System.Windows.Forms.Label()
             Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_lptSettings = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_plSearchTypes = New System.Windows.Forms.Panel()
-            Me.m_plAIC = New System.Windows.Forms.Panel()
-            Me.m_lpVulSearch = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_plVariance = New System.Windows.Forms.Panel()
-            Me.m_tlpAnomSearch = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_plAnomSearchParam = New System.Windows.Forms.Panel()
+            Me.m_lblVulCap = New System.Windows.Forms.Label()
+            Me.m_tbxVulCap = New System.Windows.Forms.TextBox()
             CType(Me.m_split1, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_split1.Panel1.SuspendLayout()
             Me.m_split1.Panel2.SuspendLayout()
             Me.m_split1.SuspendLayout()
+            Me.m_lptSettings.SuspendLayout()
             Me.m_tlpSettings.SuspendLayout()
+            Me.m_plSearchTypes.SuspendLayout()
+            Me.m_plAIC.SuspendLayout()
             Me.m_tabSearchOptions.SuspendLayout()
             Me.tpVulnerabilitySearch.SuspendLayout()
-            CType(Me.m_nudVariance, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_lpVulSearch.SuspendLayout()
             Me.m_tsVulSearchTools.SuspendLayout()
+            Me.m_plVariance.SuspendLayout()
+            CType(Me.m_nudVariance, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tpAnomalySearch.SuspendLayout()
+            Me.m_tlpAnomSearch.SuspendLayout()
+            Me.m_plAnomSearchParam.SuspendLayout()
             CType(Me.m_nudVariancePrimaryProd, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudLastYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -114,13 +123,6 @@ Namespace Ecosim
             Me.m_splitAnomalyShape.Panel1.SuspendLayout()
             Me.m_splitAnomalyShape.Panel2.SuspendLayout()
             Me.m_splitAnomalyShape.SuspendLayout()
-            Me.m_lptSettings.SuspendLayout()
-            Me.m_plSearchTypes.SuspendLayout()
-            Me.m_plAIC.SuspendLayout()
-            Me.m_lpVulSearch.SuspendLayout()
-            Me.m_plVariance.SuspendLayout()
-            Me.m_tlpAnomSearch.SuspendLayout()
-            Me.m_plAnomSearchParam.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_split1
@@ -145,40 +147,98 @@ Namespace Ecosim
             Me.m_split1.SplitterDistance = 313
             Me.m_split1.TabIndex = 0
             '
-            'm_cbResetVs
+            'm_lptSettings
             '
-            Me.m_cbResetVs.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_cbResetVs.AutoSize = True
-            Me.m_cbResetVs.Location = New System.Drawing.Point(195, 44)
-            Me.m_cbResetVs.Name = "m_cbResetVs"
-            Me.m_cbResetVs.Size = New System.Drawing.Size(109, 17)
-            Me.m_cbResetVs.TabIndex = 4
-            Me.m_cbResetVs.Text = "&Reset V's on Run"
-            Me.m_cbResetVs.UseVisualStyleBackColor = True
+            Me.m_lptSettings.ColumnCount = 1
+            Me.m_lptSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_lptSettings.Controls.Add(Me.m_tlpSettings, 0, 8)
+            Me.m_lptSettings.Controls.Add(Me.m_hdrIterations, 0, 6)
+            Me.m_lptSettings.Controls.Add(Me.m_lbResults, 0, 7)
+            Me.m_lptSettings.Controls.Add(Me.m_grid, 0, 2)
+            Me.m_lptSettings.Controls.Add(Me.m_hdrFishingMortality, 0, 1)
+            Me.m_lptSettings.Controls.Add(Me.m_gridOutput, 0, 4)
+            Me.m_lptSettings.Controls.Add(Me.m_plSearchTypes, 0, 0)
+            Me.m_lptSettings.Controls.Add(Me.m_hdrOutput, 0, 3)
+            Me.m_lptSettings.Controls.Add(Me.m_plAIC, 0, 5)
+            Me.m_lptSettings.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_lptSettings.Location = New System.Drawing.Point(3, 3)
+            Me.m_lptSettings.Name = "m_lptSettings"
+            Me.m_lptSettings.RowCount = 9
+            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_lptSettings.Size = New System.Drawing.Size(307, 581)
+            Me.m_lptSettings.TabIndex = 1
             '
-            'm_btnTimeSeriesWeights
+            'm_tlpSettings
             '
-            Me.m_btnTimeSeriesWeights.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnTimeSeriesWeights.Location = New System.Drawing.Point(196, 17)
-            Me.m_btnTimeSeriesWeights.Name = "m_btnTimeSeriesWeights"
-            Me.m_btnTimeSeriesWeights.Size = New System.Drawing.Size(108, 23)
-            Me.m_btnTimeSeriesWeights.TabIndex = 2
-            Me.m_btnTimeSeriesWeights.Text = "&Time series..."
-            Me.m_btnTimeSeriesWeights.UseVisualStyleBackColor = True
+            Me.m_tlpSettings.ColumnCount = 4
+            Me.m_tlpSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.m_tlpSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75.0!))
+            Me.m_tlpSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75.0!))
+            Me.m_tlpSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.m_tlpSettings.Controls.Add(Me.m_btnStop, 1, 0)
+            Me.m_tlpSettings.Controls.Add(Me.m_btnSearch, 2, 0)
+            Me.m_tlpSettings.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_tlpSettings.Location = New System.Drawing.Point(0, 546)
+            Me.m_tlpSettings.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_tlpSettings.Name = "m_tlpSettings"
+            Me.m_tlpSettings.RowCount = 1
+            Me.m_tlpSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpSettings.Size = New System.Drawing.Size(307, 35)
+            Me.m_tlpSettings.TabIndex = 8
             '
-            'm_hdrFishingMortality
+            'm_btnStop
             '
-            Me.m_hdrFishingMortality.CanCollapseParent = False
-            Me.m_hdrFishingMortality.CollapsedParentHeight = 0
-            Me.m_hdrFishingMortality.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_hdrFishingMortality.IsCollapsed = False
-            Me.m_hdrFishingMortality.Location = New System.Drawing.Point(0, 66)
-            Me.m_hdrFishingMortality.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_hdrFishingMortality.Name = "m_hdrFishingMortality"
-            Me.m_hdrFishingMortality.Size = New System.Drawing.Size(307, 18)
-            Me.m_hdrFishingMortality.TabIndex = 1
-            Me.m_hdrFishingMortality.Text = "Max fishing mortality"
-            Me.m_hdrFishingMortality.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.m_btnStop.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnStop.Location = New System.Drawing.Point(81, 8)
+            Me.m_btnStop.Name = "m_btnStop"
+            Me.m_btnStop.Size = New System.Drawing.Size(69, 24)
+            Me.m_btnStop.TabIndex = 0
+            Me.m_btnStop.Text = "Stop"
+            Me.m_btnStop.UseVisualStyleBackColor = True
+            '
+            'm_btnSearch
+            '
+            Me.m_btnSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnSearch.Location = New System.Drawing.Point(156, 8)
+            Me.m_btnSearch.Name = "m_btnSearch"
+            Me.m_btnSearch.Size = New System.Drawing.Size(69, 24)
+            Me.m_btnSearch.TabIndex = 1
+            Me.m_btnSearch.Text = "&Search"
+            Me.m_btnSearch.UseVisualStyleBackColor = True
+            '
+            'm_hdrIterations
+            '
+            Me.m_hdrIterations.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrIterations.CanCollapseParent = False
+            Me.m_hdrIterations.CollapsedParentHeight = 0
+            Me.m_hdrIterations.IsCollapsed = False
+            Me.m_hdrIterations.Location = New System.Drawing.Point(0, 406)
+            Me.m_hdrIterations.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_hdrIterations.Name = "m_hdrIterations"
+            Me.m_hdrIterations.Size = New System.Drawing.Size(307, 18)
+            Me.m_hdrIterations.TabIndex = 6
+            Me.m_hdrIterations.Text = "Iterations"
+            Me.m_hdrIterations.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_lbResults
+            '
+            Me.m_lbResults.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_lbResults.FormattingEnabled = True
+            Me.m_lbResults.IntegralHeight = False
+            Me.m_lbResults.Location = New System.Drawing.Point(0, 424)
+            Me.m_lbResults.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_lbResults.Name = "m_lbResults"
+            Me.m_lbResults.Size = New System.Drawing.Size(307, 122)
+            Me.m_lbResults.TabIndex = 7
             '
             'm_grid
             '
@@ -199,12 +259,11 @@ Namespace Ecosim
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
-            
-            Me.m_grid.Location = New System.Drawing.Point(0, 84)
+            Me.m_grid.Location = New System.Drawing.Point(0, 112)
             Me.m_grid.Manager = Nothing
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"
-            Me.m_grid.Size = New System.Drawing.Size(307, 132)
+            Me.m_grid.Size = New System.Drawing.Size(307, 122)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -217,23 +276,19 @@ Namespace Ecosim
             Me.m_grid.TabIndex = 2
             Me.m_grid.UIContext = Nothing
             '
-            'm_tbxAICDataPts
+            'm_hdrFishingMortality
             '
-            Me.m_tbxAICDataPts.Location = New System.Drawing.Point(111, 8)
-            Me.m_tbxAICDataPts.Name = "m_tbxAICDataPts"
-            Me.m_tbxAICDataPts.Size = New System.Drawing.Size(48, 20)
-            Me.m_tbxAICDataPts.TabIndex = 1
-            '
-            'm_btnClearOutputs
-            '
-            Me.m_btnClearOutputs.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnClearOutputs.Location = New System.Drawing.Point(229, 5)
-            Me.m_btnClearOutputs.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_btnClearOutputs.Name = "m_btnClearOutputs"
-            Me.m_btnClearOutputs.Size = New System.Drawing.Size(75, 23)
-            Me.m_btnClearOutputs.TabIndex = 2
-            Me.m_btnClearOutputs.Text = "&Clear"
-            Me.m_btnClearOutputs.UseVisualStyleBackColor = True
+            Me.m_hdrFishingMortality.CanCollapseParent = False
+            Me.m_hdrFishingMortality.CollapsedParentHeight = 0
+            Me.m_hdrFishingMortality.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_hdrFishingMortality.IsCollapsed = False
+            Me.m_hdrFishingMortality.Location = New System.Drawing.Point(0, 94)
+            Me.m_hdrFishingMortality.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_hdrFishingMortality.Name = "m_hdrFishingMortality"
+            Me.m_hdrFishingMortality.Size = New System.Drawing.Size(307, 18)
+            Me.m_hdrFishingMortality.TabIndex = 1
+            Me.m_hdrFishingMortality.Text = "Max fishing mortality"
+            Me.m_hdrFishingMortality.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_gridOutput
             '
@@ -256,11 +311,11 @@ Namespace Ecosim
             Me.m_gridOutput.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridOutput.GridToolTipActive = True
             Me.m_gridOutput.IsLayoutSuspended = False
-            Me.m_gridOutput.Location = New System.Drawing.Point(0, 234)
+            Me.m_gridOutput.Location = New System.Drawing.Point(0, 252)
             Me.m_gridOutput.Margin = New System.Windows.Forms.Padding(0)
             Me.m_gridOutput.Name = "m_gridOutput"
             Me.m_gridOutput.NumAICPoints = 0
-            Me.m_gridOutput.Size = New System.Drawing.Size(307, 132)
+            Me.m_gridOutput.Size = New System.Drawing.Size(307, 122)
             Me.m_gridOutput.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -273,93 +328,32 @@ Namespace Ecosim
             Me.m_gridOutput.TabIndex = 4
             Me.m_gridOutput.UIContext = Nothing
             '
-            'm_lblAICDataPts
+            'm_plSearchTypes
             '
-            Me.m_lblAICDataPts.AutoSize = True
-            Me.m_lblAICDataPts.Location = New System.Drawing.Point(3, 11)
-            Me.m_lblAICDataPts.Name = "m_lblAICDataPts"
-            Me.m_lblAICDataPts.Size = New System.Drawing.Size(102, 13)
-            Me.m_lblAICDataPts.TabIndex = 0
-            Me.m_lblAICDataPts.Text = "No. &AIC data points:"
+            Me.m_plSearchTypes.Controls.Add(Me.m_tbxVulCap)
+            Me.m_plSearchTypes.Controls.Add(Me.m_lblVulCap)
+            Me.m_plSearchTypes.Controls.Add(Me.m_cbResetVs)
+            Me.m_plSearchTypes.Controls.Add(Me.m_hdrSearchTypes)
+            Me.m_plSearchTypes.Controls.Add(Me.m_btnTimeSeriesWeights)
+            Me.m_plSearchTypes.Controls.Add(Me.m_cbVulnerabilitySearch)
+            Me.m_plSearchTypes.Controls.Add(Me.m_cbAnomalySearch)
+            Me.m_plSearchTypes.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_plSearchTypes.Location = New System.Drawing.Point(0, 0)
+            Me.m_plSearchTypes.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_plSearchTypes.Name = "m_plSearchTypes"
+            Me.m_plSearchTypes.Size = New System.Drawing.Size(307, 94)
+            Me.m_plSearchTypes.TabIndex = 0
             '
-            'm_hdrOutput
+            'm_cbResetVs
             '
-            Me.m_hdrOutput.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_hdrOutput.CanCollapseParent = False
-            Me.m_hdrOutput.CollapsedParentHeight = 0
-            Me.m_hdrOutput.IsCollapsed = False
-            Me.m_hdrOutput.Location = New System.Drawing.Point(0, 216)
-            Me.m_hdrOutput.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_hdrOutput.Name = "m_hdrOutput"
-            Me.m_hdrOutput.Size = New System.Drawing.Size(307, 18)
-            Me.m_hdrOutput.TabIndex = 3
-            Me.m_hdrOutput.Text = "Output"
-            Me.m_hdrOutput.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'm_hdrIterations
-            '
-            Me.m_hdrIterations.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_hdrIterations.CanCollapseParent = False
-            Me.m_hdrIterations.CollapsedParentHeight = 0
-            Me.m_hdrIterations.IsCollapsed = False
-            Me.m_hdrIterations.Location = New System.Drawing.Point(0, 398)
-            Me.m_hdrIterations.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_hdrIterations.Name = "m_hdrIterations"
-            Me.m_hdrIterations.Size = New System.Drawing.Size(307, 18)
-            Me.m_hdrIterations.TabIndex = 6
-            Me.m_hdrIterations.Text = "Iterations"
-            Me.m_hdrIterations.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'm_tlpSettings
-            '
-            Me.m_tlpSettings.ColumnCount = 4
-            Me.m_tlpSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlpSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75.0!))
-            Me.m_tlpSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75.0!))
-            Me.m_tlpSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlpSettings.Controls.Add(Me.m_btnStop, 1, 0)
-            Me.m_tlpSettings.Controls.Add(Me.m_btnSearch, 2, 0)
-            Me.m_tlpSettings.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_tlpSettings.Location = New System.Drawing.Point(0, 548)
-            Me.m_tlpSettings.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_tlpSettings.Name = "m_tlpSettings"
-            Me.m_tlpSettings.RowCount = 1
-            Me.m_tlpSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpSettings.Size = New System.Drawing.Size(307, 33)
-            Me.m_tlpSettings.TabIndex = 8
-            '
-            'm_btnStop
-            '
-            Me.m_btnStop.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnStop.Location = New System.Drawing.Point(81, 6)
-            Me.m_btnStop.Name = "m_btnStop"
-            Me.m_btnStop.Size = New System.Drawing.Size(69, 24)
-            Me.m_btnStop.TabIndex = 0
-            Me.m_btnStop.Text = "Stop"
-            Me.m_btnStop.UseVisualStyleBackColor = True
-            '
-            'm_btnSearch
-            '
-            Me.m_btnSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnSearch.Location = New System.Drawing.Point(156, 6)
-            Me.m_btnSearch.Name = "m_btnSearch"
-            Me.m_btnSearch.Size = New System.Drawing.Size(69, 24)
-            Me.m_btnSearch.TabIndex = 1
-            Me.m_btnSearch.Text = "&Search"
-            Me.m_btnSearch.UseVisualStyleBackColor = True
-            '
-            'm_lbResults
-            '
-            Me.m_lbResults.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lbResults.FormattingEnabled = True
-            Me.m_lbResults.IntegralHeight = False
-            Me.m_lbResults.Location = New System.Drawing.Point(0, 416)
-            Me.m_lbResults.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_lbResults.Name = "m_lbResults"
-            Me.m_lbResults.Size = New System.Drawing.Size(307, 132)
-            Me.m_lbResults.TabIndex = 7
+            Me.m_cbResetVs.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_cbResetVs.AutoSize = True
+            Me.m_cbResetVs.Location = New System.Drawing.Point(195, 44)
+            Me.m_cbResetVs.Name = "m_cbResetVs"
+            Me.m_cbResetVs.Size = New System.Drawing.Size(109, 17)
+            Me.m_cbResetVs.TabIndex = 4
+            Me.m_cbResetVs.Text = "&Reset V's on Run"
+            Me.m_cbResetVs.UseVisualStyleBackColor = True
             '
             'm_hdrSearchTypes
             '
@@ -374,6 +368,16 @@ Namespace Ecosim
             Me.m_hdrSearchTypes.TabIndex = 0
             Me.m_hdrSearchTypes.Text = "Search types"
             Me.m_hdrSearchTypes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_btnTimeSeriesWeights
+            '
+            Me.m_btnTimeSeriesWeights.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnTimeSeriesWeights.Location = New System.Drawing.Point(196, 17)
+            Me.m_btnTimeSeriesWeights.Name = "m_btnTimeSeriesWeights"
+            Me.m_btnTimeSeriesWeights.Size = New System.Drawing.Size(108, 23)
+            Me.m_btnTimeSeriesWeights.TabIndex = 2
+            Me.m_btnTimeSeriesWeights.Text = "&Time series..."
+            Me.m_btnTimeSeriesWeights.UseVisualStyleBackColor = True
             '
             'm_cbVulnerabilitySearch
             '
@@ -396,6 +400,60 @@ Namespace Ecosim
             Me.m_cbAnomalySearch.TabIndex = 3
             Me.m_cbAnomalySearch.Text = "&Anomaly search"
             Me.m_cbAnomalySearch.UseVisualStyleBackColor = True
+            '
+            'm_hdrOutput
+            '
+            Me.m_hdrOutput.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrOutput.CanCollapseParent = False
+            Me.m_hdrOutput.CollapsedParentHeight = 0
+            Me.m_hdrOutput.IsCollapsed = False
+            Me.m_hdrOutput.Location = New System.Drawing.Point(0, 234)
+            Me.m_hdrOutput.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_hdrOutput.Name = "m_hdrOutput"
+            Me.m_hdrOutput.Size = New System.Drawing.Size(307, 18)
+            Me.m_hdrOutput.TabIndex = 3
+            Me.m_hdrOutput.Text = "Output"
+            Me.m_hdrOutput.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_plAIC
+            '
+            Me.m_plAIC.Controls.Add(Me.m_btnClearOutputs)
+            Me.m_plAIC.Controls.Add(Me.m_tbxAICDataPts)
+            Me.m_plAIC.Controls.Add(Me.m_lblAICDataPts)
+            Me.m_plAIC.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_plAIC.Location = New System.Drawing.Point(0, 374)
+            Me.m_plAIC.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_plAIC.Name = "m_plAIC"
+            Me.m_plAIC.Size = New System.Drawing.Size(307, 32)
+            Me.m_plAIC.TabIndex = 5
+            '
+            'm_btnClearOutputs
+            '
+            Me.m_btnClearOutputs.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnClearOutputs.Location = New System.Drawing.Point(229, 5)
+            Me.m_btnClearOutputs.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_btnClearOutputs.Name = "m_btnClearOutputs"
+            Me.m_btnClearOutputs.Size = New System.Drawing.Size(75, 23)
+            Me.m_btnClearOutputs.TabIndex = 2
+            Me.m_btnClearOutputs.Text = "&Clear"
+            Me.m_btnClearOutputs.UseVisualStyleBackColor = True
+            '
+            'm_tbxAICDataPts
+            '
+            Me.m_tbxAICDataPts.Location = New System.Drawing.Point(111, 8)
+            Me.m_tbxAICDataPts.Name = "m_tbxAICDataPts"
+            Me.m_tbxAICDataPts.Size = New System.Drawing.Size(48, 20)
+            Me.m_tbxAICDataPts.TabIndex = 1
+            '
+            'm_lblAICDataPts
+            '
+            Me.m_lblAICDataPts.AutoSize = True
+            Me.m_lblAICDataPts.Location = New System.Drawing.Point(3, 11)
+            Me.m_lblAICDataPts.Name = "m_lblAICDataPts"
+            Me.m_lblAICDataPts.Size = New System.Drawing.Size(102, 13)
+            Me.m_lblAICDataPts.TabIndex = 0
+            Me.m_lblAICDataPts.Text = "No. &AIC data points:"
             '
             'm_tabSearchOptions
             '
@@ -423,15 +481,24 @@ Namespace Ecosim
             Me.tpVulnerabilitySearch.Text = "Vulnerability Search"
             Me.tpVulnerabilitySearch.UseVisualStyleBackColor = True
             '
-            'm_nudVariance
+            'm_lpVulSearch
             '
-            Me.m_nudVariance.DecimalPlaces = 3
-            Me.m_nudVariance.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            Me.m_nudVariance.Location = New System.Drawing.Point(75, 3)
-            Me.m_nudVariance.Name = "m_nudVariance"
-            Me.m_nudVariance.Size = New System.Drawing.Size(74, 20)
-            Me.m_nudVariance.TabIndex = 3
-            Me.m_nudVariance.Value = New Decimal(New Integer() {1, 0, 0, 65536})
+            Me.m_lpVulSearch.ColumnCount = 1
+            Me.m_lpVulSearch.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_lpVulSearch.Controls.Add(Me.m_tsVulSearchTools, 0, 0)
+            Me.m_lpVulSearch.Controls.Add(Me.m_vulnerabilityBlockCodeSelector, 0, 1)
+            Me.m_lpVulSearch.Controls.Add(Me.m_vulnerabilityBlockMatrix, 0, 3)
+            Me.m_lpVulSearch.Controls.Add(Me.m_plVariance, 0, 2)
+            Me.m_lpVulSearch.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_lpVulSearch.Location = New System.Drawing.Point(3, 3)
+            Me.m_lpVulSearch.Name = "m_lpVulSearch"
+            Me.m_lpVulSearch.RowCount = 4
+            Me.m_lpVulSearch.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_lpVulSearch.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_lpVulSearch.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_lpVulSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_lpVulSearch.Size = New System.Drawing.Size(529, 529)
+            Me.m_lpVulSearch.TabIndex = 5
             '
             'm_tsVulSearchTools
             '
@@ -521,6 +588,16 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockMatrix.UIContext = Nothing
             Me.m_vulnerabilityBlockMatrix.Vulblocks = Nothing
             '
+            'm_plVariance
+            '
+            Me.m_plVariance.Controls.Add(Me.m_lblVarianceVulnerability)
+            Me.m_plVariance.Controls.Add(Me.m_nudVariance)
+            Me.m_plVariance.Location = New System.Drawing.Point(0, 77)
+            Me.m_plVariance.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_plVariance.Name = "m_plVariance"
+            Me.m_plVariance.Size = New System.Drawing.Size(200, 28)
+            Me.m_plVariance.TabIndex = 5
+            '
             'm_lblVarianceVulnerability
             '
             Me.m_lblVarianceVulnerability.AutoSize = True
@@ -529,6 +606,16 @@ Namespace Ecosim
             Me.m_lblVarianceVulnerability.Size = New System.Drawing.Size(52, 13)
             Me.m_lblVarianceVulnerability.TabIndex = 2
             Me.m_lblVarianceVulnerability.Text = "Va&riance:"
+            '
+            'm_nudVariance
+            '
+            Me.m_nudVariance.DecimalPlaces = 3
+            Me.m_nudVariance.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+            Me.m_nudVariance.Location = New System.Drawing.Point(75, 3)
+            Me.m_nudVariance.Name = "m_nudVariance"
+            Me.m_nudVariance.Size = New System.Drawing.Size(74, 20)
+            Me.m_nudVariance.TabIndex = 3
+            Me.m_nudVariance.Value = New Decimal(New Integer() {1, 0, 0, 65536})
             '
             'm_tpAnomalySearch
             '
@@ -541,6 +628,48 @@ Namespace Ecosim
             Me.m_tpAnomalySearch.Text = "Anomaly Search"
             Me.m_tpAnomalySearch.UseVisualStyleBackColor = True
             '
+            'm_tlpAnomSearch
+            '
+            Me.m_tlpAnomSearch.ColumnCount = 1
+            Me.m_tlpAnomSearch.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpAnomSearch.Controls.Add(Me.m_plAnomSearchParam, 0, 0)
+            Me.m_tlpAnomSearch.Controls.Add(Me.m_splitAnomalyShape, 0, 1)
+            Me.m_tlpAnomSearch.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_tlpAnomSearch.Location = New System.Drawing.Point(3, 3)
+            Me.m_tlpAnomSearch.Name = "m_tlpAnomSearch"
+            Me.m_tlpAnomSearch.RowCount = 2
+            Me.m_tlpAnomSearch.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_tlpAnomSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpAnomSearch.Size = New System.Drawing.Size(529, 529)
+            Me.m_tlpAnomSearch.TabIndex = 10
+            '
+            'm_plAnomSearchParam
+            '
+            Me.m_plAnomSearchParam.Controls.Add(Me.m_lbLastYear)
+            Me.m_plAnomSearchParam.Controls.Add(Me.m_cbShowAllData)
+            Me.m_plAnomSearchParam.Controls.Add(Me.m_lbSplinePoints)
+            Me.m_plAnomSearchParam.Controls.Add(Me.m_nudVariancePrimaryProd)
+            Me.m_plAnomSearchParam.Controls.Add(Me.m_lbVariancePrimaryProd)
+            Me.m_plAnomSearchParam.Controls.Add(Me.m_nudLastYear)
+            Me.m_plAnomSearchParam.Controls.Add(Me.m_lbFirstYear)
+            Me.m_plAnomSearchParam.Controls.Add(Me.m_nudFirstYear)
+            Me.m_plAnomSearchParam.Controls.Add(Me.m_nudSplinePts)
+            Me.m_plAnomSearchParam.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_plAnomSearchParam.Location = New System.Drawing.Point(0, 0)
+            Me.m_plAnomSearchParam.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_plAnomSearchParam.Name = "m_plAnomSearchParam"
+            Me.m_plAnomSearchParam.Size = New System.Drawing.Size(529, 52)
+            Me.m_plAnomSearchParam.TabIndex = 0
+            '
+            'm_lbLastYear
+            '
+            Me.m_lbLastYear.AutoSize = True
+            Me.m_lbLastYear.Location = New System.Drawing.Point(1, 31)
+            Me.m_lbLastYear.Name = "m_lbLastYear"
+            Me.m_lbLastYear.Size = New System.Drawing.Size(53, 13)
+            Me.m_lbLastYear.TabIndex = 4
+            Me.m_lbLastYear.Text = "Last year:"
+            '
             'm_cbShowAllData
             '
             Me.m_cbShowAllData.AutoSize = True
@@ -550,6 +679,15 @@ Namespace Ecosim
             Me.m_cbShowAllData.TabIndex = 9
             Me.m_cbShowAllData.Text = "Show all data points"
             Me.m_cbShowAllData.UseVisualStyleBackColor = True
+            '
+            'm_lbSplinePoints
+            '
+            Me.m_lbSplinePoints.AutoSize = True
+            Me.m_lbSplinePoints.Location = New System.Drawing.Point(144, 31)
+            Me.m_lbSplinePoints.Name = "m_lbSplinePoints"
+            Me.m_lbSplinePoints.Size = New System.Drawing.Size(70, 13)
+            Me.m_lbSplinePoints.TabIndex = 6
+            Me.m_lbSplinePoints.Text = "Spline points:"
             '
             'm_nudVariancePrimaryProd
             '
@@ -561,6 +699,15 @@ Namespace Ecosim
             Me.m_nudVariancePrimaryProd.TabIndex = 3
             Me.m_nudVariancePrimaryProd.Value = New Decimal(New Integer() {1, 0, 0, 65536})
             '
+            'm_lbVariancePrimaryProd
+            '
+            Me.m_lbVariancePrimaryProd.AutoSize = True
+            Me.m_lbVariancePrimaryProd.Location = New System.Drawing.Point(145, 5)
+            Me.m_lbVariancePrimaryProd.Name = "m_lbVariancePrimaryProd"
+            Me.m_lbVariancePrimaryProd.Size = New System.Drawing.Size(69, 13)
+            Me.m_lbVariancePrimaryProd.TabIndex = 2
+            Me.m_lbVariancePrimaryProd.Text = "&PP Variance:"
+            '
             'm_nudLastYear
             '
             Me.m_nudLastYear.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
@@ -570,6 +717,15 @@ Namespace Ecosim
             Me.m_nudLastYear.Size = New System.Drawing.Size(60, 20)
             Me.m_nudLastYear.TabIndex = 5
             Me.m_nudLastYear.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            '
+            'm_lbFirstYear
+            '
+            Me.m_lbFirstYear.AutoSize = True
+            Me.m_lbFirstYear.Location = New System.Drawing.Point(1, 5)
+            Me.m_lbFirstYear.Name = "m_lbFirstYear"
+            Me.m_lbFirstYear.Size = New System.Drawing.Size(52, 13)
+            Me.m_lbFirstYear.TabIndex = 0
+            Me.m_lbFirstYear.Text = "First year:"
             '
             'm_nudFirstYear
             '
@@ -682,42 +838,6 @@ Namespace Ecosim
             Me.m_hdrAppliedFF.Text = "Applied Forcing Functions"
             Me.m_hdrAppliedFF.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'm_lbFirstYear
-            '
-            Me.m_lbFirstYear.AutoSize = True
-            Me.m_lbFirstYear.Location = New System.Drawing.Point(1, 5)
-            Me.m_lbFirstYear.Name = "m_lbFirstYear"
-            Me.m_lbFirstYear.Size = New System.Drawing.Size(52, 13)
-            Me.m_lbFirstYear.TabIndex = 0
-            Me.m_lbFirstYear.Text = "First year:"
-            '
-            'm_lbLastYear
-            '
-            Me.m_lbLastYear.AutoSize = True
-            Me.m_lbLastYear.Location = New System.Drawing.Point(1, 31)
-            Me.m_lbLastYear.Name = "m_lbLastYear"
-            Me.m_lbLastYear.Size = New System.Drawing.Size(53, 13)
-            Me.m_lbLastYear.TabIndex = 4
-            Me.m_lbLastYear.Text = "Last year:"
-            '
-            'm_lbVariancePrimaryProd
-            '
-            Me.m_lbVariancePrimaryProd.AutoSize = True
-            Me.m_lbVariancePrimaryProd.Location = New System.Drawing.Point(145, 5)
-            Me.m_lbVariancePrimaryProd.Name = "m_lbVariancePrimaryProd"
-            Me.m_lbVariancePrimaryProd.Size = New System.Drawing.Size(69, 13)
-            Me.m_lbVariancePrimaryProd.TabIndex = 2
-            Me.m_lbVariancePrimaryProd.Text = "&PP Variance:"
-            '
-            'm_lbSplinePoints
-            '
-            Me.m_lbSplinePoints.AutoSize = True
-            Me.m_lbSplinePoints.Location = New System.Drawing.Point(144, 31)
-            Me.m_lbSplinePoints.Name = "m_lbSplinePoints"
-            Me.m_lbSplinePoints.Size = New System.Drawing.Size(70, 13)
-            Me.m_lbSplinePoints.TabIndex = 6
-            Me.m_lbSplinePoints.Text = "Spline points:"
-            '
             'm_hdrSearch
             '
             Me.m_hdrSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -733,122 +853,21 @@ Namespace Ecosim
             Me.m_hdrSearch.Text = "Search"
             Me.m_hdrSearch.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'm_lptSettings
+            'm_lblVulCap
             '
-            Me.m_lptSettings.ColumnCount = 1
-            Me.m_lptSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_lptSettings.Controls.Add(Me.m_tlpSettings, 0, 8)
-            Me.m_lptSettings.Controls.Add(Me.m_hdrIterations, 0, 6)
-            Me.m_lptSettings.Controls.Add(Me.m_lbResults, 0, 7)
-            Me.m_lptSettings.Controls.Add(Me.m_grid, 0, 2)
-            Me.m_lptSettings.Controls.Add(Me.m_hdrFishingMortality, 0, 1)
-            Me.m_lptSettings.Controls.Add(Me.m_gridOutput, 0, 4)
-            Me.m_lptSettings.Controls.Add(Me.m_plSearchTypes, 0, 0)
-            Me.m_lptSettings.Controls.Add(Me.m_hdrOutput, 0, 3)
-            Me.m_lptSettings.Controls.Add(Me.m_plAIC, 0, 5)
-            Me.m_lptSettings.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lptSettings.Location = New System.Drawing.Point(3, 3)
-            Me.m_lptSettings.Name = "m_lptSettings"
-            Me.m_lptSettings.RowCount = 9
-            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-            Me.m_lptSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_lptSettings.Size = New System.Drawing.Size(307, 581)
-            Me.m_lptSettings.TabIndex = 1
+            Me.m_lblVulCap.AutoSize = True
+            Me.m_lblVulCap.Location = New System.Drawing.Point(3, 69)
+            Me.m_lblVulCap.Name = "m_lblVulCap"
+            Me.m_lblVulCap.Size = New System.Drawing.Size(87, 13)
+            Me.m_lblVulCap.TabIndex = 5
+            Me.m_lblVulCap.Text = "Vulnerability &cap:"
             '
-            'm_plSearchTypes
+            'm_tbxVulCap
             '
-            Me.m_plSearchTypes.Controls.Add(Me.m_cbResetVs)
-            Me.m_plSearchTypes.Controls.Add(Me.m_hdrSearchTypes)
-            Me.m_plSearchTypes.Controls.Add(Me.m_btnTimeSeriesWeights)
-            Me.m_plSearchTypes.Controls.Add(Me.m_cbVulnerabilitySearch)
-            Me.m_plSearchTypes.Controls.Add(Me.m_cbAnomalySearch)
-            Me.m_plSearchTypes.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plSearchTypes.Location = New System.Drawing.Point(0, 0)
-            Me.m_plSearchTypes.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_plSearchTypes.Name = "m_plSearchTypes"
-            Me.m_plSearchTypes.Size = New System.Drawing.Size(307, 66)
-            Me.m_plSearchTypes.TabIndex = 0
-            '
-            'm_plAIC
-            '
-            Me.m_plAIC.Controls.Add(Me.m_btnClearOutputs)
-            Me.m_plAIC.Controls.Add(Me.m_tbxAICDataPts)
-            Me.m_plAIC.Controls.Add(Me.m_lblAICDataPts)
-            Me.m_plAIC.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plAIC.Location = New System.Drawing.Point(0, 366)
-            Me.m_plAIC.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_plAIC.Name = "m_plAIC"
-            Me.m_plAIC.Size = New System.Drawing.Size(307, 32)
-            Me.m_plAIC.TabIndex = 5
-            '
-            'm_lpVulSearch
-            '
-            Me.m_lpVulSearch.ColumnCount = 1
-            Me.m_lpVulSearch.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_lpVulSearch.Controls.Add(Me.m_tsVulSearchTools, 0, 0)
-            Me.m_lpVulSearch.Controls.Add(Me.m_vulnerabilityBlockCodeSelector, 0, 1)
-            Me.m_lpVulSearch.Controls.Add(Me.m_vulnerabilityBlockMatrix, 0, 3)
-            Me.m_lpVulSearch.Controls.Add(Me.m_plVariance, 0, 2)
-            Me.m_lpVulSearch.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lpVulSearch.Location = New System.Drawing.Point(3, 3)
-            Me.m_lpVulSearch.Name = "m_lpVulSearch"
-            Me.m_lpVulSearch.RowCount = 4
-            Me.m_lpVulSearch.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_lpVulSearch.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_lpVulSearch.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_lpVulSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_lpVulSearch.Size = New System.Drawing.Size(529, 529)
-            Me.m_lpVulSearch.TabIndex = 5
-            '
-            'm_plVariance
-            '
-            Me.m_plVariance.Controls.Add(Me.m_lblVarianceVulnerability)
-            Me.m_plVariance.Controls.Add(Me.m_nudVariance)
-            Me.m_plVariance.Location = New System.Drawing.Point(0, 77)
-            Me.m_plVariance.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_plVariance.Name = "m_plVariance"
-            Me.m_plVariance.Size = New System.Drawing.Size(200, 28)
-            Me.m_plVariance.TabIndex = 5
-            '
-            'm_tlpAnomSearch
-            '
-            Me.m_tlpAnomSearch.ColumnCount = 1
-            Me.m_tlpAnomSearch.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpAnomSearch.Controls.Add(Me.m_plAnomSearchParam, 0, 0)
-            Me.m_tlpAnomSearch.Controls.Add(Me.m_splitAnomalyShape, 0, 1)
-            Me.m_tlpAnomSearch.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_tlpAnomSearch.Location = New System.Drawing.Point(3, 3)
-            Me.m_tlpAnomSearch.Name = "m_tlpAnomSearch"
-            Me.m_tlpAnomSearch.RowCount = 2
-            Me.m_tlpAnomSearch.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_tlpAnomSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpAnomSearch.Size = New System.Drawing.Size(529, 529)
-            Me.m_tlpAnomSearch.TabIndex = 10
-            '
-            'm_plAnomSearchParam
-            '
-            Me.m_plAnomSearchParam.Controls.Add(Me.m_lbLastYear)
-            Me.m_plAnomSearchParam.Controls.Add(Me.m_cbShowAllData)
-            Me.m_plAnomSearchParam.Controls.Add(Me.m_lbSplinePoints)
-            Me.m_plAnomSearchParam.Controls.Add(Me.m_nudVariancePrimaryProd)
-            Me.m_plAnomSearchParam.Controls.Add(Me.m_lbVariancePrimaryProd)
-            Me.m_plAnomSearchParam.Controls.Add(Me.m_nudLastYear)
-            Me.m_plAnomSearchParam.Controls.Add(Me.m_lbFirstYear)
-            Me.m_plAnomSearchParam.Controls.Add(Me.m_nudFirstYear)
-            Me.m_plAnomSearchParam.Controls.Add(Me.m_nudSplinePts)
-            Me.m_plAnomSearchParam.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plAnomSearchParam.Location = New System.Drawing.Point(0, 0)
-            Me.m_plAnomSearchParam.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_plAnomSearchParam.Name = "m_plAnomSearchParam"
-            Me.m_plAnomSearchParam.Size = New System.Drawing.Size(529, 52)
-            Me.m_plAnomSearchParam.TabIndex = 0
+            Me.m_tbxVulCap.Location = New System.Drawing.Point(96, 66)
+            Me.m_tbxVulCap.Name = "m_tbxVulCap"
+            Me.m_tbxVulCap.Size = New System.Drawing.Size(90, 20)
+            Me.m_tbxVulCap.TabIndex = 6
             '
             'frmFitToTimeSeries
             '
@@ -867,13 +886,25 @@ Namespace Ecosim
             Me.m_split1.Panel2.ResumeLayout(False)
             CType(Me.m_split1, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_split1.ResumeLayout(False)
+            Me.m_lptSettings.ResumeLayout(False)
             Me.m_tlpSettings.ResumeLayout(False)
+            Me.m_plSearchTypes.ResumeLayout(False)
+            Me.m_plSearchTypes.PerformLayout()
+            Me.m_plAIC.ResumeLayout(False)
+            Me.m_plAIC.PerformLayout()
             Me.m_tabSearchOptions.ResumeLayout(False)
             Me.tpVulnerabilitySearch.ResumeLayout(False)
-            CType(Me.m_nudVariance, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_lpVulSearch.ResumeLayout(False)
+            Me.m_lpVulSearch.PerformLayout()
             Me.m_tsVulSearchTools.ResumeLayout(False)
             Me.m_tsVulSearchTools.PerformLayout()
+            Me.m_plVariance.ResumeLayout(False)
+            Me.m_plVariance.PerformLayout()
+            CType(Me.m_nudVariance, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tpAnomalySearch.ResumeLayout(False)
+            Me.m_tlpAnomSearch.ResumeLayout(False)
+            Me.m_plAnomSearchParam.ResumeLayout(False)
+            Me.m_plAnomSearchParam.PerformLayout()
             CType(Me.m_nudVariancePrimaryProd, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudLastYear, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).EndInit()
@@ -883,18 +914,6 @@ Namespace Ecosim
             Me.m_splitAnomalyShape.Panel2.PerformLayout()
             CType(Me.m_splitAnomalyShape, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_splitAnomalyShape.ResumeLayout(False)
-            Me.m_lptSettings.ResumeLayout(False)
-            Me.m_plSearchTypes.ResumeLayout(False)
-            Me.m_plSearchTypes.PerformLayout()
-            Me.m_plAIC.ResumeLayout(False)
-            Me.m_plAIC.PerformLayout()
-            Me.m_lpVulSearch.ResumeLayout(False)
-            Me.m_lpVulSearch.PerformLayout()
-            Me.m_plVariance.ResumeLayout(False)
-            Me.m_plVariance.PerformLayout()
-            Me.m_tlpAnomSearch.ResumeLayout(False)
-            Me.m_plAnomSearchParam.ResumeLayout(False)
-            Me.m_plAnomSearchParam.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -950,6 +969,8 @@ Namespace Ecosim
         Private WithEvents m_plVariance As Panel
         Private WithEvents m_tlpAnomSearch As TableLayoutPanel
         Private WithEvents m_plAnomSearchParam As Panel
+        Private WithEvents m_lblVulCap As Label
+        Private WithEvents m_tbxVulCap As TextBox
     End Class
 
 End Namespace

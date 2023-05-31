@@ -48,6 +48,7 @@ Namespace Ecosim
 
         Private m_fpNoAICPts As cEwEFormatProvider = Nothing
         Private m_fpUseDefaultVs As cEwEFormatProvider = Nothing
+        Private m_fpVulCap As cEwEFormatProvider = Nothing
         Private m_bIsRunOwner As Boolean = False
 
 #End Region 'Private variables
@@ -95,6 +96,7 @@ Namespace Ecosim
 
                 Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
                 Me.m_fpUseDefaultVs = New cPropertyFormatProvider(Me.UIContext, Me.m_cbResetVs, Me.m_F2TSManager, eVarNameFlags.F2TSUseDefaultV)
+                Me.m_fpVulCap = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxVulCap, Me.Core.EcosimModelParameters, eVarNameFlags.VulnerabilityCap)
 
                 Me.m_shapeHandler = New cAnomalySearchShapeGUIHandler(Me.UIContext)
                 Me.m_shapeHandler.Attach(Me.m_shapeToolBox, Me.m_sketchPad)
@@ -145,6 +147,9 @@ Namespace Ecosim
 
                 Me.m_fpUseDefaultVs.Release()
                 Me.m_fpUseDefaultVs = Nothing
+
+                Me.m_fpVulCap.Release()
+                Me.m_fpVulCap = Nothing
 
                 ' Detach from event handlers
                 Me.m_vulnerabilityBlockCodeSelector = Nothing

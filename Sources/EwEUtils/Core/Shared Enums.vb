@@ -440,6 +440,9 @@ Namespace Core
         ''' <summary>A multiplier to change the number of packets for the IBM model</summary>
         ''' <remarks>..but what about Dell? Acer? Toshiba? This is simply not fair!</remarks>
         PacketsMultiplier
+        ''' <summary>Vulnerability cap in the Fit to Time series routine</summary>
+        VulnerabilityCap
+
         ''' <summary>Number of rows in the Ecospace basemap</summary>
         InRow
         ''' <summary>Number of columns in the Ecospace basemap</summary>

@@ -62,16 +62,18 @@ Namespace Ecosim
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_chkUseVarPQ = New System.Windows.Forms.CheckBox()
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plDescription = New System.Windows.Forms.Panel()
             Me.m_plInit = New System.Windows.Forms.Panel()
+            Me.m_tbxVulCap = New System.Windows.Forms.TextBox()
+            Me.m_lblVulCap = New System.Windows.Forms.Label()
+            Me.m_txSORwt = New System.Windows.Forms.TextBox()
+            Me.Label2 = New System.Windows.Forms.Label()
             Me.m_tbxMinFeedingRateAdjustment = New System.Windows.Forms.TextBox()
             Me.Label1 = New System.Windows.Forms.Label()
-            Me.Label2 = New System.Windows.Forms.Label()
-            Me.m_txSORwt = New System.Windows.Forms.TextBox()
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.TableLayoutPanel1.SuspendLayout()
+            Me.m_tlpContent.SuspendLayout()
             Me.m_plDescription.SuspendLayout()
             Me.m_plInit.SuspendLayout()
             Me.SuspendLayout()
@@ -188,12 +190,12 @@ Namespace Ecosim
             Me.m_chkUseVarPQ.Name = "m_chkUseVarPQ"
             Me.m_chkUseVarPQ.UseVisualStyleBackColor = True
             '
-            'TableLayoutPanel1
+            'm_tlpContent
             '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.m_plDescription, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_plInit, 0, 1)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
+            Me.m_tlpContent.Controls.Add(Me.m_plDescription, 0, 0)
+            Me.m_tlpContent.Controls.Add(Me.m_plInit, 0, 1)
+            Me.m_tlpContent.Name = "m_tlpContent"
             '
             'm_plDescription
             '
@@ -211,6 +213,8 @@ Namespace Ecosim
             '
             'm_plInit
             '
+            Me.m_plInit.Controls.Add(Me.m_tbxVulCap)
+            Me.m_plInit.Controls.Add(Me.m_lblVulCap)
             Me.m_plInit.Controls.Add(Me.m_txSORwt)
             Me.m_plInit.Controls.Add(Me.Label2)
             Me.m_plInit.Controls.Add(Me.m_tbxMinFeedingRateAdjustment)
@@ -228,6 +232,26 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_plInit, "m_plInit")
             Me.m_plInit.Name = "m_plInit"
             '
+            'm_tbxVulCap
+            '
+            resources.ApplyResources(Me.m_tbxVulCap, "m_tbxVulCap")
+            Me.m_tbxVulCap.Name = "m_tbxVulCap"
+            '
+            'm_lblVulCap
+            '
+            resources.ApplyResources(Me.m_lblVulCap, "m_lblVulCap")
+            Me.m_lblVulCap.Name = "m_lblVulCap"
+            '
+            'm_txSORwt
+            '
+            resources.ApplyResources(Me.m_txSORwt, "m_txSORwt")
+            Me.m_txSORwt.Name = "m_txSORwt"
+            '
+            'Label2
+            '
+            resources.ApplyResources(Me.Label2, "Label2")
+            Me.Label2.Name = "Label2"
+            '
             'm_tbxMinFeedingRateAdjustment
             '
             resources.ApplyResources(Me.m_tbxMinFeedingRateAdjustment, "m_tbxMinFeedingRateAdjustment")
@@ -238,26 +262,16 @@ Namespace Ecosim
             resources.ApplyResources(Me.Label1, "Label1")
             Me.Label1.Name = "Label1"
             '
-            'Label2
-            '
-            resources.ApplyResources(Me.Label2, "Label2")
-            Me.Label2.Name = "Label2"
-            '
-            'm_txSORwt
-            '
-            resources.ApplyResources(Me.m_txSORwt, "m_txSORwt")
-            Me.m_txSORwt.Name = "m_txSORwt"
-            '
             'frmEcosimParameters
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-            Me.Controls.Add(Me.TableLayoutPanel1)
+            Me.Controls.Add(Me.m_tlpContent)
             Me.Name = "frmEcosimParameters"
             Me.TabText = ""
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.TableLayoutPanel1.ResumeLayout(False)
+            Me.m_tlpContent.ResumeLayout(False)
             Me.m_plDescription.ResumeLayout(False)
             Me.m_plDescription.PerformLayout()
             Me.m_plInit.ResumeLayout(False)
@@ -284,13 +298,15 @@ Namespace Ecosim
         Private WithEvents m_hdrInitialization As cEwEHeaderLabel
         Private WithEvents m_nudNutBaseFreeProp As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudNumberYears As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_plDescription As System.Windows.Forms.Panel
         Private WithEvents m_plInit As System.Windows.Forms.Panel
         Private WithEvents Label1 As System.Windows.Forms.Label
         Friend WithEvents m_tbxMinFeedingRateAdjustment As System.Windows.Forms.TextBox
         Friend WithEvents m_txSORwt As TextBox
         Friend WithEvents Label2 As Label
+        Private WithEvents m_tlpContent As TableLayoutPanel
+        Private WithEvents m_lblVulCap As Label
+        Private WithEvents m_tbxVulCap As TextBox
     End Class
 End Namespace
 
