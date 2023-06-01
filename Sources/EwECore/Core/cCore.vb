@@ -14573,6 +14573,9 @@ Public Class cCore
                     Case eVarNameFlags.AdditivePredMortProp
                         Me.m_Ecosim.CalcBaseAdditiveMort()
 
+                    Case eVarNameFlags.VulMult
+                        ' JS 01Jun23: Changing Vuls messes up shared arenas for IBM
+                        Me.EcosimArenaManager.ResetArenas(0)
                 End Select
 
             Case eDataTypes.EcospaceModelParameter
