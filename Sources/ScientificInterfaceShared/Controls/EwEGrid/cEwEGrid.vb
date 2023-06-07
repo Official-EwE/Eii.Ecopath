@@ -1636,31 +1636,38 @@ Namespace Controls.EwEGrid
 
             Dim cell As ICell = Nothing
             Dim cellValue As Object = Nothing
-            Dim cellType As Type = Nothing
-            Dim strValue As String = ""
+            Dim cellText As String = ""
 
             Try
                 For iRow As Integer = 0 To Me.RowsCount - 1
                     If Me.Rows(iRow).Visible Then
+                        Dim iVals As Integer = 0
                         For iCol As Integer = 0 To Me.ColumnsCount - 1
                             If Me.Columns(iCol).Visible Then
+                                If (iVals > 0) Then sw.Write(",")
                                 cell = Me(iRow, iCol)
                                 If (cell IsNot Nothing) Then
                                     cellValue = cell.Value
-                                    If (cellValue IsNot Nothing) Then
+                                    cellText = cell.DisplayText
+                                    If (cellValue Is Nothing) Then
                                         Try
-                                            If TypeOf (cellValue) Is String Then
-                                                sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
+                                            sw.Write(cStringUtils.ToCSVField(cellText))
+                                        Catch ex As Exception
+
+                                        End Try
+                                    Else
+                                        Try
+                                            If TypeOf (cellValue) Is Object Then
+                                                sw.Write(cStringUtils.ToCSVField(cellText))
                                             Else
-                                                strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
-                                                sw.Write(strValue)
+                                                sw.Write(cStringUtils.ToCSVField(cellValue))
                                             End If
                                         Catch ex As Exception
                                             ' Ignore value graciously
                                         End Try
                                     End If
                                 End If
-                                sw.Write(",")
+                                iVals += 1
                             End If
                         Next
                         sw.WriteLine()
