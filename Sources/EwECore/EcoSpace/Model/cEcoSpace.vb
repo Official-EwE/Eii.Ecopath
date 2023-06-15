@@ -4588,7 +4588,12 @@ exitline:
         Dim arguments As cThreadedCallArgs
         Dim ncells As Integer
         Dim iFlt As Integer
+        Dim itimestep As Integer
         Dim Pencost As Single
+        Dim EffPred As Single
+        Dim EffRelaxWeight As Single
+        Dim bUsePenalty As Boolean = False
+
         'Dim stpwtch As Stopwatch
 
         Dim TotAttractZone(Me.EcoSpaceData.nEffZones) As Single
@@ -4599,6 +4604,18 @@ exitline:
             arguments = DirectCast(obParam, cThreadedCallArgs)
             Dim iMonth As Integer = arguments.iCumMonth
             Dim iYear As Integer = arguments.iYear
+
+            itimestep = Me.its
+            If Me.EcoSpaceData.UseSpinUp Then
+                itimestep = Me.iSpinUp
+            End If
+
+            If Me.EcoSpaceData.DoPenaltysearch And itimestep >= Me.EcoSpaceData.FirstPenaltyMonth Then
+                EffRelaxWeight = Me.EcoSpaceData.EffortRelaxationWeight
+                bUsePenalty = True
+            Else
+                EffRelaxWeight = 1.0
+            End If
 
             'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
             'Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
@@ -4649,7 +4666,7 @@ exitline:
                         Valt = 0
                         For isp = 1 To Me.EcoSpaceData.NGroups
                             'discards will have a value of zero so they will not be included in the total value
-                            Valt = Valt + Me.EcoPathData.Market(iFlt, isp) * Me.EcoSpaceData.Bcell(iRow, iCol, isp) * Me.EcoSimData.relQ(iFlt, isp) * Me.EcoSimData.PropLandedTime(iFlt, isp)
+                            Valt = Valt + Me.OffVesselPrice(iFlt, isp) * Me.EcoSpaceData.Bcell(iRow, iCol, isp) * Me.EcoSimData.relQ(iFlt, isp) * Me.EcoSimData.PropLandedTime(iFlt, isp)
                         Next
 
                         'Me.EcoSpaceData.Pencon(isp) calaculated in SetPenaltyConstants() in the 12 month
@@ -4684,8 +4701,20 @@ exitline:
                     'IsFished() is set every timestep to account for monthly MPA Closures
                     If Me.EcoSpaceData.IsFished(iFlt, iRow, iCol) Then
 
+                        'jb 15-June-2023 Use relaxation weight when effort penalty is turned on
+                        ''Effort distribution scaled by Effort Zone
+                        'Me.EcoSpaceData.EffortSpace(iFlt, iRow, iCol) = Me.EcoSimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.EcoSpaceData.EffZones(iRow, iCol)) * Attract(iRow, iCol) / TotAttractZone(Me.EcoSpaceData.EffZones(iRow, iCol))
+
                         'Effort distribution scaled by Effort Zone
-                        Me.EcoSpaceData.EffortSpace(iFlt, iRow, iCol) = Me.EcoSimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.EcoSpaceData.EffZones(iRow, iCol)) * Attract(iRow, iCol) / TotAttractZone(Me.EcoSpaceData.EffZones(iRow, iCol))
+                        EffPred = Me.EcoSimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.EcoSpaceData.EffZones(iRow, iCol)) * Attract(iRow, iCol) / TotAttractZone(Me.EcoSpaceData.EffZones(iRow, iCol))
+
+                        'Only use the relaxation on predicted effort if we are using the penalty cost
+                        If Not bUsePenalty Then
+                            EcoSpaceData.EffortSpace(iFlt, iRow, iCol) = EffPred
+                        Else
+                            EcoSpaceData.EffortSpace(iFlt, iRow, iCol) = EffRelaxWeight * EcoSpaceData.EffortSpace(iFlt, iRow, iCol) + (1 - EffRelaxWeight) * EffPred
+                        End If
+
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
                         'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
@@ -9086,10 +9115,10 @@ exitline:
             Me.EcoSpaceData.Pencon(ig) = (Me.EcoSpaceData.PenPow / ctarget ^ Me.EcoSpaceData.PenPow) * Tc ^ (Me.EcoSpaceData.PenPow - 1)
 
             ''For debugging
-            If Me.EcoSpaceData.Pencon(ig) > 0.1 Then
-                System.Console.WriteLine("Effort Penalty for " + ig.ToString + ", " + Me.EcoSpaceData.Pencon(ig).ToString)
-                System.Console.WriteLine("Effort Penalty group, biomass, target catch, actual catch, " + ig.ToString + ", " + Tb.ToString + ", " + ctarget.ToString + ", " + Tc.ToString)
-            End If
+            'If Me.EcoSpaceData.Pencon(ig) > 0.1 Then
+            '    System.Console.WriteLine("Effort Penalty for " + ig.ToString + ", " + Me.EcoSpaceData.Pencon(ig).ToString)
+            '    System.Console.WriteLine("Effort Penalty group, biomass, target catch, actual catch, " + ig.ToString + ", " + Tb.ToString + ", " + ctarget.ToString + ", " + Tc.ToString)
+            'End If
 
         Next ig
 
