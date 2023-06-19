@@ -135,18 +135,6 @@
   <data name="m_btnSave.Text" xml:space="preserve">
     <value>Create new key run file from current...</value>
   </data>
-  <data name="&gt;&gt;m_btnSave.Name" xml:space="preserve">
-    <value>m_btnSave</value>
-  </data>
-  <data name="&gt;&gt;m_btnSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSave.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnSave.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_btnLoad.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -161,18 +149,6 @@
   </data>
   <data name="m_btnLoad.Text" xml:space="preserve">
     <value>Load and compare key run...</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.Name" xml:space="preserve">
-    <value>m_btnLoad</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="m_lblKeyRunFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -192,18 +168,6 @@
   <data name="m_lblKeyRunFile.Text" xml:space="preserve">
     <value>&lt;key run file name&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lblKeyRunFile.Name" xml:space="preserve">
-    <value>m_lblKeyRunFile</value>
-  </data>
-  <data name="&gt;&gt;m_lblKeyRunFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblKeyRunFile.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblKeyRunFile.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_lbRunStatus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -221,18 +185,6 @@
   </data>
   <data name="m_lbRunStatus.Text" xml:space="preserve">
     <value>&lt;run status&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_lbRunStatus.Name" xml:space="preserve">
-    <value>m_lbRunStatus</value>
-  </data>
-  <data name="&gt;&gt;m_lbRunStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbRunStatus.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbRunStatus.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_cbShowErrorsOnly.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -255,18 +207,6 @@
   <data name="m_cbShowErrorsOnly.Text" xml:space="preserve">
     <value>&amp;Only show conflicts</value>
   </data>
-  <data name="&gt;&gt;m_cbShowErrorsOnly.Name" xml:space="preserve">
-    <value>m_cbShowErrorsOnly</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowErrorsOnly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowErrorsOnly.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowErrorsOnly.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_pbStatus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -281,18 +221,6 @@
   </data>
   <data name="m_pbStatus.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_pbStatus.Name" xml:space="preserve">
-    <value>m_pbStatus</value>
-  </data>
-  <data name="&gt;&gt;m_pbStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbStatus.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_pbStatus.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_btnCompare.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -315,18 +243,6 @@
   <data name="m_btnCompare.Text" xml:space="preserve">
     <value>Compare currently loaded key run...</value>
   </data>
-  <data name="&gt;&gt;m_btnCompare.Name" xml:space="preserve">
-    <value>m_btnCompare</value>
-  </data>
-  <data name="&gt;&gt;m_btnCompare.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCompare.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnCompare.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -337,18 +253,6 @@
     <value>822, 510</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEKeyRunComparison.gridKeyRunComparison, EwEKeyRunComparison, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="m_hdrDetails.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -369,18 +273,6 @@
   <data name="m_hdrDetails.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrDetails.Name" xml:space="preserve">
-    <value>m_hdrDetails</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDetails.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11875.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDetails.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDetails.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -398,11 +290,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Key Run Comparison</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmKeyRunMain</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11875.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

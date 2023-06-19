@@ -138,18 +138,6 @@
   <data name="OK_Button.Text" xml:space="preserve">
     <value>&amp;OK</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Name" xml:space="preserve">
-    <value>OK_Button</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -167,18 +155,6 @@
   </data>
   <data name="Cancel_Button.Text" xml:space="preserve">
     <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Name" xml:space="preserve">
-    <value>Cancel_Button</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="m_clbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -198,18 +174,6 @@
   <data name="m_clbGroups.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_clbGroups.Name" xml:space="preserve">
-    <value>m_clbGroups</value>
-  </data>
-  <data name="&gt;&gt;m_clbGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_clbGroups.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_clbGroups.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_btnAllGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -228,18 +192,6 @@
   <data name="m_btnAllGroups.Text" xml:space="preserve">
     <value>&amp;All</value>
   </data>
-  <data name="&gt;&gt;m_btnAllGroups.Name" xml:space="preserve">
-    <value>m_btnAllGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllGroups.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllGroups.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_btnNoneGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -257,18 +209,6 @@
   </data>
   <data name="m_btnNoneGroups.Text" xml:space="preserve">
     <value>&amp;None</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneGroups.Name" xml:space="preserve">
-    <value>m_btnNoneGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneGroups.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneGroups.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="m_hdrAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -291,18 +231,6 @@
   <data name="m_hdrAdd.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrAdd.Name" xml:space="preserve">
-    <value>m_hdrAdd</value>
-  </data>
-  <data name="&gt;&gt;m_hdrAdd.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17033, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrAdd.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_hdrAdd.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_btnLiving.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -320,18 +248,6 @@
   </data>
   <data name="m_btnLiving.Text" xml:space="preserve">
     <value>&amp;Living</value>
-  </data>
-  <data name="&gt;&gt;m_btnLiving.Name" xml:space="preserve">
-    <value>m_btnLiving</value>
-  </data>
-  <data name="&gt;&gt;m_btnLiving.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnLiving.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnLiving.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_btnNonLiving.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -351,18 +267,6 @@
   <data name="m_btnNonLiving.Text" xml:space="preserve">
     <value>Non-&amp;living</value>
   </data>
-  <data name="&gt;&gt;m_btnNonLiving.Name" xml:space="preserve">
-    <value>m_btnNonLiving</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonLiving.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonLiving.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonLiving.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_btnStanza.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -380,18 +284,6 @@
   </data>
   <data name="m_btnStanza.Text" xml:space="preserve">
     <value>&amp;Stanza</value>
-  </data>
-  <data name="&gt;&gt;m_btnStanza.Name" xml:space="preserve">
-    <value>m_btnStanza</value>
-  </data>
-  <data name="&gt;&gt;m_btnStanza.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnStanza.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnStanza.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="m_btnConsumers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -411,18 +303,6 @@
   <data name="m_btnConsumers.Text" xml:space="preserve">
     <value>&amp;Consumers</value>
   </data>
-  <data name="&gt;&gt;m_btnConsumers.Name" xml:space="preserve">
-    <value>m_btnConsumers</value>
-  </data>
-  <data name="&gt;&gt;m_btnConsumers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnConsumers.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnConsumers.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="m_btnNonStanza.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -440,18 +320,6 @@
   </data>
   <data name="m_btnNonStanza.Text" xml:space="preserve">
     <value>Non-&amp;stanza</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonStanza.Name" xml:space="preserve">
-    <value>m_btnNonStanza</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonStanza.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonStanza.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonStanza.ZOrder" xml:space="preserve">
-    <value>10</value>
   </data>
   <data name="m_btnProducers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -471,18 +339,6 @@
   <data name="m_btnProducers.Text" xml:space="preserve">
     <value>&amp;Producers</value>
   </data>
-  <data name="&gt;&gt;m_btnProducers.Name" xml:space="preserve">
-    <value>m_btnProducers</value>
-  </data>
-  <data name="&gt;&gt;m_btnProducers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnProducers.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnProducers.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="m_btnNonFished.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -500,18 +356,6 @@
   </data>
   <data name="m_btnNonFished.Text" xml:space="preserve">
     <value>Non-&amp;fished</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonFished.Name" xml:space="preserve">
-    <value>m_btnNonFished</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonFished.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonFished.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonFished.ZOrder" xml:space="preserve">
-    <value>11</value>
   </data>
   <data name="m_btnFished.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -531,18 +375,6 @@
   <data name="m_btnFished.Text" xml:space="preserve">
     <value>&amp;Fished</value>
   </data>
-  <data name="&gt;&gt;m_btnFished.Name" xml:space="preserve">
-    <value>m_btnFished</value>
-  </data>
-  <data name="&gt;&gt;m_btnFished.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnFished.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnFished.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="m_clbFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -560,18 +392,6 @@
   </data>
   <data name="m_clbFleets.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_clbFleets.Name" xml:space="preserve">
-    <value>m_clbFleets</value>
-  </data>
-  <data name="&gt;&gt;m_clbFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_clbFleets.Parent" xml:space="preserve">
-    <value>m_plFleets</value>
-  </data>
-  <data name="&gt;&gt;m_clbFleets.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_btnAllFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -591,18 +411,6 @@
   <data name="m_btnAllFleets.Text" xml:space="preserve">
     <value>&amp;All</value>
   </data>
-  <data name="&gt;&gt;m_btnAllFleets.Name" xml:space="preserve">
-    <value>m_btnAllFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.Parent" xml:space="preserve">
-    <value>m_plFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_btnNoneFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -620,18 +428,6 @@
   </data>
   <data name="m_btnNoneFleets.Text" xml:space="preserve">
     <value>&amp;None</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.Name" xml:space="preserve">
-    <value>m_btnNoneFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.Parent" xml:space="preserve">
-    <value>m_plFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_tlpContent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -660,18 +456,6 @@
   <data name="m_hdrGroups.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrGroups.Name" xml:space="preserve">
-    <value>m_hdrGroups</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17033, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_plGroups.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -685,18 +469,6 @@
     <value>303, 473</value>
   </data>
   <data name="m_plGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_plGroups.Name" xml:space="preserve">
-    <value>m_plGroups</value>
-  </data>
-  <data name="&gt;&gt;m_plGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plGroups.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_plGroups.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_hdrFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -723,18 +495,6 @@
   <data name="m_hdrFleets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrFleets.Name" xml:space="preserve">
-    <value>m_hdrFleets</value>
-  </data>
-  <data name="&gt;&gt;m_hdrFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17033, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrFleets.Parent" xml:space="preserve">
-    <value>m_plFleets</value>
-  </data>
-  <data name="&gt;&gt;m_hdrFleets.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_plFleets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -750,18 +510,6 @@
   <data name="m_plFleets.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_plFleets.Name" xml:space="preserve">
-    <value>m_plFleets</value>
-  </data>
-  <data name="&gt;&gt;m_plFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plFleets.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_plFleets.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tlpContent.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 39</value>
   </data>
@@ -773,18 +521,6 @@
   </data>
   <data name="m_tlpContent.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Name" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_tlpContent.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plGroups" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plFleets" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Absolute,10,Percent,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -810,18 +546,6 @@
   <data name="m_cbSyncViaFishing.Text" xml:space="preserve">
     <value>&amp;Fishing</value>
   </data>
-  <data name="&gt;&gt;m_cbSyncViaFishing.Name" xml:space="preserve">
-    <value>m_cbSyncViaFishing</value>
-  </data>
-  <data name="&gt;&gt;m_cbSyncViaFishing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbSyncViaFishing.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbSyncViaFishing.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_cbSyncPredators.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -843,18 +567,6 @@
   <data name="m_cbSyncPredators.Text" xml:space="preserve">
     <value>&amp;Predators</value>
   </data>
-  <data name="&gt;&gt;m_cbSyncPredators.Name" xml:space="preserve">
-    <value>m_cbSyncPredators</value>
-  </data>
-  <data name="&gt;&gt;m_cbSyncPredators.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbSyncPredators.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbSyncPredators.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_lblSyncSelections.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -872,18 +584,6 @@
   </data>
   <data name="m_lblSyncSelections.Text" xml:space="preserve">
     <value>Synchronize:</value>
-  </data>
-  <data name="&gt;&gt;m_lblSyncSelections.Name" xml:space="preserve">
-    <value>m_lblSyncSelections</value>
-  </data>
-  <data name="&gt;&gt;m_lblSyncSelections.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSyncSelections.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblSyncSelections.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_tlpPresets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -909,18 +609,6 @@
   <data name="m_tbxName.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_tbxName.Name" xml:space="preserve">
-    <value>m_tbxName</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.Parent" xml:space="preserve">
-    <value>m_tlpPresets</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_btnAdd.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -938,18 +626,6 @@
   </data>
   <data name="m_btnAdd.Text" xml:space="preserve">
     <value>&amp;Add</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.Name" xml:space="preserve">
-    <value>m_btnAdd</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.Parent" xml:space="preserve">
-    <value>m_tlpPresets</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_btnDelete.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -969,18 +645,6 @@
   <data name="m_btnDelete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="&gt;&gt;m_btnDelete.Name" xml:space="preserve">
-    <value>m_btnDelete</value>
-  </data>
-  <data name="&gt;&gt;m_btnDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnDelete.Parent" xml:space="preserve">
-    <value>m_tlpPresets</value>
-  </data>
-  <data name="&gt;&gt;m_btnDelete.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_cmbPresets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -995,18 +659,6 @@
   </data>
   <data name="m_cmbPresets.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_cmbPresets.Name" xml:space="preserve">
-    <value>m_cmbPresets</value>
-  </data>
-  <data name="&gt;&gt;m_cmbPresets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbPresets.Parent" xml:space="preserve">
-    <value>m_tlpPresets</value>
-  </data>
-  <data name="&gt;&gt;m_cmbPresets.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_btnRename.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1025,18 +677,6 @@
   </data>
   <data name="m_btnRename.Text" xml:space="preserve">
     <value>&amp;Rename</value>
-  </data>
-  <data name="&gt;&gt;m_btnRename.Name" xml:space="preserve">
-    <value>m_btnRename</value>
-  </data>
-  <data name="&gt;&gt;m_btnRename.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnRename.Parent" xml:space="preserve">
-    <value>m_tlpPresets</value>
-  </data>
-  <data name="&gt;&gt;m_btnRename.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_lblPresets.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1059,18 +699,6 @@
   <data name="m_lblPresets.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblPresets.Name" xml:space="preserve">
-    <value>m_lblPresets</value>
-  </data>
-  <data name="&gt;&gt;m_lblPresets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPresets.Parent" xml:space="preserve">
-    <value>m_tlpPresets</value>
-  </data>
-  <data name="&gt;&gt;m_lblPresets.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_tlpPresets.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 10</value>
   </data>
@@ -1081,18 +709,6 @@
     <value>616, 23</value>
   </data>
   <data name="m_tlpPresets.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tlpPresets.Name" xml:space="preserve">
-    <value>m_tlpPresets</value>
-  </data>
-  <data name="&gt;&gt;m_tlpPresets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpPresets.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpPresets.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_tlpPresets.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
@@ -1119,18 +735,6 @@
   <data name="m_cbSyncPrey.Text" xml:space="preserve">
     <value>&amp;Prey</value>
   </data>
-  <data name="&gt;&gt;m_cbSyncPrey.Name" xml:space="preserve">
-    <value>m_cbSyncPrey</value>
-  </data>
-  <data name="&gt;&gt;m_cbSyncPrey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbSyncPrey.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbSyncPrey.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -1151,11 +755,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Select items to display on plots</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgShowHideItems</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

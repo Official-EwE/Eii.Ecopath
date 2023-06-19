@@ -138,18 +138,6 @@
   <data name="m_lbHost.Text" xml:space="preserve">
     <value>&amp;Host:</value>
   </data>
-  <data name="&gt;&gt;m_lbHost.Name" xml:space="preserve">
-    <value>m_lbHost</value>
-  </data>
-  <data name="&gt;&gt;m_lbHost.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbHost.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbHost.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
   <data name="m_lbDatabase.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -167,18 +155,6 @@
   </data>
   <data name="m_lbDatabase.Text" xml:space="preserve">
     <value>&amp;Database:</value>
-  </data>
-  <data name="&gt;&gt;m_lbDatabase.Name" xml:space="preserve">
-    <value>m_lbDatabase</value>
-  </data>
-  <data name="&gt;&gt;m_lbDatabase.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbDatabase.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbDatabase.ZOrder" xml:space="preserve">
-    <value>13</value>
   </data>
   <data name="m_lbUsername.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -198,18 +174,6 @@
   <data name="m_lbUsername.Text" xml:space="preserve">
     <value>&amp;User name:</value>
   </data>
-  <data name="&gt;&gt;m_lbUsername.Name" xml:space="preserve">
-    <value>m_lbUsername</value>
-  </data>
-  <data name="&gt;&gt;m_lbUsername.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbUsername.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbUsername.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="m_lbPassword.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -228,18 +192,6 @@
   <data name="m_lbPassword.Text" xml:space="preserve">
     <value>&amp;Password:</value>
   </data>
-  <data name="&gt;&gt;m_lbPassword.Name" xml:space="preserve">
-    <value>m_lbPassword</value>
-  </data>
-  <data name="&gt;&gt;m_lbPassword.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbPassword.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbPassword.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="m_tbSQLHost.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -251,18 +203,6 @@
   </data>
   <data name="m_tbSQLHost.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLHost.Name" xml:space="preserve">
-    <value>m_tbSQLHost</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLHost.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLHost.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLHost.ZOrder" xml:space="preserve">
-    <value>10</value>
   </data>
   <data name="m_tbSQLDatabase.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -276,18 +216,6 @@
   <data name="m_tbSQLDatabase.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;m_tbSQLDatabase.Name" xml:space="preserve">
-    <value>m_tbSQLDatabase</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLDatabase.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLDatabase.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLDatabase.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="m_tbSQLUsername.Location" type="System.Drawing.Point, System.Drawing">
     <value>91, 151</value>
   </data>
@@ -296,18 +224,6 @@
   </data>
   <data name="m_tbSQLUsername.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLUsername.Name" xml:space="preserve">
-    <value>m_tbSQLUsername</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLUsername.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLUsername.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLUsername.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="m_tbSQLPassword.Location" type="System.Drawing.Point, System.Drawing">
     <value>91, 177</value>
@@ -320,18 +236,6 @@
   </data>
   <data name="m_tbSQLPassword.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLPassword.Name" xml:space="preserve">
-    <value>m_tbSQLPassword</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLPassword.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLPassword.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbSQLPassword.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="m_btnConnect.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -351,18 +255,6 @@
   <data name="m_btnConnect.Text" xml:space="preserve">
     <value>&amp;Connect</value>
   </data>
-  <data name="&gt;&gt;m_btnConnect.Name" xml:space="preserve">
-    <value>m_btnConnect</value>
-  </data>
-  <data name="&gt;&gt;m_btnConnect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnConnect.Parent" xml:space="preserve">
-    <value>m_tlpButtons</value>
-  </data>
-  <data name="&gt;&gt;m_btnConnect.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_btnDisconnect.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -380,18 +272,6 @@
   </data>
   <data name="m_btnDisconnect.Text" xml:space="preserve">
     <value>&amp;Disconnect</value>
-  </data>
-  <data name="&gt;&gt;m_btnDisconnect.Name" xml:space="preserve">
-    <value>m_btnDisconnect</value>
-  </data>
-  <data name="&gt;&gt;m_btnDisconnect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnDisconnect.Parent" xml:space="preserve">
-    <value>m_tlpButtons</value>
-  </data>
-  <data name="&gt;&gt;m_btnDisconnect.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_rbAccess.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -411,18 +291,6 @@
   <data name="m_rbAccess.Text" xml:space="preserve">
     <value>&amp;Access database:</value>
   </data>
-  <data name="&gt;&gt;m_rbAccess.Name" xml:space="preserve">
-    <value>m_rbAccess</value>
-  </data>
-  <data name="&gt;&gt;m_rbAccess.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbAccess.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbAccess.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_lbFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -441,18 +309,6 @@
   <data name="m_lbFile.Text" xml:space="preserve">
     <value>&amp;File:</value>
   </data>
-  <data name="&gt;&gt;m_lbFile.Name" xml:space="preserve">
-    <value>m_lbFile</value>
-  </data>
-  <data name="&gt;&gt;m_lbFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbFile.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbFile.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_tbAccessDatabase.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -464,18 +320,6 @@
   </data>
   <data name="m_tbAccessDatabase.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tbAccessDatabase.Name" xml:space="preserve">
-    <value>m_tbAccessDatabase</value>
-  </data>
-  <data name="&gt;&gt;m_tbAccessDatabase.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbAccessDatabase.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbAccessDatabase.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_btnBrowseAccessDatabase.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -495,18 +339,6 @@
   <data name="m_btnBrowseAccessDatabase.Text" xml:space="preserve">
     <value>&amp;Browse...</value>
   </data>
-  <data name="&gt;&gt;m_btnBrowseAccessDatabase.Name" xml:space="preserve">
-    <value>m_btnBrowseAccessDatabase</value>
-  </data>
-  <data name="&gt;&gt;m_btnBrowseAccessDatabase.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnBrowseAccessDatabase.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnBrowseAccessDatabase.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_rbSQLServer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -524,18 +356,6 @@
   </data>
   <data name="m_rbSQLServer.Text" xml:space="preserve">
     <value>&amp;SQL server:</value>
-  </data>
-  <data name="&gt;&gt;m_rbSQLServer.Name" xml:space="preserve">
-    <value>m_rbSQLServer</value>
-  </data>
-  <data name="&gt;&gt;m_rbSQLServer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbSQLServer.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbSQLServer.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_tlpButtons.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -558,18 +378,6 @@
   <data name="m_tlpButtons.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="&gt;&gt;m_tlpButtons.Name" xml:space="preserve">
-    <value>m_tlpButtons</value>
-  </data>
-  <data name="&gt;&gt;m_tlpButtons.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpButtons.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpButtons.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tlpButtons.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnConnect" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_btnDisconnect" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,AutoSize,0,AutoSize,0,Percent,50,Absolute,20" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
@@ -591,18 +399,6 @@
   <data name="m_plLogo.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="&gt;&gt;m_plLogo.Name" xml:space="preserve">
-    <value>m_plLogo</value>
-  </data>
-  <data name="&gt;&gt;m_plLogo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plLogo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_plLogo.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -620,11 +416,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Connect to SAUP Taxon database</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmConfig</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -131,18 +131,6 @@
   <data name="chkBiomass.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;chkBiomass.Name" xml:space="preserve">
-    <value>chkBiomass</value>
-  </data>
-  <data name="&gt;&gt;chkBiomass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkBiomass.Parent" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;chkBiomass.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="chkConsumption.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -154,18 +142,6 @@
   </data>
   <data name="chkConsumption.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;chkConsumption.Name" xml:space="preserve">
-    <value>chkConsumption</value>
-  </data>
-  <data name="&gt;&gt;chkConsumption.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkConsumption.Parent" xml:space="preserve">
-    <value>Panel2</value>
-  </data>
-  <data name="&gt;&gt;chkConsumption.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="chkBiomassInteg.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -179,18 +155,6 @@
   <data name="chkBiomassInteg.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;chkBiomassInteg.Name" xml:space="preserve">
-    <value>chkBiomassInteg</value>
-  </data>
-  <data name="&gt;&gt;chkBiomassInteg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkBiomassInteg.Parent" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;chkBiomassInteg.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="chkPredationMortality.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -203,18 +167,6 @@
   <data name="chkPredationMortality.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;chkPredationMortality.Name" xml:space="preserve">
-    <value>chkPredationMortality</value>
-  </data>
-  <data name="&gt;&gt;chkPredationMortality.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkPredationMortality.Parent" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;chkPredationMortality.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="chkFishingMortality.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -226,18 +178,6 @@
   </data>
   <data name="chkFishingMortality.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
-  </data>
-  <data name="&gt;&gt;chkFishingMortality.Name" xml:space="preserve">
-    <value>chkFishingMortality</value>
-  </data>
-  <data name="&gt;&gt;chkFishingMortality.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkFishingMortality.Parent" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;chkFishingMortality.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="btnSetPredPrey.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -254,18 +194,6 @@
   <data name="btnSetPredPrey.Text" xml:space="preserve">
     <value>Change Selection</value>
   </data>
-  <data name="&gt;&gt;btnSetPredPrey.Name" xml:space="preserve">
-    <value>btnSetPredPrey</value>
-  </data>
-  <data name="&gt;&gt;btnSetPredPrey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSetPredPrey.Parent" xml:space="preserve">
-    <value>Panel2</value>
-  </data>
-  <data name="&gt;&gt;btnSetPredPrey.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="btnSetPreyPred.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -277,18 +205,6 @@
   </data>
   <data name="btnSetPreyPred.TabIndex" type="System.Int32, mscorlib">
     <value>36</value>
-  </data>
-  <data name="&gt;&gt;btnSetPreyPred.Name" xml:space="preserve">
-    <value>btnSetPreyPred</value>
-  </data>
-  <data name="&gt;&gt;btnSetPreyPred.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSetPreyPred.Parent" xml:space="preserve">
-    <value>Panel3</value>
-  </data>
-  <data name="&gt;&gt;btnSetPreyPred.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="btnSaveResults.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -302,18 +218,6 @@
   <data name="btnSaveResults.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;btnSaveResults.Name" xml:space="preserve">
-    <value>btnSaveResults</value>
-  </data>
-  <data name="&gt;&gt;btnSaveResults.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSaveResults.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnSaveResults.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>414, 562</value>
   </data>
@@ -322,18 +226,6 @@
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
-    <value>btnCancel</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
-    <value>13</value>
   </data>
   <data name="chkPredationPerPredator.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -347,18 +239,6 @@
   <data name="chkPredationPerPredator.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
   </data>
-  <data name="&gt;&gt;chkPredationPerPredator.Name" xml:space="preserve">
-    <value>chkPredationPerPredator</value>
-  </data>
-  <data name="&gt;&gt;chkPredationPerPredator.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkPredationPerPredator.Parent" xml:space="preserve">
-    <value>Panel3</value>
-  </data>
-  <data name="&gt;&gt;chkPredationPerPredator.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="btnSetParentOnly.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -370,18 +250,6 @@
   </data>
   <data name="btnSetParentOnly.TabIndex" type="System.Int32, mscorlib">
     <value>39</value>
-  </data>
-  <data name="&gt;&gt;btnSetParentOnly.Name" xml:space="preserve">
-    <value>btnSetParentOnly</value>
-  </data>
-  <data name="&gt;&gt;btnSetParentOnly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSetParentOnly.Parent" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;btnSetParentOnly.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="chkFishMortFleetToPrey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -395,18 +263,6 @@
   <data name="chkFishMortFleetToPrey.TabIndex" type="System.Int32, mscorlib">
     <value>40</value>
   </data>
-  <data name="&gt;&gt;chkFishMortFleetToPrey.Name" xml:space="preserve">
-    <value>chkFishMortFleetToPrey</value>
-  </data>
-  <data name="&gt;&gt;chkFishMortFleetToPrey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkFishMortFleetToPrey.Parent" xml:space="preserve">
-    <value>Panel4</value>
-  </data>
-  <data name="&gt;&gt;chkFishMortFleetToPrey.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="chkCatch.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -419,18 +275,6 @@
   <data name="chkCatch.TabIndex" type="System.Int32, mscorlib">
     <value>44</value>
   </data>
-  <data name="&gt;&gt;chkCatch.Name" xml:space="preserve">
-    <value>chkCatch</value>
-  </data>
-  <data name="&gt;&gt;chkCatch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkCatch.Parent" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;chkCatch.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="Panel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 85</value>
   </data>
@@ -439,18 +283,6 @@
   </data>
   <data name="Panel1.TabIndex" type="System.Int32, mscorlib">
     <value>41</value>
-  </data>
-  <data name="&gt;&gt;Panel1.Name" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Panel1.ZOrder" xml:space="preserve">
-    <value>16</value>
   </data>
   <data name="Label1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
@@ -467,18 +299,6 @@
   <data name="Label1.Text" xml:space="preserve">
     <value>Functional groups only</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="chkDietProportions.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -491,18 +311,6 @@
   <data name="chkDietProportions.TabIndex" type="System.Int32, mscorlib">
     <value>44</value>
   </data>
-  <data name="&gt;&gt;chkDietProportions.Name" xml:space="preserve">
-    <value>chkDietProportions</value>
-  </data>
-  <data name="&gt;&gt;chkDietProportions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkDietProportions.Parent" xml:space="preserve">
-    <value>Panel2</value>
-  </data>
-  <data name="&gt;&gt;chkDietProportions.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="Panel2.Location" type="System.Drawing.Point, System.Drawing">
     <value>309, 89</value>
   </data>
@@ -511,18 +319,6 @@
   </data>
   <data name="Panel2.TabIndex" type="System.Int32, mscorlib">
     <value>42</value>
-  </data>
-  <data name="&gt;&gt;Panel2.Name" xml:space="preserve">
-    <value>Panel2</value>
-  </data>
-  <data name="&gt;&gt;Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Panel2.ZOrder" xml:space="preserve">
-    <value>18</value>
   </data>
   <data name="Label3.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
@@ -539,18 +335,6 @@
   <data name="Label3.Text" xml:space="preserve">
     <value>Predators with attached prey</value>
   </data>
-  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
-    <value>Label3</value>
-  </data>
-  <data name="&gt;&gt;Label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="Panel3.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 223</value>
   </data>
@@ -559,18 +343,6 @@
   </data>
   <data name="Panel3.TabIndex" type="System.Int32, mscorlib">
     <value>42</value>
-  </data>
-  <data name="&gt;&gt;Panel3.Name" xml:space="preserve">
-    <value>Panel3</value>
-  </data>
-  <data name="&gt;&gt;Panel3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel3.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Panel3.ZOrder" xml:space="preserve">
-    <value>20</value>
   </data>
   <data name="Label4.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
@@ -587,18 +359,6 @@
   <data name="Label4.Text" xml:space="preserve">
     <value>Prey with attached predators</value>
   </data>
-  <data name="&gt;&gt;Label4.Name" xml:space="preserve">
-    <value>Label4</value>
-  </data>
-  <data name="&gt;&gt;Label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label4.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Label4.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="Label2.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
@@ -614,18 +374,6 @@
   <data name="Label2.Text" xml:space="preserve">
     <value>Fleets with attached prey</value>
   </data>
-  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
-    <value>Label2</value>
-  </data>
-  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
-    <value>Panel4</value>
-  </data>
-  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="btnSetFleetPrey.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -637,18 +385,6 @@
   </data>
   <data name="btnSetFleetPrey.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
-  </data>
-  <data name="&gt;&gt;btnSetFleetPrey.Name" xml:space="preserve">
-    <value>btnSetFleetPrey</value>
-  </data>
-  <data name="&gt;&gt;btnSetFleetPrey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSetFleetPrey.Parent" xml:space="preserve">
-    <value>Panel4</value>
-  </data>
-  <data name="&gt;&gt;btnSetFleetPrey.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="chkCatchFleet.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -662,18 +398,6 @@
   <data name="chkCatchFleet.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
   </data>
-  <data name="&gt;&gt;chkCatchFleet.Name" xml:space="preserve">
-    <value>chkCatchFleet</value>
-  </data>
-  <data name="&gt;&gt;chkCatchFleet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkCatchFleet.Parent" xml:space="preserve">
-    <value>Panel4</value>
-  </data>
-  <data name="&gt;&gt;chkCatchFleet.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="Panel4.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 292</value>
   </data>
@@ -682,18 +406,6 @@
   </data>
   <data name="Panel4.TabIndex" type="System.Int32, mscorlib">
     <value>43</value>
-  </data>
-  <data name="&gt;&gt;Panel4.Name" xml:space="preserve">
-    <value>Panel4</value>
-  </data>
-  <data name="&gt;&gt;Panel4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel4.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Panel4.ZOrder" xml:space="preserve">
-    <value>15</value>
   </data>
   <data name="btnSetFleetOnly.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -707,18 +419,6 @@
   <data name="btnSetFleetOnly.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
   </data>
-  <data name="&gt;&gt;btnSetFleetOnly.Name" xml:space="preserve">
-    <value>btnSetFleetOnly</value>
-  </data>
-  <data name="&gt;&gt;btnSetFleetOnly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSetFleetOnly.Parent" xml:space="preserve">
-    <value>Panel6</value>
-  </data>
-  <data name="&gt;&gt;btnSetFleetOnly.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="chkFleetValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -730,18 +430,6 @@
   </data>
   <data name="chkFleetValue.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
-  </data>
-  <data name="&gt;&gt;chkFleetValue.Name" xml:space="preserve">
-    <value>chkFleetValue</value>
-  </data>
-  <data name="&gt;&gt;chkFleetValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkFleetValue.Parent" xml:space="preserve">
-    <value>Panel6</value>
-  </data>
-  <data name="&gt;&gt;chkFleetValue.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="chkEffort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -755,18 +443,6 @@
   <data name="chkEffort.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
   </data>
-  <data name="&gt;&gt;chkEffort.Name" xml:space="preserve">
-    <value>chkEffort</value>
-  </data>
-  <data name="&gt;&gt;chkEffort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkEffort.Parent" xml:space="preserve">
-    <value>Panel6</value>
-  </data>
-  <data name="&gt;&gt;chkEffort.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="Panel6.Location" type="System.Drawing.Point, System.Drawing">
     <value>309, 227</value>
   </data>
@@ -775,18 +451,6 @@
   </data>
   <data name="Panel6.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
-  </data>
-  <data name="&gt;&gt;Panel6.Name" xml:space="preserve">
-    <value>Panel6</value>
-  </data>
-  <data name="&gt;&gt;Panel6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel6.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Panel6.ZOrder" xml:space="preserve">
-    <value>12</value>
   </data>
   <data name="chkBasicEstimates.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -799,18 +463,6 @@
   </data>
   <data name="chkBasicEstimates.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
-  </data>
-  <data name="&gt;&gt;chkBasicEstimates.Name" xml:space="preserve">
-    <value>chkBasicEstimates</value>
-  </data>
-  <data name="&gt;&gt;chkBasicEstimates.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkBasicEstimates.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkBasicEstimates.ZOrder" xml:space="preserve">
-    <value>13</value>
   </data>
   <data name="Label6.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
@@ -827,18 +479,6 @@
   <data name="Label6.Text" xml:space="preserve">
     <value>Indicators</value>
   </data>
-  <data name="&gt;&gt;Label6.Name" xml:space="preserve">
-    <value>Label6</value>
-  </data>
-  <data name="&gt;&gt;Label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label6.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;Label6.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="chkInitFishMort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -850,18 +490,6 @@
   </data>
   <data name="chkInitFishMort.TabIndex" type="System.Int32, mscorlib">
     <value>57</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishMort.Name" xml:space="preserve">
-    <value>chkInitFishMort</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishMort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishMort.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishMort.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="chkInitFishingValues.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -875,18 +503,6 @@
   <data name="chkInitFishingValues.TabIndex" type="System.Int32, mscorlib">
     <value>56</value>
   </data>
-  <data name="&gt;&gt;chkInitFishingValues.Name" xml:space="preserve">
-    <value>chkInitFishingValues</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishingValues.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishingValues.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishingValues.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="chkInitFishingQuantities.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -898,18 +514,6 @@
   </data>
   <data name="chkInitFishingQuantities.TabIndex" type="System.Int32, mscorlib">
     <value>55</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishingQuantities.Name" xml:space="preserve">
-    <value>chkInitFishingQuantities</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishingQuantities.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishingQuantities.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkInitFishingQuantities.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="chkSearchRates.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -923,18 +527,6 @@
   <data name="chkSearchRates.TabIndex" type="System.Int32, mscorlib">
     <value>54</value>
   </data>
-  <data name="&gt;&gt;chkSearchRates.Name" xml:space="preserve">
-    <value>chkSearchRates</value>
-  </data>
-  <data name="&gt;&gt;chkSearchRates.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkSearchRates.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkSearchRates.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="chkElectivity.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -946,18 +538,6 @@
   </data>
   <data name="chkElectivity.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
-  </data>
-  <data name="&gt;&gt;chkElectivity.Name" xml:space="preserve">
-    <value>chkElectivity</value>
-  </data>
-  <data name="&gt;&gt;chkElectivity.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkElectivity.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkElectivity.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="chkPredOverlap.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -971,18 +551,6 @@
   <data name="chkPredOverlap.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
   </data>
-  <data name="&gt;&gt;chkPredOverlap.Name" xml:space="preserve">
-    <value>chkPredOverlap</value>
-  </data>
-  <data name="&gt;&gt;chkPredOverlap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkPredOverlap.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkPredOverlap.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="chkPreyOverlap.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -994,18 +562,6 @@
   </data>
   <data name="chkPreyOverlap.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
-  </data>
-  <data name="&gt;&gt;chkPreyOverlap.Name" xml:space="preserve">
-    <value>chkPreyOverlap</value>
-  </data>
-  <data name="&gt;&gt;chkPreyOverlap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkPreyOverlap.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkPreyOverlap.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="chkRespiration.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1019,18 +575,6 @@
   <data name="chkRespiration.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
   </data>
-  <data name="&gt;&gt;chkRespiration.Name" xml:space="preserve">
-    <value>chkRespiration</value>
-  </data>
-  <data name="&gt;&gt;chkRespiration.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkRespiration.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkRespiration.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="chkInitConsumption.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1042,18 +586,6 @@
   </data>
   <data name="chkInitConsumption.TabIndex" type="System.Int32, mscorlib">
     <value>49</value>
-  </data>
-  <data name="&gt;&gt;chkInitConsumption.Name" xml:space="preserve">
-    <value>chkInitConsumption</value>
-  </data>
-  <data name="&gt;&gt;chkInitConsumption.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkInitConsumption.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkInitConsumption.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="chkInitPredMort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1067,18 +599,6 @@
   <data name="chkInitPredMort.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
   </data>
-  <data name="&gt;&gt;chkInitPredMort.Name" xml:space="preserve">
-    <value>chkInitPredMort</value>
-  </data>
-  <data name="&gt;&gt;chkInitPredMort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkInitPredMort.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkInitPredMort.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="chkMortalityCoefficients.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1090,18 +610,6 @@
   </data>
   <data name="chkMortalityCoefficients.TabIndex" type="System.Int32, mscorlib">
     <value>47</value>
-  </data>
-  <data name="&gt;&gt;chkMortalityCoefficients.Name" xml:space="preserve">
-    <value>chkMortalityCoefficients</value>
-  </data>
-  <data name="&gt;&gt;chkMortalityCoefficients.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkMortalityCoefficients.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkMortalityCoefficients.ZOrder" xml:space="preserve">
-    <value>11</value>
   </data>
   <data name="chkKeyIndices.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1115,18 +623,6 @@
   <data name="chkKeyIndices.TabIndex" type="System.Int32, mscorlib">
     <value>46</value>
   </data>
-  <data name="&gt;&gt;chkKeyIndices.Name" xml:space="preserve">
-    <value>chkKeyIndices</value>
-  </data>
-  <data name="&gt;&gt;chkKeyIndices.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkKeyIndices.Parent" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;chkKeyIndices.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="Panel7.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 372</value>
   </data>
@@ -1136,18 +632,6 @@
   <data name="Panel7.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
   </data>
-  <data name="&gt;&gt;Panel7.Name" xml:space="preserve">
-    <value>Panel7</value>
-  </data>
-  <data name="&gt;&gt;Panel7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel7.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Panel7.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="btnAllOptions.Location" type="System.Drawing.Point, System.Drawing">
     <value>313, 562</value>
   </data>
@@ -1156,18 +640,6 @@
   </data>
   <data name="btnAllOptions.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
-  </data>
-  <data name="&gt;&gt;btnAllOptions.Name" xml:space="preserve">
-    <value>btnAllOptions</value>
-  </data>
-  <data name="&gt;&gt;btnAllOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnAllOptions.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnAllOptions.ZOrder" xml:space="preserve">
-    <value>10</value>
   </data>
   <data name="prgSave.Location" type="System.Drawing.Point, System.Drawing">
     <value>313, 596</value>
@@ -1180,18 +652,6 @@
   </data>
   <data name="prgSave.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
-  </data>
-  <data name="&gt;&gt;prgSave.Name" xml:space="preserve">
-    <value>prgSave</value>
-  </data>
-  <data name="&gt;&gt;prgSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;prgSave.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;prgSave.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="lblPrgInfo.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1211,18 +671,6 @@
   <data name="lblPrgInfo.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;lblPrgInfo.Name" xml:space="preserve">
-    <value>lblPrgInfo</value>
-  </data>
-  <data name="&gt;&gt;lblPrgInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblPrgInfo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;lblPrgInfo.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="chkYearly.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1234,18 +682,6 @@
   </data>
   <data name="chkYearly.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
-  </data>
-  <data name="&gt;&gt;chkYearly.Name" xml:space="preserve">
-    <value>chkYearly</value>
-  </data>
-  <data name="&gt;&gt;chkYearly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkYearly.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;chkYearly.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="PictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -2083,18 +1519,6 @@
   <data name="PictureBox1.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
   </data>
-  <data name="&gt;&gt;PictureBox1.Name" xml:space="preserve">
-    <value>PictureBox1</value>
-  </data>
-  <data name="&gt;&gt;PictureBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;PictureBox1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;PictureBox1.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
   <data name="PictureBox2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         /9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwg
@@ -2400,18 +1824,6 @@
   <data name="PictureBox2.TabIndex" type="System.Int32, mscorlib">
     <value>54</value>
   </data>
-  <data name="&gt;&gt;PictureBox2.Name" xml:space="preserve">
-    <value>PictureBox2</value>
-  </data>
-  <data name="&gt;&gt;PictureBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;PictureBox2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;PictureBox2.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
   <data name="Label5.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
@@ -2427,18 +1839,6 @@
   <data name="Label5.Text" xml:space="preserve">
     <value>Fleets only</value>
   </data>
-  <data name="&gt;&gt;Label5.Name" xml:space="preserve">
-    <value>Label5</value>
-  </data>
-  <data name="&gt;&gt;Label5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label5.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Label5.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="optCSV.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -2450,18 +1850,6 @@
   </data>
   <data name="optCSV.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;optCSV.Name" xml:space="preserve">
-    <value>optCSV</value>
-  </data>
-  <data name="&gt;&gt;optCSV.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;optCSV.Parent" xml:space="preserve">
-    <value>Panel5</value>
-  </data>
-  <data name="&gt;&gt;optCSV.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="optExcel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2475,18 +1863,6 @@
   <data name="optExcel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;optExcel.Name" xml:space="preserve">
-    <value>optExcel</value>
-  </data>
-  <data name="&gt;&gt;optExcel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;optExcel.Parent" xml:space="preserve">
-    <value>Panel5</value>
-  </data>
-  <data name="&gt;&gt;optExcel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="Panel5.Location" type="System.Drawing.Point, System.Drawing">
     <value>406, 530</value>
   </data>
@@ -2495,18 +1871,6 @@
   </data>
   <data name="Panel5.TabIndex" type="System.Int32, mscorlib">
     <value>57</value>
-  </data>
-  <data name="&gt;&gt;Panel5.Name" xml:space="preserve">
-    <value>Panel5</value>
-  </data>
-  <data name="&gt;&gt;Panel5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel5.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Panel5.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="Label7.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
@@ -2523,18 +1887,6 @@
   <data name="Label7.Text" xml:space="preserve">
     <value>Fitting statistics</value>
   </data>
-  <data name="&gt;&gt;Label7.Name" xml:space="preserve">
-    <value>Label7</value>
-  </data>
-  <data name="&gt;&gt;Label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label7.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Label7.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="chkresiduals.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -2546,18 +1898,6 @@
   </data>
   <data name="chkresiduals.TabIndex" type="System.Int32, mscorlib">
     <value>38</value>
-  </data>
-  <data name="&gt;&gt;chkresiduals.Name" xml:space="preserve">
-    <value>chkresiduals</value>
-  </data>
-  <data name="&gt;&gt;chkresiduals.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkresiduals.Parent" xml:space="preserve">
-    <value>Panel8</value>
-  </data>
-  <data name="&gt;&gt;chkresiduals.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="chkSS.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2571,18 +1911,6 @@
   <data name="chkSS.TabIndex" type="System.Int32, mscorlib">
     <value>39</value>
   </data>
-  <data name="&gt;&gt;chkSS.Name" xml:space="preserve">
-    <value>chkSS</value>
-  </data>
-  <data name="&gt;&gt;chkSS.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkSS.Parent" xml:space="preserve">
-    <value>Panel8</value>
-  </data>
-  <data name="&gt;&gt;chkSS.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="Panel8.Location" type="System.Drawing.Point, System.Drawing">
     <value>309, 307</value>
   </data>
@@ -2591,18 +1919,6 @@
   </data>
   <data name="Panel8.TabIndex" type="System.Int32, mscorlib">
     <value>59</value>
-  </data>
-  <data name="&gt;&gt;Panel8.Name" xml:space="preserve">
-    <value>Panel8</value>
-  </data>
-  <data name="&gt;&gt;Panel8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel8.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Panel8.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -2627,11 +1943,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Results Extractor</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmResults</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.3.5072.22113, Culture=neutral, PublicKeyToken=dd4210ebb9723de9</value>
   </data>
 </root>

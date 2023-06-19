@@ -141,18 +141,6 @@
   <data name="m_sketchPadToolbar.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_sketchPadToolbar.Name" xml:space="preserve">
-    <value>m_sketchPadToolbar</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPadToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPadToolbar.Parent" xml:space="preserve">
-    <value>m_tlpSketchPad</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPadToolbar.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_sketchPad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -169,18 +157,6 @@
     <value>780, 335</value>
   </data>
   <data name="m_sketchPad.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPad.Name" xml:space="preserve">
-    <value>m_sketchPad</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationSketchPad, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
-    <value>m_tlpSketchPad</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPad.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_tlpSketchPad.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -201,18 +177,6 @@
   <data name="m_tlpSketchPad.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_tlpSketchPad.Name" xml:space="preserve">
-    <value>m_tlpSketchPad</value>
-  </data>
-  <data name="&gt;&gt;m_tlpSketchPad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpSketchPad.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tlpSketchPad.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlpSketchPad.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_sketchPadToolbar" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_sketchPad" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
@@ -224,18 +188,6 @@
   </data>
   <data name="m_scMain.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_scBottomBits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -270,18 +222,6 @@
   <data name="m_shapeToolBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_shapeToolBox.Name" xml:space="preserve">
-    <value>m_shapeToolBox</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolBox.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolBox.Parent" xml:space="preserve">
-    <value>m_tlpToolbox</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_shapeToolboxToolbar.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
@@ -298,18 +238,6 @@
     <value>316, 25</value>
   </data>
   <data name="m_shapeToolboxToolbar.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.Name" xml:space="preserve">
-    <value>m_shapeToolboxToolbar</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.Parent" xml:space="preserve">
-    <value>m_tlpToolbox</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_tlpToolbox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -330,32 +258,8 @@
   <data name="m_tlpToolbox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_tlpToolbox.Name" xml:space="preserve">
-    <value>m_tlpToolbox</value>
-  </data>
-  <data name="&gt;&gt;m_tlpToolbox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpToolbox.Parent" xml:space="preserve">
-    <value>m_scBottomBits.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tlpToolbox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlpToolbox.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_shapeToolBox" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_shapeToolboxToolbar" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.Panel1.Name" xml:space="preserve">
-    <value>m_scBottomBits.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.Panel1.Parent" xml:space="preserve">
-    <value>m_scBottomBits</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_tlpAssingments.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -378,18 +282,6 @@
   <data name="m_assignments.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_assignments.Name" xml:space="preserve">
-    <value>m_assignments</value>
-  </data>
-  <data name="&gt;&gt;m_assignments.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationAssignments, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_assignments.Parent" xml:space="preserve">
-    <value>m_tlpAssingments</value>
-  </data>
-  <data name="&gt;&gt;m_assignments.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_assignmentsToolbar.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -406,18 +298,6 @@
     <value>456, 25</value>
   </data>
   <data name="m_assignmentsToolbar.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_assignmentsToolbar.Name" xml:space="preserve">
-    <value>m_assignmentsToolbar</value>
-  </data>
-  <data name="&gt;&gt;m_assignmentsToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_assignmentsToolbar.Parent" xml:space="preserve">
-    <value>m_tlpAssingments</value>
-  </data>
-  <data name="&gt;&gt;m_assignmentsToolbar.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_tlpAssingments.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -438,32 +318,8 @@
   <data name="m_tlpAssingments.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_tlpAssingments.Name" xml:space="preserve">
-    <value>m_tlpAssingments</value>
-  </data>
-  <data name="&gt;&gt;m_tlpAssingments.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpAssingments.Parent" xml:space="preserve">
-    <value>m_scBottomBits.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpAssingments.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlpAssingments.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_assignments" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_assignmentsToolbar" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.Panel2.Name" xml:space="preserve">
-    <value>m_scBottomBits.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.Panel2.Parent" xml:space="preserve">
-    <value>m_scBottomBits</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_scBottomBits.Size" type="System.Drawing.Size, System.Drawing">
     <value>784, 194</value>
@@ -474,30 +330,6 @@
   <data name="m_scBottomBits.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_scBottomBits.Name" xml:space="preserve">
-    <value>m_scBottomBits</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scBottomBits.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>784, 562</value>
   </data>
@@ -505,18 +337,6 @@
     <value>364</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Name" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -5047,11 +4867,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>&lt;caption&gt;</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmEcospaceEnvironmentalResponses</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

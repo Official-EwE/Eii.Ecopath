@@ -138,18 +138,6 @@
   <data name="m_lblSource.Text" xml:space="preserve">
     <value>&amp;File:</value>
   </data>
-  <data name="&gt;&gt;m_lblSource.Name" xml:space="preserve">
-    <value>m_lblSource</value>
-  </data>
-  <data name="&gt;&gt;m_lblSource.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSource.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblSource.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="m_tbInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -161,18 +149,6 @@
   </data>
   <data name="m_tbInput.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_tbInput.Name" xml:space="preserve">
-    <value>m_tbInput</value>
-  </data>
-  <data name="&gt;&gt;m_tbInput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbInput.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbInput.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="m_btnBrowseInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -206,18 +182,6 @@
   <data name="m_btnBrowseInput.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_btnBrowseInput.Name" xml:space="preserve">
-    <value>m_btnBrowseInput</value>
-  </data>
-  <data name="&gt;&gt;m_btnBrowseInput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnBrowseInput.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnBrowseInput.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="m_lblMappings.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -235,18 +199,6 @@
   </data>
   <data name="m_lblMappings.Text" xml:space="preserve">
     <value>Cell &amp;value field(s):</value>
-  </data>
-  <data name="&gt;&gt;m_lblMappings.Name" xml:space="preserve">
-    <value>m_lblMappings</value>
-  </data>
-  <data name="&gt;&gt;m_lblMappings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMappings.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblMappings.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="m_tlpOkCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -272,18 +224,6 @@
   <data name="m_bntOK.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;m_bntOK.Name" xml:space="preserve">
-    <value>m_bntOK</value>
-  </data>
-  <data name="&gt;&gt;m_bntOK.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_bntOK.Parent" xml:space="preserve">
-    <value>m_tlpOkCancel</value>
-  </data>
-  <data name="&gt;&gt;m_bntOK.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
@@ -302,18 +242,6 @@
   <data name="m_btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;m_btnCancel.Name" xml:space="preserve">
-    <value>m_btnCancel</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Parent" xml:space="preserve">
-    <value>m_tlpOkCancel</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tlpOkCancel.Location" type="System.Drawing.Point, System.Drawing">
     <value>359, 340</value>
   </data>
@@ -325,18 +253,6 @@
   </data>
   <data name="m_tlpOkCancel.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOkCancel.Name" xml:space="preserve">
-    <value>m_tlpOkCancel</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOkCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOkCancel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOkCancel.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_tlpOkCancel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_bntOK" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnCancel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -353,18 +269,6 @@
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Basemap.gridImportLayerMappings, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_lblRow.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -380,18 +284,6 @@
   <data name="m_lblRow.Text" xml:space="preserve">
     <value>Cell &amp;row field:</value>
   </data>
-  <data name="&gt;&gt;m_lblRow.Name" xml:space="preserve">
-    <value>m_lblRow</value>
-  </data>
-  <data name="&gt;&gt;m_lblRow.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblRow.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblRow.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_cmbRow.Location" type="System.Drawing.Point, System.Drawing">
     <value>104, 38</value>
   </data>
@@ -401,18 +293,6 @@
   <data name="m_cmbRow.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_cmbRow.Name" xml:space="preserve">
-    <value>m_cmbRow</value>
-  </data>
-  <data name="&gt;&gt;m_cmbRow.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbRow.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cmbRow.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_cmbCol.Location" type="System.Drawing.Point, System.Drawing">
     <value>104, 63</value>
   </data>
@@ -421,18 +301,6 @@
   </data>
   <data name="m_cmbCol.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_cmbCol.Name" xml:space="preserve">
-    <value>m_cmbCol</value>
-  </data>
-  <data name="&gt;&gt;m_cmbCol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbCol.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cmbCol.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_lblCol.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -452,18 +320,6 @@
   <data name="m_lblCol.Text" xml:space="preserve">
     <value>Cell &amp;column field:</value>
   </data>
-  <data name="&gt;&gt;m_lblCol.Name" xml:space="preserve">
-    <value>m_lblCol</value>
-  </data>
-  <data name="&gt;&gt;m_lblCol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblCol.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblCol.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -481,11 +337,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Import layer data from CSV</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgImportLayerDataXYZ</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

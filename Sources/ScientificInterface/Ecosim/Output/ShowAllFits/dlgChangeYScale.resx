@@ -135,18 +135,6 @@
   <data name="m_btnOK.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;m_btnOK.Name" xml:space="preserve">
-    <value>m_btnOK</value>
-  </data>
-  <data name="&gt;&gt;m_btnOK.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnOK.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_btnReset.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
@@ -161,18 +149,6 @@
   </data>
   <data name="m_btnReset.Text" xml:space="preserve">
     <value>Reset All</value>
-  </data>
-  <data name="&gt;&gt;m_btnReset.Name" xml:space="preserve">
-    <value>m_btnReset</value>
-  </data>
-  <data name="&gt;&gt;m_btnReset.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnReset.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnReset.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_lbAllPlots.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -189,18 +165,6 @@
   <data name="m_lbAllPlots.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_lbAllPlots.Name" xml:space="preserve">
-    <value>m_lbAllPlots</value>
-  </data>
-  <data name="&gt;&gt;m_lbAllPlots.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbAllPlots.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbAllPlots.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_lblSelPlotName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -216,18 +180,6 @@
   <data name="m_lblSelPlotName.Text" xml:space="preserve">
     <value>Selected Plot:</value>
   </data>
-  <data name="&gt;&gt;m_lblSelPlotName.Name" xml:space="preserve">
-    <value>m_lblSelPlotName</value>
-  </data>
-  <data name="&gt;&gt;m_lblSelPlotName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSelPlotName.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblSelPlotName.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_txbSelPlotName.Location" type="System.Drawing.Point, System.Drawing">
     <value>209, 28</value>
   </data>
@@ -236,18 +188,6 @@
   </data>
   <data name="m_txbSelPlotName.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_txbSelPlotName.Name" xml:space="preserve">
-    <value>m_txbSelPlotName</value>
-  </data>
-  <data name="&gt;&gt;m_txbSelPlotName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_txbSelPlotName.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_txbSelPlotName.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_lblYScale.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -263,18 +203,6 @@
   </data>
   <data name="m_lblYScale.Text" xml:space="preserve">
     <value>&amp;Y Scale:</value>
-  </data>
-  <data name="&gt;&gt;m_lblYScale.Name" xml:space="preserve">
-    <value>m_lblYScale</value>
-  </data>
-  <data name="&gt;&gt;m_lblYScale.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblYScale.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblYScale.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -294,18 +222,6 @@
   <data name="m_btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;m_btnCancel.Name" xml:space="preserve">
-    <value>m_btnCancel</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_nudYScale.Location" type="System.Drawing.Point, System.Drawing">
     <value>209, 75</value>
   </data>
@@ -314,18 +230,6 @@
   </data>
   <data name="m_nudYScale.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_nudYScale.Name" xml:space="preserve">
-    <value>m_nudYScale</value>
-  </data>
-  <data name="&gt;&gt;m_nudYScale.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudYScale.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudYScale.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -344,11 +248,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Change Y Scale</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgChangeYScale</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

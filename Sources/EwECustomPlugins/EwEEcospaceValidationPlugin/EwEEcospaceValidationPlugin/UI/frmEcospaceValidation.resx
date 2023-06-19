@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -138,18 +138,6 @@
   <data name="m_slTimestep.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_slTimestep.Name" xml:space="preserve">
-    <value>m_slTimestep</value>
-  </data>
-  <data name="&gt;&gt;m_slTimestep.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.7.0.18236, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_slTimestep.Parent" xml:space="preserve">
-    <value>m_plTimestep</value>
-  </data>
-  <data name="&gt;&gt;m_slTimestep.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_nudTimeStep.Location" type="System.Drawing.Point, System.Drawing">
     <value>75, 3</value>
   </data>
@@ -157,18 +145,6 @@
     <value>85, 20</value>
   </data>
   <data name="m_nudTimeStep.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_nudTimeStep.Name" xml:space="preserve">
-    <value>m_nudTimeStep</value>
-  </data>
-  <data name="&gt;&gt;m_nudTimeStep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudTimeStep.Parent" xml:space="preserve">
-    <value>m_plTimestep</value>
-  </data>
-  <data name="&gt;&gt;m_nudTimeStep.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_lblTimeStep.AutoSize" type="System.Boolean, mscorlib">
@@ -186,18 +162,6 @@
   <data name="m_lblTimeStep.Text" xml:space="preserve">
     <value>&amp;Time step:</value>
   </data>
-  <data name="&gt;&gt;m_lblTimeStep.Name" xml:space="preserve">
-    <value>m_lblTimeStep</value>
-  </data>
-  <data name="&gt;&gt;m_lblTimeStep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblTimeStep.Parent" xml:space="preserve">
-    <value>m_plTimestep</value>
-  </data>
-  <data name="&gt;&gt;m_lblTimeStep.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_plTimestep.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -213,18 +177,6 @@
   <data name="m_plTimestep.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_plTimestep.Name" xml:space="preserve">
-    <value>m_plTimestep</value>
-  </data>
-  <data name="&gt;&gt;m_plTimestep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plTimestep.Parent" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_plTimestep.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_grid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -235,18 +187,6 @@
     <value>598, 456</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEEcospaceValidationPlugin.gridPredPreyOverlap, EwEEcospaceValidationPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_slRegion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -264,18 +204,6 @@
   <data name="m_slRegion.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_slRegion.Name" xml:space="preserve">
-    <value>m_slRegion</value>
-  </data>
-  <data name="&gt;&gt;m_slRegion.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.7.0.18236, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_slRegion.Parent" xml:space="preserve">
-    <value>m_plRegions</value>
-  </data>
-  <data name="&gt;&gt;m_slRegion.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_nudRegion.Location" type="System.Drawing.Point, System.Drawing">
     <value>75, 3</value>
   </data>
@@ -284,18 +212,6 @@
   </data>
   <data name="m_nudRegion.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_nudRegion.Name" xml:space="preserve">
-    <value>m_nudRegion</value>
-  </data>
-  <data name="&gt;&gt;m_nudRegion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudRegion.Parent" xml:space="preserve">
-    <value>m_plRegions</value>
-  </data>
-  <data name="&gt;&gt;m_nudRegion.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblRegion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -315,18 +231,6 @@
   <data name="m_lblRegion.Text" xml:space="preserve">
     <value>&amp;Region:</value>
   </data>
-  <data name="&gt;&gt;m_lblRegion.Name" xml:space="preserve">
-    <value>m_lblRegion</value>
-  </data>
-  <data name="&gt;&gt;m_lblRegion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblRegion.Parent" xml:space="preserve">
-    <value>m_plRegions</value>
-  </data>
-  <data name="&gt;&gt;m_lblRegion.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_plRegions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -342,18 +246,6 @@
   <data name="m_plRegions.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_plRegions.Name" xml:space="preserve">
-    <value>m_plRegions</value>
-  </data>
-  <data name="&gt;&gt;m_plRegions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plRegions.Parent" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_plRegions.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -367,18 +259,6 @@
     <value>604, 518</value>
   </data>
   <data name="m_tlpMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tlpMain.Name" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_tlpMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
@@ -4915,11 +4795,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>&lt;caption&gt;</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmEcospaceValidation</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.18236, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

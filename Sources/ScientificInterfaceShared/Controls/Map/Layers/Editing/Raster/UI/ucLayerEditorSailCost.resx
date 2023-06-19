@@ -135,18 +135,6 @@
   <data name="m_cmbFleet.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;m_cmbFleet.Name" xml:space="preserve">
-    <value>m_cmbFleet</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFleet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFleet.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFleet.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_lblFleet.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -164,18 +152,6 @@
   </data>
   <data name="m_lblFleet.Text" xml:space="preserve">
     <value>&amp;Fleet:</value>
-  </data>
-  <data name="&gt;&gt;m_lblFleet.Name" xml:space="preserve">
-    <value>m_lblFleet</value>
-  </data>
-  <data name="&gt;&gt;m_lblFleet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblFleet.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblFleet.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_btnCalculate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -198,18 +174,6 @@
   <data name="m_btnCalculate.Text" xml:space="preserve">
     <value>&amp;Calculate</value>
   </data>
-  <data name="&gt;&gt;m_btnCalculate.Name" xml:space="preserve">
-    <value>m_btnCalculate</value>
-  </data>
-  <data name="&gt;&gt;m_btnCalculate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCalculate.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnCalculate.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -221,11 +185,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 265</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucLayerEditorSailCost</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorRange, ScientificInterfaceShared, Version=6.6.14962.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

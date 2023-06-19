@@ -128,18 +128,6 @@
   <data name="m_udNumDigits.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_udNumDigits.Name" xml:space="preserve">
-    <value>m_udNumDigits</value>
-  </data>
-  <data name="&gt;&gt;m_udNumDigits.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_udNumDigits.Parent" xml:space="preserve">
-    <value>m_gbNumFormatting</value>
-  </data>
-  <data name="&gt;&gt;m_udNumDigits.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="lbNumDigits.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -158,18 +146,6 @@
   </data>
   <data name="lbNumDigits.Text" xml:space="preserve">
     <value>Relevant decimal &amp;digits:</value>
-  </data>
-  <data name="&gt;&gt;lbNumDigits.Name" xml:space="preserve">
-    <value>lbNumDigits</value>
-  </data>
-  <data name="&gt;&gt;lbNumDigits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbNumDigits.Parent" xml:space="preserve">
-    <value>m_gbNumFormatting</value>
-  </data>
-  <data name="&gt;&gt;lbNumDigits.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -192,18 +168,6 @@
   <data name="m_lblOptions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblOptions.Name" xml:space="preserve">
-    <value>m_lblOptions</value>
-  </data>
-  <data name="&gt;&gt;m_lblOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lblOptions.Parent" xml:space="preserve">
-    <value>Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_lblOptions.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_lbDescription.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -222,18 +186,6 @@
   <data name="m_lbDescription.Text" xml:space="preserve">
     <value>D&amp;escription:</value>
   </data>
-  <data name="&gt;&gt;m_lbDescription.Name" xml:space="preserve">
-    <value>m_lbDescription</value>
-  </data>
-  <data name="&gt;&gt;m_lbDescription.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbDescription.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lbDescription.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="m_lbScenarioName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -251,18 +203,6 @@
   </data>
   <data name="m_lbScenarioName.Text" xml:space="preserve">
     <value>&amp;Name:</value>
-  </data>
-  <data name="&gt;&gt;m_lbScenarioName.Name" xml:space="preserve">
-    <value>m_lbScenarioName</value>
-  </data>
-  <data name="&gt;&gt;m_lbScenarioName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbScenarioName.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lbScenarioName.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="m_lblModel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -285,18 +225,6 @@
   <data name="m_lblModel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblModel.Name" xml:space="preserve">
-    <value>m_lblModel</value>
-  </data>
-  <data name="&gt;&gt;m_lblModel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lblModel.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblModel.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_tbName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -308,18 +236,6 @@
   </data>
   <data name="m_tbName.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tbName.Name" xml:space="preserve">
-    <value>m_tbName</value>
-  </data>
-  <data name="&gt;&gt;m_tbName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbName.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_tbName.ZOrder" xml:space="preserve">
-    <value>11</value>
   </data>
   <data name="m_lbAuthor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -339,18 +255,6 @@
   <data name="m_lbAuthor.Text" xml:space="preserve">
     <value>&amp;Author:</value>
   </data>
-  <data name="&gt;&gt;m_lbAuthor.Name" xml:space="preserve">
-    <value>m_lbAuthor</value>
-  </data>
-  <data name="&gt;&gt;m_lbAuthor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbAuthor.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lbAuthor.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_tbAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -365,18 +269,6 @@
   </data>
   <data name="m_tbAuthor.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_tbAuthor.Name" xml:space="preserve">
-    <value>m_tbAuthor</value>
-  </data>
-  <data name="&gt;&gt;m_tbAuthor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbAuthor.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_tbAuthor.ZOrder" xml:space="preserve">
-    <value>13</value>
   </data>
   <data name="m_lbContact.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -396,18 +288,6 @@
   <data name="m_lbContact.Text" xml:space="preserve">
     <value>&amp;Contact:</value>
   </data>
-  <data name="&gt;&gt;m_lbContact.Name" xml:space="preserve">
-    <value>m_lbContact</value>
-  </data>
-  <data name="&gt;&gt;m_lbContact.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbContact.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lbContact.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="m_lblFirstYear.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -422,18 +302,6 @@
   </data>
   <data name="m_lblFirstYear.Text" xml:space="preserve">
     <value>Model &amp;year:</value>
-  </data>
-  <data name="&gt;&gt;m_lblFirstYear.Name" xml:space="preserve">
-    <value>m_lblFirstYear</value>
-  </data>
-  <data name="&gt;&gt;m_lblFirstYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblFirstYear.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblFirstYear.ZOrder" xml:space="preserve">
-    <value>19</value>
   </data>
   <data name="m_lblArea.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -450,18 +318,6 @@
   <data name="m_lblArea.Text" xml:space="preserve">
     <value>Model a&amp;rea:</value>
   </data>
-  <data name="&gt;&gt;m_lblArea.Name" xml:space="preserve">
-    <value>m_lblArea</value>
-  </data>
-  <data name="&gt;&gt;m_lblArea.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblArea.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblArea.ZOrder" xml:space="preserve">
-    <value>28</value>
-  </data>
   <data name="m_tbArea.Location" type="System.Drawing.Point, System.Drawing">
     <value>109, 193</value>
   </data>
@@ -473,18 +329,6 @@
   </data>
   <data name="m_tbArea.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
-  </data>
-  <data name="&gt;&gt;m_tbArea.Name" xml:space="preserve">
-    <value>m_tbArea</value>
-  </data>
-  <data name="&gt;&gt;m_tbArea.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbArea.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_tbArea.ZOrder" xml:space="preserve">
-    <value>18</value>
   </data>
   <data name="m_lblAreaUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -504,18 +348,6 @@
   <data name="m_lblAreaUnit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblAreaUnit.Name" xml:space="preserve">
-    <value>m_lblAreaUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblAreaUnit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEUnitLabel, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lblAreaUnit.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblAreaUnit.ZOrder" xml:space="preserve">
-    <value>25</value>
-  </data>
   <data name="m_tlpUnits.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -530,18 +362,6 @@
   </data>
   <data name="tbCurrencyNutrientOther.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
-  </data>
-  <data name="&gt;&gt;tbCurrencyNutrientOther.Name" xml:space="preserve">
-    <value>tbCurrencyNutrientOther</value>
-  </data>
-  <data name="&gt;&gt;tbCurrencyNutrientOther.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbCurrencyNutrientOther.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;tbCurrencyNutrientOther.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="rbNitrogen.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -561,18 +381,6 @@
   <data name="rbNitrogen.Text" xml:space="preserve">
     <value>nitrogen ({0})</value>
   </data>
-  <data name="&gt;&gt;rbNitrogen.Name" xml:space="preserve">
-    <value>rbNitrogen</value>
-  </data>
-  <data name="&gt;&gt;rbNitrogen.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbNitrogen.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;rbNitrogen.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="rbNutrientOther.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -590,18 +398,6 @@
   </data>
   <data name="rbNutrientOther.Text" xml:space="preserve">
     <value>other:</value>
-  </data>
-  <data name="&gt;&gt;rbNutrientOther.Name" xml:space="preserve">
-    <value>rbNutrientOther</value>
-  </data>
-  <data name="&gt;&gt;rbNutrientOther.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbNutrientOther.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;rbNutrientOther.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="rbPhosporus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -621,18 +417,6 @@
   <data name="rbPhosporus.Text" xml:space="preserve">
     <value>phosporus ({0})</value>
   </data>
-  <data name="&gt;&gt;rbPhosporus.Name" xml:space="preserve">
-    <value>rbPhosporus</value>
-  </data>
-  <data name="&gt;&gt;rbPhosporus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbPhosporus.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;rbPhosporus.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="tbCurrencyEnergyOther.Location" type="System.Drawing.Point, System.Drawing">
     <value>67, 160</value>
   </data>
@@ -641,18 +425,6 @@
   </data>
   <data name="tbCurrencyEnergyOther.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
-  </data>
-  <data name="&gt;&gt;tbCurrencyEnergyOther.Name" xml:space="preserve">
-    <value>tbCurrencyEnergyOther</value>
-  </data>
-  <data name="&gt;&gt;tbCurrencyEnergyOther.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbCurrencyEnergyOther.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;tbCurrencyEnergyOther.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="rbCurrencyEnergyOther.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -672,18 +444,6 @@
   <data name="rbCurrencyEnergyOther.Text" xml:space="preserve">
     <value>other:</value>
   </data>
-  <data name="&gt;&gt;rbCurrencyEnergyOther.Name" xml:space="preserve">
-    <value>rbCurrencyEnergyOther</value>
-  </data>
-  <data name="&gt;&gt;rbCurrencyEnergyOther.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbCurrencyEnergyOther.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;rbCurrencyEnergyOther.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_lblNutrientRelated.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -699,18 +459,6 @@
   <data name="m_lblNutrientRelated.Text" xml:space="preserve">
     <value>&amp;Nutrient related:</value>
   </data>
-  <data name="&gt;&gt;m_lblNutrientRelated.Name" xml:space="preserve">
-    <value>m_lblNutrientRelated</value>
-  </data>
-  <data name="&gt;&gt;m_lblNutrientRelated.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNutrientRelated.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblNutrientRelated.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_lblEnergyRelated.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -725,18 +473,6 @@
   </data>
   <data name="m_lblEnergyRelated.Text" xml:space="preserve">
     <value>&amp;Energy related:</value>
-  </data>
-  <data name="&gt;&gt;m_lblEnergyRelated.Name" xml:space="preserve">
-    <value>m_lblEnergyRelated</value>
-  </data>
-  <data name="&gt;&gt;m_lblEnergyRelated.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblEnergyRelated.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblEnergyRelated.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="rbWetWeight.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -756,18 +492,6 @@
   <data name="rbWetWeight.Text" xml:space="preserve">
     <value>wet weight ({0})</value>
   </data>
-  <data name="&gt;&gt;rbWetWeight.Name" xml:space="preserve">
-    <value>rbWetWeight</value>
-  </data>
-  <data name="&gt;&gt;rbWetWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbWetWeight.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;rbWetWeight.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="rbJoules.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -785,18 +509,6 @@
   </data>
   <data name="rbJoules.Text" xml:space="preserve">
     <value>joules ({0})</value>
-  </data>
-  <data name="&gt;&gt;rbJoules.Name" xml:space="preserve">
-    <value>rbJoules</value>
-  </data>
-  <data name="&gt;&gt;rbJoules.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbJoules.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;rbJoules.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="rbCalorie.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -816,18 +528,6 @@
   <data name="rbCalorie.Text" xml:space="preserve">
     <value>calorie ({0})</value>
   </data>
-  <data name="&gt;&gt;rbCalorie.Name" xml:space="preserve">
-    <value>rbCalorie</value>
-  </data>
-  <data name="&gt;&gt;rbCalorie.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbCalorie.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;rbCalorie.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="rbCarbon.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -845,18 +545,6 @@
   </data>
   <data name="rbCarbon.Text" xml:space="preserve">
     <value>carbon ({0})</value>
-  </data>
-  <data name="&gt;&gt;rbCarbon.Name" xml:space="preserve">
-    <value>rbCarbon</value>
-  </data>
-  <data name="&gt;&gt;rbCarbon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbCarbon.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;rbCarbon.ZOrder" xml:space="preserve">
-    <value>11</value>
   </data>
   <data name="rbDryWeight.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -876,18 +564,6 @@
   <data name="rbDryWeight.Text" xml:space="preserve">
     <value>dry weight ({0})</value>
   </data>
-  <data name="&gt;&gt;rbDryWeight.Name" xml:space="preserve">
-    <value>rbDryWeight</value>
-  </data>
-  <data name="&gt;&gt;rbDryWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbDryWeight.Parent" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;rbDryWeight.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="m_gbCurrencyUnit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -906,18 +582,6 @@
   <data name="m_gbCurrencyUnit.Text" xml:space="preserve">
     <value>C&amp;urrency units</value>
   </data>
-  <data name="&gt;&gt;m_gbCurrencyUnit.Name" xml:space="preserve">
-    <value>m_gbCurrencyUnit</value>
-  </data>
-  <data name="&gt;&gt;m_gbCurrencyUnit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbCurrencyUnit.Parent" xml:space="preserve">
-    <value>m_tlpUnits</value>
-  </data>
-  <data name="&gt;&gt;m_gbCurrencyUnit.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="txbTimeOther.Location" type="System.Drawing.Point, System.Drawing">
     <value>84, 67</value>
   </data>
@@ -926,18 +590,6 @@
   </data>
   <data name="txbTimeOther.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
-  </data>
-  <data name="&gt;&gt;txbTimeOther.Name" xml:space="preserve">
-    <value>txbTimeOther</value>
-  </data>
-  <data name="&gt;&gt;txbTimeOther.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txbTimeOther.Parent" xml:space="preserve">
-    <value>m_gbTimeUnits</value>
-  </data>
-  <data name="&gt;&gt;txbTimeOther.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="rbTimeOther.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -957,18 +609,6 @@
   <data name="rbTimeOther.Text" xml:space="preserve">
     <value>other unit:</value>
   </data>
-  <data name="&gt;&gt;rbTimeOther.Name" xml:space="preserve">
-    <value>rbTimeOther</value>
-  </data>
-  <data name="&gt;&gt;rbTimeOther.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbTimeOther.Parent" xml:space="preserve">
-    <value>m_gbTimeUnits</value>
-  </data>
-  <data name="&gt;&gt;rbTimeOther.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="rbDay.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -986,18 +626,6 @@
   </data>
   <data name="rbDay.Text" xml:space="preserve">
     <value>day</value>
-  </data>
-  <data name="&gt;&gt;rbDay.Name" xml:space="preserve">
-    <value>rbDay</value>
-  </data>
-  <data name="&gt;&gt;rbDay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbDay.Parent" xml:space="preserve">
-    <value>m_gbTimeUnits</value>
-  </data>
-  <data name="&gt;&gt;rbDay.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="rbYear.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1017,18 +645,6 @@
   <data name="rbYear.Text" xml:space="preserve">
     <value>year *)</value>
   </data>
-  <data name="&gt;&gt;rbYear.Name" xml:space="preserve">
-    <value>rbYear</value>
-  </data>
-  <data name="&gt;&gt;rbYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbYear.Parent" xml:space="preserve">
-    <value>m_gbTimeUnits</value>
-  </data>
-  <data name="&gt;&gt;rbYear.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_gbTimeUnits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1047,18 +663,6 @@
   <data name="m_gbTimeUnits.Text" xml:space="preserve">
     <value>&amp;Time units</value>
   </data>
-  <data name="&gt;&gt;m_gbTimeUnits.Name" xml:space="preserve">
-    <value>m_gbTimeUnits</value>
-  </data>
-  <data name="&gt;&gt;m_gbTimeUnits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbTimeUnits.Parent" xml:space="preserve">
-    <value>m_tlpUnits</value>
-  </data>
-  <data name="&gt;&gt;m_gbTimeUnits.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_lblMonetaryUnit.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1073,18 +677,6 @@
   </data>
   <data name="m_lblMonetaryUnit.Text" xml:space="preserve">
     <value>&amp;Unit:</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonetaryUnit.Name" xml:space="preserve">
-    <value>m_lblMonetaryUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonetaryUnit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonetaryUnit.Parent" xml:space="preserve">
-    <value>m_gbMonetaryUnits</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonetaryUnit.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_cmbMonetaryUnit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1104,18 +696,6 @@
   <data name="m_cmbMonetaryUnit.Text" xml:space="preserve">
     <value>EUR</value>
   </data>
-  <data name="&gt;&gt;m_cmbMonetaryUnit.Name" xml:space="preserve">
-    <value>m_cmbMonetaryUnit</value>
-  </data>
-  <data name="&gt;&gt;m_cmbMonetaryUnit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cMonetaryUnitComboBox, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_cmbMonetaryUnit.Parent" xml:space="preserve">
-    <value>m_gbMonetaryUnits</value>
-  </data>
-  <data name="&gt;&gt;m_cmbMonetaryUnit.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_gbMonetaryUnits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1134,18 +714,6 @@
   <data name="m_gbMonetaryUnits.Text" xml:space="preserve">
     <value>&amp;Monetary units</value>
   </data>
-  <data name="&gt;&gt;m_gbMonetaryUnits.Name" xml:space="preserve">
-    <value>m_gbMonetaryUnits</value>
-  </data>
-  <data name="&gt;&gt;m_gbMonetaryUnits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbMonetaryUnits.Parent" xml:space="preserve">
-    <value>m_tlpUnits</value>
-  </data>
-  <data name="&gt;&gt;m_gbMonetaryUnits.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_cbGroupDigits.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1160,18 +728,6 @@
   </data>
   <data name="m_cbGroupDigits.Text" xml:space="preserve">
     <value>&amp;Group digits</value>
-  </data>
-  <data name="&gt;&gt;m_cbGroupDigits.Name" xml:space="preserve">
-    <value>m_cbGroupDigits</value>
-  </data>
-  <data name="&gt;&gt;m_cbGroupDigits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbGroupDigits.Parent" xml:space="preserve">
-    <value>m_gbNumFormatting</value>
-  </data>
-  <data name="&gt;&gt;m_cbGroupDigits.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_gbNumFormatting.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1191,18 +747,6 @@
   <data name="m_gbNumFormatting.Text" xml:space="preserve">
     <value>&amp;Number formatting</value>
   </data>
-  <data name="&gt;&gt;m_gbNumFormatting.Name" xml:space="preserve">
-    <value>m_gbNumFormatting</value>
-  </data>
-  <data name="&gt;&gt;m_gbNumFormatting.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbNumFormatting.Parent" xml:space="preserve">
-    <value>m_tlpUnits</value>
-  </data>
-  <data name="&gt;&gt;m_gbNumFormatting.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_tlpUnits.Location" type="System.Drawing.Point, System.Drawing">
     <value>22, 23</value>
   </data>
@@ -1217,18 +761,6 @@
   </data>
   <data name="m_tlpUnits.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
-  </data>
-  <data name="&gt;&gt;m_tlpUnits.Name" xml:space="preserve">
-    <value>m_tlpUnits</value>
-  </data>
-  <data name="&gt;&gt;m_tlpUnits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpUnits.Parent" xml:space="preserve">
-    <value>Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpUnits.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_tlpUnits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_gbCurrencyUnit" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_gbTimeUnits" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_gbMonetaryUnits" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_gbNumFormatting" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,54.71407,Percent,45.28593" /&gt;&lt;Rows Styles="Percent,50,Absolute,195,Absolute,194" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -1247,18 +779,6 @@
   </data>
   <data name="m_chkPSD.Text" xml:space="preserve">
     <value>Include particle size distribution calculations (&amp;PSD)</value>
-  </data>
-  <data name="&gt;&gt;m_chkPSD.Name" xml:space="preserve">
-    <value>m_chkPSD</value>
-  </data>
-  <data name="&gt;&gt;m_chkPSD.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkPSD.Parent" xml:space="preserve">
-    <value>m_plExecution</value>
-  </data>
-  <data name="&gt;&gt;m_chkPSD.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_hdrExecution.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -1281,18 +801,6 @@
   <data name="m_hdrExecution.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrExecution.Name" xml:space="preserve">
-    <value>m_hdrExecution</value>
-  </data>
-  <data name="&gt;&gt;m_hdrExecution.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrExecution.Parent" xml:space="preserve">
-    <value>m_plExecution</value>
-  </data>
-  <data name="&gt;&gt;m_hdrExecution.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_nudNorth.Location" type="System.Drawing.Point, System.Drawing">
     <value>265, 224</value>
   </data>
@@ -1300,18 +808,6 @@
     <value>92, 20</value>
   </data>
   <data name="m_nudNorth.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
-  </data>
-  <data name="&gt;&gt;m_nudNorth.Name" xml:space="preserve">
-    <value>m_nudNorth</value>
-  </data>
-  <data name="&gt;&gt;m_nudNorth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudNorth.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_nudNorth.ZOrder" xml:space="preserve">
     <value>20</value>
   </data>
   <data name="m_nudSouth.Location" type="System.Drawing.Point, System.Drawing">
@@ -1323,18 +819,6 @@
   <data name="m_nudSouth.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
   </data>
-  <data name="&gt;&gt;m_nudSouth.Name" xml:space="preserve">
-    <value>m_nudSouth</value>
-  </data>
-  <data name="&gt;&gt;m_nudSouth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudSouth.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_nudSouth.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="m_nudWest.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 250</value>
   </data>
@@ -1344,18 +828,6 @@
   <data name="m_nudWest.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
   </data>
-  <data name="&gt;&gt;m_nudWest.Name" xml:space="preserve">
-    <value>m_nudWest</value>
-  </data>
-  <data name="&gt;&gt;m_nudWest.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudWest.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_nudWest.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
   <data name="m_nudEast.Location" type="System.Drawing.Point, System.Drawing">
     <value>376, 252</value>
   </data>
@@ -1364,18 +836,6 @@
   </data>
   <data name="m_nudEast.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
-  </data>
-  <data name="&gt;&gt;m_nudEast.Name" xml:space="preserve">
-    <value>m_nudEast</value>
-  </data>
-  <data name="&gt;&gt;m_nudEast.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudEast.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_nudEast.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="m_lblNorth.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1395,18 +855,6 @@
   <data name="m_lblNorth.Text" xml:space="preserve">
     <value>North:</value>
   </data>
-  <data name="&gt;&gt;m_lblNorth.Name" xml:space="preserve">
-    <value>m_lblNorth</value>
-  </data>
-  <data name="&gt;&gt;m_lblNorth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNorth.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblNorth.ZOrder" xml:space="preserve">
-    <value>30</value>
-  </data>
   <data name="m_lblWest.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1424,18 +872,6 @@
   </data>
   <data name="m_lblWest.Text" xml:space="preserve">
     <value>West:</value>
-  </data>
-  <data name="&gt;&gt;m_lblWest.Name" xml:space="preserve">
-    <value>m_lblWest</value>
-  </data>
-  <data name="&gt;&gt;m_lblWest.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblWest.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblWest.ZOrder" xml:space="preserve">
-    <value>29</value>
   </data>
   <data name="m_lblEast.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1455,18 +891,6 @@
   <data name="m_lblEast.Text" xml:space="preserve">
     <value>East:</value>
   </data>
-  <data name="&gt;&gt;m_lblEast.Name" xml:space="preserve">
-    <value>m_lblEast</value>
-  </data>
-  <data name="&gt;&gt;m_lblEast.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblEast.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblEast.ZOrder" xml:space="preserve">
-    <value>26</value>
-  </data>
   <data name="m_lblSouth.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1485,18 +909,6 @@
   <data name="m_lblSouth.Text" xml:space="preserve">
     <value>South:</value>
   </data>
-  <data name="&gt;&gt;m_lblSouth.Name" xml:space="preserve">
-    <value>m_lblSouth</value>
-  </data>
-  <data name="&gt;&gt;m_lblSouth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSouth.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblSouth.ZOrder" xml:space="preserve">
-    <value>21</value>
-  </data>
   <data name="m_btnSearch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -1512,18 +924,6 @@
   <data name="m_btnSearch.Text" xml:space="preserve">
     <value>&amp;Search</value>
   </data>
-  <data name="&gt;&gt;m_btnSearch.Name" xml:space="preserve">
-    <value>m_btnSearch</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearch.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_btnSearch.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_gcmbAreaName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -1538,18 +938,6 @@
   </data>
   <data name="m_gcmbAreaName.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
-  </data>
-  <data name="&gt;&gt;m_gcmbAreaName.Name" xml:space="preserve">
-    <value>m_gcmbAreaName</value>
-  </data>
-  <data name="&gt;&gt;m_gcmbAreaName.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGeocodeLookupComboBox, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_gcmbAreaName.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_gcmbAreaName.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblAreaName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1569,18 +957,6 @@
   <data name="m_lblAreaName.Text" xml:space="preserve">
     <value>&amp;Area name:</value>
   </data>
-  <data name="&gt;&gt;m_lblAreaName.Name" xml:space="preserve">
-    <value>m_lblAreaName</value>
-  </data>
-  <data name="&gt;&gt;m_lblAreaName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblAreaName.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblAreaName.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_tbContact.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -1599,18 +975,6 @@
   <data name="m_tbContact.Text" xml:space="preserve">
     <value>1
 2</value>
-  </data>
-  <data name="&gt;&gt;m_tbContact.Name" xml:space="preserve">
-    <value>m_tbContact</value>
-  </data>
-  <data name="&gt;&gt;m_tbContact.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbContact.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_tbContact.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_tbDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1632,18 +996,6 @@
 2
 3</value>
   </data>
-  <data name="&gt;&gt;m_tbDescription.Name" xml:space="preserve">
-    <value>m_tbDescription</value>
-  </data>
-  <data name="&gt;&gt;m_tbDescription.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbDescription.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_tbDescription.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_tbxNumYears.Location" type="System.Drawing.Point, System.Drawing">
     <value>379, 167</value>
   </data>
@@ -1656,18 +1008,6 @@
   <data name="m_tbxNumYears.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="&gt;&gt;m_tbxNumYears.Name" xml:space="preserve">
-    <value>m_tbxNumYears</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumYears.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumYears.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNumYears.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
   <data name="m_tbxFirstYear.Location" type="System.Drawing.Point, System.Drawing">
     <value>109, 167</value>
   </data>
@@ -1679,18 +1019,6 @@
   </data>
   <data name="m_tbxFirstYear.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_tbxFirstYear.Name" xml:space="preserve">
-    <value>m_tbxFirstYear</value>
-  </data>
-  <data name="&gt;&gt;m_tbxFirstYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxFirstYear.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_tbxFirstYear.ZOrder" xml:space="preserve">
-    <value>15</value>
   </data>
   <data name="m_lblNoYears.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1710,18 +1038,6 @@
   <data name="m_lblNoYears.Text" xml:space="preserve">
     <value>No. &amp;years:</value>
   </data>
-  <data name="&gt;&gt;m_lblNoYears.Name" xml:space="preserve">
-    <value>m_lblNoYears</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoYears.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoYears.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoYears.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
   <data name="m_lblSouthUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1739,18 +1055,6 @@
   </data>
   <data name="m_lblSouthUnit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_lblSouthUnit.Name" xml:space="preserve">
-    <value>m_lblSouthUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblSouthUnit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEUnitLabel, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lblSouthUnit.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblSouthUnit.ZOrder" xml:space="preserve">
-    <value>22</value>
   </data>
   <data name="m_lblEastUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1770,18 +1074,6 @@
   <data name="m_lblEastUnit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblEastUnit.Name" xml:space="preserve">
-    <value>m_lblEastUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblEastUnit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEUnitLabel, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lblEastUnit.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblEastUnit.ZOrder" xml:space="preserve">
-    <value>23</value>
-  </data>
   <data name="m_lblNorthUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1799,18 +1091,6 @@
   </data>
   <data name="m_lblNorthUnit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_lblNorthUnit.Name" xml:space="preserve">
-    <value>m_lblNorthUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblNorthUnit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEUnitLabel, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lblNorthUnit.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblNorthUnit.ZOrder" xml:space="preserve">
-    <value>24</value>
   </data>
   <data name="m_lblModelBounds.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1830,18 +1110,6 @@
   <data name="m_lblModelBounds.Text" xml:space="preserve">
     <value>&amp;Spatial extent:</value>
   </data>
-  <data name="&gt;&gt;m_lblModelBounds.Name" xml:space="preserve">
-    <value>m_lblModelBounds</value>
-  </data>
-  <data name="&gt;&gt;m_lblModelBounds.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblModelBounds.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblModelBounds.ZOrder" xml:space="preserve">
-    <value>27</value>
-  </data>
   <data name="m_lblWestUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1860,18 +1128,6 @@
   <data name="m_lblWestUnit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblWestUnit.Name" xml:space="preserve">
-    <value>m_lblWestUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblWestUnit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEUnitLabel, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lblWestUnit.Parent" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_lblWestUnit.ZOrder" xml:space="preserve">
-    <value>31</value>
-  </data>
   <data name="m_plDescr.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1884,18 +1140,6 @@
   <data name="m_plDescr.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_plDescr.Name" xml:space="preserve">
-    <value>m_plDescr</value>
-  </data>
-  <data name="&gt;&gt;m_plDescr.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plDescr.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_plDescr.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="Panel2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1907,18 +1151,6 @@
   </data>
   <data name="Panel2.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;Panel2.Name" xml:space="preserve">
-    <value>Panel2</value>
-  </data>
-  <data name="&gt;&gt;Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel2.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;Panel2.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_tlpContent.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1947,18 +1179,6 @@
   <data name="m_lblBiodivIndex.Text" xml:space="preserve">
     <value>&amp;Biodiversity index:</value>
   </data>
-  <data name="&gt;&gt;m_lblBiodivIndex.Name" xml:space="preserve">
-    <value>m_lblBiodivIndex</value>
-  </data>
-  <data name="&gt;&gt;m_lblBiodivIndex.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblBiodivIndex.Parent" xml:space="preserve">
-    <value>m_plExecution</value>
-  </data>
-  <data name="&gt;&gt;m_lblBiodivIndex.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_cbmBiodivIndex.Location" type="System.Drawing.Point, System.Drawing">
     <value>153, 67</value>
   </data>
@@ -1967,18 +1187,6 @@
   </data>
   <data name="m_cbmBiodivIndex.TabIndex" type="System.Int32, mscorlib">
     <value>31</value>
-  </data>
-  <data name="&gt;&gt;m_cbmBiodivIndex.Name" xml:space="preserve">
-    <value>m_cbmBiodivIndex</value>
-  </data>
-  <data name="&gt;&gt;m_cbmBiodivIndex.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbmBiodivIndex.Parent" xml:space="preserve">
-    <value>m_plExecution</value>
-  </data>
-  <data name="&gt;&gt;m_cbmBiodivIndex.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_chkIsCoupled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1995,18 +1203,6 @@
   <data name="m_chkIsCoupled.Text" xml:space="preserve">
     <value>Ecospace coupled to external model</value>
   </data>
-  <data name="&gt;&gt;m_chkIsCoupled.Name" xml:space="preserve">
-    <value>m_chkIsCoupled</value>
-  </data>
-  <data name="&gt;&gt;m_chkIsCoupled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkIsCoupled.Parent" xml:space="preserve">
-    <value>m_plExecution</value>
-  </data>
-  <data name="&gt;&gt;m_chkIsCoupled.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_plExecution.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -2019,18 +1215,6 @@
   <data name="m_plExecution.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_plExecution.Name" xml:space="preserve">
-    <value>m_plExecution</value>
-  </data>
-  <data name="&gt;&gt;m_plExecution.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plExecution.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_plExecution.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_cmbEcoType.Location" type="System.Drawing.Point, System.Drawing">
     <value>109, 27</value>
   </data>
@@ -2039,18 +1223,6 @@
   </data>
   <data name="m_cmbEcoType.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_cmbEcoType.Name" xml:space="preserve">
-    <value>m_cmbEcoType</value>
-  </data>
-  <data name="&gt;&gt;m_cmbEcoType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbEcoType.Parent" xml:space="preserve">
-    <value>m_plMetadata</value>
-  </data>
-  <data name="&gt;&gt;m_cmbEcoType.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_lblEcoType.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2070,18 +1242,6 @@
   <data name="m_lblEcoType.Text" xml:space="preserve">
     <value>&amp;Ecosystem type:</value>
   </data>
-  <data name="&gt;&gt;m_lblEcoType.Name" xml:space="preserve">
-    <value>m_lblEcoType</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcoType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcoType.Parent" xml:space="preserve">
-    <value>m_plMetadata</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcoType.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_cmbCountry.Location" type="System.Drawing.Point, System.Drawing">
     <value>379, 27</value>
   </data>
@@ -2090,18 +1250,6 @@
   </data>
   <data name="m_cmbCountry.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_cmbCountry.Name" xml:space="preserve">
-    <value>m_cmbCountry</value>
-  </data>
-  <data name="&gt;&gt;m_cmbCountry.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbCountry.Parent" xml:space="preserve">
-    <value>m_plMetadata</value>
-  </data>
-  <data name="&gt;&gt;m_cmbCountry.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_lblCountry.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2117,18 +1265,6 @@
   </data>
   <data name="m_lblCountry.Text" xml:space="preserve">
     <value>&amp;Country:</value>
-  </data>
-  <data name="&gt;&gt;m_lblCountry.Name" xml:space="preserve">
-    <value>m_lblCountry</value>
-  </data>
-  <data name="&gt;&gt;m_lblCountry.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblCountry.Parent" xml:space="preserve">
-    <value>m_plMetadata</value>
-  </data>
-  <data name="&gt;&gt;m_lblCountry.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_hdrClassification.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -2151,18 +1287,6 @@
   <data name="m_hdrClassification.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrClassification.Name" xml:space="preserve">
-    <value>m_hdrClassification</value>
-  </data>
-  <data name="&gt;&gt;m_hdrClassification.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrClassification.Parent" xml:space="preserve">
-    <value>m_plMetadata</value>
-  </data>
-  <data name="&gt;&gt;m_hdrClassification.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_plMetadata.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -2174,18 +1298,6 @@
   </data>
   <data name="m_plMetadata.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_plMetadata.Name" xml:space="preserve">
-    <value>m_plMetadata</value>
-  </data>
-  <data name="&gt;&gt;m_plMetadata.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plMetadata.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_plMetadata.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_llViewPublication.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -2208,18 +1320,6 @@
   <data name="m_llViewPublication.Text" xml:space="preserve">
     <value>&amp;Validate DOI online</value>
   </data>
-  <data name="&gt;&gt;m_llViewPublication.Name" xml:space="preserve">
-    <value>m_llViewPublication</value>
-  </data>
-  <data name="&gt;&gt;m_llViewPublication.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_llViewPublication.Parent" xml:space="preserve">
-    <value>m_plPublication</value>
-  </data>
-  <data name="&gt;&gt;m_llViewPublication.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_hdrPublication.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -2241,18 +1341,6 @@
   <data name="m_hdrPublication.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrPublication.Name" xml:space="preserve">
-    <value>m_hdrPublication</value>
-  </data>
-  <data name="&gt;&gt;m_hdrPublication.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrPublication.Parent" xml:space="preserve">
-    <value>m_plPublication</value>
-  </data>
-  <data name="&gt;&gt;m_hdrPublication.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tbxReference.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -2268,18 +1356,6 @@
   <data name="m_tbxReference.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;m_tbxReference.Name" xml:space="preserve">
-    <value>m_tbxReference</value>
-  </data>
-  <data name="&gt;&gt;m_tbxReference.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxReference.Parent" xml:space="preserve">
-    <value>m_plPublication</value>
-  </data>
-  <data name="&gt;&gt;m_tbxReference.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_tbxPublicationDOI.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -2292,18 +1368,6 @@
   <data name="m_tbxPublicationDOI.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_tbxPublicationDOI.Name" xml:space="preserve">
-    <value>m_tbxPublicationDOI</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPublicationDOI.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPublicationDOI.Parent" xml:space="preserve">
-    <value>m_plPublication</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPublicationDOI.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_tbxPublicationURL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -2315,18 +1379,6 @@
   </data>
   <data name="m_tbxPublicationURL.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPublicationURL.Name" xml:space="preserve">
-    <value>m_tbxPublicationURL</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPublicationURL.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPublicationURL.Parent" xml:space="preserve">
-    <value>m_plPublication</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPublicationURL.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_lblReference.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2346,18 +1398,6 @@
   <data name="m_lblReference.Text" xml:space="preserve">
     <value>&amp;Reference:</value>
   </data>
-  <data name="&gt;&gt;m_lblReference.Name" xml:space="preserve">
-    <value>m_lblReference</value>
-  </data>
-  <data name="&gt;&gt;m_lblReference.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblReference.Parent" xml:space="preserve">
-    <value>m_plPublication</value>
-  </data>
-  <data name="&gt;&gt;m_lblReference.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_lblPublicationDOI.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -2375,18 +1415,6 @@
   </data>
   <data name="m_lblPublicationDOI.Text" xml:space="preserve">
     <value>&amp;DOI:</value>
-  </data>
-  <data name="&gt;&gt;m_lblPublicationDOI.Name" xml:space="preserve">
-    <value>m_lblPublicationDOI</value>
-  </data>
-  <data name="&gt;&gt;m_lblPublicationDOI.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPublicationDOI.Parent" xml:space="preserve">
-    <value>m_plPublication</value>
-  </data>
-  <data name="&gt;&gt;m_lblPublicationDOI.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="m_lblPublicationURL.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2406,18 +1434,6 @@
   <data name="m_lblPublicationURL.Text" xml:space="preserve">
     <value>&amp;URL:</value>
   </data>
-  <data name="&gt;&gt;m_lblPublicationURL.Name" xml:space="preserve">
-    <value>m_lblPublicationURL</value>
-  </data>
-  <data name="&gt;&gt;m_lblPublicationURL.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPublicationURL.Parent" xml:space="preserve">
-    <value>m_plPublication</value>
-  </data>
-  <data name="&gt;&gt;m_lblPublicationURL.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_plPublication.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -2429,18 +1445,6 @@
   </data>
   <data name="m_plPublication.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_plPublication.Name" xml:space="preserve">
-    <value>m_plPublication</value>
-  </data>
-  <data name="&gt;&gt;m_plPublication.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plPublication.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_plPublication.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_tlpContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -2455,18 +1459,6 @@
     <value>649, 865</value>
   </data>
   <data name="m_tlpContent.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Name" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_tlpContent.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
@@ -2489,12 +1481,6 @@
   </data>
   <data name="Label1.Text" xml:space="preserve">
     <value>&amp;Reference:</value>
-  </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -7024,11 +6010,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Model parameters</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmModelParameters</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16378.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

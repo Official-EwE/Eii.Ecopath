@@ -138,18 +138,6 @@
   <data name="m_lblItemForeColor.Text" xml:space="preserve">
     <value>&amp;Foreground color:</value>
   </data>
-  <data name="&gt;&gt;m_lblItemForeColor.Name" xml:space="preserve">
-    <value>m_lblItemForeColor</value>
-  </data>
-  <data name="&gt;&gt;m_lblItemForeColor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblItemForeColor.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblItemForeColor.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="m_cmbItemForeground.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -164,18 +152,6 @@
   </data>
   <data name="m_cmbItemForeground.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_cmbItemForeground.Name" xml:space="preserve">
-    <value>m_cmbItemForeground</value>
-  </data>
-  <data name="&gt;&gt;m_cmbItemForeground.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbItemForeground.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cmbItemForeground.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="m_lblItemBackColor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -195,18 +171,6 @@
   <data name="m_lblItemBackColor.Text" xml:space="preserve">
     <value>&amp;Background color:</value>
   </data>
-  <data name="&gt;&gt;m_lblItemBackColor.Name" xml:space="preserve">
-    <value>m_lblItemBackColor</value>
-  </data>
-  <data name="&gt;&gt;m_lblItemBackColor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblItemBackColor.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblItemBackColor.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_btnCustomForeColor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -221,18 +185,6 @@
   </data>
   <data name="m_btnCustomForeColor.Text" xml:space="preserve">
     <value>&amp;Pick...</value>
-  </data>
-  <data name="&gt;&gt;m_btnCustomForeColor.Name" xml:space="preserve">
-    <value>m_btnCustomForeColor</value>
-  </data>
-  <data name="&gt;&gt;m_btnCustomForeColor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCustomForeColor.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnCustomForeColor.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_cmbItemBackground.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -249,18 +201,6 @@
   <data name="m_cmbItemBackground.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;m_cmbItemBackground.Name" xml:space="preserve">
-    <value>m_cmbItemBackground</value>
-  </data>
-  <data name="&gt;&gt;m_cmbItemBackground.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbItemBackground.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cmbItemBackground.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_btnCustomBackColor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -275,18 +215,6 @@
   </data>
   <data name="m_btnCustomBackColor.Text" xml:space="preserve">
     <value>P&amp;ick...</value>
-  </data>
-  <data name="&gt;&gt;m_btnCustomBackColor.Name" xml:space="preserve">
-    <value>m_btnCustomBackColor</value>
-  </data>
-  <data name="&gt;&gt;m_btnCustomBackColor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCustomBackColor.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnCustomBackColor.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_hdrCaption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -305,18 +233,6 @@
   </data>
   <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.Name" xml:space="preserve">
-    <value>m_hdrCaption</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="Label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -339,18 +255,6 @@
   <data name="Label1.Text" xml:space="preserve">
     <value>Preview:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_plPreview.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -362,18 +266,6 @@
   </data>
   <data name="m_plPreview.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_plPreview.Name" xml:space="preserve">
-    <value>m_plPreview</value>
-  </data>
-  <data name="&gt;&gt;m_plPreview.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plPreview.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_plPreview.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lvItems.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -399,18 +291,6 @@
   <data name="m_lvItems.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_lvItems.Name" xml:space="preserve">
-    <value>m_lvItems</value>
-  </data>
-  <data name="&gt;&gt;m_lvItems.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvItems.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lvItems.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -422,23 +302,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>432, 307</value>
-  </data>
-  <data name="&gt;&gt;m_colItem.Name" xml:space="preserve">
-    <value>m_colItem</value>
-  </data>
-  <data name="&gt;&gt;m_colItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_colDesc.Name" xml:space="preserve">
-    <value>m_colDesc</value>
-  </data>
-  <data name="&gt;&gt;m_colDesc.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucOptionsStatusColors</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

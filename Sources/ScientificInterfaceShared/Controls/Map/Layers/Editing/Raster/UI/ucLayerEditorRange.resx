@@ -134,18 +134,6 @@
   <data name="m_lbValue.Text" xml:space="preserve">
     <value>Value:</value>
   </data>
-  <data name="&gt;&gt;m_lbValue.Name" xml:space="preserve">
-    <value>m_lbValue</value>
-  </data>
-  <data name="&gt;&gt;m_lbValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbValue.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbValue.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_nudValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -158,18 +146,6 @@
   </data>
   <data name="m_nudValue.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
-  </data>
-  <data name="&gt;&gt;m_nudValue.Name" xml:space="preserve">
-    <value>m_nudValue</value>
-  </data>
-  <data name="&gt;&gt;m_nudValue.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16126.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudValue.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudValue.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_pbPreview.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -185,18 +161,6 @@
   </data>
   <data name="m_pbPreview.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_pbPreview.Name" xml:space="preserve">
-    <value>m_pbPreview</value>
-  </data>
-  <data name="&gt;&gt;m_pbPreview.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbPreview.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_pbPreview.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_btnSmooth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -216,18 +180,6 @@
   <data name="m_btnSmooth.Text" xml:space="preserve">
     <value>Smooth</value>
   </data>
-  <data name="&gt;&gt;m_btnSmooth.Name" xml:space="preserve">
-    <value>m_btnSmooth</value>
-  </data>
-  <data name="&gt;&gt;m_btnSmooth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnSmooth.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnSmooth.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_btnReset.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -240,18 +192,6 @@
   <data name="m_btnReset.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
-  <data name="&gt;&gt;m_btnReset.Name" xml:space="preserve">
-    <value>m_btnReset</value>
-  </data>
-  <data name="&gt;&gt;m_btnReset.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnReset.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnReset.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -263,11 +203,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 208</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucLayerEditorRange</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorDefault, ScientificInterfaceShared, Version=6.6.16126.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

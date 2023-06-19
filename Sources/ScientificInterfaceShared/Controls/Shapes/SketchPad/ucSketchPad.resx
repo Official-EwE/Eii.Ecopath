@@ -215,12 +215,6 @@
   <data name="m_spContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
     <value>164, 192</value>
   </data>
-  <data name="&gt;&gt;m_spContextMenuStrip.Name" xml:space="preserve">
-    <value>m_spContextMenuStrip</value>
-  </data>
-  <data name="&gt;&gt;m_spContextMenuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -233,101 +227,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>587, 399</value>
-  </data>
-  <data name="&gt;&gt;m_tss1.Name" xml:space="preserve">
-    <value>m_tss1</value>
-  </data>
-  <data name="&gt;&gt;m_tss1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiDrawMode.Name" xml:space="preserve">
-    <value>m_tsmiDrawMode</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiDrawMode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiFill.Name" xml:space="preserve">
-    <value>m_tsmiFill</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiFill.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiLine.Name" xml:space="preserve">
-    <value>m_tsmiLine</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiLine.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiTSDriver.Name" xml:space="preserve">
-    <value>m_tsmiTSDriver</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiTSDriver.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiShowMarks.Name" xml:space="preserve">
-    <value>m_tsmiShowMarks</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiShowMarks.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiAutoScaleYAxis.Name" xml:space="preserve">
-    <value>m_tsmiAutoScaleYAxis</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiAutoScaleYAxis.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiReset.Name" xml:space="preserve">
-    <value>m_tsmiReset</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiReset.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiValue.Name" xml:space="preserve">
-    <value>m_tsmiValue</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;LoadToolStripMenuItem.Name" xml:space="preserve">
-    <value>LoadToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;LoadToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSave.Name" xml:space="preserve">
-    <value>m_tsmiSave</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tss2.Name" xml:space="preserve">
-    <value>m_tss2</value>
-  </data>
-  <data name="&gt;&gt;m_tss2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiOptions.Name" xml:space="preserve">
-    <value>m_tsmiOptions</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiTSRefAbs.Name" xml:space="preserve">
-    <value>m_tsmiTSRefAbs</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiTSRefAbs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiTSRefRel.Name" xml:space="preserve">
-    <value>m_tsmiTSRefRel</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiTSRefRel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucSketchPad</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

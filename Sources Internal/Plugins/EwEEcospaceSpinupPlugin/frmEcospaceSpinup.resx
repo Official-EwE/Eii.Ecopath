@@ -138,18 +138,6 @@
   <data name="m_chkUseSpinup.Text" xml:space="preserve">
     <value>Use spin-up period</value>
   </data>
-  <data name="&gt;&gt;m_chkUseSpinup.Name" xml:space="preserve">
-    <value>m_chkUseSpinup</value>
-  </data>
-  <data name="&gt;&gt;m_chkUseSpinup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkUseSpinup.Parent" xml:space="preserve">
-    <value>m_plControls</value>
-  </data>
-  <data name="&gt;&gt;m_chkUseSpinup.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tbxSpinUpYears.Location" type="System.Drawing.Point, System.Drawing">
     <value>129, 55</value>
   </data>
@@ -158,18 +146,6 @@
   </data>
   <data name="m_tbxSpinUpYears.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSpinUpYears.Name" xml:space="preserve">
-    <value>m_tbxSpinUpYears</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSpinUpYears.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSpinUpYears.Parent" xml:space="preserve">
-    <value>m_plControls</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSpinUpYears.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblSpinUpYears.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -189,18 +165,6 @@
   <data name="m_lblSpinUpYears.Text" xml:space="preserve">
     <value>Spin-up length (years):</value>
   </data>
-  <data name="&gt;&gt;m_lblSpinUpYears.Name" xml:space="preserve">
-    <value>m_lblSpinUpYears</value>
-  </data>
-  <data name="&gt;&gt;m_lblSpinUpYears.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSpinUpYears.Parent" xml:space="preserve">
-    <value>m_plControls</value>
-  </data>
-  <data name="&gt;&gt;m_lblSpinUpYears.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_chkUseBaseBio.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -219,18 +183,6 @@
   <data name="m_chkUseBaseBio.Text" xml:space="preserve">
     <value>Plot relative to Ecopath base</value>
   </data>
-  <data name="&gt;&gt;m_chkUseBaseBio.Name" xml:space="preserve">
-    <value>m_chkUseBaseBio</value>
-  </data>
-  <data name="&gt;&gt;m_chkUseBaseBio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkUseBaseBio.Parent" xml:space="preserve">
-    <value>m_plControls</value>
-  </data>
-  <data name="&gt;&gt;m_chkUseBaseBio.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_tlpContent.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -246,18 +198,6 @@
   <data name="m_gridSpinUpDif.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_gridSpinUpDif.Name" xml:space="preserve">
-    <value>m_gridSpinUpDif</value>
-  </data>
-  <data name="&gt;&gt;m_gridSpinUpDif.Type" xml:space="preserve">
-    <value>EwEEcospaceSpinupPlugin.gridSpinupDiff, EwEEcospaceSpinupPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f41f6af4ab48e4aa</value>
-  </data>
-  <data name="&gt;&gt;m_gridSpinUpDif.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_gridSpinUpDif.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_plControls.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -269,18 +209,6 @@
   </data>
   <data name="m_plControls.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_plControls.Name" xml:space="preserve">
-    <value>m_plControls</value>
-  </data>
-  <data name="&gt;&gt;m_plControls.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plControls.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_plControls.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_tlpContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -295,18 +223,6 @@
     <value>327, 265</value>
   </data>
   <data name="m_tlpContent.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Name" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_tlpContent.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
@@ -4840,11 +4756,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Ecospace spin-up</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmEcospaceSpinup</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.6.16180.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

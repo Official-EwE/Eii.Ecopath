@@ -418,18 +418,6 @@
   <data name="m_pbWoRMS.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_pbWoRMS.Name" xml:space="preserve">
-    <value>m_pbWoRMS</value>
-  </data>
-  <data name="&gt;&gt;m_pbWoRMS.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbWoRMS.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_pbWoRMS.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_lblConnTO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -448,18 +436,6 @@
   <data name="m_lblConnTO.Text" xml:space="preserve">
     <value>&amp;Connection time-out:</value>
   </data>
-  <data name="&gt;&gt;m_lblConnTO.Name" xml:space="preserve">
-    <value>m_lblConnTO</value>
-  </data>
-  <data name="&gt;&gt;m_lblConnTO.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblConnTO.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblConnTO.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_nudConnTO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -471,18 +447,6 @@
   </data>
   <data name="m_nudConnTO.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_nudConnTO.Name" xml:space="preserve">
-    <value>m_nudConnTO</value>
-  </data>
-  <data name="&gt;&gt;m_nudConnTO.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudConnTO.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudConnTO.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_lblSecs1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -505,18 +469,6 @@
   <data name="m_lblSecs1.Text" xml:space="preserve">
     <value>seconds</value>
   </data>
-  <data name="&gt;&gt;m_lblSecs1.Name" xml:space="preserve">
-    <value>m_lblSecs1</value>
-  </data>
-  <data name="&gt;&gt;m_lblSecs1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSecs1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblSecs1.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_lblReplyTO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -537,18 +489,6 @@
   </data>
   <data name="m_lblReplyTO.Text" xml:space="preserve">
     <value>&amp;Reply time-out:</value>
-  </data>
-  <data name="&gt;&gt;m_lblReplyTO.Name" xml:space="preserve">
-    <value>m_lblReplyTO</value>
-  </data>
-  <data name="&gt;&gt;m_lblReplyTO.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblReplyTO.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblReplyTO.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_lblSecs2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -571,18 +511,6 @@
   <data name="m_lblSecs2.Text" xml:space="preserve">
     <value>seconds</value>
   </data>
-  <data name="&gt;&gt;m_lblSecs2.Name" xml:space="preserve">
-    <value>m_lblSecs2</value>
-  </data>
-  <data name="&gt;&gt;m_lblSecs2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSecs2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblSecs2.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_nudReplyTO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -594,18 +522,6 @@
   </data>
   <data name="m_nudReplyTO.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_nudReplyTO.Name" xml:space="preserve">
-    <value>m_nudReplyTO</value>
-  </data>
-  <data name="&gt;&gt;m_nudReplyTO.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudReplyTO.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudReplyTO.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_pbBlueBridge.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -622,18 +538,6 @@
   <data name="m_pbBlueBridge.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;m_pbBlueBridge.Name" xml:space="preserve">
-    <value>m_pbBlueBridge</value>
-  </data>
-  <data name="&gt;&gt;m_pbBlueBridge.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbBlueBridge.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_pbBlueBridge.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -648,11 +552,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>400, 259</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucConfig</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

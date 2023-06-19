@@ -135,18 +135,6 @@
   <data name="m_sep.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_sep.Name" xml:space="preserve">
-    <value>m_sep</value>
-  </data>
-  <data name="&gt;&gt;m_sep.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFormSeparator, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_sep.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_sep.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_navigator.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -162,18 +150,6 @@
   <data name="m_navigator.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_navigator.Name" xml:space="preserve">
-    <value>m_navigator</value>
-  </data>
-  <data name="&gt;&gt;m_navigator.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Wizard.ucWizardNavigation, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_navigator.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_navigator.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_plWizardContent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -185,18 +161,6 @@
   </data>
   <data name="m_plWizardContent.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_plWizardContent.Name" xml:space="preserve">
-    <value>m_plWizardContent</value>
-  </data>
-  <data name="&gt;&gt;m_plWizardContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plWizardContent.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_plWizardContent.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -215,11 +179,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Model conversion utility</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgImportDatabase</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

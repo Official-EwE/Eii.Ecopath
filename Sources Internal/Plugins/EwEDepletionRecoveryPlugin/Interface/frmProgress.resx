@@ -128,18 +128,6 @@
   <data name="m_progress.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_progress.Name" xml:space="preserve">
-    <value>m_progress</value>
-  </data>
-  <data name="&gt;&gt;m_progress.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_progress.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_progress.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_lblInfo.Location" type="System.Drawing.Point, System.Drawing">
     <value>50, 12</value>
   </data>
@@ -152,18 +140,6 @@
   <data name="m_lblInfo.Text" xml:space="preserve">
     <value>Initializing...</value>
   </data>
-  <data name="&gt;&gt;m_lblInfo.Name" xml:space="preserve">
-    <value>m_lblInfo</value>
-  </data>
-  <data name="&gt;&gt;m_lblInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblInfo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblInfo.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
     <value>195, 79</value>
   </data>
@@ -175,18 +151,6 @@
   </data>
   <data name="m_btnStop.Text" xml:space="preserve">
     <value>Stop</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Name" xml:space="preserve">
-    <value>m_btnStop</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_pbIcon.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -242,18 +206,6 @@
   <data name="m_pbIcon.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_pbIcon.Name" xml:space="preserve">
-    <value>m_pbIcon</value>
-  </data>
-  <data name="&gt;&gt;m_pbIcon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbIcon.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_pbIcon.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -265,11 +217,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Depletion/recovery run progress</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmProgress</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -135,18 +135,6 @@
   <data name="m_pbIcon.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_pbIcon.Name" xml:space="preserve">
-    <value>m_pbIcon</value>
-  </data>
-  <data name="&gt;&gt;m_pbIcon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbIcon.Parent" xml:space="preserve">
-    <value>m_tlpSplash</value>
-  </data>
-  <data name="&gt;&gt;m_pbIcon.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_lblEwE.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
@@ -173,18 +161,6 @@
   </data>
   <data name="m_lblEwE.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;m_lblEwE.Name" xml:space="preserve">
-    <value>m_lblEwE</value>
-  </data>
-  <data name="&gt;&gt;m_lblEwE.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblEwE.Parent" xml:space="preserve">
-    <value>m_tlpSplash</value>
-  </data>
-  <data name="&gt;&gt;m_lblEwE.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_lblReleaseMode.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -213,18 +189,6 @@
   <data name="m_lblReleaseMode.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopCenter</value>
   </data>
-  <data name="&gt;&gt;m_lblReleaseMode.Name" xml:space="preserve">
-    <value>m_lblReleaseMode</value>
-  </data>
-  <data name="&gt;&gt;m_lblReleaseMode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblReleaseMode.Parent" xml:space="preserve">
-    <value>m_tlpSplash</value>
-  </data>
-  <data name="&gt;&gt;m_lblReleaseMode.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tlpSplash.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -252,18 +216,6 @@
   <data name="m_lblText.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
-  <data name="&gt;&gt;m_lblText.Name" xml:space="preserve">
-    <value>m_lblText</value>
-  </data>
-  <data name="&gt;&gt;m_lblText.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblText.Parent" xml:space="preserve">
-    <value>m_tlpSplash</value>
-  </data>
-  <data name="&gt;&gt;m_lblText.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_tlpSplash.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -278,18 +230,6 @@
   </data>
   <data name="m_tlpSplash.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpSplash.Name" xml:space="preserve">
-    <value>m_tlpSplash</value>
-  </data>
-  <data name="&gt;&gt;m_tlpSplash.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpSplash.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpSplash.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_tlpSplash.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbIcon" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblReleaseMode" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEwE" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblText" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,50,AutoSize,0,AutoSize,0,AutoSize,0,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -317,11 +257,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>frmSplash</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmSplash</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

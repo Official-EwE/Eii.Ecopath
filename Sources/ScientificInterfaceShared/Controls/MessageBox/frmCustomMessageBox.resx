@@ -131,18 +131,6 @@
   <data name="m_btnOne.Text" xml:space="preserve">
     <value>Button 1</value>
   </data>
-  <data name="&gt;&gt;m_btnOne.Name" xml:space="preserve">
-    <value>m_btnOne</value>
-  </data>
-  <data name="&gt;&gt;m_btnOne.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnOne.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnOne.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_btnTwo.Location" type="System.Drawing.Point, System.Drawing">
     <value>88, 72</value>
   </data>
@@ -154,18 +142,6 @@
   </data>
   <data name="m_btnTwo.Text" xml:space="preserve">
     <value>Button 2</value>
-  </data>
-  <data name="&gt;&gt;m_btnTwo.Name" xml:space="preserve">
-    <value>m_btnTwo</value>
-  </data>
-  <data name="&gt;&gt;m_btnTwo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnTwo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnTwo.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_btnThree.Location" type="System.Drawing.Point, System.Drawing">
     <value>176, 72</value>
@@ -179,18 +155,6 @@
   <data name="m_btnThree.Text" xml:space="preserve">
     <value>Button 3</value>
   </data>
-  <data name="&gt;&gt;m_btnThree.Name" xml:space="preserve">
-    <value>m_btnThree</value>
-  </data>
-  <data name="&gt;&gt;m_btnThree.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnThree.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnThree.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_pbIcon.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 16</value>
   </data>
@@ -199,18 +163,6 @@
   </data>
   <data name="m_pbIcon.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_pbIcon.Name" xml:space="preserve">
-    <value>m_pbIcon</value>
-  </data>
-  <data name="&gt;&gt;m_pbIcon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbIcon.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_pbIcon.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_chkOption.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -226,18 +178,6 @@
   </data>
   <data name="m_chkOption.Text" xml:space="preserve">
     <value>&amp;Remember answer</value>
-  </data>
-  <data name="&gt;&gt;m_chkOption.Name" xml:space="preserve">
-    <value>m_chkOption</value>
-  </data>
-  <data name="&gt;&gt;m_chkOption.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkOption.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_chkOption.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_lblPrompt.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -264,18 +204,6 @@
   <data name="m_lblPrompt.Text" xml:space="preserve">
     <value>Prompt</value>
   </data>
-  <data name="&gt;&gt;m_lblPrompt.Name" xml:space="preserve">
-    <value>m_lblPrompt</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrompt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.6.2.16944, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrompt.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrompt.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -293,11 +221,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>frmCustomMessageBox</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmCustomMessageBox</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -138,18 +138,6 @@
   <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrCaption.Name" xml:space="preserve">
-    <value>m_hdrCaption</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15112.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="m_rbOut.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -165,18 +153,6 @@
   <data name="m_rbOut.Text" xml:space="preserve">
     <value>&amp;Total EwE window size (including borders, menus, etc)</value>
   </data>
-  <data name="&gt;&gt;m_rbOut.Name" xml:space="preserve">
-    <value>m_rbOut</value>
-  </data>
-  <data name="&gt;&gt;m_rbOut.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbOut.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbOut.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -191,18 +167,6 @@
   </data>
   <data name="Label1.Text" xml:space="preserve">
     <value>Resize the EwE main window to:</value>
-  </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="m_rbIn.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -222,18 +186,6 @@
   <data name="m_rbIn.Text" xml:space="preserve">
     <value>&amp;EwE working area</value>
   </data>
-  <data name="&gt;&gt;m_rbIn.Name" xml:space="preserve">
-    <value>m_rbIn</value>
-  </data>
-  <data name="&gt;&gt;m_rbIn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbIn.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbIn.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="m_lblWidth.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -248,18 +200,6 @@
   </data>
   <data name="m_lblWidth.Text" xml:space="preserve">
     <value>&amp;Width:</value>
-  </data>
-  <data name="&gt;&gt;m_lblWidth.Name" xml:space="preserve">
-    <value>m_lblWidth</value>
-  </data>
-  <data name="&gt;&gt;m_lblWidth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblWidth.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblWidth.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="m_lblHeight.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -279,18 +219,6 @@
   <data name="m_lblHeight.Text" xml:space="preserve">
     <value>&amp;Height:</value>
   </data>
-  <data name="&gt;&gt;m_lblHeight.Name" xml:space="preserve">
-    <value>m_lblHeight</value>
-  </data>
-  <data name="&gt;&gt;m_lblHeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblHeight.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblHeight.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_tbxW.Location" type="System.Drawing.Point, System.Drawing">
     <value>70, 51</value>
   </data>
@@ -300,18 +228,6 @@
   <data name="m_tbxW.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_tbxW.Name" xml:space="preserve">
-    <value>m_tbxW</value>
-  </data>
-  <data name="&gt;&gt;m_tbxW.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxW.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxW.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_tbxH.Location" type="System.Drawing.Point, System.Drawing">
     <value>70, 77</value>
   </data>
@@ -320,18 +236,6 @@
   </data>
   <data name="m_tbxH.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_tbxH.Name" xml:space="preserve">
-    <value>m_tbxH</value>
-  </data>
-  <data name="&gt;&gt;m_tbxH.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxH.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxH.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_lblWhat.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -348,18 +252,6 @@
   <data name="m_lblWhat.Text" xml:space="preserve">
     <value>This size indicates the:</value>
   </data>
-  <data name="&gt;&gt;m_lblWhat.Name" xml:space="preserve">
-    <value>m_lblWhat</value>
-  </data>
-  <data name="&gt;&gt;m_lblWhat.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblWhat.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblWhat.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_lblUnit1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -374,18 +266,6 @@
   </data>
   <data name="m_lblUnit1.Text" xml:space="preserve">
     <value>points</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnit1.Name" xml:space="preserve">
-    <value>m_lblUnit1</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnit1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnit1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnit1.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblUnit2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -405,18 +285,6 @@
   <data name="m_lblUnit2.Text" xml:space="preserve">
     <value>points</value>
   </data>
-  <data name="&gt;&gt;m_lblUnit2.Name" xml:space="preserve">
-    <value>m_lblUnit2</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnit2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnit2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnit2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -428,11 +296,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>434, 356</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucOptionsWindowSize</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

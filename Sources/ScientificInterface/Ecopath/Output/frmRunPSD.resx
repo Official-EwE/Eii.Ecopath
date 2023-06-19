@@ -132,18 +132,6 @@
   <data name="m_zedgraph.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_zedgraph.Name" xml:space="preserve">
-    <value>m_zedgraph</value>
-  </data>
-  <data name="&gt;&gt;m_zedgraph.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
-  </data>
-  <data name="&gt;&gt;m_zedgraph.Parent" xml:space="preserve">
-    <value>m_scContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_zedgraph.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_scContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -165,18 +153,6 @@
   <data name="m_cmbMeanLat.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;m_cmbMeanLat.Name" xml:space="preserve">
-    <value>m_cmbMeanLat</value>
-  </data>
-  <data name="&gt;&gt;m_cmbMeanLat.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbMeanLat.Parent" xml:space="preserve">
-    <value>m_plTotalMortality</value>
-  </data>
-  <data name="&gt;&gt;m_cmbMeanLat.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_lblMeanLat.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -194,18 +170,6 @@
   </data>
   <data name="m_lblMeanLat.Text" xml:space="preserve">
     <value>&amp;Mean lat:</value>
-  </data>
-  <data name="&gt;&gt;m_lblMeanLat.Name" xml:space="preserve">
-    <value>m_lblMeanLat</value>
-  </data>
-  <data name="&gt;&gt;m_lblMeanLat.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMeanLat.Parent" xml:space="preserve">
-    <value>m_plTotalMortality</value>
-  </data>
-  <data name="&gt;&gt;m_lblMeanLat.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_hdrTotalMort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -228,18 +192,6 @@
   <data name="m_hdrTotalMort.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrTotalMort.Name" xml:space="preserve">
-    <value>m_hdrTotalMort</value>
-  </data>
-  <data name="&gt;&gt;m_hdrTotalMort.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrTotalMort.Parent" xml:space="preserve">
-    <value>m_plTotalMortality</value>
-  </data>
-  <data name="&gt;&gt;m_hdrTotalMort.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_rbLorenzen.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -258,18 +210,6 @@
   <data name="m_rbLorenzen.Text" xml:space="preserve">
     <value>&amp;Lorenzen-variable</value>
   </data>
-  <data name="&gt;&gt;m_rbLorenzen.Name" xml:space="preserve">
-    <value>m_rbLorenzen</value>
-  </data>
-  <data name="&gt;&gt;m_rbLorenzen.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbLorenzen.Parent" xml:space="preserve">
-    <value>m_plTotalMortality</value>
-  </data>
-  <data name="&gt;&gt;m_rbLorenzen.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_rbGroupPB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -285,18 +225,6 @@
   <data name="m_rbGroupPB.Text" xml:space="preserve">
     <value>&amp;Group P/B</value>
   </data>
-  <data name="&gt;&gt;m_rbGroupPB.Name" xml:space="preserve">
-    <value>m_rbGroupPB</value>
-  </data>
-  <data name="&gt;&gt;m_rbGroupPB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbGroupPB.Parent" xml:space="preserve">
-    <value>m_plTotalMortality</value>
-  </data>
-  <data name="&gt;&gt;m_rbGroupPB.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_plTotalMortality.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -308,18 +236,6 @@
   </data>
   <data name="m_plTotalMortality.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_plTotalMortality.Name" xml:space="preserve">
-    <value>m_plTotalMortality</value>
-  </data>
-  <data name="&gt;&gt;m_plTotalMortality.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plTotalMortality.Parent" xml:space="preserve">
-    <value>m_tlpInputs</value>
-  </data>
-  <data name="&gt;&gt;m_plTotalMortality.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="NumericUpDown1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -333,18 +249,6 @@
   <data name="NumericUpDown1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;NumericUpDown1.Name" xml:space="preserve">
-    <value>NumericUpDown1</value>
-  </data>
-  <data name="&gt;&gt;NumericUpDown1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;NumericUpDown1.Parent" xml:space="preserve">
-    <value>m_plInputs</value>
-  </data>
-  <data name="&gt;&gt;NumericUpDown1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_nudLowestWtClass.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -357,18 +261,6 @@
   <data name="m_nudLowestWtClass.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_nudLowestWtClass.Name" xml:space="preserve">
-    <value>m_nudLowestWtClass</value>
-  </data>
-  <data name="&gt;&gt;m_nudLowestWtClass.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudLowestWtClass.Parent" xml:space="preserve">
-    <value>m_plInputs</value>
-  </data>
-  <data name="&gt;&gt;m_nudLowestWtClass.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_nudNoWtClasses.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -380,18 +272,6 @@
   </data>
   <data name="m_nudNoWtClasses.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_nudNoWtClasses.Name" xml:space="preserve">
-    <value>m_nudNoWtClasses</value>
-  </data>
-  <data name="&gt;&gt;m_nudNoWtClasses.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudNoWtClasses.Parent" xml:space="preserve">
-    <value>m_plInputs</value>
-  </data>
-  <data name="&gt;&gt;m_nudNoWtClasses.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_lblNoPts.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -411,18 +291,6 @@
   <data name="m_lblNoPts.Text" xml:space="preserve">
     <value>No. of pts for moving avg:</value>
   </data>
-  <data name="&gt;&gt;m_lblNoPts.Name" xml:space="preserve">
-    <value>m_lblNoPts</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoPts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoPts.Parent" xml:space="preserve">
-    <value>m_plInputs</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoPts.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -441,18 +309,6 @@
   <data name="Label1.Text" xml:space="preserve">
     <value>Lowest wt. class (g):</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>m_plInputs</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_lblNoWtClasses.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -467,18 +323,6 @@
   </data>
   <data name="m_lblNoWtClasses.Text" xml:space="preserve">
     <value>No. of wt. classes:</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoWtClasses.Name" xml:space="preserve">
-    <value>m_lblNoWtClasses</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoWtClasses.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoWtClasses.Parent" xml:space="preserve">
-    <value>m_plInputs</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoWtClasses.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_hdrInputs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -504,18 +348,6 @@
   <data name="m_hdrInputs.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrInputs.Name" xml:space="preserve">
-    <value>m_hdrInputs</value>
-  </data>
-  <data name="&gt;&gt;m_hdrInputs.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrInputs.Parent" xml:space="preserve">
-    <value>m_plInputs</value>
-  </data>
-  <data name="&gt;&gt;m_hdrInputs.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_plInputs.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 100</value>
   </data>
@@ -524,18 +356,6 @@
   </data>
   <data name="m_plInputs.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_plInputs.Name" xml:space="preserve">
-    <value>m_plInputs</value>
-  </data>
-  <data name="&gt;&gt;m_plInputs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plInputs.Parent" xml:space="preserve">
-    <value>m_tlpInputs</value>
-  </data>
-  <data name="&gt;&gt;m_plInputs.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_btnRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -554,18 +374,6 @@
   </data>
   <data name="m_btnRun.Text" xml:space="preserve">
     <value>Run PSD</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.Name" xml:space="preserve">
-    <value>m_btnRun</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.Parent" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_hdrRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -591,18 +399,6 @@
   <data name="m_hdrRun.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrRun.Name" xml:space="preserve">
-    <value>m_hdrRun</value>
-  </data>
-  <data name="&gt;&gt;m_hdrRun.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrRun.Parent" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrRun.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="Panel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -614,18 +410,6 @@
   </data>
   <data name="Panel1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;Panel1.Name" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel1.Parent" xml:space="preserve">
-    <value>m_tlpInputs</value>
-  </data>
-  <data name="&gt;&gt;Panel1.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_tlpInputs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -642,44 +426,8 @@
   <data name="m_tlpInputs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_tlpInputs.Name" xml:space="preserve">
-    <value>m_tlpInputs</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInputs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInputs.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInputs.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlpInputs.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plTotalMortality" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plInputs" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Panel1" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Name" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Parent" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Name" xml:space="preserve">
-    <value>m_scContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Parent" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_scContent.Size" type="System.Drawing.Size, System.Drawing">
     <value>1029, 480</value>
@@ -689,18 +437,6 @@
   </data>
   <data name="m_scContent.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Name" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -5233,11 +4969,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Run particle size distribution</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>RunPSD</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

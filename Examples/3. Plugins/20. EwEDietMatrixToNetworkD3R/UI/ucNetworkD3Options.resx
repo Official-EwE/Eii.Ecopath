@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -138,18 +138,6 @@
   <data name="m_hdr.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdr.Name" xml:space="preserve">
-    <value>m_hdr</value>
-  </data>
-  <data name="&gt;&gt;m_hdr.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16096.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdr.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdr.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_lblGraph.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -168,18 +156,6 @@
   <data name="m_lblGraph.Text" xml:space="preserve">
     <value>&amp;Network type:</value>
   </data>
-  <data name="&gt;&gt;m_lblGraph.Name" xml:space="preserve">
-    <value>m_lblGraph</value>
-  </data>
-  <data name="&gt;&gt;m_lblGraph.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblGraph.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblGraph.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_cbUseSymbolicaNames.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -195,18 +171,6 @@
   <data name="m_cbUseSymbolicaNames.Text" xml:space="preserve">
     <value>&amp;Use symbolic names isntead of EwE functional group names</value>
   </data>
-  <data name="&gt;&gt;m_cbUseSymbolicaNames.Name" xml:space="preserve">
-    <value>m_cbUseSymbolicaNames</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseSymbolicaNames.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseSymbolicaNames.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseSymbolicaNames.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_cmbNetworkType.Location" type="System.Drawing.Point, System.Drawing">
     <value>79, 56</value>
   </data>
@@ -214,18 +178,6 @@
     <value>250, 21</value>
   </data>
   <data name="m_cmbNetworkType.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_cmbNetworkType.Name" xml:space="preserve">
-    <value>m_cmbNetworkType</value>
-  </data>
-  <data name="&gt;&gt;m_cmbNetworkType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbNetworkType.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cmbNetworkType.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_lblExportTo.AutoSize" type="System.Boolean, mscorlib">
@@ -246,18 +198,6 @@
   <data name="m_lblExportTo.Text" xml:space="preserve">
     <value>&amp;Destination:</value>
   </data>
-  <data name="&gt;&gt;m_lblExportTo.Name" xml:space="preserve">
-    <value>m_lblExportTo</value>
-  </data>
-  <data name="&gt;&gt;m_lblExportTo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblExportTo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblExportTo.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_rbClipboard.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -272,18 +212,6 @@
   </data>
   <data name="m_rbClipboard.Text" xml:space="preserve">
     <value>&amp;Clipboard</value>
-  </data>
-  <data name="&gt;&gt;m_rbClipboard.Name" xml:space="preserve">
-    <value>m_rbClipboard</value>
-  </data>
-  <data name="&gt;&gt;m_rbClipboard.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbClipboard.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbClipboard.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_rbFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -300,18 +228,6 @@
   <data name="m_rbFile.Text" xml:space="preserve">
     <value>&amp;File</value>
   </data>
-  <data name="&gt;&gt;m_rbFile.Name" xml:space="preserve">
-    <value>m_rbFile</value>
-  </data>
-  <data name="&gt;&gt;m_rbFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbFile.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbFile.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -326,11 +242,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>332, 223</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucNetworkD3Options</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -138,18 +138,6 @@
   <data name="m_ucSlider.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;m_ucSlider.Name" xml:space="preserve">
-    <value>m_ucSlider</value>
-  </data>
-  <data name="&gt;&gt;m_ucSlider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.6.15684.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_ucSlider.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_ucSlider.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="m_lblCursor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -164,18 +152,6 @@
   </data>
   <data name="m_lblCursor.Text" xml:space="preserve">
     <value>&amp;Cursor:</value>
-  </data>
-  <data name="&gt;&gt;m_lblCursor.Name" xml:space="preserve">
-    <value>m_lblCursor</value>
-  </data>
-  <data name="&gt;&gt;m_lblCursor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblCursor.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblCursor.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="m_lblName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -192,18 +168,6 @@
   <data name="m_lblName.Text" xml:space="preserve">
     <value>Name:</value>
   </data>
-  <data name="&gt;&gt;m_lblName.Name" xml:space="preserve">
-    <value>m_lblName</value>
-  </data>
-  <data name="&gt;&gt;m_lblName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblName.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblName.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="m_tbxName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -215,18 +179,6 @@
   </data>
   <data name="m_tbxName.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.Name" xml:space="preserve">
-    <value>m_tbxName</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_lblUnits.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -246,18 +198,6 @@
   <data name="m_lblUnits.Text" xml:space="preserve">
     <value>Units:</value>
   </data>
-  <data name="&gt;&gt;m_lblUnits.Name" xml:space="preserve">
-    <value>m_lblUnits</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnits.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnits.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_tbxUnits.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -270,18 +210,6 @@
   <data name="m_tbxUnits.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;m_tbxUnits.Name" xml:space="preserve">
-    <value>m_tbxUnits</value>
-  </data>
-  <data name="&gt;&gt;m_tbxUnits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxUnits.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxUnits.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_tbxMax.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -293,18 +221,6 @@
   </data>
   <data name="m_tbxMax.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMax.Name" xml:space="preserve">
-    <value>m_tbxMax</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMax.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMax.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMax.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblMax.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -324,18 +240,6 @@
   <data name="m_lblMax.Text" xml:space="preserve">
     <value>Max value:</value>
   </data>
-  <data name="&gt;&gt;m_lblMax.Name" xml:space="preserve">
-    <value>m_lblMax</value>
-  </data>
-  <data name="&gt;&gt;m_lblMax.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMax.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblMax.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_plLegend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -347,18 +251,6 @@
   </data>
   <data name="m_plLegend.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_plLegend.Name" xml:space="preserve">
-    <value>m_plLegend</value>
-  </data>
-  <data name="&gt;&gt;m_plLegend.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plLegend.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_plLegend.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_lblMin.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -378,18 +270,6 @@
   <data name="m_lblMin.Text" xml:space="preserve">
     <value>Min value:</value>
   </data>
-  <data name="&gt;&gt;m_lblMin.Name" xml:space="preserve">
-    <value>m_lblMin</value>
-  </data>
-  <data name="&gt;&gt;m_lblMin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMin.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblMin.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_tbxMin.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -402,18 +282,6 @@
   <data name="m_tbxMin.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;m_tbxMin.Name" xml:space="preserve">
-    <value>m_tbxMin</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMin.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMin.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -422,11 +290,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 147</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucLayerEditorDefault</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditor, ScientificInterfaceShared, Version=6.6.15684.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

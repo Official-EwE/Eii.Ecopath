@@ -141,18 +141,6 @@
   <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrCaption.Name" xml:space="preserve">
-    <value>m_hdrCaption</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_cbShowPedigreeIndicators.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -168,18 +156,6 @@
   <data name="m_cbShowPedigreeIndicators.Text" xml:space="preserve">
     <value>&amp;Show pedigree indicators</value>
   </data>
-  <data name="&gt;&gt;m_cbShowPedigreeIndicators.Name" xml:space="preserve">
-    <value>m_cbShowPedigreeIndicators</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowPedigreeIndicators.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowPedigreeIndicators.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowPedigreeIndicators.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -191,11 +167,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>434, 356</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucOptionsPedigree</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

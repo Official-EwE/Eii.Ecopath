@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -145,18 +145,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_lblWarning.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
-  <data name="&gt;&gt;m_lblWarning.Name" xml:space="preserve">
-    <value>m_lblWarning</value>
-  </data>
-  <data name="&gt;&gt;m_lblWarning.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblWarning.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblWarning.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
   <data name="m_chkUseSailCost.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -171,18 +159,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   </data>
   <data name="m_chkUseSailCost.Text" xml:space="preserve">
     <value>Use this plug-in to drive fishing effort by LME zone</value>
-  </data>
-  <data name="&gt;&gt;m_chkUseSailCost.Name" xml:space="preserve">
-    <value>m_chkUseSailCost</value>
-  </data>
-  <data name="&gt;&gt;m_chkUseSailCost.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkUseSailCost.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_chkUseSailCost.ZOrder" xml:space="preserve">
-    <value>13</value>
   </data>
   <data name="m_lblPath.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -199,18 +175,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_lblPath.Text" xml:space="preserve">
     <value>Data path:</value>
   </data>
-  <data name="&gt;&gt;m_lblPath.Name" xml:space="preserve">
-    <value>m_lblPath</value>
-  </data>
-  <data name="&gt;&gt;m_lblPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPath.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblPath.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="m_btnChoosePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -226,18 +190,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_btnChoosePath.Text" xml:space="preserve">
     <value>&amp;Choose...</value>
   </data>
-  <data name="&gt;&gt;m_btnChoosePath.Name" xml:space="preserve">
-    <value>m_btnChoosePath</value>
-  </data>
-  <data name="&gt;&gt;m_btnChoosePath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnChoosePath.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnChoosePath.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="m_tbxPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -249,18 +201,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   </data>
   <data name="m_tbxPath.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPath.Name" xml:space="preserve">
-    <value>m_tbxPath</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPath.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxPath.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -276,18 +216,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
     <value>&amp;Validation:</value>
-  </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="m_lvValidation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -316,18 +244,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_lvValidation.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;m_lvValidation.Name" xml:space="preserve">
-    <value>m_lvValidation</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_cbUseMortalitiesWriter.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -346,18 +262,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_cbUseMortalitiesWriter.Text" xml:space="preserve">
     <value>Write mortalities time series</value>
   </data>
-  <data name="&gt;&gt;m_cbUseMortalitiesWriter.Name" xml:space="preserve">
-    <value>m_cbUseMortalitiesWriter</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseMortalitiesWriter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseMortalitiesWriter.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseMortalitiesWriter.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="CEwEHeaderLabel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -375,18 +279,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   </data>
   <data name="CEwEHeaderLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Name" xml:space="preserve">
-    <value>CEwEHeaderLabel1</value>
-  </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="m_hdrLMEEffort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -409,18 +301,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_hdrLMEEffort.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrLMEEffort.Name" xml:space="preserve">
-    <value>m_hdrLMEEffort</value>
-  </data>
-  <data name="&gt;&gt;m_hdrLMEEffort.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrLMEEffort.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrLMEEffort.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_lblRunMode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -436,18 +316,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_lblRunMode.Text" xml:space="preserve">
     <value>&amp;Fffort mode:</value>
   </data>
-  <data name="&gt;&gt;m_lblRunMode.Name" xml:space="preserve">
-    <value>m_lblRunMode</value>
-  </data>
-  <data name="&gt;&gt;m_lblRunMode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblRunMode.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblRunMode.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_rbRunModeOrg.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -462,18 +330,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   </data>
   <data name="m_rbRunModeOrg.Text" xml:space="preserve">
     <value>Original (Global Ocean Model)</value>
-  </data>
-  <data name="&gt;&gt;m_rbRunModeOrg.Name" xml:space="preserve">
-    <value>m_rbRunModeOrg</value>
-  </data>
-  <data name="&gt;&gt;m_rbRunModeOrg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbRunModeOrg.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbRunModeOrg.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_rbRunModeFixed.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -493,18 +349,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_rbRunModeFixed.Text" xml:space="preserve">
     <value>Constant effort after:</value>
   </data>
-  <data name="&gt;&gt;m_rbRunModeFixed.Name" xml:space="preserve">
-    <value>m_rbRunModeFixed</value>
-  </data>
-  <data name="&gt;&gt;m_rbRunModeFixed.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbRunModeFixed.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbRunModeFixed.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_tbxRunModeFixedYear.Location" type="System.Drawing.Point, System.Drawing">
     <value>216, 235</value>
   </data>
@@ -513,18 +357,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   </data>
   <data name="m_tbxRunModeFixedYear.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
-  </data>
-  <data name="&gt;&gt;m_tbxRunModeFixedYear.Name" xml:space="preserve">
-    <value>m_tbxRunModeFixedYear</value>
-  </data>
-  <data name="&gt;&gt;m_tbxRunModeFixedYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxRunModeFixedYear.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxRunModeFixedYear.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_rbRunModeNone.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -544,18 +376,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_rbRunModeNone.Text" xml:space="preserve">
     <value>No fishing</value>
   </data>
-  <data name="&gt;&gt;m_rbRunModeNone.Name" xml:space="preserve">
-    <value>m_rbRunModeNone</value>
-  </data>
-  <data name="&gt;&gt;m_rbRunModeNone.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbRunModeNone.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbRunModeNone.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -570,29 +390,5 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>&lt;title&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_colDriver.Name" xml:space="preserve">
-    <value>m_colDriver</value>
-  </data>
-  <data name="&gt;&gt;m_colDriver.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_colFile.Name" xml:space="preserve">
-    <value>m_colFile</value>
-  </data>
-  <data name="&gt;&gt;m_colFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_colFound.Name" xml:space="preserve">
-    <value>m_colFound</value>
-  </data>
-  <data name="&gt;&gt;m_colFound.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmGOMPlugin</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

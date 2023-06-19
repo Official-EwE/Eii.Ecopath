@@ -135,18 +135,6 @@
   <data name="OK_Button.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Name" xml:space="preserve">
-    <value>OK_Button</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
-    <value>m_plControl</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -162,18 +150,6 @@
   <data name="Cancel_Button.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;Cancel_Button.Name" xml:space="preserve">
-    <value>Cancel_Button</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
-    <value>m_plControl</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_lvAllShapes.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -187,18 +163,6 @@
     <value>200, 283</value>
   </data>
   <data name="m_lvAllShapes.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_lvAllShapes.Name" xml:space="preserve">
-    <value>m_lvAllShapes</value>
-  </data>
-  <data name="&gt;&gt;m_lvAllShapes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvAllShapes.Parent" xml:space="preserve">
-    <value>m_tlpFunctions</value>
-  </data>
-  <data name="&gt;&gt;m_lvAllShapes.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_btnRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -230,18 +194,6 @@
     <value>26, 23</value>
   </data>
   <data name="m_btnRemove.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemove.Name" xml:space="preserve">
-    <value>m_btnRemove</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemove.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemove.Parent" xml:space="preserve">
-    <value>m_plButtons</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemove.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_btnAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -320,18 +272,6 @@
   <data name="m_btnAdd.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_btnAdd.Name" xml:space="preserve">
-    <value>m_btnAdd</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.Parent" xml:space="preserve">
-    <value>m_plButtons</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlMain.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -356,18 +296,6 @@
   <data name="m_plButtons.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_plButtons.Name" xml:space="preserve">
-    <value>m_plButtons</value>
-  </data>
-  <data name="&gt;&gt;m_plButtons.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plButtons.Parent" xml:space="preserve">
-    <value>m_tlMain</value>
-  </data>
-  <data name="&gt;&gt;m_plButtons.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_hdrResp.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -388,18 +316,6 @@
   </data>
   <data name="m_hdrResp.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrResp.Name" xml:space="preserve">
-    <value>m_hdrResp</value>
-  </data>
-  <data name="&gt;&gt;m_hdrResp.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrResp.Parent" xml:space="preserve">
-    <value>m_tlMain</value>
-  </data>
-  <data name="&gt;&gt;m_hdrResp.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_hdrApplied.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -422,18 +338,6 @@
   <data name="m_hdrApplied.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrApplied.Name" xml:space="preserve">
-    <value>m_hdrApplied</value>
-  </data>
-  <data name="&gt;&gt;m_hdrApplied.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrApplied.Parent" xml:space="preserve">
-    <value>m_tlMain</value>
-  </data>
-  <data name="&gt;&gt;m_hdrApplied.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_graph.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -447,18 +351,6 @@
     <value>400, 315</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
-    <value>m_graph</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.ucDriverResponseView, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
-    <value>m_tlMain</value>
-  </data>
-  <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_tlpFunctions.ColumnCount" type="System.Int32, mscorlib">
@@ -509,18 +401,6 @@
   <data name="m_tsMain.Text" xml:space="preserve">
     <value>ToolStrip1</value>
   </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>m_tlpFunctions</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlpFunctions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -538,18 +418,6 @@
   </data>
   <data name="m_tlpFunctions.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFunctions.Name" xml:space="preserve">
-    <value>m_tlpFunctions</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFunctions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFunctions.Parent" xml:space="preserve">
-    <value>m_tlMain</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFunctions.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_tlpFunctions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsMain" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lvAllShapes" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -572,18 +440,6 @@
   <data name="m_btnChangeShape.Text" xml:space="preserve">
     <value>&amp;Change shape &gt;</value>
   </data>
-  <data name="&gt;&gt;m_btnChangeShape.Name" xml:space="preserve">
-    <value>m_btnChangeShape</value>
-  </data>
-  <data name="&gt;&gt;m_btnChangeShape.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnChangeShape.Parent" xml:space="preserve">
-    <value>m_plControl</value>
-  </data>
-  <data name="&gt;&gt;m_btnChangeShape.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_plControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -598,18 +454,6 @@
   </data>
   <data name="m_plControl.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_plControl.Name" xml:space="preserve">
-    <value>m_plControl</value>
-  </data>
-  <data name="&gt;&gt;m_plControl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plControl.Parent" xml:space="preserve">
-    <value>m_tlMain</value>
-  </data>
-  <data name="&gt;&gt;m_plControl.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_changeshape.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
@@ -629,18 +473,6 @@
   <data name="m_changeshape.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;m_changeshape.Name" xml:space="preserve">
-    <value>m_changeshape</value>
-  </data>
-  <data name="&gt;&gt;m_changeshape.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucChangeShapeType, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_changeshape.Parent" xml:space="preserve">
-    <value>m_tlMain</value>
-  </data>
-  <data name="&gt;&gt;m_changeshape.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_tlMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -657,18 +489,6 @@
     <value>877, 387</value>
   </data>
   <data name="m_tlMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tlMain.Name" xml:space="preserve">
-    <value>m_tlMain</value>
-  </data>
-  <data name="&gt;&gt;m_tlMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_tlMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
@@ -5211,29 +5031,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>&lt;caption&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnCaseSensitive.Name" xml:space="preserve">
-    <value>m_tsbnCaseSensitive</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnCaseSensitive.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tstbFilter.Name" xml:space="preserve">
-    <value>m_tstbFilter</value>
-  </data>
-  <data name="&gt;&gt;m_tstbFilter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tslbFilter.Name" xml:space="preserve">
-    <value>m_tslbFilter</value>
-  </data>
-  <data name="&gt;&gt;m_tslbFilter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgSelectEnvironmentalResponse</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.17143, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
