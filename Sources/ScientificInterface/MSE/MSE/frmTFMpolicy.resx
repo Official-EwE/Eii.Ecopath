@@ -144,30 +144,6 @@
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
-    <value>m_graph</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlpGrid.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -210,18 +186,6 @@
   <data name="m_tsMain.Text" xml:space="preserve">
     <value>tsControls</value>
   </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>m_tlpGrid</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_grid.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
@@ -236,18 +200,6 @@
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridTargetFishingMortalityPolicy, EwE6, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>m_tlpGrid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_tlpGrid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -267,32 +219,8 @@
   <data name="m_tlpGrid.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_tlpGrid.Name" xml:space="preserve">
-    <value>m_tlpGrid</value>
-  </data>
-  <data name="&gt;&gt;m_tlpGrid.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpGrid.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpGrid.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlpGrid.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsMain" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_grid" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>713, 355</value>
@@ -302,18 +230,6 @@
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Name" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -4843,17 +4759,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>TFM policy</value>
-  </data>
-  <data name="&gt;&gt;tsbDefaultTFM.Name" xml:space="preserve">
-    <value>tsbDefaultTFM</value>
-  </data>
-  <data name="&gt;&gt;tsbDefaultTFM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmTargetFishingMortalityPolicy</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.17454, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

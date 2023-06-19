@@ -132,18 +132,6 @@
   <data name="m_plResultsGrid.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="&gt;&gt;m_plResultsGrid.Name" xml:space="preserve">
-    <value>m_plResultsGrid</value>
-  </data>
-  <data name="&gt;&gt;m_plResultsGrid.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plResultsGrid.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_plResultsGrid.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
   <data name="m_nudSumLength.Location" type="System.Drawing.Point, System.Drawing">
     <value>150, 81</value>
   </data>
@@ -152,18 +140,6 @@
   </data>
   <data name="m_nudSumLength.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_nudSumLength.Name" xml:space="preserve">
-    <value>m_nudSumLength</value>
-  </data>
-  <data name="&gt;&gt;m_nudSumLength.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudSumLength.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudSumLength.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="m_tbSumEndTime.Location" type="System.Drawing.Point, System.Drawing">
     <value>150, 56</value>
@@ -174,18 +150,6 @@
   <data name="m_tbSumEndTime.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_tbSumEndTime.Name" xml:space="preserve">
-    <value>m_tbSumEndTime</value>
-  </data>
-  <data name="&gt;&gt;m_tbSumEndTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbSumEndTime.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbSumEndTime.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="m_tbSumStartTime.Location" type="System.Drawing.Point, System.Drawing">
     <value>150, 30</value>
   </data>
@@ -194,18 +158,6 @@
   </data>
   <data name="m_tbSumStartTime.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tbSumStartTime.Name" xml:space="preserve">
-    <value>m_tbSumStartTime</value>
-  </data>
-  <data name="&gt;&gt;m_tbSumStartTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbSumStartTime.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbSumStartTime.ZOrder" xml:space="preserve">
-    <value>10</value>
   </data>
   <data name="m_lblSumStartTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -225,18 +177,6 @@
   <data name="m_lblSumStartTime.Text" xml:space="preserve">
     <value>&amp;Start year:</value>
   </data>
-  <data name="&gt;&gt;m_lblSumStartTime.Name" xml:space="preserve">
-    <value>m_lblSumStartTime</value>
-  </data>
-  <data name="&gt;&gt;m_lblSumStartTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSumStartTime.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblSumStartTime.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="m_lblSumEndTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -255,18 +195,6 @@
   <data name="m_lblSumEndTime.Text" xml:space="preserve">
     <value>&amp;End year:</value>
   </data>
-  <data name="&gt;&gt;m_lblSumEndTime.Name" xml:space="preserve">
-    <value>m_lblSumEndTime</value>
-  </data>
-  <data name="&gt;&gt;m_lblSumEndTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSumEndTime.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblSumEndTime.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="m_cmbRegions.Location" type="System.Drawing.Point, System.Drawing">
     <value>339, 83</value>
   </data>
@@ -276,18 +204,6 @@
   <data name="m_cmbRegions.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;m_cmbRegions.Name" xml:space="preserve">
-    <value>m_cmbRegions</value>
-  </data>
-  <data name="&gt;&gt;m_cmbRegions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbRegions.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cmbRegions.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_cmbGears.Location" type="System.Drawing.Point, System.Drawing">
     <value>339, 56</value>
   </data>
@@ -296,18 +212,6 @@
   </data>
   <data name="m_cmbGears.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_cmbGears.Name" xml:space="preserve">
-    <value>m_cmbGears</value>
-  </data>
-  <data name="&gt;&gt;m_cmbGears.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbGears.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cmbGears.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_rbGroup.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -327,18 +231,6 @@
   <data name="m_rbGroup.Text" xml:space="preserve">
     <value>&amp;Group, caught by:</value>
   </data>
-  <data name="&gt;&gt;m_rbGroup.Name" xml:space="preserve">
-    <value>m_rbGroup</value>
-  </data>
-  <data name="&gt;&gt;m_rbGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbGroup.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbGroup.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_rbRegion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -356,18 +248,6 @@
   </data>
   <data name="m_rbRegion.Text" xml:space="preserve">
     <value>&amp;Region:</value>
-  </data>
-  <data name="&gt;&gt;m_rbRegion.Name" xml:space="preserve">
-    <value>m_rbRegion</value>
-  </data>
-  <data name="&gt;&gt;m_rbRegion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbRegion.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbRegion.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="m_rbFleet.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -387,18 +267,6 @@
   <data name="m_rbFleet.Text" xml:space="preserve">
     <value>&amp;Fleet</value>
   </data>
-  <data name="&gt;&gt;m_rbFleet.Name" xml:space="preserve">
-    <value>m_rbFleet</value>
-  </data>
-  <data name="&gt;&gt;m_rbFleet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbFleet.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbFleet.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_hdrSummary.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -416,18 +284,6 @@
   </data>
   <data name="m_hdrSummary.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSummary.Name" xml:space="preserve">
-    <value>m_hdrSummary</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSummary.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSummary.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSummary.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_hdrShow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -450,18 +306,6 @@
   <data name="m_hdrShow.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrShow.Name" xml:space="preserve">
-    <value>m_hdrShow</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShow.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShow.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShow.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_lblNumSteps.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -476,18 +320,6 @@
   </data>
   <data name="m_lblNumSteps.Text" xml:space="preserve">
     <value>&amp;Number of time steps:</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumSteps.Name" xml:space="preserve">
-    <value>m_lblNumSteps</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumSteps.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumSteps.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumSteps.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -509,11 +341,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Ecospace results</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmEcospaceResults</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

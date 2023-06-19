@@ -132,18 +132,6 @@
   <data name="m_pbFlowDiagram.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.Name" xml:space="preserve">
-    <value>m_pbFlowDiagram</value>
-  </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_scContent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -152,18 +140,6 @@
   </data>
   <data name="m_scContent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Name" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Parent" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_pgFlowDiagram.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -180,30 +156,6 @@
   <data name="m_pgFlowDiagram.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_pgFlowDiagram.Name" xml:space="preserve">
-    <value>m_pgFlowDiagram</value>
-  </data>
-  <data name="&gt;&gt;m_pgFlowDiagram.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PropertyGrid, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pgFlowDiagram.Parent" xml:space="preserve">
-    <value>m_scContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_pgFlowDiagram.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Name" xml:space="preserve">
-    <value>m_scContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Parent" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_scContent.Size" type="System.Drawing.Size, System.Drawing">
     <value>711, 432</value>
   </data>
@@ -212,18 +164,6 @@
   </data>
   <data name="m_scContent.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Name" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <metadata name="m_tsFlowDiagram.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>13, 4</value>
@@ -414,18 +354,6 @@
   </data>
   <data name="m_tsFlowDiagram.Text" xml:space="preserve">
     <value>ToolStrip1</value>
-  </data>
-  <data name="&gt;&gt;m_tsFlowDiagram.Name" xml:space="preserve">
-    <value>m_tsFlowDiagram</value>
-  </data>
-  <data name="&gt;&gt;m_tsFlowDiagram.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsFlowDiagram.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tsFlowDiagram.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -4955,89 +4883,5 @@
         ////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////8=
 </value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSettings.Name" xml:space="preserve">
-    <value>m_tsmiSettings</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tss1.Name" xml:space="preserve">
-    <value>m_tss1</value>
-  </data>
-  <data name="&gt;&gt;m_tss1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tslData.Name" xml:space="preserve">
-    <value>m_tslData</value>
-  </data>
-  <data name="&gt;&gt;m_tslData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tscmbData.Name" xml:space="preserve">
-    <value>m_tscmbData</value>
-  </data>
-  <data name="&gt;&gt;m_tscmbData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tss2.Name" xml:space="preserve">
-    <value>m_tss2</value>
-  </data>
-  <data name="&gt;&gt;m_tss2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSaveToImage.Name" xml:space="preserve">
-    <value>m_tsmiSaveToImage</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSaveToImage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tss3.Name" xml:space="preserve">
-    <value>m_tss3</value>
-  </data>
-  <data name="&gt;&gt;m_tss3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnImport.Name" xml:space="preserve">
-    <value>m_tsbnImport</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnImport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnExport.Name" xml:space="preserve">
-    <value>m_tsbnExport</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnExport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tss4.Name" xml:space="preserve">
-    <value>m_tss4</value>
-  </data>
-  <data name="&gt;&gt;m_tss4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiFont.Name" xml:space="preserve">
-    <value>m_tsmiFont</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiFont.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiCenterLabels.Name" xml:space="preserve">
-    <value>m_tsmiCenterLabels</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiCenterLabels.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiResetLayout.Name" xml:space="preserve">
-    <value>m_tsmiResetLayout</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiResetLayout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmEcopathFlowDiagram</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -250,18 +250,6 @@
   <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_scFD.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -281,30 +269,6 @@
   <data name="m_pbFlowDiagram.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.Name" xml:space="preserve">
-    <value>m_pbFlowDiagram</value>
-  </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSmoothPanel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.Parent" xml:space="preserve">
-    <value>m_scFD.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.Panel1.Name" xml:space="preserve">
-    <value>m_scFD.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.Panel1.Parent" xml:space="preserve">
-    <value>m_scFD</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_pgFD.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -316,30 +280,6 @@
   </data>
   <data name="m_pgFD.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_pgFD.Name" xml:space="preserve">
-    <value>m_pgFD</value>
-  </data>
-  <data name="&gt;&gt;m_pgFD.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PropertyGrid, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pgFD.Parent" xml:space="preserve">
-    <value>m_scFD.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_pgFD.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.Panel2.Name" xml:space="preserve">
-    <value>m_scFD.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.Panel2.Parent" xml:space="preserve">
-    <value>m_scFD</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_scFD.Size" type="System.Drawing.Size, System.Drawing">
     <value>559, 336</value>
@@ -353,18 +293,6 @@
   <data name="m_scFD.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_scFD.Name" xml:space="preserve">
-    <value>m_scFD</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scFD.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -376,65 +304,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>559, 361</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSaveImage.Name" xml:space="preserve">
-    <value>m_tsbnSaveImage</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSaveImage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_sep1.Name" xml:space="preserve">
-    <value>m_sep1</value>
-  </data>
-  <data name="&gt;&gt;m_sep1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tslLayout.Name" xml:space="preserve">
-    <value>m_tslLayout</value>
-  </data>
-  <data name="&gt;&gt;m_tslLayout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSaveLayout.Name" xml:space="preserve">
-    <value>m_tsbnSaveLayout</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSaveLayout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnLoadLayout.Name" xml:space="preserve">
-    <value>m_tsbnLoadLayout</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnLoadLayout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_sep2.Name" xml:space="preserve">
-    <value>m_sep2</value>
-  </data>
-  <data name="&gt;&gt;m_sep2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tslData.Name" xml:space="preserve">
-    <value>m_tslData</value>
-  </data>
-  <data name="&gt;&gt;m_tslData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tscbmValue.Name" xml:space="preserve">
-    <value>m_tscbmValue</value>
-  </data>
-  <data name="&gt;&gt;m_tscbmValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnOptions.Name" xml:space="preserve">
-    <value>m_tsbnOptions</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucFlowDiagram</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -141,18 +141,6 @@
   <data name="m_btnDelete.Text" xml:space="preserve">
     <value>&amp;Delete</value>
   </data>
-  <data name="&gt;&gt;m_btnDelete.Name" xml:space="preserve">
-    <value>m_btnDelete</value>
-  </data>
-  <data name="&gt;&gt;m_btnDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnDelete.Parent" xml:space="preserve">
-    <value>m_tlpOptions</value>
-  </data>
-  <data name="&gt;&gt;m_btnDelete.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_btnLoad.Location" type="System.Drawing.Point, System.Drawing">
     <value>134, 0</value>
   </data>
@@ -167,18 +155,6 @@
   </data>
   <data name="m_btnLoad.Text" xml:space="preserve">
     <value>&amp;Load</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.Name" xml:space="preserve">
-    <value>m_btnLoad</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.Parent" xml:space="preserve">
-    <value>m_tlpOptions</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblAction.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -201,18 +177,6 @@
   <data name="m_lblAction.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblAction.Name" xml:space="preserve">
-    <value>m_lblAction</value>
-  </data>
-  <data name="&gt;&gt;m_lblAction.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblAction.Parent" xml:space="preserve">
-    <value>m_tlpOptions</value>
-  </data>
-  <data name="&gt;&gt;m_lblAction.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_tlpOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -227,18 +191,6 @@
   </data>
   <data name="m_tlpOptions.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.Name" xml:space="preserve">
-    <value>m_tlpOptions</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.Parent" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_tlpOptions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnDelete" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_btnLoad" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblAction" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -259,18 +211,6 @@
     <value>266, 227</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEEcoSamplerPlugin.gridSamples, EwEEcoSamplerPlugin, Version=6.6.16101.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -357,18 +297,6 @@
   <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.16101.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_rbStartAtNo.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -387,18 +315,6 @@
   <data name="m_rbStartAtNo.Text" xml:space="preserve">
     <value>&amp;Start at:</value>
   </data>
-  <data name="&gt;&gt;m_rbStartAtNo.Name" xml:space="preserve">
-    <value>m_rbStartAtNo</value>
-  </data>
-  <data name="&gt;&gt;m_rbStartAtNo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbStartAtNo.Parent" xml:space="preserve">
-    <value>m_plBatchRun</value>
-  </data>
-  <data name="&gt;&gt;m_rbStartAtNo.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_rbRandom.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -413,18 +329,6 @@
   </data>
   <data name="m_rbRandom.Text" xml:space="preserve">
     <value>&amp;Randomly select samples</value>
-  </data>
-  <data name="&gt;&gt;m_rbRandom.Name" xml:space="preserve">
-    <value>m_rbRandom</value>
-  </data>
-  <data name="&gt;&gt;m_rbRandom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbRandom.Parent" xml:space="preserve">
-    <value>m_plBatchRun</value>
-  </data>
-  <data name="&gt;&gt;m_rbRandom.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_btnRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -441,18 +345,6 @@
   <data name="m_btnRun.Text" xml:space="preserve">
     <value>&amp;Batch run samples</value>
   </data>
-  <data name="&gt;&gt;m_btnRun.Name" xml:space="preserve">
-    <value>m_btnRun</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.Parent" xml:space="preserve">
-    <value>m_plBatchRun</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_nudStartAt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -463,18 +355,6 @@
     <value>126, 20</value>
   </data>
   <data name="m_nudStartAt.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartAt.Name" xml:space="preserve">
-    <value>m_nudStartAt</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartAt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartAt.Parent" xml:space="preserve">
-    <value>m_plBatchRun</value>
-  </data>
-  <data name="&gt;&gt;m_nudStartAt.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_nudNumSamples.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -488,18 +368,6 @@
   </data>
   <data name="m_nudNumSamples.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumSamples.Name" xml:space="preserve">
-    <value>m_nudNumSamples</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumSamples.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumSamples.Parent" xml:space="preserve">
-    <value>m_plBatchRun</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumSamples.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_lblNumSamples.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -515,18 +383,6 @@
   </data>
   <data name="m_lblNumSamples.Text" xml:space="preserve">
     <value>&amp;No. of samples:</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumSamples.Name" xml:space="preserve">
-    <value>m_lblNumSamples</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumSamples.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumSamples.Parent" xml:space="preserve">
-    <value>m_plBatchRun</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumSamples.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_hdrRun.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -546,18 +402,6 @@
   <data name="m_hdrRun.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrRun.Name" xml:space="preserve">
-    <value>m_hdrRun</value>
-  </data>
-  <data name="&gt;&gt;m_hdrRun.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16101.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrRun.Parent" xml:space="preserve">
-    <value>m_plBatchRun</value>
-  </data>
-  <data name="&gt;&gt;m_hdrRun.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_plBatchRun.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -573,18 +417,6 @@
   <data name="m_plBatchRun.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_plBatchRun.Name" xml:space="preserve">
-    <value>m_plBatchRun</value>
-  </data>
-  <data name="&gt;&gt;m_plBatchRun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plBatchRun.Parent" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_plBatchRun.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -598,18 +430,6 @@
     <value>266, 407</value>
   </data>
   <data name="m_tlpMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tlpMain.Name" xml:space="preserve">
-    <value>m_tlpMain</value>
-  </data>
-  <data name="&gt;&gt;m_tlpMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
@@ -5143,41 +4963,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>frmSamples</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnRecord.Name" xml:space="preserve">
-    <value>m_tsbnRecord</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnRecord.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsddImport.Name" xml:space="preserve">
-    <value>m_tsddImport</value>
-  </data>
-  <data name="&gt;&gt;m_tsddImport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiImportModel.Name" xml:space="preserve">
-    <value>m_tsmiImportModel</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiImportModel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiImportCefas.Name" xml:space="preserve">
-    <value>m_tsmiImportCefas</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiImportCefas.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsblRecordStatus.Name" xml:space="preserve">
-    <value>m_tsblRecordStatus</value>
-  </data>
-  <data name="&gt;&gt;m_tsblRecordStatus.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmSamples</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16101.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

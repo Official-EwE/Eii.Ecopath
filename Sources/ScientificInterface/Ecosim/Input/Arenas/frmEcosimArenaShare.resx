@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -188,18 +188,6 @@
   <data name="m_tsMain.Text" xml:space="preserve">
     <value>ToolStrip1</value>
   </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.17120.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_groups.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -216,18 +204,6 @@
   <data name="m_groups.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_groups.Name" xml:space="preserve">
-    <value>m_groups</value>
-  </data>
-  <data name="&gt;&gt;m_groups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.7.17120.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_groups.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_groups.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_grid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -239,18 +215,6 @@
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridEcosimArenaShare, EwE6, Version=6.7.17120.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>m_scContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_hdrPrey.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -270,18 +234,6 @@
   <data name="m_hdrPrey.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrPrey.Name" xml:space="preserve">
-    <value>m_hdrPrey</value>
-  </data>
-  <data name="&gt;&gt;m_hdrPrey.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.17120.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrPrey.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrPrey.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_hdrArenas.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -300,47 +252,11 @@
   <data name="m_hdrArenas.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrArenas.Name" xml:space="preserve">
-    <value>m_hdrArenas</value>
-  </data>
-  <data name="&gt;&gt;m_hdrArenas.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.17120.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrArenas.Parent" xml:space="preserve">
-    <value>m_scContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_hdrArenas.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_scContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="m_scContent.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 25</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Name" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Parent" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Name" xml:space="preserve">
-    <value>m_scContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Parent" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_scContent.Size" type="System.Drawing.Size, System.Drawing">
     <value>800, 425</value>
@@ -350,18 +266,6 @@
   </data>
   <data name="m_scContent.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Name" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -4888,23 +4792,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>&lt;caption&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnResetSelected.Name" xml:space="preserve">
-    <value>m_tsbnResetSelected</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnResetSelected.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnResetAll.Name" xml:space="preserve">
-    <value>m_tsbnResetAll</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnResetAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmEcosimArenaShare</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.7.17120.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

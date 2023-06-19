@@ -141,18 +141,6 @@
   <data name="m_btnOk.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;m_btnOk.Name" xml:space="preserve">
-    <value>m_btnOk</value>
-  </data>
-  <data name="&gt;&gt;m_btnOk.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnOk.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="m_tvDrivers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
@@ -167,18 +155,6 @@
   </data>
   <data name="m_tvDrivers.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_tvDrivers.Name" xml:space="preserve">
-    <value>m_tvDrivers</value>
-  </data>
-  <data name="&gt;&gt;m_tvDrivers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tvDrivers.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tvDrivers.ZOrder" xml:space="preserve">
-    <value>11</value>
   </data>
   <data name="m_btnRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -198,18 +174,6 @@
   <data name="m_btnRemove.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_btnRemove.Name" xml:space="preserve">
-    <value>m_btnRemove</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemove.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemove.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemove.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="m_btnAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
   </data>
@@ -227,18 +191,6 @@
   </data>
   <data name="m_btnAdd.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.Name" xml:space="preserve">
-    <value>m_btnAdd</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="m_hdrReponse.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -264,18 +216,6 @@
   <data name="m_hdrReponse.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrReponse.Name" xml:space="preserve">
-    <value>m_hdrReponse</value>
-  </data>
-  <data name="&gt;&gt;m_hdrReponse.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrReponse.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrReponse.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_lbxGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
@@ -293,18 +233,6 @@
   </data>
   <data name="m_lbxGroups.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_lbxGroups.Name" xml:space="preserve">
-    <value>m_lbxGroups</value>
-  </data>
-  <data name="&gt;&gt;m_lbxGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lbxGroups.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbxGroups.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="m_hdrConfig.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -327,18 +255,6 @@
   <data name="m_hdrConfig.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrConfig.Name" xml:space="preserve">
-    <value>m_hdrConfig</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrConfig.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_lblDrivers.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -359,18 +275,6 @@
   </data>
   <data name="m_lblDrivers.Text" xml:space="preserve">
     <value>&amp;Temporal drivers</value>
-  </data>
-  <data name="&gt;&gt;m_lblDrivers.Name" xml:space="preserve">
-    <value>m_lblDrivers</value>
-  </data>
-  <data name="&gt;&gt;m_lblDrivers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblDrivers.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblDrivers.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_lblGroups.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -393,18 +297,6 @@
   <data name="m_lblGroups.Text" xml:space="preserve">
     <value>&amp;Groups</value>
   </data>
-  <data name="&gt;&gt;m_lblGroups.Name" xml:space="preserve">
-    <value>m_lblGroups</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroups.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroups.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_graph.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -419,18 +311,6 @@
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
-    <value>m_graph</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.ucDriverResponseView, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_rbForaging.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -450,18 +330,6 @@
   <data name="m_rbForaging.Text" xml:space="preserve">
     <value>&amp;Foraging</value>
   </data>
-  <data name="&gt;&gt;m_rbForaging.Name" xml:space="preserve">
-    <value>m_rbForaging</value>
-  </data>
-  <data name="&gt;&gt;m_rbForaging.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbForaging.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbForaging.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_rbMortality.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -479,18 +347,6 @@
   </data>
   <data name="m_rbMortality.Text" xml:space="preserve">
     <value>&amp;Other mortality</value>
-  </data>
-  <data name="&gt;&gt;m_rbMortality.Name" xml:space="preserve">
-    <value>m_rbMortality</value>
-  </data>
-  <data name="&gt;&gt;m_rbMortality.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbMortality.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbMortality.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -515,11 +371,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Functional response to environmental forcing for '{0}'</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgDefineEcosimFunctionalResponses</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

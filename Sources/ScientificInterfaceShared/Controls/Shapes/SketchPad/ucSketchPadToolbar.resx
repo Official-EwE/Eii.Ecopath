@@ -275,18 +275,6 @@
   <data name="m_tsMenus.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_tsMenus.Name" xml:space="preserve">
-    <value>m_tsMenus</value>
-  </data>
-  <data name="&gt;&gt;m_tsMenus.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMenus.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tsMenus.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -298,95 +286,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>1072, 25</value>
-  </data>
-  <data name="&gt;&gt;ts1.Name" xml:space="preserve">
-    <value>ts1</value>
-  </data>
-  <data name="&gt;&gt;ts1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ts4.Name" xml:space="preserve">
-    <value>ts4</value>
-  </data>
-  <data name="&gt;&gt;ts4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ts2.Name" xml:space="preserve">
-    <value>ts2</value>
-  </data>
-  <data name="&gt;&gt;ts2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSaveAsImage.Name" xml:space="preserve">
-    <value>m_tsbnSaveAsImage</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSaveAsImage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnLongTerm.Name" xml:space="preserve">
-    <value>m_tsbnLongTerm</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnLongTerm.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSeasonal.Name" xml:space="preserve">
-    <value>m_tsbnSeasonal</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnSeasonal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tslMaxValue.Name" xml:space="preserve">
-    <value>m_tslMaxValue</value>
-  </data>
-  <data name="&gt;&gt;m_tslMaxValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tstbMaxValue.Name" xml:space="preserve">
-    <value>m_tstbMaxValue</value>
-  </data>
-  <data name="&gt;&gt;m_tstbMaxValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tslWeight.Name" xml:space="preserve">
-    <value>m_tslWeight</value>
-  </data>
-  <data name="&gt;&gt;m_tslWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tstbWeight.Name" xml:space="preserve">
-    <value>m_tstbWeight</value>
-  </data>
-  <data name="&gt;&gt;m_tstbWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnValues.Name" xml:space="preserve">
-    <value>m_tsbnValues</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnValues.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnChangeShape.Name" xml:space="preserve">
-    <value>m_tsbnChangeShape</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnChangeShape.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnReset.Name" xml:space="preserve">
-    <value>m_tsbnReset</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnReset.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnOptions.Name" xml:space="preserve">
-    <value>m_tsbnOptions</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucSketchPadToolbar</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

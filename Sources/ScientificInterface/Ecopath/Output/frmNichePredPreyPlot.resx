@@ -135,18 +135,6 @@
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
-    <value>m_graph</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -168,18 +156,6 @@
   <data name="m_cbLabels.Text" xml:space="preserve">
     <value>&amp;Show labels</value>
   </data>
-  <data name="&gt;&gt;m_cbLabels.Name" xml:space="preserve">
-    <value>m_cbLabels</value>
-  </data>
-  <data name="&gt;&gt;m_cbLabels.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbLabels.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_cbLabels.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_lblColours.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -194,18 +170,6 @@
   </data>
   <data name="m_lblColours.Text" xml:space="preserve">
     <value>&amp;Colours:</value>
-  </data>
-  <data name="&gt;&gt;m_lblColours.Name" xml:space="preserve">
-    <value>m_lblColours</value>
-  </data>
-  <data name="&gt;&gt;m_lblColours.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblColours.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblColours.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_rbNone.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -222,18 +186,6 @@
   <data name="m_rbNone.Text" xml:space="preserve">
     <value>None</value>
   </data>
-  <data name="&gt;&gt;m_rbNone.Name" xml:space="preserve">
-    <value>m_rbNone</value>
-  </data>
-  <data name="&gt;&gt;m_rbNone.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbNone.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_rbNone.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_rbOverlap.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -248,18 +200,6 @@
   </data>
   <data name="m_rbOverlap.Text" xml:space="preserve">
     <value>Scaled to overlap</value>
-  </data>
-  <data name="&gt;&gt;m_rbOverlap.Name" xml:space="preserve">
-    <value>m_rbOverlap</value>
-  </data>
-  <data name="&gt;&gt;m_rbOverlap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbOverlap.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_rbOverlap.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_rbPrey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -276,18 +216,6 @@
   <data name="m_rbPrey.Text" xml:space="preserve">
     <value>By prey</value>
   </data>
-  <data name="&gt;&gt;m_rbPrey.Name" xml:space="preserve">
-    <value>m_rbPrey</value>
-  </data>
-  <data name="&gt;&gt;m_rbPrey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbPrey.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_rbPrey.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_rbPredator.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -303,18 +231,6 @@
   <data name="m_rbPredator.Text" xml:space="preserve">
     <value>By predator</value>
   </data>
-  <data name="&gt;&gt;m_rbPredator.Name" xml:space="preserve">
-    <value>m_rbPredator</value>
-  </data>
-  <data name="&gt;&gt;m_rbPredator.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbPredator.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_rbPredator.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_nudCutOff.Location" type="System.Drawing.Point, System.Drawing">
     <value>56, 21</value>
   </data>
@@ -323,18 +239,6 @@
   </data>
   <data name="m_nudCutOff.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_nudCutOff.Name" xml:space="preserve">
-    <value>m_nudCutOff</value>
-  </data>
-  <data name="&gt;&gt;m_nudCutOff.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudCutOff.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_nudCutOff.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="m_hdrDisplay.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -360,18 +264,6 @@
   <data name="m_hdrDisplay.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrDisplay.Name" xml:space="preserve">
-    <value>m_hdrDisplay</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDisplay.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDisplay.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDisplay.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_lblCutOff.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -387,42 +279,6 @@
   <data name="m_lblCutOff.Text" xml:space="preserve">
     <value>Cut-&amp;off:</value>
   </data>
-  <data name="&gt;&gt;m_lblCutOff.Name" xml:space="preserve">
-    <value>m_lblCutOff</value>
-  </data>
-  <data name="&gt;&gt;m_lblCutOff.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblCutOff.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblCutOff.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>778, 517</value>
   </data>
@@ -430,18 +286,6 @@
     <value>149</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Name" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -4972,11 +4816,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Niche overlap plot</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmNichePredPreyPlot</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -198,18 +198,6 @@
   <data name="lblDescriptionCreate.Text" xml:space="preserve">
     <value>&amp;Description:</value>
   </data>
-  <data name="&gt;&gt;lblDescriptionCreate.Name" xml:space="preserve">
-    <value>lblDescriptionCreate</value>
-  </data>
-  <data name="&gt;&gt;lblDescriptionCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblDescriptionCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;lblDescriptionCreate.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="lblNameCreate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -228,18 +216,6 @@
   <data name="lblNameCreate.Text" xml:space="preserve">
     <value>&amp;Name:</value>
   </data>
-  <data name="&gt;&gt;lblNameCreate.Name" xml:space="preserve">
-    <value>lblNameCreate</value>
-  </data>
-  <data name="&gt;&gt;lblNameCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblNameCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;lblNameCreate.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="tbNameCreate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -251,18 +227,6 @@
   </data>
   <data name="tbNameCreate.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;tbNameCreate.Name" xml:space="preserve">
-    <value>tbNameCreate</value>
-  </data>
-  <data name="&gt;&gt;tbNameCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbNameCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;tbNameCreate.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="tbDescriptionCreate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -278,18 +242,6 @@
   </data>
   <data name="tbDescriptionCreate.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionCreate.Name" xml:space="preserve">
-    <value>tbDescriptionCreate</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionCreate.ZOrder" xml:space="preserve">
-    <value>11</value>
   </data>
   <metadata name="m_cmsListBox.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -396,12 +348,6 @@
   <data name="m_cmsListBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>137, 120</value>
   </data>
-  <data name="&gt;&gt;m_cmsListBox.Name" xml:space="preserve">
-    <value>m_cmsListBox</value>
-  </data>
-  <data name="&gt;&gt;m_cmsListBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="btnCancelCreate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -420,18 +366,6 @@
   <data name="btnCancelCreate.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;btnCancelCreate.Name" xml:space="preserve">
-    <value>btnCancelCreate</value>
-  </data>
-  <data name="&gt;&gt;btnCancelCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCancelCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;btnCancelCreate.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="btnDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -449,18 +383,6 @@
   </data>
   <data name="btnDelete.Text" xml:space="preserve">
     <value>&amp;Delete</value>
-  </data>
-  <data name="&gt;&gt;btnDelete.Name" xml:space="preserve">
-    <value>btnDelete</value>
-  </data>
-  <data name="&gt;&gt;btnDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnDelete.Parent" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;btnDelete.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="tabctrlModes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -489,18 +411,6 @@
   <data name="lvCreate.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="&gt;&gt;lvCreate.Name" xml:space="preserve">
-    <value>lvCreate</value>
-  </data>
-  <data name="&gt;&gt;lvCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lvCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;lvCreate.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="UcFormSeparator2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -512,18 +422,6 @@
   </data>
   <data name="UcFormSeparator2.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
-  </data>
-  <data name="&gt;&gt;UcFormSeparator2.Name" xml:space="preserve">
-    <value>UcFormSeparator2</value>
-  </data>
-  <data name="&gt;&gt;UcFormSeparator2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFormSeparator, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;UcFormSeparator2.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;UcFormSeparator2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="lblScenariosCreate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -543,18 +441,6 @@
   <data name="lblScenariosCreate.Text" xml:space="preserve">
     <value>Scenarios:</value>
   </data>
-  <data name="&gt;&gt;lblScenariosCreate.Name" xml:space="preserve">
-    <value>lblScenariosCreate</value>
-  </data>
-  <data name="&gt;&gt;lblScenariosCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblScenariosCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;lblScenariosCreate.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="lbContactCreate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -572,18 +458,6 @@
   </data>
   <data name="lbContactCreate.Text" xml:space="preserve">
     <value>&amp;Contact:</value>
-  </data>
-  <data name="&gt;&gt;lbContactCreate.Name" xml:space="preserve">
-    <value>lbContactCreate</value>
-  </data>
-  <data name="&gt;&gt;lbContactCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbContactCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;lbContactCreate.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="lbAuthorCreate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -603,18 +477,6 @@
   <data name="lbAuthorCreate.Text" xml:space="preserve">
     <value>&amp;Author:</value>
   </data>
-  <data name="&gt;&gt;lbAuthorCreate.Name" xml:space="preserve">
-    <value>lbAuthorCreate</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorCreate.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="tbAuthorCreate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -626,18 +488,6 @@
   </data>
   <data name="tbAuthorCreate.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorCreate.Name" xml:space="preserve">
-    <value>tbAuthorCreate</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorCreate.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="tbContactCreate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -653,18 +503,6 @@
   </data>
   <data name="tbContactCreate.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
-  </data>
-  <data name="&gt;&gt;tbContactCreate.Name" xml:space="preserve">
-    <value>tbContactCreate</value>
-  </data>
-  <data name="&gt;&gt;tbContactCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbContactCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;tbContactCreate.ZOrder" xml:space="preserve">
-    <value>10</value>
   </data>
   <data name="btnCreate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -684,18 +522,6 @@
   <data name="btnCreate.Text" xml:space="preserve">
     <value>&amp;Create</value>
   </data>
-  <data name="&gt;&gt;btnCreate.Name" xml:space="preserve">
-    <value>btnCreate</value>
-  </data>
-  <data name="&gt;&gt;btnCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCreate.Parent" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;btnCreate.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="tabpageCreate.ImageIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -713,18 +539,6 @@
   </data>
   <data name="tabpageCreate.Text" xml:space="preserve">
     <value>Create</value>
-  </data>
-  <data name="&gt;&gt;tabpageCreate.Name" xml:space="preserve">
-    <value>tabpageCreate</value>
-  </data>
-  <data name="&gt;&gt;tabpageCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabpageCreate.Parent" xml:space="preserve">
-    <value>tabctrlModes</value>
-  </data>
-  <data name="&gt;&gt;tabpageCreate.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="lvLoad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -747,18 +561,6 @@
   <data name="lvLoad.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;lvLoad.Name" xml:space="preserve">
-    <value>lvLoad</value>
-  </data>
-  <data name="&gt;&gt;lvLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lvLoad.Parent" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;lvLoad.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="btnCancelLoad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -776,18 +578,6 @@
   </data>
   <data name="btnCancelLoad.Text" xml:space="preserve">
     <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;btnCancelLoad.Name" xml:space="preserve">
-    <value>btnCancelLoad</value>
-  </data>
-  <data name="&gt;&gt;btnCancelLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCancelLoad.Parent" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;btnCancelLoad.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="btnLoad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -807,18 +597,6 @@
   <data name="btnLoad.Text" xml:space="preserve">
     <value>&amp;Load</value>
   </data>
-  <data name="&gt;&gt;btnLoad.Name" xml:space="preserve">
-    <value>btnLoad</value>
-  </data>
-  <data name="&gt;&gt;btnLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnLoad.Parent" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;btnLoad.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="lblScenariosLoad.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -836,18 +614,6 @@
   </data>
   <data name="lblScenariosLoad.Text" xml:space="preserve">
     <value>Scenarios:</value>
-  </data>
-  <data name="&gt;&gt;lblScenariosLoad.Name" xml:space="preserve">
-    <value>lblScenariosLoad</value>
-  </data>
-  <data name="&gt;&gt;lblScenariosLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblScenariosLoad.Parent" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;lblScenariosLoad.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="Label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -870,18 +636,6 @@
   <data name="Label1.Text" xml:space="preserve">
     <value>Contact:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="lbAuthorLoad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -902,18 +656,6 @@
   </data>
   <data name="lbAuthorLoad.Text" xml:space="preserve">
     <value>Author:</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorLoad.Name" xml:space="preserve">
-    <value>lbAuthorLoad</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorLoad.Parent" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorLoad.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="lblDescriptionLoad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -936,18 +678,6 @@
   <data name="lblDescriptionLoad.Text" xml:space="preserve">
     <value>Description:</value>
   </data>
-  <data name="&gt;&gt;lblDescriptionLoad.Name" xml:space="preserve">
-    <value>lblDescriptionLoad</value>
-  </data>
-  <data name="&gt;&gt;lblDescriptionLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblDescriptionLoad.Parent" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;lblDescriptionLoad.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="tbContactLoad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -961,18 +691,6 @@
     <value>344, 58</value>
   </data>
   <data name="tbContactLoad.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;tbContactLoad.Name" xml:space="preserve">
-    <value>tbContactLoad</value>
-  </data>
-  <data name="&gt;&gt;tbContactLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbContactLoad.Parent" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;tbContactLoad.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
   <data name="tbAuthorLoad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -990,18 +708,6 @@
   <data name="tbAuthorLoad.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;tbAuthorLoad.Name" xml:space="preserve">
-    <value>tbAuthorLoad</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorLoad.Parent" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorLoad.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="tbDescriptionLoad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -1016,18 +722,6 @@
   </data>
   <data name="tbDescriptionLoad.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionLoad.Name" xml:space="preserve">
-    <value>tbDescriptionLoad</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionLoad.Parent" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionLoad.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="tabpageLoad.ImageIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1046,18 +740,6 @@
   </data>
   <data name="tabpageLoad.Text" xml:space="preserve">
     <value>Load</value>
-  </data>
-  <data name="&gt;&gt;tabpageLoad.Name" xml:space="preserve">
-    <value>tabpageLoad</value>
-  </data>
-  <data name="&gt;&gt;tabpageLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabpageLoad.Parent" xml:space="preserve">
-    <value>tabctrlModes</value>
-  </data>
-  <data name="&gt;&gt;tabpageLoad.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="lvDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -1080,18 +762,6 @@
   <data name="lvDelete.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;lvDelete.Name" xml:space="preserve">
-    <value>lvDelete</value>
-  </data>
-  <data name="&gt;&gt;lvDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lvDelete.Parent" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;lvDelete.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="lbContactDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -1112,18 +782,6 @@
   </data>
   <data name="lbContactDelete.Text" xml:space="preserve">
     <value>Contact:</value>
-  </data>
-  <data name="&gt;&gt;lbContactDelete.Name" xml:space="preserve">
-    <value>lbContactDelete</value>
-  </data>
-  <data name="&gt;&gt;lbContactDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbContactDelete.Parent" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;lbContactDelete.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="lbAuthorDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -1146,18 +804,6 @@
   <data name="lbAuthorDelete.Text" xml:space="preserve">
     <value>Author:</value>
   </data>
-  <data name="&gt;&gt;lbAuthorDelete.Name" xml:space="preserve">
-    <value>lbAuthorDelete</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorDelete.Parent" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorDelete.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="lbDescriptionDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -1179,18 +825,6 @@
   <data name="lbDescriptionDelete.Text" xml:space="preserve">
     <value>Description:</value>
   </data>
-  <data name="&gt;&gt;lbDescriptionDelete.Name" xml:space="preserve">
-    <value>lbDescriptionDelete</value>
-  </data>
-  <data name="&gt;&gt;lbDescriptionDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbDescriptionDelete.Parent" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;lbDescriptionDelete.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="tbContactDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -1205,18 +839,6 @@
   </data>
   <data name="tbContactDelete.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
-  </data>
-  <data name="&gt;&gt;tbContactDelete.Name" xml:space="preserve">
-    <value>tbContactDelete</value>
-  </data>
-  <data name="&gt;&gt;tbContactDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbContactDelete.Parent" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;tbContactDelete.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="tbAuthorDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -1233,18 +855,6 @@
   <data name="tbAuthorDelete.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;tbAuthorDelete.Name" xml:space="preserve">
-    <value>tbAuthorDelete</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorDelete.Parent" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorDelete.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="tbDescriptionDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
@@ -1259,18 +869,6 @@
   </data>
   <data name="tbDescriptionDelete.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionDelete.Name" xml:space="preserve">
-    <value>tbDescriptionDelete</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionDelete.Parent" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionDelete.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="lblScenariosDelete.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1290,18 +888,6 @@
   <data name="lblScenariosDelete.Text" xml:space="preserve">
     <value>Scenarios:</value>
   </data>
-  <data name="&gt;&gt;lblScenariosDelete.Name" xml:space="preserve">
-    <value>lblScenariosDelete</value>
-  </data>
-  <data name="&gt;&gt;lblScenariosDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblScenariosDelete.Parent" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;lblScenariosDelete.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="btnCancelDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -1320,18 +906,6 @@
   <data name="btnCancelDelete.Text" xml:space="preserve">
     <value>&amp;Cancel</value>
   </data>
-  <data name="&gt;&gt;btnCancelDelete.Name" xml:space="preserve">
-    <value>btnCancelDelete</value>
-  </data>
-  <data name="&gt;&gt;btnCancelDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCancelDelete.Parent" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;btnCancelDelete.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="tabpageDelete.ImageKey" xml:space="preserve">
     <value>DeleteHS.png</value>
   </data>
@@ -1346,18 +920,6 @@
   </data>
   <data name="tabpageDelete.Text" xml:space="preserve">
     <value>Delete</value>
-  </data>
-  <data name="&gt;&gt;tabpageDelete.Name" xml:space="preserve">
-    <value>tabpageDelete</value>
-  </data>
-  <data name="&gt;&gt;tabpageDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabpageDelete.Parent" xml:space="preserve">
-    <value>tabctrlModes</value>
-  </data>
-  <data name="&gt;&gt;tabpageDelete.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="lvSaveAs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -1380,18 +942,6 @@
   <data name="lvSaveAs.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="&gt;&gt;lvSaveAs.Name" xml:space="preserve">
-    <value>lvSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lvSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lvSaveAs.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lvSaveAs.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="lbContactSaveAs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1409,18 +959,6 @@
   </data>
   <data name="lbContactSaveAs.Text" xml:space="preserve">
     <value>&amp;Contact:</value>
-  </data>
-  <data name="&gt;&gt;lbContactSaveAs.Name" xml:space="preserve">
-    <value>lbContactSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lbContactSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbContactSaveAs.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lbContactSaveAs.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="lbAuthorSaveAs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1440,18 +978,6 @@
   <data name="lbAuthorSaveAs.Text" xml:space="preserve">
     <value>&amp;Author:</value>
   </data>
-  <data name="&gt;&gt;lbAuthorSaveAs.Name" xml:space="preserve">
-    <value>lbAuthorSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorSaveAs.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lbAuthorSaveAs.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="tbAuthorSaveAs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -1463,18 +989,6 @@
   </data>
   <data name="tbAuthorSaveAs.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorSaveAs.Name" xml:space="preserve">
-    <value>tbAuthorSaveAs</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorSaveAs.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;tbAuthorSaveAs.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="tbContactSaveAs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1490,18 +1004,6 @@
   </data>
   <data name="tbContactSaveAs.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
-  </data>
-  <data name="&gt;&gt;tbContactSaveAs.Name" xml:space="preserve">
-    <value>tbContactSaveAs</value>
-  </data>
-  <data name="&gt;&gt;tbContactSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbContactSaveAs.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;tbContactSaveAs.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="btnCancelSave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -1521,18 +1023,6 @@
   <data name="btnCancelSave.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;btnCancelSave.Name" xml:space="preserve">
-    <value>btnCancelSave</value>
-  </data>
-  <data name="&gt;&gt;btnCancelSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCancelSave.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;btnCancelSave.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="btnSave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -1550,18 +1040,6 @@
   </data>
   <data name="btnSave.Text" xml:space="preserve">
     <value>&amp;Save</value>
-  </data>
-  <data name="&gt;&gt;btnSave.Name" xml:space="preserve">
-    <value>btnSave</value>
-  </data>
-  <data name="&gt;&gt;btnSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSave.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;btnSave.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="lblScenarioSaveAs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1581,18 +1059,6 @@
   <data name="lblScenarioSaveAs.Text" xml:space="preserve">
     <value>Scenarios:</value>
   </data>
-  <data name="&gt;&gt;lblScenarioSaveAs.Name" xml:space="preserve">
-    <value>lblScenarioSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lblScenarioSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblScenarioSaveAs.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lblScenarioSaveAs.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="lblDescriptionSaveAs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1611,18 +1077,6 @@
   <data name="lblDescriptionSaveAs.Text" xml:space="preserve">
     <value>&amp;Description:</value>
   </data>
-  <data name="&gt;&gt;lblDescriptionSaveAs.Name" xml:space="preserve">
-    <value>lblDescriptionSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lblDescriptionSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblDescriptionSaveAs.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lblDescriptionSaveAs.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="tbNameSaveAs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -1634,18 +1088,6 @@
   </data>
   <data name="tbNameSaveAs.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;tbNameSaveAs.Name" xml:space="preserve">
-    <value>tbNameSaveAs</value>
-  </data>
-  <data name="&gt;&gt;tbNameSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbNameSaveAs.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;tbNameSaveAs.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="lblNameSaveAs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1665,18 +1107,6 @@
   <data name="lblNameSaveAs.Text" xml:space="preserve">
     <value>&amp;Name:</value>
   </data>
-  <data name="&gt;&gt;lblNameSaveAs.Name" xml:space="preserve">
-    <value>lblNameSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lblNameSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lblNameSaveAs.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;lblNameSaveAs.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="tbDescriptionSaveAs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -1692,18 +1122,6 @@
   <data name="tbDescriptionSaveAs.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;tbDescriptionSaveAs.Name" xml:space="preserve">
-    <value>tbDescriptionSaveAs</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionSaveAs.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;tbDescriptionSaveAs.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="UcFormSeparator1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -1715,18 +1133,6 @@
   </data>
   <data name="UcFormSeparator1.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
-  </data>
-  <data name="&gt;&gt;UcFormSeparator1.Name" xml:space="preserve">
-    <value>UcFormSeparator1</value>
-  </data>
-  <data name="&gt;&gt;UcFormSeparator1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFormSeparator, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;UcFormSeparator1.Parent" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;UcFormSeparator1.ZOrder" xml:space="preserve">
-    <value>12</value>
   </data>
   <data name="tabpageSaveAs.ImageIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1742,18 +1148,6 @@
   </data>
   <data name="tabpageSaveAs.Text" xml:space="preserve">
     <value>Save as</value>
-  </data>
-  <data name="&gt;&gt;tabpageSaveAs.Name" xml:space="preserve">
-    <value>tabpageSaveAs</value>
-  </data>
-  <data name="&gt;&gt;tabpageSaveAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabpageSaveAs.Parent" xml:space="preserve">
-    <value>tabctrlModes</value>
-  </data>
-  <data name="&gt;&gt;tabpageSaveAs.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <metadata name="ilPurdyPics.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>139, 17</value>
@@ -1825,18 +1219,6 @@
   </data>
   <data name="tabctrlModes.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;tabctrlModes.Name" xml:space="preserve">
-    <value>tabctrlModes</value>
-  </data>
-  <data name="&gt;&gt;tabctrlModes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabctrlModes.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tabctrlModes.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -6814,125 +6196,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Scenarios</value>
-  </data>
-  <data name="&gt;&gt;chCreate2.Name" xml:space="preserve">
-    <value>chCreate2</value>
-  </data>
-  <data name="&gt;&gt;chCreate2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chCreate3.Name" xml:space="preserve">
-    <value>chCreate3</value>
-  </data>
-  <data name="&gt;&gt;chCreate3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chLoad2.Name" xml:space="preserve">
-    <value>chLoad2</value>
-  </data>
-  <data name="&gt;&gt;chLoad2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chLoad3.Name" xml:space="preserve">
-    <value>chLoad3</value>
-  </data>
-  <data name="&gt;&gt;chLoad3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chDelete2.Name" xml:space="preserve">
-    <value>chDelete2</value>
-  </data>
-  <data name="&gt;&gt;chDelete2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chDelete3.Name" xml:space="preserve">
-    <value>chDelete3</value>
-  </data>
-  <data name="&gt;&gt;chDelete3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chSaveAs2.Name" xml:space="preserve">
-    <value>chSaveAs2</value>
-  </data>
-  <data name="&gt;&gt;chSaveAs2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chSaveAs3.Name" xml:space="preserve">
-    <value>chSaveAs3</value>
-  </data>
-  <data name="&gt;&gt;chSaveAs3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmCreate.Name" xml:space="preserve">
-    <value>tsmCreate</value>
-  </data>
-  <data name="&gt;&gt;tsmCreate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmLoad.Name" xml:space="preserve">
-    <value>tsmLoad</value>
-  </data>
-  <data name="&gt;&gt;tsmLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmSave.Name" xml:space="preserve">
-    <value>tsmSave</value>
-  </data>
-  <data name="&gt;&gt;tsmSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmRename.Name" xml:space="preserve">
-    <value>tsmRename</value>
-  </data>
-  <data name="&gt;&gt;tsmRename.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
-    <value>ToolStripSeparator1</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmDelete.Name" xml:space="preserve">
-    <value>tsmDelete</value>
-  </data>
-  <data name="&gt;&gt;tsmDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chCreate1.Name" xml:space="preserve">
-    <value>chCreate1</value>
-  </data>
-  <data name="&gt;&gt;chCreate1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chLoad1.Name" xml:space="preserve">
-    <value>chLoad1</value>
-  </data>
-  <data name="&gt;&gt;chLoad1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chDelete1.Name" xml:space="preserve">
-    <value>chDelete1</value>
-  </data>
-  <data name="&gt;&gt;chDelete1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chSaveAs1.Name" xml:space="preserve">
-    <value>chSaveAs1</value>
-  </data>
-  <data name="&gt;&gt;chSaveAs1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ilPurdyPics.Name" xml:space="preserve">
-    <value>ilPurdyPics</value>
-  </data>
-  <data name="&gt;&gt;ilPurdyPics.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgScenario</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

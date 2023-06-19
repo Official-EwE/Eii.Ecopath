@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -132,18 +132,6 @@
   <data name="m_tbBackupMask.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;m_tbBackupMask.Name" xml:space="preserve">
-    <value>m_tbBackupMask</value>
-  </data>
-  <data name="&gt;&gt;m_tbBackupMask.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbBackupMask.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbBackupMask.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_lblBackupFolder.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -162,18 +150,6 @@
   <data name="m_lblBackupFolder.Text" xml:space="preserve">
     <value>&amp;Back-up models as:</value>
   </data>
-  <data name="&gt;&gt;m_lblBackupFolder.Name" xml:space="preserve">
-    <value>m_lblBackupFolder</value>
-  </data>
-  <data name="&gt;&gt;m_lblBackupFolder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblBackupFolder.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblBackupFolder.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_tbOutputMask.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -185,18 +161,6 @@
   </data>
   <data name="m_tbOutputMask.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tbOutputMask.Name" xml:space="preserve">
-    <value>m_tbOutputMask</value>
-  </data>
-  <data name="&gt;&gt;m_tbOutputMask.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbOutputMask.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbOutputMask.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="m_lblOutput.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -216,18 +180,6 @@
   <data name="m_lblOutput.Text" xml:space="preserve">
     <value>&amp;Output location:</value>
   </data>
-  <data name="&gt;&gt;m_lblOutput.Name" xml:space="preserve">
-    <value>m_lblOutput</value>
-  </data>
-  <data name="&gt;&gt;m_lblOutput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblOutput.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblOutput.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="m_tbxOutputSample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -240,18 +192,6 @@
   <data name="m_tbxOutputSample.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_tbxOutputSample.Name" xml:space="preserve">
-    <value>m_tbxOutputSample</value>
-  </data>
-  <data name="&gt;&gt;m_tbxOutputSample.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxOutputSample.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxOutputSample.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="m_tbxBackupSample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -263,18 +203,6 @@
   </data>
   <data name="m_tbxBackupSample.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_tbxBackupSample.Name" xml:space="preserve">
-    <value>m_tbxBackupSample</value>
-  </data>
-  <data name="&gt;&gt;m_tbxBackupSample.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxBackupSample.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxBackupSample.ZOrder" xml:space="preserve">
-    <value>10</value>
   </data>
   <data name="m_plAutoSave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -290,18 +218,6 @@
   </data>
   <data name="m_plAutoSave.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
-  </data>
-  <data name="&gt;&gt;m_plAutoSave.Name" xml:space="preserve">
-    <value>m_plAutoSave</value>
-  </data>
-  <data name="&gt;&gt;m_plAutoSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plAutoSave.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_plAutoSave.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_btnVisitOutputFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -336,18 +252,6 @@
   <data name="m_btnVisitOutputFolder.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_btnVisitOutputFolder.Name" xml:space="preserve">
-    <value>m_btnVisitOutputFolder</value>
-  </data>
-  <data name="&gt;&gt;m_btnVisitOutputFolder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnVisitOutputFolder.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnVisitOutputFolder.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_btnVisitBackupFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -381,18 +285,6 @@
   <data name="m_btnVisitBackupFolder.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="&gt;&gt;m_btnVisitBackupFolder.Name" xml:space="preserve">
-    <value>m_btnVisitBackupFolder</value>
-  </data>
-  <data name="&gt;&gt;m_btnVisitBackupFolder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnVisitBackupFolder.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnVisitBackupFolder.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_cbSaveWithHeader.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -411,18 +303,6 @@
   <data name="m_cbSaveWithHeader.Text" xml:space="preserve">
     <value>&amp;Include EwE model and scenario information header in output files</value>
   </data>
-  <data name="&gt;&gt;m_cbSaveWithHeader.Name" xml:space="preserve">
-    <value>m_cbSaveWithHeader</value>
-  </data>
-  <data name="&gt;&gt;m_cbSaveWithHeader.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbSaveWithHeader.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbSaveWithHeader.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_fieldpickBackup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -435,18 +315,6 @@
   <data name="m_fieldpickBackup.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;m_fieldpickBackup.Name" xml:space="preserve">
-    <value>m_fieldpickBackup</value>
-  </data>
-  <data name="&gt;&gt;m_fieldpickBackup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_fieldpickBackup.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_fieldpickBackup.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_fieldpickOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -458,18 +326,6 @@
   </data>
   <data name="m_fieldpickOutput.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_fieldpickOutput.Name" xml:space="preserve">
-    <value>m_fieldpickOutput</value>
-  </data>
-  <data name="&gt;&gt;m_fieldpickOutput.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_fieldpickOutput.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_fieldpickOutput.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_hdrMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -492,18 +348,6 @@
   <data name="m_hdrMain.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrMain.Name" xml:space="preserve">
-    <value>m_hdrMain</value>
-  </data>
-  <data name="&gt;&gt;m_hdrMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrMain.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="m_hdrAutosave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -525,18 +369,6 @@
   <data name="m_hdrAutosave.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrAutosave.Name" xml:space="preserve">
-    <value>m_hdrAutosave</value>
-  </data>
-  <data name="&gt;&gt;m_hdrAutosave.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrAutosave.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrAutosave.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -551,11 +383,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>553, 387</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucOptionsFileManagement</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -138,18 +138,6 @@
   <data name="m_btnOK.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;m_btnOK.Name" xml:space="preserve">
-    <value>m_btnOK</value>
-  </data>
-  <data name="&gt;&gt;m_btnOK.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnOK.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -167,18 +155,6 @@
   </data>
   <data name="m_btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Name" xml:space="preserve">
-    <value>m_btnCancel</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_lblTarget.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -198,18 +174,6 @@
   <data name="m_lblTarget.Text" xml:space="preserve">
     <value>&amp;Group:</value>
   </data>
-  <data name="&gt;&gt;m_lblTarget.Name" xml:space="preserve">
-    <value>m_lblTarget</value>
-  </data>
-  <data name="&gt;&gt;m_lblTarget.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblTarget.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblTarget.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_cmbSource.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -221,18 +185,6 @@
   </data>
   <data name="m_cmbSource.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSource.Name" xml:space="preserve">
-    <value>m_cmbSource</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSource.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSource.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSource.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_tbxSplit1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -246,18 +198,6 @@
   <data name="m_tbxSplit1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_tbxSplit1.Name" xml:space="preserve">
-    <value>m_tbxSplit1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSplit1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSplit1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSplit1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tbxB1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -269,18 +209,6 @@
   </data>
   <data name="m_tbxB1.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_tbxB1.Name" xml:space="preserve">
-    <value>m_tbxB1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxB1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxB1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxB1.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_tbxSplit2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -294,18 +222,6 @@
   <data name="m_tbxSplit2.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_tbxSplit2.Name" xml:space="preserve">
-    <value>m_tbxSplit2</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSplit2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSplit2.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSplit2.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_tbxB2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -317,18 +233,6 @@
   </data>
   <data name="m_tbxB2.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_tbxB2.Name" xml:space="preserve">
-    <value>m_tbxB2</value>
-  </data>
-  <data name="&gt;&gt;m_tbxB2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxB2.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxB2.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="m_sliderB.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
@@ -350,18 +254,6 @@
   </data>
   <data name="m_sliderB.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_sliderB.Name" xml:space="preserve">
-    <value>m_sliderB</value>
-  </data>
-  <data name="&gt;&gt;m_sliderB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_sliderB.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_sliderB.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblBiomass.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -390,18 +282,6 @@
   <data name="m_lblBiomass.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblBiomass.Name" xml:space="preserve">
-    <value>m_lblBiomass</value>
-  </data>
-  <data name="&gt;&gt;m_lblBiomass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblBiomass.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblBiomass.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
@@ -429,18 +309,6 @@
   <data name="m_lblName.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblName.Name" xml:space="preserve">
-    <value>m_lblName</value>
-  </data>
-  <data name="&gt;&gt;m_lblName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblName.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblName.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_hdrSplit1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -459,18 +327,6 @@
   <data name="m_hdrSplit1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrSplit1.Name" xml:space="preserve">
-    <value>m_hdrSplit1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSplit1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSplit1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSplit1.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_hdrSplit2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -488,18 +344,6 @@
   </data>
   <data name="m_hdrSplit2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSplit2.Name" xml:space="preserve">
-    <value>m_hdrSplit2</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSplit2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSplit2.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSplit2.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -522,18 +366,6 @@
   <data name="Label1.Text" xml:space="preserve">
     <value>&amp;Taxonomy:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="m_lbxTaxa1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -549,18 +381,6 @@
   <data name="m_lbxTaxa1.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="&gt;&gt;m_lbxTaxa1.Name" xml:space="preserve">
-    <value>m_lbxTaxa1</value>
-  </data>
-  <data name="&gt;&gt;m_lbxTaxa1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbxTaxa1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_lbxTaxa1.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="m_lbxTaxa2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -575,18 +395,6 @@
   </data>
   <data name="m_lbxTaxa2.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
-  </data>
-  <data name="&gt;&gt;m_lbxTaxa2.Name" xml:space="preserve">
-    <value>m_lbxTaxa2</value>
-  </data>
-  <data name="&gt;&gt;m_lbxTaxa2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbxTaxa2.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_lbxTaxa2.ZOrder" xml:space="preserve">
-    <value>11</value>
   </data>
   <data name="m_plMoveTaxa.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -609,18 +417,6 @@
   <data name="m_btn2to1.Text" xml:space="preserve">
     <value>&lt;</value>
   </data>
-  <data name="&gt;&gt;m_btn2to1.Name" xml:space="preserve">
-    <value>m_btn2to1</value>
-  </data>
-  <data name="&gt;&gt;m_btn2to1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btn2to1.Parent" xml:space="preserve">
-    <value>m_plMoveTaxa</value>
-  </data>
-  <data name="&gt;&gt;m_btn2to1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_btn1to2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
@@ -636,18 +432,6 @@
   <data name="m_btn1to2.Text" xml:space="preserve">
     <value>&gt;</value>
   </data>
-  <data name="&gt;&gt;m_btn1to2.Name" xml:space="preserve">
-    <value>m_btn1to2</value>
-  </data>
-  <data name="&gt;&gt;m_btn1to2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btn1to2.Parent" xml:space="preserve">
-    <value>m_plMoveTaxa</value>
-  </data>
-  <data name="&gt;&gt;m_btn1to2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_plMoveTaxa.Location" type="System.Drawing.Point, System.Drawing">
     <value>225, 96</value>
   </data>
@@ -659,18 +443,6 @@
   </data>
   <data name="m_plMoveTaxa.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
-  </data>
-  <data name="&gt;&gt;m_plMoveTaxa.Name" xml:space="preserve">
-    <value>m_plMoveTaxa</value>
-  </data>
-  <data name="&gt;&gt;m_plMoveTaxa.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plMoveTaxa.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_plMoveTaxa.ZOrder" xml:space="preserve">
-    <value>12</value>
   </data>
   <data name="m_lblStartAge.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -696,18 +468,6 @@
   <data name="m_lblStartAge.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblStartAge.Name" xml:space="preserve">
-    <value>m_lblStartAge</value>
-  </data>
-  <data name="&gt;&gt;m_lblStartAge.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblStartAge.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblStartAge.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
   <data name="m_tbxAge1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -719,18 +479,6 @@
   </data>
   <data name="m_tbxAge1.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_tbxAge1.Name" xml:space="preserve">
-    <value>m_tbxAge1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxAge1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxAge1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxAge1.ZOrder" xml:space="preserve">
-    <value>14</value>
   </data>
   <data name="m_tbxAge2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -744,18 +492,6 @@
   <data name="m_tbxAge2.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;m_tbxAge2.Name" xml:space="preserve">
-    <value>m_tbxAge2</value>
-  </data>
-  <data name="&gt;&gt;m_tbxAge2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxAge2.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxAge2.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
   <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 39</value>
   </data>
@@ -767,18 +503,6 @@
   </data>
   <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tbxSplit1" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_sliderB" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblBiomass" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxSplit2" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxB1" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblName" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxB2" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrSplit1" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrSplit2" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="Label1" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbxTaxa1" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lbxTaxa2" Row="4" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_plMoveTaxa" Row="4" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblStartAge" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxAge1" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxAge2" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,Absolute,60,Percent,50" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -807,18 +531,6 @@
   <data name="m_pbLogo.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_pbLogo.Name" xml:space="preserve">
-    <value>m_pbLogo</value>
-  </data>
-  <data name="&gt;&gt;m_pbLogo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbLogo.Parent" xml:space="preserve">
-    <value>m_tlpLogo</value>
-  </data>
-  <data name="&gt;&gt;m_pbLogo.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlpLogo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Bottom</value>
   </data>
@@ -833,18 +545,6 @@
   </data>
   <data name="m_tlpLogo.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_tlpLogo.Name" xml:space="preserve">
-    <value>m_tlpLogo</value>
-  </data>
-  <data name="&gt;&gt;m_tlpLogo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpLogo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpLogo.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_tlpLogo.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbLogo" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,10,Percent,100,Absolute,10" /&gt;&lt;Rows Styles="Absolute,10,Percent,100,Absolute,10" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -863,11 +563,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Split group</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgSplitGroup</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

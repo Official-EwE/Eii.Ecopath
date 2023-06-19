@@ -154,18 +154,6 @@
   <data name="m_tvNavigation.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_tvNavigation.Name" xml:space="preserve">
-    <value>m_tvNavigation</value>
-  </data>
-  <data name="&gt;&gt;m_tvNavigation.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.6.15222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tvNavigation.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tvNavigation.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -186,17 +174,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Navigator</value>
-  </data>
-  <data name="&gt;&gt;m_ilTreeIcons.Name" xml:space="preserve">
-    <value>m_ilTreeIcons</value>
-  </data>
-  <data name="&gt;&gt;m_ilTreeIcons.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmNavigationPanel</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.6.15222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

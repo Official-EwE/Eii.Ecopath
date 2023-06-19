@@ -135,18 +135,6 @@
   <data name="OK_Button.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Name" xml:space="preserve">
-    <value>OK_Button</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -161,18 +149,6 @@
   </data>
   <data name="Cancel_Button.Text" xml:space="preserve">
     <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Name" xml:space="preserve">
-    <value>Cancel_Button</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="clbAllPlots.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -192,18 +168,6 @@
   <data name="clbAllPlots.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
   </data>
-  <data name="&gt;&gt;clbAllPlots.Name" xml:space="preserve">
-    <value>clbAllPlots</value>
-  </data>
-  <data name="&gt;&gt;clbAllPlots.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;clbAllPlots.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;clbAllPlots.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="btnCheckAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -219,18 +183,6 @@
   <data name="btnCheckAll.Text" xml:space="preserve">
     <value>&amp;Check all</value>
   </data>
-  <data name="&gt;&gt;btnCheckAll.Name" xml:space="preserve">
-    <value>btnCheckAll</value>
-  </data>
-  <data name="&gt;&gt;btnCheckAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCheckAll.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnCheckAll.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="btnUnCheckAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -245,18 +197,6 @@
   </data>
   <data name="btnUnCheckAll.Text" xml:space="preserve">
     <value>&amp;Uncheck all</value>
-  </data>
-  <data name="&gt;&gt;btnUnCheckAll.Name" xml:space="preserve">
-    <value>btnUnCheckAll</value>
-  </data>
-  <data name="&gt;&gt;btnUnCheckAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnUnCheckAll.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btnUnCheckAll.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -275,11 +215,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Hide/show plots</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgSelectAllFitsPlots</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

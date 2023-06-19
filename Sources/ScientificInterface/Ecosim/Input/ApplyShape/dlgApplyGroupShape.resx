@@ -135,18 +135,6 @@
   <data name="OK_Button.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Name" xml:space="preserve">
-    <value>OK_Button</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -162,18 +150,6 @@
   <data name="Cancel_Button.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;Cancel_Button.Name" xml:space="preserve">
-    <value>Cancel_Button</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_lblAvailableFF.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -188,18 +164,6 @@
   </data>
   <data name="m_lblAvailableFF.Text" xml:space="preserve">
     <value>A&amp;vailable functions:</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableFF.Name" xml:space="preserve">
-    <value>m_lblAvailableFF</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableFF.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableFF.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblAvailableFF.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="m_btnAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -274,18 +238,6 @@
   <data name="m_btnAdd.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;m_btnAdd.Name" xml:space="preserve">
-    <value>m_btnAdd</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_lvAppliedShapes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -310,18 +262,6 @@
   <data name="m_lvAppliedShapes.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;m_lvAppliedShapes.Name" xml:space="preserve">
-    <value>m_lvAppliedShapes</value>
-  </data>
-  <data name="&gt;&gt;m_lvAppliedShapes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvAppliedShapes.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lvAppliedShapes.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_lvAllShapes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
@@ -333,18 +273,6 @@
   </data>
   <data name="m_lvAllShapes.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_lvAllShapes.Name" xml:space="preserve">
-    <value>m_lvAllShapes</value>
-  </data>
-  <data name="&gt;&gt;m_lvAllShapes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvAllShapes.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lvAllShapes.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_btnRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -374,18 +302,6 @@
   <data name="m_btnRemove.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;m_btnRemove.Name" xml:space="preserve">
-    <value>m_btnRemove</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemove.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemove.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnRemove.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_lblAppliedFF.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -403,18 +319,6 @@
   </data>
   <data name="m_lblAppliedFF.Text" xml:space="preserve">
     <value>A&amp;pplied functions:</value>
-  </data>
-  <data name="&gt;&gt;m_lblAppliedFF.Name" xml:space="preserve">
-    <value>m_lblAppliedFF</value>
-  </data>
-  <data name="&gt;&gt;m_lblAppliedFF.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblAppliedFF.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblAppliedFF.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="m_lblSource.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -437,18 +341,6 @@
   <data name="m_lblSource.Text" xml:space="preserve">
     <value>Source group '{0}'</value>
   </data>
-  <data name="&gt;&gt;m_lblSource.Name" xml:space="preserve">
-    <value>m_lblSource</value>
-  </data>
-  <data name="&gt;&gt;m_lblSource.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSource.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblSource.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -469,23 +361,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Apply other mortality forcing</value>
-  </data>
-  <data name="&gt;&gt;m_colhdrShape.Name" xml:space="preserve">
-    <value>m_colhdrShape</value>
-  </data>
-  <data name="&gt;&gt;m_colhdrShape.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_colhdrModifier.Name" xml:space="preserve">
-    <value>m_colhdrModifier</value>
-  </data>
-  <data name="&gt;&gt;m_colhdrModifier.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgApplyGroupShape</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

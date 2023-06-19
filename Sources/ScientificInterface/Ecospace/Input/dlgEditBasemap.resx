@@ -147,18 +147,6 @@
   <data name="m_btnOk.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;m_btnOk.Name" xml:space="preserve">
-    <value>m_btnOk</value>
-  </data>
-  <data name="&gt;&gt;m_btnOk.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnOk.Parent" xml:space="preserve">
-    <value>m_tlpButtons</value>
-  </data>
-  <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>None</value>
   </data>
@@ -180,18 +168,6 @@
   <data name="m_btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;m_btnCancel.Name" xml:space="preserve">
-    <value>m_btnCancel</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Parent" xml:space="preserve">
-    <value>m_tlpButtons</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tlpButtons.Location" type="System.Drawing.Point, System.Drawing">
     <value>190, 602</value>
   </data>
@@ -206,18 +182,6 @@
   </data>
   <data name="m_tlpButtons.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
-  </data>
-  <data name="&gt;&gt;m_tlpButtons.Name" xml:space="preserve">
-    <value>m_tlpButtons</value>
-  </data>
-  <data name="&gt;&gt;m_tlpButtons.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpButtons.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpButtons.ZOrder" xml:space="preserve">
-    <value>21</value>
   </data>
   <data name="m_tlpButtons.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnOk" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnCancel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -243,18 +207,6 @@
   <data name="m_NumRows.Text" xml:space="preserve">
     <value>Number of &amp;rows:</value>
   </data>
-  <data name="&gt;&gt;m_NumRows.Name" xml:space="preserve">
-    <value>m_NumRows</value>
-  </data>
-  <data name="&gt;&gt;m_NumRows.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_NumRows.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_NumRows.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
   <data name="m_lblNumCols.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -275,18 +227,6 @@
   </data>
   <data name="m_lblNumCols.Text" xml:space="preserve">
     <value>Number of &amp;cols:</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumCols.Name" xml:space="preserve">
-    <value>m_lblNumCols</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumCols.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumCols.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumCols.ZOrder" xml:space="preserve">
-    <value>19</value>
   </data>
   <data name="m_lblCellLength.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -309,18 +249,6 @@
   <data name="m_lblCellLength.Text" xml:space="preserve">
     <value>Cell &amp;length:</value>
   </data>
-  <data name="&gt;&gt;m_lblCellLength.Name" xml:space="preserve">
-    <value>m_lblCellLength</value>
-  </data>
-  <data name="&gt;&gt;m_lblCellLength.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblCellLength.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblCellLength.ZOrder" xml:space="preserve">
-    <value>22</value>
-  </data>
   <data name="m_pbLink.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Center</value>
   </data>
@@ -338,18 +266,6 @@
   </data>
   <data name="m_pbLink.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_pbLink.Name" xml:space="preserve">
-    <value>m_pbLink</value>
-  </data>
-  <data name="&gt;&gt;m_pbLink.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbLink.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_pbLink.ZOrder" xml:space="preserve">
-    <value>8</value>
   </data>
   <data name="m_lblLonTL.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -372,18 +288,6 @@
   <data name="m_lblLonTL.Text" xml:space="preserve">
     <value>Top-left l&amp;ongitude:</value>
   </data>
-  <data name="&gt;&gt;m_lblLonTL.Name" xml:space="preserve">
-    <value>m_lblLonTL</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonTL.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonTL.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblLonTL.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="m_lblLatTL.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -404,18 +308,6 @@
   </data>
   <data name="m_lblLatTL.Text" xml:space="preserve">
     <value>Top-left l&amp;atitude:</value>
-  </data>
-  <data name="&gt;&gt;m_lblLatTL.Name" xml:space="preserve">
-    <value>m_lblLatTL</value>
-  </data>
-  <data name="&gt;&gt;m_lblLatTL.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblLatTL.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblLatTL.ZOrder" xml:space="preserve">
-    <value>18</value>
   </data>
   <data name="m_lblCellSize.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -438,18 +330,6 @@
   <data name="m_lblCellSize.Text" xml:space="preserve">
     <value>Cell &amp;size:</value>
   </data>
-  <data name="&gt;&gt;m_lblCellSize.Name" xml:space="preserve">
-    <value>m_lblCellSize</value>
-  </data>
-  <data name="&gt;&gt;m_lblCellSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblCellSize.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblCellSize.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
   <data name="m_cbAssumeSquareCells.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -470,18 +350,6 @@
   </data>
   <data name="m_cbAssumeSquareCells.Text" xml:space="preserve">
     <value>&amp;Assume square cells</value>
-  </data>
-  <data name="&gt;&gt;m_cbAssumeSquareCells.Name" xml:space="preserve">
-    <value>m_cbAssumeSquareCells</value>
-  </data>
-  <data name="&gt;&gt;m_cbAssumeSquareCells.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbAssumeSquareCells.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbAssumeSquareCells.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="m_lblUnitLat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -507,18 +375,6 @@
   <data name="m_lblUnitLat.Text" xml:space="preserve">
     <value>&lt;unit&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lblUnitLat.Name" xml:space="preserve">
-    <value>m_lblUnitLat</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitLat.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitLat.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitLat.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_lblUnitLon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -542,18 +398,6 @@
   </data>
   <data name="m_lblUnitLon.Text" xml:space="preserve">
     <value>&lt;unit&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitLon.Name" xml:space="preserve">
-    <value>m_lblUnitLon</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitLon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitLon.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitLon.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_lblUnitCellLen.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -579,18 +423,6 @@
   <data name="m_lblUnitCellLen.Text" xml:space="preserve">
     <value>&lt;unit&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lblUnitCellLen.Name" xml:space="preserve">
-    <value>m_lblUnitCellLen</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitCellLen.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitCellLen.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitCellLen.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_lblUnitCellSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -615,18 +447,6 @@
   <data name="m_lblUnitCellSize.Text" xml:space="preserve">
     <value>&lt;unit&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lblUnitCellSize.Name" xml:space="preserve">
-    <value>m_lblUnitCellSize</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitCellSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitCellSize.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnitCellSize.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -644,18 +464,6 @@
   </data>
   <data name="Label1.Text" xml:space="preserve">
     <value>Number of modeled cells:</value>
-  </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <metadata name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -702,18 +510,6 @@
   <data name="m_ts.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
-  <data name="&gt;&gt;m_ts.Name" xml:space="preserve">
-    <value>m_ts</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_hdrSpatialReference.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -737,18 +533,6 @@
   </data>
   <data name="m_hdrSpatialReference.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSpatialReference.Name" xml:space="preserve">
-    <value>m_hdrSpatialReference</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSpatialReference.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSpatialReference.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrSpatialReference.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="m_hdrDimensions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -774,18 +558,6 @@
   <data name="m_hdrDimensions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrDimensions.Name" xml:space="preserve">
-    <value>m_hdrDimensions</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDimensions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDimensions.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDimensions.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="m_nudCellSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -800,18 +572,6 @@
   </data>
   <data name="m_nudCellSize.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellSize.Name" xml:space="preserve">
-    <value>m_nudCellSize</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellSize.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellSize.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellSize.ZOrder" xml:space="preserve">
-    <value>12</value>
   </data>
   <data name="m_nudCellLength.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -828,18 +588,6 @@
   <data name="m_nudCellLength.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;m_nudCellLength.Name" xml:space="preserve">
-    <value>m_nudCellLength</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellLength.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellLength.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudCellLength.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
   <data name="m_nudLonTL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -854,18 +602,6 @@
   </data>
   <data name="m_nudLonTL.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_nudLonTL.Name" xml:space="preserve">
-    <value>m_nudLonTL</value>
-  </data>
-  <data name="&gt;&gt;m_nudLonTL.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudLonTL.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudLonTL.ZOrder" xml:space="preserve">
-    <value>15</value>
   </data>
   <data name="m_nudRowCount.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -882,18 +618,6 @@
   <data name="m_nudRowCount.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_nudRowCount.Name" xml:space="preserve">
-    <value>m_nudRowCount</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowCount.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowCount.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowCount.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
   <data name="m_nudLatTL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -908,18 +632,6 @@
   </data>
   <data name="m_nudLatTL.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_nudLatTL.Name" xml:space="preserve">
-    <value>m_nudLatTL</value>
-  </data>
-  <data name="&gt;&gt;m_nudLatTL.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudLatTL.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudLatTL.ZOrder" xml:space="preserve">
-    <value>17</value>
   </data>
   <data name="m_nudColCount.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -936,18 +648,6 @@
   <data name="m_nudColCount.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_nudColCount.Name" xml:space="preserve">
-    <value>m_nudColCount</value>
-  </data>
-  <data name="&gt;&gt;m_nudColCount.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16567.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudColCount.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudColCount.ZOrder" xml:space="preserve">
-    <value>23</value>
-  </data>
   <data name="m_lbNCells.Location" type="System.Drawing.Point, System.Drawing">
     <value>263, 204</value>
   </data>
@@ -959,18 +659,6 @@
   </data>
   <data name="m_lbNCells.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_lbNCells.Name" xml:space="preserve">
-    <value>m_lbNCells</value>
-  </data>
-  <data name="&gt;&gt;m_lbNCells.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbNCells.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lbNCells.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -995,23 +683,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Edit basemap</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnImport.Name" xml:space="preserve">
-    <value>m_tsbnImport</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnImport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiImportFromASCII.Name" xml:space="preserve">
-    <value>m_tsmiImportFromASCII</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiImportFromASCII.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgEditBasemap</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

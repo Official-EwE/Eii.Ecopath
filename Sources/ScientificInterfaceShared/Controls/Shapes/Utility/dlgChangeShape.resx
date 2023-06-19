@@ -138,18 +138,6 @@
   <data name="m_btnOk.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;m_btnOk.Name" xml:space="preserve">
-    <value>m_btnOk</value>
-  </data>
-  <data name="&gt;&gt;m_btnOk.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnOk.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -167,18 +155,6 @@
   </data>
   <data name="m_btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Name" xml:space="preserve">
-    <value>m_btnCancel</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_plPreview.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -198,18 +174,6 @@
   <data name="m_plPreview.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_plPreview.Name" xml:space="preserve">
-    <value>m_plPreview</value>
-  </data>
-  <data name="&gt;&gt;m_plPreview.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_plPreview.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_plPreview.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_btDefaults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -228,18 +192,6 @@
   <data name="m_btDefaults.Text" xml:space="preserve">
     <value>Set defaults</value>
   </data>
-  <data name="&gt;&gt;m_btDefaults.Name" xml:space="preserve">
-    <value>m_btDefaults</value>
-  </data>
-  <data name="&gt;&gt;m_btDefaults.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btDefaults.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btDefaults.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_tbxName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -251,18 +203,6 @@
   </data>
   <data name="m_tbxName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.Name" xml:space="preserve">
-    <value>m_tbxName</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxName.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_lblName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -282,18 +222,6 @@
   <data name="m_lblName.Text" xml:space="preserve">
     <value>&amp;Name:</value>
   </data>
-  <data name="&gt;&gt;m_lblName.Name" xml:space="preserve">
-    <value>m_lblName</value>
-  </data>
-  <data name="&gt;&gt;m_lblName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblName.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblName.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_scMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -312,42 +240,6 @@
   <data name="m_controlpanel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_controlpanel.Name" xml:space="preserve">
-    <value>m_controlpanel</value>
-  </data>
-  <data name="&gt;&gt;m_controlpanel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucChangeShapeType, ScientificInterfaceShared, Version=6.6.15329.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_controlpanel.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_controlpanel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>600, 348</value>
   </data>
@@ -356,18 +248,6 @@
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Name" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_cbShowExtraData.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -386,18 +266,6 @@
   </data>
   <data name="m_cbShowExtraData.Text" xml:space="preserve">
     <value>&amp;Show extra data</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowExtraData.Name" xml:space="preserve">
-    <value>m_cbShowExtraData</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowExtraData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowExtraData.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowExtraData.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -419,11 +287,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Change shape</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgChangeShape</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -132,18 +132,6 @@
   <data name="m_pbFlowDiagram.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.Name" xml:space="preserve">
-    <value>m_pbFlowDiagram</value>
-  </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_pbFlowDiagram.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
   <data name="m_scContent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -168,18 +156,6 @@
   <data name="m_btnStop.Text" xml:space="preserve">
     <value>&amp;Stop</value>
   </data>
-  <data name="&gt;&gt;m_btnStop.Name" xml:space="preserve">
-    <value>m_btnStop</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tbxDelay.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
@@ -194,18 +170,6 @@
   </data>
   <data name="m_tbxDelay.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
-  </data>
-  <data name="&gt;&gt;m_tbxDelay.Name" xml:space="preserve">
-    <value>m_tbxDelay</value>
-  </data>
-  <data name="&gt;&gt;m_tbxDelay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxDelay.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxDelay.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblDelay.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -225,18 +189,6 @@
   <data name="m_lblDelay.Text" xml:space="preserve">
     <value>Delay (ms)</value>
   </data>
-  <data name="&gt;&gt;m_lblDelay.Name" xml:space="preserve">
-    <value>m_lblDelay</value>
-  </data>
-  <data name="&gt;&gt;m_lblDelay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblDelay.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblDelay.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_btnPlay.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
@@ -251,18 +203,6 @@
   </data>
   <data name="m_btnPlay.Text" xml:space="preserve">
     <value>&amp;Play</value>
-  </data>
-  <data name="&gt;&gt;m_btnPlay.Name" xml:space="preserve">
-    <value>m_btnPlay</value>
-  </data>
-  <data name="&gt;&gt;m_btnPlay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnPlay.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_btnPlay.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_lblTimeStep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -282,18 +222,6 @@
   <data name="m_lblTimeStep.Text" xml:space="preserve">
     <value>Time step</value>
   </data>
-  <data name="&gt;&gt;m_lblTimeStep.Name" xml:space="preserve">
-    <value>m_lblTimeStep</value>
-  </data>
-  <data name="&gt;&gt;m_lblTimeStep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblTimeStep.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblTimeStep.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_lblMonth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -311,18 +239,6 @@
   </data>
   <data name="m_lblMonth.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopCenter</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonth.Name" xml:space="preserve">
-    <value>m_lblMonth</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonth.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblMonth.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_lblYear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -345,18 +261,6 @@
   <data name="m_lblYear.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopCenter</value>
   </data>
-  <data name="&gt;&gt;m_lblYear.Name" xml:space="preserve">
-    <value>m_lblYear</value>
-  </data>
-  <data name="&gt;&gt;m_lblYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblYear.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblYear.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_tbxMonth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -367,18 +271,6 @@
     <value>42, 20</value>
   </data>
   <data name="m_tbxMonth.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMonth.Name" xml:space="preserve">
-    <value>m_tbxMonth</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMonth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMonth.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMonth.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
   <data name="m_tbxYear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -393,18 +285,6 @@
   <data name="m_tbxYear.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_tbxYear.Name" xml:space="preserve">
-    <value>m_tbxYear</value>
-  </data>
-  <data name="&gt;&gt;m_tbxYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxYear.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxYear.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="m_tbxTimeStep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -415,18 +295,6 @@
     <value>42, 20</value>
   </data>
   <data name="m_tbxTimeStep.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_tbxTimeStep.Name" xml:space="preserve">
-    <value>m_tbxTimeStep</value>
-  </data>
-  <data name="&gt;&gt;m_tbxTimeStep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxTimeStep.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxTimeStep.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
   <data name="m_slider.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -444,30 +312,6 @@
   <data name="m_slider.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_slider.Name" xml:space="preserve">
-    <value>m_slider</value>
-  </data>
-  <data name="&gt;&gt;m_slider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_slider.Parent" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_slider.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Name" xml:space="preserve">
-    <value>m_scContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.Parent" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_pgFlowDiagram.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -483,30 +327,6 @@
   <data name="m_pgFlowDiagram.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_pgFlowDiagram.Name" xml:space="preserve">
-    <value>m_pgFlowDiagram</value>
-  </data>
-  <data name="&gt;&gt;m_pgFlowDiagram.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PropertyGrid, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pgFlowDiagram.Parent" xml:space="preserve">
-    <value>m_scContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_pgFlowDiagram.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Name" xml:space="preserve">
-    <value>m_scContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.Parent" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_scContent.Size" type="System.Drawing.Size, System.Drawing">
     <value>794, 514</value>
   </data>
@@ -514,18 +334,6 @@
     <value>592</value>
   </data>
   <data name="m_scContent.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Name" xml:space="preserve">
-    <value>m_scContent</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scContent.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="m_tsFlowDiagram.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -648,18 +456,6 @@
   </data>
   <data name="m_tsFlowDiagram.Text" xml:space="preserve">
     <value>ToolStrip1</value>
-  </data>
-  <data name="&gt;&gt;m_tsFlowDiagram.Name" xml:space="preserve">
-    <value>m_tsFlowDiagram</value>
-  </data>
-  <data name="&gt;&gt;m_tsFlowDiagram.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsFlowDiagram.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tsFlowDiagram.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -5189,59 +4985,5 @@
         ////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////8=
 </value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSettings.Name" xml:space="preserve">
-    <value>m_tsmiSettings</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tss2.Name" xml:space="preserve">
-    <value>m_tss2</value>
-  </data>
-  <data name="&gt;&gt;m_tss2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSaveToImage.Name" xml:space="preserve">
-    <value>m_tsmiSaveToImage</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSaveToImage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSaveToBatchImage.Name" xml:space="preserve">
-    <value>m_tsmiSaveToBatchImage</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiSaveToBatchImage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tss3.Name" xml:space="preserve">
-    <value>m_tss3</value>
-  </data>
-  <data name="&gt;&gt;m_tss3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnImport.Name" xml:space="preserve">
-    <value>m_tsbnImport</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnImport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnExport.Name" xml:space="preserve">
-    <value>m_tsbnExport</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnExport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiResetLayout.Name" xml:space="preserve">
-    <value>m_tsmiResetLayout</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiResetLayout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmEcosimFlowDiagram</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16280.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

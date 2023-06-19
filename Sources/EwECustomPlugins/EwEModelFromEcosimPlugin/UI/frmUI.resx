@@ -141,18 +141,6 @@
   <data name="m_cbEnable.Text" xml:space="preserve">
     <value>Enable model generation</value>
   </data>
-  <data name="&gt;&gt;m_cbEnable.Name" xml:space="preserve">
-    <value>m_cbEnable</value>
-  </data>
-  <data name="&gt;&gt;m_cbEnable.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbEnable.Parent" xml:space="preserve">
-    <value>m_tabOutput</value>
-  </data>
-  <data name="&gt;&gt;m_cbEnable.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_lblPath.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -174,18 +162,6 @@
   <data name="m_lblPath.Text" xml:space="preserve">
     <value>Output &amp;path:</value>
   </data>
-  <data name="&gt;&gt;m_lblPath.Name" xml:space="preserve">
-    <value>m_lblPath</value>
-  </data>
-  <data name="&gt;&gt;m_lblPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPath.Parent" xml:space="preserve">
-    <value>m_tabOutput</value>
-  </data>
-  <data name="&gt;&gt;m_lblPath.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_tbxOutputPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -200,18 +176,6 @@
   </data>
   <data name="m_tbxOutputPath.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tbxOutputPath.Name" xml:space="preserve">
-    <value>m_tbxOutputPath</value>
-  </data>
-  <data name="&gt;&gt;m_tbxOutputPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxOutputPath.Parent" xml:space="preserve">
-    <value>m_tabOutput</value>
-  </data>
-  <data name="&gt;&gt;m_tbxOutputPath.ZOrder" xml:space="preserve">
-    <value>6</value>
   </data>
   <data name="m_btnChoose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -237,18 +201,6 @@
   <data name="m_btnChoose.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;m_btnChoose.Name" xml:space="preserve">
-    <value>m_btnChoose</value>
-  </data>
-  <data name="&gt;&gt;m_btnChoose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnChoose.Parent" xml:space="preserve">
-    <value>m_tabOutput</value>
-  </data>
-  <data name="&gt;&gt;m_btnChoose.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_cmbBACalcType.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -265,18 +217,6 @@
     <value>685, 32</value>
   </data>
   <data name="m_cmbBACalcType.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_cmbBACalcType.Name" xml:space="preserve">
-    <value>m_cmbBACalcType</value>
-  </data>
-  <data name="&gt;&gt;m_cmbBACalcType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbBACalcType.Parent" xml:space="preserve">
-    <value>m_tabBA</value>
-  </data>
-  <data name="&gt;&gt;m_cmbBACalcType.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_lblBACalcType.AutoSize" type="System.Boolean, mscorlib">
@@ -300,18 +240,6 @@
   <data name="m_lblBACalcType.Text" xml:space="preserve">
     <value>&amp;Set Biomass Accumulation to:</value>
   </data>
-  <data name="&gt;&gt;m_lblBACalcType.Name" xml:space="preserve">
-    <value>m_lblBACalcType</value>
-  </data>
-  <data name="&gt;&gt;m_lblBACalcType.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblBACalcType.Parent" xml:space="preserve">
-    <value>m_tabBA</value>
-  </data>
-  <data name="&gt;&gt;m_lblBACalcType.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_lblNumYears.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -333,18 +261,6 @@
   <data name="m_lblNumYears.Text" xml:space="preserve">
     <value>&amp;No. years for averaging BA:</value>
   </data>
-  <data name="&gt;&gt;m_lblNumYears.Name" xml:space="preserve">
-    <value>m_lblNumYears</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumYears.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumYears.Parent" xml:space="preserve">
-    <value>m_tabBA</value>
-  </data>
-  <data name="&gt;&gt;m_lblNumYears.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_nudNumYears.Location" type="System.Drawing.Point, System.Drawing">
     <value>282, 60</value>
   </data>
@@ -357,18 +273,6 @@
   <data name="m_nudNumYears.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_nudNumYears.Name" xml:space="preserve">
-    <value>m_nudNumYears</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumYears.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumYears.Parent" xml:space="preserve">
-    <value>m_tabBA</value>
-  </data>
-  <data name="&gt;&gt;m_nudNumYears.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_tbxWeightPower.Location" type="System.Drawing.Point, System.Drawing">
     <value>282, 104</value>
   </data>
@@ -380,18 +284,6 @@
   </data>
   <data name="m_tbxWeightPower.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_tbxWeightPower.Name" xml:space="preserve">
-    <value>m_tbxWeightPower</value>
-  </data>
-  <data name="&gt;&gt;m_tbxWeightPower.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxWeightPower.Parent" xml:space="preserve">
-    <value>m_tabBA</value>
-  </data>
-  <data name="&gt;&gt;m_tbxWeightPower.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="m_lblDWP.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -414,18 +306,6 @@
   <data name="m_lblDWP.Text" xml:space="preserve">
     <value>&amp;Distance weighting power:</value>
   </data>
-  <data name="&gt;&gt;m_lblDWP.Name" xml:space="preserve">
-    <value>m_lblDWP</value>
-  </data>
-  <data name="&gt;&gt;m_lblDWP.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblDWP.Parent" xml:space="preserve">
-    <value>m_tabBA</value>
-  </data>
-  <data name="&gt;&gt;m_lblDWP.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tcMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -447,18 +327,6 @@
   <data name="m_rdbtMonthlySnap.Text" xml:space="preserve">
     <value>Monthly snapshot June and Oct.</value>
   </data>
-  <data name="&gt;&gt;m_rdbtMonthlySnap.Name" xml:space="preserve">
-    <value>m_rdbtMonthlySnap</value>
-  </data>
-  <data name="&gt;&gt;m_rdbtMonthlySnap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rdbtMonthlySnap.Parent" xml:space="preserve">
-    <value>m_tabOutput</value>
-  </data>
-  <data name="&gt;&gt;m_rdbtMonthlySnap.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_rdbtAnnualAvg.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -477,18 +345,6 @@
   <data name="m_rdbtAnnualAvg.Text" xml:space="preserve">
     <value>Annual averages</value>
   </data>
-  <data name="&gt;&gt;m_rdbtAnnualAvg.Name" xml:space="preserve">
-    <value>m_rdbtAnnualAvg</value>
-  </data>
-  <data name="&gt;&gt;m_rdbtAnnualAvg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rdbtAnnualAvg.Parent" xml:space="preserve">
-    <value>m_tabOutput</value>
-  </data>
-  <data name="&gt;&gt;m_rdbtAnnualAvg.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_cmbFormat.Location" type="System.Drawing.Point, System.Drawing">
     <value>140, 94</value>
   </data>
@@ -500,18 +356,6 @@
   </data>
   <data name="m_cmbFormat.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFormat.Name" xml:space="preserve">
-    <value>m_cmbFormat</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFormat.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFormat.Parent" xml:space="preserve">
-    <value>m_tabOutput</value>
-  </data>
-  <data name="&gt;&gt;m_cmbFormat.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="m_lblFormat.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -534,18 +378,6 @@
   <data name="m_lblFormat.Text" xml:space="preserve">
     <value>Output &amp;format:</value>
   </data>
-  <data name="&gt;&gt;m_lblFormat.Name" xml:space="preserve">
-    <value>m_lblFormat</value>
-  </data>
-  <data name="&gt;&gt;m_lblFormat.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblFormat.Parent" xml:space="preserve">
-    <value>m_tabOutput</value>
-  </data>
-  <data name="&gt;&gt;m_lblFormat.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_tabOutput.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 33</value>
   </data>
@@ -563,18 +395,6 @@
   </data>
   <data name="m_tabOutput.Text" xml:space="preserve">
     <value>Output settings</value>
-  </data>
-  <data name="&gt;&gt;m_tabOutput.Name" xml:space="preserve">
-    <value>m_tabOutput</value>
-  </data>
-  <data name="&gt;&gt;m_tabOutput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tabOutput.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tabOutput.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_tabBA.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 33</value>
@@ -594,18 +414,6 @@
   <data name="m_tabBA.Text" xml:space="preserve">
     <value>Biomass Accumulation</value>
   </data>
-  <data name="&gt;&gt;m_tabBA.Name" xml:space="preserve">
-    <value>m_tabBA</value>
-  </data>
-  <data name="&gt;&gt;m_tabBA.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tabBA.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tabBA.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tcMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>21, 21</value>
   </data>
@@ -617,18 +425,6 @@
   </data>
   <data name="m_tcMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Name" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <metadata name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -711,18 +507,6 @@
   <data name="m_ts.Text" xml:space="preserve">
     <value>ToolStrip1</value>
   </data>
-  <data name="&gt;&gt;m_ts.Name" xml:space="preserve">
-    <value>m_ts</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.17702, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -737,18 +521,6 @@
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEModelFromEcosimPlugin.gridUI, EwEModelFromEcosimPlugin, Version=6.7.0.17702, Culture=neutral, PublicKeyToken=39cec52bd095db6e</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -5284,29 +5056,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Ecopath model from Ecosim</value>
-  </data>
-  <data name="&gt;&gt;m_tslQuickSelect.Name" xml:space="preserve">
-    <value>m_tslQuickSelect</value>
-  </data>
-  <data name="&gt;&gt;m_tslQuickSelect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnAll.Name" xml:space="preserve">
-    <value>m_tsbnAll</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnNone.Name" xml:space="preserve">
-    <value>m_tsbnNone</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnNone.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmUI</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.17702, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

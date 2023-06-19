@@ -134,18 +134,6 @@
   <data name="m_rbLine.Text" xml:space="preserve">
     <value>Li&amp;ne</value>
   </data>
-  <data name="&gt;&gt;m_rbLine.Name" xml:space="preserve">
-    <value>m_rbLine</value>
-  </data>
-  <data name="&gt;&gt;m_rbLine.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbLine.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbLine.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
   <data name="m_rbFill.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -160,18 +148,6 @@
   </data>
   <data name="m_rbFill.Text" xml:space="preserve">
     <value>&amp;Solid contour</value>
-  </data>
-  <data name="&gt;&gt;m_rbFill.Name" xml:space="preserve">
-    <value>m_rbFill</value>
-  </data>
-  <data name="&gt;&gt;m_rbFill.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbFill.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbFill.ZOrder" xml:space="preserve">
-    <value>13</value>
   </data>
   <data name="m_cbRightClickAutoScale.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -188,18 +164,6 @@
   <data name="m_cbRightClickAutoScale.Text" xml:space="preserve">
     <value>Right mouse button</value>
   </data>
-  <data name="&gt;&gt;m_cbRightClickAutoScale.Name" xml:space="preserve">
-    <value>m_cbRightClickAutoScale</value>
-  </data>
-  <data name="&gt;&gt;m_cbRightClickAutoScale.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRightClickAutoScale.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbRightClickAutoScale.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="m_nudMax.Location" type="System.Drawing.Point, System.Drawing">
     <value>118, 290</value>
   </data>
@@ -211,18 +175,6 @@
   </data>
   <data name="m_nudMax.ThousandsSeparator" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="&gt;&gt;m_nudMax.Name" xml:space="preserve">
-    <value>m_nudMax</value>
-  </data>
-  <data name="&gt;&gt;m_nudMax.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.14002.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudMax.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudMax.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_cbAutoScale.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -239,18 +191,6 @@
   <data name="m_cbAutoScale.Text" xml:space="preserve">
     <value>A&amp;uto scale</value>
   </data>
-  <data name="&gt;&gt;m_cbAutoScale.Name" xml:space="preserve">
-    <value>m_cbAutoScale</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoScale.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoScale.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoScale.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="m_lblYMax.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -266,18 +206,6 @@
   <data name="m_lblYMax.Text" xml:space="preserve">
     <value>Fix Ma&amp;x Y scale as:</value>
   </data>
-  <data name="&gt;&gt;m_lblYMax.Name" xml:space="preserve">
-    <value>m_lblYMax</value>
-  </data>
-  <data name="&gt;&gt;m_lblYMax.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblYMax.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblYMax.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_cbShowScaleAndTitle.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -292,18 +220,6 @@
   </data>
   <data name="m_cbShowScaleAndTitle.Text" xml:space="preserve">
     <value>S&amp;how scale and title</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowScaleAndTitle.Name" xml:space="preserve">
-    <value>m_cbShowScaleAndTitle</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowScaleAndTitle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowScaleAndTitle.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowScaleAndTitle.ZOrder" xml:space="preserve">
-    <value>14</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdrShow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -324,18 +240,6 @@
   <data name="m_hdrShow.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrShow.Name" xml:space="preserve">
-    <value>m_hdrShow</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShow.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14002.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShow.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShow.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="OK_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -354,18 +258,6 @@
   <data name="OK_Button.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;OK_Button.Name" xml:space="preserve">
-    <value>OK_Button</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -383,18 +275,6 @@
   </data>
   <data name="Cancel_Button.Text" xml:space="preserve">
     <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Name" xml:space="preserve">
-    <value>Cancel_Button</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_hdrDrawAs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -417,18 +297,6 @@
   <data name="m_hdrDrawAs.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrDrawAs.Name" xml:space="preserve">
-    <value>m_hdrDrawAs</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDrawAs.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14002.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDrawAs.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDrawAs.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_hdrScaling.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -450,18 +318,6 @@
   <data name="m_hdrScaling.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrScaling.Name" xml:space="preserve">
-    <value>m_hdrScaling</value>
-  </data>
-  <data name="&gt;&gt;m_hdrScaling.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14002.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrScaling.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrScaling.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_rbTSDriver.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -479,18 +335,6 @@
   </data>
   <data name="m_rbTSDriver.Text" xml:space="preserve">
     <value>&amp;Driver time series</value>
-  </data>
-  <data name="&gt;&gt;m_rbTSDriver.Name" xml:space="preserve">
-    <value>m_rbTSDriver</value>
-  </data>
-  <data name="&gt;&gt;m_rbTSDriver.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTSDriver.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbTSDriver.ZOrder" xml:space="preserve">
-    <value>11</value>
   </data>
   <data name="m_rbTSRefAbs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -510,18 +354,6 @@
   <data name="m_rbTSRefAbs.Text" xml:space="preserve">
     <value>&amp;Absolute reference time series</value>
   </data>
-  <data name="&gt;&gt;m_rbTSRefAbs.Name" xml:space="preserve">
-    <value>m_rbTSRefAbs</value>
-  </data>
-  <data name="&gt;&gt;m_rbTSRefAbs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTSRefAbs.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbTSRefAbs.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="m_rbTSRefRel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -540,18 +372,6 @@
   <data name="m_rbTSRefRel.Text" xml:space="preserve">
     <value>&amp;Relative reference time series</value>
   </data>
-  <data name="&gt;&gt;m_rbTSRefRel.Name" xml:space="preserve">
-    <value>m_rbTSRefRel</value>
-  </data>
-  <data name="&gt;&gt;m_rbTSRefRel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbTSRefRel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbTSRefRel.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -566,11 +386,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Graph display options</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgGraphDisplayOptions</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -135,18 +135,6 @@
   <data name="m_lblInfo.Text" xml:space="preserve">
     <value>&lt;update prompt&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lblInfo.Name" xml:space="preserve">
-    <value>m_lblInfo</value>
-  </data>
-  <data name="&gt;&gt;m_lblInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblInfo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblInfo.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_pbProgress.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -158,18 +146,6 @@
   </data>
   <data name="m_pbProgress.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_pbProgress.Name" xml:space="preserve">
-    <value>m_pbProgress</value>
-  </data>
-  <data name="&gt;&gt;m_pbProgress.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbProgress.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_pbProgress.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_btnAbort.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -188,18 +164,6 @@
   </data>
   <data name="m_btnAbort.Text" xml:space="preserve">
     <value>&amp;Abort</value>
-  </data>
-  <data name="&gt;&gt;m_btnAbort.Name" xml:space="preserve">
-    <value>m_btnAbort</value>
-  </data>
-  <data name="&gt;&gt;m_btnAbort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnAbort.Parent" xml:space="preserve">
-    <value>m_tlpButtons</value>
-  </data>
-  <data name="&gt;&gt;m_btnAbort.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_tlpButtons.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -222,18 +186,6 @@
   <data name="m_tlpButtons.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_tlpButtons.Name" xml:space="preserve">
-    <value>m_tlpButtons</value>
-  </data>
-  <data name="&gt;&gt;m_tlpButtons.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpButtons.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpButtons.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_tlpButtons.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnAbort" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Absolute,75,Percent,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
@@ -249,18 +201,6 @@
   <data name="m_pbLogo.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;m_pbLogo.Name" xml:space="preserve">
-    <value>m_pbLogo</value>
-  </data>
-  <data name="&gt;&gt;m_pbLogo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbLogo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_pbLogo.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_cbAutoUpdatePlugins.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -275,18 +215,6 @@
   </data>
   <data name="m_cbAutoUpdatePlugins.Text" xml:space="preserve">
     <value>&amp;Check for updates at start-up</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoUpdatePlugins.Name" xml:space="preserve">
-    <value>m_cbAutoUpdatePlugins</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoUpdatePlugins.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoUpdatePlugins.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutoUpdatePlugins.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -5261,11 +5189,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Checking for updates</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmUpdateComponents</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

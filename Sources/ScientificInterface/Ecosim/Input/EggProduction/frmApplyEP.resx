@@ -135,18 +135,6 @@
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ApplyEPEwEGrid, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>m_splitContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_splitContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -165,42 +153,6 @@
   <data name="m_lvShapes.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_lvShapes.Name" xml:space="preserve">
-    <value>m_lvShapes</value>
-  </data>
-  <data name="&gt;&gt;m_lvShapes.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cSmoothListView, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lvShapes.Parent" xml:space="preserve">
-    <value>m_splitContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lvShapes.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Panel1.Name" xml:space="preserve">
-    <value>m_splitContent.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Panel1.Parent" xml:space="preserve">
-    <value>m_splitContent</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Panel2.Name" xml:space="preserve">
-    <value>m_splitContent.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Panel2.Parent" xml:space="preserve">
-    <value>m_splitContent</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_splitContent.Size" type="System.Drawing.Size, System.Drawing">
     <value>637, 379</value>
   </data>
@@ -209,18 +161,6 @@
   </data>
   <data name="m_splitContent.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Name" xml:space="preserve">
-    <value>m_splitContent</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_splitContent.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_lblNoStanza.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -245,18 +185,6 @@
   </data>
   <data name="m_lblNoStanza.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoStanza.Name" xml:space="preserve">
-    <value>m_lblNoStanza</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoStanza.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoStanza.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoStanza.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_tlpContent.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -297,18 +225,6 @@
   <data name="m_tsSet.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_tsSet.Name" xml:space="preserve">
-    <value>m_tsSet</value>
-  </data>
-  <data name="&gt;&gt;m_tsSet.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsSet.Parent" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_tsSet.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tlpContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -323,18 +239,6 @@
   </data>
   <data name="m_tlpContent.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Name" xml:space="preserve">
-    <value>m_tlpContent</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpContent.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_tlpContent.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_splitContent" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tsSet" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,20,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -356,29 +260,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Apply egg production</value>
-  </data>
-  <data name="&gt;&gt;m_tsbSet.Name" xml:space="preserve">
-    <value>m_tsbSet</value>
-  </data>
-  <data name="&gt;&gt;m_tsbSet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tscEggProdShapes.Name" xml:space="preserve">
-    <value>m_tscEggProdShapes</value>
-  </data>
-  <data name="&gt;&gt;m_tscEggProdShapes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlbSet.Name" xml:space="preserve">
-    <value>m_tlbSet</value>
-  </data>
-  <data name="&gt;&gt;m_tlbSet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ApplyEP</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -185,18 +185,6 @@
   <data name="m_tsVUlnerabilities.Text" xml:space="preserve">
     <value>ToolStrip1</value>
   </data>
-  <data name="&gt;&gt;m_tsVUlnerabilities.Name" xml:space="preserve">
-    <value>m_tsVUlnerabilities</value>
-  </data>
-  <data name="&gt;&gt;m_tsVUlnerabilities.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14137.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsVUlnerabilities.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tsVUlnerabilities.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -212,23 +200,5 @@
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="&gt;&gt;m_tsbEstimateVs.Name" xml:space="preserve">
-    <value>m_tsbEstimateVs</value>
-  </data>
-  <data name="&gt;&gt;m_tsbEstimateVs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnScaleVtoTL.Name" xml:space="preserve">
-    <value>m_tsbnScaleVtoTL</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnScaleVtoTL.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmVulnerabilities</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.5.14137.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
