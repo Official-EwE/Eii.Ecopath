@@ -5158,9 +5158,11 @@ exitline:
 
         'Use Ecopath effort
         If Not Me.EcoSpaceData.PredictEffort Then Return
-        'Don't adjust total effort when using EffortDistThreshold
-        'EffortDistThreshold restricts the fishing to small number of cells
-        If Me.EcoSpaceData.bUseEffortDistThreshold Then Return
+
+        'jb 17-June-2023 Let the Effort Distribution Threshold AdjustTotalEffort()
+        'This will work because Me.EcoSpaceData.PAreaFished() takes the EffortDistThreshold into account
+        'so the total effort will only be over fished cells only
+        'If Me.EcoSpaceData.bUseEffortDistThreshold Then Return
 
         If Me.EcoSpaceData.DoPenaltysearch Then
             NoFishWeight = Me.EcoSpaceData.NoFishWeight
