@@ -325,8 +325,25 @@ Public Class cEnviroInputMap
 
 #End Region
 
-    Public Property IsCapacityEnabled As Boolean = True _
+    Public Property IsCapacityEnabled As Boolean _
         Implements IEnviroInputData.IsCapacityEnabled
+        Get
+            Debug.Assert(Me.m_source.VarName = eVarNameFlags.LayerDepth Or Me.m_source.VarName = eVarNameFlags.LayerDriver, Me.ToString + " Invalid layer type.")
+            If Me.m_source.VarName = eVarNameFlags.LayerDepth Then
+                Return DirectCast(Me.m_source, cEcospaceLayerDepth).IsCapacityEnabled
+            Else
+                Return DirectCast(Me.m_source, cEcospaceLayerDriver).IsCapacityEnabled
+            End If
+        End Get
+        Set(value As Boolean)
+            Debug.Assert(Me.m_source.VarName = eVarNameFlags.LayerDepth Or Me.m_source.VarName = eVarNameFlags.LayerDriver, Me.ToString + " Invalid layer type.")
+            If Me.m_source.VarName = eVarNameFlags.LayerDepth Then
+                DirectCast(Me.m_source, cEcospaceLayerDepth).IsCapacityEnabled = value
+            Else
+                DirectCast(Me.m_source, cEcospaceLayerDriver).IsCapacityEnabled = value
+            End If
+        End Set
+    End Property
 
     Public ReadOnly Property Start As Single Implements IEnviroInputData.Start
         Get
