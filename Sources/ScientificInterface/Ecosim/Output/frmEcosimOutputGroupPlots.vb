@@ -69,6 +69,7 @@ Namespace Ecosim
                     Case ePlot.DiscardsMortality : Return SharedResources.HEADER_DISCARD_MORT
                     Case ePlot.DiscardsSurvival : Return SharedResources.HEADER_DISCARD_SURV
                     Case ePlot.Landings : Return SharedResources.HEADER_LANDINGS
+                    Case ePlot.TrophicLevel : Return SharedResources.HEADER_TROPHIC_LEVEL
                 End Select
                 Return ""
 
@@ -103,6 +104,7 @@ Namespace Ecosim
             DiscardsMortality
             DiscardsSurvival
             Landings
+            TrophicLevel
             Value
         End Enum
 
@@ -249,6 +251,8 @@ Namespace Ecosim
                                 aResults.Add(cEcosimResultWriter.eResultTypes.DiscardSurvivalFleetGroup)
                             Case ePlot.Landings
                                 aResults.Add(cEcosimResultWriter.eResultTypes.Landings)
+                            Case ePlot.TrophicLevel
+                                aResults.Add(cEcosimResultWriter.eResultTypes.TL)
                             Case Else
                                 Debug.Assert(False, "Plot type not translated")
                         End Select
@@ -401,6 +405,7 @@ Namespace Ecosim
             Dim pplFeedTime As New PointPairList()
             Dim pplYield As New PointPairList()
             Dim pplAvgWorProdCons As New PointPairList()
+            Dim pplTL As New PointPairList()
 
             Dim pplMortTotal As New PointPairList()
             Dim pplMortPredation As New PointPairList()
@@ -448,6 +453,7 @@ Namespace Ecosim
                 pplMortTotal.Add(dXValue, groupSimOut.TotalMort(i))
                 pplMortPredation.Add(dXValue, groupSimOut.PredMort(i))
                 pplMortFishing.Add(dXValue, groupSimOut.FishMort(i))
+                pplTL.Add(dXValue, groupSimOut.TL(i))
 
                 ' Special case: is catch aggregated?
                 If Me.m_bIsCatchAggregated Then
@@ -491,6 +497,7 @@ Namespace Ecosim
 
             Me.AddCurveToGraphPane(ePlot.ConsumptionBiomass, Me.m_zgh.CreateLineItem(group, pplConsB))
             Me.AddCurveToGraphPane(ePlot.FeedingTime, Me.m_zgh.CreateLineItem(group, pplFeedTime))
+            Me.AddCurveToGraphPane(ePlot.TrophicLevel, Me.m_zgh.CreateLineItem(group, pplTL))
 
             If Me.m_bIsCatchAggregated Then
                 Dim strAll As String = SharedResources.GENERIC_VALUE_ALL
@@ -890,7 +897,7 @@ Namespace Ecosim
                 Case ePlot.Biomass
                     Return Me.StyleGuide.FormatUnitString(cUnits.Currency)
 
-                Case ePlot.FeedingTime
+                Case ePlot.FeedingTime, ePlot.TrophicLevel
                     Return ""
 
                 Case ePlot.ConsumptionBiomass,
@@ -916,6 +923,7 @@ Namespace Ecosim
         Private Function GetPlotAxisMax(data As ePlot) As Double
             Select Case data
                 Case ePlot.Prey : Return 100
+                Case ePlot.TrophicLevel : Return 6
             End Select
             Return 0
         End Function
