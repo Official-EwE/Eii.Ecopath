@@ -283,6 +283,7 @@ Public Class ucDriverResponseView
 
             Me.PlotShape()
             Me.PlotDriver()
+            Me.m_zgh.Redraw()
 
         Catch ex As Exception
 
