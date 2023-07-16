@@ -309,7 +309,12 @@ Public Class dlgSelectEnvironmentalResponse
             '    tgt.ShapeFunctionParameters = src.ShapeFunctionParameters
             '    tgt.UnlockUpdates()
             'Next
+
+            ' JS 15Jul23: I *think* that we can safely lock cascading updates to block out the UI until shape manager has done its bit
+            Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
             Me.m_shapeManager.Update()
+            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, True)
+
         End If
         Me.Close()
     End Sub
@@ -531,7 +536,7 @@ Public Class dlgSelectEnvironmentalResponse
         Return Me.Shape.Index
     End Function
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles m_btnChangeShape.Click
+    Private Sub OnToggleChangeShapePanelVisibility(sender As Object, e As EventArgs) Handles m_btnChangeShape.Click
         Me.m_changeshape.Visible = Not Me.m_changeshape.Visible
     End Sub
 
