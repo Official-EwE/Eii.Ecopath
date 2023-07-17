@@ -111,6 +111,9 @@ Public Class cEcospaceLayerDepth
         Return My.Resources.CoreDefaults.CORE_DEFAULT_DEPTH
     End Function
 
+    ''' <summary>
+    ''' This used to be cEcospaceLayer.IsActive()
+    ''' </summary>
     Public Property IsCapacityEnabled As Boolean
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.EcospaceCapacityEnabled))
