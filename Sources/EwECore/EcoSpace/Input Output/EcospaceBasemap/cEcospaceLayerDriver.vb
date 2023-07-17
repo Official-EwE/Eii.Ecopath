@@ -131,6 +131,10 @@ Public Class cEcospaceLayerDriver
         End Set
     End Property
 
+    ''' <summary>
+    ''' This used to be cEcospaceLayer.IsActive()
+    ''' </summary>
+    ''' <returns></returns>
     Public Property IsCapacityEnabled As Boolean
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.EcospaceCapacityEnabled))

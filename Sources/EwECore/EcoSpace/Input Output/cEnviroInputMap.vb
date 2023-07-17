@@ -243,16 +243,17 @@ Public Class cEnviroInputMap
 
     End Function
 
-
     Private Function getCellValue(irow As Integer, icol As Integer) As Single
-        Debug.Assert(Me.m_source.VarName = eVarNameFlags.LayerDepth Or Me.m_source.VarName = eVarNameFlags.LayerDriver, Me.ToString + " Invalid layer type.")
-        If Me.m_source.VarName = eVarNameFlags.LayerDepth Then
-            Return Me.m_spaceData.Depth(irow, icol)
-        Else
-            Return Me.m_spaceData.EnvironmentalLayerMap(Me.m_iLayerIndex)(irow, icol)
-        End If
+        Select Case Me.m_source.VarName
+            Case eVarNameFlags.LayerDepth
+                Return Me.m_spaceData.Depth(irow, icol)
+            Case eVarNameFlags.LayerDriver
+                Return Me.m_spaceData.EnvironmentalLayerMap(Me.m_iLayerIndex)(irow, icol)
+            Case Else
+                Debug.Assert(False, Me.ToString + " invalid layer type " + CStr(Me.m_source.VarName))
+        End Select
+        Return 0
     End Function
-
 
     ''' <summary>
     ''' Sets or gets the response(mediation) function index to use from the current cMediationDataStructures load during the Init(...)
@@ -328,20 +329,25 @@ Public Class cEnviroInputMap
     Public Property IsCapacityEnabled As Boolean _
         Implements IEnviroInputData.IsCapacityEnabled
         Get
-            Debug.Assert(Me.m_source.VarName = eVarNameFlags.LayerDepth Or Me.m_source.VarName = eVarNameFlags.LayerDriver, Me.ToString + " Invalid layer type.")
-            If Me.m_source.VarName = eVarNameFlags.LayerDepth Then
-                Return DirectCast(Me.m_source, cEcospaceLayerDepth).IsCapacityEnabled
-            Else
-                Return DirectCast(Me.m_source, cEcospaceLayerDriver).IsCapacityEnabled
-            End If
+            Select Case Me.m_source.VarName
+                Case eVarNameFlags.LayerDepth
+                    Return DirectCast(Me.m_source, cEcospaceLayerDepth).IsCapacityEnabled
+                Case eVarNameFlags.LayerDriver
+                    Return DirectCast(Me.m_source, cEcospaceLayerDriver).IsCapacityEnabled
+                Case Else
+                    Debug.Assert(False, Me.ToString + " invalid layer type " + CStr(Me.m_source.VarName))
+            End Select
+            Return False
         End Get
         Set(value As Boolean)
-            Debug.Assert(Me.m_source.VarName = eVarNameFlags.LayerDepth Or Me.m_source.VarName = eVarNameFlags.LayerDriver, Me.ToString + " Invalid layer type.")
-            If Me.m_source.VarName = eVarNameFlags.LayerDepth Then
-                DirectCast(Me.m_source, cEcospaceLayerDepth).IsCapacityEnabled = value
-            Else
-                DirectCast(Me.m_source, cEcospaceLayerDriver).IsCapacityEnabled = value
-            End If
+            Select Case Me.m_source.VarName
+                Case eVarNameFlags.LayerDepth
+                    DirectCast(Me.m_source, cEcospaceLayerDepth).IsCapacityEnabled = value
+                Case eVarNameFlags.LayerDriver
+                    DirectCast(Me.m_source, cEcospaceLayerDriver).IsCapacityEnabled = value
+                Case Else
+                    Debug.Assert(False, Me.ToString + " invalid layer type " + CStr(Me.m_source.VarName))
+            End Select
         End Set
     End Property
 

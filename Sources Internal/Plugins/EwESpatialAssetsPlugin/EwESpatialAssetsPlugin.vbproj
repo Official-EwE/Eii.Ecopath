@@ -195,9 +195,7 @@
     <Compile Include="Plugins\Datasets\Files\ucMultiFileDataSetConfigPage.Designer.vb">
       <DependentUpon>ucMultiFileDataSetConfigPage.vb</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Datasets\Files\ucMultiFileDataSetConfigPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Plugins\Datasets\Files\ucMultiFileDataSetConfigPage.vb" />
     <Compile Include="Plugins\Datasets\Single File\cSingleFileDataSetPlugin.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
