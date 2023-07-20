@@ -82,6 +82,25 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\ARM64\Debug\</OutputPath>
+    <DocumentationFile>EwEEcospaceValidationPlugin.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\ARM64\Release\</OutputPath>
+    <DocumentationFile>EwEEcospaceValidationPlugin.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="SourceGrid2">
       <HintPath>..\..\..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
@@ -132,9 +151,7 @@
     <Compile Include="UI\frmEcospaceValidation.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\gridPredPreyOverlap.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="UI\gridPredPreyOverlap.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

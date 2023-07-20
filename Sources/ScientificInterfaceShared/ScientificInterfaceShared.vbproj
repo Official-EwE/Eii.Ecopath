@@ -98,6 +98,25 @@
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\ARM64\Debug\</OutputPath>
+    <DocumentationFile>ScientificInterfaceShared.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\ARM64\Release\</OutputPath>
+    <DocumentationFile>ScientificInterfaceShared.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPPlus">
       <HintPath>..\EwECore\Includes\EPPlus.dll</HintPath>
@@ -444,9 +463,7 @@
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.Designer.vb">
       <DependentUpon>ucLayerEditorGroup.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.vb" />
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacity.Designer.vb">
       <DependentUpon>ucLayerEditorHabitatCapacity.vb</DependentUpon>
     </Compile>
