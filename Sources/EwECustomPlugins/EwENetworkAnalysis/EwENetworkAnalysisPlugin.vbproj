@@ -167,7 +167,9 @@
     <Compile Include="Interface\frmNetworkAnalysis.Designer.vb">
       <DependentUpon>frmNetworkAnalysis.vb</DependentUpon>
     </Compile>
-    <Compile Include="Interface\frmNetworkAnalysis.vb" />
+    <Compile Include="Interface\frmNetworkAnalysis.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Interface\cContentManager.vb" />
     <Compile Include="Interface\Keystoneness\cKeystonenessTable.vb" />
     <Compile Include="Interface\Keystoneness\cKeystonenessGraph.vb" />

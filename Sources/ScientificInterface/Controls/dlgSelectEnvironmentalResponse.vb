@@ -310,10 +310,10 @@ Public Class dlgSelectEnvironmentalResponse
             '    tgt.UnlockUpdates()
             'Next
 
-            ' JS 15Jul23: I *think* that we can safely lock cascading updates to block out the UI until shape manager has done its bit
-            Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
+            '' JS 15Jul23: I *think* that we can safely lock cascading updates to block out the UI until shape manager has done its bit
+            Me.Core.Messages.SetMessageLock()
             Me.m_shapeManager.Update()
-            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, True)
+            Me.Core.Messages.RemoveMessageLock()
 
         End If
         Me.Close()
