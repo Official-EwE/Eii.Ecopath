@@ -463,7 +463,9 @@
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.Designer.vb">
       <DependentUpon>ucLayerEditorGroup.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacity.Designer.vb">
       <DependentUpon>ucLayerEditorHabitatCapacity.vb</DependentUpon>
     </Compile>

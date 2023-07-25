@@ -165,7 +165,9 @@
     <Compile Include="UI\ucEcoEngineerConfigUI.Designer.vb">
       <DependentUpon>ucEcoEngineerConfigUI.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\ucEcoEngineerConfigUI.vb" />
+    <Compile Include="UI\ucEcoEngineerConfigUI.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UI\ucEcoEngineerSketchPad.vb">
       <SubType>UserControl</SubType>
     </Compile>
