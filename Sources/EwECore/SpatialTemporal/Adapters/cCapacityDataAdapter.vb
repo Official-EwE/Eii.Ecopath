@@ -112,7 +112,7 @@ Namespace SpatialData
                 Dim bInvalidate As Boolean = False
                 Select Case Me.VarName
                     Case eVarNameFlags.LayerHabitatCapacityInput
-                        bInvalidate = True
+                        bInvalidate = (iGroup = layer.Index)
                     Case eVarNameFlags.LayerHabitat
                         bInvalidate = ((Me.m_spaceData.CapCalType(iGroup) And eEcospaceCapacityCalType.Habitat) > 0)
                     Case eVarNameFlags.LayerDriver
