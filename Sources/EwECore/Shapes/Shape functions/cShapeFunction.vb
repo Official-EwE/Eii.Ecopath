@@ -248,15 +248,15 @@ Public MustInherit Class cShapeFunction
     End Function
 
     Protected Function IsMediation(datatype As eDataTypes) As Boolean
-        Return (datatype = eDataTypes.Mediation) Or _
-               (datatype = eDataTypes.PriceMediation) Or _
+        Return (datatype = eDataTypes.Mediation) Or
+               (datatype = eDataTypes.PriceMediation) Or
                (datatype = eDataTypes.CapacityMediation)
     End Function
 
     Protected Function IsForcing(datatype As eDataTypes) As Boolean
-        Return (datatype = eDataTypes.Forcing) Or _
-               (datatype = eDataTypes.EggProd) Or _
-               (datatype = eDataTypes.FishingEffort) Or _
+        Return (datatype = eDataTypes.Forcing) Or
+               (datatype = eDataTypes.EggProd) Or
+               (datatype = eDataTypes.FishingEffort) Or
                (datatype = eDataTypes.FishMort)
     End Function
 
