@@ -69,15 +69,6 @@ Public MustInherit Class cShoulderShapeFunction
             'The location of the shoulder in the response function is determined by it's index position in the points array
             Dim iSegment() As Integer = New Integer() {0, Me.getIndex(LeftPt, x0, WidthX, nPoints), Me.getIndex(RightPt, x0, WidthX, nPoints), nPoints}
 
-            ' JS 160914: This is not right; the original shape cannot be modified until the user clicks 'OK'
-            '            This has to move to some kind of 'Apply' function
-            'Dim shape As cEnviroResponseFunction = TryCast(Me.m_shape, cEnviroResponseFunction)
-            'If shape IsNot Nothing Then
-            '    'set the extent of the data in the shape
-            '    shape.ResponseLeftLimit = x0
-            '    shape.ResponseRightLimit = sYBase
-            'End If
-
             'loop over the segments and interpolate the points on the line
             For i As Integer = 0 To 2
                 xpt = xVal(i)

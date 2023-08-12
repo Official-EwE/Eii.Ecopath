@@ -163,7 +163,19 @@ Namespace Shapes.Utility
                     Dim parms(4) As Single
                     For i As Integer = 0 To 4
                         If bits.Length > i + 2 Then
-                            parms(i) = cStringUtils.ConvertToSingle(bits(i + 2), 0, Me.DecimalSeparator)
+                            If bits(i + 2).Contains(" "c) Then
+                                parms(i) = cCore.NULL_VALUE
+                                ' JS 13Aug23: Hack to accommodate min / max / space spaced points data
+                                If fn.ShapeFunctionType = eShapeFunctionType.Computed Then
+                                    Dim comp As cComputedShapeFunction = DirectCast(fn, cComputedShapeFunction)
+                                    Dim points() As String = bits(i + 2).Split(" "c)
+                                    For j As Integer = 0 To Math.Min(points.Length - 1, 1200)
+                                        comp.ShapeData(j + 1) = cStringUtils.ConvertToSingle(points(j), 0, Me.DecimalSeparator)
+                                    Next
+                                End If
+                            Else
+                                parms(i) = cStringUtils.ConvertToSingle(bits(i + 2), 0, Me.DecimalSeparator)
+                            End If
                         Else
                             parms(i) = cCore.NULL_VALUE
                         End If

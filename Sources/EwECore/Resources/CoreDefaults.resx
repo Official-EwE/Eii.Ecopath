@@ -2930,4 +2930,7 @@
   <data name="CORE_DEFAULT_EFFORTZONE" xml:space="preserve">
     <value>Effort zones</value>
   </data>
+  <data name="PARAM_MIN" xml:space="preserve">
+    <value>Min.</value>
+  </data>
 </root>

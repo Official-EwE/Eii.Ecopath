@@ -235,7 +235,7 @@ Public MustInherit Class cShapeFunction
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the max value in the shape buffer.
+    ''' Returns the max value in the shape points buffer.
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
