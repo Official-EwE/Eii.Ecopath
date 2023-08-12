@@ -221,7 +221,6 @@ Public Class cTrapezoidShapeFunction
                 shape.ResponseLeftLimit = Me.LeftBottom
                 shape.ResponseRightLimit = Me.RightBottom
             End If
-
         End If
     End Function
 
