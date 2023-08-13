@@ -154,6 +154,7 @@ Namespace Shapes.Utility
             Dim bSucces As Boolean = True
 
             ' Skip header line, for now expect fixed order
+            ' Name, type, parm* (up to 5)
 
             strLine = text.ReadLine()
             While Not String.IsNullOrWhiteSpace(strLine)
@@ -167,11 +168,13 @@ Namespace Shapes.Utility
                                 parms(i) = cCore.NULL_VALUE
                                 ' JS 13Aug23: Hack to accommodate min / max / space spaced points data
                                 If fn.ShapeFunctionType = eShapeFunctionType.Computed Then
-                                    Dim comp As cComputedShapeFunction = DirectCast(fn, cComputedShapeFunction)
+                                    ' This is also hack: create a new instance to ensure a unique collection of points
+                                    Dim comp As New cComputedShapeFunction()
                                     Dim points() As String = bits(i + 2).Split(" "c)
-                                    For j As Integer = 0 To Math.Min(points.Length - 1, 1200)
+                                    For j As Integer = 0 To Math.Min(points.Length, 1200) - 1
                                         comp.ShapeData(j + 1) = cStringUtils.ConvertToSingle(points(j), 0, Me.DecimalSeparator)
                                     Next
+                                    fn = comp
                                 End If
                             Else
                                 parms(i) = cStringUtils.ConvertToSingle(bits(i + 2), 0, Me.DecimalSeparator)
@@ -213,7 +216,7 @@ Namespace Shapes.Utility
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns all avaliable <see cref="IShapeFunction">shape functions</see>, provuded
+        ''' Returns all avaliable <see cref="IShapeFunction">shape functions</see>, provided
         ''' by the EwE core and plug-ins.
         ''' </summary>
         ''' <returns>All avaliable <see cref="IShapeFunction">shape functions</see>.</returns>
