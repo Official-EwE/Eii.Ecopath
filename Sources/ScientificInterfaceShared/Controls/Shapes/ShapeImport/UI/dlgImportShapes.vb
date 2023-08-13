@@ -33,6 +33,8 @@ Imports EwECore
 
 Namespace Controls
 
+    ' ToDo_JS: add plot to to preview selected shape contour
+
     Public Class dlgImportShapes
 
         Private m_uic As cUIContext = Nothing

@@ -21,6 +21,7 @@
 
 Option Strict On
 
+Imports EwECore
 Imports EwECore.Shapes.Utility
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
@@ -89,8 +90,9 @@ Namespace Controls
                 Me(iRow, 0) = New cEwERowHeaderCell(fn.Name)
                 Me(iRow, 1) = New cEwECell(fmt.ToString(fn.ShapeFunction), cStyleGuide.eStyleFlags.NotEditable)
                 For i As Integer = 0 To 4
-                    Dim style As cStyleGuide.eStyleFlags = If(fn.ShapeParameters(i) >= 0, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.Null) Or cStyleGuide.eStyleFlags.NotEditable
-                    Me(iRow, 2 + i) = New cEwECell(fn.ShapeParameters(i), style)
+                    Dim style As cStyleGuide.eStyleFlags = If(fn.ShapeParameters(i) <> cCore.NULL_VALUE, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.Null) Or cStyleGuide.eStyleFlags.NotEditable
+                    Dim cell As New cEwECell(fn.ShapeParameters(i), style)
+                    Me(iRow, 2 + i) = cell
                 Next
             Next
 
