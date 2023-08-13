@@ -2956,9 +2956,9 @@ Public Class cEIIXMLDataSource
         If Convert.IsDBNull(data) Then Return ""
 
         If (TypeOf data Is String) Or (TypeOf data Is Date) Then
-            Dim strData As String = CStr(data)
+            Dim strData As String = CStr(data).Trim
             ' is XML?
-            If (strData.IndexOf("<"c) > -1) Then
+            If (strData.IndexOf("<"c) = 0) Then
                 Try
                     Dim reader As XmlReader = XmlReader.Create(New StringReader(strData))
                     bIsXML = reader.Read()
