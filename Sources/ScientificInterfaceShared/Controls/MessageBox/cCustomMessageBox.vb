@@ -60,7 +60,7 @@ Namespace Controls
 
             frm = New frmCustomMessageBox(strText, strCaption, mbb, mbi, "", customtexts)
             frm.UIContext = uic
-            frm.ShowDialog()
+            frm.ShowDialog(uic.FormMain)
 
             Return frm.Result
 
@@ -94,7 +94,7 @@ Namespace Controls
 
             frm = New frmCustomMessageBox(strText, strCaption, mbb, mbi, strCheckPrompt, customtexts)
             frm.UIContext = uic
-            frm.ShowDialog()
+            frm.ShowDialog(uic.FormMain)
 
             ' Transfer checked state
             bIsChecked = frm.IsChecked
