@@ -941,7 +941,7 @@ Public Class cTimeSeriesDataStructures
                             iFlt = Me.AppliedDatPool(iDType)
                             iGrp = Me.AppliedDatPoolSec(iDType)
                             If (iGrp > 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
-                                Me.PoolForceOffVesselPriceRel(iFlt, iGrp, iDatPt) = value
+                                Me.PoolForceOffVesselPriceRel(iFlt, iGrp, iDatPt) *= value
                             End If
 
                         Case eTimeSeriesType.EffortCost
@@ -953,7 +953,7 @@ Public Class cTimeSeriesDataStructures
                         Case eTimeSeriesType.EffortCostRel
                             iFlt = Me.AppliedDatPool(iDType)
                             If (iFlt > 0 And iFlt <= nFleets) Then
-                                Me.PoolForceEffortCostRel(iFlt, iDatPt) = value
+                                Me.PoolForceEffortCostRel(iFlt, iDatPt) *= value
                             End If
 
                         Case eTimeSeriesType.SailCost
@@ -965,7 +965,7 @@ Public Class cTimeSeriesDataStructures
                         Case eTimeSeriesType.SailCostRel
                             iFlt = Me.AppliedDatPool(iDType)
                             If (iFlt > 0 And iFlt <= nFleets) Then
-                                Me.PoolForceSailCostRel(iFlt, iDatPt) = value
+                                Me.PoolForceSailCostRel(iFlt, iDatPt) *= value
                             End If
 
                         Case eTimeSeriesType.FixedCost
@@ -977,7 +977,7 @@ Public Class cTimeSeriesDataStructures
                         Case eTimeSeriesType.FixedCostRel
                             iFlt = Me.AppliedDatPool(iDType)
                             If (iFlt > 0 And iFlt <= nFleets) Then
-                                Me.PoolForceFixedCostRel(iFlt, iDatPt) = value
+                                Me.PoolForceFixedCostRel(iFlt, iDatPt) *= value
                             End If
 
                     End Select
