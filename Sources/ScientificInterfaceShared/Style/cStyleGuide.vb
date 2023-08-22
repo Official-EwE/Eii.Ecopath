@@ -2404,7 +2404,7 @@ Namespace Style
                     If r.ID = vs.ColorRampID Then Return r
                 Next
             End If
-            Return Nothing
+            Return Me.DefaultColorRamp()
         End Function
 
 #Region " Internal implementation "
