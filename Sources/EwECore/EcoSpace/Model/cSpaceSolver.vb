@@ -1252,33 +1252,36 @@ Public Class cSpaceSolver
                     Me.m_Data.CatchMap(iRow, iCol, iGrp) += bCatch
                     'Next value of catch, depends on what gear was used:
                     For iFlt = 1 To Me.m_PathData.NumFleet
-                        If Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp) > 0 Then
-                            'First get catch
-                            Dim f As Single = Me.m_SimData.relQ(iFlt, iGrp) * (Me.m_SimData.PropLandedTime(iFlt, iGrp) + Me.m_SimData.Propdiscardtime(iFlt, iGrp))
-                            cellCatch = Biomass(iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol) * f
+                        ' BUas Marin Hekman found that catch data was incorrectly aggregated here. Good catch.
+                        If Not m_Data.IsFished(iFlt, iRow, iCol) Then
+                            If Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp) > 0 Then
+                                'First get catch
+                                Dim f As Single = Me.m_SimData.relQ(iFlt, iGrp) * (Me.m_SimData.PropLandedTime(iFlt, iGrp) + Me.m_SimData.Propdiscardtime(iFlt, iGrp))
+                                cellCatch = Biomass(iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol) * f
 
-                            Me.m_Data.CatchFleetMap(iRow, iCol, iFlt) += cellCatch
-                            'Sum the total catch by gear
-                            Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch
-                            'sum all fleets
-                            Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0) += cellCatch
+                                Me.m_Data.CatchFleetMap(iRow, iCol, iFlt) += cellCatch
+                                'Sum the total catch by gear
+                                Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch
+                                'sum all fleets
+                                Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0) += cellCatch
 
-                            Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, iGrp) += cellCatch
-                            'sum all fleets into the zero fleet index
-                            Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, iGrp) += cellCatch
+                                Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, iGrp) += cellCatch
+                                'sum all fleets into the zero fleet index
+                                Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, iGrp) += cellCatch
 
-                            'Next line is for adding up catch by region etc
-                            If Me.m_Data.nRegions >= 1 Then
-                                Dim iRgn As Integer = Me.m_Data.Region(iRow, iCol)
-                                If (iRgn > Me.m_Data.nRegions) Then iRgn = 0
-                                Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch
+                                'Next line is for adding up catch by region etc
+                                If Me.m_Data.nRegions >= 1 Then
+                                    Dim iRgn As Integer = Me.m_Data.Region(iRow, iCol)
+                                    If (iRgn > Me.m_Data.nRegions) Then iRgn = 0
+                                    Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch
+                                End If
+
+                                Me.Landings(iGrp, iFlt) += Biomass(iGrp) * Me.m_SimData.relQ(iFlt, iGrp) * Me.m_SimData.PropLandedTime(iFlt, iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol)
+                                'Discards map used by the Biodiversity plugin
+                                'Include discards that survived
+                                Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += Biomass(iGrp) * Me.m_SimData.relQ(iFlt, iGrp) * (1 - Me.m_SimData.PropLandedTime(iFlt, iGrp)) * Me.m_Data.EffortSpace(iFlt, iRow, iCol)
+                                ' Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += cellCatch * Me.m_SimData.Propdiscardtime(iFlt, iGrp)
                             End If
-
-                            Me.Landings(iGrp, iFlt) += Biomass(iGrp) * Me.m_SimData.relQ(iFlt, iGrp) * Me.m_SimData.PropLandedTime(iFlt, iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol)
-                            'Discards map used by the Biodiversity plugin
-                            'Include discards that survived
-                            Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += Biomass(iGrp) * Me.m_SimData.relQ(iFlt, iGrp) * (1 - Me.m_SimData.PropLandedTime(iFlt, iGrp)) * Me.m_Data.EffortSpace(iFlt, iRow, iCol)
-                            ' Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += cellCatch * Me.m_SimData.Propdiscardtime(iFlt, iGrp)
                         End If
                     Next iFlt
                 End If 'If m_EPdata.fCatch(igrp) > 0 Then
