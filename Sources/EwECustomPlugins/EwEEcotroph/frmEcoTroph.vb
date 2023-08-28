@@ -53,7 +53,7 @@ Imports ScientificInterfaceShared.Controls
 Public Class frmEcotroph
 
     Private num_model() As Integer
-    Private aide As String = "http://ecobase.ecopath.org/index.php?action=examples&lang=uk"
+    Private aide As String = "https://ecobase.ecopath.org/index.php?action=examples&lang=uk"
     Private m_strRPath As String = ""
     Private m_strRRoot As String = ""
 
@@ -1285,7 +1285,7 @@ Public Class frmEcotroph
 
         Dim url_eco As String
 
-        url_eco = "http://ecobase.ecopath.org/php/extract_model.php?model=" & Me.num_model(Me.models_list.SelectedIndex)
+        url_eco = "https://ecobase.ecopath.org/php/extract_model.php?model=" & Me.num_model(Me.models_list.SelectedIndex)
 
 
         Try

@@ -136,7 +136,7 @@ Namespace SystemUtilities
             Try
                 Dim links As New List(Of String)
                 If (String.IsNullOrWhiteSpace(url)) Then
-                    links.AddRange(New String() {"http://google.com", "http://ecopath.org", "http://noaa.gov", "http://gov.cn"})
+                    links.AddRange(New String() {"https://google.com", "https://ecopath.org", "https://noaa.gov", "https://gov.cn"})
                 Else
                     links.Add(url)
                 End If

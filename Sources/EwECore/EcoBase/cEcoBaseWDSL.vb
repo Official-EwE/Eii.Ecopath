@@ -45,7 +45,7 @@ Namespace WebServices
         Private Upload_ModelOperationCompleted As System.Threading.SendOrPostCallback
 
         Public Sub New()
-            Me.Url = "http://ecobase.ecopath.org/php/webser/soap-server.php"
+            Me.Url = "https://ecobase.ecopath.org/php/webser/soap-server.php"
         End Sub
 
         Public Event ListModelsCompleted As ListModelsCompletedEventHandler
