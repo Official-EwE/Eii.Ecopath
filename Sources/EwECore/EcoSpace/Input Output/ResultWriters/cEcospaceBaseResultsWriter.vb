@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports System.IO
+Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
@@ -183,15 +184,19 @@ Public MustInherit Class cEcospaceBaseResultsWriter
                                                  Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
         Dim fn As String = ""
+        Dim pm As cPluginManager = Me.m_core.PluginManager
+        Dim bSet As Boolean = False
 
-        If Me.m_core.PluginManager.EcospaceResultsMapGroupFileName(fn, varname, iGrp, strExt, iModelTimeStep) Then
-            'File was set by the plugin
-            'System.Console.WriteLine("Plugin Filename = " + Filename)
-        Else
+        If (pm IsNot Nothing) Then
+            'Allow plug-ins to change the file name. Eek.
+            bSet = pm.EcospaceResultsMapGroupFileName(fn, varname, iGrp, strExt, iModelTimeStep)
+        End If
+
+        If Not bSet Then
+            'Ok Use the default filename
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim strTimestep As String = ""
-            'Ok Use the default filename
             Dim grpName As String = Me.m_core.m_EcopathData.GroupName(iGrp)
 
             If (String.IsNullOrWhiteSpace(grpName)) Then Return ""
