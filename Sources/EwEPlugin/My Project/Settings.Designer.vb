@@ -53,11 +53,11 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("http://webservice.ecopath.org/EwEAutoUpdate.Web/UpdateService.asmx")>  _
+
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),
+         Global.System.Configuration.DefaultSettingValueAttribute("https://webservice.ecopath.org/EwEAutoUpdate.Web/UpdateService.asmx")>
         Public ReadOnly Property EwEPlugin_EwEAutoUpdateRef_UpdateService() As String
             Get
                 Return CType(Me("EwEPlugin_EwEAutoUpdateRef_UpdateService"),String)
