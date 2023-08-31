@@ -22,6 +22,7 @@
 Option Strict On
 
 Imports System.Diagnostics.Eventing
+Imports System.Reflection
 Imports System.Text
 Imports EwECore.Auxiliary
 Imports EwECore.MSE
@@ -520,7 +521,8 @@ Namespace DataSources
 
                 Catch ex As Exception
                     ' Development-time panic event.
-                    Debug.Assert(False, String.Format("cIDMappings.Add: ID Mapping failed '{0}'", ex.Message))
+                    Debug.Assert(False, String.Format("cDBDataSource.Add: ID Mapping failed '{0}'", ex.Message))
+                    cLog.Write(ex, String.Format("cDBDataSource.Add: ID Mapping failed '{0}'. Dt {1}, IDfrom {2}, IDto {3}", ex.Message, dt.ToString, iIDOrg, iIDNew))
                 End Try
             End Sub
 
@@ -542,6 +544,7 @@ Namespace DataSources
                     End If
                 Catch ex As Exception
                     ' Woops
+                    cLog.Write(ex, String.Format("cDBDataSource.GetID: ID retrieval failed '{0}'. Dt {1} ID {2}", ex.Message, dt.ToString, iIDOrg))
                 End Try
                 Return iIDOrg
             End Function
@@ -566,19 +569,24 @@ Namespace DataSources
 
 #Region " Messages "
 
+        Private Sub LogInfo(strMessage As String)
+            Me.LogMessage(strMessage, False)
+        End Sub
+
+        Private Sub LogError(strMessage As String)
+            Me.LogMessage(strMessage, True)
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Logs a message to the application log.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub LogMessage(strMessage As String,
-                Optional msgType As eMessageType = eMessageType.DataModified,
-                Optional msgImportance As eMessageImportance = eMessageImportance.Information)
+        Private Sub LogMessage(strMessage As String, bError As Boolean)
 
             If (Me.m_core IsNot Nothing) Then
-                Me.m_core.m_publisher.AddMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance))
+                Me.m_core.m_publisher.AddMessage(New cMessage(strMessage, eMessageType.Any, eCoreComponentType.DataSource, If(bError, eMessageImportance.Critical, eMessageImportance.Information)))
             End If
-            'Console.WriteLine(strMessage)
 
         End Sub
 
@@ -757,7 +765,7 @@ Namespace DataSources
                 ecopathDS.ModelLastSaved = CDbl(Me.m_db.ReadSafe(reader, "LastSaved", 0))
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcopathModel", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading EcopathModel", ex.Message))
                 bSucces = False
             End Try
 
@@ -838,6 +846,7 @@ Namespace DataSources
                 writer.Commit()
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving EcopathModel", ex.Message))
                 bSucces = False
             End Try
 
@@ -880,7 +889,7 @@ Namespace DataSources
                     iScenario += 1
                 End While
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading ecosim scenario definition {1}", ex.Message, iScenario))
+                Me.LogError(String.Format("Error {0} occurred while reading ecosim scenario definition {1}", ex.Message, iScenario))
                 bSucces = False
             End Try
 
@@ -929,6 +938,7 @@ Namespace DataSources
                 Next
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving ecosim scenario definition {1}", ex.Message, iScenario))
                 bSucces = False
             End Try
 
@@ -971,7 +981,7 @@ Namespace DataSources
                     iScenario += 1
                 End While
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
+                Me.LogError(String.Format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
                 bSucces = False
             End Try
 
@@ -1019,6 +1029,7 @@ Namespace DataSources
                 Next
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving ecospace scenario definition {1}", ex.Message, iScenario))
                 bSucces = False
             End Try
 
@@ -1061,7 +1072,7 @@ Namespace DataSources
                     iScenario += 1
                 End While
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
+                Me.LogError(String.Format("Error {0} occurred while reading ecotracer scenario definition {1}", ex.Message, iScenario))
                 bSucces = False
             End Try
 
@@ -1109,6 +1120,7 @@ Namespace DataSources
                 Next
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving ecotracer scenario definition {1}", ex.Message, iScenario))
                 bSucces = False
             End Try
 
@@ -1159,7 +1171,7 @@ Namespace DataSources
                     ecopathDS.PedigreeLevelColor(iLevel) = CInt(Me.m_db.ReadSafe(reader, "LevelColor", 0))
 
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))
+                    Me.LogError(String.Format("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))
                     bSucces = False
                 End Try
 
@@ -1224,7 +1236,7 @@ Namespace DataSources
                     End If
 
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading pedigree assignment {1}{2}", ex.Message, iGroup, iVariable))
+                    Me.LogError(String.Format("Error {0} occurred while reading pedigree assignment {1} {2}", ex.Message, iGroup, iVariable))
                     bSucces = False
                 End Try
 
@@ -1279,7 +1291,7 @@ Namespace DataSources
                 Next iLevel
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving pedigree level", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving pedigree level", ex.Message))
                 bSucces = False
             End Try
 
@@ -1317,7 +1329,7 @@ Namespace DataSources
                 Next
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving pedigree assignments", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving pedigree assignments", ex.Message))
                 bSucces = False
             End Try
 
@@ -1370,6 +1382,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding pedigree level {1} var {2}", ex.Message, strName, varName.ToString))
                 bSucces = False
             End Try
 
@@ -1396,7 +1409,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("UPDATE Pedigree SET Sequence={1} WHERE (LevelID={0})", iPedigreeLevelID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while moving PedigreeLevel {1}", ex.Message, iPedigreeLevelID))
+                Me.LogError(String.Format("Error {0} occurred while moving PedigreeLevel {1}", ex.Message, iPedigreeLevelID))
                 bSucces = False
             End Try
             Return bSucces
@@ -1419,7 +1432,7 @@ Namespace DataSources
                 ' Per Jul 2018, Pedigree levels are only no longer stored in other tables
                 Me.m_db.Execute(String.Format("DELETE FROM Pedigree WHERE (LevelID={0})", iPedigreeLevelID))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing PedigreeLevel {1}", ex.Message, iPedigreeLevelID))
+                Me.LogError(String.Format("Error {0} occurred while removing PedigreeLevel {1}", ex.Message, iPedigreeLevelID))
                 bSucces = False
             End Try
             Return bSucces
@@ -1455,7 +1468,7 @@ Namespace DataSources
                         psdDS.FirstWeightClass = CSng(Me.m_db.ReadSafe(reader, "FirstWeightClass", 0.125))
                         psdDS.ClimateType = CType(CInt(Me.m_db.ReadSafe(reader, "ClimateType", eClimateTypes.Temperate)), eClimateTypes)
                     Catch ex As Exception
-                        Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
+                        Me.LogError(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
                         bSucces = False
                     End Try
                 End If
@@ -1516,7 +1529,7 @@ Namespace DataSources
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving PSD", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving PSD", ex.Message))
                 bSucces = False
             End Try
 
@@ -1620,7 +1633,7 @@ Namespace DataSources
 
 
                     Catch ex As Exception
-                        Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
+                        Me.LogError(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
                         bSucces = False
                     End Try
 
@@ -1645,7 +1658,7 @@ Namespace DataSources
                             stanzaDS.SpawnProp(iStanza, iLifeStage) = CSng(Me.m_db.ReadSafe(rdLifeStage, "SpawnProp", 1.0))
 
                         Catch ex As Exception
-                            Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
+                            Me.LogError(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
                             bSucces = False
                         End Try
 
@@ -1735,6 +1748,7 @@ Namespace DataSources
                 Next
                 Me.m_db.ReleaseWriter(writer)
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Stanza", ex.Message))
                 Return False
             End Try
 
@@ -1766,6 +1780,7 @@ Namespace DataSources
                 Next iStanza
                 Me.m_db.ReleaseWriter(writer)
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while deleting Stanza life stages", ex.Message))
                 Return False
             End Try
 
@@ -1826,6 +1841,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while appending Stanza {1}", ex.Message, strStanzaName))
                 bSucces = False
             End Try
 
@@ -1844,6 +1860,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while appending Stanza {1} stages", ex.Message, strStanzaName))
                 bSucces = False
             End Try
 
@@ -1878,6 +1895,7 @@ Namespace DataSources
 
                 Return bSuccess And Me.m_db.Execute(String.Format("DELETE FROM Stanza WHERE (StanzaID={0})", iStanzaID))
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while removing Stanza {1}", ex.Message, iStanzaID))
                 ' Kaboom
             End Try
             Return False
@@ -1915,6 +1933,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Stanza life stage stanza {1} grp {2} age {3}", ex.Message, iStanzaDBID, iGroupDBID, iStartAge))
                 bSucces = False
             End Try
             Return bSucces
@@ -1935,6 +1954,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("DELETE FROM StanzaLifeStage WHERE (StanzaID={0}) AND (GroupID={1})", iStanzaDBID, iGroupDBID))
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while removing Stanza life stage stanza {1} grp {2}", ex.Message, iStanzaDBID, iGroupDBID))
                 bSucces = False
             End Try
             Return bSucces
@@ -2043,7 +2063,7 @@ Namespace DataSources
                     If ecopathDS.DtImp(iGroup) = cCore.NULL_VALUE Then ecopathDS.DtImp(iGroup) = 0.0F
 
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
+                    Me.LogError(String.Format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
                     bSucces = False
                 End Try
 
@@ -2141,7 +2161,7 @@ Namespace DataSources
                 Next iGroup
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathGroup", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving EcopathGroup", ex.Message))
                 bSucces = False
             End Try
 
@@ -2331,7 +2351,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iEcopathGroupID))
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing group {1}", ex.Message, iEcopathGroupID))
+                Me.LogError(String.Format("Error {0} occurred while removing group {1}", ex.Message, iEcopathGroupID))
                 bSucces = False
             End Try
 
@@ -2357,7 +2377,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("UPDATE EcopathGroup SET Sequence={1} WHERE (GroupID={0})", iGroupID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while moving group {1}", ex.Message, iGroupID))
+                Me.LogError(String.Format("Error {0} occurred while moving group {1}", ex.Message, iGroupID))
                 bSucces = False
             End Try
             Return bSucces
@@ -2405,7 +2425,7 @@ Namespace DataSources
                     ' The actual data fix is performed once during EwE5 import, and should not reoccur when running EwE6.
                     If ecopathDS.PP(iPred) = 1 And ecopathDS.QB(iPred) <= 0 Then
                         If (ecopathDS.DC(iPred, iPrey) <> 0) Then
-                            cLog.Write(String.Format("Database error on DC({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DC(iPred, iPrey)))
+                            Me.LogError(String.Format("Database error on DC({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DC(iPred, iPrey)))
                         End If
                     End If
 
@@ -2417,7 +2437,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcopathDietComp {1}, {2}", ex.Message, ecopathDS.GroupName(iPred), ecopathDS.GroupName(iPrey)))
+                Me.LogError(String.Format("Error {0} occurred while reading EcopathDietComp {1}, {2}", ex.Message, ecopathDS.GroupName(iPred), ecopathDS.GroupName(iPrey)))
                 bSucces = False
             End Try
 
@@ -2486,6 +2506,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving EcopathDietComp", ex.Message))
                 bSucces = False
             End Try
 
@@ -2630,7 +2651,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcopathFleet {1}", ex.Message, iFleet))
+                Me.LogError(String.Format("Error {0} occurred while reading EcopathFleet {1}", ex.Message, iFleet))
                 bSucces = False
             End Try
 
@@ -2663,14 +2684,14 @@ Namespace DataSources
                         ecopathDS.Market(iFleet, iGroup) = CSng(reader("price"))
                         ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(Me.m_db.ReadSafe(reader, "DiscardMortality", 0.0!))
                     Else
-                        Me.LogMessage(String.Format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
+                        Me.LogError(String.Format("Failed to append catch for group {0}, fleet {1}", iGroup, iFleet))
                         bSucces = False
                     End If
 
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading catch {1}, {2}", ex.Message, iGroup, iFleet))
+                Me.LogError(String.Format("Error {0} occurred while reading catch {1}, {2}", ex.Message, iGroup, iFleet))
                 bSucces = False
             End Try
 
@@ -2707,7 +2728,7 @@ Namespace DataSources
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
+                Me.LogError(String.Format("Error {0} occurred while reading DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
                 bSucces = False
             End Try
 
@@ -2784,7 +2805,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathFleet", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving EcopathFleet", ex.Message))
                 bSucces = False
             End Try
 
@@ -2832,7 +2853,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving catch", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving catch", ex.Message))
                 bSucces = False
             End Try
 
@@ -2869,7 +2890,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
+                Me.LogError(String.Format("Error {0} occurred while saving DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
                 bSucces = False
             End Try
 
@@ -2913,7 +2934,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while adding fleet {1}", ex.Message, strFleetName))
+                Me.LogError(String.Format("Error {0} occurred while adding fleet {1}", ex.Message, strFleetName))
                 bSucces = False
             End Try
 
@@ -2965,7 +2986,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.RemoveEcosimFleet(iFleetID)
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathFleet WHERE (FleetID={0})", iFleetID))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing fleet {1}", ex.Message, iFleetID))
+                Me.LogError(String.Format("Error {0} occurred while removing fleet {1}", ex.Message, iFleetID))
                 bSucces = False
             End Try
             Return bSucces
@@ -2987,7 +3008,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("UPDATE EcopathFleet SET Sequence={1} WHERE (FleetID={0})", iFleetID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while moving fleet {1}", ex.Message, iFleetID))
+                Me.LogError(String.Format("Error {0} occurred while moving fleet {1}", ex.Message, iFleetID))
                 bSucces = False
             End Try
             Return bSucces
@@ -3021,6 +3042,7 @@ Namespace DataSources
             Try
                 tsDS.nDatasets = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcosimTimeSeriesDataset"))
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while reading Ecosim time series number of datasets", ex.Message))
                 tsDS.nDatasets = 0
             End Try
 
@@ -3043,6 +3065,7 @@ Namespace DataSources
                         iDataset += 1
                     End While
                 Catch ex As Exception
+                    Me.LogError(String.Format("Error {0} occurred while reading Ecosim time series datasets", ex.Message))
                     bSucces = False
                 End Try
                 Me.m_db.ReleaseReader(reader)
@@ -3119,7 +3142,7 @@ Namespace DataSources
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while appending dataset {1}", ex.Message, strDatasetName))
+                Me.LogError(String.Format("Error {0} occurred while appending dataset {1}", ex.Message, strDatasetName))
                 bSucces = False
             End Try
 
@@ -3155,6 +3178,7 @@ Namespace DataSources
                 Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeries WHERE (DatasetID={0})", iDatasetID))
                 Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesDataset WHERE (DatasetID={0})", iDatasetID))
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while removing Ecosim time series dataset {1}", ex.Message, iDatasetID))
                 bSucces = False
             End Try
             Return bSucces
@@ -3225,7 +3249,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, iTaxon))
+                Me.LogError(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, iTaxon))
                 bSucces = False
             End Try
 
@@ -3265,7 +3289,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}, group {2}", ex.Message, iTaxon, iGroup))
+                Me.LogError(String.Format("Error {0} occurred while reading taxon {1}, group {2}", ex.Message, iTaxon, iGroup))
                 bSucces = False
             End Try
 
@@ -3298,7 +3322,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}, stanza {2}", ex.Message, iTaxon, iStanza))
+                Me.LogError(String.Format("Error {0} occurred while reading taxon {1}, stanza {2}", ex.Message, iTaxon, iStanza))
                 bSucces = False
             End Try
 
@@ -3373,7 +3397,7 @@ Namespace DataSources
                     Next iTaxon
 
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while saving EcopathTaxa", ex.Message))
+                    Me.LogError(String.Format("Error {0} occurred while saving EcopathTaxa", ex.Message))
                     bSucces = False
                 End Try
             End If
@@ -3413,7 +3437,7 @@ Namespace DataSources
                 Next iTaxon
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathGroupTaxon", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving EcopathGroupTaxon", ex.Message))
                 bSucces = False
             End Try
 
@@ -3446,7 +3470,7 @@ Namespace DataSources
                 Next iTaxon
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcopathStanzaTaxon", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving EcopathStanzaTaxon", ex.Message))
                 bSucces = False
             End Try
 
@@ -3541,7 +3565,7 @@ Namespace DataSources
                 bSucces = Me.m_db.ReleaseWriter(writer, bSucces)
             Catch ex As Exception
                 bSucces = False
-                Me.LogMessage(String.Format("Error {0} occurred while adding taxon", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while adding taxon", ex.Message))
             End Try
 
             Try
@@ -3566,7 +3590,7 @@ Namespace DataSources
                 End If
             Catch ex As Exception
                 bSucces = False
-                Me.LogMessage(String.Format("Error {0} occurred while adding taxon", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while adding taxon", ex.Message))
             End Try
 
             Return bSucces
@@ -3587,7 +3611,7 @@ Namespace DataSources
                 Me.m_db.Execute(String.Format("DELETE FROM EcopathStanzaTaxon WHERE (TaxonID={0})", iTaxonID))
                 Me.m_db.Execute(String.Format("DELETE FROM EcopathTaxon WHERE (TaxonID={0})", iTaxonID))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing taxon {1}", ex.Message, iTaxonID))
+                Me.LogError(String.Format("Error {0} occurred while removing taxon {1}", ex.Message, iTaxonID))
                 bSucces = False
             End Try
             Return bSucces
@@ -3637,6 +3661,7 @@ Namespace DataSources
                     reader.Read()
                     ecosimDS.ForcePoints = CInt(Me.m_db.ReadSafe(reader, "ForcePoints", cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS))
                 Catch ex As Exception
+                    Me.LogError(String.Format("Error {0} occurred while loading Ecosim model", ex.Message))
                     bSuccess = False
                 End Try
 
@@ -3668,6 +3693,7 @@ Namespace DataSources
                 drow("ForcePoints") = ecosimDS.ForcePoints
                 drow.EndEdit()
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim model", ex.Message))
                 bSuccess = False
             End Try
 
@@ -3725,7 +3751,7 @@ Namespace DataSources
                 ecosimDS.ForagingTimeLowerLimit = CSng(Me.m_db.ReadSafe(reader, "ForagingTimeLowerLimit", 0.01))
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Scenario {1}", ex.Message, iScenarioID))
+                Me.LogError(String.Format("Error {0} occurred while reading Scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -3775,6 +3801,7 @@ Namespace DataSources
                 writer.AddRow(drow)
                 Me.m_db.ReleaseWriter(writer)
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Scenario {1} as {2}", ex.Message, iScenarioID, strScenarioName))
                 bSucces = False
             End Try
 
@@ -3860,7 +3887,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcoSimModelParameter, iActiveScenarioID)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving Scenario {1}", ex.Message, iScenarioID))
+                Me.LogError(String.Format("Error {0} occurred while saving Scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -3958,7 +3985,7 @@ Namespace DataSources
                 Me.ClearChanged(s_EcosimComponents)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
+                Me.LogError(String.Format("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
                 bSucces = False
             End Try
 
@@ -3993,7 +4020,7 @@ Namespace DataSources
                 ' Delete actual scenario
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing Ecosim scenarioID {1}", ex.Message, iScenarioID))
+                Me.LogError(String.Format("Error {0} occurred while removing Ecosim scenarioID {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -4027,6 +4054,7 @@ Namespace DataSources
                 End While
                 Me.m_db.ReleaseReader(reader)
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Ecopath group {1} to all Ecosim scenarios", ex.Message, iEcopathGroupID))
                 bSucces = False
             End Try
 
@@ -4101,12 +4129,12 @@ Namespace DataSources
                     Me.m_db.ReleaseWriter(writerShape)
 
                     ' Log repair state
-                    Me.LogMessage(String.Format("Added missing shape definition {0} for Ecosim group {1}", iFishMortShapeID, iGroupID))
+                    Me.LogInfo(String.Format("Added missing shape definition {0} for Ecosim group {1}", iFishMortShapeID, iGroupID))
 
                 Catch ex As Exception
                     bSucces = False
                     ' Log failure
-                    Me.LogMessage(String.Format("Failed to add shape definition {0} for Ecosim group {1}", iFishMortShapeID, iGroupID), eMessageType.NotSet, eMessageImportance.Critical)
+                    Me.LogError(String.Format("Failed to add shape definition {0} for Ecosim group {1}", iFishMortShapeID, iGroupID))
                 End Try
             End If
 
@@ -4123,12 +4151,12 @@ Namespace DataSources
                     Me.m_db.ReleaseWriter(writerAssgn)
 
                     ' Log repair state
-                    Me.LogMessage(String.Format("Added missing fishing mortality shape {0} for Ecosim group {1}", iFishMortShapeID, iGroupID))
+                    Me.LogInfo(String.Format("Added missing fishing mortality shape {0} for Ecosim group {1}", iFishMortShapeID, iGroupID))
 
                 Catch ex As Exception
                     bSucces = False
                     ' Log failure
-                    Me.LogMessage(String.Format("Failed to add fishing mortality shape {0} for Ecosim group {1}", iFishMortShapeID, iGroupID), eMessageType.NotSet, eMessageImportance.Critical)
+                    Me.LogError(String.Format("Failed to add fishing mortality shape {0} for Ecosim group {1}", iFishMortShapeID, iGroupID))
                 End Try
             End If
 
@@ -4144,12 +4172,12 @@ Namespace DataSources
                     Me.m_db.ReleaseWriter(writerGroup)
 
                     ' Log repair state
-                    Me.LogMessage(String.Format("Added missing Ecosim group {0}", iGroupID))
+                    Me.LogInfo(String.Format("Added missing Ecosim group {0}", iGroupID))
 
                 Catch ex As Exception
                     bSucces = False
                     ' Log failure
-                    Me.LogMessage(String.Format("Failed to add Ecosim group {0}", iGroupID), eMessageType.NotSet, eMessageImportance.Critical)
+                    Me.LogError(String.Format("Failed to add Ecosim group {0}", iGroupID))
                 End Try
             End If
 
@@ -4175,6 +4203,7 @@ Namespace DataSources
                 End While
                 Me.m_db.ReleaseReader(reader)
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Ecopath fleet {1} to all Ecosim scenarios", ex.Message, iEcopathFleetID))
                 bSucces = False
             End Try
 
@@ -4220,12 +4249,12 @@ Namespace DataSources
                     bSucces = bSucces And Me.m_db.ReleaseWriter(writerFleet, True)
 
                     ' Log repair state
-                    Me.LogMessage(String.Format("Added missing Ecosim fleet {0}", iEcopathFleetID))
+                    Me.LogInfo(String.Format("Added missing Ecosim fleet {0}", iEcopathFleetID))
 
                 Catch ex As Exception
                     bSucces = False
                     ' Log failure
-                    Me.LogMessage(String.Format("Failed to add Ecosim fleet {0}", iEcopathFleetID), eMessageType.NotSet, eMessageImportance.Critical)
+                    Me.LogError(String.Format("Failed to add Ecosim fleet {0}", iEcopathFleetID))
                 End Try
             End If
 
@@ -4261,6 +4290,7 @@ Namespace DataSources
                     bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimShape WHERE ShapeID={0}", iShapeID))
                 End While
             Catch ex As Exception
+                Me.LogError(String.Format("Failed to remove Ecosim fleet {0}", iEcopathFleetID))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -4295,6 +4325,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
 
             Catch ex As Exception
+                Me.LogError(String.Format("Failed to remove Ecosim group {0}", iGroupID))
                 bSucces = False
             End Try
             Return bSucces
@@ -4368,7 +4399,7 @@ Namespace DataSources
                     ' Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iEcopathGroup))
+                    Me.LogError(String.Format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iEcopathGroup))
                     bSucces = False
                 End Try
 
@@ -4406,6 +4437,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while reading EcoSim group year {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -4441,7 +4473,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading Ecosim vulerabilities", ex.Message))
                 bSucces = False
             End Try
 
@@ -4507,7 +4539,7 @@ Namespace DataSources
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading Ecosim shared arenas", ex.Message))
                 bSucces = False
             End Try
 
@@ -4573,6 +4605,7 @@ Namespace DataSources
                     Me.LoadFishingRateShape(iShapeID, iFleet)
 
                 Catch ex As Exception
+                    Me.LogError(String.Format("Error {0} occurred while reading Ecosim fleet ID {0}", ex.Message, iFleetID))
                     bSucces = False
                 End Try
 
@@ -4597,6 +4630,7 @@ Namespace DataSources
                     drow("FishRateShapeID") = iShapeID
                     drow.EndEdit()
                 Catch ex As Exception
+                    Me.LogError(String.Format("Error {0} occurred while storing Ecosim fleet shape link {0}", ex.Message, iShapeID))
                     bSucces = False
                 End Try
             Next
@@ -4634,6 +4668,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while loading Ecosim fleet year {0}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -4671,6 +4706,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while loading Ecosim quota {0}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -4800,6 +4836,7 @@ Namespace DataSources
                 Next i
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim groups", ex.Message))
                 bSucces = False
             End Try
 
@@ -4847,6 +4884,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim group year", ex.Message))
                 bSucces = False
             End Try
 
@@ -4888,6 +4926,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim vulnerabilities", ex.Message))
                 bSucces = False
             End Try
 
@@ -4932,6 +4971,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim shared arenas", ex.Message))
                 bSucces = False
             End Try
 
@@ -5038,6 +5078,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim fleets", ex.Message))
                 bSucces = False
             End Try
 
@@ -5088,6 +5129,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim fleet year", ex.Message))
                 bSucces = False
             End Try
 
@@ -5133,6 +5175,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim quota", ex.Message))
                 bSucces = False
             End Try
 
@@ -5230,6 +5273,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while loading Ecosim shapes", ex.Message))
                 bSucces = False
             End Try
 
@@ -5245,6 +5289,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
                 reader = Nothing
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while loading Ecosim nutforcing", ex.Message))
                 bSucces = False
             End Try
 
@@ -5296,7 +5341,7 @@ Namespace DataSources
                 readerShape = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EggShape {1}", ex.Message, iShapeID))
+                Me.LogError(String.Format("Error {0} occurred while reading EggShape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -5342,7 +5387,7 @@ Namespace DataSources
                 readerShape = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading TimeShape {1}", ex.Message, iShapeID))
+                Me.LogError(String.Format("Error {0} occurred while reading TimeShape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -5388,7 +5433,7 @@ Namespace DataSources
                 readerShape = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
+                Me.LogError(String.Format("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -5451,7 +5496,7 @@ Namespace DataSources
                             End If
                             ecosimDS.BioMedData.ApplicationType(iPrey, iPredator, iFNo(iPrey, iPredator)) = appl
                         Else
-                            Me.LogMessage(String.Format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
+                            Me.LogInfo(String.Format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
                         End If
                     End If
 
@@ -5461,7 +5506,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading PredPreyInteraction", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading PredPreyInteraction", ex.Message))
                 bSucces = False
             End Try
 
@@ -5501,7 +5546,7 @@ Namespace DataSources
                     If iShape > -1 Then
                         ecosimDS.PriceMedData.PriceMedFuncNum(iGroup, iFleet, iFNo(iGroup, iFleet)) = iShape
                     Else
-                        Me.LogMessage(String.Format("Shape {0} cannot be used for landings interactions; assignment discarded", iShapeID))
+                        Me.LogInfo(String.Format("Shape {0} cannot be used for landings interactions; assignment discarded", iShapeID))
                     End If
 
                 End While
@@ -5510,7 +5555,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Landing interaction", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading Landing interaction", ex.Message))
                 bSucces = False
             End Try
 
@@ -5553,7 +5598,7 @@ Namespace DataSources
                     readerGroup = Nothing
                 End If
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading group MediationWeights", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading group pred/prey mediation weights", ex.Message))
                 bSucces = False
             End Try
 
@@ -5572,7 +5617,7 @@ Namespace DataSources
                     readerFleet = Nothing
                 End If
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading fleet MediationWeights", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading fleet mediation weights", ex.Message))
                 bSucces = False
             End Try
 
@@ -5594,7 +5639,7 @@ Namespace DataSources
                     readerGroup = Nothing
                 End If
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading group MediationWeights", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading group landing mediation weights", ex.Message))
                 bSucces = False
             End Try
 
@@ -5646,7 +5691,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading stanza shape assignments", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading stanza shape assignments", ex.Message))
                 bSucces = False
             End Try
             Return bSucces
@@ -5679,7 +5724,7 @@ Namespace DataSources
                 readerShape = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading FishingRate {1}", ex.Message, iShapeID))
+                Me.LogError(String.Format("Error {0} occurred while reading FishingRate {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -5853,7 +5898,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving forcing shapes", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim forcing shapes", ex.Message))
                 bSucces = False
             End Try
 
@@ -5924,6 +5969,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim egg shape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -5985,6 +6031,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim time shape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -6040,6 +6087,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim mediation shape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -6097,7 +6145,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving PredPreyInteraction", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving PredPreyInteraction", ex.Message))
                 bSucces = False
             End Try
 
@@ -6149,7 +6197,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving landings interaction", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving landings interaction", ex.Message))
                 bSucces = False
             End Try
 
@@ -6191,7 +6239,12 @@ Namespace DataSources
                     Next iShape
                 Next iGroup
                 Me.m_db.ReleaseWriter(writer, True)
+            Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving group mediation weights", ex.Message))
+                bSucces = False
+            End Try
 
+            Try
                 writer = Me.m_db.GetWriter("EcosimScenarioShapeMedWeightsFleet")
                 For iFleet As Integer = 1 To ecosimDS.nGear
                     For iShape As Integer = 1 To medData.MediationShapes
@@ -6209,6 +6262,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving fleet mediation weights", ex.Message))
                 bSucces = False
             End Try
 
@@ -6235,6 +6289,7 @@ Namespace DataSources
                 bSucces = Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving landings mediation weights", ex.Message))
                 bSucces = False
             End Try
 
@@ -6287,6 +6342,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving stanza shape assignments", ex.Message))
                 bSucces = False
             End Try
 
@@ -6334,6 +6390,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving save rate shape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -6520,7 +6577,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writerID)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while appending shape {1}, {2}", ex.Message, strShapeName, shapeType.ToString()))
+                Me.LogError(String.Format("Error {0} occurred while appending shape {1}, {2}", ex.Message, strShapeName, shapeType.ToString()))
                 bSucces = False
             End Try
 
@@ -6575,7 +6632,7 @@ Namespace DataSources
                 bSucces = Me.LoadShapes(ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while deleting shape {1}", ex.Message, iShapeID))
+                Me.LogError(String.Format("Error {0} occurred while deleting shape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -6674,7 +6731,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-
+                Me.LogError(String.Format("Internal error {0} while creating function in AddAsForcingFunction {1}", ex.Message, bNewShape))
             End Try
 
             Try
@@ -6724,6 +6781,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Internal error {0} while updating function in AddAsForcingFunction {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -6812,6 +6870,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writerGroup, True)
             Catch ex As Exception
                 ' Woops
+                Me.LogError(String.Format("Error {0} while adding group time series {1}", ex.Message, ts.DatPool))
                 bSucces = False
             End Try
 
@@ -6853,6 +6912,7 @@ Namespace DataSources
                 writerFleet.AddRow(drow)
             Catch ex As Exception
                 ' Woops
+                Me.LogError(String.Format("Error {0} while adding fleet time series {1}, {2}", ex.Message, ts.DatPool, ts.DatPoolSec))
                 bSucces = False
             End Try
 
@@ -6972,7 +7032,6 @@ Namespace DataSources
 
                     End Select
 
-
                     astrTimeValues = CStr(reader("TimeValues")).Split(CChar(" "))
 
                     For iPoint = 1 To Math.Min(tsDS.DatasetNumPoints(iDataset), astrTimeValues.Length)
@@ -6988,6 +7047,7 @@ Namespace DataSources
 
                 Me.m_db.ReleaseReader(reader)
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while loading time series dataset {1}", ex.Message, iDataset))
                 bSucces = False
             End Try
 
@@ -7103,6 +7163,7 @@ Namespace DataSources
 
             Catch ex As Exception
 
+                Me.LogError(String.Format("Error {0} occurred while saving time series datasets", ex.Message))
                 bSucces = False
 
             End Try
@@ -7200,7 +7261,7 @@ Namespace DataSources
                 End Select
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while appending time series {1}", ex.Message, strName))
+                Me.LogError(String.Format("Error {0} occurred while appending time series {1}", ex.Message, strName))
                 bSucces = False
             End Try
 
@@ -7222,6 +7283,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeries WHERE (TimeSeriesID = {0})", iTimeSeriesID))
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while removing time series {1}", ex.Message, iTimeSeriesID))
                 bSucces = False
             End Try
             Return bSucces
@@ -7264,6 +7326,7 @@ Namespace DataSources
 
                 End While
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while loading Ecosim capacity drivers", ex.Message))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -7312,6 +7375,7 @@ Namespace DataSources
                     Next iGroup
                 Next iShapeDriver
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecosim capacity drivers", ex.Message))
                 bSucces = False
             End Try
 
@@ -7343,7 +7407,7 @@ Namespace DataSources
                         mseDS.MSYStartTimeIndex = CInt(Me.m_db.ReadSafe(reader, "StartIndex", 2))
                         mseDS.MSEMaxEffort = CSng(Me.m_db.ReadSafe(reader, "MaxEffort", cMSEDataStructures.MSE_DEFAULT_MAXEFFORT))
                     Catch ex As Exception
-                        Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
+                        Me.LogError(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
                         bSucces = False
                     End Try
                 End If
@@ -7390,7 +7454,7 @@ Namespace DataSources
                 writer.AddRow(drow)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving MSE", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving MSE", ex.Message))
                 bSucces = False
             End Try
 
@@ -7516,7 +7580,7 @@ Namespace DataSources
                 End Select
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace Scenario {1}", ex.Message, iScenarioID))
+                Me.LogError(String.Format("Error {0} occurred while reading Ecospace Scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -7539,7 +7603,7 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcospaceGroups(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceMonthlyMaps(iScenarioID)
-            bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
+            bSucces = bSucces And Me.LoadEcospaceImportanceLayers(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceDataConnections(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
@@ -7576,6 +7640,7 @@ Namespace DataSources
                 writer.AddRow(drow)
                 Me.m_db.ReleaseWriter(writer)
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecospace scenario {1} as {2}", ex.Message, iScenarioID, strScenarioName))
                 bSucces = False
             End Try
 
@@ -7624,6 +7689,7 @@ Namespace DataSources
                 ' Save scenario
                 bSucces = bSucces And Me.SaveEcospaceScenario(idm)
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecospace scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -7723,7 +7789,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving ecospace scenario {1}", ex.Message, iScenarioID))
+                Me.LogError(String.Format("Error {0} occurred while saving ecospace scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -7736,8 +7802,8 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcospaceGroups(idm)
             bSucces = bSucces And Me.SaveEcospaceFleets(idm)
             bSucces = bSucces And Me.SaveEcospaceMonthlyMaps(idm)
-            bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
-            bSucces = bSucces And Me.SaveEcospaceCapacityMaps(idm)
+            bSucces = bSucces And Me.SaveEcospaceImportanceLayers(idm)
+            bSucces = bSucces And Me.SaveEcospaceCapacityLayers(idm)
             bSucces = bSucces And Me.SaveEcospaceDataConnections(idm)
 
             Return bSucces
@@ -7833,7 +7899,7 @@ Namespace DataSources
                 Me.ClearChanged(s_EcospaceComponents)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
+                Me.LogError(String.Format("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
                 bSucces = False
             End Try
 
@@ -7852,7 +7918,7 @@ Namespace DataSources
                     bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayerCell WHERE (ScenarioID={0})", iScenarioID))
                     bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioFleetMap WHERE (ScenarioID={0})", iScenarioID))
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
+                    Me.LogError(String.Format("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
                     bSucces = False
                 End Try
             End If
@@ -7872,7 +7938,7 @@ Namespace DataSources
                 ' Delete scenario
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
+                Me.LogError(String.Format("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -7922,6 +7988,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while resizing Ecospace basemap", ex.Message))
                 bSucces = False
             End Try
             Return bSucces
@@ -7965,6 +8032,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while resizing Ecospace maps {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
             Return bSucces
@@ -8003,6 +8071,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while loading Ecospace monthly maps {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
             Return bSucces
@@ -8069,6 +8138,7 @@ Namespace DataSources
                 Debug.Assert(False, String.Format("Error saving basemap: '{0}'", ex.Message))
                 '..be very, very afraid
                 bSucces = False
+                Me.LogError(String.Format("Error {0} occurred while saving Ecospace maps {1}", ex.Message, iScenarioID))
             End Try
 
             Return bSucces
@@ -8132,9 +8202,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerWind, iActiveScenarioID)
 
             Catch ex As Exception
-                ' Don't be alarmed..
-                Debug.Assert(False, String.Format("Error saving month maps: '{0}'", ex.Message))
-                '..be very, very afraid
+                Me.LogError(String.Format("Error {0} occurred while saving Ecospace montly maps {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -8178,7 +8246,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace habitat for habitat {1}", ex.Message, i))
+                Me.LogError(String.Format("Error {0} occurred while reading Ecospace habitat for habitat {1}", ex.Message, i))
                 bSucces = False
             End Try
 
@@ -8246,6 +8314,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecospace habitats", ex.Message))
                 bSucces = False
             End Try
 
@@ -8334,7 +8403,7 @@ Namespace DataSources
                 '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
                 'bSucces = Me.LoadEcospaceScenario(iScenarioID)
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace habitatID {1}", ex.Message, iHabitatID))
+                Me.LogError(String.Format("Error {0} occurred while removing Ecospace habitatID {1}", ex.Message, iHabitatID))
                 bSucces = False
             End Try
             Return bSucces
@@ -8356,7 +8425,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("UPDATE EcospaceScenarioHabitat SET Sequence={1} WHERE (HabitatID={0})", iHabitatID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while moving habitat {1}", ex.Message, iHabitatID))
+                Me.LogError(String.Format("Error {0} occurred while moving habitat {1}", ex.Message, iHabitatID))
                 bSucces = False
             End Try
             Return bSucces
@@ -8423,7 +8492,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group {1}", ex.Message, iGroup))
+                Me.LogError(String.Format("Error {0} occurred while reading Ecospace group {1}", ex.Message, iGroup))
                 bSucces = False
             End Try
 
@@ -8459,8 +8528,8 @@ Namespace DataSources
                     sPreference = CSng(Me.m_db.ReadSafe(reader, "Preference", 1.0))
                     ' Sanity check
                     If (iGroup = -1) Or (iHabitat = -1) Then
-                        If (iGroup = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
-                        If (iHabitat = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Habitat ID {0} no longer exist", iHabitatID))
+                        If (iGroup = -1) Then Me.LogInfo(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
+                        If (iHabitat = -1) Then Me.LogInfo(String.Format("LoadEcospaceGroupHabitats: Habitat ID {0} no longer exist", iHabitatID))
                     Else
                         ' Flag as preferred
                         ecospaceDS.PrefHab(iGroup, 0) = 0
@@ -8471,7 +8540,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
                 bSucces = False
             End Try
 
@@ -8500,7 +8569,7 @@ Namespace DataSources
                     iMonth = CInt(reader("MonthID"))
                     ' Sanity check
                     If (iGroup = -1) Then
-                        Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
+                        Me.LogInfo(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
                     Else
                         ' Read only water cells 
                         Dim strMap As String = CStr(Me.m_db.ReadSafe(reader, "Map", ""))
@@ -8516,13 +8585,12 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
                 bSucces = False
             End Try
 
             Return bSucces
         End Function
-
 
 #End Region ' Load
 
@@ -8600,7 +8668,7 @@ Namespace DataSources
                 Next iGroup
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcospaceGroup", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving EcospaceGroup", ex.Message))
                 bSucces = False
             End Try
 
@@ -8655,6 +8723,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecospace group habitats", ex.Message))
                 bSucces = False
             End Try
 
@@ -8715,6 +8784,7 @@ Namespace DataSources
                 Next iGroup
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecospace group migration", ex.Message))
                 bSucces = False
             End Try
 
@@ -8745,6 +8815,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding new group to all Ecospace scenarios", ex.Message))
                 bSucces = False
             End Try
 
@@ -8789,6 +8860,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Ecopath group {1} to Ecospace scenario {2}", ex.Message, iEcopathGroupID, iScenarioID))
                 bSucces = False
             End Try
 
@@ -8825,6 +8897,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroup WHERE GroupID={0}", iEcospaceGroupID))
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while removing Ecospath group {1} from Ecospace as {2}", ex.Message, iEcopathGroupID, iEcospaceGroupID))
                 bSucces = False
             End Try
             Return bSucces
@@ -8871,7 +8944,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace fleet {1}", ex.Message, iFleet))
+                Me.LogError(String.Format("Error {0} occurred while reading Ecospace fleet {1}", ex.Message, iFleet))
                 bSucces = False
             End Try
 
@@ -8906,7 +8979,7 @@ Namespace DataSources
                     End If
                 End While
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioHabitatFishery for iFleet {1}, iHabitat {2}", ex.Message, iFleet, iHabitat))
+                Me.LogError(String.Format("Error {0} occurred while reading EcospaceScenarioHabitatFishery for iFleet {1}, iHabitat {2}", ex.Message, iFleet, iHabitat))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -8934,7 +9007,7 @@ Namespace DataSources
                     End If
                 End While
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading ReadEcospaceMPAFishery for iFleet {1}, iMPA {2}", ex.Message, iFleet, iMPA))
+                Me.LogError(String.Format("Error {0} occurred while reading ReadEcospaceMPAFishery for iFleet {1}, iMPA {2}", ex.Message, iFleet, iMPA))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -9018,7 +9091,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving Ecospace Fleet", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving Ecospace Fleet", ex.Message))
                 bSucces = False
             End Try
 
@@ -9066,7 +9139,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcospaceScenarioHabitatFishery", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving EcospaceScenarioHabitatFishery", ex.Message))
                 bSucces = False
             End Try
 
@@ -9109,7 +9182,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcospaceScenarioMPAFishery", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving EcospaceScenarioMPAFishery", ex.Message))
                 bSucces = False
             End Try
 
@@ -9140,6 +9213,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Ecopath fleet {1} to all Ecospace scenarios", ex.Message, iEcopathFleetID))
                 bSucces = False
             End Try
 
@@ -9175,6 +9249,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Ecopath fleet {1} to Ecospace scenario {2}", ex.Message, iEcopathFleetID, iScenarioID))
                 bSucces = False
             End Try
 
@@ -9200,6 +9275,7 @@ Namespace DataSources
                     bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioMPAFishery WHERE (FleetID={0})", iFleetID))
                 End While
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while removing ecopath fleet {1} from Ecospace", ex.Message, iEcopathFleetID))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -9258,7 +9334,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioMPA {1}", ex.Message, iMPA))
+                Me.LogError(String.Format("Error {0} occurred while reading EcospaceScenarioMPA {1}", ex.Message, iMPA))
                 bSucces = False
             End Try
 
@@ -9336,7 +9412,7 @@ Namespace DataSources
                 Next iMPA
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving Ecospace MPA", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving Ecospace MPA", ex.Message))
                 bSucces = False
             Finally
                 Me.m_db.ReleaseWriter(writer)
@@ -9401,25 +9477,31 @@ Namespace DataSources
 
             If (iIndex <= 0) Then iIndex = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcospaceScenarioMPA", 1))
 
-            drow = writer.NewRow()
-            drow("ScenarioID") = iScenarioID
-            drow("MPAID") = iDBID
-            drow("MPAName") = strName
-            drow("Sequence") = iIndex
-            drow("MPAMap") = ""
+            Try
 
-            sbMPAMonth.Length = 0
-            For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, bMPAMonths.Length - 1)
-                ' Closed for fishing: store as 0, open: store as 1
-                sbMPAMonth.Append(If(bMPAMonths(iMonth), "1", "0"))
-            Next iMonth
-            drow("MPAMonth") = sbMPAMonth.ToString()
+                drow = writer.NewRow()
+                drow("ScenarioID") = iScenarioID
+                drow("MPAID") = iDBID
+                drow("MPAName") = strName
+                drow("Sequence") = iIndex
+                drow("MPAMap") = ""
 
-            writer.AddRow(drow)
+                sbMPAMonth.Length = 0
+                For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, bMPAMonths.Length - 1)
+                    ' Closed for fishing: store as 0, open: store as 1
+                    sbMPAMonth.Append(If(bMPAMonths(iMonth), "1", "0"))
+                Next iMonth
+                drow("MPAMonth") = sbMPAMonth.ToString()
+
+                writer.AddRow(drow)
+            Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Ecospace MPA {1}", ex.Message, strName))
+                bSucces = False
+            End Try
 
             Me.m_db.ReleaseWriter(writer)
-
             Return bSucces
+
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -9442,7 +9524,7 @@ Namespace DataSources
                 '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
                 'bSucces = Me.LoadEcospaceScenario(iScenarioID)
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace MPA {1}", ex.Message, iMPAID))
+                Me.LogError(String.Format("Error {0} occurred while removing Ecospace MPA {1}", ex.Message, iMPAID))
                 bSucces = False
             End Try
             Return bSucces
@@ -9463,7 +9545,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("UPDATE EcospaceScenarioMPA SET Sequence={1} WHERE (MPAID={0})", iMPAID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while moving MPA {1}", ex.Message, iMPAID))
+                Me.LogError(String.Format("Error {0} occurred while moving MPA {1}", ex.Message, iMPAID))
                 bSucces = False
             End Try
             Return bSucces
@@ -9478,7 +9560,7 @@ Namespace DataSources
 
 #Region " Load "
 
-        Private Function LoadEcospaceWeightLayers(iScenarioID As Integer) As Boolean
+        Private Function LoadEcospaceImportanceLayers(iScenarioID As Integer) As Boolean
 
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim readerLayer As IDataReader = Nothing
@@ -9504,6 +9586,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred loading Ecospace weight layers for scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             Finally
                 Me.m_db.ReleaseReader(readerLayer)
@@ -9518,7 +9601,7 @@ Namespace DataSources
 
 #Region " Save "
 
-        Private Function SaveEcospaceWeightLayers(idm As cIDMappings) As Boolean
+        Private Function SaveEcospaceImportanceLayers(idm As cIDMappings) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
@@ -9575,6 +9658,7 @@ Namespace DataSources
                 Next iLayer
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred saving Ecospace importance layers for scenario {1}", ex.Message, iScenarioIDdest))
                 bSucces = False
             Finally
                 Me.m_db.ReleaseWriter(writer)
@@ -9637,19 +9721,26 @@ Namespace DataSources
             ' MPAID unique for all scenarios
             iLayerID = CInt(Me.m_db.GetValue("SELECT MAX(LayerID) FROM EcospaceScenarioWeightLayer", 0)) + 1
 
-            writer = Me.m_db.GetWriter("EcospaceScenarioWeightLayer")
+            Try
 
-            drow = writer.NewRow()
-            drow("ScenarioID") = iScenarioID
-            drow("LayerID") = iLayerID
-            drow("Name") = strName
-            drow("Sequence") = iLayerID
-            drow("Description") = strDescription
-            drow("Weight") = sWeight
-            drow("LayerMap") = ""
-            writer.AddRow(drow)
+                writer = Me.m_db.GetWriter("EcospaceScenarioWeightLayer")
 
-            Me.m_db.ReleaseWriter(writer)
+                drow = writer.NewRow()
+                drow("ScenarioID") = iScenarioID
+                drow("LayerID") = iLayerID
+                drow("Name") = strName
+                drow("Sequence") = iLayerID
+                drow("Description") = strDescription
+                drow("Weight") = sWeight
+                drow("LayerMap") = ""
+                writer.AddRow(drow)
+
+                Me.m_db.ReleaseWriter(writer)
+
+            Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred adding Ecospace importance layer {1} to scenario {1}", ex.Message, strName, iScenarioID))
+                bSucces = False
+            End Try
 
             Return bSucces
         End Function
@@ -9673,7 +9764,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iLayerID))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace Importance Layer {1}", ex.Message, iLayerID))
+                Me.LogError(String.Format("Error {0} occurred while removing Ecospace Importance Layer {1}", ex.Message, iLayerID))
                 bSucces = False
             End Try
             Return bSucces
@@ -9711,6 +9802,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred loading Ecospace driver maps for scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             Finally
                 Me.m_db.ReleaseReader(readerLayer)
@@ -9756,6 +9848,7 @@ Namespace DataSources
 
                 End While
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred loading Ecospace capacity drivers for scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -9786,6 +9879,7 @@ Namespace DataSources
 
                     End While
                 Catch ex As Exception
+                    Me.LogError(String.Format("Error {0} occurred loading Ecospace disabled drivers for scenario {1}", ex.Message, iScenarioID))
                     bSucces = False
                 Finally
                     Me.m_db.ReleaseReader(readerLayer)
@@ -9797,48 +9891,11 @@ Namespace DataSources
 
         End Function
 
-        ''' <summary>
-        ''' Loads the layers for which external data has been disabled.
-        ''' </summary>
-        ''' <param name="iScenarioID">The scenario identifier.</param>
-        ''' <returns></returns>
-        Private Function EcospaceScenarioLayerConnectionDisabled(iScenarioID As Integer) As Boolean
-
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
-            Dim readerLayer As IDataReader = Nothing
-            Dim bSucces As Boolean = True
-
-            Try
-                readerLayer = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDriverDisabled WHERE (ScenarioID={0})", iScenarioID))
-                While readerLayer.Read()
-                    Dim iLayerID As Integer = CInt(readerLayer("LayerID"))
-                    Dim iLayer As Integer = If(iLayerID = 0, 0, Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, iLayerID))
-                    Dim ShapeType As Integer = CInt(Me.m_db.ReadSafe(readerLayer, "Target", CInt(eDataTypes.EcosimEnviroResponseFunctionManager)))
-
-                    If ShapeType = eDataTypes.EcospaceEnviroCapacityResponse Then
-                        ecospaceDS.EnvironmentalLayerCapacityDisabled(iLayer) = True
-                    ElseIf ShapeType = eDataTypes.EcospaceEnviroMortalityResponse Then
-                        ' Use case does not exist yet. But it may in the near future
-                    End If 'If ShapeType = 
-
-                End While
-            Catch ex As Exception
-                bSucces = False
-            Finally
-                Me.m_db.ReleaseReader(readerLayer)
-                readerLayer = Nothing
-            End Try
-
-            Return bSucces
-
-        End Function
-
-
 #End Region ' Load
 
 #Region " Save "
 
-        Private Function SaveEcospaceCapacityMaps(idm As cIDMappings) As Boolean
+        Private Function SaveEcospaceCapacityLayers(idm As cIDMappings) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
@@ -9897,6 +9954,7 @@ Namespace DataSources
                 Next iLayer
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred saving Ecospace driver maps for scenario {1}", ex.Message, iScenarioIDdest))
                 bSucces = False
             End Try
 
@@ -9947,6 +10005,7 @@ Namespace DataSources
                     Next iGroup
                 Next iMap
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred saving Ecospace capacity drivers for scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -9986,6 +10045,7 @@ Namespace DataSources
 
                 Next
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred saving Ecospace disabled drivers for scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -10016,17 +10076,24 @@ Namespace DataSources
             ' The writer needed here will maintain row sequence for the given scenario only
             writer = Me.m_db.GetWriter("EcospaceScenarioDriverLayer")
 
-            drow = writer.NewRow()
-            drow("ScenarioID") = iScenarioID
-            drow("LayerID") = iDBID
-            drow("Sequence") = iDBID
-            drow("LayerName") = strName
-            drow("LayerDescription") = strDescription
-            drow("LayerUnits") = strUnits
-            drow("LayerMap") = ""
-            writer.AddRow(drow)
+            Try
 
-            Me.m_db.ReleaseWriter(writer)
+                drow = writer.NewRow()
+                drow("ScenarioID") = iScenarioID
+                drow("LayerID") = iDBID
+                drow("Sequence") = iDBID
+                drow("LayerName") = strName
+                drow("LayerDescription") = strDescription
+                drow("LayerUnits") = strUnits
+                drow("LayerMap") = ""
+                writer.AddRow(drow)
+
+                Me.m_db.ReleaseWriter(writer)
+
+            Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred adding Ecospace driver map [1} to scenario {2}", ex.Message, strName, iScenarioID))
+                bSucces = False
+            End Try
 
             Return bSucces
 
@@ -10049,7 +10116,7 @@ Namespace DataSources
                 ' Delete the layer
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iDBID))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace driver layer ID {1}", ex.Message, iDBID))
+                Me.LogError(String.Format("Error {0} occurred while removing Ecospace driver layer ID {1}", ex.Message, iDBID))
                 bSucces = False
             End Try
             Return bSucces
@@ -10062,7 +10129,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("UPDATE EcospaceScenarioDriverLayer SET Sequence={1} WHERE (LayerID={0})", iDBID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while moving ecospace driver layer {1}", ex.Message, iDBID))
+                Me.LogError(String.Format("Error {0} occurred while moving ecospace driver layer {1}", ex.Message, iDBID))
                 bSucces = False
             End Try
             Return bSucces
@@ -10125,6 +10192,7 @@ Namespace DataSources
                     End If
 
                 Catch ex As Exception
+                    Me.LogError(String.Format("Error {0} occurred loading Ecospace ext data connections for scenario {1}", ex.Message, iScenarioID))
                     bSucces = False
                     cLog.Write(ex, "DBDataSource::LoadEcospaceDataConnections")
                 End Try
@@ -10231,6 +10299,7 @@ Namespace DataSources
                 Next adt
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred saving Ecospace ext data connections for scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -10338,7 +10407,7 @@ Namespace DataSources
                 'tracerDS.ConForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iConForceNumber))
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecotracer Scenario {1}", ex.Message, iScenarioID))
+                Me.LogError(String.Format("Error {0} occurred while loading Ecotracer Scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -10392,7 +10461,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecotracer group {1}", ex.Message, iGroup))
+                Me.LogError(String.Format("Error {0} occurred while reading Ecotracer group {1}", ex.Message, iGroup))
                 bSucces = False
             End Try
             Return bSucces
@@ -10493,7 +10562,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving ecotracer scenario {1}", ex.Message, iScenarioID))
+                Me.LogError(String.Format("Error {0} occurred while saving ecotracer scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -10542,7 +10611,7 @@ Namespace DataSources
                 Next iGroup
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcotracerGroup", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while saving EcotracerGroup", ex.Message))
                 bSucces = False
             End Try
 
@@ -10620,7 +10689,7 @@ Namespace DataSources
 
             Catch ex As Exception
                 Me.m_db.RollbackTransaction()
-                Me.LogMessage(String.Format("Error {0} occurred while appending Ecotracer scenario {1}", ex.Message, strScenarioName))
+                Me.LogError(String.Format("Error {0} occurred while appending Ecotracer scenario {1}", ex.Message, strScenarioName))
                 bSucces = False
             End Try
 
@@ -10646,7 +10715,7 @@ Namespace DataSources
                 ' Delete scenario
                 Me.m_db.Execute(String.Format("DELETE FROM EcotracerScenario WHERE (ScenarioID={0})", iScenarioID))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing Ecotracer scenarioID {1}", ex.Message, iScenarioID))
+                Me.LogError(String.Format("Error {0} occurred while removing Ecotracer scenarioID {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -10674,6 +10743,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred adding Ecopath group {1} to all Ecotracer scenarios", ex.Message, iEcopathGroupID))
                 bSucces = False
             End Try
 
@@ -10705,6 +10775,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred adding Ecopath group {1} to Ecotracer scenario {2}", ex.Message, iEcopathGroupID, iScenarioID))
                 bSucces = False
             End Try
 
@@ -10748,7 +10819,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading AuxillaryData", ex.Message))
+                Me.LogError(String.Format("Error {0} occurred while loading AuxillaryData", ex.Message))
                 bSucces = False
             End Try
 
@@ -10793,6 +10864,7 @@ Namespace DataSources
                     End If
                 Next
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving AuxillaryData", ex.Message))
                 bSucces = False
             End Try
 
@@ -10855,6 +10927,7 @@ Namespace DataSources
                             iAdDBID += 1
 
                         Catch ex As Exception
+                            Me.LogError(String.Format("Error {0} occurred while duplicating AuxillaryData", ex.Message))
                             bSucces = False
                         End Try
 
@@ -10974,6 +11047,7 @@ Namespace DataSources
 
                     ds.m_samples.Add(sample)
                 Catch ex As Exception
+                    Me.LogError(String.Format("Error {0} occurred while loading Ecopath samples", ex.Message))
                     bSucces = False
                 End Try
             End While
@@ -11019,7 +11093,7 @@ Namespace DataSources
                         End If
                     End If
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading EcopathGroupSample", ex.Message))
+                    Me.LogError(String.Format("Error {0} occurred while reading EcopathGroupSample", ex.Message))
                     bSucces = False
                 End Try
             End While
@@ -11053,7 +11127,7 @@ Namespace DataSources
                         End If
                     End If
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading EcopathDietCompSample", ex.Message))
+                    Me.LogError(String.Format("Error {0} occurred while reading EcopathDietCompSample", ex.Message))
                     bSucces = False
                 End Try
             End While
@@ -11085,7 +11159,7 @@ Namespace DataSources
                         sample.Discard(iFleet, iGroup) = CSng(reader("Discards"))
                     End If
                 Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading EcopathGroupCatchSample", ex.Message))
+                    Me.LogError(String.Format("Error {0} occurred while reading EcopathGroupCatchSample", ex.Message))
                     bSucces = False
                 End Try
             End While
@@ -11125,6 +11199,7 @@ Namespace DataSources
                 writer.Commit()
 
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while saving Ecopath samples", ex.Message))
                 bSucces = False
             End Try
 
@@ -11138,6 +11213,11 @@ Namespace DataSources
 
         Public Function AddSample(sample As Samples.cEcopathSample, ByRef iDBID As Integer) As Boolean _
             Implements IEcopathSampleDataSource.AddSample
+
+            If sample Is Nothing Then
+                Debug.Assert(False)
+                Return False
+            End If
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -11163,6 +11243,7 @@ Namespace DataSources
                 writer.AddRow(drow)
                 Me.m_db.ReleaseWriter(writer, bSucces)
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Ecopath sample {1}", ex.Message, sample.Name))
                 bSucces = False
             End Try
 
@@ -11186,6 +11267,7 @@ Namespace DataSources
                     writer.AddRow(drow)
                 Next
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Ecopath sample {1} groups", ex.Message, sample.Name))
                 bSucces = False
             End Try
             bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
@@ -11205,6 +11287,7 @@ Namespace DataSources
                     Next iPrey
                 Next iPred
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Ecopath sample {1} diets", ex.Message, sample.Name))
                 bSucces = False
             End Try
             bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
@@ -11225,6 +11308,7 @@ Namespace DataSources
                     Next iGroup
                 Next iFleet
             Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred while adding Ecopath sample {1} catch", ex.Message, sample.Name))
                 bSucces = False
             End Try
             bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
