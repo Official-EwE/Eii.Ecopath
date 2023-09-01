@@ -1345,17 +1345,19 @@ Public Class cEcoSpace
 
             Me.EcoSpaceData.MOLayerChanged.Clear()
 
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'jb 31-Mar-2022 For Parallel Processing
-            'When running multiple cores on the same computer at the same time
-            'Different processes reading the same files from disk can cause funky behaviour. 
-            'Model that should run the same sometimes give different results
-            ReadMutex = New Threading.Mutex(False, "EwEReadSpatialData")
-            btimedout = ReadMutex.WaitOne(60000) ' JS increased time-out
-            Debug.Assert(btimedout, "SPF timed out waiting for global Read Mutex")
+            If Me.m_bUseSystemMutex Then
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'jb 31-Mar-2022 For Parallel Processing
+                'When running multiple cores on the same computer at the same time
+                'Different processes reading the same files from disk can cause funky behaviour. 
+                'Model that should run the same sometimes give different results
+                ReadMutex = New Threading.Mutex(False, "EwEReadSpatialData")
+                btimedout = ReadMutex.WaitOne(60000) ' JS increased time-out
+                Debug.Assert(btimedout, "SPF timed out waiting for global Read Mutex")
 
-            If (btimedout) Then
-                cLog.Write("WARNING!! cEcospace.SetSpatialTempData mutex timed out, model results may be funky past time step " & iTimeStepCounter)
+                If (btimedout) Then
+                    cLog.Write("WARNING!! cEcospace.SetSpatialTempData mutex timed out, model results may be funky past time step " & iTimeStepCounter)
+                End If
             End If
 
             'For debugging global mutex
@@ -1382,10 +1384,12 @@ Public Class cEcoSpace
             Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
 
         Finally
-            'Make sure the Mutex gets released
-            ' JS 23Sept22: only release if not timed out, otherwise the mutex keeps failing with consequences for future spat temp data
-            If Not btimedout Then ReadMutex.ReleaseMutex()
-            ReadMutex.Close()
+            If Me.m_bUseSystemMutex Then
+                'Make sure the Mutex gets released
+                ' JS 23Sept22: only release if not timed out, otherwise the mutex keeps failing with consequences for future spat temp data
+                If Not btimedout Then ReadMutex.ReleaseMutex()
+                ReadMutex.Close()
+            End If
         End Try
 
     End Sub
@@ -2284,11 +2288,15 @@ Public Class cEcoSpace
         Next solver
     End Sub
 
+    Private m_bUseSystemMutex As Boolean = False
 
     Public Function initSpatialEquilibrium() As Boolean
+
         Dim ip As Integer, i As Integer, j As Integer
         Dim ig As Integer
         Dim isp As Integer, ist As Integer
+
+        Me.m_bUseSystemMutex = Me.EcoSpaceData.UseSystemMutex
 
         Try
 

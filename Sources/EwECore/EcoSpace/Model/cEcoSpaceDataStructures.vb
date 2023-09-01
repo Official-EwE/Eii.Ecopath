@@ -45,6 +45,17 @@ Public Class cEcospaceDataStructures
     ''' <summary>ESRI projection string of the default WGS_84 projection of Ecospace.</summary>
     Public Const DEFAULT_COORDINATESYSTEM As String = "GEOGCS[""WGS 84"", DATUM[""WGS_1984"", SPHEROID[""WGS 84"",6378137,298.257223563, AUTHORITY[""EPSG"",""7030""]], AUTHORITY[""EPSG"",""6326""]], PRIMEM[""Greenwich"",0, AUTHORITY[""EPSG"",""8901""]], UNIT[""degree"",0.01745329251994328, AUTHORITY[""EPSG"",""9122""]], AUTHORITY[""EPSG"",""4326""]]"
 
+    ''' <summary>
+    ''' Flag to indicate that a system-wide mutex should be used to safeguard spat temp data exchange. 
+    ''' </summary>
+    ''' <remarks>
+    ''' This will be used in cEcospace.SetSpatialTemporal data. Commented:
+    ''' When running multiple cores on the same computer at the same time, different processes reading the same files from disk can cause funky behaviour. 
+    ''' Model that should run the same sometimes give different results. Mutex is an attempt to solve this to enforce that only ONE ecospace instance at 
+    ''' the time can ask for external spat temp data.
+    ''' </remarks>
+    Public UseSystemMutex As Boolean = False
+
     Public EcosimScenarioDBID As Integer
     ''' <summary>Array of ecospace group database IDs.</summary>
     Public GroupDBID() As Integer
