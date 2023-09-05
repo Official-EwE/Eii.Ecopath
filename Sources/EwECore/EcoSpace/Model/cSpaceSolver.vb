@@ -509,9 +509,10 @@ Public Class cSpaceSolver
                             'effortspace should be 1.0 for cell with "average" effort by gear type ig
                         Next
                     Else
-                        'Not Predicting Effort
-                        'F = Ecopath base F
+                        'Not Predicting Effort. Use the Ecosim F Time Series
+                        'F = Ecosim F at this time step
                         Me.FishTime(iGrp) = Me.m_SimData.FishRateNo(iGrp, itt)
+
 
                         For Me.ig = 1 To Me.m_Data.nFleets
                             'Effort used to calculate Catch and Value in cEcospace.accumCatchData
