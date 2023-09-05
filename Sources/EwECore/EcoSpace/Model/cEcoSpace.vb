@@ -4320,10 +4320,11 @@ exitline:
 
                     TotE = Me.EcoSpaceData.TotEffort(iFlt) * Me.EcoSpaceData.SEmult(iFlt)
 
-                    ''set the total effort by zone
+                    'set the total effort by zone
                     For iZone As Integer = 0 To Me.EcoSpaceData.nEffZones
                         TotEffortZone(iZone) = TotE * Me.EcoSpaceData.PropEffortFleetZone(iFlt, iZone)
-                        TotAttractZone(iZone) = Me.EcoSpaceData.AttractNofish(iFlt) ' * Me.EcoSpaceData.PropEffortFleetZone(iFlt, iZone)
+                        'jb protect against /0 for groups that have no value or landing 
+                        TotAttractZone(iZone) = Me.EcoSpaceData.AttractNofish(iFlt) + 1.0E-30
                     Next iZone
 
                     'jb Attract() gets cleared out for each fleet
@@ -4643,7 +4644,8 @@ exitline:
                 'set the total effort by zone
                 For iZone As Integer = 0 To Me.EcoSpaceData.nEffZones
                     TotEffortZone(iZone) = TotE * Me.EcoSpaceData.PropEffortFleetZone(iFlt, iZone)
-                    TotAttractZone(iZone) = 1.0E-30
+                    'jb protect against /0 for groups that have no value or landing 
+                    TotAttractZone(iZone) = Me.EcoSpaceData.AttractNofish(iFlt) + 1.0E-30
                 Next iZone
 
                 'jb Attract() gets cleared out for each fleet
