@@ -1005,7 +1005,7 @@ Namespace Samples
                         Me.m_core.RunEcopath(bIsBalanced)
                         If (bIsBalanced) Then
                             If (iEcosim > 0) Then Me.m_core.RunEcosim()
-                            If (iEcospace > 0) Then Me.m_core.RunEcospace()
+                            If (iEcospace > 0) Then Me.m_core.RunEcospace(Nothing, RunOnThread:=False)
                         Else
                             Me.LogEvent(cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_SAMPLE_NOBALANCE, s.Index), eMessageImportance.Warning)
                         End If
