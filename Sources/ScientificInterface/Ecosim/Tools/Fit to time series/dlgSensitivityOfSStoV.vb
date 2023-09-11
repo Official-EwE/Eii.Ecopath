@@ -135,23 +135,6 @@ Public Class dlgSensitivityOfSStoV
 
 #Region " Controls "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub OnSearchCheckedChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_rbSearchPred.CheckedChanged, _
-                m_rbSearchPredPrey.CheckedChanged
-
-        If (Me.m_rbSearchPredPrey.Checked) Then
-            Me.RunType = eRunType.SensitivitySS2VByPredPrey
-        Else
-            Me.RunType = eRunType.SensitivitySS2VByPredator
-        End If
-
-    End Sub
-
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' 
@@ -356,29 +339,34 @@ Public Class dlgSensitivityOfSStoV
     ''' <returns>True if a new run was started succesfully.</returns>
     ''' -----------------------------------------------------------------------
     Private Function StartRun() As Boolean
+
+        Dim bResult As Boolean = False
+
         If (Me.m_F2TSManager.IsRunning()) Then Return False
 
         ' Reset controls
         Me.m_progress.Value = 0
 
+        Me.RunType = If(Me.m_rbSearchPredPrey.Checked, eRunType.SensitivitySS2VByPredPrey, eRunType.SensitivitySS2VByPredator)
         Me.m_F2TSManager.Connect(Me, AddressOf Me.OnRunStarted, AddressOf Me.OnRunStep, AddressOf Me.OnRunStopped, Nothing)
-        If (Me.m_rbSearchPredPrey.Checked) Then
-            If (Me.m_F2TSManager.RunSensitivitySS2VByPredPrey(False, TriState.False) = False) Then
-                Return False
-            End If
-            Me.RunType = eRunType.SensitivitySS2VByPredPrey
-        Else
-            If (Me.m_F2TSManager.RunSensitivitySS2VByPredator(False, TriState.False) = False) Then
-                Return False
-            End If
-            Me.RunType = eRunType.SensitivitySS2VByPredator
-        End If
+
+        Try
+            Select Case Me.RunType
+                Case eRunType.SensitivitySS2VByPredator
+                    bResult = Me.m_F2TSManager.RunSensitivitySS2VByPredator(False, TriState.False)
+                Case eRunType.SensitivitySS2VByPredPrey
+                    bResult = Me.m_F2TSManager.RunSensitivitySS2VByPredPrey(False, TriState.False)
+            End Select
+        Catch ex As Exception
+            bResult = False
+        End Try
+
         Me.m_F2TSManager.Disconnect()
 
         Me.UpdateControls()
         Me.UpdateDisplay()
 
-        Return True
+        Return bResult
     End Function
 
     ''' -----------------------------------------------------------------------
