@@ -360,6 +360,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.FleetEffortConversion) = New cVariableMetaData(0, Single.MaxValue, gt, lt)
         Me.Metadata(eVarNameFlags.SwitchingPower) = New cVariableMetaData(0, 2, ge, le, 0)
         Me.Metadata(eVarNameFlags.VulMult) = New cVariableMetaData(1, Single.MaxValue, ge, lt, 2)
+        Me.Metadata(eVarNameFlags.EcosimRelQ) = New cVariableMetaData(1, Single.MaxValue, ge, lt, 1)
 
         ' fleets out. Must have metadata for units
         Me.Metadata(eVarNameFlags.EcosimFleetCatchStart) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)

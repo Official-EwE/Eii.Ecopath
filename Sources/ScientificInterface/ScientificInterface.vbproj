@@ -277,6 +277,9 @@
     <Compile Include="Ecosim\Input\ApplyShape\dlgApplyGroupShape.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecosim\Input\Catchabilities\gridEcosimCatchability.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\EggProduction\frmApplyEP.Designer.vb">
       <DependentUpon>frmApplyEP.vb</DependentUpon>
     </Compile>
@@ -2356,7 +2359,6 @@
     <None Include="Resources\Ecopath4_hohoho.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Ecosim\Input\Catchabilities\" />
     <Folder Include="Other\Update\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
