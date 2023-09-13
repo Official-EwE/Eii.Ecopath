@@ -8140,6 +8140,15 @@ Public Class cCore
 
                 fleet.EffortConversionFactor = m_EcoSimData.EffortConversionFactor(iFleet)
 
+                For iGroup As Integer = 1 To Me.nGroups
+                    If (Me.EcopathDataStructures.Landing(iFleet, iGroup) + Me.EcopathDataStructures.Discard(iFleet, iGroup) > 0) Then
+                        fleet.RelQ(iGroup) = m_EcoSimData.relQ(iFleet, iGroup)
+                        fleet.RelQStatus(iGroup) = eStatusFlags.NotEditable Or eStatusFlags.OK
+                    Else
+                        fleet.RelQStatus(iGroup) = eStatusFlags.NotEditable Or eStatusFlags.Null
+                    End If
+                Next
+
                 fleet.ResetStatusFlags()
                 fleet.AllowValidation = True
             Next

@@ -62,6 +62,9 @@ Public Class cEcosimFleetInput
         val = New cValue(core, New Single, eVarNameFlags.FleetEffortConversion, eStatusFlags.Null, eValueTypes.Sng)
         Me.m_values.Add(val.varName, val)
 
+        val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcosimRelQ, eStatusFlags.Null, eCoreCounterTypes.nGroups)
+        Me.m_values.Add(val.varName, val)
+
         Me.AllowValidation = True
 
     End Sub
@@ -128,7 +131,6 @@ Public Class cEcosimFleetInput
 
     End Property
 
-
     ''' <summary>
     ''' Effort conversion factor used for summing maps into a single Effort value
     ''' </summary>
@@ -141,6 +143,18 @@ Public Class cEcosimFleetInput
         End Get
         Set(value As Single)
             Me.SetVariable(eVarNameFlags.FleetEffortConversion, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Start-up catchability
+    ''' </summary>
+    Public Property RelQ(iGroup As Integer) As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.EcosimRelQ, iGroup))
+        End Get
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.EcosimRelQ, value, iGroup)
         End Set
     End Property
 
@@ -200,6 +214,18 @@ Public Class cEcosimFleetInput
         End Get
         Set(value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.FleetEffortConversion, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Start-up catchability
+    ''' </summary>
+    Public Property RelQStatus(iGroup As Integer) As eStatusFlags
+        Get
+            Return Me.GetStatus(eVarNameFlags.EcosimRelQ, iGroup)
+        End Get
+        Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.EcosimRelQ, value, iGroup)
         End Set
     End Property
 

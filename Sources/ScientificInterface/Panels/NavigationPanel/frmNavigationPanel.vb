@@ -262,7 +262,7 @@ Public Class frmNavigationPanel
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_PRICEELAST, "ndPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmPriceElasticity), eNodeImages.Input, nodeInput) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_APPLYPRICEELAST, "ndApplyPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmApplyPriceElasticy), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
-        'Me.m_nodecontroller.Add("Catchabilities", "ndCatchabilities", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimCatchabilities), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add("Catchabilities", "ndCatchabilities", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimCatchability), eNodeImages.Input, nodeInput) ' ToDo: connect to help
 
         ' output
         nodeOutput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_OUTPUT, "ndEcosimOutput", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.Output, nodeModel)

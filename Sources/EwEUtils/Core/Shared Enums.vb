@@ -1954,6 +1954,7 @@ Namespace Core
         ''' <summary>Ecosim SOR Weight for groups with fast production.</summary>
         EcosimSORWt
 
+        EcosimRelQ
         EcosimArenaShare
 
         LayerOtherMortLoss
