@@ -156,6 +156,12 @@ Public Class cEcosimArenaManager
 
     End Sub
 
+    ''' <summary>
+    ''' Flag to temporarily stop cascading updates
+    ''' </summary>
+    ''' <returns></returns>
+    Public Property InUpdates As Boolean = False
+
 #Region " Public access "
 
     ''' <summary>
@@ -163,6 +169,8 @@ Public Class cEcosimArenaManager
     ''' </summary>
     ''' <param name="iPrey">The i prey.</param>
     Public Sub ResetArenas(iPrey As Integer)
+
+        If Me.InUpdates Then Return
 
         Dim min As Integer = If(iPrey < 1, 1, iPrey)
         Dim max As Integer = If(iPrey < 1, Me.m_core.nGroups, iPrey)

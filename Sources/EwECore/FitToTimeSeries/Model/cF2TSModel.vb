@@ -148,8 +148,8 @@ Namespace FitToTimeSeries
 
 #Region "Construction and Initialization"
 
-        Friend Sub New(core As cCore, _
-                            ByRef EcoSim As EwECore.Ecosim.cEcosimModel, _
+        Friend Sub New(core As cCore,
+                            ByRef EcoSim As EwECore.Ecosim.cEcosimModel,
                             ByRef EcoPathData As cEcopathDataStructures, EcosimData As cEcosimDatastructures)
             Me.m_core = core
             Me.m_ecosim = EcoSim
@@ -164,12 +164,12 @@ Namespace FitToTimeSeries
         ''' <param name="runstartedHandler"></param>
         ''' <param name="runstepHandler"></param>
         ''' <param name="runstoppedHandler"></param>
-        Public Sub Init( _
-                runstartedHandler As RunStartedDelegate, _
-                runstepHandler As RunStepDelegate, _
-                runstoppedHandler As RunStoppedDelegate, _
-                AddMessageHandler As RunMessageDelegate, _
-                RunModelHandler As RunModelDelegate, _
+        Public Sub Init(
+                runstartedHandler As RunStartedDelegate,
+                runstepHandler As RunStepDelegate,
+                runstoppedHandler As RunStoppedDelegate,
+                AddMessageHandler As RunMessageDelegate,
+                RunModelHandler As RunModelDelegate,
                 SendMessageHandler As RunMessageDelegate)
 
 
