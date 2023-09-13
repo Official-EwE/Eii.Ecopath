@@ -7960,7 +7960,6 @@ Public Class cCore
     End Property
 
 
-
     Public ReadOnly Property EcosimArenaManager() As cEcosimArenaManager
         Get
             Return Me.m_ArenaManager
@@ -8921,6 +8920,10 @@ Public Class cCore
 
     Public Function SetVToDefault(Optional sDefaultValue As Single = 2.0F) As Boolean
 
+        Dim bSuccess As Boolean = True
+        Me.EcosimArenaManager.InUpdates = True
+        Me.SetBatchLock(eBatchLockType.Update)
+
         Try
             Dim groupSim As cEcosimGroupInput = Nothing
             For iPrey As Integer = 1 To Me.nGroups
@@ -8932,10 +8935,14 @@ Public Class cCore
         Catch ex As Exception
             cLog.Write(ex, "cCore.SetVToDefault(" & sDefaultValue & ")")
             Debug.Assert(False, ex.Message)
-            Return False
+            bSuccess = False
         End Try
 
-        Return True
+        Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecosim)
+        Me.EcosimArenaManager.InUpdates = False
+        Me.EcosimArenaManager.ResetArenas(0)
+
+        Return bSuccess
 
     End Function
 
