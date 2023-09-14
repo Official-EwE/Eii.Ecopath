@@ -52,6 +52,7 @@ Partial Class frmRun
         Me.m_plConfig = New System.Windows.Forms.Panel()
         Me.m_btnSelectFishing = New System.Windows.Forms.Button()
         Me.m_btnSelectBaseline = New System.Windows.Forms.Button()
+        Me.m_btnSelectFandVandA = New System.Windows.Forms.Button()
         Me.m_btnSelectVandA = New System.Windows.Forms.Button()
         Me.m_btnSelectA = New System.Windows.Forms.Button()
         Me.m_btnSelectV = New System.Windows.Forms.Button()
@@ -70,7 +71,8 @@ Partial Class frmRun
         Me.m_nudK = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumVars = New System.Windows.Forms.Label()
         Me.m_nudNoThreads = New System.Windows.Forms.NumericUpDown()
-        Me.m_btnSelectFandVandA = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_tbxVUlCap = New System.Windows.Forms.TextBox()
         CType(Me.m_nudStepSize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plModel.SuspendLayout()
@@ -277,6 +279,12 @@ Partial Class frmRun
         Me.m_btnSelectBaseline.Name = "m_btnSelectBaseline"
         Me.m_btnSelectBaseline.UseVisualStyleBackColor = True
         '
+        'm_btnSelectFandVandA
+        '
+        resources.ApplyResources(Me.m_btnSelectFandVandA, "m_btnSelectFandVandA")
+        Me.m_btnSelectFandVandA.Name = "m_btnSelectFandVandA"
+        Me.m_btnSelectFandVandA.UseVisualStyleBackColor = True
+        '
         'm_btnSelectVandA
         '
         resources.ApplyResources(Me.m_btnSelectVandA, "m_btnSelectVandA")
@@ -314,7 +322,6 @@ Partial Class frmRun
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
-
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -368,6 +375,8 @@ Partial Class frmRun
         '
         'm_plSettings
         '
+        Me.m_plSettings.Controls.Add(Me.m_tbxVUlCap)
+        Me.m_plSettings.Controls.Add(Me.Label1)
         Me.m_plSettings.Controls.Add(Me.m_lblNoRuns)
         Me.m_plSettings.Controls.Add(Me.m_cmbAnomalyShape)
         Me.m_plSettings.Controls.Add(Me.m_lblAnomalyShape)
@@ -435,11 +444,15 @@ Partial Class frmRun
         Me.m_nudNoThreads.Name = "m_nudNoThreads"
         Me.m_nudNoThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
-        'm_btnSelectFandVandA
+        'Label1
         '
-        resources.ApplyResources(Me.m_btnSelectFandVandA, "m_btnSelectFandVandA")
-        Me.m_btnSelectFandVandA.Name = "m_btnSelectFandVandA"
-        Me.m_btnSelectFandVandA.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
+        'm_tbxVUlCap
+        '
+        resources.ApplyResources(Me.m_tbxVUlCap, "m_tbxVUlCap")
+        Me.m_tbxVUlCap.Name = "m_tbxVUlCap"
         '
         'frmRun
         '
@@ -513,4 +526,6 @@ Partial Class frmRun
     Private WithEvents m_lblNoRuns As System.Windows.Forms.Label
     Private WithEvents m_nudNoThreads As System.Windows.Forms.NumericUpDown
     Private WithEvents m_btnSelectFandVandA As Windows.Forms.Button
+    Friend WithEvents m_tbxVUlCap As Windows.Forms.TextBox
+    Friend WithEvents Label1 As Windows.Forms.Label
 End Class

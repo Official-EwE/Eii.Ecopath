@@ -54,6 +54,7 @@ Public Class frmRun
     Private WithEvents m_cmdLoadTS As cCommand = Nothing
 
     Private m_fpK As cEwEFormatProvider = Nothing
+    Private m_fpVukCap As cEwEFormatProvider = Nothing
 
 #End Region ' Private vars
 
@@ -113,6 +114,7 @@ Public Class frmRun
         Me.m_nudNoThreads.Value = parms.NumThreads
 
         Me.m_fpK = New cEwEFormatProvider(Me.UIContext, Me.m_nudK, GetType(Integer))
+        Me.m_fpVukCap = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxVUlCap, Me.Core.EcosimModelParameters, eVarNameFlags.VulnerabilityCap)
 
         ' -- Handle run modes
         Select Case Me.m_runmode
@@ -161,6 +163,9 @@ Public Class frmRun
 
         'Detach time series load command from time series button
         If Me.m_cmdLoadTS IsNot Nothing Then Me.m_cmdLoadTS.RemoveControl(Me.m_btnTS)
+
+        Me.m_fpK.Release()
+        Me.m_fpVukCap.Release()
 
         ' Done
         My.Settings.Save()
