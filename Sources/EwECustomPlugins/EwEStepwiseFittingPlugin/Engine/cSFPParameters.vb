@@ -156,10 +156,19 @@ Public Class cSFPParameters
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the index of the selected anomaly shape
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property AnomalyShapeIndex As Integer
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the index of the selected anomaly shape
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property VulCap As Single
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

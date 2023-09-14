@@ -6056,7 +6056,9 @@ exitline:
         For ii = 1 To Me.EcoSimData.Narena
             i = Me.EcoSimData.Iarena(ii)
             j = Me.EcoSimData.Jarena(ii)
-            If Me.EcoSimData.VulMult(i, j) > Me.EcoSimData.VulnerabilityCap Then Me.EcoSimData.VulMult(i, j) = Me.EcoSimData.VulnerabilityCap
+            If Me.EcoSimData.VulMult(i, j) > Me.EcoSimData.VulnerabilityCap Then
+                Me.EcoSimData.VulMult(i, j) = Me.EcoSimData.VulnerabilityCap
+            End If
             Me.EcoSpaceData.Vspace(ii) = (Me.EcoSimData.VulMult(i, j) + 0.0000000001) * Qarena(ii) / (Me.EcoSimData.StartBiomass(i) * Me.EcoSpaceData.BRatio(i))
             If Me.EcoSpaceData.Vspace(ii) = 0 Then Me.EcoSpaceData.Vspace(ii) = 1
             ' CJW 12jun11: Fix possible cause of the jumps in biomass of spatially restricted groups.
