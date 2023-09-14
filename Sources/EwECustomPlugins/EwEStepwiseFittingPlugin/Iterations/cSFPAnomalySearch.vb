@@ -43,6 +43,8 @@ Public Class cSFPAnomalySearch
 
     Public Overrides Function Load(core As cCore) As Boolean
 
+        If Not MyBase.Load(core) Then Return False
+
         'Enable specific time series for Baseline or Fishing
         If Not Me.EnableTimeSeries(core) Then Return False
 
