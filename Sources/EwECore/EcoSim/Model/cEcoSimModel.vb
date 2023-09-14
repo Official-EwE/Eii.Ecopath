@@ -380,33 +380,6 @@ Namespace Ecosim
             End Try
         End Function
 
-        Public Function IsDatTypeDriver(DatType As eTimeSeriesType) As Boolean
-            Select Case DatType
-                Case eTimeSeriesType.BiomassForcing,
-                     eTimeSeriesType.CatchesForcing,
-                     eTimeSeriesType.FishingEffort,
-                     eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion,
-                     eTimeSeriesType.Catchabilities,
-                     eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel,
-                     eTimeSeriesType.EffortCost, eTimeSeriesType.EffortCostRel,
-                     eTimeSeriesType.SailCost, eTimeSeriesType.SailCostRel,
-                     eTimeSeriesType.FixedCost, eTimeSeriesType.FixedCostRel
-                    Return True
-                Case eTimeSeriesType.BiomassRel,
-                     eTimeSeriesType.BiomassAbs,
-                     eTimeSeriesType.TotalMortality,
-                     eTimeSeriesType.AverageWeight,
-                     eTimeSeriesType.Catches,
-                     eTimeSeriesType.CatchesRel,
-                     eTimeSeriesType.Discards,
-                     eTimeSeriesType.Landings
-                    Return False
-                Case Else
-                    Debug.Assert(False, "Time series type " & DatType & " not accounted for")
-            End Select
-            Return False
-        End Function
-
         Public Sub Clear()
 
             Me.A = Nothing 'nGroups, nGroups

@@ -23,9 +23,10 @@ Option Strict On
 
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports OfficeOpenXml.FormulaParsing.ExpressionGraph
+
 
 #End Region ' Imports
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Data for one time series contained in an Ecosim scenario.
@@ -199,38 +200,55 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method, states whether a time series is a reference series.
+    ''' Returns whether a time series is a driver series.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsDriver() As Boolean
+        Return cTimeSeries.IsDriver(Me.m_timeSeriesType)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether a time series is a reference series.
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function IsReference() As Boolean
-        Return Not Me.IsDriver()
+        Return Not cTimeSeries.IsDriver(Me.m_timeSeriesType)
     End Function
 
-    Public Function IsDriver() As Boolean
-        Return Me.m_core.m_EcoSim.IsDatTypeDriver(Me.m_timeSeriesType)
-    End Function
-
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether a time series uses relative data.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function IsRelative() As Boolean
-        Return (Me.m_timeSeriesType = eTimeSeriesType.BiomassRel) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.CatchesRel) ' Or
-        '(Me.TimeSeriesType = eTimeSeriesType.EcotracerConcRel)
+        Return cTimeSeries.IsRelative(Me.m_timeSeriesType)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether a time series uses absolute.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function IsAbsolute() As Boolean
         Return Not Me.IsRelative()
     End Function
 
-    Public MustOverride Function IsValid() As Boolean
-
     <Obsolete("Remove when time series properly use cCore.NULL_VALUE")>
     Public Function SupportsNull() As Boolean
-        Return Me.m_timeSeriesType = eTimeSeriesType.DiscardMortality Or
-               Me.m_timeSeriesType = eTimeSeriesType.DiscardProportion Or
-               Me.m_timeSeriesType = eTimeSeriesType.Landings Or
-               Me.m_timeSeriesType = eTimeSeriesType.Discards Or
-               Me.m_timeSeriesType = eTimeSeriesType.OffVesselPrice
+        Return cTimeSeries.SupportsNull(Me.m_timeSeriesType)
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether this time series has all necessary data to be applied.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public MustOverride Function IsValid() As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -254,5 +272,59 @@ Public MustInherit Class cTimeSeries
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Interval As eTSDataSetInterval
+
+#Region " Public diagnostics "
+
+    Public Shared Function IsReference(datType As eTimeSeriesType) As Boolean
+        Return Not cTimeSeries.IsDriver(datType)
+    End Function
+
+    Public Shared Function IsDriver(DatType As eTimeSeriesType) As Boolean
+        Select Case DatType
+            Case eTimeSeriesType.BiomassForcing,
+                     eTimeSeriesType.CatchesForcing,
+                     eTimeSeriesType.FishingEffort, eTimeSeriesType.FishingMortality,
+                     eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion,
+                     eTimeSeriesType.Catchabilities,
+                     eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel,
+                     eTimeSeriesType.EffortCost, eTimeSeriesType.EffortCostRel,
+                     eTimeSeriesType.SailCost, eTimeSeriesType.SailCostRel,
+                     eTimeSeriesType.FixedCost, eTimeSeriesType.FixedCostRel
+                Return True
+            Case eTimeSeriesType.BiomassRel,
+                     eTimeSeriesType.BiomassAbs,
+                     eTimeSeriesType.TotalMortality,
+                     eTimeSeriesType.AverageWeight,
+                     eTimeSeriesType.Catches,
+                     eTimeSeriesType.CatchesRel,
+                     eTimeSeriesType.Discards,
+                     eTimeSeriesType.Landings
+                Return False
+            Case Else
+                Debug.Assert(False, "Time series type " & DatType & " not accounted for")
+        End Select
+        Return False
+    End Function
+
+    Public Shared Function IsAbsolute(DatType As eTimeSeriesType) As Boolean
+        Return Not cTimeSeries.IsRelative(DatType)
+    End Function
+
+    Public Shared Function IsRelative(DatType As eTimeSeriesType) As Boolean
+        Return (DatType = eTimeSeriesType.BiomassRel) Or
+               (DatType = eTimeSeriesType.CatchesRel) ' Or
+        '(DatType = eTimeSeriesType.EcotracerConcRel)
+    End Function
+
+    <Obsolete("Remove when time series properly use cCore.NULL_VALUE")>
+    Public Shared Function SupportsNull(DatType As eTimeSeriesType) As Boolean
+        Return DatType = eTimeSeriesType.DiscardMortality Or
+               DatType = eTimeSeriesType.DiscardProportion Or
+               DatType = eTimeSeriesType.Landings Or
+               DatType = eTimeSeriesType.Discards Or
+               DatType = eTimeSeriesType.OffVesselPrice
+    End Function
+
+#End Region ' Public diagnoistics
 
 End Class
