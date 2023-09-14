@@ -252,7 +252,7 @@ Public Class cTimeSeriesCSVWriter
                 For iTS As Integer = 1 To nTsT
                     sw.Write(strDelimiter)
                     Dim t As eTimeSeriesType = tstypes(iTS - 1)
-                    If Not Me.m_core.m_Ecosim.IsDatTypeDriver(t) Then
+                    If cTimeSeries.IsReference(t) Then
                         sw.Write("""0 to 1""")
                     End If
                 Next
