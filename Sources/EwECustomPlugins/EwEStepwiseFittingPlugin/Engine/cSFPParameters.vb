@@ -237,6 +237,9 @@ Public Class cSFPParameters
             End With
         Next
 
+        ' Make sure this transfers over from core to core, even if the source core has not been saved yet.
+        Me.VulCap = Me.Core.EcosimModelParameters.VulnerabilityCap
+
     End Sub
 
     Public ReadOnly Property TimeSeriesWeight(its As Integer) As Single

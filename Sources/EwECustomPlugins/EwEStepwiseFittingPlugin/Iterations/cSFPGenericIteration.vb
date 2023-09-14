@@ -90,9 +90,18 @@ Public MustInherit Class cSFPGenericIteration
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="ISFPIteration.Load"/>
+    ''' <remarks>
+    ''' The baseline implementation makes sure that non-fit to time series
+    ''' parameters are transfered to the temporary core.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Function Load(core As cCore) As Boolean _
+    Public Overridable Function Load(core As cCore) As Boolean _
         Implements ISFPIteration.Load
+
+        core.EcosimModelParameters.VulnerabilityCap = Me.Parameters.VulCap
+        Return True
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="ISFPIteration.Run"/>

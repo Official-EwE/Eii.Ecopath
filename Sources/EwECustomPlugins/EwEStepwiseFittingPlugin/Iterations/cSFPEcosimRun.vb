@@ -41,7 +41,8 @@ Public Class cSFPEcosimRun
 
     Public Overrides Function Load(core As cCore) As Boolean
 
-        Dim BSuccess As Boolean = False
+        Dim bOK As Boolean = False
+        If Not MyBase.Load(core) Then Return bOK
 
         'Enable specific time series for Baseline or Fishing
         If Me.EnableTimeSeries(core) Then
@@ -49,12 +50,12 @@ Public Class cSFPEcosimRun
             If MyBase.ResetVs(core) And MyBase.ResetFF(core) Then
                 'Run a sensitivity of SS to V search for baseline
                 If MyBase.RunSensitivityOfSSToV(core) Then
-                    BSuccess = True
+                    bOK = True
                 End If
             End If
         End If
 
-        Return BSuccess
+        Return bOK
 
     End Function
 

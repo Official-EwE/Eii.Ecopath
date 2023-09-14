@@ -45,6 +45,7 @@ Public Class cSFPVandASearch
     Public Overrides Function Load(core As cCore) As Boolean
 
         Dim bOK As Boolean = False
+        If Not MyBase.Load(core) Then Return bOK
 
         'Enable specific time series for Baseline or Fishing
         If Me.EnableTimeSeries(core) Then
