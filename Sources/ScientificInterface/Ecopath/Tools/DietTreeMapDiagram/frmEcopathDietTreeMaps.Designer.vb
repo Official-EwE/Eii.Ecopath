@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Partial Class frmEcopathDietTreeMapDiagram
+Partial Class frmEcopathDietTreeMaps
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
@@ -40,15 +40,16 @@ Partial Class frmEcopathDietTreeMapDiagram
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcopathDietTreeMapDiagram))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcopathDietTreeMaps))
         Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton()
         Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsmiFont = New System.Windows.Forms.ToolStripButton()
         Me.m_scContent = New System.Windows.Forms.SplitContainer()
         Me.m_pbDiagram = New System.Windows.Forms.PictureBox()
         Me.m_pgSettings = New System.Windows.Forms.PropertyGrid()
-        Me.m_tsmiFont = New System.Windows.Forms.ToolStripButton()
+        Me.m_tslCredits = New System.Windows.Forms.ToolStripLabel()
         Me.m_ts.SuspendLayout()
         CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scContent.Panel1.SuspendLayout()
@@ -60,7 +61,7 @@ Partial Class frmEcopathDietTreeMapDiagram
         'm_ts
         '
         Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSettings, Me.m_tss1, Me.m_tsmiSaveToImage, Me.m_tsmiFont})
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSettings, Me.m_tss1, Me.m_tsmiSaveToImage, Me.m_tsmiFont, Me.m_tslCredits})
         Me.m_ts.Location = New System.Drawing.Point(0, 0)
         Me.m_ts.Name = "m_ts"
         Me.m_ts.Size = New System.Drawing.Size(800, 25)
@@ -89,6 +90,16 @@ Partial Class frmEcopathDietTreeMapDiagram
         Me.m_tsmiSaveToImage.Name = "m_tsmiSaveToImage"
         Me.m_tsmiSaveToImage.Size = New System.Drawing.Size(23, 22)
         Me.m_tsmiSaveToImage.Text = "Save to image"
+        '
+        'm_tsmiFont
+        '
+        Me.m_tsmiFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.m_tsmiFont.Image = CType(resources.GetObject("m_tsmiFont.Image"), System.Drawing.Image)
+        Me.m_tsmiFont.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.m_tsmiFont.Name = "m_tsmiFont"
+        Me.m_tsmiFont.Size = New System.Drawing.Size(23, 22)
+        Me.m_tsmiFont.Text = "ToolStripButton1"
+        Me.m_tsmiFont.ToolTipText = "Fonts"
         '
         'm_scContent
         '
@@ -131,17 +142,14 @@ Partial Class frmEcopathDietTreeMapDiagram
         Me.m_pgSettings.TabIndex = 1
         Me.m_pgSettings.ToolbarVisible = False
         '
-        'm_tsmiFont
+        'm_tslCredits
         '
-        Me.m_tsmiFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsmiFont.Image = CType(resources.GetObject("m_tsmiFont.Image"), System.Drawing.Image)
-        Me.m_tsmiFont.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.m_tsmiFont.Name = "m_tsmiFont"
-        Me.m_tsmiFont.Size = New System.Drawing.Size(23, 22)
-        Me.m_tsmiFont.Text = "ToolStripButton1"
-        Me.m_tsmiFont.ToolTipText = "Fonts"
+        Me.m_tslCredits.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tslCredits.Name = "m_tslCredits"
+        Me.m_tslCredits.Size = New System.Drawing.Size(147, 22)
+        Me.m_tslCredits.Text = "Idea: Matias Bofarull Oddo"
         '
-        'frmEcopathDietTreeMapDiagram
+        'frmEcopathDietMap
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -150,7 +158,7 @@ Partial Class frmEcopathDietTreeMapDiagram
         Me.Controls.Add(Me.m_ts)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Name = "frmEcopathDietTreeMapDiagram"
+        Me.Name = "frmEcopathDietMap"
         Me.TabText = ""
         Me.Text = "frmEcopathDietTreeMapDiagram"
         Me.m_ts.ResumeLayout(False)
@@ -173,4 +181,5 @@ Partial Class frmEcopathDietTreeMapDiagram
     Private WithEvents m_tss1 As ToolStripSeparator
     Private WithEvents m_tsmiSaveToImage As ToolStripButton
     Private WithEvents m_tsmiFont As ToolStripButton
+    Private WithEvents m_tslCredits As ToolStripLabel
 End Class

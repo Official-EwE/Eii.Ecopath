@@ -2155,7 +2155,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <comment>{0}=arena number</comment>
   </data>
   <data name="LABEL_NAV_ECOPATH_OUTPUT_DIETTREEMAP" xml:space="preserve">
-    <value>Diet tree map</value>
+    <value>Diet tree maps</value>
   </data>
   <data name="CAPTION_ENVRESPONSE" xml:space="preserve">
     <value>Define {0} {1} response to {2} for {3}</value>
@@ -2228,5 +2228,23 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="LABEL_NAV_ECOSPACE_INPUT_FTARGET" xml:space="preserve">
     <value>Target mortalities</value>
+  </data>
+  <data name="HEADER_APPEARANCE" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="LABEL_BORDERS" xml:space="preserve">
+    <value>Borders</value>
+  </data>
+  <data name="LABEL_CAPTIONS" xml:space="preserve">
+    <value>Captions</value>
+  </data>
+  <data name="LABEL_CONTENT" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="LABEL_LABELS" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="LABEL_PADDING" xml:space="preserve">
+    <value>Padding</value>
   </data>
 </root>

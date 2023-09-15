@@ -213,9 +213,7 @@ Public Class frmNavigationPanel
         ' tools
         nodeTools = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TOOLS, "ndEcopathOutputTools", eCoreExecutionState.EcopathCompleted, Nothing, eNodeImages.Tool, nodeOutput)
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_OUTPUT_FLOWDIAGRAM, "ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.frmEcopathFlowDiagram), eNodeImages.Output, nodeTools, "Flow diagram.htm")
-#If DEBUG Then
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_OUTPUT_DIETTREEMAP, "ndEcopathDietTreeMap", eCoreExecutionState.EcopathCompleted, GetType(frmEcopathDietTreeMapDiagram), eNodeImages.Output, nodeTools) ' ToDo: connect to help
-#End If
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_OUTPUT_DIETTREEMAP, "ndEcopathDietTreeMap", eCoreExecutionState.EcopathCompleted, GetType(frmEcopathDietTreeMaps), eNodeImages.Output, nodeTools) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_OUTPUT_STATISTICS, "ndEcopathStats", eCoreExecutionState.EcopathCompleted, GetType(gridEcopathStatistics), eNodeImages.Output, nodeTools) ' ToDo: connect to help
 
         ' -- Ecosim --

@@ -28,11 +28,11 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
-Public Class frmEcopathDietTreeMapDiagram
+Public Class frmEcopathDietTreeMaps
 
 #Region " Private vars "
 
-    Private m_doodler As cDietFlowMapRenderer
+    Private m_doodler As cDietTreeMapRenderer
 
 #End Region ' Private vars
 
@@ -62,7 +62,7 @@ Public Class frmEcopathDietTreeMapDiagram
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Me.m_doodler = New cDietFlowMapRenderer(Me.UIContext)
+        Me.m_doodler = New cDietTreeMapRenderer(Me.UIContext)
         Me.m_pgSettings.SelectedObject = Me.m_doodler
 
         Me.m_tsmiFont.Image = SharedResources.CaseSensitive
