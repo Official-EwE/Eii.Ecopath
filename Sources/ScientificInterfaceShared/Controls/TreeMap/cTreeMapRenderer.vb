@@ -55,8 +55,8 @@ Namespace Controls
 
         Public Property MinSliceRatio As Double = 0.35
         Public Property DrawBorders As Boolean = True
-        Public Property DrawLabels As Boolean = True
-        Public Property DrawCaption As Boolean = True
+        Public Property DrawCaptions As Boolean = True
+        Public Property DrawDataLabels As Boolean = True
 
         Public Sub DrawTreemap(elements As IEnumerable(Of cTreeMapElement), caption As String, gfx As Graphics, rect As Rectangle)
 
@@ -66,7 +66,7 @@ Namespace Controls
             fmt.Alignment = StringAlignment.Center
             fmt.LineAlignment = StringAlignment.Center
 
-            If (Me.DrawCaption) Then
+            If (Me.DrawCaptions) Then
                 Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
                     Dim rcCaption As New Rectangle(rect.X, rect.Y, rect.Width, ft.Height + 3)
                     gfx.DrawString(caption, ft, Brushes.Black, rcCaption, fmt)
@@ -91,7 +91,7 @@ Namespace Controls
                     gfx.FillRectangle(br, rc)
                 End Using
 
-                If (Me.DrawLabels) Then
+                If (Me.DrawDataLabels) Then
                     Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
                         Using brText As New SolidBrush(clrText)
                             gfx.DrawString(r.Slice.Elements.First().Label, ft, brText, rc, fmt)

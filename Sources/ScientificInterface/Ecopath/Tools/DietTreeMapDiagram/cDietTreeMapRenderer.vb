@@ -56,6 +56,7 @@ Public Class cDietTreeMapRenderer
 
     <Flags>
     Public Enum eDrawMode As Integer
+        None = 0
         Name = 1
         Number = 2
         All = Name Or Number
@@ -63,21 +64,15 @@ Public Class cDietTreeMapRenderer
 
     <Browsable(True),
         cLocalizedCategory("HEADER_APPEARANCE"),
-        cLocalizedDisplayName("LABEL_CAPTIONS"),
-        DefaultValue(True)>
-    Public Property DrawCaptions As Boolean = True
+        cLocalizedDisplayName("LABEL_PREDATOR_STYLE"),
+        DefaultValue(eDrawMode.Name)>
+    Public Property PredatorLabelStyle As eDrawMode = eDrawMode.Name
 
     <Browsable(True),
         cLocalizedCategory("HEADER_APPEARANCE"),
-        cLocalizedDisplayName("LABEL_LABELS"),
-        DefaultValue(True)>
-    Public Property DrawLabels As Boolean = True
-
-    <Browsable(True),
-        cLocalizedCategory("HEADER_APPEARANCE"),
-        cLocalizedDisplayName("LABEL_CONTENT"),
+        cLocalizedDisplayName("LABEL_PREY_STYLE"),
         DefaultValue(eDrawMode.Number)>
-    Public Property LabelDrawMode As eDrawMode = eDrawMode.Number
+    Public Property PreyLabelStyle As eDrawMode = eDrawMode.Number
 
     <Browsable(True),
         cLocalizedCategory("HEADER_APPEARANCE"),
@@ -113,9 +108,11 @@ Public Class cDietTreeMapRenderer
         For j As Integer = 0 To lPreds.Count - 1
 
             Dim renderer As New cTreeMapRenderer(Me.m_uic)
+            Dim predLabel As String = ""
+
             renderer.DrawBorders = Me.DrawBorders
-            renderer.DrawLabels = Me.DrawLabels
-            renderer.DrawCaption = Me.DrawCaptions
+            renderer.DrawCaptions = (Me.PredatorLabelStyle <> eDrawMode.None)
+            renderer.DrawDataLabels = (Me.PreyLabelStyle <> eDrawMode.None)
 
             Dim elements As New List(Of cTreeMapRenderer.cTreeMapElement)
             Dim iPred As Integer = lPreds(j)
@@ -126,7 +123,9 @@ Public Class cDietTreeMapRenderer
                 Dim dc As Single = pred.DietComp(i)
                 If dc > 0 Then
                     Dim elm As New cTreeMapRenderer.cTreeMapElement()
-                    Select Case Me.LabelDrawMode
+                    Select Case Me.PreyLabelStyle
+                        Case eDrawMode.None
+                            elm.Label = ""
                         Case eDrawMode.Name
                             elm.Label = prey.Name
                         Case eDrawMode.Number
@@ -142,7 +141,18 @@ Public Class cDietTreeMapRenderer
             Next i
 
             elements.Sort(New cElementListSorter())
-            renderer.DrawTreemap(elements, pred.Name, g, lRects(j))
+
+            Select Case Me.PredatorLabelStyle
+                Case eDrawMode.None
+                    predLabel = ""
+                Case eDrawMode.Name
+                    predLabel = pred.Name
+                Case eDrawMode.Number
+                    predLabel = CStr(pred.Index)
+                Case eDrawMode.All
+                    predLabel = fmt.ToString(pred)
+            End Select
+            renderer.DrawTreemap(elements, predLabel, g, lRects(j))
         Next
 
     End Sub

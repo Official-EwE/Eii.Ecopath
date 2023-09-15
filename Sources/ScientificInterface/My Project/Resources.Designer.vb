@@ -2221,15 +2221,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Captions.
-        '''</summary>
-        Public ReadOnly Property LABEL_CAPTIONS() As String
-            Get
-                Return ResourceManager.GetString("LABEL_CAPTIONS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Content.
         '''</summary>
         Public ReadOnly Property LABEL_CONTENT() As String
@@ -2253,15 +2244,6 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_GROUP() As String
             Get
                 Return ResourceManager.GetString("LABEL_GROUP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Labels.
-        '''</summary>
-        Public ReadOnly Property LABEL_LABELS() As String
-            Get
-                Return ResourceManager.GetString("LABEL_LABELS", resourceCulture)
             End Get
         End Property
         
@@ -3423,6 +3405,24 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_PADDING() As String
             Get
                 Return ResourceManager.GetString("LABEL_PADDING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Predator labelling.
+        '''</summary>
+        Public ReadOnly Property LABEL_PREDATOR_STYLE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_PREDATOR_STYLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prey labelling.
+        '''</summary>
+        Public ReadOnly Property LABEL_PREY_STYLE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_PREY_STYLE", resourceCulture)
             End Get
         End Property
         
@@ -5747,15 +5747,6 @@ Namespace My.Resources
         Public ReadOnly Property STATUSSTRIP_MODIFIED() As String
             Get
                 Return ResourceManager.GetString("STATUSSTRIP_MODIFIED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to .
-        '''</summary>
-        Public ReadOnly Property String1() As String
-            Get
-                Return ResourceManager.GetString("String1", resourceCulture)
             End Get
         End Property
         
