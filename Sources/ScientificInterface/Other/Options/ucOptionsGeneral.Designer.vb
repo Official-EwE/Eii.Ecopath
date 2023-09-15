@@ -54,6 +54,8 @@ Namespace Other
             Me.m_cbStatusShowNewestFirst = New System.Windows.Forms.CheckBox()
             Me.m_cbStatusAutoPopup = New System.Windows.Forms.CheckBox()
             Me.m_cbShowSplashScreen = New System.Windows.Forms.CheckBox()
+            Me.m_hdrModelMaintenance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbCompactOnExit = New System.Windows.Forms.CheckBox()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -188,10 +190,26 @@ Namespace Other
             Me.m_cbShowSplashScreen.Name = "m_cbShowSplashScreen"
             Me.m_cbShowSplashScreen.UseVisualStyleBackColor = True
             '
+            'm_hdrModelMaintenance
+            '
+            resources.ApplyResources(Me.m_hdrModelMaintenance, "m_hdrModelMaintenance")
+            Me.m_hdrModelMaintenance.CanCollapseParent = False
+            Me.m_hdrModelMaintenance.CollapsedParentHeight = 0
+            Me.m_hdrModelMaintenance.IsCollapsed = False
+            Me.m_hdrModelMaintenance.Name = "m_hdrModelMaintenance"
+            '
+            'm_cbCompactOnExit
+            '
+            resources.ApplyResources(Me.m_cbCompactOnExit, "m_cbCompactOnExit")
+            Me.m_cbCompactOnExit.Name = "m_cbCompactOnExit"
+            Me.m_cbCompactOnExit.UseVisualStyleBackColor = True
+            '
             'ucOptionsGeneral
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.Controls.Add(Me.m_cbCompactOnExit)
+            Me.Controls.Add(Me.m_hdrModelMaintenance)
             Me.Controls.Add(Me.m_tbxContact)
             Me.Controls.Add(Me.m_tbxAuthor)
             Me.Controls.Add(Me.m_cmbLogLevel)
@@ -241,6 +259,8 @@ Namespace Other
         Private WithEvents m_cbStatusShowNewestFirst As CheckBox
         Private WithEvents m_cbStatusAutoPopup As CheckBox
         Private WithEvents m_cbShowSplashScreen As CheckBox
+        Private WithEvents m_hdrModelMaintenance As cEwEHeaderLabel
+        Private WithEvents m_cbCompactOnExit As CheckBox
     End Class
 
 End Namespace

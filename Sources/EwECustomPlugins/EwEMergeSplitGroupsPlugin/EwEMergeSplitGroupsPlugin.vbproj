@@ -188,7 +188,9 @@
     <Compile Include="Split\UI\dlgSplitGroup.Designer.vb">
       <DependentUpon>dlgSplitGroup.vb</DependentUpon>
     </Compile>
-    <Compile Include="Split\UI\dlgSplitGroup.vb" />
+    <Compile Include="Split\UI\dlgSplitGroup.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Merge\UI\dlgMergeGroups.resx">

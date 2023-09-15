@@ -138,6 +138,18 @@
   <data name="m_btnClearMRU.Text" xml:space="preserve">
     <value>&amp;Clear</value>
   </data>
+  <data name="&gt;&gt;m_btnClearMRU.Name" xml:space="preserve">
+    <value>m_btnClearMRU</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearMRU.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearMRU.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearMRU.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
   <data name="m_lblMRU.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -148,13 +160,25 @@
     <value>8, 28</value>
   </data>
   <data name="m_lblMRU.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 13</value>
+    <value>168, 13</value>
   </data>
   <data name="m_lblMRU.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_lblMRU.Text" xml:space="preserve">
-    <value>Number of &amp;recent models:</value>
+    <value>Number of &amp;recent models to show:</value>
+  </data>
+  <data name="&gt;&gt;m_lblMRU.Name" xml:space="preserve">
+    <value>m_lblMRU</value>
+  </data>
+  <data name="&gt;&gt;m_lblMRU.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblMRU.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblMRU.ZOrder" xml:space="preserve">
+    <value>22</value>
   </data>
   <data name="m_cbStatusShowTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -174,6 +198,18 @@
   <data name="m_cbStatusShowTime.Text" xml:space="preserve">
     <value>&amp;Show time in status panel</value>
   </data>
+  <data name="&gt;&gt;m_cbStatusShowTime.Name" xml:space="preserve">
+    <value>m_cbStatusShowTime</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusShowTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusShowTime.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusShowTime.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
   <data name="m_lblMaxNumMessages.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -191,6 +227,18 @@
   </data>
   <data name="m_lblMaxNumMessages.Text" xml:space="preserve">
     <value>&amp;Maximum number of messages:</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.Name" xml:space="preserve">
+    <value>m_lblMaxNumMessages</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.ZOrder" xml:space="preserve">
+    <value>10</value>
   </data>
   <data name="m_cbShowHost.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -210,6 +258,18 @@
   <data name="m_cbShowHost.Text" xml:space="preserve">
     <value>Show IP address in status bar when running via &amp;Remote Desktop</value>
   </data>
+  <data name="&gt;&gt;m_cbShowHost.Name" xml:space="preserve">
+    <value>m_cbShowHost</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowHost.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowHost.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowHost.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -228,17 +288,41 @@
   <data name="Label1.Text" xml:space="preserve">
     <value>&amp;Log file details:</value>
   </data>
+  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
+    <value>Label1</value>
+  </data>
+  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
   <data name="m_cmbLogLevel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbLogLevel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 54</value>
+    <value>182, 54</value>
   </data>
   <data name="m_cmbLogLevel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 21</value>
+    <value>213, 21</value>
   </data>
   <data name="m_cmbLogLevel.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_cmbLogLevel.Name" xml:space="preserve">
+    <value>m_cmbLogLevel</value>
+  </data>
+  <data name="&gt;&gt;m_cmbLogLevel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cmbLogLevel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cmbLogLevel.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -258,17 +342,41 @@
   <data name="Label2.Text" xml:space="preserve">
     <value>Default author &amp;name:</value>
   </data>
+  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
+    <value>Label2</value>
+  </data>
+  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
   <data name="m_tbxAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxAuthor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 158</value>
+    <value>182, 158</value>
   </data>
   <data name="m_tbxAuthor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 20</value>
+    <value>213, 20</value>
   </data>
   <data name="m_tbxAuthor.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAuthor.Name" xml:space="preserve">
+    <value>m_tbxAuthor</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAuthor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAuthor.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAuthor.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -288,29 +396,65 @@
   <data name="Label3.Text" xml:space="preserve">
     <value>Default author &amp;contact:</value>
   </data>
+  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
+    <value>Label3</value>
+  </data>
+  <data name="&gt;&gt;Label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
   <data name="m_tbxContact.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxContact.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 184</value>
+    <value>182, 184</value>
   </data>
   <data name="m_tbxContact.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_tbxContact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 38</value>
+    <value>213, 38</value>
   </data>
   <data name="m_tbxContact.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
+  <data name="&gt;&gt;m_tbxContact.Name" xml:space="preserve">
+    <value>m_tbxContact</value>
+  </data>
+  <data name="&gt;&gt;m_tbxContact.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxContact.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxContact.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="m_nudMaxNumMessages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 246</value>
+    <value>182, 246</value>
   </data>
   <data name="m_nudMaxNumMessages.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 20</value>
   </data>
   <data name="m_nudMaxNumMessages.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.Name" xml:space="preserve">
+    <value>m_nudMaxNumMessages</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.7.0.18472, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="m_hdrAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -333,6 +477,18 @@
   <data name="m_hdrAuthor.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
+  <data name="&gt;&gt;m_hdrAuthor.Name" xml:space="preserve">
+    <value>m_hdrAuthor</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAuthor.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18472, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAuthor.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAuthor.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
   <data name="m_hdrStatusPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -354,14 +510,38 @@
   <data name="m_hdrStatusPanel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
+  <data name="&gt;&gt;m_hdrStatusPanel.Name" xml:space="preserve">
+    <value>m_hdrStatusPanel</value>
+  </data>
+  <data name="&gt;&gt;m_hdrStatusPanel.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18472, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrStatusPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrStatusPanel.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
   <data name="m_nudMRU.Location" type="System.Drawing.Point, System.Drawing">
-    <value>168, 26</value>
+    <value>182, 26</value>
   </data>
   <data name="m_nudMRU.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 20</value>
   </data>
   <data name="m_nudMRU.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_nudMRU.Name" xml:space="preserve">
+    <value>m_nudMRU</value>
+  </data>
+  <data name="&gt;&gt;m_nudMRU.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.7.0.18472, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudMRU.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_nudMRU.ZOrder" xml:space="preserve">
+    <value>17</value>
   </data>
   <data name="m_hdrCaption.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -384,6 +564,18 @@
   <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
+  <data name="&gt;&gt;m_hdrCaption.Name" xml:space="preserve">
+    <value>m_hdrCaption</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18472, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
   <data name="m_btnViewLogFileDir.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -401,6 +593,18 @@
   </data>
   <data name="m_btnViewLogFileDir.Text" xml:space="preserve">
     <value>&amp;View...</value>
+  </data>
+  <data name="&gt;&gt;m_btnViewLogFileDir.Name" xml:space="preserve">
+    <value>m_btnViewLogFileDir</value>
+  </data>
+  <data name="&gt;&gt;m_btnViewLogFileDir.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnViewLogFileDir.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnViewLogFileDir.ZOrder" xml:space="preserve">
+    <value>15</value>
   </data>
   <data name="m_cbStatusShowVariableValidations.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -420,6 +624,18 @@
   <data name="m_cbStatusShowVariableValidations.Text" xml:space="preserve">
     <value>Show &amp;variable changes in status panel</value>
   </data>
+  <data name="&gt;&gt;m_cbStatusShowVariableValidations.Name" xml:space="preserve">
+    <value>m_cbStatusShowVariableValidations</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusShowVariableValidations.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusShowVariableValidations.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusShowVariableValidations.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
   <data name="m_cbStatusShowNewestFirst.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -437,6 +653,18 @@
   </data>
   <data name="m_cbStatusShowNewestFirst.Text" xml:space="preserve">
     <value>Show &amp;newest messages first</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusShowNewestFirst.Name" xml:space="preserve">
+    <value>m_cbStatusShowNewestFirst</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusShowNewestFirst.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusShowNewestFirst.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusShowNewestFirst.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="m_cbStatusAutoPopup.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -456,6 +684,18 @@
   <data name="m_cbStatusAutoPopup.Text" xml:space="preserve">
     <value>&amp;Pop-up status panel when errors occur</value>
   </data>
+  <data name="&gt;&gt;m_cbStatusAutoPopup.Name" xml:space="preserve">
+    <value>m_cbStatusAutoPopup</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusAutoPopup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusAutoPopup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbStatusAutoPopup.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
   <data name="m_cbShowSplashScreen.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -474,6 +714,78 @@
   <data name="m_cbShowSplashScreen.Text" xml:space="preserve">
     <value>Show &amp;splash screen on start-up</value>
   </data>
+  <data name="&gt;&gt;m_cbShowSplashScreen.Name" xml:space="preserve">
+    <value>m_cbShowSplashScreen</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowSplashScreen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowSplashScreen.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowSplashScreen.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="m_hdrModelMaintenance.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrModelMaintenance.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrModelMaintenance.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 370</value>
+  </data>
+  <data name="m_hdrModelMaintenance.Size" type="System.Drawing.Size, System.Drawing">
+    <value>487, 18</value>
+  </data>
+  <data name="m_hdrModelMaintenance.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="m_hdrModelMaintenance.Text" xml:space="preserve">
+    <value>Model file maintenance</value>
+  </data>
+  <data name="m_hdrModelMaintenance.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrModelMaintenance.Name" xml:space="preserve">
+    <value>m_hdrModelMaintenance</value>
+  </data>
+  <data name="&gt;&gt;m_hdrModelMaintenance.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18472, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrModelMaintenance.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrModelMaintenance.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_cbCompactOnExit.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbCompactOnExit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 391</value>
+  </data>
+  <data name="m_cbCompactOnExit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 17</value>
+  </data>
+  <data name="m_cbCompactOnExit.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="m_cbCompactOnExit.Text" xml:space="preserve">
+    <value>&amp;Compact EwE model file after closing</value>
+  </data>
+  <data name="&gt;&gt;m_cbCompactOnExit.Name" xml:space="preserve">
+    <value>m_cbCompactOnExit</value>
+  </data>
+  <data name="&gt;&gt;m_cbCompactOnExit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbCompactOnExit.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbCompactOnExit.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -487,6 +799,12 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 360</value>
+    <value>490, 416</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ucOptionsGeneral</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

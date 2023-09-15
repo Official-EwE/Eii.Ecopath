@@ -95,6 +95,7 @@ Namespace Other
             Me.m_cbStatusAutoPopup.Checked = My.Settings.StatusAutoPopop
             Me.m_tbxAuthor.Text = My.Settings.Author
             Me.m_tbxContact.Text = My.Settings.Contact
+            Me.m_cbCompactOnExit.Checked = My.Settings.AutoCompact
 
             Me.UpdateControls()
 
@@ -139,6 +140,7 @@ Namespace Other
                 My.Settings.LogVerboseLevel = DirectCast(Me.m_fpVerboseLevel.Value, eVerboseLevel)
                 My.Settings.Author = Me.m_tbxAuthor.Text
                 My.Settings.Contact = Me.m_tbxContact.Text
+                My.Settings.AutoCompact = Me.m_cbCompactOnExit.Checked
 
             Catch ex As Exception
                 result = IOptionsPage.eApplyResultType.Failed

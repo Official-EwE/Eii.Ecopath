@@ -1391,54 +1391,24 @@ Public Class frmEwE6
 
 #Region " Database utils "
 
-    Private Function CompactModel() As Boolean
+    Private Function CompactModel(strFileName As String) As eDatasourceAccessType
 
-        Dim ds As IEwEDataSource = Me.Core.DataSource
+        Debug.Assert(Not Me.Core.StateMonitor.HasEcopathLoaded())
+
+        Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFileName)
         Dim result As eDatasourceAccessType = eDatasourceAccessType.Success
-        Dim strFileName As String = Me.SelectedFileName()
-        Dim strMessage As String = ""
-        Dim bSucces As Boolean = True
 
-        If (Me.AskFeedback(My.Resources.PROMPT_MODEL_COMPACT) <> eMessageReply.YES) Then
-            Return False
+        If Not ds.CanCompact(strFileName) Then
+            Return eDatasourceAccessType.Failed_OSUnsupported
         End If
 
-        If Me.CloseEcopathModel() = False Then Return False
-
         cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MODEL_COMPACTING)
+        ' Compacting should happen on separate thread. For now, bluntly refresh and worry about threading some other day
+        Me.Refresh()
         result = ds.Compact(strFileName)
         cApplicationStatusNotifier.EndProgress(Me.Core)
 
-        If result = eDatasourceAccessType.Success Then
-            bSucces = Me.LoadEcopathModel(strFileName, eLoadSourceType.API)
-            If bSucces Then
-                strMessage = My.Resources.STATUS_MODEL_COMPACT_SUCCESS
-            Else
-                strMessage = My.Resources.STATUS_MODEL_COMPACT_RELOADFAIL
-            End If
-        Else
-            ' Report error
-            Select Case result
-                Case eDatasourceAccessType.Failed_OSUnsupported
-                    strMessage = My.Resources.STATUS_MODEL_COMPACTING_OS
-                Case eDatasourceAccessType.Failed_CannotSave
-                    strMessage = My.Resources.STATUS_MODEL_COMPACTING_TEMPFILE
-                Case eDatasourceAccessType.Failed_FileNotFound,
-                     eDatasourceAccessType.Failed_Unknown
-                    strMessage = My.Resources.STATUS_MODEL_COMPACTING_FAILED
-                Case eDatasourceAccessType.Failed_ReadOnly
-                    strMessage = My.Resources.STATUS_MODEL_ACCESS_READONLY
-            End Select
-            bSucces = False
-        End If
-
-        If (bSucces) Then
-            Me.SendMessage(strMessage, eMessageImportance.Information, eCoreComponentType.DataSource)
-        Else
-            Me.SendMessage(strMessage, eMessageImportance.Critical, eCoreComponentType.DataSource)
-        End If
-
-        Return bSucces
+        Return result
 
     End Function
 
@@ -2369,10 +2339,12 @@ Public Class frmEwE6
     ''' ---------------------------------------------------------------------------
     Private Function CloseEcopathModel() As Boolean
 
+        Dim strFileName As String = Me.SelectedFileName
+
         ' Save form settings
         Me.SaveMainFormSettings()
 
-        If Not String.IsNullOrEmpty(Me.SelectedFileName) Then
+        If Not String.IsNullOrEmpty(strFileName) Then
 
             Me.m_cmdPropertySelection.Invoke()
 
@@ -2390,6 +2362,11 @@ Public Class frmEwE6
             Me.ClearScenarioDropdowns()
 
             Me.m_autosavemanager.GatherSettings()
+
+            ' Automatic maintenance
+            If My.Settings.AutoCompact Then
+                Me.CompactModel(strFileName)
+            End If
 
             ' Reset components
             DirectCast(Me.Panel(cPANEL_NAV), frmNavigationPanel).Reset()
@@ -3160,10 +3137,49 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Compact a model
+    ''' Compact a model as requested by the user
     ''' </summary>
     Private Sub OnCompactModel(cmd As cCommand) Handles m_cmdCompactModel.OnInvoke
-        Me.CompactModel()
+
+        Dim strFilename As String = Me.SelectedFileName
+        Dim result As eDatasourceAccessType = eDatasourceAccessType.Success
+        Dim strMessage As String = ""
+        Dim bSuccess As Boolean = True
+
+        If (Me.AskFeedback(My.Resources.PROMPT_MODEL_COMPACT) <> eMessageReply.YES) Then Return
+        If Me.CloseEcopathModel() = False Then Return
+
+        result = Me.CompactModel(strFilename)
+
+        If result = eDatasourceAccessType.Success Then
+            bSuccess = Me.LoadEcopathModel(strFilename, eLoadSourceType.API)
+            If bSuccess Then
+                strMessage = My.Resources.STATUS_MODEL_COMPACT_SUCCESS
+            Else
+                strMessage = My.Resources.STATUS_MODEL_COMPACT_RELOADFAIL
+            End If
+        Else
+            ' Report error
+            Select Case result
+                Case eDatasourceAccessType.Failed_OSUnsupported
+                    strMessage = My.Resources.STATUS_MODEL_COMPACTING_OS
+                Case eDatasourceAccessType.Failed_CannotSave
+                    strMessage = My.Resources.STATUS_MODEL_COMPACTING_TEMPFILE
+                Case eDatasourceAccessType.Failed_FileNotFound,
+                     eDatasourceAccessType.Failed_Unknown
+                    strMessage = My.Resources.STATUS_MODEL_COMPACTING_FAILED
+                Case eDatasourceAccessType.Failed_ReadOnly
+                    strMessage = My.Resources.STATUS_MODEL_ACCESS_READONLY
+            End Select
+            bSuccess = False
+        End If
+
+        If (bSuccess) Then
+            Me.SendMessage(strMessage, eMessageImportance.Information, eCoreComponentType.DataSource)
+        Else
+            Me.SendMessage(strMessage, eMessageImportance.Critical, eCoreComponentType.DataSource)
+        End If
+
     End Sub
 
     ''' <summary>
