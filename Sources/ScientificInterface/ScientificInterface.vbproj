@@ -913,7 +913,9 @@
     <Compile Include="Ecospace\Output\frmEcospaceResults.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Output\EcospaceResultsGridGear.vb" />
+    <Compile Include="Ecospace\Output\EcospaceResultsGridGear.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecospace\Output\frmRunEcospace.Designer.vb">
       <DependentUpon>frmRunEcospace.vb</DependentUpon>
     </Compile>

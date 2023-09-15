@@ -1162,6 +1162,19 @@ Partial Friend NotInheritable Class Settings
             Me("ColorRampDefaultFleet") = value
         End Set
     End Property
+	
+	<Global.System.Configuration.UserScopedSettingAttribute(),  _
+	 Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+     Global.System.Configuration.DefaultSettingValueAttribute("True")>
+    Public Property AutoCompact() As Boolean
+        Get
+            Return CType(Me("AutoCompact"), Boolean)
+        End Get
+        Set(value As Boolean)
+            Me("AutoCompact") = value
+        End Set
+    End Property
+
 End Class
 
 Namespace My

@@ -6246,6 +6246,7 @@ Public Class cCore
         Dim bIshigherOrganism As Boolean = False
         Dim bIsFished As Boolean = True
         Dim bIsStanza As Boolean = (t.iStanza >= 0)
+        Dim bIsGroup As Boolean = (t.iGroup > 0)
         Dim bClearVI As Boolean = False
 
         ' Cheung Vulnerability index is only available for fish (per FishBase)
@@ -6258,8 +6259,11 @@ Public Class cCore
 
             If bIsStanza Then
                 bIsFished = Me.StanzaGroups(t.iStanza - 1).IsFished
-            Else
+            ElseIf bIsGroup Then
                 bIsFished = Me.EcopathGroupInputs(t.iGroup).IsFished
+            Else
+                ' Orphaned / unassigned record
+                bIsFished = False
             End If
 
             If bIshigherOrganism Then
