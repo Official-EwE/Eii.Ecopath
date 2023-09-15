@@ -417,7 +417,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\cCoreInputOutputControlItem.vb" />
-    <Compile Include="Controls\ListBox\cFleetListBox.vb" />
+    <Compile Include="Controls\ListBox\cFleetListBox.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ListBox\cGroupListBox.vb">
       <SubType>Component</SubType>
     </Compile>

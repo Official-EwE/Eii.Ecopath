@@ -63,26 +63,26 @@ Public Class cDietTreeMapRenderer
     End Enum
 
     <Browsable(True),
-        cLocalizedCategory("HEADER_APPEARANCE"),
-        cLocalizedDisplayName("LABEL_PREDATOR_STYLE"),
+        Category("Appearance"),
+        DisplayName("Predator display style"),
         DefaultValue(eDrawMode.Name)>
     Public Property PredatorLabelStyle As eDrawMode = eDrawMode.Name
 
     <Browsable(True),
-        cLocalizedCategory("HEADER_APPEARANCE"),
-        cLocalizedDisplayName("LABEL_PREY_STYLE"),
+        Category("Appearance"),
+        DisplayName("Prey display style"),
         DefaultValue(eDrawMode.Number)>
     Public Property PreyLabelStyle As eDrawMode = eDrawMode.Number
 
     <Browsable(True),
-        cLocalizedCategory("HEADER_APPEARANCE"),
-        cLocalizedDisplayName("LABEL_BORDERS"),
+        Category("Appearance"),
+        DisplayName("Draw borders"),
         DefaultValue(True)>
     Public Property DrawBorders As Boolean = False
 
     <Browsable(True),
-        cLocalizedCategory("HEADER_APPEARANCE"),
-        cLocalizedDisplayName("LABEL_PADDING"),
+        Category("Appearance"),
+        DisplayName("Padding"),
         DefaultValue(3)>
     Public Property Padding As Integer = 3
 

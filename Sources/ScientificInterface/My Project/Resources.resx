@@ -2229,19 +2229,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="HEADER_APPEARANCE" xml:space="preserve">
     <value>Appearance</value>
   </data>
-  <data name="LABEL_BORDERS" xml:space="preserve">
-    <value>Borders</value>
-  </data>
   <data name="LABEL_CONTENT" xml:space="preserve">
     <value>Content</value>
-  </data>
-  <data name="LABEL_PADDING" xml:space="preserve">
-    <value>Padding</value>
-  </data>
-  <data name="LABEL_PREDATOR_STYLE" xml:space="preserve">
-    <value>Predator labelling</value>
-  </data>
-  <data name="LABEL_PREY_STYLE" xml:space="preserve">
-    <value>Prey labelling</value>
   </data>
 </root>
