@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports System.Linq
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -83,13 +84,18 @@ Namespace Controls
 
             For Each r As cSliceRectangle In rectangles
                 Dim rc As New Rectangle(rect.X + r.X, rect.Y + r.Y, r.Width - 1, r.Height - 1)
-                Using br As New SolidBrush(r.Slice.Elements.First().Color)
+                Dim clrBack As Color = r.Slice.Elements.First().Color
+                Dim clrText As Color = If(cColorUtils.IsLight(clrBack), Color.Black, Color.White)
+
+                Using br As New SolidBrush(clrBack)
                     gfx.FillRectangle(br, rc)
                 End Using
 
                 If (Me.DrawLabels) Then
                     Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
-                        gfx.DrawString(r.Slice.Elements.First().Label, ft, Brushes.Black, rc, fmt)
+                        Using brText As New SolidBrush(clrText)
+                            gfx.DrawString(r.Slice.Elements.First().Label, ft, brText, rc, fmt)
+                        End Using
                     End Using
                 End If
             Next

@@ -25,7 +25,7 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Public Class cDietFlowMapRenderer
+Public Class cDietTreeMapRenderer
 
     Private Class cElementListSorter
         Implements IComparer(Of cTreeMapRenderer.cTreeMapElement)
@@ -75,9 +75,9 @@ Public Class cDietFlowMapRenderer
 
     <Browsable(True),
         cLocalizedCategory("HEADER_APPEARANCE"),
-        cLocalizedDisplayName("LABEL_LABEL_CONTENT"),
+        cLocalizedDisplayName("LABEL_CONTENT"),
         DefaultValue(eDrawMode.Number)>
-    Public Property LabelDrawMode As eDrawMode
+    Public Property LabelDrawMode As eDrawMode = eDrawMode.Number
 
     <Browsable(True),
         cLocalizedCategory("HEADER_APPEARANCE"),
@@ -85,7 +85,10 @@ Public Class cDietFlowMapRenderer
         DefaultValue(True)>
     Public Property DrawBorders As Boolean = False
 
-    <Browsable(True)>
+    <Browsable(True),
+        cLocalizedCategory("HEADER_APPEARANCE"),
+        cLocalizedDisplayName("LABEL_PADDING"),
+        DefaultValue(3)>
     Public Property Padding As Integer = 3
 
     Public Sub Draw(g As Graphics, rc As Rectangle)
