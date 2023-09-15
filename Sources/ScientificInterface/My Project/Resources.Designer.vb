@@ -2212,15 +2212,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Borders.
-        '''</summary>
-        Public ReadOnly Property LABEL_BORDERS() As String
-            Get
-                Return ResourceManager.GetString("LABEL_BORDERS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Content.
         '''</summary>
         Public ReadOnly Property LABEL_CONTENT() As String
@@ -3396,33 +3387,6 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_NAV_TOOLS() As String
             Get
                 Return ResourceManager.GetString("LABEL_NAV_TOOLS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Padding.
-        '''</summary>
-        Public ReadOnly Property LABEL_PADDING() As String
-            Get
-                Return ResourceManager.GetString("LABEL_PADDING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Predator labelling.
-        '''</summary>
-        Public ReadOnly Property LABEL_PREDATOR_STYLE() As String
-            Get
-                Return ResourceManager.GetString("LABEL_PREDATOR_STYLE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Prey labelling.
-        '''</summary>
-        Public ReadOnly Property LABEL_PREY_STYLE() As String
-            Get
-                Return ResourceManager.GetString("LABEL_PREY_STYLE", resourceCulture)
             End Get
         End Property
         
