@@ -187,9 +187,7 @@
     <Compile Include="Grids\gridFishingMortality.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Grids\gridForcing.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Grids\gridForcing.vb" />
     <Compile Include="Grids\gridForcingBase.vb">
       <SubType>Component</SubType>
     </Compile>
