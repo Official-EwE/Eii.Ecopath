@@ -37,15 +37,17 @@ Namespace Ecopath
         ''' <summary>Model has not been run yet.</summary>
         NotRun
         ''' <summary>Model ran with a balanced model. EE in bounds. </summary>
-        ValidEE
+        Balanced
         ''' <summary>Failed EE out of bounds.</summary>
-        InValidEE
+        InvalidEE
         ''' <summary>Failed to find all the parameter. </summary>
         MissingParameter
         ''' <summary>Failed to run because diet matrix does not sum to one. </summary>
         InValidDietMatrix
         ''' <summary>Failed due to invalid initialization of data.  </summary>
         InValidInitialization
+        ''' <summary>Failed Respiration negative.</summary>
+        InValidRespiration
         ''' <summary>Failed to run because an error was encountered. </summary>
         [Error]
     End Enum
@@ -209,8 +211,7 @@ Namespace Ecopath
         ''' Estimate the unknown parameters in EcoPath
         ''' </summary>
         ''' <returns>
-        ''' True if successfull 
-        ''' False if something went wrong
+        ''' True if the model balanced
         ''' </returns>
         ''' <remarks>
         ''' EcoPath must be initialized before this can be called
@@ -317,6 +318,8 @@ Namespace Ecopath
                     Me.m_Data.onPostEcopathRun(Me.m_Ecofunctions)
 
                     Me.CheckIfEEsAreOK(bSendMessage:=True)
+                    Me.CheckIfRespirationOK(bSendMessage:=True)
+
                     'Else
                     '    EstimEEAgain()
                     'End If
@@ -364,12 +367,15 @@ Namespace Ecopath
             End Try
 
             'Finally did the model balance
-            Me.RunState = eEcopathRunState.InValidEE
-            If Me.CheckIfEEsAreOK(False) Then
-                Me.RunState = eEcopathRunState.ValidEE
+            If Not Me.CheckIfEEsAreOK(False) Then
+                Me.RunState = eEcopathRunState.InvalidEE
+            ElseIf Not Me.CheckIfRespirationOK(False) Then
+                Me.RunState = eEcopathRunState.InValidRespiration
+            Else
+                Me.RunState = eEcopathRunState.Balanced
             End If
 
-            Return True
+            Return (Me.RunState = eEcopathRunState.Balanced)
 
         End Function
 
@@ -767,27 +773,13 @@ Namespace Ecopath
             Next i
         End Sub
 
-        '--------------------------------------------------------------------------
-        'CheckIfEEsAreOK
-        '
-        'Inputs:
-        '   EE - (global) calculated ecotrophic efficiency array
-        '   NumGroups - (global) number of species groups in the model
-        '
-        'Outputs:
-        '   current database updated with input diets set to DC
-        '
-        'Description:
-        'Check whether model is balanced (EE<1) and tell user.
-        'Optionallty invoke auto mass balance feature, if user requests.
-        '
-        'History:
-        '   May 2002    P Kavanagh      Modified to include dialog to invoke auto
-        '                               mass balance facility
-        '                               Also reduce EElimit from 1.005 to 1
-        '                               Get rid of DontDisplay flag (unused)
-        '--------------------------------------------------------------------------
-
+        ''' --------------------------------------------------------------------------
+        ''' <summary>
+        ''' CheckIfEEsAreOK
+        ''' </summary>
+        ''' <param name="bSendMessage"></param>
+        ''' <returns></returns>
+        ''' --------------------------------------------------------------------------
         Friend Function CheckIfEEsAreOK(bSendMessage As Boolean) As Boolean
             Dim i As Integer
             Dim EEMax As Single
@@ -821,6 +813,45 @@ Namespace Ecopath
 
         End Function
 
+        ''' --------------------------------------------------------------------------
+        ''' <summary>
+        ''' Check if respiration is OK
+        ''' </summary>
+        ''' <param name="bSendMessage"></param>
+        ''' <returns></returns>
+        ''' --------------------------------------------------------------------------
+        Friend Function CheckIfRespirationOK(bSendMessage As Boolean) As Boolean
+
+            Dim bRespOK As Boolean = True
+            Dim msg As cMessage = Nothing
+
+            For i As Integer = 1 To Me.m_Data.NumLiving
+                'No respiration warning for multistanza groups
+                If Me.m_Data.Resp(i) < 0 And (Me.m_Ecofunctions.getStanzaIndexForGroup(i) = cCore.NULL_VALUE) Then
+                    bRespOK = False 'pt = 2
+                End If
+
+                If (bRespOK = False) Then
+                    If (bSendMessage) Then
+                        If (msg Is Nothing) Then
+                            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING, eMessageType.ErrorEncountered, eCoreComponentType.Ecopath, eMessageImportance.Warning)
+                        End If
+
+                        Dim vs As New cVariableStatus(eStatusFlags.ErrorEncountered, cStringUtils.Localize("Respiration for {0} cannot be negative", Me.m_Data.GroupName(i)), eVarNameFlags.Respiration, eDataTypes.EcoPathGroupOutput, eCoreComponentType.Ecopath, i)
+                        msg.AddVariable(vs)
+                    Else
+                        Console.WriteLine(My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING)
+                    End If
+                End If
+            Next
+
+            If (msg IsNot Nothing) Then
+                Me.NotifyCore(msg)
+            End If
+
+            Return bRespOK
+
+        End Function
 
 
         Private Sub CalcTotalPrimProd()
@@ -1588,6 +1619,7 @@ LoopCalc:
                     Result = eStatusFlags.MissingParameter
                     Return False
                 End If
+
                 '040112VC: In case B is missing, BABi is entered, then estimate BA(i) again
                 For ji = 1 To Me.m_Data.NumLiving
                     If Me.m_Data.BA(ji) = 0 Then
@@ -1735,9 +1767,14 @@ LoopCalc:
                 Return False
             End Try
 
+            If Not Me.CheckIfRespirationOK(False) Then
+                Result = eStatusFlags.ErrorEncountered
+                Return False
+            End If
+
             Result = eStatusFlags.OK
-            Debug.Assert(Result <> eStatusFlags.Null)
-            Return True
+                Debug.Assert(Result <> eStatusFlags.Null)
+                Return True
         End Function
 
 
@@ -2031,8 +2068,8 @@ NextPivot:
                         If i = Me.m_Data.NumLiving Then
                             If (Me.m_Data.B(j) * Me.m_Data.EE(j)) <> 0 Then
                                 '031220VC: Either BABi or BA is zero; Either Emigration or Emig is zero
-                                Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
-                                Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                                Sum = CSng(If(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                                Sum = Sum + CSng(If(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
                                 Sum = Sum * Me.m_Data.B(j)
                                 Me.m_Data.PB(j) = CSng((MM2 + Sum + Me.m_Data.BA(j) + Me.m_Data.Emigration(j) - Me.m_Data.Immig(j) + Me.m_Data.fCatch(j)) / (Me.m_Data.B(j) * Me.m_Data.EE(j)))
                                 'Added mig above 15022000 per discussion with Kerim / Villy
@@ -2072,8 +2109,8 @@ NextPivot:
                         '031220VC Now has Emigi and BABi as rates, won't have values if Emigration and BA have.
                         '031220VC: Either BABi or BA is zero; Either Emigration or Emig is zero
                     Next i
-                    Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
-                    Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                    Sum = CSng(If(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                    Sum = Sum + CSng(If(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
                     Sum = Sum * Me.m_Data.B(j)
 
                     If Me.m_Data.B(j) * Me.m_Data.PB(j) > 0 Then
@@ -2123,8 +2160,8 @@ nextJ:
                     Next i
                     If Me.m_Data.QB(j) < 0 And Me.m_Data.PP(j) < 0 Then GoTo nextJ '1680
                     '031220VC: Either BABi or BA is zero; Either Emigration or Emig is zero
-                    Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
-                    Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                    Sum = CSng(If(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                    Sum = Sum + CSng(If(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
                     Only = Me.m_Data.PB(j) * Me.m_Data.EE(j) - Me.m_Data.QB(j) * Me.m_Data.DC(j, j) - Sum
                     ' There may be too much cannibalism when e.g. the biomass
                     ' of a group is changed and the EE is kept constant in the
@@ -2213,8 +2250,8 @@ nextJ:
             Dim msg As cMessage = Nothing
 
             str = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PREDMORT_CANN, Me.m_Data.GroupName(j))
-            fmsg = New cFeedbackMessage(str, _
-                                       eCoreComponentType.Ecopath, eMessageType.Any, _
+            fmsg = New cFeedbackMessage(str,
+                                       eCoreComponentType.Ecopath, eMessageType.Any,
                                        eMessageImportance.Maintenance, eMessageReplyStyle.YES_NO_CANCEL)
             fmsg.Suppressable = True
             Me.NotifyCore(fmsg)
@@ -2288,13 +2325,13 @@ nextJ:
 
                         If (msgMissing Is Nothing) Then
                             msgMissing = New cMessage(
-                                My.Resources.CoreMessages.DIETCOMP_PROMPT_MISSING, _
+                                My.Resources.CoreMessages.DIETCOMP_PROMPT_MISSING,
                                 eMessageType.DataValidation, eCoreComponentType.Ecopath, eMessageImportance.Critical)
                         End If
 
                         ' Attach variable status
-                        vs = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                cStringUtils.Localize(My.Resources.CoreMessages.DIETCOMP_MISSING, Me.m_Data.GroupName(iPred)), _
+                        vs = New cVariableStatus(eStatusFlags.MissingParameter,
+                                cStringUtils.Localize(My.Resources.CoreMessages.DIETCOMP_MISSING, Me.m_Data.GroupName(iPred)),
                                 eVarNameFlags.DietComp, eDataTypes.EcoPathGroupInput, eCoreComponentType.Ecopath, iPred)
                         msgMissing.AddVariable(vs)
 
@@ -2306,16 +2343,16 @@ nextJ:
                         If (msgSumToOne Is Nothing) Then
 
                             ' #Yes: prepare message
-                            msgSumToOne = New cFeedbackMessage( _
-                                    My.Resources.CoreMessages.DIETCOMP_PROMPT_SUMTOONE, _
-                                    eCoreComponentType.Ecopath, eMessageType.DietComp, eMessageImportance.Warning, _
+                            msgSumToOne = New cFeedbackMessage(
+                                    My.Resources.CoreMessages.DIETCOMP_PROMPT_SUMTOONE,
+                                    eCoreComponentType.Ecopath, eMessageType.DietComp, eMessageImportance.Warning,
                                     eMessageReplyStyle.YES_NO)
                             msgMaintenance = New cMessage("Ecopath diets have changed", eMessageType.DataModified, eCoreComponentType.Ecopath, eMessageImportance.Maintenance)
                         End If
 
                         ' Attach variable status
-                        vs = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                cStringUtils.Localize(My.Resources.CoreMessages.DIETCOMP_SUMTOONE_PRED, Me.m_Data.GroupName(iPred)), _
+                        vs = New cVariableStatus(eStatusFlags.MissingParameter,
+                                cStringUtils.Localize(My.Resources.CoreMessages.DIETCOMP_SUMTOONE_PRED, Me.m_Data.GroupName(iPred)),
                                 eVarNameFlags.DietComp, eDataTypes.EcoPathGroupInput, eCoreComponentType.Ecopath, iPred)
 
                         msgSumToOne.AddVariable(vs)
@@ -2393,8 +2430,8 @@ nextJ:
                         If Me.m_Data.DC(j, i) > 0 And SumQ >= 0 Then
                             If Me.m_Data.B(i) > 0 And Me.m_Data.PB(i) > 0 And Me.m_Data.EE(i) >= 0 Then
                                 '031220VC:
-                                Sum = CSng(if(Me.m_Data.BaBi(i) <> 0 And Me.m_Data.BA(i) = 0, Me.m_Data.BaBi(i), 0))
-                                Sum = Sum + CSng(if(Me.m_Data.Emig(i) > 0 And Me.m_Data.Emigration(i) = 0, Me.m_Data.Emig(i), 0))
+                                Sum = CSng(If(Me.m_Data.BaBi(i) <> 0 And Me.m_Data.BA(i) = 0, Me.m_Data.BaBi(i), 0))
+                                Sum = Sum + CSng(If(Me.m_Data.Emig(i) > 0 And Me.m_Data.Emigration(i) = 0, Me.m_Data.Emig(i), 0))
                                 Sum = Sum * Me.m_Data.B(i)
                                 SumMi = Me.m_Data.BA(i) + Sum + Me.m_Data.Emigration(i) + Me.m_Data.Immig(i) + Me.m_Data.fCatch(i) + (1 - Me.m_Data.EE(i)) * Me.m_Data.PB(i) * Me.m_Data.B(i)
                                 'Added mig above 15022000 per discussion with Kerim / Villy
@@ -2508,7 +2545,7 @@ nextJ:
 
                 If NBQB > 0 Then
 
-                    Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_INSUFFICIENTDATA, _
+                    Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_INSUFFICIENTDATA,
                         eMessageType.MassBalance_InsufficientData, eCoreComponentType.Ecopath, eMessageImportance.Warning)
                     msg.Suppressable = True
 
@@ -2540,8 +2577,8 @@ nextJ:
                             If Me.NoBQB(j) = 1 And i <> j Then Me.AUL(i, j) = -Me.m_Data.QB(j) * Me.m_Data.DC(j, i)
                             'No QB
                             '031220VC Emigi and BABi now included as rates, will be zero if there are flows (Emigration and BA)
-                            Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
-                            Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                            Sum = CSng(If(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                            Sum = Sum + CSng(If(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
                             Sum = Sum * Me.m_Data.B(j)
                             If Me.NoBQB(j) = 10 Then Me.AUL(i, j) = -Me.m_Data.B(j) * Me.m_Data.DC(j, i)
                             If Me.NoBQB(j) = 0 And i <> j Then Me.Q(i) = Me.Q(i) + (Me.m_Data.B(j) * Me.m_Data.QB(j) * Me.m_Data.DC(j, i)) + Sum
@@ -2652,8 +2689,8 @@ nextJ:
             End If
 
             '031220VC: rates or flows,
-            sum = CSng(if(Me.m_Data.BaBi(kc) <> 0 And Me.m_Data.BA(kc) = 0, Me.m_Data.BaBi(kc), 0))
-            sum = sum + CSng(if(Me.m_Data.Emig(kc) > 0 And Me.m_Data.Emigration(kc) = 0, Me.m_Data.Emig(kc), 0))
+            sum = CSng(If(Me.m_Data.BaBi(kc) <> 0 And Me.m_Data.BA(kc) = 0, Me.m_Data.BaBi(kc), 0))
+            sum = sum + CSng(If(Me.m_Data.Emig(kc) > 0 And Me.m_Data.Emigration(kc) = 0, Me.m_Data.Emig(kc), 0))
             sum = sum * Me.m_Data.B(kc)
 
             BQBDC = Me.m_Data.B(kc) * Me.m_Data.PB(kc) * Me.m_Data.EE(kc) - Me.m_Data.fCatch(kc) - Me.m_Data.BA(kc) - Me.m_Data.Emigration(kc) + Me.m_Data.Immig(kc) - sum
@@ -2691,8 +2728,8 @@ nextJ:
 
             '031220VC, either use BaBi or BA and either Emigi or Emigration
             If (Me.m_Data.DC(kq, kc)) > 0 And (Me.m_Data.PB(kq) * Me.m_Data.EE(kq)) > 0 Then
-                sum = CSng(if(Me.m_Data.BaBi(kq) <> 0 And Me.m_Data.BA(kq) = 0, Me.m_Data.BaBi(kq), 0))
-                sum = sum + CSng(if(Me.m_Data.Emig(kq) > 0 And Me.m_Data.Emigration(kq) = 0, Me.m_Data.Emig(kq), 0))
+                sum = CSng(If(Me.m_Data.BaBi(kq) <> 0 And Me.m_Data.BA(kq) = 0, Me.m_Data.BaBi(kq), 0))
+                sum = sum + CSng(If(Me.m_Data.Emig(kq) > 0 And Me.m_Data.Emigration(kq) = 0, Me.m_Data.Emig(kq), 0))
                 'Sum is the combined migration and biomass.acc instantaneous mortality rate, will only be non-zero if these are entered
                 'B.PB.EE = Pred + NM.B + BAB.B + Catch, hence B = (Pred + Catch)/(PB.EE-NM-BAB)
                 Me.m_Data.B(kq) = (PartM2 + Me.m_Data.BA(kq) + Me.m_Data.Emigration(kq) - Me.m_Data.Immig(kq) + Me.m_Data.fCatch(kq) + Me.m_Data.DC(kq, kq) * BQBDC / Me.m_Data.DC(kq, kc)) / (Me.m_Data.PB(kq) * Me.m_Data.EE(kq) - sum)
@@ -2826,8 +2863,8 @@ ONE:
                 Cnt = 0
                 If Me.m_Data.B(j) > 0 And Me.m_Data.PB(j) > 0 And Me.m_Data.EE(j) > 0 Then
                     '031220VC, emig and ba as rates
-                    Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
-                    Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                    Sum = CSng(If(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                    Sum = Sum + CSng(If(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
                     Sum = Sum * Me.m_Data.B(j)
 
                     LeftProd = Me.m_Data.B(j) * Me.m_Data.PB(j) * Me.m_Data.EE(j) - Me.m_Data.fCatch(j) - Sum - Me.m_Data.BA(j) - Me.m_Data.Emigration(j) + Me.m_Data.Immig(j)
@@ -2887,7 +2924,7 @@ ONE:
                 ' Has error detail?
                 If (varname <> eVarNameFlags.NotSet) Then
                     ' #Yes: append to message
-                    vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, varname, _
+                    vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, varname,
                                              eDataTypes.EcoPathGroupInput, eCoreComponentType.Ecopath, i)
                     msg.AddVariable(vs)
                 End If
@@ -2903,7 +2940,7 @@ ONE:
             Dim msg As cMessage = Nothing
 
             Try
-                strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING, _
+                strMsg = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING,
                                        Me.m_Data.GroupName(i), Environment.NewLine)
                 msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eCoreComponentType.Ecopath, eMessageImportance.Warning)
                 msg.Suppressable = False
@@ -2916,7 +2953,7 @@ ONE:
         End Sub
 
 
-        Private Sub EstimateTrophicLevels(iNumGroups As Integer, iNumLiving As Integer, _
+        Private Sub EstimateTrophicLevels(iNumGroups As Integer, iNumLiving As Integer,
                                           PP() As Single, Diet(,) As Single, TLreturn() As Single)
 
             Me.m_Ecofunctions.EstimateTrophicLevels(iNumGroups, iNumLiving, PP, Diet, TLreturn)
@@ -3020,7 +3057,7 @@ ONE:
                         If Me.m_Data.B(j) > MaxBio Then MaxBio = Me.m_Data.B(j)
                     End If
                 Next
-                MaxBio = CDbl(if(MaxBio > 0, CSng(10 * MaxBio), 100))
+                MaxBio = CDbl(If(MaxBio > 0, CSng(10 * MaxBio), 100))
                 DoIterationsToEstimateB = 0
                 NewSum = 0
                 OldSum = -1
@@ -3045,8 +3082,8 @@ ONE:
                                 End If
                             Next i
                             '031220VC: modified to incorporate that BioAcc and emigration can be rates
-                            Sum = CSng(if(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
-                            Sum = Sum + CSng(if(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
+                            Sum = CSng(If(Me.m_Data.BaBi(j) <> 0 And Me.m_Data.BA(j) = 0, Me.m_Data.BaBi(j), 0))
+                            Sum = Sum + CSng(If(Me.m_Data.Emig(j) > 0 And Me.m_Data.Emigration(j) = 0, Me.m_Data.Emig(j), 0))
                             Sum = Sum * Me.m_Data.B(j)
                             Only = Me.m_Data.PB(j) * Me.m_Data.EE(j) - Me.m_Data.QB(j) * Me.m_Data.DC(j, j) - Sum
                             If Only > 0 Then
