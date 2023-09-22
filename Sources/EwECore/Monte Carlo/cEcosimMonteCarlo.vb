@@ -1251,7 +1251,8 @@ Public Class cEcosimMonteCarlo
                     bEcopathNeedsBalancing = False
 
                     If Me.ValidateRespiration Then
-                        bEcopathNeedsBalancing = bEcopathNeedsBalancing And (Me.m_epdata.Compute_M2_Resp_and_Stats(EcoFunctions, True) = False)
+                        Me.m_epdata.Compute_M2_Resp_and_Stats(EcoFunctions)
+                        bEcopathNeedsBalancing = bEcopathNeedsBalancing And Me.m_ecopath.CheckIfRespirationOK(False)
                     End If
 
                     For igrp = 1 To Me.m_core.nGroups

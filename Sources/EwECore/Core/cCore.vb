@@ -5432,7 +5432,7 @@ Public Class cCore
 
             'Is the model balanced
             isModelBalanced = False
-            If m_Ecopath.RunState = Ecopath.eEcopathRunState.ValidEE Then isModelBalanced = True
+            If m_Ecopath.RunState = Ecopath.eEcopathRunState.Balanced Then isModelBalanced = True
 
             ' Update core state monitor
             Me.m_StateMonitor.SetEcopathCompleted(isModelBalanced)
@@ -5472,7 +5472,7 @@ Public Class cCore
     End Function
 
     Public Function IsModelBalanced() As Boolean
-        Return (Me.m_Ecopath.RunState = Ecopath.eEcopathRunState.ValidEE)
+        Return (Me.m_Ecopath.RunState = Ecopath.eEcopathRunState.Balanced)
     End Function
 
     ''' <summary>
