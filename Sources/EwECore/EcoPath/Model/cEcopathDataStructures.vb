@@ -20,6 +20,7 @@
 Option Strict Off ' OUCH
 Imports EwEUtils.Extensions
 Imports EwEUtils.Core
+Imports OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
 
 ''' <summary>
 ''' Wrapper for the underlying data structures of the EcoPath model. 
@@ -779,6 +780,7 @@ Public Class cEcopathDataStructures
 
     End Sub
 
+	''' -----------------------------------------------------------------------
     '''<summary>
     '''Computes the following:
     '''M2(): Predator mortality for group i.
@@ -788,16 +790,16 @@ Public Class cEcopathDataStructures
     '''SumBio: sum of biomass.
     '''min_B_QB: minimum B*QB.
     ''' </summary>
-    ''' <param name="bQuiet">Flag to suppress any system warning messages that this method may produce.</param>
-    ''' <returns>True if there were all respiration is valied</returns>
     ''' <remarks>
-    ''' Was Public Sub ParamEstimate2() in original code
+    ''' Was Public Sub ParamEstimate2() in original EwE5 code. 
+	''' Sept 2023: this method no longer checks for negative Respiration; this check is
+	''' now better integrated in the Ecopath parameter checks
     ''' </remarks>
-    Friend Function Compute_M2_Resp_and_Stats(Functions As cEcoFunctions, Optional bQuiet As Boolean = False) As Boolean
+    ''' -----------------------------------------------------------------------
+    Friend Sub Compute_M2_Resp_and_Stats(Functions As cEcoFunctions)
         Dim Prod As Single
         Dim Consump As Single, UnAssimConsump As Single
         Dim M2Sum As Single
-        Dim strMsg As String
         Dim i As Integer, j As Integer
         Dim bRespOK As Boolean = True
 
@@ -860,11 +862,6 @@ Public Class cEcopathDataStructures
             'Sum of respiration across all the groups
             Me.RTZ += Me.Resp(i)
 
-            'No respiration warning for multistanza groups
-            If Me.Resp(i) < 0 And (Functions.getStanzaIndexForGroup(i) = cCore.NULL_VALUE) Then
-                bRespOK = False 'pt = 2
-            End If
-
         Next i
 
         'jb min_B_QB was called min
@@ -876,18 +873,7 @@ Public Class cEcopathDataStructures
             End If
         Next i
 
-        If (bRespOK = False) Then
-            If (bQuiet = False) Then
-                strMsg = My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING
-                Me.m_messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered, eCoreComponentType.Ecopath, eMessageImportance.Warning))
-            Else
-                Console.WriteLine(My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING)
-            End If
-        End If
-
-        Return bRespOK
-
-    End Function
+    End Sub
 
     ''' <summary>
     ''' Compute
@@ -1071,19 +1057,17 @@ Public Class cEcopathDataStructures
     ''' <summary>
     ''' Compute missing <see cref="BH">BH</see> (Biomass/Area) values.
     ''' </summary>
-    ''' <returns>True if successfully.</returns>
     ''' <remarks>
     ''' EwE5 performed differently here; BH() value was left at its NULL input value,
     ''' and was computed in the interface for display. I hope this doesn't mess anything up.
     ''' </remarks>
-    Private Function UpdateBH() As Boolean
+    Private Sub UpdateBH()
         For i As Integer = 1 To Me.NumGroups
             If Me.BH(i) < 0 And Me.B(i) > 0 And Me.Area(i) > 0 Then
                 Me.BH(i) = Me.B(i) / Me.Area(i)
             End If
         Next
-        Return True
-    End Function
+    End Sub
 
     ''' <summary>
     ''' Sums a <see cref="DC">Diet Composition</see> matrix to one. 
