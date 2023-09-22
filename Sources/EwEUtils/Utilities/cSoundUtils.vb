@@ -19,10 +19,10 @@
 
 #Region " Imports "
 
-Imports System.Windows.Forms
-Imports Microsoft.Win32
 Imports System
 Imports System.IO
+Imports System.Media
+Imports System.Windows.Forms
 Imports Microsoft.VisualBasic
 
 #End Region ' Imports
@@ -36,74 +36,34 @@ Namespace Utilities
     ''' =======================================================================
     Public Class cSoundUtilities
 
-#Region " Private vars "
-
-        Private Class cWindowsSystemSounds
-            ''' <summary>SystemAsterisk</summary>
-            Public Shared ReadOnly Property Asterisk As String
-                Get
-                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemAsterisk\.Current", "")
-                End Get
-            End Property
-            ''' <summary>SystemExclamation</summary>
-            Public Shared ReadOnly Property Exclamation As String
-                Get
-                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemExclamation\.Current", "")
-                End Get
-            End Property
-            ''' <summary>SystemHand</summary>
-            Public Shared ReadOnly Property Hand As String
-                Get
-                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemHand\.Current", "")
-                End Get
-            End Property
-            ''' <summary>SystemNotification</summary>
-            Public Shared ReadOnly Property Notification As String
-                Get
-                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemNotification\.Current", "")
-                End Get
-            End Property
-            ''' <summary>SystemQuestion</summary>
-            Public Shared ReadOnly Property Question As String
-                Get
-                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemQuestion\.Current", "")
-                End Get
-            End Property
-            ''' <summary>A default sound</summary>
-            Public Shared ReadOnly Property [Default] As String
-                Get
-                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\.Default\.Current", "")
-                End Get
-            End Property
-        End Class
-
-#End Region ' Private vars
-
 #Region " Public access "
 
         Public Shared Sub PlaySound(icon As MessageBoxIcon)
 
-            Dim strFileName As String = ""
+            Dim sound As SystemSound
 
             Select Case icon
                 Case MessageBoxIcon.Asterisk
-                    strFileName = cWindowsSystemSounds.Asterisk
+                    sound = SystemSounds.Asterisk
                 Case MessageBoxIcon.Exclamation
-                    strFileName = cWindowsSystemSounds.Exclamation
-                Case MessageBoxIcon.Hand,
-                     MessageBoxIcon.Stop
-                    strFileName = cWindowsSystemSounds.Hand
+                    sound = SystemSounds.Exclamation
+                Case MessageBoxIcon.Hand, MessageBoxIcon.Stop
+                    sound = SystemSounds.Hand
                 Case MessageBoxIcon.Information
-                    strFileName = cWindowsSystemSounds.Notification
+                    sound = SystemSounds.Exclamation
                 Case MessageBoxIcon.Question
-                    strFileName = cWindowsSystemSounds.Question
+                    sound = SystemSounds.Question
                 Case MessageBoxIcon.Warning
-                    strFileName = cWindowsSystemSounds.[Default]
+                    sound = SystemSounds.Exclamation
                 Case Else
-                    strFileName = cWindowsSystemSounds.[Default]
+                    sound = SystemSounds.Beep
             End Select
 
-            PlaySound(strFileName)
+            Try
+                My.Computer.Audio.PlaySystemSound(sound)
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
