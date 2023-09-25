@@ -31,8 +31,6 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-#Const B_USE_SHARED_ARENA = True
-
 Namespace Ecosim
 
 #Region "Public defintions"
@@ -5167,6 +5165,53 @@ Namespace Ecosim
 
         End Sub
 
+#If B_USE_SHARED_ARENA Then
+        Sub DefineFlowList()
+
+            ' set up list of foraging arenas defined by nonzero trophic flows
+            Dim i As Integer, K As Integer, ii As Integer, iii As Integer
+
+
+            ' JS 12Jun20: moved arena validation to a pre-run Sim check
+
+            'next count number of nonzero trophic links
+            Me.m_Data.inlinks = 0
+            For iii = 1 To Me.m_Data.NlinksSet
+                'find arena number for this link
+                i = Me.m_Data.IlinkSet(iii)
+                ii = Me.m_Data.ArenaNo(i, Me.m_Data.JlinkSet(iii))
+                K = Me.m_Data.KlinkSet(iii)
+                If Me.m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
+                    Me.m_Data.inlinks = Me.m_Data.inlinks + 1
+                End If
+            Next
+
+            ReDim Me.m_Data.Qlink(Me.m_Data.inlinks), Me.m_Data.ilink(Me.m_Data.inlinks), Me.m_Data.jlink(Me.m_Data.inlinks), Me.m_Data.ArenaLink(Me.m_Data.inlinks)
+            ReDim Me.m_Data.MPred(Me.m_Data.inlinks)
+
+            'then set list variables by feeding link (note must be at least as many links as arenas)
+            Dim Il As Integer = 0
+            For iii = 1 To Me.m_Data.NlinksSet
+                i = Me.m_Data.IlinkSet(iii)
+                ii = Me.m_Data.ArenaNo(i, Me.m_Data.JlinkSet(iii))
+                K = Me.m_Data.KlinkSet(iii)
+                If Me.m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
+                    'Debug.Assert(m_Data.PeatArena(ii, K) = 1.0F)
+                    'If m_Data.PeatArena(ii, K) <> 1.0F Then
+                    '    Debug.WriteLine("ShArenas: DefineFlowList - Prop: {0}, Arena: {1}, Pred {2}", m_Data.PeatArena(ii, K), ii, K)
+                    'End If
+                    ''Debug.Assert(i <> 8)
+                    Il = Il + 1
+                    Me.m_Data.ilink(Il) = i 'Prey for this arena link
+                    Me.m_Data.jlink(Il) = K 'Pred for this arena link
+                    Me.m_Data.ArenaLink(Il) = ii
+                    'Consumption(iPrey,iPred), PeatArena(Arena, Pred)
+                    Me.m_Data.Qlink(Il) = Me.m_Data.Consumption(i, K) * Me.m_Data.PeatArena(ii, K)
+                End If 'm_Data.PeatArena(ii, K) > 0 
+            Next iii
+
+        End Sub
+#Else
         Sub DefaultPeatArena()
             'sets default peatarena array for models that have not had multiple predators defined to
             'eat in any foraging arenas and no peatarena values have yet been stored in database
@@ -5289,51 +5334,7 @@ Namespace Ecosim
             Next
         End Sub
 
-        Sub DefineFlowList()
-
-            ' set up list of foraging arenas defined by nonzero trophic flows
-            Dim i As Integer, K As Integer, ii As Integer, iii As Integer
-
-
-            ' JS 12Jun20: moved arena validation to a pre-run Sim check
-
-            'next count number of nonzero trophic links
-            Me.m_Data.inlinks = 0
-            For iii = 1 To Me.m_Data.NlinksSet
-                'find arena number for this link
-                i = Me.m_Data.IlinkSet(iii)
-                ii = Me.m_Data.ArenaNo(i, Me.m_Data.JlinkSet(iii))
-                K = Me.m_Data.KlinkSet(iii)
-                If Me.m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
-                    Me.m_Data.inlinks = Me.m_Data.inlinks + 1
-                End If
-            Next
-
-            ReDim Me.m_Data.Qlink(Me.m_Data.inlinks), Me.m_Data.ilink(Me.m_Data.inlinks), Me.m_Data.jlink(Me.m_Data.inlinks), Me.m_Data.ArenaLink(Me.m_Data.inlinks)
-            ReDim Me.m_Data.MPred(Me.m_Data.inlinks)
-
-            'then set list variables by feeding link (note must be at least as many links as arenas)
-            Dim Il As Integer = 0
-            For iii = 1 To Me.m_Data.NlinksSet
-                i = Me.m_Data.IlinkSet(iii)
-                ii = Me.m_Data.ArenaNo(i, Me.m_Data.JlinkSet(iii))
-                K = Me.m_Data.KlinkSet(iii)
-                If Me.m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
-                    'Debug.Assert(m_Data.PeatArena(ii, K) = 1.0F)
-                    'If m_Data.PeatArena(ii, K) <> 1.0F Then
-                    '    Debug.WriteLine("ShArenas: DefineFlowList - Prop: {0}, Arena: {1}, Pred {2}", m_Data.PeatArena(ii, K), ii, K)
-                    'End If
-                    ''Debug.Assert(i <> 8)
-                    Il = Il + 1
-                    Me.m_Data.ilink(Il) = i 'Prey for this arena link
-                    Me.m_Data.jlink(Il) = K 'Pred for this arena link
-                    Me.m_Data.ArenaLink(Il) = ii
-                    'Consumption(iPrey,iPred), PeatArena(Arena, Pred)
-                    Me.m_Data.Qlink(Il) = Me.m_Data.Consumption(i, K) * Me.m_Data.PeatArena(ii, K)
-                End If 'm_Data.PeatArena(ii, K) > 0 
-            Next iii
-
-        End Sub
+#End If
 
         Sub SetArenaVulandSearchRates()
             'this routine sets vulrates by arena and feeding a's by trophic link after arena and trophic link lists have been set
