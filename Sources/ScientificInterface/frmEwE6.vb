@@ -1676,10 +1676,10 @@ Public Class frmEwE6
         Try
             If Me.Core.License.IsRegistered Then
                 Dim diff As Integer = Me.Core.License.Expiry.Subtract(Date.Now).Days
-                If diff > 21 Then
+                If diff > 28 Then ' Start warning four weeks prior expiration
                     Me.m_tsbnLicense.Image = SharedResources.license_ok
                 ElseIf diff > 0 Then
-                    Me.m_tsbnLicense.Image = SharedResources.license_expired
+                    Me.m_tsbnLicense.Image = SharedResources.license_expiring
                 Else
                     Me.m_tsbnLicense.Image = SharedResources.license_expired
                 End If
