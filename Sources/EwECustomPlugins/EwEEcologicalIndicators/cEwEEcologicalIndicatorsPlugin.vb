@@ -579,6 +579,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         ' Create indicators for water cells only
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim depth As cEcospaceLayerDepth = bm.LayerDepth
+        Dim excl As cEcospaceLayerExclusion = bm.LayerExclusion
         Dim ptCell As Point = Nothing
         Dim lookup As cTaxonAnalysis = Me.m_core.TaxonAnalysis
 
@@ -593,7 +594,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Dim n As Integer = 0
         For iRow As Integer = 1 To bm.InRow
             For iCol As Integer = 1 To bm.InCol
-                If (depth.IsWaterCell(iRow, iCol)) Then
+                If (depth.IsWaterCell(iRow, iCol) And excl.IsIncludedCell(iRow, iCol)) Then
                     ptCell = New Point(iCol, iRow)
                     Dim inds As New cEcospaceIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecospaceDS, ptCell, Me.m_stanzaDS, Me.m_taxonDS, lookup)
                     Me.m_dtIndEcospace(ptCell) = inds
