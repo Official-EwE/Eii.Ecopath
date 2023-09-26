@@ -515,7 +515,7 @@ Public MustInherit Class cTimeSeriesTextReader
         cols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
         If (String.Compare(cols(0), "weight", True) = 0) Then
             Try
-                For i As Integer = 1 To iNumSeries : asWeight(i - 1) = cStringUtils.ConvertToSingle(cols(i), 0, Me.m_strDecimalSeparator) : Next i
+                For i As Integer = 1 To Math.Min(cols.Length - 1, iNumSeries) : asWeight(i - 1) = cStringUtils.ConvertToSingle(cols(i), 0, Me.m_strDecimalSeparator) : Next i
             Catch ex As Exception
                 Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_WEIGHTFORMAT, iLineNumber)
             End Try
