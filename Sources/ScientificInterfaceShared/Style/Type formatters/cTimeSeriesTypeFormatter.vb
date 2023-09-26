@@ -38,6 +38,8 @@ Namespace Style
         Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
+            ' ToDo: globalize this
+
             Dim ts As eTimeSeriesType = DirectCast(value, eTimeSeriesType)
             Dim strType As String = ""
 
@@ -57,13 +59,17 @@ Namespace Style
                 Case eTimeSeriesType.TimeForcing : strType = My.Resources.TS_TYPE_TIMEFORCING
                 Case eTimeSeriesType.TotalMortality : strType = My.Resources.TS_TYPE_TOTALMORT
                 Case eTimeSeriesType.FishingMortalityRef : strType = My.Resources.TS_TYPE_FISHMORTREL
-                Case eTimeSeriesType.DiscardMortality : strType = My.Resources.TS_TYPE_DISCARDMORT
-                Case eTimeSeriesType.DiscardProportion : strType = My.Resources.TS_TYPE_DISCARDPROP
                 Case eTimeSeriesType.Landings : strType = My.Resources.TS_TYPE_LANDINGS
                 Case eTimeSeriesType.Discards : strType = My.Resources.TS_TYPE_DISCARDS
                 Case eTimeSeriesType.Catchabilities : strType = My.Resources.TS_TYPE_CATCHABILITIES
+                Case eTimeSeriesType.DiscardMortality : strType = My.Resources.TS_TYPE_DISCARDMORT
+                Case eTimeSeriesType.DiscardProportion : strType = My.Resources.TS_TYPE_DISCARDPROP
+                Case eTimeSeriesType.OffVesselPrice : strType = "Off-vessel price (abs)"
+                Case eTimeSeriesType.OffVesselPriceRel : strType = "Off-vessel price (rel)"
+                Case eTimeSeriesType.SailCost : strType = "Sailing related costs (abs)"
+                Case eTimeSeriesType.SailCostRel : strType = "Sailing related costs (rel)"
                 Case Else
-                    Debug.Assert(False, "cTimeSeriesTypeFormatter does not support time series type " & ts.ToString())
+                    'Debug.Assert(False, "cTimeSeriesTypeFormatter does not support time series type " & ts.ToString())
                     strType = ts.ToString
             End Select
 
