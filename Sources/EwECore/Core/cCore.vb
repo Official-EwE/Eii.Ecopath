@@ -87,11 +87,7 @@ Public Class cCore
     ''' <summary>Max number of years ecosim or ecospace can run for</summary>
     Public Const MAX_RUN_LENGTH As Integer = 500
 
-#If B_USE_SHARED_ARENA Then
     Public Const USE_SHARED_ARENAS As Boolean = True
-#Else
-    Public Const USE_SHARED_ARENAS As Boolean = False
-#End If
 
 #End Region ' Shared consts
 

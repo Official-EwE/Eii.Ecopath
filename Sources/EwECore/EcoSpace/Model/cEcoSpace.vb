@@ -5083,8 +5083,9 @@ exitline:
 
         ReDim Effort(Me.EcoSpaceData.nFleets)
 
-        Dim iMonth As Integer = Me.EcoSpaceData.MonthNow
+        'Dim iMonth As Integer = Me.EcoSpaceData.MonthNow
         Dim iYear As Integer = Me.EcoSpaceData.YearNow
+        Dim iTime As Integer = Me.EcoSpaceData.TimeNow * cCore.N_MONTHS
 
         For ig = 1 To Me.EcoSpaceData.nFleets
             'jb Attract() gets cleared out for each fleet
@@ -5092,12 +5093,12 @@ exitline:
             TotAttract = 0.0000000001
 
             'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
-            If Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear) = 0 Then
+            If Me.EcoSim.EffortCost(ig, iTime, iYear) + Me.EcoSim.SailCost(ig, iTime, iYear) = 0 Then
                 EffortCost = 0
                 SailCost = 1
             Else
-                EffortCost = Me.EcoSim.EffortCost(ig, iMonth, iYear) / (Me.EcoSim.FixedCost(ig, iMonth, iYear) + Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear))
-                SailCost = Me.EcoSim.SailCost(ig, iMonth, iYear) / (Me.EcoSim.FixedCost(ig, iMonth, iYear) + Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear))
+                EffortCost = Me.EcoSim.EffortCost(ig, iTime, iYear) / (Me.EcoSim.FixedCost(ig, iTime, iYear) + Me.EcoSim.EffortCost(ig, iTime, iYear) + Me.EcoSim.SailCost(ig, iTime, iYear))
+                SailCost = Me.EcoSim.SailCost(ig, iTime, iYear) / (Me.EcoSim.FixedCost(ig, iTime, iYear) + Me.EcoSim.EffortCost(ig, iTime, iYear) + Me.EcoSim.SailCost(ig, iTime, iYear))
             End If
 
             CatGear = 0 '*****ecopath base total catch for this gear
@@ -5117,7 +5118,9 @@ exitline:
                             'Catch
                             CatLoc(i, j) = CatLoc(i, j) + Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(ig, isp) '****
                             'Value of catch
-                            Valt = Valt + Me.EcoPathData.Market(ig, isp) * Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(ig, isp)
+                            ' JS 26Sep23: Must consider OffVessselPrice time series here too
+                            ''Valt = Valt + Me.EcoPathData.Market(ig, isp) * Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(ig, isp)
+                            Valt = Valt + Me.EcoSim.MarketValue(isp, ig, iTime, iYear) * Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(ig, isp)
                         Next
 
                         If Me.EcoSpaceData.Sail(ig)(i, j) = 0 Then Me.EcoSpaceData.Sail(ig)(i, j) = 0.000001
@@ -5182,8 +5185,8 @@ exitline:
 
         ReDim Effort(Me.EcoSpaceData.nFleets)
 
-        Dim iMonth As Integer = Me.EcoSpaceData.MonthNow
         Dim iYear As Integer = Me.EcoSpaceData.YearNow
+        Dim iTime As Integer = Me.EcoSpaceData.TimeNow * cCore.N_MONTHS
 
         For ig = 1 To Me.EcoSpaceData.nFleets
             'jb Attract() gets cleared out for each fleet
@@ -5191,12 +5194,12 @@ exitline:
             TotAttract = 0.0000000001
 
             'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
-            If Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear) = 0 Then
+            If Me.EcoSim.EffortCost(ig, iTime, iYear) + Me.EcoSim.SailCost(ig, iTime, iYear) = 0 Then
                 EffortCost = 0
                 SailCost = 1
             Else
-                EffortCost = Me.EcoSim.EffortCost(ig, iMonth, iYear) / (Me.EcoSim.FixedCost(ig, iMonth, iYear) + Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear))
-                SailCost = Me.EcoSim.SailCost(ig, iMonth, iYear) / (Me.EcoSim.FixedCost(ig, iMonth, iYear) + Me.EcoSim.EffortCost(ig, iMonth, iYear) + Me.EcoSim.SailCost(ig, iMonth, iYear))
+                EffortCost = Me.EcoSim.EffortCost(ig, iTime, iYear) / (Me.EcoSim.FixedCost(ig, iTime, iYear) + Me.EcoSim.EffortCost(ig, iTime, iYear) + Me.EcoSim.SailCost(ig, iTime, iYear))
+                SailCost = Me.EcoSim.SailCost(ig, iTime, iYear) / (Me.EcoSim.FixedCost(ig, iTime, iYear) + Me.EcoSim.EffortCost(ig, iTime, iYear) + Me.EcoSim.SailCost(ig, iTime, iYear))
             End If
 
             CatGear = 0 '*****ecopath base total catch for this gear
@@ -5216,7 +5219,7 @@ exitline:
                             'Catch
                             CatLoc(i, j) = CatLoc(i, j) + Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(ig, isp) '****
                             'Value of catch
-                            Valt = Valt + Me.EcoPathData.Market(ig, isp) * Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(ig, isp)
+                            Valt = Valt + Me.EcoSim.MarketValue(isp, ig, iTime, iYear) * Me.EcoSpaceData.Bcell(i, j, isp) * Me.EcoSimData.relQ(ig, isp)
                         Next
 
                         If Me.EcoSpaceData.Sail(ig)(i, j) = 0 Then Me.EcoSpaceData.Sail(ig)(i, j) = 0.000001
@@ -5316,7 +5319,7 @@ exitline:
     Private Sub updateOffVesselPrices(ByVal iModelTimeStep As Integer, iYear As Integer)
         For ig As Integer = 1 To Me.EcoSpaceData.nFleets
             For isp As Integer = 1 To Me.EcoSpaceData.NGroups
-                Me.OffVesselPrice(ig, isp) = Me.EcoSim.LandingsValue(isp, ig, iModelTimeStep, iYear)
+                Me.OffVesselPrice(ig, isp) = Me.EcoSim.MarketValue(isp, ig, iModelTimeStep, iYear)
             Next
         Next
     End Sub

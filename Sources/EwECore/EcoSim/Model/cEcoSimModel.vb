@@ -1166,7 +1166,7 @@ Namespace Ecosim
                 For igrp As Integer = 1 To Me.nGroups
                     For iflt = 1 To Me.m_Data.nGear
                         'Monthly Value = Landings * [mediated price] * [Discount Factor]
-                        Me.m_search.ValCatch(iflt, igrp) += LandingsForValue(igrp, iflt) * Me.LandingsValue(igrp, iflt, iTime, iYear) * Me.m_search.DF / 12.0F
+                        Me.m_search.ValCatch(iflt, igrp) += LandingsForValue(igrp, iflt) * Me.MarketValue(igrp, iflt, iTime, iYear) * Me.m_search.DF / 12.0F
 
                     Next
                 Next
@@ -1211,7 +1211,7 @@ Namespace Ecosim
                 baseGroupVal = 0
                 For iflt As Integer = 1 To Me.m_Data.nGear
                     'Landings are the "Ecopath" landings (discards not included) which is the annual landings
-                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.LandingsValue(igrp, iflt, iTime, iYear)
+                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.MarketValue(igrp, iflt, iTime, iYear)
 
                     Me.m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) += value
                     Me.m_Data.ResultsSumValueByGear(iflt, iTime) += value
@@ -1248,7 +1248,7 @@ Namespace Ecosim
         ''' <see cref="eTimeSeriesType.OffVesselPriceRel">relative time series</see> 
         ''' and applied price elasticity functions.</remarks>
         ''' -------------------------------------------------------------------
-        Public Function LandingsValue(ByVal iGrp As Integer, ByVal iFlt As Integer, ByVal iTime As Integer, ByVal iYear As Integer) As Single
+        Public Function MarketValue(ByVal iGrp As Integer, ByVal iFlt As Integer, ByVal iTime As Integer, ByVal iYear As Integer) As Single
 
             Dim value As Single = Me.m_EPData.Market(iFlt, iGrp)
             Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iTime, iYear)
@@ -3292,19 +3292,15 @@ Namespace Ecosim
             'Switching:
             Me.InitRelaSwitch()
 
-
-#If B_USE_SHARED_ARENA Then
-            Me.DefineFlowList()
-#Else
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            Debug.Assert(False, "Warning Shared Arenas disabled")
-            DefaultPeatArena()
-            DefineArenasAndFlowList()
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-#End If
+            If cCore.USE_SHARED_ARENAS Then
+                Me.DefineFlowList()
+            Else
+                DefineArenasAndFlowList()
+            End If
             Me.SetArenaVulandSearchRates()
 
         End Sub
+
         Private Sub InitRelaSwitch()     'Switching
             Dim i As Integer, j As Integer, ii As Integer
             Dim PredDen() As Double
@@ -4530,10 +4526,14 @@ Namespace Ecosim
                 Next
             Next
 
-            ' Datasource may have missed entries for newly created diet links
-            If (Not Me.m_Data.ValidateSharedArenas()) Then
-                Dim msg As cMessage = New cMessage("Shared arenas have been reset", eMessageType.DataModified, eCoreComponentType.Core, eMessageImportance.Warning)
-                Me.m_publisher.SendMessage(msg)
+            If cCore.USE_SHARED_ARENAS Then
+                ' Datasource may have missed entries for newly created diet links
+                If (Not Me.m_Data.ValidateSharedArenas()) Then
+                    Dim msg As cMessage = New cMessage("Shared arenas have been reset", eMessageType.DataModified, eCoreComponentType.Core, eMessageImportance.Warning)
+                    Me.m_publisher.SendMessage(msg)
+                End If
+            Else
+                Me.DefaultPeatArena()
             End If
 
             ' cLog.WriteMatrixToFile("VulRate EwE6.csv", m_Data.vulrate, "Vul rate")
@@ -5165,8 +5165,9 @@ Namespace Ecosim
 
         End Sub
 
-#If B_USE_SHARED_ARENA Then
         Sub DefineFlowList()
+
+            Debug.Assert(cCore.USE_SHARED_ARENAS)
 
             ' set up list of foraging arenas defined by nonzero trophic flows
             Dim i As Integer, K As Integer, ii As Integer, iii As Integer
@@ -5211,8 +5212,11 @@ Namespace Ecosim
             Next iii
 
         End Sub
-#Else
+
         Sub DefaultPeatArena()
+
+            Debug.Assert(Not cCore.USE_SHARED_ARENAS)
+
             'sets default peatarena array for models that have not had multiple predators defined to
             'eat in any foraging arenas and no peatarena values have yet been stored in database
             Dim i As Integer, j As Integer, ii As Integer
@@ -5248,93 +5252,94 @@ Namespace Ecosim
         End Sub
 
         Sub DefineArenasAndFlowList()
+
+            Debug.Assert(Not cCore.USE_SHARED_ARENAS)
             ' set up list of foraging arenas defined by nonzero trophic flows
             Dim i As Integer, j As Integer, K As Integer, ii As Integer, iii As Integer
             'IlinkSet(2) = 3: JlinkSet(2) = 1: KlinkSet(2) = 2: PeatArena(2, 1) = 1  'test inputs for accounting
             'first count number of arenas
-            Me.m_Data.Narena = 0
-            For i = 1 To Me.nGroups : For j = 1 To Me.m_EPData.NumLiving
-                    If Me.m_Data.Consumption(i, j) > 0 Then Me.m_Data.Narena = Me.m_Data.Narena + 1
+            m_Data.Narena = 0
+            For i = 1 To nGroups : For j = 1 To m_EPData.NumLiving
+                    If m_Data.Consumption(i, j) > 0 Then m_Data.Narena = m_Data.Narena + 1
                 Next
             Next
-            ReDim Me.m_Data.Iarena(Me.m_Data.Narena), Me.m_Data.Jarena(Me.m_Data.Narena), Me.m_Data.ArenaNo(Me.nGroups, Me.nGroups)
+            ReDim m_Data.Iarena(m_Data.Narena), m_Data.Jarena(m_Data.Narena), m_Data.ArenaNo(nGroups, nGroups)
 
             'then assign arenas to linear list
             ii = 0
-            For i = 1 To Me.nGroups
-                For j = 1 To Me.nGroups
-                    If Me.m_Data.Consumption(i, j) > 0 Then
+            For i = 1 To nGroups
+                For j = 1 To nGroups
+                    If m_Data.Consumption(i, j) > 0 Then
                         ii = ii + 1
-                        Me.m_Data.Iarena(ii) = i
-                        Me.m_Data.Jarena(ii) = j
-                        Me.m_Data.ArenaNo(i, j) = ii
+                        m_Data.Iarena(ii) = i
+                        m_Data.Jarena(ii) = j
+                        m_Data.ArenaNo(i, j) = ii
                     End If
                 Next
             Next
 
             'next check to make sure PeatArena(arena,k) accounts for all i,j consumption rates
             Dim Tcon(,) As Single
-            ReDim Tcon(Me.nGroups, Me.nGroups)
-            For iii = 1 To Me.m_Data.NlinksSet
-                i = Me.m_Data.IlinkSet(iii)
-                j = Me.m_Data.KlinkSet(iii)
-                Tcon(i, j) = Tcon(i, j) + Me.m_Data.PeatArena(Me.m_Data.ArenaNo(i, Me.m_Data.JlinkSet(iii)), j)
+            ReDim Tcon(nGroups, nGroups)
+            For iii = 1 To m_Data.NlinksSet
+                i = m_Data.IlinkSet(iii)
+                j = m_Data.KlinkSet(iii)
+                Tcon(i, j) = Tcon(i, j) + m_Data.PeatArena(m_Data.ArenaNo(i, m_Data.JlinkSet(iii)), j)
             Next
 
-            For i = 1 To Me.nGroups
-                For j = 1 To Me.nGroups
-                    If Me.m_Data.Consumption(i, j) > 0 Then
+            For i = 1 To nGroups
+                For j = 1 To nGroups
+                    If m_Data.Consumption(i, j) > 0 Then
                         If Tcon(i, j) < 1 Then
-                            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, Me.m_EPData.GroupName(i), Me.m_EPData.GroupName(j)),
+                            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RUN_ERROR_MISSINGPREDATION, m_EPData.GroupName(i), m_EPData.GroupName(j)),
                                                     eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Warning)
                             Me.m_publisher.AddMessage(msg)
                             'assign remaining consumption by j of i to the i,j arena
-                            Me.m_Data.PeatArena(Me.m_Data.ArenaNo(i, j), j) = Me.m_Data.PeatArena(Me.m_Data.ArenaNo(i, j), j) + 1 - Tcon(i, j)
+                            m_Data.PeatArena(m_Data.ArenaNo(i, j), j) = m_Data.PeatArena(m_Data.ArenaNo(i, j), j) + 1 - Tcon(i, j)
                         End If
                     End If
                 Next
             Next
 
             'next count number of nonzero trophic links
-            Me.m_Data.inlinks = 0
-            For iii = 1 To Me.m_Data.NlinksSet
+            m_Data.inlinks = 0
+            For iii = 1 To m_Data.NlinksSet
                 'find arena number for this link
-                i = Me.m_Data.IlinkSet(iii)
-                ii = Me.m_Data.ArenaNo(i, Me.m_Data.JlinkSet(iii))
-                K = Me.m_Data.KlinkSet(iii)
-                If Me.m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
-                    Me.m_Data.inlinks = Me.m_Data.inlinks + 1
+                i = m_Data.IlinkSet(iii)
+                ii = m_Data.ArenaNo(i, m_Data.JlinkSet(iii))
+                K = m_Data.KlinkSet(iii)
+                If m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
+                    m_Data.inlinks = m_Data.inlinks + 1
                 End If
             Next
 
-            If Me.m_Data.inlinks < Me.m_Data.Narena Then
-                Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSIM_ERROR_FEEDARENA,
+            If m_Data.inlinks < m_Data.Narena Then
+                ' ToDo: globalize this
+                Me.m_publisher.AddMessage(New cMessage("feeding proportions by arenas not set properly",
                                             eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Warning))
                 ' ToDo: Handle this properly
                 Stop
             End If
 
-            ReDim Me.m_Data.Qlink(Me.m_Data.inlinks), Me.m_Data.ilink(Me.m_Data.inlinks), Me.m_Data.jlink(Me.m_Data.inlinks), Me.m_Data.ArenaLink(Me.m_Data.inlinks)
-            ReDim Me.m_Data.MPred(Me.m_Data.inlinks)
+            ReDim m_Data.Qlink(m_Data.inlinks), m_Data.ilink(m_Data.inlinks), m_Data.jlink(m_Data.inlinks), m_Data.ArenaLink(m_Data.inlinks)
+            ReDim m_Data.MPred(m_Data.inlinks)
 
             'then set list variables by feeding link (note must be at least as many links as arenas
             Dim Il As Integer
             Il = 0
-            For iii = 1 To Me.m_Data.NlinksSet
-                i = Me.m_Data.IlinkSet(iii)
-                ii = Me.m_Data.ArenaNo(i, Me.m_Data.JlinkSet(iii))
-                K = Me.m_Data.KlinkSet(iii)
-                If Me.m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
+            For iii = 1 To m_Data.NlinksSet
+                i = m_Data.IlinkSet(iii)
+                ii = m_Data.ArenaNo(i, m_Data.JlinkSet(iii))
+                K = m_Data.KlinkSet(iii)
+                If m_Data.PeatArena(ii, K) > 0 Then 'predator k takes part of its consumption of i from this arena
                     Il = Il + 1
-                    Me.m_Data.ilink(Il) = i
-                    Me.m_Data.jlink(Il) = K
-                    Me.m_Data.ArenaLink(Il) = ii
-                    Me.m_Data.Qlink(Il) = Me.m_Data.Consumption(i, K) * Me.m_Data.PeatArena(ii, K)
+                    m_Data.ilink(Il) = i
+                    m_Data.jlink(Il) = K
+                    m_Data.ArenaLink(Il) = ii
+                    m_Data.Qlink(Il) = m_Data.Consumption(i, K) * m_Data.PeatArena(ii, K)
                 End If
             Next
         End Sub
-
-#End If
 
         Sub SetArenaVulandSearchRates()
             'this routine sets vulrates by arena and feeding a's by trophic link after arena and trophic link lists have been set
@@ -5427,7 +5432,7 @@ Namespace Ecosim
                     'jb use time varing proportion of landings
                     If (1 = 1) Then
                         ' Use price elasticity 
-                        Dim price As Single = Me.LandingsValue(i, ig, t, y)
+                        Dim price As Single = Me.MarketValue(i, ig, t, y)
                         TotIncome += Fg * BB(i) * price * Me.m_Data.PropLandedTime(ig, i)
                     Else
                         ' Use 'old' version
