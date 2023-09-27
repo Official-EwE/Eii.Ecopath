@@ -4305,14 +4305,6 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command handler; invokes the Ecospace edit regions dialog.
-    ''' </summary>
-    Private Sub OnEditEcospaceEffortZOnes(cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
-        Dim dlg As New dlgDefineRegions(Me.UIContext)
-        dlg.ShowDialog(Me)
-    End Sub
-
-    ''' <summary>
     ''' Command handler; invokes the Ecospace edit MPAs dialog.
     ''' </summary>
     Private Sub OnEditEcospaceMPAs(cmd As cCommand) Handles m_cmdEditMPAs.OnInvoke

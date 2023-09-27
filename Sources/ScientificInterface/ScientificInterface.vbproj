@@ -2218,6 +2218,10 @@
       <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
       <Name>enaRPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEBiomassEmitterPlugin\EwEBiomassEmitterPlugin.vbproj">
+      <Project>{f1e83a61-8a90-4975-abae-a546e74e7235}</Project>
+      <Name>EwEBiomassEmitterPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
       <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
       <Name>EwEEcospaceSpinupPlugin</Name>
