@@ -32,34 +32,9 @@ Imports ScientificInterfaceShared.Controls
 #End Region ' Imports
 
 Public Class cEwEBiomassEmitterTimeseriesBuilderPlugin
-    Implements IMenuItemPlugin
     Implements IUIContextPlugin
 
     Private m_uic As cUIContext = Nothing
-
-    Public ReadOnly Property MenuItemLocation As String Implements IMenuItemPlugin.MenuItemLocation
-        Get
-            Return "MenuTools"
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlImage As Image Implements IGUIPlugin.ControlImage
-        Get
-            Return Nothing
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
-        Get
-            Return ""
-        End Get
-    End Property
-
-    Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState
-        Get
-            Return eCoreExecutionState.EcopathLoaded
-        End Get
-    End Property
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
@@ -90,11 +65,6 @@ Public Class cEwEBiomassEmitterTimeseriesBuilderPlugin
             Return "mailto:ewedevteam@gmail.com"
         End Get
     End Property
-
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
-        Dim dlg As New dlgBiomassEmitterTimeSeriesBuilder(Me.m_uic)
-        dlg.ShowDialog(Me.m_uic.FormMain)
-    End Sub
 
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
         ' NOP
