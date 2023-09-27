@@ -278,10 +278,15 @@ Public Class cTimeSeriesCSVWriter
                 sw.Write("Pool code 2")
                 For iTS As Integer = 1 To nTsT
                     Dim t As eTimeSeriesType = tstypes(iTS - 1)
+                    Dim tTest As cTimeSeries = cTimeSeriesFactory.CreateTimeSeries(t, Me.m_core, -1)
+
                     sw.Write(strDelimiter)
                     Select Case cTimeSeriesFactory.TimeSeriesCategory(t)
                         Case eTimeSeriesCategoryType.FleetGroup
                             sw.Write("group no")
+                            If (DirectCast(tTest, cFleetTimeSeries).CanApplyToAllGroups) Then
+                                sw.Write(" or 0 (all groups)")
+                            End If
                         Case Else
                             sw.Write("")
                     End Select
@@ -296,7 +301,6 @@ Public Class cTimeSeriesCSVWriter
                     sw.Write("{0} or {1}", CInt(t), t.ToString())
                 Next
                 sw.WriteLine()
-
 
                 ' Years
                 For iYear As Integer = 1 To 5

@@ -105,10 +105,14 @@ Public Class cTimeSeriesFactory
 
             Case eTimeSeriesCategoryType.Fleet,
                  eTimeSeriesCategoryType.FleetGroup
-                ts = New cFleetTimeSeries(core, iDBID)
+                ts = New cFleetTimeSeries(core, iDBID) With {
+                    .TimeSeriesType = timeSeriesType
+                    }
 
             Case eTimeSeriesCategoryType.Group
-                ts = New cGroupTimeSeries(core, iDBID)
+                ts = New cGroupTimeSeries(core, iDBID) With {
+                    .TimeSeriesType = timeSeriesType
+                    }
 
             Case eTimeSeriesCategoryType.NotSet
                 Debug.Assert(False, String.Format("Unknown category of time series for type {0}", timeSeriesType))
