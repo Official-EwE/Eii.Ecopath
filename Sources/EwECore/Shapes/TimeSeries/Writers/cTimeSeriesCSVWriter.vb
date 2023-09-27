@@ -308,7 +308,7 @@ Public Class cTimeSeriesCSVWriter
                     For iTS As Integer = 1 To nTsT
                         sw.Write(strDelimiter)
                         If (iYear < 5) Then
-                            sw.Write(If(rnd.NextDouble < 0.1, "", cStringUtils.FormatSingle(CSng(rnd.NextDouble() * 100), strDecimalSeparator)))
+                            sw.Write("#")
                         Else
                             sw.Write("..")
                         End If
