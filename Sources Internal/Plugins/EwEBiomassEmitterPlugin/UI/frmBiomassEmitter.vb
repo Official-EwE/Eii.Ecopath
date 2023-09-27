@@ -65,9 +65,9 @@ Public Class frmBiomassEmitter
 
         ' -- Set up UI --
         Dim cmd As cBrowserCommand = DirectCast(Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-        cmd.AddControl(Me.m_pbSafenet, "http://www.criobe.pf/recherche/safenet/")
-        cmd.AddControl(Me.m_pbCSIC, "http://www.icm.csic.es")
-        cmd.AddControl(Me.m_pbEII, "http://www.ecopathinternational.org")
+        cmd.AddControl(Me.m_pbSafenet, "https://www.criobe.pf/recherche/safenet/")
+        cmd.AddControl(Me.m_pbCSIC, "https://www.icm.csic.es")
+        cmd.AddControl(Me.m_pbEII, "https://www.ecopathinternational.org")
 
         Me.m_btnTrendLoad.Image = SharedResources.openHS
         Me.m_lblVersion.Text = My.Resources.VERSION
@@ -79,8 +79,19 @@ Public Class frmBiomassEmitter
                 Me.m_rbApplyToRegions.Checked = True
             Case eTargetType.MPA
                 Me.m_rbApplyToMPAs.Checked = True
+            Case eTargetType.Habitat
+                Me.m_rbApplyToHabitats.Checked = True
             Case Else
                 Debug.Assert(False)
+        End Select
+
+        Select Case Me.Data.ApplicationType
+            Case eApplicationType.Absolute
+                Me.m_rbApplyIsAbsolute.Checked = True
+            Case eApplicationType.Relative
+                Me.m_rbApplyIsRelative.Checked = True
+            Case eApplicationType.Cumulative
+                Me.m_rbApplyIsCumulative.Checked = True
         End Select
 
         Dim prots As eProtectionType() = CType([Enum].GetValues(GetType(eProtectionType)), eProtectionType())
@@ -143,6 +154,10 @@ Public Class frmBiomassEmitter
                 strTarget = SharedResources.HEADER_REGION
                 Me.m_rbApplyToRegions.Checked = True
 
+            Case eTargetType.Habitat
+                strTarget = SharedResources.HEADER_HABITAT
+                Me.m_rbApplyToHabitats.Checked = True
+
             Case Else
                 Debug.Assert(False)
 
@@ -186,13 +201,14 @@ Public Class frmBiomassEmitter
     End Sub
 
     Private Sub OnTargetChanged(sender As Object, e As EventArgs) _
-        Handles m_rbApplyToRegions.CheckedChanged, m_rbApplyToMPAs.CheckedChanged
+        Handles m_rbApplyToRegions.CheckedChanged, m_rbApplyToMPAs.CheckedChanged, m_rbApplyToHabitats.CheckedChanged
 
         If (Me.Engine Is Nothing) Then Return
         If (Me.InUpdate) Then Return
 
         If Me.m_rbApplyToRegions.Checked Then Me.Data.TargetType = eTargetType.Region
         If Me.m_rbApplyToMPAs.Checked Then Me.Data.TargetType = eTargetType.MPA
+        If Me.m_rbApplyToHabitats.Checked Then Me.Data.TargetType = eTargetType.Habitat
 
         ' Need to refresh validation status
         Me.RefreshModelTrendGrid()
@@ -200,13 +216,14 @@ Public Class frmBiomassEmitter
     End Sub
 
     Private Sub OnDataTypeChanged(sender As Object, e As EventArgs) _
-        Handles m_rbApplyIsRelative.CheckedChanged, m_rbApplyIsAbsolute.CheckedChanged
+        Handles m_rbApplyIsRelative.CheckedChanged, m_rbApplyIsAbsolute.CheckedChanged, m_rbApplyIsCumulative.CheckedChanged
 
         If (Me.Engine Is Nothing) Then Return
         If (Me.InUpdate) Then Return
 
         If Me.m_rbApplyIsRelative.Checked Then Me.Data.ApplicationType = eApplicationType.Relative
         If Me.m_rbApplyIsAbsolute.Checked Then Me.Data.ApplicationType = eApplicationType.Absolute
+        If Me.m_rbApplyIsCumulative.Checked Then Me.Data.ApplicationType = eApplicationType.Cumulative
 
     End Sub
 

@@ -29,7 +29,7 @@ Imports EwEUtils.Utilities
 Public Class cTrendFileReader
 
     Private Shared s_groupheaders As String() = {"group", "pool"}
-    Private Shared s_areaheaders As String() = {"target", "zone", "region", "mpa"}
+    Private Shared s_areaheaders As String() = {"target", "zone", "region", "mpa", "habitat"}
 
     Public Sub New()
     End Sub
@@ -84,6 +84,7 @@ Public Class cTrendFileReader
                         Else
                             If (iID = 2) Then data.TargetType = eTargetType.Region
                             If (iID = 3) Then data.TargetType = eTargetType.MPA
+                            If (iID = 4) Then data.TargetType = eTargetType.Habitat
                         End If
 
                     End If

@@ -60,6 +60,8 @@ Public Class cModelTrend
                     bValid = bValid And (Me.Target >= 1) And (Me.Target <= core.nRegions)
                 Case eTargetType.MPA
                     bValid = bValid And (Me.Target >= 1) And (Me.Target <= core.nMPAs)
+                Case eTargetType.Habitat
+                    bValid = bValid And (Me.Target >= 1) And (Me.Target <= core.nHabitats)
                 Case Else
                     Debug.Assert(False)
             End Select

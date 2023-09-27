@@ -32,11 +32,13 @@ Public Module modDefinitions
     Public Enum eTargetType As Integer
         Region = 0
         MPA
+        Habitat
     End Enum
 
     Public Enum eApplicationType As Integer
         Relative = 0
         Absolute
+        Cumulative
     End Enum
 
     Public Enum eProtectionType As Integer

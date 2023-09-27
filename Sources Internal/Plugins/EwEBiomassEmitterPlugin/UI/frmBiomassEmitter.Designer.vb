@@ -71,20 +71,25 @@ Partial Class frmBiomassEmitter
         Me.m_lblVersion = New System.Windows.Forms.Label()
         Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
         Me.m_tabTrends = New System.Windows.Forms.TabPage()
+        Me.m_plApplication = New System.Windows.Forms.Panel()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_rbApplyIsAbsolute = New System.Windows.Forms.RadioButton()
+        Me.m_rbApplyIsRelative = New System.Windows.Forms.RadioButton()
+        Me.m_plApplyTo = New System.Windows.Forms.Panel()
+        Me.m_lblApplyTo = New System.Windows.Forms.Label()
+        Me.m_rbApplyToMPAs = New System.Windows.Forms.RadioButton()
+        Me.m_rbApplyToRegions = New System.Windows.Forms.RadioButton()
         Me.m_btnTrendFished = New System.Windows.Forms.Button()
         Me.m_btnTrendAll = New System.Windows.Forms.Button()
         Me.m_btnTrendNone = New System.Windows.Forms.Button()
         Me.m_tbxTrendFile = New System.Windows.Forms.TextBox()
         Me.m_btnTrendLoad = New System.Windows.Forms.Button()
-        Me.m_lblApplyTo = New System.Windows.Forms.Label()
-        Me.m_rbApplyToRegions = New System.Windows.Forms.RadioButton()
         Me.m_dgvTrends = New System.Windows.Forms.DataGridView()
         Me.m_colTrendGroup = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.m_colTrendTarget = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.m_colTrendSummary = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.m_colTrendValid = New System.Windows.Forms.DataGridViewImageColumn()
         Me.m_colTrendEnable = New System.Windows.Forms.DataGridViewCheckBoxColumn()
-        Me.m_rbApplyToMPAs = New System.Windows.Forms.RadioButton()
         Me.m_lblTrendFile = New System.Windows.Forms.Label()
         Me.m_btnTrendReset = New System.Windows.Forms.Button()
         Me.m_btnTrendMagic = New System.Windows.Forms.Button()
@@ -94,11 +99,8 @@ Partial Class frmBiomassEmitter
         Me.m_colMPAName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.m_colMPAUseEmitter = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.m_colMPAProtection = New System.Windows.Forms.DataGridViewComboBoxColumn()
-        Me.m_plApplyTo = New System.Windows.Forms.Panel()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.m_rbApplyIsAbsolute = New System.Windows.Forms.RadioButton()
-        Me.m_rbApplyIsRelative = New System.Windows.Forms.RadioButton()
+        Me.m_rbApplyIsCumulative = New System.Windows.Forms.RadioButton()
+        Me.m_rbApplyToHabitats = New System.Windows.Forms.RadioButton()
         Me.m_ltpCredits.SuspendLayout()
         CType(Me.m_pbSafenet, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -110,11 +112,11 @@ Partial Class frmBiomassEmitter
         CType(Me.m_pbHasTrends, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbHasMetadata, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tabTrends.SuspendLayout()
+        Me.m_plApplication.SuspendLayout()
+        Me.m_plApplyTo.SuspendLayout()
         CType(Me.m_dgvTrends, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tabMetadata.SuspendLayout()
         CType(Me.m_dgvRuleData, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_plApplyTo.SuspendLayout()
-        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_ltpCredits
@@ -252,7 +254,7 @@ Partial Class frmBiomassEmitter
         '
         'm_tabTrends
         '
-        Me.m_tabTrends.Controls.Add(Me.Panel1)
+        Me.m_tabTrends.Controls.Add(Me.m_plApplication)
         Me.m_tabTrends.Controls.Add(Me.m_plApplyTo)
         Me.m_tabTrends.Controls.Add(Me.m_btnTrendFished)
         Me.m_tabTrends.Controls.Add(Me.m_btnTrendAll)
@@ -266,6 +268,61 @@ Partial Class frmBiomassEmitter
         resources.ApplyResources(Me.m_tabTrends, "m_tabTrends")
         Me.m_tabTrends.Name = "m_tabTrends"
         Me.m_tabTrends.UseVisualStyleBackColor = True
+        '
+        'm_plApplication
+        '
+        Me.m_plApplication.Controls.Add(Me.m_rbApplyIsCumulative)
+        Me.m_plApplication.Controls.Add(Me.Label1)
+        Me.m_plApplication.Controls.Add(Me.m_rbApplyIsAbsolute)
+        Me.m_plApplication.Controls.Add(Me.m_rbApplyIsRelative)
+        resources.ApplyResources(Me.m_plApplication, "m_plApplication")
+        Me.m_plApplication.Name = "m_plApplication"
+        '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
+        'm_rbApplyIsAbsolute
+        '
+        resources.ApplyResources(Me.m_rbApplyIsAbsolute, "m_rbApplyIsAbsolute")
+        Me.m_rbApplyIsAbsolute.Name = "m_rbApplyIsAbsolute"
+        Me.m_rbApplyIsAbsolute.UseVisualStyleBackColor = True
+        '
+        'm_rbApplyIsRelative
+        '
+        resources.ApplyResources(Me.m_rbApplyIsRelative, "m_rbApplyIsRelative")
+        Me.m_rbApplyIsRelative.Checked = True
+        Me.m_rbApplyIsRelative.Name = "m_rbApplyIsRelative"
+        Me.m_rbApplyIsRelative.TabStop = True
+        Me.m_rbApplyIsRelative.UseVisualStyleBackColor = True
+        '
+        'm_plApplyTo
+        '
+        Me.m_plApplyTo.Controls.Add(Me.m_lblApplyTo)
+        Me.m_plApplyTo.Controls.Add(Me.m_rbApplyToHabitats)
+        Me.m_plApplyTo.Controls.Add(Me.m_rbApplyToMPAs)
+        Me.m_plApplyTo.Controls.Add(Me.m_rbApplyToRegions)
+        resources.ApplyResources(Me.m_plApplyTo, "m_plApplyTo")
+        Me.m_plApplyTo.Name = "m_plApplyTo"
+        '
+        'm_lblApplyTo
+        '
+        resources.ApplyResources(Me.m_lblApplyTo, "m_lblApplyTo")
+        Me.m_lblApplyTo.Name = "m_lblApplyTo"
+        '
+        'm_rbApplyToMPAs
+        '
+        resources.ApplyResources(Me.m_rbApplyToMPAs, "m_rbApplyToMPAs")
+        Me.m_rbApplyToMPAs.Checked = True
+        Me.m_rbApplyToMPAs.Name = "m_rbApplyToMPAs"
+        Me.m_rbApplyToMPAs.UseVisualStyleBackColor = True
+        '
+        'm_rbApplyToRegions
+        '
+        resources.ApplyResources(Me.m_rbApplyToRegions, "m_rbApplyToRegions")
+        Me.m_rbApplyToRegions.Name = "m_rbApplyToRegions"
+        Me.m_rbApplyToRegions.UseVisualStyleBackColor = True
         '
         'm_btnTrendFished
         '
@@ -296,17 +353,6 @@ Partial Class frmBiomassEmitter
         resources.ApplyResources(Me.m_btnTrendLoad, "m_btnTrendLoad")
         Me.m_btnTrendLoad.Name = "m_btnTrendLoad"
         Me.m_btnTrendLoad.UseVisualStyleBackColor = True
-        '
-        'm_lblApplyTo
-        '
-        resources.ApplyResources(Me.m_lblApplyTo, "m_lblApplyTo")
-        Me.m_lblApplyTo.Name = "m_lblApplyTo"
-        '
-        'm_rbApplyToRegions
-        '
-        resources.ApplyResources(Me.m_rbApplyToRegions, "m_rbApplyToRegions")
-        Me.m_rbApplyToRegions.Name = "m_rbApplyToRegions"
-        Me.m_rbApplyToRegions.UseVisualStyleBackColor = True
         '
         'm_dgvTrends
         '
@@ -352,14 +398,6 @@ Partial Class frmBiomassEmitter
         resources.ApplyResources(Me.m_colTrendEnable, "m_colTrendEnable")
         Me.m_colTrendEnable.Name = "m_colTrendEnable"
         Me.m_colTrendEnable.ReadOnly = True
-        '
-        'm_rbApplyToMPAs
-        '
-        resources.ApplyResources(Me.m_rbApplyToMPAs, "m_rbApplyToMPAs")
-        Me.m_rbApplyToMPAs.Checked = True
-        Me.m_rbApplyToMPAs.Name = "m_rbApplyToMPAs"
-        Me.m_rbApplyToMPAs.TabStop = True
-        Me.m_rbApplyToMPAs.UseVisualStyleBackColor = True
         '
         'm_lblTrendFile
         '
@@ -428,40 +466,17 @@ Partial Class frmBiomassEmitter
         resources.ApplyResources(Me.m_colMPAProtection, "m_colMPAProtection")
         Me.m_colMPAProtection.Name = "m_colMPAProtection"
         '
-        'm_plApplyTo
+        'm_rbApplyIsCumulative
         '
-        Me.m_plApplyTo.Controls.Add(Me.m_lblApplyTo)
-        Me.m_plApplyTo.Controls.Add(Me.m_rbApplyToMPAs)
-        Me.m_plApplyTo.Controls.Add(Me.m_rbApplyToRegions)
-        resources.ApplyResources(Me.m_plApplyTo, "m_plApplyTo")
-        Me.m_plApplyTo.Name = "m_plApplyTo"
+        resources.ApplyResources(Me.m_rbApplyIsCumulative, "m_rbApplyIsCumulative")
+        Me.m_rbApplyIsCumulative.Name = "m_rbApplyIsCumulative"
+        Me.m_rbApplyIsCumulative.UseVisualStyleBackColor = True
         '
-        'Panel1
+        'm_rbApplyToHabitats
         '
-        Me.Panel1.Controls.Add(Me.Label1)
-        Me.Panel1.Controls.Add(Me.m_rbApplyIsAbsolute)
-        Me.Panel1.Controls.Add(Me.m_rbApplyIsRelative)
-        resources.ApplyResources(Me.Panel1, "Panel1")
-        Me.Panel1.Name = "Panel1"
-        '
-        'Label1
-        '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
-        '
-        'm_rbApplyIsAbsolute
-        '
-        resources.ApplyResources(Me.m_rbApplyIsAbsolute, "m_rbApplyIsAbsolute")
-        Me.m_rbApplyIsAbsolute.Name = "m_rbApplyIsAbsolute"
-        Me.m_rbApplyIsAbsolute.UseVisualStyleBackColor = True
-        '
-        'm_rbApplyIsRelative
-        '
-        resources.ApplyResources(Me.m_rbApplyIsRelative, "m_rbApplyIsRelative")
-        Me.m_rbApplyIsRelative.Checked = True
-        Me.m_rbApplyIsRelative.Name = "m_rbApplyIsRelative"
-        Me.m_rbApplyIsRelative.TabStop = True
-        Me.m_rbApplyIsRelative.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbApplyToHabitats, "m_rbApplyToHabitats")
+        Me.m_rbApplyToHabitats.Name = "m_rbApplyToHabitats"
+        Me.m_rbApplyToHabitats.UseVisualStyleBackColor = True
         '
         'frmBiomassEmitter
         '
@@ -485,13 +500,13 @@ Partial Class frmBiomassEmitter
         CType(Me.m_pbHasMetadata, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tabTrends.ResumeLayout(False)
         Me.m_tabTrends.PerformLayout()
+        Me.m_plApplication.ResumeLayout(False)
+        Me.m_plApplication.PerformLayout()
+        Me.m_plApplyTo.ResumeLayout(False)
+        Me.m_plApplyTo.PerformLayout()
         CType(Me.m_dgvTrends, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tabMetadata.ResumeLayout(False)
         CType(Me.m_dgvRuleData, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_plApplyTo.ResumeLayout(False)
-        Me.m_plApplyTo.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -537,9 +552,11 @@ Partial Class frmBiomassEmitter
     Friend WithEvents m_btnTrendFished As Windows.Forms.Button
     Friend WithEvents m_btnTrendAll As Windows.Forms.Button
     Friend WithEvents m_btnTrendNone As Windows.Forms.Button
-    Private WithEvents Panel1 As Windows.Forms.Panel
+    Private WithEvents m_plApplication As Windows.Forms.Panel
     Private WithEvents Label1 As Windows.Forms.Label
     Private WithEvents m_rbApplyIsAbsolute As Windows.Forms.RadioButton
     Private WithEvents m_rbApplyIsRelative As Windows.Forms.RadioButton
     Private WithEvents m_plApplyTo As Windows.Forms.Panel
+    Private WithEvents m_rbApplyIsCumulative As Windows.Forms.RadioButton
+    Private WithEvents m_rbApplyToHabitats As Windows.Forms.RadioButton
 End Class

@@ -60,54 +60,33 @@ Public Class cBiomassEmitter
         Dim t As Date = core.EcospaceTimestepToAbsoluteTime(timestep)
         Dim d As cEcospaceLayerDepth = core.EcospaceBasemap.LayerDepth
         Dim nApplied As Integer = 0
-        Dim bRel As Boolean = (Me.Data.ApplicationType = eApplicationType.Relative)
 
         For Each mt As cModelTrend In Me.Data.ModelTrends
 
             Dim bApplied As Boolean = False
             If (mt.CanRun And mt.Enable) Then
                 Dim v As Single = mt.ForcingValue(t, mt.Group)
-                Dim bUseValue As Boolean = (v > 0) And If(bRel, v <> 1, True)
+                Dim bUseValue As Boolean = False
+
+                Select Case Me.Data.ApplicationType
+                    Case eApplicationType.Relative
+                        bUseValue = (v <> 1)
+                    Case eApplicationType.Cumulative, eApplicationType.Absolute
+                        bUseValue = (v > 0)
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+
                 If (bUseValue) Then
-                    Select Case Me.Data.TargetType
-                        Case eTargetType.Region
-                            For iCol As Integer = 1 To ecospaceDS.InCol
-                                For iRow As Integer = 1 To ecospaceDS.InRow
-                                    If d.IsWaterCell(iRow, iCol) Then
-                                        If (ecospaceDS.Region(iRow, iCol) = mt.Target) Then
-                                            If bRel Then
-                                                ecospaceDS.Bcell(iRow, iCol, mt.Group) *= v
-                                            Else
-                                                ecospaceDS.Bcell(iRow, iCol, mt.Group) = v
-                                            End If
-                                            bApplied = True
-                                        End If
-                                    End If
-                                Next iRow
-                            Next iCol
-
-                        Case eTargetType.MPA
-                            Dim map As Integer(,) = ecospaceDS.MPA(mt.Target)
-                            For iCol As Integer = 1 To ecospaceDS.InCol
-                                For iRow As Integer = 1 To ecospaceDS.InRow
-                                    If d.IsWaterCell(iRow, iCol) Then
-                                        If (map(iRow, iCol) > 0) Then
-                                            If bRel Then
-                                                ecospaceDS.Bcell(iRow, iCol, mt.Group) *= v
-                                            Else
-                                                ecospaceDS.Bcell(iRow, iCol, mt.Group) = v
-                                            End If
-                                            bApplied = True
-                                        End If
-                                    End If
-                                Next iRow
-                            Next iCol
-
-                        Case Else
-                            ' Not supported yet
-                            Debug.Assert(False)
-
-                    End Select
+                    For iCol As Integer = 1 To ecospaceDS.InCol
+                        For iRow As Integer = 1 To ecospaceDS.InRow
+                            If d.IsWaterCell(iRow, iCol) Then
+                                If IsTargetCell(iRow, iCol, mt.Target) Then
+                                    Me.ApplyEmission(iRow, iCol, mt.Group, v)
+                                End If
+                            End If
+                        Next iRow
+                    Next iCol
                 End If
             End If
             If (bApplied) Then nApplied += 1
@@ -170,6 +149,43 @@ Public Class cBiomassEmitter
         Return True
 
     End Function
+
+    Private Function IsTargetCell(iRow As Integer, iCol As Integer, iTarget As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.Data.EcospaceDS
+
+        Select Case Me.Data.TargetType
+            Case eTargetType.Habitat
+                Return ecospaceDS.PHabType(iTarget)(iRow, iCol) > 0
+            Case eTargetType.MPA
+                Return ecospaceDS.MPA(iTarget)(iRow, iCol) > 0
+            Case eTargetType.Region
+                Return ecospaceDS.Region(iRow, iCol) = iTarget
+            Case Else
+                Debug.Assert(False)
+        End Select
+        Return False
+
+    End Function
+
+    Private Sub ApplyEmission(iRow As Integer, iCol As Integer, iGroup As Integer, v As Single)
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.Data.EcospaceDS
+
+        Select Case Me.Data.ApplicationType
+            Case eApplicationType.Cumulative
+                ecospaceDS.Bcell(iRow, iCol, iGroup) += v
+            Case eApplicationType.Absolute
+                ecospaceDS.Bcell(iRow, iCol, iGroup) = v
+            Case eApplicationType.Relative
+                ecospaceDS.Bcell(iRow, iCol, iGroup) *= v
+            Case Else
+                Debug.Assert(False)
+        End Select
+
+    End Sub
+
+
 
 #End Region ' Run
 
