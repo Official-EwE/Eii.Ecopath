@@ -2984,6 +2984,8 @@ Namespace DataSources
             Try
                 bSucces = bSucces And Me.RemoveEcospaceFleet(iFleetID)
                 bSucces = bSucces And Me.RemoveEcosimFleet(iFleetID)
+
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupCatchSample WHERE (FleetID={0})", iFleetID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathFleet WHERE (FleetID={0})", iFleetID))
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while removing fleet {1}", ex.Message, iFleetID))
