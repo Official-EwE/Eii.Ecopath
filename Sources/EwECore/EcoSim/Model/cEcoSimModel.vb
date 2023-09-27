@@ -1482,10 +1482,13 @@ Namespace Ecosim
             For igrp As Integer = 1 To Me.m_Data.nGroups
                 For iflt As Integer = 1 To Me.m_Data.nGear
 
-                    If Me.m_RefData.PoolForceDiscardMort(iflt, igrp, iForcedTime) >= 0.0 Then
+                    Dim discardmortForced As Single = Me.m_RefData.PoolForceDiscardMort(iflt, igrp, iForcedTime)
+                    If (discardmortForced < 0) Then discardmortForced = Me.m_RefData.PoolForceDiscardMort(iflt, 0, iForcedTime)
+
+                    If discardmortForced >= 0.0 Then
                         'Discard Mortality has changed
                         'Save the discard mortality rate for this timestep
-                        Me.m_Data.PropDiscardMortTime(iflt, igrp) = Me.m_RefData.PoolForceDiscardMort(iflt, igrp, iForcedTime)
+                        Me.m_Data.PropDiscardMortTime(iflt, igrp) = discardmortForced
                         'Propdiscardtime() does NOT include discards that survived
                         Me.m_Data.Propdiscardtime(iflt, igrp) = (1 - Me.m_Data.PropLandedTime(iflt, igrp)) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
 
@@ -1493,10 +1496,13 @@ Namespace Ecosim
                         bForced = True
                     End If
 
-                    If Me.m_RefData.PoolForceDiscardProp(iflt, igrp, iForcedTime) >= 0.0 Then
+                    Dim discardprop As Single = Me.m_RefData.PoolForceDiscardProp(iflt, igrp, iForcedTime)
+                    If (discardprop < 0) Then discardprop = Me.m_RefData.PoolForceDiscardProp(iflt, 0, iForcedTime)
+
+                    If discardprop >= 0.0 Then
                         'Propdiscardtime does not include discards that survived
-                        Me.m_Data.Propdiscardtime(iflt, igrp) = Me.m_RefData.PoolForceDiscardProp(iflt, igrp, iForcedTime) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
-                        Me.m_Data.PropLandedTime(iflt, igrp) = 1 - Me.m_RefData.PoolForceDiscardProp(iflt, igrp, iForcedTime)
+                        Me.m_Data.Propdiscardtime(iflt, igrp) = discardprop * Me.m_Data.PropDiscardMortTime(iflt, igrp)
+                        Me.m_Data.PropLandedTime(iflt, igrp) = 1 - discardprop
 
                         bForced = True
                         bFChanged = True

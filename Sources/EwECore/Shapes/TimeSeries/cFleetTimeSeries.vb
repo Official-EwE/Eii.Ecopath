@@ -85,13 +85,27 @@ Public Class cFleetTimeSeries
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether this fleet time series type can be broadly applied to all groups at once
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property CanApplyToAllGroups As Boolean
+        Get
+            ' JS 27Sept23: some secundary inidices (group codes) can be 0 to allow for 'All' groups
+            Select Case Me.m_timeSeriesType
+                Case eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion
+                    Return True
+            End Select
+            Return False
+        End Get
+    End Property
+
     Public ReadOnly Property GroupIndexStatus() As eStatusFlags
         Get
-            If (Me.m_timeSeriesType = eTimeSeriesType.DiscardMortality) Or (Me.m_timeSeriesType = eTimeSeriesType.DiscardProportion) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.Catchabilities) Or (Me.m_timeSeriesType = eTimeSeriesType.OffVesselPrice) Then
-                If (Me.DatPoolSec < 1 Or Me.DatPoolSec > Me.m_core.nGroups) Then
-                    Return eStatusFlags.ErrorEncountered
-                End If
+            If Me.CanApplyToAllGroups Then Return eStatusFlags.OK
+            If (Me.DatPoolSec < 1 Or Me.DatPoolSec > Me.m_core.nGroups) Then
+                Return eStatusFlags.ErrorEncountered
             End If
             Return eStatusFlags.OK
         End Get

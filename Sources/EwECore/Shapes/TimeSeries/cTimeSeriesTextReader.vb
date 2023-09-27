@@ -564,6 +564,9 @@ Public MustInherit Class cTimeSeriesTextReader
                 ' Extract time series type
                 ' JS28oct09 allow strings as time series types too
                 tstype(i - 1) = Me.ToTimeSeriesType(cols(i))
+
+                Dim tsTest As cTimeSeries = cTimeSeriesFactory.CreateTimeSeries(tstype(i - 1), Nothing, -1)
+
                 If (tstype(i - 1) = eTimeSeriesType.NotSet) Then
                     tstype(i - 1) = DirectCast(cStringUtils.ConvertToInteger(cols(i)), eTimeSeriesType)
                     If (tstype(i - 1) = cCore.NULL_VALUE) Then
@@ -606,8 +609,10 @@ Public MustInherit Class cTimeSeriesTextReader
                         End If
 
                         ' Group index cannot exceed core nGroups
-                        If (datpool2(i - 1) < 1) Or (datpool2(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)) Then
-                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, datpool2(i - 1)), iLineNumber - 1)
+                        If Not DirectCast(tsTest, cFleetTimeSeries).CanApplyToAllGroups Then
+                            If (datpool2(i - 1) < 1) Or (datpool2(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)) Then
+                                Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, datpool2(i - 1)), iLineNumber - 1)
+                            End If
                         End If
 
                     Case eTimeSeriesCategoryType.Forcing
@@ -796,7 +801,8 @@ Public MustInherit Class cTimeSeriesTextReader
             End If
         Next [type]
 
-        Return eTimeSeriesType.NotSet
+        Dim val As Integer = cStringUtils.ConvertToInteger(strTimeSeries)
+        Return DirectCast(val, eTimeSeriesType)
 
     End Function
 

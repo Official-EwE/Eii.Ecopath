@@ -530,6 +530,10 @@ Namespace Ecosim
                         Me.AddCurveToGraphPane(ePlot.DiscardsSurvival, Me.m_zgh.CreateLineItem(fleet, applDiscardsSurvival(i)), True)
                     End If
                     Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem(fleet, applFishMortFleet(i)), True)
+                    For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortalityRef, iGroup, Color.Blue)
+                        Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, li)
+                    Next li
+
                 Next
 
             End If
