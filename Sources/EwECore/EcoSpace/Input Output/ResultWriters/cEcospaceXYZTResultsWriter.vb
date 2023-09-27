@@ -201,7 +201,11 @@ Public Class cEcospaceXYZTResultsWriter
         For ir As Integer = 1 To Me.EcospaceData.InRow
             For ic As Integer = 1 To Me.EcospaceData.InCol
                 If ic > 1 Then sbBuff.Append(",")
-                value = CDbl(map.Cell(ir, ic))
+                If Me.EcospaceData.Depth(ir, ic) > 0 Then
+                    value = CDbl(map.Cell(ir, ic))
+                Else
+                    value = cCore.NULL_VALUE
+                End If
                 If (value <> cCore.NULL_VALUE) Then
                     value = Me.ScaleValue(value, timestep, iIndex, varname)
                 End If
