@@ -166,7 +166,7 @@ Namespace Ecospace.Controls
             Dim clrText As Color = e.ForeColor
             Dim fmt As New StringFormat(StringFormatFlags.NoWrap)
             fmt.LineAlignment = StringAlignment.Center
-            fmt.Trimming = StringTrimming.EllipsisWord
+            fmt.Trimming = StringTrimming.None
 
             If Not Me.Enabled Then
                 clrText = SystemColors.GrayText
