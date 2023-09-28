@@ -4499,51 +4499,54 @@ Namespace DataSources
             ' Get consumption and arenas ready
             Me.m_core.InitEcosimLinks()
 
-            ecosimDS.NlinksSet = 0
+            If cCore.USE_SHARED_ARENAS Then
 
-            ' Strategy:
-            ' - Load database as in EwE5
-            ' - Call on Ecosim to patch the data, add defaults where missing, etc
-            ' - Groups that have disappeared should no longer be around, no need to account for those
+                ecosimDS.NlinksSet = 0
 
-            ' Abandon EwE5 approach of loading arenas by sequence; instead, grab arena no from pred + prey as initialized by Sim, forced here on line 4483
+                ' Strategy:
+                ' - Load database as in EwE5
+                ' - Call on Ecosim to patch the data, add defaults where missing, etc
+                ' - Groups that have disappeared should no longer be around, no need to account for those
 
-            Try
-                Dim n As Integer = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID)))
+                ' Abandon EwE5 approach of loading arenas by sequence; instead, grab arena no from pred + prey as initialized by Sim, forced here on line 4483
 
-                If (n > 0) Then
-                    reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
-                    ecosimDS.NlinksSet = n
-                    ecosimDS.RedimArenaLinks()
+                Try
+                    Dim n As Integer = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID)))
 
-                    While reader.Read()
+                    If (n > 0) Then
+                        reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
+                        ecosimDS.NlinksSet = n
+                        ecosimDS.RedimArenaLinks()
 
-                        iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
-                        iPred = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
-                        iPredShared = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredSharedID")))
-                        sPeatArena = CSng(reader("PeatArena"))
+                        While reader.Read()
 
-                        ' Grab arena no. as initialized from current set-up
-                        iArenaNo = ecosimDS.ArenaNo(iPrey, iPred) ' CInt(Me.m_db.ReadSafe(reader, "Sequence", 1)) ' Fallback
+                            iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
+                            iPred = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
+                            iPredShared = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredSharedID")))
+                            sPeatArena = CSng(reader("PeatArena"))
 
-                        If (iPred > 0 And iPrey > 0 And iPredShared > 0 And sPeatArena > 0 And iArenaNo > 0) Then
-                            ii += 1
-                            ecosimDS.IlinkSet(ii) = iPrey
-                            ecosimDS.JlinkSet(ii) = iPred
-                            ecosimDS.KlinkSet(ii) = iPredShared
-                            ecosimDS.PeatArena(iArenaNo, iPredShared) = sPeatArena
-                        End If
+                            ' Grab arena no. as initialized from current set-up
+                            iArenaNo = ecosimDS.ArenaNo(iPrey, iPred) ' CInt(Me.m_db.ReadSafe(reader, "Sequence", 1)) ' Fallback
 
-                    End While
-                    Me.m_db.ReleaseReader(reader)
-                    reader = Nothing
+                            If (iPred > 0 And iPrey > 0 And iPredShared > 0 And sPeatArena > 0 And iArenaNo > 0) Then
+                                ii += 1
+                                ecosimDS.IlinkSet(ii) = iPrey
+                                ecosimDS.JlinkSet(ii) = iPred
+                                ecosimDS.KlinkSet(ii) = iPredShared
+                                ecosimDS.PeatArena(iArenaNo, iPredShared) = sPeatArena
+                            End If
 
-                End If
+                        End While
+                        Me.m_db.ReleaseReader(reader)
+                        reader = Nothing
 
-            Catch ex As Exception
-                Me.LogError(String.Format("Error {0} occurred while reading Ecosim shared arenas", ex.Message))
-                bSucces = False
-            End Try
+                    End If
+
+                Catch ex As Exception
+                    Me.LogError(String.Format("Error {0} occurred while reading Ecosim shared arenas", ex.Message))
+                    bSucces = False
+                End Try
+            End If
 
             Return bSucces
 
@@ -4944,38 +4947,41 @@ Namespace DataSources
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
 
-            ' Obtain mapped scenario ID
-            iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+            If cCore.USE_SHARED_ARENAS Then
 
-            Try
-                Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
-                writer = Me.m_db.GetWriter("EcosimScenarioArena")
+                ' Obtain mapped scenario ID
+                iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
-                For i As Integer = 1 To ecosimDS.NlinksSet
-                    Dim iPrey As Integer = ecosimDS.IlinkSet(i)
-                    Dim iPred As Integer = ecosimDS.JlinkSet(i)
-                    Dim iPredShared As Integer = ecosimDS.KlinkSet(i)
+                Try
+                    Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
+                    writer = Me.m_db.GetWriter("EcosimScenarioArena")
 
-                    Dim iArena As Integer = ecosimDS.ArenaNo(iPrey, iPred)
-                    drow = writer.NewRow()
-                    drow("ScenarioID") = iScenarioID
-                    ' JS20Jun20: Oh god, had totally forgotten about this.
-                    '   Ecosim group DBID linked to Ecopath groups. Load as such. See SaveEcosimGroup for explanation
-                    '   Just don't try to explain this to your grandmother
-                    drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
-                    drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPred))
-                    drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredShared))
-                    drow("PeatArena") = ecosimDS.PeatArena(iArena, iPredShared)
-                    drow("Sequence") = iArena
-                    writer.AddRow(drow)
-                Next
+                    For i As Integer = 1 To ecosimDS.NlinksSet
+                        Dim iPrey As Integer = ecosimDS.IlinkSet(i)
+                        Dim iPred As Integer = ecosimDS.JlinkSet(i)
+                        Dim iPredShared As Integer = ecosimDS.KlinkSet(i)
 
-                Me.m_db.ReleaseWriter(writer, True)
+                        Dim iArena As Integer = ecosimDS.ArenaNo(iPrey, iPred)
+                        drow = writer.NewRow()
+                        drow("ScenarioID") = iScenarioID
+                        ' JS20Jun20: Oh god, had totally forgotten about this.
+                        '   Ecosim group DBID linked to Ecopath groups. Load as such. See SaveEcosimGroup for explanation
+                        '   Just don't try to explain this to your grandmother
+                        drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
+                        drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPred))
+                        drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredShared))
+                        drow("PeatArena") = ecosimDS.PeatArena(iArena, iPredShared)
+                        drow("Sequence") = iArena
+                        writer.AddRow(drow)
+                    Next
 
-            Catch ex As Exception
-                Me.LogError(String.Format("Error {0} occurred while saving Ecosim shared arenas", ex.Message))
-                bSucces = False
-            End Try
+                    Me.m_db.ReleaseWriter(writer, True)
+
+                Catch ex As Exception
+                    Me.LogError(String.Format("Error {0} occurred while saving Ecosim shared arenas", ex.Message))
+                    bSucces = False
+                End Try
+            End If
 
             Return bSucces
 
