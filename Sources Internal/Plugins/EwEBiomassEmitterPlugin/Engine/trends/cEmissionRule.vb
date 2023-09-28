@@ -24,8 +24,8 @@
 Option Strict On
 Imports EwECore
 
-Public Class cRuleTrend
-    Inherits cTrend
+Public Class cEmissionRule
+    Inherits cEmission
 
     Public Sub New(data As cData, mpa As cEcospaceMPA)
         MyBase.New(data)
@@ -79,7 +79,7 @@ Public Class cRuleTrend
 
         ' Determine which fished groups this MPA is preventing from being fished at ths time step. Multiply only those
 
-        ' In Skype discussions with Joachim Claudette we have been yet unable to fnid a working approach that
+        ' In Skype discussions with Joachim Claudet we have been yet unable to fnid a working approach that
         ' crosses the divide between the Zupan et al approach and EwE.
         ' - Zupan's formulas account for all MPA effects since establishment: size, age, lack of fishing, etc
         ' - Ecospace implicitly accounts for age, and fishing mortality is already controlled through MPA enforcement
@@ -124,7 +124,11 @@ Public Class cRuleTrend
     ''' <returns></returns>
     Public Property Protection As eProtectionType = eProtectionType.Moderate
 
-    Public Overrides Property CanRun As Boolean = False
+    Public Overrides Property Enable As Boolean = False
+
+    Public Overrides Function IsValid() As Boolean
+        Return True
+    End Function
 
     Public ReadOnly Property Index As Integer
         Get
@@ -137,4 +141,5 @@ Public Class cRuleTrend
             Return Me.MPA.Name
         End Get
     End Property
+
 End Class

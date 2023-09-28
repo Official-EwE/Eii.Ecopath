@@ -63,8 +63,8 @@ Public Class cData
 
     Public Property Enabled As Boolean = True
 
-    Public ReadOnly Property ModelTrends As New List(Of cModelTrend)
-    Public ReadOnly Property RuleTrends As New List(Of cRuleTrend)
+    Public ReadOnly Property TimeSeries As New List(Of cEmissionTimeSeries)
+    Public ReadOnly Property RuleTrends As New List(Of cEmissionRule)
 
     Public ReadOnly Property TrendFileName As String
         Get
@@ -87,11 +87,11 @@ Public Class cData
     Public ReadOnly Property CanRun As Boolean
         Get
             Dim bValid As Boolean = True
-            For Each t As cTrend In Me.ModelTrends
-                bValid = bValid And t.CanRun
+            For Each t As cEmission In Me.TimeSeries
+                bValid = bValid And t.Enable
             Next
-            For Each t As cTrend In Me.RuleTrends
-                bValid = bValid And t.CanRun
+            For Each t As cEmission In Me.RuleTrends
+                bValid = bValid And t.Enable
             Next
             Return bValid
         End Get
@@ -110,16 +110,18 @@ Public Class cData
 #Region " Loading "
 
     Public Sub Clear()
-        Me.ModelTrends.Clear()
+        Me.TimeSeries.Clear()
         Me.RuleTrends.Clear()
         Me.m_strTrendFileName = ""
         Me.TargetType = eTargetType.Region
     End Sub
 
-    Friend Sub LoadTrends(files() As String)
+    Friend Sub LoadTimeSeries(files() As String)
 
-        Me.Clear()
-        Dim IO As New cTrendFileReader()
+        Me.TimeSeries.Clear()
+        Me.m_strTrendFileName = ""
+
+        Dim IO As New cEmissionTimeSeriesReader()
         If IO.Load(Me.Core, files, Me) Then
             If (files.Count = 1) Then
                 Me.m_strTrendFileName = files(0)
@@ -127,6 +129,9 @@ Public Class cData
                 Me.m_strTrendFileName = "(multiple files)"
             End If
             'Me.Validate()
+        Else
+            Me.TimeSeries.Clear()
+            Me.m_strTrendFileName = ""
         End If
 
     End Sub
@@ -145,12 +150,12 @@ Public Class cData
 
         Me.RuleTrends.Clear()
         For i As Integer = 1 To Me.Core.nMPAs
-            Dim rule As New cRuleTrend(Me, Me.Core.EcospaceMPAs(i))
+            Dim rule As New cEmissionRule(Me, Me.Core.EcospaceMPAs(i))
             Dim key As String = Me.SectionName(rule.MPA)
 
             'meta.YearEstablished = ad.Settings.ReadSetting(key, SETTING_YEAR, 2000)
             rule.Protection = ad.Settings.ReadSetting(key, SETTING_PROT, eProtectionType.Moderate)
-            rule.CanRun = ad.Settings.ReadSetting(key, SETTING_USE, False)
+            rule.Enable = ad.Settings.ReadSetting(key, SETTING_USE, False)
             Me.RuleTrends.Add(rule)
         Next
 
@@ -182,11 +187,11 @@ Public Class cData
 
         Dim ad As cAuxiliaryData = Me.Core.AuxillaryData(Me.DataName())
 
-        For Each rule As cRuleTrend In Me.RuleTrends
+        For Each rule As cEmissionRule In Me.RuleTrends
             Dim key As String = Me.SectionName(rule.MPA)
             'ad.Settings.WriteSetting(key, SETTING_YEAR, meta.YearEstablished)
             ad.Settings.WriteSetting(key, SETTING_PROT, rule.Protection)
-            ad.Settings.WriteSetting(key, SETTING_USE, rule.CanRun)
+            ad.Settings.WriteSetting(key, SETTING_USE, rule.Enable)
         Next
 
         Dim sb As New StringBuilder()

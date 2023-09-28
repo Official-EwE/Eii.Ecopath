@@ -38,6 +38,7 @@ Public Class cBiomassEmitter
     End Sub
 
     Public Property Enabled As Boolean = False
+
     Public ReadOnly Property Data As cData = Nothing
 
 #Region " Run "
@@ -61,17 +62,17 @@ Public Class cBiomassEmitter
         Dim d As cEcospaceLayerDepth = core.EcospaceBasemap.LayerDepth
         Dim nApplied As Integer = 0
 
-        For Each mt As cModelTrend In Me.Data.ModelTrends
+        For Each mt As cEmissionTimeSeries In Me.Data.TimeSeries
 
             Dim bApplied As Boolean = False
-            If (mt.CanRun And mt.Enable) Then
+            If (mt.Enable And mt.IsValid) Then
                 Dim v As Single = mt.ForcingValue(t, mt.Group)
                 Dim bUseValue As Boolean = False
 
                 Select Case Me.Data.ApplicationType
                     Case eApplicationType.Relative
                         bUseValue = (v <> 1)
-                    Case eApplicationType.Cumulative, eApplicationType.Absolute
+                    Case eApplicationType.Additive, eApplicationType.Absolute
                         bUseValue = (v > 0)
                     Case Else
                         Debug.Assert(False)
@@ -96,8 +97,8 @@ Public Class cBiomassEmitter
 
             Dim clustermaps(core.nMPAs) As Map
             For iMPA As Integer = 1 To core.nMPAs
-                Dim rt As cRuleTrend = Me.Data.RuleTrends(iMPA - 1)
-                If (rt.CanRun) Then
+                Dim rt As cEmissionRule = Me.Data.RuleTrends(iMPA - 1)
+                If (rt.Enable) Then
                     Dim map As New Map(ecospaceDS.MPA(iMPA), True)
                     clustermaps(iMPA) = map.Clusters().ClusterCount()
                 End If
@@ -116,8 +117,8 @@ Public Class cBiomassEmitter
                                 ' If this cell is closed to fishing for this fleet and month by any of the MPAs, then do not allow fishing here 
                                 For iMPA As Integer = 1 To ecospaceDS.MPAno
                                     ' Is the MPA closed to this fleet, and is a rule in place?
-                                    Dim rt As cRuleTrend = Me.Data.RuleTrends(iMPA - 1)
-                                    If rt.CanRun And (ecospaceDS.MPA(iMPA)(i, j) > 0) And (Not ecospaceDS.MPAfishery(f, iMPA)) And (Not ecospaceDS.MPAmonth(ecospaceDS.MonthNow, iMPA)) Then
+                                    Dim rt As cEmissionRule = Me.Data.RuleTrends(iMPA - 1)
+                                    If rt.Enable And (ecospaceDS.MPA(iMPA)(i, j) > 0) And (Not ecospaceDS.MPAfishery(f, iMPA)) And (Not ecospaceDS.MPAmonth(ecospaceDS.MonthNow, iMPA)) Then
                                         ' #Yes: This MPA prohibits this fleet from fishing in this cell for this month
                                         For g As Integer = 1 To ecopathDS.NumGroups
                                             If (ecopathDS.Landing(f, g) + ecopathDS.Discard(f, g)) > 0 Then
@@ -173,7 +174,7 @@ Public Class cBiomassEmitter
         Dim ecospaceDS As cEcospaceDataStructures = Me.Data.EcospaceDS
 
         Select Case Me.Data.ApplicationType
-            Case eApplicationType.Cumulative
+            Case eApplicationType.Additive
                 ecospaceDS.Bcell(iRow, iCol, iGroup) += v
             Case eApplicationType.Absolute
                 ecospaceDS.Bcell(iRow, iCol, iGroup) = v

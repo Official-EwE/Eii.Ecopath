@@ -25,9 +25,9 @@
 ''' Helper class, compares model trends
 ''' </summary>
 Public Class cModelTrendComparer
-    Implements IComparer(Of cModelTrend)
+    Implements IComparer(Of cEmissionTimeSeries)
 
-    Public Function Compare(x As cModelTrend, y As cModelTrend) As Integer Implements IComparer(Of cModelTrend).Compare
+    Public Function Compare(x As cEmissionTimeSeries, y As cEmissionTimeSeries) As Integer Implements IComparer(Of cEmissionTimeSeries).Compare
         If (x.Group < y.Group) Then Return -1
         If (x.Group > y.Group) Then Return 1
         If (x.Target < y.Target) Then Return -1

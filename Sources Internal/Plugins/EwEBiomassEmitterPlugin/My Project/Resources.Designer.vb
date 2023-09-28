@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -70,7 +70,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass emitters.
+        '''  Looks up a localized string similar to Biomass emitter.
         '''</summary>
         Friend ReadOnly Property CAPTION_EMITTER() As String
             Get
@@ -97,29 +97,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to You have not loaded any trend data yet.
+        '''  Looks up a localized string similar to You have not loaded any time series data yet.
         '''</summary>
-        Friend ReadOnly Property CHECK_TRENDS_MISSING() As String
+        Friend ReadOnly Property CHECK_TIMESERIES_MISSING() As String
             Get
-                Return ResourceManager.GetString("CHECK_TRENDS_MISSING", resourceCulture)
+                Return ResourceManager.GetString("CHECK_TIMESERIES_MISSING", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to There are no biomass trends conflicts with Ecospace..
+        '''  Looks up a localized string similar to All emission time series overlap with the Ecospace run period..
         '''</summary>
-        Friend ReadOnly Property CHECK_TRENDS_OK() As String
+        Friend ReadOnly Property CHECK_TIMESERIES_OK() As String
             Get
-                Return ResourceManager.GetString("CHECK_TRENDS_OK", resourceCulture)
+                Return ResourceManager.GetString("CHECK_TIMESERIES_OK", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomas trends do not overlap with the Ecospace run. Did you set the Ecopath start year?.
+        '''  Looks up a localized string similar to One or more emission time series do not overlap with the Ecospace run period. Did you set the Ecopath start year?.
         '''</summary>
-        Friend ReadOnly Property CHECK_TRENDS_OUTOFRANGE() As String
+        Friend ReadOnly Property CHECK_TIMESERIES_OUTOFRANGE() As String
             Get
-                Return ResourceManager.GetString("CHECK_TRENDS_OUTOFRANGE", resourceCulture)
+                Return ResourceManager.GetString("CHECK_TIMESERIES_OUTOFRANGE", resourceCulture)
             End Get
         End Property
         
@@ -155,9 +155,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property icm_transparent() As System.Drawing.Bitmap
+        Friend ReadOnly Property ICM_logo_blue() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("icm_transparent", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("ICM_logo_blue", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -282,7 +282,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Version 0.4, 21 March 2019.
+        '''  Looks up a localized string similar to Version 0.5, 27 September 2023.
         '''</summary>
         Friend ReadOnly Property VERSION() As String
             Get

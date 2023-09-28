@@ -24,8 +24,8 @@
 Option Strict On
 Imports EwECore
 
-Public Class cModelTrend
-    Inherits cTrend
+Public Class cEmissionTimeSeries
+    Inherits cEmission
 
     Public Sub New(data As cData, iGroup As Integer, iTarget As Integer)
         MyBase.New(data)
@@ -49,32 +49,27 @@ Public Class cModelTrend
         End Set
     End Property
 
-    Public Property Enable As Boolean = True
+    Public Overrides Property Enable As Boolean = True
 
-    Public Overrides Property CanRun As Boolean
-        Get
-            Dim core As cCore = Me.Data.Core
-            Dim bValid As Boolean = ((Me.Group >= 1) And (Me.Group <= core.nGroups))
-            Select Case Me.Data.TargetType
-                Case eTargetType.Region
-                    bValid = bValid And (Me.Target >= 1) And (Me.Target <= core.nRegions)
-                Case eTargetType.MPA
-                    bValid = bValid And (Me.Target >= 1) And (Me.Target <= core.nMPAs)
-                Case eTargetType.Habitat
-                    bValid = bValid And (Me.Target >= 1) And (Me.Target <= core.nHabitats)
-                Case Else
-                    Debug.Assert(False)
-            End Select
-            Return bValid
-        End Get
-        Set(value As Boolean)
-            ' NOP
-        End Set
-    End Property
+    Public Overrides Function IsValid() As Boolean
+        Dim core As cCore = Me.Data.Core
+        Dim bValid As Boolean = ((Me.Group >= 1) And (Me.Group <= core.nGroups))
+        Select Case Me.Data.TargetType
+            Case eTargetType.Region
+                bValid = bValid And (Me.Target >= 1) And (Me.Target <= core.nRegions)
+            Case eTargetType.MPA
+                bValid = bValid And (Me.Target >= 1) And (Me.Target <= core.nMPAs)
+            Case eTargetType.Habitat
+                bValid = bValid And (Me.Target >= 1) And (Me.Target <= core.nHabitats)
+            Case Else
+                Debug.Assert(False)
+        End Select
+        Return bValid
+    End Function
 
-    Public Function NumTrendPointsForRun() As Integer
+    Public Function NumDataPointsForRun() As Integer
         ' No need to dig further if invalid
-        If (Not Me.CanRun) Then Return 0
+        If (Not Me.Enable) Then Return 0
 
         Dim core As cCore = Me.Data.Core
         Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
@@ -98,13 +93,11 @@ Public Class cModelTrend
     End Function
 
     Public Overrides Function ToString() As String
-
-        If Not Me.CanRun Then
+        If Not Me.IsValid Then
             Return "(invalid group or target)"
         Else
-            Return (Me.NumTrendPointsForRun() & " datapoints for run")
+            Return (Me.NumDataPointsForRun() & " datapoints for run")
         End If
-
     End Function
 
 End Class

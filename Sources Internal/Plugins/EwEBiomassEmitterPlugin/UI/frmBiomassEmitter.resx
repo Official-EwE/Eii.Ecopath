@@ -153,34 +153,34 @@
   <data name="&gt;&gt;m_pbSafenet.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_pbCSIC.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+  <data name="m_pbICM.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="m_pbCSIC.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbICM.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_pbCSIC.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbICM.Location" type="System.Drawing.Point, System.Drawing">
     <value>173, 5</value>
   </data>
-  <data name="m_pbCSIC.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_pbICM.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_pbCSIC.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbICM.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 65</value>
   </data>
-  <data name="m_pbCSIC.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbICM.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_pbCSIC.Name" xml:space="preserve">
-    <value>m_pbCSIC</value>
+  <data name="&gt;&gt;m_pbICM.Name" xml:space="preserve">
+    <value>m_pbICM</value>
   </data>
-  <data name="&gt;&gt;m_pbCSIC.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbICM.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbCSIC.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_pbICM.Parent" xml:space="preserve">
     <value>m_ltpCredits</value>
   </data>
-  <data name="&gt;&gt;m_pbCSIC.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbICM.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_pbEII.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
@@ -241,7 +241,7 @@
     <value>0</value>
   </data>
   <data name="m_ltpCredits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbSafenet" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbCSIC" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_pbEII" Row="1" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,12,Percent,33.33333,Absolute,12,Percent,33.33333,Absolute,12,Percent,33.33333,Absolute,16" /&gt;&lt;Rows Styles="Absolute,5,Percent,100,Absolute,5" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbSafenet" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbICM" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_pbEII" Row="1" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,12,Percent,33.33333,Absolute,12,Percent,33.33333,Absolute,12,Percent,33.33333,Absolute,16" /&gt;&lt;Rows Styles="Absolute,5,Percent,100,Absolute,5" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_hdrCredits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -348,64 +348,64 @@
   <data name="&gt;&gt;m_hdrRuleSettings.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_lblHasTrends.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblHasTimeSeries.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblHasTrends.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblHasTimeSeries.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblHasTrends.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblHasTimeSeries.Location" type="System.Drawing.Point, System.Drawing">
     <value>30, 32</value>
   </data>
-  <data name="m_lblHasTrends.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 13</value>
+  <data name="m_lblHasTimeSeries.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 13</value>
   </data>
-  <data name="m_lblHasTrends.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblHasTimeSeries.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_lblHasTrends.Text" xml:space="preserve">
-    <value>&lt;has trends check&gt;</value>
+  <data name="m_lblHasTimeSeries.Text" xml:space="preserve">
+    <value>&lt;has time series check&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lblHasTrends.Name" xml:space="preserve">
-    <value>m_lblHasTrends</value>
+  <data name="&gt;&gt;m_lblHasTimeSeries.Name" xml:space="preserve">
+    <value>m_lblHasTimeSeries</value>
   </data>
-  <data name="&gt;&gt;m_lblHasTrends.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblHasTimeSeries.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblHasTrends.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblHasTimeSeries.Parent" xml:space="preserve">
     <value>m_tabMPA</value>
   </data>
-  <data name="&gt;&gt;m_lblHasTrends.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblHasTimeSeries.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_lblHasMetadata.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblHasRules.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblHasMetadata.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblHasRules.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblHasMetadata.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblHasRules.Location" type="System.Drawing.Point, System.Drawing">
     <value>30, 54</value>
   </data>
-  <data name="m_lblHasMetadata.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 13</value>
+  <data name="m_lblHasRules.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 13</value>
   </data>
-  <data name="m_lblHasMetadata.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblHasRules.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_lblHasMetadata.Text" xml:space="preserve">
-    <value>&lt;has metadata check&gt;</value>
+  <data name="m_lblHasRules.Text" xml:space="preserve">
+    <value>&lt;has rules check&gt;</value>
   </data>
-  <data name="&gt;&gt;m_lblHasMetadata.Name" xml:space="preserve">
-    <value>m_lblHasMetadata</value>
+  <data name="&gt;&gt;m_lblHasRules.Name" xml:space="preserve">
+    <value>m_lblHasRules</value>
   </data>
-  <data name="&gt;&gt;m_lblHasMetadata.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblHasRules.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblHasMetadata.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblHasRules.Parent" xml:space="preserve">
     <value>m_tabMPA</value>
   </data>
-  <data name="&gt;&gt;m_lblHasMetadata.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblHasRules.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_pbHasTrends.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -466,10 +466,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>333, 2</value>
+    <value>233, 2</value>
   </data>
   <data name="m_lblVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 23</value>
+    <value>252, 23</value>
   </data>
   <data name="m_lblVersion.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -549,64 +549,64 @@
   <data name="&gt;&gt;m_tabMPA.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_rbApplyIsCumulative.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbApplyIsAdditive.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_rbApplyIsCumulative.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_rbApplyIsAdditive.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_rbApplyIsCumulative.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_rbApplyIsAdditive.Location" type="System.Drawing.Point, System.Drawing">
     <value>194, 3</value>
   </data>
-  <data name="m_rbApplyIsCumulative.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 17</value>
+  <data name="m_rbApplyIsAdditive.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 17</value>
   </data>
-  <data name="m_rbApplyIsCumulative.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_rbApplyIsAdditive.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_rbApplyIsCumulative.Text" xml:space="preserve">
-    <value>&amp;Cumulative</value>
+  <data name="m_rbApplyIsAdditive.Text" xml:space="preserve">
+    <value>A&amp;dditive</value>
   </data>
-  <data name="&gt;&gt;m_rbApplyIsCumulative.Name" xml:space="preserve">
-    <value>m_rbApplyIsCumulative</value>
+  <data name="&gt;&gt;m_rbApplyIsAdditive.Name" xml:space="preserve">
+    <value>m_rbApplyIsAdditive</value>
   </data>
-  <data name="&gt;&gt;m_rbApplyIsCumulative.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbApplyIsAdditive.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_rbApplyIsCumulative.Parent" xml:space="preserve">
-    <value>m_plApplication</value>
+  <data name="&gt;&gt;m_rbApplyIsAdditive.Parent" xml:space="preserve">
+    <value>m_plTimeSeriesApplication</value>
   </data>
-  <data name="&gt;&gt;m_rbApplyIsCumulative.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbApplyIsAdditive.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblTimeSeriesApplication.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblTimeSeriesApplication.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblTimeSeriesApplication.Location" type="System.Drawing.Point, System.Drawing">
     <value>-2, 5</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblTimeSeriesApplication.Size" type="System.Drawing.Size, System.Drawing">
     <value>43, 13</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblTimeSeriesApplication.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="m_lblTimeSeriesApplication.Text" xml:space="preserve">
     <value>Data is:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;m_lblTimeSeriesApplication.Name" xml:space="preserve">
+    <value>m_lblTimeSeriesApplication</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblTimeSeriesApplication.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>m_plApplication</value>
+  <data name="&gt;&gt;m_lblTimeSeriesApplication.Parent" xml:space="preserve">
+    <value>m_plTimeSeriesApplication</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblTimeSeriesApplication.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_rbApplyIsAbsolute.AutoSize" type="System.Boolean, mscorlib">
@@ -616,7 +616,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbApplyIsAbsolute.Location" type="System.Drawing.Point, System.Drawing">
-    <value>122, 2</value>
+    <value>122, 3</value>
   </data>
   <data name="m_rbApplyIsAbsolute.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 17</value>
@@ -634,7 +634,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbApplyIsAbsolute.Parent" xml:space="preserve">
-    <value>m_plApplication</value>
+    <value>m_plTimeSeriesApplication</value>
   </data>
   <data name="&gt;&gt;m_rbApplyIsAbsolute.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -646,7 +646,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbApplyIsRelative.Location" type="System.Drawing.Point, System.Drawing">
-    <value>52, 2</value>
+    <value>52, 3</value>
   </data>
   <data name="m_rbApplyIsRelative.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 17</value>
@@ -664,63 +664,63 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbApplyIsRelative.Parent" xml:space="preserve">
-    <value>m_plApplication</value>
+    <value>m_plTimeSeriesApplication</value>
   </data>
   <data name="&gt;&gt;m_rbApplyIsRelative.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_plApplication.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_plTimeSeriesApplication.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 57</value>
   </data>
-  <data name="m_plApplication.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_plTimeSeriesApplication.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_plApplication.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_plTimeSeriesApplication.Size" type="System.Drawing.Size, System.Drawing">
     <value>397, 23</value>
   </data>
-  <data name="m_plApplication.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_plTimeSeriesApplication.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;m_plApplication.Name" xml:space="preserve">
-    <value>m_plApplication</value>
+  <data name="&gt;&gt;m_plTimeSeriesApplication.Name" xml:space="preserve">
+    <value>m_plTimeSeriesApplication</value>
   </data>
-  <data name="&gt;&gt;m_plApplication.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_plTimeSeriesApplication.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_plApplication.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_plTimeSeriesApplication.Parent" xml:space="preserve">
     <value>m_tabTrends</value>
   </data>
-  <data name="&gt;&gt;m_plApplication.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_plTimeSeriesApplication.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_lblApplyTo.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblTimeSeriesTarget.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblApplyTo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblTimeSeriesTarget.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblApplyTo.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblTimeSeriesTarget.Location" type="System.Drawing.Point, System.Drawing">
     <value>-2, 5</value>
   </data>
-  <data name="m_lblApplyTo.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblTimeSeriesTarget.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 13</value>
   </data>
-  <data name="m_lblApplyTo.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblTimeSeriesTarget.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="m_lblApplyTo.Text" xml:space="preserve">
+  <data name="m_lblTimeSeriesTarget.Text" xml:space="preserve">
     <value>Apply to:</value>
   </data>
-  <data name="&gt;&gt;m_lblApplyTo.Name" xml:space="preserve">
-    <value>m_lblApplyTo</value>
+  <data name="&gt;&gt;m_lblTimeSeriesTarget.Name" xml:space="preserve">
+    <value>m_lblTimeSeriesTarget</value>
   </data>
-  <data name="&gt;&gt;m_lblApplyTo.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblTimeSeriesTarget.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblApplyTo.Parent" xml:space="preserve">
-    <value>m_plApplyTo</value>
+  <data name="&gt;&gt;m_lblTimeSeriesTarget.Parent" xml:space="preserve">
+    <value>m_plTimeSeriesTarget</value>
   </data>
-  <data name="&gt;&gt;m_lblApplyTo.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblTimeSeriesTarget.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_rbApplyToHabitats.AutoSize" type="System.Boolean, mscorlib">
@@ -748,7 +748,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbApplyToHabitats.Parent" xml:space="preserve">
-    <value>m_plApplyTo</value>
+    <value>m_plTimeSeriesTarget</value>
   </data>
   <data name="&gt;&gt;m_rbApplyToHabitats.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -778,7 +778,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbApplyToMPAs.Parent" xml:space="preserve">
-    <value>m_plApplyTo</value>
+    <value>m_plTimeSeriesTarget</value>
   </data>
   <data name="&gt;&gt;m_rbApplyToMPAs.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -808,171 +808,171 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbApplyToRegions.Parent" xml:space="preserve">
-    <value>m_plApplyTo</value>
+    <value>m_plTimeSeriesTarget</value>
   </data>
   <data name="&gt;&gt;m_rbApplyToRegions.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_plApplyTo.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_plTimeSeriesTarget.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 32</value>
   </data>
-  <data name="m_plApplyTo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_plTimeSeriesTarget.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_plApplyTo.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_plTimeSeriesTarget.Size" type="System.Drawing.Size, System.Drawing">
     <value>397, 23</value>
   </data>
-  <data name="m_plApplyTo.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_plTimeSeriesTarget.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_plApplyTo.Name" xml:space="preserve">
-    <value>m_plApplyTo</value>
+  <data name="&gt;&gt;m_plTimeSeriesTarget.Name" xml:space="preserve">
+    <value>m_plTimeSeriesTarget</value>
   </data>
-  <data name="&gt;&gt;m_plApplyTo.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_plTimeSeriesTarget.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_plApplyTo.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_plTimeSeriesTarget.Parent" xml:space="preserve">
     <value>m_tabTrends</value>
   </data>
-  <data name="&gt;&gt;m_plApplyTo.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_plTimeSeriesTarget.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_btnTrendFished.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnEnableFishedGroupTimeSeries.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnTrendFished.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnEnableFishedGroupTimeSeries.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnTrendFished.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnEnableFishedGroupTimeSeries.Location" type="System.Drawing.Point, System.Drawing">
     <value>410, 115</value>
   </data>
-  <data name="m_btnTrendFished.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnEnableFishedGroupTimeSeries.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="m_btnTrendFished.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnEnableFishedGroupTimeSeries.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="m_btnTrendFished.Text" xml:space="preserve">
+  <data name="m_btnEnableFishedGroupTimeSeries.Text" xml:space="preserve">
     <value>&amp;Fished</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendFished.Name" xml:space="preserve">
-    <value>m_btnTrendFished</value>
+  <data name="&gt;&gt;m_btnEnableFishedGroupTimeSeries.Name" xml:space="preserve">
+    <value>m_btnEnableFishedGroupTimeSeries</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendFished.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEnableFishedGroupTimeSeries.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendFished.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEnableFishedGroupTimeSeries.Parent" xml:space="preserve">
     <value>m_tabTrends</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendFished.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEnableFishedGroupTimeSeries.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_btnTrendAll.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnEnableAllTimeSeries.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnTrendAll.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnEnableAllTimeSeries.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnTrendAll.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnEnableAllTimeSeries.Location" type="System.Drawing.Point, System.Drawing">
     <value>410, 86</value>
   </data>
-  <data name="m_btnTrendAll.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnEnableAllTimeSeries.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="m_btnTrendAll.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnEnableAllTimeSeries.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="m_btnTrendAll.Text" xml:space="preserve">
+  <data name="m_btnEnableAllTimeSeries.Text" xml:space="preserve">
     <value>&amp;All</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendAll.Name" xml:space="preserve">
-    <value>m_btnTrendAll</value>
+  <data name="&gt;&gt;m_btnEnableAllTimeSeries.Name" xml:space="preserve">
+    <value>m_btnEnableAllTimeSeries</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendAll.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEnableAllTimeSeries.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendAll.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEnableAllTimeSeries.Parent" xml:space="preserve">
     <value>m_tabTrends</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendAll.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnEnableAllTimeSeries.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_btnTrendNone.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnDisableAllTimeSeries.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnTrendNone.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnDisableAllTimeSeries.Location" type="System.Drawing.Point, System.Drawing">
     <value>411, 57</value>
   </data>
-  <data name="m_btnTrendNone.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnDisableAllTimeSeries.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="m_btnTrendNone.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnDisableAllTimeSeries.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="m_btnTrendNone.Text" xml:space="preserve">
+  <data name="m_btnDisableAllTimeSeries.Text" xml:space="preserve">
     <value>&amp;None</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendNone.Name" xml:space="preserve">
-    <value>m_btnTrendNone</value>
+  <data name="&gt;&gt;m_btnDisableAllTimeSeries.Name" xml:space="preserve">
+    <value>m_btnDisableAllTimeSeries</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendNone.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnDisableAllTimeSeries.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendNone.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnDisableAllTimeSeries.Parent" xml:space="preserve">
     <value>m_tabTrends</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendNone.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnDisableAllTimeSeries.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_tbxTrendFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tbxTimeSeriesFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_tbxTrendFile.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tbxTimeSeriesFile.Location" type="System.Drawing.Point, System.Drawing">
     <value>60, 8</value>
   </data>
-  <data name="m_tbxTrendFile.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tbxTimeSeriesFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>316, 20</value>
   </data>
-  <data name="m_tbxTrendFile.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tbxTimeSeriesFile.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_tbxTrendFile.Name" xml:space="preserve">
-    <value>m_tbxTrendFile</value>
+  <data name="&gt;&gt;m_tbxTimeSeriesFile.Name" xml:space="preserve">
+    <value>m_tbxTimeSeriesFile</value>
   </data>
-  <data name="&gt;&gt;m_tbxTrendFile.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxTimeSeriesFile.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tbxTrendFile.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxTimeSeriesFile.Parent" xml:space="preserve">
     <value>m_tabTrends</value>
   </data>
-  <data name="&gt;&gt;m_tbxTrendFile.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxTimeSeriesFile.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="m_btnTrendLoad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnBrowseTimeSeries.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnTrendLoad.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnBrowseTimeSeries.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnTrendLoad.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnBrowseTimeSeries.Location" type="System.Drawing.Point, System.Drawing">
     <value>382, 6</value>
   </data>
-  <data name="m_btnTrendLoad.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnBrowseTimeSeries.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 23</value>
   </data>
-  <data name="m_btnTrendLoad.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnBrowseTimeSeries.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendLoad.Name" xml:space="preserve">
-    <value>m_btnTrendLoad</value>
+  <data name="&gt;&gt;m_btnBrowseTimeSeries.Name" xml:space="preserve">
+    <value>m_btnBrowseTimeSeries</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendLoad.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnBrowseTimeSeries.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendLoad.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnBrowseTimeSeries.Parent" xml:space="preserve">
     <value>m_tabTrends</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendLoad.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnBrowseTimeSeries.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="m_dgvTrends.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1068,61 +1068,61 @@
   <data name="&gt;&gt;m_lblTrendFile.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="m_btnTrendReset.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnResetTimeSeriesFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnTrendReset.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnResetTimeSeriesFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnTrendReset.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnResetTimeSeriesFile.Location" type="System.Drawing.Point, System.Drawing">
     <value>411, 6</value>
   </data>
-  <data name="m_btnTrendReset.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnResetTimeSeriesFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 23</value>
   </data>
-  <data name="m_btnTrendReset.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnResetTimeSeriesFile.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_btnTrendReset.Text" xml:space="preserve">
+  <data name="m_btnResetTimeSeriesFile.Text" xml:space="preserve">
     <value>&amp;Reset</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendReset.Name" xml:space="preserve">
-    <value>m_btnTrendReset</value>
+  <data name="&gt;&gt;m_btnResetTimeSeriesFile.Name" xml:space="preserve">
+    <value>m_btnResetTimeSeriesFile</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendReset.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnResetTimeSeriesFile.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendReset.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnResetTimeSeriesFile.Parent" xml:space="preserve">
     <value>m_tabTrends</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendReset.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnResetTimeSeriesFile.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="m_btnTrendMagic.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnBuildTrend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnTrendMagic.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnBuildTrend.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnTrendMagic.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnBuildTrend.Location" type="System.Drawing.Point, System.Drawing">
     <value>462, 6</value>
   </data>
-  <data name="m_btnTrendMagic.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnBuildTrend.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 23</value>
   </data>
-  <data name="m_btnTrendMagic.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnBuildTrend.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendMagic.Name" xml:space="preserve">
-    <value>m_btnTrendMagic</value>
+  <data name="&gt;&gt;m_btnBuildTrend.Name" xml:space="preserve">
+    <value>m_btnBuildTrend</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendMagic.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnBuildTrend.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendMagic.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnBuildTrend.Parent" xml:space="preserve">
     <value>m_tabTrends</value>
   </data>
-  <data name="&gt;&gt;m_btnTrendMagic.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnBuildTrend.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
   <data name="m_tabTrends.Location" type="System.Drawing.Point, System.Drawing">

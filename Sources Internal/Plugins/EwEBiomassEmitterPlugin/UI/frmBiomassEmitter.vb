@@ -66,10 +66,10 @@ Public Class frmBiomassEmitter
         ' -- Set up UI --
         Dim cmd As cBrowserCommand = DirectCast(Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
         cmd.AddControl(Me.m_pbSafenet, "https://www.criobe.pf/recherche/safenet/")
-        cmd.AddControl(Me.m_pbCSIC, "https://www.icm.csic.es")
+        cmd.AddControl(Me.m_pbICM, "https://www.icm.csic.es")
         cmd.AddControl(Me.m_pbEII, "https://www.ecopathinternational.org")
 
-        Me.m_btnTrendLoad.Image = SharedResources.openHS
+        Me.m_btnBrowseTimeSeries.Image = SharedResources.openHS
         Me.m_lblVersion.Text = My.Resources.VERSION
 
         Me.m_cbEnabled.Checked = Me.Engine.Enabled
@@ -90,8 +90,8 @@ Public Class frmBiomassEmitter
                 Me.m_rbApplyIsAbsolute.Checked = True
             Case eApplicationType.Relative
                 Me.m_rbApplyIsRelative.Checked = True
-            Case eApplicationType.Cumulative
-                Me.m_rbApplyIsCumulative.Checked = True
+            Case eApplicationType.Additive
+                Me.m_rbApplyIsAdditive.Checked = True
         End Select
 
         Dim prots As eProtectionType() = CType([Enum].GetValues(GetType(eProtectionType)), eProtectionType())
@@ -126,7 +126,7 @@ Public Class frmBiomassEmitter
 
         Dim cmd As cBrowserCommand = DirectCast(Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
         cmd.RemoveControl(Me.m_pbSafenet)
-        cmd.RemoveControl(Me.m_pbCSIC)
+        cmd.RemoveControl(Me.m_pbICM)
         cmd.RemoveControl(Me.m_pbEII)
 
         MyBase.OnFormClosing(e)
@@ -164,11 +164,11 @@ Public Class frmBiomassEmitter
         End Select
         Me.m_colTrendTarget.HeaderText = strTarget
 
-        Me.UpdateStatus(Me.m_pbHasMetadata, Me.m_lblHasMetadata, Me.NumEnabledRules > 0 And Me.NumMPAs > 0, cStringUtils.Localize(My.Resources.CHECK_RULES_ENABLED, Me.NumEnabledRules), My.Resources.CHECK_RULES_DISABLED)
+        Me.UpdateStatus(Me.m_pbHasMetadata, Me.m_lblHasRules, Me.NumEnabledRules > 0 And Me.NumMPAs > 0, cStringUtils.Localize(My.Resources.CHECK_RULES_ENABLED, Me.NumEnabledRules), My.Resources.CHECK_RULES_DISABLED)
         If Not HasTrends() Then
-            Me.UpdateStatus(Me.m_pbHasTrends, Me.m_lblHasTrends, False, "", My.Resources.CHECK_TRENDS_MISSING)
+            Me.UpdateStatus(Me.m_pbHasTrends, Me.m_lblHasTimeSeries, False, "", My.Resources.CHECK_TIMESERIES_MISSING)
         Else
-            Me.UpdateStatus(Me.m_pbHasTrends, Me.m_lblHasTrends, Me.HasTrendData(), My.Resources.CHECK_TRENDS_OK, My.Resources.CHECK_TRENDS_OUTOFRANGE)
+            Me.UpdateStatus(Me.m_pbHasTrends, Me.m_lblHasTimeSeries, Me.HasTrendData(), My.Resources.CHECK_TIMESERIES_OK, My.Resources.CHECK_TIMESERIES_OUTOFRANGE)
         End If
 
         Me.InUpdate = False
@@ -211,49 +211,49 @@ Public Class frmBiomassEmitter
         If Me.m_rbApplyToHabitats.Checked Then Me.Data.TargetType = eTargetType.Habitat
 
         ' Need to refresh validation status
-        Me.RefreshModelTrendGrid()
+        Me.RefreshTimeSeriesGrid()
 
     End Sub
 
     Private Sub OnDataTypeChanged(sender As Object, e As EventArgs) _
-        Handles m_rbApplyIsRelative.CheckedChanged, m_rbApplyIsAbsolute.CheckedChanged, m_rbApplyIsCumulative.CheckedChanged
+        Handles m_rbApplyIsRelative.CheckedChanged, m_rbApplyIsAbsolute.CheckedChanged, m_rbApplyIsAdditive.CheckedChanged
 
         If (Me.Engine Is Nothing) Then Return
         If (Me.InUpdate) Then Return
 
         If Me.m_rbApplyIsRelative.Checked Then Me.Data.ApplicationType = eApplicationType.Relative
         If Me.m_rbApplyIsAbsolute.Checked Then Me.Data.ApplicationType = eApplicationType.Absolute
-        If Me.m_rbApplyIsCumulative.Checked Then Me.Data.ApplicationType = eApplicationType.Cumulative
+        If Me.m_rbApplyIsAdditive.Checked Then Me.Data.ApplicationType = eApplicationType.Additive
 
     End Sub
 
     Private Sub OnLoadTrends(sender As Object, e As EventArgs) _
-        Handles m_btnTrendLoad.Click
+        Handles m_btnBrowseTimeSeries.Click
 
         Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECTTRENDFILE, "", SharedResources.FILEFILTER_CSV)
         ofd.Multiselect = True
         If (ofd.ShowDialog() = DialogResult.OK) Then
-            Me.Data.LoadTrends(ofd.FileNames)
-            Me.RefreshModelTrendGrid()
+            Me.Data.LoadTimeSeries(ofd.FileNames)
+            Me.RefreshTimeSeriesGrid()
         End If
 
     End Sub
 
     Private Sub OnResetTrends(sender As Object, e As EventArgs) _
-        Handles m_btnTrendReset.Click
+        Handles m_btnResetTimeSeriesFile.Click
 
         Me.Data.Clear()
-        Me.RefreshModelTrendGrid()
+        Me.RefreshTimeSeriesGrid()
 
     End Sub
 
-    Private Sub OnMagicButtonClicked(sender As Object, e As EventArgs) Handles m_btnTrendMagic.Click
+    Private Sub OnMagicButtonClicked(sender As Object, e As EventArgs) Handles m_btnBuildTrend.Click
 
         Dim util As New dlgBiomassEmitterTimeSeriesBuilder(Me.UIContext)
         If (util.ShowDialog(Me.UIContext.FormMain) = DialogResult.OK) Then
             If (util.LoadOnSave) Then
-                Me.Data.LoadTrends(New String() {util.FileName})
-                Me.RefreshModelTrendGrid()
+                Me.Data.LoadTimeSeries(New String() {util.FileName})
+                Me.RefreshTimeSeriesGrid()
             End If
         End If
     End Sub
@@ -273,57 +273,57 @@ Public Class frmBiomassEmitter
 
     End Sub
 
-    Private Sub m_btnTrendNone_Click(sender As Object, e As EventArgs) Handles m_btnTrendNone.Click
-        For Each trend As cModelTrend In Me.Data.ModelTrends
-            trend.Enable = False
+    Private Sub OnisableAllTimeSeries(sender As Object, e As EventArgs) Handles m_btnDisableAllTimeSeries.Click
+        For Each timeseries As cEmissionTimeSeries In Me.Data.TimeSeries
+            timeseries.Enable = False
         Next
-        Me.RefreshModelTrendGrid()
+        Me.RefreshTimeSeriesGrid()
     End Sub
 
-    Private Sub m_btnTrendAll_Click(sender As Object, e As EventArgs) Handles m_btnTrendAll.Click
-        For Each trend As cModelTrend In Me.Data.ModelTrends
-            trend.Enable = (trend.NumTrendPointsForRun > 0)
+    Private Sub OnEnableAllTimeSeries(sender As Object, e As EventArgs) Handles m_btnEnableAllTimeSeries.Click
+        For Each timeseries As cEmissionTimeSeries In Me.Data.TimeSeries
+            timeseries.Enable = (timeseries.NumDataPointsForRun > 0)
         Next
-        Me.RefreshModelTrendGrid()
+        Me.RefreshTimeSeriesGrid()
     End Sub
 
-    Private Sub m_btnTrendFished_Click(sender As Object, e As EventArgs) Handles m_btnTrendFished.Click
-        For Each trend As cModelTrend In Me.Data.ModelTrends
-            If (trend.CanRun) Then
-                Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(trend.Group)
-                trend.Enable = (trend.NumTrendPointsForRun > 0) And group.IsFished
+    Private Sub OnEnableFishedGroupTimeSeries(sender As Object, e As EventArgs) Handles m_btnEnableFishedGroupTimeSeries.Click
+        For Each timeseries As cEmissionTimeSeries In Me.Data.TimeSeries
+            If (timeseries.Enable) Then
+                Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(timeseries.Group)
+                timeseries.Enable = (timeseries.NumDataPointsForRun > 0) And group.IsFished
             End If
         Next
-        Me.RefreshModelTrendGrid()
+        Me.RefreshTimeSeriesGrid()
     End Sub
 
-    Private Sub OnTrendsEnabled(sender As Object, e As DataGridViewCellEventArgs) _
+    Private Sub OnTimeSeriesEnabledStateChanged(sender As Object, e As DataGridViewCellEventArgs) _
         Handles m_dgvTrends.CellValueChanged
 
         ' Do not fire events while initializing
         If (Me.Engine Is Nothing) Or (Me.InUpdate) Then Return
 
-        Dim trend As cModelTrend = DirectCast(Me.m_dgvTrends.Rows(e.RowIndex).Tag, cModelTrend)
+        Dim timeseries As cEmissionTimeSeries = DirectCast(Me.m_dgvTrends.Rows(e.RowIndex).Tag, cEmissionTimeSeries)
         Dim val As Boolean = CBool(Me.m_dgvTrends(Me.m_colSettingsMaxEffect.Index, e.RowIndex).Value)
-        trend.Enable = val
+        timeseries.Enable = val
 
         Me.UpdateControls()
 
     End Sub
 
-    Private Sub OnMetaDataChanged(sender As Object, e As DataGridViewCellEventArgs) _
+    Private Sub OnRuleSettingsChanged(sender As Object, e As DataGridViewCellEventArgs) _
         Handles m_dgvRuleData.CellValueChanged
 
         ' Do not fire events while initializing
         If (Me.Engine Is Nothing) Or (Me.InUpdate) Then Return
 
-        Dim rule As cRuleTrend = DirectCast(Me.m_dgvRuleData.Rows(e.RowIndex).Tag, cRuleTrend)
+        Dim rule As cEmissionRule = DirectCast(Me.m_dgvRuleData.Rows(e.RowIndex).Tag, cEmissionRule)
         Dim val As Object = Me.m_dgvRuleData(e.ColumnIndex, e.RowIndex).Value
 
         ' Using hard-coded column indices can easily break when the grid is localized - if ever
         Select Case e.ColumnIndex
             Case 2 ' Enable
-                rule.CanRun = CBool(val)
+                rule.Enable = CBool(val)
             Case 3 ' Protection type
                 rule.Protection = DirectCast(val, eProtectionType)
 
@@ -351,18 +351,18 @@ Public Class frmBiomassEmitter
     ''' <summary>(Wo)men-at-work.</summary>
     Private Property InUpdate As Boolean = False
 
-    Private Sub RefreshModelTrendGrid()
+    Private Sub RefreshTimeSeriesGrid()
 
         If (Me.InUpdate) Then Return
         Me.InUpdate = True
 
-        Me.m_tbxTrendFile.Text = Me.Data.TrendFileName
+        Me.m_tbxTimeSeriesFile.Text = Me.Data.TrendFileName
 
-        Dim entries As ICollection(Of cModelTrend) = Me.Data.ModelTrends
+        Dim entries As ICollection(Of cEmissionTimeSeries) = Me.Data.TimeSeries
         Me.m_dgvTrends.Rows.Clear()
         For i As Integer = 0 To entries.Count - 1
-            Dim e As cModelTrend = entries(i)
-            Dim img As Image = If(e.CanRun, SharedResources.OK, SharedResources.Critical)
+            Dim e As cEmissionTimeSeries = entries(i)
+            Dim img As Image = If(e.Enable, SharedResources.OK, SharedResources.Critical)
             Dim iRow As Integer = Me.m_dgvTrends.Rows.Add(New Object() {e.Group, e.Target, e.ToString, img, e.Enable})
             Me.m_dgvTrends.Rows(iRow).Tag = e
         Next
@@ -376,8 +376,8 @@ Public Class frmBiomassEmitter
         ' Populate rule grid
         Me.m_dgvRuleData.Rows.Clear()
         For i As Integer = 1 To Me.Core.nMPAs
-            Dim rule As cRuleTrend = Data.RuleTrends(i - 1)
-            Dim iRow As Integer = Me.m_dgvRuleData.Rows.Add(New Object() {rule.Index, rule.Name, rule.CanRun, rule.Protection})
+            Dim rule As cEmissionRule = Data.RuleTrends(i - 1)
+            Dim iRow As Integer = Me.m_dgvRuleData.Rows.Add(New Object() {rule.Index, rule.Name, rule.Enable, rule.Protection})
             Me.m_dgvRuleData.Rows(iRow).Tag = rule
         Next
     End Sub
@@ -395,21 +395,23 @@ Public Class frmBiomassEmitter
 
     Private Function NumEnabledRules() As Integer
         Dim n As Integer = 0
-        For Each md As cRuleTrend In Me.Data.RuleTrends
-            If (md.CanRun) Then n += 1
+        For Each md As cEmissionRule In Me.Data.RuleTrends
+            If (md.Enable) Then
+                n += 1
+            End If
         Next
         Return n
     End Function
 
     Private Function HasTrends() As Boolean
-        Return (Me.Data.ModelTrends.Count + Me.Data.RuleTrends.Count > 0)
+        Return (Me.Data.TimeSeries.Count + Me.Data.RuleTrends.Count > 0)
     End Function
 
     Private Function HasTrendData() As Boolean
         If Not Me.HasTrends() Then Return False
         Dim bHasData As Boolean = False
-        For Each tr As cModelTrend In Me.Data.ModelTrends
-            bHasData = bHasData Or (tr.NumTrendPointsForRun() > 0)
+        For Each tr As cEmissionTimeSeries In Me.Data.TimeSeries
+            bHasData = bHasData Or (tr.NumDataPointsForRun() > 0)
         Next
         Return bHasData Or (Me.Data.RuleTrends.Count > 0)
     End Function

@@ -38,7 +38,7 @@ Public Module modDefinitions
     Public Enum eApplicationType As Integer
         Relative = 0
         Absolute
-        Cumulative
+        Additive
     End Enum
 
     Public Enum eProtectionType As Integer

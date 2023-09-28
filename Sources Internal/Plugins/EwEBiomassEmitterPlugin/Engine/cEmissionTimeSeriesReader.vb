@@ -26,7 +26,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
-Public Class cTrendFileReader
+Public Class cEmissionTimeSeriesReader
 
     Private Shared s_groupheaders As String() = {"group", "pool"}
     Private Shared s_areaheaders As String() = {"target", "zone", "region", "mpa", "habitat"}
@@ -37,7 +37,7 @@ Public Class cTrendFileReader
     Public Function Load(core As cCore, strFiles() As String, data As cData) As Boolean
 
         Dim msg As cMessage = Nothing
-        Dim records As New List(Of cModelTrend)
+        Dim records As New List(Of cEmissionTimeSeries)
 
         Try
             For Each strFile As String In strFiles
@@ -109,7 +109,7 @@ Public Class cTrendFileReader
                     If (msg Is Nothing) Then
 
                         For i As Integer = 0 To nItems - 1
-                            records.Add(New cModelTrend(data, groups(i), targets(i)))
+                            records.Add(New cEmissionTimeSeries(data, groups(i), targets(i)))
                         Next
 
                         ' -- data --
@@ -155,13 +155,12 @@ Public Class cTrendFileReader
         End Try
 
         If (msg IsNot Nothing) Then
-            data.Clear()
             data.Core.Messages.SendMessage(msg)
             Return False
         End If
 
         records.Sort(New cModelTrendComparer())
-        data.ModelTrends.AddRange(records)
+        data.TimeSeries.AddRange(records)
 
         Return True
 

@@ -118,14 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CAPTION_EMITTER" xml:space="preserve">
-    <value>Biomass emitters</value>
+    <value>Biomass emitter</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="EII_transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\EII_transparent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icm_transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icm_transparent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PROMPT_SELECTTRENDFILE" xml:space="preserve">
     <value>Select biomass emitter trend file to load</value>
@@ -163,7 +160,7 @@
     <comment>{0} = record count. {1}=time step, {2}=short date</comment>
   </data>
   <data name="VERSION" xml:space="preserve">
-    <value>Version 0.4, 21 March 2019</value>
+    <value>Version 0.5, 27 September 2023</value>
   </data>
   <data name="PROMPT_SELECTRULEFILE" xml:space="preserve">
     <value>Select biomass emitter rule file to load</value>
@@ -175,15 +172,15 @@
     <value>You have {0} empirical rule(s) enabled</value>
     <comment>{0} = rule count</comment>
   </data>
-  <data name="CHECK_TRENDS_MISSING" xml:space="preserve">
-    <value>You have not loaded any trend data yet</value>
+  <data name="CHECK_TIMESERIES_MISSING" xml:space="preserve">
+    <value>You have not loaded any time series data yet</value>
   </data>
-  <data name="CHECK_TRENDS_OK" xml:space="preserve">
-    <value>There are no biomass trends conflicts with Ecospace.</value>
+  <data name="CHECK_TIMESERIES_OK" xml:space="preserve">
+    <value>All emission time series overlap with the Ecospace run period.</value>
     <comment>{0}=trend count</comment>
   </data>
-  <data name="CHECK_TRENDS_OUTOFRANGE" xml:space="preserve">
-    <value>Biomas trends do not overlap with the Ecospace run. Did you set the Ecopath start year?</value>
+  <data name="CHECK_TIMESERIES_OUTOFRANGE" xml:space="preserve">
+    <value>One or more emission time series do not overlap with the Ecospace run period. Did you set the Ecopath start year?</value>
   </data>
   <data name="CAPTION_BUILDER" xml:space="preserve">
     <value>Biomass emitter time series builder</value>
@@ -202,5 +199,8 @@
   <data name="DROPLABEL_RELATIVE" xml:space="preserve">
     <value>Drop region average .csv files here
 (both before and after protection measures)</value>
+  </data>
+  <data name="ICM_logo_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ICM-logo-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

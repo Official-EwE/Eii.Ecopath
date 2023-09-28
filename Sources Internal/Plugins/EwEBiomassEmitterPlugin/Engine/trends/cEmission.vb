@@ -31,13 +31,14 @@ Option Strict On
 ''' for a specific group and target area (MPA or region), or can determine local
 ''' biomass fluctuations from emprical rules.
 ''' </summary>
-Public MustInherit Class cTrend
+Public MustInherit Class cEmission
 
     Public Sub New(data As cData)
         Me.Data = data
     End Sub
 
     Public ReadOnly Property Data As cData = Nothing
-    Public MustOverride Property CanRun As Boolean
+    Public MustOverride Property Enable As Boolean
+    Public MustOverride Function IsValid() As Boolean
 
 End Class

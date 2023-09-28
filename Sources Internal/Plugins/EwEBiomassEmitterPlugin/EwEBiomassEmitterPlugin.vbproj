@@ -138,11 +138,11 @@
     <Compile Include="cEwEBiomassEmitterTimeseriesBuilderPlugin.vb" />
     <Compile Include="Engine\cData.vb" />
     <Compile Include="Engine\Map.vb" />
-    <Compile Include="Engine\trends\cEmpiricalTrend.vb" />
-    <Compile Include="Engine\trends\cModelTrend.vb" />
-    <Compile Include="Engine\trends\cTrend.vb" />
+    <Compile Include="Engine\trends\cEmissionRule.vb" />
+    <Compile Include="Engine\trends\cEmissionTimeSeries.vb" />
+    <Compile Include="Engine\trends\cEmission.vb" />
     <Compile Include="Engine\cModelTrendComparer.vb" />
-    <Compile Include="Engine\cTrendFileReader.vb" />
+    <Compile Include="Engine\cEmissionTimeSeriesReader.vb" />
     <Compile Include="Engine\modDefinitions.vb" />
     <Compile Include="My Project\Settings.vb" />
     <Compile Include="UI\dlgBiomassEmitterTimeSeriesBuilder.Designer.vb">
@@ -256,7 +256,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\pure_magic.png" />
-    <None Include="Resources\icm_transparent.png" />
     <None Include="Resources\EII_transparent.png" />
     <Content Include="Documentation\Assets\Fig 2.png" />
     <Content Include="Documentation\Assets\Fig 3.png" />
@@ -266,6 +265,7 @@
     <Content Include="Documentation\Assets\Fig 6.png" />
     <Content Include="Documentation\Assets\Front.png" />
     <Content Include="Documentation\Assets\utility.png" />
+    <Content Include="Resources\ICM-logo-blue.png" />
     <Content Include="Resources\Safenet logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
