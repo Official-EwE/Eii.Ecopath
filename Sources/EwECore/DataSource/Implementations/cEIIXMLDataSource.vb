@@ -1249,41 +1249,46 @@ Public Class cEIIXMLDataSource
         ' Get consumption and arenas ready
         Me.m_core.InitEcosimLinks()
 
-        ecosimDS.NlinksSet = 0
+        If cCore.USE_SHARED_ARENAS Then
 
-        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
-        Dim n As Integer = dt.DefaultView.ToTable.Rows.Count
+            ecosimDS.NlinksSet = 0
 
-        If (n > 0) Then
-            ecosimDS.NlinksSet = n
-            ecosimDS.RedimArenaLinks()
-            For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+            dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+            Dim n As Integer = dt.DefaultView.ToTable.Rows.Count
 
-                Try
+            If (n > 0) Then
+                ecosimDS.NlinksSet = n
+                ecosimDS.RedimArenaLinks()
+                For Each drow As DataRow In dt.DefaultView.ToTable.Rows
 
-                    iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PreyID")))
-                    iPred = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PredID")))
-                    iPredShared = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PredSharedID")))
-                    sPeatArena = CSng(drow("PeatArena"))
+                    Try
 
-                    ' Grab arena no. as initialized from current set-up
-                    iArenaNo = ecosimDS.ArenaNo(iPrey, iPred) ' CInt(Me.m_db.ReadSafe(reader, "Sequence", 1)) ' Fallback
+                        iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PreyID")))
+                        iPred = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PredID")))
+                        iPredShared = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PredSharedID")))
+                        sPeatArena = CSng(drow("PeatArena"))
 
-                    If (iPred > 0 And iPrey > 0 And iPredShared > 0 And sPeatArena > 0 And iArenaNo > 0) Then
-                        ii += 1
-                        ecosimDS.IlinkSet(ii) = iPrey
-                        ecosimDS.JlinkSet(ii) = iPred
-                        ecosimDS.KlinkSet(ii) = iPredShared
-                        ecosimDS.PeatArena(iArenaNo, iPredShared) = sPeatArena
-                    End If
+                        ' Grab arena no. as initialized from current set-up
+                        iArenaNo = ecosimDS.ArenaNo(iPrey, iPred) ' CInt(Me.m_db.ReadSafe(reader, "Sequence", 1)) ' Fallback
 
-                Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
-                    bSucces = False
-                End Try
-            Next
+                        If (iPred > 0 And iPrey > 0 And iPredShared > 0 And sPeatArena > 0 And iArenaNo > 0) Then
+                            ii += 1
+                            ecosimDS.IlinkSet(ii) = iPrey
+                            ecosimDS.JlinkSet(ii) = iPred
+                            ecosimDS.KlinkSet(ii) = iPredShared
+                            ecosimDS.PeatArena(iArenaNo, iPredShared) = sPeatArena
+                        End If
+
+                    Catch ex As Exception
+                        Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
+                        bSucces = False
+                    End Try
+                Next
+            End If
+            dt.Clear()
+
         End If
-        dt.Clear()
+
         Return bSucces
 
     End Function
