@@ -63,6 +63,12 @@ Namespace Ecospace
             ShowSingle
         End Enum
 
+        Private Enum ePlotFilterType As Integer
+            Group
+            Fleet
+            Driver
+        End Enum
+
         Public Enum ePlotTypes As Integer
             RelB
             FOverB
@@ -128,8 +134,10 @@ Namespace Ecospace
 
         ' -- map plot settings --
         Private m_mapPlotType As ePlotTypes = ePlotTypes.RelB
-        ''' <summary>Tracker to detect plot type changes. Initial value indicates fleet stuff, not groups</summary>
-        Private m_mapPlotTypeLast As ePlotTypes = ePlotTypes.Effort
+
+        ''' <summary>Tracker to detect filter changes.</summary>
+        Private m_filterLast As ePlotFilterType
+
         Private m_bOverlay As Boolean = False
         Private m_bShowIBM As Boolean = True
         Private m_iPacketStepSize As Integer = 1
@@ -204,7 +212,7 @@ Namespace Ecospace
             Me.m_iTimeStepCur = 0
             Me.m_iTimeStepPrev = 0
 
-            Me.CheckRefreshSingleItemDropdown()
+            Me.CheckRefreshSingleItemDropdown(True)
 
         End Sub
 
@@ -1195,6 +1203,7 @@ Namespace Ecospace
 
                 If rb.Checked Then
                     Me.m_graphPlotType = DirectCast(rb.Tag, ePlotTypes)
+                    Me.CheckRefreshSingleItemDropdown()
                     Me.UpdateGraph()
                 End If
             Catch ex As Exception
@@ -1661,56 +1670,50 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub CheckRefreshSingleItemDropdown()
-
-            ' No need to refresh if nothing changes
-            If (Me.m_mapPlotTypeLast = Me.m_mapPlotType) Then Return
-
-            Dim bNeedRebuilding As Boolean = False
-            Select Case Me.m_mapPlotTypeLast
-                Case ePlotTypes.Effort
-                    bNeedRebuilding = Me.m_mapPlotType <> ePlotTypes.Effort
-                Case ePlotTypes.Driver
-                    bNeedRebuilding = Me.m_mapPlotType <> ePlotTypes.Driver
-                Case Else
-                    bNeedRebuilding = (Me.m_mapPlotType = ePlotTypes.Effort) Or (Me.m_mapPlotType = ePlotTypes.Driver)
+        Private Function PlotFilter(pt As ePlotTypes) As ePlotFilterType
+            Select Case pt
+                Case ePlotTypes.Effort : Return ePlotFilterType.Fleet
+                Case ePlotTypes.Driver : Return ePlotFilterType.Driver
+                Case Else : Return ePlotFilterType.Group
             End Select
-            Me.m_mapPlotTypeLast = Me.m_mapPlotType
+        End Function
 
-            If (bNeedRebuilding) Then
+        Private Sub CheckRefreshSingleItemDropdown(Optional bForce As Boolean = False)
 
-                Dim desc As New cCoreInterfaceFormatter()
-                Me.m_cmbDisplayItem.Items.Clear()
+            Dim bShowMap As Boolean = Object.ReferenceEquals(Me.m_tcOutputs.SelectedTab, Me.m_tabMap)
+            Dim filterNew As ePlotFilterType = Me.PlotFilter(If(bShowMap, Me.m_mapPlotType, Me.m_graphPlotType))
+            If (Me.m_filterLast = filterNew) And (bForce = False) Then Return
 
-                Select Case Me.m_mapPlotType
-                    Case ePlotTypes.Effort
-                        For i As Integer = 1 To Me.Core.nFleets
-                            Me.m_cmbDisplayItem.Items.Add(desc.ToString(Me.Core.EcospaceFleetInputs(i), eDescriptorTypes.Name))
-                        Next i
-                    Case ePlotTypes.Driver
-                        Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
-                        For i As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
-                            Me.m_cmbDisplayItem.Items.Add(desc.ToString(bm.LayerDriver(i), eDescriptorTypes.Name))
-                        Next
-                    Case Else
-                        For i As Integer = 1 To Me.Core.nGroups
-                            Me.m_cmbDisplayItem.Items.Add(desc.ToString(Me.Core.EcospaceGroupInputs(i), eDescriptorTypes.Name))
-                        Next i
-                End Select
+            Dim desc As New cCoreInterfaceFormatter()
+            Me.m_cmbDisplayItem.Items.Clear()
 
-                ' This is a confusing bit: bInUpdate flag prohibits a item selection from flipping view mode to single view
-                ' However, we want to always select an item when this combo box has been (re)populated
-                ' We certainly do not want the Ecospace form to flip back to single mode as it used to to (bug #1570)
-                ' As a solution, the item selection does not affect display but is only cosmetic if we're not currently in single item mode. There.
-                Me.m_bInUpdate = (Me.ShowItemMode <> eShowItemType.ShowSingle)
-                Me.m_cmbDisplayItem.SelectedIndex = Math.Min(Me.m_cmbDisplayItem.Items.Count - 1, 0)
-                Me.m_bInUpdate = False
+            Select Case filterNew
+                Case ePlotFilterType.Fleet
+                    For i As Integer = 1 To Me.Core.nFleets
+                        Me.m_cmbDisplayItem.Items.Add(desc.ToString(Me.Core.EcospaceFleetInputs(i), eDescriptorTypes.Name))
+                    Next i
+                Case ePlotFilterType.Driver
+                    Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+                    For i As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
+                        Me.m_cmbDisplayItem.Items.Add(desc.ToString(bm.LayerDriver(i), eDescriptorTypes.Name))
+                    Next
+                Case ePlotFilterType.Group
+                    For i As Integer = 1 To Me.Core.nGroups
+                        Me.m_cmbDisplayItem.Items.Add(desc.ToString(Me.Core.EcospaceGroupInputs(i), eDescriptorTypes.Name))
+                    Next i
+                Case Else
+                    Debug.Assert(False)
+            End Select
 
-            End If
+            Me.m_filterLast = filterNew
 
-        End Sub
-
-        Private Sub CheckRefreshCustomItemDropdown()
+            ' This is a confusing bit: bInUpdate flag prohibits a item selection from flipping view mode to single view
+            ' However, we want to always select an item when this combo box has been (re)populated
+            ' We certainly do not want the Ecospace form to flip back to single mode as it used to to (bug #1570)
+            ' As a solution, the item selection does not affect display but is only cosmetic if we're not currently in single item mode. There.
+            Me.m_bInUpdate = (Me.ShowItemMode <> eShowItemType.ShowSingle)
+            Me.m_cmbDisplayItem.SelectedIndex = Math.Min(Me.m_cmbDisplayItem.Items.Count - 1, 0)
+            Me.m_bInUpdate = False
 
         End Sub
 
