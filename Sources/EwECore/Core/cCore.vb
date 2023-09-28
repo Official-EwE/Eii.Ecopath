@@ -86,8 +86,9 @@ Public Class cCore
     Public Const N_MONTHS As Integer = 12
     ''' <summary>Max number of years ecosim or ecospace can run for</summary>
     Public Const MAX_RUN_LENGTH As Integer = 500
-
-    Public Const USE_SHARED_ARENAS As Boolean = True
+    ''' <summary>Because the shared arenas logic still causes issues in Ecospace and the Monte Carlo diet searches,
+    ''' this flag can be used to bypass shared arenas data loading, logic, and user interfaces</summary>
+    Public Const USE_SHARED_ARENAS As Boolean = False
 
 #End Region ' Shared consts
 
@@ -14596,8 +14597,10 @@ Public Class cCore
                         Me.m_Ecosim.CalcBaseAdditiveMort()
 
                     Case eVarNameFlags.VulMult
-                        ' JS 01Jun23: Changing Vuls messes up shared arenas for IBM
-                        Me.EcosimArenaManager.ResetArenas(0)
+                        If cCore.USE_SHARED_ARENAS Then
+                            ' JS 01Jun23: Changing Vuls messes up shared arenas for IBM
+                            Me.EcosimArenaManager.ResetArenas(0)
+                        End If
                 End Select
 
             Case eDataTypes.EcospaceModelParameter
@@ -14856,9 +14859,12 @@ Public Class cCore
 
                 Case eDataTypes.EcosimMortalityResponseFunctionManager
                     Me.m_publisher.AddMessage(New cMessage("Ecosim environmental responses modified", eMessageType.DataModified, obj.CoreComponent, eMessageImportance.Maintenance, eDataTypes.EcosimMortalityResponseFunctionManager))
+
                 Case eDataTypes.EcosimArenaShare
-                    Me.m_ArenaManager.Load()
-                    Me.m_publisher.AddMessage(New cMessage("Arenas modified", TypeOfChange, eCoreComponentType.Ecosim, eMessageImportance.Maintenance, eDataTypes.EcosimArenaShare))
+                    If cCore.USE_SHARED_ARENAS Then
+                        Me.m_ArenaManager.Load()
+                        Me.m_publisher.AddMessage(New cMessage("Arenas modified", TypeOfChange, eCoreComponentType.Ecosim, eMessageImportance.Maintenance, eDataTypes.EcosimArenaShare))
+                    End If
 
 
                 Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerHabitat
