@@ -123,6 +123,9 @@ Namespace Style
                     Case cUnits.Year
                         result = My.Resources.CoreDefaults.UNIT_TIME_YEAR
 
+                    Case Else
+                        result = str
+
                 End Select
 
                 Dim strResource As String = cResourceUtils.LoadString("UNIT_" & str.ToUpper(), My.Resources.CoreDefaults.ResourceManager)
@@ -133,7 +136,7 @@ Namespace Style
             End Try
 
             ' Unit undefined
-            If String.IsNullOrWhiteSpace(result) Then Return "?"
+            If String.IsNullOrWhiteSpace(result) Then Return str
 
             Return result
 
