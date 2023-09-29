@@ -84,6 +84,7 @@ Public Class cBiomassEmitter
                             If d.IsWaterCell(iRow, iCol) Then
                                 Dim overlap As Single = TargetCellOverlap(iRow, iCol, mt.Target)
                                 If (overlap > 0) Then
+                                    ' Scale emission by cell target overlap
                                     Me.ApplyEmission(iRow, iCol, mt.Group, overlap * v)
                                 End If
                             End If
