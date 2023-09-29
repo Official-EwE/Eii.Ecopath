@@ -64,6 +64,18 @@ Public Class cVariableMetaData
 
     Private Sub Init()
 
+        ' Ok. Stop. Halt. Wait. First a bit about Units
+
+        ' cUnit accepts whatever field you provide with the metadata, and placeholders are used to find localized and/or
+        ' customized units. Placeholders are [encapsulated]. For units that are hard-coded and unlocalizable
+        ' (such as the vulnerability index below), encapsulation brackets are not needed.
+
+        ' If cUnit cannot find a replacement for a unit placeholder, the placeholder text is shown in the UI.
+        ' This could be the case for units such as [cm] or [kg]. Maybe they get localized one day, but hey,
+        ' at least the UI will display some sort of a unit.
+
+        ' Now carry on.
+
         s_metadata = New Dictionary(Of eVarNameFlags, cVariableMetaData)
 
         Dim gt As cOperatorBase = cOperatorManager.getOperator(eOperators.GreaterThan)
@@ -283,7 +295,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.IUCNConservationStatus) = [Default](eValueTypes.Int)
         Me.Metadata(eVarNameFlags.ExploitationStatus) = [Default](eValueTypes.Int)
         Me.Metadata(eVarNameFlags.OccurrenceStatus) = [Default](eValueTypes.Int)
-        Me.Metadata(eVarNameFlags.TaxonVulnerabilityIndex) = [Default](eValueTypes.Int, "[0, 100]")
+        Me.Metadata(eVarNameFlags.TaxonVulnerabilityIndex) = [Default](eValueTypes.Int, "0-100")
         Me.Metadata(eVarNameFlags.TaxonWinf) = New cVariableMetaData(0, Single.MaxValue, gt, lt, cCore.NULL_VALUE)
         Me.Metadata(eVarNameFlags.TaxonvbgfK) = New cVariableMetaData(0, Single.MaxValue, gt, lt, cCore.NULL_VALUE)
 
