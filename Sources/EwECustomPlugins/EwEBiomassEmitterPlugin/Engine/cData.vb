@@ -64,7 +64,7 @@ Public Class cData
     Public Property Enabled As Boolean = True
 
     Public ReadOnly Property TimeSeries As New List(Of cEmissionTimeSeries)
-    Public ReadOnly Property RuleTrends As New List(Of cEmissionRule)
+    Public ReadOnly Property EmissionRules As New List(Of cEmissionRule)
 
     Public ReadOnly Property TrendFileName As String
         Get
@@ -90,7 +90,7 @@ Public Class cData
             For Each t As cEmission In Me.TimeSeries
                 bValid = bValid And t.Enable
             Next
-            For Each t As cEmission In Me.RuleTrends
+            For Each t As cEmission In Me.EmissionRules
                 bValid = bValid And t.Enable
             Next
             Return bValid
@@ -111,7 +111,7 @@ Public Class cData
 
     Public Sub Clear()
         Me.TimeSeries.Clear()
-        Me.RuleTrends.Clear()
+        Me.EmissionRules.Clear()
         Me.m_strTrendFileName = ""
         Me.TargetType = eTargetType.Region
     End Sub
@@ -148,7 +148,7 @@ Public Class cData
 
         Dim ad As cAuxiliaryData = Me.Core.AuxillaryData(Me.DataName())
 
-        Me.RuleTrends.Clear()
+        Me.EmissionRules.Clear()
         For i As Integer = 1 To Me.Core.nMPAs
             Dim rule As New cEmissionRule(Me, Me.Core.EcospaceMPAs(i))
             Dim key As String = Me.SectionName(rule.MPA)
@@ -156,7 +156,7 @@ Public Class cData
             'meta.YearEstablished = ad.Settings.ReadSetting(key, SETTING_YEAR, 2000)
             rule.Protection = ad.Settings.ReadSetting(key, SETTING_PROT, eProtectionType.Moderate)
             rule.Enable = ad.Settings.ReadSetting(key, SETTING_USE, False)
-            Me.RuleTrends.Add(rule)
+            Me.EmissionRules.Add(rule)
         Next
 
         ' Defaults
@@ -187,7 +187,7 @@ Public Class cData
 
         Dim ad As cAuxiliaryData = Me.Core.AuxillaryData(Me.DataName())
 
-        For Each rule As cEmissionRule In Me.RuleTrends
+        For Each rule As cEmissionRule In Me.EmissionRules
             Dim key As String = Me.SectionName(rule.MPA)
             'ad.Settings.WriteSetting(key, SETTING_YEAR, meta.YearEstablished)
             ad.Settings.WriteSetting(key, SETTING_PROT, rule.Protection)

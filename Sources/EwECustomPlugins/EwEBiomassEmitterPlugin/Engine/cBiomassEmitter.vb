@@ -93,11 +93,11 @@ Public Class cBiomassEmitter
             If (bApplied) Then nApplied += 1
         Next
 
-        If (Me.Data.RuleTrends.Count > 0) And (nApplied = 0) Then
+        If (Me.Data.EmissionRules.Count > 0) And (nApplied = 0) Then
 
             Dim clustermaps(core.nMPAs) As Map
             For iMPA As Integer = 1 To core.nMPAs
-                Dim rt As cEmissionRule = Me.Data.RuleTrends(iMPA - 1)
+                Dim rt As cEmissionRule = Me.Data.EmissionRules(iMPA - 1)
                 If (rt.Enable) Then
                     Dim map As New Map(ecospaceDS.MPA(iMPA), True)
                     clustermaps(iMPA) = map.Clusters().ClusterCount()
@@ -117,7 +117,7 @@ Public Class cBiomassEmitter
                                 ' If this cell is closed to fishing for this fleet and month by any of the MPAs, then do not allow fishing here 
                                 For iMPA As Integer = 1 To ecospaceDS.MPAno
                                     ' Is the MPA closed to this fleet, and is a rule in place?
-                                    Dim rt As cEmissionRule = Me.Data.RuleTrends(iMPA - 1)
+                                    Dim rt As cEmissionRule = Me.Data.EmissionRules(iMPA - 1)
                                     If rt.Enable And (ecospaceDS.MPA(iMPA)(i, j) > 0) And (Not ecospaceDS.MPAfishery(f, iMPA)) And (Not ecospaceDS.MPAmonth(ecospaceDS.MonthNow, iMPA)) Then
                                         ' #Yes: This MPA prohibits this fleet from fishing in this cell for this month
                                         For g As Integer = 1 To ecopathDS.NumGroups

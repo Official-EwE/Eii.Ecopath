@@ -70,7 +70,7 @@ Partial Class frmBiomassEmitter
         Me.m_pbHasMetadata = New System.Windows.Forms.PictureBox()
         Me.m_lblVersion = New System.Windows.Forms.Label()
         Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
-        Me.m_tabTrends = New System.Windows.Forms.TabPage()
+        Me.m_tabTimeseries = New System.Windows.Forms.TabPage()
         Me.m_plTimeSeriesApplication = New System.Windows.Forms.Panel()
         Me.m_rbApplyIsAdditive = New System.Windows.Forms.RadioButton()
         Me.m_lblTimeSeriesApplication = New System.Windows.Forms.Label()
@@ -95,7 +95,7 @@ Partial Class frmBiomassEmitter
         Me.m_lblTrendFile = New System.Windows.Forms.Label()
         Me.m_btnResetTimeSeriesFile = New System.Windows.Forms.Button()
         Me.m_btnBuildTrend = New System.Windows.Forms.Button()
-        Me.m_tabMetadata = New System.Windows.Forms.TabPage()
+        Me.m_tabRules = New System.Windows.Forms.TabPage()
         Me.m_dgvRuleData = New System.Windows.Forms.DataGridView()
         Me.m_colMPAIndex = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.m_colMPAName = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -111,11 +111,11 @@ Partial Class frmBiomassEmitter
         CType(Me.m_dgvRuleSettings, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbHasTrends, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbHasMetadata, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_tabTrends.SuspendLayout()
+        Me.m_tabTimeseries.SuspendLayout()
         Me.m_plTimeSeriesApplication.SuspendLayout()
         Me.m_plTimeSeriesTarget.SuspendLayout()
         CType(Me.m_dgvTrends, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_tabMetadata.SuspendLayout()
+        Me.m_tabRules.SuspendLayout()
         CType(Me.m_dgvRuleData, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -168,8 +168,8 @@ Partial Class frmBiomassEmitter
         'm_tcTrends
         '
         Me.m_tcTrends.Controls.Add(Me.m_tabMPA)
-        Me.m_tcTrends.Controls.Add(Me.m_tabTrends)
-        Me.m_tcTrends.Controls.Add(Me.m_tabMetadata)
+        Me.m_tcTrends.Controls.Add(Me.m_tabTimeseries)
+        Me.m_tcTrends.Controls.Add(Me.m_tabRules)
         resources.ApplyResources(Me.m_tcTrends, "m_tcTrends")
         Me.m_tcTrends.Name = "m_tcTrends"
         Me.m_tcTrends.SelectedIndex = 0
@@ -252,22 +252,22 @@ Partial Class frmBiomassEmitter
         Me.m_cbEnabled.Name = "m_cbEnabled"
         Me.m_cbEnabled.UseVisualStyleBackColor = True
         '
-        'm_tabTrends
+        'm_tabTimeseries
         '
-        Me.m_tabTrends.Controls.Add(Me.m_plTimeSeriesApplication)
-        Me.m_tabTrends.Controls.Add(Me.m_plTimeSeriesTarget)
-        Me.m_tabTrends.Controls.Add(Me.m_btnEnableFishedGroupTimeSeries)
-        Me.m_tabTrends.Controls.Add(Me.m_btnEnableAllTimeSeries)
-        Me.m_tabTrends.Controls.Add(Me.m_btnDisableAllTimeSeries)
-        Me.m_tabTrends.Controls.Add(Me.m_tbxTimeSeriesFile)
-        Me.m_tabTrends.Controls.Add(Me.m_btnBrowseTimeSeries)
-        Me.m_tabTrends.Controls.Add(Me.m_dgvTrends)
-        Me.m_tabTrends.Controls.Add(Me.m_lblTrendFile)
-        Me.m_tabTrends.Controls.Add(Me.m_btnResetTimeSeriesFile)
-        Me.m_tabTrends.Controls.Add(Me.m_btnBuildTrend)
-        resources.ApplyResources(Me.m_tabTrends, "m_tabTrends")
-        Me.m_tabTrends.Name = "m_tabTrends"
-        Me.m_tabTrends.UseVisualStyleBackColor = True
+        Me.m_tabTimeseries.Controls.Add(Me.m_plTimeSeriesApplication)
+        Me.m_tabTimeseries.Controls.Add(Me.m_plTimeSeriesTarget)
+        Me.m_tabTimeseries.Controls.Add(Me.m_btnEnableFishedGroupTimeSeries)
+        Me.m_tabTimeseries.Controls.Add(Me.m_btnEnableAllTimeSeries)
+        Me.m_tabTimeseries.Controls.Add(Me.m_btnDisableAllTimeSeries)
+        Me.m_tabTimeseries.Controls.Add(Me.m_tbxTimeSeriesFile)
+        Me.m_tabTimeseries.Controls.Add(Me.m_btnBrowseTimeSeries)
+        Me.m_tabTimeseries.Controls.Add(Me.m_dgvTrends)
+        Me.m_tabTimeseries.Controls.Add(Me.m_lblTrendFile)
+        Me.m_tabTimeseries.Controls.Add(Me.m_btnResetTimeSeriesFile)
+        Me.m_tabTimeseries.Controls.Add(Me.m_btnBuildTrend)
+        resources.ApplyResources(Me.m_tabTimeseries, "m_tabTimeseries")
+        Me.m_tabTimeseries.Name = "m_tabTimeseries"
+        Me.m_tabTimeseries.UseVisualStyleBackColor = True
         '
         'm_plTimeSeriesApplication
         '
@@ -430,12 +430,12 @@ Partial Class frmBiomassEmitter
         Me.m_btnBuildTrend.Name = "m_btnBuildTrend"
         Me.m_btnBuildTrend.UseVisualStyleBackColor = True
         '
-        'm_tabMetadata
+        'm_tabRules
         '
-        Me.m_tabMetadata.Controls.Add(Me.m_dgvRuleData)
-        resources.ApplyResources(Me.m_tabMetadata, "m_tabMetadata")
-        Me.m_tabMetadata.Name = "m_tabMetadata"
-        Me.m_tabMetadata.UseVisualStyleBackColor = True
+        Me.m_tabRules.Controls.Add(Me.m_dgvRuleData)
+        resources.ApplyResources(Me.m_tabRules, "m_tabRules")
+        Me.m_tabRules.Name = "m_tabRules"
+        Me.m_tabRules.UseVisualStyleBackColor = True
         '
         'm_dgvRuleData
         '
@@ -499,14 +499,14 @@ Partial Class frmBiomassEmitter
         CType(Me.m_dgvRuleSettings, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbHasTrends, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbHasMetadata, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_tabTrends.ResumeLayout(False)
-        Me.m_tabTrends.PerformLayout()
+        Me.m_tabTimeseries.ResumeLayout(False)
+        Me.m_tabTimeseries.PerformLayout()
         Me.m_plTimeSeriesApplication.ResumeLayout(False)
         Me.m_plTimeSeriesApplication.PerformLayout()
         Me.m_plTimeSeriesTarget.ResumeLayout(False)
         Me.m_plTimeSeriesTarget.PerformLayout()
         CType(Me.m_dgvTrends, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_tabMetadata.ResumeLayout(False)
+        Me.m_tabRules.ResumeLayout(False)
         CType(Me.m_dgvRuleData, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -529,7 +529,7 @@ Partial Class frmBiomassEmitter
     Private WithEvents m_pbHasMetadata As Windows.Forms.PictureBox
     Private WithEvents m_lblVersion As Windows.Forms.Label
     Private WithEvents m_cbEnabled As Windows.Forms.CheckBox
-    Private WithEvents m_tabTrends As Windows.Forms.TabPage
+    Private WithEvents m_tabTimeseries As Windows.Forms.TabPage
     Private WithEvents m_tbxTimeSeriesFile As Windows.Forms.TextBox
     Private WithEvents m_btnBrowseTimeSeries As Windows.Forms.Button
     Private WithEvents m_lblTimeSeriesTarget As Windows.Forms.Label
@@ -539,7 +539,7 @@ Partial Class frmBiomassEmitter
     Private WithEvents m_lblTrendFile As Windows.Forms.Label
     Private WithEvents m_btnResetTimeSeriesFile As Windows.Forms.Button
     Private WithEvents m_btnBuildTrend As Windows.Forms.Button
-    Private WithEvents m_tabMetadata As Windows.Forms.TabPage
+    Private WithEvents m_tabRules As Windows.Forms.TabPage
     Private WithEvents m_dgvRuleData As Windows.Forms.DataGridView
     Friend WithEvents m_colMPAIndex As Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents m_colMPAName As Windows.Forms.DataGridViewTextBoxColumn

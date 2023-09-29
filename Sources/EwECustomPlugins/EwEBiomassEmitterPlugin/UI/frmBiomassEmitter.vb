@@ -164,11 +164,16 @@ Public Class frmBiomassEmitter
         End Select
         Me.m_colTrendTarget.HeaderText = strTarget
 
-        Me.UpdateStatus(Me.m_pbHasMetadata, Me.m_lblHasRules, Me.NumEnabledRules > 0 And Me.NumMPAs > 0, cStringUtils.Localize(My.Resources.CHECK_RULES_ENABLED, Me.NumEnabledRules), My.Resources.CHECK_RULES_DISABLED)
-        If Not HasTrends() Then
+        If Not HasMPAs() Then
+            Me.UpdateStatus(Me.m_pbHasMetadata, Me.m_lblHasRules, False, "", My.Resources.CHECK_MPAS_MISSING)
+        Else
+            Me.UpdateStatus(Me.m_pbHasMetadata, Me.m_lblHasRules, Me.NumEnabledRules > 0, cStringUtils.Localize(My.Resources.CHECK_RULES_ENABLED, Me.NumEnabledRules), My.Resources.CHECK_RULES_DISABLED)
+        End If
+
+        If Not HasTimeSeries() Then
             Me.UpdateStatus(Me.m_pbHasTrends, Me.m_lblHasTimeSeries, False, "", My.Resources.CHECK_TIMESERIES_MISSING)
         Else
-            Me.UpdateStatus(Me.m_pbHasTrends, Me.m_lblHasTimeSeries, Me.HasTrendData(), My.Resources.CHECK_TIMESERIES_OK, My.Resources.CHECK_TIMESERIES_OUTOFRANGE)
+            Me.UpdateStatus(Me.m_pbHasTrends, Me.m_lblHasTimeSeries, Me.HasTimeSeriesData(), My.Resources.CHECK_TIMESERIES_OK, My.Resources.CHECK_TIMESERIES_OUTOFRANGE)
         End If
 
         Me.InUpdate = False
@@ -376,7 +381,7 @@ Public Class frmBiomassEmitter
         ' Populate rule grid
         Me.m_dgvRuleData.Rows.Clear()
         For i As Integer = 1 To Me.Core.nMPAs
-            Dim rule As cEmissionRule = Data.RuleTrends(i - 1)
+            Dim rule As cEmissionRule = Data.EmissionRules(i - 1)
             Dim iRow As Integer = Me.m_dgvRuleData.Rows.Add(New Object() {rule.Index, rule.Name, rule.Enable, rule.Protection})
             Me.m_dgvRuleData.Rows(iRow).Tag = rule
         Next
@@ -389,13 +394,13 @@ Public Class frmBiomassEmitter
         lb.ForeColor = If(test, sg.ApplicationColor(eApplicationColorType.DEFAULT_TEXT), sg.ApplicationColor(eApplicationColorType.FAILEDVALIDATION_TEXT))
     End Sub
 
-    Private Function NumMPAs() As Integer
-        Return Me.Data.RuleTrends.Count
+    Private Function HasMPAs() As Boolean
+        Return (Me.Data.EmissionRules.Count > 0)
     End Function
 
     Private Function NumEnabledRules() As Integer
         Dim n As Integer = 0
-        For Each md As cEmissionRule In Me.Data.RuleTrends
+        For Each md As cEmissionRule In Me.Data.EmissionRules
             If (md.Enable) Then
                 n += 1
             End If
@@ -403,17 +408,17 @@ Public Class frmBiomassEmitter
         Return n
     End Function
 
-    Private Function HasTrends() As Boolean
-        Return (Me.Data.TimeSeries.Count + Me.Data.RuleTrends.Count > 0)
+    Private Function HasTimeSeries() As Boolean
+        Return (Me.Data.TimeSeries.Count + Me.Data.EmissionRules.Count > 0)
     End Function
 
-    Private Function HasTrendData() As Boolean
-        If Not Me.HasTrends() Then Return False
+    Private Function HasTimeSeriesData() As Boolean
+        If Not Me.HasTimeSeries() Then Return False
         Dim bHasData As Boolean = False
         For Each tr As cEmissionTimeSeries In Me.Data.TimeSeries
             bHasData = bHasData Or (tr.NumDataPointsForRun() > 0)
         Next
-        Return bHasData Or (Me.Data.RuleTrends.Count > 0)
+        Return bHasData Or (Me.Data.EmissionRules.Count > 0)
     End Function
 
     Private Sub m_tsbnRecalc_Click(sender As Object, e As EventArgs)

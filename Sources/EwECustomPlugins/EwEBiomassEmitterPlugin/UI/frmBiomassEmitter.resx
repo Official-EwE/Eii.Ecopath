@@ -535,7 +535,7 @@
     <value>2</value>
   </data>
   <data name="m_tabMPA.Text" xml:space="preserve">
-    <value>Emitter settings</value>
+    <value>Settings</value>
   </data>
   <data name="&gt;&gt;m_tabMPA.Name" xml:space="preserve">
     <value>m_tabMPA</value>
@@ -688,7 +688,7 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_plTimeSeriesApplication.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_plTimeSeriesApplication.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -832,7 +832,7 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_plTimeSeriesTarget.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_plTimeSeriesTarget.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -862,7 +862,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnEnableFishedGroupTimeSeries.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_btnEnableFishedGroupTimeSeries.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -892,7 +892,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnEnableAllTimeSeries.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_btnEnableAllTimeSeries.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -919,7 +919,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnDisableAllTimeSeries.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_btnDisableAllTimeSeries.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -943,7 +943,7 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbxTimeSeriesFile.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_tbxTimeSeriesFile.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -970,7 +970,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnBrowseTimeSeries.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_btnBrowseTimeSeries.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -1033,7 +1033,7 @@
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_dgvTrends.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_dgvTrends.ZOrder" xml:space="preserve">
     <value>7</value>
@@ -1063,7 +1063,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblTrendFile.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_lblTrendFile.ZOrder" xml:space="preserve">
     <value>8</value>
@@ -1093,7 +1093,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnResetTimeSeriesFile.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_btnResetTimeSeriesFile.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -1120,36 +1120,36 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnBuildTrend.Parent" xml:space="preserve">
-    <value>m_tabTrends</value>
+    <value>m_tabTimeseries</value>
   </data>
   <data name="&gt;&gt;m_btnBuildTrend.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="m_tabTrends.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tabTimeseries.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="m_tabTrends.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_tabTimeseries.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="m_tabTrends.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tabTimeseries.Size" type="System.Drawing.Size, System.Drawing">
     <value>491, 389</value>
   </data>
-  <data name="m_tabTrends.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tabTimeseries.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_tabTrends.Text" xml:space="preserve">
-    <value>From time series</value>
+  <data name="m_tabTimeseries.Text" xml:space="preserve">
+    <value>Emission time series</value>
   </data>
-  <data name="&gt;&gt;m_tabTrends.Name" xml:space="preserve">
-    <value>m_tabTrends</value>
+  <data name="&gt;&gt;m_tabTimeseries.Name" xml:space="preserve">
+    <value>m_tabTimeseries</value>
   </data>
-  <data name="&gt;&gt;m_tabTrends.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tabTimeseries.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tabTrends.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tabTimeseries.Parent" xml:space="preserve">
     <value>m_tcTrends</value>
   </data>
-  <data name="&gt;&gt;m_tabTrends.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tabTimeseries.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="m_colMPAIndex.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -1216,36 +1216,36 @@
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_dgvRuleData.Parent" xml:space="preserve">
-    <value>m_tabMetadata</value>
+    <value>m_tabRules</value>
   </data>
   <data name="&gt;&gt;m_dgvRuleData.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_tabMetadata.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tabRules.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="m_tabMetadata.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_tabRules.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="m_tabMetadata.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tabRules.Size" type="System.Drawing.Size, System.Drawing">
     <value>491, 389</value>
   </data>
-  <data name="m_tabMetadata.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tabRules.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_tabMetadata.Text" xml:space="preserve">
-    <value>From emperical rules</value>
+  <data name="m_tabRules.Text" xml:space="preserve">
+    <value>Emission rules</value>
   </data>
-  <data name="&gt;&gt;m_tabMetadata.Name" xml:space="preserve">
-    <value>m_tabMetadata</value>
+  <data name="&gt;&gt;m_tabRules.Name" xml:space="preserve">
+    <value>m_tabRules</value>
   </data>
-  <data name="&gt;&gt;m_tabMetadata.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tabRules.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tabMetadata.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tabRules.Parent" xml:space="preserve">
     <value>m_tcTrends</value>
   </data>
-  <data name="&gt;&gt;m_tabMetadata.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tabRules.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_tcTrends.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">

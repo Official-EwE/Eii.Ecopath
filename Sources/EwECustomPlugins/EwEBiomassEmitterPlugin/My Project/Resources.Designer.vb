@@ -79,7 +79,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to All emperical rules are disabled.
+        '''  Looks up a localized string similar to You do not have any MPAs to apply emission rules to.
+        '''</summary>
+        Friend ReadOnly Property CHECK_MPAS_MISSING() As String
+            Get
+                Return ResourceManager.GetString("CHECK_MPAS_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to All emission rules are disabled.
         '''</summary>
         Friend ReadOnly Property CHECK_RULES_DISABLED() As String
             Get
@@ -88,7 +97,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to You have {0} empirical rule(s) enabled.
+        '''  Looks up a localized string similar to You have {0} emission rule(s) enabled.
         '''</summary>
         Friend ReadOnly Property CHECK_RULES_ENABLED() As String
             Get
@@ -97,7 +106,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to You have not loaded any time series data yet.
+        '''  Looks up a localized string similar to You have not loaded any emission time series.
         '''</summary>
         Friend ReadOnly Property CHECK_TIMESERIES_MISSING() As String
             Get
@@ -106,7 +115,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to All emission time series overlap with the Ecospace run period..
+        '''  Looks up a localized string similar to All emission time series overlap with the Ecospace run period.
         '''</summary>
         Friend ReadOnly Property CHECK_TIMESERIES_OK() As String
             Get
@@ -115,7 +124,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to One or more emission time series do not overlap with the Ecospace run period. Did you set the Ecopath start year?.
+        '''  Looks up a localized string similar to One or more emission time series do not overlap with the Ecospace run period.
         '''</summary>
         Friend ReadOnly Property CHECK_TIMESERIES_OUTOFRANGE() As String
             Get
@@ -163,7 +172,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Groups expected on first line..
+        '''  Looks up a localized string similar to Groups expected on first line.
         '''</summary>
         Friend ReadOnly Property PARSE_ERROR_DETAIL_GROUPROW() As String
             Get
@@ -172,7 +181,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Line {0} does not contain enough items..
+        '''  Looks up a localized string similar to Line {0} does not contain enough items.
         '''</summary>
         Friend ReadOnly Property PARSE_ERROR_DETAIL_MISSING() As String
             Get
@@ -181,7 +190,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Unable to read the date in line {0}..
+        '''  Looks up a localized string similar to Unable to read the date in line {0}.
         '''</summary>
         Friend ReadOnly Property PARSE_ERROR_DETAIL_PARSEDATE() As String
             Get
@@ -190,7 +199,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Unable to read values in line {0}..
+        '''  Looks up a localized string similar to Unable to read values in line {0}.
         '''</summary>
         Friend ReadOnly Property PARSE_ERROR_DETAIL_PARSELINE() As String
             Get
@@ -282,7 +291,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Version 0.5, 27 September 2023.
+        '''  Looks up a localized string similar to Version 0.5, 29 September 2023.
         '''</summary>
         Friend ReadOnly Property VERSION() As String
             Get
