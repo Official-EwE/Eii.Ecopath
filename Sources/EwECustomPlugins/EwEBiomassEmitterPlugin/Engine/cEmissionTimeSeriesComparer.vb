@@ -24,7 +24,7 @@
 ''' <summary>
 ''' Helper class, compares model trends
 ''' </summary>
-Public Class cModelTrendComparer
+Public Class cEmissionTimeSeriesComparer
     Implements IComparer(Of cEmissionTimeSeries)
 
     Public Function Compare(x As cEmissionTimeSeries, y As cEmissionTimeSeries) As Integer Implements IComparer(Of cEmissionTimeSeries).Compare

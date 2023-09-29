@@ -159,7 +159,7 @@ Public Class cEmissionTimeSeriesReader
             Return False
         End If
 
-        records.Sort(New cModelTrendComparer())
+        records.Sort(New cEmissionTimeSeriesComparer())
         data.TimeSeries.AddRange(records)
 
         Return True

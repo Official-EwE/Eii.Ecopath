@@ -138,10 +138,10 @@
     <Compile Include="cEwEBiomassEmitterTimeseriesBuilderPlugin.vb" />
     <Compile Include="Engine\cData.vb" />
     <Compile Include="Engine\Map.vb" />
-    <Compile Include="Engine\trends\cEmissionRule.vb" />
-    <Compile Include="Engine\trends\cEmissionTimeSeries.vb" />
-    <Compile Include="Engine\trends\cEmission.vb" />
-    <Compile Include="Engine\cModelTrendComparer.vb" />
+    <Compile Include="Engine\Emission strategies\cEmissionRule.vb" />
+    <Compile Include="Engine\Emission strategies\cEmissionTimeSeries.vb" />
+    <Compile Include="Engine\Emission strategies\cEmission.vb" />
+    <Compile Include="Engine\cEmissionTimeSeriesComparer.vb" />
     <Compile Include="Engine\cEmissionTimeSeriesReader.vb" />
     <Compile Include="Engine\modDefinitions.vb" />
     <Compile Include="My Project\Settings.vb" />

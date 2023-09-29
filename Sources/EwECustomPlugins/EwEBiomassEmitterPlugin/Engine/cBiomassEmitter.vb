@@ -82,8 +82,9 @@ Public Class cBiomassEmitter
                     For iCol As Integer = 1 To ecospaceDS.InCol
                         For iRow As Integer = 1 To ecospaceDS.InRow
                             If d.IsWaterCell(iRow, iCol) Then
-                                If IsTargetCell(iRow, iCol, mt.Target) Then
-                                    Me.ApplyEmission(iRow, iCol, mt.Group, v)
+                                Dim overlap As Single = TargetCellOverlap(iRow, iCol, mt.Target)
+                                If (overlap > 0) Then
+                                    Me.ApplyEmission(iRow, iCol, mt.Group, overlap * v)
                                 End If
                             End If
                         Next iRow
@@ -151,21 +152,22 @@ Public Class cBiomassEmitter
 
     End Function
 
-    Private Function IsTargetCell(iRow As Integer, iCol As Integer, iTarget As Integer) As Boolean
+    Private Function TargetCellOverlap(iRow As Integer, iCol As Integer, iTarget As Integer) As Single
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.Data.EcospaceDS
 
         Select Case Me.Data.TargetType
             Case eTargetType.Habitat
-                Return ecospaceDS.PHabType(iTarget)(iRow, iCol) > 0
+                Return ecospaceDS.PHabType(iTarget)(iRow, iCol)
             Case eTargetType.MPA
-                Return ecospaceDS.MPA(iTarget)(iRow, iCol) > 0
+                Return If(ecospaceDS.MPA(iTarget)(iRow, iCol) > 0, 1.0!, 0.0!)
             Case eTargetType.Region
-                Return ecospaceDS.Region(iRow, iCol) = iTarget
+                Return If(ecospaceDS.Region(iRow, iCol) = iTarget, 1.0!, 0.0!)
             Case Else
                 Debug.Assert(False)
         End Select
-        Return False
+
+        Return 0.0!
 
     End Function
 
