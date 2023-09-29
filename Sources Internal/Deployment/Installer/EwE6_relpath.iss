@@ -35,7 +35,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.18466
+  VersionInfoVersion=6.7.0.18500
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -115,168 +115,182 @@ Source: "{#DefRoot}{#DefSrc}\ScientificInterfaceShared.dll"; DestDir: "{app}"; F
 Source: "{#DefRoot}{#DefSrc}\EwE6.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\EwELicense.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EwENetworkAnalysis.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\na
-Source: "{#DefRoot}{#DefSrc}\EwEMultiSimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\multisim
-Source: "{#DefRoot}{#DefSrc}\EwEPrebalPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\prebal
-Source: "{#DefRoot}{#DefSrc}\EwERemarksPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\ui\remarks
-Source: "{#DefRoot}{#DefSrc}\EwEResultsExtractorPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\resultextractor
-Source: "{#DefRoot}{#DefSrc}\EwEShapeGridPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\ui\shapegrid
-Source: "{#DefRoot}{#DefSrc}\EwEStepwiseFittingPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\stepwisef
-Source: "{#DefRoot}{#DefSrc}\EwEValueChainPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\valuechain
-Source: "{#DefRoot}{#DefSrc}\EwEWoRMSPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\worms
 Source: "{#DefRoot}{#DefSrc}\Interop.JRO.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Ionic.Zip.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Microsoft.GLEE.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Microsoft.Office.Interop.Access.Dao.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EwEAquamapsEnvDataImporterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\aquamaps
-Source: "{#DefRoot}{#DefSrc}\EwEEcologicalIndicatorsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecolind
-Source: "{#DefRoot}{#DefSrc}\EwEEcoTrophPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecotroph
-Source: "{#DefRoot}{#DefSrc}\EwEModelFromEcosimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\modelfromsim
 Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win32\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win32\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win64\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win64\"; Flags: ignoreversion
+; - User guide
+Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE6_userguide.chm"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: userguide
+; - Tools
+Source: "{#DefRoot}{#DefSrc}\Tools\code_for_plotting_dirichlets.R"; DestDir: "{app}\Tools\"; Flags: ignoreversion
+
+; - Plugins --
+; Analysis
+Source: "{#DefRoot}{#DefSrc}\EwENetworkAnalysis.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\na
+Source: "{#DefRoot}{#DefSrc}\EwEPrebalPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\prebal
+Source: "{#DefRoot}{#DefSrc}\UserGuide\Link - 2010 - Adding rigor to ecological network models by evalu.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\prebal
+Source: "{#DefRoot}{#DefSrc}\EwEValueChainPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\valuechain
+Source: "{#DefRoot}{#DefSrc}\UserGuide\ChristensenValueChainMS.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\valuechain
+Source: "{#DefRoot}{#DefSrc}\EwEEcologicalIndicatorsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecolind
+Source: "{#DefRoot}{#DefSrc}\EwEEcoTrophPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecotroph
+
+; Input
+Source: "{#DefRoot}{#DefSrc}\EwEWoRMSPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\worms
+Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mergegroups
+Source: "{#DefRoot}{#DefSrc}\EwEAquamapsEnvDataImporterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\aquamaps
+Source: "{#DefRoot}{#DefSrc}\EwEImportExportLayerDefinitionsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\layerimportexport
+Source: "{#DefRoot}{#DefSrc}\EwEEcoengineersPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecoengineers
+Source: "{#DefRoot}{#DefSrc}\UserGuide\Ecoengineer user guide.pdf"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecoengineers
+Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
+Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\biomassemitter
+Source: "{#DefRoot}{#DefSrc}\UserGuide\Biomass-emitter-guide.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\input\biomassemitter
+Source: "{#DefRoot}{#DefSrc}\EwEImportDietsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\szumadiets
+Source: "{#DefRoot}{#DefSrc}\EwEEcotracerEnvDriverPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecotracer
+
+; Output
+Source: "{#DefRoot}{#DefSrc}\EwEResultsExtractorPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\resultextractor
+Source: "{#DefRoot}{#DefSrc}\UserGuide\ResultsExtractorPlug.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\output\resultextractor
+Source: "{#DefRoot}{#DefSrc}\EwEModelFromEcosimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\modelfromsim
+Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE model from time step.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\output\modelfromsim
+Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
+Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3RPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
+Source: "{#DefRoot}{#DefSrc}\EwEIBMAgeStructureResultsWriterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\IBMwriter
+
+; Automation
+Source: "{#DefRoot}{#DefSrc}\EwEMultiSimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\multisim
+Source: "{#DefRoot}{#DefSrc}\UserGuide\EwEMultiSimPlugin.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\multisim
+Source: "{#DefRoot}{#DefSrc}\EwEStepwiseFittingPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\stepwisef
+Source: "{#DefRoot}{#DefSrc}\EwEMSEPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\mse
 Source: "{#DefRoot}{#DefSrc}\LumenWorks.Framework.IO.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: plugin\automation\mse
 Source: "{#DefRoot}{#DefSrc}\Troschuetz.Random.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: plugin\automation\mse
-Source: "{#DefRoot}{#DefSrc}\EwEMSEPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\mse
-Source: "{#DefRoot}{#DefSrc}\UserGuide\ChristensenValueChainMS.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\valuechain
-Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE model from time step.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE6_userguide.chm"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: userguide
-Source: "{#DefRoot}{#DefSrc}\UserGuide\EwEMultiSimPlugin.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\UserGuide\Link - 2010 - Adding rigor to ecological network models by evalu.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\prebal
-Source: "{#DefRoot}{#DefSrc}\UserGuide\ResultsExtractorPlug.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\output\resultextractor
-Source: "{#DefRoot}{#DefSrc}\Tools\code_for_plotting_dirichlets.R"; DestDir: "{app}\Tools\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler-user-manual.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
-Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
-Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
-Source: "{#DefRoot}{#DefSrc}\EwEImportExportLayerDefinitionsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\layerimportexport
-Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mergegroups
-Source: "{#DefRoot}{#DefSrc}\EwEImportDietsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\szumadiets
-Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3RPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
-Source: "{#DefRoot}{#DefSrc}\EwEEcoengineersPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\analysis\ecoengineers
-Source: "{#DefRoot}{#DefSrc}\UserGuide\Ecoengineer user guide.pdf"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\analysis\ecoengineers
-Source: "{#DefRoot}{#DefSrc}\EwEEcotracerEnvDriverPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\analysis\ecotracer
-Source: "{#DefRoot}{#DefSrc}\EwEIBMAgeStructureResultsWriterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EwEWindowsIntegrationPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\winintegration
-;Source: "{#DefRoot}{#DefSrc}\EcospaceMOResultsWriter.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion;
 
-; - PRO FEATURES --
-Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
-Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
+; UI
+Source: "{#DefRoot}{#DefSrc}\EwERemarksPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\ui\remarks
+Source: "{#DefRoot}{#DefSrc}\EwEShapeGridPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\ui\shapegrid
+Source: "{#DefRoot}{#DefSrc}\EwEWindowsIntegrationPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\winintegration
+
+; Pro
+Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spinup
+Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\pro\spattemp
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Analysis.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Extensions.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Modeling.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Positioning.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Projections.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Serialization.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Tools.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Topology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
+Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\DotSpatial.Extensions.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\DotSpatial.Modeling.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Positioning.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\DotSpatial.Projections.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\DotSpatial.Serialization.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Tools.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\DotSpatial.Topology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
 
 #if Compile64Bit == 0
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cairo.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cfitsio.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\DotSpatial.Data.Rasters.GdalExtension.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\freexl.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\fribidi.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\ftgl.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdal19.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalconst_csharp.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalconst_wrap.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdal_csharp.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdal_wrap.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\geos_c.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\hdf5dll.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\iconv.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libcurl.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libeay32.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libecwj2.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libexpat.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libfcgi.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libmap.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libmysql.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libpq.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libtiff.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libxml2.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\lti_dsdk.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\lti_lidar_dsdk.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\msvcp100.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\msvcr100.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\netcdf.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\ogr_csharp.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\ogr_wrap.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\openjpeg.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\osr_csharp.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\osr_wrap.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\pdflib.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\proj.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\spatialite.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\sqlite3.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\ssleay32.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\xerces-c_2_8.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\zlib1.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_BAG.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_ECW_JP2ECW.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_FITS.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_GMT.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_HDF5.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_HDF5Image.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_MrSID.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_netCDF.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cairo.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cfitsio.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\DotSpatial.Data.Rasters.GdalExtension.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\freexl.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\fribidi.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\ftgl.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdal19.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalconst_csharp.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalconst_wrap.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdal_csharp.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdal_wrap.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\geos_c.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\hdf5dll.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\iconv.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libcurl.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libeay32.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libecwj2.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libexpat.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libfcgi.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libmap.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libmysql.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libpq.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libtiff.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\libxml2.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\lti_dsdk.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\lti_lidar_dsdk.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\msvcp100.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\msvcr100.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\netcdf.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\ogr_csharp.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\ogr_wrap.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\openjpeg.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\osr_csharp.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\osr_wrap.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\pdflib.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\proj.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\spatialite.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\sqlite3.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\ssleay32.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\xerces-c_2_8.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\zlib1.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_BAG.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_ECW_JP2ECW.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_FITS.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_GMT.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_HDF5.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_HDF5Image.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_MrSID.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_netCDF.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
 #else
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\cairo.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\cfitsio.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\DotSpatial.Data.Rasters.GdalExtension.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\freexl.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\fribidi.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\ftgl.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdal19.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalconst_csharp.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalconst_wrap.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdal_csharp.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdal_wrap.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\geos_c.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\hdf5dll.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\iconv.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libcurl.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libeay32.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libecwj2.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libexpat.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libfcgi.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libmap.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libmysql.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libpq.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libtiff.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libxml2.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\lti_dsdk.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\lti_lidar_dsdk.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\msvcp100.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\msvcr100.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\netcdf.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\ogr_csharp.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\ogr_wrap.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\openjpeg.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\osr_csharp.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\osr_wrap.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\pdflib.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\proj.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\spatialite.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\sqlite3.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\ssleay32.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\xerces-c_2_8.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\zlib1.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_BAG.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_ECW_JP2ECW.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_FITS.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_GMT.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_HDF5.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_HDF5Image.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_MrSID.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_netCDF.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\cairo.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\cfitsio.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\DotSpatial.Data.Rasters.GdalExtension.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\freexl.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\fribidi.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\ftgl.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdal19.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalconst_csharp.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalconst_wrap.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdal_csharp.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdal_wrap.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\geos_c.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\hdf5dll.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\iconv.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libcurl.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libeay32.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libecwj2.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libexpat.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libfcgi.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libmap.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libmysql.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libpq.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libtiff.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\libxml2.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\lti_dsdk.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\lti_lidar_dsdk.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\msvcp100.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\msvcr100.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\netcdf.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\ogr_csharp.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\ogr_wrap.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\openjpeg.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\osr_csharp.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\osr_wrap.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\pdflib.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\proj.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\spatialite.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\sqlite3.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\ssleay32.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\xerces-c_2_8.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\zlib1.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_BAG.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_ECW_JP2ECW.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_FITS.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_GMT.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_HDF5.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_HDF5Image.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_MrSID.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_netCDF.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
 #endif
 
 ; -- ExcludeDeadCells --
@@ -333,32 +347,35 @@ Name: "plugin\analysis\ecolind"; Description: "Ecological Indicators"; Types: fu
 Name: "plugin\analysis\ecotroph"; Description: "EcoTroph"; Types: custom full
 Name: "plugin\analysis\na"; Description: "Network Analysis"; Types: compact custom full
 Name: "plugin\analysis\prebal"; Description: "Pre-balance diagnostics"; Types: full custom
-Name: "plugin\analysis\ecoengineers"; Description: "Eco-engineer dynamics"; Types: full
-Name: "plugin\analysis\ecotracer"; Description: "Ecotracer impacts"; Types: full
 Name: "plugin\analysis\valuechain"; Description: "Value chain"; Types: full
 Name: "plugin\input"; Description: "Data retrieval"; Types: full custom
 Name: "plugin\input\worms"; Description: "WoRMS taxonomy search"; Types: full
+Name: "plugin\input\mergegroups"; Description: "Merge groups"; Types: full
+Name: "plugin\input\mpadynamics"; Description: "MPA dynamics"; Types: full
 Name: "plugin\input\aquamaps"; Description: "Aquamaps functional response importer"; Types: full
+Name: "plugin\input\ecoengineers"; Description: "Eco-engineer dynamics"; Types: full
 Name: "plugin\input\szumadiets"; Description: "Diet import utility"; Types: full
 Name: "plugin\input\layerimportexport"; Description: "Ecospace layer style import and export"; Types: full
+Name: "plugin\input\biomassemitter"; Description: "Biomass emitter"; Types: full
+Name: "plugin\input\ecotracer"; Description: "Ecotracer impacts"; Types: full
 Name: "plugin\output"; Description: "Data export"; Types: full
 Name: "plugin\output\modelfromsim"; Description: "Ecopath model from Ecosim"; Types: full
 Name: "plugin\output\resultextractor"; Description: "Results extractor"; Types: full
+Name: "plugin\output\transects"; Description: "Transects extraction"; Types: full
+Name: "plugin\output\networkD3"; Description: "Export diet matrix to NetworkD3"; Types: full
+Name: "plugin\output\IBMwriter"; Description: "Ecospace IBM age structure autosave"; Types: full
 Name: "plugin\automation"; Description: "Automation"; Types: full custom
 Name: "plugin\automation\multisim"; Description: "Multi-Sim"; Types: custom full
 Name: "plugin\automation\stepwisef"; Description: "Stepwise Fitting"; Types: full
 Name: "plugin\automation\mse"; Description: "Cefas MSE"; Types: custom full
 Name: "plugin\automation\sampler"; Description: "Ecosampler"; Types: full
-Name: "plugin\automation\winintegration"; Description: "Windows integration"; Types: full
 Name: "plugin\ui"; Description: "Usability"; Types: full custom
 Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
 Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
-Name: "plugin\input\mergegroups"; Description: "Merge groups"; Types: full
-Name: "plugin\input\mpadynamics"; Description: "MPA dynamics"; Types: full
-Name: "plugin\output\transects"; Description: "Transects extraction"; Types: full
-Name: "plugin\output\networkD3"; Description: "Export diet matrix to NetworkD3"; Types: full
-Name: "plugin\output\spinup"; Description: "Ecospace spin-up"; Types: full
-Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
+Name: "plugin\ui\winintegration"; Description: "Windows integration"; Types: full
+Name: "plugin\pro"; Description: "Professional license features"; Types: full custom
+Name: "plugin\pro\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
+Name: "plugin\pro\spinup"; Description: "Ecospace spin-up"; Types: full
 
 #if RobertsBank == 1
 Name: "plugin\robertsbank"; Description: "Roberts Bank utilities"; Types: full custom
