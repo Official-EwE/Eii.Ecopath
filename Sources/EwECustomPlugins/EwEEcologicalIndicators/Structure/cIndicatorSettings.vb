@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -175,8 +176,8 @@ Public Class cIndicatorSettings
 
         ' Note that the name an indicator as specified below must match the name of the public function used by
         ' cIndicator to expose the value for that indicator. The function is lookup up at runtime via reflection.
-        Dim strUnitCurrency As String = "[currency]"
-        Dim strUnitCatch As String = "[currency]/[time]"
+        Dim strUnitCurrency As String = cUnits.Currency
+        Dim strUnitCatch As String = cUnits.CurrencyOverTime
 
         ' 1 biomass-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_BIOMASS, My.Resources.GROUP_BIOMASS_DESC)
