@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CAPTION_EMITTER" xml:space="preserve">
+    <value>Biomass emitter</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="EII_transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EII_transparent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PROMPT_SELECTTRENDFILE" xml:space="preserve">
+    <value>Select biomass emitter trend file to load</value>
+  </data>
+  <data name="pure_magic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pure_magic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Safenet_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\safenet logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PARSE_ERROR_DETAIL_GROUPROW" xml:space="preserve">
+    <value>Groups expected on first line</value>
+  </data>
+  <data name="PARSE_ERROR_DETAIL_MISSING" xml:space="preserve">
+    <value>Line {0} does not contain enough items</value>
+    <comment>{0} = line number</comment>
+  </data>
+  <data name="PARSE_ERROR_DETAIL_PARSEDATE" xml:space="preserve">
+    <value>Unable to read the date in line {0}</value>
+    <comment>{0} = line number</comment>
+  </data>
+  <data name="PARSE_ERROR_DETAIL_PARSELINE" xml:space="preserve">
+    <value>Unable to read values in line {0}</value>
+    <comment>{0} = line number</comment>
+  </data>
+  <data name="PARSE_ERROR_DETAIL_REGIONROW" xml:space="preserve">
+    <value>Regions expected on second line.</value>
+  </data>
+  <data name="PARSE_ERROR_GENERIC" xml:space="preserve">
+    <value>Error reading biomass emitter CSV file. {0}</value>
+    <comment>{0} = detail sentence</comment>
+  </data>
+  <data name="STATUS_EMITTED" xml:space="preserve">
+    <value>{0} biomass(es) emitted at time step {1}, {2}</value>
+    <comment>{0} = record count. {1}=time step, {2}=short date</comment>
+  </data>
+  <data name="VERSION" xml:space="preserve">
+    <value>Version 0.5, 29 September 2023</value>
+  </data>
+  <data name="PROMPT_SELECTRULEFILE" xml:space="preserve">
+    <value>Select biomass emitter rule file to load</value>
+  </data>
+  <data name="CHECK_RULES_DISABLED" xml:space="preserve">
+    <value>All emission rules are disabled</value>
+  </data>
+  <data name="CHECK_RULES_ENABLED" xml:space="preserve">
+    <value>You have {0} emission rule(s) enabled</value>
+    <comment>{0} = rule count</comment>
+  </data>
+  <data name="CHECK_TIMESERIES_MISSING" xml:space="preserve">
+    <value>You have not loaded any emission time series</value>
+  </data>
+  <data name="CHECK_TIMESERIES_OK" xml:space="preserve">
+    <value>All emission time series overlap with the Ecospace run period</value>
+  </data>
+  <data name="CHECK_TIMESERIES_OUTOFRANGE" xml:space="preserve">
+    <value>One or more emission time series do not overlap with the Ecospace run period</value>
+  </data>
+  <data name="CAPTION_BUILDER" xml:space="preserve">
+    <value>Biomass emitter time series builder</value>
+  </data>
+  <data name="STATUS_UTILITY_SAVE_ERROR" xml:space="preserve">
+    <value>Biomass emitter time series failed to save to {0}. {1}</value>
+    <comment>{0}=file name. {1}=exception</comment>
+  </data>
+  <data name="STATUS_UTILITY_SAVE_OK" xml:space="preserve">
+    <value>Biomass emitter time series saved to {0}</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="DROPLABEL_ABSOLUTE" xml:space="preserve">
+    <value>Drop region average .csv files here</value>
+  </data>
+  <data name="DROPLABEL_RELATIVE" xml:space="preserve">
+    <value>Drop region average .csv files here
+(both before and after protection measures)</value>
+  </data>
+  <data name="ICM_logo_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ICM-logo-blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CHECK_MPAS_MISSING" xml:space="preserve">
+    <value>You do not have any MPAs to apply emission rules to</value>
+  </data>
+</root>
