@@ -196,8 +196,7 @@
     <None Include="Documentation\Assets.psd" />
     <None Include="Documentation\Assets\georgia strait emission dummy.csv" />
     <None Include="Documentation\Assets\plot.xlsx" />
-    <None Include="Documentation\Biomass emitter guide.docx" />
-    <None Include="Documentation\Biomass emitter guide.pdf" />
+    <None Include="Documentation\Biomass-emitter-guide.docx" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -229,7 +228,7 @@
     <None Include="Sample data\trend_testdata3.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UserGuide\Biomass emitter guide.pdf">
+    <None Include="UserGuide\Biomass-emitter-guide.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
