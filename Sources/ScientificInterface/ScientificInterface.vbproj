@@ -2290,6 +2290,14 @@
       <Project>{19b57860-d7c5-479a-8979-e4dfe9a46b50}</Project>
       <Name>EwEMSEPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEMSPChallengeIntegration\EwEMSPLink\EwEMSPLink.vbproj">
+      <Project>{ddc5d15f-63f4-4b9d-ad24-a69d1d91c243}</Project>
+      <Name>EwEMSPLink</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEMSPChallengeIntegration\EwEMSPPlugin\EwEMSPPlugin.vbproj">
+      <Project>{5e75a493-7980-4d12-b03c-2844322fcd6b}</Project>
+      <Name>EwEMSPPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEMultiSimPlugin\EwEMultiSimPlugin.vbproj">
       <Project>{c73cf657-456c-4397-b6a1-5dc8fa68ad48}</Project>
       <Name>EwEMultiSimPlugin</Name>

@@ -10,7 +10,6 @@
 #define RobertsBank 0
 #define EcoOcean 0
 #define FISHMIP 0
-#define MSPTools 0
 #define RandomizeMPAs 0
 #define ExcludeDeadCells 0
 
@@ -148,6 +147,12 @@ Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugi
 Source: "{#DefRoot}{#DefSrc}\UserGuide\Biomass-emitter-guide.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\input\biomassemitter
 Source: "{#DefRoot}{#DefSrc}\EwEImportDietsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\szumadiets
 Source: "{#DefRoot}{#DefSrc}\EwEEcotracerEnvDriverPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecotracer
+#if RandomizeMPAs == 1
+Source: "{#DefRoot}{#DefSrc}\EwERandomizeMPAPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\randomizeMPAs
+#endif
+#if ExcludeDeadCells == 1
+Source: "{#DefRoot}{#DefSrc}\EwEEcospaceExcludeIsolatedCellsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\excldeadcells
+#endif
 
 ; Output
 Source: "{#DefRoot}{#DefSrc}\EwEResultsExtractorPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\resultextractor
@@ -157,6 +162,7 @@ Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE model from time step.pdf"; DestDir: "
 Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
 Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3RPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
 Source: "{#DefRoot}{#DefSrc}\EwEIBMAgeStructureResultsWriterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\IBMwriter
+Source: "{#DefRoot}{#DefSrc}\enaRPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\enaR
 
 ; Automation
 Source: "{#DefRoot}{#DefSrc}\EwEMultiSimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\multisim
@@ -190,6 +196,8 @@ Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.Forms.dll"; DestDir: "{app}\Pl
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Tools.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Topology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
 Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\EwEMSPLink.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\projects\msptools
+Source: "{#DefRoot}{#DefSrc}\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\projects\msptools
 
 #if Compile64Bit == 0
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cairo.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
@@ -293,25 +301,6 @@ Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_MrSID.dll"; De
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_netCDF.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
 #endif
 
-; -- ExcludeDeadCells --
-#if ExcludeDeadCells == 1
-Source: "{#DefRoot}{#DefSrc}\EwEEcospaceExcludeIsolatedCellsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\excldeadcells
-#endif
-
-; -- RandomizeMPAs --
-#if RandomizeMPAs == 1
-Source: "{#DefRoot}{#DefSrc}\EwERandomizeMPAPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\randomizeMPAs
-#endif
-
-; -- enaR --
-Source: "{#DefRoot}{#DefSrc}\enaRPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\enaR
-
-; -- MSPTools --
-#if MSPTools == 1
-Source: "{#DefRoot}{#DefSrc}\EwEShell.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
-Source: "{#DefRoot}{#DefSrc}\EwEMSPToolsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
-#endif
-
 ; -- RBT --
 #if RobertsBank == 1
 Source: "{#DefRoot}{#DefSrc}\EwEDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
@@ -358,12 +347,19 @@ Name: "plugin\input\szumadiets"; Description: "Diet import utility"; Types: full
 Name: "plugin\input\layerimportexport"; Description: "Ecospace layer style import and export"; Types: full
 Name: "plugin\input\biomassemitter"; Description: "Biomass emitter"; Types: full
 Name: "plugin\input\ecotracer"; Description: "Ecotracer impacts"; Types: full
+#if ExcludeDeadCells == 1
+Name: "plugin\input\excldeadcells"; Description: "Exclude isolated cells"; Types: full
+#endif
+#if RandomizeMPAs == 1
+Name: "plugin\input\randomizeMPAs"; Description: "Randomize MPA cells"; Types: full
+#endif
 Name: "plugin\output"; Description: "Data export"; Types: full
 Name: "plugin\output\modelfromsim"; Description: "Ecopath model from Ecosim"; Types: full
 Name: "plugin\output\resultextractor"; Description: "Results extractor"; Types: full
 Name: "plugin\output\transects"; Description: "Transects extraction"; Types: full
 Name: "plugin\output\networkD3"; Description: "Export diet matrix to NetworkD3"; Types: full
 Name: "plugin\output\IBMwriter"; Description: "Ecospace IBM age structure autosave"; Types: full
+Name: "plugin\output\enaR"; Description: "Ecospace enaR"; Types: full
 Name: "plugin\automation"; Description: "Automation"; Types: full custom
 Name: "plugin\automation\multisim"; Description: "Multi-Sim"; Types: custom full
 Name: "plugin\automation\stepwisef"; Description: "Stepwise Fitting"; Types: full
@@ -373,10 +369,11 @@ Name: "plugin\ui"; Description: "Usability"; Types: full custom
 Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
 Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
 Name: "plugin\ui\winintegration"; Description: "Windows integration"; Types: full
-Name: "plugin\pro"; Description: "Professional license features"; Types: full custom
+Name: "plugin\pro"; Description: "Professional features"; Types: full custom
 Name: "plugin\pro\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
 Name: "plugin\pro\spinup"; Description: "Ecospace spin-up"; Types: full
-
+Name: "plugin\projects"; Description: "Project specific plugins"; Types: full custom
+Name: "plugin\projects\msptools"; Description: "MSP Challenge tools"; Types: full
 #if RobertsBank == 1
 Name: "plugin\robertsbank"; Description: "Roberts Bank utilities"; Types: full custom
 #endif
@@ -386,17 +383,6 @@ Name: "plugin\ecoocean"; Description: "EcoOcean"; Types: full custom
 #if FISHMIP == 1
 Name: "plugin\fishmip"; Description: "FishMIP/TRIATLAS utilities"; Types: full custom
 #endif
-#if MSPTools == 1
-Name: "plugin\ui\msptools"; Description: "MSP tools"; Types: full
-#endif
-#if ExcludeDeadCells == 1
-Name: "plugin\input\excldeadcells"; Description: "Exclude isolated cells"; Types: full
-#endif
-#if RandomizeMPAs == 1
-Name: "plugin\input\randomizeMPAs"; Description: "Randomize MPA cells"; Types: full
-#endif
-; -- enaR --
-Name: "plugin\output\enaR"; Description: "Ecospace enaR"; Types: full
 
 [Tasks]
 Name: "desktopicon"; Description: "Add desktop icon"
