@@ -440,6 +440,13 @@ Namespace Utilities
             Return ConvertToInteger(strNumber, CInt(objNullValue), strDecimalSeparator, strThousandsSeparator)
         End Function
 
+        Private Shared Function CheckNaN(strNumber As String) As String
+            Select Case strNumber.Trim.ToLower
+                Case "-", "_", "nan", "nan(ind)", "-nan", "-nan(ind)" : Return ""
+            End Select
+            Return strNumber
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Generic conversion helper, converts a string into an integer value using
@@ -456,9 +463,7 @@ Namespace Utilities
                                                 Optional strDecimalSeparator As String = ".",
                                                 Optional strThousandsSeparator As String = "") As Integer
 
-            Select Case strNumber.Trim.ToLower
-                Case "-", "_", "nan" : strNumber = ""
-            End Select
+            strNumber = CheckNaN(strNumber)
 
             If Not String.IsNullOrEmpty(strNumber) Then
 
@@ -501,9 +506,7 @@ Namespace Utilities
                                                Optional strDecimalSeparator As String = ".",
                                                Optional strThousandsSeparator As String = "") As Single
 
-            Select Case strNumber.Trim.ToLower
-                Case "-", "_", "nan" : strNumber = ""
-            End Select
+            strNumber = CheckNaN(strNumber)
 
             If Not String.IsNullOrEmpty(strNumber) Then
 
@@ -545,9 +548,7 @@ Namespace Utilities
                                                Optional strDecimalSeparator As String = ".",
                                                Optional strThousandsSeparator As String = "") As Double
 
-            Select Case strNumber.Trim.ToLower
-                Case "-", "_", "nan" : strNumber = ""
-            End Select
+            strNumber = CheckNaN(strNumber)
 
             If Not String.IsNullOrEmpty(strNumber) Then
 
@@ -588,9 +589,7 @@ Namespace Utilities
                                                Optional strDecimalSeparator As String = ".",
                                                Optional strThousandsSeparator As String = "") As Decimal
 
-            Select Case strNumber.Trim.ToLower
-                Case "-", "_", "nan" : strNumber = ""
-            End Select
+            strNumber = CheckNaN(strNumber)
 
             If Not String.IsNullOrEmpty(strNumber) Then
 
