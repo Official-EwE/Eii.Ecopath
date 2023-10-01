@@ -94,7 +94,7 @@ Public Class cFleetTimeSeries
         Get
             ' JS 27Sept23: some secundary inidices (group codes) can be 0 to allow for 'All' groups
             Select Case Me.m_timeSeriesType
-                Case eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion
+                Case eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion, eTimeSeriesType.OffVesselPriceRel
                     Return True
             End Select
             Return False
@@ -103,8 +103,7 @@ Public Class cFleetTimeSeries
 
     Public ReadOnly Property GroupIndexStatus() As eStatusFlags
         Get
-            If Me.CanApplyToAllGroups Then Return eStatusFlags.OK
-            If (Me.DatPoolSec < 1 Or Me.DatPoolSec > Me.m_core.nGroups) Then
+            If (Me.DatPoolSec < If(Me.CanApplyToAllGroups, 0, 1) Or Me.DatPoolSec > Me.m_core.nGroups) Then
                 Return eStatusFlags.ErrorEncountered
             End If
             Return eStatusFlags.OK
