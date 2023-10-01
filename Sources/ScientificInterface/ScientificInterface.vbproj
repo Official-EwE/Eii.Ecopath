@@ -551,9 +551,7 @@
     <Compile Include="Ecospace\Input\dlgEditLayer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridLayerData.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Ecospace\Input\gridLayerData.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
