@@ -174,9 +174,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Grids\cShapeDataComparer.vb" />
-    <Compile Include="Grids\gridFunctionalResponses.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Grids\gridFunctionalResponses.vb" />
     <Compile Include="Grids\cVisualModelThumbnail.vb" />
     <Compile Include="Grids\gridEggProduction.vb">
       <SubType>Component</SubType>

@@ -59,7 +59,7 @@ Namespace Ecopath.Input
 
             Me.Redim(1, 2 + Me.Core.nFleets)
 
-            Me(0, 0) = New cEwEColumnHeaderCell("")
+            Me(0, 0) = New cEwEColumnHeaderCell()
             Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iFleet As Integer = 1 To Me.Core.nFleets
@@ -83,7 +83,7 @@ Namespace Ecopath.Input
             Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             ' For each group
-            For i As Integer = 0 To groups.Count - 1
+            For i As Integer = 1 To groups.Count - 1
 
                 group = groups(i)
                 If group.IsMultiStanza Then
@@ -106,7 +106,7 @@ Namespace Ecopath.Input
                     iStanzaPrev = -1
                 End If
 
-                ' Fleet name As row header
+                ' Group index and name
                 Me(iRow, 0) = New cEwERowHeaderCell(CStr(i))
                 Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
 

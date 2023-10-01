@@ -172,7 +172,9 @@
     <Compile Include="UI\frmDefineTransects.Designer.vb">
       <DependentUpon>frmDefineTransects.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmDefineTransects.vb" />
+    <Compile Include="UI\frmDefineTransects.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

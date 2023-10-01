@@ -1243,10 +1243,14 @@ Namespace Ecosim
         ''' <param name="iTime">Cummulative time step.</param>
         ''' <param name="iYear">Current year.</param>
         ''' <returns>([Ecopath market value] or [OffVesselPrice time series]) * [PES multiplier]</returns>
-        ''' <remarks>Any <see cref="eTimeSeriesType.OffVesselPrice">absolute landings time series</see> are 
+        ''' <remarks>
+        ''' <para>Any <see cref="eTimeSeriesType.OffVesselPrice">absolute landings time series</see> are 
         ''' used if provided. if not, Ecopath base off-vessel prices are multiplied with 
         ''' <see cref="eTimeSeriesType.OffVesselPriceRel">relative time series</see> 
-        ''' and applied price elasticity functions.</remarks>
+        ''' and applied price elasticity functions.</para>
+        ''' <para>Note that <see cref="eTimeSeriesType.OffVesselPriceRel">relative time series</see>
+        ''' can vary prices for all caught groups by the same magnitude by specifying group code 0.</para>
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Function MarketValue(ByVal iGrp As Integer, ByVal iFlt As Integer, ByVal iTime As Integer, ByVal iYear As Integer) As Single
 
@@ -1256,9 +1260,12 @@ Namespace Ecosim
                 Return Me.m_RefData.PoolForceOffVesselPriceAbs(iFlt, iGrp, iForcing)
             End If
 
-            If Me.m_RefData.PoolForceOffVesselPriceRel(iFlt, iGrp, iForcing) > 0 Then
-                value = Me.m_RefData.PoolForceOffVesselPriceRel(iFlt, iGrp, iForcing)
+            Dim f As Single = Me.m_RefData.PoolForceOffVesselPriceRel(iFlt, iGrp, iForcing)
+            If (f <= 0) Then f = Me.m_RefData.PoolForceOffVesselPriceRel(iFlt, 0, iForcing)
+            If f > 0 Then
+                value = f
             End If
+
             'apply the price elasticity multiplier to market value for this Group/Fleet
             'if there is no PES function for this group fleet getPESMult(group,fleet) will return 1
             Return value * Me.m_Data.PriceMedData.getPESMult(iGrp, iFlt)
@@ -5418,7 +5425,6 @@ Namespace Ecosim
         End Sub
 
         Sub FindCurrentProfit(BB() As Single, t As Integer, y As Integer)
-            ' JS 080321: enabled price elasticity
 
             Dim i As Integer, ig As Integer, TotIncome As Single, Fg As Single
             Dim LandingsForValue(Me.m_Data.nGroups, Me.m_Data.nGear) As Single
@@ -5435,15 +5441,7 @@ Namespace Ecosim
                 TotIncome = 0
                 For i = 1 To m_Data.nGroups
                     Fg = CSng(Qmult(i) * m_Data.FishMGear(ig, i) * (m_Data.FishRateGear(ig, t) + 1.0E-20))
-                    'jb use time varing proportion of landings
-                    If (1 = 1) Then
-                        ' Use price elasticity 
-                        Dim price As Single = Me.MarketValue(i, ig, t, y)
-                        TotIncome += Fg * BB(i) * price * Me.m_Data.PropLandedTime(ig, i)
-                    Else
-                        ' Use 'old' version
-                        TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * Me.m_Data.PropLandedTime(ig, i)
-                    End If
+                    TotIncome += Fg * BB(i) * Me.MarketValue(i, ig, t, y) * Me.m_Data.PropLandedTime(ig, i)
                 Next
 
                 TotCost = m_Data.FishRateGear(ig, t) * (Me.EffortCost(ig, t, y) + Me.SailCost(ig, t, y))
