@@ -426,9 +426,7 @@
     <Compile Include="frmEwE6.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\ImportExport\gridExportLayerMappings.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Ecospace\Assets\ImportExport\gridExportLayerMappings.vb" />
     <Compile Include="Ecospace\Assets\ImportExport\gridImportLayerMappings.vb">
       <SubType>Component</SubType>
     </Compile>

@@ -178,9 +178,7 @@
     <Compile Include="frmSelectPredatorPrey.Designer.vb">
       <DependentUpon>frmSelectPredatorPrey.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSelectPredatorPrey.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmSelectPredatorPrey.vb" />
     <Compile Include="frmSelectPreyPredator.Designer.vb">
       <DependentUpon>frmSelectPreyPredator.vb</DependentUpon>
     </Compile>
