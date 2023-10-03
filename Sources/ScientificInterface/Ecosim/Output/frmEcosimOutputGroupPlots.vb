@@ -87,6 +87,7 @@ Namespace Ecosim
         Private m_plotPanel([Enum].GetValues(GetType(ePlot)).Length) As Integer
         Private m_plotVisible([Enum].GetValues(GetType(ePlot)).Length) As Boolean
         Private m_bIsCatchAggregated As Boolean = False
+        Private m_bInUpdate As Boolean = False
 
         Dim m_TSInterval As eTSDataSetInterval
 
@@ -207,7 +208,24 @@ Namespace Ecosim
         Private Sub OnGroupSelectionChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_lbGroups.SelectedIndexChanged
 
+            If (Me.m_bInUpdate) Then Return
+            Me.m_bInUpdate = True
             Me.UpdatePlots()
+            Me.ShowGroup()
+            Me.m_bInUpdate = False
+
+        End Sub
+
+        ''' <summary>
+        ''' Event hander to filter group results for a specific fleet
+        ''' </summary>
+        Private Sub OnFleetSelectionChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_lbFleets.SelectedIndexChanged
+
+            If (Me.m_bInUpdate) Then Return
+            Me.m_bInUpdate = True
+            Me.UpdatePlots()
+            Me.m_bInUpdate = False
 
         End Sub
 
@@ -396,9 +414,10 @@ Namespace Ecosim
 
             Dim iCount As Integer = 0
             Dim dXValue As Double = 0
-            Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
-            Dim groupSimOut As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroup)
-            Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroup)
+            Dim iGroupSel As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
+            Dim iFleetSel As Integer = Me.m_lbFleets.SelectedFleetIndex
+            Dim groupSimOut As cEcosimGroupOutput = Me.Core.EcosimGroupOutputs(iGroupSel)
+            Dim group As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(iGroupSel)
 
             Dim pplB As New PointPairList()
             Dim pplConsB As New PointPairList()
@@ -423,6 +442,9 @@ Namespace Ecosim
 
             ' Do not render when sim has not ran
             If Not Me.Core.StateMonitor.HasEcosimRan Then Return
+
+            Dim iFleetMin As Integer = If(iFleetSel > 0, iFleetSel, 1)
+            Dim iFleetMax As Integer = If(iFleetSel > 0, iFleetSel, Me.Core.nFleets)
 
             Dim applCatchFleet(Me.Core.nFleets) As PointPairList
             Dim applFishMortFleet(Me.Core.nFleets) As PointPairList
@@ -466,7 +488,7 @@ Namespace Ecosim
                     applDiscardsSurvival(0).Add(dXValue, groupSimOut.DiscardSurvivedByFleet(0, i))
                     applLandings(0).Add(dXValue, groupSimOut.LandingsByFleet(0, i))
                 Else
-                    For iFleet As Integer = 1 To Me.Core.nFleets
+                    For iFleet As Integer = iFleetMin To iFleetMax
                         applFishMortFleet(iFleet).Add(dXValue, groupSimOut.FishingMortByFleet(iFleet, i))
                         applCatchFleet(iFleet).Add(dXValue, groupSimOut.CatchByFleet(iFleet, i))
                         applValueFleet(iFleet).Add(dXValue, groupSimOut.ValueByFleet(iFleet, i))
@@ -487,11 +509,10 @@ Namespace Ecosim
             Next
 
             Me.AddCurveToGraphPane(ePlot.Biomass, Me.m_zgh.CreateLineItem(group, pplB))
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassRel, iGroup, Color.Blue)
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassRel, iGroupSel, Color.Blue)
                 Me.AddCurveToGraphPane(ePlot.Biomass, li)
             Next li
-            ' Fixes issue 604:
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassAbs, iGroup, Color.Green)
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassAbs, iGroupSel, Color.Green)
                 Me.AddCurveToGraphPane(ePlot.Biomass, li)
             Next li
 
@@ -510,41 +531,44 @@ Namespace Ecosim
                 Me.AddCurveToGraphPane(ePlot.DiscardsSurvival, Me.m_zgh.CreateLineItem(strAll, eSketchDrawModeTypes.Line, clrAll, applDiscardsSurvival(0)), True)
                 Me.AddCurveToGraphPane(ePlot.Landings, Me.m_zgh.CreateLineItem(strAll, eSketchDrawModeTypes.Line, clrAll, applLandings(0)), True)
 
-                For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortality, iGroup, Color.Black)
-                    Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, li)
-                Next li
+                ' No point putting a time series line on a cumulative plot
+                'For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortality, iGroup, Color.Black)
+                '    Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, li, True)
+                'Next li
 
             Else
-                For i As Integer = 1 To Me.Core.nFleets
+                For i As Integer = iFleetMin To iFleetMax
 
                     Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
                     Dim clr As Color = Me.UIContext.StyleGuide.FleetColor(Me.Core, i)
-                    If fleet.Landings(iGroup) > 0 Then
-                        Me.AddCurveToGraphPane(ePlot.[Catch], Me.m_zgh.CreateLineItem(fleet, applCatchFleet(i)), True)
-                        Me.AddCurveToGraphPane(ePlot.Value, Me.m_zgh.CreateLineItem(fleet, applValueFleet(i)), True)
-                        Me.AddCurveToGraphPane(ePlot.Landings, Me.m_zgh.CreateLineItem(fleet, applLandings(i)), True)
+                    If fleet.Landings(iGroupSel) > 0 Then
+                        Me.AddCurveToGraphPane(ePlot.[Catch], Me.m_zgh.CreateLineItem(fleet, applCatchFleet(i)), iFleetSel < 1)
+                        Me.AddCurveToGraphPane(ePlot.Value, Me.m_zgh.CreateLineItem(fleet, applValueFleet(i)), iFleetSel < 1)
+                        Me.AddCurveToGraphPane(ePlot.Landings, Me.m_zgh.CreateLineItem(fleet, applLandings(i)), iFleetSel < 1)
                     End If
-                    If fleet.Discards(iGroup) > 0 Then
-                        Me.AddCurveToGraphPane(ePlot.Discards, Me.m_zgh.CreateLineItem(fleet, applDiscards(i)), True)
-                        Me.AddCurveToGraphPane(ePlot.DiscardsMortality, Me.m_zgh.CreateLineItem(fleet, applDiscardsMortality(i)), True)
-                        Me.AddCurveToGraphPane(ePlot.DiscardsSurvival, Me.m_zgh.CreateLineItem(fleet, applDiscardsSurvival(i)), True)
+                    If fleet.Discards(iGroupSel) > 0 Then
+                        Me.AddCurveToGraphPane(ePlot.Discards, Me.m_zgh.CreateLineItem(fleet, applDiscards(i)), iFleetSel < 1)
+                        Me.AddCurveToGraphPane(ePlot.DiscardsMortality, Me.m_zgh.CreateLineItem(fleet, applDiscardsMortality(i)), iFleetSel < 1)
+                        Me.AddCurveToGraphPane(ePlot.DiscardsSurvival, Me.m_zgh.CreateLineItem(fleet, applDiscardsSurvival(i)), iFleetSel < 1)
                     End If
-                    Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem(fleet, applFishMortFleet(i)), True)
-                    For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortalityRef, iGroup, Color.Blue)
-                        Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, li)
-                    Next li
+                    Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem(fleet, applFishMortFleet(i)), iFleetSel < 1)
 
+                    ' Only put a time series line on a cumulative plot
+                    If (iFleetSel > 0) Then
+                        For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortalityRef, iGroupSel, Color.Blue)
+                            Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, li)
+                        Next li
+                    End If
                 Next
-
             End If
 
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroupSel, Color.Red)
                 Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
             Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesForcing, iGroup, Color.Blue)
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesForcing, iGroupSel, Color.Blue)
                 Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
             Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesRel, iGroup, Color.LightBlue)
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesRel, iGroupSel, Color.LightBlue)
                 Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
             Next li
 
@@ -553,7 +577,7 @@ Namespace Ecosim
                 Me.UpdateGraphPaneTitle(ePlot.AvgWeightOrProdCons, SharedResources.HEADER_AVGERAGEWEIGHT)
 
                 Me.AddCurveToGraphPane(ePlot.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
-                For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.AverageWeight, iGroup, Color.Blue)
+                For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.AverageWeight, iGroupSel, Color.Blue)
                     Me.AddCurveToGraphPane(ePlot.AvgWeightOrProdCons, li)
                 Next li
 
@@ -567,7 +591,7 @@ Namespace Ecosim
             Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_TOTAL, eSketchDrawModeTypes.Line, Color.Black, pplMortTotal))
             Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_PREDATION, eSketchDrawModeTypes.Line, Color.Red, pplMortPredation))
             Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_FISHING, eSketchDrawModeTypes.Line, Color.Blue, pplMortFishing))
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.TotalMortality, iGroup, Color.Green)
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.TotalMortality, iGroupSel, Color.Green)
                 Me.AddCurveToGraphPane(ePlot.Mortality, li)
             Next li
 
@@ -606,13 +630,15 @@ Namespace Ecosim
                 End If
             Next
 
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Discards, iGroup, Color.Black)
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Discards, iGroupSel, Color.Black)
                 Me.AddCurveToGraphPane(ePlot.Discards, li)
             Next li
 
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Landings, iGroup, Color.Black)
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Landings, iGroupSel, Color.Black)
                 Me.AddCurveToGraphPane(ePlot.Landings, li)
             Next li
+
+            Me.m_zgh.RescaleAndRedraw()
 
         End Sub
 
@@ -706,7 +732,6 @@ Namespace Ecosim
             Try
                 Me.AddCurves()
                 Me.m_zgh.RescaleAndRedraw()
-                Me.ShowGroup()
             Catch ex As Exception
 
             End Try
@@ -851,7 +876,8 @@ Namespace Ecosim
             ' Sanity check
             Debug.Assert(Me.m_plotPanel(paneType) > 0)
             Try
-                Me.m_zgh.PlotLines(lli.ToArray, Me.m_plotPanel(paneType), True, False, bCumulative)
+                ' Do not refresh immediately
+                Me.m_zgh.PlotLines(lli.ToArray, Me.m_plotPanel(paneType), False, False, bCumulative)
             Catch ex As Exception
 
             End Try
