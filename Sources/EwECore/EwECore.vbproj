@@ -480,6 +480,7 @@
     <Compile Include="SpatialTemporal\Adapters\cHabitatDataAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cIBMAge1NumbersForcingAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cMPADataAdapter.vb" />
+    <Compile Include="SpatialTemporal\Adapters\cSpatialScalarDataAdapterBase.vb" />
     <Compile Include="SpatialTemporal\Adapters\cSpatialScalarNonRestoringDataAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cForcingAdapterBase.vb" />
     <Compile Include="SpatialTemporal\Adapters\cRelPPDataAdapter.vb" />
