@@ -103,9 +103,12 @@ Public Class cFleetTimeSeries
 
     Public ReadOnly Property GroupIndexStatus() As eStatusFlags
         Get
-            If (Me.DatPoolSec < If(Me.CanApplyToAllGroups, 0, 1) Or Me.DatPoolSec > Me.m_core.nGroups) Then
-                Return eStatusFlags.ErrorEncountered
-            End If
+            Select Case cTimeSeriesFactory.TimeSeriesCategory(Me.TimeSeriesType)
+                Case eTimeSeriesCategoryType.FleetGroup
+                    If (Me.DatPoolSec < If(Me.CanApplyToAllGroups, 0, 1) Or Me.DatPoolSec > Me.m_core.nGroups) Then
+                        Return eStatusFlags.ErrorEncountered
+                    End If
+            End Select
             Return eStatusFlags.OK
         End Get
     End Property

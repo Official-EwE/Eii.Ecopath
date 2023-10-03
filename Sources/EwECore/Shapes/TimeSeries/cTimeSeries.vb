@@ -282,8 +282,8 @@ Public MustInherit Class cTimeSeries
     Public Shared Function IsDriver(DatType As eTimeSeriesType) As Boolean
         Select Case DatType
             Case eTimeSeriesType.BiomassForcing,
-                     eTimeSeriesType.CatchesForcing,
-                     eTimeSeriesType.FishingEffort, eTimeSeriesType.FishingMortality,
+                     eTimeSeriesType.CatchesForcing, eTimeSeriesType.TimeForcing,
+                     eTimeSeriesType.FishingEffort, eTimeSeriesType.FishingMortality, eTimeSeriesType.ConstantTotalMortality,
                      eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion,
                      eTimeSeriesType.Catchabilities,
                      eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel,
@@ -293,7 +293,7 @@ Public MustInherit Class cTimeSeries
                 Return True
             Case eTimeSeriesType.BiomassRel,
                      eTimeSeriesType.BiomassAbs,
-                     eTimeSeriesType.TotalMortality,
+                     eTimeSeriesType.TotalMortality, eTimeSeriesType.FishingMortalityRef,
                      eTimeSeriesType.AverageWeight,
                      eTimeSeriesType.Catches,
                      eTimeSeriesType.CatchesRel,

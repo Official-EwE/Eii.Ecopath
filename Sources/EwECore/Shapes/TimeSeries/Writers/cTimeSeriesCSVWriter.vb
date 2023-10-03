@@ -24,9 +24,10 @@ Option Strict On
 Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+
 
 #End Region ' Imports
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Write a time series dataset to a text output source.
@@ -64,7 +65,7 @@ Public Class cTimeSeriesCSVWriter
         Dim name As String = ""
         If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
             Dim ds As cTimeSeriesDataset = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
-            If (ds Is Nothing) Then
+            If (ds IsNot Nothing) Then
                 name = Path.ChangeExtension(cFileUtils.ToValidFileName(ds.Name, False), ".csv")
                 Me.Write(Path.Combine(pout, name), ","c, "."c)
             End If
@@ -147,18 +148,21 @@ Public Class cTimeSeriesCSVWriter
                 sw.Write("Pool code 2")
                 For iTS As Integer = 1 To Me.m_core.nTimeSeries
                     ts = Me.m_core.EcosimTimeSeries(iTS)
-
                     sw.Write(strDelimiter)
-                    If TypeOf ts Is cGroupTimeSeries Then
-                        sw.Write(0)
-                    ElseIf TypeOf ts Is cFleetTimeSeries Then
-                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cFleetTimeSeries).GroupIndex, strDecimalSeparator, ""))
-                    Else
-                        ' Should never happen, unless a new type of time series is defined.
-                        Debug.Assert(False)
-                    End If
-
+                    Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
+                        Case eTimeSeriesCategoryType.Fleet
+                            ' NOP
+                        Case eTimeSeriesCategoryType.Group
+                            ' NOP
+                        Case eTimeSeriesCategoryType.Forcing
+                            ' NOP
+                        Case eTimeSeriesCategoryType.FleetGroup
+                            sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cFleetTimeSeries).GroupIndex, strDecimalSeparator, ""))
+                        Case Else
+                            Debug.Assert(False, "Time series type not supported")
+                    End Select
                 Next
+
                 sw.WriteLine()
                 ' Type
                 sw.Write("Type")
