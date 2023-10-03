@@ -169,6 +169,7 @@ Namespace Style
         Public Shared ReadOnly Property Number As String = "[number]"
         Public Shared ReadOnly Property Year As String = "[year]"
         Public Shared ReadOnly Property FishingEffort As String = "[kilowattdays]/[time]"
+        Public Shared ReadOnly Property Percentage As String = "[%]"
 
     End Class
 

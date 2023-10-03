@@ -24,12 +24,9 @@ Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports OfficeOpenXml.FormulaParsing.Excel.Functions.Text
 
-
 #End Region ' Imports
 
 Namespace SpatialData
-
-#Region " Base class "
 
     ''' <summary>
     ''' Derived spatial data adapter to insert scaled external spatial/temporal map data into
@@ -216,7 +213,5 @@ Namespace SpatialData
 #End Region ' Public access
 
     End Class
-
-#End Region ' Base class
 
 End Namespace
