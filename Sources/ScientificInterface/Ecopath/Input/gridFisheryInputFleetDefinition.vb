@@ -47,7 +47,7 @@ Namespace Ecopath.Input
         Private Enum eColumnTypes As Integer
             Index = 0
             Name
-            NominalEffort
+            'NominalEffort
             FixedCost
             EffCost
             SailCost
@@ -68,12 +68,12 @@ Namespace Ecopath.Input
 
             Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(eVarNameFlags.Name)
-            Me(0, eColumnTypes.NominalEffort) = New cEwEColumnHeaderCell(eVarNameFlags.NominalEffort)
+            'Me(0, eColumnTypes.NominalEffort) = New cEwEColumnHeaderCell(eVarNameFlags.NominalEffort)
             Me(0, eColumnTypes.FixedCost) = New cEwEColumnHeaderCell(eVarNameFlags.FixedCost)
             Me(0, eColumnTypes.EffCost) = New cEwEColumnHeaderCell(eVarNameFlags.EffortCost)
             Me(0, eColumnTypes.SailCost) = New cEwEColumnHeaderCell(eVarNameFlags.SailCost)
-            Me(0, eColumnTypes.Profit) = New cEwEColumnHeaderCell(SharedResources.HEADER_PROFIT_PERC, cUnits.MonetaryOverTime)
-            Me(0, eColumnTypes.TotalVal) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE_PERC)
+            Me(0, eColumnTypes.Profit) = New cEwEColumnHeaderCell(SharedResources.HEADER_PROFIT, cUnits.Percentage)
+            Me(0, eColumnTypes.TotalVal) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE, cUnits.Percentage)
 
         End Sub
 
@@ -106,9 +106,9 @@ Namespace Ecopath.Input
                 ' Fleet name column
                 Me(iRow, eColumnTypes.Name) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
-                ' Fleet nominal effort column
-                prop = pm.GetProperty(source, eVarNameFlags.NominalEffort)
-                Me(iRow, eColumnTypes.NominalEffort) = New cPropertyCell(prop)
+                '' Fleet nominal effort column
+                'prop = pm.GetProperty(source, eVarNameFlags.NominalEffort)
+                'Me(iRow, eColumnTypes.NominalEffort) = New cPropertyCell(prop)
 
                 'Fixed cost column
                 prop = pm.GetProperty(source, eVarNameFlags.FixedCost)
