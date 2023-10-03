@@ -980,9 +980,6 @@
   <data name="HEADER_PROFIT" xml:space="preserve">
     <value>Profit</value>
   </data>
-  <data name="HEADER_PROFIT_PERC" xml:space="preserve">
-    <value>Profit (%)</value>
-  </data>
   <data name="HEADER_PROPORTION" xml:space="preserve">
     <value>Proportion</value>
   </data>
@@ -1123,7 +1120,7 @@
     <value>Sum of all production</value>
   </data>
   <data name="HEADER_SUM_PROFIT" xml:space="preserve">
-    <value>Profit</value>
+    <value>Total profit</value>
   </data>
   <data name="HEADER_SUM_THROUGHPUT" xml:space="preserve">
     <value>Total system throughput</value>
@@ -1167,9 +1164,6 @@
   </data>
   <data name="HEADER_TOTALLENGTH" xml:space="preserve">
     <value>Total length</value>
-  </data>
-  <data name="HEADER_TOTALVALUE_PERC" xml:space="preserve">
-    <value>Total value (%)</value>
   </data>
   <data name="HEADER_TOTEFFMULTI" xml:space="preserve">
     <value>Tot. eff. multip.</value>

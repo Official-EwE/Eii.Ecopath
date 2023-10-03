@@ -6199,15 +6199,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Profit (%).
-        '''</summary>
-        Public ReadOnly Property HEADER_PROFIT_PERC() As String
-            Get
-                Return ResourceManager.GetString("HEADER_PROFIT_PERC", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Proportion natural mort..
         '''</summary>
         Public ReadOnly Property HEADER_PROP_NAT_MORT() As String
@@ -6784,7 +6775,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Profit.
+        '''  Looks up a localized string similar to Total profit.
         '''</summary>
         Public ReadOnly Property HEADER_SUM_PROFIT() As String
             Get
@@ -6996,15 +6987,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_TOTALVALUE() As String
             Get
                 Return ResourceManager.GetString("HEADER_TOTALVALUE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Total value (%).
-        '''</summary>
-        Public ReadOnly Property HEADER_TOTALVALUE_PERC() As String
-            Get
-                Return ResourceManager.GetString("HEADER_TOTALVALUE_PERC", resourceCulture)
             End Get
         End Property
         

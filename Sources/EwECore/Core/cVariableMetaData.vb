@@ -206,9 +206,9 @@ Public Class cVariableMetaData
 
         ' -- Ecopath fleets  --
         ' in 
-        Me.Metadata(eVarNameFlags.FixedCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.MonetaryOverBiomass)
-        Me.Metadata(eVarNameFlags.EffortCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 40, cUnits.MonetaryOverBiomass)
-        Me.Metadata(eVarNameFlags.SailCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 40, cUnits.MonetaryOverBiomass)
+        Me.Metadata(eVarNameFlags.FixedCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Percentage)
+        Me.Metadata(eVarNameFlags.EffortCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 40, cUnits.Percentage)
+        Me.Metadata(eVarNameFlags.SailCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 40, cUnits.Percentage)
         Me.Metadata(eVarNameFlags.OffVesselPrice) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.MonetaryOverBiomass)
         Me.Metadata(eVarNameFlags.NominalEffort) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.FishingEffort)
         Me.Metadata(eVarNameFlags.Landings) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.CurrencyOverTime)
