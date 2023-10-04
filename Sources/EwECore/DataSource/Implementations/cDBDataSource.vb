@@ -6665,7 +6665,7 @@ Namespace DataSources
         Public Function ImportTimeSeries(ts As cTimeSeriesImport, iDataset As Integer) As Boolean _
               Implements IEcosimDatasource.ImportTimeSeries
 
-            Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
+            Select Case cTimeSeries.Category(ts.TimeSeriesType)
 
                 Case eTimeSeriesCategoryType.Group,
                      eTimeSeriesCategoryType.Fleet,
@@ -6837,7 +6837,7 @@ Namespace DataSources
             writer.AddRow(drow)
             Me.m_db.ReleaseWriter(writer, True)
 
-            Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
+            Select Case cTimeSeries.Category(ts.TimeSeriesType)
                 Case eTimeSeriesCategoryType.Group
                     bSucces = bSucces And Me.AddGroupTimeSeries(ts, iTimeSeriesID)
                 Case eTimeSeriesCategoryType.Fleet, eTimeSeriesCategoryType.FleetGroup
@@ -6997,7 +6997,7 @@ Namespace DataSources
                     tsDS.TimeSeriesWeight(iSeries) = CSng(reader("WtType"))
                     tsDS.TimeSeriesCV(iSeries) = CSng(Me.m_db.ReadSafe(reader, "CV", 0.0!))
 
-                    Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
+                    Select Case cTimeSeries.Category(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
                         Case eTimeSeriesCategoryType.Group
                             Dim iIndex As Integer = 0
@@ -7116,7 +7116,7 @@ Namespace DataSources
 
                     drow.EndEdit()
 
-                    Select Case cTimeSeriesFactory.TimeSeriesCategory(tsDS.TimeSeriesType(iTS))
+                    Select Case cTimeSeries.Category(tsDS.TimeSeriesType(iTS))
 
                         Case eTimeSeriesCategoryType.Fleet,
                              eTimeSeriesCategoryType.FleetGroup
@@ -7242,7 +7242,7 @@ Namespace DataSources
                 writer.AddRow(drow)
                 Me.m_db.ReleaseWriter(writer)
 
-                Select Case cTimeSeriesFactory.TimeSeriesCategory(timeSeriesType)
+                Select Case cTimeSeries.Category(timeSeriesType)
 
                     Case eTimeSeriesCategoryType.Fleet,
                          eTimeSeriesCategoryType.FleetGroup

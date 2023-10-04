@@ -2958,7 +2958,7 @@ Namespace Database
                 ' JS 07may07: time series assignments have changed in EwE6. A time series is always connected to either a fleet
                 '             (via EcosimTimeSeriesFleet) or a group (via EcosimTimeSeriesGroup). Both tables then link one-on-one
                 '             to the actual time series data in EcosimTimeSeries.
-                Select Case cTimeSeriesFactory.TimeSeriesCategory(eType)
+                Select Case cTimeSeries.Category(eType)
 
                     Case eTimeSeriesCategoryType.Forcing
 

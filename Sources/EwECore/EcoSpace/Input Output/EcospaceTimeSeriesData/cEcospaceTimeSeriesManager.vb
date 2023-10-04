@@ -308,7 +308,7 @@ Namespace EcospaceTimeSeries
         ''' <returns>True if successful.</returns>
         Public Function CalculateStats(iTimeStep As Integer, biomass(,,) As Single) As Boolean
             Dim zstat As Double
-            Dim TimeStepDate As Date = Me.TimeStepToDate(iTimeStep)
+            Dim TimeStepDate As Date = Me.Core.EcospaceTimestepToAbsoluteTime(iTimeStep)
             Try
                 Dim table As DataTable = Me.m_dataSets.Tables(eVarNameFlags.EcospaceMapBiomass.ToString)
                 Dim rows As DataRow() = table.Select("Date='" + TimeStepDate.ToLongDateString + "'")
@@ -366,7 +366,7 @@ Namespace EcospaceTimeSeries
             Try
                 'Clear current data from memory
                 'Me.clearContaminantForcing()
-                Dim TimeStepDate As Date = Me.TimeStepToDate(iTimeStep)
+                Dim TimeStepDate As Date = Me.Core.EcospaceTimestepToAbsoluteTime(iTimeStep)
 
                 Dim table As DataTable = Me.m_dataSets.Tables(eVarNameFlags.Concentration.ToString)
                 Dim rows As DataRow() = table.Select("Date='" + TimeStepDate.ToLongDateString + "'")
@@ -493,31 +493,6 @@ Namespace EcospaceTimeSeries
                 Return False
             End Get
         End Property
-
-
-
-        ''' <summary>
-        ''' Get the calendar date for the current model time step
-        ''' </summary>
-        ''' <param name="itimestep"></param>
-        ''' <returns></returns>
-        ''' <remarks>This method is identical to <see cref="cCore.EcospaceTimestepToAbsoluteTime(Integer)"/></remarks>
-        <Obsolete("Use cCore.EcospaceTimestepToAbsoluteTime instead")>
-        Private Function TimeStepToDate(itimestep As Integer) As Date
-            'convert Ecospace time step into date
-            Dim stYear As Integer
-            If Me.m_core.EwEModel.FirstYear <> 0 Then
-                stYear = Me.m_core.EwEModel.FirstYear
-            Else
-                stYear = 1
-            End If
-
-            Dim StartDate As New Date(stYear, 1, 1)
-            Dim nmonths As Integer = CInt(Math.Truncate((itimestep - 1) * Me.m_SpaceData.TimeStep * 12))
-            Dim tsDate As Date = StartDate.AddMonths(CInt(nmonths))
-            Return tsDate
-
-        End Function
 
         ''' <summary>
         ''' Are the start date and the end date of the input time series data within the model run

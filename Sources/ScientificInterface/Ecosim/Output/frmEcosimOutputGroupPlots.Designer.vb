@@ -158,9 +158,6 @@ Namespace Ecosim
             'm_tlpMain
             '
             resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
-            Me.m_tlpMain.Controls.Add(Me.m_hdrPrey, 0, 5)
-            Me.m_tlpMain.Controls.Add(Me.m_hdrFleets, 0, 7)
-            Me.m_tlpMain.Controls.Add(Me.m_hdrPredators, 0, 3)
             Me.m_tlpMain.Controls.Add(Me.m_hdrGroup, 0, 1)
             Me.m_tlpMain.Controls.Add(Me.m_tsMain, 0, 0)
             Me.m_tlpMain.Controls.Add(Me.m_btnSaveData, 0, 9)
@@ -169,6 +166,9 @@ Namespace Ecosim
             Me.m_tlpMain.Controls.Add(Me.m_plPredators, 0, 4)
             Me.m_tlpMain.Controls.Add(Me.m_plPrey, 0, 6)
             Me.m_tlpMain.Controls.Add(Me.m_cbSaveVisibleOnly, 0, 10)
+            Me.m_tlpMain.Controls.Add(Me.m_hdrPrey, 0, 7)
+            Me.m_tlpMain.Controls.Add(Me.m_hdrPredators, 0, 5)
+            Me.m_tlpMain.Controls.Add(Me.m_hdrFleets, 0, 3)
             Me.m_tlpMain.Name = "m_tlpMain"
             '
             'm_hdrPrey
@@ -226,7 +226,7 @@ Namespace Ecosim
             '
             'm_plFleets
             '
-            Me.m_plFleets.Controls.Add(Me.m_lbFleets)
+            Me.m_plFleets.Controls.Add(Me.m_lbPrey)
             resources.ApplyResources(Me.m_plFleets, "m_plFleets")
             Me.m_plFleets.Name = "m_plFleets"
             '
@@ -244,13 +244,13 @@ Namespace Ecosim
             '
             'm_plPredators
             '
-            Me.m_plPredators.Controls.Add(Me.m_lbPredators)
+            Me.m_plPredators.Controls.Add(Me.m_lbFleets)
             resources.ApplyResources(Me.m_plPredators, "m_plPredators")
             Me.m_plPredators.Name = "m_plPredators"
             '
             'm_plPrey
             '
-            Me.m_plPrey.Controls.Add(Me.m_lbPrey)
+            Me.m_plPrey.Controls.Add(Me.m_lbPredators)
             resources.ApplyResources(Me.m_plPrey, "m_plPrey")
             Me.m_plPrey.Name = "m_plPrey"
             '

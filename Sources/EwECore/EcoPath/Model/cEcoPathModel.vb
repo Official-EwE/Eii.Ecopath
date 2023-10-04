@@ -317,13 +317,6 @@ Namespace Ecopath
 
                     Me.m_Data.onPostEcopathRun(Me.m_Ecofunctions)
 
-                    Me.CheckIfEEsAreOK(bSendMessage:=True)
-                    Me.CheckIfRespirationOK(bSendMessage:=True)
-
-                    'Else
-                    '    EstimEEAgain()
-                    'End If
-
                 Else
 
                     'Failed to estimate parameters
@@ -344,10 +337,8 @@ Namespace Ecopath
                                             eMessageType.ErrorEncountered, eCoreComponentType.Ecopath, eMessageImportance.Critical, eDataTypes.NotSet)
                         Me.NotifyCore(msg)
                         cLog.Write("cEcopathModel.Run() failed to estimate parameters because of an error.")
-
+                        Return False
                     End If
-
-                    Return False
 
                 End If ' If parmest_returncode = eParmEstimateCodes.Success Then
 
@@ -366,16 +357,19 @@ Namespace Ecopath
 
             End Try
 
-            'Finally did the model balance
-            If Not Me.CheckIfEEsAreOK(False) Then
-                Me.RunState = eEcopathRunState.InvalidEE
-            ElseIf Not Me.CheckIfRespirationOK(False) Then
-                Me.RunState = eEcopathRunState.InValidRespiration
-            Else
-                Me.RunState = eEcopathRunState.Balanced
+            If (Me.RunState = eEcopathRunState.NotRun) Then
+
+                'Finally did the model balance
+                If Not Me.CheckIfEEsAreOK(Me.ParameterEstimationType <> eEstimateParameterFor.Sensitivity) Then
+                    Me.RunState = eEcopathRunState.InvalidEE
+                ElseIf Not Me.CheckIfRespirationOK(Me.ParameterEstimationType <> eEstimateParameterFor.Sensitivity) Then
+                    Me.RunState = eEcopathRunState.InValidRespiration
+                Else
+                    Me.RunState = eEcopathRunState.Balanced
+                End If
             End If
 
-            Return (Me.RunState = eEcopathRunState.Balanced)
+            Return True
 
         End Function
 

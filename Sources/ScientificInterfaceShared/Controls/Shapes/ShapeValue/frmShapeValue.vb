@@ -499,13 +499,15 @@ Public Class frmShapeValue
         iPoolCode = Me.m_cmbPoolCode.SelectedIndex + 1
 
         'Assign the time series pool code to fleet index or group index
-        Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
+        Select Case cTimeSeries.Category(ts.TimeSeriesType)
             Case eTimeSeriesCategoryType.Fleet
                 fts = CType(ts, cFleetTimeSeries)
                 fts.FleetIndex = iPoolCode
             Case eTimeSeriesCategoryType.Group
                 gts = CType(ts, cGroupTimeSeries)
                 gts.GroupIndex = iPoolCode
+            Case eTimeSeriesCategoryType.FleetGroup
+                Return False
         End Select
 
         ' Update the shape
@@ -621,7 +623,7 @@ Public Class frmShapeValue
                     bEnableOk = bEnableOk And (Me.m_cmbPoolCode.SelectedIndex >= 0)
                     ' .. and perhaps a valid secondary pool code too
                     Dim ts As cTimeSeries = DirectCast(Me.m_shape, cTimeSeries)
-                    If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup) Then
+                    If (cTimeSeries.Category(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup) Then
                         bEnableOk = bEnableOk And (Me.m_cmbPoolCodeSec.SelectedIndex >= 0)
                     End If
                 Else
@@ -629,10 +631,10 @@ Public Class frmShapeValue
                 End If
             End If
 
-            Me.m_lblPoolCode.Visible = (cTimeSeriesFactory.TimeSeriesCategory(Me.SelectedTimeSeriesType()) <> eTimeSeriesCategoryType.NotSet)
+            Me.m_lblPoolCode.Visible = (cTimeSeries.Category(Me.SelectedTimeSeriesType()) <> eTimeSeriesCategoryType.NotSet)
             Me.m_cmbPoolCode.Visible = Me.m_lblPoolCode.Visible
 
-            Me.m_lblPoolCodeSec.Visible = (cTimeSeriesFactory.TimeSeriesCategory(Me.SelectedTimeSeriesType()) = eTimeSeriesCategoryType.FleetGroup)
+            Me.m_lblPoolCodeSec.Visible = (cTimeSeries.Category(Me.SelectedTimeSeriesType()) = eTimeSeriesCategoryType.FleetGroup)
             Me.m_cmbPoolCodeSec.Visible = Me.m_lblPoolCodeSec.Visible
 
             Me.m_lblViewAs.Visible = Not bIsMediation And Not bIsTimeSeries
@@ -679,7 +681,7 @@ Public Class frmShapeValue
 
         Dim fts As cFleetTimeSeries
         Dim gts As cGroupTimeSeries
-        Dim cat As eTimeSeriesCategoryType = cTimeSeriesFactory.TimeSeriesCategory(Me.SelectedTimeSeriesType())
+        Dim cat As eTimeSeriesCategoryType = cTimeSeries.Category(Me.SelectedTimeSeriesType())
         Dim fmt As New cCoreInterfaceFormatter()
 
         Me.m_cmbPoolCode.Items.Clear()

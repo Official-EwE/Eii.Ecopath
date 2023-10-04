@@ -1769,7 +1769,7 @@ Public Class cCore
             For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
 
                 ' Validate whether TS will remain in its category (group)
-                Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Group, "Cannot change TS to a different category")
+                Debug.Assert(cTimeSeries.Category(ts.TimeSeriesType) = eTimeSeriesCategoryType.Group, "Cannot change TS to a different category")
                 Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
                 Me.m_TSData.TimeSeriesName(ts.Index) = ts.Name
                 Me.m_TSData.TimeSeriesPool(ts.Index) = ts.GroupIndex
@@ -1810,8 +1810,8 @@ Public Class cCore
             For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
 
                 ' Validate whether TS will remain in its category
-                Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Fleet Or
-                             cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup, "Cannot change TS to a different category")
+                Debug.Assert(cTimeSeries.Category(ts.TimeSeriesType) = eTimeSeriesCategoryType.Fleet Or
+                             cTimeSeries.Category(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup, "Cannot change TS to a different category")
                 Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
                 Me.m_TSData.TimeSeriesName(ts.Index) = ts.Name
                 Me.m_TSData.TimeSeriesPool(ts.Index) = ts.FleetIndex

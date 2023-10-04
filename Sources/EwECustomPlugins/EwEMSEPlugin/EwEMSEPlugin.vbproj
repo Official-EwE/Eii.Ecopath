@@ -308,9 +308,7 @@
     <Compile Include="User interface\frmStrategiesOverview.Designer.vb">
       <DependentUpon>frmStrategiesOverview.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmStrategiesOverview.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="User interface\frmStrategiesOverview.vb" />
     <Compile Include="User interface\frmTFMpolicy.designer.vb">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
     </Compile>
