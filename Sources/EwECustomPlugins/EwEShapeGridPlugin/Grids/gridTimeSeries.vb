@@ -136,7 +136,7 @@ Public Class gridTimeSeries
                 If (fts.FleetIndex >= 1) Then
                     selDatTypePrim = Me.Core.EcopathFleetInputs(fts.FleetIndex)
                 End If
-                If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup) Then
+                If (cTimeSeries.Category(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup) Then
                     If (fts.GroupIndex >= 1) Then
                         selDatTypeSec = Me.Core.EcopathGroupInputs(fts.GroupIndex)
                     End If

@@ -149,7 +149,7 @@ Public Class cTimeSeriesCSVWriter
                 For iTS As Integer = 1 To Me.m_core.nTimeSeries
                     ts = Me.m_core.EcosimTimeSeries(iTS)
                     sw.Write(strDelimiter)
-                    Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
+                    Select Case cTimeSeries.Category(ts.TimeSeriesType)
                         Case eTimeSeriesCategoryType.Fleet
                             ' NOP
                         Case eTimeSeriesCategoryType.Group
@@ -267,7 +267,7 @@ Public Class cTimeSeriesCSVWriter
                 For iTS As Integer = 1 To nTsT
                     Dim t As eTimeSeriesType = tstypes(iTS - 1)
                     sw.Write(strDelimiter)
-                    Select Case cTimeSeriesFactory.TimeSeriesCategory(t)
+                    Select Case cTimeSeries.Category(t)
                         Case eTimeSeriesCategoryType.Group
                             sw.Write("group no")
                         Case eTimeSeriesCategoryType.Fleet, eTimeSeriesCategoryType.FleetGroup, eTimeSeriesCategoryType.Forcing
@@ -285,7 +285,7 @@ Public Class cTimeSeriesCSVWriter
                     Dim tTest As cTimeSeries = cTimeSeriesFactory.CreateTimeSeries(t, Me.m_core, -1)
 
                     sw.Write(strDelimiter)
-                    Select Case cTimeSeriesFactory.TimeSeriesCategory(t)
+                    Select Case cTimeSeries.Category(t)
                         Case eTimeSeriesCategoryType.FleetGroup
                             sw.Write("group no")
                             If (DirectCast(tTest, cFleetTimeSeries).CanApplyToAllGroups) Then

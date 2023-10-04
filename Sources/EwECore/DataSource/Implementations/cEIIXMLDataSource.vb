@@ -2029,7 +2029,7 @@ Public Class cEIIXMLDataSource
                 tsDS.TimeSeriesWeight(iSeries) = CSng(drow("WtType"))
                 tsDS.TimeSeriesCV(iSeries) = Me.ReadSafe(drow, "CV", 0.0!)
 
-                Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
+                Select Case cTimeSeries.Category(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
                     Case eTimeSeriesCategoryType.Group
                         For Each drowSub As DataRow In dtGrp.Select("TimeSeriesID=" & iTSID)

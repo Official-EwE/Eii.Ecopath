@@ -80,12 +80,12 @@ Public MustInherit Class cTimeSeries
 
         Set(tstype As eTimeSeriesType)
             ' It is not allowed to switch between TS types once a type has been assigned
-            Dim tscatCurr As eTimeSeriesCategoryType = cTimeSeriesFactory.TimeSeriesCategory(Me.m_timeSeriesType)
+            Dim tscatCurr As eTimeSeriesCategoryType = cTimeSeries.Category(Me.m_timeSeriesType)
             Select Case tscatCurr
                 Case eTimeSeriesCategoryType.NotSet
                     Me.m_timeSeriesType = tstype
                 Case Else
-                    If cTimeSeriesFactory.TimeSeriesCategory(tstype) = tscatCurr Then
+                    If cTimeSeries.Category(tstype) = tscatCurr Then
                         Me.m_timeSeriesType = tstype
                     Else
                         Debug.Assert(False, "Illegal assignment; a TS cannot switch categories")
@@ -312,8 +312,8 @@ Public MustInherit Class cTimeSeries
 
     Public Shared Function IsRelative(DatType As eTimeSeriesType) As Boolean
         Return (DatType = eTimeSeriesType.BiomassRel) Or
-               (DatType = eTimeSeriesType.CatchesRel) ' Or
-        '(DatType = eTimeSeriesType.EcotracerConcRel)
+               (DatType = eTimeSeriesType.CatchesRel) Or
+               (DatType = eTimeSeriesType.AverageWeight)
     End Function
 
     <Obsolete("Remove when time series properly use cCore.NULL_VALUE")>
@@ -323,6 +323,57 @@ Public MustInherit Class cTimeSeries
                DatType = eTimeSeriesType.Landings Or
                DatType = eTimeSeriesType.Discards Or
                DatType = eTimeSeriesType.OffVesselPrice
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Determine the <see cref="eTimeSeriesCategoryType">Time series category</see>
+    ''' based on a <see cref="eTimeSeriesType">Time series type</see>. For instance,
+    ''' time series types <see cref="eTimeSeriesType.Catches"/>
+    ''' and <see cref="eTimeSeriesType.FishingEffort"/>
+    ''' are <see cref="eTimeSeriesCategoryType.Fleet"/>-related time series. With the
+    ''' Discardless changes time series category <see cref="eTimeSeriesCategoryType.FleetGroup"/>
+    ''' was introduced.
+    ''' </summary>
+    ''' <param name="DatType">The type to get the category for.</param>
+    ''' <remarks>
+    ''' This method was added to centralize interpretation of the awkward enumerator 
+    ''' <see cref="eTimeSeriesType">eTimeSeriesType</see>.
+    ''' </remarks>
+    ''' <returns>
+    ''' A time series category for the provided time series type.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function Category(DatType As eTimeSeriesType) As eTimeSeriesCategoryType
+
+        Select Case DatType
+
+            Case eTimeSeriesType.NotSet
+                Return eTimeSeriesCategoryType.NotSet
+
+            Case eTimeSeriesType.TimeForcing
+                Return eTimeSeriesCategoryType.Forcing
+
+            Case eTimeSeriesType.FishingEffort,
+                 eTimeSeriesType.EffortCost, eTimeSeriesType.EffortCostRel,
+                 eTimeSeriesType.SailCost, eTimeSeriesType.SailCostRel,
+                 eTimeSeriesType.FixedCost, eTimeSeriesType.FixedCostRel
+                Return eTimeSeriesCategoryType.Fleet
+
+            Case eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion,
+                 eTimeSeriesType.Landings, eTimeSeriesType.Discards,
+                 eTimeSeriesType.Catchabilities,
+                 eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel
+                Return eTimeSeriesCategoryType.FleetGroup
+
+            Case Else
+                Return eTimeSeriesCategoryType.Group
+
+        End Select
+
+        ' Add this for good manners.
+        Return eTimeSeriesCategoryType.NotSet
+
     End Function
 
 #End Region ' Public diagnoistics

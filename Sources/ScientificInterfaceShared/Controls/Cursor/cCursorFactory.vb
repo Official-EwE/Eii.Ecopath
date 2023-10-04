@@ -22,6 +22,7 @@
 Option Strict On
 Imports System.Globalization
 Imports System.Threading
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -46,8 +47,6 @@ Namespace Controls
 
             If (imgAdd Is Nothing) Then Return crsBase
 
-            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
-
             ' Hotspot always at center of new cursor. Not handy!
             Dim rcBase As New Rectangle(0, 0, crsBase.Size.Width, crsBase.Size.Height)
             Dim ptOffset As Point = New Point(rcBase.Width - crsBase.HotSpot.X, rcBase.Height - crsBase.HotSpot.Y)
@@ -61,7 +60,7 @@ Namespace Controls
                 ' Draw cursor, positioned at hotspot
                 crsBase.Draw(g, rcBase)
                 ' ToDo: this is hack, need to properly position overlay
-                If ci.TextInfo.IsRightToLeft Then
+                If cSystemUtils.IsRightToLeft Then
                     g.DrawImage(imgAdd, New Rectangle(0, CInt(rcOut.Height - imgAdd.Height - 1), imgAdd.Width, imgAdd.Height))
                 Else
                     g.DrawImage(imgAdd, New Rectangle(CInt(rcOut.Width - imgAdd.Width - 1), CInt(rcOut.Height - imgAdd.Height - 1), imgAdd.Width, imgAdd.Height))

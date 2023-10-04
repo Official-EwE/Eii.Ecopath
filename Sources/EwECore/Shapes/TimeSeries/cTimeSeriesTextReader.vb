@@ -575,7 +575,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 End If
 
                 ' Validate pool code(s) fits the corresponding core counter
-                Select Case cTimeSeriesFactory.TimeSeriesCategory(tstype(i - 1))
+                Select Case cTimeSeries.Category(tstype(i - 1))
 
                     Case eTimeSeriesCategoryType.Group
                         ' Leniency: if dp2 is entered instead of dp, use dp2

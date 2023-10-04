@@ -35,57 +35,6 @@ Public Class cTimeSeriesFactory
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Determine the <see cref="eTimeSeriesCategoryType">Time series category</see>
-    ''' based on a <see cref="eTimeSeriesType">Time series type</see>. For instance,
-    ''' time series types <see cref="eTimeSeriesType.Catches"/>
-    ''' and <see cref="eTimeSeriesType.FishingEffort"/>
-    ''' are <see cref="eTimeSeriesCategoryType.Fleet"/>-related time series. With the
-    ''' Discardless changes time series category <see cref="eTimeSeriesCategoryType.FleetGroup"/>
-    ''' was introduced.
-    ''' </summary>
-    ''' <param name="timeSeriesType">The type to get the category for.</param>
-    ''' <remarks>
-    ''' This method was added to centralize interpretation of the awkward enumerator 
-    ''' <see cref="eTimeSeriesType">eTimeSeriesType</see>.
-    ''' </remarks>
-    ''' <returns>
-    ''' A time series category for the provided time series type.
-    ''' </returns>
-    ''' -----------------------------------------------------------------------
-    Public Shared Function TimeSeriesCategory(timeSeriesType As eTimeSeriesType) As eTimeSeriesCategoryType
-
-        Select Case timeSeriesType
-
-            Case eTimeSeriesType.NotSet
-                Return eTimeSeriesCategoryType.NotSet
-
-            Case eTimeSeriesType.TimeForcing
-                Return eTimeSeriesCategoryType.Forcing
-
-            Case eTimeSeriesType.FishingEffort,
-                 eTimeSeriesType.EffortCost, eTimeSeriesType.EffortCostRel,
-                 eTimeSeriesType.SailCost, eTimeSeriesType.SailCostRel,
-                 eTimeSeriesType.FixedCost, eTimeSeriesType.FixedCostRel
-                Return eTimeSeriesCategoryType.Fleet
-
-            Case eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion,
-                 eTimeSeriesType.Landings, eTimeSeriesType.Discards,
-                 eTimeSeriesType.Catchabilities,
-                 eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel
-                Return eTimeSeriesCategoryType.FleetGroup
-
-            Case Else
-                Return eTimeSeriesCategoryType.Group
-
-        End Select
-
-        ' Add this for good manners.
-        Return eTimeSeriesCategoryType.NotSet
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Factory method; the only location in EwE where actual <see cref="cTimeSeries">cTimeSeries-derived</see>
     ''' objects are created.
     ''' </summary>
@@ -98,7 +47,7 @@ Public Class cTimeSeriesFactory
 
         Dim ts As cTimeSeries = Nothing
 
-        Select Case TimeSeriesCategory(timeSeriesType)
+        Select Case cTimeSeries.Category(timeSeriesType)
 
             Case eTimeSeriesCategoryType.Forcing
                 ts = Nothing ' No can do
@@ -131,7 +80,7 @@ Public Class cTimeSeriesFactory
     ''' <returns>Well...</returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function CompatibleTypes(type As eTimeSeriesType) As eTimeSeriesType()
-        Return CompatibleTypes(TimeSeriesCategory(type))
+        Return CompatibleTypes(cTimeSeries.Category(type))
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -144,7 +93,7 @@ Public Class cTimeSeriesFactory
     Public Shared Function CompatibleTypes(cat As eTimeSeriesCategoryType) As eTimeSeriesType()
         Dim lTypes As New List(Of eTimeSeriesType)
         For Each t As eTimeSeriesType In [Enum].GetValues(GetType(eTimeSeriesType))
-            If (TimeSeriesCategory(t) = cat) Or (cat = eTimeSeriesCategoryType.NotSet) Then
+            If (cTimeSeries.Category(t) = cat) Or (cat = eTimeSeriesCategoryType.NotSet) Then
                 lTypes.Add(t)
             End If
         Next

@@ -683,7 +683,7 @@ Public Class dlgManageTimeSeries
             ' Determine if need to create a new dataset
             For Each ts As cTimeSeriesImport In Me.m_tr
                 ' Create new dataset if it will contain one of more TS
-                bCreateNewSet = bCreateNewSet Or (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) <> eTimeSeriesCategoryType.Forcing)
+                bCreateNewSet = bCreateNewSet Or (cTimeSeries.Category(ts.TimeSeriesType) <> eTimeSeriesCategoryType.Forcing)
             Next
 
             ' Need to create a new dataset?
@@ -715,7 +715,7 @@ Public Class dlgManageTimeSeries
                     ts.Interval = interval
 
                     If Me.m_uic.Core.ImportEcosimTimeSeries(ts, iDataset) Then
-                        Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
+                        Select Case cTimeSeries.Category(ts.TimeSeriesType)
 
                             Case eTimeSeriesCategoryType.Forcing
                                 clf = DirectCast(Math.Min(clf, cCore.eBatchChangeLevelFlags.Ecosim), cCore.eBatchChangeLevelFlags)

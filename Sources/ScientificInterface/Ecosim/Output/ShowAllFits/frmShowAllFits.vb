@@ -300,7 +300,7 @@ Namespace Ecosim
 
                 If Me.m_lShownPlotsType.Contains(ts.TimeSeriesType) Then
 
-                    Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
+                    Select Case cTimeSeries.Category(ts.TimeSeriesType)
                         Case eTimeSeriesCategoryType.Group
                             Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
                             Dim iGroup As Integer = gts.GroupIndex

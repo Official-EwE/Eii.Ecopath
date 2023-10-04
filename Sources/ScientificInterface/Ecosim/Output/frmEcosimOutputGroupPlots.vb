@@ -553,8 +553,20 @@ Namespace Ecosim
                     End If
                     Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem(fleet, applFishMortFleet(i)), iFleetSel < 1)
 
-                    ' Only put a time series line on a cumulative plot
+                    ' Only put a time series line on non-cumulative plots
                     If (iFleetSel > 0) Then
+                        For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroupSel, Color.Red)
+                            Me.AddCurveToGraphPane(ePlot.[Catch], li)
+                        Next li
+                        For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesForcing, iGroupSel, Color.Blue)
+                            Me.AddCurveToGraphPane(ePlot.[Catch], li)
+                        Next li
+                        For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesRel, iGroupSel, Color.LightBlue)
+                            Me.AddCurveToGraphPane(ePlot.[Catch], li)
+                        Next li
+                        For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortality, iGroupSel, Color.Black)
+                            Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, li)
+                        Next li
                         For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortalityRef, iGroupSel, Color.Blue)
                             Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, li)
                         Next li
@@ -562,15 +574,6 @@ Namespace Ecosim
                 Next
             End If
 
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroupSel, Color.Red)
-                Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesForcing, iGroupSel, Color.Blue)
-                Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesRel, iGroupSel, Color.LightBlue)
-                Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
-            Next li
 
             If groupSimOut.IsMultiStanza() Then
 
@@ -703,8 +706,7 @@ Namespace Ecosim
             Dim iYear As Integer = Me.Core.EcosimFirstYear
             Dim h As New cTimeSeriesShapeGUIHandler(Me.UIContext)
 
-            If (ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (ts.TimeSeriesType = eTimeSeriesType.AverageWeight) Or (ts.TimeSeriesType = eTimeSeriesType.CatchesRel) Then
-                'VC091209: totalmortality is absolute, not relative
+            If (ts.IsRelative) Then
                 If ts.eDataQ > 0 Then dScale = 1.0F / ts.eDataQ
             End If
 
