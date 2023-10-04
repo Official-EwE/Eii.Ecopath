@@ -4,7 +4,7 @@
 
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 1
+#define Compile64Bit 0
 
 ; Optional features
 #define RobertsBank 0
@@ -25,7 +25,7 @@
   #define MyAppVersion "6.7.0 α 32-bit setup"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
-  #define MyAppVersion "6.7.0 α 64-bit"
+  #define MyAppVersion "6.7.0 α 64-bit setup"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
