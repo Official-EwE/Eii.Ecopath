@@ -26,6 +26,8 @@ Imports EwECore
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.SystemUtilities
+
 
 #End Region ' Imports
 
@@ -341,11 +343,11 @@ Namespace Controls
         ''' Get/set how to sort the data in this list box.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        <Browsable(True), _
-         Description("The EwE6 sort method to use"), _
-         Category("EwE6"), _
-         DefaultValue(eSortType.GroupIndexAsc)> _
-       Public Property SortType() As eSortType
+        <Browsable(True),
+         Description("The EwE6 sort method to use"),
+         Category("EwE6"),
+         DefaultValue(eSortType.GroupIndexAsc)>
+        Public Property SortType() As eSortType
             Get
                 Return Me.m_sortType
             End Get
@@ -362,11 +364,11 @@ Namespace Controls
         ''' Get/set the value that sort values have to exceed.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        <Browsable(True), _
-        Description("The EwE6 sort threshold value to use"), _
-        Category("EwE6"), _
-        DefaultValue(cCore.NULL_VALUE)> _
-      Public Property SortThreshold() As Single
+        <Browsable(True),
+        Description("The EwE6 sort threshold value to use"),
+        Category("EwE6"),
+DefaultValue(cCore.NULL_VALUE)>
+        Public Property SortThreshold() As Single
             Get
                 Return Me.m_sSortThreshold
             End Get
@@ -427,10 +429,10 @@ Namespace Controls
         ''' Get/set group styleguide visibility tracking.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("State how to reflect styleguide hidden groups"), _
-         Category("EwE6"), _
-         DefaultValue(eGroupDisplayStyleTypes.DisplayAlways)> _
+        <Browsable(True),
+         Description("State how to reflect styleguide hidden groups"),
+         Category("EwE6"),
+         DefaultValue(eGroupDisplayStyleTypes.DisplayAlways)>
         Public Property GroupDisplayStyle() As eGroupDisplayStyleTypes
             Get
                 Return Me.m_groupdisplaystyle
@@ -448,10 +450,10 @@ Namespace Controls
         ''' States whether the listbox should include an 'all groups' item.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("State whether an 'all groups' item should be included in the list box"), _
-         Category("EwE6"), _
-         DefaultValue(True)> _
+        <Browsable(True),
+         Description("State whether an 'all groups' item should be included in the list box"),
+         Category("EwE6"),
+         DefaultValue(True)>
         Public Property ShowAllGroupsItem() As Boolean
             Get
                 Return Me.m_bShowAllGroupsItem
@@ -469,11 +471,11 @@ Namespace Controls
         ''' Get/set the text for the 'all groups' item.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("The text for the 'all groups' item"), _
-         Category("EwE6"), _
-         DefaultValue(True)> _
-      Public Property AllGroupsItemText() As String
+        <Browsable(True),
+         Description("The text for the 'all groups' item"),
+         Category("EwE6"),
+DefaultValue(True)>
+        Public Property AllGroupsItemText() As String
             Get
                 Return Me.m_strAllGroupsItem
             End Get
@@ -849,6 +851,7 @@ Namespace Controls
             Dim clrLegend As Color = Color.Transparent
             Dim clrText As Color = e.ForeColor
             Dim bItemValid As Boolean = True
+            Dim iSize As Integer = Me.ItemHeight - 4
 
             ' Attempt to get item colour if it is a cGroupItem
             If (TypeOf item Is cGroupListBox.cGroupItem) Then
@@ -884,32 +887,38 @@ Namespace Controls
                 clrText = SystemColors.GrayText
             End If
 
-            ' TODO: Take current culture into consideration here. Right-to-left reading order cultures
-            ' will need the colour box to be displayed on the right-hand side of the text.
-
             ' Render default background 
             e.DrawBackground()
 
-            ' Render default text, bumped to the right by 22 pixels
+            Dim rcText As Rectangle = Nothing
+            Dim rcIcon As Rectangle = Nothing
+
+            If cSystemUtils.IsRightToLeft Then
+                rcIcon = New Rectangle(e.Bounds.X + 2, e.Bounds.Width - iSize - 2 - 2, iSize, iSize)
+                rcText = New Rectangle(2, 2, e.Bounds.Width - 2 - iSize - 6, iSize)
+            Else
+                rcIcon = New Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, iSize, iSize)
+                rcText = New Rectangle(e.Bounds.X + 2 + iSize + 6, e.Bounds.Y, e.Bounds.Width - 2 - iSize - 6 - 2, Me.ItemHeight)
+            End If
+
+            ' Render default text
             Using br As New SolidBrush(clrText)
-                e.Graphics.DrawString(item.ToString(), e.Font, br, e.Bounds.X + 22, e.Bounds.Y)
+                e.Graphics.DrawString(item.ToString(), e.Font, br, rcText)
             End Using
 
             If (clrLegend.A > 0) Then
                 ' Render colour fill
                 If bItemValid Then
                     Using br As New SolidBrush(clrLegend)
-                        e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
+                        e.Graphics.FillRectangle(br, rcIcon)
                     End Using
                 Else
                     Using br As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.BackwardDiagonal, clrLegend, Color.Transparent)
-                        e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
+                        e.Graphics.FillRectangle(br, rcIcon)
                     End Using
                 End If
                 ' Render colour box border
-                Using p As New Pen(clrText, 1)
-                    e.Graphics.DrawRectangle(p, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
-                End Using
+                e.Graphics.DrawRectangle(Pens.Black, rcIcon)
             End If
 
             ' Render default focus rectangle

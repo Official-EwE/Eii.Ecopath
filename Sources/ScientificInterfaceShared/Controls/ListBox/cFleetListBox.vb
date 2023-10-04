@@ -26,6 +26,9 @@ Imports EwECore
 Imports ScientificInterfaceShared.Style
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
+
 
 #End Region ' Imports
 
@@ -717,6 +720,7 @@ Namespace Controls
             Dim li As cFleetListBox.cFleetItem = Nothing
             Dim clrFleet As Color = Color.Transparent
             Dim clrText As Color = e.ForeColor
+            Dim iSize As Integer = Me.ItemHeight - 4
 
             ' Attempt to get item colour if it is a cFleetItem
             If (TypeOf item Is cFleetListBox.cFleetItem) Then
@@ -732,25 +736,30 @@ Namespace Controls
                 End If
             End If
 
-            ' TODO: Take current culture into consideration here. Right-to-left reading order cultures
-            ' will need the colour box to be displayed on the right-hand side of the text.
-
             ' Render default background 
             e.DrawBackground()
 
-            ' Render default text, bumped to the right by 22 pixels
+            Dim rcText As Rectangle = Nothing
+            Dim rcIcon As Rectangle = Nothing
+
+            If cSystemUtils.IsRightToLeft Then
+                rcIcon = New Rectangle(e.Bounds.X + 2, e.Bounds.Width - iSize - 2 - 2, iSize, iSize)
+                rcText = New Rectangle(2, 2, e.Bounds.Width - 2 - iSize - 6, iSize)
+            Else
+                rcIcon = New Rectangle(e.Bounds.X + 2, e.Bounds.Y + 2, iSize, iSize)
+                rcText = New Rectangle(e.Bounds.X + 2 + iSize + 6, e.Bounds.Y, e.Bounds.Width - 2 - iSize - 6 - 2, Me.ItemHeight)
+            End If
+
+            ' Render default text
             Using br As New SolidBrush(clrText)
-                e.Graphics.DrawString(item.ToString(), e.Font, br, e.Bounds.X + 22, e.Bounds.Y)
+                e.Graphics.DrawString(item.ToString(), e.Font, br, rcText)
             End Using
 
             ' Render colour fill
             Using br As New SolidBrush(clrFleet)
-                e.Graphics.FillRectangle(br, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
+                e.Graphics.FillRectangle(br, rcIcon)
             End Using
-            ' Render colour box border
-            Using p As New Pen(clrText, 1)
-                e.Graphics.DrawRectangle(p, e.Bounds.X + 2, e.Bounds.Y + 2, 18, e.Bounds.Height - 4)
-            End Using
+            e.Graphics.DrawRectangle(Pens.Black, rcIcon)
 
             ' Render default focus rectangle
             e.DrawFocusRectangle()
