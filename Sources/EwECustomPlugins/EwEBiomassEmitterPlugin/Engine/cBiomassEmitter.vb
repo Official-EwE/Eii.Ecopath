@@ -67,15 +67,16 @@ Public Class cBiomassEmitter
             Dim bApplied As Boolean = False
             If (mt.Enable And mt.IsValid) Then
                 Dim v As Single = mt.ForcingValue(t, mt.Group)
-                Dim bUseValue As Boolean = False
+                Dim bUseValue As Boolean = (v <> cCore.NULL_VALUE)
 
                 Select Case Me.Data.ApplicationType
                     Case eApplicationType.Relative
-                        bUseValue = (v <> 1)
+                        bUseValue = bUseValue And (v <> 1)
                     Case eApplicationType.Additive, eApplicationType.Absolute
-                        bUseValue = (v > 0)
+                        bUseValue = bUseValue And (v > 0)
                     Case Else
                         Debug.Assert(False)
+                        bUseValue = False
                 End Select
 
                 If (bUseValue) Then
@@ -95,7 +96,7 @@ Public Class cBiomassEmitter
             If (bApplied) Then nApplied += 1
         Next
 
-        If (Me.Data.EmissionRules.Count > 0) And (nApplied = 0) Then
+        If (Me.Data.EmissionRules.Count > 0) And (nApplied > 0) Then
 
             Dim clustermaps(core.nMPAs) As Map
             For iMPA As Integer = 1 To core.nMPAs
