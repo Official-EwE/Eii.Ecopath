@@ -219,31 +219,31 @@ Namespace Ecosim
                      eResultTypes.Value
 
                     Dim data(Me.m_core.nGroups, Me.m_core.nEcosimTimeSteps) As Single
-                    For i As Integer = 1 To Me.m_core.nGroups
-                        group = Me.m_core.EcopathGroupInputs(i)
-                        For j As Integer = 1 To Me.m_core.nEcosimTimeSteps
+                    For iGrp As Integer = 1 To Me.m_core.nGroups
+                        group = Me.m_core.EcopathGroupInputs(iGrp)
+                        For iTime As Integer = 1 To Me.m_core.nEcosimTimeSteps
                             Select Case resulttype
                                 Case eResultTypes.Biomass
-                                    data(i, j) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, i, j)
+                                    data(iGrp, iTime) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, iTime)
                                 Case eResultTypes.Mortality
-                                    data(i, j) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, i, j)
+                                    data(iGrp, iTime) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, iGrp, iTime)
                                 Case eResultTypes.Catch
-                                    data(i, j) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, i, j)
+                                    data(iGrp, iTime) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGrp, iTime)
                                 Case eResultTypes.ConsumptionBiomass
-                                    data(i, j) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ConsumpBiomass, i, j)
+                                    data(iGrp, iTime) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ConsumpBiomass, iGrp, iTime)
                                 Case eResultTypes.FeedingTime
-                                    data(i, j) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FeedingTime, i, j)
+                                    data(iGrp, iTime) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FeedingTime, iGrp, iTime)
                                 Case eResultTypes.AvgWeightOrProdCons
                                     If group.IsMultiStanza Then
-                                        data(i, j) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, i, j)
+                                        data(iGrp, iTime) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, iGrp, iTime)
                                     Else
-                                        data(i, j) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ProdConsump, i, j)
+                                        data(iGrp, iTime) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ProdConsump, iGrp, iTime)
                                     End If
                                 Case eResultTypes.TL
-                                    data(i, j) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TL, i, j)
+                                    data(iGrp, iTime) = Me.m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TL, iGrp, iTime)
                                 Case eResultTypes.Value
                                     ' For all fleets
-                                    data(i, j) = Me.m_core.m_EcoSimData.ResultsSumValueByGroupGear(i, 0, j)
+                                    data(iGrp, iTime) = Me.m_core.m_EcoSimData.ResultsSumValueByGroupGear(iGrp, 0, iTime)
                             End Select
                         Next
 
@@ -368,18 +368,24 @@ Namespace Ecosim
 
                     Select Case resulttype
                         Case eResultTypes.CatchFleetGroup
+                            ' Grp, flt, time
                             data = Me.m_core.m_EcoSimData.ResultsSumCatchByGroupGear
                         Case eResultTypes.MortFleetGroup
+                            ' Grp, flt, time
                             data = Me.m_core.m_EcoSimData.ResultsSumFMortByGroupGear
                         Case eResultTypes.ValueFleetGroup
+                            ' Grp, flt, time
                             data = Me.m_core.m_EcoSimData.ResultsSumValueByGroupGear
                         Case eResultTypes.DiscardFleetGroup
                             data = Me.m_core.m_EcoSimData.ResultsTimeDiscardsGroupGear
                         Case eResultTypes.DiscardMortalityFleetGroup
+                            ' Grp, flt, time
                             data = Me.m_core.m_EcoSimData.ResultsTimeDiscardsMortGroupGear
                         Case eResultTypes.DiscardSurvivalFleetGroup
+                            ' Grp, flt, time
                             data = Me.m_core.m_EcoSimData.ResultsTimeDiscardsSurvivedGroupGear
                         Case eResultTypes.Landings
+                            ' Grp, flt, time
                             data = Me.m_core.m_EcoSimData.ResultsTimeLandingsGroupGear
                     End Select
 
@@ -568,28 +574,24 @@ Namespace Ecosim
 
                         Dim simYears As Integer = Me.m_core.nEcosimYears
                         sw.WriteLine("year,fleet,group,value")
-                        For y As Integer = 1 To simYears
-                            For i As Integer = 1 To Me.m_core.nFleets
-                                For j As Integer = 1 To Me.m_core.nGroups
+                        For iYear As Integer = 1 To simYears
+                            For iFleet As Integer = 1 To Me.m_core.nFleets
+                                For iGroup As Integer = 1 To Me.m_core.nGroups
                                     Dim sum As Single = 0
                                     For k As Integer = 1 To cCore.N_MONTHS
-                                        sum += data(j, i, (y - 1) * cCore.N_MONTHS + k)
+                                        sum += data(iGroup, iFleet, (iYear - 1) * cCore.N_MONTHS + k)
                                     Next k
-                                    If (sum > 0) Then
-                                        sw.WriteLine("{0},{1},{2},{3}", Me.m_core.EcosimFirstYear - 1 + y, i, j, cStringUtils.ToCSVField(sum / cCore.N_MONTHS))
-                                    End If
+                                    sw.WriteLine("{0},{1},{2},{3}", Me.m_core.EcosimFirstYear - 1 + iYear, iFleet, iGroup, cStringUtils.ToCSVField(sum / cCore.N_MONTHS))
                                 Next
                             Next
                         Next
                     Else
                         sw.WriteLine("timestep,fleet,group,value")
                         'Each time steps
-                        For t As Integer = 1 To Me.m_core.nEcosimTimeSteps
-                            For i As Integer = 1 To Me.m_core.nFleets
-                                For j As Integer = 1 To Me.m_core.nGroups
-                                    If (data(j, i, t) > 0) Then
-                                        sw.WriteLine("{0},{1},{2},{3}", t, i, j, cStringUtils.ToCSVField(data(j, i, t) / cCore.N_MONTHS))
-                                    End If
+                        For iTimestep As Integer = 1 To Me.m_core.nEcosimTimeSteps
+                            For iFleet As Integer = 1 To Me.m_core.nFleets
+                                For iGroup As Integer = 1 To Me.m_core.nGroups
+                                    sw.WriteLine("{0},{1},{2},{3}", iTimestep, iFleet, iGroup, cStringUtils.ToCSVField(data(iGroup, iFleet, iTimestep)))
                                 Next
                             Next
                         Next
@@ -627,8 +629,7 @@ Namespace Ecosim
             Dim str As New StringBuilder()
             For i As Integer = 1 To Me.m_core.nGroups
                 If (i > 1) Then str.Append(","c)
-                str.Append(cStringUtils.ToCSVField(If(Me.ShowGroupNames,
-                                                                    Me.m_core.EcopathGroupInputs(i).Name, CStr(Me.m_core.EcopathGroupInputs(i).Index))))
+                str.Append(cStringUtils.ToCSVField(If(Me.ShowGroupNames, Me.m_core.EcopathGroupInputs(i).Name, CStr(Me.m_core.EcopathGroupInputs(i).Index))))
             Next i
             Return str.ToString()
 
