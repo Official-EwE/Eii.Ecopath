@@ -181,7 +181,9 @@
     <Compile Include="Merge\UI\gridDietComposition.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Merge\UI\gridGroupInput.vb" />
+    <Compile Include="Merge\UI\gridGroupInput.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Split\cSplitGroupPluginPoint.vb" />
     <Compile Include="Split\UI\dlgSplitGroup.Designer.vb">
       <DependentUpon>dlgSplitGroup.vb</DependentUpon>

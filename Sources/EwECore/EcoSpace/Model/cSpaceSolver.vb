@@ -119,27 +119,28 @@ Public Class cSpaceSolver
     ''' <summary>
     ''' Sum of Effort, Sailing Effort, Catch and Value across cells by fleet
     ''' </summary>
-    ''' <remarks></remarks>
     Public ResultsByFleet(,) As Single
 
     ''' <summary>
     ''' Sum of Biomass, Relative Biomass and Catch by group across cells by group
     ''' </summary>
-    ''' <remarks></remarks>
     Public ResultsByGroup(,) As Single
 
-    ''' <summary>
-    ''' Sum of Catch and Value across cells by fleet group
-    ''' </summary>
-    ''' <remarks></remarks>
+    ''' <summary>Sum of Catch and Value across cells by fleet group</summary>
     Public ResultsByFleetGroup(,,) As Single
+
+    ''' <summary>Sum of Catch by region x fleet x group</summary>
     Public ResultsCatchRegionGearGroup(,,) As Single
+    ''' <summary>Average landings by region x fleet x group</summary>
+    Public ResultsLandingsRegionGearGroup(,,) As Single
+    ''' <summary>Average value by region x fleet x group</summary>
+    Public ResultsValueRegionGearGroup(,,) As Single
+    ''' <summary>Sum of consumption by region x pred x prey</summary>
     Public ResultsConsumptionRegionPredPrey(,,) As Single
 
     ''' <summary>
     ''' Sum of Landings across cells by group fleet
     ''' </summary>
-    ''' <remarks></remarks>
     Public Landings(,) As Single
 
     'the ip groups to solve
@@ -238,6 +239,8 @@ Public Class cSpaceSolver
         ReDim Me.ResultsByFleetGroup([Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length, Me.m_Data.nFleets, Me.m_Data.NGroups)
         ReDim Me.Landings(Me.m_Data.NGroups, Me.m_Data.nFleets)
         ReDim Me.ResultsCatchRegionGearGroup(Me.m_Data.nRegions, Me.m_Data.nFleets, Me.m_Data.NGroups)
+        ReDim Me.ResultsLandingsRegionGearGroup(Me.m_Data.nRegions, Me.m_Data.nFleets, Me.m_Data.NGroups)
+        ReDim Me.ResultsValueRegionGearGroup(Me.m_Data.nRegions, Me.m_Data.nFleets, Me.m_Data.NGroups)
         ReDim Me.ResultsConsumptionRegionPredPrey(Me.m_Data.nRegions, Me.m_Data.NGroups, Me.m_Data.NGroups)
 
         'local copies are initialized from the ecosim data
@@ -330,6 +333,8 @@ Public Class cSpaceSolver
             Array.Clear(Me.ResultsByFleet, 0, Me.ResultsByFleet.Length)
             Array.Clear(Me.ResultsByFleetGroup, 0, Me.ResultsByFleetGroup.Length)
             Array.Clear(Me.ResultsCatchRegionGearGroup, 0, Me.ResultsCatchRegionGearGroup.Length)
+            Array.Clear(Me.ResultsLandingsRegionGearGroup, 0, Me.ResultsCatchRegionGearGroup.Length)
+            Array.Clear(Me.ResultsValueRegionGearGroup, 0, Me.ResultsValueRegionGearGroup.Length)
             Array.Clear(Me.ResultsConsumptionRegionPredPrey, 0, Me.ResultsConsumptionRegionPredPrey.Length)
 
             'Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
@@ -1225,7 +1230,11 @@ Public Class cSpaceSolver
     ''' <param name="iCol">Map col</param>
     ''' <remarks></remarks>
     Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal FMortByGroup() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
-        Dim cellCatch As Single, iFlt As Integer, iGrp As Integer
+        Dim cellCatch As Single
+        Dim cellLandings As Single
+        Dim cellValue As Single
+        Dim iFlt As Integer
+        Dim iGrp As Integer
         Dim st As Double = Me.m_stpWatch.Elapsed.TotalSeconds
 
         Try
@@ -1254,7 +1263,7 @@ Public Class cSpaceSolver
                     'Next value of catch, depends on what gear was used:
                     For iFlt = 1 To Me.m_PathData.NumFleet
                         ' BUas Marin Hekman found that catch data was incorrectly aggregated here. Good catch.
-                        If Not m_Data.IsFished(iFlt, iRow, iCol) Then
+                        If m_Data.IsFished(iFlt, iRow, iCol) Then
                             If Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp) > 0 Then
                                 'First get catch
                                 Dim f As Single = Me.m_SimData.relQ(iFlt, iGrp) * (Me.m_SimData.PropLandedTime(iFlt, iGrp) + Me.m_SimData.Propdiscardtime(iFlt, iGrp))
@@ -1270,14 +1279,20 @@ Public Class cSpaceSolver
                                 'sum all fleets into the zero fleet index
                                 Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, iGrp) += cellCatch
 
-                                'Next line is for adding up catch by region etc
+                                cellLandings = Biomass(iGrp) * Me.m_SimData.relQ(iFlt, iGrp) * Me.m_SimData.PropLandedTime(iFlt, iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol)
+                                Me.Landings(iGrp, iFlt) += cellLandings
+
+                                cellValue = cellLandings * Me.m_Ecosim.MarketValue(iGrp, iFlt, iCumTime, iYear)
+
+                                'Next line is for adding up catch, landings and value by region
                                 If Me.m_Data.nRegions >= 1 Then
                                     Dim iRgn As Integer = Me.m_Data.Region(iRow, iCol)
                                     If (iRgn > Me.m_Data.nRegions) Then iRgn = 0
                                     Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch
+                                    Me.ResultsLandingsRegionGearGroup(iRgn, iFlt, iGrp) += cellLandings
+                                    Me.ResultsValueRegionGearGroup(iRgn, iFlt, iGrp) += cellValue
                                 End If
 
-                                Me.Landings(iGrp, iFlt) += Biomass(iGrp) * Me.m_SimData.relQ(iFlt, iGrp) * Me.m_SimData.PropLandedTime(iFlt, iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol)
                                 'Discards map used by the Biodiversity plugin
                                 'Include discards that survived
                                 Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += Biomass(iGrp) * Me.m_SimData.relQ(iFlt, iGrp) * (1 - Me.m_SimData.PropLandedTime(iFlt, iGrp)) * Me.m_Data.EffortSpace(iFlt, iRow, iCol)

@@ -6421,7 +6421,7 @@ exitline:
                 If Me.EcoSpaceData.Landings(igrp, iflt) > 0.0 Then
                     'Value = Landings * [market value] * [price elasticity multiplier]
                     'Value is in the same units as Ecopath Off-vessel price value/km2/year. So the landings need to be the Ecospace average.
-                    ValLandings = AvgLandings(igrp, iflt) * Me.EcoPathData.Market(iflt, igrp) * Me.EcoSimData.PriceMedData.getPESMult(igrp, iflt)
+                    ValLandings = AvgLandings(igrp, iflt) * Me.EcoSim.MarketValue(igrp, iflt, iCumTime, iYear)
 
                     'Add to group and to gear sums
                     Me.EcoSpaceData.ResultsByFleetGroup(eSpaceResultsFleetsGroups.Value, iflt, igrp, iCumTime) += ValLandings
@@ -6499,6 +6499,8 @@ exitline:
                         For irgn As Integer = 0 To Me.EcoSpaceData.nRegions
                             Me.EcoSpaceData.ResultsCatchRegionGearGroup(irgn, iflt, igrp, Me.itt) += solver.ResultsCatchRegionGearGroup(irgn, iflt, igrp)
                             Me.EcoSpaceData.ResultsCatchRegionGearGroupYear(irgn, iflt, igrp, Me.EcoSpaceData.YearNow) += solver.ResultsCatchRegionGearGroup(irgn, iflt, igrp)
+                            Me.EcoSpaceData.ResultsLandingsRegionGearGroup(irgn, iflt, igrp, Me.itt) += solver.ResultsLandingsRegionGearGroup(irgn, iflt, igrp)
+                            Me.EcoSpaceData.ResultsValueRegionGearGroup(irgn, iflt, igrp, Me.itt) += solver.ResultsValueRegionGearGroup(irgn, iflt, igrp)
                         Next irgn
 
                     Next igrp

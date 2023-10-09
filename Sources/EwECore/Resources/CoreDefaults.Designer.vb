@@ -443,6 +443,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Average regional landings by fleet, group ({0}).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_REGAVG_LANDINGS_UNIT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_REGAVG_LANDINGS_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Average regional value by fleet, group ({0}).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_REGAVG_VALUE_UNIT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_REGAVG_VALUE_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Region {0} area ({1}).
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_REGION_AREA_UNIT() As String

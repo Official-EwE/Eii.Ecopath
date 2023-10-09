@@ -2345,7 +2345,7 @@ Namespace Ecosim
                                 'Total catch that was landed
                                 Me.m_Data.ResultsLandings(igrp, iflt) = TotCatch * Me.m_Data.PropLandedTime(iflt, igrp)
 
-                                'Catch mortality that is discards
+                                'Catch mortality that is discarded. JS: does this account for discard survival?! Does not seem so.
                                 Me.m_Data.ResultsDiscardsMort(igrp, iflt) = CatchMort * Me.m_Data.Propdiscardtime(iflt, igrp) / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
 
                                 'Total catch that survived = [total catch] - [total catch mortality] 

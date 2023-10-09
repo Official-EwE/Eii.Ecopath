@@ -2214,10 +2214,6 @@
       <Project>{df752fa0-b8c1-4de1-9b9b-d1adf678b64e}</Project>
       <Name>EcospaceMonteCarlo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\enaRPlugin\enaRPlugin\enaRPlugin.vbproj">
-      <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
-      <Name>enaRPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
       <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
       <Name>EwEEcospaceSpinupPlugin</Name>
@@ -2253,6 +2249,10 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotracerEnvDriverPlugin\EwEEcotracerEnvDriverPlugin.vbproj">
       <Project>{6536c62f-3ee0-48f6-83c7-fadb5f6ae6aa}</Project>
       <Name>EwEEcotracerEnvDriverPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEenaRPlugin\EwEenaRPlugin.vbproj">
+      <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
+      <Name>EwEenaRPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEIBMAgeStructureResultsWriter\EwEIBMAgeStructureResultsWriterPlugin.vbproj">
       <Project>{f08c7b56-076e-4e1b-bb2e-83f53cae262f}</Project>
