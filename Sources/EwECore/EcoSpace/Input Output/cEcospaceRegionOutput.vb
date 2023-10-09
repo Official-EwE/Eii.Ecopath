@@ -66,6 +66,8 @@ Public Class cEcospaceRegionOutput
             Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatch, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
             Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionFleetGroupCatchYear, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsCatchRegionGearGroup, Me.Index))
             Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionConsumption, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsRegionConsumptionPredPrey, Me.Index))
+            Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionLandings, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsLandingsRegionGearGroup, Me.Index))
+            Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionValue, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsValueRegionGearGroup, Me.Index))
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Init() Error: " & ex.Message)
             cLog.Write(ex)

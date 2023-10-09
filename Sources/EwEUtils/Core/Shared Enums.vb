@@ -632,8 +632,12 @@ Namespace Core
         ''' <summary>Ecospace Biomass by region over time averaged over all the cells in a region, per year.
         ''' <seealso cref="EcospaceRegionBiomass"/></summary>
         EcospaceRegionBiomassYear
-        ''' <summary>Ecospace Consumption by pred and prey averaged over all the cells in a region for each timestep.
+        ''' <summary>Ecospace Consumption by pred and prey (Averaged? Total?) over all the cells in a region for each timestep.
         EcospaceRegionConsumption
+        ''' <summary>Ecospace Landings by fleet and group (Averaged? Total?) over all the cells in a region for each timestep.
+        EcospaceRegionLandings
+        ''' <summary>Ecospace Value by fleet and group (Averaged? Total?) over all the cells in a region for each timestep.
+        EcospaceRegionValue
 
         ''' <summary>Ecospace yearly average profit by fleet</summary>
         EcospaceFleetProfit

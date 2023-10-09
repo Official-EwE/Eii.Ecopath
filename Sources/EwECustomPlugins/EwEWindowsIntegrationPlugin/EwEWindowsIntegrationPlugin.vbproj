@@ -145,7 +145,9 @@
     <Compile Include="ucConfig.Designer.vb">
       <DependentUpon>ucConfig.vb</DependentUpon>
     </Compile>
-    <Compile Include="ucConfig.vb" />
+    <Compile Include="ucConfig.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

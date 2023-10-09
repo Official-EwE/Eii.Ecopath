@@ -382,6 +382,11 @@ Public Class cEcospaceDataStructures
     Public ResultsCatchRegionGearGroup(,,,) As Single
     ''' <summary>ResultsCatchRegionGearGroup( nRegions, nFleets, nGroups, nYears)</summary>
     Public ResultsCatchRegionGearGroupYear(,,,) As Single
+    ''' <summary>ResultsRegionLandingsGearGroup(nRegions, nFleets, nGroups, nTimesteps)</summary>
+    Public ResultsLandingsRegionGearGroup(,,,) As Single
+    ''' <summary>ResultsRegionValueGearGroup(nRegions, nFleets, nGroups, nTimesteps)</summary>
+    Public ResultsValueRegionGearGroup(,,,) As Single
+
     ''' <summary>ResultsByFleet(nvars,nFleets,NumberOfTimeSteps)</summary>
     Public ResultsByFleet(,,) As Single
     ''' <summary>ResultsByFleetGroup(nvars, nFleets, nGroups, nTimesteps)</summary>
@@ -1082,6 +1087,8 @@ Public Class cEcospaceDataStructures
             Me.ResultsByFleetGroup = Nothing ', N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
             Me.ResultsRegionGroup = Nothing ', NoRegions, NGroups, NumberOfTimeSteps)
             Me.ResultsCatchRegionGearGroup = Nothing ', NoRegions, nFleets, NGroups, NumberOfTimeSteps)
+            Me.ResultsLandingsRegionGearGroup = Nothing ', NoRegions, nFleets, NGroups, NumberOfTimeSteps)
+            Me.ResultsValueRegionGearGroup = Nothing ', NoRegions, nFleets, NGroups, NumberOfTimeSteps)
             Me.ResultsRegionConsumptionPredPrey = Nothing
 
             Me.MPred = Nothing
@@ -2227,6 +2234,8 @@ Public Class cEcospaceDataStructures
             Me.allocate(Me.ResultsRegionGroupYear, Me.nRegions, Me.NGroups, CInt(NumberOfTimeSteps / Math.Max(Me.NumStep, 1) + 1))
             Me.allocate(Me.ResultsCatchRegionGearGroup, Me.nRegions, Me.nFleets, Me.NGroups, NumberOfTimeSteps)
             Me.allocate(Me.ResultsCatchRegionGearGroupYear, Me.nRegions, Me.nFleets, Me.NGroups, CInt(NumberOfTimeSteps / Math.Max(Me.NumStep, 1) + 1))
+            Me.allocate(Me.ResultsLandingsRegionGearGroup, Me.nRegions, Me.nFleets, Me.NGroups, NumberOfTimeSteps)
+            Me.allocate(Me.ResultsValueRegionGearGroup, Me.nRegions, Me.nFleets, Me.NGroups, NumberOfTimeSteps)
 
         Catch exmem As OutOfMemoryException
             System.Console.WriteLine(Me.ToString & ".redimTimeStepResults() Out of memory: " & exmem.Message)
@@ -2563,6 +2572,8 @@ Public Class cEcospaceDataStructures
                     For igrp = 1 To Me.NGroups
                         For it = 1 To Me.nTimeSteps
                             Me.ResultsCatchRegionGearGroup(irgn, iflt, igrp, it) /= ncells
+                            Me.ResultsLandingsRegionGearGroup(irgn, iflt, igrp, it) /= ncells
+                            Me.ResultsValueRegionGearGroup(irgn, iflt, igrp, it) /= ncells
                         Next it
                     Next igrp
                 Next iflt

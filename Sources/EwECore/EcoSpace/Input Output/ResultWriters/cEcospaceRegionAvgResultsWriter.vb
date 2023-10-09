@@ -56,6 +56,8 @@ Public Class cEcospaceRegionAvgResultsWriter
         RegionCatch
         MOTotalLoss
         RegionConsumption
+        Landings
+        [Value]
     End Enum
 
 #End Region ' Private classes
@@ -173,6 +175,10 @@ Public Class cEcospaceRegionAvgResultsWriter
                 dataSource = New cMOTotalResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.RegionConsumption
                 dataSource = New cRegionConsuptionResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
+            Case eDataSourceTypes.Landings
+                dataSource = New cRegionLandingsResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
+            Case eDataSourceTypes.Value
+                dataSource = New cRegionValueResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
         End Select
         dataSource.Init(RegionIndex)
         Return dataSource
@@ -180,19 +186,23 @@ Public Class cEcospaceRegionAvgResultsWriter
 
 #Region " Write Results "
 
-    Private Function initDataSources() As List(Of cEcospaceResultsWriterDataSourceBase)
-        Dim lstDataSources As New List(Of cEcospaceResultsWriterDataSourceBase)
+    Private Function initDataSources() As cEcospaceResultsWriterDataSourceBase()
 
-        lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.Biomass))
-        lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.Catch))
-        lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.MOTotalLoss))
+        Dim l As New List(Of cEcospaceResultsWriterDataSourceBase)
 
+        l.Add(Me.DataSourceFactory(eDataSourceTypes.Biomass))
+        l.Add(Me.DataSourceFactory(eDataSourceTypes.Catch))
+        l.Add(Me.DataSourceFactory(eDataSourceTypes.MOTotalLoss))
         For irgn As Integer = 1 To Me.m_core.nRegions
-            lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.RegionBiomass, irgn))
-            lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.RegionCatch, irgn))
-            lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.RegionConsumption, irgn))
+            l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionBiomass, irgn))
+            l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionCatch, irgn))
+            l.Add(Me.DataSourceFactory(eDataSourceTypes.Landings, irgn))
+            l.Add(Me.DataSourceFactory(eDataSourceTypes.Value, irgn))
+            l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionConsumption, irgn))
         Next
-        Return lstDataSources
+
+        Return l.ToArray()
+
     End Function
 
     Private Sub WriteResult()
@@ -203,9 +213,9 @@ Public Class cEcospaceRegionAvgResultsWriter
         Dim strDescriptor As String = ""
         Dim sValue As Single = 0
 
-        Dim lstDataSources As List(Of cEcospaceResultsWriterDataSourceBase) = Me.initDataSources()
+        Dim datasources() As cEcospaceResultsWriterDataSourceBase = Me.initDataSources()
 
-        For Each ds As cEcospaceResultsWriterDataSourceBase In lstDataSources
+        For Each ds As cEcospaceResultsWriterDataSourceBase In datasources
 
             Dim eAvgs As Array
             eAvgs = System.Enum.GetValues(GetType(eEcospaceResultsAverageType))
