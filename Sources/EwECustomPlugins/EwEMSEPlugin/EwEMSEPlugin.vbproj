@@ -290,9 +290,7 @@
     <Compile Include="User interface\frmEditQuotaShares.Designer.vb">
       <DependentUpon>frmEditQuotaShares.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmEditQuotaShares.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="User interface\frmEditQuotaShares.vb" />
     <Compile Include="User interface\frmEditSurvivabilities.Designer.vb">
       <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
     </Compile>
