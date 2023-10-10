@@ -299,31 +299,31 @@
     <value>From clipboard</value>
   </data>
   <data name="UNIT_AREA_KM2" xml:space="preserve">
-    <value>km²</value>
+    <value>km^2</value>
   </data>
   <data name="UNIT_AREA_MI2" xml:space="preserve">
-    <value>mi²</value>
+    <value>mi^2</value>
   </data>
   <data name="UNIT_CURRENCY_CALORIE" xml:space="preserve">
-    <value>kcal/m²</value>
+    <value>kcal/m^2</value>
   </data>
   <data name="UNIT_CURRENCY_CARBON" xml:space="preserve">
-    <value>g/m²</value>
+    <value>g/m^2</value>
   </data>
   <data name="UNIT_CURRENCY_DRYWEIGHT" xml:space="preserve">
-    <value>g/m²</value>
+    <value>g/m^2</value>
   </data>
   <data name="UNIT_CURRENCY_JOULES" xml:space="preserve">
-    <value>J/m²</value>
+    <value>J/m^2</value>
   </data>
   <data name="UNIT_CURRENCY_NITROGEN" xml:space="preserve">
-    <value>mg N/m²</value>
+    <value>mg N/m^2</value>
   </data>
   <data name="UNIT_CURRENCY_PHOSPOROUS" xml:space="preserve">
-    <value>mg P/m²</value>
+    <value>mg P/m^2</value>
   </data>
   <data name="UNIT_CURRENCY_WETWEIGHT" xml:space="preserve">
-    <value>t/km²</value>
+    <value>t/km^2</value>
   </data>
   <data name="UNIT_DECIMALDEGREE" xml:space="preserve">
     <value>dd</value>
@@ -2904,9 +2904,9 @@
   <data name="ECOSPACE_REGAVG_DATA_M0" xml:space="preserve">
     <value>Average Other Mortality across modeled area</value>
   </data>
-  <data name="ECOSPACE_REGION_AREA_UNIT" xml:space="preserve">
-    <value>Region {0} area ({1})</value>
-    <comment>{0}=region, {1}=area units</comment>
+  <data name="ECOSPACE_REGION" xml:space="preserve">
+    <value>Region {0}</value>
+    <comment>{0}=region</comment>
   </data>
   <data name="CORE_DEFAULT_LAYER" xml:space="preserve">
     <value>Layer {0}</value>

@@ -839,7 +839,6 @@ Namespace Ecospace
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim lColors As List(Of Color) = sg.DefaultColors(cColourBins)
             Dim cScaler As Single = cColourBins / 2 'Me.m_sMaxEffort
-            Dim brCell As Brush = Nothing
             Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
             Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
@@ -848,6 +847,7 @@ Namespace Ecospace
             Dim brExcluded As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.FromArgb(&H88FF4500))
             Dim dtTime As Date = Me.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStepCur)
             Dim strDate As String = dtTime.ToShortDateString()
+            Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(iFleet)
 
             Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
                 g.FillRectangle(br, rcPos)
@@ -881,18 +881,20 @@ Namespace Ecospace
 
                             ' Draw MPA
                             If Me.StyleGuide.ShowMapsMPAs Then
+                                Dim bClosed As Boolean = False
                                 For k As Integer = 1 To Me.Core.nMPAs
-                                    Dim iMPA As Integer = CInt(Me.Core.EcospaceBasemap.LayerMPA(k).Cell(i, j))
-                                    If iMPA > 0 Then
-                                        If Me.Core.EcospaceMPAs(iMPA).MPAMonth(iMonth) Then
-                                            brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
-                                        Else
-                                            brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                                    If CInt(Me.Core.EcospaceBasemap.LayerMPA(k).Cell(i, j)) > 0 Then
+                                        bClosed = bClosed Or ((fleet.MPAFishery(k) = False) And (Me.Core.EcospaceMPAs(k).MPAMonth(iMonth) = False))
+                                        If bClosed Then
+                                            Exit For
                                         End If
-                                        g.FillRectangle(brCell, tmpRect)
-                                        brCell.Dispose()
                                     End If
                                 Next
+                                If bClosed Then
+                                    Using brCell As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                                        g.FillRectangle(brCell, tmpRect)
+                                    End Using
+                                End If
                             End If
                         End If
                     Else

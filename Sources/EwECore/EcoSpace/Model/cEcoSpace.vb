@@ -6559,6 +6559,8 @@ exitline:
                         nInReg = Me.EcoSpaceData.nCellsInRegion(irgn)
                         If nInReg = 0 Then nInReg = 1
                         Me.EcoSpaceData.ResultsCatchRegionGearGroup(irgn, iflt, igrp, Me.itt) /= nInReg
+                        Me.EcoSpaceData.ResultsLandingsRegionGearGroup(irgn, iflt, igrp, Me.itt) /= nInReg
+                        Me.EcoSpaceData.ResultsValueRegionGearGroup(irgn, iflt, igrp, Me.itt) /= nInReg
                         If ((Me.itt Mod Me.EcoSpaceData.NumStep) = 0) Then
                             Me.EcoSpaceData.ResultsCatchRegionGearGroupYear(irgn, iflt, igrp, Me.EcoSpaceData.YearNow) /= Me.EcoSpaceData.NumStep
                         End If

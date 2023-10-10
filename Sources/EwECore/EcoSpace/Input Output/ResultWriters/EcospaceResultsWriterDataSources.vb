@@ -140,7 +140,7 @@ Public Class cBiomassResultsDataSource
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
             Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_AVG_B_UNIT, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_AVG_B_UNIT, u.ToString(cUnits.Currency))
         End Get
     End Property
 
@@ -257,7 +257,7 @@ Public Class cCatchResultsDataSource
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
             Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_AVG_CATCH_UNIT, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_AVG_CATCH_UNIT, u.ToString(cUnits.Currency))
         End Get
     End Property
 
@@ -388,15 +388,14 @@ Public Class cRegionBiomassResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION_AREA_UNIT, Me.m_RegionIndex, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION, Me.m_RegionIndex)
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
             Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_B_UNIT, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_B_UNIT, u.ToString(cUnits.Currency))
         End Get
     End Property
 
@@ -512,15 +511,14 @@ Public Class cRegionCatchResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION_AREA_UNIT, Me.m_RegionIndex, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION, Me.m_RegionIndex)
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
             Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_CATCH_UNIT, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_CATCH_UNIT, u.ToString(cUnits.Currency))
         End Get
     End Property
 
@@ -627,15 +625,14 @@ Public Class cRegionConsuptionResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION_AREA_UNIT, Me.m_RegionIndex, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION, Me.m_RegionIndex)
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
             Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_CONS_UNIT, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_CONS_UNIT, u.ToString(cUnits.Currency))
         End Get
     End Property
 
@@ -741,15 +738,14 @@ Public Class cRegionLandingsResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION_AREA_UNIT, Me.m_RegionIndex, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION, Me.m_RegionIndex)
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
             Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_LANDINGS_UNIT, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_LANDINGS_UNIT, u.ToString(cUnits.Currency))
         End Get
     End Property
 
@@ -810,7 +806,7 @@ Public Class cRegionValueResultsDataSource
     Public Overrides Function GetResult(OneBasedIndex As Integer, TimeIndex As Integer) As Single
         Try
             Dim r As cRegion = Me.m_regions.Item(OneBasedIndex - 1)
-            Return Me.m_spaceData.ResultsLandingsRegionGearGroup(r.RegionIndex, r.FleetIndex, r.TargetIndex, TimeIndex)
+            Return Me.m_spaceData.ResultsValueRegionGearGroup(r.RegionIndex, r.FleetIndex, r.TargetIndex, TimeIndex)
         Catch ex As Exception
             Debug.Assert(False, "Exception obtaining Ecospace results. " + ex.Message)
         End Try
@@ -855,15 +851,14 @@ Public Class cRegionValueResultsDataSource
 
     Public Overrides ReadOnly Property AreaDescriptor As String
         Get
-            Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION_AREA_UNIT, Me.m_RegionIndex, u.ToString(cUnits.CurrencyOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGION, Me.m_RegionIndex)
         End Get
     End Property
 
     Public Overrides ReadOnly Property DataDescriptor As String
         Get
             Dim u As New cUnits(Me.m_core)
-            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_VALUE_UNIT, u.ToString(cUnits.MonetaryOverArea))
+            Return cStringUtils.Localize(My.Resources.CoreDefaults.ECOSPACE_REGAVG_VALUE_UNIT, u.ToString(cUnits.MonetaryCurrency))
         End Get
     End Property
 
