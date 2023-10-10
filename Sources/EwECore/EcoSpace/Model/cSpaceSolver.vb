@@ -333,7 +333,7 @@ Public Class cSpaceSolver
             Array.Clear(Me.ResultsByFleet, 0, Me.ResultsByFleet.Length)
             Array.Clear(Me.ResultsByFleetGroup, 0, Me.ResultsByFleetGroup.Length)
             Array.Clear(Me.ResultsCatchRegionGearGroup, 0, Me.ResultsCatchRegionGearGroup.Length)
-            Array.Clear(Me.ResultsLandingsRegionGearGroup, 0, Me.ResultsCatchRegionGearGroup.Length)
+            Array.Clear(Me.ResultsLandingsRegionGearGroup, 0, Me.ResultsLandingsRegionGearGroup.Length)
             Array.Clear(Me.ResultsValueRegionGearGroup, 0, Me.ResultsValueRegionGearGroup.Length)
             Array.Clear(Me.ResultsConsumptionRegionPredPrey, 0, Me.ResultsConsumptionRegionPredPrey.Length)
 
@@ -1266,9 +1266,7 @@ Public Class cSpaceSolver
                         If m_Data.IsFished(iFlt, iRow, iCol) Then
                             If Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp) > 0 Then
                                 'First get catch
-                                Dim f As Single = Me.m_SimData.relQ(iFlt, iGrp) * (Me.m_SimData.PropLandedTime(iFlt, iGrp) + Me.m_SimData.Propdiscardtime(iFlt, iGrp))
-                                cellCatch = Biomass(iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol) * f
-
+                                cellCatch = Biomass(iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol) * Me.m_SimData.relQ(iFlt, iGrp) * (Me.m_SimData.PropLandedTime(iFlt, iGrp) + Me.m_SimData.Propdiscardtime(iFlt, iGrp))
                                 Me.m_Data.CatchFleetMap(iRow, iCol, iFlt) += cellCatch
                                 'Sum the total catch by gear
                                 Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch
@@ -1279,7 +1277,7 @@ Public Class cSpaceSolver
                                 'sum all fleets into the zero fleet index
                                 Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, iGrp) += cellCatch
 
-                                cellLandings = Biomass(iGrp) * Me.m_SimData.relQ(iFlt, iGrp) * Me.m_SimData.PropLandedTime(iFlt, iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol)
+                                cellLandings = Biomass(iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol) * Me.m_SimData.relQ(iFlt, iGrp) * Me.m_SimData.PropLandedTime(iFlt, iGrp)
                                 Me.Landings(iGrp, iFlt) += cellLandings
 
                                 cellValue = cellLandings * Me.m_Ecosim.MarketValue(iGrp, iFlt, iCumTime, iYear)

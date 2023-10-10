@@ -461,11 +461,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Region {0} area ({1}).
+        '''  Looks up a localized string similar to Region {0}.
         '''</summary>
-        Public Shared ReadOnly Property ECOSPACE_REGION_AREA_UNIT() As String
+        Public Shared ReadOnly Property ECOSPACE_REGION() As String
             Get
-                Return ResourceManager.GetString("ECOSPACE_REGION_AREA_UNIT", resourceCulture)
+                Return ResourceManager.GetString("ECOSPACE_REGION", resourceCulture)
             End Get
         End Property
         
@@ -1064,7 +1064,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to km².
+        '''  Looks up a localized string similar to km^2.
         '''</summary>
         Public Shared ReadOnly Property UNIT_AREA_KM2() As String
             Get
@@ -1073,7 +1073,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mi².
+        '''  Looks up a localized string similar to mi^2.
         '''</summary>
         Public Shared ReadOnly Property UNIT_AREA_MI2() As String
             Get
@@ -1082,7 +1082,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to kcal/m².
+        '''  Looks up a localized string similar to kcal/m^2.
         '''</summary>
         Public Shared ReadOnly Property UNIT_CURRENCY_CALORIE() As String
             Get
@@ -1091,7 +1091,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to g/m².
+        '''  Looks up a localized string similar to g/m^2.
         '''</summary>
         Public Shared ReadOnly Property UNIT_CURRENCY_CARBON() As String
             Get
@@ -1100,7 +1100,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to g/m².
+        '''  Looks up a localized string similar to g/m^2.
         '''</summary>
         Public Shared ReadOnly Property UNIT_CURRENCY_DRYWEIGHT() As String
             Get
@@ -1109,7 +1109,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to J/m².
+        '''  Looks up a localized string similar to J/m^2.
         '''</summary>
         Public Shared ReadOnly Property UNIT_CURRENCY_JOULES() As String
             Get
@@ -1118,7 +1118,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mg N/m².
+        '''  Looks up a localized string similar to mg N/m^2.
         '''</summary>
         Public Shared ReadOnly Property UNIT_CURRENCY_NITROGEN() As String
             Get
@@ -1127,7 +1127,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mg P/m².
+        '''  Looks up a localized string similar to mg P/m^2.
         '''</summary>
         Public Shared ReadOnly Property UNIT_CURRENCY_PHOSPOROUS() As String
             Get
@@ -1136,7 +1136,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to t/km².
+        '''  Looks up a localized string similar to t/km^2.
         '''</summary>
         Public Shared ReadOnly Property UNIT_CURRENCY_WETWEIGHT() As String
             Get

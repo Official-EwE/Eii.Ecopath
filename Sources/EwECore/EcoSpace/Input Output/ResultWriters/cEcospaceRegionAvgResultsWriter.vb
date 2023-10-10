@@ -231,7 +231,7 @@ Public Class cEcospaceRegionAvgResultsWriter
                     If Me.m_core.SaveWithFileHeader Then
                         sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
                         sw.WriteLine(cStringUtils.ToCSVField("Data") & "," & cStringUtils.ToCSVField(ds.DataDescriptor))
-                        sw.WriteLine(cStringUtils.ToCSVField(ds.AreaDescriptor) + "," & cStringUtils.ToCSVField(ds.nWaterCells * Me.m_core.EcospaceBasemap.CellLength() ^ 2))
+                        sw.WriteLine(cStringUtils.ToCSVField(ds.AreaDescriptor))
                         sw.WriteLine(cStringUtils.ToCSVField("Number of cells") & "," & cStringUtils.ToCSVField(ds.nWaterCells))
                         sw.WriteLine()
                     End If

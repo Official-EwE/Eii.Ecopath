@@ -2808,15 +2808,19 @@ Public Class cCore
                 fields("Date") = Date.Now.ToString()
 
             Case eAutosaveTypes.Ecopath
+                If Not Me.m_StateMonitor.HasEcopathLoaded Then Return fields
                 fields("ModelName") = Me.EwEModel.Name
+                fields("ModelSource") = Me.DataSource.ToString()
 
             Case eAutosaveTypes.Ecosim
+                If Not Me.m_StateMonitor.HasEcosimLoaded Then Return fields
                 fields("EcosimScenario") = Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                 fields("TimeSeries") = If(Me.ActiveTimeSeriesDatasetIndex > 0, Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name, "-")
                 If (iStartYear = cCore.NULL_VALUE) Then iStartYear = Me.EcosimFirstYear
                 fields("StartYear") = CStr(iStartYear)
 
             Case eAutosaveTypes.Ecospace
+                If Not Me.m_StateMonitor.HasEcospaceLoaded Then Return fields
                 Dim bm As cEcospaceBasemap = Me.m_EcospaceBasemap
                 Dim ld As cEcospaceLayerDepth = bm.LayerDepth
                 Dim man As cSpatialDataConnectionManager = Me.SpatialDataConnectionManager

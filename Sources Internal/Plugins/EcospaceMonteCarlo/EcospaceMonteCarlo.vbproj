@@ -147,7 +147,9 @@
     <Compile Include="frmEcospaceMonteCarlo.Designer.vb">
       <DependentUpon>frmEcospaceMonteCarlo.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmEcospaceMonteCarlo.vb" />
+    <Compile Include="frmEcospaceMonteCarlo.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

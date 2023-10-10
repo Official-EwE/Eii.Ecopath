@@ -146,7 +146,9 @@
     <Compile Include="UI\frmImport.Designer.vb">
       <DependentUpon>frmImport.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmImport.vb" />
+    <Compile Include="UI\frmImport.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
