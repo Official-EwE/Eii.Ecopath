@@ -832,38 +832,39 @@ Namespace Ecospace
 
         End Sub
 
-        ' ToDo: move to cMapDrawerFleet
         Private Sub DrawFishingBaseMap(mapFishing(,,) As Single,
                                        iFleet As Integer, rcPos As Rectangle, g As Graphics)
 
+            ' JS 12Oct23: this method CANNOT pull from the IO objects, as MPA dynamics may have changed MPA settings. Ecospace DS, here we come
+
+            ' ToDo: move to cMapDrawerFleet
+            Dim ecopathDS As cEcopathDataStructures = Me.Core.EcopathDataStructures
+            Dim ecospaceDS As cEcospaceDataStructures = Me.Core.EcospaceDataStructures
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim lColors As List(Of Color) = sg.DefaultColors(cColourBins)
             Dim cScaler As Single = cColourBins / 2 'Me.m_sMaxEffort
             Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
             Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
-            Dim depth As cEcospaceLayerDepth = Me.Core.EcospaceBasemap.LayerDepth
-            Dim excl As cEcospaceLayerExclusion = Me.Core.EcospaceBasemap.LayerExclusion
-            Dim brExcluded As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.FromArgb(&H88FF4500))
             Dim dtTime As Date = Me.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStepCur)
             Dim strDate As String = dtTime.ToShortDateString()
-            Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(iFleet)
 
             Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
                 g.FillRectangle(br, rcPos)
             End Using
 
-            For i As Integer = 1 To Me.m_iInRow
-                For j As Integer = 1 To Me.m_iInCol
+            Using brExcluded As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.FromArgb(&H88FF4500))
 
-                    Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.m_iInCol),
-                        CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.m_iInRow),
-                        CSng(rcPos.Width() / Me.m_iInCol),
-                        CSng(rcPos.Height() / Me.m_iInRow))
-                    Dim tmpBrush As SolidBrush = Nothing
+                For i As Integer = 1 To Me.m_iInRow
+                    For j As Integer = 1 To Me.m_iInCol
 
-                    If (depth.IsWaterCell(i, j) = True) Then
-                        If (Not excl.IsExcludedCell(i, j)) Then
+                        Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.m_iInCol),
+                            CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.m_iInRow),
+                            CSng(rcPos.Width() / Me.m_iInCol),
+                            CSng(rcPos.Height() / Me.m_iInRow))
+                        Dim tmpBrush As SolidBrush = Nothing
+
+                        If (ecospaceDS.Depth(i, j) > 0) Then
 
                             'Effort for a single fleet
                             Dim icc As Single = mapFishing(iFleet, i, j) * cScaler
@@ -883,8 +884,8 @@ Namespace Ecospace
                             If Me.StyleGuide.ShowMapsMPAs Then
                                 Dim bClosed As Boolean = False
                                 For k As Integer = 1 To Me.Core.nMPAs
-                                    If CInt(Me.Core.EcospaceBasemap.LayerMPA(k).Cell(i, j)) > 0 Then
-                                        bClosed = bClosed Or ((fleet.MPAFishery(k) = False) And (Me.Core.EcospaceMPAs(k).MPAMonth(iMonth) = False))
+                                    If (ecospaceDS.MPA(k)(i, j) > 0) Then
+                                        bClosed = bClosed Or (ecospaceDS.MPAfishery(iFleet, k) = False) And (ecospaceDS.MPAmonth(iMonth, k) = False)
                                         If bClosed Then
                                             Exit For
                                         End If
@@ -896,26 +897,22 @@ Namespace Ecospace
                                     End Using
                                 End If
                             End If
+                        Else
+                            tmpBrush = New SolidBrush(Color.Gray)
+                            g.FillRectangle(tmpBrush, tmpRect)
+                            tmpBrush.Dispose()
                         End If
-                    Else
-                        tmpBrush = New SolidBrush(Color.Gray)
-                        g.FillRectangle(tmpBrush, tmpRect)
-                        tmpBrush.Dispose()
-                    End If
 
-                    If Me.StyleGuide.ShowMapsExcludedCells And (excl.IsExcludedCell(i, j)) Then
-                        g.FillRectangle(brExcluded, tmpRect)
-                    End If
+                        If Me.StyleGuide.ShowMapsExcludedCells And (ecospaceDS.Excluded(i, j)) Then
+                            g.FillRectangle(brExcluded, tmpRect)
+                        End If
+                    Next
                 Next
-            Next
 
-            'Draw the black frame of base map
-            g.DrawRectangle(Pens.Black, rcPos)
+                'Draw the black frame of base map
+                g.DrawRectangle(Pens.Black, rcPos)
 
-            ' Probably don't have to do this as these brushes are only create once and will be disposed when they go out of scope
-            ' JS: No, must dispose GDI objects because they are not garbage collected in .NET
-            brExcluded.Dispose()
-            brExcluded = Nothing
+            End Using
 
             'Display the group name
             If Me.StyleGuide.ShowMapLabels Then
@@ -924,9 +921,9 @@ Namespace Ecospace
                 Dim strName As String = ""
 
                 If Me.StyleGuide.ShowMapsIndexInLabels Then
-                    strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, iFleet, Me.Core.EcospaceFleetInputs(iFleet).Name)
+                    strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, iFleet, ecopathDS.FleetName(iFleet))
                 Else
-                    strName = Me.Core.EcospaceFleetInputs(iFleet).Name
+                    strName = ecopathDS.FleetName(iFleet)
                 End If
 
 
