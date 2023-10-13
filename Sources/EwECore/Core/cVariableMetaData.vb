@@ -140,7 +140,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.GS) = New cVariableMetaData(0, 1, ge, le)
         Me.Metadata(eVarNameFlags.Z) = New cVariableMetaData(0, Single.MaxValue, gt, lt, cCore.NULL_VALUE, cUnits.OverTime) ' Set to null when cleared
         Me.Metadata(eVarNameFlags.OtherMortInput) = New cVariableMetaData(0, 1, gt, le, cCore.NULL_VALUE) ' Set to null when cleared 
-        Me.Metadata(eVarNameFlags.NonMarketValue) = New cVariableMetaData(0, Single.MaxValue, ge, lt,, cUnits.MonetaryOverBiomass)
+        Me.Metadata(eVarNameFlags.NonMarketValue) = New cVariableMetaData(0, Single.MaxValue, ge, lt,, cUnits.MonetaryOverKg)
         Me.Metadata(eVarNameFlags.DetImp) = New cVariableMetaData(0, Single.MaxValue, ge, le, cCore.NULL_VALUE, cUnits.CurrencyOverTime)
         Me.Metadata(eVarNameFlags.DetritusFate) = New cVariableMetaData(0, 1, ge, le, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.DietComp) = New cVariableMetaData(0, 1, ge, le, 0, cUnits.Proportion)
@@ -209,7 +209,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.FixedCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Percentage)
         Me.Metadata(eVarNameFlags.EffortCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 40, cUnits.Percentage)
         Me.Metadata(eVarNameFlags.SailCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 40, cUnits.Percentage)
-        Me.Metadata(eVarNameFlags.OffVesselPrice) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.MonetaryOverBiomass)
+        Me.Metadata(eVarNameFlags.OffVesselPrice) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.MonetaryOverKg)
         Me.Metadata(eVarNameFlags.NominalEffort) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.FishingEffort)
         Me.Metadata(eVarNameFlags.Landings) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.CurrencyOverTime)
         Me.Metadata(eVarNameFlags.Discards) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.CurrencyOverTime)
@@ -494,8 +494,8 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcospaceGroupBiomassEnd) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
         Me.Metadata(eVarNameFlags.EcospaceGroupCatchStart) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
         Me.Metadata(eVarNameFlags.EcospaceGroupCatchEnd) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
-        Me.Metadata(eVarNameFlags.EcospaceGroupValueStart) = [Default](eValueTypes.Sng, cUnits.MonetaryOverBiomass)
-        Me.Metadata(eVarNameFlags.EcospaceGroupValueEnd) = [Default](eValueTypes.Sng, cUnits.MonetaryOverBiomass)
+        Me.Metadata(eVarNameFlags.EcospaceGroupValueStart) = [Default](eValueTypes.Sng, cUnits.MonetaryOverKg)
+        Me.Metadata(eVarNameFlags.EcospaceGroupValueEnd) = [Default](eValueTypes.Sng, cUnits.MonetaryOverKg)
 
         ' fleet int
         Me.Metadata(eVarNameFlags.EffectivePower) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1)
@@ -506,10 +506,10 @@ Public Class cVariableMetaData
         ' fleet out
         Me.Metadata(eVarNameFlags.EcospaceFleetCatchStart) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
         Me.Metadata(eVarNameFlags.EcospaceFleetCatchEnd) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
-        Me.Metadata(eVarNameFlags.EcospaceFleetValueStart) = [Default](eValueTypes.Sng, cUnits.MonetaryOverBiomass)
-        Me.Metadata(eVarNameFlags.EcospaceFleetValueEnd) = [Default](eValueTypes.Sng, cUnits.MonetaryOverBiomass)
-        Me.Metadata(eVarNameFlags.EcospaceFleetCostStart) = [Default](eValueTypes.Sng, cUnits.MonetaryOverBiomass)
-        Me.Metadata(eVarNameFlags.EcospaceFleetCostEnd) = [Default](eValueTypes.Sng, cUnits.MonetaryOverBiomass)
+        Me.Metadata(eVarNameFlags.EcospaceFleetValueStart) = [Default](eValueTypes.Sng, cUnits.MonetaryOverKg)
+        Me.Metadata(eVarNameFlags.EcospaceFleetValueEnd) = [Default](eValueTypes.Sng, cUnits.MonetaryOverKg)
+        Me.Metadata(eVarNameFlags.EcospaceFleetCostStart) = [Default](eValueTypes.Sng, cUnits.MonetaryOverKg)
+        Me.Metadata(eVarNameFlags.EcospaceFleetCostEnd) = [Default](eValueTypes.Sng, cUnits.MonetaryOverKg)
         Me.Metadata(eVarNameFlags.EcospaceFleetEffortES) = [Default](eValueTypes.Sng, cUnits.Proportion)
 
         ' Habitats
