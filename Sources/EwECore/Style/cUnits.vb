@@ -154,8 +154,7 @@ Namespace Style
         Public Shared ReadOnly Property MonetaryOverTime As String = "[monetary]/[time]"
         Public Shared ReadOnly Property OverTime As String = "/[time]"
         Public Shared ReadOnly Property CurrencyOverTime As String = "[currency]/[time]"
-        Public Shared ReadOnly Property MonetaryOverBiomass As String = "[monetary]/[biomass]"
-        Public Shared ReadOnly Property MonetaryCurrency As String = "[monetary] x [currency]"
+        Public Shared ReadOnly Property MonetaryOverKg As String = "[monetary]/[kg]"
         Public Shared ReadOnly Property Proportion As String = "[proportion]"
         Public Shared ReadOnly Property Multiplier As String = "[multiplier]"
         Public Shared ReadOnly Property ProportionOverTime As String = "[proportion]/[time]"
@@ -170,6 +169,8 @@ Namespace Style
         Public Shared ReadOnly Property Year As String = "[year]"
         Public Shared ReadOnly Property FishingEffort As String = "[kilowattdays]/[time]"
         Public Shared ReadOnly Property Percentage As String = "[%]"
+
+        Public Shared ReadOnly Property MonetaryCurrency As String = cUnits.MonetaryOverKg & " x " & cUnits.Currency
 
     End Class
 

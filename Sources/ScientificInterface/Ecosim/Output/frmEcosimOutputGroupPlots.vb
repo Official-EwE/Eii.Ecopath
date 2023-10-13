@@ -942,7 +942,7 @@ Namespace Ecosim
                     Return SharedResources.HEADER_PREY_PERCENTAGE
 
                 Case ePlot.Value
-                    Return Me.StyleGuide.FormatUnitString(cUnits.MonetaryOverBiomass)
+                    Return Me.StyleGuide.FormatUnitString(cUnits.MonetaryOverKg)
 
                 Case ePlot.[Catch]
                     Return Me.StyleGuide.FormatUnitString(cUnits.CurrencyOverTime)
