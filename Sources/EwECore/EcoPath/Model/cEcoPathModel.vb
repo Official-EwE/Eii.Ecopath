@@ -1761,10 +1761,10 @@ LoopCalc:
                 Return False
             End Try
 
-            If Not Me.CheckIfRespirationOK(False) Then
-                Result = eStatusFlags.ErrorEncountered
-                Return False
-            End If
+            'If Not Me.CheckIfRespirationOK(False) Then
+            '    Result = eStatusFlags.ErrorEncountered
+            '    Return False
+            'End If
 
             Result = eStatusFlags.OK
                 Debug.Assert(Result <> eStatusFlags.Null)
