@@ -4,7 +4,7 @@
 
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 0
+#define Compile64Bit 1
 
 ; Optional features
 #define RobertsBank 0
@@ -18,7 +18,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.18527
+  VersionInfoVersion=6.7.0.18536
 #endif
 
 #if Compile64Bit == 0
