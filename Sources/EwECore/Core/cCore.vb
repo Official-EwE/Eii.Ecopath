@@ -10484,6 +10484,11 @@ Public Class cCore
 
             SendEcospaceLoadMessage(strScenarioName)
 
+            If Not cCore.USE_SHARED_ARENAS Then
+                ' JS 25oct'23: This bandaid solution compensates for Ecospace not getting the shared arenas right
+                Me.m_ArenaManager.ResetArenas(0)
+            End If
+
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then
                 Me.PluginManager.EcospaceLoadScenario(ds)
