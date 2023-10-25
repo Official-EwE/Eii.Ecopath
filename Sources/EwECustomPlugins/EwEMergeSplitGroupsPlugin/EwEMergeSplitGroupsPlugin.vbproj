@@ -175,7 +175,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Merge\UI\gridTaxonomy.vb" />
+    <Compile Include="Merge\UI\gridTaxonomy.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Merge\UI\gridDietComposition.vb">
       <SubType>Component</SubType>
     </Compile>
