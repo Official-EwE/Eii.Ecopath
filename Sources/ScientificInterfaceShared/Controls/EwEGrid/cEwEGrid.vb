@@ -1275,8 +1275,8 @@ Namespace Controls.EwEGrid
             Dim iDY As Integer = lines.Length
             Dim iDX As Integer = 0
 
-            ' Determine most likely delimiter used in text
-            If (iDY > 0) Then cSplit = cStringUtils.FindStringDelimiter(lines(0))
+            '' Determine most likely delimiter used in text
+            'If (iDY > 0) Then cSplit = cStringUtils.FindStringDelimiter(lines(0))
 
             If (Me.Core IsNot Nothing) Then
                 Dim fmt As New cCharFormatter()
