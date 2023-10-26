@@ -1050,7 +1050,7 @@ Public Class cEcoSpace
                     For irgn = 0 To Me.EcoSpaceData.nRegions
                         Dim ncells As Integer = Me.EcoSpaceData.nCellsInRegion(irgn)
                         If ncells = 0 Then ncells = 1
-                        Me.EcoSpaceData.ResultsRegionGroup(irgn, ip, Me.itt) /= n
+                        Me.EcoSpaceData.ResultsRegionGroup(irgn, ip, Me.itt) /= ncells
                         Me.EcoSpaceData.ResultsRegionGroupYear(irgn, ip, Me.EcoSpaceData.YearNow) += Me.EcoSpaceData.ResultsRegionGroup(irgn, ip, Me.itt)
                         If ((Me.itt Mod Me.EcoSpaceData.nTimeStepsPerYear) = 0) Then
                             Me.EcoSpaceData.ResultsRegionGroupYear(irgn, ip, Me.EcoSpaceData.YearNow) /= Me.EcoSpaceData.nTimeStepsPerYear
