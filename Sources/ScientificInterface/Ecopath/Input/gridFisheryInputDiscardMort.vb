@@ -83,7 +83,7 @@ Namespace Ecopath.Input
             Dim hgcStanza As cEwEHierarchyGridCell = Nothing
 
             ' For each group
-            For i As Integer = 1 To groups.Count - 1
+            For i As Integer = 0 To groups.Count - 1
 
                 group = groups(i)
                 If group.IsMultiStanza Then
@@ -107,7 +107,7 @@ Namespace Ecopath.Input
                 End If
 
                 ' Group index and name
-                Me(iRow, 0) = New cEwERowHeaderCell(CStr(i))
+                Me(iRow, 0) = New cPropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                 Me(iRow, 1) = New cPropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 ' Fleet cells
