@@ -484,7 +484,6 @@ Public Class frmShapeValue
         Dim gts As cGroupTimeSeries = Nothing
         Dim bSucces As Boolean = True
 
-        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_TIMESERIES_UPDATING)
 
         'Get the time series
         ts = DirectCast(Me.m_shape, cTimeSeries)
@@ -511,6 +510,8 @@ Public Class frmShapeValue
                 fts.FleetIndex = iPoolCode
                 fts.GroupIndex = iPoolCode
         End Select
+
+        cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_TIMESERIES_UPDATING, ts.Name))
 
         If bSucces Then
             ' Update the shape

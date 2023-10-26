@@ -987,10 +987,6 @@ Description: {1}</value>
     <value>Are you sure you want to delete region '{0}'? This action cannot be undone.</value>
     <comment>{0}=region name</comment>
   </data>
-  <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
-    <value>Updating time series {0}...</value>
-    <comment>{0}=time series name</comment>
-  </data>
   <data name="SPATIALTEMP_STATUS_T_FULLSPATIAL" xml:space="preserve">
     <value>Spatial data for {0} at time {1}, {2} entirely overlaps with your model area</value>
     <comment>{0}=data set name, {1}=time step, {2}=formatted date</comment>

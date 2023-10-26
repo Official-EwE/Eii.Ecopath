@@ -773,10 +773,9 @@ Namespace Ecosim
 
             ' Are fleet values aggregated?
             If Me.m_bIsCatchAggregated Then
-                ' #Yes: show only 'All fleets' item
-                Me.m_lbFleets.ShowAllFleetsItem = True
+                Me.m_lbFleets.ShowAllFleetsItem = False
             Else
-                ' #No: Show all relevant fleets, sorted by landings
+                ' Show all relevant fleets, sorted by landings
                 For i As Integer = 1 To Me.Core.nFleets
                     If Me.Core.EcopathFleetInputs(i).Landings(iGroup) > 0 Then
                         Dim sCatch As Single = 0
@@ -787,8 +786,9 @@ Namespace Ecosim
                         lFleetIndex.Add(i)
                     End If
                 Next
-                Me.m_lbFleets.ShowAllFleetsItem = False
+                Me.m_lbFleets.ShowAllFleetsItem = True
             End If
+
             Me.PopulateFleetListBox(Me.m_lbFleets, lFleetIndex.ToArray(), lCatch.ToArray())
 
         End Sub
