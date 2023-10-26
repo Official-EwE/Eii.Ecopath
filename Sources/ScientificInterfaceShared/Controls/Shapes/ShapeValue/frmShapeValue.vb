@@ -507,14 +507,18 @@ Public Class frmShapeValue
                 gts = CType(ts, cGroupTimeSeries)
                 gts.GroupIndex = iPoolCode
             Case eTimeSeriesCategoryType.FleetGroup
-                Return False
+                fts = CType(ts, cFleetTimeSeries)
+                fts.FleetIndex = iPoolCode
+                fts.GroupIndex = iPoolCode
         End Select
 
-        ' Update the shape
-        Me.m_grid.ApplyValues(ts)
+        If bSucces Then
+            ' Update the shape
+            Me.m_grid.ApplyValues(ts)
+            ts.Update()
+            bSucces = Me.Core.UpdateTimeSeries()
+        End If
 
-        ts.Update()
-        bSucces = Me.Core.UpdateTimeSeries()
         cApplicationStatusNotifier.EndProgress(Me.Core)
 
         Return bSucces
