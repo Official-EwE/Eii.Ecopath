@@ -5508,15 +5508,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Updating time series {0}....
-        '''</summary>
-        Public ReadOnly Property STATUS_TIMESERIES_UPDATING() As String
-            Get
-                Return ResourceManager.GetString("STATUS_TIMESERIES_UPDATING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Checking for updated components....
         '''</summary>
         Public ReadOnly Property STATUS_UPDATE_CHECKING() As String
