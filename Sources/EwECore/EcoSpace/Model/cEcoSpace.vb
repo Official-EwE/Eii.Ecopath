@@ -1048,7 +1048,9 @@ Public Class cEcoSpace
                     If Me.Btime(ip) = 0 Then Me.Btime(ip) = 0.0000000001
 
                     For irgn = 0 To Me.EcoSpaceData.nRegions
-                        Me.EcoSpaceData.ResultsRegionGroup(irgn, ip, Me.itt) /= Me.EcoSpaceData.nCellsInRegion(irgn)
+                        Dim ncells As Integer = Me.EcoSpaceData.nCellsInRegion(irgn)
+                        If ncells = 0 Then ncells = 1
+                        Me.EcoSpaceData.ResultsRegionGroup(irgn, ip, Me.itt) /= n
                         Me.EcoSpaceData.ResultsRegionGroupYear(irgn, ip, Me.EcoSpaceData.YearNow) += Me.EcoSpaceData.ResultsRegionGroup(irgn, ip, Me.itt)
                         If ((Me.itt Mod Me.EcoSpaceData.nTimeStepsPerYear) = 0) Then
                             Me.EcoSpaceData.ResultsRegionGroupYear(irgn, ip, Me.EcoSpaceData.YearNow) /= Me.EcoSpaceData.nTimeStepsPerYear
