@@ -46,11 +46,20 @@ Namespace Ecospace
             Me.m_nudNoRegions = New System.Windows.Forms.NumericUpDown()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_btnCancel = New System.Windows.Forms.Button()
-            Me.m_rbCustomMax = New System.Windows.Forms.RadioButton()
-            Me.Label1 = New System.Windows.Forms.Label()
-            Me.m_rbFromMPAs = New System.Windows.Forms.RadioButton()
+            Me.m_lblNoRegions = New System.Windows.Forms.Label()
+            Me.m_lblAllocate = New System.Windows.Forms.Label()
+            Me.m_dgvMapping = New System.Windows.Forms.DataGridView()
+            Me.m_rbNone = New System.Windows.Forms.RadioButton()
+            Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
             Me.m_rbFromHabitats = New System.Windows.Forms.RadioButton()
+            Me.m_rbFromMPAs = New System.Windows.Forms.RadioButton()
+            Me.m_colIndex = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.m_colName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.m_colRegion = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.m_colPriority = New System.Windows.Forms.DataGridViewTextBoxColumn()
             CType(Me.m_nudNoRegions, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_dgvMapping, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tlpOptions.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_nudNoRegions
@@ -71,24 +80,43 @@ Namespace Ecospace
             Me.m_btnCancel.Name = "m_btnCancel"
             Me.m_btnCancel.UseVisualStyleBackColor = True
             '
-            'm_rbCustomMax
+            'm_lblNoRegions
             '
-            resources.ApplyResources(Me.m_rbCustomMax, "m_rbCustomMax")
-            Me.m_rbCustomMax.Name = "m_rbCustomMax"
-            Me.m_rbCustomMax.TabStop = True
-            Me.m_rbCustomMax.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_lblNoRegions, "m_lblNoRegions")
+            Me.m_lblNoRegions.Name = "m_lblNoRegions"
             '
-            'Label1
+            'm_lblAllocate
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_lblAllocate, "m_lblAllocate")
+            Me.m_lblAllocate.Name = "m_lblAllocate"
             '
-            'm_rbFromMPAs
+            'm_dgvMapping
             '
-            resources.ApplyResources(Me.m_rbFromMPAs, "m_rbFromMPAs")
-            Me.m_rbFromMPAs.Name = "m_rbFromMPAs"
-            Me.m_rbFromMPAs.TabStop = True
-            Me.m_rbFromMPAs.UseVisualStyleBackColor = True
+            Me.m_dgvMapping.AllowUserToAddRows = False
+            Me.m_dgvMapping.AllowUserToDeleteRows = False
+            Me.m_dgvMapping.AllowUserToResizeRows = False
+            Me.m_dgvMapping.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            Me.m_dgvMapping.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colIndex, Me.m_colName, Me.m_colRegion, Me.m_colPriority})
+            resources.ApplyResources(Me.m_dgvMapping, "m_dgvMapping")
+            Me.m_dgvMapping.MultiSelect = False
+            Me.m_dgvMapping.Name = "m_dgvMapping"
+            Me.m_dgvMapping.RowHeadersVisible = False
+            Me.m_dgvMapping.ShowRowErrors = False
+            '
+            'm_rbNone
+            '
+            resources.ApplyResources(Me.m_rbNone, "m_rbNone")
+            Me.m_rbNone.Name = "m_rbNone"
+            Me.m_rbNone.TabStop = True
+            Me.m_rbNone.UseVisualStyleBackColor = True
+            '
+            'm_tlpOptions
+            '
+            resources.ApplyResources(Me.m_tlpOptions, "m_tlpOptions")
+            Me.m_tlpOptions.Controls.Add(Me.m_rbNone, 0, 0)
+            Me.m_tlpOptions.Controls.Add(Me.m_rbFromHabitats, 1, 0)
+            Me.m_tlpOptions.Controls.Add(Me.m_rbFromMPAs, 2, 0)
+            Me.m_tlpOptions.Name = "m_tlpOptions"
             '
             'm_rbFromHabitats
             '
@@ -97,6 +125,38 @@ Namespace Ecospace
             Me.m_rbFromHabitats.TabStop = True
             Me.m_rbFromHabitats.UseVisualStyleBackColor = True
             '
+            'm_rbFromMPAs
+            '
+            resources.ApplyResources(Me.m_rbFromMPAs, "m_rbFromMPAs")
+            Me.m_rbFromMPAs.Name = "m_rbFromMPAs"
+            Me.m_rbFromMPAs.TabStop = True
+            Me.m_rbFromMPAs.UseVisualStyleBackColor = True
+            '
+            'm_colIndex
+            '
+            resources.ApplyResources(Me.m_colIndex, "m_colIndex")
+            Me.m_colIndex.Name = "m_colIndex"
+            Me.m_colIndex.ReadOnly = True
+            '
+            'm_colName
+            '
+            Me.m_colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+            resources.ApplyResources(Me.m_colName, "m_colName")
+            Me.m_colName.Name = "m_colName"
+            Me.m_colName.ReadOnly = True
+            '
+            'm_colRegion
+            '
+            resources.ApplyResources(Me.m_colRegion, "m_colRegion")
+            Me.m_colRegion.MaxInputLength = 2
+            Me.m_colRegion.Name = "m_colRegion"
+            '
+            'm_colPriority
+            '
+            resources.ApplyResources(Me.m_colPriority, "m_colPriority")
+            Me.m_colPriority.MaxInputLength = 2
+            Me.m_colPriority.Name = "m_colPriority"
+            '
             'dlgDefineRegions
             '
             Me.AcceptButton = Me.m_btnOK
@@ -104,10 +164,10 @@ Namespace Ecospace
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
-            Me.Controls.Add(Me.m_rbFromHabitats)
-            Me.Controls.Add(Me.m_rbFromMPAs)
-            Me.Controls.Add(Me.m_rbCustomMax)
-            Me.Controls.Add(Me.Label1)
+            Me.Controls.Add(Me.m_tlpOptions)
+            Me.Controls.Add(Me.m_dgvMapping)
+            Me.Controls.Add(Me.m_lblAllocate)
+            Me.Controls.Add(Me.m_lblNoRegions)
             Me.Controls.Add(Me.m_btnCancel)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_nudNoRegions)
@@ -117,6 +177,9 @@ Namespace Ecospace
             Me.Name = "dlgDefineRegions"
             Me.ShowInTaskbar = False
             CType(Me.m_nudNoRegions, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_dgvMapping, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tlpOptions.ResumeLayout(False)
+            Me.m_tlpOptions.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -124,10 +187,17 @@ Namespace Ecospace
         Private WithEvents m_nudNoRegions As System.Windows.Forms.NumericUpDown
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_btnCancel As System.Windows.Forms.Button
-        Private WithEvents m_rbCustomMax As System.Windows.Forms.RadioButton
-        Private WithEvents Label1 As System.Windows.Forms.Label
-        Private WithEvents m_rbFromMPAs As System.Windows.Forms.RadioButton
-        Private WithEvents m_rbFromHabitats As System.Windows.Forms.RadioButton
+        Private WithEvents m_lblNoRegions As System.Windows.Forms.Label
+        Private WithEvents m_lblAllocate As Label
+        Private WithEvents m_tlpOptions As TableLayoutPanel
+        Private WithEvents m_rbFromHabitats As RadioButton
+        Private WithEvents m_rbFromMPAs As RadioButton
+        Private WithEvents m_rbNone As RadioButton
+        Private WithEvents m_dgvMapping As DataGridView
+        Friend WithEvents m_colIndex As DataGridViewTextBoxColumn
+        Friend WithEvents m_colName As DataGridViewTextBoxColumn
+        Friend WithEvents m_colRegion As DataGridViewTextBoxColumn
+        Friend WithEvents m_colPriority As DataGridViewTextBoxColumn
     End Class
 
 End Namespace

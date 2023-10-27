@@ -1399,17 +1399,17 @@ Namespace MSE
                                         If Me.m_data.QuotaType(ig) = eQuotaTypes.HighestValue Then
                                             'QuotaType = Strongest 
                                             'excess catch discarded and included in the fishing mortailtiy
-                                            Me.m_esData.Propdiscardtime(ig, i) = (1 - Me.m_esData.PropLandedTime(ig, i)) * Me.m_epdata.PropDiscardMort(ig, i)
+                                            Me.m_esData.PropDiscardTime(ig, i) = (1 - Me.m_esData.PropLandedTime(ig, i)) * Me.m_epdata.PropDiscardMort(ig, i)
                                         Else
                                             'QuotaType = Selective 
                                             'excess catch is NOT included in fishing mortaility all discards survive
-                                            Me.m_esData.Propdiscardtime(ig, i) = 0
+                                            Me.m_esData.PropDiscardTime(ig, i) = 0
                                         End If
 
                                     Else
                                         'ci < QuotaTime
                                         Me.m_esData.PropLandedTime(ig, i) = Me.m_epdata.PropLanded(ig, i)
-                                        Me.m_esData.Propdiscardtime(ig, i) = Me.m_epdata.PropDiscard(ig, i)
+                                        Me.m_esData.PropDiscardTime(ig, i) = Me.m_epdata.PropDiscard(ig, i)
                                     End If
 
                                 End If

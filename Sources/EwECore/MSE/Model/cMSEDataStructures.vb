@@ -743,7 +743,7 @@ Namespace MSE
                     Me.QStar(iGrp, iFlt) = Me.m_ESData.relQ(iFlt, iGrp)
 
                     Me.m_ESData.PropLandedTime(iFlt, iGrp) = Me.m_EPData.PropLanded(iFlt, iGrp)
-                    Me.m_ESData.Propdiscardtime(iFlt, iGrp) = Me.m_EPData.PropDiscard(iFlt, iGrp)
+                    Me.m_ESData.PropDiscardTime(iFlt, iGrp) = Me.m_EPData.PropDiscard(iFlt, iGrp)
                     Me.m_ESData.PropDiscardMortTime(iFlt, iGrp) = Me.m_EPData.PropDiscardMort(iFlt, iGrp)
 
                 Next

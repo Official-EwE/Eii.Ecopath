@@ -653,7 +653,7 @@ Public Class cEcosimDatastructures
     ''' Proportion of the total catch that suffered mortality for the current time step (by gear group). Does not include discards that survived.
     ''' Initialized in cEcosim.InitPropLanded() Propdiscardtime(iflt, igrp) = PropDiscard(iflt, igrp) * PropDiscardMort(iflt, igrp)
     ''' </summary>
-    Public Propdiscardtime(,) As Single
+    Public PropDiscardTime(,) As Single
 
     Public PropDiscardMortTime(,) As Single
 
@@ -935,7 +935,7 @@ Public Class cEcosimDatastructures
         ReDim Me.CapBaseGrowth(Me.nGear)
 
         ReDim Me.PropLandedTime(Me.nGear, Me.nGroups)
-        ReDim Me.Propdiscardtime(Me.nGear, Me.nGroups)
+        ReDim Me.PropDiscardTime(Me.nGear, Me.nGroups)
 
         ReDim Me.PropDiscardMortTime(Me.nGear, Me.nGroups)
 
@@ -1057,7 +1057,7 @@ Public Class cEcosimDatastructures
         Me.CapBaseGrowth = Nothing ' (nGear)
 
         Me.PropLandedTime = Nothing ' (nGear, nGroups)
-        Me.Propdiscardtime = Nothing ' (nGear, nGroups)
+        Me.PropDiscardTime = Nothing ' (nGear, nGroups)
         Me.PropDiscardMortTime = Nothing
         Me.Consumption = Nothing ' (nGroups, nGroups)
         Me.Consumpt = Nothing ' (nGroups, nGroups)

@@ -3412,12 +3412,12 @@ Public Class cMSE
                     'Debug.Assert((m_ecosim.EcosimData.Propdiscardtime(iflt, igrp) > 0 And _simdata.FishRateGear(iflt, iTime) > 0) = False)
 
                     Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) += CatchFleetGrp * Me.m_ecosim.EcosimData.PropLandedTime(iflt, igrp)
-                    Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * Me.m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
+                    Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * Me.m_ecosim.EcosimData.PropDiscardTime(iflt, igrp)
                     Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * (1 - Me.m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - Me.m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
 
                     'Sum across fleets into the zero index
                     Me.LandingsDiscards(0, igrp, eCatchTypes.Landings) += CatchFleetGrp * Me.m_ecosim.EcosimData.PropLandedTime(iflt, igrp)
-                    Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * Me.m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
+                    Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * Me.m_ecosim.EcosimData.PropDiscardTime(iflt, igrp)
                     Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * (1 - Me.m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - Me.m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
 
                     ' Dim tmpCatch As Single = Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardsMort) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvived)
@@ -3962,13 +3962,13 @@ Public Class cMSE
         If Me.currentStrategy.Regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Or Not Me.IsTargetSpecies(iGrp, iFleet) Then
             'QuotaType = Strongest
             'excess catch discarded and included in the fishing mortality()
-            Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * Me.m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
+            Me.m_ecosim.EcosimData.PropDiscardTime(iFleet, iGrp) = (1 - Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * Me.m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
         Else
             'QuotaType = Selective 
             'excess catch is NOT included in fishing mortality all discards survive
             'm_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = CSng(1 - (FleetQuota / (m_ecopath.EcopathData.PropLanded(iFleet, iGrp) * iCatch)) * (1 - m_ecopath.EcopathData.PropDiscard(iFleet, iGrp)) - (iCatch - FleetQuota / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / iCatch)
             Catch2LandQuota = CSng(FleetQuota / (Me.m_ecopath.EcopathData.PropLanded(iFleet, iGrp) + +1.0E-20))
-            Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = CSng((1 - Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * (Catch2LandQuota / iCatch) * (Me.m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)))
+            Me.m_ecosim.EcosimData.PropDiscardTime(iFleet, iGrp) = CSng((1 - Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * (Catch2LandQuota / iCatch) * (Me.m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)))
         End If
 
     End Sub
@@ -4190,14 +4190,14 @@ Public Class cMSE
     Private Sub Set_Prop_Landed_Prop_Discarded_Die_To_Default(iFleet As Integer, iGrp As Integer)
 
         Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = Me.m_ecopath.EcopathData.PropLanded(iFleet, iGrp)
-        Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = Me.m_ecopath.EcopathData.PropDiscard(iFleet, iGrp) * Me.m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
+        Me.m_ecosim.EcosimData.PropDiscardTime(iFleet, iGrp) = Me.m_ecopath.EcopathData.PropDiscard(iFleet, iGrp) * Me.m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
 
     End Sub
 
     Private Sub Set_Prop_Landed_Prop_Discarded_Die_Given_NonTarget(iFleet As Integer, iGrp As Integer)
 
         Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = 0
-        Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = Me.m_ecopath.EcopathData.PropDiscard(iFleet, iGrp) * Me.m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
+        Me.m_ecosim.EcosimData.PropDiscardTime(iFleet, iGrp) = Me.m_ecopath.EcopathData.PropDiscard(iFleet, iGrp) * Me.m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
 
     End Sub
 
@@ -4242,7 +4242,7 @@ Public Class cMSE
 
         For iFleet = 1 To Me.m_ecosim.EcosimData.nGear
             'Propdiscardtime(iFleet, iGrp) does not include discards that survived
-            Ft += Me.calcCatchRate(BiomassAtT, iFleet, iGrp, t) * Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp)
+            Ft += Me.calcCatchRate(BiomassAtT, iFleet, iGrp, t) * Me.m_ecosim.EcosimData.PropDiscardTime(iFleet, iGrp)
         Next
 
         Return Ft
@@ -4267,7 +4267,7 @@ Public Class cMSE
             totF = 0
             For ig = 1 To Me._simdata.nGear
                 'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
-                totF += Me._simdata.relQ(ig, i) * Me._simdata.FishRateGear(ig, t) * (Me._simdata.PropLandedTime(ig, i) + Me._simdata.Propdiscardtime(ig, i))
+                totF += Me._simdata.relQ(ig, i) * Me._simdata.FishRateGear(ig, t) * (Me._simdata.PropLandedTime(ig, i) + Me._simdata.PropDiscardTime(ig, i))
             Next
 
             'Save F for this time step 
@@ -4347,12 +4347,12 @@ Public Class cMSE
                 'Debug.Assert((m_ecosim.EcosimData.Propdiscardtime(iflt, igrp) > 0 And _simdata.FishRateGear(iflt, iTime) > 0) = False)
 
                 Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, iflt, igrp, eCatchTypes.Landings) = CatchFleetGrp * Me.m_ecosim.EcosimData.PropLandedTime(iflt, igrp)
-                Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, iflt, igrp, eCatchTypes.DiscardMortalities) = CatchFleetGrp * Me.m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
+                Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, iflt, igrp, eCatchTypes.DiscardMortalities) = CatchFleetGrp * Me.m_ecosim.EcosimData.PropDiscardTime(iflt, igrp)
                 Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, iflt, igrp, eCatchTypes.DiscardSurvivals) = CatchFleetGrp * (1 - Me.m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - Me.m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
 
                 'Sum across fleets into the zero index
                 Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, 0, igrp, eCatchTypes.Landings) += CatchFleetGrp * Me.m_ecosim.EcosimData.PropLandedTime(iflt, igrp)
-                Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, 0, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * Me.m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
+                Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, 0, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * Me.m_ecosim.EcosimData.PropDiscardTime(iflt, igrp)
                 Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, 0, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * (1 - Me.m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - Me.m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
 
                 ' Dim tmpCatch As Single = Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardsMort) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvived)
@@ -4686,7 +4686,7 @@ Public Class cMSE
                     Ft = Me._simdata.FishRateNo(igrp, it) * PropCatchFleet(iflt, igrp)
 
                     'F at the current timestep calculated from baseline values
-                    FtCalc = Me._simdata.relQ(iflt, igrp) * QMultAtT(igrp) * Me._simdata.FishRateGear(iflt, it) * (Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.Propdiscardtime(iflt, igrp))
+                    FtCalc = Me._simdata.relQ(iflt, igrp) * QMultAtT(igrp) * Me._simdata.FishRateGear(iflt, it) * (Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.PropDiscardTime(iflt, igrp))
 
                     'Ratio of F from time series to F computed from Effort
                     'If there is no timeseries or the F and Effort timeseries are synchronised then m_QModifier will be one
@@ -4838,10 +4838,10 @@ Public Class cMSE
         'Debug.Assert(iTime = OriginalNTimesteps, "Oppss PropTotCatchFleet(t) called at the wrong time step.")
 
         For iflt As Integer = 1 To Me.m_core.nFleets
-            sumCatchMortality += Me._simdata.relQ(iflt, iGroup) * Me._simdata.FishRateGear(iflt, iTime) * (Me._simdata.PropLandedTime(iflt, iGroup) + Me._simdata.Propdiscardtime(iflt, iGroup))
+            sumCatchMortality += Me._simdata.relQ(iflt, iGroup) * Me._simdata.FishRateGear(iflt, iTime) * (Me._simdata.PropLandedTime(iflt, iGroup) + Me._simdata.PropDiscardTime(iflt, iGroup))
         Next
 
-        Dim catchMortalityByFleet As Single = Me._simdata.relQ(iFleet, iGroup) * Me._simdata.FishRateGear(iFleet, iTime) * (Me._simdata.PropLandedTime(iFleet, iGroup) + Me._simdata.Propdiscardtime(iFleet, iGroup))
+        Dim catchMortalityByFleet As Single = Me._simdata.relQ(iFleet, iGroup) * Me._simdata.FishRateGear(iFleet, iTime) * (Me._simdata.PropLandedTime(iFleet, iGroup) + Me._simdata.PropDiscardTime(iFleet, iGroup))
 
         sumCatchMortality += CSng(1.0E-20)
 

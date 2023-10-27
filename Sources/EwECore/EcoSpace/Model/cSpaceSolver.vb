@@ -1266,7 +1266,7 @@ Public Class cSpaceSolver
                         If m_Data.IsFished(iFlt, iRow, iCol) Then
                             If Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp) > 0 Then
                                 'First get catch
-                                cellCatch = Biomass(iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol) * Me.m_SimData.relQ(iFlt, iGrp) * (Me.m_SimData.PropLandedTime(iFlt, iGrp) + Me.m_SimData.Propdiscardtime(iFlt, iGrp))
+                                cellCatch = Biomass(iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol) * Me.m_SimData.relQ(iFlt, iGrp) * (Me.m_SimData.PropLandedTime(iFlt, iGrp) + Me.m_SimData.PropDiscardTime(iFlt, iGrp))
                                 Me.m_Data.CatchFleetMap(iRow, iCol, iFlt) += cellCatch
                                 'Sum the total catch by gear
                                 Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch
@@ -1427,7 +1427,7 @@ Public Class cSpaceSolver
                 ToDet = ToDet + Me.m_SimData.mo(i) * Biomass(i) * Me.m_PathData.DF(i, j - Me.m_PathData.NumLiving)
 
                 For K = 1 To Me.m_PathData.NumFleet
-                    Dim PropDiscMort As Single = Me.m_SimData.Propdiscardtime(K, i) / (Me.m_SimData.PropLandedTime(K, i) + Me.m_SimData.Propdiscardtime(K, i) + 1.0E-20F)
+                    Dim PropDiscMort As Single = Me.m_SimData.PropDiscardTime(K, i) / (Me.m_SimData.PropLandedTime(K, i) + Me.m_SimData.PropDiscardTime(K, i) + 1.0E-20F)
                     'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
                     'discard mort is included in Propdiscardtime() by initialization and MSE 
                     DetFlowN = Me.m_PathData.DiscardFate(K, j - Me.m_PathData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * Me.m_SimData.FishMGear(K, i) * PropDiscMort 'Me.m_SimData.Propdiscardtime(K, i)

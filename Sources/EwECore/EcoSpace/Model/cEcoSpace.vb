@@ -5042,7 +5042,7 @@ exitline:
                     If Me.EcoSpaceData.IsFished(iflt, irow, jcol) Then
                         For igrp As Integer = 1 To Me.EcoSpaceData.NGroups
                             'Fishing Mort Rate in a cell by group
-                            Dim f As Single = Me.EcoSimData.relQ(iflt, igrp) * (Me.EcoSimData.PropLandedTime(iflt, igrp) + Me.EcoSimData.Propdiscardtime(iflt, igrp))
+                            Dim f As Single = Me.EcoSimData.relQ(iflt, igrp) * (Me.EcoSimData.PropLandedTime(iflt, igrp) + Me.EcoSimData.PropDiscardTime(iflt, igrp))
                             Me.EcoSpaceData.Ftot(igrp, irow, jcol) += Me.EcoSpaceData.EffortSpace(iflt, irow, jcol) * f / Me.EcoSpaceData.PAreaFished(iflt)(irow, jcol)
 
                             'Debug.Assert(Single.IsNaN(Me.EcoSpaceData.Ftot(igrp, irow, jcol)) = False)
@@ -5274,7 +5274,7 @@ exitline:
                     'Save the discard mortality rate for this timestep
                     Me.EcoSimData.PropDiscardMortTime(iflt, igrp) = Me.m_refdata.PoolForceDiscardMort(iflt, igrp, iForcedTime)
                     'Propdiscardtime() does NOT include discards that survived
-                    Me.EcoSimData.Propdiscardtime(iflt, igrp) = (1 - Me.EcoSimData.PropLandedTime(iflt, igrp)) * Me.EcoSimData.PropDiscardMortTime(iflt, igrp)
+                    Me.EcoSimData.PropDiscardTime(iflt, igrp) = (1 - Me.EcoSimData.PropLandedTime(iflt, igrp)) * Me.EcoSimData.PropDiscardMortTime(iflt, igrp)
 
                     bFChanged = True
                     bForced = True
@@ -5282,7 +5282,7 @@ exitline:
 
                 If Me.m_refdata.PoolForceDiscardProp(iflt, igrp, iForcedTime) >= 0.0 Then
                     'Propdiscardtime does not include discards that survived
-                    Me.EcoSimData.Propdiscardtime(iflt, igrp) = Me.m_refdata.PoolForceDiscardProp(iflt, igrp, iForcedTime) * Me.EcoSimData.PropDiscardMortTime(iflt, igrp)
+                    Me.EcoSimData.PropDiscardTime(iflt, igrp) = Me.m_refdata.PoolForceDiscardProp(iflt, igrp, iForcedTime) * Me.EcoSimData.PropDiscardMortTime(iflt, igrp)
                     Me.EcoSimData.PropLandedTime(iflt, igrp) = 1 - Me.m_refdata.PoolForceDiscardProp(iflt, igrp, iForcedTime)
 
                     bForced = True
@@ -5290,12 +5290,12 @@ exitline:
                 End If
 
                 If bFChanged Then
-                    Debug.Assert((Me.EcoSimData.PropLandedTime(iflt, igrp) + Me.EcoSimData.Propdiscardtime(iflt, igrp)) <= 1.0, "Opps cEcosimModel.setForcedDiscards() may have calculated an incorrect PropLandedTime() or Propdiscardtime()")
+                    Debug.Assert((Me.EcoSimData.PropLandedTime(iflt, igrp) + Me.EcoSimData.PropDiscardTime(iflt, igrp)) <= 1.0, "Opps cEcosimModel.setForcedDiscards() may have calculated an incorrect PropLandedTime() or Propdiscardtime()")
                     'FishMGear() only contains catch that incure mortality
                     'Changing the discard mortality rate changes F
                     'Changing the proportion of landings and discards changes F if discard mort rate is not 1
                     'Calulate the new F from base values 
-                    totCatch = (Me.EcoPathData.Landing(iflt, igrp) + Me.EcoPathData.Discard(iflt, igrp)) * (Me.EcoSimData.PropLandedTime(iflt, igrp) + Me.EcoSimData.Propdiscardtime(iflt, igrp))
+                    totCatch = (Me.EcoPathData.Landing(iflt, igrp) + Me.EcoPathData.Discard(iflt, igrp)) * (Me.EcoSimData.PropLandedTime(iflt, igrp) + Me.EcoSimData.PropDiscardTime(iflt, igrp))
                     Me.EcoSimData.FishMGear(iflt, igrp) = totCatch / Me.EcoPathData.B(igrp)
 
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

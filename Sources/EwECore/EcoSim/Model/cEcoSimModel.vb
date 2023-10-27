@@ -654,9 +654,8 @@ Namespace Ecosim
                 For igrp As Integer = 1 To Me.nGroups
                     'jb 7-Jan-2010 addded PropDiscardMort() so the default for discards contain only the mort
                     Me.m_Data.PropDiscardMortTime(iflt, igrp) = Me.m_EPData.PropDiscardMort(iflt, igrp)
-                    Me.m_Data.Propdiscardtime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
+                    Me.m_Data.PropDiscardTime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
                     Me.m_Data.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
-
                 Next
             Next
 
@@ -901,7 +900,7 @@ Namespace Ecosim
                         For iFlt As Integer = 1 To Me.m_EPData.NumFleet
                             For j = 1 To Me.m_EPData.NumGroups
                                 'Don't include discards that survived  Propdiscardtime() does not include survivors
-                                FSearch = Me.m_Data.relQ(iFlt, j) * (Me.m_Data.PropLandedTime(iFlt, j) + Me.m_Data.Propdiscardtime(iFlt, j))
+                                FSearch = Me.m_Data.relQ(iFlt, j) * (Me.m_Data.PropLandedTime(iFlt, j) + Me.m_Data.PropDiscardTime(iFlt, j))
                                 Me.m_search.FishYear(j) += Fgear(iFlt) * FSearch * QYear(iFlt)
                                 '********following line stops gear overwrite for cases where
                                 'model has been fit to historical data by using species F forcing
@@ -1496,7 +1495,7 @@ Namespace Ecosim
                         'Save the discard mortality rate for this timestep
                         Me.m_Data.PropDiscardMortTime(iflt, igrp) = discardmortForced
                         'Propdiscardtime() does NOT include discards that survived
-                        Me.m_Data.Propdiscardtime(iflt, igrp) = (1 - Me.m_Data.PropLandedTime(iflt, igrp)) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
+                        Me.m_Data.PropDiscardTime(iflt, igrp) = (1 - Me.m_Data.PropLandedTime(iflt, igrp)) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
 
                         bFChanged = True
                         bForced = True
@@ -1507,7 +1506,7 @@ Namespace Ecosim
 
                     If discardprop >= 0.0 Then
                         'Propdiscardtime does not include discards that survived
-                        Me.m_Data.Propdiscardtime(iflt, igrp) = discardprop * Me.m_Data.PropDiscardMortTime(iflt, igrp)
+                        Me.m_Data.PropDiscardTime(iflt, igrp) = discardprop * Me.m_Data.PropDiscardMortTime(iflt, igrp)
                         Me.m_Data.PropLandedTime(iflt, igrp) = 1 - discardprop
 
                         bForced = True
@@ -1515,12 +1514,12 @@ Namespace Ecosim
                     End If
 
                     If bFChanged Then
-                        Debug.Assert((Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp)) <= 1.0001, "Opps cEcosimModel.setForcedDiscards() may have calculated an incorrect PropLandedTime() or Propdiscardtime()")
+                        Debug.Assert((Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp)) <= 1.0001, "Opps cEcosimModel.setForcedDiscards() may have calculated an incorrect PropLandedTime() or Propdiscardtime()")
                         'FishMGear() only contains catch that incure mortality
                         'Changing the discard mortality rate changes F
                         'Changing the proportion of landings and discards changes F if discard mort rate is not 1
                         'Calulate the new F from base values 
-                        totCatch = (Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)) * (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp))
+                        totCatch = (Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)) * (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp))
                         Me.m_Data.FishMGear(iflt, igrp) = totCatch / Me.m_EPData.B(igrp)
 
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1536,6 +1535,7 @@ Namespace Ecosim
             Next igrp
 
             If bForced Then
+                ' Apply
                 Me.SetFtimeFromGear(iModelTimeStep, QYear, False)
                 'Debugging check that FishMGear and relQ are still in sync
                 'Me.debugTestRelQFishMGear()
@@ -1955,10 +1955,10 @@ Namespace Ecosim
                     For iFlt As Integer = 1 To Me.m_Data.nGear
                         If Me.m_Data.relQ(iFlt, iGrp) > 0 Then
                             'Make sure PropLandedTime() and Propdiscardtime() don't add up to greater than zero
-                            Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.Propdiscardtime(iFlt, iGrp), 3) <= 1.0!,
+                            Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.PropDiscardTime(iFlt, iGrp), 3) <= 1.0!,
                                         Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
                             'Fishing Mortality "F" computed from base catch rate "q"
-                            Dim FfromQ0 As Single = Me.m_Data.relQ(iFlt, iGrp) * (Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.Propdiscardtime(iFlt, iGrp))
+                            Dim FfromQ0 As Single = Me.m_Data.relQ(iFlt, iGrp) * (Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.PropDiscardTime(iFlt, iGrp))
                             Dim dif As Double = Math.Round(FfromQ0 - Me.m_Data.FishMGear(iFlt, iGrp), 3)
                             'Debug.Assert(dif = 0.0, "relQ and FishMGear are not equal. Something is wrong!")
                         End If
@@ -2337,7 +2337,7 @@ Namespace Ecosim
                                 PropFleet = Me.m_Data.FishRateGear(iflt, iTime) * Me.m_Data.FishMGear(iflt, igrp) / SumEf
 
                                 'multiplier to scale F [fishing mort rate] to Total Catch [total catch including discards that survived]
-                                TotCatchScalar = 1 / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
+                                TotCatchScalar = 1 / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp) + 1.0E-20F)
 
                                 CatchMort = Me.BB(igrp) * Me.m_Data.FishTime(igrp) * PropFleet
                                 TotCatch = CatchMort * TotCatchScalar
@@ -2346,7 +2346,7 @@ Namespace Ecosim
                                 Me.m_Data.ResultsLandings(igrp, iflt) = TotCatch * Me.m_Data.PropLandedTime(iflt, igrp)
 
                                 'Catch mortality that is discarded. JS: does this account for discard survival?! Does not seem so.
-                                Me.m_Data.ResultsDiscardsMort(igrp, iflt) = CatchMort * Me.m_Data.Propdiscardtime(iflt, igrp) / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
+                                Me.m_Data.ResultsDiscardsMort(igrp, iflt) = CatchMort * Me.m_Data.PropDiscardTime(iflt, igrp) / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp) + 1.0E-20F)
 
                                 'Total catch that survived = [total catch] - [total catch mortality] 
                                 If Me.m_Data.FishTime(igrp) > 0 Or Me.m_Data.FisForced(igrp) Then
@@ -3145,7 +3145,7 @@ Namespace Ecosim
 
                     For K = 1 To Me.m_EPData.NumFleet
                         'proportion of fishing mortality that was discarded and died
-                        Dim PropDiscMort As Single = (Me.m_Data.Propdiscardtime(K, i) / (Me.m_Data.PropLandedTime(K, i) + Me.m_Data.Propdiscardtime(K, i) + 1.0E-20F))
+                        Dim PropDiscMort As Single = (Me.m_Data.PropDiscardTime(K, i) / (Me.m_Data.PropLandedTime(K, i) + Me.m_Data.PropDiscardTime(K, i) + 1.0E-20F))
                         'Debug.Assert(PropDiscMort = 0.0)
                         If Me.m_Data.FirstTime = True Then
                             DetFlowN = Me.m_EPData.DiscardFate(K, j - Me.m_EPData.NumLiving) * Biomass(i) * Me.m_Data.FishMGear(K, i) * PropDiscMort
@@ -5135,11 +5135,11 @@ Namespace Ecosim
 
                     Ft = 0
                     For ig = 1 To Me.m_Data.nGear
-                        Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i), 3) <= 1.0!,
+                        Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.PropDiscardTime(ig, i), 3) <= 1.0!,
                                     Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
                         'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
                         'Debug.Assert(m_Data.relQ(ig, i) = 0)
-                        Ft = Ft + QYear(ig) * Me.m_Data.relQ(ig, i) * Me.m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
+                        Ft = Ft + QYear(ig) * Me.m_Data.relQ(ig, i) * Me.m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.PropDiscardTime(ig, i))
                         'Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                     Next
 
