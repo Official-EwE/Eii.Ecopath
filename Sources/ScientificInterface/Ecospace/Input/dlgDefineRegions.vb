@@ -33,10 +33,13 @@ Namespace Ecospace
         Implements IUIElement
 
         Private m_uic As cUIContext = Nothing
+        Private m_bInUpdate As Boolean = True
 
         Public Sub New(uic As cUIContext)
             Me.m_uic = uic
             Me.InitializeComponent()
+            Me.m_dgvMapping.Columns(2).ValueType = GetType(Integer)
+            Me.m_dgvMapping.Columns(3).ValueType = GetType(Integer)
         End Sub
 
         Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
@@ -57,6 +60,8 @@ Namespace Ecospace
             Me.m_rbFromHabitats.Enabled = (Me.UIContext.Core.nHabitats > 0)
             Me.m_rbFromMPAs.Enabled = (Me.UIContext.Core.nMPAs > 0)
 
+            Me.m_bInUpdate = False
+
             Me.UpdateControls()
             Me.CenterToScreen()
 
@@ -64,30 +69,30 @@ Namespace Ecospace
 
 #Region " Events "
 
-        Private Sub m_nudNoRegions_GotFocus(sender As Object, e As System.EventArgs) _
-            Handles m_nudNoRegions.GotFocus
-            Me.m_rbCustomMax.Checked = True
-        End Sub
+        Private Sub OnSelectionChanged(sender As Object, e As EventArgs) _
+            Handles m_rbFromHabitats.CheckedChanged, m_rbFromMPAs.CheckedChanged, m_rbNone.CheckedChanged
 
-        Private Sub OnCreateOptionChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_rbCustomMax.CheckedChanged, m_rbFromMPAs.CheckedChanged, m_rbFromHabitats.CheckedChanged
-            Try
-                Me.UpdateControls()
-            Catch ex As Exception
+            ' Prevent from responding too soon
+            If Me.m_bInUpdate Then Return
 
-            End Try
+            Me.UpdateMappingGrid()
+
         End Sub
 
         Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles m_btnOK.Click
 
-            If Me.m_rbCustomMax.Checked Then
-                Me.ChangeNumRegions()
+            Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
+            Dim nReg As Integer = CInt(Me.m_nudNoRegions.Value)
+
+            parms.nRegions = nReg
+
+            If Me.m_rbFromHabitats.Checked Then
+                Me.AssignHabitatRegions()
             ElseIf Me.m_rbFromMPAs.Checked Then
-                Me.CreateMPARegions()
-            Else
-                Me.CreateHabitatRegions()
+                Me.AssignMPARegions()
             End If
+
             Me.Close()
 
         End Sub
@@ -101,69 +106,65 @@ Namespace Ecospace
             End Try
         End Sub
 
+
 #End Region ' Events
 
 #Region " Internals "
 
-        Private Sub UpdateControls()
+        Private Sub UpdateMappingGrid()
 
-            Dim bHasSel As Boolean = (Me.m_rbCustomMax.Checked Or Me.m_rbFromMPAs.Checked Or Me.m_rbFromHabitats.Checked)
-            Me.m_btnOK.Enabled = bHasSel
+            Dim core As cCore = Me.m_uic.Core
 
-        End Sub
+            Me.m_dgvMapping.Rows.Clear()
 
-        Private Sub ChangeNumRegions()
-
-            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-            Dim regions As cEcospaceLayerRegion = bm.LayerRegion
-            Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
-            Dim nReg As Integer = CInt(Me.m_nudNoRegions.Value)
-            Dim iMaxReg As Integer = 0
-
-            ' JS 22Nov14: cannot trust the region layer maxvalue, which is fixed in the case of regions
-            '             need to test actual region layer
-            For ir As Integer = 1 To bm.InRow
-                For ic As Integer = 1 To bm.InCol
-                    If bm.IsModelledCell(ir, ic) Then
-                        iMaxReg = Math.Max(iMaxReg, CInt(regions.Cell(ir, ic)))
-                    End If
+            If Me.m_rbFromHabitats.Checked Then
+                For i As Integer = 1 To core.nHabitats - 1
+                    Me.m_dgvMapping.Rows.Add({i, core.EcospaceHabitats(i).Name, i, i})
                 Next
-            Next
-
-            If (nReg < iMaxReg) Then
-                ' ToDo: globalize this
-                Dim fmsg As New cFeedbackMessage("There are cells that will no longer be assigned to regions if you continue.", _
-                                                 EwEUtils.Core.eCoreComponentType.Ecospace, eMessageType.Any, eMessageImportance.Question, _
-                                                 eMessageReplyStyle.OK_CANCEL, EwEUtils.Core.eDataTypes.NotSet, eMessageReply.CANCEL)
-                fmsg.Suppressable = True
-                Me.m_uic.Core.Messages.SendMessage(fmsg)
-                If (fmsg.Reply <> eMessageReply.OK) Then Return
+                Me.m_dgvMapping.Columns(3).Visible = False
+            ElseIf Me.m_rbFromMPAs.Checked Then
+                For i As Integer = 1 To core.nMPAs
+                    Me.m_dgvMapping.Rows.Add({i, core.EcospaceMPAs(i).Name, i, i})
+                Next
+                Me.m_dgvMapping.Columns(3).Visible = True
             End If
 
-            parms.nRegions = nReg
+        End Sub
+
+        Private Sub UpdateControls()
+
+            Dim bHasSel As Boolean = (Me.m_rbNone.Checked Or Me.m_rbFromMPAs.Checked Or Me.m_rbFromHabitats.Checked)
+            Me.m_btnOK.Enabled = True
 
         End Sub
 
-        Private Sub CreateMPARegions()
+        Private Sub AssignMPARegions()
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+            Dim core As cCore = Me.m_uic.Core
+            Dim bm As cEcospaceBasemap = core.EcospaceBasemap
             Dim regions As cEcospaceLayerRegion = bm.LayerRegion
-            Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
             Dim ll As cEcospaceLayer() = bm.Layers(eVarNameFlags.LayerMPA)
-
-            parms.nRegions = Me.UIContext.Core.nMPAs
 
             For iRow As Integer = 1 To bm.InRow
                 For iCol As Integer = 1 To bm.InCol
-                    regions.Cell(iRow, iCol) = 0
-                    For Each l As cEcospaceLayer In ll
-                        Dim iMPA As Single = CSng(l.Cell(iRow, iCol))
-                        If iMPA <> 0 Then
-                            regions.Cell(iRow, iCol) = l.Index
+
+                    Dim iPriorityMax As Integer = 0
+                    Dim iRegionSel As Integer = 0
+
+                    For iMPA As Integer = 0 To core.nMPAs - 1
+                        If CInt(ll(iMPA).Cell(iRow, iCol)) > 0 Then
+
+                            Dim iPriority As Integer = CInt(Me.m_dgvMapping.Rows(iMPA).Cells(3).Value)
+                            If (iPriority > iPriorityMax) Then
+                                iPriorityMax = iPriority
+                                iRegionSel = CInt(Me.m_dgvMapping.Rows(iMPA).Cells(2).Value)
+                            End If
                         End If
-                    Next l
+                    Next iMPA
+
+                    regions.Cell(iRow, iCol) = iRegionSel
                 Next iCol
             Next iRow
 
@@ -174,7 +175,7 @@ Namespace Ecospace
         ''' Create regions from Habitats.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub CreateHabitatRegions()
+        Private Sub AssignHabitatRegions()
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -182,24 +183,22 @@ Namespace Ecospace
             Dim bm As cEcospaceBasemap = core.EcospaceBasemap
             Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
             Dim regions As cEcospaceLayerRegion = bm.LayerRegion
-            Dim sValMax As Single = 0
-            Dim iHabMax As Integer = 0
-            Dim nRegions As Integer = Me.UIContext.Core.nHabitats - 1
+            Dim ll As cEcospaceLayer() = bm.Layers(eVarNameFlags.LayerHabitat)
 
-            parms.nRegions = nRegions
             Try
 
                 For iRow As Integer = 1 To bm.InRow
                     For iCol As Integer = 1 To bm.InCol
-                        sValMax = 0
-                        iHabMax = 0
-                        For iHab As Integer = 1 To nRegions
-                            Dim sVal As Single = CSng(bm.LayerHabitat(iHab).Cell(iRow, iCol))
-                            If sVal > sValMax Then
-                                sValMax = sVal : iHabMax = iHab
+                        Dim sCoverMax As Single = 0
+                        Dim iRegionSel As Integer = 0
+                        For iHab As Integer = 1 To core.nHabitats - 1
+                            Dim sCover As Single = CSng(ll(iHab - 1).Cell(iRow, iCol))
+                            If sCover > sCoverMax Then
+                                sCoverMax = sCover
+                                iRegionSel = CInt(Me.m_dgvMapping.Rows(iHab - 1).Cells(2).Value)
                             End If
                         Next
-                        regions.Cell(iRow, iCol) = iHabMax
+                        regions.Cell(iRow, iCol) = iRegionSel
                     Next iCol
                 Next iRow
             Catch ex As Exception

@@ -27,6 +27,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.VisualModels
 Imports EwEUtils.Core
+Imports SourceGrid2.Cells
 
 #End Region ' Imports
 
@@ -35,9 +36,9 @@ Imports EwEUtils.Core
 ''' Grid class for the Edit Fleets interface.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-<CLSCompliant(False)> _
-   Public Class gridDefineFleets
-    : Inherits cEwEGrid
+<CLSCompliant(False)>
+Public Class gridDefineFleets
+    Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -444,6 +445,24 @@ Imports EwEUtils.Core
         End Select
 
         Return True
+
+    End Function
+
+    Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
+
+        If Not Me.AllowUpdates Then Return True
+
+        Dim fi As cFleetInfo = DirectCast(Me.m_lfiFleets(p.Row - 1), cFleetInfo)
+
+        Select Case DirectCast(p.Column, eColumnTypes)
+            Case eColumnTypes.FleetIndex
+                ' Not possible
+
+            Case eColumnTypes.FleetName
+                fi.Name = CStr(cell.GetValue(p))
+        End Select
+
+        Return MyBase.OnCellValueChanged(p, cell)
 
     End Function
 
