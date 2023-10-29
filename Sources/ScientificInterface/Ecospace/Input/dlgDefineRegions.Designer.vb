@@ -57,11 +57,10 @@ Namespace Ecospace
             Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
             Me.m_rbFromHabitats = New System.Windows.Forms.RadioButton()
             Me.m_rbFromMPAs = New System.Windows.Forms.RadioButton()
-            Me.m_pbFuma = New System.Windows.Forms.PictureBox()
+            Me.m_acknowledgements = New ScientificInterfaceShared.ucLogoBar()
             CType(Me.m_nudNoRegions, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_dgvMapping, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpOptions.SuspendLayout()
-            CType(Me.m_pbFuma, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_nudNoRegions
@@ -159,13 +158,11 @@ Namespace Ecospace
             Me.m_rbFromMPAs.TabStop = True
             Me.m_rbFromMPAs.UseVisualStyleBackColor = True
             '
-            'm_pbFuma
+            'm_acknowledgements
             '
-            resources.ApplyResources(Me.m_pbFuma, "m_pbFuma")
-            Me.m_pbFuma.BackColor = System.Drawing.Color.White
-            Me.m_pbFuma.Image = Global.ScientificInterface.My.Resources.Resources.FuMa_logo
-            Me.m_pbFuma.Name = "m_pbFuma"
-            Me.m_pbFuma.TabStop = False
+            resources.ApplyResources(Me.m_acknowledgements, "m_acknowledgements")
+            Me.m_acknowledgements.Name = "m_acknowledgements"
+            Me.m_acknowledgements.UIContext = Nothing
             '
             'dlgDefineRegions
             '
@@ -174,7 +171,7 @@ Namespace Ecospace
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
-            Me.Controls.Add(Me.m_pbFuma)
+            Me.Controls.Add(Me.m_acknowledgements)
             Me.Controls.Add(Me.m_tlpOptions)
             Me.Controls.Add(Me.m_dgvMapping)
             Me.Controls.Add(Me.m_lblAllocate)
@@ -190,7 +187,6 @@ Namespace Ecospace
             CType(Me.m_dgvMapping, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpOptions.ResumeLayout(False)
             Me.m_tlpOptions.PerformLayout()
-            CType(Me.m_pbFuma, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -209,7 +205,7 @@ Namespace Ecospace
         Friend WithEvents m_colName As DataGridViewTextBoxColumn
         Friend WithEvents m_colRegion As DataGridViewTextBoxColumn
         Friend WithEvents m_colPriority As DataGridViewTextBoxColumn
-        Private WithEvents m_pbFuma As PictureBox
+        Private WithEvents m_acknowledgements As ScientificInterfaceShared.ucLogoBar
     End Class
 
 End Namespace
