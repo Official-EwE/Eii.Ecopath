@@ -32,15 +32,25 @@ Namespace Ecospace
     Public Class dlgDefineRegions
         Implements IUIElement
 
+#Region " Private vars "
+
         Private m_uic As cUIContext = Nothing
         Private m_bInUpdate As Boolean = True
 
+#End Region ' Private vars
+
+#Region " Construction / destruction "
+
         Public Sub New(uic As cUIContext)
-            Me.m_uic = uic
             Me.InitializeComponent()
+            Me.UIContext = uic
             Me.m_dgvMapping.Columns(2).ValueType = GetType(Integer)
             Me.m_dgvMapping.Columns(3).ValueType = GetType(Integer)
         End Sub
+
+#End Region ' Construction / destruction
+
+#Region " Public access "
 
         Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
             Implements ScientificInterfaceShared.Controls.IUIElement.UIContext
@@ -49,8 +59,13 @@ Namespace Ecospace
             End Get
             Set(value As ScientificInterfaceShared.Controls.cUIContext)
                 Me.m_uic = value
+                Me.m_acknowledgements.UIContext = value
             End Set
         End Property
+
+#End Region ' Public access
+
+#Region " Overrides "
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
@@ -59,9 +74,7 @@ Namespace Ecospace
 
             Me.m_nudNoRegions.Value = core.nRegions
 
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-            Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            cmd.AddControl(Me.m_pbFuma, "https://futuremares.eu")
+            Me.m_acknowledgements.AddLogo("FuMa", My.Resources.FuMa_logo, "https://futuremares.eu")
 
             Me.UpdateControls()
             Me.CenterToScreen()
@@ -72,12 +85,12 @@ Namespace Ecospace
 
         Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-            Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            cmd.RemoveControl(Me.m_pbFuma)
-
+            Me.m_acknowledgements.UIContext = Nothing
             MyBase.OnFormClosed(e)
+
         End Sub
+
+#End Region ' Overrides
 
 #Region " Events "
 
@@ -233,3 +246,4 @@ Namespace Ecospace
     End Class
 
 End Namespace
+

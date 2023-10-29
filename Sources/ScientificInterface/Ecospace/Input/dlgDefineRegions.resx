@@ -144,8 +144,11 @@
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
+  <data name="m_btnOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>379, 428</value>
+    <value>403, 449</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -171,8 +174,11 @@
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
+  <data name="m_btnCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>298, 428</value>
+    <value>322, 449</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -197,6 +203,9 @@
   </data>
   <data name="m_lblNoRegions.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_lblNoRegions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_lblNoRegions.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 9</value>
@@ -225,6 +234,9 @@
   <data name="m_lblAllocate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_lblAllocate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lblAllocate.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 38</value>
   </data>
@@ -249,41 +261,8 @@
   <data name="&gt;&gt;m_lblAllocate.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <metadata name="m_colIndex.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="m_colName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="m_colRegion.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="m_colPriority.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <data name="m_dgvMapping.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_dgvMapping.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 60</value>
-  </data>
-  <data name="m_dgvMapping.Size" type="System.Drawing.Size, System.Drawing">
-    <value>442, 286</value>
-  </data>
-  <data name="m_dgvMapping.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="&gt;&gt;m_dgvMapping.Name" xml:space="preserve">
-    <value>m_dgvMapping</value>
-  </data>
-  <data name="&gt;&gt;m_dgvMapping.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_dgvMapping.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_dgvMapping.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <metadata name="m_colIndex.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -312,8 +291,32 @@
   <data name="m_colPriority.HeaderText" xml:space="preserve">
     <value>Priority</value>
   </data>
+  <data name="m_dgvMapping.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 60</value>
+  </data>
+  <data name="m_dgvMapping.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 283</value>
+  </data>
+  <data name="m_dgvMapping.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;m_dgvMapping.Name" xml:space="preserve">
+    <value>m_dgvMapping</value>
+  </data>
+  <data name="&gt;&gt;m_dgvMapping.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_dgvMapping.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_dgvMapping.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="m_rbNone.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_rbNone.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_rbNone.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -345,59 +348,11 @@
   <data name="m_tlpOptions.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_rbFromHabitats.Name" xml:space="preserve">
-    <value>m_rbFromHabitats</value>
-  </data>
-  <data name="&gt;&gt;m_rbFromHabitats.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbFromHabitats.Parent" xml:space="preserve">
-    <value>m_tlpOptions</value>
-  </data>
-  <data name="&gt;&gt;m_rbFromHabitats.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_rbFromMPAs.Name" xml:space="preserve">
-    <value>m_rbFromMPAs</value>
-  </data>
-  <data name="&gt;&gt;m_rbFromMPAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbFromMPAs.Parent" xml:space="preserve">
-    <value>m_tlpOptions</value>
-  </data>
-  <data name="&gt;&gt;m_rbFromMPAs.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_tlpOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 33</value>
-  </data>
-  <data name="m_tlpOptions.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tlpOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>340, 21</value>
-  </data>
-  <data name="m_tlpOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.Name" xml:space="preserve">
-    <value>m_tlpOptions</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tlpOptions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbNone" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbFromHabitats" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbFromMPAs" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
   <data name="m_rbFromHabitats.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_rbFromHabitats.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_rbFromHabitats.Location" type="System.Drawing.Point, System.Drawing">
     <value>60, 3</value>
@@ -426,6 +381,9 @@
   <data name="m_rbFromMPAs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_rbFromMPAs.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_rbFromMPAs.Location" type="System.Drawing.Point, System.Drawing">
     <value>156, 3</value>
   </data>
@@ -450,31 +408,55 @@
   <data name="&gt;&gt;m_rbFromMPAs.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_pbFuma.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+  <data name="m_tlpOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>114, 33</value>
   </data>
-  <data name="m_pbFuma.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 352</value>
+  <data name="m_tlpOptions.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="m_pbFuma.Size" type="System.Drawing.Size, System.Drawing">
-    <value>442, 70</value>
+  <data name="m_tlpOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>364, 21</value>
   </data>
-  <data name="m_pbFuma.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>Zoom</value>
+  <data name="m_tlpOptions.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
   </data>
-  <data name="m_pbFuma.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+  <data name="&gt;&gt;m_tlpOptions.Name" xml:space="preserve">
+    <value>m_tlpOptions</value>
   </data>
-  <data name="&gt;&gt;m_pbFuma.Name" xml:space="preserve">
-    <value>m_pbFuma</value>
+  <data name="&gt;&gt;m_tlpOptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbFuma.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbFuma.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpOptions.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_pbFuma.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpOptions.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpOptions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbNone" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbFromHabitats" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbFromMPAs" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_acknowledgements.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_acknowledgements.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 349</value>
+  </data>
+  <data name="m_acknowledgements.Size" type="System.Drawing.Size, System.Drawing">
+    <value>466, 94</value>
+  </data>
+  <data name="m_acknowledgements.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;m_acknowledgements.Name" xml:space="preserve">
+    <value>m_acknowledgements</value>
+  </data>
+  <data name="&gt;&gt;m_acknowledgements.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.ucAcknowledgementsLogoBar, ScientificInterfaceShared, Version=6.7.0.18558, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_acknowledgements.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_acknowledgements.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -487,7 +469,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>466, 463</value>
+    <value>490, 484</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>400, 400</value>
