@@ -55,16 +55,28 @@ Namespace Ecospace
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Me.m_nudNoRegions.Value = Me.UIContext.Core.nRegions
+            Dim core As cCore = Me.m_uic.Core
 
-            Me.m_rbFromHabitats.Enabled = (Me.UIContext.Core.nHabitats > 0)
-            Me.m_rbFromMPAs.Enabled = (Me.UIContext.Core.nMPAs > 0)
+            Me.m_nudNoRegions.Value = core.nRegions
 
-            Me.m_bInUpdate = False
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.AddControl(Me.m_pbFuma, "https://futuremares.eu")
 
             Me.UpdateControls()
             Me.CenterToScreen()
 
+            Me.m_bInUpdate = False
+
+        End Sub
+
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
+
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.RemoveControl(Me.m_pbFuma)
+
+            MyBase.OnFormClosed(e)
         End Sub
 
 #Region " Events "
@@ -133,7 +145,14 @@ Namespace Ecospace
 
         Private Sub UpdateControls()
 
+            Dim core As cCore = Me.m_uic.Core
+
             Dim bHasSel As Boolean = (Me.m_rbNone.Checked Or Me.m_rbFromMPAs.Checked Or Me.m_rbFromHabitats.Checked)
+            Dim bHasHabs As Boolean = (core.nHabitats > 1)
+            Dim bHasMPAs As Boolean = (core.nMPAs > 0)
+
+            Me.m_rbFromHabitats.Enabled = bHasHabs
+            Me.m_rbFromMPAs.Enabled = bHasMPAs
             Me.m_btnOK.Enabled = True
 
         End Sub

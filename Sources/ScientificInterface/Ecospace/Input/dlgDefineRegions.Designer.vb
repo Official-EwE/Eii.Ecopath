@@ -49,17 +49,19 @@ Namespace Ecospace
             Me.m_lblNoRegions = New System.Windows.Forms.Label()
             Me.m_lblAllocate = New System.Windows.Forms.Label()
             Me.m_dgvMapping = New System.Windows.Forms.DataGridView()
-            Me.m_rbNone = New System.Windows.Forms.RadioButton()
-            Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_rbFromHabitats = New System.Windows.Forms.RadioButton()
-            Me.m_rbFromMPAs = New System.Windows.Forms.RadioButton()
             Me.m_colIndex = New System.Windows.Forms.DataGridViewTextBoxColumn()
             Me.m_colName = New System.Windows.Forms.DataGridViewTextBoxColumn()
             Me.m_colRegion = New System.Windows.Forms.DataGridViewTextBoxColumn()
             Me.m_colPriority = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.m_rbNone = New System.Windows.Forms.RadioButton()
+            Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_rbFromHabitats = New System.Windows.Forms.RadioButton()
+            Me.m_rbFromMPAs = New System.Windows.Forms.RadioButton()
+            Me.m_pbFuma = New System.Windows.Forms.PictureBox()
             CType(Me.m_nudNoRegions, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_dgvMapping, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpOptions.SuspendLayout()
+            CType(Me.m_pbFuma, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_nudNoRegions
@@ -95,13 +97,38 @@ Namespace Ecospace
             Me.m_dgvMapping.AllowUserToAddRows = False
             Me.m_dgvMapping.AllowUserToDeleteRows = False
             Me.m_dgvMapping.AllowUserToResizeRows = False
+            resources.ApplyResources(Me.m_dgvMapping, "m_dgvMapping")
             Me.m_dgvMapping.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
             Me.m_dgvMapping.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colIndex, Me.m_colName, Me.m_colRegion, Me.m_colPriority})
-            resources.ApplyResources(Me.m_dgvMapping, "m_dgvMapping")
             Me.m_dgvMapping.MultiSelect = False
             Me.m_dgvMapping.Name = "m_dgvMapping"
             Me.m_dgvMapping.RowHeadersVisible = False
             Me.m_dgvMapping.ShowRowErrors = False
+            '
+            'm_colIndex
+            '
+            resources.ApplyResources(Me.m_colIndex, "m_colIndex")
+            Me.m_colIndex.Name = "m_colIndex"
+            Me.m_colIndex.ReadOnly = True
+            '
+            'm_colName
+            '
+            Me.m_colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+            resources.ApplyResources(Me.m_colName, "m_colName")
+            Me.m_colName.Name = "m_colName"
+            Me.m_colName.ReadOnly = True
+            '
+            'm_colRegion
+            '
+            resources.ApplyResources(Me.m_colRegion, "m_colRegion")
+            Me.m_colRegion.MaxInputLength = 2
+            Me.m_colRegion.Name = "m_colRegion"
+            '
+            'm_colPriority
+            '
+            resources.ApplyResources(Me.m_colPriority, "m_colPriority")
+            Me.m_colPriority.MaxInputLength = 2
+            Me.m_colPriority.Name = "m_colPriority"
             '
             'm_rbNone
             '
@@ -132,30 +159,13 @@ Namespace Ecospace
             Me.m_rbFromMPAs.TabStop = True
             Me.m_rbFromMPAs.UseVisualStyleBackColor = True
             '
-            'm_colIndex
+            'm_pbFuma
             '
-            resources.ApplyResources(Me.m_colIndex, "m_colIndex")
-            Me.m_colIndex.Name = "m_colIndex"
-            Me.m_colIndex.ReadOnly = True
-            '
-            'm_colName
-            '
-            Me.m_colName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-            resources.ApplyResources(Me.m_colName, "m_colName")
-            Me.m_colName.Name = "m_colName"
-            Me.m_colName.ReadOnly = True
-            '
-            'm_colRegion
-            '
-            resources.ApplyResources(Me.m_colRegion, "m_colRegion")
-            Me.m_colRegion.MaxInputLength = 2
-            Me.m_colRegion.Name = "m_colRegion"
-            '
-            'm_colPriority
-            '
-            resources.ApplyResources(Me.m_colPriority, "m_colPriority")
-            Me.m_colPriority.MaxInputLength = 2
-            Me.m_colPriority.Name = "m_colPriority"
+            resources.ApplyResources(Me.m_pbFuma, "m_pbFuma")
+            Me.m_pbFuma.BackColor = System.Drawing.Color.White
+            Me.m_pbFuma.Image = Global.ScientificInterface.My.Resources.Resources.FuMa_logo
+            Me.m_pbFuma.Name = "m_pbFuma"
+            Me.m_pbFuma.TabStop = False
             '
             'dlgDefineRegions
             '
@@ -164,6 +174,7 @@ Namespace Ecospace
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_pbFuma)
             Me.Controls.Add(Me.m_tlpOptions)
             Me.Controls.Add(Me.m_dgvMapping)
             Me.Controls.Add(Me.m_lblAllocate)
@@ -171,7 +182,6 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_btnCancel)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_nudNoRegions)
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "dlgDefineRegions"
@@ -180,6 +190,7 @@ Namespace Ecospace
             CType(Me.m_dgvMapping, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpOptions.ResumeLayout(False)
             Me.m_tlpOptions.PerformLayout()
+            CType(Me.m_pbFuma, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -198,6 +209,7 @@ Namespace Ecospace
         Friend WithEvents m_colName As DataGridViewTextBoxColumn
         Friend WithEvents m_colRegion As DataGridViewTextBoxColumn
         Friend WithEvents m_colPriority As DataGridViewTextBoxColumn
+        Private WithEvents m_pbFuma As PictureBox
     End Class
 
 End Namespace
