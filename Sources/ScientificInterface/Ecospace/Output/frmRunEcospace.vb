@@ -841,11 +841,10 @@ Namespace Ecospace
             Dim ecopathDS As cEcopathDataStructures = Me.Core.EcopathDataStructures
             Dim ecospaceDS As cEcospaceDataStructures = Me.Core.EcospaceDataStructures
             Dim sg As cStyleGuide = Me.StyleGuide
+            Dim iYear As Integer = ecospaceDS.YearNow
+            Dim iMonth As Integer = ecospaceDS.MonthNow
             Dim lColors As List(Of Color) = sg.DefaultColors(cColourBins)
             Dim cScaler As Single = cColourBins / 2 'Me.m_sMaxEffort
-            Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
-            Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
-            Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
             Dim dtTime As Date = Me.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStepCur)
             Dim strDate As String = dtTime.ToShortDateString()
 
