@@ -158,12 +158,8 @@
     <Compile Include="UI\frmUI.Designer.vb">
       <DependentUpon>frmUI.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmUI.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\gridUI.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="UI\frmUI.vb" />
+    <Compile Include="UI\gridUI.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

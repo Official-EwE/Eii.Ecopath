@@ -145,15 +145,11 @@
     <Compile Include="cRemarksPlugin.vb" />
     <Compile Include="Utility\cPropertySorter.vb" />
     <Compile Include="Utility\cRemarkMonitor.vb" />
-    <Compile Include="UI\cRemarksGrid.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="UI\cRemarksGrid.vb" />
     <Compile Include="UI\frmRemarkUI.Designer.vb">
       <DependentUpon>frmRemarkUI.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmRemarkUI.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="UI\frmRemarkUI.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
