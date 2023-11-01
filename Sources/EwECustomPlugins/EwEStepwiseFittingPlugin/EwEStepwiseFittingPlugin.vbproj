@@ -200,12 +200,8 @@
     <Compile Include="UI\frmRun.Designer.vb">
       <DependentUpon>frmRun.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmRun.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\gridRun.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="UI\frmRun.vb" />
+    <Compile Include="UI\gridRun.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

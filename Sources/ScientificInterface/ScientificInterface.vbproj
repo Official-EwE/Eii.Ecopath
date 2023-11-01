@@ -2211,6 +2211,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\EcoOcean\Sources\EwECustomPlugins\EwEEcospaceValidationPlugin\EwEEcospaceValidationPlugin\EwEEcospaceValidationPlugin.vbproj">
+      <Project>{4deddbd4-dfb9-40ae-a8c2-558eb94faf42}</Project>
+      <Name>EwEEcospaceValidationPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sources Internal\Plugins\EcospaceMonteCarlo\EcospaceMonteCarlo.vbproj">
       <Project>{df752fa0-b8c1-4de1-9b9b-d1adf678b64e}</Project>
       <Name>EcospaceMonteCarlo</Name>

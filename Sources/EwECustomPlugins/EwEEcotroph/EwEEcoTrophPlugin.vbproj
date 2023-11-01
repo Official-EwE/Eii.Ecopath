@@ -226,9 +226,7 @@
     <Compile Include="frmEcoTroph.Designer.vb">
       <DependentUpon>frmEcoTroph.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmEcoTroph.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmEcoTroph.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
