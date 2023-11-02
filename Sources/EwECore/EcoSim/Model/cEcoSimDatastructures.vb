@@ -608,6 +608,9 @@ Public Class cEcosimDatastructures
     'moved here for Network Analysis plugin
     Public ToDetritus() As Single
 
+    ''' <summary>
+    ''' Fishing mortality is forced
+    ''' </summary>
     Public FisForced() As Boolean
 
     ''' <summary>
