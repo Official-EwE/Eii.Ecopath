@@ -2343,15 +2343,18 @@ Namespace Ecosim
 
                                 CatchMort = Me.BB(igrp) * Me.m_Data.FishTime(igrp) * PropFleet
 
+                                'Debug warning if fishing mort calcualtion have gotten out of sync
+                                Debug.Assert(Math.Abs(Me.m_Data.FishRateGear(iflt, iTime) * Me.m_Data.FishMGear(iflt, igrp) - Me.m_Data.FishTime(igrp) * PropFleet) < 0.0001, "Ecosim Fishing Mortality is out of sync. Check FishTime() and FishMGear()")
 
+                                'total catch including discard that survived
                                 TotCatch = CatchMort * TotCatchScalar
 
-                                Me.m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime) = TotCatch 'Me.BB(igrp) * Me.m_Data.FishTime(igrp)
+                                Me.m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime) = TotCatch
 
                                 'Total catch that was landed
                                 Me.m_Data.ResultsLandings(igrp, iflt) = TotCatch * Me.m_Data.PropLandedTime(iflt, igrp)
 
-                                'Catch mortality that is discarded. JS: does this account for discard survival?! Does not seem so.
+                                'Catch mortality that is discarded
                                 Me.m_Data.ResultsDiscardsMort(igrp, iflt) = CatchMort * Me.m_Data.Propdiscardtime(iflt, igrp) / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
 
                                 'Total catch that survived = [total catch] - [total catch mortality] 
@@ -2392,23 +2395,22 @@ Namespace Ecosim
                             End If ' If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
                         Next iflt
 
-                    Else
-                        ' Dim fleetProp As Single
-                        Dim CatchByFleet As Single
+                    Else 'Me.m_RefData.ForcedFs(igrp, iTime) F is forced
+                        'F is forced by group
+                        'in this case we don't know what the fleet breakdown is
+                        Dim CatchByGroup As Single
 
-                        CatchByFleet = Me.BB(igrp) * Me.m_Data.FishTime(igrp)
+                        CatchByGroup = Me.BB(igrp) * Me.m_Data.FishTime(igrp)
 
-                        Me.m_Data.ResultsLandings(igrp, 0) = CatchByFleet ' * Me.m_Data.PropLandedTime(0, igrp)
+                        Me.m_Data.ResultsLandings(igrp, 0) = CatchByGroup ' * Me.m_Data.PropLandedTime(0, igrp)
 
-                        Me.m_Results.BCatch(igrp, 0) = CatchByFleet
+                        Me.m_Results.BCatch(igrp, 0) = CatchByGroup
                         Me.m_Results.Landings(igrp, 0) = Me.m_Data.ResultsLandings(igrp, 0)
 
-                        Me.m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) = CatchByFleet
-                        Me.m_Data.ResultsSumFMortByGroupGear(igrp, 0, iTime) = CatchByFleet / Me.BB(igrp)
+                        Me.m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) = CatchByGroup
+                        Me.m_Data.ResultsSumFMortByGroupGear(igrp, 0, iTime) = CatchByGroup / Me.BB(igrp)
 
                         Me.m_Data.ResultsTimeLandingsGroupGear(igrp, 0, iTime) = Me.m_Data.ResultsLandings(igrp, 0)
-
-
 
                     End If
 
@@ -3151,7 +3153,7 @@ Namespace Ecosim
 
                     For K = 1 To Me.m_EPData.NumFleet
                         'proportion of fishing mortality that was discarded and died
-                        Dim PropDiscMort As Single = (Me.m_Data.Propdiscardtime(K, i) / (Me.m_Data.PropLandedTime(K, i) + Me.m_Data.Propdiscardtime(K, i) + 1.0E-20F))
+                        Dim PropDiscMort As Single = (Me.m_Data.PropDiscardTime(K, i) / (Me.m_Data.PropLandedTime(K, i) + Me.m_Data.PropDiscardTime(K, i) + 1.0E-20F))
                         'Debug.Assert(PropDiscMort = 0.0)
                         If Me.m_Data.FirstTime = True Then
                             DetFlowN = Me.m_EPData.DiscardFate(K, j - Me.m_EPData.NumLiving) * Biomass(i) * Me.m_Data.FishMGear(K, i) * PropDiscMort
