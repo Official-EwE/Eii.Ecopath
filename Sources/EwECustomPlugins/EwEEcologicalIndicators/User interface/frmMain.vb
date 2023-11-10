@@ -377,7 +377,7 @@ Public Class frmMain
     End Sub
 
     Private Sub OnSaveToCSV(sender As System.Object, e As System.EventArgs) _
-
+        Handles m_btnSaveResults.Click
 
         ' Start CSV save process
         cApplicationStatusNotifier.StartProgress(Me.UIContext.Core)
