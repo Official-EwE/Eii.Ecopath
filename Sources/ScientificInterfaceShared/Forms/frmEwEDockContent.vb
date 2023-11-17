@@ -62,6 +62,18 @@ Namespace Forms
             MyBase.OnClosing(e)
         End Sub
 
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
+            Try
+                If (Me.Icon IsNot Nothing) Then
+                    Me.Icon.Dispose()
+                    Me.Icon = Nothing
+                End If
+                MyBase.OnFormClosed(e)
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="Form.Icon"/>
         ''' <remarks>
