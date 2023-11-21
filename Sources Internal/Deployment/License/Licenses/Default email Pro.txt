@@ -4,17 +4,17 @@ Many thanks for your purchase of Ecopath with Ecosim (EwE) Pro license. Your pur
 
 Attached please find the license file for EwE. Please proceed to download the latest installer for EwE Pro here:
 
-    32-bit: https://www.dropbox.com/s/4smogwnhx1ozggd/EwE6.6.6.17608_32-bit_pro.exe?dl=0
-    64-bit: https://www.dropbox.com/s/dkh462hj528kw15/EwE6.6.6.17608_64-bit_pro.exe?dl=0
+    32-bit: https://www.dropbox.com/s/l99bzlmnaietx4x/ewe6.6.8.18071-pro_32-bit_setup.exe?dl=0
+    64-bit: https://www.dropbox.com/s/cg3w7g6sateurr6/ewe6.6.8.18071-pro_64-bit_setup.exe?dl=0
 
 Installation and activation instructions:
 
-    Save attached license file to a directory on a computer where EwE Pro will be installed;
-    Keep a back-up copy of the attached license file in a safe place;
-    Download the appropriate EwE installer. As with previous versions of EwE, make sure that the bit-ness of EwE matches the bit-ness of any installed Microsoft Office component on your computer - 32-bit versions of EwE require 32-bit versions of Office, and 64-bit versions of EwE require 64-bit versions of Office;
-    Run the installer to install EwE;
-    Launch EwE. EwE requires .NET framework 4.7 to be installed; if Windows complains about this, please install .NET from Microsoft (https://dotnet.microsoft.com/download/dotnet-framework/net48).
-    EwE will prompt for a license file when needed. Browse to the license file that you saved earlier, and EwE will be registered.
+Save attached license file to a directory on a computer where EwE Pro will be installed;
+Keep a back-up copy of the attached license file in a safe place;
+Download the appropriate EwE installer. As with previous versions of EwE, make sure that the bit-ness of EwE matches the bit-ness of any installed Microsoft Office component on your computer - 32-bit versions of EwE require 32-bit versions of Office, and 64-bit versions of EwE require 64-bit versions of Office;
+Run the installer to install EwE;
+Launch EwE. EwE requires .NET framework 4.7 to be installed; if Windows complains about this, please install .NET from Microsoft (https://dotnet.microsoft.com/download/dotnet-framework/net48).
+EwE will prompt for a license file when needed. Browse to the license file that you saved earlier, and EwE will be registered.
 
 Attached also find a quick-reference guide for the spatial temporal data framework.
 

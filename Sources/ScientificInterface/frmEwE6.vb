@@ -1205,16 +1205,6 @@ Public Class frmEwE6
             End Try
         End If
 
-        'If (Me.Icon IsNot Nothing) Then
-        '    Try
-        '        Me.Icon.Dispose()
-        '        Me.Icon = Nothing
-        '        Console.WriteLine("aargh")
-        '    Catch ex As Exception
-        '        ' NOP
-        '    End Try
-        'End If
-
         MyBase.OnFormClosed(e)
 
     End Sub
