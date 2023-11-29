@@ -28,6 +28,7 @@ Imports System.Threading
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
+Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
@@ -102,7 +103,7 @@ Namespace Ecospace
         Private m_BaseBiomassResults() As Single
         ''' <summary>Contaminants over Biomass.</summary>
         Private m_ConcOverB(,,) As Single
-        ''' <summary>Effort over Biomass.</summary>
+        ''' <summary>F, fishing mortality, catch over Biomass.</summary>
         Private m_FoverB(,,) As Single
 
         Private m_graphData As Dictionary(Of ePlotTypes, Single(,))
@@ -359,6 +360,7 @@ Namespace Ecospace
 
             Dim nGrps As Integer = Me.Core.nGroups
             ReDim Me.m_BaseC(nGrps)
+            ReDim Me.m_CBScaler(nGrps)
             ReDim Me.m_BaseCatch(nGrps)
             ReDim Me.m_FishingMortScaler(nGrps)
             ReDim Me.m_BaseBiomass(nGrps)
@@ -366,7 +368,7 @@ Namespace Ecospace
 
             For igrp As Integer = 1 To nGrps
                 Me.m_FishingMortScaler(igrp) = 1
-                Me.m_BaseC(igrp) = 1
+                'Me.m_BaseC(igrp) = 1
                 Me.m_BaseBiomass(igrp) = Me.Core.StartBiomass(igrp)
                 For iflt As Integer = 1 To Me.Core.nFleets
                     Me.m_BaseCatch(igrp) += Me.Core.EcopathFleetInputs(iflt).Landings(igrp) + Me.Core.EcopathFleetInputs(iflt).Discards(igrp)
@@ -621,7 +623,7 @@ Namespace Ecospace
                             Case ePlotTypes.CoverB
                                 drawer.Map = Me.m_ConcOverB
                                 maptype = cMapDrawerBase.eMapType.ContamRate
-                                RelScaler = Me.m_BaseC
+                                RelScaler = Me.m_CBScaler
 
                             Case ePlotTypes.Discards
                                 drawer.Map = Me.m_dataTimeStep.DiscardMortalityMap
@@ -1313,6 +1315,7 @@ Namespace Ecospace
         Private Sub OnEcospaceTimeStep(ByRef TimeStepData As cEcospaceTimestep)
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
+            Dim bContaminantsOn As Boolean = False
 
             If (TimeStepData.InSpinUp) Then
                 cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING_SPINUP, TimeStepData.RunProgress)
@@ -1339,14 +1342,6 @@ Namespace Ecospace
                 Me.m_graphData.Item(ePlotTypes.ConsumpRateGraph)(groupIndex, TimeStepData.iTimeStep) = TimeStepData.ConsumptRate(groupIndex)
                 Me.m_graphData.Item(ePlotTypes.CatchGraph)(groupIndex, TimeStepData.iTimeStep) = TimeStepData.Catch(groupIndex)
 
-#If DEBUG Then
-                'JB ECOTRACER_HACK
-                'jb 22-Nov-2016 For debugging set contaminant legend scaler to max across the map
-                'doing this at every timestep is incorrect but shows the spatial distribution 
-                'Some how we need to figure out what the concentration is over time?????
-                Me.m_BaseC(groupIndex) = TimeStepData.ConcMax(groupIndex) * 0.25F
-#End If
-
             Next
 
             'Temporary variables to store the timesteps for plotting. 
@@ -1358,20 +1353,11 @@ Namespace Ecospace
             cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_RUNNING, dt.ToShortDateString()), TimeStepData.RunProgress)
             Me.m_dataTimeStep = TimeStepData
 
-            For iRow As Integer = 1 To TimeStepData.inRows
-                For iCol As Integer = 1 To TimeStepData.inCols
-                    For iGroup As Integer = 1 To Me.Core.nGroups
-                        Dim sB As Single = TimeStepData.BiomassMap(iRow, iCol, iGroup)
-                        If (sB > 0) Then
-                            If (TimeStepData.ContaminantMap IsNot Nothing) Then
-                                Me.m_ConcOverB(iRow, iCol, iGroup) = TimeStepData.ContaminantMap(iRow, iCol, iGroup) / sB
-                            End If
-                            Me.m_FoverB(iRow, iCol, iGroup) = TimeStepData.CatchMap(iRow, iCol, iGroup) / sB
-                        End If '(sB > 0)
-
-                    Next iGroup
-                Next iCol
-            Next iRow
+            'Populate maps for f (catch/biomass) and contaminants/biomass for this timestep
+            Me.initMapsOverBiomass(TimeStepData)
+            'Get the map legend scalers for contaminants and c/b
+            'this can only be done at the first timestep
+            Me.initContaminantScalars(TimeStepData)
 
             'if the size of the map has changed reset the interface
             If Me.m_iInRow <> TimeStepData.inRows Or Me.m_iInCol <> TimeStepData.inCols Then
@@ -1478,6 +1464,69 @@ Namespace Ecospace
 #End Region ' Overrides
 
 #Region " Internal implementation "
+
+        Private Sub initContaminantScalars(TimeStepData As cEcospaceTimestep)
+
+            Try
+
+                If Not Me.Core.EcospaceModelParameters.ContaminantTracing() Then
+                    Return
+                End If
+
+                If TimeStepData.iTimeStep = 1 Then
+
+                    For igrp As Integer = 1 To Me.Core.nGroups
+                        Me.m_BaseC(igrp) = TimeStepData.ConcMax(igrp) '* 0.25F
+
+                        For iRow As Integer = 1 To TimeStepData.inRows
+                            For iCol As Integer = 1 To TimeStepData.inCols
+                                m_CBScaler(igrp) = Math.Max(m_CBScaler(igrp), Me.m_ConcOverB(iRow, iCol, igrp))
+                            Next iCol
+                        Next iRow
+                    Next igrp
+
+                End If
+
+            Catch ex As Exception
+                'just swallow any exceptions in the release version
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Sub
+
+
+        Private Sub initMapsOverBiomass(TimeStepData As cEcospaceTimestep)
+            Dim bContaminantsOn As Boolean = False
+
+            If Me.Core.EcospaceModelParameters.ContaminantTracing() Then
+                bContaminantsOn = True
+                Debug.Assert(TimeStepData.ContaminantMap IsNot Nothing, "Ecospace Contaminant mapping is not initialized correctly.")
+            End If
+
+            Try
+
+                For iRow As Integer = 1 To TimeStepData.inRows
+                    For iCol As Integer = 1 To TimeStepData.inCols
+                        For iGroup As Integer = 1 To Me.Core.nGroups
+                            Dim sB As Single = TimeStepData.BiomassMap(iRow, iCol, iGroup)
+                            If (sB > 1.0E-20) Then
+                                If bContaminantsOn Then
+                                    Me.m_ConcOverB(iRow, iCol, iGroup) = TimeStepData.ContaminantMap(iRow, iCol, iGroup) / sB
+                                End If
+
+                                Me.m_FoverB(iRow, iCol, iGroup) = TimeStepData.CatchMap(iRow, iCol, iGroup) / sB
+                            End If '(sB > 0)
+
+                        Next iGroup
+                    Next iCol
+                Next iRow
+
+            Catch ex As Exception
+                cLog.Write(ex, "Ecospace Contaminant mapping is not initialized correctly.")
+            End Try
+
+        End Sub
+
 
         Private Sub ClearResults()
 
@@ -1935,7 +1984,7 @@ Namespace Ecospace
                 Case ePlotTypes.CoverB
                     drawer.Map = Me.m_ConcOverB
                     maptype = cMapDrawerBase.eMapType.ContamRate
-                    scaler = Me.m_BaseC
+                    scaler = Me.m_CBScaler
 
                 Case ePlotTypes.Effort
                     ' This type of map cannot be drawn threaded because cMapDrawers are hard-wired

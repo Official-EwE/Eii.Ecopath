@@ -3165,7 +3165,7 @@ Namespace Ecosim
                         ToDet = ToDet + DetFlowN
 
                         If Me.m_TracerData.EcoSimConSimOn = True Then
-                            Me.m_ConTracer.ConKdet(i, j, K) = DetFlowN / Biomass(i)
+                            Me.m_ConTracer.ConKdet(i, j - Me.m_EPData.NumLiving, K) = DetFlowN / Biomass(i)
                         End If
 
                     Next K
