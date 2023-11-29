@@ -1949,6 +1949,8 @@ Public Class cEcoSpace
 
         Try
 
+            'Me.EcoSpaceData.debugDumpContaminantMap(11)
+
             'set the shared thread increment counter to the number of threads
             cSpaceSolver.ThreadIncrementer = Me.m_spaceSolvers.Count
 
@@ -2002,6 +2004,8 @@ Public Class cEcoSpace
 
             etRunTime = stpTotRun.Elapsed.TotalSeconds
 
+            'Me.EcoSpaceData.debugDumpContaminantMap(11)
+
             Me.UpdateThreadedResults()
 
             stpTotRun.Stop()
@@ -2030,7 +2034,6 @@ Public Class cEcoSpace
         Dim j As Integer
         Dim iRgn As Integer
         Dim ip As Integer
-        Dim Wtr As Double
 
         'Me.grdslvConSim.FirstLastGroups(0, m_EPdata.NumGroups)
         'the grid solver has already been initialized with a reference to the contaminant tracing data
@@ -2046,10 +2049,6 @@ Public Class cEcoSpace
                 If iRgn > Me.EcoSpaceData.nRegions Then iRgn = 0
 
                 For ip = 0 To Me.EcoSpaceData.NGroups
-                    'If SpaceTime = False Then Wtr = Exp(AMmTr(i, j, ip) * TimeStep) Else Wtr = 0
-                    Wtr = Math.Exp(Me.EcoSpaceData.AMmTr(i, j, ip) * Me.EcoSpaceData.TimeStep)
-                    'ww i don't think this line should be here
-                    'm_Data.Ccell(i, j, ip) = Wtr * m_Data.Clast(i, j, ip) + (1 - Wtr) * m_Data.Ccell(i, j, ip)
                     Me.EcoSpaceData.Clast(i, j, ip) = Me.EcoSpaceData.Ccell(i, j, ip)
 
                     If Me.EcoSpaceData.Ccell(i, j, ip) > Me.ContaiminantTracerData.ConcMax(ip) Then Me.ContaiminantTracerData.ConcMax(ip) = Me.EcoSpaceData.Ccell(i, j, ip)
@@ -2092,8 +2091,6 @@ Public Class cEcoSpace
                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
                     For iGrp = 0 To Me.EcoSpaceData.NGroups
 
-                        'If i = 18 And j = 38 And itt >= 13 Then Debug.Assert(False)
-
                         Derivcon(i, j, iGrp) = Me.EcoSpaceData.Ftr(i, j, iGrp) +
                             Me.Bcw(i, j, iGrp) * Me.EcoSpaceData.Ccell(i - 1, j, iGrp) +
                             Me.C(i, j, iGrp) * Me.EcoSpaceData.Ccell(i + 1, j, iGrp) +
@@ -2102,6 +2099,8 @@ Public Class cEcoSpace
                             Me.EcoSpaceData.AMmTr(i, j, iGrp) * Me.EcoSpaceData.Ccell(i, j, iGrp)
                         'm_Data.Ccell(i, j, iGrp) = m_Data.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
                         Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
+                        'Debug.Assert(Not Single.IsNegativeInfinity(Derivcon(i, j, iGrp)))
+
                     Next
                 End If
             Next
@@ -2112,8 +2111,14 @@ Public Class cEcoSpace
                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
                     For iGrp = 0 To Me.EcoSpaceData.NGroups
 
-                        ''If i = 18 And j = 38 And itt >= 13 Then Debug.Assert(False)
+
                         Me.EcoSpaceData.Ccell(i, j, iGrp) = Me.EcoSpaceData.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
+                        If Me.EcoSpaceData.Ccell(i, j, iGrp) < 1.0E-20 Then
+                            Me.EcoSpaceData.Ccell(i, j, iGrp) = 1.0E-20
+                        End If
+
+                        'Debug.Assert(Not Single.IsNegativeInfinity(Me.EcoSpaceData.Ccell(i, j, iGrp)))
+
 
                         'Me.EcoSpaceData.Ccell(i - 1, j, iGrp) -= Me.Bcw(i, j, iGrp) * Me.EcoSpaceData.Ccell(i - 1, j, iGrp) * Tst
                         'Me.EcoSpaceData.Ccell(i + 1, j, iGrp) -= Me.C(i, j, iGrp) * Me.EcoSpaceData.Ccell(i + 1, j, iGrp) * Tst
@@ -2147,7 +2152,6 @@ Public Class cEcoSpace
                             Me.e(i, j + 1, iGrp) * Me.EcoSpaceData.Ccell(i, j + 1, iGrp) +
                             Me.EcoSpaceData.AMmTr(i, j, iGrp) * Me.EcoSpaceData.Ccell(i, j, iGrp)
                         'm_Data.Ccell(i, j, iGrp) = m_Data.Ccell(i, j, iGrp) + 0.5 * (3.0 * Derivcon(i, j, iGrp) - Derivcon2(i, j, iGrp)) * Tst
-                        Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
                     Next
                 End If
             Next
@@ -2158,7 +2162,8 @@ Public Class cEcoSpace
                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
                     For iGrp = 0 To Me.EcoSpaceData.NGroups
                         Me.EcoSpaceData.Ccell(i, j, iGrp) = Me.EcoSpaceData.Ccell(i, j, iGrp) + 0.5 * (3.0 * Derivcon(i, j, iGrp) - Derivcon2(i, j, iGrp)) * Tst
-                        'Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
+                        'jb
+                        Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
                     Next
                 End If
             Next
@@ -2524,6 +2529,9 @@ Public Class cEcoSpace
                             'jb in EwE5 Ccell() is initialized using ConcTr()
                             'in EwE5 CInitialize() was called right before this setting ConcTr() to Czero()
                             Me.EcoSpaceData.Ccell(i, j, ip) = Me.EcoSpaceData.HabCap(ip)(i, j) * Me.ContaiminantTracerData.Czero(ip)
+
+                            Debug.Assert(Not Single.IsNegativeInfinity(Me.EcoSpaceData.Ccell(i, j, igrp)))
+
                             Me.EcoSpaceData.Clast(i, j, ip) = Me.EcoSpaceData.Ccell(i, j, ip)
                         End If
 
@@ -2741,6 +2749,9 @@ Public Class cEcoSpace
             Me.SetMigGradThreaded()
 
             If Me.ContaiminantTracerData.EcoSpaceConSimOn Then
+
+                Me.EcoSpaceData.InitContaminantMaps(Me.EcoSimData.inlinks)
+
                 'initialize the contaminant tracing
                 Try
                     'contaminant tracer grid solver runs on one thread
@@ -3310,9 +3321,6 @@ Public Class cEcoSpace
         Me.EcoSimData.NutFree = Me.EcoSimData.NutTot * RelProd - Me.EcoSimData.NutBiom
         If Me.EcoSimData.NutFree < Me.EcoSimData.NutMin Then Me.EcoSimData.NutFree = Me.EcoSimData.NutMin
 
-        'If m_SimData.IndicesOn Then
-        '    ReDim m_SimData.Consumpt(m_Data.NGroups, m_Data.NGroups)
-        'End If
 
         For j = Me.EcoSpaceData.nLiving + 1 To Me.EcoSpaceData.NGroups
             ToDetritus(j - Me.EcoSpaceData.nLiving) = 0
@@ -6240,33 +6248,34 @@ exitline:
         For i = 1 To Me.EcoSpaceData.InRow
             For j = 1 To Me.EcoSpaceData.InCol
                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
+                    'End If
+                    For iGrp = 1 To Me.EcoSpaceData.NGroups
+                        Cin = Me.EcoSpaceData.Ftr(i, j, iGrp) '+ inflows from surrounding cells
+                        Cin = Cin + Me.Bcw(i, j, iGrp) * Me.EcoSpaceData.Ccell(i - 1, j, iGrp)
+                        Cin = Cin + Me.C(i, j, iGrp) * Me.EcoSpaceData.Ccell(i + 1, j, iGrp)
+                        Cin = Cin + Me.d(i, j - 1, iGrp) * Me.EcoSpaceData.Ccell(i, j - 1, iGrp)
+                        Cin = Cin + Me.e(i, j + 1, iGrp) * Me.EcoSpaceData.Ccell(i, j + 1, iGrp)
+                        Cout = -Me.EcoSpaceData.AMmTr(i, j, iGrp)
+
+                        If Cout <> 0 Then
+                            Ceq = Cin / Cout
+                            'calculate distance to equilibrium (%)
+                            Terr = CSng(2.0 * Math.Abs(Ceq - Me.EcoSpaceData.Ccell(i, j, iGrp)) / (Ceq + Me.EcoSpaceData.Ccell(i, j, iGrp) + 1.0E-30))
+                            If Terr < 0.5 Then
+                                Terr = 0.5
+                            End If
+                            'minimum timestep is 0.01 times 1/closs (which is essentially the time to equilibrium at the current derivative value)
+                            'the timestep scales from (0.01 to 0.1) times 1/closs as ConcTr approaches Ceq
+                            Ttemp = CSng(0.1 / Terr / Cout)
+                            If Ttemp < maxT Then
+                                maxT = Ttemp
+                            End If
+                        End If
+
+                    Next iGrp
                 End If
-                For iGrp = 1 To Me.EcoSpaceData.NGroups
-                    Cin = Me.EcoSpaceData.Ftr(i, j, iGrp) '+ inflows from surrounding cells
-                    Cin = Cin + Me.Bcw(i, j, iGrp) * Me.EcoSpaceData.Ccell(i - 1, j, iGrp)
-                    Cin = Cin + Me.C(i, j, iGrp) * Me.EcoSpaceData.Ccell(i + 1, j, iGrp)
-                    Cin = Cin + Me.d(i, j - 1, iGrp) * Me.EcoSpaceData.Ccell(i, j - 1, iGrp)
-                    Cin = Cin + Me.e(i, j + 1, iGrp) * Me.EcoSpaceData.Ccell(i, j + 1, iGrp)
-                    Cout = -Me.EcoSpaceData.AMmTr(i, j, iGrp)
-
-                    If Cout <> 0 Then
-                        Ceq = Cin / Cout
-                        'calculate distance to equilibrium (%)
-                        Terr = CSng(2.0 * Math.Abs(Ceq - Me.EcoSpaceData.Ccell(i, j, iGrp)) / (Ceq + Me.EcoSpaceData.Ccell(i, j, iGrp) + 1.0E-30))
-                        If Terr < 0.5 Then
-                            Terr = 0.5
-                        End If
-                        'minimum timestep is 0.01 times 1/closs (which is essentially the time to equilibrium at the current derivative value)
-                        'the timestep scales from (0.01 to 0.1) times 1/closs as ConcTr approaches Ceq
-                        Ttemp = CSng(0.1 / Terr / Cout)
-                        If Ttemp < maxT Then
-                            maxT = Ttemp
-                        End If
-                    End If
-
-                Next
-            Next
-        Next
+            Next j
+        Next i
 
         ntc = Math.Ceiling(Me.EcoSpaceData.TimeStep / maxT)
         'jb 1-Dec-2016 Hack to cap the number of ecotrace time steps!

@@ -873,6 +873,14 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     Public bSaveThreadingLog As Boolean
 
+    ''' <summary>
+    ''' Flow of detritus for each cell in the Ecospace map 
+    ''' </summary>
+    Public ConKdetSpace(,)(,,) As Single '(row,col)(ngroups, ndetritus,nfleets)
+
+    Public ConKtrophic(,)() As Single '(row,col)(inLinks)
+
+
 #End Region
 
 #Region "Private Data"
@@ -1679,12 +1687,12 @@ Public Class cEcospaceDataStructures
         Dim sumC As Single
         For ir As Integer = 1 To Me.InRow
             For ic As Integer = 1 To Me.InCol
-                'System.Console.Write(Me.Ccell(ir, ic, foriGroup).ToString)
-                'If ic <> Me.InCol Then
-                '    System.Console.Write(", ")
-                'Else
-                '    System.Console.WriteLine()
-                'End If
+                System.Console.Write(Me.Ccell(ir, ic, foriGroup).ToString)
+                If ic <> Me.InCol Then
+                    System.Console.Write(", ")
+                Else
+                    System.Console.WriteLine()
+                End If
 
                 sumC += (Me.Ccell(ir, ic, foriGroup))
             Next
@@ -2767,6 +2775,26 @@ Public Class cEcospaceDataStructures
         For ifleet As Integer = 1 To Me.nFleets : bHasFleet = bHasFleet Or (Me.MPAfishery(ifleet, iMPA) = False) : Next
         Return bHasFleet And bHasMonth
     End Function
+
+    Public Sub InitContaminantMaps(nLinks As Integer)
+
+        'Detritus
+        Me.ConKdetSpace = New Single(Me.InRow, Me.InCol)(,,) {}
+        For irow As Integer = 0 To Me.InRow
+            For icol As Integer = 0 To Me.InCol
+                Me.ConKdetSpace(irow, icol) = New Single(Me.NGroups, Me.NGroups - Me.nLiving, Me.nFleets) {}
+            Next
+        Next
+
+        'Consumption by cell
+        ConKtrophic = New Single(Me.InRow, Me.InCol)() {}
+        For irow As Integer = 0 To Me.InRow
+            For icol As Integer = 0 To Me.InCol
+                Me.ConKtrophic(irow, icol) = New Single(nLinks) {}
+            Next
+        Next
+
+    End Sub
 
 #End Region
 

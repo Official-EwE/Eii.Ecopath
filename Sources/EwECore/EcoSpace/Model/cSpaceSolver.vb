@@ -19,6 +19,7 @@
 
 Option Explicit On
 Option Strict On
+Imports System.Reflection
 Imports System.Threading
 Imports EwEUtils.Core
 
@@ -108,6 +109,9 @@ Public Class cSpaceSolver
     Private pbb() As Single
     Private TimeStepC As Single
 
+    Private lossSpace()(,) As Single
+
+
     'These are total sums for every cell, so must be summed for each thread seperately, then combined after they've all run
     'Public BtimeLocal() As Single
     Public TotLossThread() As Single
@@ -176,6 +180,7 @@ Public Class cSpaceSolver
 
     'Contaminant tracing used locally
     Dim Derivcon() As Single, Cintotal() As Single, Closs() As Single, ConCtot As Single
+    'Dim ConKtrophic()(,) As Single
 
     Private RtoNext As Single
     Private SurvRat As Single
@@ -252,8 +257,15 @@ Public Class cSpaceSolver
         Array.Copy(Me.m_SimData.Eatenof, Me.Eatenof, Me.m_Data.NGroups + 1)
         Array.Copy(Me.m_SimData.Eatenby, Me.Eatenby, Me.m_Data.NGroups + 1)
 
+        lossSpace = New Single(Me.m_Data.NGroups)(,) {}
+        For igrp As Integer = 0 To Me.m_Data.NGroups
+            lossSpace(igrp) = New Single(Me.m_Data.InRow, Me.m_Data.InCol) {}
+        Next
+
         Me.m_ConTracer.Init(Me.m_TracerData, Me.m_PathData, Me.m_SimData, Me.m_Stanza)
         Me.m_ConTracer.CInitialize()
+
+        Me.m_ConTracer.ThreadID = Me.ThreadID
 
         Me.m_bFitnessSet = New Boolean(Me.m_Data.InRow, Me.m_Data.InCol) {}
 
@@ -469,6 +481,7 @@ Public Class cSpaceSolver
             'Debug.Assert(m_Data.Ccell(i, j, 0) = 0)
             If Me.m_TracerData.EcoSpaceConSimOn Then
                 Me.m_ConTracer.ConcTr(0) = Me.m_Data.Ccell(i, j, 0)
+                Debug.Assert(Not Single.IsNegativeInfinity(Me.m_ConTracer.ConcTr(0)))
                 'jb ConTotal() is not used anywhere
                 'For ip = 0 To m_Data.NGroups : ConTotal(ip) = ConTotal(ip) + m_Data.Ccell(i, j, ip):Next
             End If
@@ -483,6 +496,7 @@ Public Class cSpaceSolver
 
                 If Me.m_TracerData.EcoSpaceConSimOn Then
                     Me.m_ConTracer.ConcTr(iGrp) = Me.m_Data.Ccell(i, j, iGrp)
+                    Debug.Assert(Not Single.IsNaN(Me.m_ConTracer.ConcTr(iGrp)))
                 End If
 
                 'sum biomass over all the cells
@@ -571,6 +585,8 @@ Public Class cSpaceSolver
             Me.derivtRed(Me.BB, Me.Flowin, Me.FlowoutRate, Me.EatEff, Me.VulPred, scaledPP, i, j)
 
             If Me.m_TracerData.EcoSpaceConSimOn Then
+                Me.m_ConTracer.ConKtrophic = m_Data.ConKtrophic(i, j)
+                Me.m_ConTracer.ConKdet = m_Data.ConKdetSpace(i, j)
                 Me.m_ConTracer.loss = Me.loss 'set loss to ecospace loss for this cell
                 Me.m_ConTracer.ConDeriv(Me.BB, Me.Derivcon, Me.Cintotal, Me.Closs, Me.m_Data.RelCin(i, j), True)
             End If
@@ -640,6 +656,8 @@ Public Class cSpaceSolver
 
             If Me.m_TracerData.EcoSpaceConSimOn Then
                 For iGrp = 0 To Me.m_Data.NGroups
+                    'Debug.Assert(Not Single.IsNaN(Me.Cintotal(iGrp)))
+                    'Debug.Assert(Not Single.IsNaN(Me.Closs(iGrp)))
                     Me.m_Data.Ftr(i, j, iGrp) = Me.Cintotal(iGrp)
                     Me.m_Data.AMmTr(i, j, iGrp) = -Me.Closs(iGrp) - Me.Bcw(i + 1, j, iGrp) - Me.C(i - 1, j, iGrp) - Me.d(i, j, iGrp) - Me.e(i, j, iGrp)
                     If Me.m_Data.AMmTr(i, j, iGrp) >= 0 Then Me.m_Data.AMmTr(i, j, iGrp) = -1.0E+30
@@ -745,7 +763,7 @@ Public Class cSpaceSolver
         Dim iGrp As Integer
 
         Try
-
+            'Dim bio() As Single
             ' System.Console.WriteLine("Thread ID, " & Me.ThreadID & ", " & i.ToString & ", " & j.ToString)
             'this changes the timestep for higher order numerical sceme.  the timestep isn't actually different, it's a multiplier
             'jb Apr-2023 TimeStep2c is not used any more. Integration done by cEcopace.runContaminantTracerExplicit1()
@@ -759,8 +777,31 @@ Public Class cSpaceSolver
                 Me.m_ConTracer.ConcTr(iGrp) = Me.m_Data.Ccell(i, j, iGrp)
             Next
 
-            Me.m_ConTracer.loss = Me.loss 'set loss to ecospace loss for this cell
-            Me.m_ConTracer.ConDeriv(Me.BB, Me.Derivcon, Me.Cintotal, Me.Closs, Me.m_Data.RelCin(i, j), True)
+            'System.Console.WriteLine(Me.m_ConTracer.ThreadID.ToString + ", " + i.ToString + ", " + j.ToString)
+            'bio = New Single(Me.m_Data.NGroups) {}
+            'Me.m_ConTracer.loss = Me.loss 'set loss to ecospace loss for this cell
+            If Me.m_ConTracer.loss Is Nothing Or Me.m_ConTracer.bio Is Nothing Then
+                Me.m_ConTracer.loss = New Single(Me.m_Data.NGroups) {}
+                Me.m_ConTracer.bio = New Single(Me.m_Data.NGroups) {}
+
+            Else
+                System.Array.Clear(Me.m_ConTracer.loss, 0, Me.m_Data.NGroups)
+                System.Array.Clear(Me.m_ConTracer.bio, 0, Me.m_Data.NGroups)
+            End If
+
+            'set state variables by cell from Ecospace
+            For iGrp = 0 To Me.m_Data.NGroups
+                Me.m_ConTracer.loss(iGrp) = Me.lossSpace(iGrp)(i, j)
+                m_ConTracer.bio(iGrp) = Me.m_Data.Bcell(i, j, iGrp)
+            Next
+
+            'Set contaminant map variable calculated by cell
+            'Detritus for this cell. 
+            'Computed in SimDetritusMT()
+            Me.m_ConTracer.ConKdet = m_Data.ConKdetSpace(i, j)
+            'Consumption by pred prey link
+            Me.m_ConTracer.ConKtrophic = m_Data.ConKtrophic(i, j)
+            Me.m_ConTracer.ConDeriv(m_ConTracer.bio, Me.Derivcon, Me.Cintotal, Me.Closs, Me.m_Data.RelCin(i, j), True)
 
             For iGrp = 0 To Me.m_Data.NGroups
                 Me.m_Data.Ftr(i, j, iGrp) = Me.Cintotal(iGrp)
@@ -793,7 +834,7 @@ Public Class cSpaceSolver
 
     End Function
 
-    Private Sub derivtRed(ByVal Biomass() As Single, ByRef Flowin() As Single, ByRef FlowoutRate() As Single, ByRef EatEff() As Single, ByRef VulPred() As Single, ByVal RelProdScaler As Double, ByVal iRow As Integer, ByVal iCol As Integer)
+    Public Sub derivtRed(ByVal Biomass() As Single, ByRef Flowin() As Single, ByRef FlowoutRate() As Single, ByRef EatEff() As Single, ByRef VulPred() As Single, ByVal RelProdScaler As Double, ByVal iRow As Integer, ByVal iCol As Integer)
         'reduced derivatives for MPA equilibration procedure
         Dim i As Integer, j As Integer, ii As Integer
         Dim eat As Single, Pmult As Single
@@ -934,8 +975,13 @@ Public Class cSpaceSolver
 
                 'jb 
                 If Me.m_TracerData.EcoSpaceConSimOn = True Then
-                    'jb ConKtrophic will need to be local it is the rate of comsumption per unit of prey
-                    If Biomass(i) > 0 Then Me.m_ConTracer.ConKtrophic(ii) = eat / Biomass(i) Else Me.m_ConTracer.ConKtrophic(ii) = 0
+                    If Biomass(i) > 0 Then
+                        'Me.m_ConTracer.ConKtrophic(ii) = eat / Biomass(i)
+                        Me.m_Data.ConKtrophic(iRow, iCol)(ii) = eat / Biomass(i)
+                    Else
+                        'Me.m_ConTracer.ConKtrophic(ii) = 0
+                        Me.m_Data.ConKtrophic(iRow, iCol)(ii) = 0
+                    End If
                 End If
 
                 If Me.m_Data.nRegions >= 1 Then
@@ -949,7 +995,8 @@ Public Class cSpaceSolver
             Me.CalcTrophicLevel(iRow, iCol, Me.Consumpt, Me.Eatenby)
 
             'Make the detritus calculations here:
-            Me.SimDetritusMT(Biomass, Me.FishRateGear, Me.Eatenby, ToDetritus, Me.GroupDetritus)
+            Me.SimDetritusSpace(Biomass, Me.FishRateGear, Me.Eatenby, ToDetritus, Me.GroupDetritus, iRow, iCol)
+
             Dim moMult As Single = 1
             For i = 1 To Me.m_Data.NGroups
 
@@ -975,6 +1022,7 @@ Public Class cSpaceSolver
 
                     Me.pbb(i) = 2 * EatEff(i) * Me.NutFree / (Me.NutFree + Me.m_SimData.NutFreeBase(i)) * Pmult * Me.m_SimData.pbm(i) / (1 + Biomass(i) * Me.PbSpace(i))
                     Me.loss(i) = Me.Eatenof(i) + (Me.m_SimData.mo(i) * moMult * (1 - Me.m_SimData.MoPred(i) + Me.m_SimData.MoPred(i) * Me.Ftime(i)) + Me.m_PathData.Emig(i) + Me.FishTime(i)) * Biomass(i)
+                    Me.lossSpace(i)(iRow, iCol) = Me.loss(i)
                     'Debug.Assert(Single.IsNaN(Me.loss(i)) = False)
 
                     Me.SaveMOLoss(i, Biomass(i), moMult, iRow, iCol)
@@ -1000,6 +1048,7 @@ Public Class cSpaceSolver
                     'Detritus(group)
 
                     Me.loss(i) = Me.Eatenof(i) + Me.m_PathData.Emig(i) + Me.m_SimData.DetritusOut(i) * Biomass(i)
+                    Me.lossSpace(i)(iRow, iCol) = Me.Eatenof(i) + Me.m_PathData.Emig(i) + Me.m_SimData.DetritusOut(i) * Biomass(i)
                     'deriv(i) = Immig(i) + ToDetritus(i - n) - loss(i)
                     If Me.loss(i) <> 0 And Biomass(i) > 0 Then
                         'biomeq(i) = (Immig(i) + ToDetritus(i - n)) / (loss(i) / Biomass(i))
@@ -1098,6 +1147,8 @@ Public Class cSpaceSolver
             'MOProp(igrp)(irow, icol) Proportion of the total population that will experience mortality in this cell/time-step
             'This is the value calcualted by the response function for this cell/time-step
             Dim propMort As Single = Me.m_Data.MOProp(igrp)(irow, icol)
+
+            If propMort = 0.0 Then Return 1.0
             'cap it at just below 1.0
             If propMort >= 1.0 Then propMort = 0.9999F
 
@@ -1410,49 +1461,51 @@ Public Class cSpaceSolver
 
     End Sub
 
-    Public Sub SimDetritusMT(ByVal Biomass() As Single, ByVal FishRateGear(,) As Single, ByVal Eatenby() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single)
-        ' Dim Surplus As Single
-        Dim i As Integer, j As Integer, K As Integer
-        Dim ToDet As Single, DetFlowN As Single
-        DetFlowN = 0
+    Public Sub SimDetritusSpace(ByVal Biomass() As Single, ByVal FishRateGear(,) As Single, ByVal Eatenby() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single, irow As Integer, icol As Integer)
+        Dim i As Integer, iFleet As Integer
+        Dim ToDet As Single, DetFlowN As Single = 0
+        Dim jDet As Integer ', j As Integer
+        Dim moMult As Single
+        Dim nDet As Integer = Me.m_Data.NGroups - Me.m_PathData.NumLiving
 
         'DetritusByGroup() needs to be cleared because the values are summed into it
         Array.Clear(DetritusByGroup, 0, Me.m_Data.NGroups)
 
         For i = 1 To Me.m_PathData.NumLiving
-            For j = Me.m_PathData.NumLiving + 1 To Me.m_Data.NGroups
+            For jDet = 1 To nDet
                 'First take egestion
-                ToDet = Me.m_PathData.GS(i) * Eatenby(i) * Me.m_PathData.DF(i, j - Me.m_PathData.NumLiving)
-                'Add dying organisms
-                ToDet = ToDet + Me.m_SimData.mo(i) * Biomass(i) * Me.m_PathData.DF(i, j - Me.m_PathData.NumLiving)
+                ToDet = Me.m_PathData.GS(i) * Eatenby(i) * Me.m_PathData.DF(i, jDet)
 
-                For K = 1 To Me.m_PathData.NumFleet
-                    Dim PropDiscMort As Single = Me.m_SimData.PropDiscardTime(K, i) / (Me.m_SimData.PropLandedTime(K, i) + Me.m_SimData.PropDiscardTime(K, i) + 1.0E-20F)
+                moMult = Me.getM0Mult(i, irow, icol)
+                'Add dying organisms
+                ToDet = ToDet + Me.m_SimData.mo(i) * moMult * Biomass(i) * Me.m_PathData.DF(i, jDet)
+
+                For iFleet = 1 To Me.m_PathData.NumFleet
+                    Dim PropDiscMort As Single = Me.m_SimData.PropDiscardTime(iFleet, i) / (Me.m_SimData.PropLandedTime(iFleet, i) + Me.m_SimData.PropDiscardTime(iFleet, i) + 1.0E-20F)
                     'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
                     'discard mort is included in Propdiscardtime() by initialization and MSE 
-                    DetFlowN = Me.m_PathData.DiscardFate(K, j - Me.m_PathData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * Me.m_SimData.FishMGear(K, i) * PropDiscMort 'Me.m_SimData.Propdiscardtime(K, i)
+                    DetFlowN = Me.m_PathData.DiscardFate(iFleet, jDet) * Biomass(i) * FishRateGear(iFleet, 0) * Me.m_SimData.FishMGear(iFleet, i) * PropDiscMort 'Me.m_SimData.Propdiscardtime(K, i)
                     ToDet = ToDet + DetFlowN
 
                     If Me.m_TracerData.EcoSpaceConSimOn = True Then
-                        Me.m_ConTracer.ConKdet(i, j, K) = DetFlowN / Biomass(i)
+                        Me.m_Data.ConKdetSpace(irow, icol)(i, jDet, iFleet) = DetFlowN / Biomass(i)
                     End If
 
                     Me.TotFisheriesDiscards += DetFlowN
 
-                Next K
+                Next iFleet
 
-                ToDetritus(j - Me.m_PathData.NumLiving) = ToDetritus(j - Me.m_PathData.NumLiving) + ToDet
-
+                ToDetritus(jDet) = ToDetritus(jDet) + ToDet
                 DetritusByGroup(i) += ToDet
 
-            Next j
+            Next jDet
         Next i
 
         'Next add flow from other detritus groups
-        For i = Me.m_PathData.NumLiving + 1 To Me.m_Data.NGroups
-            For j = Me.m_PathData.NumLiving + 1 To Me.m_Data.NGroups
-                If i <> j Then
-                    ToDetritus(j - Me.m_PathData.NumLiving) = ToDetritus(j - Me.m_PathData.NumLiving) + Me.m_PathData.DetPassedProp(i) * Biomass(i) * Me.m_PathData.DF(i, j - Me.m_PathData.NumLiving)
+        For i = 1 To nDet
+            For jDet = 1 To nDet ' (Me.m_Data.NGroups - Me.m_PathData.NumLiving)
+                If i <> jDet Then
+                    ToDetritus(jDet) = ToDetritus(jDet) + Me.m_PathData.DetPassedProp(i) * Biomass(i) * Me.m_PathData.DF(i, jDet)
                 End If
             Next
         Next
