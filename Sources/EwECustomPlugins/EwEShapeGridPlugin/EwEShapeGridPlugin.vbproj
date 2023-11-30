@@ -170,20 +170,44 @@
     <Compile Include="frmShapes.Designer.vb">
       <DependentUpon>frmShapes.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmShapes.vb" />
+    <Compile Include="frmShapes.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Grids\cShapeDataComparer.vb" />
-    <Compile Include="Grids\gridFunctionalResponses.vb" />
+    <Compile Include="Grids\gridFunctionalResponses.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Grids\cVisualModelThumbnail.vb" />
-    <Compile Include="Grids\gridEggProduction.vb" />
-    <Compile Include="Grids\gridFishingEffort.vb" />
-    <Compile Include="Grids\gridFishingMortality.vb" />
-    <Compile Include="Grids\gridForcing.vb" />
-    <Compile Include="Grids\gridForcingBase.vb" />
-    <Compile Include="Grids\gridLandingsMediation.vb" />
-    <Compile Include="Grids\gridMediation.vb" />
-    <Compile Include="Grids\gridPredPreyMediation.vb" />
-    <Compile Include="Grids\gridShapeBase.vb" />
-    <Compile Include="Grids\gridTimeSeries.vb" />
+    <Compile Include="Grids\gridEggProduction.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Grids\gridFishingEffort.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Grids\gridFishingMortality.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Grids\gridForcing.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Grids\gridForcingBase.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Grids\gridLandingsMediation.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Grids\gridMediation.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Grids\gridPredPreyMediation.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Grids\gridShapeBase.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Grids\gridTimeSeries.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

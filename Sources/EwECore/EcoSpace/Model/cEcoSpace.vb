@@ -2836,14 +2836,14 @@ Public Class cEcoSpace
 
             ' Me.m_Data.bENA = True
             If Me.EcoSpaceData.bENA Then
-                If Me.EcoSpaceData.dctENACells IsNot Nothing Then Me.EcoSpaceData.dctENACells.Clear()
-                Me.EcoSpaceData.dctENACells = New Dictionary(Of String, cENACellData)
+                If Me.EcoSpaceData.m_enaCellData IsNot Nothing Then Me.EcoSpaceData.m_enaCellData.Clear()
+                Me.EcoSpaceData.m_enaCellData = New Dictionary(Of String, cENAData)
                 For irow As Integer = 1 To Me.EcoSpaceData.InRow
                     For icol As Integer = 1 To Me.EcoSpaceData.InCol
                         If Me.EcoSpaceData.Depth(irow, icol) > 0 Then
-                            Dim ENACell As New cENACellData(irow, icol)
-                            ENACell.Init(Me.EcoSpaceData, Me.EcoPathData)
-                            Me.EcoSpaceData.dctENACells.Add(ENACell.Key, ENACell)
+                            Dim enaData As New cENAData(irow, icol)
+                            enaData.Init(Me.EcoPathData)
+                            Me.EcoSpaceData.m_enaCellData.Add(enaData.Key, enaData)
                         End If
                     Next
                 Next

@@ -118,7 +118,8 @@ Namespace UI
             Me.m_pbEII = New System.Windows.Forms.PictureBox()
             Me.m_pbBUAS = New System.Windows.Forms.PictureBox()
             Me.m_pbRWS = New System.Windows.Forms.PictureBox()
-            Me.m_pbMSPC2050 = New System.Windows.Forms.PictureBox()
+            Me.m_pbMSPChallenge = New System.Windows.Forms.PictureBox()
+            Me.m_pbEcoscope = New System.Windows.Forms.PictureBox()
             Me.m_lblAboutCredits = New System.Windows.Forms.Label()
             Me.m_lblAboutVersion = New System.Windows.Forms.Label()
             Me.m_hdrCredits = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -132,6 +133,10 @@ Namespace UI
             Me.m_btnGameDelete = New System.Windows.Forms.Button()
             Me.m_btnGameAddFromJSON = New System.Windows.Forms.Button()
             Me.m_btnExport = New System.Windows.Forms.Button()
+            Me.m_tpFleets = New System.Windows.Forms.TabPage()
+            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+            Me.m_gridFleets = New EwEMSPPlugin.UI.gridFleets()
+            Me.m_gridFleetCatch = New EwEMSPPlugin.UI.gridFleetCatch()
             Me.m_tabConfig.SuspendLayout()
             Me.m_tpEwESettings.SuspendLayout()
             Me.m_tpInformation.SuspendLayout()
@@ -149,7 +154,13 @@ Namespace UI
             CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbBUAS, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbMSPC2050, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbEcoscope, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tpFleets.SuspendLayout()
+            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.SplitContainer1.Panel1.SuspendLayout()
+            Me.SplitContainer1.Panel2.SuspendLayout()
+            Me.SplitContainer1.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tabConfig
@@ -157,6 +168,7 @@ Namespace UI
             resources.ApplyResources(Me.m_tabConfig, "m_tabConfig")
             Me.m_tabConfig.Controls.Add(Me.m_tpEwESettings)
             Me.m_tabConfig.Controls.Add(Me.m_tpInformation)
+            Me.m_tabConfig.Controls.Add(Me.m_tpFleets)
             Me.m_tabConfig.Controls.Add(Me.m_tpPressures)
             Me.m_tabConfig.Controls.Add(Me.m_tpOutcomes)
             Me.m_tabConfig.Controls.Add(Me.m_tpEmulator)
@@ -696,10 +708,10 @@ Namespace UI
             '
             resources.ApplyResources(Me.m_tlpAbout, "m_tlpAbout")
             Me.m_tlpAbout.Controls.Add(Me.m_lblAboutDescription, 0, 1)
-            Me.m_tlpAbout.Controls.Add(Me.m_tlpLogos, 0, 5)
+            Me.m_tlpAbout.Controls.Add(Me.m_tlpLogos, 0, 4)
             Me.m_tlpAbout.Controls.Add(Me.m_lblAboutCredits, 0, 2)
             Me.m_tlpAbout.Controls.Add(Me.m_lblAboutVersion, 0, 0)
-            Me.m_tlpAbout.Controls.Add(Me.m_hdrCredits, 0, 4)
+            Me.m_tlpAbout.Controls.Add(Me.m_hdrCredits, 0, 3)
             Me.m_tlpAbout.Name = "m_tlpAbout"
             '
             'm_lblAboutDescription
@@ -713,7 +725,8 @@ Namespace UI
             Me.m_tlpLogos.Controls.Add(Me.m_pbEII, 7, 0)
             Me.m_tlpLogos.Controls.Add(Me.m_pbBUAS, 5, 0)
             Me.m_tlpLogos.Controls.Add(Me.m_pbRWS, 3, 0)
-            Me.m_tlpLogos.Controls.Add(Me.m_pbMSPC2050, 1, 0)
+            Me.m_tlpLogos.Controls.Add(Me.m_pbMSPChallenge, 1, 0)
+            Me.m_tlpLogos.Controls.Add(Me.m_pbEcoscope, 9, 0)
             Me.m_tlpLogos.Name = "m_tlpLogos"
             '
             'm_pbEII
@@ -736,12 +749,19 @@ Namespace UI
             Me.m_pbRWS.Name = "m_pbRWS"
             Me.m_pbRWS.TabStop = False
             '
-            'm_pbMSPC2050
+            'm_pbMSPChallenge
             '
-            Me.m_pbMSPC2050.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.MSPChallenge2050
-            resources.ApplyResources(Me.m_pbMSPC2050, "m_pbMSPC2050")
-            Me.m_pbMSPC2050.Name = "m_pbMSPC2050"
-            Me.m_pbMSPC2050.TabStop = False
+            Me.m_pbMSPChallenge.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.MSP_Challenge_Icon_037c7c
+            resources.ApplyResources(Me.m_pbMSPChallenge, "m_pbMSPChallenge")
+            Me.m_pbMSPChallenge.Name = "m_pbMSPChallenge"
+            Me.m_pbMSPChallenge.TabStop = False
+            '
+            'm_pbEcoscope
+            '
+            Me.m_pbEcoscope.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.EcoScope_logo
+            resources.ApplyResources(Me.m_pbEcoscope, "m_pbEcoscope")
+            Me.m_pbEcoscope.Name = "m_pbEcoscope"
+            Me.m_pbEcoscope.TabStop = False
             '
             'm_lblAboutCredits
             '
@@ -824,6 +844,36 @@ Namespace UI
             Me.m_btnExport.Name = "m_btnExport"
             Me.m_btnExport.UseVisualStyleBackColor = True
             '
+            'm_tpFleets
+            '
+            Me.m_tpFleets.Controls.Add(Me.SplitContainer1)
+            resources.ApplyResources(Me.m_tpFleets, "m_tpFleets")
+            Me.m_tpFleets.Name = "m_tpFleets"
+            Me.m_tpFleets.UseVisualStyleBackColor = True
+            '
+            'SplitContainer1
+            '
+            resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
+            Me.SplitContainer1.Name = "SplitContainer1"
+            '
+            'SplitContainer1.Panel1
+            '
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_gridFleets)
+            '
+            'SplitContainer1.Panel2
+            '
+            Me.SplitContainer1.Panel2.Controls.Add(Me.m_gridFleetCatch)
+            '
+            'm_gridFleets
+            '
+            resources.ApplyResources(Me.m_gridFleets, "m_gridFleets")
+            Me.m_gridFleets.Name = "m_gridFleets"
+            '
+            'm_gridFleetCatch
+            '
+            resources.ApplyResources(Me.m_gridFleetCatch, "m_gridFleetCatch")
+            Me.m_gridFleetCatch.Name = "m_gridFleetCatch"
+            '
             'frmGameDesigner
             '
             resources.ApplyResources(Me, "$this")
@@ -865,7 +915,13 @@ Namespace UI
             CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbBUAS, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbMSPC2050, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbEcoscope, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tpFleets.ResumeLayout(False)
+            Me.SplitContainer1.Panel1.ResumeLayout(False)
+            Me.SplitContainer1.Panel2.ResumeLayout(False)
+            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitContainer1.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -893,7 +949,7 @@ Namespace UI
         Private WithEvents m_pbEII As Windows.Forms.PictureBox
         Private WithEvents m_pbBUAS As Windows.Forms.PictureBox
         Private WithEvents m_pbRWS As Windows.Forms.PictureBox
-        Private WithEvents m_pbMSPC2050 As Windows.Forms.PictureBox
+        Private WithEvents m_pbMSPChallenge As Windows.Forms.PictureBox
         Private WithEvents m_gridPressureMappings As gridDrivers
         Private WithEvents m_lbOutputs As Windows.Forms.ListBox
         Private WithEvents m_plEmulator As Windows.Forms.Panel
@@ -957,6 +1013,11 @@ Namespace UI
         Private WithEvents m_hdrCredits As cEwEHeaderLabel
         Private WithEvents m_btnExport As Windows.Forms.Button
         Private WithEvents m_nudEmulOutcomeRange As Windows.Forms.NumericUpDown
+        Private WithEvents m_pbEcoscope As Windows.Forms.PictureBox
+        Private WithEvents m_tpFleets As Windows.Forms.TabPage
+        Friend WithEvents SplitContainer1 As Windows.Forms.SplitContainer
+        Private WithEvents m_gridFleetCatch As Windows.Forms.Panel
+        Private WithEvents m_gridFleets As Windows.Forms.Panel
     End Class
 
 End Namespace

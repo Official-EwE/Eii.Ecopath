@@ -20,7 +20,9 @@
 
 Option Strict On
 Imports System.Data
+Imports System.Reflection
 Imports EwEUtils
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -52,6 +54,32 @@ Public Class cDataTableConverter
             data(key) = obj
         Next
         Return True
+    End Function
+
+    Public Shared Function ToDatatable(Of T)(data As ICollection(Of T), Optional excludedproperties As String() = Nothing) As DataTable
+
+        Dim dt As New DataTable()
+        Dim type As Type = GetType(T)
+
+        For Each prop As PropertyInfo In type.GetProperties()
+            If (cPropertyUtils.IsWritableElemental(prop) And (excludedproperties Is Nothing OrElse Array.IndexOf(excludedproperties, prop.Name) = -1)) Then
+                dt.Columns.Add(prop.Name, prop.PropertyType)
+            End If
+        Next
+        Try
+            For Each obj As T In data
+                Dim row As DataRow = dt.NewRow()
+                For Each prop As PropertyInfo In type.GetProperties()
+                    If (cPropertyUtils.IsWritableElemental(prop) And (excludedproperties Is Nothing OrElse Array.IndexOf(excludedproperties, prop.Name) = -1)) Then
+                        row(prop.Name) = prop.GetValue(obj)
+                    End If
+                Next
+                dt.Rows.Add(row)
+            Next
+        Catch ex As Exception
+
+        End Try
+        Return dt
     End Function
 
 End Class

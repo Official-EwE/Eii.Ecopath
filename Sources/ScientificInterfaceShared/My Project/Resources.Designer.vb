@@ -1812,6 +1812,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} (predefined list of {1}).
+        '''</summary>
+        Public ReadOnly Property FIELDINFO_ENUM() As String
+            Get
+                Return ResourceManager.GetString("FIELDINFO_ENUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} ({1}).
+        '''</summary>
+        Public ReadOnly Property FIELDINFO_VARIABLE() As String
+            Get
+                Return ResourceManager.GetString("FIELDINFO_VARIABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to The file &apos;{0}&apos; did not contain any data..
         '''</summary>
         Public ReadOnly Property FILE_LOAD_ERROR_DATA() As String

@@ -3524,6 +3524,12 @@ Public Class cCore
         End Get
     End Property
 
+    Public ReadOnly Property EcosimDataStructures As cEcosimDatastructures
+        Get
+            Return Me.m_EcoSimData
+        End Get
+    End Property
+
     Public ReadOnly Property EcospaceDataStructures As cEcospaceDataStructures
         Get
             Return Me.m_EcospaceData
@@ -9873,9 +9879,9 @@ Public Class cCore
             If Me.m_EcospaceData.bENA Then
 
                 Dim SCORFileWriter As New cSCORFileWriter(Me.m_EcopathData)
-                For Each enaData As cENACellData In Me.m_EcospaceData.dctENACells.Values
+                For Each enaData As cENAData In Me.m_EcospaceData.m_enaCellData.Values
                     'System.Console.WriteLine(enaData.Key)
-                    SCORFileWriter.Write(enaData.toFileName(Me), enaData.ENARData)
+                    SCORFileWriter.Write(enaData.OutputFileName(Me, eAutosaveTypes.Ecospace, SpaceResults.iTimeStep), enaData.ENARData)
                 Next enaData
 
             End If 'Me.m_EcoSpaceData.bENA

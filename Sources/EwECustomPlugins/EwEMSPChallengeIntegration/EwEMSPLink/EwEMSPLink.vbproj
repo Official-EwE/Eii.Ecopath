@@ -122,12 +122,14 @@
     <Compile Include="Converters\cEcospaceImportExportBitmap.vb" />
     <Compile Include="Data\cJSONGameConfig.vb" />
     <Compile Include="Data\cGame.vb" />
+    <Compile Include="Data\Drivers\cDriverFactory.vb" />
+    <Compile Include="Data\Drivers\Implemented\cEcologicalGearDriver.vb" />
     <Compile Include="Data\Elementals\cGrid.vb" />
     <Compile Include="Data\Elementals\IMELItem.vb" />
     <Compile Include="Data\Elementals\cScalar.vb" />
+    <Compile Include="Data\Fleets\cFleet.vb" />
     <Compile Include="Data\Pressures\cPressure.vb" />
     <Compile Include="Data\Drivers\cDriver.vb" />
-    <Compile Include="Data\Drivers\cDriverFactory.vb" />
     <Compile Include="Data\Outcomes\cOutcome.vb" />
     <Compile Include="Data\Drivers\Implemented\cHabitatDriver.vb" />
     <Compile Include="Data\Drivers\Implemented\cEnvironmentalDriver.vb" />
@@ -161,7 +163,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\cShellData.vb" />
+    <Compile Include="Data\cEwEMSPLinkData.vb" />
     <None Include="EwEMSPLink.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>

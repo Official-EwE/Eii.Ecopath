@@ -222,6 +222,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property EcoScope_logo() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("EcoScope_logo", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property EII() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("EII", resourceCulture)
@@ -305,9 +315,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property MSPChallenge2050() As System.Drawing.Bitmap
+        Friend ReadOnly Property MSP_Challenge_Icon_037c7c() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("MSPChallenge2050", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("MSP_Challenge_Icon_037c7c", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

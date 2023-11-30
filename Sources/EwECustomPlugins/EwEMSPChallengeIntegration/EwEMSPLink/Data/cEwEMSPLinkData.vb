@@ -30,7 +30,7 @@ Imports EwEUtils.Utilities
 ''' Data container for a list of games.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cShellData
+Public Class cEwEMSPLinkData
 
 #Region " Private vars "
 

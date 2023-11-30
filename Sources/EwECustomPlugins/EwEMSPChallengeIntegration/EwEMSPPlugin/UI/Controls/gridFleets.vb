@@ -16,12 +16,21 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
+Imports System.Windows.Forms
+Imports EwECore
+Imports EwEMSPPlugin.Emulator
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
+Imports SourceGrid2
+Imports SourceGrid2.Cells
 Imports SourceGrid2.DataModels
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -29,26 +38,22 @@ Namespace UI
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Driver configuration grid; enables configuring how MEL <see cref="cPressure">pressures</see>
-    ''' map to available <see cref="cDriver">Ecospace driver variables</see>.
+    ''' Fleetconfiguration grid.
     ''' </summary>
     ''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.cEwEGrid" />
     ''' -----------------------------------------------------------------------
-    Public Class gridDrivers
+    Public Class gridFleets
         Inherits cEwEGrid
-
-#Region " Internal vars "
 
         Private m_data As cGame = Nothing
 
         Private Enum eColumnTypes As Integer
             Index = 0
             Name
-            Mapping
-            Mulitplier
+            Nationality
+            NoDiscards
+            NoBycatch
         End Enum
-
-#End Region ' Internal vars
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -60,10 +65,11 @@ Namespace UI
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Creates a new <see cref="gridDrivers">driver configuration grid</see>.
+        ''' Creates a new <see cref="gridFleets">test set configuration</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New()
+            ' NOP
         End Sub
 
 #Region " Overrides "
@@ -78,9 +84,10 @@ Namespace UI
 
             Me.Redim(1, 4)
             Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
-            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(My.Resources.HEADER_PRESSURE)
-            Me(0, eColumnTypes.Mapping) = New cEwEColumnHeaderCell(My.Resources.HEADER_DRIVER)
-            Me(0, eColumnTypes.Mulitplier) = New cEwEColumnHeaderCell(My.Resources.HEADER_MULTIPLIER)
+            Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
+            Me(0, eColumnTypes.Nationality) = New cEwEColumnHeaderCell("Country")
+            Me(0, eColumnTypes.NoDiscards) = New cEwEColumnHeaderCell("Discards")
+            Me(0, eColumnTypes.NoBycatch) = New cEwEColumnHeaderCell("Bycatch")
 
             Me.FixedColumnWidths = False
             Me.FixedColumns = 2
@@ -101,38 +108,39 @@ Namespace UI
 
             Dim iRow As Integer = 0
 
-            For i As Integer = 0 To Game.Pressures.Count - 1
+            For i As Integer = 0 To Game.Fleets.Count - 1
 
-                Dim pressure As cPressure = Me.Game.Pressures(i)
+                Dim fleet As cFleet = Me.Game.Fleets(i)
                 iRow = Me.AddRow()
 
                 Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i + 1))
-                Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(pressure.Name)
+                Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(fleet.Name)
+                Me(iRow, eColumnTypes.Nationality) = New cEwECell(1)
+                Me(iRow, eColumnTypes.NoBycatch) = New cEwECell(fleet.NoBycatch)
+                Me(iRow, eColumnTypes.NoDiscards) = New cEwECell(fleet.NoDiscards)
 
-                Dim edt As EditorComboBox = Me.Editor(pressure)
-                Dim d As cDriver = Game.Driver(pressure.Name)
 
                 ' Drivers are created on the fly. To avoid exceptions, make sure the shown driver is obtained from the editor
-                For Each v As Object In edt.StandardValues
-                    Dim dtmp As cDriver = DirectCast(v, cDriver)
-                    If (dtmp IsNot Nothing) And (d IsNot Nothing) Then
-                        If (dtmp.Name = d.Name) Then
-                            d = dtmp
-                        End If
-                    End If
-                Next
+                'For Each v As Object In edt.StandardValues
+                '    Dim dtmp As cDriver = DirectCast(v, cDriver)
+                '    If (dtmp IsNot Nothing) And (d IsNot Nothing) Then
+                '        If (dtmp.Name = d.Name) Then
+                '            d = dtmp
+                '        End If
+                '    End If
+                'Next
 
-                Me(iRow, eColumnTypes.Mapping) = New SourceGrid2.Cells.Real.Cell(d, edt)
-                Me(iRow, eColumnTypes.Mapping).Behaviors.Add(Me.EwEEditHandler)
+                'Me(iRow, eColumnTypes.Mapping) = New SourceGrid2.Cells.Real.Cell(d, edt)
+                'Me(iRow, eColumnTypes.Mapping).Behaviors.Add(Me.EwEEditHandler)
 
-                If (pressure.DataType = cPressure.eDataTypes.Scalar) Then
-                    Me(iRow, eColumnTypes.Mulitplier) = New cEwECell(Game.Multiplier(pressure.Name))
-                    Me(iRow, eColumnTypes.Mulitplier).Behaviors.Add(Me.EwEEditHandler)
-                Else
-                    Me(iRow, eColumnTypes.Mulitplier) = New cEwECell("", eStyleFlags.Null Or eStyleFlags.NotEditable)
-                End If
+                'If (pressure.DataType = cPressure.eDataTypes.Scalar) Then
+                '    Me(iRow, eColumnTypes.Mulitplier) = New cEwECell(Game.Multiplier(pressure.Name))
+                '    Me(iRow, eColumnTypes.Mulitplier).Behaviors.Add(Me.EwEEditHandler)
+                'Else
+                '    Me(iRow, eColumnTypes.Mulitplier) = New cEwECell("", eStyleFlags.Null Or eStyleFlags.NotEditable)
+                'End If
 
-                Me.Pressure(iRow) = pressure
+                'Me.Pressure(iRow) = pressure
 
             Next
 
@@ -161,31 +169,32 @@ Namespace UI
         ''' -------------------------------------------------------------------
         Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
-            Dim pressure As cPressure = Me.Pressure(p.Row)
-            Dim strDriver As String = pressure.Name
+            'Dim pressure As cPressure = Me.Pressure(p.Row)
+            'Dim strDriver As String = pressure.Name
 
-            Select Case DirectCast(p.Column, eColumnTypes)
+            'Select Case DirectCast(p.Column, eColumnTypes)
 
-                Case eColumnTypes.Mapping
-                    Me.Game.Driver(strDriver) = DirectCast(cell.GetValue(p), cDriver)
-                    Me.Shell.OnChanged()
-                    Try
-                        RaiseEvent OnMappingsChanged(Me)
-                    Catch ex As Exception
-                        ' WHoah!
-                        Debug.Assert(False, ex.Message)
-                    End Try
+            '    Case eColumnTypes.Mapping
+            '        Me.Game.Driver(strDriver) = DirectCast(cell.GetValue(p), cDriver)
+            '        Me.Shell.OnChanged()
+            '        Try
+            '            RaiseEvent OnMappingsChanged(Me)
+            '        Catch ex As Exception
+            '            ' WHoah!
+            '            Debug.Assert(False, ex.Message)
+            '        End Try
 
-                Case eColumnTypes.Mulitplier
-                    Me.Game.Multiplier(strDriver) = DirectCast(cell.GetValue(p), Double)
-                    Me.Shell.OnChanged()
+            '    Case eColumnTypes.Mulitplier
+            '        Me.Game.Multiplier(strDriver) = DirectCast(cell.GetValue(p), Double)
+            '        Me.Shell.OnChanged()
 
-            End Select
-            Return MyBase.OnCellValueChanged(p, cell)
+            'End Select
+            'Return MyBase.OnCellValueChanged(p, cell)
 
         End Function
 
 #End Region ' Overrides
+
 
 #Region " Public bits "
 
@@ -211,63 +220,14 @@ Namespace UI
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the <see cref="cPressure">pressure</see> currently selected in
-        ''' the grid.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property SelectedPressure As cPressure
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
             Get
-                Return Me.Pressure(Me.SelectedRow)
+                Throw New NotImplementedException()
             End Get
         End Property
 
 #End Region ' Public bits
 
-#Region " Internals "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Build a <see cref="EditorComboBox">editor</see> for a given <see cref="cPressure">pressure</see>
-        ''' that ontains compatible <see cref="cDriver">drivers</see>.
-        ''' </summary>
-        ''' <param name="pressure">The pressure.</param>
-        ''' <returns>The editor.</returns>
-        ''' -------------------------------------------------------------------
-        Private Function Editor(pressure As cPressure) As EditorComboBox
-
-            Dim lDrivers As New List(Of cDriver)
-            lDrivers.Add(Nothing)
-            lDrivers.AddRange(Game.Drivers(pressure.DataType))
-
-            Dim e As New EditorComboBox(GetType(cDriver))
-            e.StandardValues = lDrivers.ToArray()
-            e.StandardValuesExclusive = True
-
-            Return e
-
-        End Function
-
-        Private Property Pressure(ByVal iRow As Integer) As cPressure
-            Get
-                If (iRow < 1) Then Return Nothing
-                Return DirectCast(Me.Rows(iRow).Tag, cPressure)
-            End Get
-            Set(ByVal value As cPressure)
-                If (iRow < 1) Then Return
-                Me.Rows(iRow).Tag = value
-            End Set
-        End Property
-
-        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
-            Get
-                Return True
-            End Get
-        End Property
-
-#End Region ' Internals
-
     End Class
 
-End Namespace ' UI
+End Namespace

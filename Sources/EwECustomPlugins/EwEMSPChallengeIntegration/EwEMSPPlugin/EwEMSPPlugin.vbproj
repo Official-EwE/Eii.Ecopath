@@ -122,7 +122,15 @@
   <ItemGroup>
     <Compile Include="cMSPEwEPluginPoint.vb" />
     <Compile Include="My Project\Settings.vb" />
-    <Compile Include="UI\Controls\gridEmulator.vb" />
+    <Compile Include="UI\Controls\gridEmulator.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\gridFleetCatch.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\gridFleets.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\Requirements\cEcosimForcingChecker.vb" />
     <Compile Include="UI\Requirements\cEcosimFishingChecker.vb" />
     <Compile Include="UI\Requirements\cEcosimTimeSeriesChecker.vb" />
@@ -135,8 +143,12 @@
     <Compile Include="UI\frmGameDesigner.Designer.vb">
       <DependentUpon>frmGameDesigner.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmGameDesigner.vb" />
-    <Compile Include="UI\Controls\gridOutcomes.vb" />
+    <Compile Include="UI\frmGameDesigner.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\gridOutcomes.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -153,7 +165,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="UI\Controls\gridDrivers.vb" />
+    <Compile Include="UI\Controls\gridDrivers.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Test sets\cTestset.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +248,8 @@
     <Content Include="Documentation\EwE tools for MSP change list.txt" />
     <Content Include="Documentation\sandcastle.shfbproj" />
     <Content Include="Resources\buas.png" />
+    <None Include="Resources\EcoScope logo.png" />
+    <None Include="Resources\MSP_Challenge_Icon-037c7c.png" />
     <None Include="Resources\CopyHS.png" />
     <None Include="Resources\block.wav" />
     <None Include="Resources\logo-json.png" />

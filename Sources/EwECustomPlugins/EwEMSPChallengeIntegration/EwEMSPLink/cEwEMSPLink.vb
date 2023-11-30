@@ -77,7 +77,7 @@ Public Class cEwEMSPLink
     Public Sub New(core As cCore)
 
         Me.Core = core
-        Me.Data = New cShellData(core)
+        Me.Data = New cEwEMSPLinkData(core)
 
     End Sub
 
@@ -353,10 +353,10 @@ Public Class cEwEMSPLink
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the <see cref="cShellData">EwE shell data</see> to use.
+    ''' Get the <see cref="cEwEMSPLinkData">EwE shell data</see> to use.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Data() As cShellData = Nothing
+    Public ReadOnly Property Data() As cEwEMSPLinkData = Nothing
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

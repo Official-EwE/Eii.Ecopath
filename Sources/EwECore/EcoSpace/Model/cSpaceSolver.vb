@@ -1523,9 +1523,9 @@ Public Class cSpaceSolver
 
     Private Sub ENAData(Ir As Integer, ic As Integer, ByVal Biomass() As Single, Production() As Single, consumpt(,) As Single, FishingMort() As Single, FlowToDertitus() As Single, DetritusFlowByGroup() As Single)
         'Lookup this cell in the dictionary of cells by its Row,Col haskey
-        Dim enaRCellData As cENACellData = Me.m_Data.dctENACells(cENACellData.getHash(Ir, ic))
+        Dim d As cENAData = Me.m_Data.m_enaCellData(cENAData.GetHash(Ir, ic))
         'Populate its data with values from this cell at this time  step
-        enaRCellData.Populate(Me.itt, Me.m_Data, Biomass, Production, consumpt, FishingMort, Me.Eatenof, FlowToDertitus, DetritusFlowByGroup, Me.TotFisheriesDiscards)
+        d.Populate(Me.m_Data, Biomass, Production, consumpt, FishingMort, Me.Eatenof, FlowToDertitus, DetritusFlowByGroup, Me.TotFisheriesDiscards)
     End Sub
 
 
@@ -1570,7 +1570,6 @@ Public Class cSpaceSolver
 
 
 End Class
-
 
 #Region "New Local Memory"
 

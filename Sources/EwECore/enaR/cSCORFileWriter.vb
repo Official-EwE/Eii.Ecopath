@@ -46,7 +46,7 @@ Public Class cSCORFileWriter
         Threading.Thread.CurrentThread.CurrentCulture = culture
 
         Try
-
+            cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(Filename), True)
             Dim strm As New StreamWriter(Filename)
 
             strm.WriteLine(Me.m_EPData.ModelName)
