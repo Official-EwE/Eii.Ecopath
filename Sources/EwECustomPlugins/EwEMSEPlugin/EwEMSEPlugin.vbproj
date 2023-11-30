@@ -254,58 +254,102 @@
     <Compile Include="User interface\frmBiomassLimits.Designer.vb">
       <DependentUpon>frmBiomassLimits.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmBiomassLimits.vb" />
+    <Compile Include="User interface\frmBiomassLimits.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmCEFASRecruitment.designer.vb">
       <DependentUpon>frmCEFASRecruitment.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmCEFASRecruitment.vb" />
+    <Compile Include="User interface\frmCEFASRecruitment.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmDistributionParameters.Designer.vb">
       <DependentUpon>frmDistributionParameters.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmDistributionParameters.vb" />
+    <Compile Include="User interface\frmDistributionParameters.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmEditAssessmentError.Designer.vb">
       <DependentUpon>frmEditAssessmentError.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmEditAssessmentError.vb" />
+    <Compile Include="User interface\frmEditAssessmentError.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmEditDecreaseEffort.Designer.vb">
       <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmEditDecreaseEffort.vb" />
+    <Compile Include="User interface\frmEditDecreaseEffort.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmEditDiets.Designer.vb">
       <DependentUpon>frmEditDiets.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmEditDiets.vb" />
+    <Compile Include="User interface\frmEditDiets.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmEditQuotaShares.Designer.vb">
       <DependentUpon>frmEditQuotaShares.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmEditQuotaShares.vb" />
+    <Compile Include="User interface\frmEditQuotaShares.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmEditSurvivabilities.Designer.vb">
       <DependentUpon>frmEditSurvivabilities.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmEditSurvivabilities.vb" />
+    <Compile Include="User interface\frmEditSurvivabilities.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmMSE.Designer.vb">
       <DependentUpon>frmMSE.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmMSE.vb" />
+    <Compile Include="User interface\frmMSE.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmStrategiesOverview.Designer.vb">
       <DependentUpon>frmStrategiesOverview.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmStrategiesOverview.vb" />
+    <Compile Include="User interface\frmStrategiesOverview.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="User interface\frmTFMpolicy.designer.vb">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
     </Compile>
-    <Compile Include="User interface\frmTFMpolicy.vb" />
-    <Compile Include="User interface\gridBiomassLimits.vb" />
-    <Compile Include="User interface\gridCEFASRecruitment.vb" />
-    <Compile Include="User interface\gridDiets.vb" />
-    <Compile Include="User interface\gridDistributionParameters.vb" />
-    <Compile Include="User interface\gridErrorCVs.vb" />
-    <Compile Include="User interface\gridMaxDecreaseEffort.vb" />
-    <Compile Include="User interface\gridQuotaShares.vb" />
-    <Compile Include="User interface\gridRegulations.vb" />
-    <Compile Include="User interface\gridStrategiesOverview.vb" />
-    <Compile Include="User interface\gridSurviveDistParams.vb" />
-    <Compile Include="User interface\gridTFMpolicy.vb" />
+    <Compile Include="User interface\frmTFMpolicy.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User interface\gridBiomassLimits.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridCEFASRecruitment.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridDiets.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridDistributionParameters.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridErrorCVs.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridMaxDecreaseEffort.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridQuotaShares.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridRegulations.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridStrategiesOverview.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridSurviveDistParams.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="User interface\gridTFMpolicy.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="xalglib.vb" />
   </ItemGroup>
   <ItemGroup>

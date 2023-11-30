@@ -268,4 +268,16 @@ Namespace Utilities
 
     End Class
 
+    Public Class cPropertyUtils
+
+        Public Shared Function IsWritableElemental(pi As PropertyInfo) As Boolean
+            If Not pi.CanWrite Then Return False
+            Dim t As Type = pi.PropertyType
+            If t.IsEnum Then Return True
+            If t.IsValueType Then Return True
+            If t Is GetType(String) Then Return True
+            Return False
+        End Function
+
+    End Class
 End Namespace

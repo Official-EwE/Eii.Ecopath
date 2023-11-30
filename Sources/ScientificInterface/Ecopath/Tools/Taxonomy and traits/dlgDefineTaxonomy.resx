@@ -415,7 +415,7 @@
     <value>7</value>
   </data>
   <data name="m_hdrIO.Text" xml:space="preserve">
-    <value>CSV access</value>
+    <value>CSV</value>
   </data>
   <data name="m_hdrIO.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>

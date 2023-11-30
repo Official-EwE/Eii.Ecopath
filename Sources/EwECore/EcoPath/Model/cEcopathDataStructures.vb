@@ -80,7 +80,7 @@ Public Class cEcopathDataStructures
     ''' <summary>Group names.</summary>
     Public GroupName() As String
     ''' <summary>Group Database ID - uniquely identifies a group.</summary>
-    Friend GroupDBID() As Integer
+    Public GroupDBID() As Integer
 
     ''' <summary>Number of Ecosim scenarios available in a loaded model.</summary>
     Public NumEcosimScenarios As Integer
@@ -268,7 +268,7 @@ Public Class cEcopathDataStructures
     ''' <summary>Names of fleets.</summary>
     Public FleetName() As String
     ''' <summary>Database IDs per fleet.</summary>
-    Friend FleetDBID() As Integer
+    Public FleetDBID() As Integer
     Public NoGearData As Boolean
     ''' <summary> cost(nFleets,3) '1 is fixed cost, 2 is cost per unit effort, 3 sailing cost </summary>
     Public cost(,) As Single

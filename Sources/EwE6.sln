@@ -83,7 +83,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEIBMAgeStructureResultsWr
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEBiomassEmitterPlugin", "EwECustomPlugins\EwEBiomassEmitterPlugin\EwEBiomassEmitterPlugin.vbproj", "{F1E83A61-8A90-4975-ABAE-A546E74E7235}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSC Challenge integration", "MSC Challenge integration", "{4F313741-4B49-424E-BABE-49518258444D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSP Challenge integration", "MSP Challenge integration", "{4F313741-4B49-424E-BABE-49518258444D}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEMSPLink", "EwECustomPlugins\EwEMSPChallengeIntegration\EwEMSPLink\EwEMSPLink.vbproj", "{DDC5D15F-63F4-4B9D-AD24-A69D1D91C243}"
 EndProject

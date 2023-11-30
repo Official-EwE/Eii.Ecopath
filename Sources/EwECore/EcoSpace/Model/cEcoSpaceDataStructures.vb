@@ -20,7 +20,6 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Extensions
-Imports System.IO
 
 #Region "Public Class definitions"
 
@@ -859,7 +858,7 @@ Public Class cEcospaceDataStructures
     Public IsEcosimDiscardForcingGroup() As Boolean
     Public UseEcosimDiscardForcing As Boolean = False
 
-    Public dctENACells As Dictionary(Of String, cENACellData)
+    Public m_enaCellData As Dictionary(Of String, cENAData)
 
     Public bENA As Boolean
 
@@ -1113,8 +1112,8 @@ Public Class cEcospaceDataStructures
 
             Me.MigMaps = Nothing
 
-            If Me.dctENACells IsNot Nothing Then Me.dctENACells.Clear()
-            Me.dctENACells = Nothing
+            If Me.m_enaCellData IsNot Nothing Then Me.m_enaCellData.Clear()
+            Me.m_enaCellData = Nothing
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)

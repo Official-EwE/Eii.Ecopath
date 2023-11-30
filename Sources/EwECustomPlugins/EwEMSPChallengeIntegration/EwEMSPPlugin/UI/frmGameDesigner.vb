@@ -453,7 +453,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users has selected a <see cref="cGame">game</see>.
+        ''' Event handler, called when the user has selected a <see cref="cGame">game</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
@@ -563,7 +563,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to add a <see cref="CGame">game</see>.
+        ''' Event handler, called when the user wishes to add a <see cref="CGame">game</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
@@ -593,7 +593,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to rename the selected <see cref="CGame">game</see>.
+        ''' Event handler, called when the user wishes to rename the selected <see cref="CGame">game</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
@@ -614,7 +614,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to delete the selected <see cref="CGame">game</see>.
+        ''' Event handler, called when the user wishes to delete the selected <see cref="CGame">game</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
@@ -637,7 +637,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users whas modified the Ecospace run
+        ''' Event handler, called when the user whas modified the Ecospace run
         ''' settings.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -668,7 +668,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to review Ecosim time series.
+        ''' Event handler, called when the user wishes to review Ecosim time series.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
@@ -703,11 +703,15 @@ Namespace UI
 
 #End Region ' Game info and game settings "
 
+#Region " Fleets "
+
+#End Region ' Fleets
+
 #Region " Pressures "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to add a <see cref="cPressure">pressure</see>.
+        ''' Event handler, called when the user wishes to add a <see cref="cPressure">pressure</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
@@ -731,7 +735,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to rename the selected 
+        ''' Event handler, called when the user wishes to rename the selected 
         ''' <see cref="cPressure">pressure</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -767,7 +771,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to delete the selected 
+        ''' Event handler, called when the user wishes to delete the selected 
         ''' <see cref="cPressure">pressure</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -797,7 +801,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to create default 
+        ''' Event handler, called when the user wishes to create default 
         ''' <see cref="cPressure">pressures</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -817,7 +821,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users has selected a <see cref="cPressure">pressure</see>.
+        ''' Event handler, called when the user has selected a <see cref="cPressure">pressure</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub OnPressureSelected() _
@@ -833,7 +837,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users has connected changed  a 
+        ''' Event handler, called when the user has connected changed  a 
         ''' <see cref="cPressure">pressure</see> to <see cref="cDriver">driver</see> 
         ''' mapping.
         ''' </summary>
@@ -853,7 +857,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to add a <see cref="cOutcome">output</see>.
+        ''' Event handler, called when the user wishes to add a <see cref="cOutcome">output</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
@@ -877,7 +881,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to rename the selected 
+        ''' Event handler, called when the user wishes to rename the selected 
         ''' <see cref="cOutcome">output</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -903,7 +907,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to delete the selected 
+        ''' Event handler, called when the user wishes to delete the selected 
         ''' <see cref="cOutcome">output</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -929,7 +933,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users has selected an <see cref="cOutcome">output</see>
+        ''' Event handler, called when the user has selected an <see cref="cOutcome">output</see>
         ''' for configuration.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -957,7 +961,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users has changed the configuration of an
+        ''' Event handler, called when the user has changed the configuration of an
         ''' <see cref="cOutcome">output</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -979,7 +983,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to add a <see cref="cTestset">test set</see>.
+        ''' Event handler, called when the user wishes to add a <see cref="cTestset">test set</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
@@ -1002,7 +1006,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to rename the selected 
+        ''' Event handler, called when the user wishes to rename the selected 
         ''' <see cref="cTestset">test set</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -1026,7 +1030,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to delete the selected 
+        ''' Event handler, called when the user wishes to delete the selected 
         ''' <see cref="cTestset">test set</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -1050,7 +1054,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users has selected a <see cref="cTestset">test set</see>
+        ''' Event handler, called when the user has selected a <see cref="cTestset">test set</see>
         ''' for configuration.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -1066,7 +1070,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users has changed the configuratio of a
+        ''' Event handler, called when the user has changed the configuratio of a
         ''' <see cref="cTestset">test set</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -1079,7 +1083,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to load a <see cref="cTestset">test set</see>
+        ''' Event handler, called when the user wishes to load a <see cref="cTestset">test set</see>
         ''' into connected Ecospace <see cref="cDriver">drivers</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -1092,7 +1096,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users has toggled the Ecospace pause option.
+        ''' Event handler, called when the user has toggled the Ecospace pause option.
         ''' <see cref="cTestset">test set</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -1105,7 +1109,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to advance the current 
+        ''' Event handler, called when the user wishes to advance the current 
         ''' Ecospace run to the next pause point.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -1125,7 +1129,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to stop the current Ecospace 
+        ''' Event handler, called when the user wishes to stop the current Ecospace 
         ''' run.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -1140,7 +1144,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to view to folder where
+        ''' Event handler, called when the user wishes to view to folder where
         ''' MSP output files have been stored.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -1156,7 +1160,7 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to view to folder where
+        ''' Event handler, called when the user wishes to view to folder where
         ''' MSP output files have been stored.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
@@ -1193,29 +1197,40 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to visit the RWS site.
+        ''' Event handler, called when the user wishes to visit the MSP site.
+        ''' </summary>
+        ''' <param name="sender">Ignored.</param>
+        ''' <param name="e">Ignored</param>
+        ''' -----------------------------------------------------------------------
+        Private Sub OnVisitMSPChallenge(sender As Object, e As EventArgs) Handles m_pbMSPChallenge.Click
+            Me.Visit("https://www.mspchallenge.info/")
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler, called when the user wishes to visit the RWS site.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
         Private Sub OnVisitRWS(sender As Object, e As EventArgs) Handles m_pbRWS.Click
-            Me.Visit("http://www.rws.nl/")
+            Me.Visit("https://www.rws.nl/")
         End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to visit the EII site.
+        ''' Event handler, called when the user wishes to visit the EII site.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
         Private Sub OnVisitEII(sender As Object, e As EventArgs) Handles m_pbEII.Click
-            Me.Visit("http://www.ecopathinternational.org")
+            Me.Visit("https://www.ecopathinternational.org")
         End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to visit the BUAS site.
+        ''' Event handler, called when the user wishes to visit the BUAS site.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
@@ -1226,13 +1241,13 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to visit the MSP site.
+        ''' Event handler, called when the user wishes to visit the Ecoscope site.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnVisitMSP2050(sender As Object, e As EventArgs) Handles m_pbMSPC2050.Click
-            Me.Visit("http://www.mspchallenge.info/")
+        Private Sub OnVisitEcoscope(sender As Object, e As EventArgs) Handles m_pbEcoscope.Click
+            Me.Visit("https://ecoscopium.eu/")
         End Sub
 
 #End Region ' Credits
@@ -1411,6 +1426,8 @@ Namespace UI
 
             ' Populate outputs
             Dim g As cGame = Me.SelectedGame()
+            If (g Is Nothing) Then Return
+
             Dim outcomes As New List(Of cGrid)
             Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
             Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters

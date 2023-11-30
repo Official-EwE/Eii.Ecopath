@@ -158,7 +158,9 @@
     <Compile Include="UI\frmMPADynamics.Designer.vb">
       <DependentUpon>frmMPADynamics.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmMPADynamics.vb" />
+    <Compile Include="UI\frmMPADynamics.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

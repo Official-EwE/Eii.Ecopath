@@ -544,7 +544,7 @@ Namespace Controls
             Dim rcClient As Rectangle = Me.ClientRectangle()
             Dim bmp As Bitmap = Me.UIContext.StyleGuide.GetImage(rcClient.Width, rcClient.Height, imgFormat, strFileName)
             Dim g As Graphics = Graphics.FromImage(bmp)
-            Dim fs As IO.FileStream = Nothing
+            Dim fs As FileStream = Nothing
             Dim bSucces As Boolean = True
 
             ' Render the shape

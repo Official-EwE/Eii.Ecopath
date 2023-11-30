@@ -23,8 +23,8 @@ Partial Class dlgDefineTaxonomy
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(disposing As Boolean)
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -40,7 +40,7 @@ Partial Class dlgDefineTaxonomy
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineTaxonomy))
         Me.m_btnDefine = New System.Windows.Forms.Button()
@@ -58,7 +58,6 @@ Partial Class dlgDefineTaxonomy
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnExport = New System.Windows.Forms.Button()
         Me.m_btnImport = New System.Windows.Forms.Button()
-        Me.m_hdrIO = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_pbSearching = New System.Windows.Forms.PictureBox()
         Me.m_cmbFilter = New System.Windows.Forms.ComboBox()
@@ -67,6 +66,7 @@ Partial Class dlgDefineTaxonomy
         Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults()
         Me.m_lblEngine = New System.Windows.Forms.Label()
         Me.m_cbShowCodes = New System.Windows.Forms.CheckBox()
+        Me.m_hdrIO = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -178,7 +178,7 @@ Partial Class dlgDefineTaxonomy
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridGroups.CustomSort = False
-        Me.m_gridGroups.DataName = "grid content"
+        Me.m_gridGroups.DataName = "taxonomy"
         Me.m_gridGroups.FixedColumnWidths = True
         Me.m_gridGroups.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridGroups.GridToolTipActive = True
@@ -216,14 +216,6 @@ Partial Class dlgDefineTaxonomy
         resources.ApplyResources(Me.m_btnImport, "m_btnImport")
         Me.m_btnImport.Name = "m_btnImport"
         Me.m_btnImport.UseVisualStyleBackColor = True
-        '
-        'm_hdrIO
-        '
-        resources.ApplyResources(Me.m_hdrIO, "m_hdrIO")
-        Me.m_hdrIO.CanCollapseParent = False
-        Me.m_hdrIO.CollapsedParentHeight = 0
-        Me.m_hdrIO.IsCollapsed = False
-        Me.m_hdrIO.Name = "m_hdrIO"
         '
         'm_hdrSearch
         '
@@ -299,6 +291,14 @@ Partial Class dlgDefineTaxonomy
         resources.ApplyResources(Me.m_cbShowCodes, "m_cbShowCodes")
         Me.m_cbShowCodes.Name = "m_cbShowCodes"
         Me.m_cbShowCodes.UseVisualStyleBackColor = True
+        '
+        'm_hdrIO
+        '
+        resources.ApplyResources(Me.m_hdrIO, "m_hdrIO")
+        Me.m_hdrIO.CanCollapseParent = False
+        Me.m_hdrIO.CollapsedParentHeight = 0
+        Me.m_hdrIO.IsCollapsed = False
+        Me.m_hdrIO.Name = "m_hdrIO"
         '
         'dlgDefineTaxonomy
         '

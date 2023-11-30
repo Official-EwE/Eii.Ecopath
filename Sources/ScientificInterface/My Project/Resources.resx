@@ -2231,4 +2231,23 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="FuMa_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FuMa_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ECOPATH_IMPORTTAXA_DELETE_PROMPT" xml:space="preserve">
+    <value>This will remove all existing taxa definitions. Are you sure you want to do this?</value>
+  </data>
+  <data name="GENERIC_FILEIMPORT_FAILURE" xml:space="preserve">
+    <value>File {0} failed to import. {1}</value>
+    <comment>{0}=file name, {1}=error</comment>
+  </data>
+  <data name="GENERIC_FILEIMPORT_SUCCESS" xml:space="preserve">
+    <value>File {0} imported successfully.</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="GENERIC_FILESAVE_FAILURE1" xml:space="preserve">
+    <value>'{0}' failed to save to file '{1}'. {2}.</value>
+    <comment>{0}=item that saved. {1}=file dest. {2}=error message</comment>
+  </data>
+  <data name="GENERIC_FILESAVE_SUCCES1" xml:space="preserve">
+    <value>'{0}' is succesfully saved to file '{1}'.</value>
+    <comment>{0}=item that saved. {1}=file dest</comment>
+  </data>
 </root>

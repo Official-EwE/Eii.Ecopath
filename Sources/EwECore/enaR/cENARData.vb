@@ -16,46 +16,62 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
 Imports EwEUtils.Core
-Imports EwEUtils.Extensions
 Imports System.IO
 
-Public Class cENACellData
-    Inherits cRowCol
+#End Region ' Imports
+
+Public Class cENAData
 
     Public nGroups As Integer
     Public ENARData As cENARDataStructures
-    Public iTimeStep As Integer
 
     Private m_epdata As cEcopathDataStructures
 
-
     Public Sub New(theRow As Integer, theCol As Integer)
-        MyBase.New(theRow, theCol)
-
+        Me.Key = GetHash(theRow, theCol)
     End Sub
 
+    Public Sub New(region As String)
+        Me.Key = "region-" & region
+    End Sub
 
-    Public Sub Init(SpaceData As cEcospaceDataStructures, EcoPathData As cEcopathDataStructures)
-        Me.nGroups = SpaceData.NGroups
+    Public ReadOnly Property Key() As String
 
+    Public Sub Init(ecopathDS As cEcopathDataStructures)
+        Me.nGroups = ecopathDS.NumGroups
         Me.ENARData = New cENARDataStructures(Me.nGroups)
-        Me.m_epdata = EcoPathData
-
+        Me.m_epdata = ecopathDS
     End Sub
 
-    Public Sub Populate(iTime As Integer, SpaceData As cEcospaceDataStructures, Biomass() As Single, Production() As Single, consumpt(,) As Single,
-                        FishingMort() As Single, EatenOf() As Single, FlowToDertitus() As Single, DetritusFlowByGroup() As Single, TotfisheriesDiscards As Single)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Populate the internal <see cref="cENARDataStructures"/> with new data.
+    ''' </summary>
+    ''' <param name="SpaceData"></param>
+    ''' <param name="Biomass"></param>
+    ''' <param name="Production"></param>
+    ''' <param name="consumpt"></param>
+    ''' <param name="FishingMort"></param>
+    ''' <param name="EatenOf"></param>
+    ''' <param name="FlowToDertitus"></param>
+    ''' <param name="DetritusFlowByGroup"></param>
+    ''' <param name="TotfisheriesDiscards"></param>
+    ''' -----------------------------------------------------------------------
+    Public Sub Populate(SpaceData As cEcospaceDataStructures, Biomass() As Single,
+                        Production() As Single, consumpt(,) As Single,
+                        FishingMort() As Single, EatenOf() As Single,
+                        FlowToDertitus() As Single, DetritusFlowByGroup() As Single,
+                        TotfisheriesDiscards As Single)
 
         'System.Console.WriteLine("Populating ENA Data " + Me.Key)
 
         Debug.Assert(Biomass.Length >= Me.nGroups, "enaR Populate(...) Number of groups in enaR and Core is not the same! This will cause problems!")
         Try
 
-            Me.iTimeStep = iTime
-			
             ' JS 11dec20: fixed bug where last array items weren't copied over, resulting in missing B for the last (detritus) group in EnaR SCOR files
             Array.Copy(Biomass, Me.ENARData.b, Me.nGroups + 1)
             Array.Copy(consumpt, Me.ENARData.Consumpt, Me.nGroups + 1)
@@ -160,38 +176,22 @@ Public Class cENACellData
 
     End Sub
 
-    Public Shared Function getHash(irow As Integer, icol As Integer) As String
-        Return irow.ToString + "_" + icol.ToString
+    Public Shared Function GetHash(irow As Integer, icol As Integer) As String
+        Return "cell-" & irow.ToString("D4") & "-" & icol.ToString("D4")
     End Function
 
-    Public Function Key() As String
-        Return cENACellData.getHash(Me.Row, Me.Col)
+    Public Shared Function GetHash(region As String) As String
+        Return "region-" & region
     End Function
 
-    Public Function toFileName(theCore As cCore) As String
-        Dim fname As String = theCore.EwEModel.Name + "_" + theCore.EcospaceScenarios(theCore.ActiveEcospaceScenarioIndex).Name + ".txt"
-        Dim row As String = Me.toFormattedString(Me.Row, 3)
-        Dim col As String = Me.toFormattedString(Me.Col, 3)
+    Public Function OutputFileName(theCore As cCore, autosave As eAutosaveTypes, Optional iTimestep As Integer = 0) As String
 
-        Dim fp As String = Path.Combine(theCore.DefaultOutputPath(eAutosaveTypes.Ecospace), "ena_data", "TimeStep=" + Me.toFormattedString(Me.iTimeStep, 4))
+        Dim fname As String = "enaR.txt"
 
-        If Not Directory.Exists(fp) Then
-            Directory.CreateDirectory(fp)
-        End If
-
-        Return Path.Combine(fp, row + "-" + col + "-" + fname)
+        Dim fp As String = Path.Combine(theCore.DefaultOutputPath(autosave), "ena_data", If(iTimestep <= 0, "", "TimeStep-" + iTimestep.ToString("D4")))
+        Return Path.Combine(fp, Me.Key & fname)
 
     End Function
-
-    Function toFormattedString(value As Integer, nZeros As Integer) As String
-        Dim FormatedNum As String = EwEUtils.Utilities.cStringUtils.FormatInteger(value)
-        Dim n As Integer = FormatedNum.Length
-        For i As Integer = n To nZeros
-            FormatedNum = "0" + FormatedNum
-        Next
-        Return FormatedNum
-    End Function
-
 
 #Region "ENA code from EwE Used as reference"
 

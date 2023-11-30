@@ -167,8 +167,12 @@
     <Compile Include="UI\frmSamples.Designer.vb">
       <DependentUpon>frmSamples.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmSamples.vb" />
-    <Compile Include="UI\gridSamples.vb" />
+    <Compile Include="UI\frmSamples.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\gridSamples.vb">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

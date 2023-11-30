@@ -767,6 +767,7 @@
     <Compile Include="IO\cDataTableConverter.vb" />
     <Compile Include="IO\cDataTableEnumerable.vb" />
     <Compile Include="IO\cDataTableEnumerator.vb" />
+    <Compile Include="IO\cFieldInfoWriter.vb" />
     <Compile Include="IO\cGenericDataReader.vb" />
     <Compile Include="IO\cGenericDataWriter.vb" />
     <Compile Include="modExtensions.vb" />

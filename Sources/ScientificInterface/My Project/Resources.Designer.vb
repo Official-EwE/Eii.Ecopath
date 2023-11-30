@@ -449,6 +449,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to This will remove all existing taxa definitions. Are you sure you want to do this?.
+        '''</summary>
+        Public ReadOnly Property ECOPATH_IMPORTTAXA_DELETE_PROMPT() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_IMPORTTAXA_DELETE_PROMPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         '''</summary>
         Public ReadOnly Property ecopath_logo() As System.Drawing.Icon
@@ -1619,6 +1628,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to File {0} failed to import. {1}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_FILEIMPORT_FAILURE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_FILEIMPORT_FAILURE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to File {0} imported successfully..
+        '''</summary>
+        Public ReadOnly Property GENERIC_FILEIMPORT_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_FILEIMPORT_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to &apos;{0}&apos; failed to save to file &apos;{1}&apos;: {2}..
         '''</summary>
         Public ReadOnly Property GENERIC_FILESAVE_FAILURE() As String
@@ -1628,11 +1655,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to &apos;{0}&apos; failed to save to file &apos;{1}&apos;. {2}..
+        '''</summary>
+        Public ReadOnly Property GENERIC_FILESAVE_FAILURE1() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_FILESAVE_FAILURE1", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to &apos;{0}&apos; is succesfully saved to file &apos;{1}&apos;..
         '''</summary>
         Public ReadOnly Property GENERIC_FILESAVE_SUCCES() As String
             Get
                 Return ResourceManager.GetString("GENERIC_FILESAVE_SUCCES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &apos;{0}&apos; is succesfully saved to file &apos;{1}&apos;..
+        '''</summary>
+        Public ReadOnly Property GENERIC_FILESAVE_SUCCES1() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_FILESAVE_SUCCES1", resourceCulture)
             End Get
         End Property
         

@@ -26,17 +26,16 @@ Imports EwEUtils.Utilities
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Driver for inserting MSP pressure data into the <see cref="cEcospaceFleet.TotalEffMultiplier">effort multiplier</see>
-''' of a single <see cref="cEcospaceFleet">Ecospace fleet</see>.
+''' Driver for defining if a fleet is "ecological", which changes all discard mortalities to 0.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cEffortDriver
+Public Class cEcologicalGearDriver
     Inherits cDriver
 
 #Region " Private vars "
 
     Private m_fleet As cEcopathFleetInput = Nothing
-    Private Const cTINY_NUM = 1.0E-20
+    Private m_bEcological As Boolean = False
 
 #End Region ' Private vars
 
@@ -68,13 +67,27 @@ Public Class cEffortDriver
 
         If (pressure.Scalar < 0) Then Return True
 
-        If (data IsNot Nothing) Then
-            data.SEmult(Me.m_fleet.Index) = Math.Max(cTINY_NUM, Math.Min(1, Math.Max(pressure.Scalar, 0)) * multiplier)
-        Else
-            Dim flt As cEcospaceFleetInput = Me.m_core.EcospaceFleetInputs(Me.m_fleet.Index)
-            flt.TotalEffMultiplier = Math.Max(cTINY_NUM, Math.Min(1, Math.Max(pressure.Scalar, 0)) * multiplier)
-        End If
+        Dim bIsEcological As Boolean = (pressure.Scalar > 0)
+        Dim SimDS As cEcosimDatastructures = Me.m_core.EcosimDataStructures
+        Dim PathDS As cEcopathDataStructures = Me.m_core.EcopathDataStructures
 
+        Dim iFlt As Integer = Me.m_fleet.Index
+
+        For iGrp As Integer = 1 To Me.m_core.nGroups
+
+            If (bIsEcological <> Me.m_bEcological) Then
+                If (bIsEcological) Then
+
+                    SimDS.PropDiscardMortTime(iFlt, iGrp) = 0
+                    SimDS.PropDiscardTime(iFlt, iGrp) = 0
+                Else
+                    SimDS.PropDiscardMortTime(iFlt, iGrp) = PathDS.PropDiscardMort(iFlt, iGrp)
+                    SimDS.PropDiscardTime(iFlt, iGrp) = PathDS.PropDiscard(iFlt, iGrp) * SimDS.PropDiscardMortTime(iFlt, iGrp)
+                End If
+
+                Me.m_bEcological = bIsEcological
+            End If
+        Next
         Return True
 
     End Function
@@ -87,8 +100,7 @@ Public Class cEffortDriver
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property StartValue As Double
         Get
-            Dim flt As cEcospaceFleetInput = Me.m_core.EcospaceFleetInputs(Me.m_fleet.Index)
-            Return flt.TotalEffMultiplier
+            Return CDbl(False)
         End Get
     End Property
 

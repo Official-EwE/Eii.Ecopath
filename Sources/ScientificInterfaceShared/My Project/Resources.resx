@@ -3208,4 +3208,12 @@
   <data name="COMMAND_DEFINEEFFORTZONES" xml:space="preserve">
     <value>Define the number of effort distribution zones</value>
   </data>
+  <data name="FIELDINFO_ENUM" xml:space="preserve">
+    <value>{0} (predefined list of {1})</value>
+    <comment>{0} = field name, {1} = field type</comment>
+  </data>
+  <data name="FIELDINFO_VARIABLE" xml:space="preserve">
+    <value>{0} ({1})</value>
+    <comment>{0} = field name, {1} = field type</comment>
+  </data>
 </root>

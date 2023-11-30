@@ -32,6 +32,7 @@ Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Web
+Imports System.IO
 
 #End Region ' Imports
 
@@ -550,7 +551,7 @@ Public Class dlgEcobaseImport
 
             Dim MyWebClient As New System.Net.WebClient()
             Dim data() As Byte = MyWebClient.DownloadData("http://ecobase.ecopath.org/php/mapserver.php?model=" & Me.m_model.EcobaseCode)
-            Dim strm As New IO.MemoryStream(data)
+            Dim strm As New MemoryStream(data)
             Me.m_img = New System.Drawing.Bitmap(strm)
 
             If Me.m_wrkGetImage.CancellationPending Then e.Cancel = True

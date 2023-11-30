@@ -20,13 +20,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Xml
-Imports EwECore
 Imports System.Drawing
 Imports System.Text
-Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities
 Imports System.Web
+Imports System.Xml
+Imports EwECore
+Imports EwECore.WebServices
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -44,7 +44,8 @@ Public Class cGame
     Private m_pressures As New List(Of cPressure)
     Private m_pressuredrivers As New Dictionary(Of String, String)
     Private m_pressuremultipliers As New Dictionary(Of String, Double)
-    Private m_outputs As New List(Of cOutcome)
+    Private m_outcomes As New List(Of cOutcome)
+    Private m_fleets As New List(Of cFleet)
 
 #End Region ' Private variables
 
@@ -73,6 +74,8 @@ Public Class cGame
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Name As String Implements IMELItem.Name
+
+#Region " Pressures "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -127,6 +130,10 @@ Public Class cGame
         Me.m_pressures.Remove(pressure)
     End Sub
 
+#End Region ' Pressures
+
+#Region " Outcomes "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns the list of output configurations defined in the game.
@@ -134,7 +141,7 @@ Public Class cGame
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Outputs As ICollection(Of cOutcome)
         Get
-            Return Me.m_outputs
+            Return Me.m_outcomes
         End Get
     End Property
 
@@ -150,7 +157,7 @@ Public Class cGame
                 Return
             End If
         Next
-        Me.m_outputs.Add(output)
+        Me.m_outcomes.Add(output)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -160,8 +167,12 @@ Public Class cGame
     ''' <param name="output">The <see cref="cOutcome"/> to remove.</param>
     ''' -----------------------------------------------------------------------
     Public Sub Remove(output As cOutcome)
-        Me.m_outputs.Remove(output)
+        Me.m_outcomes.Remove(output)
     End Sub
+
+#End Region ' Outcomes
+
+#Region " Drivers "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -174,6 +185,20 @@ Public Class cGame
             Return cDriverFactory.GetDrivers(Me.m_core, Me, datatype)
         End Get
     End Property
+
+#End Region ' Drivers
+
+#Region " Fleets "
+
+    Public ReadOnly Property Fleets() As ICollection(Of cFleet)
+        Get
+            Return Me.m_fleets
+        End Get
+    End Property
+
+#End Region ' Fleets
+
+#Region " Metadata "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -259,6 +284,10 @@ Public Class cGame
     ''' -----------------------------------------------------------------------
     Public Property MPACellClosureRatio As Single = 0.25
 
+#End Region ' Metadata
+
+#Region " Pressure / Driver mapping "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns the driver connected to a specific pressure.
@@ -306,16 +335,17 @@ Public Class cGame
         End Set
     End Property
 
+#End Region ' Pressure / Driver mapping 
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Find the output that describes how a specific outcome grid should be populated.
+    ''' Find the output that describes how a specific cGrid should be populated.
     ''' </summary>
-    ''' <param name="grid">The grid to find the output for.</param>
-    ''' <returns>An output if configured, or nothing if the output could not be found.</returns>
+    ''' <param name="grid">The name of the <see cref="cOutcome"/> to find.</param>
+    ''' <returns>An outcome if configured, or nothing if the outcome  could not be found.</returns>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Output(grid As cGrid) As cOutcome
         Get
-            If (grid Is Nothing) Then Return Nothing
             For Each out As cOutcome In Me.Outputs
                 If (String.Compare(out.Name, grid.Name, True) = 0) Then Return out
             Next
@@ -562,7 +592,7 @@ Public Class cGame
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Prepare the game. Load sim and space, run space spin-up.
+    ''' Prepare the game by loading sim and space.
     ''' </summary>
     ''' <remarks>True if successful.</remarks>
     ''' <exception cref="cMELException">A MEL exception will be thrown if something went wrong.</exception>
@@ -720,9 +750,24 @@ Public Class cGame
         Next
         xnGame.AppendChild(xnMappings)
 
+        ' Add fleets
+        Dim xnFleets As XmlNode = doc.CreateElement("fleets")
+        For i As Integer = 0 To Me.m_fleets.Count - 1
+
+            Dim fleet As cFleet = Me.m_fleets(i)
+            Dim xnFleet As XmlNode = doc.CreateElement("fleet")
+
+            xa = doc.CreateAttribute("name")
+            xa.InnerText = HttpUtility.UrlEncode(fleet.Name)
+            xnFleet.Attributes.Append(xa)
+
+            xa = doc.CreateAttribute("nationality")
+            xa.InnerText = HttpUtility.UrlEncode(fleet.Nationality)
+
+        Next
+
         ' Add outputs
         Dim xnOutputs As XmlNode = doc.CreateElement("outputs")
-        Dim sb As New StringBuilder()
         For Each output As cOutcome In Outputs
 
             Dim xnOutput As XmlNode = doc.CreateElement("output")
@@ -736,7 +781,7 @@ Public Class cGame
             xnOutput.Attributes.Append(xa)
 
             xa = doc.CreateAttribute("numerators")
-            sb.Clear()
+            Dim sb As New StringBuilder()
             For i As Integer = 1 To output.NumItems
                 If (i > 1) Then sb.Append(",")
                 sb.Append(cStringUtils.FormatNumber(output.Numerator(i)))

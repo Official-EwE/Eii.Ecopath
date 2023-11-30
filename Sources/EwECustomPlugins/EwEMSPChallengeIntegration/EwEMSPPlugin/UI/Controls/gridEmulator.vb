@@ -22,7 +22,6 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEMSPLink
 Imports EwEMSPPlugin.Emulator
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
