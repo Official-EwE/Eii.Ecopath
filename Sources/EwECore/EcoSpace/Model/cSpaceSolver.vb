@@ -491,20 +491,23 @@ Public Class cSpaceSolver
                 'the long term equilibrium biomass or at least an approx to)
 
                 If Me.m_Data.Depth(i, j) = 0 Then Me.m_Data.Bcell(i, j, iGrp) = 0
-                If Single.IsNaN(Me.m_Data.Bcell(i, j, iGrp)) = True Then Me.m_Data.Bcell(i, j, iGrp) = 0.000001
+                If Single.IsNaN(Me.m_Data.Bcell(i, j, iGrp)) = True Then Me.m_Data.Bcell(i, j, iGrp) = 1.0E-30
                 Me.BB(iGrp) = Me.m_Data.Bcell(i, j, iGrp)
 
                 If Me.m_TracerData.EcoSpaceConSimOn Then
+                    If Me.m_Data.Ccell(i, j, iGrp) < 1.0E-30 Or Single.IsNaN(Me.m_ConTracer.ConcTr(iGrp)) Then
+                        Me.m_Data.Ccell(i, j, iGrp) = 1.0E-30
+                    End If
                     Me.m_ConTracer.ConcTr(iGrp) = Me.m_Data.Ccell(i, j, iGrp)
-                    Debug.Assert(Not Single.IsNaN(Me.m_ConTracer.ConcTr(iGrp)))
+                    'Debug.Assert(Not Single.IsNaN(Me.m_ConTracer.ConcTr(iGrp)))
                 End If
 
-                'sum biomass over all the cells
-                'this is now done individually for each thread, then summed outside the threads
-                'Btime(ip) = Btime(ip) + BB(ip)
-                'BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
+                    'sum biomass over all the cells
+                    'this is now done individually for each thread, then summed outside the threads
+                    'Btime(ip) = Btime(ip) + BB(ip)
+                    'BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
 
-                If (Me.m_SimData.NoIntegrate(iGrp) = iGrp Or Me.m_SimData.NoIntegrate(iGrp) < 0) And Me.m_SimData.SimGE(iGrp) > 0 Then
+                    If (Me.m_SimData.NoIntegrate(iGrp) = iGrp Or Me.m_SimData.NoIntegrate(iGrp) < 0) And Me.m_SimData.SimGE(iGrp) > 0 Then
                     If (Me.Cper(i, j, iGrp) > 0 And Me.m_SimData.FtimeAdjust(iGrp) > 0) Then
                         Me.FtimeCell(i, j, iGrp) = Me.FtimeCell(i, j, iGrp) * (0.7F + 0.3F * Me.m_SimData.Cbase(iGrp) / Me.Cper(i, j, iGrp))
                     End If

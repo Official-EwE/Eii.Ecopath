@@ -1075,6 +1075,7 @@ Public Class cEcoSpace
                         Me.runSpaceCSolverThreads(CSng(ntc))
 
                         Me.runContaminantTracerExplicit1(Derivcon, Derivcon2, ntc)
+                        If Me.m_StopRun Then Exit For
 
                         'For debugging
                         'totderivcon = 0
@@ -2110,26 +2111,33 @@ Public Class cEcoSpace
             For j = 1 To Me.EcoSpaceData.InCol
                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
                     For iGrp = 0 To Me.EcoSpaceData.NGroups
-
-
                         Me.EcoSpaceData.Ccell(i, j, iGrp) = Me.EcoSpaceData.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
+
                         If Me.EcoSpaceData.Ccell(i, j, iGrp) < 1.0E-20 Then
                             Me.EcoSpaceData.Ccell(i, j, iGrp) = 1.0E-20
                         End If
 
-                        'Debug.Assert(Not Single.IsNegativeInfinity(Me.EcoSpaceData.Ccell(i, j, iGrp)))
-
-
-                        'Me.EcoSpaceData.Ccell(i - 1, j, iGrp) -= Me.Bcw(i, j, iGrp) * Me.EcoSpaceData.Ccell(i - 1, j, iGrp) * Tst
-                        'Me.EcoSpaceData.Ccell(i + 1, j, iGrp) -= Me.C(i, j, iGrp) * Me.EcoSpaceData.Ccell(i + 1, j, iGrp) * Tst
-                        'Me.EcoSpaceData.Ccell(i, j - 1, iGrp) -= Me.d(i, j - 1, iGrp) * Me.EcoSpaceData.Ccell(i, j - 1, iGrp) * Tst
-                        'Me.EcoSpaceData.Ccell(i, j + 1, iGrp) -= Me.e(i, j + 1, iGrp) * Me.EcoSpaceData.Ccell(i, j + 1, iGrp) * Tst
-
-                        'Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
                     Next
                 End If
             Next
         Next
+
+        'Set the system boundary cells (outside the modeled area) to cells on the edge
+        'This stops contaminants from importing zero values from outside the modeled area
+        'and causing the values to drop along open edges
+        'This will have no affect if the outside edge is land
+        For iGrp = 0 To Me.EcoSpaceData.NGroups
+            For i = 0 To Me.EcoSpaceData.InRow
+                Me.EcoSpaceData.Ccell(i, 0, iGrp) = Me.EcoSpaceData.Ccell(i, 1, iGrp)
+                Me.EcoSpaceData.Ccell(i, Me.EcoSpaceData.InCol + 1, iGrp) = Me.EcoSpaceData.Ccell(i, Me.EcoSpaceData.InCol, iGrp)
+            Next
+
+            For j = 0 To Me.EcoSpaceData.InCol
+                Me.EcoSpaceData.Ccell(0, j, iGrp) = Me.EcoSpaceData.Ccell(1, j, iGrp)
+                Me.EcoSpaceData.Ccell(Me.EcoSpaceData.InRow + 1, j, iGrp) = Me.EcoSpaceData.Ccell(Me.EcoSpaceData.InRow, j, iGrp)
+            Next
+        Next igrp
+
 
     End Sub
 
@@ -2162,8 +2170,6 @@ Public Class cEcoSpace
                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
                     For iGrp = 0 To Me.EcoSpaceData.NGroups
                         Me.EcoSpaceData.Ccell(i, j, iGrp) = Me.EcoSpaceData.Ccell(i, j, iGrp) + 0.5 * (3.0 * Derivcon(i, j, iGrp) - Derivcon2(i, j, iGrp)) * Tst
-                        'jb
-                        Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
                     Next
                 End If
             Next
@@ -2799,19 +2805,24 @@ Public Class cEcoSpace
                             End If
                         Next
                     Next
+
                     If TinP > 0 Then 'there is contaminant input at at least one cell
-                        For i = 1 To Me.EcoSpaceData.InRow
-                            For j = 1 To Me.EcoSpaceData.InCol
+                        Dim relCin As Single
+                        For i = 0 To Me.EcoSpaceData.InRow + 1
+                            For j = 0 To Me.EcoSpaceData.InCol + 1
                                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
-                                    Me.EcoSpaceData.Ccell(i, j, 0) = Me.ContaiminantTracerData.Czero(0) * Tcell / TinP * Me.EcoSpaceData.RelCin(i, j)
-                                    'm_Data.Ccell(i, j, 0) = m_tracerData.Czero(0) * m_Data.RelCin(i, j)
+                                    relCin = Me.EcoSpaceData.RelCin(i, j)
+                                    If i = 0 Or i = Me.EcoSpaceData.InRow + 1 Then relCin = 1.0
+                                    If j = 0 Or j = Me.EcoSpaceData.InRow + 1 Then relCin = 1.0
+                                    Me.EcoSpaceData.Ccell(i, j, 0) = Me.ContaiminantTracerData.Czero(0) * Tcell / TinP * relCin
                                     Me.EcoSpaceData.Clast(i, j, 0) = Me.EcoSpaceData.Ccell(i, j, 0)
-                                End If
-                            Next
-                        Next
-                    End If
-                End If
-            End If
+                                End If 'Me.EcoSpaceData.Depth(i, j) > 0
+                            Next j
+                        Next i
+                    End If 'TinP > 0 
+
+                End If 'Me.ContaiminantTracerData.Czero(0) > 
+            End If 'Me.ContaiminantTracerData.EcoSpaceConSimOn
 
             Me.EcoSim.InitializeDataInfo()
 
