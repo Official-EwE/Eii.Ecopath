@@ -60,6 +60,11 @@ Public Class cEcospaceXYZTResultsWriter
             Me.WriteGroupFileHeaders(eVarNameFlags.EcospaceMapBiomass)
             Me.WriteGroupFileHeaders(eVarNameFlags.EcospaceMapCatch)
             Me.WriteFleetFileHeaders(eVarNameFlags.EcospaceMapEffort)
+
+            If Me.m_core.EcospaceModelParameters.ContaminantTracing Then
+                Me.WriteGroupFileHeaders(eVarNameFlags.Concentration)
+            End If
+
         Catch ex As Exception
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message),
                                                         eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Warning))
@@ -71,10 +76,19 @@ Public Class cEcospaceXYZTResultsWriter
     ''' -----------------------------------------------------------------------
     Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
 
-        Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
+        Dim vars() As eVarNameFlags
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
         Dim strm As StreamWriter = Nothing
         Dim strFile As String = ""
+        Dim ifirstGroup As Integer
+
+        If Me.m_core.EcospaceModelParameters.ContaminantTracing Then
+            vars = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch, eVarNameFlags.Concentration}
+            ifirstGroup = 0
+        Else
+            vars = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
+            ifirstGroup = 1
+        End If
 
         Try
 
@@ -83,7 +97,7 @@ Public Class cEcospaceXYZTResultsWriter
             End If
 
             For Each varname As eVarNameFlags In vars
-                For igrp As Integer = 1 To Me.m_core.m_EcopathData.NumLiving
+                For igrp As Integer = ifirstGroup To Me.m_core.nGroups
                     strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension())
                     If Not String.IsNullOrWhiteSpace(strFile) AndAlso cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
                         'Handle file exceptions on a per file basis
@@ -160,10 +174,9 @@ Public Class cEcospaceXYZTResultsWriter
     ''' Write run info header.
     ''' </summary>
     ''' <param name="strm">The writer to write to.</param>
-    ''' <param name="igrp">The group to write the header for.</param>
     ''' <param name="varname">The variable name to write the header for.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteHeader(ByRef strm As StreamWriter, igrp As Integer, varname As eVarNameFlags, TypeLabel As String, Type As String)
+    Private Sub WriteHeader(ByRef strm As StreamWriter, varname As eVarNameFlags, TypeLabel As String, Type As String)
 
         Try
             Me.WriteRunInfo(strm)
@@ -256,19 +269,28 @@ Public Class cEcospaceXYZTResultsWriter
 
         Dim strm As StreamWriter
         Dim strFN As String
+        Dim grp As String
 
-        For igrp As Integer = 1 To Me.m_core.m_EcopathData.NumLiving
+        Dim ifirst As Integer = 1
+        If varname = eVarNameFlags.Concentration Then
+            ifirst = 0
+        End If
+
+
+        For igrp As Integer = ifirst To Me.m_core.m_EcopathData.NumGroups
             strFN = Me.GetGroupFileName(varname, igrp, "csv")
             If Not String.IsNullOrWhiteSpace(strFN) AndAlso cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFN), True) Then
+                grp = cStringUtils.ToCSVField(Me.m_core.m_EcopathData.GroupName(igrp))
+                If igrp = 0 Then grp = "Environment"
                 'Create a new file when writing the header
                 'this overwrites the data in the current directory
                 strm = New StreamWriter(strFN)
-                If Me.m_core.SaveWithFileHeader Then
-                    Me.WriteHeader(strm, igrp, varname, "Group name", cStringUtils.ToCSVField(Me.EcopathData.GroupName(igrp)))
-                End If
+                'If Me.m_core.SaveWithFileHeader Then
+                Me.WriteHeader(strm, varname, "Contaminant Concentrations", grp)
+                'End If
                 strm.Close()
-                strm = Nothing
-            End If
+                    strm = Nothing
+                End If
         Next
 
     End Sub
@@ -289,9 +311,10 @@ Public Class cEcospaceXYZTResultsWriter
             'Create a new file when writing the header
             'this overwrites the data in the current directory
             strm = New StreamWriter(strFN)
-            If Me.m_core.SaveWithFileHeader Then
-                Me.WriteHeader(strm, iflt, varname, "Fleet name", cStringUtils.ToCSVField(Me.EcopathData.FleetName(iflt)))
-            End If
+            'always write the header
+            'If Me.m_core.SaveWithFileHeader Then
+            Me.WriteHeader(strm, varname, "Fleet name", cStringUtils.ToCSVField(Me.EcopathData.FleetName(iflt)))
+            'End If
             strm.Close()
             strm = Nothing
         Next

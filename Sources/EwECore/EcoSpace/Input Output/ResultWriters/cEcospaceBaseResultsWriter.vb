@@ -197,21 +197,27 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim strTimestep As String = ""
-            Dim grpName As String = Me.m_core.m_EcopathData.GroupName(iGrp)
+            Dim grpName As String
+            If varname = eVarNameFlags.Concentration And iGrp = 0 Then
+                grpName = "Environment"
+            Else
+                grpName = Me.m_core.m_EcopathData.GroupName(iGrp)
+            End If
+
 
             If (String.IsNullOrWhiteSpace(grpName)) Then Return ""
 
-            ' Is there a time step in the file name?
-            If (iModelTimeStep > 0) Then
-                ' #Yes: include it in the file name
-                strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
+                ' Is there a time step in the file name?
+                If (iModelTimeStep > 0) Then
+                    ' #Yes: include it in the file name
+                    strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
+                End If
+
+                fn = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
+                                                                        cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
             End If
 
-            fn = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
-                                                                        cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
-        End If
-
-        Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
+            Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
 
     End Function
 
