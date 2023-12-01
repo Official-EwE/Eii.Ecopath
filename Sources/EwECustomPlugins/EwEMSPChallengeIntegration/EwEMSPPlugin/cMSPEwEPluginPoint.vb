@@ -112,7 +112,7 @@ Public Class cMSPEwEPluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlImage As System.Drawing.Image Implements IGUIPlugin.ControlImage
         Get
-            Return Nothing
+            Return My.Resources.MSP_Challenge_Icon_037c7c
         End Get
     End Property
 
