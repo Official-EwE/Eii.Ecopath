@@ -104,7 +104,7 @@ Public Class cContaminantTracer
             Ceq = CSng(Cintotal(i) / Closs(i))
             'calculate distance to equilibrium (%)
             'if the equilibrium is Inf or NaN, then this should evaluate to NaN
-            Terr = CSng(2.0 * Math.Abs(Ceq - Me.ConcTr(i)) / (Ceq + Me.ConcTr(i)))
+            Terr = CSng(2.0 * Math.Abs(Ceq - Me.ConcTr(i)) / (Ceq + Me.ConcTr(i) + 1.0E-30))
             If Terr < 0.01 Then
                 'this forces the maximum timestep size to be 1/closs
                 Terr = 0.01

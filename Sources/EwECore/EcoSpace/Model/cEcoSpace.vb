@@ -2100,7 +2100,6 @@ Public Class cEcoSpace
                             Me.EcoSpaceData.AMmTr(i, j, iGrp) * Me.EcoSpaceData.Ccell(i, j, iGrp)
                         'm_Data.Ccell(i, j, iGrp) = m_Data.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
                         Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
-                        'Debug.Assert(Not Single.IsNegativeInfinity(Derivcon(i, j, iGrp)))
 
                     Next
                 End If
@@ -2113,8 +2112,10 @@ Public Class cEcoSpace
                     For iGrp = 0 To Me.EcoSpaceData.NGroups
                         Me.EcoSpaceData.Ccell(i, j, iGrp) = Me.EcoSpaceData.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
 
-                        If Me.EcoSpaceData.Ccell(i, j, iGrp) < 1.0E-20 Then
-                            Me.EcoSpaceData.Ccell(i, j, iGrp) = 1.0E-20
+                        If Me.EcoSpaceData.Ccell(i, j, iGrp) < 0 Or
+                            Single.IsNaN(Me.EcoSpaceData.Ccell(i, j, iGrp)) Or
+                            Single.IsInfinity(Me.EcoSpaceData.Ccell(i, j, iGrp)) Then
+                            Me.EcoSpaceData.Ccell(i, j, iGrp) = 0.0
                         End If
 
                     Next

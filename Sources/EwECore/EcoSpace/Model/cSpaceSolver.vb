@@ -478,12 +478,14 @@ Public Class cSpaceSolver
 
             'Cell area in KM2 at the equator * relative width of the cell
             CellAreaKM2 = CSng(Me.m_Data.CellLength ^ 2.0) * Me.m_Data.Width(i)
-            'Debug.Assert(m_Data.Ccell(i, j, 0) = 0)
             If Me.m_TracerData.EcoSpaceConSimOn Then
+
+                Debug.Assert(Not (Me.m_Data.Ccell(i, j, 0) < 0.0 Or Single.IsNaN(Me.m_Data.Ccell(i, j, 0)) Or Double.IsInfinity(Me.m_Data.Ccell(i, j, 0))))
+                'If Single.IsNaN(Me.m_Data.Ccell(i, j, 0)) Or Double.IsInfinity(Me.m_Data.Ccell(i, j, 0)) Then
+                '    Me.m_Data.Ccell(i, j, 0) = 0.0
+                'End If
                 Me.m_ConTracer.ConcTr(0) = Me.m_Data.Ccell(i, j, 0)
-                Debug.Assert(Not Single.IsNegativeInfinity(Me.m_ConTracer.ConcTr(0)))
-                'jb ConTotal() is not used anywhere
-                'For ip = 0 To m_Data.NGroups : ConTotal(ip) = ConTotal(ip) + m_Data.Ccell(i, j, ip):Next
+                'Debug.Assert(Not Single.IsNegativeInfinity(Me.m_ConTracer.ConcTr(0)))
             End If
 
             For iGrp = 1 To Me.m_Data.NGroups
@@ -495,8 +497,11 @@ Public Class cSpaceSolver
                 Me.BB(iGrp) = Me.m_Data.Bcell(i, j, iGrp)
 
                 If Me.m_TracerData.EcoSpaceConSimOn Then
-                    If Me.m_Data.Ccell(i, j, iGrp) < 1.0E-30 Or Single.IsNaN(Me.m_ConTracer.ConcTr(iGrp)) Then
-                        Me.m_Data.Ccell(i, j, iGrp) = 1.0E-30
+                    'If Me.m_Data.Ccell(i, j, iGrp) < 1.0E-30 Or Single.IsNaN(Me.m_ConTracer.ConcTr(iGrp)) Then
+                    '    Me.m_Data.Ccell(i, j, iGrp) = 1.0E-30
+                    'End If
+                    If Single.IsNaN(Me.m_Data.Ccell(i, j, iGrp)) Then
+                        Me.m_Data.Ccell(i, j, iGrp) = 0.0
                     End If
                     Me.m_ConTracer.ConcTr(iGrp) = Me.m_Data.Ccell(i, j, iGrp)
                     'Debug.Assert(Not Single.IsNaN(Me.m_ConTracer.ConcTr(iGrp)))
