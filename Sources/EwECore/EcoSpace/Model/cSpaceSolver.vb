@@ -478,14 +478,12 @@ Public Class cSpaceSolver
 
             'Cell area in KM2 at the equator * relative width of the cell
             CellAreaKM2 = CSng(Me.m_Data.CellLength ^ 2.0) * Me.m_Data.Width(i)
-            If Me.m_TracerData.EcoSpaceConSimOn Then
 
+            If Me.m_TracerData.EcoSpaceConSimOn Then
+                'set contaminant concentration for the environment
+                'before entering the group loop
                 Debug.Assert(Not (Me.m_Data.Ccell(i, j, 0) < 0.0 Or Single.IsNaN(Me.m_Data.Ccell(i, j, 0)) Or Double.IsInfinity(Me.m_Data.Ccell(i, j, 0))))
-                'If Single.IsNaN(Me.m_Data.Ccell(i, j, 0)) Or Double.IsInfinity(Me.m_Data.Ccell(i, j, 0)) Then
-                '    Me.m_Data.Ccell(i, j, 0) = 0.0
-                'End If
                 Me.m_ConTracer.ConcTr(0) = Me.m_Data.Ccell(i, j, 0)
-                'Debug.Assert(Not Single.IsNegativeInfinity(Me.m_ConTracer.ConcTr(0)))
             End If
 
             For iGrp = 1 To Me.m_Data.NGroups
@@ -497,22 +495,18 @@ Public Class cSpaceSolver
                 Me.BB(iGrp) = Me.m_Data.Bcell(i, j, iGrp)
 
                 If Me.m_TracerData.EcoSpaceConSimOn Then
-                    'If Me.m_Data.Ccell(i, j, iGrp) < 1.0E-30 Or Single.IsNaN(Me.m_ConTracer.ConcTr(iGrp)) Then
-                    '    Me.m_Data.Ccell(i, j, iGrp) = 1.0E-30
-                    'End If
                     If Single.IsNaN(Me.m_Data.Ccell(i, j, iGrp)) Then
                         Me.m_Data.Ccell(i, j, iGrp) = 0.0
                     End If
                     Me.m_ConTracer.ConcTr(iGrp) = Me.m_Data.Ccell(i, j, iGrp)
-                    'Debug.Assert(Not Single.IsNaN(Me.m_ConTracer.ConcTr(iGrp)))
                 End If
 
-                    'sum biomass over all the cells
-                    'this is now done individually for each thread, then summed outside the threads
-                    'Btime(ip) = Btime(ip) + BB(ip)
-                    'BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
+                'sum biomass over all the cells
+                'this is now done individually for each thread, then summed outside the threads
+                'Btime(ip) = Btime(ip) + BB(ip)
+                'BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
 
-                    If (Me.m_SimData.NoIntegrate(iGrp) = iGrp Or Me.m_SimData.NoIntegrate(iGrp) < 0) And Me.m_SimData.SimGE(iGrp) > 0 Then
+                If (Me.m_SimData.NoIntegrate(iGrp) = iGrp Or Me.m_SimData.NoIntegrate(iGrp) < 0) And Me.m_SimData.SimGE(iGrp) > 0 Then
                     If (Me.Cper(i, j, iGrp) > 0 And Me.m_SimData.FtimeAdjust(iGrp) > 0) Then
                         Me.FtimeCell(i, j, iGrp) = Me.FtimeCell(i, j, iGrp) * (0.7F + 0.3F * Me.m_SimData.Cbase(iGrp) / Me.Cper(i, j, iGrp))
                     End If
@@ -664,8 +658,6 @@ Public Class cSpaceSolver
 
             If Me.m_TracerData.EcoSpaceConSimOn Then
                 For iGrp = 0 To Me.m_Data.NGroups
-                    'Debug.Assert(Not Single.IsNaN(Me.Cintotal(iGrp)))
-                    'Debug.Assert(Not Single.IsNaN(Me.Closs(iGrp)))
                     Me.m_Data.Ftr(i, j, iGrp) = Me.Cintotal(iGrp)
                     Me.m_Data.AMmTr(i, j, iGrp) = -Me.Closs(iGrp) - Me.Bcw(i + 1, j, iGrp) - Me.C(i - 1, j, iGrp) - Me.d(i, j, iGrp) - Me.e(i, j, iGrp)
                     If Me.m_Data.AMmTr(i, j, iGrp) >= 0 Then Me.m_Data.AMmTr(i, j, iGrp) = -1.0E+30

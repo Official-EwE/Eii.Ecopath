@@ -255,7 +255,7 @@ Public Class cEcoSpace
 
     Private HabAreaUsed() As Single
 
-    Private totalIterThread() As Integer 'total number of solvegrid iterations for each thread
+    'Private totalIterThread() As Integer 'total number of solvegrid iterations for each thread
 
     'grid solver for contaminant the tracer
     Private grdslvConSim As cGridSolver
@@ -819,6 +819,7 @@ Public Class cEcoSpace
 
                 'One Off hack to pause the run for the Water Institute's 2017 Gulf Coast Model
                 'Me.HACKAutoPause(its)
+                Dim SPSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
 
                 Me.m_PauseSignal.WaitOne()
 
@@ -841,11 +842,6 @@ Public Class cEcoSpace
 
                 'Set the isFished(fleet,row,col) array
                 Me.setIsFished()
-
-                Dim SPSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
-
-                If Me.EcoSpaceData.isAdvectionActive Then
-                End If
 
                 'Read any Spatial Temporal data into memory for this timestep
                 Me.SetSpatialTempData(Me.itt)
@@ -1077,7 +1073,7 @@ Public Class cEcoSpace
                         Me.runContaminantTracerExplicit1(Derivcon, Derivcon2, ntc)
                         If Me.m_StopRun Then Exit For
 
-                        'For debugging
+                        'For debugging1
                         'totderivcon = 0
                         'For ip = 0 To Me.EcoSpaceData.NGroups
                         '    For i = 1 To Me.EcoSpaceData.InRow
@@ -1135,7 +1131,8 @@ Public Class cEcoSpace
                 'System.Console.WriteLine("FindSpatialEquilibrium() SpaceSolver run time(min.) = " & stpwchSolver.Elapsed.TotalMinutes.ToString)
                 'System.Console.WriteLine("FindSpatialEquilibrium() GridSolver run time(min.) = " & stpwchGrid.Elapsed.TotalMinutes.ToString)
                 'System.Console.WriteLine("FindSpatialEquilibrium() PredictEffortDistribution run time(min.) = " & stpwchEffort.Elapsed.TotalMinutes.ToString)
-                'System.Console.WriteLine("FindSpatialEquilibrium() Total run time(min.) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
+                System.Console.WriteLine("FindSpatialEquilibrium() Time Step(sec.) = " & (stpwchTotRunTime.Elapsed.TotalSeconds - SPSt).ToString)
+                System.Console.WriteLine("FindSpatialEquilibrium() Total run time(min.) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
 
             Next Me.EcoSpaceData.TimeNow
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1160,10 +1157,11 @@ Public Class cEcoSpace
 
             Me.TimeSeriesManager.RunCompleted()
 
-            Dim totalIter As Single
-            For i = 1 To Me.EcoSpaceData.nGridSolverThreads
-                totalIter = totalIter + Me.totalIterThread(i)
-            Next
+            'degugging 
+            'Dim totalIter As Single
+            'For i = 1 To Me.EcoSpaceData.nGridSolverThreads
+            '    totalIter = totalIter + Me.totalIterThread(i)
+            'Next
 
             'Always turn OFF the TrophicLevel calculations
             'so it does not create unnecessary overhead
@@ -2170,11 +2168,39 @@ Public Class cEcoSpace
             For j = 1 To Me.EcoSpaceData.InCol
                 If Me.EcoSpaceData.Depth(i, j) > 0 Then
                     For iGrp = 0 To Me.EcoSpaceData.NGroups
-                        Me.EcoSpaceData.Ccell(i, j, iGrp) = Me.EcoSpaceData.Ccell(i, j, iGrp) + 0.5 * (3.0 * Derivcon(i, j, iGrp) - Derivcon2(i, j, iGrp)) * Tst
+                        'ww version
+                        'Me.EcoSpaceData.Ccell(i, j, iGrp) = Me.EcoSpaceData.Ccell(i, j, iGrp) + 0.5 * (3.0 * Derivcon(i, j, iGrp) - Derivcon2(i, j, iGrp)) * Tst
+                        'integration from Sim
+                        'Me.ConcTr(i) = CSng(Me.ConcTr(i) + (3.0 * Derivcon(i) - Derivcon2(i)) * Tst / 2.0)
+                        Me.EcoSpaceData.Ccell(i, j, iGrp) = Me.EcoSpaceData.Ccell(i, j, iGrp) + (3.0 * Derivcon(i, j, iGrp) - Derivcon2(i, j, iGrp)) * Tst / 2.0
+                        Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
+
+                        If Me.EcoSpaceData.Ccell(i, j, iGrp) < 0 Or
+                            Single.IsNaN(Me.EcoSpaceData.Ccell(i, j, iGrp)) Or
+                            Single.IsInfinity(Me.EcoSpaceData.Ccell(i, j, iGrp)) Then
+                            Me.EcoSpaceData.Ccell(i, j, iGrp) = 0.0
+                        End If
                     Next
                 End If
             Next
         Next
+
+        'Set the system boundary cells (outside the modeled area) to cells on the edge
+        'This stops contaminants from importing zero values from outside the modeled area
+        'and causing the values to drop along open edges
+        'This will have no affect if the outside edge is land
+        For iGrp = 0 To Me.EcoSpaceData.NGroups
+            For i = 0 To Me.EcoSpaceData.InRow
+                Me.EcoSpaceData.Ccell(i, 0, iGrp) = Me.EcoSpaceData.Ccell(i, 1, iGrp)
+                Me.EcoSpaceData.Ccell(i, Me.EcoSpaceData.InCol + 1, iGrp) = Me.EcoSpaceData.Ccell(i, Me.EcoSpaceData.InCol, iGrp)
+            Next
+
+            For j = 0 To Me.EcoSpaceData.InCol
+                Me.EcoSpaceData.Ccell(0, j, iGrp) = Me.EcoSpaceData.Ccell(1, j, iGrp)
+                Me.EcoSpaceData.Ccell(Me.EcoSpaceData.InRow + 1, j, iGrp) = Me.EcoSpaceData.Ccell(Me.EcoSpaceData.InRow, j, iGrp)
+            Next
+        Next iGrp
+
     End Sub
 
     Private Sub dumpGridRunTimes()
@@ -2325,7 +2351,7 @@ Public Class cEcoSpace
                 cLog.Write("Ecospace allocated MPred data for model interoperability", eVerboseLevel.Detailed)
             End If
 
-            ReDim Me.totalIterThread(Me.EcoSpaceData.nGridSolverThreads + 1)
+            'ReDim Me.totalIterThread(Me.EcoSpaceData.nGridSolverThreads + 1)
 
             Me.m_bsolverError = False
             Me.bEffortAdjusted = False
