@@ -186,8 +186,10 @@ Public Class cEcosimArenaManager
         Next
         Me.Update()
 
-        If (obj IsNot Nothing) Then
-            Me.m_core.onChanged(obj, eMessageType.DataModified)
+        If cCore.USE_SHARED_ARENAS Then
+            If (obj IsNot Nothing) Then
+                Me.m_core.onChanged(obj, eMessageType.DataModified)
+            End If
         End If
 
     End Sub
