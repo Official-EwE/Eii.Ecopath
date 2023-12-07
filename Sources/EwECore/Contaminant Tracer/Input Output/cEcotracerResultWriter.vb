@@ -191,14 +191,18 @@ Public Class cEcotracerResultWriter
         Dim tracerDS As cContaminantTracerDataStructures = Me.m_core.m_tracerData
 
         sw.Write("time step")
-        For i As Integer = 1 To pathDS.NumGroups
-            sw.Write("," & cStringUtils.ToCSVField(pathDS.GroupName(i)))
+        For i As Integer = 0 To pathDS.NumGroups
+            Dim grpname As String = cStringUtils.ToCSVField(pathDS.GroupName(i))
+            If i = 0 Then
+                grpname = cStringUtils.ToCSVField("Environment")
+            End If
+            sw.Write("," & grpname)
         Next
         sw.WriteLine()
 
         For t As Integer = 1 To tracerDS.m_nTime
             sw.Write(t)
-            For i As Integer = 1 To pathDS.NumGroups
+            For i As Integer = 0 To pathDS.NumGroups
                 If iRegion = 0 Then
                     sw.Write("," & cStringUtils.FormatNumber(tracerDS.TracerConc(i, t)))
                 Else
