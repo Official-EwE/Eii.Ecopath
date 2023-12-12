@@ -452,6 +452,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Average regional trophic level by group.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_REGAVG_TL() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_REGAVG_TL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Average regional value by fleet, group ({0}).
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_REGAVG_VALUE_UNIT() As String

@@ -2941,4 +2941,7 @@
     <value>Average regional value by fleet, group ({0})</value>
     <comment>{0}=unit</comment>
   </data>
+  <data name="ECOSPACE_REGAVG_TL" xml:space="preserve">
+    <value>Average regional trophic level by group</value>
+  </data>
 </root>

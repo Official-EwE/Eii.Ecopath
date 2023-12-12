@@ -297,6 +297,8 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassRelativeForcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerExclusion.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceValidation\cEcospaceValidation.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cBiomassResultsDataSource.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cCatchResultsDataSource.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCBaseResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapCapacityWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapBiomassWriter.vb" />
@@ -309,7 +311,13 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="EcoSpace\Input Output\IEcospaceLayerManager.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceResultWriterFactory.vb" />
-    <Compile Include="EcoSpace\Input Output\ResultWriters\EcospaceResultsWriterDataSources.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cMOTotalResultsDataSource.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cRegionBiomassResultsDataSource.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cRegionCatchResultsDataSource.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cRegionConsuptionResultsDataSource.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cRegionLandingsResultsDataSource.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cRegionValueResultsDataSource.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cEcospaceResultsWriterDataSourceBase.vb" />
     <Compile Include="enaR\cENARData.vb" />
     <Compile Include="enaR\cENARDataStructures.vb" />
     <Compile Include="enaR\cSCORFileWriter.vb" />
@@ -764,8 +772,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EcoSpace\Input Output\ResultWriters\Data sources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>
