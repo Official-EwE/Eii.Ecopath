@@ -313,7 +313,10 @@ Public MustInherit Class cTimeSeries
     Public Shared Function IsRelative(DatType As eTimeSeriesType) As Boolean
         Return (DatType = eTimeSeriesType.BiomassRel) Or
                (DatType = eTimeSeriesType.CatchesRel) Or
-               (DatType = eTimeSeriesType.AverageWeight)
+               (DatType = eTimeSeriesType.AverageWeight) Or
+               (DatType = eTimeSeriesType.OffVesselPriceRel) Or
+               (DatType = eTimeSeriesType.SailCostRel) Or
+               (DatType = eTimeSeriesType.FixedCostRel)
     End Function
 
     <Obsolete("Remove when time series properly use cCore.NULL_VALUE")>
