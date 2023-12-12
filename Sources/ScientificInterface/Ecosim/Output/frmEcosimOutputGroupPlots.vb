@@ -519,6 +519,7 @@ Namespace Ecosim
             Me.AddCurveToGraphPane(ePlot.ConsumptionBiomass, Me.m_zgh.CreateLineItem(group, pplConsB))
             Me.AddCurveToGraphPane(ePlot.FeedingTime, Me.m_zgh.CreateLineItem(group, pplFeedTime))
             Me.AddCurveToGraphPane(ePlot.TrophicLevel, Me.m_zgh.CreateLineItem(group, pplTL))
+            Me.AddCurveToGraphPane(ePlot.PredationMortality, Me.m_zgh.CreateLineItem(group, pplMortPredation))
 
             If Me.m_bIsCatchAggregated Then
                 Dim strAll As String = SharedResources.GENERIC_VALUE_ALL
