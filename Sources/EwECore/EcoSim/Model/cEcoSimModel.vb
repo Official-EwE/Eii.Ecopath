@@ -5147,7 +5147,9 @@ Namespace Ecosim
                                     Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
                         'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
                         'Debug.Assert(m_Data.relQ(ig, i) = 0)
-                        Ft = Ft + QYear(ig) * Me.m_Data.relQ(ig, i) * Me.m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
+
+                        ' js 12-dec-2023: when driving dicard mort, relQ(ig, i) may return -9999
+                        Ft = Ft + QYear(ig) * Math.Max(Me.m_Data.relQ(ig, i), 0) * Me.m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.PropDiscardTime(ig, i))
                         'Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                     Next
 

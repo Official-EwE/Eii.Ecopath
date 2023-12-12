@@ -898,7 +898,6 @@ Public Class cTimeSeriesDataStructures
                             iGrp = Me.AppliedDatPoolSec(iDType)
                             ' JS 27Sep23: Group 0 allowed for this TS type
                             If (iGrp >= 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
-                                ' JS 08Apr22: no monthly replication of annual TS values here?
                                 If value > 1.0 Then
                                     value = 1.0
                                     bDisFailedValidation = True

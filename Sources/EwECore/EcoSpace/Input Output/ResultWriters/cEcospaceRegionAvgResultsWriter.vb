@@ -56,8 +56,9 @@ Public Class cEcospaceRegionAvgResultsWriter
         RegionCatch
         MOTotalLoss
         RegionConsumption
-        Landings
-        [Value]
+        RegionLandings
+        RegionValue
+        RegionTL
     End Enum
 
 #End Region ' Private classes
@@ -175,9 +176,11 @@ Public Class cEcospaceRegionAvgResultsWriter
                 dataSource = New cMOTotalResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.RegionConsumption
                 dataSource = New cRegionConsuptionResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
-            Case eDataSourceTypes.Landings
+            Case eDataSourceTypes.RegionLandings
                 dataSource = New cRegionLandingsResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
-            Case eDataSourceTypes.Value
+            Case eDataSourceTypes.RegionValue
+                dataSource = New cRegionValueResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
+            Case eDataSourceTypes.RegionTL
                 dataSource = New cRegionValueResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
         End Select
         dataSource.Init(RegionIndex)
@@ -196,9 +199,10 @@ Public Class cEcospaceRegionAvgResultsWriter
         For irgn As Integer = 1 To Me.m_core.nRegions
             l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionBiomass, irgn))
             l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionCatch, irgn))
-            l.Add(Me.DataSourceFactory(eDataSourceTypes.Landings, irgn))
-            l.Add(Me.DataSourceFactory(eDataSourceTypes.Value, irgn))
+            l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionLandings, irgn))
+            l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionValue, irgn))
             l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionConsumption, irgn))
+            l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionTL, irgn))
         Next
 
         Return l.ToArray()
