@@ -75,7 +75,9 @@ Namespace Ecosim
             Me(0, eColumnTypes.DenDepCatchability) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_DENDEPCATCHABILITY)
             Me(0, eColumnTypes.QBMaxQBO) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_QBMAXQBO)
             Me(0, eColumnTypes.SwitchPower) = New cEwEColumnHeaderCell(SharedResources.HEADER_SWITCHINGPOWER_VALRANGE)
-            Me(0, eColumnTypes.AddPredMortProp) = New cEwEColumnHeaderCell(eVarNameFlags.AdditivePredMortProp)
+            Me(0, eColumnTypes.AddPredMortProp) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_PROPADDITIVEMORT)
+
+
 
             Me.FixedColumns = 2
 

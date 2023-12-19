@@ -2250,4 +2250,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>'{0}' is succesfully saved to file '{1}'.</value>
     <comment>{0}=item that saved. {1}=file dest</comment>
   </data>
+  <data name="ECOSIM_GROUPINFO_PROPADDITIVEMORT" xml:space="preserve">
+    <value>Additive prop. of predation mortality [0,1]</value>
+  </data>
 </root>
