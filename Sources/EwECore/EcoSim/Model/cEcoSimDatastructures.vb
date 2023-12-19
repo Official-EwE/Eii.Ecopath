@@ -390,10 +390,10 @@ Public Class cEcosimDatastructures
     Public PaddP() As Single
     ''' <summary>
     ''' Predation mortality rate at base
+    ''' StartEatenOf / [Ecopath biomass]
     ''' </summary>
     Public MoPredBase() As Single
 
-    'Public startEatenOf() As Single
 
     ''' <summary>
     ''' 1 / PaddP - 1

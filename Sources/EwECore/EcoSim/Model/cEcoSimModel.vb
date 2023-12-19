@@ -3036,16 +3036,6 @@ Namespace Ecosim
                             If Me.m_Data.FishTime(i) < 0 Then Me.m_Data.FishTime(i) = 0
                         End If
 
-                        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                        ''before merge
-                        'If StartEatenOf(i) > 0 Then
-                        '    PredMult = (m_Data.Eatenof(i) / StartEatenOf(i)) / (m_Data.PhHalf(i) + m_Data.Eatenof(i) / StartEatenOf(i))
-                        'Else
-                        '    PredMult = 1
-                        'End If
-                        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-
                         If Me.StartEatenOf(i) > 0 Then
 
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-
@@ -3054,19 +3044,10 @@ Namespace Ecosim
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                             ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                            ''From Spreadsheet
+                            ''From Spreadsheet "simple nonadditive predation model.xls"
+                            'When PaddP() is one(all predation mortality is additive) moTot() = mo() 
                             Me.m_Data.moTot(i) = Me.m_Data.moMax(i) / (1 + Me.m_Data.Qh(i) * (Me.m_Data.Eatenof(i) / Me.StartEatenOf(i)))
                             ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                            'jb Alternatively just scale Mo as a proportion of the change in q/q0 and PaddP [proportion of additive mortality]
-                            'Dim MoPredRatio As Single = m_Data.Eatenof(i) / (StartEatenOf(i) + 1.0E-20F)
-                            'If StartEatenOf(i) > 0 And MoPredRatio < 1.0F Then
-
-                            'm_Data.moTot(i) = m_Data.mo(i) + m_Data.MoPredBase(i) * (1 - MoPredRatio) * (1.0F - m_Data.PaddP(i))
-                            'Debug.Assert(Not Single.IsNaN(m_Data.moTot(i)))
-                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
                         Else
                             Me.m_Data.moTot(i) = Me.m_Data.mo(i)
@@ -3079,8 +3060,8 @@ Namespace Ecosim
                         'm_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * MoMult * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
-                        'If m_Data.PaddP(i) < 1 Then 'And (MoPredRatio < 0.8) 
+                        ''for debugging nonadditive predation mortality
+                        'If m_Data.PaddP(i) < 1 Then
                         '    Dim orgLoss As Single = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
                         '    Debug.Print(m_Data.loss(i).ToString + ", " + orgLoss.ToString + ", " + m_Data.moMax(i).ToString + ", " + m_Data.moTot(i).ToString + ", " + m_Data.mo(i).ToString + ", " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
                         'End If
@@ -3792,11 +3773,9 @@ Namespace Ecosim
 
 
         Public Sub CalcBaseAdditiveMort()
-
             Dim i As Integer
 
             For i = 1 To Me.m_EPData.NumGroups
-
 
                 If Me.StartEatenOf(i) > 0 And Me.m_Data.mo(i) > 0 Then
                     Me.m_Data.MoPredBase(i) = Me.StartEatenOf(i) / Me.m_Data.StartBiomass(i)
@@ -3809,26 +3788,13 @@ Namespace Ecosim
                     Me.m_Data.Qh(i) = 0
                 End If
 
-                If Me.m_Data.PhHalf(i) > 0 Then
+                If Me.m_Data.PaddP(i) > 0 Then
                     Me.m_Data.PhHalf(i) = 1.0F / Me.m_Data.PaddP(i) - 1.0F
                 Else
                     Me.m_Data.PhHalf(i) = 1.0F
                 End If
 
             Next i
-
-            'Dim i As Integer
-
-            'For i = 1 To m_EPData.NumGroups
-
-            '    m_Data.MoPredBase(i) = StartEatenOf(i) / m_Data.StartBiomass(i)
-            '    If m_Data.PhHalf(i) > 0 Then
-            '        m_Data.PhHalf(i) = 1 / m_Data.PaddP(i) - 1
-            '    Else
-            '        m_Data.PhHalf(i) = 1
-            '    End If
-
-            'Next i
 
         End Sub
 

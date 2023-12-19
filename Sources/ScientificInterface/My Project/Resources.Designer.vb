@@ -726,6 +726,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Additive prop. of predation mortality [0,1].
+        '''</summary>
+        Public ReadOnly Property ECOSIM_GROUPINFO_PROPADDITIVEMORT() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_GROUPINFO_PROPADDITIVEMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to QBmax/QBo (for handling time) [&gt;1].
         '''</summary>
         Public ReadOnly Property ECOSIM_GROUPINFO_QBMAXQBO() As String
