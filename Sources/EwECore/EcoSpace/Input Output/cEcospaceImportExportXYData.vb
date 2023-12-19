@@ -235,9 +235,9 @@ Public Class cEcospaceImportExportXYData
     ''' <param name="bWaterCellsOnly">If true, only water cell data is written to the file.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function WriteXYFile(strFile As String, _
-                                strColField As String, _
-                                strRowField As String, _
+    Public Function WriteXYFile(strFile As String,
+                                strColField As String,
+                                strRowField As String,
                                 Optional bWaterCellsOnly As Boolean = True) As Boolean
 
         If (Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
