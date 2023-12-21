@@ -39,6 +39,7 @@ Public Class cEwEMPADynamicsPlugin
     Implements IEcospaceInitRunCompletedPlugin
     Implements IEcospaceRunCompletedPlugin
     Implements IAutoSavePlugin
+    Implements IAutoRunPlugin
 
 #Region " Private vars "
 
@@ -148,18 +149,24 @@ Public Class cEwEMPADynamicsPlugin
     End Sub
 
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
+
         ' Make snapshot of MPA states
         Me.m_engine.Backup(Me.AutoSave)
+
     End Sub
 
     Public Sub EcospaceBeginTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep
+
         ' Update MPA states
         Me.m_engine.OnEcospaceTimeStep(iTime)
+
     End Sub
 
     Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements IEcospaceRunCompletedPlugin.EcospaceRunCompleted
+
         ' Restore snapshot of MPA states
         Me.m_engine.Restore()
+
     End Sub
 
 #End Region ' Ecospace integration
@@ -200,6 +207,10 @@ Public Class cEwEMPADynamicsPlugin
         End If
     End Sub
 
+    Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
+        Return {eCoreComponentType.Ecospace}
+    End Function
+
 #End Region ' Internals
 
 #Region " Automation support "
@@ -208,6 +219,17 @@ Public Class cEwEMPADynamicsPlugin
         Get
             Return Me.m_engine
         End Get
+    End Property
+
+    Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
+        Get
+            If (Me.m_engine Is Nothing) Then Return False
+            Return Me.m_engine.Autorun
+        End Get
+        Set(value As Boolean)
+            If (Me.m_engine Is Nothing) Then Return
+            Me.m_engine.Autorun = value
+        End Set
     End Property
 
 #End Region ' Automation support

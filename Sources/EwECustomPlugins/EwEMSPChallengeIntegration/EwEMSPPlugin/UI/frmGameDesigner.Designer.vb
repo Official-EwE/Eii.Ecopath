@@ -1016,8 +1016,8 @@ Namespace UI
         Private WithEvents m_pbEcoscope As Windows.Forms.PictureBox
         Private WithEvents m_tpFleets As Windows.Forms.TabPage
         Friend WithEvents SplitContainer1 As Windows.Forms.SplitContainer
-        Private WithEvents m_gridFleetCatch As Windows.Forms.Panel
-        Private WithEvents m_gridFleets As Windows.Forms.Panel
+        Private WithEvents m_gridFleetCatch As gridFleetCatch
+        Private WithEvents m_gridFleets As gridFleets
     End Class
 
 End Namespace

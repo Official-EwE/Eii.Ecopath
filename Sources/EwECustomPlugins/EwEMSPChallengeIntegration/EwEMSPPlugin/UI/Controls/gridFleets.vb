@@ -20,16 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
-Imports EwECore
-Imports EwEMSPPlugin.Emulator
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports ScientificInterfaceShared.Style.cStyleGuide
-Imports SourceGrid2
-Imports SourceGrid2.Cells
-Imports SourceGrid2.DataModels
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -82,7 +73,7 @@ Namespace UI
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
-            Me.Redim(1, 4)
+            Me.Redim(1, 5)
             Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
             Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(SharedResources.HEADER_NAME)
             Me(0, eColumnTypes.Nationality) = New cEwEColumnHeaderCell("Country")
@@ -189,9 +180,15 @@ Namespace UI
             '        Me.Shell.OnChanged()
 
             'End Select
-            'Return MyBase.OnCellValueChanged(p, cell)
+            Return MyBase.OnCellValueChanged(p, cell)
 
         End Function
+
+        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
+            Get
+                Return True
+            End Get
+        End Property
 
 #End Region ' Overrides
 
@@ -218,12 +215,6 @@ Namespace UI
                 Me.m_data = value
                 Me.RefreshContent()
             End Set
-        End Property
-
-        Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
-            Get
-                Throw New NotImplementedException()
-            End Get
         End Property
 
 #End Region ' Public bits

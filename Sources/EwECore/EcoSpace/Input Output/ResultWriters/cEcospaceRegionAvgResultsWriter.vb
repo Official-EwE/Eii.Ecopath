@@ -221,10 +221,7 @@ Public Class cEcospaceRegionAvgResultsWriter
 
         For Each ds As cEcospaceResultsWriterDataSourceBase In datasources
 
-            Dim eAvgs As Array
-            eAvgs = System.Enum.GetValues(GetType(eEcospaceResultsAverageType))
-
-            For Each AvgType As eEcospaceResultsAverageType In eAvgs
+            For Each AvgType As eEcospaceResultsAverageType In System.Enum.GetValues(GetType(eEcospaceResultsAverageType))
 
                 strFile = Me.GetFileName(AvgType, ds)
 
