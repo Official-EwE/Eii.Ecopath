@@ -118,6 +118,8 @@ Namespace UI
             Me.m_gridPressureMappings.UIContext = Me.UIContext
             Me.m_gridOutcome.UIContext = Me.UIContext
             Me.m_gridEmulTestset.UIContext = Me.UIContext
+            Me.m_gridFleets.UIContext = Me.UIContext
+            Me.m_gridFleetCatch.UIcontext = Me.UIContext
 
             Me.m_fpSpinupYears = New cEwEFormatProvider(Me.UIContext, Me.m_tbxSpinupYears, GetType(Integer))
             Me.m_fpRunYears = New cEwEFormatProvider(Me.UIContext, Me.m_tbxRunYears, GetType(Integer))
@@ -306,7 +308,7 @@ Namespace UI
             Me.m_btnTestsetApply.Enabled = bHasGame And bHasTestsetSelected
             Me.m_gridEmulTestset.Enabled = bHasGame And bHasTestsetSelected And Not bIsEcospaceRunning
 
-            Me.ShowModelStatus(Me.m_lblCheckGame, Not bHasDuplicateGameNames, My.Resources.CHECK_GAME_OK, My.Resources.CHECK_GAME_FAILED)
+            Me.ShowModelStatus(Me.m_lblCheckGame, bHasGame And Not bHasDuplicateGameNames, My.Resources.CHECK_GAME_OK, My.Resources.CHECK_GAME_FAILED)
 
             Dim bSimOK As Boolean = Not bHasDuplicateGameNames And
                 Me.ShowModelStatus(Me.m_lblCheckSimTimeSeries, Not Me.HasEcosimTimeseries(), My.Resources.CHECK_SIM_TS_OK, My.Resources.CHECK_SIM_TS_FAILED) And

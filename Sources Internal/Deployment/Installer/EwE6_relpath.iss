@@ -18,7 +18,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.7.0.18558
+  VersionInfoVersion=6.7.0.18597
 #endif
 
 #if Compile64Bit == 0

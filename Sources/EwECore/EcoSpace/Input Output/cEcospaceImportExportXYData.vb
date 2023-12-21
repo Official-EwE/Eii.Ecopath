@@ -70,7 +70,7 @@ Public Class cEcospaceImportExportXYData
     ''' <param name="core">The EwE Core to itneract with.</param>
     ''' <param name="astrFields">An optional array of field names.</param>
     ''' -------------------------------------------------------------------
-    Public Sub New(core As cCore, _
+    Public Sub New(core As cCore,
                    Optional astrFields() As String = Nothing)
 
         Debug.Assert(core IsNot Nothing)
@@ -124,7 +124,7 @@ Public Class cEcospaceImportExportXYData
     ''' values are separated by commas.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ReadXYFields(strFile As String, _
+    Public Function ReadXYFields(strFile As String,
                                  Optional separator As Char = ","c) As Boolean
 
         Dim tr As TextReader = Nothing
@@ -170,9 +170,9 @@ Public Class cEcospaceImportExportXYData
     ''' values are separated by commas.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ReadXYFile(strFile As String, _
-                               strRowField As String, _
-                               strColField As String, _
+    Public Function ReadXYFile(strFile As String,
+                               strRowField As String,
+                               strColField As String,
                                Optional separator As Char = ","c) As Boolean
 
         If Me.m_astrFields.Length = 0 Then

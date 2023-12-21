@@ -46,10 +46,11 @@ Partial Class frmMPADynamics
         Me.m_tscmbFleets = New System.Windows.Forms.ToolStripComboBox()
         Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnAutosave = New System.Windows.Forms.ToolStripButton()
         Me.m_dgvStates = New System.Windows.Forms.DataGridView()
         Me.m_colTime = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.m_colMPA = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.m_tsbnAutosave = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnRun = New System.Windows.Forms.ToolStripButton()
         Me.m_tsMain.SuspendLayout()
         CType(Me.m_dgvStates, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -57,7 +58,7 @@ Partial Class frmMPADynamics
         'm_tsMain
         '
         Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnLoadCSV, Me.m_sep1, Me.m_tsbnShowMonths, Me.m_tsbnShowFleets, Me.m_tscmbFleets, Me.m_sep2, Me.m_tsbnExport, Me.m_tsbnAutosave})
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnRun, Me.m_tsbnLoadCSV, Me.m_sep1, Me.m_tsbnShowMonths, Me.m_tsbnShowFleets, Me.m_tscmbFleets, Me.m_sep2, Me.m_tsbnExport, Me.m_tsbnAutosave})
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
         Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -90,8 +91,8 @@ Partial Class frmMPADynamics
         'm_tscmbFleets
         '
         Me.m_tscmbFleets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_tscmbFleets.Name = "m_tscmbFleets"
         resources.ApplyResources(Me.m_tscmbFleets, "m_tscmbFleets")
+        Me.m_tscmbFleets.Name = "m_tscmbFleets"
         '
         'm_sep2
         '
@@ -103,6 +104,12 @@ Partial Class frmMPADynamics
         Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
         Me.m_tsbnExport.Name = "m_tsbnExport"
+        '
+        'm_tsbnAutosave
+        '
+        Me.m_tsbnAutosave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnAutosave, "m_tsbnAutosave")
+        Me.m_tsbnAutosave.Name = "m_tsbnAutosave"
         '
         'm_dgvStates
         '
@@ -134,11 +141,11 @@ Partial Class frmMPADynamics
         Me.m_colMPA.Name = "m_colMPA"
         Me.m_colMPA.ReadOnly = True
         '
-        'm_tsbnAutosave
+        'm_tsbnRun
         '
-        Me.m_tsbnAutosave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnAutosave, "m_tsbnAutosave")
-        Me.m_tsbnAutosave.Name = "m_tsbnAutosave"
+        Me.m_tsbnRun.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnRun, "m_tsbnRun")
+        Me.m_tsbnRun.Name = "m_tsbnRun"
         '
         'frmMPADynamics
         '
@@ -168,4 +175,5 @@ Partial Class frmMPADynamics
     Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnExport As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnAutosave As Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnRun As Windows.Forms.ToolStripButton
 End Class

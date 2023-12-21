@@ -54,6 +54,7 @@ Public Class cMPADynamicsEngine
     Private m_dtStates As New Dictionary(Of Date, List(Of cMPAState))
     Private m_lPreserved As New List(Of cMPAState)
     Private m_bAutosaving As Boolean = False
+    Private m_bAutorunning As Boolean = False
 
     Private m_sw As StreamWriter = Nothing
 
@@ -75,7 +76,14 @@ Public Class cMPADynamicsEngine
         Me.m_dtStates.Clear()
     End Sub
 
+    Public Event OnSettingsChanged(sender As Object, args As EventArgs)
+
+    Public Property Autorun As Boolean
+
     Public Sub Backup(bAutosave As Boolean)
+
+        Me.m_bAutorunning = Me.Autorun And (Me.m_dtStates.Count > 0)
+        If (Not Me.m_bAutorunning) Then Return
 
         Me.m_lPreserved.Clear()
         Dim timestamp As Date = Me.m_core.EcospaceTimestepToAbsoluteTime(1)
@@ -89,6 +97,9 @@ Public Class cMPADynamicsEngine
     End Sub
 
     Public Sub Restore()
+
+        If (Not Me.m_bAutorunning) Then Return
+
         For Each state As cMPAState In Me.m_lPreserved
             state.Apply()
         Next
@@ -97,6 +108,8 @@ Public Class cMPADynamicsEngine
     End Sub
 
     Public Sub OnEcospaceTimeStep(iTime As Integer)
+
+        If (Not Me.m_bAutorunning) Then Return
 
         Dim timestamp As Date = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
 
@@ -182,6 +195,8 @@ Public Class cMPADynamicsEngine
                 Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ""), eMessageImportance.Critical, lDetails)
                 Me.m_dtStates.Clear()
             End If
+
+            Me.Autorun = bSucces
 
         Catch ex As Exception
             Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ex.Message), eMessageImportance.Critical)
