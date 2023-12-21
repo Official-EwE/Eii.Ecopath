@@ -1262,7 +1262,7 @@ Namespace Ecosim
             Dim f As Single = Me.m_RefData.PoolForceOffVesselPriceRel(iFlt, iGrp, iForcing)
             If (f <= 0) Then f = Me.m_RefData.PoolForceOffVesselPriceRel(iFlt, 0, iForcing)
             If f > 0 Then
-                value = f
+                value = value * f
             End If
 
             'apply the price elasticity multiplier to market value for this Group/Fleet
