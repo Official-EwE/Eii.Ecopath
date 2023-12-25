@@ -25,6 +25,7 @@ Imports EwECore
 Imports EwECore.FitToTimeSeries
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports Microsoft.VisualBasic.Devices
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
@@ -424,39 +425,12 @@ Namespace Ecosim
         Private Sub m_tsbSearchGroup_Click(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbSearchGroup.Click
 
-            Dim nBlocks As Integer = 0 ' Me.m_vulnerabilityBlockCodeSelector.NumBlocks
-            Dim iBlock As Integer = 1
-            Dim ts As cTimeSeries = Nothing
-            Dim gts As cGroupTimeSeries = Nothing
-            Dim abUseBlock(Me.Core.nGroups) As Boolean
-
             Me.Core.CheckResetDefaultVulnerabilities()
 
-            For iTS As Integer = 1 To Me.Core.nTimeSeries
-                ts = Me.Core.EcosimTimeSeries(iTS)
-                If (TypeOf (ts) Is cGroupTimeSeries) And (ts.Enabled = True) And (ts.WtType > 0) Then
-                    gts = DirectCast(ts, cGroupTimeSeries)
-                    If gts.IsReference Then
-                        abUseBlock(gts.GroupIndex) = True
-                        nBlocks += 1
-                    End If
-                End If
-            Next
+            Me.m_F2TSManager.SetNBlocksForGroupsWithTimeSeries()
+            Me.m_vulnerabilityBlockCodeSelector.NumBlocks = Me.m_F2TSManager.nBlockCodes
+            Me.m_vulnerabilityBlockMatrix.Vulblocks = Me.m_F2TSManager.VulnerabilityBlocks
 
-            ' Bump up the number of blocks if neccessary
-            Me.m_vulnerabilityBlockCodeSelector.NumBlocks = Math.Max(Me.m_vulnerabilityBlockCodeSelector.NumBlocks, nBlocks)
-
-            iBlock = 1
-            For i As Integer = 1 To Me.Core.nGroups
-                For j As Integer = 1 To Me.Core.nGroups
-                    If abUseBlock(i) Then
-                        Me.m_vulnerabilityBlockMatrix.Vulblocks(i, j) = iBlock
-                    Else
-                        Me.m_vulnerabilityBlockMatrix.Vulblocks(i, j) = 0
-                    End If
-                Next j
-                If abUseBlock(i) Then iBlock += 1
-            Next i
             Me.m_vulnerabilityBlockMatrix.Invalidate()
 
         End Sub
@@ -613,8 +587,8 @@ Namespace Ecosim
             Dim bIsRunning As Boolean = Me.IsRunning Or Me.Core.StateMonitor.IsSearching()
 
             If Me.m_cbAnomalySearch.Checked Then
-                bInputsValid = bInputsValid And _
-                               (Me.m_shapeHandler.SelectedShape IsNot Nothing) And _
+                bInputsValid = bInputsValid And
+                               (Me.m_shapeHandler.SelectedShape IsNot Nothing) And
                                (Me.m_nudLastYear.Value > Me.m_nudFirstYear.Value)
             Else
                 'bInputsValid = True

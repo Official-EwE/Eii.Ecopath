@@ -147,7 +147,9 @@
     <Compile Include="ucConfigureCConcDriver.Designer.vb">
       <DependentUpon>ucConfigureCConcDriver.vb</DependentUpon>
     </Compile>
-    <Compile Include="ucConfigureCConcDriver.vb" />
+    <Compile Include="ucConfigureCConcDriver.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
