@@ -22,6 +22,7 @@ Option Strict On
 Imports EwECore.Ecosim
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports Microsoft.VisualBasic.Devices
 
 
 Namespace FitToTimeSeries
@@ -293,16 +294,16 @@ Namespace FitToTimeSeries
 
             Catch ex As Threading.ThreadAbortException
 
-                Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ABORTED, _
-                                        eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcosimFitToTimeSeries, _
+                Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ABORTED,
+                                        eMessageType.ErrorEncountered,
+                                        eCoreComponentType.EcosimFitToTimeSeries,
                                         eMessageImportance.Critical))
 
             Catch ex As Exception
 
-                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
-                                        eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcosimFitToTimeSeries, _
+                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
+                                        eMessageType.ErrorEncountered,
+                                        eCoreComponentType.EcosimFitToTimeSeries,
                                         eMessageImportance.Critical))
 
             End Try
@@ -333,7 +334,7 @@ Namespace FitToTimeSeries
             Dim ipred As Integer, iprey As Integer
 
             If Me.m_core.m_TSData.AppliedNdatType = 0 Then
-                Exit Sub
+                Return
             End If
 
             Dim epData As cEcopathDataStructures = Me.m_core.m_EcopathData
@@ -410,9 +411,9 @@ Namespace FitToTimeSeries
 
             Catch ex As Exception
                 ' Woops
-                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
-                                        eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcosimFitToTimeSeries, _
+                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
+                                        eMessageType.ErrorEncountered,
+                                        eCoreComponentType.EcosimFitToTimeSeries,
                                         eMessageImportance.Critical))
 
             End Try
@@ -434,10 +435,7 @@ Namespace FitToTimeSeries
 
             If Me.m_lastRunSens = eSensType.NotRun Then
 
-                Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_SENSITIVITY_SETBLOCKS, _
-                                        eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcosimFitToTimeSeries, _
-                                        eMessageImportance.Warning))
+                Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_SENSITIVITY_SETBLOCKS, eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Warning))
 
                 Exit Sub
             End If
@@ -451,7 +449,6 @@ Namespace FitToTimeSeries
                 'clear out the old data
                 Array.Clear(Me.VblockCode, 0, Me.VblockCode.Length)
 
-
                 'now update the VblockCode() with the sorted sensitivities
                 Select Case Me.m_lastRunSens
 
@@ -459,7 +456,7 @@ Namespace FitToTimeSeries
 
                         'nBlocks is the user set number of blocks
                         'm_lstSSResults.Count is the actual number of pred/columns found by the sensitivity search
-                        n = CInt(if(Me.m_lstSSResults.Count > nBlocks, nBlocks, Me.m_lstSSResults.Count))
+                        n = CInt(If(Me.m_lstSSResults.Count > nBlocks, nBlocks, Me.m_lstSSResults.Count))
 
                         icell = 0
                         For Each ssObj In Me.m_lstSSResults
@@ -480,7 +477,7 @@ Namespace FitToTimeSeries
 
                     Case eSensType.PredPreyCell
 
-                        n = CInt(if(Me.m_lstSSResults.Count > nBlocks, nBlocks, Me.m_lstSSResults.Count))
+                        n = CInt(If(Me.m_lstSSResults.Count > nBlocks, nBlocks, Me.m_lstSSResults.Count))
                         icell = 0
                         For Each ssObj In Me.m_lstSSResults
                             icell = icell + 1
@@ -502,7 +499,6 @@ Namespace FitToTimeSeries
                 cLog.Write(ex)
 
             End Try
-
 
         End Sub
 

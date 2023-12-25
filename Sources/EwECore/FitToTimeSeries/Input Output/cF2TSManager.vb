@@ -433,26 +433,26 @@ Public Class cF2TSManager
     Public Property VulnerabilityBlocks() As Integer(,)
         Get
             ' Translate m_model.Vblockcode into pred/prey array
-            Dim a2iVulnerabilityBlocks(Me.m_EPData.NumGroups, Me.m_EPData.NumGroups) As Integer
+            Dim Blocks(Me.m_EPData.NumGroups, Me.m_EPData.NumGroups) As Integer
             For iLink As Integer = 1 To Me.m_ESData.Narena
-                a2iVulnerabilityBlocks(Me.m_ESData.Jarena(iLink), Me.m_ESData.Iarena(iLink)) = Me.m_model.VblockCode(iLink)
+                Blocks(Me.m_ESData.Jarena(iLink), Me.m_ESData.Iarena(iLink)) = Me.m_model.VblockCode(iLink)
             Next
-            Return a2iVulnerabilityBlocks
+            Return Blocks
         End Get
         Set(value(,) As Integer)
             ' Copy pred/prey array into inlinks array
-            Dim aiVblockCode(Me.m_ESData.Narena) As Integer
+            Dim VBlockCodes(Me.m_ESData.Narena) As Integer
             Dim iLink As Integer = 1
 
             For j As Integer = 1 To Me.m_EPData.NumGroups      'all living groups; consumers
                 For i As Integer = 0 To Me.m_EPData.NumGroups 'prey
                     If (Me.isPredPrey(i, j) = True) Then
-                        aiVblockCode(iLink) = value(i, j)
+                        VBlockCodes(iLink) = value(i, j)
                         iLink += 1
                     End If
                 Next i
             Next j
-            Me.m_model.VblockCode = aiVblockCode
+            Me.m_model.VblockCode = VBlockCodes
         End Set
     End Property
 
@@ -698,6 +698,50 @@ Public Class cF2TSManager
 
 #End Region ' SensitivitySS2VByPredPrey
 
+#Region " Groups with time series "
+
+    Public Sub SetNBlocksForGroupsWithTimeSeries()
+
+        Dim blocks(Me.m_core.nGroups, Me.m_core.nGroups) As Integer
+        Dim iBlock As Integer = 1
+        Dim ts As cTimeSeries = Nothing
+        Dim bUseGroup(Me.m_core.nGroups) As Boolean
+
+        For iTS As Integer = 1 To Me.m_core.nTimeSeries
+            ts = Me.m_core.EcosimTimeSeries(iTS)
+            If (ts.Enabled = True And ts.IsReference And ts.WtType > 0) Then
+                Dim iGroup As Integer = 0
+                If (TypeOf (ts) Is cGroupTimeSeries) Then
+                    iGroup = DirectCast(ts, cGroupTimeSeries).GroupIndex
+                ElseIf (TypeOf (ts) Is cFleetTimeSeries) Then
+                    iGroup = DirectCast(ts, cFleetTimeSeries).GroupIndex
+                Else
+                    Debug.Assert(False, "Unknown time series type encountered")
+                End If
+                If (iGroup > 0) Then
+                    bUseGroup(iGroup) = True
+                End If
+            End If
+        Next
+
+        iBlock = 1
+        For i As Integer = 1 To Me.m_core.nGroups
+            For j As Integer = 1 To Me.m_core.nGroups
+                If bUseGroup(i) Then
+                    blocks(i, j) = iBlock
+                Else
+                    blocks(i, j) = 0
+                End If
+            Next j
+            If bUseGroup(i) Then iBlock += 1
+        Next i
+
+        Me.nBlockCodes = Math.Max(1, iBlock - 1)
+        Me.VulnerabilityBlocks = blocks
+    End Sub
+
+#End Region ' Groups with time series
+
 #Region " Search "
 
     ''' <summary>
@@ -773,7 +817,6 @@ Public Class cF2TSManager
     Public Function Results() As cF2TSResults
         Return Me.m_model.Results
     End Function
-
 
     Public Sub setNBlocksFromSensitivity(nBlocks As Integer)
         Me.m_model.setNBlocksFromSensitivity(nBlocks)
