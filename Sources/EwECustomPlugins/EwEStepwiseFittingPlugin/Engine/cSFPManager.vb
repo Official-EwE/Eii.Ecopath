@@ -279,10 +279,15 @@ Public Class cSFPManager
         ' Add in reverse order (it's a stack)
         For i As Integer = Me.m_iterations.Count - 1 To 0 Step -1
             Dim it As ISFPIteration = Me.m_iterations(i)
-            it.RunState = ISFPIteration.eRunState.Idle
             it.Elapsed = New TimeSpan(0)
             it.IsBestFit = False
-            If (it.Enabled) Then Me.m_queue.Push(it)
+
+            If (it.Enabled) Then
+                it.RunState = ISFPIteration.eRunState.Pending
+                Me.m_queue.Push(it)
+            Else
+                it.RunState = ISFPIteration.eRunState.Idle
+            End If
         Next
 
         Me.m_statusmsg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, My.Resources.DISPLAYNAME),
@@ -509,6 +514,7 @@ Public Class cSFPManager
 
             'Load Fishing iteration
             Me.m_iterations.Add(New cSFPEcosimRun(ISFPIteration.eBaseSearchMode.Fishing))
+            Me.m_iterations.Add(New cSFPGroupsWithTimeSeries(ISFPIteration.eBaseSearchMode.Fishing))
 
             'Load Fishing Vunerability Search iterations
             For i = Me.Parameters.MinK To Me.Parameters.K
@@ -537,6 +543,7 @@ Public Class cSFPManager
 
             'Load Baseline iteration
             Me.m_iterations.Add(New cSFPEcosimRun(ISFPIteration.eBaseSearchMode.Baseline))
+            Me.m_iterations.Add(New cSFPGroupsWithTimeSeries(ISFPIteration.eBaseSearchMode.Baseline))
 
             'Load Baseline Vunerability Search iterations
             For i = Me.Parameters.MinK To Me.Parameters.K

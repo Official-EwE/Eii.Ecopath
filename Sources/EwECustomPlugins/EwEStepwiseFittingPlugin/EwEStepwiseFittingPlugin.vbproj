@@ -176,6 +176,7 @@
     <Compile Include="Iterations\cSFPGenericIteration.vb" />
     <Compile Include="Engine\cSFPManager.vb" />
     <Compile Include="Engine\cSFPParameters.vb" />
+    <Compile Include="Iterations\cSFPGroupsWithTimeSeries.vb" />
     <Compile Include="Iterations\cSFPVandASearch.vb" />
     <Compile Include="Iterations\cSFPVulnerabilitySearch.vb" />
     <Compile Include="Iterations\ISFPIteration.vb" />

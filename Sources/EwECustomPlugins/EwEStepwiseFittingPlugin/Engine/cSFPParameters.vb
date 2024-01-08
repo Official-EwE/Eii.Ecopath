@@ -33,7 +33,10 @@ Imports EwEUtils.SystemUtilities
 #End Region ' Imports
 
 ''' <summary>
-''' SFPParameters calculates and stores estimated parameter values. Also stores applied shape of FF to PP
+''' SFPParameters is the one instance that holds all settings to define the fitting bounds, 
+''' including bounds for K and spline points; the vulnerability cap, the index of the 
+''' applied anomaly shape, threading bounds, etc. The SFP manager and iterations all share 
+''' the same SFP parameters instance.
 ''' </summary>
 Public Class cSFPParameters
 
@@ -217,19 +220,21 @@ Public Class cSFPParameters
 
 #Region " Run preparation and offloading "
 
-    Private m_weights(1000) As Single
-    Private m_enabled(1000) As Boolean
+    Private m_weights() As Single
+    Private m_enabled() As Boolean
 
     Public Sub PrepareForRun(outputfolder As String)
 
         Me.IterationOutputFolder = outputfolder
 
-        Array.Clear(Me.m_weights, 0, Me.m_weights.Length)
-
         If (Me.TimeSeriesDataset <= 0) Then Return
         Dim dataset As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.TimeSeriesDataset)
+        Dim n As Integer = dataset.nTimeSeries
 
-        'Go through each time series of the time series dataset
+        ReDim m_weights(n)
+        ReDim m_enabled(n)
+
+        'Go through each time series of the time series dataset and store time series properties
         For i As Integer = 1 To dataset.nTimeSeries
             With dataset.TimeSeries(i)
                 Me.m_weights(i) = .WtType
@@ -242,14 +247,14 @@ Public Class cSFPParameters
 
     End Sub
 
-    Public ReadOnly Property TimeSeriesWeight(its As Integer) As Single
+    Public ReadOnly Property OriginalTimeSeriesWeight(its As Integer) As Single
         Get
             If (its < 0 Or its >= Me.m_weights.Length) Then Return 0
             Return Me.m_weights(its)
         End Get
     End Property
 
-    Public ReadOnly Property TimeSeriesEnabled(its As Integer) As Boolean
+    Public ReadOnly Property OriginalTimeSeriesEnabled(its As Integer) As Boolean
         Get
             If (its < 0 Or its >= Me.m_enabled.Length) Then Return True
             Return Me.m_enabled(its)

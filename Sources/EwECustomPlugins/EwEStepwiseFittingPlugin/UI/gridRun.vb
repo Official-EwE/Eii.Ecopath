@@ -257,6 +257,8 @@ Public Class gridRun
         Select Case iteration.RunState
             Case ISFPIteration.eRunState.Idle
                 Return ""
+            Case ISFPIteration.eRunState.Pending
+                Return My.Resources.STATE_ITERATION_PENDING
             Case ISFPIteration.eRunState.Initializing
                 Return My.Resources.STATE_ITERATION_INITIALIZING
             Case ISFPIteration.eRunState.Completed
