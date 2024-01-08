@@ -22,7 +22,6 @@ Option Strict On
 Imports EwECore.Ecosim
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports Microsoft.VisualBasic.Devices
 
 
 Namespace FitToTimeSeries
@@ -406,7 +405,7 @@ Namespace FitToTimeSeries
             Catch ex As Threading.ThreadAbortException
                 ' Done
                 'this should not happen under normal circumstances
-                'm_runmessageHandler(New cMessage("Fit to Time Series aborted.", _
+                'm_runmessageHandler(New cMessage("Fit to Time Series aborted.", 
                 '                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical))
 
             Catch ex As Exception
@@ -535,9 +534,9 @@ Namespace FitToTimeSeries
                 ' Done
 
             Catch ex As Exception
-                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message), _
-                                        eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcosimFitToTimeSeries, _
+                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
+                                        eMessageType.ErrorEncountered,
+                                        eCoreComponentType.EcosimFitToTimeSeries,
                                         eMessageImportance.Critical))
 
             End Try
@@ -853,9 +852,9 @@ Namespace FitToTimeSeries
                 If Me.n = 0 Then
                     'message
 
-                    Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_INTERACTIONS, _
-                                            eMessageType.ErrorEncountered, _
-                                            eCoreComponentType.EcosimFitToTimeSeries, _
+                    Me.AddMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_INTERACTIONS,
+                                            eMessageType.ErrorEncountered,
+                                            eCoreComponentType.EcosimFitToTimeSeries,
                                             eMessageImportance.Warning))
                     Exit Sub
                 End If
@@ -893,10 +892,10 @@ Namespace FitToTimeSeries
                 If Me.m_estIter > 500 Then GoTo 250
 
                 If Me.StopIndex > 0 Then
-                    fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_ITERATIONS, _
-                                                 eCoreComponentType.EcosimFitToTimeSeries, _
-                                                 eMessageType.Any, _
-                                                 eMessageImportance.Information, _
+                    fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_ITERATIONS,
+                                                 eCoreComponentType.EcosimFitToTimeSeries,
+                                                 eMessageType.Any,
+                                                 eMessageImportance.Information,
                                                  eMessageReplyStyle.YES_NO)
                     fbmsg.Reply = eMessageReply.NO
 
@@ -938,10 +937,10 @@ Namespace FitToTimeSeries
 
                 Me.searchIterationStep()
 
-                fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_CONVERGED, _
-                                                 eCoreComponentType.EcosimFitToTimeSeries, _
-                                                 eMessageType.Any, _
-                                                 eMessageImportance.Information, _
+                fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_CONVERGED,
+                                                 eCoreComponentType.EcosimFitToTimeSeries,
+                                                 eMessageType.Any,
+                                                 eMessageImportance.Information,
                                                  eMessageReplyStyle.YES_NO)
                 fbmsg.Reply = eMessageReply.NO
 
@@ -982,9 +981,9 @@ Namespace FitToTimeSeries
                 Me.m_runstoppedHandler(Me.RunState)
                 Me.RunState = eRunType.Idle
 
-                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR_ESTIMATION, ex.Message), _
-                                        eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcosimFitToTimeSeries, _
+                Me.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR_ESTIMATION, ex.Message),
+                                        eMessageType.ErrorEncountered,
+                                        eCoreComponentType.EcosimFitToTimeSeries,
                                         eMessageImportance.Warning))
             End Try
 
