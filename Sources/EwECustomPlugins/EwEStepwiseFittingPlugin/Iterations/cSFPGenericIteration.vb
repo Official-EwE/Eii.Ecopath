@@ -204,21 +204,31 @@ Public MustInherit Class cSFPGenericIteration
 
                     Dim ts As cTimeSeries = dataset.TimeSeries(i)
 
-                    'If the time series type is 0, 1, 5, 6, 7 enable it
-                    Select Case ts.TimeSeriesType
-                        Case eTimeSeriesType.BiomassRel,
-                             eTimeSeriesType.TotalMortality,
-                             eTimeSeriesType.Catches,
-                             eTimeSeriesType.CatchesRel,
-                             eTimeSeriesType.AverageWeight
-                            ts.Enabled = Me.Parameters.TimeSeriesEnabled(i)
-                            ts.WtType = Me.Parameters.TimeSeriesWeight(i)
-                        Case eTimeSeriesType.BiomassAbs
-                            ts.Enabled = (Me.Parameters.EnableAbsoluteBiomassTimeSeries And Me.Parameters.TimeSeriesEnabled(i))
-                            ts.WtType = Me.Parameters.TimeSeriesWeight(i)
-                        Case Else
-                            ts.Enabled = False
-                    End Select
+                    ''If the time series type is 0, 1, 5, 6, 7 enable it
+                    'Select Case ts.TimeSeriesType
+                    '    Case eTimeSeriesType.BiomassRel,
+                    '         eTimeSeriesType.TotalMortality,
+                    '         eTimeSeriesType.Catches,
+                    '         eTimeSeriesType.CatchesRel,
+                    '         eTimeSeriesType.AverageWeight
+                    '        ts.Enabled = Me.Parameters.OriginalTimeSeriesEnabled(i)
+                    '        ts.WtType = Me.Parameters.TimeSeriesWeight(i)
+                    '    Case eTimeSeriesType.BiomassAbs
+                    '        ts.Enabled = (Me.Parameters.EnableAbsoluteBiomassTimeSeries And Me.Parameters.TimeSeriesEnabled(i))
+                    '        ts.WtType = Me.Parameters.TimeSeriesWeight(i)
+                    '    Case Else
+                    '        ts.Enabled = False
+                    'End Select
+
+                    If ts.IsReference Then
+                        ts.Enabled = Me.Parameters.OriginalTimeSeriesEnabled(i)
+                        ts.WtType = Me.Parameters.OriginalTimeSeriesWeight(i)
+                        If ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
+                            ts.Enabled = ts.Enabled And Me.Parameters.EnableAbsoluteBiomassTimeSeries
+                        End If
+                    Else
+                        ts.Enabled = False
+                    End If
                 Next
 
             Case ISFPIteration.eBaseSearchMode.Fishing
@@ -226,8 +236,8 @@ Public MustInherit Class cSFPGenericIteration
                 For i As Integer = 1 To dataset.nTimeSeries
                     'Enable Time Series
                     Dim ts As cTimeSeries = dataset.TimeSeries(i)
-                    ts.Enabled = Me.Parameters.TimeSeriesEnabled(i)
-                    ts.WtType = Me.Parameters.TimeSeriesWeight(i)
+                    ts.Enabled = Me.Parameters.OriginalTimeSeriesEnabled(i)
+                    ts.WtType = Me.Parameters.OriginalTimeSeriesWeight(i)
                 Next
 
             Case Else
@@ -261,6 +271,7 @@ Public MustInherit Class cSFPGenericIteration
     Public Property RunState As ISFPIteration.eRunState = ISFPIteration.eRunState.Idle Implements ISFPIteration.RunState
     Public Property Elapsed As TimeSpan Implements ISFPIteration.Elapsed
     Public Property Completed As Date Implements ISFPIteration.Completed
+
     Public ReadOnly Property RunStateMessages As String() Implements ISFPIteration.RunStateMessages
         Get
             Return Me.m_lRunMessages.ToArray()
@@ -570,9 +581,9 @@ Public MustInherit Class cSFPGenericIteration
     Protected Function BaselineOrFishing() As String
         Select Case Me.BaseSearchMode
             Case ISFPIteration.eBaseSearchMode.Baseline
-                Return My.Resources.MODUS_BASELINE
+                Return My.Resources.NAME_BASELINE
             Case ISFPIteration.eBaseSearchMode.Fishing
-                Return My.Resources.MODUS_FISHING
+                Return My.Resources.NAME_FISHING
             Case Else
                 Debug.Assert(False, "Unsupported enum")
         End Select
@@ -584,31 +595,23 @@ Public MustInherit Class cSFPGenericIteration
     ''' Return name of hypothesis 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Name() As String _
+    Public Overridable ReadOnly Property Name() As String _
         Implements ISFPIteration.Name
         Get
-            ' ToDo: globalize this
-
-            Dim HName As String
             'If simple run
             If (Me.EstimatedV = 0 And Me.SplinePoints = 0) Then
-                HName = Me.BaselineOrFishing()
-                Return HName
+                Return Me.BaselineOrFishing()
             End If
             'If Vunerability Search
             If (Me.EstimatedV > 0 And Me.SplinePoints = 0) Then
-                HName = Me.BaselineOrFishing() & " and " & Me.EstimatedV & "v"
-                Return HName
+                Return cStringUtils.Localize(My.Resources.NAME_BASE_AND_V, Me.BaselineOrFishing, Me.EstimatedV)
             End If
             'If Anomaly Search
             If (Me.EstimatedV = 0 And Me.SplinePoints > 0) Then
-                HName = Me.BaselineOrFishing() & " and " & Me.SplinePoints & "pp"
-                Return HName
-            Else 'If V and A Search
-                HName = Me.BaselineOrFishing() & " and " & Me.EstimatedV & "v" & " + " & Me.SplinePoints & "pp"
-                Return HName
+                Return cStringUtils.Localize(My.Resources.NAME_BASE_AND_SPLINE, Me.BaselineOrFishing, Me.SplinePoints)
             End If
-
+            'Fall-through: V and A Search
+            Return cStringUtils.Localize(My.Resources.NAME_BASE_AND_V_AND_SPLINE, Me.BaselineOrFishing, Me.EstimatedV, Me.SplinePoints)
         End Get
     End Property
 

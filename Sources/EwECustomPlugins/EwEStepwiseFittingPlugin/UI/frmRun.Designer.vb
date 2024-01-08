@@ -4,7 +4,7 @@ Partial Class frmRun
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -63,6 +63,8 @@ Partial Class frmRun
         Me.m_btnStop = New System.Windows.Forms.Button()
         Me.m_btnResetFolder = New System.Windows.Forms.Button()
         Me.m_plSettings = New System.Windows.Forms.Panel()
+        Me.m_tbxVUlCap = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.m_lblNoRuns = New System.Windows.Forms.Label()
         Me.m_cmbAnomalyShape = New System.Windows.Forms.ComboBox()
         Me.m_lblAnomalyShape = New System.Windows.Forms.Label()
@@ -71,8 +73,6 @@ Partial Class frmRun
         Me.m_nudK = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumVars = New System.Windows.Forms.Label()
         Me.m_nudNoThreads = New System.Windows.Forms.NumericUpDown()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.m_tbxVUlCap = New System.Windows.Forms.TextBox()
         CType(Me.m_nudStepSize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plModel.SuspendLayout()
@@ -394,6 +394,16 @@ Partial Class frmRun
         resources.ApplyResources(Me.m_plSettings, "m_plSettings")
         Me.m_plSettings.Name = "m_plSettings"
         '
+        'm_tbxVUlCap
+        '
+        resources.ApplyResources(Me.m_tbxVUlCap, "m_tbxVUlCap")
+        Me.m_tbxVUlCap.Name = "m_tbxVUlCap"
+        '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
+        '
         'm_lblNoRuns
         '
         resources.ApplyResources(Me.m_lblNoRuns, "m_lblNoRuns")
@@ -443,16 +453,6 @@ Partial Class frmRun
         Me.m_nudNoThreads.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.m_nudNoThreads.Name = "m_nudNoThreads"
         Me.m_nudNoThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'Label1
-        '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
-        '
-        'm_tbxVUlCap
-        '
-        resources.ApplyResources(Me.m_tbxVUlCap, "m_tbxVUlCap")
-        Me.m_tbxVUlCap.Name = "m_tbxVUlCap"
         '
         'frmRun
         '

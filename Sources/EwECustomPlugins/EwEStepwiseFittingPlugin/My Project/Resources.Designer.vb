@@ -205,20 +205,56 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} and {1}pp.
+        '''</summary>
+        Friend ReadOnly Property NAME_BASE_AND_SPLINE() As String
+            Get
+                Return ResourceManager.GetString("NAME_BASE_AND_SPLINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} and {1}v.
+        '''</summary>
+        Friend ReadOnly Property NAME_BASE_AND_V() As String
+            Get
+                Return ResourceManager.GetString("NAME_BASE_AND_V", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} and {1}v and {2}pp.
+        '''</summary>
+        Friend ReadOnly Property NAME_BASE_AND_V_AND_SPLINE() As String
+            Get
+                Return ResourceManager.GetString("NAME_BASE_AND_V_AND_SPLINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Baseline.
         '''</summary>
-        Friend ReadOnly Property MODUS_BASELINE() As String
+        Friend ReadOnly Property NAME_BASELINE() As String
             Get
-                Return ResourceManager.GetString("MODUS_BASELINE", resourceCulture)
+                Return ResourceManager.GetString("NAME_BASELINE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Fishing.
         '''</summary>
-        Friend ReadOnly Property MODUS_FISHING() As String
+        Friend ReadOnly Property NAME_FISHING() As String
             Get
-                Return ResourceManager.GetString("MODUS_FISHING", resourceCulture)
+                Return ResourceManager.GetString("NAME_FISHING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} with time series.
+        '''</summary>
+        Friend ReadOnly Property NAME_WITH_TS_ONLY() As String
+            Get
+                Return ResourceManager.GetString("NAME_WITH_TS_ONLY", resourceCulture)
             End Get
         End Property
         
@@ -246,6 +282,15 @@ Namespace My.Resources
         Friend ReadOnly Property STATE_ITERATION_OK() As String
             Get
                 Return ResourceManager.GetString("STATE_ITERATION_OK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (pending).
+        '''</summary>
+        Friend ReadOnly Property STATE_ITERATION_PENDING() As String
+            Get
+                Return ResourceManager.GetString("STATE_ITERATION_PENDING", resourceCulture)
             End Get
         End Property
         

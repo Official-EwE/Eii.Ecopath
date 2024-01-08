@@ -166,11 +166,23 @@
   <data name="HEADER_STATE" xml:space="preserve">
     <value>State</value>
   </data>
-  <data name="MODUS_BASELINE" xml:space="preserve">
+  <data name="NAME_BASELINE" xml:space="preserve">
     <value>Baseline</value>
   </data>
-  <data name="MODUS_FISHING" xml:space="preserve">
+  <data name="NAME_BASE_AND_SPLINE" xml:space="preserve">
+    <value>{0} and {1}pp</value>
+  </data>
+  <data name="NAME_BASE_AND_V" xml:space="preserve">
+    <value>{0} and {1}v</value>
+  </data>
+  <data name="NAME_BASE_AND_V_AND_SPLINE" xml:space="preserve">
+    <value>{0} and {1}v and {2}pp</value>
+  </data>
+  <data name="NAME_FISHING" xml:space="preserve">
     <value>Fishing</value>
+  </data>
+  <data name="NAME_WITH_TS_ONLY" xml:space="preserve">
+    <value>{0} with time series</value>
   </data>
   <data name="STATE_ITERATION_ERROR" xml:space="preserve">
     <value>Error</value>
@@ -180,6 +192,9 @@
   </data>
   <data name="STATE_ITERATION_OK" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="STATE_ITERATION_PENDING" xml:space="preserve">
+    <value>(pending)</value>
   </data>
   <data name="STATE_ITERATION_RUNNING" xml:space="preserve">
     <value>(running)</value>

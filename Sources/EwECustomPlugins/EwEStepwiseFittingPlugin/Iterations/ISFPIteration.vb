@@ -65,11 +65,13 @@ Public Interface ISFPIteration
     Enum eRunState As Integer
         ''' <summary>Iteration has not ran yet.</summary>
         Idle = 0
-        ''' <summary>Iteration starting</summary>
+        ''' <summary>Iteration is scheduled to run.</summary>
+        Pending
+        ''' <summary>Iteration starting.</summary>
         Initializing
-        ''' <summary>Iteration running</summary>
+        ''' <summary>Iteration running.</summary>
         Running
-        ''' <summary>Iteration stopping</summary>
+        ''' <summary>Iteration stopping.</summary>
         Stopping
         ''' <summary>Iteration ran successfully.</summary>
         Completed
@@ -116,7 +118,7 @@ Public Interface ISFPIteration
     ''' Get/set the <see cref="cSFPParameters"/> that the iteration can use.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    ReadOnly Property Parameters As cSFPParameters
+    Property Parameters As cSFPParameters
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
