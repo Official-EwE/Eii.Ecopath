@@ -244,6 +244,8 @@ Public Class cTimeSeriesDataStructures
 
     Private Sub ClearForcing()
 
+        Array.Clear(Me.ForcedFs, 0, Me.ForcedFs.Length)
+
         Array.Clear(Me.PoolForceBB, 0, Me.PoolForceBB.Length)
         Array.Clear(Me.PoolForceCatch, 0, Me.PoolForceCatch.Length)
         Array.Clear(Me.PoolForceZ, 0, Me.PoolForceZ.Length)
