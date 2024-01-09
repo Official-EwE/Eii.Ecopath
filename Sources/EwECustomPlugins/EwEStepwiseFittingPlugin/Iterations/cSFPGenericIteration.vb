@@ -128,14 +128,10 @@ Public MustInherit Class cSFPGenericIteration
         Next
 
         ' Store first anomaly shape
-        Dim shape As cShapeData = Me.GetAppliedShape(core)
-        If (shape IsNot Nothing) Then
-            core.ForcingShapeManager.Load()
-            Me.m_anomalyshape = shape.ShapeData
-        End If
-
-        'Store time series SS
+        Me.GetAnomalyShape(core)
+        ' Store time series SS
         Me.GetTimeSeriesSS(core)
+
         Return True
 
     End Function
@@ -567,6 +563,15 @@ Public MustInherit Class cSFPGenericIteration
     ''' -----------------------------------------------------------------------
     Public Overridable Sub Clear()
         Me.m_lRunMessages.Clear()
+
+        ' Do not delete memory allocate in init. Wiping array content should be enough
+        'Me.m_ss = 0
+        'Me.m_aic = 0
+        'Me.m_aicc = 0
+        'Me.m_timeseriesSS = Nothing
+        'Me.m_anomalyshape = Nothing
+        'Me.m_vulnerabilities = Nothing
+        'Me.m_fishmortshapes.Clear()
     End Sub
 
 #End Region ' Running
@@ -717,6 +722,14 @@ Public MustInherit Class cSFPGenericIteration
             Me.m_timeseriesSS(i) = core.TimeSeriesDataset(iTS).TimeSeries(i).DataSS
         Next
 
+    End Sub
+
+    Private Sub GetAnomalyShape(core As cCore)
+        Dim shape As cShapeData = Me.GetAppliedShape(core)
+        If (shape IsNot Nothing) Then
+            core.ForcingShapeManager.Load()
+            Me.m_anomalyshape = shape.ShapeData
+        End If
     End Sub
 
 #End Region ' Internals
