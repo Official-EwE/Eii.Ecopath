@@ -312,9 +312,14 @@ Namespace Database
             ' Preconditions
             Debug.Assert(Me.IsConnected(), "Cannot close a connection that is not open")
 
-            Me.m_conn.Close()
-            Me.m_conn.Dispose()
-            Me.m_conn = Nothing
+            If Me.IsConnected Then
+                Me.m_conn.Close()
+            End If
+
+            If (Me.m_conn IsNot Nothing) Then
+                Me.m_conn.Dispose()
+                Me.m_conn = Nothing
+            End If
 
             ' Clear file name
             Me.m_strFileName = ""
