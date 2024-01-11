@@ -3037,9 +3037,15 @@ Namespace Ecosim
                         End If
 
                         If Me.StartEatenOf(i) > 0 Then
+                            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                            ''jb Alternatively just scale Mo as a proportion of the change in q/q0 and PaddP [proportion of additive mortality]
+                            'Dim MoPredRatio As Single = m_Data.Eatenof(i) / (StartEatenOf(i) + 1.0E-20F)
+                            'm_Data.moTot(i) = m_Data.mo(i) + m_Data.MoPredBase(i) * (1 - MoPredRatio) * (1.0F - m_Data.PaddP(i))
+                            ''Debug.Assert(Not Single.IsNaN(m_Data.moTot(i)))
+                            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-
-                            'jb org formualtion
+                            'jb org formulation
                             ' PredMult = (m_Data.Eatenof(i) / StartEatenOf(i)) / (m_Data.PhHalf(i) + m_Data.Eatenof(i) / StartEatenOf(i))
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -3063,9 +3069,8 @@ Namespace Ecosim
                         ''for debugging nonadditive predation mortality
                         'If m_Data.PaddP(i) < 1 Then
                         '    Dim orgLoss As Single = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
-                        '    Debug.Print(m_Data.loss(i).ToString + ", " + orgLoss.ToString + ", " + m_Data.moMax(i).ToString + ", " + m_Data.moTot(i).ToString + ", " + m_Data.mo(i).ToString + ", " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
+                        '    Debug.Print("Group = " + i.ToString + ", new loss = " + m_Data.loss(i).ToString + ", org loss = " + orgLoss.ToString + ", mo max = " + m_Data.moMax(i).ToString + ", mo used = " + m_Data.moTot(i).ToString + ", mo original = " + m_Data.mo(i).ToString + ", rel pred ratio = " + (m_Data.Eatenof(i) / StartEatenOf(i)).ToString)
                         'End If
-
 
                         'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
                         'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten
