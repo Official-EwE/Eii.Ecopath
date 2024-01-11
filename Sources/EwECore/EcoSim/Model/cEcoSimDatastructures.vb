@@ -394,19 +394,17 @@ Public Class cEcosimDatastructures
     ''' </summary>
     Public MoPredBase() As Single
 
-
-    ''' <summary>
-    ''' 1 / PaddP - 1
-    ''' </summary>
-    Public PhHalf() As Single
-
-
-
     Public moTot() As Single
 
     Public moMax() As Single
 
     Public Qh() As Single
+
+    ''jb 11-jan-2024 PhHalf is not use in the new implementation of additive mortality
+    '''' <summary>
+    '''' 1 / PaddP - 1
+    '''' </summary>
+    'Public PhHalf() As Single
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
