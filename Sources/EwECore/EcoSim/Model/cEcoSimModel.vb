@@ -3793,11 +3793,12 @@ Namespace Ecosim
                     Me.m_Data.Qh(i) = 0
                 End If
 
-                If Me.m_Data.PaddP(i) > 0 Then
-                    Me.m_Data.PhHalf(i) = 1.0F / Me.m_Data.PaddP(i) - 1.0F
-                Else
-                    Me.m_Data.PhHalf(i) = 1.0F
-                End If
+                ''jb 11-jan-2024 PhHalf is not use in the new implementation of additive mortality
+                'If Me.m_Data.PaddP(i) > 0 Then
+                '    Me.m_Data.PhHalf(i) = 1.0F / Me.m_Data.PaddP(i) - 1.0F
+                'Else
+                '    Me.m_Data.PhHalf(i) = 1.0F
+                'End If
 
             Next i
 
@@ -4687,11 +4688,12 @@ Namespace Ecosim
 
             ReDim Me.m_Data.PaddP(Me.nGroups)
             ReDim Me.m_Data.MoPredBase(Me.nGroups)
-
-            ReDim Me.m_Data.PhHalf(Me.nGroups)
             ReDim Me.m_Data.moTot(Me.nGroups)
             ReDim Me.m_Data.moMax(Me.nGroups)
             ReDim Me.m_Data.Qh(Me.nGroups)
+            'jb 11-jan-2024 PhHalf is not use in the new implementation of additive mortality
+            'ReDim Me.m_Data.PhHalf(Me.nGroups)
+
 
             'default from frmOptF.Form_Load()
             For igrp As Integer = 1 To Me.nGroups
