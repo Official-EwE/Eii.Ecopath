@@ -168,12 +168,12 @@ Public Class cEcospaceRegionAvgResultsWriter
                 dataSource = New cBiomassResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.Catch
                 dataSource = New cCatchResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
+            Case eDataSourceTypes.MOTotalLoss
+                dataSource = New cMOTotalResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.RegionBiomass
                 dataSource = New cRegionBiomassResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.RegionCatch
                 dataSource = New cRegionCatchResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
-            Case eDataSourceTypes.MOTotalLoss
-                dataSource = New cMOTotalResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.RegionConsumption
                 dataSource = New cRegionConsuptionResultsDataSource(Me.m_core, Me.m_core.m_EcospaceData)
             Case eDataSourceTypes.RegionLandings
@@ -196,7 +196,7 @@ Public Class cEcospaceRegionAvgResultsWriter
         l.Add(Me.DataSourceFactory(eDataSourceTypes.Biomass))
         l.Add(Me.DataSourceFactory(eDataSourceTypes.Catch))
         l.Add(Me.DataSourceFactory(eDataSourceTypes.MOTotalLoss))
-        For irgn As Integer = 1 To Me.m_core.nRegions
+        For irgn As Integer = 0 To Me.m_core.nRegions
             l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionBiomass, irgn))
             l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionCatch, irgn))
             l.Add(Me.DataSourceFactory(eDataSourceTypes.RegionLandings, irgn))
@@ -230,11 +230,14 @@ Public Class cEcospaceRegionAvgResultsWriter
                     ' Start writing
                     sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
                     If Me.m_core.SaveWithFileHeader Then
+
+                        Me.m_core.ExtraFileHeaderFields("Data") = ds.DataDescriptor
+                        Me.m_core.ExtraFileHeaderFields("Area") = ds.AreaDescriptor
+                        Me.m_core.ExtraFileHeaderFields("Number_of_cells") = CStr(ds.nWaterCells)
+
                         sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
-                        sw.WriteLine(cStringUtils.ToCSVField("Data") & "," & cStringUtils.ToCSVField(ds.DataDescriptor))
-                        sw.WriteLine(cStringUtils.ToCSVField(ds.AreaDescriptor))
-                        sw.WriteLine(cStringUtils.ToCSVField("Number of cells") & "," & cStringUtils.ToCSVField(ds.nWaterCells))
-                        sw.WriteLine()
+
+                        Me.m_core.ExtraFileHeaderFields.Clear()
                     End If
 
                     Me.WriteData(sw, ds, AvgType)
