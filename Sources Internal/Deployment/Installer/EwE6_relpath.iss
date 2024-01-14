@@ -21,7 +21,7 @@
   VersionInfoVersion=6.7.0.18597
 #endif
 
-#if Compile64Bit == 0
+#if Compile64Bit == 1
   #define MyAppVersion "6.7.0 α 32-bit setup"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
@@ -38,10 +38,14 @@
 
 [Setup]
 
-
-; In Inno Setup UI, define Sign tool 'codesign' as:
-;   <full path to signtool.exe> /f <cert file> /p <password> /t <path to timestamp server> $f
-;   "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x86\signtool.exe" sign /a /f "D:\Cloud\Dropbox\EII_cert.pfx" /p <muahaha> /t http://timestamp.comodoca.com/authenticode $f
+; Code signing, fundamental for distributing installers and executables:
+; - EII 2020 .pfx code signing certificate expired 2 Dec 2023. 
+; - EII 2024 .cer code signing certificate will expire 10 Jan 2027
+;
+; In Inno Setup UI, define Sign tool 'codesign' depending on code cert type:
+;   .pfx:   "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x86\signtool.exe" sign /a /f "D:\Cloud\Dropbox\EII_cert.pfx" /p muahaha /t http://timestamp.comodoca.com/authenticode $f
+;   .cer    "C:\Program Files (x86)\Windows Kits\10\bin\10.0.20348.0\x64\signtool.exe" sign  /f ".\EII_cert_2024.cer" /csp "eToken Base Cryptographic Provider"  /k  "[SafeNet Token JC 0{{muahaha}}]=Sectigo_20240110133725" /t "http://timestamp.sectigo.com" /fd sha256 $f
+; - Replace "muahaha" with the certificate password
 AllowNoIcons=True
 AlwaysShowGroupOnReadyPage=True
 AlwaysShowDirOnReadyPage=True
@@ -324,10 +328,7 @@ Source: "{#DefRoot}{#DefSrc}\FishMIPv3Plugin.dll"; DestDir: "{app}\Plugins\"; Fl
 #endif
 
 ; -- SAMPLE DATABASES --
-Source: "{#DefRoot}{#DefDB}\Generic_37.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "{#DefRoot}{#DefDB}\Anchovy Bay Spatial.ewemdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
-Source: "{#DefRoot}{#DefDB}\Tampa_Bay.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
-Source: "{#DefRoot}{#DefDB}\Georgia_Strait.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 
 [Components]
 Name: "userguide"; Description: "EwE user guide (2008)"; Types: full custom
