@@ -742,8 +742,8 @@ Public Class cEcoSpace
     Private Sub FindSpatialEquilibrium()
         'this routine attempts to seek spatial equilibrium in ecosim biomasses, given mpa pattern
         'and start density map based on no movement
-        Dim i As Integer
-        Dim j As Integer
+        Dim iRow As Integer
+        Dim iCol As Integer
         Dim ip As Integer
         Dim RelFopt() As Single
         Dim Fgear() As Single
@@ -862,11 +862,11 @@ Public Class cEcoSpace
                 Me.EcoseedBeginTimeStep(Me.EcoSpaceData.MonthNow, Me.EcoSpaceData.YearNow, Me.Btime)
 
                 If Me.SearchData.bInSearch Then
-                    For i = 1 To Me.EcoPathData.NumFleet
-                        If Me.SearchData.FblockCode(i, Me.EcoSpaceData.YearNow) > 0 Then
-                            Me.EcoSimData.FishRateGear(i, Me.its) = Fgear(i)
+                    For iRow = 1 To Me.EcoPathData.NumFleet
+                        If Me.SearchData.FblockCode(iRow, Me.EcoSpaceData.YearNow) > 0 Then
+                            Me.EcoSimData.FishRateGear(iRow, Me.its) = Fgear(iRow)
                         End If
-                        Me.EcoSimData.FishRateGear(i, 0) = Fgear(i) 'm_Data.FishRateGear(i, itime)
+                        Me.EcoSimData.FishRateGear(iRow, 0) = Fgear(iRow) 'm_Data.FishRateGear(i, itime)
                     Next
                 End If
 
@@ -874,16 +874,16 @@ Public Class cEcoSpace
                     ' Is Advection NOT forced externally?
                     If Not Me.EcoSpaceData.isAdvectionForced Then
                         'if so, then update actual advection from the monthly X and Y velocity vectors
-                        For i = 0 To Me.EcoSpaceData.InRow + 1
-                            For j = 0 To Me.EcoSpaceData.InCol + 1
+                        For iRow = 0 To Me.EcoSpaceData.InRow + 1
+                            For iCol = 0 To Me.EcoSpaceData.InCol + 1
                                 'If i = 18 And j = 38 Then Debug.Assert(False)
 
 
-                                Me.EcoSpaceData.Xvel(i, j) = Me.EcoSpaceData.MonthlyXvel(Me.EcoSpaceData.MonthNow)(i, j)
-                                Me.EcoSpaceData.Yvel(i, j) = Me.EcoSpaceData.MonthlyYvel(Me.EcoSpaceData.MonthNow)(i, j)
-                                Me.EcoSpaceData.UpVel(i, j) = Me.EcoSpaceData.MonthlyUpWell(Me.EcoSpaceData.MonthNow)(i, j)
-                            Next j
-                        Next i
+                                Me.EcoSpaceData.Xvel(iRow, iCol) = Me.EcoSpaceData.MonthlyXvel(Me.EcoSpaceData.MonthNow)(iRow, iCol)
+                                Me.EcoSpaceData.Yvel(iRow, iCol) = Me.EcoSpaceData.MonthlyYvel(Me.EcoSpaceData.MonthNow)(iRow, iCol)
+                                Me.EcoSpaceData.UpVel(iRow, iCol) = Me.EcoSpaceData.MonthlyUpWell(Me.EcoSpaceData.MonthNow)(iRow, iCol)
+                            Next iCol
+                        Next iRow
                     End If
                     'set the movement patterns based on velocity vectors for this month set above
                     Me.SetMovementParameters()
@@ -905,16 +905,16 @@ Public Class cEcoSpace
                 'set tval() (time step forcing value) to the value for this time step for each forcing shape
                 'Time forcing function are disable in EcoSpace via ApplyAVmodifiers() "UseTime" flag
                 'If ApplyAVmodifiers() is called with the UseTime = True then the time forcing function will be used
-                For i = 0 To Me.EcoSimData.NumForcingShapes
-                    Me.EcoSimData.tval(i) = Me.EcoSimData.zscale(Me.its, i)
+                For iRow = 0 To Me.EcoSimData.NumForcingShapes
+                    Me.EcoSimData.tval(iRow) = Me.EcoSimData.zscale(Me.its, iRow)
                 Next
 
                 'ToDo_jb EggProdShapeSplit() make sure this is correct
                 'set current relative reproductive rates for stanzas groups
-                For i = 1 To Me.StanzaData.Nsplit
-                    If Me.StanzaData.EggProdShapeSplit(i) > 0 Then
+                For iRow = 1 To Me.StanzaData.Nsplit
+                    If Me.StanzaData.EggProdShapeSplit(iRow) > 0 Then
                         'Debug.Assert(m_SimData.tval(m_Stanza.EggProdShapeSplit(i)) = 0)
-                        Me.RelRepStanza(i) = Me.EcoSimData.tval(Me.StanzaData.EggProdShapeSplit(i)) * Me.StanzaData.RscaleSplit(i) / Me.EcoSimData.StartBiomass(Me.StanzaData.EcopathCode(i, Me.StanzaData.Nstanza(i)))
+                        Me.RelRepStanza(iRow) = Me.EcoSimData.tval(Me.StanzaData.EggProdShapeSplit(iRow)) * Me.StanzaData.RscaleSplit(iRow) / Me.EcoSimData.StartBiomass(Me.StanzaData.EcopathCode(iRow, Me.StanzaData.Nstanza(iRow)))
                     End If
                 Next
 
@@ -988,16 +988,16 @@ Public Class cEcoSpace
 
                 'make sure none of the biomass cells are zero
                 For ip = 1 To Me.EcoSpaceData.nvartot
-                    For i = 1 To Me.EcoSpaceData.InRow
-                        For j = 1 To Me.EcoSpaceData.InCol
+                    For iRow = 1 To Me.EcoSpaceData.InRow
+                        For iCol = 1 To Me.EcoSpaceData.InCol
                             'Debug.Assert(Not Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)))
-                            If Single.IsNaN(Me.EcoSpaceData.Bcell(i, j, ip)) Then
-                                Me.EcoSpaceData.Bcell(i, j, ip) = 1.0E-30
+                            If Single.IsNaN(Me.EcoSpaceData.Bcell(iRow, iCol, ip)) Then
+                                Me.EcoSpaceData.Bcell(iRow, iCol, ip) = 1.0E-30
                             End If
                             'If EcoSpaceData.Bcell(i, j, ip) < 0.000001 Then EcoSpaceData.Bcell(i, j, ip) = 0.000001
-                            If Me.EcoSpaceData.Bcell(i, j, ip) < 1.0E-30 Then Me.EcoSpaceData.Bcell(i, j, ip) = 1.0E-30
-                        Next j
-                    Next i
+                            If Me.EcoSpaceData.Bcell(iRow, iCol, ip) < 1.0E-30 Then Me.EcoSpaceData.Bcell(iRow, iCol, ip) = 1.0E-30
+                        Next iCol
+                    Next iRow
                 Next 'For ip = 1 To m_Data.nvartot
 
                 stpwchIBMMultiStanza.Start()
@@ -1024,31 +1024,35 @@ Public Class cEcoSpace
                 Me.ForceBiomassWithEcosimTimeSeries(Me.its)
 
                 For ip = 0 To Me.EcoSpaceData.NGroups
-                    For i = 1 To Me.EcoSpaceData.InRow
-                        For j = 1 To Me.EcoSpaceData.InCol
+                    For iRow = 1 To Me.EcoSpaceData.InRow
+                        For iCol = 1 To Me.EcoSpaceData.InCol
                             'jb 12-July-2013 Added Depth check and removed width multiplier
                             'This fixes a bug in the Ecospace Results grid were biomass was not matching Ecopath base with large spatial models
-                            If Me.EcoSpaceData.Depth(i, j) > 0 Then
-                                Me.Btime(ip) += Me.EcoSpaceData.Bcell(i, j, ip)
+                            If Me.EcoSpaceData.Depth(iRow, iCol) > 0 Then
+                                ' JS 19Jan24: Does it make sense to sum up densities? This should also consider cell areas, at least
+                                Me.Btime(ip) += Me.EcoSpaceData.Bcell(iRow, iCol, ip)
+
                                 'By Region
-                                Dim iRgn As Integer = Me.EcoSpaceData.Region(i, j)
+                                Dim iRgn As Integer = Me.EcoSpaceData.Region(iRow, iCol)
                                 If (iRgn > 0 And iRgn <= Me.EcoSpaceData.nRegions) Then
-                                    Me.EcoSpaceData.ResultsRegionGroup(iRgn, ip, Me.itt) += Me.EcoSpaceData.Bcell(i, j, ip)
+                                    Me.EcoSpaceData.ResultsRegionGroup(iRgn, ip, Me.itt) += Me.EcoSpaceData.Bcell(iRow, iCol, ip) * Me.EcoSpaceData.CellArea(iRow, iCol)
                                 End If
                                 ' JS 19Jan24: allways add to 0 region (= total)
-                                Me.EcoSpaceData.ResultsRegionGroup(0, ip, Me.itt) += Me.EcoSpaceData.Bcell(i, j, ip)
+                                Me.EcoSpaceData.ResultsRegionGroup(0, ip, Me.itt) += Me.EcoSpaceData.Bcell(iRow, iCol, ip) * Me.EcoSpaceData.CellArea(iRow, iCol)
                             End If
-                        Next j
-                    Next i
+                        Next iCol
+                    Next iRow
                     'Debug.Assert(ip <> 67)
                     'Average across all the cells
                     Me.Btime(ip) /= Me.EcoSpaceData.nWaterCells
                     If Me.Btime(ip) = 0 Then Me.Btime(ip) = 0.0000000001
 
+                    ' JS 19Jan24: Region averages have been updated to correctly incorporate cell areas, and need correcting to the total region area
+                    ' JS 19Jan24: Region 0 holds total map average, no longer just the left-over region values
                     For iRgn As Integer = 0 To Me.EcoSpaceData.nRegions
-                        Dim ncells As Integer = Me.EcoSpaceData.nCellsInRegion(iRgn)
-                        If ncells = 0 Then ncells = 1
-                        Me.EcoSpaceData.ResultsRegionGroup(iRgn, ip, Me.itt) /= ncells
+                        Dim RegArea As Single = Me.EcoSpaceData.RegionArea(iRgn)
+                        If RegArea = 0 Then RegArea = 1
+                        Me.EcoSpaceData.ResultsRegionGroup(iRgn, ip, Me.itt) /= RegArea
                         Me.EcoSpaceData.ResultsRegionGroupYear(iRgn, ip, Me.EcoSpaceData.YearNow) += Me.EcoSpaceData.ResultsRegionGroup(iRgn, ip, Me.itt)
                         If ((Me.itt Mod Me.EcoSpaceData.nTimeStepsPerYear) = 0) Then
                             Me.EcoSpaceData.ResultsRegionGroupYear(iRgn, ip, Me.EcoSpaceData.YearNow) /= Me.EcoSpaceData.nTimeStepsPerYear
@@ -2988,6 +2992,7 @@ Public Class cEcoSpace
         Try
             ' Preserve base RelPP, either loaded or sketched
             Me.EcoSpaceData.setBaseRelPP()
+            Me.EcoSpaceData.RedimRegionAdminForRun()
 
             If (Me.SpatialData IsNot Nothing) Then
                 For Each src As cSpatialDataAdapter In Me.SpatialData.DataAdapters
@@ -6579,6 +6584,7 @@ exitline:
 
             'Average values across all the map cells
             For igrp As Integer = 1 To Me.EcoSpaceData.NGroups
+                ' JS19Jan24: Ecospace results should be averaged by total AREA, not by number of cells. See region averaging code, further down in this loop
                 Me.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, Me.itt) /= Me.EcoSpaceData.nWaterCells
                 Me.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, Me.itt) /= Me.EcoSpaceData.nWaterCells
                 Me.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, Me.itt) /= Me.EcoSpaceData.nWaterCells
@@ -6595,6 +6601,14 @@ exitline:
                 'This shouldn't cause problems because when Ecosim it run FishTime() is calculated on the fly for each time step
                 'this value will be over written
                 Me.EcoSimData.FishTime(igrp) = Me.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, Me.itt)
+
+                ' JS 19Jan24: Region averages have been updated to correctly incorporate cell areas, and need correcting to the total region area
+                For iprey As Integer = 1 To Me.EcoSpaceData.NGroups
+                    For irgn As Integer = 0 To Me.EcoSpaceData.nRegions
+                        Me.EcoSpaceData.ResultsRegionConsumptionPredPrey(irgn, igrp, iprey, Me.itt) /= Me.EcoSpaceData.RegionArea(irgn)
+                    Next irgn
+                Next iprey
+
             Next igrp
 
             For iflt As Integer = 0 To Me.EcoSpaceData.nFleets
@@ -6605,13 +6619,14 @@ exitline:
                 For igrp As Integer = 1 To Me.EcoSpaceData.NGroups
                     Me.EcoSpaceData.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp, Me.itt) /= Me.EcoSpaceData.nWaterCells
 
-                    Dim nInReg As Integer
+                    ' JS 19Jan24: Region averages have been updated to correctly incorporate cell areas, and need correcting to the total region area
+                    ' JS 19Jan24: Region 0 holds total map average, no longer just the left-over region values
                     For irgn As Integer = 0 To Me.EcoSpaceData.nRegions
-                        nInReg = Me.EcoSpaceData.nCellsInRegion(irgn)
-                        If nInReg = 0 Then nInReg = 1
-                        Me.EcoSpaceData.ResultsCatchRegionGearGroup(irgn, iflt, igrp, Me.itt) /= nInReg
-                        Me.EcoSpaceData.ResultsLandingsRegionGearGroup(irgn, iflt, igrp, Me.itt) /= nInReg
-                        Me.EcoSpaceData.ResultsValueRegionGearGroup(irgn, iflt, igrp, Me.itt) /= nInReg
+                        Dim RegArea As Single = Me.EcoSpaceData.RegionArea(irgn)
+                        If RegArea = 0 Then RegArea = 1
+                        Me.EcoSpaceData.ResultsCatchRegionGearGroup(irgn, iflt, igrp, Me.itt) /= RegArea
+                        Me.EcoSpaceData.ResultsLandingsRegionGearGroup(irgn, iflt, igrp, Me.itt) /= RegArea
+                        Me.EcoSpaceData.ResultsValueRegionGearGroup(irgn, iflt, igrp, Me.itt) /= RegArea
                         If ((Me.itt Mod Me.EcoSpaceData.NumStep) = 0) Then
                             Me.EcoSpaceData.ResultsCatchRegionGearGroupYear(irgn, iflt, igrp, Me.EcoSpaceData.YearNow) /= Me.EcoSpaceData.NumStep
                         End If

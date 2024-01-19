@@ -133,13 +133,17 @@ Public Class cSpaceSolver
     ''' <summary>Sum of Catch and Value across cells by fleet group</summary>
     Public ResultsByFleetGroup(,,) As Single
 
-    ''' <summary>Sum of Catch by region x fleet x group</summary>
+    ''' <summary>Sum of Catch (absolute) by region x fleet x group.</summary>
+    ''' <remarks>Cell catches are multiplied by <see cref="cEcospaceDataStructures.CellArea"/></remarks>
     Public ResultsCatchRegionGearGroup(,,) As Single
-    ''' <summary>Average landings by region x fleet x group</summary>
+    ''' <summary>Average landings (absolute) by region x fleet x group</summary>
+    ''' <remarks>Cell landings are multiplied by <see cref="cEcospaceDataStructures.CellArea"/></remarks>
     Public ResultsLandingsRegionGearGroup(,,) As Single
-    ''' <summary>Average value by region x fleet x group</summary>
+    ''' <summary>Average value (absolute) by region x fleet x group</summary>
+    ''' <remarks>Cell values are multiplied by <see cref="cEcospaceDataStructures.CellArea"/></remarks>
     Public ResultsValueRegionGearGroup(,,) As Single
     ''' <summary>Sum of consumption by region x pred x prey</summary>
+    ''' <remarks>Cell consumptions are multiplied by <see cref="cEcospaceDataStructures.CellArea"/></remarks>
     Public ResultsConsumptionRegionPredPrey(,,) As Single
 
     ''' <summary>
@@ -984,14 +988,15 @@ Public Class cSpaceSolver
                     End If
                 End If
 
+                ' JS 19Jan24: Region averages have been updated to correctly incorporate cell areas, and need correcting to the total region area
+                ' JS 19Jan24: Region 0 holds total map average, no longer just the left-over region values
                 If Me.m_Data.nRegions >= 1 Then
                     Dim iRgn As Integer = Me.m_Data.Region(iRow, iCol)
                     If (iRgn > 0 And iRgn <= Me.m_Data.nRegions) Then
-                        Me.ResultsConsumptionRegionPredPrey(iRgn, j, i) += eat
+                        Me.ResultsConsumptionRegionPredPrey(iRgn, j, i) += eat * Me.m_Data.CellArea(iRow, iCol)
                     End If
                 End If
-                ' JS 19Jan24: allways add to 0 region
-                Me.ResultsConsumptionRegionPredPrey(0, j, i) += eat
+                Me.ResultsConsumptionRegionPredPrey(0, j, i) += eat * Me.m_Data.CellArea(iRow, iCol)
 
             Next ii
 
@@ -1337,18 +1342,20 @@ Public Class cSpaceSolver
                                 cellValue = cellLandings * Me.m_Ecosim.MarketValue(iGrp, iFlt, iCumTime, iYear)
 
                                 'Next line is for adding up catch, landings and value by region
+
+                                ' JS 19Jan24: Region averages have been updated to correctly incorporate cell areas, and need correcting to the total region area
+                                ' JS 19Jan24: Region 0 holds total map average, no longer just the left-over region values
                                 If Me.m_Data.nRegions >= 1 Then
                                     Dim iRgn As Integer = Me.m_Data.Region(iRow, iCol)
                                     If (iRgn > 0 And iRgn <= Me.m_Data.nRegions) Then
-                                        Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch
-                                        Me.ResultsLandingsRegionGearGroup(iRgn, iFlt, iGrp) += cellLandings
-                                        Me.ResultsValueRegionGearGroup(iRgn, iFlt, iGrp) += cellValue
+                                        Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch * Me.m_Data.CellArea(iRow, iCol)
+                                        Me.ResultsLandingsRegionGearGroup(iRgn, iFlt, iGrp) += cellLandings * Me.m_Data.CellArea(iRow, iCol)
+                                        Me.ResultsValueRegionGearGroup(iRgn, iFlt, iGrp) += cellValue * Me.m_Data.CellArea(iRow, iCol)
                                     End If
                                 End If
-                                ' JS 19Jan24: always add to 0 region (= total)
-                                Me.ResultsCatchRegionGearGroup(0, iFlt, iGrp) += cellCatch
-                                Me.ResultsLandingsRegionGearGroup(0, iFlt, iGrp) += cellLandings
-                                Me.ResultsValueRegionGearGroup(0, iFlt, iGrp) += cellValue
+                                Me.ResultsCatchRegionGearGroup(0, iFlt, iGrp) += cellCatch * Me.m_Data.CellArea(iRow, iCol)
+                                Me.ResultsLandingsRegionGearGroup(0, iFlt, iGrp) += cellLandings * Me.m_Data.CellArea(iRow, iCol)
+                                Me.ResultsValueRegionGearGroup(0, iFlt, iGrp) += cellValue * Me.m_Data.CellArea(iRow, iCol)
 
                                 'Discards map used by the Biodiversity plugin
                                 'Include discards that survived

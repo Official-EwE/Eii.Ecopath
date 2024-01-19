@@ -318,6 +318,7 @@
     <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cRegionLandingsResultsDataSource.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cRegionValueResultsDataSource.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\Data sources\cEcospaceResultsWriterDataSourceBase.vb" />
+    <Compile Include="EcoSpace\Model\cRowCol.vb" />
     <Compile Include="enaR\cENARData.vb" />
     <Compile Include="enaR\cENARDataStructures.vb" />
     <Compile Include="enaR\cSCORFileWriter.vb" />

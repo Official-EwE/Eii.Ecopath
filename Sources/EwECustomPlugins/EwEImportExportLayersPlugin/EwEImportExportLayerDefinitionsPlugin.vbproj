@@ -161,7 +161,9 @@
     <Compile Include="UI\dlgImportLayerStyles.Designer.vb">
       <DependentUpon>dlgImportLayerStyles.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\dlgImportLayerStyles.vb" />
+    <Compile Include="UI\dlgImportLayerStyles.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

@@ -10995,6 +10995,11 @@ Public Class cCore
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
         If ds.ResizeEcospaceBasemap(InRow, InCol) Then
+            ' ToDo: Take decisive action on existing Ecospace data.
+            ' - Ask users to erase?
+            ' - Interpret the coordinates, cell sizes etc and resample?
+            ' - etc?
+
             ' Save Ecospace
             Me.SaveChanges(True, eBatchChangeLevelFlags.Ecospace)
             ' Reload the scenario
