@@ -2213,7 +2213,7 @@ Public Class cEcospaceDataStructures
         ReDim Me.RegionArea(Me.nRegions)
         For iRow As Integer = 1 To Me.InRow
             For iCol As Integer = 1 To Me.InCol
-                Dim iReg As Integer = Me.Region(iCol, iRow)
+                Dim iReg As Integer = Me.Region(iRow, iCol)
                 If (iReg > 0 And iReg <= Me.nRegions) Then
                     Me.RegionArea(iReg) += Me.CellArea(iRow, iCol)
                 End If
