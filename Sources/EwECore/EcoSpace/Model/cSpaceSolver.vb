@@ -986,9 +986,12 @@ Public Class cSpaceSolver
 
                 If Me.m_Data.nRegions >= 1 Then
                     Dim iRgn As Integer = Me.m_Data.Region(iRow, iCol)
-                    If (iRgn > Me.m_Data.nRegions) Then iRgn = 0
-                    Me.ResultsConsumptionRegionPredPrey(iRgn, j, i) += eat
+                    If (iRgn > 0 And iRgn <= Me.m_Data.nRegions) Then
+                        Me.ResultsConsumptionRegionPredPrey(iRgn, j, i) += eat
+                    End If
                 End If
+                ' JS 19Jan24: allways add to 0 region
+                Me.ResultsConsumptionRegionPredPrey(0, j, i) += eat
 
             Next ii
 
@@ -1336,11 +1339,16 @@ Public Class cSpaceSolver
                                 'Next line is for adding up catch, landings and value by region
                                 If Me.m_Data.nRegions >= 1 Then
                                     Dim iRgn As Integer = Me.m_Data.Region(iRow, iCol)
-                                    If (iRgn > Me.m_Data.nRegions) Then iRgn = 0
-                                    Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch
-                                    Me.ResultsLandingsRegionGearGroup(iRgn, iFlt, iGrp) += cellLandings
-                                    Me.ResultsValueRegionGearGroup(iRgn, iFlt, iGrp) += cellValue
+                                    If (iRgn > 0 And iRgn <= Me.m_Data.nRegions) Then
+                                        Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch
+                                        Me.ResultsLandingsRegionGearGroup(iRgn, iFlt, iGrp) += cellLandings
+                                        Me.ResultsValueRegionGearGroup(iRgn, iFlt, iGrp) += cellValue
+                                    End If
                                 End If
+                                ' JS 19Jan24: always add to 0 region (= total)
+                                Me.ResultsCatchRegionGearGroup(0, iFlt, iGrp) += cellCatch
+                                Me.ResultsLandingsRegionGearGroup(0, iFlt, iGrp) += cellLandings
+                                Me.ResultsValueRegionGearGroup(0, iFlt, iGrp) += cellValue
 
                                 'Discards map used by the Biodiversity plugin
                                 'Include discards that survived
