@@ -16,26 +16,15 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Extensions
 
+#End Region ' Imports
+
 #Region "Public Class definitions"
-
-Public Class cRowCol
-    Public Property Row As Integer
-    Public Property Col As Integer
-    Public Sub New(ByVal theRow As Integer, ByVal theCol As Integer)
-        Me.Row = theRow
-        Me.Col = theCol
-    End Sub
-    Public Overrides Function ToString() As String
-        Return "Row: " & Me.Row & ", col: " & Me.Col
-    End Function
-End Class
-
-#End Region
 
 Public Class cEcospaceDataStructures
 
@@ -265,6 +254,8 @@ Public Class cEcospaceDataStructures
     Public Excluded(,) As Boolean
     ''' <summary>Modeled area, in area units^2 by Row, Col.</summary>
     Public CellArea(,) As Single
+    ''' <summary>Region area, in area units^2</summary>
+    Public RegionArea() As Single
 
     ''' <summary>Trophic Level by Row, Col, Group.</summary>
     Public TL(,,) As Single
@@ -385,6 +376,8 @@ Public Class cEcospaceDataStructures
     Public ResultsLandingsRegionGearGroup(,,,) As Single
     ''' <summary>ResultsRegionValueGearGroup(nRegions, nFleets, nGroups, nTimesteps)</summary>
     Public ResultsValueRegionGearGroup(,,,) As Single
+    ''' <summary>ResultsConsumptionPredPrey(nRegions, nGroups, nGroups, nTimesteps)</summary>
+    Public ResultsRegionConsumptionPredPrey(,,,) As Single
 
     ''' <summary>ResultsByFleet(nvars,nFleets,NumberOfTimeSteps)</summary>
     Public ResultsByFleet(,,) As Single
@@ -394,8 +387,6 @@ Public Class cEcospaceDataStructures
     Public ResultsRegionGroup(,,) As Single
     ''' <summary>ResultsRegionGroup(nRegions, nGroups, nYears)</summary>
     Public ResultsRegionGroupYear(,,) As Single
-    ''' <summary>ResultsConsumptionPredPrey(nRegions, nGroups, nGroups, nTimesteps)</summary>
-    Public ResultsRegionConsumptionPredPrey(,,,) As Single
 
     ''' <summary> Summarized time step data </summary>
     ''' <remarks>populated in sumarizeTimeStepData()</remarks>
@@ -2217,6 +2208,22 @@ Public Class cEcospaceDataStructures
         End Try
     End Sub
 
+    Friend Sub RedimRegionAdminForRun()
+
+        ReDim Me.RegionArea(Me.nRegions)
+        For iRow As Integer = 1 To Me.InRow
+            For iCol As Integer = 1 To Me.InCol
+                Dim iReg As Integer = Me.Region(iCol, iRow)
+                If (iReg > 0 And iReg <= Me.nRegions) Then
+                    Me.RegionArea(iReg) += Me.CellArea(iRow, iCol)
+                End If
+                ' Total water area
+                Me.RegionArea(0) += Me.CellArea(iRow, iCol)
+            Next
+        Next
+
+    End Sub
+
     ''' <summary>
     ''' Redim the data that saves the Ecospace results over time
     ''' </summary>
@@ -2823,5 +2830,6 @@ Public Class cEcospaceDataStructures
 
 End Class
 
+#End Region
 
 
