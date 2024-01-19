@@ -745,7 +745,6 @@ Public Class cEcoSpace
         Dim i As Integer
         Dim j As Integer
         Dim ip As Integer
-        Dim irgn As Integer
         Dim RelFopt() As Single
         Dim Fgear() As Single
         Dim FtimeTotal(Me.EcoSpaceData.NGroups) As Single
@@ -1032,9 +1031,12 @@ Public Class cEcoSpace
                             If Me.EcoSpaceData.Depth(i, j) > 0 Then
                                 Me.Btime(ip) += Me.EcoSpaceData.Bcell(i, j, ip)
                                 'By Region
-                                irgn = Me.EcoSpaceData.Region(i, j)
-                                If (irgn > Me.EcoSpaceData.nRegions) Then irgn = 0
-                                Me.EcoSpaceData.ResultsRegionGroup(irgn, ip, Me.itt) += Me.EcoSpaceData.Bcell(i, j, ip)
+                                Dim iRgn As Integer = Me.EcoSpaceData.Region(i, j)
+                                If (iRgn > 0 And iRgn <= Me.EcoSpaceData.nRegions) Then
+                                    Me.EcoSpaceData.ResultsRegionGroup(iRgn, ip, Me.itt) += Me.EcoSpaceData.Bcell(i, j, ip)
+                                End If
+                                ' JS 19Jan24: allways add to 0 region (= total)
+                                Me.EcoSpaceData.ResultsRegionGroup(0, ip, Me.itt) += Me.EcoSpaceData.Bcell(i, j, ip)
                             End If
                         Next j
                     Next i
@@ -1043,15 +1045,15 @@ Public Class cEcoSpace
                     Me.Btime(ip) /= Me.EcoSpaceData.nWaterCells
                     If Me.Btime(ip) = 0 Then Me.Btime(ip) = 0.0000000001
 
-                    For irgn = 0 To Me.EcoSpaceData.nRegions
-                        Dim ncells As Integer = Me.EcoSpaceData.nCellsInRegion(irgn)
+                    For iRgn As Integer = 0 To Me.EcoSpaceData.nRegions
+                        Dim ncells As Integer = Me.EcoSpaceData.nCellsInRegion(iRgn)
                         If ncells = 0 Then ncells = 1
-                        Me.EcoSpaceData.ResultsRegionGroup(irgn, ip, Me.itt) /= ncells
-                        Me.EcoSpaceData.ResultsRegionGroupYear(irgn, ip, Me.EcoSpaceData.YearNow) += Me.EcoSpaceData.ResultsRegionGroup(irgn, ip, Me.itt)
+                        Me.EcoSpaceData.ResultsRegionGroup(iRgn, ip, Me.itt) /= ncells
+                        Me.EcoSpaceData.ResultsRegionGroupYear(iRgn, ip, Me.EcoSpaceData.YearNow) += Me.EcoSpaceData.ResultsRegionGroup(iRgn, ip, Me.itt)
                         If ((Me.itt Mod Me.EcoSpaceData.nTimeStepsPerYear) = 0) Then
-                            Me.EcoSpaceData.ResultsRegionGroupYear(irgn, ip, Me.EcoSpaceData.YearNow) /= Me.EcoSpaceData.nTimeStepsPerYear
+                            Me.EcoSpaceData.ResultsRegionGroupYear(iRgn, ip, Me.EcoSpaceData.YearNow) /= Me.EcoSpaceData.nTimeStepsPerYear
                         End If
-                    Next irgn
+                    Next iRgn
 
                 Next ip
 
