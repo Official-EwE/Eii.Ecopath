@@ -75,7 +75,11 @@ Namespace Style
 
             Select Case descriptor
                 Case eDescriptorTypes.Name
-                    Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, strType, CInt(value))
+                    Return strType
+                Case eDescriptorTypes.Description
+                    Dim strApplication As String = If(cTimeSeries.IsDriver(ts), My.Resources.VALUE_GENERIC_FORCING, My.Resources.VALUE_GENERIC_REFERENCE)
+                    Dim strScale As String = If(cTimeSeries.IsAbsolute(ts), My.Resources.VALUE_GENERIC_ABSOLUTE, My.Resources.VALUE_GENERIC_RELATIVE)
+                    Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_POINT, strType, strApplication, strScale)
             End Select
             Return strType
 

@@ -8878,7 +8878,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Absolute biomass (reference).
+        '''  Looks up a localized string similar to Absolute biomass.
         '''</summary>
         Public ReadOnly Property TS_TYPE_BIOMASSABS() As String
             Get
@@ -8896,7 +8896,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative biomass (reference).
+        '''  Looks up a localized string similar to Relative biomass.
         '''</summary>
         Public ReadOnly Property TS_TYPE_BIOMASSREL() As String
             Get
@@ -8905,7 +8905,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catchabilities (forcing).
+        '''  Looks up a localized string similar to Catchabilities.
         '''</summary>
         Public ReadOnly Property TS_TYPE_CATCHABILITIES() As String
             Get
@@ -8914,7 +8914,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catches (reference).
+        '''  Looks up a localized string similar to Catches.
         '''</summary>
         Public ReadOnly Property TS_TYPE_CATCHESABS() As String
             Get
@@ -8923,7 +8923,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catches (forcing).
+        '''  Looks up a localized string similar to Catches.
         '''</summary>
         Public ReadOnly Property TS_TYPE_CATCHESFORCING() As String
             Get
@@ -8932,7 +8932,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative catches (reference).
+        '''  Looks up a localized string similar to Relative catches.
         '''</summary>
         Public ReadOnly Property TS_TYPE_CATCHESREL() As String
             Get
@@ -8968,7 +8968,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Discards (reference).
+        '''  Looks up a localized string similar to Discards.
         '''</summary>
         Public ReadOnly Property TS_TYPE_DISCARDS() As String
             Get
@@ -9004,7 +9004,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Landings (reference).
+        '''  Looks up a localized string similar to Landings.
         '''</summary>
         Public ReadOnly Property TS_TYPE_LANDINGS() As String
             Get
@@ -9112,7 +9112,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Absolute.
+        '''  Looks up a localized string similar to absolute.
         '''</summary>
         Public ReadOnly Property VALUE_GENERIC_ABSOLUTE() As String
             Get
@@ -9121,7 +9121,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Forcing.
+        '''  Looks up a localized string similar to forcing.
         '''</summary>
         Public ReadOnly Property VALUE_GENERIC_FORCING() As String
             Get
@@ -9130,7 +9130,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Reference.
+        '''  Looks up a localized string similar to reference.
         '''</summary>
         Public ReadOnly Property VALUE_GENERIC_REFERENCE() As String
             Get
@@ -9139,7 +9139,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative.
+        '''  Looks up a localized string similar to relative.
         '''</summary>
         Public ReadOnly Property VALUE_GENERIC_RELATIVE() As String
             Get
