@@ -2621,6 +2621,7 @@ Namespace Ecosim
                     If Me.m_RefData.setRefDataIndex(iDYear, iTimeStep, iMonth, iYear) Then
 
                         ' JS16Mar23: Catches forcing is not a reference TS?!
+                        ' JS22Jan24: Relative fishing mort (104) is not included here
 
                         Debug.Assert(iDYear <> cCore.NULL_VALUE, "Warning: Ecosim.AccumulateDataInfo() failed to find a valid reference data index.")
                         If Me.m_RefData.AppliedDatVal(iDYear, iDType) > 0 And (Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassRel Or
@@ -2661,8 +2662,6 @@ Namespace Ecosim
                                 Case eTimeSeriesType.AverageWeight    '7 Mean body weith data Martell, iDatTypean 02
                                     'Assuming user knows this data type is for split pools only.
                                     'and is treated as a relative index
-
-
                                     If Me.m_Data.ResultsOverTime IsNot Nothing Then
                                         Dim iti As Integer = iDYear * 12 - 7
 
