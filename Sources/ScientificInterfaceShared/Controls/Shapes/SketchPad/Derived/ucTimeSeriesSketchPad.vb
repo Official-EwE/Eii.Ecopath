@@ -104,7 +104,7 @@ Namespace Controls
             Dim fmt As New cTimeSeriesTypeFormatter()
 
             sb.AppendLine(MyBase.GetShapeTitle())
-            sb.Append(fmt.ToString(DirectCast(Me.Shape, cTimeSeries).TimeSeriesType))
+            sb.Append(fmt.ToString(DirectCast(Me.Shape, cTimeSeries).TimeSeriesType, eDescriptorTypes.Description))
 
             Return sb.ToString()
         End Function

@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="TS_TYPE_BIOMASSABS" xml:space="preserve">
-    <value>Absolute biomass (reference)</value>
+    <value>Absolute biomass</value>
     <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
-    <value>Relative biomass (reference)</value>
+    <value>Relative biomass</value>
     <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
@@ -227,7 +227,7 @@
     <value>Month</value>
   </data>
   <data name="TS_TYPE_CATCHESFORCING" xml:space="preserve">
-    <value>Catches (forcing)</value>
+    <value>Catches</value>
     <comment>Time series type</comment>
   </data>
   <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
@@ -286,7 +286,7 @@
     <comment>{0}: time series name</comment>
   </data>
   <data name="TS_TYPE_CATCHESABS" xml:space="preserve">
-    <value>Catches (reference)</value>
+    <value>Catches</value>
     <comment>Time series type</comment>
   </data>
   <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">
@@ -2850,7 +2850,7 @@
     <value>Latin name</value>
   </data>
   <data name="TS_TYPE_CATCHESREL" xml:space="preserve">
-    <value>Relative catches (reference)</value>
+    <value>Relative catches</value>
   </data>
   <data name="HEADER_ASSIGNED_ENV_FORCING" xml:space="preserve">
     <value>Assigned environmental forcing to {0}</value>
@@ -2903,10 +2903,10 @@
     <value>Discard proportion</value>
   </data>
   <data name="TS_TYPE_DISCARDS" xml:space="preserve">
-    <value>Discards (reference)</value>
+    <value>Discards</value>
   </data>
   <data name="TS_TYPE_LANDINGS" xml:space="preserve">
-    <value>Landings (reference)</value>
+    <value>Landings</value>
   </data>
   <data name="HEADER_DISCARDS" xml:space="preserve">
     <value>Discards</value>
@@ -3182,7 +3182,7 @@
     <value>Link</value>
   </data>
   <data name="TS_TYPE_CATCHABILITIES" xml:space="preserve">
-    <value>Catchabilities (forcing)</value>
+    <value>Catchabilities</value>
   </data>
   <data name="HEADER_TARGET_SECOND" xml:space="preserve">
     <value>2nd target</value>
@@ -3194,16 +3194,16 @@
     <value>Usage</value>
   </data>
   <data name="VALUE_GENERIC_ABSOLUTE" xml:space="preserve">
-    <value>Absolute</value>
+    <value>absolute</value>
   </data>
   <data name="VALUE_GENERIC_FORCING" xml:space="preserve">
-    <value>Forcing</value>
+    <value>forcing</value>
   </data>
   <data name="VALUE_GENERIC_REFERENCE" xml:space="preserve">
-    <value>Reference</value>
+    <value>reference</value>
   </data>
   <data name="VALUE_GENERIC_RELATIVE" xml:space="preserve">
-    <value>Relative</value>
+    <value>relative</value>
   </data>
   <data name="COMMAND_DEFINEEFFORTZONES" xml:space="preserve">
     <value>Define the number of effort distribution zones</value>
