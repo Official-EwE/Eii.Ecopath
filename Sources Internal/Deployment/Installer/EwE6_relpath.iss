@@ -15,17 +15,16 @@
 
 ; Automated build will provide file version as a command line parameter
 ; /DFileVersion=6.6.{minor release no}.{build no}
-#ifdef FileVersion
-  VersionInfoVersion={#FileVersion}
-#else
-  VersionInfoVersion=6.7.0.18597
+#ifndef FileVersion
+  #define FileVersion "6.7.0.18608"
 #endif
+VersionInfoVersion={#FileVersion}
 
-#if Compile64Bit == 1
-  #define MyAppVersion "6.7.0 α 32-bit setup"
+#if Compile64Bit == 0
+  #define MyAppVersion FileVersion + " α 32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
-  #define MyAppVersion "6.7.0 α 64-bit setup"
+  #define MyAppVersion FileVersion + " α 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -117,7 +116,7 @@ Source: "{#DefRoot}{#DefSrc}\EPPlus.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\SourceLibrary.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\SourceGrid2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ScientificInterfaceShared.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EwE6.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EwE6.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\EwELicense.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Interop.JRO.dll"; DestDir: "{app}"; Flags: ignoreversion
