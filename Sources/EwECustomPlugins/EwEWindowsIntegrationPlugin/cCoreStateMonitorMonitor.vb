@@ -21,6 +21,7 @@
 Option Strict On
 Imports System.Timers
 Imports EwECore
+Imports ScientificInterfaceShared
 
 #End Region ' Imports
 
@@ -79,8 +80,13 @@ Public Class cCoreStateMonitorMonitor
         SyncLock Me.m_timer
 
             ' Re-evaluate if keep alive situation needs to change
-            Dim bNeedsMonitoring As Boolean = IsEnabled()
-            bNeedsMonitoring = bNeedsMonitoring And ((Me.m_sm.IsBusy And My.Settings.KeepOSAwake) Or My.Settings.NoRestart)
+            Dim bNeedsMonitoring As Boolean = False
+
+            If IsEnabled Then
+                Dim bNoSleep As Boolean = My.Settings.KeepOSAwake And Me.m_sm.IsBusy
+                Dim bNoRestart As Boolean = My.Settings.NoRestart And (Me.m_sm.IsDatasourceModified Or Me.m_sm.IsBusy)
+                bNeedsMonitoring = bNoRestart Or bNoSleep
+            End If
 
             ' No changes? Ok, abort
             If (bNeedsMonitoring = Me.m_bIsActive) Then Return
