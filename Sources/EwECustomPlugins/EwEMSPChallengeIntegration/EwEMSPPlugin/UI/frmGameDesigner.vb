@@ -723,7 +723,10 @@ Namespace UI
             Try
                 Dim type As cPressure.eDataTypes = DirectCast(Me.m_cmbPressureTypes.SelectedItem, cPressure.eDataTypes)
                 Dim g As cGame = Me.SelectedGame()
-                Dim p As New cPressure(Me.m_tbxPressureName.Text, type)
+
+                ' Solved reflection ambiguity
+                Dim p As New cPressure(type)
+                p.Name = Me.m_tbxPressureName.Text
 
                 g.Add(p)
 

@@ -8977,6 +8977,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Effort related costs.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_EFFORTCOST() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_EFFORTCOST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Relative effort related costs.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_EFFORTCOSTREL() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_EFFORTCOSTREL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fishing effort.
         '''</summary>
         Public ReadOnly Property TS_TYPE_FISHINGEFFORT() As String
@@ -9009,6 +9027,42 @@ Namespace My.Resources
         Public ReadOnly Property TS_TYPE_LANDINGS() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_LANDINGS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Off-vessel price.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_OFFVESSELPRICE() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_OFFVESSELPRICE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Relative off-vessel price.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_OFFVESSELPRICEREL() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_OFFVESSELPRICEREL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sailing related costs.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_SAILCOST() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_SAILCOST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Relative sailing related costs.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_SAILCOSTREL() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_SAILCOSTREL", resourceCulture)
             End Get
         End Property
         
