@@ -92,16 +92,14 @@ Public Class cCoreStateMonitorMonitor
             If (bNeedsMonitoring = Me.m_bIsActive) Then Return
 
             If (Not Me.m_bIsActive) Then
-                'Debug.WriteLine("!!!! Start keeping OS awake")
                 Me.m_timer.Start()
                 Me.m_bIsActive = True
             Else
-                'Debug.WriteLine("!!!! Stop keeping OS awake")
                 Me.m_timer.Stop()
                 Me.m_bIsActive = False
             End If
 
-            ' As a precaution
+            ' Check state change
             Me.ApplyStateChange()
 
         End SyncLock
@@ -139,21 +137,24 @@ Public Class cCoreStateMonitorMonitor
 
 #Region " The magic "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns whether Windows is being kept alert and awake
     ''' </summary>
-    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Friend Function IsActive() As Boolean
         Return Me.m_bIsActive
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns whether active hours were set correctly. User rights and whatnot
     ''' </summary>
-    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Friend Function IsAbleToShiftActiveHours() As Boolean
         Return Me.m_bAbleToShiftActiveHours
     End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Reaffirm the thread state.
