@@ -53,8 +53,10 @@ Public Class ucConfig
     Public Event OnChanged As IOptionsPage.OnChangedEventHandler Implements IOptionsPage.OnChanged
 
     Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
+        My.Settings.Enabled = False
         My.Settings.KeepOSAwake = False
         My.Settings.KeepMonitorOn = False
+        My.Settings.NoRestart = False
         Me.Persist()
         Me.UpdateContent()
     End Sub
@@ -64,8 +66,10 @@ Public Class ucConfig
     End Function
 
     Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
+        My.Settings.Enabled = Me.m_cbEnabled.Checked
         My.Settings.KeepOSAwake = Me.m_cbKeepOSAwake.Checked
         My.Settings.KeepMonitorOn = Me.m_cbKeepMonitorOn.Checked
+        My.Settings.NoRestart = Me.m_cbNoRestart.Checked
         Me.Persist()
         Return IOptionsPage.eApplyResultType.Success
     End Function
@@ -79,13 +83,16 @@ Public Class ucConfig
 #Region " Internals "
 
     Private Sub UpdateContent()
+        Me.m_cbEnabled.Checked = My.Settings.Enabled
         Me.m_cbKeepOSAwake.Checked = My.Settings.KeepOSAwake
         Me.m_cbKeepMonitorOn.Checked = My.Settings.KeepMonitorOn
+        Me.m_cbNoRestart.Checked = My.Settings.NoRestart
+        Me.m_cbNoRestart.Enabled = Me.m_plugin.HasRightsToMessWithActiveHours
     End Sub
 
     Private Sub Persist()
         My.Settings.Save()
-        Me.m_plugin.UpdateKeepAliveState()
+        Me.m_plugin.RefreshState()
     End Sub
 
 #End Region ' Internals

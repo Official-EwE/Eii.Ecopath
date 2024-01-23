@@ -39,7 +39,9 @@ Public Class cCoreStateMonitorMonitor
     Private WithEvents m_timer As Timer = Nothing
 
     ''' <summary>Current state for responding to state changes.</summary>
-    Private m_bKeepingAlive As Boolean = False
+    Private m_bIsActive As Boolean = False
+    ''' <summary>Think positive.</summary>
+    Private m_bAbleToShiftActiveHours As Boolean = True
 
 #End Region ' Privates
 
@@ -54,33 +56,47 @@ Public Class cCoreStateMonitorMonitor
 
 #Region " Public methods "
 
+    Public Property IsEnabled() As Boolean
+        Get
+            Return My.Settings.Enabled And Me.m_sm.HasEcopathLoaded
+        End Get
+        Set(value As Boolean)
+            If (value <> My.Settings.Enabled) Then
+                My.Settings.Enabled = value
+                My.Settings.Save()
+                Me.RefreshState()
+            End If
+        End Set
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Update the keep alive state.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub UpdateKeepAliveState()
+    Public Sub RefreshState()
 
         SyncLock Me.m_timer
 
             ' Re-evaluate if keep alive situation needs to change
-            Dim bIsRunning As Boolean = Me.m_sm.IsBusy And My.Settings.KeepOSAwake
+            Dim bNeedsMonitoring As Boolean = IsEnabled()
+            bNeedsMonitoring = bNeedsMonitoring And ((Me.m_sm.IsBusy And My.Settings.KeepOSAwake) Or My.Settings.NoRestart)
 
             ' No changes? Ok, abort
-            If (bIsRunning = Me.m_bKeepingAlive) Then Return
+            If (bNeedsMonitoring = Me.m_bIsActive) Then Return
 
-            If (Not Me.m_bKeepingAlive) Then
+            If (Not Me.m_bIsActive) Then
                 'Debug.WriteLine("!!!! Start keeping OS awake")
                 Me.m_timer.Start()
-                Me.m_bKeepingAlive = True
+                Me.m_bIsActive = True
             Else
                 'Debug.WriteLine("!!!! Stop keeping OS awake")
                 Me.m_timer.Stop()
-                Me.m_bKeepingAlive = False
+                Me.m_bIsActive = False
             End If
 
             ' As a precaution
-            Me.UpdateThreadState()
+            Me.ApplyStateChange()
 
         End SyncLock
 
@@ -98,7 +114,7 @@ Public Class cCoreStateMonitorMonitor
     ''' <param name="statemonitor"></param>
     ''' -----------------------------------------------------------------------
     Private Sub OnCoreStateEvent(statemonitor As cCoreStateMonitor) Handles m_sm.CoreExecutionStateEvent
-        Me.UpdateKeepAliveState()
+        Me.RefreshState()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -110,24 +126,43 @@ Public Class cCoreStateMonitorMonitor
     ''' <param name="e"></param>
     ''' -----------------------------------------------------------------------
     Private Sub OnTimerElapsed(sender As Object, e As ElapsedEventArgs) Handles m_timer.Elapsed
-        Me.UpdateThreadState()
+        Me.ApplyStateChange()
     End Sub
 
 #End Region ' Event handlers
 
 #Region " The magic "
 
+    ''' <summary>
+    ''' Returns whether Windows is being kept alert and awake
+    ''' </summary>
+    ''' <returns></returns>
+    Friend Function IsActive() As Boolean
+        Return Me.m_bIsActive
+    End Function
+
+    ''' <summary>
+    ''' Returns whether active hours were set correctly. User rights and whatnot
+    ''' </summary>
+    ''' <returns></returns>
+    Friend Function IsAbleToShiftActiveHours() As Boolean
+        Return Me.m_bAbleToShiftActiveHours
+    End Function
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Reaffirm the thread state.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateThreadState()
+    Private Sub ApplyStateChange()
 
-        If Me.m_bKeepingAlive Then
+        If Me.IsActive And My.Settings.KeepOSAwake Then
             cNativeMethods.PreventSleep(My.Settings.KeepMonitorOn)
         Else
             cNativeMethods.AllowSleep()
+        End If
+
+        If Me.IsActive And My.Settings.NoRestart Then
+            Me.m_bAbleToShiftActiveHours = cNativeMethods.ShiftActiveHours()
         End If
     End Sub
 

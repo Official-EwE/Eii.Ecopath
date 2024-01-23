@@ -21,6 +21,8 @@
 
 Option Strict On
 Imports System.Runtime.InteropServices
+Imports EwEUtils.Utilities
+Imports Microsoft.Win32
 
 #End Region ' Imports
 
@@ -28,6 +30,9 @@ Imports System.Runtime.InteropServices
 ''' https://stackoverflow.com/questions/57850624/prevent-a-computer-from-entering-sleep-standby-hibernate-while-program-is-runnin
 ''' </summary>
 Friend Class cNativeMethods
+
+    Private Shared s_dtLastMidHour As Integer = -1
+    Private Shared s_bSetActiveHoursSuccess As Boolean = True
 
     Public Shared Sub PreventSleep(bMonitor As Boolean)
         Dim flags As eExecutionState = eExecutionState.ES_CONTINUOUS Or eExecutionState.ES_SYSTEM_REQUIRED
@@ -49,5 +54,34 @@ Friend Class cNativeMethods
         ES_DISPLAY_REQUIRED = &H2
         ES_CONTINUOUS = &H80000000UI
     End Enum
+
+    Public Shared Function ShiftActiveHours() As Boolean
+
+        If Not s_bSetActiveHoursSuccess Then Return False
+
+        Dim basepath As String = "SOFTWARE\Microsoft\WindowsUpdate\UX\Settings"
+        Dim midHour As Integer = Date.Now.Hour
+        Dim bSuccess As Boolean = True
+
+        If midHour <> s_dtLastMidHour Then
+
+            Try
+                Dim key As RegistryKey = Nothing
+                key = Registry.LocalMachine.OpenSubKey(basepath, True)
+                ' Start active hours at 2 hours ago
+                key.SetValue("ActiveHoursStart", (midHour + 22) Mod 24)
+                ' Stop active hours 6 hours in the future
+                key.SetValue("ActiveHoursEnd", (midHour + 6) Mod 24)
+            Catch ex As Exception
+                bSuccess = False
+            End Try
+
+            s_bSetActiveHoursSuccess = bSuccess
+            s_dtLastMidHour = midHour
+
+        End If
+        Return bSuccess
+
+    End Function
 
 End Class
