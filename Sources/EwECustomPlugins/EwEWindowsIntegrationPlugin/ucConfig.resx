@@ -126,7 +126,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdr.Size" type="System.Drawing.Size, System.Drawing">
-    <value>293, 18</value>
+    <value>318, 18</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdr.TabIndex" type="System.Int32, mscorlib">
@@ -138,35 +138,71 @@
   <data name="m_hdr.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
+  <data name="&gt;&gt;m_hdr.Name" xml:space="preserve">
+    <value>m_hdr</value>
+  </data>
+  <data name="&gt;&gt;m_hdr.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18536, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdr.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdr.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
   <data name="m_cbKeepOSAwake.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbKeepOSAwake.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 44</value>
+    <value>6, 81</value>
   </data>
   <data name="m_cbKeepOSAwake.Size" type="System.Drawing.Size, System.Drawing">
     <value>133, 17</value>
   </data>
   <data name="m_cbKeepOSAwake.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_cbKeepOSAwake.Text" xml:space="preserve">
     <value>Keep Windows &amp;awake</value>
+  </data>
+  <data name="&gt;&gt;m_cbKeepOSAwake.Name" xml:space="preserve">
+    <value>m_cbKeepOSAwake</value>
+  </data>
+  <data name="&gt;&gt;m_cbKeepOSAwake.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbKeepOSAwake.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbKeepOSAwake.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="m_lblPrompt.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblPrompt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 23</value>
+    <value>3, 60</value>
   </data>
   <data name="m_lblPrompt.Size" type="System.Drawing.Size, System.Drawing">
     <value>161, 13</value>
   </data>
   <data name="m_lblPrompt.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lblPrompt.Text" xml:space="preserve">
     <value>While EwE is executing a model:</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrompt.Name" xml:space="preserve">
+    <value>m_lblPrompt</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrompt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrompt.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblPrompt.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_cbKeepMonitorOn.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -175,16 +211,85 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbKeepMonitorOn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 67</value>
+    <value>6, 104</value>
   </data>
   <data name="m_cbKeepMonitorOn.Size" type="System.Drawing.Size, System.Drawing">
     <value>146, 17</value>
   </data>
   <data name="m_cbKeepMonitorOn.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_cbKeepMonitorOn.Text" xml:space="preserve">
     <value>Also, keep the monitor &amp;on</value>
+  </data>
+  <data name="&gt;&gt;m_cbKeepMonitorOn.Name" xml:space="preserve">
+    <value>m_cbKeepMonitorOn</value>
+  </data>
+  <data name="&gt;&gt;m_cbKeepMonitorOn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbKeepMonitorOn.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbKeepMonitorOn.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_cbNoRestart.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbNoRestart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbNoRestart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 127</value>
+  </data>
+  <data name="m_cbNoRestart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>274, 17</value>
+  </data>
+  <data name="m_cbNoRestart.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_cbNoRestart.Text" xml:space="preserve">
+    <value>Prevent automatic restarts by modifying Active Hours</value>
+  </data>
+  <data name="&gt;&gt;m_cbNoRestart.Name" xml:space="preserve">
+    <value>m_cbNoRestart</value>
+  </data>
+  <data name="&gt;&gt;m_cbNoRestart.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbNoRestart.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbNoRestart.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_cbEnabled.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbEnabled.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 21</value>
+  </data>
+  <data name="m_cbEnabled.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 17</value>
+  </data>
+  <data name="m_cbEnabled.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_cbEnabled.Text" xml:space="preserve">
+    <value>&amp;Enable Windows control (may require admin rights)</value>
+  </data>
+  <data name="&gt;&gt;m_cbEnabled.Name" xml:space="preserve">
+    <value>m_cbEnabled</value>
+  </data>
+  <data name="&gt;&gt;m_cbEnabled.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbEnabled.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbEnabled.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -192,7 +297,16 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>278, 110</value>
+  </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>293, 89</value>
+    <value>318, 147</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ucConfig</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

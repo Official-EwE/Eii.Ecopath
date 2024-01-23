@@ -46,6 +46,8 @@ Partial Class ucConfig
         Me.m_cbKeepOSAwake = New System.Windows.Forms.CheckBox()
         Me.m_lblPrompt = New System.Windows.Forms.Label()
         Me.m_cbKeepMonitorOn = New System.Windows.Forms.CheckBox()
+        Me.m_cbNoRestart = New System.Windows.Forms.CheckBox()
+        Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'm_hdr
@@ -73,10 +75,24 @@ Partial Class ucConfig
         Me.m_cbKeepMonitorOn.Name = "m_cbKeepMonitorOn"
         Me.m_cbKeepMonitorOn.UseVisualStyleBackColor = True
         '
+        'm_cbNoRestart
+        '
+        resources.ApplyResources(Me.m_cbNoRestart, "m_cbNoRestart")
+        Me.m_cbNoRestart.Name = "m_cbNoRestart"
+        Me.m_cbNoRestart.UseVisualStyleBackColor = True
+        '
+        'm_cbEnabled
+        '
+        resources.ApplyResources(Me.m_cbEnabled, "m_cbEnabled")
+        Me.m_cbEnabled.Name = "m_cbEnabled"
+        Me.m_cbEnabled.UseVisualStyleBackColor = True
+        '
         'ucConfig
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_cbEnabled)
+        Me.Controls.Add(Me.m_cbNoRestart)
         Me.Controls.Add(Me.m_lblPrompt)
         Me.Controls.Add(Me.m_cbKeepMonitorOn)
         Me.Controls.Add(Me.m_cbKeepOSAwake)
@@ -91,4 +107,6 @@ Partial Class ucConfig
     Private WithEvents m_hdr As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_lblPrompt As Windows.Forms.Label
     Private WithEvents m_cbKeepMonitorOn As Windows.Forms.CheckBox
+    Private WithEvents m_cbNoRestart As Windows.Forms.CheckBox
+    Private WithEvents m_cbEnabled As Windows.Forms.CheckBox
 End Class

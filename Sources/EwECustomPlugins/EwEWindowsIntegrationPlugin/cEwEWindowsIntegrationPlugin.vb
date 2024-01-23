@@ -30,6 +30,7 @@ Imports ScientificInterfaceShared.Controls
 Public Class cEwEKeepSystemAwakePlugin
     Implements IUIContextPlugin
     Implements IEwEOptionsPlugin
+    Implements IAutoRunPlugin
 
 #Region " Private parts "
 
@@ -57,7 +58,7 @@ Public Class cEwEKeepSystemAwakePlugin
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
-            Return "Windows-only plug-in to prevent the OS from sleeping while EwE is busy"
+            Return "Windows-only plug-in to prevent the OS from sleeping or restarting while EwE is busy"
         End Get
     End Property
 
@@ -96,6 +97,12 @@ Public Class cEwEKeepSystemAwakePlugin
         End Get
     End Property
 
+    Public ReadOnly Property HasRightsToMessWithActiveHours As Boolean
+        Get
+            Return Me.m_mon.IsAbleToShiftActiveHours
+        End Get
+    End Property
+
     Public Function IsConfigured() As Boolean Implements IConfigurable.IsConfigured
         Return True
     End Function
@@ -106,10 +113,27 @@ Public Class cEwEKeepSystemAwakePlugin
 
 #End Region ' Config plug-in bits
 
+#Region " Autorun bits "
+
+    Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
+        Get
+            Return Me.m_mon.IsEnabled
+        End Get
+        Set(value As Boolean)
+            Me.m_mon.IsEnabled = value
+        End Set
+    End Property
+
+    Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
+        Return {eCoreComponentType.Ecopath}
+    End Function
+
+#End Region
+
 #Region " UI callback "
 
-    Friend Sub UpdateKeepAliveState()
-        Me.m_mon.UpdateKeepAliveState()
+    Friend Sub RefreshState()
+        Me.m_mon.RefreshState()
     End Sub
 
 #End Region ' UI callback
