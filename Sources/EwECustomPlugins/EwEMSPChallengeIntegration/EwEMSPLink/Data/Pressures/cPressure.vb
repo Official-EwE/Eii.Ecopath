@@ -47,21 +47,8 @@ Public Class cPressure
 
 #Region " Constructors "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Create an instance of a pressure definition. Pressure definitions cannot 
-    ''' accept actual pressure data; they just serve to define game dynamics.
-    ''' </summary>
-    ''' <param name="name">The name of the pressure to define.</param>
-    ''' <param name="datatype">The <see cref="eDataTypes">type of data</see>
-    ''' that the defined pressure will support.</param>
-    ''' <seealso cref="DataType"/>
-    ''' <seealso cref="eDataTypes"/>
-    ''' -----------------------------------------------------------------------
-    Friend Sub New(name As String, datatype As eDataTypes)
-        MyBase.New()
+    Public Sub New(datatype As eDataTypes)
         Me.DataType = datatype
-        Me.Name = name
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -76,7 +63,8 @@ Public Class cPressure
     ''' <see cref="IsScalar"/>
     ''' -----------------------------------------------------------------------
     Public Sub New(name As String, scalar As Double)
-        Me.New(name, eDataTypes.Scalar)
+        Me.New(eDataTypes.Scalar)
+        Me.Name = name
         Me.m_scalar = New cScalar(name, scalar)
     End Sub
 
@@ -94,7 +82,8 @@ Public Class cPressure
     ''' <see cref="IsGrid"/>
     ''' -----------------------------------------------------------------------
     Public Sub New(name As String, iNumColumns As Integer, iNumRows As Integer, Optional data As Double(,) = Nothing)
-        Me.New(name, eDataTypes.Grid)
+        Me.New(eDataTypes.Grid)
+        Me.Name = name
         Me.m_grid = New cGrid(name, iNumColumns, iNumRows, data)
     End Sub
 

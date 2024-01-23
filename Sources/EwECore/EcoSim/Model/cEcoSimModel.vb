@@ -2680,6 +2680,17 @@ Namespace Ecosim
 
                                     End If
 
+                                Case eTimeSeriesType.FishingMortalityRef
+                                    ' JS: Joe, this look about right?
+                                    'If Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType)) > 0 Then
+                                    '    Zstat = CSng(Math.Log(Me.m_RefData.AppliedDatVal(iDYear, iDType) / Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType))))
+                                    '    Me.m_RefData.Yhat(Me.m_RefData.Iobs) = CSng(Math.Log(Zest))
+                                    'End If
+
+                                    'If Me.MakeTestData Then
+                                    '    Me.m_RefData.AppliedDatVal(iDYear, iDType) = CSng(Zest * Math.Exp(SDtest * Me.RandomNormal()))
+                                    'End If
+
                                 Case eTimeSeriesType.Discards
 
                                     ' PoolForceDiscardMort(DatPool(iDType), DatPoolSec(iDType), iDatPt) = value

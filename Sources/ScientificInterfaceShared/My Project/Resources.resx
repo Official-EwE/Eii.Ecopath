@@ -3216,4 +3216,22 @@
     <value>{0} ({1})</value>
     <comment>{0} = field name, {1} = field type</comment>
   </data>
+  <data name="TS_TYPE_EFFORTCOST" xml:space="preserve">
+    <value>Effort related costs</value>
+  </data>
+  <data name="TS_TYPE_EFFORTCOSTREL" xml:space="preserve">
+    <value>Relative effort related costs</value>
+  </data>
+  <data name="TS_TYPE_OFFVESSELPRICE" xml:space="preserve">
+    <value>Off-vessel price</value>
+  </data>
+  <data name="TS_TYPE_OFFVESSELPRICEREL" xml:space="preserve">
+    <value>Relative off-vessel price</value>
+  </data>
+  <data name="TS_TYPE_SAILCOST" xml:space="preserve">
+    <value>Sailing related costs</value>
+  </data>
+  <data name="TS_TYPE_SAILCOSTREL" xml:space="preserve">
+    <value>Relative sailing related costs</value>
+  </data>
 </root>
