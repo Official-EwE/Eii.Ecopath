@@ -2625,14 +2625,16 @@ Namespace Ecosim
 
                         Debug.Assert(iDYear <> cCore.NULL_VALUE, "Warning: Ecosim.AccumulateDataInfo() failed to find a valid reference data index.")
                         If Me.m_RefData.AppliedDatVal(iDYear, iDType) > 0 And (Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassRel Or
-                                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassAbs Or
-                                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.TotalMortality Or
-                                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Or
-                                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Catches Or
-                                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
-                                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
-                                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
-                                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings) Then
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassAbs Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.TotalMortality Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Catches Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef) Then
+
 
                             Zstat = 0
                             Me.m_RefData.Iobs += 1
@@ -2681,20 +2683,14 @@ Namespace Ecosim
                                     End If
 
                                 Case eTimeSeriesType.FishingMortalityRef
-                                    ' JS: Joe, this look about right?
-                                    'If Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType)) > 0 Then
-                                    '    Zstat = CSng(Math.Log(Me.m_RefData.AppliedDatVal(iDYear, iDType) / Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType))))
-                                    '    Me.m_RefData.Yhat(Me.m_RefData.Iobs) = CSng(Math.Log(Zest))
-                                    'End If
-
-                                    'If Me.MakeTestData Then
-                                    '    Me.m_RefData.AppliedDatVal(iDYear, iDType) = CSng(Zest * Math.Exp(SDtest * Me.RandomNormal()))
-                                    'End If
+JS:                                 'Joe, this look about right?
+                                    If Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType)) > 0 Then
+                                        Zstat = CSng(Math.Log(Me.m_RefData.AppliedDatVal(iDYear, iDType) / Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType))))
+                                        Me.m_RefData.Yhat(Me.m_RefData.Iobs) = CSng(Math.Log(Zest))
+                                    End If
 
                                 Case eTimeSeriesType.Discards
 
-                                    ' PoolForceDiscardMort(DatPool(iDType), DatPoolSec(iDType), iDatPt) = value
-                                    '   If iTimeStep > 1 Then
                                     Dim iflt As Integer, igrp As Integer
                                     Dim predDiscard As Single
                                     Dim obsDiscard As Single = Me.m_RefData.AppliedDatVal(iDYear, iDType)
@@ -2706,7 +2702,6 @@ Namespace Ecosim
 
                                     Zstat = CSng(Math.Log(obsDiscard / predDiscard))
                                     Me.m_RefData.Yhat(Me.m_RefData.Iobs) = CSng(Math.Log(obsDiscard))
-                                    '  End If
 
                                 Case eTimeSeriesType.Landings
 

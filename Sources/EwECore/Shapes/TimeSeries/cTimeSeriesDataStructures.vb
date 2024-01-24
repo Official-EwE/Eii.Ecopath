@@ -810,6 +810,12 @@ Public Class cTimeSeriesDataStructures
                                 If value > 0 Then Me.Iobs = Me.Iobs + 1
                             End If
 
+                        Case eTimeSeriesType.FishingMortalityRef
+                            iGrp = Me.AppliedDatPool(iDType)
+                            If (iGrp > 0 And iGrp < nGroups) Then
+                                If value > 0 Then Me.Iobs = Me.Iobs + 1
+                            End If
+
                         Case eTimeSeriesType.BiomassAbs
                             iGrp = Me.AppliedDatPool(iDType)
                             If (iGrp > 0 And iGrp < nGroups) Then

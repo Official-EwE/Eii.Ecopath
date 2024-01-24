@@ -2949,6 +2949,9 @@ Namespace Database
                         eType = eTimeSeriesType.CatchesRel
                     Case 7
                         eType = eTimeSeriesType.AverageWeight
+                    Case 104
+                        eType = eTimeSeriesType.FishingMortalityRef
+
                         'Case 8
                         '    eType = eTimeSeriesType.EcotracerConcRel
                         'Case 9
