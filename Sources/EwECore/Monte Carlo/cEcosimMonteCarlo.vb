@@ -92,6 +92,7 @@ Public Class cEcosimMonteCarlo
 
     Public Const EE_TOL As Single = 0.0005
     Public Const MAX_ECOPATH_TRIES As Integer = 10000
+    Public Const MIN_DIET_PROP As Single = 0.000001
 
     'Public DietMultiplier() As Single
 
@@ -1348,7 +1349,7 @@ Public Class cEcosimMonteCarlo
                         dcRef(iPred, iPrey) /= dietsum
                         If (Me.PMeanDC(iPred, iPrey) > 0) Then
                             ' Fail normalization if a diet got lost
-                            If dcRef(iPred, iPrey) < 1.0E-20 Then
+                            If dcRef(iPred, iPrey) < MIN_DIET_PROP Then
                                 Return False
                             End If
                         End If
@@ -1596,8 +1597,8 @@ Public Class cEcosimMonteCarlo
 
                 If (param = eMCParams.Diets Or param = eMCParams.NotSet) Then
                     For iPred As Integer = 1 To Me.m_core.nLivingGroups
-                        Me.ParLimitDC(0, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DC(iPred, iGroup) * (1 - factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
-                        Me.ParLimitDC(1, iPred, iGroup) = Math.Min(1 - 1.0E-10!, Me.m_epdata.DC(iPred, iGroup) * (1 + factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
+                        Me.ParLimitDC(0, iPred, iGroup) = Math.Max(MIN_DIET_PROP, Me.m_epdata.DC(iPred, iGroup) * (1 - factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
+                        Me.ParLimitDC(1, iPred, iGroup) = Math.Min(1, Me.m_epdata.DC(iPred, iGroup) * (1 + factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
                     Next iPred
                 End If
 
@@ -1627,13 +1628,12 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-    Private Function ChooseFeasiblePar(par As eMCParams,
-                                       xbar As Single, CV As Single,
-                                       ParMin As Single, ParMax As Single) As Single
+    Private Function ChooseFeasiblePar(par As eMCParams, xbar As Single, CV As Single, ParMin As Single, ParMax As Single) As Single
 
         ' Sanity checks
-        'jb NOPE if the user has set CV to zero this will fail
-        'Find something better
+        If (CV <= 0) Then Return xbar
+
+        'jb NOPE if the user has set CV to zero, the debug assertion below will fail. Find something better
         'Debug.Assert((ParMin <= xbar) And (xbar <= ParMax))
 
         Dim X As Single
@@ -1652,11 +1652,10 @@ Public Class cEcosimMonteCarlo
 
     End Function
 
-    Private Function ChooseFeasibleBA(Biomass As Single,
-                                      xbar As Single, CV As Single,
-                                      ParMin As Single, ParMax As Single) As Single
+    Private Function ChooseFeasibleBA(Biomass As Single, xbar As Single, CV As Single, ParMin As Single, ParMax As Single) As Single
 
         ' Sanity checks
+        If (CV <= 0) Then Return xbar
         Debug.Assert((ParMin <= xbar) And (xbar <= ParMax))
 
         Dim X As Single
@@ -1689,7 +1688,6 @@ Public Class cEcosimMonteCarlo
         Dim TempDirichlet() As Single
         Dim iPointer As Integer = 0
 
-        Const MIN_DIET_PROP As Single = 0.000001
 
         'SumInteractions(iPred - 1) += If(m_core.EcoPathGroupInputs(iPred).ImpDiet > 0, 1, 0)
         For iPrey As Integer = 0 To Me.m_core.nGroups
@@ -1761,11 +1759,17 @@ Public Class cEcosimMonteCarlo
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a random normal distributed value between -1 and 1
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Private Function RandomNormal() As Single
         Dim i As Integer, X As Single
         X = -6
         For i = 1 To 12 : X = X + CSng(Me.m_rand.NextDouble()) : Next
-        Return X
+        Return X / 6
     End Function
 
     'Private Sub ChangeVulnerabilities(ParCurVal(,) As Single, CVpar(,) As Single)
