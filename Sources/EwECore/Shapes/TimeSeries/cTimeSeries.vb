@@ -316,6 +316,7 @@ Public MustInherit Class cTimeSeries
                (DatType = eTimeSeriesType.AverageWeight) Or
                (DatType = eTimeSeriesType.OffVesselPriceRel) Or
                (DatType = eTimeSeriesType.SailCostRel) Or
+               (DatType = eTimeSeriesType.FishingMortalityRef) Or
                (DatType = eTimeSeriesType.FixedCostRel)
     End Function
 
