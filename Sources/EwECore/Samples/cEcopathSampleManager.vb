@@ -819,7 +819,6 @@ Namespace Samples
 
                 If (s.EE(iGroup) > cCore.NULL_VALUE) Then
                     epdata.EEinput(iGroup) = s.EE(iGroup)
-                    If (epdata.EEinput(1) > 0) Then Stop
                 End If
 
                 If (s.BA(iGroup) > cCore.NULL_VALUE) Then
