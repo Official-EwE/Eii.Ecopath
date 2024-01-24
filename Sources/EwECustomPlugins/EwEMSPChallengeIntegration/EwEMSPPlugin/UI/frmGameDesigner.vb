@@ -111,6 +111,11 @@ Namespace UI
 
             If (Me.UIContext Is Nothing) Then Return
 
+#If DEBUG Then
+            Me.m_tpFleets.Visible = True
+#Else
+            Me.m_tpFleets.Visible = False
+#End If
             Me.m_ilTabIcons.Images.Add(SharedRecources.OK)
             Me.m_ilTabIcons.Images.Add(SharedRecources.Warning)
             Me.m_ilTabIcons.Images.Add(SharedRecources.Critical)

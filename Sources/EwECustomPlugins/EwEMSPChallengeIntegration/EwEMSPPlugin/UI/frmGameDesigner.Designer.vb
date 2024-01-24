@@ -73,6 +73,10 @@ Namespace UI
             Me.m_lblInfoContact = New System.Windows.Forms.Label()
             Me.m_lblInfoAuthor = New System.Windows.Forms.Label()
             Me.m_lblInfoVersion = New System.Windows.Forms.Label()
+            Me.m_tpFleets = New System.Windows.Forms.TabPage()
+            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+            Me.m_gridFleets = New EwEMSPPlugin.UI.gridFleets()
+            Me.m_gridFleetCatch = New EwEMSPPlugin.UI.gridFleetCatch()
             Me.m_tpPressures = New System.Windows.Forms.TabPage()
             Me.m_cmbPressureTypes = New System.Windows.Forms.ComboBox()
             Me.m_gridPressureMappings = New EwEMSPPlugin.UI.gridDrivers()
@@ -133,13 +137,14 @@ Namespace UI
             Me.m_btnGameDelete = New System.Windows.Forms.Button()
             Me.m_btnGameAddFromJSON = New System.Windows.Forms.Button()
             Me.m_btnExport = New System.Windows.Forms.Button()
-            Me.m_tpFleets = New System.Windows.Forms.TabPage()
-            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-            Me.m_gridFleets = New EwEMSPPlugin.UI.gridFleets()
-            Me.m_gridFleetCatch = New EwEMSPPlugin.UI.gridFleetCatch()
             Me.m_tabConfig.SuspendLayout()
             Me.m_tpEwESettings.SuspendLayout()
             Me.m_tpInformation.SuspendLayout()
+            Me.m_tpFleets.SuspendLayout()
+            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.SplitContainer1.Panel1.SuspendLayout()
+            Me.SplitContainer1.Panel2.SuspendLayout()
+            Me.SplitContainer1.SuspendLayout()
             Me.m_tpPressures.SuspendLayout()
             Me.m_tpOutcomes.SuspendLayout()
             CType(Me.m_scOutputs, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -156,11 +161,6 @@ Namespace UI
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbEcoscope, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_tpFleets.SuspendLayout()
-            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.SplitContainer1.Panel1.SuspendLayout()
-            Me.SplitContainer1.Panel2.SuspendLayout()
-            Me.SplitContainer1.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tabConfig
@@ -331,6 +331,90 @@ Namespace UI
             '
             resources.ApplyResources(Me.m_lblInfoVersion, "m_lblInfoVersion")
             Me.m_lblInfoVersion.Name = "m_lblInfoVersion"
+            '
+            'm_tpFleets
+            '
+            Me.m_tpFleets.Controls.Add(Me.SplitContainer1)
+            resources.ApplyResources(Me.m_tpFleets, "m_tpFleets")
+            Me.m_tpFleets.Name = "m_tpFleets"
+            Me.m_tpFleets.UseVisualStyleBackColor = True
+            '
+            'SplitContainer1
+            '
+            resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
+            Me.SplitContainer1.Name = "SplitContainer1"
+            '
+            'SplitContainer1.Panel1
+            '
+            Me.SplitContainer1.Panel1.Controls.Add(Me.m_gridFleets)
+            '
+            'SplitContainer1.Panel2
+            '
+            Me.SplitContainer1.Panel2.Controls.Add(Me.m_gridFleetCatch)
+            '
+            'm_gridFleets
+            '
+            Me.m_gridFleets.AllowBlockSelect = False
+            Me.m_gridFleets.AutoSizeMinHeight = 10
+            Me.m_gridFleets.AutoSizeMinWidth = 10
+            Me.m_gridFleets.AutoStretchColumnsToFitWidth = True
+            Me.m_gridFleets.AutoStretchRowsToFitHeight = False
+            Me.m_gridFleets.BackColor = System.Drawing.Color.White
+            Me.m_gridFleets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridFleets.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridFleets.CustomSort = False
+            Me.m_gridFleets.DataName = "grid content"
+            resources.ApplyResources(Me.m_gridFleets, "m_gridFleets")
+            Me.m_gridFleets.FixedColumnWidths = False
+            Me.m_gridFleets.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridFleets.Game = Nothing
+            Me.m_gridFleets.GridToolTipActive = True
+            Me.m_gridFleets.IsLayoutSuspended = False
+            Me.m_gridFleets.Name = "m_gridFleets"
+            Me.m_gridFleets.Shell = Nothing
+            Me.m_gridFleets.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridFleets.UIContext = Nothing
+            '
+            'm_gridFleetCatch
+            '
+            Me.m_gridFleetCatch.AllowBlockSelect = True
+            Me.m_gridFleetCatch.AutoSizeMinHeight = 10
+            Me.m_gridFleetCatch.AutoSizeMinWidth = 10
+            Me.m_gridFleetCatch.AutoStretchColumnsToFitWidth = False
+            Me.m_gridFleetCatch.AutoStretchRowsToFitHeight = False
+            Me.m_gridFleetCatch.BackColor = System.Drawing.Color.White
+            Me.m_gridFleetCatch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridFleetCatch.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridFleetCatch.CustomSort = False
+            Me.m_gridFleetCatch.DataName = "grid content"
+            resources.ApplyResources(Me.m_gridFleetCatch, "m_gridFleetCatch")
+            Me.m_gridFleetCatch.FixedColumnWidths = False
+            Me.m_gridFleetCatch.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridFleetCatch.GridToolTipActive = True
+            Me.m_gridFleetCatch.IsLayoutSuspended = False
+            Me.m_gridFleetCatch.Name = "m_gridFleetCatch"
+            Me.m_gridFleetCatch.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridFleetCatch.UIContext = Nothing
             '
             'm_tpPressures
             '
@@ -844,36 +928,6 @@ Namespace UI
             Me.m_btnExport.Name = "m_btnExport"
             Me.m_btnExport.UseVisualStyleBackColor = True
             '
-            'm_tpFleets
-            '
-            Me.m_tpFleets.Controls.Add(Me.SplitContainer1)
-            resources.ApplyResources(Me.m_tpFleets, "m_tpFleets")
-            Me.m_tpFleets.Name = "m_tpFleets"
-            Me.m_tpFleets.UseVisualStyleBackColor = True
-            '
-            'SplitContainer1
-            '
-            resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
-            Me.SplitContainer1.Name = "SplitContainer1"
-            '
-            'SplitContainer1.Panel1
-            '
-            Me.SplitContainer1.Panel1.Controls.Add(Me.m_gridFleets)
-            '
-            'SplitContainer1.Panel2
-            '
-            Me.SplitContainer1.Panel2.Controls.Add(Me.m_gridFleetCatch)
-            '
-            'm_gridFleets
-            '
-            resources.ApplyResources(Me.m_gridFleets, "m_gridFleets")
-            Me.m_gridFleets.Name = "m_gridFleets"
-            '
-            'm_gridFleetCatch
-            '
-            resources.ApplyResources(Me.m_gridFleetCatch, "m_gridFleetCatch")
-            Me.m_gridFleetCatch.Name = "m_gridFleetCatch"
-            '
             'frmGameDesigner
             '
             resources.ApplyResources(Me, "$this")
@@ -896,6 +950,11 @@ Namespace UI
             Me.m_tpEwESettings.PerformLayout()
             Me.m_tpInformation.ResumeLayout(False)
             Me.m_tpInformation.PerformLayout()
+            Me.m_tpFleets.ResumeLayout(False)
+            Me.SplitContainer1.Panel1.ResumeLayout(False)
+            Me.SplitContainer1.Panel2.ResumeLayout(False)
+            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.SplitContainer1.ResumeLayout(False)
             Me.m_tpPressures.ResumeLayout(False)
             Me.m_tpPressures.PerformLayout()
             Me.m_tpOutcomes.ResumeLayout(False)
@@ -917,11 +976,6 @@ Namespace UI
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbEcoscope, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_tpFleets.ResumeLayout(False)
-            Me.SplitContainer1.Panel1.ResumeLayout(False)
-            Me.SplitContainer1.Panel2.ResumeLayout(False)
-            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.SplitContainer1.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
