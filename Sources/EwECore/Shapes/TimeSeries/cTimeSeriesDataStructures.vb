@@ -244,8 +244,6 @@ Public Class cTimeSeriesDataStructures
 
     Private Sub ClearForcing()
 
-        Array.Clear(Me.ForcedFs, 0, Me.ForcedFs.Length)
-
         Array.Clear(Me.PoolForceBB, 0, Me.PoolForceBB.Length)
         Array.Clear(Me.PoolForceCatch, 0, Me.PoolForceCatch.Length)
         Array.Clear(Me.PoolForceZ, 0, Me.PoolForceZ.Length)
@@ -254,6 +252,13 @@ Public Class cTimeSeriesDataStructures
         Array.Clear(Me.PoolForceDiscardProp, 0, Me.PoolForceDiscardProp.Length)
         Array.Clear(Me.PoolForceCatchabilities, 0, Me.PoolForceCatchabilities.Length)
         Array.Clear(Me.PoolForceCatchabilities, 0, Me.PoolForceCatchabilities.Length)
+
+        ' Also reset the F is forced flag
+        For igrp As Integer = 0 To Me.nGroups
+            For ipt As Integer = 0 To Me.AppliedDatPoints * cCore.N_MONTHS
+                Me.ForcedFs(igrp, ipt) = cCore.NULL_VALUE
+            Next
+        Next
 
         Me.InitForcedDiscards()
 
@@ -681,6 +686,7 @@ Public Class cTimeSeriesDataStructures
 
                 End If
             Next iTS
+            Me.DoDatValCalculations()
 
         End If
 
@@ -708,6 +714,8 @@ Public Class cTimeSeriesDataStructures
     ''' <returns>True if a timeseries type contributes to AIC Calculations</returns>
     ''' -----------------------------------------------------------------------
     Friend Function UseForAIC(TimeSeriesType As eTimeSeriesType) As Boolean
+        '' JS 24Jan24: Should not all reference time series contribute? We now have a conventient function for that
+        'Return cTimeSeries.IsReference(TimeSeriesType)
         Return (TimeSeriesType = eTimeSeriesType.BiomassAbs) Or
                (TimeSeriesType = eTimeSeriesType.BiomassRel) Or
                (TimeSeriesType = eTimeSeriesType.Catches) Or
