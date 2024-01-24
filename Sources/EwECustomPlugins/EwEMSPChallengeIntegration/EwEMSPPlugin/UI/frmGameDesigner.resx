@@ -1338,9 +1338,9 @@
   <data name="&gt;&gt;m_gridOutcome.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="m_tsOutcome.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_tsOutcome.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>116, 13</value>
-  </metadata>
+  </data>
   <data name="m_tsOutcome.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -1875,7 +1875,7 @@
   <data name="m_btnEmulViewOutputFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6
-        JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAACXBIWXMAAAsPAAALDwGS+QOlAAACeUlE
+        JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAACXBIWXMAAAsNAAALDQHtB8AsAAACeUlE
         QVQ4T6WSWUiUURiG/4suurJIjUIwskQsEAMjqosQpUVNKbdCSRPKrQVDMddmXEedGdcpFXNGnUYdrSzF
         sEIoFInQcqHE1CwoKsXUUMnt6XfEye0munjgnO+c9+HjO0cA/osNi2tJLdA6SXN13MwoI12lJ06uiV8+
         W3d5IwIjVXiGKvwX11djSs2TRFlUito7ILIAoVab7SvCWhqrZYq1omXC4gpPe4Ur8AjNMQjo69IwPVZj
@@ -2909,9 +2909,8 @@
   </data>
   <data name="m_lblAboutCredits.Text" xml:space="preserve">
     <value>Development: EII &amp;&amp; BUas
-Funding: Ministry of Infrastructure and the Environment, the Netherlands, H2020 Ecoscope project
-Testing MSP tools: Jacob Bentley, Giovanni Romagnoni, Magali Gonçalves
-Testing MEL: Marin Hekman. Elwin Verploegen</value>
+Funding: Ministry of Infrastructure and the Environment, the Netherlands; H2020 project Ecoscope
+WIth thanks to Jacob Bentley, Giovanni Romagnoni, Magali Gonçalves, Marcela Nascimento, Eyal Ofir</value>
   </data>
   <data name="&gt;&gt;m_lblAboutCredits.Name" xml:space="preserve">
     <value>m_lblAboutCredits</value>
@@ -3054,9 +3053,9 @@ Testing MEL: Marin Hekman. Elwin Verploegen</value>
   <data name="&gt;&gt;m_tpAbout.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <metadata name="m_ilTabIcons.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="m_ilTabIcons.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>12, 13</value>
-  </metadata>
+  </data>
   <data name="m_ilTabIcons.ImageSize" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
   </data>
@@ -3309,7 +3308,7 @@ Testing MEL: Marin Hekman. Elwin Verploegen</value>
   <data name="m_btnExport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wAAADsABataJCQAAAHZJREFUOE/NjMEOgCAMQ9F48ODN///WCWNdiiGMBA8e3mBd2yQiS9SRnwgOMXUM
+        vgAADr4B6kKxwAAAAHZJREFUOE/NjMEOgCAMQ9F48ODN///WCWNdiiGMBA8e3mBd2yQiS9SRnwgOMXUM
         DIV/FGS27k1HUMBY2e07RAgRVuAlLpLhKvsM6reQLvZfK4hAOHPoDhGGCA7rDhFCDwud9t+bGwwsvhnd
         6/iiIIJDTFecR9IDjbhnB7Nq5gUAAAAASUVORK5CYII=
 </value>
@@ -3338,9 +3337,9 @@ Testing MEL: Marin Hekman. Elwin Verploegen</value>
   <data name="&gt;&gt;m_btnExport.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>96, 96</value>
   </data>
