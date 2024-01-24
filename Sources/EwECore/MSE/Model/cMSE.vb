@@ -812,7 +812,7 @@ Namespace MSE
 
             Try
                 'Effort is being regulated
-                'Always set Effort back to it its base value (Effort from the Sceintific Interface)
+                'Always set Effort back to it its base value (Effort from the Scientific Interface)
                 Me.setEffortToBase()
 
                 'Set FisForced() (F timeseries loaded) back to it's base value
