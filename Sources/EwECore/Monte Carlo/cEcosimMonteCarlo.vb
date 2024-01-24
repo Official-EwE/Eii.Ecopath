@@ -1219,7 +1219,7 @@ Public Class cEcosimMonteCarlo
                                 Me.ChooseFeasibleDiet(Me.PMeanDC, Me.CVParDC(eMCDietSamplingMethod.Dirichlets, igrp), igrp, Me.m_epdata.DC)
                             Case eMCDietSamplingMethod.NormalDistribution
                                 For iPred As Integer = 1 To Me.m_epdata.NumLiving
-                                    If (Me.PMeanDC(iPred, igrp) > 0) Then
+                                    If (Me.PMeanDC(iPred, igrp) > 0) And (Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred) > 0) Then
                                         Me.m_epdata.DC(iPred, igrp) = Me.ChooseFeasiblePar(eMCParams.Diets,
                                                                                     Me.PMeanDC(iPred, igrp),
                                                                                     Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred),
@@ -1523,7 +1523,7 @@ Public Class cEcosimMonteCarlo
 
 
     ''' <summary>
-    ''' Calculte the Upper and Lower Parameter limits from CV values
+    ''' Calculate the Upper and Lower Parameter limits from CV values
     ''' </summary>
     ''' <param name="IsCrashEvaluated">Not USED!</param>
     ''' <param name="param">The parameter to calculate, or <see cref="eMCParams.NotSet"/> to calculate all.</param>
@@ -1597,7 +1597,7 @@ Public Class cEcosimMonteCarlo
                 If (param = eMCParams.Diets Or param = eMCParams.NotSet) Then
                     For iPred As Integer = 1 To Me.m_core.nLivingGroups
                         Me.ParLimitDC(0, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DC(iPred, iGroup) * (1 - factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
-                        Me.ParLimitDC(1, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DC(iPred, iGroup) * (1 + factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
+                        Me.ParLimitDC(1, iPred, iGroup) = Math.Min(1 - 1.0E-10!, Me.m_epdata.DC(iPred, iGroup) * (1 + factor * Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
                     Next iPred
                 End If
 
