@@ -328,7 +328,11 @@ Public Class cContaminantTracer
         For igrp = 0 To Me.m_EPData.NumGroups + 1
             TracerData.TracerConc(igrp, iTime) = Me.ConcTr(igrp)
             If igrp <= Me.m_EPData.NumGroups Then
-                TracerData.TracerCB(igrp, iTime) = Me.ConcTr(igrp) / (Biomass(igrp) + 1.0E-20F)
+                If Biomass(igrp) > 1.0E-20F Then
+                    TracerData.TracerCB(igrp, iTime) = Me.ConcTr(igrp) / (Biomass(igrp) + 1.0E-20F)
+                Else
+                    TracerData.TracerCB(igrp, iTime) = 0.0
+                End If
             End If
         Next igrp
     End Sub
