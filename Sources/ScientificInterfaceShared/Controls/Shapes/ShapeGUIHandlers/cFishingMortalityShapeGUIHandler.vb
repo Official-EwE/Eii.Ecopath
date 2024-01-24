@@ -23,7 +23,6 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -35,7 +34,7 @@ Namespace Controls
     ''' handling fishing mortality <see cref="cForcingFunction">forcing shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(True)> _
+    <CLSCompliant(True)>
     Public Class cFishingMortalityShapeGUIHandler
         Inherits cFishingBaseShapeGUIHandler
 
@@ -91,6 +90,10 @@ Namespace Controls
 
         Protected Overrides Function MinYScale() As Single
             Return 0
+        End Function
+
+        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+            Return {eDataTypes.FishMort, eDataTypes.FishingEffort}
         End Function
 
     End Class

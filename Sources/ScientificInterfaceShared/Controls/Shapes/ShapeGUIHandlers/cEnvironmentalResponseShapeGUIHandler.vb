@@ -88,6 +88,11 @@ Namespace Controls
                 Me.MediationAssignments.Title = strTitle
             End If
         End Sub
+
+        Protected Overrides Function Datatypes() As eDataTypes()
+            Return {eDataTypes.EcosimEnviroResponseFunctionManager}
+        End Function
+
     End Class
 
 End Namespace

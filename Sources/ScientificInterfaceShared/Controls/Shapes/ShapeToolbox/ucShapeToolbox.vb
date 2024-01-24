@@ -494,6 +494,18 @@ Namespace Controls
             Me.Selection = Me.m_selectionDelayed
             Me.m_selectionDelayed = Nothing
 
+            Me.Invalidate()
+
+        End Sub
+
+        Public Overridable Sub InvalidateContent()
+            Try
+                If Me.m_uic IsNot Nothing Then
+                    Me.UpdateThumbnails(Me.Selection)
+                End If
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 #End Region ' Helper methods

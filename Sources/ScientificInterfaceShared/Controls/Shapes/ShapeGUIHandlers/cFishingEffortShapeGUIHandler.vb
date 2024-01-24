@@ -90,6 +90,10 @@ Namespace Controls
             Return cCore.NULL_VALUE
         End Function
 
+        Protected Overrides Function Datatypes() As eDataTypes()
+            Return {eDataTypes.FishingEffort}
+        End Function
+
     End Class
 
 End Namespace
