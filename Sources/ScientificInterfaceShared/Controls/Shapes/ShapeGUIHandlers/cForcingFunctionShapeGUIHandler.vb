@@ -362,9 +362,10 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Sub Refresh()
             If Me.m_bInUpdate Then
-                ' Perform limited update. Sketchpad and Toolbox should take care of themselves
-                If (Me.SketchPadToolbar IsNot Nothing) Then Me.SketchPadToolbar.Refresh()
-                If (Me.ShapeToolBoxToolbar IsNot Nothing) Then Me.ShapeToolBoxToolbar.Refresh()
+                If (Me.SketchPad IsNot Nothing) Then Me.SketchPad.Invalidate()
+                If (Me.SketchPadToolbar IsNot Nothing) Then Me.SketchPadToolbar.Invalidate()
+                If (Me.ShapeToolBoxToolbar IsNot Nothing) Then Me.ShapeToolBoxToolbar.Invalidate()
+                If (Me.ShapeToolBox IsNot Nothing) Then Me.ShapeToolBox.InvalidateContent()
             Else
                 ' Do full update
                 Me.DisplayFullXAxis = Me.m_bShowAll
