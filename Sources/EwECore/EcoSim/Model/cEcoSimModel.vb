@@ -2686,7 +2686,7 @@ Namespace Ecosim
 JS:                                 'Joe, this look about right?
                                     If Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType)) > 0 Then
                                         Zstat = CSng(Math.Log(Me.m_RefData.AppliedDatVal(iDYear, iDType) / Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType))))
-                                        Me.m_RefData.Yhat(Me.m_RefData.Iobs) = CSng(Math.Log(Zest))
+                                        Me.m_RefData.Yhat(Me.m_RefData.Iobs) = CSng(Math.Log(Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType))))
                                     End If
 
                                 Case eTimeSeriesType.Discards
@@ -3867,6 +3867,7 @@ JS:                                 'Joe, this look about right?
                     If Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassRel Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.TotalMortality Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Then
 
                         Me.m_RefData.AppliedDatSS(iDType) = CSng(Me.DatSumZ2(iDType) - Me.DatSumZ(iDType) ^ 2 / Me.DatNobs(iDType))
@@ -3899,7 +3900,8 @@ JS:                                 'Joe, this look about right?
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
-                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings) Then
 
                         Me.m_RefData.Iobs = Me.m_RefData.Iobs + 1

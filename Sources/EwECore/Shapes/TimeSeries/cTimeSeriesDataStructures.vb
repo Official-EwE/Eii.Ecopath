@@ -173,6 +173,10 @@ Public Class cTimeSeriesDataStructures
     Public Iobs As Integer
     Public Wt() As Single
 
+    ''' <summary>
+    ''' Value predicted by the model (log). 
+    ''' Used by cF2TSModel fit to time series to tell how much change each parameter tweak made.
+    ''' </summary>
     Public Yhat() As Single
 
     ''' <summary>log(observed/predicted) by observation</summary>
