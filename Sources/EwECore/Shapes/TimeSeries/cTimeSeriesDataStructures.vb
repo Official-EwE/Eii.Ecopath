@@ -244,23 +244,26 @@ Public Class cTimeSeriesDataStructures
 
     Private Sub ClearForcing()
 
-        Array.Clear(Me.PoolForceBB, 0, Me.PoolForceBB.Length)
-        Array.Clear(Me.PoolForceCatch, 0, Me.PoolForceCatch.Length)
-        Array.Clear(Me.PoolForceZ, 0, Me.PoolForceZ.Length)
+        If (Me.PoolForceBB IsNot Nothing) Then
 
-        Array.Clear(Me.PoolForceDiscardMort, 0, Me.PoolForceDiscardMort.Length)
-        Array.Clear(Me.PoolForceDiscardProp, 0, Me.PoolForceDiscardProp.Length)
-        Array.Clear(Me.PoolForceCatchabilities, 0, Me.PoolForceCatchabilities.Length)
-        Array.Clear(Me.PoolForceCatchabilities, 0, Me.PoolForceCatchabilities.Length)
+            Array.Clear(Me.PoolForceBB, 0, Me.PoolForceBB.Length)
+            Array.Clear(Me.PoolForceCatch, 0, Me.PoolForceCatch.Length)
+            Array.Clear(Me.PoolForceZ, 0, Me.PoolForceZ.Length)
 
-        ' Also reset the F is forced flag
-        For igrp As Integer = 0 To Me.nGroups
-            For ipt As Integer = 0 To Me.AppliedDatPoints * cCore.N_MONTHS
-                Me.ForcedFs(igrp, ipt) = cCore.NULL_VALUE
+            Array.Clear(Me.PoolForceDiscardMort, 0, Me.PoolForceDiscardMort.Length)
+            Array.Clear(Me.PoolForceDiscardProp, 0, Me.PoolForceDiscardProp.Length)
+            Array.Clear(Me.PoolForceCatchabilities, 0, Me.PoolForceCatchabilities.Length)
+            Array.Clear(Me.PoolForceCatchabilities, 0, Me.PoolForceCatchabilities.Length)
+
+            ' Also reset the F is forced flag
+            For igrp As Integer = 0 To Me.nGroups
+                For ipt As Integer = 0 To Me.AppliedDatPoints * cCore.N_MONTHS
+                    Me.ForcedFs(igrp, ipt) = cCore.NULL_VALUE
+                Next
             Next
-        Next
 
-        Me.InitForcedDiscards()
+            Me.InitForcedDiscards()
+        End If
 
     End Sub
 
