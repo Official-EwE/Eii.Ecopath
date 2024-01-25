@@ -5,26 +5,25 @@
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
 #define Compile64Bit 0
+#define CodeSigning 1                       ; set to 0 to disable code signing
 
 ; Optional features
 #define RobertsBank 0
-#define EcoOcean 0
-#define FISHMIP 0
 #define RandomizeMPAs 0
 #define ExcludeDeadCells 0
 
 ; Automated build will provide file version as a command line parameter
 ; /DFileVersion=6.6.{minor release no}.{build no}
 #ifndef FileVersion
-  #define FileVersion "6.7.0.18608"
+  #define FileVersion "6.7.0.18646"
 #endif
 VersionInfoVersion={#FileVersion}
 
 #if Compile64Bit == 0
-  #define MyAppVersion FileVersion + " α 32-bit"
+  #define MyAppVersion FileVersion + "_32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
-  #define MyAppVersion FileVersion + " α 64-bit"
+  #define MyAppVersion FileVersion + "_64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -59,7 +58,11 @@ DefaultDirName={pf}\{#MyAppName} {#MyAppVersion}
 DefaultGroupName={#MyAppName}\Release {#MyAppVersion}
 MinVersion=0,6.1
 SetupIconFile=Ecopath_install.ico
+#if CodeSigning == 1
 SignTool=codesign /d $q{#MyAppName}$q $f
+#else
+; NOP
+#endif
 UninstallDisplayIcon={app}\{#MyAppName}
 WizardImageFile=EwE5Logo.bmp
 WizardSmallImageFile=EwE6Header.bmp
@@ -70,7 +73,7 @@ WizardSizePercent=120,120
 SolidCompression=True
 Compression=lzma2/max 
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
-OutputBaseFilename=ewe_{#MyAppVersion}
+OutputBaseFilename=ewe_{#MyAppVersion}_setup
 
 #if Compile64Bit == 1
   ; "ArchitecturesInstallIn64BitMode=x64" requests that the install be
@@ -312,20 +315,6 @@ Source: "{#DefRoot}{#DefSrc}\EwEDepthChangePlugin.dll"; DestDir: "{app}\Plugins\
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
 #endif
 
-; -- EcoOcean --
-#if EcoOcean == 1
-Source: "{#DefRoot}{#DefSrc}\EcoOceanCellSpecificTempResponsesPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EcoOceanLMEEffortPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EcoOceanNativeRangesPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EcoOceanQ10Plugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EcoOceanUtils.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
-#endif
-
-; -- FISHMIP --
-#if FISHMIP == 1
-Source: "{#DefRoot}{#DefSrc}\FishMIPv3Plugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
-#endif
-
 ; -- SAMPLE DATABASES --
 Source: "{#DefRoot}{#DefDB}\Anchovy Bay Spatial.ewemdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 
@@ -378,12 +367,6 @@ Name: "plugin\projects"; Description: "Project specific plugins"; Types: full cu
 Name: "plugin\projects\msptools"; Description: "MSP Challenge tools"; Types: full
 #if RobertsBank == 1
 Name: "plugin\robertsbank"; Description: "Roberts Bank utilities"; Types: full custom
-#endif
-#if EcoOcean == 1
-Name: "plugin\ecoocean"; Description: "EcoOcean"; Types: full custom
-#endif
-#if FISHMIP == 1
-Name: "plugin\fishmip"; Description: "FishMIP/TRIATLAS utilities"; Types: full custom
 #endif
 
 [Tasks]
