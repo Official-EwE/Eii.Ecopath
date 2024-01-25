@@ -750,7 +750,11 @@ Public Class dlgManageTimeSeries
         If (bSucces And Me.m_cbImportEnableOnImport.Checked) Then
             ' Reload time series
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PLEASE_WAIT)
-            Me.m_uic.Core.LoadTimeSeries(iDataset, True)
+            Try
+                Me.m_uic.Core.LoadTimeSeries(iDataset, True)
+            Catch ex As Exception
+
+            End Try
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         End If
 

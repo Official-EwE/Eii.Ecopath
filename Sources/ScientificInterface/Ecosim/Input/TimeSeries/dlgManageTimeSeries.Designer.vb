@@ -300,10 +300,10 @@ Partial Class dlgManageTimeSeries
         Me.m_hdrPreview.CausesValidation = False
         Me.m_hdrPreview.CollapsedParentHeight = 0
         Me.m_hdrPreview.IsCollapsed = False
-        Me.m_hdrPreview.Location = New System.Drawing.Point(0, 122)
+        Me.m_hdrPreview.Location = New System.Drawing.Point(3, 122)
         Me.m_hdrPreview.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrPreview.Name = "m_hdrPreview"
-        Me.m_hdrPreview.Size = New System.Drawing.Size(499, 18)
+        Me.m_hdrPreview.Size = New System.Drawing.Size(493, 18)
         Me.m_hdrPreview.TabIndex = 11
         Me.m_hdrPreview.Text = "Preview"
         Me.m_hdrPreview.TextAlign = System.Drawing.ContentAlignment.MiddleLeft

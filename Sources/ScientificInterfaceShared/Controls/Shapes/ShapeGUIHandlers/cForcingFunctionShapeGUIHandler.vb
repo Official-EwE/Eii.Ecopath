@@ -365,7 +365,7 @@ Namespace Controls
                 If (Me.SketchPad IsNot Nothing) Then Me.SketchPad.Invalidate()
                 If (Me.SketchPadToolbar IsNot Nothing) Then Me.SketchPadToolbar.Invalidate()
                 If (Me.ShapeToolBoxToolbar IsNot Nothing) Then Me.ShapeToolBoxToolbar.Invalidate()
-                If (Me.ShapeToolBox IsNot Nothing) Then Me.ShapeToolBox.InvalidateContent()
+                If (Me.ShapeToolBox IsNot Nothing) Then Me.ShapeToolBox.InvalidateShapeImages()
             Else
                 ' Do full update
                 Me.DisplayFullXAxis = Me.m_bShowAll

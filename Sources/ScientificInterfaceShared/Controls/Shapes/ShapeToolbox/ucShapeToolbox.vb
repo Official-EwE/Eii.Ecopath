@@ -38,7 +38,7 @@ Namespace Controls
     ''' <see cref="cShapeData">shapes</see>.
     ''' </summary>
     ''' ------------------------------------------------------------------
-    <CLSCompliant(True)> _
+    <CLSCompliant(True)>
     Public Class ucShapeToolbox
         Implements IUIElement
 
@@ -65,8 +65,8 @@ Namespace Controls
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
-            Me.UpdateThumbnails(Me.m_selectionDelayed)
-
+            Me.m_lvShapes.View = View.LargeIcon
+            Me.RefreshContent(Me.m_selectionDelayed)
         End Sub
 
         Protected Overrides Sub Dispose(bDisposing As Boolean)
@@ -137,15 +137,15 @@ Namespace Controls
         ''' Get/set the max X value for the graph.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Category("Sketchpad"), _
-         Description("State the max X value for the graph.")> _
+        <Category("Sketchpad"),
+         Description("State the max X value for the graph.")>
         Public Overridable Property XAxisMaxValue() As Integer
             Get
                 Return Me.m_iMaxXScale
             End Get
             Set(iValue As Integer)
                 Me.m_iMaxXScale = iValue
-                Me.UpdateThumbnails(Me.Selection)
+                Me.RefreshContent(Me.Selection)
                 Me.Invalidate()
             End Set
         End Property
@@ -169,8 +169,8 @@ Namespace Controls
         ''' Get/set the line style used to render the graph.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Category("Thumbnails"), _
-         Description("The line style used to render the graph")> _
+        <Category("Thumbnails"),
+         Description("The line style used to render the graph")>
         Public Property SketchDrawMode() As eSketchDrawModeTypes
             Get
                 Return Me.m_sketchDrawMode
@@ -189,7 +189,7 @@ Namespace Controls
         ''' ------------------------------------------------------------------
         Public Sub UpdateThumbnail(shape As cShapeData)
             If Me.m_bInUpdate Then Return
-            Me.UpdateThumbnails(New cShapeData() {shape})
+            Me.RefreshContent(New cShapeData() {shape})
         End Sub
 
         ''' ------------------------------------------------------------------
@@ -213,7 +213,7 @@ Namespace Controls
             End If
 
             ' Update selection when redoing thumbnails
-            Me.UpdateThumbnails(ashapeSelect)
+            Me.RefreshContent(ashapeSelect)
 
         End Sub
 
@@ -231,7 +231,7 @@ Namespace Controls
         ''' Get/set the list of selected shapes in the tool box.
         ''' </summary>
         ''' ------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property Selection() As cShapeData()
             Get
                 Dim lShapes As New List(Of cShapeData)
@@ -301,7 +301,7 @@ Namespace Controls
                     RaiseEvent OnSelectionChanged(selection.ToArray())
                 Catch ex As Exception
                     Debug.Assert(False, ex.Message)
-                    End Try
+                End Try
 
                 Me.m_bInUpdate = False
 
@@ -403,7 +403,7 @@ Namespace Controls
             End If
         End Function
 
-        Private m_bUpdateRequested As Boolean = False
+        Private m_bContentRefreshRequested As Boolean = False
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -417,28 +417,28 @@ Namespace Controls
         ''' or preserve info which shape was changed. Hence this work-around.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateThumbnails(selection As cShapeData())
+        Private Sub RefreshContent(selection As cShapeData())
 
             Me.m_selectionDelayed = selection
 
             If Not Me.Created Then Return
-            If Me.m_bUpdateRequested Then Return
-            Me.m_bUpdateRequested = True
+            If Me.m_bContentRefreshRequested Then Return
+            Me.m_bContentRefreshRequested = True
 
             Try
-                Me.BeginInvoke(New MethodInvoker(AddressOf Me.DelayUpdateThumbnails))
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.DoRefreshContent))
             Catch ex As Exception
                 ' Whoah!
             End Try
         End Sub
 
-        Private Sub DelayUpdateThumbnails()
+        Private Sub DoRefreshContent()
 
             ' UIC may disappear in response to manager commands
             If (Me.m_uic Is Nothing) Then Return
 
-            If (Me.m_bUpdateRequested = False) Then Return
-            Me.m_bUpdateRequested = False
+            If (Me.m_bContentRefreshRequested = False) Then Return
+            Me.m_bContentRefreshRequested = False
 
             Dim iThumbSize As Integer = Me.m_uic.StyleGuide.ThumbnailSize
             Dim largeImageList As New ImageList
@@ -488,6 +488,8 @@ Namespace Controls
             End If
 
             Me.m_lvShapes.ResumeLayout()
+
+            Me.m_bShapeImageRefreshRequested = False
             Me.m_bInUpdate = False
 
             ' Update selection
@@ -498,14 +500,57 @@ Namespace Controls
 
         End Sub
 
-        Public Overridable Sub InvalidateContent()
-            Try
-                If Me.m_uic IsNot Nothing Then
-                    Me.UpdateThumbnails(Me.Selection)
-                End If
-            Catch ex As Exception
+        Private m_bShapeImageRefreshRequested As Boolean = False
 
+        Public Overridable Sub InvalidateShapeImages()
+            If Not Me.Created Then Return
+            If Me.m_bShapeImageRefreshRequested Then Return
+            Me.m_bShapeImageRefreshRequested = True
+
+            Try
+                Me.BeginInvoke(New MethodInvoker(AddressOf Me.DoRefreshShapeImages))
+            Catch ex As Exception
+                ' Whoah!
             End Try
+        End Sub
+
+        Private Sub DoRefreshShapeImages()
+
+            ' UIC may disappear in response to manager commands
+            If (Me.m_uic Is Nothing) Then Return
+
+            If (Me.m_bShapeImageRefreshRequested = False) Then Return
+            Me.m_bShapeImageRefreshRequested = False
+
+            Dim iThumbSize As Integer = Me.m_uic.StyleGuide.ThumbnailSize
+            Dim largeImageList As New ImageList()
+            Dim shape As cShapeData = Nothing
+
+            'Set up the thumbnail image size
+            largeImageList.ImageSize = New System.Drawing.Size(iThumbSize, iThumbSize)
+
+            If Me.m_lShapes.Count > 0 Then
+
+                For i As Integer = 0 To Me.m_lShapes.Count - 1
+
+                    shape = Me.m_lShapes(i)
+                    ' Add thumbnail image
+                    largeImageList.Images.Add(Me.GetThumbnail(shape))
+                Next
+
+                ' Clean up
+                If Me.m_lvShapes.LargeImageList IsNot Nothing Then
+                    Me.m_lvShapes.LargeImageList.Dispose()
+                    Me.m_lvShapes.LargeImageList = Nothing
+                End If
+                Me.m_lvShapes.LargeImageList = largeImageList
+
+            End If
+
+            Me.m_bInUpdate = False
+
+            Me.Invalidate()
+
         End Sub
 
 #End Region ' Helper methods
@@ -552,7 +597,7 @@ Namespace Controls
 
                     If ts.ValidationStatus <> eStatusFlags.OK Then
                         e.Item.Checked = False
-                        Me.m_uic.Core.Messages.SendMessage(New cMessage(String.Format(My.Resources.PROMPT_TIMESERIES_NOTUSABLE, ts.Name, ts.ValidationMessage), _
+                        Me.m_uic.Core.Messages.SendMessage(New cMessage(String.Format(My.Resources.PROMPT_TIMESERIES_NOTUSABLE, ts.Name, ts.ValidationMessage),
                                                                         eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.TimeSeries, eMessageImportance.Warning))
                         Return
                     End If
@@ -639,7 +684,7 @@ Namespace Controls
         ''' </summary>
         Private Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             If (ct And cStyleGuide.eChangeType.Thumbnails) > 0 Then
-                Me.UpdateThumbnails(Me.Selection)
+                Me.RefreshContent(Me.Selection)
             End If
         End Sub
 

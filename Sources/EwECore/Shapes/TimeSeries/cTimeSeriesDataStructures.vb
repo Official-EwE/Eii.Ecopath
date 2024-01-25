@@ -690,8 +690,8 @@ Public Class cTimeSeriesDataStructures
                 End If
             Next iTS
         End If
-        ' JS24Jan24: Invoked to re-assess ForcedFs
-        Me.DoDatValCalculations()
+        '' JS24Jan24: Invoked to re-assess ForcedFs
+        'Me.DoDatValCalculations()
 
     End Sub
 
