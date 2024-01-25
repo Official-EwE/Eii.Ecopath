@@ -193,9 +193,7 @@
     <Compile Include="Plugins\Converters\Vector\ucAttributeFilterConfigPage.Designer.vb">
       <DependentUpon>ucAttributeFilterConfigPage.vb</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Converters\Vector\ucAttributeFilterConfigPage.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="Plugins\Converters\Vector\ucAttributeFilterConfigPage.vb" />
     <Compile Include="Plugins\Converters\Vector\Inclusion\cVectorCookieCutterPlugin.vb" />
     <Compile Include="Plugins\Converters\Vector\Isobar\cIsobarConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Raster\cRasterConverterPlugin.vb" />
