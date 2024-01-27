@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports System.Runtime.InteropServices
+Imports System.Security.AccessControl
 Imports EwEUtils.Utilities
 Imports Microsoft.Win32
 
