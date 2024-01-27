@@ -4930,7 +4930,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to F (fishing mortality).
+        '''  Looks up a localized string similar to F.
         '''</summary>
         Public ReadOnly Property HEADER_FISHINGMORTALITY() As String
             Get
@@ -4975,7 +4975,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Fixed fishing mortality.
+        '''  Looks up a localized string similar to Fixed F.
         '''</summary>
         Public ReadOnly Property HEADER_FIXEDF() As String
             Get
@@ -5047,7 +5047,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Fishing mortaility (group x fleet).
+        '''  Looks up a localized string similar to F (group x fleet).
         '''</summary>
         Public ReadOnly Property HEADER_FMORT_BREAKDOWN() As String
             Get

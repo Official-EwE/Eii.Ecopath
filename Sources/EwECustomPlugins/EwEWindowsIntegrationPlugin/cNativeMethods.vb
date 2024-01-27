@@ -34,6 +34,7 @@ Friend Class cNativeMethods
 
     Private Shared s_dtLastMidHour As Integer = -1
     Private Shared s_bSetActiveHoursSuccess As Boolean = True
+    Private Shared s_synclock As New Object()
 
     Public Shared Sub PreventSleep(bMonitor As Boolean)
         Dim flags As eExecutionState = eExecutionState.ES_CONTINUOUS Or eExecutionState.ES_SYSTEM_REQUIRED
@@ -59,28 +60,33 @@ Friend Class cNativeMethods
     Public Shared Function ShiftActiveHours() As Boolean
 
         If Not s_bSetActiveHoursSuccess Then Return False
-
-        Dim basepath As String = "SOFTWARE\Microsoft\WindowsUpdate\UX\Settings"
-        Dim midHour As Integer = Date.Now.Hour
         Dim bSuccess As Boolean = True
 
-        If midHour <> s_dtLastMidHour Then
+        SyncLock s_synclock
 
-            Try
-                Dim key As RegistryKey = Nothing
-                key = Registry.LocalMachine.OpenSubKey(basepath, True)
-                ' Start active hours at 2 hours ago
-                key.SetValue("ActiveHoursStart", (midHour + 22) Mod 24)
-                ' Stop active hours 6 hours in the future
-                key.SetValue("ActiveHoursEnd", (midHour + 6) Mod 24)
-            Catch ex As Exception
-                bSuccess = False
-            End Try
+            Dim basepath As String = "SOFTWARE\Microsoft\WindowsUpdate\UX\Settings"
+            Dim midHour As Integer = Date.Now.Hour
 
-            s_bSetActiveHoursSuccess = bSuccess
-            s_dtLastMidHour = midHour
+            If midHour <> s_dtLastMidHour Then
 
-        End If
+                Try
+                    Dim key As RegistryKey = Nothing
+                    key = Registry.LocalMachine.OpenSubKey(basepath, True)
+                    ' Start active hours at 2 hours ago
+                    key.SetValue("ActiveHoursStart", (midHour + 22) Mod 24)
+                    ' Stop active hours 6 hours in the future
+                    key.SetValue("ActiveHoursEnd", (midHour + 6) Mod 24)
+                Catch ex As Exception
+                    bSuccess = False
+                End Try
+
+                s_bSetActiveHoursSuccess = bSuccess
+                s_dtLastMidHour = midHour
+
+            End If
+
+        End SyncLock
+
         Return bSuccess
 
     End Function
