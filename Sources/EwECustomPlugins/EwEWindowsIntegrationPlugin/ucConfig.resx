@@ -307,7 +307,7 @@
     <value>6</value>
   </data>
   <data name="m_lblError.Text" xml:space="preserve">
-    <value>EwE was not allowed to write to the Windows registry,  Running EwE with administrator rights may help</value>
+    <value>EwE is not allowed to modify the registry and cannot protect against automatic Windows restarts. Running EwE with administrator rights may help</value>
   </data>
   <data name="&gt;&gt;m_lblError.Name" xml:space="preserve">
     <value>m_lblError</value>
@@ -321,9 +321,9 @@
   <data name="&gt;&gt;m_lblError.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
