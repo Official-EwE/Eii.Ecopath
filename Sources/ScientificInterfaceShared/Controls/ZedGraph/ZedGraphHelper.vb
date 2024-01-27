@@ -22,6 +22,7 @@
 Option Strict On
 
 Imports System.IO
+Imports System.Runtime.ExceptionServices
 Imports System.Text
 Imports EwECore
 Imports EwECore.Style
@@ -724,16 +725,24 @@ Namespace Controls
                                          Optional bClear As Boolean = True,
                                          Optional bCumulative As Boolean = False)
             Try
-
                 If (Me.IsPaneCumulative(iPane) <> bCumulative) Then
-                    bClear = True
-                    Me.IsPaneCumulative(iPane) = bCumulative
+                    Dim bUpdateCumm As Boolean = False
+                    ' Exclude time series lines here
+                    For Each li As LineItem In lines
+                        Select Case Me.CurveType(li)
+                            Case eSketchDrawModeTypes.Fill, eSketchDrawModeTypes.Line : bUpdateCumm = True
+                        End Select
+                    Next
+                    If bUpdateCumm Then
+                        bClear = True
+                        Me.IsPaneCumulative(iPane) = bCumulative
+                    End If
                 End If
 
-                Dim li As LineItem = Nothing
-                Dim linetype As eSketchDrawModeTypes = eSketchDrawModeTypes.NotSet
-
                 With Me.GetPane(iPane)
+
+                    Dim li As LineItem = Nothing
+                    Dim linetype As eSketchDrawModeTypes = eSketchDrawModeTypes.NotSet
 
                     If bClear Then .CurveList.Clear()
 
@@ -776,9 +785,9 @@ Namespace Controls
                                             End If
 
                                             ' Set cumulative colour style
-                                            li.Line.Fill = New Fill(li.Color)
+                                            li.Line.Color = li.Color
+                                            li.Line.Fill = New Fill(cColorUtils.GetVariant(li.Color, 0.875))
                                             li.Line.Fill.IsVisible = True
-                                            li.Line.Color = Color.SlateGray
 
                                             ' Add the curve to the end 
                                             .CurveList.Insert(iLastLine + 1, li)
@@ -2314,7 +2323,7 @@ Namespace Controls
                             With DirectCast(ci, LineItem)
                                 If bPaneCumulative Then
                                     .Line.Color = Color.Gray
-                                    .Line.Fill.Color = info.Colour
+                                    .Line.Fill.Color = cColorUtils.GetVariant(info.Colour, 0.5)
                                 Else
                                     .Line.Color = info.Colour
                                     .Line.Fill.Color = Color.White

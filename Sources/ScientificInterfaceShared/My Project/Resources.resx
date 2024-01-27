@@ -736,7 +736,7 @@
     <value>Fishing effort</value>
   </data>
   <data name="HEADER_FISHINGMORTALITY" xml:space="preserve">
-    <value>F (fishing mortality)</value>
+    <value>F</value>
   </data>
   <data name="HEADER_FISHINGMORTRATE" xml:space="preserve">
     <value>= Fishing mort. rate</value>
@@ -751,7 +751,7 @@
     <value>Fixed escapement (t/km2)</value>
   </data>
   <data name="HEADER_FIXEDF" xml:space="preserve">
-    <value>Fixed fishing mortality</value>
+    <value>Fixed F</value>
   </data>
   <data name="HEADER_FLEETNAME" xml:space="preserve">
     <value>Fleet name</value>
@@ -2835,7 +2835,7 @@
     <value>Catch (group x fleet)</value>
   </data>
   <data name="HEADER_FMORT_BREAKDOWN" xml:space="preserve">
-    <value>Fishing mortaility (group x fleet)</value>
+    <value>F (group x fleet)</value>
   </data>
   <data name="HEADER_VALUE_BREAKDOWN" xml:space="preserve">
     <value>Value (group x fleet)</value>
