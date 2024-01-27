@@ -48,6 +48,7 @@ Partial Class ucConfig
         Me.m_cbKeepMonitorOn = New System.Windows.Forms.CheckBox()
         Me.m_cbNoRestart = New System.Windows.Forms.CheckBox()
         Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
+        Me.m_lblError = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'm_hdr
@@ -87,10 +88,16 @@ Partial Class ucConfig
         Me.m_cbEnabled.Name = "m_cbEnabled"
         Me.m_cbEnabled.UseVisualStyleBackColor = True
         '
+        'm_lblError
+        '
+        resources.ApplyResources(Me.m_lblError, "m_lblError")
+        Me.m_lblError.Name = "m_lblError"
+        '
         'ucConfig
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_lblError)
         Me.Controls.Add(Me.m_cbEnabled)
         Me.Controls.Add(Me.m_cbNoRestart)
         Me.Controls.Add(Me.m_lblPrompt)
@@ -109,4 +116,5 @@ Partial Class ucConfig
     Private WithEvents m_cbKeepMonitorOn As Windows.Forms.CheckBox
     Private WithEvents m_cbNoRestart As Windows.Forms.CheckBox
     Private WithEvents m_cbEnabled As Windows.Forms.CheckBox
+    Private WithEvents m_lblError As Windows.Forms.Label
 End Class

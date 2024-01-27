@@ -41,7 +41,7 @@ Public Class ucConfig
         Me.InitializeComponent()
         Me.m_hdr.Text = My.Resources.Caption
         Me.m_plugin = pi
-        Me.UpdateContent()
+        Me.UpdateControls()
     End Sub
 
 #End Region ' Construction / destruction
@@ -58,7 +58,7 @@ Public Class ucConfig
         My.Settings.KeepMonitorOn = False
         My.Settings.NoRestart = False
         Me.Persist()
-        Me.UpdateContent()
+        Me.UpdateControls()
     End Sub
 
     Public Function CanApply() As Boolean Implements IOptionsPage.CanApply
@@ -82,12 +82,13 @@ Public Class ucConfig
 
 #Region " Internals "
 
-    Private Sub UpdateContent()
+    Private Sub UpdateControls()
         Me.m_cbEnabled.Checked = My.Settings.Enabled
         Me.m_cbKeepOSAwake.Checked = My.Settings.KeepOSAwake
         Me.m_cbKeepMonitorOn.Checked = My.Settings.KeepMonitorOn
         Me.m_cbNoRestart.Checked = My.Settings.NoRestart
         Me.m_cbNoRestart.Enabled = Me.m_plugin.HasRightsToMessWithActiveHours
+        Me.m_lblError.Visible = Not Me.m_plugin.HasRightsToMessWithActiveHours
     End Sub
 
     Private Sub Persist()
