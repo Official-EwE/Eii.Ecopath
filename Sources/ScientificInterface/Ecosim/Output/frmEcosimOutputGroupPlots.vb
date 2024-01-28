@@ -509,13 +509,6 @@ Namespace Ecosim
             Next
 
             Me.AddCurveToGraphPane(ePlot.Biomass, Me.m_zgh.CreateLineItem(group, pplB))
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassRel, iGroupSel, Color.Blue)
-                Me.AddCurveToGraphPane(ePlot.Biomass, li)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassAbs, iGroupSel, Color.Green)
-                Me.AddCurveToGraphPane(ePlot.Biomass, li)
-            Next li
-
             Me.AddCurveToGraphPane(ePlot.ConsumptionBiomass, Me.m_zgh.CreateLineItem(group, pplConsB))
             Me.AddCurveToGraphPane(ePlot.FeedingTime, Me.m_zgh.CreateLineItem(group, pplFeedTime))
             Me.AddCurveToGraphPane(ePlot.TrophicLevel, Me.m_zgh.CreateLineItem(group, pplTL))
@@ -553,62 +546,17 @@ Namespace Ecosim
                 Next
             End If
 
-            ' Show all reference time series, irrespective of aggregation modus
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassAbs, iGroupSel, Color.Red)
-                Me.AddCurveToGraphPane(ePlot.Biomass, li)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.BiomassRel, iGroupSel, Color.Red)
-                Me.AddCurveToGraphPane(ePlot.Biomass, li)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroupSel, Color.Red)
-                Me.AddCurveToGraphPane(ePlot.[Catch], li)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesRel, iGroupSel, Color.LightBlue)
-                Me.AddCurveToGraphPane(ePlot.[Catch], li)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.TotalMortality, iGroupSel, Color.Black)
-                Me.AddCurveToGraphPane(ePlot.Mortality, li)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortality, iGroupSel, Color.Black)
-                Me.AddCurveToGraphPane(ePlot.F, li)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortalityRef, iGroupSel, Color.Blue)
-                Me.AddCurveToGraphPane(ePlot.F, li)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Discards, iGroupSel, Color.Black)
-                Me.AddCurveToGraphPane(ePlot.Discards, li)
-            Next li
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Landings, iGroupSel, Color.Black)
-                Me.AddCurveToGraphPane(ePlot.Landings, li)
-            Next li
-
             If groupSimOut.IsMultiStanza() Then
-
                 Me.UpdateGraphPaneTitle(ePlot.AvgWeightOrProdCons, SharedResources.HEADER_AVGERAGEWEIGHT)
-
                 Me.AddCurveToGraphPane(ePlot.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
-                For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.AverageWeight, iGroupSel, Color.Blue)
-                    Me.AddCurveToGraphPane(ePlot.AvgWeightOrProdCons, li)
-                Next li
-
             Else
-
                 Me.UpdateGraphPaneTitle(ePlot.AvgWeightOrProdCons, SharedResources.HEADER_PRODCONS)
                 Me.AddCurveToGraphPane(ePlot.AvgWeightOrProdCons, Me.m_zgh.CreateLineItem(group, pplAvgWorProdCons))
-
             End If
 
             Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_TOTAL, eSketchDrawModeTypes.Line, Color.Black, pplMortTotal))
             Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_PREDATION, eSketchDrawModeTypes.Line, Color.Red, pplMortPredation))
             Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_FISHING, eSketchDrawModeTypes.Line, Color.Blue, pplMortFishing))
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.TotalMortality, iGroupSel, Color.Green)
-                Me.AddCurveToGraphPane(ePlot.Mortality, li)
-            Next li
-
-            'VC 07apr09: F values (type = 4) should not be plotted as they are used to drive the model
-            'For Each ppl As PointPairList In Me.GetTSData(eTimeSeriesType.FishingMortality)
-            '    Me.AddCurveToGraphPane(ePaneTypes.Mortality, Me.m_zgh.CreateLineItem("Fishing", ZedGraphHelper.eCurveTypes.TimeSeries, Color.Red, ppl), False)
-            'Next ppl
 
             'Predation mortality 
             iCount = 0
@@ -640,13 +588,45 @@ Namespace Ecosim
                 End If
             Next
 
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Discards, iGroupSel, Color.Black)
-                Me.AddCurveToGraphPane(ePlot.Discards, li)
-            Next li
-
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Landings, iGroupSel, Color.Black)
-                Me.AddCurveToGraphPane(ePlot.Landings, li)
-            Next li
+            For Each ts As eTimeSeriesType In [Enum].GetValues(GetType(eTimeSeriesType))
+                If (cTimeSeries.IsReference(ts)) Then
+                    ' Determine where to plot it
+                    Select Case ts
+                        Case eTimeSeriesType.BiomassAbs, eTimeSeriesType.BiomassRel
+                            For Each li As LineItem In Me.GetTimeSeriesLineItems(ts, iGroupSel)
+                                Me.AddCurveToGraphPane(ePlot.Biomass, li)
+                            Next li
+                        Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesRel
+                            For Each li As LineItem In Me.GetTimeSeriesLineItems(ts, iGroupSel)
+                                Me.AddCurveToGraphPane(ePlot.[Catch], li)
+                            Next li
+                        Case eTimeSeriesType.TotalMortality
+                            For Each li As LineItem In Me.GetTimeSeriesLineItems(ts, iGroupSel)
+                                Me.AddCurveToGraphPane(ePlot.Mortality, li)
+                            Next li
+                        Case eTimeSeriesType.FishingMortalityRef
+                            For Each li As LineItem In Me.GetTimeSeriesLineItems(ts, iGroupSel)
+                                Me.AddCurveToGraphPane(ePlot.F, li)
+                            Next li
+                        Case eTimeSeriesType.Discards
+                            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Discards, iGroupSel, iFleetSel)
+                                Me.AddCurveToGraphPane(ePlot.Discards, li)
+                            Next li
+                        Case eTimeSeriesType.Landings
+                            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Landings, iGroupSel, iFleetSel)
+                                Me.AddCurveToGraphPane(ePlot.Landings, li)
+                            Next li
+                        Case eTimeSeriesType.AverageWeight
+                            If groupSimOut.IsMultiStanza() Then
+                                For Each li As LineItem In Me.GetTimeSeriesLineItems(ts, iGroupSel)
+                                    Me.AddCurveToGraphPane(ePlot.AvgWeightOrProdCons, li)
+                                Next li
+                            End If
+                        Case Else
+                            Debug.Assert(False, "Reference time series type not included")
+                    End Select
+                End If
+            Next
 
             Me.m_zgh.RescaleAndRedraw()
 
@@ -655,29 +635,13 @@ Namespace Ecosim
 #Region " Time series "
 
         ' JS 09Sep18: now also allow fleet TS with group as secundary index
-        Private Function GetTimeSeriesLineItems(TSType As eTimeSeriesType, iGroup As Integer, clr As Color) As List(Of LineItem)
+        Private Function GetTimeSeriesLineItems(TSType As eTimeSeriesType, iGroup As Integer, Optional iFleet As Integer = 0) As List(Of LineItem)
 
             Dim lli As New List(Of LineItem)
             Dim ppt As PointPairList = Nothing
             Dim ts As cTimeSeries = Nothing
             Dim gts As cGroupTimeSeries = Nothing
             Dim fts As cFleetTimeSeries = Nothing
-            Dim iNumLine As Integer = 0
-            Dim iMaxLines As Integer = 1
-
-            ' First count #TS (for colouring)
-            ' Do not count fleet time series; they will be drawn with fleet colors
-            For i As Integer = 1 To Me.Core.nTimeSeries
-                ts = Me.Core.EcosimTimeSeries(i)
-                If ts.TimeSeriesType = TSType Then
-                    If TypeOf ts Is cGroupTimeSeries Then
-                        gts = DirectCast(ts, cGroupTimeSeries)
-                        If (gts.GroupIndex = iGroup) And gts.Enabled() Then
-                            iMaxLines += 1
-                        End If
-                    End If
-                End If
-            Next
 
             ' Build lines
             For i As Integer = 1 To Me.Core.nTimeSeries
@@ -686,13 +650,12 @@ Namespace Ecosim
                     If TypeOf ts Is cGroupTimeSeries Then
                         gts = DirectCast(ts, cGroupTimeSeries)
                         If (gts.GroupIndex = iGroup) And gts.Enabled() Then
-                            lli.Add(Me.ToTimeSeriesLineItem(gts, cColorUtils.GetVariant(clr, CSng(iNumLine / iMaxLines))))
-                            iNumLine += 1
+                            lli.Add(Me.ToTimeSeriesLineItem(gts, Me.StyleGuide.GroupColor(Me.Core, iGroup)))
                         End If
                     End If
                     If TypeOf ts Is cFleetTimeSeries Then
                         fts = DirectCast(ts, cFleetTimeSeries)
-                        If (fts.GroupIndex = iGroup) And fts.Enabled() Then
+                        If (fts.GroupIndex = iGroup) And fts.Enabled() And (iFleet = 0 Or iFleet = fts.FleetIndex) Then
                             lli.Add(Me.ToTimeSeriesLineItem(fts, Me.StyleGuide.FleetColor(Me.Core, fts.FleetIndex)))
                         End If
                     End If
