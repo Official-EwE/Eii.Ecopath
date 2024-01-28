@@ -276,10 +276,12 @@ Public MustInherit Class cTimeSeries
 #Region " Public diagnostics "
 
     Public Shared Function IsReference(datType As eTimeSeriesType) As Boolean
+        If datType = eTimeSeriesType.NotSet Then Return False
         Return Not cTimeSeries.IsDriver(datType)
     End Function
 
     Public Shared Function IsDriver(DatType As eTimeSeriesType) As Boolean
+        If DatType = eTimeSeriesType.NotSet Then Return False
         Select Case DatType
             Case eTimeSeriesType.BiomassForcing,
                      eTimeSeriesType.CatchesForcing, eTimeSeriesType.TimeForcing,
@@ -307,10 +309,12 @@ Public MustInherit Class cTimeSeries
     End Function
 
     Public Shared Function IsAbsolute(DatType As eTimeSeriesType) As Boolean
+        If DatType = eTimeSeriesType.NotSet Then Return False
         Return Not cTimeSeries.IsRelative(DatType)
     End Function
 
     Public Shared Function IsRelative(DatType As eTimeSeriesType) As Boolean
+        If DatType = eTimeSeriesType.NotSet Then Return False
         Return (DatType = eTimeSeriesType.BiomassRel) Or
                (DatType = eTimeSeriesType.CatchesRel) Or
                (DatType = eTimeSeriesType.AverageWeight) Or
@@ -322,6 +326,7 @@ Public MustInherit Class cTimeSeries
 
     <Obsolete("Remove when time series properly use cCore.NULL_VALUE")>
     Public Shared Function SupportsNull(DatType As eTimeSeriesType) As Boolean
+        If DatType = eTimeSeriesType.NotSet Then Return False
         Return DatType = eTimeSeriesType.DiscardMortality Or
                DatType = eTimeSeriesType.DiscardProportion Or
                DatType = eTimeSeriesType.Landings Or
