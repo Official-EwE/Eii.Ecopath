@@ -19,6 +19,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -70,6 +71,22 @@ Public Class cPressure
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Create a <see cref="eDataTypes.Scalar">scalar</see> pressure.
+    ''' </summary>
+    ''' <param name="name">The name of the pressure to define.</param>
+    ''' <param name="bEnabled">The initial data for the pressure.</param>
+    ''' <seealso cref="DataType"/>
+    ''' <seealso cref="eDataTypes"/>
+    ''' <seealso cref="Scalar"/>
+    ''' <see cref="IsScalar"/>
+    ''' -----------------------------------------------------------------------
+    Public Sub New(name As String, bEnabled As Boolean)
+        Me.New(eDataTypes.Scalar, name)
+        Me.m_scalar = New cScalar(name, CDbl(bEnabled))
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Create a <see cref="eDataTypes.Grid">grid</see> pressure.
     ''' </summary>
     ''' <param name="name">The name of the pressure to define.</param>
@@ -100,7 +117,7 @@ Public Class cPressure
         NotSet = 0
         ''' <summary>Pressure contains a single value.</summary>
         Scalar
-        ''' <summary>Pressure contains an map of values.</summary>
+        ''' <summary>Pressure contains a map of values.</summary>
         Grid
     End Enum
 
@@ -158,6 +175,23 @@ Public Class cPressure
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the on/off, or true/false value of the <see cref="Scalar"/>.
+    ''' </summary>
+    ''' <returns>A boolean interpretation of the scalar value, where
+    ''' true is return if the <see cref="Scalar"/> is not zero.</returns>
+    ''' <seealso cref="IsScalar"/>
+    ''' <seealso cref="Scalar"/>
+    ''' -----------------------------------------------------------------------
+    Public Property Enabled As Boolean
+        Get
+            Return (Me.Scalar <> 0)
+        End Get
+        Set(value As Boolean)
+            Me.Scalar = If(value, 1, 0)
+        End Set
+    End Property
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns if this pressure accepts grid driver data. 

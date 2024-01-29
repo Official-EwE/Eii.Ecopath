@@ -41,7 +41,7 @@ Public Class cEcologicalGearDriver
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Create a new <see cref="cEffortDriver"/> to drive the <see cref="cEcospaceFleet.TotalEffMultiplier">
+    ''' Create a new <see cref="cEffortMulitiplierDriver"/> to drive the <see cref="cEcospaceFleet.TotalEffMultiplier">
     ''' Ecospace effort multiplier</see> of a single fleet.
     ''' </summary>
     ''' <param name="core">The <see cref="cCore"/> to connect to.</param>
@@ -49,7 +49,7 @@ Public Class cEcologicalGearDriver
     ''' <param name="fleet">The <see cref="cEcospaceFleet">fleet</see> this driver is connected to.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(core As cCore, game As cGame, fleet As cEcopathFleetInput)
-        MyBase.New(core, game, cStringUtils.Localize(My.Resources.DRIVER_EFFORTMULTIPLIER_NAME, fleet.Name))
+        MyBase.New(core, game, cStringUtils.Localize(My.Resources.DRIVER_ECOLOGICALFISHING_NAME, fleet.Name))
         Me.m_fleet = fleet
     End Sub
 
