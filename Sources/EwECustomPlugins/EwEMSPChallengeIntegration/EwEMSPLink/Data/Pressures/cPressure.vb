@@ -47,8 +47,9 @@ Public Class cPressure
 
 #Region " Constructors "
 
-    Public Sub New(datatype As eDataTypes)
+    Public Sub New(datatype As eDataTypes, name As String)
         Me.DataType = datatype
+        Me.Name = name
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -63,8 +64,7 @@ Public Class cPressure
     ''' <see cref="IsScalar"/>
     ''' -----------------------------------------------------------------------
     Public Sub New(name As String, scalar As Double)
-        Me.New(eDataTypes.Scalar)
-        Me.Name = name
+        Me.New(eDataTypes.Scalar, name)
         Me.m_scalar = New cScalar(name, scalar)
     End Sub
 
@@ -82,8 +82,7 @@ Public Class cPressure
     ''' <see cref="IsGrid"/>
     ''' -----------------------------------------------------------------------
     Public Sub New(name As String, iNumColumns As Integer, iNumRows As Integer, Optional data As Double(,) = Nothing)
-        Me.New(eDataTypes.Grid)
-        Me.Name = name
+        Me.New(eDataTypes.Grid, name)
         Me.m_grid = New cGrid(name, iNumColumns, iNumRows, data)
     End Sub
 
