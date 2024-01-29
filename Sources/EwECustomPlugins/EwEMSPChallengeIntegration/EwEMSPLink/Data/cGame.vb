@@ -25,7 +25,6 @@ Imports System.Text
 Imports System.Web
 Imports System.Xml
 Imports EwECore
-Imports EwECore.WebServices
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -180,9 +179,9 @@ Public Class cGame
     ''' receiving pressures.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Drivers(Optional datatype As cPressure.eDataTypes = cPressure.eDataTypes.NotSet) As cDriver()
+    Public ReadOnly Property Drivers(Optional pressure As cPressure = Nothing) As cDriver()
         Get
-            Return cDriverFactory.GetDrivers(Me.m_core, Me, datatype)
+            Return cDriverFactory.GetDrivers(Me.m_core, Me, pressure)
         End Get
     End Property
 
@@ -498,7 +497,7 @@ Public Class cGame
         Dim items As New List(Of cScalar)
         For Each p As cPressure In Me.Pressures
             If p.IsScalar Then
-                Dim d As cEffortDriver = DirectCast(Me.Driver(p.Name), cEffortDriver)
+                Dim d As cEffortMulitiplierDriver = DirectCast(Me.Driver(p.Name), cEffortMulitiplierDriver)
                 Dim s As New cScalar(p.Name, d.StartValue / Me.Multiplier(p.Name))
                 items.Add(s)
             End If
@@ -613,6 +612,13 @@ Public Class cGame
 
     End Function
 
+    Public Const NAME_NOISE As String = "Noise"
+    Public Const NAME_BOTTOM_DIST As String = "Bottom disturbance"
+    Public Const NAME_SURFACE_DIST As String = "Surface disturbance"
+    Public Const NAME_ARTIFICIAL_HAB As String = "Artificial habitat"
+    Public Const NAME_PROTECTION As String = "Protection"
+    Public Const NAME_FISHING_INT As String = "Fishing intensity"
+    Public Const NAME_FISHING_ECO As String = "Ecological fishing"
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Create default pressures and outputs.
@@ -622,13 +628,14 @@ Public Class cGame
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
 
-        Me.Add(New cPressure("Noise", bm.InCol, bm.InRow))
-        Me.Add(New cPressure("Bottom disturbance", bm.InCol, bm.InRow))
-        Me.Add(New cPressure("Surface disturbance", bm.InCol, bm.InRow))
-        Me.Add(New cPressure("Artificial habitat", bm.InCol, bm.InRow))
+        Me.Add(New cPressure(NAME_NOISE, bm.InCol, bm.InRow))
+        Me.Add(New cPressure(NAME_BOTTOM_DIST, bm.InCol, bm.InRow))
+        Me.Add(New cPressure(NAME_SURFACE_DIST, bm.InCol, bm.InRow))
+        Me.Add(New cPressure(NAME_ARTIFICIAL_HAB, bm.InCol, bm.InRow))
         For i As Integer = 1 To Me.m_core.nFleets
-            Me.Add(New cPressure("Protection " & Me.m_core.EcopathFleetInputs(i).Name, bm.InCol, bm.InRow))
-            Me.Add(New cPressure("Fishing intensity " & Me.m_core.EcopathFleetInputs(i).Name, 1.0))
+            Me.Add(New cPressure(NAME_PROTECTION & " " & Me.m_core.EcopathFleetInputs(i).Name, bm.InCol, bm.InRow))
+            Me.Add(New cPressure(NAME_FISHING_INT & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0))
+            Me.Add(New cPressure(NAME_FISHING_ECO & " " & Me.m_core.EcopathFleetInputs(i).Name, False))
         Next
 
     End Sub

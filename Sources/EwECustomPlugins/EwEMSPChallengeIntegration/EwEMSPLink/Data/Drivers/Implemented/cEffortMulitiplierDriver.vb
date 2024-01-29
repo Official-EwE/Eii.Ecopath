@@ -30,7 +30,7 @@ Imports EwEUtils.Utilities
 ''' of a single <see cref="cEcospaceFleet">Ecospace fleet</see>.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cEffortDriver
+Public Class cEffortMulitiplierDriver
     Inherits cDriver
 
 #Region " Private vars "
@@ -42,7 +42,7 @@ Public Class cEffortDriver
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Create a new <see cref="cEffortDriver"/> to drive the <see cref="cEcospaceFleet.TotalEffMultiplier">
+    ''' Create a new <see cref="cEffortMulitiplierDriver"/> to drive the <see cref="cEcospaceFleet.TotalEffMultiplier">
     ''' Ecospace effort multiplier</see> of a single fleet.
     ''' </summary>
     ''' <param name="core">The <see cref="cCore"/> to connect to.</param>

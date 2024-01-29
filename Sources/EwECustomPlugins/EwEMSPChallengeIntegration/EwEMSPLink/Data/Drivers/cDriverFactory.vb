@@ -38,74 +38,65 @@ Friend Class cDriverFactory
     ''' <param name="core"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetDrivers(core As cCore, game As cGame, Optional datatype As cPressure.eDataTypes = cPressure.eDataTypes.NotSet) As cDriver()
-        Dim lPressures As New List(Of cDriver)
-        For Each vn As eVarNameFlags In cDriverFactory.SupportedVariables
-            lPressures.AddRange(cDriverFactory.GetDrivers(core, game, vn, datatype))
-        Next
-        Return lPressures.ToArray()
+    Public Shared Function GetDrivers(core As cCore, game As cGame, Optional pressure As cPressure = Nothing) As cDriver()
+
+        Dim key As String = ""
+        If (pressure IsNot Nothing) Then key = pressure.Name
+        Return GetDrivers(core, game, key)
+
     End Function
 
 #Region " Internals "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Obtain all drivers for a <see cref="SupportedVariables()">supported variable</see>.
+    ''' Obtain all drivers for the given fixed named key, or for all drivers if the key is omitted.
     ''' </summary>
     ''' <param name="core"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Shared Function GetDrivers(core As cCore, game As cGame, vn As eVarNameFlags, datatype As cPressure.eDataTypes) As cDriver()
+    Private Shared Function GetDrivers(core As cCore, game As cGame, key As String) As cDriver()
 
         Dim l As New List(Of cDriver)
         Dim d As cDriver = Nothing
 
-        Debug.Assert(Array.IndexOf(SupportedVariables, vn) > -1)
+        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_NOISE) Or key.StartsWith(cGame.NAME_SURFACE_DIST) Or key.StartsWith(cGame.NAME_BOTTOM_DIST) Then
+            For i As Integer = 1 To core.nEnvironmentalDriverLayers
+                d = New cEnvironmentalDriver(core, game, core.EcospaceBasemap.LayerDriver(i))
+                l.Add(d)
+            Next
+        End If
 
-        Select Case vn
+        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_PROTECTION) Then
+            For i As Integer = 1 To core.nMPAs
+                d = New cMPADriver(core, game, core.EcospaceMPAs(i))
+                l.Add(d)
+            Next
+        End If
 
-            Case eVarNameFlags.LayerDriver
-                For i As Integer = 1 To core.nEnvironmentalDriverLayers
-                    d = New cEnvironmentalDriver(core, game, core.EcospaceBasemap.LayerDriver(i))
-                    l.Add(d)
-                Next
+        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_ARTIFICIAL_HAB) Then
+            For i As Integer = 1 To core.nHabitats - 1
+                d = New cHabitatDriver(core, game, core.EcospaceHabitats(i))
+                l.Add(d)
+            Next
+        End If
 
-            Case eVarNameFlags.LayerMPA
-                For i As Integer = 1 To core.nMPAs
-                    d = New cMPADriver(core, game, core.EcospaceMPAs(i))
-                    l.Add(d)
-                Next
+        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_FISHING_INT) Then
+            For i As Integer = 1 To core.nFleets
+                d = New cEffortMulitiplierDriver(core, game, core.EcopathFleetInputs(i))
+                l.Add(d)
+            Next
+        End If
 
-            Case eVarNameFlags.LayerHabitat
-                For i As Integer = 1 To core.nHabitats - 1
-                    d = New cHabitatDriver(core, game, core.EcospaceHabitats(i))
-                    l.Add(d)
-                Next
+        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_FISHING_ECO) Then
+            For i As Integer = 1 To core.nFleets
+                d = New cEcologicalGearDriver(core, game, core.EcopathFleetInputs(i))
+                l.Add(d)
+            Next
+        End If
 
-            Case eVarNameFlags.EcosimFleetEffort
-                For i As Integer = 1 To core.nFleets
-                    d = New cEffortDriver(core, game, core.EcopathFleetInputs(i))
-                    l.Add(d)
-                Next
-
-            Case Else
-                Debug.Assert(False, "Internal error: variable not supported")
-
-        End Select
-
-        l.RemoveAll(Function(tmp) tmp.DataType <> datatype And datatype <> cPressure.eDataTypes.NotSet)
         Return l.ToArray()
 
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns the list of variables that can be used to drive Ecospace through
-    ''' MSP pressures.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Shared Function SupportedVariables() As eVarNameFlags()
-        Return New eVarNameFlags() {eVarNameFlags.LayerDriver, eVarNameFlags.LayerMPA, eVarNameFlags.LayerHabitat, eVarNameFlags.EcosimFleetEffort}
     End Function
 
 #End Region ' Internals
