@@ -165,7 +165,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="UI\Controls\gridDrivers.vb">
+    <Compile Include="UI\Controls\gridPressureDriverMappings.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Test sets\cTestset.vb" />
