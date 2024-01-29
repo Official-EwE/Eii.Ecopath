@@ -79,7 +79,7 @@ Namespace UI
             Me.m_gridFleetCatch = New EwEMSPPlugin.UI.gridFleetCatch()
             Me.m_tpPressures = New System.Windows.Forms.TabPage()
             Me.m_cmbPressureTypes = New System.Windows.Forms.ComboBox()
-            Me.m_gridPressureMappings = New EwEMSPPlugin.UI.gridDrivers()
+            Me.m_gridPressureMappings = New EwEMSPPlugin.UI.gridPressureDriverMappings()
             Me.m_btnPressureDefaults = New System.Windows.Forms.Button()
             Me.m_btnPressureDelete = New System.Windows.Forms.Button()
             Me.m_btnPressureRename = New System.Windows.Forms.Button()
@@ -1004,7 +1004,7 @@ Namespace UI
         Private WithEvents m_pbBUAS As Windows.Forms.PictureBox
         Private WithEvents m_pbRWS As Windows.Forms.PictureBox
         Private WithEvents m_pbMSPChallenge As Windows.Forms.PictureBox
-        Private WithEvents m_gridPressureMappings As gridDrivers
+        Private WithEvents m_gridPressureMappings As gridPressureDriverMappings
         Private WithEvents m_lbOutputs As Windows.Forms.ListBox
         Private WithEvents m_plEmulator As Windows.Forms.Panel
         Private WithEvents m_hdrEmulRun As ScientificInterfaceShared.Controls.cEwEHeaderLabel

@@ -48,7 +48,7 @@ Namespace Ecosim
             Me.m_plContent = New System.Windows.Forms.Panel()
             Me.m_hdrDisplayOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_chkShowB = New System.Windows.Forms.CheckBox()
-            Me.m_chkShowZ = New System.Windows.Forms.CheckBox()
+            Me.m_chkShowMort = New System.Windows.Forms.CheckBox()
             Me.m_chkShowLandings = New System.Windows.Forms.CheckBox()
             Me.m_chkShowDiscards = New System.Windows.Forms.CheckBox()
             Me.m_chkShowCatch = New System.Windows.Forms.CheckBox()
@@ -69,6 +69,7 @@ Namespace Ecosim
             Me.m_nudDotSize = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_nudRowNum = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_nudLineWidth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblWTF = New System.Windows.Forms.Label()
             Me.m_pbPlots = New System.Windows.Forms.PictureBox()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsmiOptions = New System.Windows.Forms.ToolStripButton()
@@ -83,7 +84,6 @@ Namespace Ecosim
             Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiPrintPreview = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_printdocAllFits = New System.Drawing.Printing.PrintDocument()
-            Me.m_lblWTF = New System.Windows.Forms.Label()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -129,7 +129,7 @@ Namespace Ecosim
             '
             Me.m_plContent.Controls.Add(Me.m_hdrDisplayOptions)
             Me.m_plContent.Controls.Add(Me.m_chkShowB)
-            Me.m_plContent.Controls.Add(Me.m_chkShowZ)
+            Me.m_plContent.Controls.Add(Me.m_chkShowMort)
             Me.m_plContent.Controls.Add(Me.m_chkShowLandings)
             Me.m_plContent.Controls.Add(Me.m_chkShowDiscards)
             Me.m_plContent.Controls.Add(Me.m_chkShowCatch)
@@ -152,13 +152,13 @@ Namespace Ecosim
             Me.m_chkShowB.Name = "m_chkShowB"
             Me.m_chkShowB.UseVisualStyleBackColor = True
             '
-            'm_chkShowZ
+            'm_chkShowMort
             '
-            resources.ApplyResources(Me.m_chkShowZ, "m_chkShowZ")
-            Me.m_chkShowZ.Checked = True
-            Me.m_chkShowZ.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_chkShowZ.Name = "m_chkShowZ"
-            Me.m_chkShowZ.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_chkShowMort, "m_chkShowMort")
+            Me.m_chkShowMort.Checked = True
+            Me.m_chkShowMort.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowMort.Name = "m_chkShowMort"
+            Me.m_chkShowMort.UseVisualStyleBackColor = True
             '
             'm_chkShowLandings
             '
@@ -316,6 +316,12 @@ Namespace Ecosim
             Me.m_nudLineWidth.Name = "m_nudLineWidth"
             Me.m_nudLineWidth.Value = New Decimal(New Integer() {1, 0, 0, 131072})
             '
+            'm_lblWTF
+            '
+            resources.ApplyResources(Me.m_lblWTF, "m_lblWTF")
+            Me.m_lblWTF.BackColor = System.Drawing.Color.White
+            Me.m_lblWTF.Name = "m_lblWTF"
+            '
             'm_pbPlots
             '
             Me.m_pbPlots.BackColor = System.Drawing.Color.White
@@ -395,12 +401,6 @@ Namespace Ecosim
             'm_printdocAllFits
             '
             '
-            'm_lblWTF
-            '
-            resources.ApplyResources(Me.m_lblWTF, "m_lblWTF")
-            Me.m_lblWTF.BackColor = System.Drawing.Color.White
-            Me.m_lblWTF.Name = "m_lblWTF"
-            '
             'frmShowAllFits
             '
             resources.ApplyResources(Me, "$this")
@@ -456,7 +456,7 @@ Namespace Ecosim
         Private WithEvents m_chkShowYear As System.Windows.Forms.CheckBox
         Private WithEvents m_chkShowWeight As System.Windows.Forms.CheckBox
         Private WithEvents m_chkShowCatch As System.Windows.Forms.CheckBox
-        Private WithEvents m_chkShowZ As System.Windows.Forms.CheckBox
+        Private WithEvents m_chkShowMort As System.Windows.Forms.CheckBox
         Private WithEvents m_chkShowB As System.Windows.Forms.CheckBox
         Private WithEvents m_pbPlots As System.Windows.Forms.PictureBox
         Private WithEvents m_chkShowSS As System.Windows.Forms.CheckBox

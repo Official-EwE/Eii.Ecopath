@@ -52,7 +52,7 @@ Namespace UI
         ''' to <see cref="cDriver"/> mapping displayed in the grid.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Event OnMappingsChanged(sender As gridDrivers)
+        Public Event OnMappingsChanged(sender As gridPressureDriverMappings)
 
         ''' -------------------------------------------------------------------
         ''' <summary>

@@ -852,7 +852,7 @@ Namespace UI
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnMappingsChanged(sender As gridDrivers) _
+        Private Sub OnMappingsChanged(sender As gridPressureDriverMappings) _
             Handles m_gridPressureMappings.OnMappingsChanged
 
             Me.m_gridEmulTestset.RefreshContent()

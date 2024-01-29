@@ -160,7 +160,9 @@
     <Compile Include="frmSelectFleetOnly.Designer.vb">
       <DependentUpon>frmSelectFleetOnly.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSelectFleetOnly.vb" />
+    <Compile Include="frmSelectFleetOnly.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSelectFleetPrey.Designer.vb">
       <DependentUpon>frmSelectFleetPrey.vb</DependentUpon>
     </Compile>

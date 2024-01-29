@@ -34,7 +34,7 @@ Namespace UI
     ''' </summary>
     ''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.cEwEGrid" />
     ''' -----------------------------------------------------------------------
-    Public Class gridDrivers
+    Public Class gridPressureDriverMappings
         Inherits cEwEGrid
 
 #Region " Internal vars "
@@ -56,11 +56,11 @@ Namespace UI
         ''' to <see cref="cDriver"/> mapping displayed in the grid.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Event OnMappingsChanged(sender As gridDrivers)
+        Public Event OnMappingsChanged(sender As gridPressureDriverMappings)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Creates a new <see cref="gridDrivers">driver configuration grid</see>.
+        ''' Creates a new <see cref="gridPressureDriverMappings">driver configuration grid</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New()
@@ -110,7 +110,7 @@ Namespace UI
                 Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(pressure.Name)
 
                 Dim edt As EditorComboBox = Me.Editor(pressure)
-                Dim d As cDriver = Game.Driver(pressure.Name)
+                Dim d As cDriver = Me.Game.Driver(pressure.Name)
 
                 ' Drivers are created on the fly. To avoid exceptions, make sure the shown driver is obtained from the editor
                 For Each v As Object In edt.StandardValues
@@ -239,7 +239,7 @@ Namespace UI
 
             Dim lDrivers As New List(Of cDriver)
             lDrivers.Add(Nothing)
-            lDrivers.AddRange(Game.Drivers(pressure.DataType))
+            lDrivers.AddRange(Game.Drivers(pressure))
 
             Dim e As New EditorComboBox(GetType(cDriver))
             e.StandardValues = lDrivers.ToArray()
