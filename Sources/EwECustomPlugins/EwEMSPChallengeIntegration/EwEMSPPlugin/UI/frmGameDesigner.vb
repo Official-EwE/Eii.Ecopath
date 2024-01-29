@@ -730,8 +730,7 @@ Namespace UI
                 Dim g As cGame = Me.SelectedGame()
 
                 ' Solved reflection ambiguity
-                Dim p As New cPressure(type)
-                p.Name = Me.m_tbxPressureName.Text
+                Dim p As New cPressure(type, Me.m_tbxPressureName.Text)
 
                 g.Add(p)
 

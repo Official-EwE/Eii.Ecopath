@@ -858,7 +858,7 @@ Public Class cGame
                                 End Select
                             Next
                             If (t <> cPressure.eDataTypes.NotSet) Then
-                                Me.Add(New cPressure(strPressure, t))
+                                Me.Add(New cPressure(t, strPressure))
                             End If
                         Next
                     Catch ex As Exception

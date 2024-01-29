@@ -228,13 +228,11 @@ Public Class cJSONGameConfig
             Dim lPressures As New List(Of cPressure)
             If (Me.m_gamedef IsNot Nothing) Then
                 For Each obj As JObject In Me.m_gamedef.pressures
-                    Dim p As cPressure = New cPressure(cPressure.eDataTypes.Grid)
-                    p.Name = obj.Property("name").Value.ToString
+                    Dim p As cPressure = New cPressure(cPressure.eDataTypes.Grid, obj.Property("name").Value.ToString)
                     lPressures.Add(p)
                 Next
                 For Each obj As JObject In Me.m_gamedef.fishing
-                    Dim p As cPressure = New cPressure(cPressure.eDataTypes.Scalar)
-                    p.Name = obj.Property("name").Value.ToString
+                    Dim p As cPressure = New cPressure(cPressure.eDataTypes.Scalar, obj.Property("name").Value.ToString)
                     lPressures.Add(p)
                 Next
             End If
