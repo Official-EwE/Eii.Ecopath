@@ -2213,12 +2213,14 @@ Public Class cEcospaceDataStructures
         ReDim Me.RegionArea(Me.nRegions)
         For iRow As Integer = 1 To Me.InRow
             For iCol As Integer = 1 To Me.InCol
-                Dim iReg As Integer = Me.Region(iRow, iCol)
-                If (iReg > 0 And iReg <= Me.nRegions) Then
-                    Me.RegionArea(iReg) += Me.CellArea(iRow, iCol)
+                If (Me.Depth(iRow, iCol) > 0) Then
+                    Dim iReg As Integer = Me.Region(iRow, iCol)
+                    If (iReg > 0 And iReg <= Me.nRegions) Then
+                        Me.RegionArea(iReg) += Me.CellArea(iRow, iCol)
+                    End If
+                    ' Total water area
+                    Me.RegionArea(0) += Me.CellArea(iRow, iCol)
                 End If
-                ' Total water area
-                Me.RegionArea(0) += Me.CellArea(iRow, iCol)
             Next
         Next
 
