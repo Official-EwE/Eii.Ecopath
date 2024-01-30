@@ -237,7 +237,6 @@ Public Class cEcospaceDataStructures
     Public DepthX(,) As Integer
     Public DepthY(,) As Single
 
-
     ''' <summary>Catch by Row, Col, Group.</summary>
     Public CatchMap(,,) As Single
 
@@ -254,8 +253,10 @@ Public Class cEcospaceDataStructures
     Public Excluded(,) As Boolean
     ''' <summary>Modeled area, in area units^2 by Row, Col.</summary>
     Public CellArea(,) As Single
-    ''' <summary>Region area, in area units^2</summary>
+    ''' <summary>Region area, in area units^2. Region 0 represents the entire area.</summary>
     Public RegionArea() As Single
+    ''' <summary>Region cells. Region 0 represents the entire area.</summary>
+    Public RegionCells() As Integer
 
     ''' <summary>Trophic Level by Row, Col, Group.</summary>
     Public TL(,,) As Single
@@ -926,30 +927,6 @@ Public Class cEcospaceDataStructures
             'which delay the dimensioning until the data is loaded
             'this may not be a good idea
         End Set
-    End Property
-
-    Public ReadOnly Property nCellsInRegion(ByVal iRegion As Integer) As Integer
-
-        Get
-            Try
-                Dim n As Integer = 0
-                For irow As Integer = 1 To Me.InRow
-                    For icol As Integer = 1 To Me.InCol
-                        If Me.Depth(irow, icol) > 0 Then
-                            If Me.Region(irow, icol) = iRegion Then
-                                n += 1
-                            End If
-                        End If
-                    Next
-                Next
-                Return n
-
-            Catch ex As Exception
-                cLog.Write(ex)
-                Return 0
-            End Try
-        End Get
-
     End Property
 
     Public ReadOnly Property nTimeSteps() As Integer
@@ -2211,15 +2188,18 @@ Public Class cEcospaceDataStructures
     Friend Sub RedimRegionAdminForRun()
 
         ReDim Me.RegionArea(Me.nRegions)
+        ReDim Me.RegionCells(Me.nRegions)
         For iRow As Integer = 1 To Me.InRow
             For iCol As Integer = 1 To Me.InCol
                 If (Me.Depth(iRow, iCol) > 0) Then
                     Dim iReg As Integer = Me.Region(iRow, iCol)
                     If (iReg > 0 And iReg <= Me.nRegions) Then
                         Me.RegionArea(iReg) += Me.CellArea(iRow, iCol)
+                        Me.RegionCells(iReg) += 1
                     End If
                     ' Total water area
                     Me.RegionArea(0) += Me.CellArea(iRow, iCol)
+                    Me.RegionCells(0) += 1
                 End If
             Next
         Next
@@ -2556,7 +2536,7 @@ Public Class cEcospaceDataStructures
             For ivar = 0 To [Enum].GetValues(GetType(eSpaceResultsFleets)).Length
                 For iflt = 0 To Me.nFleets
                     For it = 1 To Me.nTimeSteps
-                        Me.ResultsByFleet(ivar, iflt, it) /= Me.nWaterCells
+                        Me.ResultsByFleet(ivar, iflt, it) /= Me.RegionCells(0)
                     Next it
                 Next iflt
             Next ivar
@@ -2565,14 +2545,14 @@ Public Class cEcospaceDataStructures
                 For iflt = 0 To Me.nFleets
                     For igrp = 1 To Me.NGroups
                         For it = 1 To Me.nTimeSteps
-                            Me.ResultsByFleetGroup(ivar, iflt, igrp, it) /= Me.nWaterCells
+                            Me.ResultsByFleetGroup(ivar, iflt, igrp, it) /= Me.RegionCells(0)
                         Next it
                     Next igrp
                 Next iflt
             Next ivar
 
             For irgn = 0 To Me.nRegions
-                ncells = Me.nCellsInRegion(irgn)
+                ncells = Me.RegionCells(irgn)
                 If ncells = 0 Then ncells = 1
                 For igrp = 1 To Me.NGroups
                     For it = 1 To Me.nTimeSteps
@@ -2582,7 +2562,7 @@ Public Class cEcospaceDataStructures
             Next irgn
 
             For irgn = 0 To Me.nRegions
-                ncells = Me.nCellsInRegion(irgn)
+                ncells = Me.RegionCells(irgn)
                 If ncells = 0 Then ncells = 1
                 For iflt = 0 To Me.nFleets
                     For igrp = 1 To Me.NGroups
