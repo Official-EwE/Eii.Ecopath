@@ -2071,7 +2071,7 @@ Public Class cEcoSpace
 
         'average contamintant results by region
         For iRgn = 0 To Me.EcoSpaceData.nRegions
-            Dim nInRgn As Integer = Me.EcoSpaceData.nCellsInRegion(iRgn)
+            Dim nInRgn As Integer = Me.EcoSpaceData.RegionCells(iRgn)
             If nInRgn = 0 Then nInRgn = 1 'there can be regions with zero cells(no area) this avoids a /0 
 
             For igrp As Integer = 0 To Me.EcoSpaceData.NGroups
@@ -2141,7 +2141,7 @@ Public Class cEcoSpace
                 Me.EcoSpaceData.Ccell(0, j, iGrp) = Me.EcoSpaceData.Ccell(1, j, iGrp)
                 Me.EcoSpaceData.Ccell(Me.EcoSpaceData.InRow + 1, j, iGrp) = Me.EcoSpaceData.Ccell(Me.EcoSpaceData.InRow, j, iGrp)
             Next
-        Next igrp
+        Next iGrp
 
 
     End Sub
