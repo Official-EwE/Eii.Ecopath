@@ -11408,7 +11408,7 @@ Public Class cCore
                 End If
 
                 'average the data over the number of cells in the region for output
-                Dim nCellsInRegion As Integer = m_EcospaceData.nCellsInRegion(rgn.Index)
+                Dim nCellsInRegion As Integer = m_EcospaceData.RegionCells(rgn.Index)
                 If nCellsInRegion = 0 Then nCellsInRegion = 1
 
                 For igrp = 1 To nGroups
