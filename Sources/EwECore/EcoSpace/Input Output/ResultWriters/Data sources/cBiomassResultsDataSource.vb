@@ -75,7 +75,7 @@ Public Class cBiomassResultsDataSource
 
     Public Overrides ReadOnly Property nWaterCells As Integer
         Get
-            Return Me.m_spaceData.nWaterCells
+            Return Me.m_spaceData.RegionCells(0)
         End Get
     End Property
 

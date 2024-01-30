@@ -132,7 +132,7 @@ Public Class cRegionCatchResultsDataSource
 
     Public Overrides ReadOnly Property nWaterCells As Integer
         Get
-            Return Me.m_core.m_EcospaceData.nCellsInRegion(Me.m_RegionIndex)
+            Return Me.m_core.m_EcospaceData.RegionCells(Me.m_RegionIndex)
         End Get
     End Property
 
