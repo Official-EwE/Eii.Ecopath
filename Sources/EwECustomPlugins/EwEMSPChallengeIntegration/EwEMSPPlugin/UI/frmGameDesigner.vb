@@ -89,8 +89,8 @@ Namespace UI
             Me.m_spacedata = data
 
             Me.m_testdata = New cTestSetData()
-            Me.Shell = shell
-            Me.m_gridPressureMappings.Shell = Me.Shell
+            Me.MSPLink = shell
+            Me.m_gridPressureMappings.Shell = Me.MSPLink
             Me.m_gridOutcome.Shell = shell
 
             Me.Text = My.Resources.NODE_CONFIG
@@ -263,7 +263,7 @@ Namespace UI
             Dim nOK As Integer = 0
 
             If (bHasGame) Then
-                For Each gameTest As cGame In Me.Shell.Data.Games
+                For Each gameTest As cGame In Me.MSPLink.Data.Games
                     If (Not ReferenceEquals(game, gameTest)) Then
                         bHasDuplicateGameNames = bHasDuplicateGameNames Or (String.Compare(gameTest.Name, game.Name, True) = 0)
                     End If
@@ -337,7 +337,7 @@ Namespace UI
                 End Select
                 Me.SetTabStatusImage(Me.m_tpPressures, iImg)
 
-                For Each out As cOutcome In game.Outputs
+                For Each out As cOutcome In game.Outcomes
                     If (out.LayerType = cOutcome.eLayerType.Indicator) Then
                         nOK += 1
                     Else
@@ -554,8 +554,8 @@ Namespace UI
                             g.Add(New cOutcome(Me.Core, outcome.Name, t))
                         Next
 
-                        Me.Shell.Data.Add(g)
-                        Me.Shell.OnChanged()
+                        Me.MSPLink.Data.Add(g)
+                        Me.MSPLink.OnChanged()
                         Me.FillGameCombo(g)
                         Me.UpdateControls()
 
@@ -589,8 +589,8 @@ Namespace UI
 
                 g.AddDefaultPressures()
 
-                Me.Shell.Data.Add(g)
-                Me.Shell.OnChanged()
+                Me.MSPLink.Data.Add(g)
+                Me.MSPLink.OnChanged()
                 Me.FillGameCombo(g)
                 Me.UpdateControls()
 
@@ -612,7 +612,7 @@ Namespace UI
                 Dim g As cGame = Me.SelectedGame()
                 If (g IsNot Nothing) Then
                     g.Name = Me.m_tbxGameName.Text
-                    Me.Shell.OnChanged()
+                    Me.MSPLink.OnChanged()
                     Me.FillGameCombo(g)
                 End If
             Catch ex As Exception
@@ -630,8 +630,8 @@ Namespace UI
         Private Sub OnDeleteGame(sender As Object, e As EventArgs) _
             Handles m_btnGameDelete.Click
             Try
-                Me.Shell.Data.Remove(Me.SelectedGame())
-                Me.Shell.OnChanged()
+                Me.MSPLink.Data.Remove(Me.SelectedGame())
+                Me.MSPLink.OnChanged()
                 Me.FillGameCombo()
                 Me.UpdateControls()
             Catch ex As Exception
@@ -666,7 +666,7 @@ Namespace UI
                     g.RunYears = CInt(Me.m_fpRunYears.Value)
                     g.MPACellClosureRatio = CSng(Me.m_fpMAPCellClosure.Value)
                     g.CalculateIndicators = Me.m_cbGameCalcIndicators.Checked
-                    Me.Shell.OnChanged()
+                    Me.MSPLink.OnChanged()
                 End If
             Catch ex As Exception
                 cLog.Write(ex)
@@ -698,7 +698,7 @@ Namespace UI
                 If (g IsNot Nothing) Then
                     Dim space As cEcospaceScenario = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex)
                     g.EcospaceID = space.DBID
-                    Me.Shell.OnChanged()
+                    Me.MSPLink.OnChanged()
                     Me.FillGameCombo(g)
                 End If
             Catch ex As Exception
@@ -742,7 +742,7 @@ Namespace UI
 
                 g.Add(p)
 
-                Me.Shell.OnChanged()
+                Me.MSPLink.OnChanged()
                 Me.m_gridPressureMappings.RefreshContent()
             Catch ex As Exception
 
@@ -779,7 +779,7 @@ Namespace UI
                 pressure.Name = strNewName
 
                 Me.m_gridPressureMappings.RefreshContent()
-                Me.Shell.OnChanged()
+                Me.MSPLink.OnChanged()
             Catch ex As Exception
 
             End Try
@@ -809,7 +809,7 @@ Namespace UI
                 g.Remove(pressure)
 
                 Me.m_gridPressureMappings.RefreshContent()
-                Me.Shell.OnChanged()
+                Me.MSPLink.OnChanged()
             Catch ex As Exception
 
             End Try
@@ -832,7 +832,7 @@ Namespace UI
             g.AddDefaultPressures()
 
             Me.m_gridPressureMappings.RefreshContent()
-            Me.Shell.OnChanged()
+            Me.MSPLink.OnChanged()
 
         End Sub
 
@@ -889,7 +889,7 @@ Namespace UI
                 game.Add(output)
 
                 Me.FillOutputListbox()
-                Me.Shell.OnChanged()
+                Me.MSPLink.OnChanged()
                 Me.m_lbOutputs.SelectedItem = output
             Catch ex As Exception
 
@@ -915,7 +915,7 @@ Namespace UI
                 output.LayerType = type
 
                 Me.FillOutputListbox()
-                Me.Shell.OnChanged()
+                Me.MSPLink.OnChanged()
                 Me.m_lbOutputs.SelectedItem = output
             Catch ex As Exception
 
@@ -940,7 +940,7 @@ Namespace UI
 
                 Me.FillOutputListbox()
                 Me.OnOutputSelected(Nothing, Nothing)
-                Me.Shell.OnChanged()
+                Me.MSPLink.OnChanged()
 
             Catch ex As Exception
 
@@ -989,7 +989,7 @@ Namespace UI
             Me.m_bInupdate = True
             Me.m_lbOutputs.Items(Me.m_lbOutputs.SelectedIndex) = Me.m_lbOutputs.SelectedItem
             Me.m_bInupdate = False
-            Me.Shell.OnChanged()
+            Me.MSPLink.OnChanged()
             Me.UpdateControls()
 
         End Sub
@@ -1278,7 +1278,7 @@ Namespace UI
         ''' Get/set the <see cref="cEwEMSPLink">EwE MSP shell</see> to operate onto.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Property Shell As cEwEMSPLink = Nothing
+        Friend Property MSPLink As cEwEMSPLink = Nothing
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1293,7 +1293,7 @@ Namespace UI
         Private Sub FillGameCombo(Optional sel As cGame = Nothing)
 
             Me.m_cmbGames.Items.Clear()
-            For Each cfg As cGame In Me.Shell.Data.Games
+            For Each cfg As cGame In Me.MSPLink.Data.Games
                 Me.m_cmbGames.Items.Add(cfg)
             Next
             If sel IsNot Nothing Then
@@ -1324,7 +1324,7 @@ Namespace UI
                 Dim g As cGame = Me.SelectedGame()
                 Me.m_lbOutputs.Items.Clear()
                 If (g IsNot Nothing) Then
-                    For Each out As cOutcome In g.Outputs
+                    For Each out As cOutcome In g.Outcomes
                         Me.m_lbOutputs.Items.Add(out)
                     Next
                 End If
@@ -1439,7 +1439,7 @@ Namespace UI
             Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
             Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
 
-            For Each o As cOutcome In g.Outputs
+            For Each o As cOutcome In g.Outcomes
                 Dim grid As New cGrid(o.Name, bm.InCol, bm.InRow)
                 grid.IsValid = False
                 outcomes.Add(grid)
@@ -1521,7 +1521,7 @@ Namespace UI
             Dim file As String = Path.Combine(ds.Directory, ds.FileName) & "_MSPgames.xml"
             Dim msg As cMessage = Nothing
 
-            If Me.Shell.SaveConfiguration(file) Then
+            If Me.MSPLink.SaveConfiguration(file) Then
                 msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_GAME_EXPORT_SUCCESS, file), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(file)
             Else
