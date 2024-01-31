@@ -104,16 +104,18 @@ Public Class cOutcome
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eLayerType As Integer
-        ''' <summary>Outcome contains an Ecospace biomass distribution summary.</summary>
+        ''' <summary>Outcome contains an Ecospace biomass distribution.</summary>
         Biomass
-        ''' <summary>Outcome contains an Ecospace catch distribution summary.</summary>
+        ''' <summary>Outcome contains an Ecospace catch distribution.</summary>
         [Catch]
-        ''' <summary>Outcome contains an Ecospace fishing effort distribution summary.</summary>
+        ''' <summary>Outcome contains an Ecospace fishing effort distribution.</summary>
         Effort
         ''' <summary>Outcome contains a spatially explicit <see cref="eMSPDIversityIndex">ecological indicator</see>.</summary>
         Indicator
-        ''' <summary>Outcome contains an Ecospace discards distribution summary.</summary>
+        ''' <summary>Outcome contains an Ecospace discards distribution.</summary>
         Discards
+        ''' <summary>Outcome contains an Ecospace bycatch distribution.</summary>
+        Bycatch
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -188,7 +190,7 @@ Public Class cOutcome
     ''' -----------------------------------------------------------------------
     Public Function IsConfigured() As Boolean
         Select Case Me.LayerType
-            Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Effort, eLayerType.Discards
+            Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Effort, eLayerType.Discards, eLayerType.Bycatch
                 ' Needs to have data when defined
                 Return Me.NumItems > 0
             Case eLayerType.Indicator
@@ -210,7 +212,7 @@ Public Class cOutcome
         Select Case Me.LayerType
             Case eLayerType.Biomass, eLayerType.Discards
                 Return Me.m_core.nGroups
-            Case eLayerType.Effort, eLayerType.Catch
+            Case eLayerType.Effort, eLayerType.Catch, eLayerType.Bycatch
                 Return Me.m_core.nFleets
             Case eLayerType.Indicator
                 Return [Enum].GetValues(GetType(eMSPDIversityIndex)).Length

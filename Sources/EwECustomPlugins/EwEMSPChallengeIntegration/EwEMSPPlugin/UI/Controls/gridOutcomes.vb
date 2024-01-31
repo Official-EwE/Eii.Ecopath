@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEMSPLink
 Imports ScientificInterfaceShared.Controls.EwEGrid
 
 #End Region ' Imports
@@ -110,9 +109,9 @@ Namespace UI
                 Dim c As cEwECell = Nothing
 
                 Select Case Me.Output.LayerType
-                    Case cOutcome.eLayerType.Biomass
+                    Case cOutcome.eLayerType.Biomass, cOutcome.eLayerType.Discards
                         strName = Me.UIContext.Core.EcopathGroupInputs(i).Name
-                    Case cOutcome.eLayerType.Effort, cOutcome.eLayerType.Catch
+                    Case cOutcome.eLayerType.Effort, cOutcome.eLayerType.Catch, cOutcome.eLayerType.Bycatch
                         strName = Me.UIContext.Core.EcopathFleetInputs(i).Name
                     Case cOutcome.eLayerType.Indicator
                         strName = DirectCast(i - 1, cOutcome.eMSPDIversityIndex).ToString()
