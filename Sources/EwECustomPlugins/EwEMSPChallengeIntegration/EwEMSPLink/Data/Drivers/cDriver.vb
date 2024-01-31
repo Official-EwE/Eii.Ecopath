@@ -66,9 +66,9 @@ Public MustInherit Class cDriver
     ''' Apply a MSP driver value to Ecospace
     ''' </summary>
     ''' <param name="pressure">The MEL-derived pressure value to apply to the driver.</param>
-    ''' <param name="data">Optional Ecospace data structures to apply the driver
-    ''' to. If not provided, the driver data must be applied through <see cref="ICoreInputOutput"/>
-    ''' interfaces instead.</param>
+    ''' <param name="bDirect">Flag, indicating whether a value needs to be 
+    ''' injected directly into the EwE data structures (true) or into the EwE 
+    ''' input/output objects (false).</param>
     ''' <param name="multiplier"></param>
     ''' <remarks>When used in the EwE user interface and MEL Emulator, data will be 
     ''' applied to <see cref="cCoreInputOutputBase">core I/O classes</see> to provide 
@@ -77,7 +77,7 @@ Public MustInherit Class cDriver
     ''' synchronizing is needed.</remarks>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Function Apply(pressure As cPressure, Optional data As cEcospaceDataStructures = Nothing, Optional multiplier As Double = 1.0!) As Boolean
+    Public MustOverride Function Apply(pressure As cPressure, bDirect As Boolean, Optional multiplier As Double = 1.0!) As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -91,12 +91,12 @@ Public MustInherit Class cDriver
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Data support identifier; override to state which <see cref="cPressure.eDataTypes">
-    ''' pressure data type</see> this driver can be connected to.
+    ''' Data support identifier; override to state which pressure type this 
+    ''' driver can be connected to.
     ''' </summary>
     ''' <returns>The pressure type.</returns>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Function DataType() As cPressure.eDataTypes
+    Public MustOverride Function PressureType() As Type
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -49,6 +49,9 @@ Namespace UI
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmGameDesigner))
             Me.m_tabConfig = New System.Windows.Forms.TabControl()
             Me.m_tpEwESettings = New System.Windows.Forms.TabPage()
+            Me.m_lblBycatchFee2 = New System.Windows.Forms.Label()
+            Me.m_lblBycatchFee1 = New System.Windows.Forms.Label()
+            Me.m_tbxBycatchFee = New System.Windows.Forms.TextBox()
             Me.m_btnSettingsUseCurrentScenario = New System.Windows.Forms.Button()
             Me.m_hdrValidation = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbGameCalcIndicators = New System.Windows.Forms.CheckBox()
@@ -73,10 +76,6 @@ Namespace UI
             Me.m_lblInfoContact = New System.Windows.Forms.Label()
             Me.m_lblInfoAuthor = New System.Windows.Forms.Label()
             Me.m_lblInfoVersion = New System.Windows.Forms.Label()
-            Me.m_tpFleets = New System.Windows.Forms.TabPage()
-            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-            Me.m_gridFleets = New EwEMSPPlugin.UI.gridFleets()
-            Me.m_gridFleetCatch = New EwEMSPPlugin.UI.gridFleetCatch()
             Me.m_tpPressures = New System.Windows.Forms.TabPage()
             Me.m_cmbPressureTypes = New System.Windows.Forms.ComboBox()
             Me.m_gridPressureMappings = New EwEMSPPlugin.UI.gridPressureDriverMappings()
@@ -140,11 +139,6 @@ Namespace UI
             Me.m_tabConfig.SuspendLayout()
             Me.m_tpEwESettings.SuspendLayout()
             Me.m_tpInformation.SuspendLayout()
-            Me.m_tpFleets.SuspendLayout()
-            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.SplitContainer1.Panel1.SuspendLayout()
-            Me.SplitContainer1.Panel2.SuspendLayout()
-            Me.SplitContainer1.SuspendLayout()
             Me.m_tpPressures.SuspendLayout()
             Me.m_tpOutcomes.SuspendLayout()
             CType(Me.m_scOutputs, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -168,7 +162,6 @@ Namespace UI
             resources.ApplyResources(Me.m_tabConfig, "m_tabConfig")
             Me.m_tabConfig.Controls.Add(Me.m_tpEwESettings)
             Me.m_tabConfig.Controls.Add(Me.m_tpInformation)
-            Me.m_tabConfig.Controls.Add(Me.m_tpFleets)
             Me.m_tabConfig.Controls.Add(Me.m_tpPressures)
             Me.m_tabConfig.Controls.Add(Me.m_tpOutcomes)
             Me.m_tabConfig.Controls.Add(Me.m_tpEmulator)
@@ -180,6 +173,9 @@ Namespace UI
             'm_tpEwESettings
             '
             Me.m_tpEwESettings.BackColor = System.Drawing.Color.White
+            Me.m_tpEwESettings.Controls.Add(Me.m_lblBycatchFee2)
+            Me.m_tpEwESettings.Controls.Add(Me.m_lblBycatchFee1)
+            Me.m_tpEwESettings.Controls.Add(Me.m_tbxBycatchFee)
             Me.m_tpEwESettings.Controls.Add(Me.m_btnSettingsUseCurrentScenario)
             Me.m_tpEwESettings.Controls.Add(Me.m_hdrValidation)
             Me.m_tpEwESettings.Controls.Add(Me.m_cbGameCalcIndicators)
@@ -197,6 +193,21 @@ Namespace UI
             Me.m_tpEwESettings.Controls.Add(Me.m_lblCheckSimTimeSeries)
             resources.ApplyResources(Me.m_tpEwESettings, "m_tpEwESettings")
             Me.m_tpEwESettings.Name = "m_tpEwESettings"
+            '
+            'm_lblBycatchFee2
+            '
+            resources.ApplyResources(Me.m_lblBycatchFee2, "m_lblBycatchFee2")
+            Me.m_lblBycatchFee2.Name = "m_lblBycatchFee2"
+            '
+            'm_lblBycatchFee1
+            '
+            resources.ApplyResources(Me.m_lblBycatchFee1, "m_lblBycatchFee1")
+            Me.m_lblBycatchFee1.Name = "m_lblBycatchFee1"
+            '
+            'm_tbxBycatchFee
+            '
+            resources.ApplyResources(Me.m_tbxBycatchFee, "m_tbxBycatchFee")
+            Me.m_tbxBycatchFee.Name = "m_tbxBycatchFee"
             '
             'm_btnSettingsUseCurrentScenario
             '
@@ -331,90 +342,6 @@ Namespace UI
             '
             resources.ApplyResources(Me.m_lblInfoVersion, "m_lblInfoVersion")
             Me.m_lblInfoVersion.Name = "m_lblInfoVersion"
-            '
-            'm_tpFleets
-            '
-            Me.m_tpFleets.Controls.Add(Me.SplitContainer1)
-            resources.ApplyResources(Me.m_tpFleets, "m_tpFleets")
-            Me.m_tpFleets.Name = "m_tpFleets"
-            Me.m_tpFleets.UseVisualStyleBackColor = True
-            '
-            'SplitContainer1
-            '
-            resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
-            Me.SplitContainer1.Name = "SplitContainer1"
-            '
-            'SplitContainer1.Panel1
-            '
-            Me.SplitContainer1.Panel1.Controls.Add(Me.m_gridFleets)
-            '
-            'SplitContainer1.Panel2
-            '
-            Me.SplitContainer1.Panel2.Controls.Add(Me.m_gridFleetCatch)
-            '
-            'm_gridFleets
-            '
-            Me.m_gridFleets.AllowBlockSelect = False
-            Me.m_gridFleets.AutoSizeMinHeight = 10
-            Me.m_gridFleets.AutoSizeMinWidth = 10
-            Me.m_gridFleets.AutoStretchColumnsToFitWidth = True
-            Me.m_gridFleets.AutoStretchRowsToFitHeight = False
-            Me.m_gridFleets.BackColor = System.Drawing.Color.White
-            Me.m_gridFleets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridFleets.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridFleets.CustomSort = False
-            Me.m_gridFleets.DataName = "grid content"
-            resources.ApplyResources(Me.m_gridFleets, "m_gridFleets")
-            Me.m_gridFleets.FixedColumnWidths = False
-            Me.m_gridFleets.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridFleets.Game = Nothing
-            Me.m_gridFleets.GridToolTipActive = True
-            Me.m_gridFleets.IsLayoutSuspended = False
-            Me.m_gridFleets.Name = "m_gridFleets"
-            Me.m_gridFleets.Shell = Nothing
-            Me.m_gridFleets.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridFleets.UIContext = Nothing
-            '
-            'm_gridFleetCatch
-            '
-            Me.m_gridFleetCatch.AllowBlockSelect = True
-            Me.m_gridFleetCatch.AutoSizeMinHeight = 10
-            Me.m_gridFleetCatch.AutoSizeMinWidth = 10
-            Me.m_gridFleetCatch.AutoStretchColumnsToFitWidth = False
-            Me.m_gridFleetCatch.AutoStretchRowsToFitHeight = False
-            Me.m_gridFleetCatch.BackColor = System.Drawing.Color.White
-            Me.m_gridFleetCatch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridFleetCatch.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridFleetCatch.CustomSort = False
-            Me.m_gridFleetCatch.DataName = "grid content"
-            resources.ApplyResources(Me.m_gridFleetCatch, "m_gridFleetCatch")
-            Me.m_gridFleetCatch.FixedColumnWidths = False
-            Me.m_gridFleetCatch.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridFleetCatch.GridToolTipActive = True
-            Me.m_gridFleetCatch.IsLayoutSuspended = False
-            Me.m_gridFleetCatch.Name = "m_gridFleetCatch"
-            Me.m_gridFleetCatch.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridFleetCatch.UIContext = Nothing
             '
             'm_tpPressures
             '
@@ -950,11 +877,6 @@ Namespace UI
             Me.m_tpEwESettings.PerformLayout()
             Me.m_tpInformation.ResumeLayout(False)
             Me.m_tpInformation.PerformLayout()
-            Me.m_tpFleets.ResumeLayout(False)
-            Me.SplitContainer1.Panel1.ResumeLayout(False)
-            Me.SplitContainer1.Panel2.ResumeLayout(False)
-            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.SplitContainer1.ResumeLayout(False)
             Me.m_tpPressures.ResumeLayout(False)
             Me.m_tpPressures.PerformLayout()
             Me.m_tpOutcomes.ResumeLayout(False)
@@ -1041,10 +963,8 @@ Namespace UI
         Private WithEvents m_btnGameAddFromJSON As Windows.Forms.Button
         Private WithEvents m_gridOutcome As gridOutcomes
         Private WithEvents m_lblMPACellClosure2 As Windows.Forms.Label
-        Private WithEvents m_lblMPACellClosure1 As Windows.Forms.Label
-        Private WithEvents m_tbxMPACellClosure As Windows.Forms.TextBox
         Private WithEvents m_btnTestsetApply As Windows.Forms.Button
-        Friend WithEvents m_tlpAbout As Windows.Forms.TableLayoutPanel
+        Private WithEvents m_tlpAbout As Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblAboutDescription As Windows.Forms.Label
         Private WithEvents m_btnEmulViewOutputFolder As Windows.Forms.Button
         Private WithEvents m_scOutputs As Windows.Forms.SplitContainer
@@ -1063,15 +983,16 @@ Namespace UI
         Private WithEvents m_lblAboutVersion As Windows.Forms.Label
         Private WithEvents m_tbxInfoDescription As Windows.Forms.TextBox
         Private WithEvents m_lblInfoDescription As Windows.Forms.Label
-        Friend WithEvents m_btnSettingsUseCurrentScenario As Windows.Forms.Button
+        Private WithEvents m_btnSettingsUseCurrentScenario As Windows.Forms.Button
         Private WithEvents m_hdrCredits As cEwEHeaderLabel
         Private WithEvents m_btnExport As Windows.Forms.Button
         Private WithEvents m_nudEmulOutcomeRange As Windows.Forms.NumericUpDown
         Private WithEvents m_pbEcoscope As Windows.Forms.PictureBox
-        Private WithEvents m_tpFleets As Windows.Forms.TabPage
-        Friend WithEvents SplitContainer1 As Windows.Forms.SplitContainer
-        Private WithEvents m_gridFleetCatch As gridFleetCatch
-        Private WithEvents m_gridFleets As gridFleets
+        Private WithEvents m_lblBycatchFee2 As Windows.Forms.Label
+        Private WithEvents m_lblBycatchFee1 As Windows.Forms.Label
+        Private WithEvents m_tbxBycatchFee As Windows.Forms.TextBox
+        Private WithEvents m_lblMPACellClosure1 As Windows.Forms.Label
+        Private WithEvents m_tbxMPACellClosure As Windows.Forms.TextBox
     End Class
 
 End Namespace

@@ -125,8 +125,8 @@ Namespace UI
                 Me(iRow, eColumnTypes.Mapping) = New SourceGrid2.Cells.Real.Cell(d, edt)
                 Me(iRow, eColumnTypes.Mapping).Behaviors.Add(Me.EwEEditHandler)
 
-                If (pressure.DataType = cPressure.eDataTypes.Scalar) Then
-                    Me(iRow, eColumnTypes.Mulitplier) = New cEwECell(Game.Multiplier(pressure.Name))
+                If (TypeOf (pressure) Is cFishingPressure) Then
+                    Me(iRow, eColumnTypes.Mulitplier) = New cEwECell(Game.EffortMultiplier(pressure.Name))
                     Me(iRow, eColumnTypes.Mulitplier).Behaviors.Add(Me.EwEEditHandler)
                 Else
                     Me(iRow, eColumnTypes.Mulitplier) = New cEwECell("", eStyleFlags.Null Or eStyleFlags.NotEditable)
@@ -177,7 +177,7 @@ Namespace UI
                     End Try
 
                 Case eColumnTypes.Mulitplier
-                    Me.Game.Multiplier(strDriver) = DirectCast(cell.GetValue(p), Double)
+                    Me.Game.EffortMultiplier(strDriver) = DirectCast(cell.GetValue(p), Double)
                     Me.Shell.OnChanged()
 
             End Select

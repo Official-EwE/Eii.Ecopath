@@ -81,16 +81,9 @@ Friend Class cDriverFactory
             Next
         End If
 
-        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_FISHING_INT) Then
+        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_FISHING) Then
             For i As Integer = 1 To core.nFleets
-                d = New cEffortMulitiplierDriver(core, game, core.EcopathFleetInputs(i))
-                l.Add(d)
-            Next
-        End If
-
-        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_FISHING_ECO) Then
-            For i As Integer = 1 To core.nFleets
-                d = New cEcologicalGearDriver(core, game, core.EcopathFleetInputs(i))
+                d = New cFleetDriver(core, game, core.EcopathFleetInputs(i))
                 l.Add(d)
             Next
         End If

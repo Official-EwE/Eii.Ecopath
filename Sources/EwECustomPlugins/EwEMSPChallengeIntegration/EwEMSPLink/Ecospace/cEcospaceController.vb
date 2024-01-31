@@ -131,7 +131,7 @@ Public Class cEcospaceController
         Me.m_outcomes = outcomes
 
         If (Me.m_pressures IsNot Nothing) Then
-            Me.m_game.ApplyPressures(Me.m_pressures.ToArray(), Me.m_spaceDS)
+            Me.m_game.ApplyPressures(Me.m_pressures.ToArray(), True)
         End If
 
         Try

@@ -123,17 +123,17 @@
     <Compile Include="Data\cJSONGameConfig.vb" />
     <Compile Include="Data\cGame.vb" />
     <Compile Include="Data\Drivers\cDriverFactory.vb" />
-    <Compile Include="Data\Drivers\Implemented\cEcologicalGearDriver.vb" />
     <Compile Include="Data\Elementals\cGrid.vb" />
-    <Compile Include="Data\Elementals\IMELItem.vb" />
     <Compile Include="Data\Elementals\cScalar.vb" />
-    <Compile Include="Data\Fleets\cFleet.vb" />
+    <Compile Include="Data\Elementals\IMELItem.vb" />
+    <Compile Include="Data\Pressures\cEnvironmentalPressure.vb" />
+    <Compile Include="Data\Pressures\cFishingPressure.vb" />
     <Compile Include="Data\Pressures\cPressure.vb" />
     <Compile Include="Data\Drivers\cDriver.vb" />
     <Compile Include="Data\Outcomes\cOutcome.vb" />
     <Compile Include="Data\Drivers\Implemented\cHabitatDriver.vb" />
     <Compile Include="Data\Drivers\Implemented\cEnvironmentalDriver.vb" />
-    <Compile Include="Data\Drivers\Implemented\cEffortMulitiplierDriver.vb" />
+    <Compile Include="Data\Drivers\Implemented\cFleetDriver.vb" />
     <Compile Include="Data\Drivers\Implemented\cMPADriver.vb" />
     <Compile Include="Ecospace\cEcospaceController.vb" />
     <Compile Include="Exceptions\cMELException.vb" />
@@ -198,6 +198,9 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\Fleets\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -60,30 +60,35 @@ Public Class cEnvironmentalDriver
     ''' layer map</see>.
     ''' </summary>
     ''' <param name="pressure">The MEL-derived protection map value to apply to the driver.</param>
-    ''' <param name="data">Optional Ecospace data structures to apply pressures to.</param>
+    ''' <param name="bDirect">Flag, indicating whether a value needs to be 
+    ''' injected directly into the EwE data structures (true) or into the EwE 
+    ''' input/output objects (false).</param>
     ''' <param name="multiplier">Ignored.</param>
     ''' <returns>True if applied correctly, False if an error occurred.</returns>
     ''' <exception cref="cMELException">A MEL exception will be thrown if something went wrong.</exception>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function Apply(pressure As cPressure, Optional data As cEcospaceDataStructures = Nothing, Optional multiplier As Double = 1.0!) As Boolean
+    Public Overrides Function Apply(pressure As cPressure, bDirect As Boolean, Optional multiplier As Double = 1.0!) As Boolean
+
+        If (TypeOf pressure IsNot cEnvironmentalPressure) Then Return False
+        Dim ep As cEnvironmentalPressure = DirectCast(pressure, cEnvironmentalPressure)
 
         Try
-            Dim nRows As Integer = pressure.Grid.Height
-            Dim nCols As Integer = pressure.Grid.Width
+            Dim nRows As Integer = ep.Grid.Height
+            Dim nCols As Integer = ep.Grid.Width
             Dim total As Double = 0
 
-            If (data IsNot Nothing) Then
-                Dim map As Single(,) = data.EnvironmentalLayerMap(Me.m_layer.Index)
+            If (bDirect) Then
+                Dim map As Single(,) = Me.m_core.EcospaceDataStructures.EnvironmentalLayerMap(Me.m_layer.Index)
                 For iRow As Integer = 0 To nRows - 1
                     For iCol As Integer = 0 To nCols - 1
-                        map(iRow + 1, iCol + 1) = pressure.Grid.Cell(iRow, iCol)
+                        map(iRow + 1, iCol + 1) = ep.Grid.Cell(iRow, iCol)
                     Next iCol
                 Next iRow
             Else
                 Dim layer As cEcospaceLayerDriver = Me.m_core.EcospaceBasemap.LayerDriver(Me.m_layer.Index)
                 For iRow As Integer = 0 To nRows - 1
                     For iCol As Integer = 0 To nCols - 1
-                        Dim val As Double = pressure.Grid.Cell(iCol, iRow)
+                        Dim val As Double = ep.Grid.Cell(iCol, iRow)
                         layer.Cell(iRow + 1, iCol + 1) = val
                         If (val > 0) Then
                             total += val
@@ -118,10 +123,10 @@ Public Class cEnvironmentalDriver
     ''' <summary>
     ''' Returns that this driver can only be driven by gridded map data.
     ''' </summary>
-    ''' <returns>The supported <see cref="cPressure.eDataTypes">pressure type</see>.</returns>
+    ''' <returns>The supported pressure type.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function DataType() As cPressure.eDataTypes
-        Return cPressure.eDataTypes.Grid
+    Public Overrides Function PressureType() As Type
+        Return GetType(cEnvironmentalPressure)
     End Function
 
 End Class

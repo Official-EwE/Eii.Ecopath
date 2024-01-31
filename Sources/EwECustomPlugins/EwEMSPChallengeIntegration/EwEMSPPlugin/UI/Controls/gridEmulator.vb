@@ -118,16 +118,15 @@ Namespace UI
                 Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i + 1))
                 Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(pressure.Name)
 
-                Select Case pressure.DataType
-                    Case cPressure.eDataTypes.Scalar
-                        cell = New cEwECell(cStringUtils.ConvertToSingle(Me.m_testset.Testdata(pressure)), style)
-                        cell.SuppressZero(cCore.NULL_VALUE) = True
-                    Case cPressure.eDataTypes.Grid
-                        cell = New cEwECell(Me.m_testset.Testdata(pressure), style)
-                    Case Else
-                        Debug.Assert(False)
-                        cell = New cEwECell("", eStyleFlags.NotEditable)
-                End Select
+                If (TypeOf pressure Is cFishingPressure) Then
+                    cell = New cEwECell(cStringUtils.ConvertToSingle(Me.m_testset.Testdata(pressure)), style)
+                    cell.SuppressZero(cCore.NULL_VALUE) = True
+                ElseIf (TypeOf pressure Is cEnvironmentalPressure) Then
+                    cell = New cEwECell(Me.m_testset.Testdata(pressure), style)
+                Else
+                    Debug.Assert(False)
+                    cell = New cEwECell("", eStyleFlags.NotEditable)
+                End If
 
                 Me(iRow, eColumnTypes.Testdata) = cell
                 Me(iRow, eColumnTypes.Testdata).Behaviors.Add(Me.EwEEditHandler)
@@ -160,21 +159,16 @@ Namespace UI
         Protected Overrides Sub OnCellClicked(p As Position, cell As ICellVirtual)
 
             Dim pressure As cPressure = Me.Pressure(p.Row)
-            Select Case pressure.DataType
-                Case cPressure.eDataTypes.Scalar
-                    ' NOP
-                Case cPressure.eDataTypes.Grid
-                    Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(cStringUtils.Localize(My.Resources.PROMPT_SELECT_MAP, pressure.Name), "", My.Resources.FILEFILTER_TESTSET_MAP)
-                    If (ofd.ShowDialog() = DialogResult.OK) Then
-                        Me.m_testset.Testdata(pressure) = ofd.FileName
-                        Me(p.Row, p.Column).SetValue(p, ofd.FileName)
-                    End If
-                    Return
-                Case Else
-                    ' NOP
-            End Select
-
+            If (TypeOf pressure Is cEnvironmentalPressure) Then
+                Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(cStringUtils.Localize(My.Resources.PROMPT_SELECT_MAP, pressure.Name), "", My.Resources.FILEFILTER_TESTSET_MAP)
+                If (ofd.ShowDialog() = DialogResult.OK) Then
+                    Me.m_testset.Testdata(pressure) = ofd.FileName
+                    Me(p.Row, p.Column).SetValue(p, ofd.FileName)
+                End If
+                Return
+            End If
             MyBase.OnCellClicked(p, cell)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -192,18 +186,15 @@ Namespace UI
 
             Dim pressure As cPressure = Me.Pressure(p.Row)
 
-            Select Case pressure.DataType
-                Case cPressure.eDataTypes.Scalar
-                    Dim val As Single = cCore.NULL_VALUE
-                    If (cell.GetValue(p) IsNot Nothing) Then val = CSng(cell.GetValue(p))
-                    Me.m_testset.Testdata(pressure) = cStringUtils.FormatSingle(val)
-                    Me.OnChanged()
-                Case cPressure.eDataTypes.Grid
-                    Me.m_testset.Testdata(pressure) = CStr(cell.GetValue(p))
-                    Me.OnChanged()
-                Case Else
-                    ' NOP
-            End Select
+            If (TypeOf pressure Is cFishingPressure) Then
+                Dim val As Single = cCore.NULL_VALUE
+                If (cell.GetValue(p) IsNot Nothing) Then val = CSng(cell.GetValue(p))
+                Me.m_testset.Testdata(pressure) = cStringUtils.FormatSingle(val)
+                Me.OnChanged()
+            ElseIf (TypeOf pressure Is cEnvironmentalPressure) Then
+                Me.m_testset.Testdata(pressure) = CStr(cell.GetValue(p))
+                Me.OnChanged()
+            End If
             Return MyBase.OnCellValueChanged(p, cell)
 
         End Function
