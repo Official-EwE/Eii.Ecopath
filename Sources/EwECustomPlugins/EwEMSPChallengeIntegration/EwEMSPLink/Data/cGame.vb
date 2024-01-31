@@ -134,10 +134,10 @@ Public Class cGame
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the list of output configurations defined in the game.
+    ''' Returns the list of outcome configurations defined in the game.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Outputs As ICollection(Of cOutcome)
+    Public ReadOnly Property Outcomes As ICollection(Of cOutcome)
         Get
             Return Me.m_outcomes
         End Get
@@ -147,25 +147,25 @@ Public Class cGame
     ''' <summary>
     ''' Add a <see cref="cOutcome"/> to the game.
     ''' </summary>
-    ''' <param name="output">The <see cref="cOutcome"/> to add.</param>
+    ''' <param name="outcome">The <see cref="cOutcome"/> to add.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Add(output As cOutcome)
-        For Each t As cOutcome In Me.Outputs
-            If (String.Compare(t.Name, output.Name, True) = 0) Then
+    Public Sub Add(outcome As cOutcome)
+        For Each t As cOutcome In Me.Outcomes
+            If (String.Compare(t.Name, outcome.Name, True) = 0) Then
                 Return
             End If
         Next
-        Me.m_outcomes.Add(output)
+        Me.m_outcomes.Add(outcome)
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Remove a <see cref="cOutcome"/> from the game.
     ''' </summary>
-    ''' <param name="output">The <see cref="cOutcome"/> to remove.</param>
+    ''' <param name="outcome">The <see cref="cOutcome"/> to remove.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Remove(output As cOutcome)
-        Me.m_outcomes.Remove(output)
+    Public Sub Remove(outcome As cOutcome)
+        Me.m_outcomes.Remove(outcome)
     End Sub
 
 #End Region ' Outcomes
@@ -353,7 +353,7 @@ Public Class cGame
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Output(grid As cGrid) As cOutcome
         Get
-            For Each out As cOutcome In Me.Outputs
+            For Each out As cOutcome In Me.Outcomes
                 If (String.Compare(out.Name, grid.Name, True) = 0) Then Return out
             Next
             Return Nothing
@@ -581,10 +581,10 @@ Public Class cGame
 
         Dim bOK As Boolean = True
         For Each grid As cGrid In outcomelayers
-            Dim output As cOutcome = Me.Output(grid)
-            If (output IsNot Nothing) Then
-                Debug.WriteLine("@@ " & results.TimeStepinYears & ": loading output " & output.Name & " into outcome " & grid.Name)
-                bOK = bOK And output.Populate(grid, results, Me.OutcomeRange)
+            Dim outcome As cOutcome = Me.Output(grid)
+            If (outcome IsNot Nothing) Then
+                Debug.WriteLine("@@ " & results.TimeStepinYears & ": loading output " & outcome.Name & " into outcome " & grid.Name)
+                bOK = bOK And outcome.Populate(grid, results, Me.OutcomeRange)
             Else
                 cEwEMSPLink.RaiseException("Outcome mismatch; grid '" & grid.Name & "' is not configured to receive EwE outputs.", False)
                 bOK = False
@@ -774,7 +774,7 @@ Public Class cGame
 
         ' Add outputs
         Dim xnOutputs As XmlNode = doc.CreateElement("outputs")
-        For Each output As cOutcome In Outputs
+        For Each output As cOutcome In Outcomes
 
             Dim xnOutput As XmlNode = doc.CreateElement("output")
 
@@ -909,17 +909,19 @@ Public Class cGame
 
                 Case "outputs"
                     Try
-                        For Each xnOutput As XmlNode In xn.ChildNodes
+                        For Each xnOutcome As XmlNode In xn.ChildNodes
                             Dim strName As String = ""
                             Dim type As cOutcome.eLayerType
                             Dim strNumerators As String = ""
                             Dim strDenominators As String = ""
-                            For Each xa As XmlAttribute In xnOutput.Attributes
+                            Dim bRaw As Boolean = False
+                            For Each xa As XmlAttribute In xnOutcome.Attributes
                                 Select Case xa.Name
                                     Case "name" : strName = HttpUtility.UrlDecode(xa.InnerText)
                                     Case "type" : [Enum].TryParse(xa.InnerText, type)
                                     Case "items", "numerators" : strNumerators = xa.InnerText
                                     Case "denominators" : strDenominators = xa.InnerText
+                                    Case "raw" : Boolean.TryParse(xa.InnerText, bRaw)
                                 End Select
                             Next
 

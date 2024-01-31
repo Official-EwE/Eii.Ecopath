@@ -94,6 +94,12 @@ Public Class cOutcome
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set whether this 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property IsRawData As Boolean = False
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Outcome layers categories.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -302,10 +308,10 @@ Public Class cOutcome
                 For iCol As Integer = 1 To nCols
                     Dim dCell As Double = 0D
                     If (bm.IsModelledCell(iRow, iCol)) Then
+                        Dim dVal As Double = 0
                         Dim a As Double = 0
                         Dim b As Double = 0
                         For iItem As Integer = 1 To Me.NumItems
-                            Dim dVal As Double = 0
                             Select Case Me.m_layertype
                                 Case eLayerType.Biomass
                                     dVal = timestepdata.BiomassMap(iRow, iCol, iItem)
@@ -333,11 +339,7 @@ Public Class cOutcome
                             End If
                         Next iItem
 
-                        ' MEL expects output layers with values between [0, 1]
-                        ' We reused the Ecospace map colour binning logic to do this, using relative map values in the range of [0.1, 10], 
-                        ' binned to a colour bin where value 0.5 = baseline value, yielding values of <0, 1]
-                        ' - Upshot: MEL can render these data fast and on a predictable colour range
-                        ' - Downside: MEL has no way of knowing the actual model outcome values, which is not handy if these values were needed
+
 
                         If (a > 0) Then
 
@@ -351,21 +353,31 @@ Public Class cOutcome
                             grid.Max = Math.Max(grid.Max, dCell)
                             dTotal += dCell
 
-                            ' -- Now let's mutilate the cell value --
+                            ' Needs binning?
+                            If Not Me.IsRawData Then
 
-                            ' Scale cell value to map average.
-                            dCell = dCell / Me.m_scalar
+                                ' MEL expects output layers with values between [0, 1]
+                                ' We reused the Ecospace map colour binning logic to do this, using relative map values in the range of [0.1, 10], 
+                                ' binned to a colour bin where value 0.5 = baseline value, yielding values of <0, 1]
+                                ' - Upshot: MEL can render these data fast and on a predictable colour range
+                                ' - Downside: MEL has no way of knowing the actual model outcome values, which is not handy if these values were needed
 
-                            ' Truncate value range to [1, nBins]
-                            If (dCell < 1 / outcomerange Or Double.IsNegativeInfinity(dCell)) Then
-                                dCell = 1 ' nBins
-                            ElseIf (dCell > outcomeRange Or Double.IsPositiveInfinity(dCell)) Then
-                                dCell = nBins
-                            Else
-                                dCell = Math.Round(nBins * dCell / (dCell + 1))
+                                ' -- Now let's mutilate the cell value --
+
+                                ' Scale cell value to map average.
+                                dCell = dCell / Me.m_scalar
+
+                                ' Truncate value range to [1, nBins]
+                                If (dCell < 1 / outcomerange Or Double.IsNegativeInfinity(dCell)) Then
+                                    dCell = 1 ' nBins
+                                ElseIf (dCell > outcomerange Or Double.IsPositiveInfinity(dCell)) Then
+                                    dCell = nBins
+                                Else
+                                    dCell = Math.Round(nBins * dCell / (dCell + 1))
+                                End If
+                                ' Convert to <0, 1]
+                                dCell = dCell / nBins
                             End If
-                            ' Convert to <0, 1]
-                            dCell = dCell / nBins
                         End If
                     Else
                         ' MEL land cells are 0

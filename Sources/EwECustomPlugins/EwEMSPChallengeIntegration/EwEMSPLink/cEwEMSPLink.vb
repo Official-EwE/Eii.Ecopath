@@ -143,7 +143,8 @@ Public Class cEwEMSPLink
     ''' <param name="nrows">Check: the number of rows in the model.</param>
     ''' <param name="pressures">Check: the pressures that the model should support.</param>
     ''' <param name="outcomelayers">Check: the outcomes that the model should support.</param>
-    ''' <param name="outcomerange">Biomass / catch fluctuations for outcomes to display</param>
+    ''' <param name="outcomerange">Grid data range to bin results to. By default, gridded outcomes 
+    ''' reflect a 10-fold increase or decrease in values.</param>
     ''' <param name="effortstartvalues"><see cref="cScalar"/> values with effort intensity start values in EwE</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
@@ -357,6 +358,17 @@ Public Class cEwEMSPLink
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Data() As cEwEMSPLinkData = Nothing
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the currently loaded <see cref="cGame">game</see>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Game As cGame
+        Get
+            Return Me.m_game
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
