@@ -356,7 +356,7 @@ Public Class cOutcome
                             ' Needs binning?
                             If Not Me.IsRawData Then
 
-                                ' MEL expects output layers with values between [0, 1]
+                                ' When binned, MEL expects output layers with values between [0, 1]
                                 ' We reused the Ecospace map colour binning logic to do this, using relative map values in the range of [0.1, 10], 
                                 ' binned to a colour bin where value 0.5 = baseline value, yielding values of <0, 1]
                                 ' - Upshot: MEL can render these data fast and on a predictable colour range
