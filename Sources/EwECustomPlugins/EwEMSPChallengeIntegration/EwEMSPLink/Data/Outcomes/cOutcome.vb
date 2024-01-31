@@ -114,8 +114,6 @@ Public Class cOutcome
         Indicator
         ''' <summary>Outcome contains an Ecospace discards distribution summary.</summary>
         Discards
-        ''' <summary>Outcome contains an Ecospace bycatch distribution summary.</summary>
-        Bycatch
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -190,15 +188,12 @@ Public Class cOutcome
     ''' -----------------------------------------------------------------------
     Public Function IsConfigured() As Boolean
         Select Case Me.LayerType
-            Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Effort
+            Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Effort, eLayerType.Discards
                 ' Needs to have data when defined
                 Return Me.NumItems > 0
             Case eLayerType.Indicator
                 ' Automatically populated
                 Return True
-            Case eLayerType.Bycatch, eLayerType.Discards
-                ' Needs to have data when defined
-                Return Me.NumItems > 0
             Case Else
                 Debug.Assert(False, "Layer type not supported")
         End Select
@@ -213,12 +208,10 @@ Public Class cOutcome
     ''' -----------------------------------------------------------------------
     Public Function NumItems() As Integer
         Select Case Me.LayerType
-            Case eLayerType.Biomass
+            Case eLayerType.Biomass, eLayerType.Discards
                 Return Me.m_core.nGroups
             Case eLayerType.Effort, eLayerType.Catch
                 Return Me.m_core.nFleets
-            Case eLayerType.Bycatch, eLayerType.Discards
-                Return Me.m_core.nGroups
             Case eLayerType.Indicator
                 Return [Enum].GetValues(GetType(eMSPDIversityIndex)).Length
             Case Else
@@ -250,7 +243,8 @@ Public Class cOutcome
     ''' <returns>Oooooh!</returns>
     ''' -----------------------------------------------------------------------
     Public Overrides Function ToString() As String
-        Return String.Format("{1}: {0}, {2}/{3}", Me.Name, Me.LayerType, Me.NumUsed, Me.NumItems)
+        ' ToDo: globalize this
+        Return String.Format("{1}: {0}, {2}/{3} ({4})", Me.Name, Me.LayerType, Me.NumUsed, Me.NumItems, If(Me.IsRawData, "Raw", "Binned"))
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -292,7 +286,7 @@ Public Class cOutcome
         outcomerange = Math.Max(2, outcomerange)
 
         Select Case Me.m_layertype
-            Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Bycatch, eLayerType.Discards
+            Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Discards
                 grid.Units = Me.m_units.ToString(cUnits.Currency) ' "t/km²"
             Case eLayerType.Effort
                 ' ToDo: obtain from metadata once it's there
@@ -321,8 +315,6 @@ Public Class cOutcome
                                     dVal = timestepdata.FishingEffortMap(iItem, iRow, iCol)
                                 Case eLayerType.Discards
                                     dVal = timestepdata.DiscardMortalityMap(iRow, iCol, iItem)
-                                Case eLayerType.Bycatch
-                                    dVal = timestepdata.CatchFleetMap(iRow, iCol, iItem)
                                 Case eLayerType.Indicator
                                     Select Case DirectCast(iItem - 1, eMSPDIversityIndex)
                                         Case eMSPDIversityIndex.Shannon

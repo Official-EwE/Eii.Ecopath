@@ -241,15 +241,17 @@ Namespace UI
             Dim space As cEcospaceScenario = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex)
 
             Dim game As cGame = Me.SelectedGame()
+            Dim outcome As cOutcome = Nothing
+
             Dim bHasGame As Boolean = (game IsNot Nothing)
             Dim bHasGameName As Boolean = (Me.m_tbxGameName.Text.Trim.Length > 3)
             Dim bHasDuplicateGameNames As Boolean = False
             Dim bHasGameVersion As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxInfoVersion.Text)
             Dim bHasPressureName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxPressureName.Text)
             Dim bHasPressureSelected As Boolean = (Me.m_gridPressureMappings.SelectedPressure IsNot Nothing)
-            Dim bHasOutputName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxOutcomeName.Text)
-            Dim bHasOutputSelected As Boolean = (Me.m_lbOutputs.SelectedIndices.Count = 1)
-            Dim bHasOutputSselected As Boolean = (Me.m_lbOutputs.SelectedIndices.Count > 0)
+            Dim bHasOutcomeName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxOutcomeName.Text)
+            Dim bHasOutcomeSelected As Boolean = (Me.m_lbOutputs.SelectedIndices.Count = 1)
+            Dim bHasOutcomesSelected As Boolean = (Me.m_lbOutputs.SelectedIndices.Count > 1)
             Dim bHasTestsetSelected As Boolean = (Me.m_cmbEmulTestsets.SelectedIndex > -1)
             Dim bHasTestsetName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxTestsetName.Text)
             Dim bHasCurrent As Boolean = False
@@ -257,6 +259,10 @@ Namespace UI
 
             If (game IsNot Nothing) Then
                 bHasCurrent = (space.DBID = game.EcospaceID)
+            End If
+
+            If bHasOutcomeSelected And Not bHasOutcomesSelected Then
+                outcome = CType(Me.m_lbOutputs.SelectedItem, cOutcome)
             End If
 
             Dim iImg As Integer = 0
@@ -291,9 +297,15 @@ Namespace UI
 
             ' -- Outputs --
             Me.m_tpOutcomes.Enabled = bHasGame And Not bIsEcospaceRunning
-            Me.m_btnOutcomeAdd.Enabled = bHasOutputName
-            Me.m_btnOutcomeRename.Enabled = bHasOutputName And bHasOutputSelected
-            Me.m_btnOutcomeDelete.Enabled = bHasOutputSselected
+            Me.m_btnOutcomeAdd.Enabled = bHasOutcomeName
+            Me.m_btnOutcomeRename.Enabled = bHasOutcomeName And bHasOutcomeSelected
+            Me.m_btnOutcomeDelete.Enabled = bHasOutcomesSelected Or bHasOutcomesSelected
+            Me.m_tsbnOuputRaw.Enabled = bHasOutcomeSelected
+            Me.m_tsbnOuputBinned.Enabled = bHasOutcomeSelected
+            If (outcome IsNot Nothing) Then
+                Me.m_tsbnOuputRaw.Checked = outcome.IsRawData
+                Me.m_tsbnOuputBinned.Checked = Not outcome.IsRawData
+            End If
 
             ' -- Emulator --
             Me.m_tpEmulator.Enabled = bHasGame
@@ -497,7 +509,7 @@ Namespace UI
 
                 Me.m_gridPressureMappings.Game = game
                 Me.m_gridEmulTestset.Game = game
-                Me.FillOutputListbox()
+                Me.FillOutcomeListbox()
 
                 Dim model As cEwEModel = Me.Core.EwEModel
                 Dim space As cEcospaceScenario = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex)
@@ -711,10 +723,6 @@ Namespace UI
 
 #End Region ' Game info and game settings "
 
-#Region " Fleets "
-
-#End Region ' Fleets
-
 #Region " Pressures "
 
         ''' -----------------------------------------------------------------------
@@ -870,7 +878,7 @@ Namespace UI
 
 #End Region ' Pressures
 
-#Region " Outputs "
+#Region " Outcomes "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -888,7 +896,7 @@ Namespace UI
 
                 game.Add(output)
 
-                Me.FillOutputListbox()
+                Me.FillOutcomeListbox()
                 Me.MSPLink.OnChanged()
                 Me.m_lbOutputs.SelectedItem = output
             Catch ex As Exception
@@ -914,7 +922,7 @@ Namespace UI
                 output.Name = Me.m_tbxOutcomeName.Text
                 output.LayerType = type
 
-                Me.FillOutputListbox()
+                Me.FillOutcomeListbox()
                 Me.MSPLink.OnChanged()
                 Me.m_lbOutputs.SelectedItem = output
             Catch ex As Exception
@@ -938,7 +946,7 @@ Namespace UI
                     g.Remove(DirectCast(item, cOutcome))
                 Next
 
-                Me.FillOutputListbox()
+                Me.FillOutcomeListbox()
                 Me.OnOutputSelected(Nothing, Nothing)
                 Me.MSPLink.OnChanged()
 
@@ -946,7 +954,6 @@ Namespace UI
 
             End Try
         End Sub
-
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -976,6 +983,32 @@ Namespace UI
 
         End Sub
 
+        Private Sub OnOutcomeRawSelected(sender As Object, e As EventArgs) _
+            Handles m_tsbnOuputRaw.Click
+
+            If Me.m_bInupdate Then Return
+
+            If (Me.m_lbOutputs.SelectedItems.Count = 1) Then
+                Dim out As cOutcome = CType(Me.m_lbOutputs.SelectedItem, cOutcome)
+                out.IsRawData = True
+                Me.OnOutputChanged(Nothing)
+            End If
+
+        End Sub
+
+        Private Sub OnOutcomeBinnedSelected(sender As Object, e As EventArgs) _
+            Handles m_tsbnOuputBinned.Click
+
+            If Me.m_bInupdate Then Return
+
+            If (Me.m_lbOutputs.SelectedItems.Count = 1) Then
+                Dim out As cOutcome = CType(Me.m_lbOutputs.SelectedItem, cOutcome)
+                out.IsRawData = False
+                Me.OnOutputChanged(Nothing)
+            End If
+
+        End Sub
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Event handler, called when the user has changed the configuration of an
@@ -983,7 +1016,8 @@ Namespace UI
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnOutputChanged(sender As gridOutcomes) Handles m_gridOutcome.OnMappingsChanged
+        Private Sub OnOutputChanged(sender As gridOutcomes) _
+            Handles m_gridOutcome.OnMappingsChanged
 
             Dim out As cOutcome = CType(Me.m_lbOutputs.SelectedItem, cOutcome)
             Me.m_bInupdate = True
@@ -994,7 +1028,7 @@ Namespace UI
 
         End Sub
 
-#End Region ' Outputs
+#End Region ' Outcomes
 
 #Region " Emulator "
 
@@ -1206,8 +1240,6 @@ Namespace UI
 
         End Sub
 
-
-
 #End Region ' Emulator
 
 #Region " Credits "
@@ -1315,7 +1347,7 @@ Namespace UI
 
         End Sub
 
-        Private Sub FillOutputListbox()
+        Private Sub FillOutcomeListbox()
 
             If (Me.m_bInupdate) Then Return
 

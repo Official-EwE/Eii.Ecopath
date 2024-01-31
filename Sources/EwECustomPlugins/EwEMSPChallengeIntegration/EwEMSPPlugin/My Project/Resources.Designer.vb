@@ -294,6 +294,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Raw data.
+        '''</summary>
+        Friend ReadOnly Property HEADER_RAW() As String
+            Get
+                Return ResourceManager.GetString("HEADER_RAW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Test data.
         '''</summary>
         Friend ReadOnly Property HEADER_TESTDATA() As String
