@@ -1024,7 +1024,6 @@ Public Class cTimeSeriesDataStructures
             End If
 
             If Me.Iobs = 0 Then Me.Iobs = HoldIobs
-            ReDim Me.Wt(Me.Iobs)
 
             If bDisFailedValidation Then
                 cLog.Write("Time series Discard Mortality Rate or Discard Proportion contained values > 1.0. These values cap a 1.0")

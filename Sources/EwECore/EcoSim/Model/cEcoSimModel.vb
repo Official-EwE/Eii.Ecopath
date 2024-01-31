@@ -879,7 +879,7 @@ Namespace Ecosim
             ' START OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For iyr = 1 To NumberOfYears + ExtraTime
-                'Constrain the Ecosim year index to the run length passed in as the arguement NumberOfYears
+                'Constrain the Ecosim year index to the run length passed in as the argument NumberOfYears
                 iyf = Math.Min(iyr, NumberOfYears)
 
                 'set Fgear() fishing effort at timestep that can be modified by a search routine
@@ -932,7 +932,7 @@ Namespace Ecosim
 
                     If (Me.m_pluginManager IsNot Nothing) Then Me.m_pluginManager.EcosimBeginTimeStep(Me.BB, Me.m_Data, itime)
 
-                    Me.AccumulateDataInfo(ipct, itime, iyf, Me.BB, Me.m_Data.loss)
+                    Me.AccumulateDataInfo(ipct, itime, iyr, Me.BB, Me.m_Data.loss)
                     'If ipct = 6 Then AccumulateDataInfo(CInt(Math.Truncate(itime / 12)), BB, m_Data.loss)
 
                     Me.setEffortFromPlugin(QYear, itime, iyr)
@@ -2344,7 +2344,7 @@ Namespace Ecosim
                                 CatchMort = Me.BB(igrp) * Me.m_Data.FishTime(igrp) * PropFleet
 
                                 'Debug warning if fishing mort calcualtion have gotten out of sync
-                                Debug.Assert(Math.Abs(Me.m_Data.FishRateGear(iflt, iTime) * Me.m_Data.FishMGear(iflt, igrp) - Me.m_Data.FishTime(igrp) * PropFleet) < 0.0001, "Ecosim Fishing Mortality is out of sync. Check FishTime() and FishMGear()")
+                                'Debug.Assert(Math.Abs(Me.m_Data.FishRateGear(iflt, iTime) * Me.m_Data.FishMGear(iflt, igrp) - Me.m_Data.FishTime(igrp) * PropFleet) < 0.0001, "Ecosim Fishing Mortality is out of sync. Check FishTime() and FishMGear()")
 
                                 'total catch including discard that survived
                                 TotCatch = CatchMort * TotCatchScalar
@@ -2608,7 +2608,6 @@ Namespace Ecosim
             SDtest = 0.05
 
             Try
-
                 If Not Me.m_RefData.HasData(iTimeStep, iMonth, iYear) Then
                     'Nope no reference data
                     Return
@@ -2634,7 +2633,6 @@ Namespace Ecosim
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings Or
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef) Then
-
 
                             Zstat = 0
                             Me.m_RefData.Iobs += 1
@@ -2683,7 +2681,7 @@ Namespace Ecosim
                                     End If
 
                                 Case eTimeSeriesType.FishingMortalityRef
-JS:                                 'Joe, this look about right?
+
                                     If Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType)) > 0 Then
                                         Zstat = CSng(Math.Log(Me.m_RefData.AppliedDatVal(iDYear, iDType) / Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType))))
                                         Me.m_RefData.Yhat(Me.m_RefData.Iobs) = CSng(Math.Log(Me.m_Data.FishTime(Me.m_RefData.AppliedDatPool(iDType))))
@@ -3816,9 +3814,15 @@ JS:                                 'Joe, this look about right?
             ReDim Me.DatSumZ2(Me.m_RefData.AppliedNdatType)
             ReDim Me.DatNobs(Me.m_RefData.AppliedNdatType)
             ReDim Me.NobsTime(Me.m_RefData.AppliedDatPoints)
+            ReDim Me.DatDev(Me.m_RefData.AppliedNdatType, Me.m_RefData.AppliedDatPoints)
+
+            'data managed by cTimeSeriesDataStructures
+            'Dimensioned across all the data even if these data are forcing and not used for stats in AccumulateDataInfo()
+            'This is because AppliedDatVal(,) contains data this is both forcing and reference
+            'and it easier to loop over all the data rather then keeping at seperate dimensions
             ReDim Me.m_RefData.Erpred(Me.m_RefData.AppliedNdatType * Me.m_RefData.AppliedDatPoints)
             ReDim Me.m_RefData.Yhat(Me.m_RefData.AppliedNdatType * Me.m_RefData.AppliedDatPoints)
-            ReDim Me.DatDev(Me.m_RefData.AppliedNdatType, Me.m_RefData.AppliedDatPoints)
+            ReDim Me.m_RefData.Wt(Me.m_RefData.AppliedNdatType * Me.m_RefData.AppliedDatPoints)
             Me.m_RefData.Iobs = 0
 
         End Sub
