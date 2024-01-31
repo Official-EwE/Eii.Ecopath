@@ -44,7 +44,6 @@ Public Class cGame
     Private m_pressuredrivers As New Dictionary(Of String, String)
     Private m_pressuremultipliers As New Dictionary(Of String, Double)
     Private m_outcomes As New List(Of cOutcome)
-    Private m_fleets As New List(Of cFleet)
 
 #End Region ' Private variables
 
@@ -187,16 +186,6 @@ Public Class cGame
 
 #End Region ' Drivers
 
-#Region " Fleets "
-
-    Public ReadOnly Property Fleets() As ICollection(Of cFleet)
-        Get
-            Return Me.m_fleets
-        End Get
-    End Property
-
-#End Region ' Fleets
-
 #Region " Metadata "
 
     ''' -----------------------------------------------------------------------
@@ -283,6 +272,25 @@ Public Class cGame
     ''' -----------------------------------------------------------------------
     Public Property MPACellClosureRatio As Single = 0.25
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the multiplier that determines how much bycatch is penalized in
+    ''' comparison to the total prices of targeted species, per fleet.
+    ''' </summary>
+    ''' <remarks>
+    ''' <para>This experimental multiplier is used to calculate the negative value 
+    ''' for bycatch species, in order to coax fleets in trying to avoid bycatch.</para> 
+    ''' <para>Whereas in EwE these species have no value,
+    ''' the MSP challenge actively penalizes bycatches by giving them a negative 
+    ''' value equal to the total of targeted species multiplied by this weight
+    ''' factor.</para>
+    ''' <para>For example, if a fleet catches two commercial species with values of
+    ''' 4 and 2 EUR per biomass unit, the <see cref="cEcopathFleetInput.OffVesselValue">
+    ''' off-vessel value</see> will be set to <code>-1 * <see cref="BycatchWeightMultiplier"/> * (4 + 2)</code></para>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Property BycatchWeightMultiplier As Single = 10.0
+
 #End Region ' Metadata
 
 #Region " Pressure / Driver mapping "
@@ -322,7 +330,7 @@ Public Class cGame
     ''' <param name="pressure">The name of the pressure to find the multiplier for.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Property Multiplier(pressure As String) As Double
+    Public Property EffortMultiplier(pressure As String) As Double
         Get
             If String.IsNullOrWhiteSpace(pressure) Then Return 1.0!
             If (Not Me.m_pressuremultipliers.ContainsKey(pressure)) Then Return 1.0!
@@ -496,9 +504,9 @@ Public Class cGame
     Public Function EffortStartValues() As ICollection(Of cScalar)
         Dim items As New List(Of cScalar)
         For Each p As cPressure In Me.Pressures
-            If p.IsScalar Then
-                Dim d As cEffortMulitiplierDriver = DirectCast(Me.Driver(p.Name), cEffortMulitiplierDriver)
-                Dim s As New cScalar(p.Name, d.StartValue / Me.Multiplier(p.Name))
+            If (TypeOf (p) Is cFishingPressure) Then
+                Dim d As cFleetDriver = DirectCast(Me.Driver(p.Name), cFleetDriver)
+                Dim s As New cScalar(p.Name, d.StartValue / Me.EffortMultiplier(p.Name))
                 items.Add(s)
             End If
         Next
@@ -510,11 +518,13 @@ Public Class cGame
     ''' Apply pressure layers to the running Ecospace scenario.
     ''' </summary>
     ''' <param name="pressurelayers">The pressures to apply.</param>
-    ''' <param name="spaceDS">Optional Ecospace datastructures to directly apply pressurs to.</param>
+    ''' <param name="bDirect">Flag, indicating whether a value needs to be 
+    ''' injected directly into the EwE data structures (true) or into the EwE 
+    ''' input/output objects (false).</param>
     ''' <returns>True if successful.</returns>
     ''' <exception cref="cMELException">A MEL exception will be thrown if something went wrong.</exception>
     ''' -----------------------------------------------------------------------
-    Public Function ApplyPressures(pressurelayers As cPressure(), Optional spaceDS As cEcospaceDataStructures = Nothing) As Boolean
+    Public Function ApplyPressures(pressurelayers As cPressure(), Optional bDirect As Boolean = False) As Boolean
 
         Dim bOK As Boolean = True
 
@@ -537,20 +547,16 @@ Public Class cGame
 
             If (pressureConfig IsNot Nothing And driver IsNot Nothing) Then
                 'Debug.WriteLine("@@ Applying pressure " & pressure.Name & " to driver " & driver.Name)
-                If (driver.DataType = pressure.DataType) Then
-                    If Not driver.Apply(pressure, spaceDS, Me.Multiplier(pressure.Name)) Then
-                        cEwEMSPLink.RaiseException("Pressure mismatch; '" & pressure.Name & "' failed to apply to EwE driver " & driver.Name & ".", True)
-                        bOK = False
-                    End If
-                Else
-                    cEwEMSPLink.RaiseException("Pressure mismatch; '" & pressure.Name & "' incompatible with EwE driver " & driver.Name & ".", True)
+                If Not driver.Apply(pressure, bDirect, Me.EffortMultiplier(pressure.Name)) Then
+                    cEwEMSPLink.RaiseException("Pressure mismatch; '" & pressure.Name & "' failed to apply to EwE driver " & driver.Name & ".", True)
+                    bOK = False
                 End If
             End If
-
         Next
 
         ' Invalidate capacity if directly using Ecospace data structures
-        If (spaceDS IsNot Nothing) Then
+        If (bDirect) Then
+            Dim spaceDS As cEcospaceDataStructures = Me.m_core.EcospaceDataStructures
             spaceDS.isCapacityChanged = True
             For i As Integer = 1 To Me.m_core.nGroups
                 spaceDS.isGroupHabCapChanged(i) = True
@@ -617,8 +623,8 @@ Public Class cGame
     Public Const NAME_SURFACE_DIST As String = "Surface disturbance"
     Public Const NAME_ARTIFICIAL_HAB As String = "Artificial habitat"
     Public Const NAME_PROTECTION As String = "Protection"
-    Public Const NAME_FISHING_INT As String = "Fishing intensity"
-    Public Const NAME_FISHING_ECO As String = "Ecological fishing"
+    Public Const NAME_FISHING As String = "Fishing"
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Create default pressures and outputs.
@@ -628,14 +634,13 @@ Public Class cGame
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
 
-        Me.Add(New cPressure(NAME_NOISE, bm.InCol, bm.InRow))
-        Me.Add(New cPressure(NAME_BOTTOM_DIST, bm.InCol, bm.InRow))
-        Me.Add(New cPressure(NAME_SURFACE_DIST, bm.InCol, bm.InRow))
-        Me.Add(New cPressure(NAME_ARTIFICIAL_HAB, bm.InCol, bm.InRow))
+        Me.Add(New cEnvironmentalPressure(NAME_NOISE, bm.InCol, bm.InRow))
+        Me.Add(New cEnvironmentalPressure(NAME_BOTTOM_DIST, bm.InCol, bm.InRow))
+        Me.Add(New cEnvironmentalPressure(NAME_SURFACE_DIST, bm.InCol, bm.InRow))
+        Me.Add(New cEnvironmentalPressure(NAME_ARTIFICIAL_HAB, bm.InCol, bm.InRow))
         For i As Integer = 1 To Me.m_core.nFleets
-            Me.Add(New cPressure(NAME_PROTECTION & " " & Me.m_core.EcopathFleetInputs(i).Name, bm.InCol, bm.InRow))
-            Me.Add(New cPressure(NAME_FISHING_INT & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0))
-            Me.Add(New cPressure(NAME_FISHING_ECO & " " & Me.m_core.EcopathFleetInputs(i).Name, False))
+            Me.Add(New cEnvironmentalPressure(NAME_PROTECTION & " " & Me.m_core.EcopathFleetInputs(i).Name, bm.InCol, bm.InRow))
+            Me.Add(New cFishingPressure(NAME_FISHING & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0, False))
         Next
 
     End Sub
@@ -710,6 +715,10 @@ Public Class cGame
         xa.InnerText = cStringUtils.FormatNumber(Me.MPACellClosureRatio)
         xnGame.Attributes.Append(xa)
 
+        xa = doc.CreateAttribute("bycatch_weight")
+        xa.InnerText = cStringUtils.FormatNumber(Me.BycatchWeightMultiplier)
+        xnGame.Attributes.Append(xa)
+
         Dim xnDescr As XmlNode = doc.CreateElement("description")
         xnDescr.InnerText = HttpUtility.UrlEncode(Me.Description)
         xnGame.AppendChild(xnDescr)
@@ -718,18 +727,24 @@ Public Class cGame
         Dim xnPressures As XmlNode = doc.CreateElement("pressures")
         For Each p As cPressure In Me.Pressures
 
-            Dim xnPressure As XmlNode = doc.CreateElement("pressure")
+            Dim xnPressure As XmlNode = Nothing
 
-            xa = doc.CreateAttribute("name")
-            xa.InnerText = HttpUtility.UrlEncode(p.Name)
-            xnPressure.Attributes.Append(xa)
+            If TypeOf p Is cEnvironmentalPressure Then
+                doc.CreateElement("environmental_pressure")
+            ElseIf TypeOf p Is cFishingPressure Then
+                doc.CreateElement("fishing_pressure")
+            Else
+                Debug.Assert(False)
+            End If
 
-            xa = doc.CreateAttribute("type")
-            xa.InnerText = p.DataType.ToString()
-            xnPressure.Attributes.Append(xa)
+            If (xnPressure IsNot Nothing) Then
 
-            xnPressures.AppendChild(xnPressure)
+                xa = doc.CreateAttribute("name")
+                xa.InnerText = HttpUtility.UrlEncode(p.Name)
+                xnPressure.Attributes.Append(xa)
+                xnPressures.AppendChild(xnPressure)
 
+            End If
         Next
         xnGame.AppendChild(xnPressures)
 
@@ -756,22 +771,6 @@ Public Class cGame
 
         Next
         xnGame.AppendChild(xnMappings)
-
-        ' Add fleets
-        Dim xnFleets As XmlNode = doc.CreateElement("fleets")
-        For i As Integer = 0 To Me.m_fleets.Count - 1
-
-            Dim fleet As cFleet = Me.m_fleets(i)
-            Dim xnFleet As XmlNode = doc.CreateElement("fleet")
-
-            xa = doc.CreateAttribute("name")
-            xa.InnerText = HttpUtility.UrlEncode(fleet.Name)
-            xnFleet.Attributes.Append(xa)
-
-            xa = doc.CreateAttribute("nationality")
-            xa.InnerText = HttpUtility.UrlEncode(fleet.Nationality)
-
-        Next
 
         ' Add outputs
         Dim xnOutputs As XmlNode = doc.CreateElement("outputs")
@@ -838,6 +837,7 @@ Public Class cGame
                     Case "spinup_years" : Me.SpinupYears = cStringUtils.ConvertToInteger(xa.InnerText)
                     Case "run_years" : Me.RunYears = cStringUtils.ConvertToInteger(xa.InnerText)
                     Case "mpa_cell_closure" : Me.MPACellClosureRatio = cStringUtils.ConvertToSingle(xa.InnerText)
+                    Case "bycatch_weight" : Me.BycatchWeightMultiplier = cStringUtils.ConvertToSingle(xa.InnerText)
                     Case "calc_indicators" : Me.CalculateIndicators = Convert.ToBoolean(xa.InnerText)
                 End Select
             Next
@@ -856,16 +856,28 @@ Public Class cGame
                 Case "pressures"
                     Try
                         For Each xnPressure As XmlNode In xn.ChildNodes
-                            Dim strPressure As String = ""
-                            Dim t As cPressure.eDataTypes = cPressure.eDataTypes.NotSet
+                            Dim strName As String = ""
+                            Dim strDatatype As String = ""
+                            Dim t As Type = Nothing
+
                             For Each xa As XmlAttribute In xnPressure.Attributes
                                 Select Case xa.Name
-                                    Case "name" : strPressure = HttpUtility.UrlDecode(xa.InnerText)
-                                    Case "type" : [Enum].TryParse(xa.InnerText, t)
+                                    Case "name" : strName = HttpUtility.UrlDecode(xa.InnerText)
+                                    Case "type" : strDatatype = xa.InnerText
                                 End Select
                             Next
-                            If (t <> cPressure.eDataTypes.NotSet) Then
-                                Me.Add(New cPressure(t, strPressure))
+
+                            Select Case xnPressure.Name
+                                Case "pressure"
+                                    ' Backwards compatibility - must upgrade
+                                    t = If(strDatatype.Contains("scalar"), GetType(cFishingPressure), GetType(cEnvironmentalPressure))
+                                Case "environmental_pressure"
+                                    t = GetType(cEnvironmentalPressure)
+                                Case "fishing_pressure"
+                                    t = GetType(cFishingPressure)
+                            End Select
+                            If (t IsNot Nothing) Then
+                                Me.Add(DirectCast(Activator.CreateInstance(t, {strName}), cPressure))
                             End If
                         Next
                     Catch ex As Exception
@@ -882,6 +894,7 @@ Public Class cGame
                                 Select Case xa.Name
                                     Case "pressure" : strPressure = HttpUtility.UrlDecode(xa.InnerText)
                                     Case "driver" : strDriver = HttpUtility.UrlDecode(xa.InnerText)
+                                        ' ToDo: upgrade this too
                                     Case "multiplier" : dMultiplier = cStringUtils.ConvertToDouble(xa.InnerText)
                                 End Select
                             Next

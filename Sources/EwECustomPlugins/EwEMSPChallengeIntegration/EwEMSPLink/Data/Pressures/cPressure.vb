@@ -33,74 +33,13 @@ Imports EwEUtils.Core
 ''' <see cref="cDriver">Ecospace drivers</see> to impact the Ecospace model.
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
-Public Class cPressure
+Public MustInherit Class cPressure
     Implements IMELItem
-
-#Region " Internal vars "
-
-    ''' <summary>The scalar data wrapped by the pressure.</summary>
-    Protected m_scalar As cScalar = Nothing
-
-    ''' <summary>The grid data wrapped by the pressure.</summary>
-    Protected m_grid As cGrid = Nothing
-
-#End Region ' Internal vars
 
 #Region " Constructors "
 
-    Public Sub New(datatype As eDataTypes, name As String)
-        Me.DataType = datatype
+    Public Sub New(name As String)
         Me.Name = name
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Create a <see cref="eDataTypes.Scalar">scalar</see> pressure.
-    ''' </summary>
-    ''' <param name="name">The name of the pressure to define.</param>
-    ''' <param name="scalar">The initial data for the pressure.</param>
-    ''' <seealso cref="DataType"/>
-    ''' <seealso cref="eDataTypes"/>
-    ''' <seealso cref="Scalar"/>
-    ''' <see cref="IsScalar"/>
-    ''' -----------------------------------------------------------------------
-    Public Sub New(name As String, scalar As Double)
-        Me.New(eDataTypes.Scalar, name)
-        Me.m_scalar = New cScalar(name, scalar)
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Create a <see cref="eDataTypes.Scalar">scalar</see> pressure.
-    ''' </summary>
-    ''' <param name="name">The name of the pressure to define.</param>
-    ''' <param name="bEnabled">The initial data for the pressure.</param>
-    ''' <seealso cref="DataType"/>
-    ''' <seealso cref="eDataTypes"/>
-    ''' <seealso cref="Scalar"/>
-    ''' <see cref="IsScalar"/>
-    ''' -----------------------------------------------------------------------
-    Public Sub New(name As String, bEnabled As Boolean)
-        Me.New(eDataTypes.Scalar, name)
-        Me.m_scalar = New cScalar(name, CDbl(bEnabled))
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Create a <see cref="eDataTypes.Grid">grid</see> pressure.
-    ''' </summary>
-    ''' <param name="name">The name of the pressure to define.</param>
-    ''' <param name="iNumRows">The number of rows in the pressure grid.</param>
-    ''' <param name="iNumColumns">The number of columns in the pressure grid.</param>
-    ''' <param name="data">Optional initial data for the pressure.</param>
-    ''' <seealso cref="DataType"/>
-    ''' <seealso cref="eDataTypes"/>
-    ''' <seealso cref="Grid"/>
-    ''' <see cref="IsGrid"/>
-    ''' -----------------------------------------------------------------------
-    Public Sub New(name As String, iNumColumns As Integer, iNumRows As Integer, Optional data As Double(,) = Nothing)
-        Me.New(eDataTypes.Grid, name)
-        Me.m_grid = New cGrid(name, iNumColumns, iNumRows, data)
     End Sub
 
 #End Region ' Constructors
@@ -109,110 +48,10 @@ Public Class cPressure
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Enumerated type, defining the types of data that a pressure supports.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Enum eDataTypes As Byte
-        ''' <summary>Data type has not been set yet.</summary>
-        NotSet = 0
-        ''' <summary>Pressure contains a single value.</summary>
-        Scalar
-        ''' <summary>Pressure contains a map of values.</summary>
-        Grid
-    End Enum
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Get/set the name of the pressure.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Name As String Implements IMELItem.Name
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the <see cref="eDataTypes">type of data</see> that a pressure supports.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property DataType As eDataTypes
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get a reference to the <see cref="cGrid"/> wrapped by the pressure, if 
-    ''' this is a <see cref="eDataTypes.Grid"/> pressure.
-    ''' </summary>
-    ''' <returns>The grid, or null if the pressure does not accept grid data.</returns>
-    ''' <seealso cref="IsGrid"/>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Grid As cGrid
-        Get
-            If Me.IsGrid Then Return Me.m_grid
-            Return Nothing
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the scalar value wrapped by the pressure, if this is a
-    ''' <see cref="eDataTypes.Scalar"/> pressure.
-    ''' </summary>
-    ''' <returns>The scalar value, or 0 if the pressure does not accept scalar 
-    ''' data.</returns>
-    ''' <seealso cref="IsScalar"/>
-    ''' -----------------------------------------------------------------------
-    Public Property Scalar As Double
-        Get
-            If Me.m_scalar IsNot Nothing Then Return Me.m_scalar.Value
-            Return 0
-        End Get
-        Set(value As Double)
-            If Me.IsScalar Then
-                If (Me.m_scalar Is Nothing) Then
-                    Me.m_scalar = New cScalar(Me.Name, value)
-                Else
-                    Me.m_scalar.Value = value
-                End If
-            End If
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the on/off, or true/false value of the <see cref="Scalar"/>.
-    ''' </summary>
-    ''' <returns>A boolean interpretation of the scalar value, where
-    ''' true is return if the <see cref="Scalar"/> is not zero.</returns>
-    ''' <seealso cref="IsScalar"/>
-    ''' <seealso cref="Scalar"/>
-    ''' -----------------------------------------------------------------------
-    Public Property Enabled As Boolean
-        Get
-            Return (Me.Scalar <> 0)
-        End Get
-        Set(value As Boolean)
-            Me.Scalar = If(value, 1, 0)
-        End Set
-    End Property
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns if this pressure accepts grid driver data. 
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property IsGrid As Boolean
-        Get
-            Return (Me.DataType = eDataTypes.Grid)
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns if this pressure accepts scalar driver data. 
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property IsScalar As Boolean
-        Get
-            Return (Me.DataType = eDataTypes.Scalar)
-        End Get
-    End Property
 
 #End Region ' Public bits
 

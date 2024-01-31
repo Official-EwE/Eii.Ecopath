@@ -21,6 +21,7 @@
 Option Strict On
 Imports System.Drawing
 Imports System.IO
+Imports System.Security
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
@@ -59,6 +60,7 @@ Namespace UI
         Private WithEvents m_fpSpinupYears As cEwEFormatProvider = Nothing
         Private WithEvents m_fpRunYears As cEwEFormatProvider = Nothing
         Private WithEvents m_fpMAPCellClosure As cEwEFormatProvider = Nothing
+        Private WithEvents m_fpBycatchFee As cEwEFormatProvider = Nothing
 
         Private m_dgtTimeStep As New cCore.EcoSpaceInterfaceDelegate(AddressOf OnEcospaceTimeStep)
 
@@ -111,11 +113,9 @@ Namespace UI
 
             If (Me.UIContext Is Nothing) Then Return
 
-#If DEBUG Then
-            Me.m_tpFleets.Visible = True
-#Else
-            Me.m_tpFleets.Visible = False
-#End If
+            Dim ge As cOperatorBase = cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo)
+            Dim le As cOperatorBase = cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)
+
             Me.m_ilTabIcons.Images.Add(SharedRecources.OK)
             Me.m_ilTabIcons.Images.Add(SharedRecources.Warning)
             Me.m_ilTabIcons.Images.Add(SharedRecources.Critical)
@@ -123,12 +123,11 @@ Namespace UI
             Me.m_gridPressureMappings.UIContext = Me.UIContext
             Me.m_gridOutcome.UIContext = Me.UIContext
             Me.m_gridEmulTestset.UIContext = Me.UIContext
-            Me.m_gridFleets.UIContext = Me.UIContext
-            Me.m_gridFleetCatch.UIcontext = Me.UIContext
 
             Me.m_fpSpinupYears = New cEwEFormatProvider(Me.UIContext, Me.m_tbxSpinupYears, GetType(Integer))
             Me.m_fpRunYears = New cEwEFormatProvider(Me.UIContext, Me.m_tbxRunYears, GetType(Integer))
-            Me.m_fpMAPCellClosure = New cEwEFormatProvider(Me.UIContext, Me.m_tbxMPACellClosure, GetType(Single))
+            Me.m_fpMAPCellClosure = New cEwEFormatProvider(Me.UIContext, Me.m_tbxMPACellClosure, GetType(Single), metadata:=New cVariableMetaData(0, 1, ge, le, 0.25))
+            Me.m_fpBycatchFee = New cEwEFormatProvider(Me.UIContext, Me.m_tbxBycatchFee, GetType(Single), metadata:=New cVariableMetaData(0, 1000, ge, le, 10))
 
             Me.m_checkEcosimTimeSeries = New cEcosimTimeSeriesChecker(Me.Core)
             Me.m_checkEcosimFishing = New cEcosimFishingChecker(Me.Core)
@@ -142,7 +141,6 @@ Namespace UI
 
             Me.Core.AddEcospaceTimeStepHandler(Me.m_dgtTimeStep)
             Me.FillGameCombo()
-            Me.FillPressureTypesCombo()
             Me.FillOutputTypesCombo()
             Me.FillTestsetCombo()
             Me.FillStopOptionsCombo()
@@ -185,6 +183,7 @@ Namespace UI
             Me.m_fpSpinupYears.Release()
             Me.m_fpRunYears.Release()
             Me.m_fpMAPCellClosure.Release()
+            Me.m_fpBycatchFee.Release()
 
             Me.m_gridPressureMappings.UIContext = Nothing
             Me.m_gridOutcome.UIContext = Nothing
@@ -474,6 +473,7 @@ Namespace UI
                     Me.m_fpRunYears.Value = game.RunYears
                     Me.m_fpSpinupYears.Value = game.SpinupYears
                     Me.m_fpMAPCellClosure.Value = game.MPACellClosureRatio
+                    Me.m_fpBycatchFee.Value = game.BycatchWeightMultiplier
                     Me.m_tbxGameName.Text = game.Name
                     Me.m_tbxInfoVersion.Text = game.Version
                     Me.m_tbxInfoAuthor.Text = game.Author
@@ -482,9 +482,10 @@ Namespace UI
                     Me.m_cbGameCalcIndicators.Checked = game.CalculateIndicators
                     Me.m_nudEmulOutcomeRange.Value = CDec(game.OutcomeRange)
                 Else
-                    Me.m_fpRunYears.Value = 0
-                    Me.m_fpSpinupYears.Value = 0
-                    Me.m_fpMAPCellClosure.Value = 0
+                    Me.m_fpRunYears.Value = 100
+                    Me.m_fpSpinupYears.Value = 10
+                    Me.m_fpMAPCellClosure.Value = 0.25
+                    Me.m_fpBycatchFee.Value = 10
                     Me.m_tbxGameName.Text = ""
                     Me.m_tbxInfoVersion.Text = ""
                     Me.m_tbxInfoAuthor.Text = ""
@@ -726,11 +727,18 @@ Namespace UI
         Private Sub OnAddPressure(sender As Object, e As EventArgs) _
             Handles m_btnPressureAdd.Click
             Try
-                Dim type As cPressure.eDataTypes = DirectCast(Me.m_cmbPressureTypes.SelectedItem, cPressure.eDataTypes)
                 Dim g As cGame = Me.SelectedGame()
+                Dim p As cPressure = Nothing
+                Dim n As String = Me.m_tbxPressureName.Text
 
-                ' Solved reflection ambiguity
-                Dim p As New cPressure(type, Me.m_tbxPressureName.Text)
+                Select Case Me.m_cmbPressureTypes.SelectedIndex
+                    Case 0
+                        p = New cEnvironmentalPressure(n)
+                    Case 1
+                        p = New cFishingPressure(n)
+                    Case Else
+                        Debug.Assert(False, "Whoopsie")
+                End Select
 
                 g.Add(p)
 
@@ -1297,18 +1305,6 @@ Namespace UI
             Me.OnGameSelected(Me, Nothing)
         End Sub
 
-        Private Sub FillPressureTypesCombo()
-
-            Me.m_cmbPressureTypes.Items.Clear()
-            For Each t As cPressure.eDataTypes In [Enum].GetValues(GetType(cPressure.eDataTypes))
-                If (t <> cPressure.eDataTypes.NotSet) Then
-                    Me.m_cmbPressureTypes.Items.Add(t)
-                End If
-            Next
-            Me.m_cmbPressureTypes.SelectedIndex = 0
-
-        End Sub
-
         Private Sub FillOutputTypesCombo()
 
             Me.m_cmbOutputTypes.Items.Clear()
@@ -1381,24 +1377,26 @@ Namespace UI
                         Dim data As String = testset.Testdata(p)
                         If (Not String.IsNullOrWhiteSpace(data)) Then
                             Dim vs As cVariableStatus = Nothing
-                            Select Case p.DataType
-                                Case cPressure.eDataTypes.Grid
-                                    Dim psim As New cPressure(p.Name, bm.InCol, bm.InRow)
-                                    If psim.Grid.Load(data, Me.UIContext.Core) Then
-                                        pressures.Add(psim)
-                                    Else
-                                        msg.Message = cStringUtils.Localize(My.Resources.STATUS_TESTSET_LOAD_FAILED, testset.Name)
-                                        vs = New cVariableStatus(eStatusFlags.ErrorEncountered, cStringUtils.Localize(My.Resources.STATUS_TESTDATA_MAP_REJECTED, p.Name, data),
-                                                                 eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.Ecospace, 0)
-                                        msg.AddVariable(vs)
-                                    End If
-                                Case cPressure.eDataTypes.Scalar
-                                    If Double.TryParse(data, p.Scalar) Then
-                                        pressures.Add(p)
-                                    End If
-                                Case Else
-                                    Debug.Assert(False)
-                            End Select
+
+                            ' XXX REWRITE THIS XXX
+                            'Select Case p.DataType
+                            '    Case cPressure.eDataTypes.Grid
+                            '        Dim psim As New cPressure(p.Name, bm.InCol, bm.InRow)
+                            '        If psim.Grid.Load(data, Me.UIContext.Core) Then
+                            '            pressures.Add(psim)
+                            '        Else
+                            '            msg.Message = cStringUtils.Localize(My.Resources.STATUS_TESTSET_LOAD_FAILED, testset.Name)
+                            '            vs = New cVariableStatus(eStatusFlags.ErrorEncountered, cStringUtils.Localize(My.Resources.STATUS_TESTDATA_MAP_REJECTED, p.Name, data),
+                            '                                     eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.Ecospace, 0)
+                            '            msg.AddVariable(vs)
+                            '        End If
+                            '    Case cPressure.eDataTypes.Scalar
+                            '        If Double.TryParse(data, p.Scalar) Then
+                            '            pressures.Add(p)
+                            '        End If
+                            '    Case Else
+                            '        Debug.Assert(False)
+                            'End Select
                         End If
 
                     Next

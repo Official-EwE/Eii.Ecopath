@@ -128,9 +128,6 @@
     <Compile Include="UI\Controls\gridFleetCatch.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\Controls\gridFleets.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\Requirements\cEcosimForcingChecker.vb" />
     <Compile Include="UI\Requirements\cEcosimFishingChecker.vb" />
     <Compile Include="UI\Requirements\cEcosimTimeSeriesChecker.vb" />

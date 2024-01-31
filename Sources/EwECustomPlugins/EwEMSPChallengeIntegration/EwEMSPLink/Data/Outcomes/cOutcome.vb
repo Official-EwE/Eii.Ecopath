@@ -104,8 +104,12 @@ Public Class cOutcome
         [Catch]
         ''' <summary>Outcome contains an Ecospace fishing effort distribution summary.</summary>
         Effort
-        ''' <summary>Outcome contains an spatially explicit <see cref="eMSPDIversityIndex">ecological indicator</see>.</summary>
+        ''' <summary>Outcome contains a spatially explicit <see cref="eMSPDIversityIndex">ecological indicator</see>.</summary>
         Indicator
+        ''' <summary>Outcome contains an Ecospace discards distribution summary.</summary>
+        Discards
+        ''' <summary>Outcome contains an Ecospace bycatch distribution summary.</summary>
+        Bycatch
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -181,9 +185,14 @@ Public Class cOutcome
     Public Function IsConfigured() As Boolean
         Select Case Me.LayerType
             Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Effort
+                ' Needs to have data when defined
                 Return Me.NumItems > 0
             Case eLayerType.Indicator
+                ' Automatically populated
                 Return True
+            Case eLayerType.Bycatch, eLayerType.Discards
+                ' Needs to have data when defined
+                Return Me.NumItems > 0
             Case Else
                 Debug.Assert(False, "Layer type not supported")
         End Select
@@ -202,8 +211,12 @@ Public Class cOutcome
                 Return Me.m_core.nGroups
             Case eLayerType.Effort, eLayerType.Catch
                 Return Me.m_core.nFleets
+            Case eLayerType.Bycatch, eLayerType.Discards
+                Return Me.m_core.nGroups
             Case eLayerType.Indicator
                 Return [Enum].GetValues(GetType(eMSPDIversityIndex)).Length
+            Case Else
+                Debug.Assert(False, "Whoopsie")
         End Select
         Return 0
     End Function
@@ -273,13 +286,15 @@ Public Class cOutcome
         outcomerange = Math.Max(2, outcomerange)
 
         Select Case Me.m_layertype
-            Case eLayerType.Biomass, eLayerType.Catch
+            Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Bycatch, eLayerType.Discards
                 grid.Units = Me.m_units.ToString(cUnits.Currency) ' "t/km²"
             Case eLayerType.Effort
                 ' ToDo: obtain from metadata once it's there
                 grid.Units = My.Resources.UNITS_EFFORT
             Case eLayerType.Indicator
                 grid.Units = My.Resources.UNITS_RATIO
+            Case Else
+                Debug.Assert(False, "Whoopsie")
         End Select
 
         Try
@@ -298,6 +313,10 @@ Public Class cOutcome
                                     dVal = timestepdata.CatchFleetMap(iRow, iCol, iItem)
                                 Case eLayerType.Effort
                                     dVal = timestepdata.FishingEffortMap(iItem, iRow, iCol)
+                                Case eLayerType.Discards
+                                    dVal = timestepdata.DiscardMortalityMap(iRow, iCol, iItem)
+                                Case eLayerType.Bycatch
+                                    dVal = timestepdata.CatchFleetMap(iRow, iCol, iItem)
                                 Case eLayerType.Indicator
                                     Select Case DirectCast(iItem - 1, eMSPDIversityIndex)
                                         Case eMSPDIversityIndex.Shannon
