@@ -68,14 +68,15 @@ Namespace UI
             Me.m_lblCheckSpaceTimeSeries = New EwEMSPPlugin.UI.cImageLabel()
             Me.m_lblCheckSimTimeSeries = New EwEMSPPlugin.UI.cImageLabel()
             Me.m_tpInformation = New System.Windows.Forms.TabPage()
-            Me.m_tbxInfoDescription = New System.Windows.Forms.TextBox()
-            Me.m_tbxInfoContact = New System.Windows.Forms.TextBox()
-            Me.m_tbxInfoAuthor = New System.Windows.Forms.TextBox()
-            Me.m_tbxInfoVersion = New System.Windows.Forms.TextBox()
+            Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lblInfoVersion = New System.Windows.Forms.Label()
             Me.m_lblInfoDescription = New System.Windows.Forms.Label()
+            Me.m_tbxInfoDescription = New System.Windows.Forms.TextBox()
             Me.m_lblInfoContact = New System.Windows.Forms.Label()
             Me.m_lblInfoAuthor = New System.Windows.Forms.Label()
-            Me.m_lblInfoVersion = New System.Windows.Forms.Label()
+            Me.m_tbxInfoContact = New System.Windows.Forms.TextBox()
+            Me.m_tbxInfoVersion = New System.Windows.Forms.TextBox()
+            Me.m_tbxInfoAuthor = New System.Windows.Forms.TextBox()
             Me.m_tpPressures = New System.Windows.Forms.TabPage()
             Me.m_cmbPressureTypes = New System.Windows.Forms.ComboBox()
             Me.m_gridPressureMappings = New EwEMSPPlugin.UI.gridPressureDriverMappings()
@@ -136,15 +137,22 @@ Namespace UI
             Me.m_btnGameDelete = New System.Windows.Forms.Button()
             Me.m_btnGameAddFromJSON = New System.Windows.Forms.Button()
             Me.m_btnExport = New System.Windows.Forms.Button()
+            Me.m_tlpOutcomes = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plOutcomesToolbar = New System.Windows.Forms.Panel()
+            Me.m_tslOutputRawBinned = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tsbnOuputRaw = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnOuputBinned = New System.Windows.Forms.ToolStripButton()
             Me.m_tabConfig.SuspendLayout()
             Me.m_tpEwESettings.SuspendLayout()
             Me.m_tpInformation.SuspendLayout()
+            Me.m_tlpInfo.SuspendLayout()
             Me.m_tpPressures.SuspendLayout()
             Me.m_tpOutcomes.SuspendLayout()
             CType(Me.m_scOutputs, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scOutputs.Panel1.SuspendLayout()
             Me.m_scOutputs.Panel2.SuspendLayout()
             Me.m_scOutputs.SuspendLayout()
+            Me.m_tsOutcome.SuspendLayout()
             Me.m_tpEmulator.SuspendLayout()
             CType(Me.m_nudEmulOutcomeRange, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tpAbout.SuspendLayout()
@@ -155,6 +163,8 @@ Namespace UI
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbEcoscope, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tlpOutcomes.SuspendLayout()
+            Me.m_plOutcomesToolbar.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tabConfig
@@ -291,42 +301,38 @@ Namespace UI
             '
             'm_tpInformation
             '
-            Me.m_tpInformation.Controls.Add(Me.m_tbxInfoDescription)
-            Me.m_tpInformation.Controls.Add(Me.m_tbxInfoContact)
-            Me.m_tpInformation.Controls.Add(Me.m_tbxInfoAuthor)
-            Me.m_tpInformation.Controls.Add(Me.m_tbxInfoVersion)
-            Me.m_tpInformation.Controls.Add(Me.m_lblInfoDescription)
-            Me.m_tpInformation.Controls.Add(Me.m_lblInfoContact)
-            Me.m_tpInformation.Controls.Add(Me.m_lblInfoAuthor)
-            Me.m_tpInformation.Controls.Add(Me.m_lblInfoVersion)
+            Me.m_tpInformation.Controls.Add(Me.m_tlpInfo)
             resources.ApplyResources(Me.m_tpInformation, "m_tpInformation")
             Me.m_tpInformation.Name = "m_tpInformation"
             Me.m_tpInformation.UseVisualStyleBackColor = True
             '
-            'm_tbxInfoDescription
+            'm_tlpInfo
             '
-            resources.ApplyResources(Me.m_tbxInfoDescription, "m_tbxInfoDescription")
-            Me.m_tbxInfoDescription.Name = "m_tbxInfoDescription"
+            resources.ApplyResources(Me.m_tlpInfo, "m_tlpInfo")
+            Me.m_tlpInfo.Controls.Add(Me.m_lblInfoVersion, 0, 0)
+            Me.m_tlpInfo.Controls.Add(Me.m_lblInfoDescription, 0, 3)
+            Me.m_tlpInfo.Controls.Add(Me.m_tbxInfoDescription, 1, 3)
+            Me.m_tlpInfo.Controls.Add(Me.m_lblInfoContact, 0, 2)
+            Me.m_tlpInfo.Controls.Add(Me.m_lblInfoAuthor, 0, 1)
+            Me.m_tlpInfo.Controls.Add(Me.m_tbxInfoContact, 1, 2)
+            Me.m_tlpInfo.Controls.Add(Me.m_tbxInfoVersion, 1, 0)
+            Me.m_tlpInfo.Controls.Add(Me.m_tbxInfoAuthor, 1, 1)
+            Me.m_tlpInfo.Name = "m_tlpInfo"
             '
-            'm_tbxInfoContact
+            'm_lblInfoVersion
             '
-            resources.ApplyResources(Me.m_tbxInfoContact, "m_tbxInfoContact")
-            Me.m_tbxInfoContact.Name = "m_tbxInfoContact"
-            '
-            'm_tbxInfoAuthor
-            '
-            resources.ApplyResources(Me.m_tbxInfoAuthor, "m_tbxInfoAuthor")
-            Me.m_tbxInfoAuthor.Name = "m_tbxInfoAuthor"
-            '
-            'm_tbxInfoVersion
-            '
-            resources.ApplyResources(Me.m_tbxInfoVersion, "m_tbxInfoVersion")
-            Me.m_tbxInfoVersion.Name = "m_tbxInfoVersion"
+            resources.ApplyResources(Me.m_lblInfoVersion, "m_lblInfoVersion")
+            Me.m_lblInfoVersion.Name = "m_lblInfoVersion"
             '
             'm_lblInfoDescription
             '
             resources.ApplyResources(Me.m_lblInfoDescription, "m_lblInfoDescription")
             Me.m_lblInfoDescription.Name = "m_lblInfoDescription"
+            '
+            'm_tbxInfoDescription
+            '
+            resources.ApplyResources(Me.m_tbxInfoDescription, "m_tbxInfoDescription")
+            Me.m_tbxInfoDescription.Name = "m_tbxInfoDescription"
             '
             'm_lblInfoContact
             '
@@ -338,10 +344,20 @@ Namespace UI
             resources.ApplyResources(Me.m_lblInfoAuthor, "m_lblInfoAuthor")
             Me.m_lblInfoAuthor.Name = "m_lblInfoAuthor"
             '
-            'm_lblInfoVersion
+            'm_tbxInfoContact
             '
-            resources.ApplyResources(Me.m_lblInfoVersion, "m_lblInfoVersion")
-            Me.m_lblInfoVersion.Name = "m_lblInfoVersion"
+            resources.ApplyResources(Me.m_tbxInfoContact, "m_tbxInfoContact")
+            Me.m_tbxInfoContact.Name = "m_tbxInfoContact"
+            '
+            'm_tbxInfoVersion
+            '
+            resources.ApplyResources(Me.m_tbxInfoVersion, "m_tbxInfoVersion")
+            Me.m_tbxInfoVersion.Name = "m_tbxInfoVersion"
+            '
+            'm_tbxInfoAuthor
+            '
+            resources.ApplyResources(Me.m_tbxInfoAuthor, "m_tbxInfoAuthor")
+            Me.m_tbxInfoAuthor.Name = "m_tbxInfoAuthor"
             '
             'm_tpPressures
             '
@@ -438,13 +454,7 @@ Namespace UI
             '
             'm_tpOutcomes
             '
-            Me.m_tpOutcomes.Controls.Add(Me.m_scOutputs)
-            Me.m_tpOutcomes.Controls.Add(Me.m_cmbOutputTypes)
-            Me.m_tpOutcomes.Controls.Add(Me.m_btnOutcomeDelete)
-            Me.m_tpOutcomes.Controls.Add(Me.m_btnOutcomeRename)
-            Me.m_tpOutcomes.Controls.Add(Me.m_btnOutcomeAdd)
-            Me.m_tpOutcomes.Controls.Add(Me.m_tbxOutcomeName)
-            Me.m_tpOutcomes.Controls.Add(Me.m_lblOutcome)
+            Me.m_tpOutcomes.Controls.Add(Me.m_tlpOutcomes)
             resources.ApplyResources(Me.m_tpOutcomes, "m_tpOutcomes")
             Me.m_tpOutcomes.Name = "m_tpOutcomes"
             Me.m_tpOutcomes.UseVisualStyleBackColor = True
@@ -507,6 +517,7 @@ Namespace UI
             'm_tsOutcome
             '
             Me.m_tsOutcome.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsOutcome.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslOutputRawBinned, Me.m_tsbnOuputRaw, Me.m_tsbnOuputBinned})
             resources.ApplyResources(Me.m_tsOutcome, "m_tsOutcome")
             Me.m_tsOutcome.Name = "m_tsOutcome"
             '
@@ -855,10 +866,45 @@ Namespace UI
             Me.m_btnExport.Name = "m_btnExport"
             Me.m_btnExport.UseVisualStyleBackColor = True
             '
+            'm_tlpOutcomes
+            '
+            resources.ApplyResources(Me.m_tlpOutcomes, "m_tlpOutcomes")
+            Me.m_tlpOutcomes.Controls.Add(Me.m_plOutcomesToolbar, 0, 0)
+            Me.m_tlpOutcomes.Controls.Add(Me.m_scOutputs, 0, 1)
+            Me.m_tlpOutcomes.Name = "m_tlpOutcomes"
+            '
+            'm_plOutcomesToolbar
+            '
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_cmbOutputTypes)
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_lblOutcome)
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_tbxOutcomeName)
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_btnOutcomeDelete)
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_btnOutcomeAdd)
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_btnOutcomeRename)
+            resources.ApplyResources(Me.m_plOutcomesToolbar, "m_plOutcomesToolbar")
+            Me.m_plOutcomesToolbar.Name = "m_plOutcomesToolbar"
+            '
+            'm_tslOutputRawBinned
+            '
+            Me.m_tslOutputRawBinned.Name = "m_tslOutputRawBinned"
+            resources.ApplyResources(Me.m_tslOutputRawBinned, "m_tslOutputRawBinned")
+            '
+            'm_tsbnOuputRaw
+            '
+            Me.m_tsbnOuputRaw.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnOuputRaw, "m_tsbnOuputRaw")
+            Me.m_tsbnOuputRaw.Name = "m_tsbnOuputRaw"
+            '
+            'm_tsbnOuputBinned
+            '
+            Me.m_tsbnOuputBinned.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnOuputBinned, "m_tsbnOuputBinned")
+            Me.m_tsbnOuputBinned.Name = "m_tsbnOuputBinned"
+            '
             'frmGameDesigner
             '
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_tbxGameName)
             Me.Controls.Add(Me.m_lblGame)
             Me.Controls.Add(Me.m_btnGameAddFromJSON)
@@ -876,16 +922,18 @@ Namespace UI
             Me.m_tpEwESettings.ResumeLayout(False)
             Me.m_tpEwESettings.PerformLayout()
             Me.m_tpInformation.ResumeLayout(False)
-            Me.m_tpInformation.PerformLayout()
+            Me.m_tlpInfo.ResumeLayout(False)
+            Me.m_tlpInfo.PerformLayout()
             Me.m_tpPressures.ResumeLayout(False)
             Me.m_tpPressures.PerformLayout()
             Me.m_tpOutcomes.ResumeLayout(False)
-            Me.m_tpOutcomes.PerformLayout()
             Me.m_scOutputs.Panel1.ResumeLayout(False)
             Me.m_scOutputs.Panel2.ResumeLayout(False)
             Me.m_scOutputs.Panel2.PerformLayout()
             CType(Me.m_scOutputs, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scOutputs.ResumeLayout(False)
+            Me.m_tsOutcome.ResumeLayout(False)
+            Me.m_tsOutcome.PerformLayout()
             Me.m_tpEmulator.ResumeLayout(False)
             Me.m_tpEmulator.PerformLayout()
             CType(Me.m_nudEmulOutcomeRange, System.ComponentModel.ISupportInitialize).EndInit()
@@ -898,6 +946,9 @@ Namespace UI
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbEcoscope, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tlpOutcomes.ResumeLayout(False)
+            Me.m_plOutcomesToolbar.ResumeLayout(False)
+            Me.m_plOutcomesToolbar.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -993,6 +1044,12 @@ Namespace UI
         Private WithEvents m_tbxBycatchFee As Windows.Forms.TextBox
         Private WithEvents m_lblMPACellClosure1 As Windows.Forms.Label
         Private WithEvents m_tbxMPACellClosure As Windows.Forms.TextBox
+        Private WithEvents m_tlpInfo As Windows.Forms.TableLayoutPanel
+        Private WithEvents m_plOutcomesToolbar As Windows.Forms.Panel
+        Private WithEvents m_tlpOutcomes As Windows.Forms.TableLayoutPanel
+        Private WithEvents m_tsbnOuputBinned As Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnOuputRaw As Windows.Forms.ToolStripButton
+        Private WithEvents m_tslOutputRawBinned As Windows.Forms.ToolStripLabel
     End Class
 
 End Namespace
