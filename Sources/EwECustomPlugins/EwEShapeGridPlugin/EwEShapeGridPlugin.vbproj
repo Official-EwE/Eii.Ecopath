@@ -199,9 +199,7 @@
     <Compile Include="Grids\gridMediation.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Grids\gridPredPreyMediation.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Grids\gridPredPreyMediation.vb" />
     <Compile Include="Grids\gridShapeBase.vb">
       <SubType>Component</SubType>
     </Compile>
