@@ -53,7 +53,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcospacePlugin
     Implements EwEPlugin.IEcospaceBeginTimestepPlugin
-    Implements EwEPlugin.IEcospaceEndTimestepPostPlugin
+    Implements EwEPlugin.IEcospaceEndTimestepPlugin
     Implements EwEPlugin.IEcospaceRunInvalidatedPlugin
     Implements EwEPlugin.IEcospaceInitRunCompletedPlugin
     Implements EwEPlugin.IEcospaceRunCompletedPlugin
@@ -642,8 +642,8 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
     End Sub
 
-    Public Sub EcospaceEndTimeStepPost(EcospaceDatastructures As Object, iTime As Integer) _
-        Implements EwEPlugin.IEcospaceEndTimestepPostPlugin.EcospaceEndTimeStepPost
+    Private Sub EcospaceEndTimeStep(EcospaceDatastructures As Object, iTime As Integer) _
+        Implements IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
 
         If Not Me.m_bEcospaceCalculating Then Return
         Try
@@ -1323,14 +1323,14 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                Dim fout As String = Path.Combine(pout, Me.ASCMapFileName(info.OutputName, iTS.ToString("D4")))
-                Dim exp As New cEcospaceImportExportASCIIData(Me.m_core)
-                For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
-                    If (ind.IsComputed) Then
+                If info.Enabled Then
+                    Dim fout As String = Path.Combine(pout, Me.ASCMapFileName(info.OutputName, iTS.ToString("D4")))
+                    Dim exp As New cEcospaceImportExportASCIIData(Me.m_core)
+                    For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
                         exp.Value(ind.Location.Y, ind.Location.X) = info.GetValue(ind)
-                    End If
-                Next
-                exp.Save(fout)
+                    Next
+                    exp.Save(fout)
+                End If
             Next iInfo
         Next iGrp
 
