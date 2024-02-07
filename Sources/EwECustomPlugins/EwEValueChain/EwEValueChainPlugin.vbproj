@@ -221,7 +221,9 @@
     <Compile Include="Interface\Flow\ucSelector2.Designer.vb">
       <DependentUpon>ucSelector2.vb</DependentUpon>
     </Compile>
-    <Compile Include="Interface\Flow\ucSelector2.vb" />
+    <Compile Include="Interface\Flow\ucSelector2.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Interface\Flow\dlgAddUnits.Designer.vb">
       <DependentUpon>dlgAddUnits.vb</DependentUpon>
     </Compile>
