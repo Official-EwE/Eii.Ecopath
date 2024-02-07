@@ -2013,7 +2013,7 @@ Public Class cEIIXMLDataSource
         End If
 
         tsDS.RedimTimeSeries()
-        tsDS.RedimEnabledTimeSeries()
+        'tsDS.RedimEnabledTimeSeries()
 
         If tsDS.nTimeSeries = 0 Then Return bSucces
 
