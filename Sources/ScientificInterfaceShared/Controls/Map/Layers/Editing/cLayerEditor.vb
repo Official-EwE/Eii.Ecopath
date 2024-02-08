@@ -174,7 +174,7 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Overridable Sub DestroyEditorControl()
 
-            Debug.Assert(Me.m_gui IsNot Nothing)
+            If (Me.m_gui Is Nothing) Then Return
 
             If (TypeOf Me.m_gui Is ucLayerEditor) Then
                 DirectCast(Me.m_gui, ucLayerEditor).Detach()
