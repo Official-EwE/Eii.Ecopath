@@ -112,6 +112,7 @@ Public Class frmRun
         Me.m_cmbAutoSave.SelectedIndex = parms.AutosaveMode
         Me.m_nudNoThreads.Maximum = parms.MaxThreads
         Me.m_nudNoThreads.Value = parms.NumThreads
+        Me.m_cbResetVs.Checked = parms.ResetVsOnRun
 
         Me.m_fpK = New cEwEFormatProvider(Me.UIContext, Me.m_nudK, GetType(Integer))
         Me.m_fpVukCap = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxVUlCap, Me.Core.EcosimModelParameters, eVarNameFlags.VulnerabilityCap)
@@ -314,6 +315,7 @@ Public Class frmRun
             parms.VulSearchMode = If(Me.m_rbPredator.Checked, ISFPIteration.eVulSearchMode.Predator, ISFPIteration.eVulSearchMode.PredPrey)
             parms.NumThreads = CInt(Me.m_nudNoThreads.Value)
             parms.AutosaveMode = CType(Me.m_cmbAutoSave.SelectedIndex, cSFPParameters.eAutosaveMode)
+            parms.ResetVsOnRun = Me.m_cbResetVs.Checked
 
             ' And the ones that affect the list of iterations (grid refrensh can be slow)
             If bRefreshIterationsList Then

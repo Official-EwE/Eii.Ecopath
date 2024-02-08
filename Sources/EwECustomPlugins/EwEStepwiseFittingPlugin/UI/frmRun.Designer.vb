@@ -63,6 +63,7 @@ Partial Class frmRun
         Me.m_btnStop = New System.Windows.Forms.Button()
         Me.m_btnResetFolder = New System.Windows.Forms.Button()
         Me.m_plSettings = New System.Windows.Forms.Panel()
+        Me.m_cbResetVs = New System.Windows.Forms.CheckBox()
         Me.m_tbxVUlCap = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.m_lblNoRuns = New System.Windows.Forms.Label()
@@ -375,6 +376,7 @@ Partial Class frmRun
         '
         'm_plSettings
         '
+        Me.m_plSettings.Controls.Add(Me.m_cbResetVs)
         Me.m_plSettings.Controls.Add(Me.m_tbxVUlCap)
         Me.m_plSettings.Controls.Add(Me.Label1)
         Me.m_plSettings.Controls.Add(Me.m_lblNoRuns)
@@ -393,6 +395,14 @@ Partial Class frmRun
         Me.m_plSettings.Controls.Add(Me.m_lblStepSize)
         resources.ApplyResources(Me.m_plSettings, "m_plSettings")
         Me.m_plSettings.Name = "m_plSettings"
+        '
+        'm_cbResetVs
+        '
+        resources.ApplyResources(Me.m_cbResetVs, "m_cbResetVs")
+        Me.m_cbResetVs.Checked = True
+        Me.m_cbResetVs.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.m_cbResetVs.Name = "m_cbResetVs"
+        Me.m_cbResetVs.UseVisualStyleBackColor = True
         '
         'm_tbxVUlCap
         '
@@ -528,4 +538,5 @@ Partial Class frmRun
     Private WithEvents m_btnSelectFandVandA As Windows.Forms.Button
     Friend WithEvents m_tbxVUlCap As Windows.Forms.TextBox
     Friend WithEvents Label1 As Windows.Forms.Label
+    Private WithEvents m_cbResetVs As Windows.Forms.CheckBox
 End Class

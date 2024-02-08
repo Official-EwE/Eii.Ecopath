@@ -364,6 +364,8 @@ Public MustInherit Class cSFPGenericIteration
     ''' <returns>True if Ecosim has all default vulnerabilties.</returns>
     ''' -----------------------------------------------------------------------
     Protected Function ResetVs(core As cCore) As Boolean
+        ' Skip V resetting if requested
+        If (Not Me.Parameters.ResetVsOnRun) Then Return True
         ' Suppress prompt, just reset the vulnerabilities without asking
         Return core.CheckResetDefaultVulnerabilities(True)
     End Function
