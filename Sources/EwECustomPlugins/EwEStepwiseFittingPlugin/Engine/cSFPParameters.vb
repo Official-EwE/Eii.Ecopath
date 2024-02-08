@@ -183,6 +183,13 @@ Public Class cSFPParameters
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set whether vulnerabilities should be reset when searching.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ResetVsOnRun As Boolean = True
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Returns if absolute biomass timeseries are available.
     ''' </summary>
     ''' -----------------------------------------------------------------------
