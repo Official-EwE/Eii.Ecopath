@@ -1288,17 +1288,15 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Dim exp As New cEcospaceImportExportXYData(Me.m_core, fields.ToArray())
         ' Write line for cell
         For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
-            If (ind.IsComputed) Then
-                For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-                    Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
-                    For iInfo As Integer = 0 To grp.NumIndicators - 1
-                        Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                        If info.Enabled Then
-                            exp.Value(ind.Location.Y, ind.Location.X, info.OutputName) = info.GetValue(ind)
-                        End If
-                    Next iInfo
-                Next iGrp
-            End If
+            For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+                Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                For iInfo As Integer = 0 To grp.NumIndicators - 1
+                    Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+                    If info.Enabled Then
+                        exp.Value(ind.Location.Y, ind.Location.X, info.OutputName) = info.GetValue(ind)
+                    End If
+                Next iInfo
+            Next iGrp
         Next ind
 
         ' Done
