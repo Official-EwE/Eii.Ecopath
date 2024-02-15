@@ -229,8 +229,10 @@ Public Class gridRun
 
         Me(iRow, eColumnTypes.State).Value = Me.State(iteration)
         Dim cell As cEwECell = DirectCast(Me(iRow, eColumnTypes.State), cEwECell)
-        cell.Style = style Or eStyleFlags.NotEditable
-        cell.ToolTipText = iteration.Report()
+        Dim report As String = iteration.Report()
+
+        cell.ToolTipText = report
+        cell.Style = style Or eStyleFlags.NotEditable Or If(String.IsNullOrEmpty(report), style, eStyleFlags.Remarks)
 
         Me.m_bInUpdate = False
 
