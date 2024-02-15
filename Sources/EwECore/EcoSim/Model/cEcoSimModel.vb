@@ -3868,12 +3868,7 @@ Namespace Ecosim
                     'Calculate DatQ() for data types that are relative.
                     'These data may not have been entered in the same units as the internal ecosim mean weight
                     'DatQ() is used to normalize/scale the time series data to model units
-                    If Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassRel Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.TotalMortality Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Then
-
+                    If cTimeSeries.IsRelative(Me.m_RefData.AppliedDatType(iDType)) Then
                         Me.m_RefData.AppliedDatSS(iDType) = CSng(Me.DatSumZ2(iDType) - Me.DatSumZ(iDType) ^ 2 / Me.DatNobs(iDType))
                         Me.m_RefData.AppliedDatQ(iDType) = Me.DatSumZ(iDType) / Me.DatNobs(iDType)
                         Me.m_RefData.AppliedeDatQ(iDType) = CSng(Math.Exp(Me.m_RefData.AppliedDatQ(iDType)))
