@@ -68,27 +68,25 @@ Namespace Ecosim
 
         Private Sub CalculateScale()
 
-            Dim asData As Single() = Me.m_lSimData.ToArray
+            Dim data As Single() = Me.m_lSimData.ToArray
             Dim sMax As Single = 0
 
             ' Find data max across sim results
-            For j As Integer = 1 To asData.Length - 1
-                sMax = Math.Max(asData(j), sMax)
+            For j As Integer = 1 To data.Length - 1
+                sMax = Math.Max(data(j), sMax)
             Next
 
             Me.TSDataScale = 1.0
 
             ' Find data max across time series
             If (Me.m_ts IsNot Nothing) Then
-                If ((Me.m_ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or
-                    (Me.m_ts.TimeSeriesType = eTimeSeriesType.CatchesRel) Or
-                    (Me.m_ts.TimeSeriesType = eTimeSeriesType.AverageWeight)) Then
+                If (Me.m_ts.IsRelative) Then
                     If (Me.m_ts.DataQ <> 0) Then Me.TSDataScale = CSng(1.0! / Me.m_ts.eDataQ)
                 End If
 
-                asData = Me.m_ts.ShapeData
-                For j As Integer = 1 To asData.Length - 1
-                    sMax = Math.Max(asData(j) * Me.TSDataScale, sMax)
+                data = Me.m_ts.ShapeData
+                For j As Integer = 1 To data.Length - 1
+                    sMax = Math.Max(data(j) * Me.TSDataScale, sMax)
                 Next
             End If
 
