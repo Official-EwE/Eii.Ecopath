@@ -379,7 +379,7 @@ Public MustInherit Class cSFPGenericIteration
     ''' -----------------------------------------------------------------------
     Public Function Report() As String Implements ISFPIteration.Report
 
-        If (Me.RunState <> ISFPIteration.eRunState.Completed) Then Return ""
+        If (Me.RunState <> ISFPIteration.eRunState.Completed) Or (Me.RunState <> ISFPIteration.eRunState.Error) Then Return ""
 
         Dim sb As New StringBuilder()
         sb.AppendLine(String.Format("Iteration '{0}', SS {1}, AIC {2}, AICC {3}", Me.Name, Me.m_ss, Me.m_aic, Me.m_aicc))
