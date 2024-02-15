@@ -3891,17 +3891,19 @@ Namespace Ecosim
             For iDatPt = 1 To Me.m_RefData.AppliedDatPoints
                 iYear = Me.m_RefData.AppliedDatYear(iDatPt) - Me.m_RefData.AppliedDatYear(1)
                 For iDType = 1 To Me.m_RefData.AppliedNdatType
+                    ' JS 15Feb24: if below are reference time series, then CatchesForcing is misplaced
                     If Me.m_RefData.AppliedDatVal(iDatPt, iDType) > 0 And iYear < Me.m_Data.NumYears + 1 And
-                       (Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassRel Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassAbs Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.TotalMortality Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Catches Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings) Then
+                            cTimeSeries.IsReference(Me.m_RefData.AppliedDatType(iDType)) Then
+                        '(Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassRel Or
+                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassAbs Or
+                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.TotalMortality Or
+                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Catches Or
+                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
+                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Or
+                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
+                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
+                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
+                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings) Then
 
                         Me.m_RefData.Iobs = Me.m_RefData.Iobs + 1
                         'following debug.print checks to insure m_refdata.Iobs data alignment has been
