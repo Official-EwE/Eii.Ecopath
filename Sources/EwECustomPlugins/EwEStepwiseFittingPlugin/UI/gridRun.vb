@@ -228,7 +228,9 @@ Public Class gridRun
         DirectCast(Me(iRow, eColumnTypes.Elapsed), IEwECell).Style = style Or eStyleFlags.NotEditable
 
         Me(iRow, eColumnTypes.State).Value = Me.State(iteration)
-        DirectCast(Me(iRow, eColumnTypes.State), IEwECell).Style = style Or eStyleFlags.NotEditable
+        Dim cell As cEwECell = DirectCast(Me(iRow, eColumnTypes.State), cEwECell)
+        cell.Style = style Or eStyleFlags.NotEditable
+        cell.ToolTipText = iteration.Report()
 
         Me.m_bInUpdate = False
 

@@ -282,11 +282,11 @@ Public Class cSFPManager
             it.Elapsed = New TimeSpan(0)
             it.IsBestFit = False
 
+            ' Iteration will manage its initial state
+            it.InitRun()
+
             If (it.Enabled) Then
-                it.RunState = ISFPIteration.eRunState.Pending
                 Me.m_queue.Push(it)
-            Else
-                it.RunState = ISFPIteration.eRunState.Idle
             End If
         Next
 

@@ -191,7 +191,7 @@ Partial Class frmRun
         '
         'm_hdrParameters
         '
-        Me.m_hdrParameters.CanCollapseParent = False
+        Me.m_hdrParameters.CanCollapseParent = True
         Me.m_hdrParameters.CollapsedParentHeight = 0
         resources.ApplyResources(Me.m_hdrParameters, "m_hdrParameters")
         Me.m_hdrParameters.IsCollapsed = False
