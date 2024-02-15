@@ -185,7 +185,7 @@
     <value>{0} with time series</value>
   </data>
   <data name="REPORT_ENABLED_TIMESERIES" xml:space="preserve">
-    <value>Enabled {0} reference time series, {1} driver time series out of {2}</value>
+    <value>Enabled {0} reference time series, {1} driver time series (out of {2})</value>
   </data>
   <data name="REPORT_ERROR" xml:space="preserve">
     <value>error</value>
@@ -231,6 +231,9 @@
   </data>
   <data name="REPORT_SUCCESS" xml:space="preserve">
     <value>success</value>
+  </data>
+  <data name="REPORT_V_FOR_GROUPS_WITH_TIMESERIES" xml:space="preserve">
+    <value>Set {0}v for groups with time series</value>
   </data>
   <data name="STATE_ITERATION_ERROR" xml:space="preserve">
     <value>Error</value>

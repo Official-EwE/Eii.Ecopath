@@ -259,7 +259,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Enabled {0} reference time series, {1} driver time series out of {2}.
+        '''  Looks up a localized string similar to Enabled {0} reference time series, {1} driver time series (out of {2}).
         '''</summary>
         Friend ReadOnly Property REPORT_ENABLED_TIMESERIES() As String
             Get
@@ -399,6 +399,15 @@ Namespace My.Resources
         Friend ReadOnly Property REPORT_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("REPORT_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Set {0}v for groups with time series.
+        '''</summary>
+        Friend ReadOnly Property REPORT_V_FOR_GROUPS_WITH_TIMESERIES() As String
+            Get
+                Return ResourceManager.GetString("REPORT_V_FOR_GROUPS_WITH_TIMESERIES", resourceCulture)
             End Get
         End Property
         

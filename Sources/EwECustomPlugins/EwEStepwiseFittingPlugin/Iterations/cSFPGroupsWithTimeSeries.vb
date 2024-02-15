@@ -50,6 +50,7 @@ Public Class cSFPGroupsWithTimeSeries
                 'Run a sensitivity of SS to V search for baseline
                 Dim man As cF2TSManager = core.EcosimFitToTimeSeries
                 man.SetNBlocksForGroupsWithTimeSeries()
+                Me.Report(cStringUtils.Localize(My.Resources.REPORT_V_FOR_GROUPS_WITH_TIMESERIES, man.nBlockCodes), eReportState.Success)
                 bOK = True
             End If
         End If
