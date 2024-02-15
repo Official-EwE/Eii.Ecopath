@@ -81,7 +81,7 @@ Public Interface ISFPIteration
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Initialize the iteration
+    ''' Initialize the iteration.
     ''' </summary>
     ''' <param name="core">The core to initialize to.</param>
     ''' <param name="params">The <see cref="cSFPParameters"/> instance to initialize to.</param>
@@ -96,6 +96,13 @@ Public Interface ISFPIteration
     ''' <returns>True if load successful</returns>
     ''' -----------------------------------------------------------------------
     Function Load(core As cCore) As Boolean
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Initialize the iteration for a new run.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Sub InitRun()
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -246,6 +253,14 @@ Public Interface ISFPIteration
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Function Apply(core As cCore) As Boolean
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a textual report of the steps taken by the iteration.
+    ''' </summary>
+    ''' <returns>A textual report of the steps taken by the iteration.</returns>
+    ''' -----------------------------------------------------------------------
+    Function Report() As String
 
 End Interface
 

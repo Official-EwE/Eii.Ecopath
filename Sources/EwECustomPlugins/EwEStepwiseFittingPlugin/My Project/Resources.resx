@@ -184,6 +184,54 @@
   <data name="NAME_WITH_TS_ONLY" xml:space="preserve">
     <value>{0} with time series</value>
   </data>
+  <data name="REPORT_ENABLED_TIMESERIES" xml:space="preserve">
+    <value>Enabled {0} reference time series, {1} driver time series out of {2}</value>
+  </data>
+  <data name="REPORT_ERROR" xml:space="preserve">
+    <value>error</value>
+  </data>
+  <data name="REPORT_ERROR_NO_SPLINE" xml:space="preserve">
+    <value>No anomaly shape defined</value>
+  </data>
+  <data name="REPORT_FORMAT" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
+  <data name="REPORT_FORMAT_DETAIL" xml:space="preserve">
+    <value>{0} ({1}) - {2}</value>
+  </data>
+  <data name="REPORT_RESET_EFFORT" xml:space="preserve">
+    <value>Reset fishing effort</value>
+  </data>
+  <data name="REPORT_RESET_SPLINE" xml:space="preserve">
+    <value>Reset anomaly shape {0}</value>
+  </data>
+  <data name="REPORT_RESET_V" xml:space="preserve">
+    <value>Reset Vs</value>
+  </data>
+  <data name="REPORT_RUN_ECOSIM" xml:space="preserve">
+    <value>Run Ecosim</value>
+  </data>
+  <data name="REPORT_RUN_SENSV_PRED" xml:space="preserve">
+    <value>Run pred sens {0}v</value>
+  </data>
+  <data name="REPORT_RUN_SENSV_PREDPREY" xml:space="preserve">
+    <value>Run pred/prey sens {0}v</value>
+  </data>
+  <data name="REPORT_RUN_SPLINE" xml:space="preserve">
+    <value>Run {0}pp</value>
+  </data>
+  <data name="REPORT_RUN_V" xml:space="preserve">
+    <value>Run {0}v</value>
+  </data>
+  <data name="REPORT_RUN_V_SPLINE" xml:space="preserve">
+    <value>Run {0}v {1}pp</value>
+  </data>
+  <data name="REPORT_SKIPPED" xml:space="preserve">
+    <value>not needed</value>
+  </data>
+  <data name="REPORT_SUCCESS" xml:space="preserve">
+    <value>success</value>
+  </data>
   <data name="STATE_ITERATION_ERROR" xml:space="preserve">
     <value>Error</value>
   </data>

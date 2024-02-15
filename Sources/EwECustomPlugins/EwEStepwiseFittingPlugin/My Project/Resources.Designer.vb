@@ -259,6 +259,150 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Enabled {0} reference time series, {1} driver time series out of {2}.
+        '''</summary>
+        Friend ReadOnly Property REPORT_ENABLED_TIMESERIES() As String
+            Get
+                Return ResourceManager.GetString("REPORT_ENABLED_TIMESERIES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to error.
+        '''</summary>
+        Friend ReadOnly Property REPORT_ERROR() As String
+            Get
+                Return ResourceManager.GetString("REPORT_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No anomaly shape defined.
+        '''</summary>
+        Friend ReadOnly Property REPORT_ERROR_NO_SPLINE() As String
+            Get
+                Return ResourceManager.GetString("REPORT_ERROR_NO_SPLINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} ({1}).
+        '''</summary>
+        Friend ReadOnly Property REPORT_FORMAT() As String
+            Get
+                Return ResourceManager.GetString("REPORT_FORMAT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} ({1}) - {2}.
+        '''</summary>
+        Friend ReadOnly Property REPORT_FORMAT_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("REPORT_FORMAT_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Reset fishing effort.
+        '''</summary>
+        Friend ReadOnly Property REPORT_RESET_EFFORT() As String
+            Get
+                Return ResourceManager.GetString("REPORT_RESET_EFFORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Reset anomaly shape {0}.
+        '''</summary>
+        Friend ReadOnly Property REPORT_RESET_SPLINE() As String
+            Get
+                Return ResourceManager.GetString("REPORT_RESET_SPLINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Reset Vs.
+        '''</summary>
+        Friend ReadOnly Property REPORT_RESET_V() As String
+            Get
+                Return ResourceManager.GetString("REPORT_RESET_V", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run Ecosim.
+        '''</summary>
+        Friend ReadOnly Property REPORT_RUN_ECOSIM() As String
+            Get
+                Return ResourceManager.GetString("REPORT_RUN_ECOSIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run pred sens {0}v.
+        '''</summary>
+        Friend ReadOnly Property REPORT_RUN_SENSV_PRED() As String
+            Get
+                Return ResourceManager.GetString("REPORT_RUN_SENSV_PRED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run pred/prey sens {0}v.
+        '''</summary>
+        Friend ReadOnly Property REPORT_RUN_SENSV_PREDPREY() As String
+            Get
+                Return ResourceManager.GetString("REPORT_RUN_SENSV_PREDPREY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run {0}pp.
+        '''</summary>
+        Friend ReadOnly Property REPORT_RUN_SPLINE() As String
+            Get
+                Return ResourceManager.GetString("REPORT_RUN_SPLINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run {0}v.
+        '''</summary>
+        Friend ReadOnly Property REPORT_RUN_V() As String
+            Get
+                Return ResourceManager.GetString("REPORT_RUN_V", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run {0}v {1}pp.
+        '''</summary>
+        Friend ReadOnly Property REPORT_RUN_V_SPLINE() As String
+            Get
+                Return ResourceManager.GetString("REPORT_RUN_V_SPLINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to not needed.
+        '''</summary>
+        Friend ReadOnly Property REPORT_SKIPPED() As String
+            Get
+                Return ResourceManager.GetString("REPORT_SKIPPED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to success.
+        '''</summary>
+        Friend ReadOnly Property REPORT_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("REPORT_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Error.
         '''</summary>
         Friend ReadOnly Property STATE_ITERATION_ERROR() As String

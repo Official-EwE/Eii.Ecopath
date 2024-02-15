@@ -29,6 +29,7 @@ Option Strict On
 
 Imports System.IO
 Imports System.Text
+Imports System.Web
 Imports EwECore
 Imports EwECore.Ecosim
 Imports EwECore.FitToTimeSeries
@@ -59,6 +60,8 @@ Public MustInherit Class cSFPGenericIteration
 
     Private m_parameters As cSFPParameters = Nothing
 
+    Private m_report As New List(Of String)
+
 #End Region ' Private variables
 
     ''' -----------------------------------------------------------------------
@@ -86,6 +89,12 @@ Public MustInherit Class cSFPGenericIteration
         'Allocate memory for time series SS results
         ReDim Me.m_timeseriesSS(core.TimeSeriesDataset(Me.Parameters.TimeSeriesDataset).nTimeSeries)
 
+    End Sub
+
+    Public Sub InitRun() Implements ISFPIteration.InitRun
+        Me.Clear()
+        Me.m_report.Clear()
+        Me.RunState = If(Me.Enabled, ISFPIteration.eRunState.Pending, ISFPIteration.eRunState.Idle)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -191,6 +200,11 @@ Public MustInherit Class cSFPGenericIteration
 
         'Reset fishing effort shapes
         core.FishingEffortShapeManager.ResetToDefaults()
+        Me.Report(My.Resources.REPORT_RESET_EFFORT, eReportState.Success)
+
+        ' Quick count
+        Dim nRef As Integer = 0
+        Dim nDrv As Integer = 0
 
         Select Case Me.BaseSearchMode
 
@@ -221,9 +235,13 @@ Public MustInherit Class cSFPGenericIteration
                         ts.WtType = Me.Parameters.OriginalTimeSeriesWeight(i)
                         If ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
                             ts.Enabled = ts.Enabled And Me.Parameters.EnableAbsoluteBiomassTimeSeries
+                            nRef += 1
+                        Else
+                            nRef += 1
                         End If
                     Else
                         ts.Enabled = False
+                        nDrv += 0 ' Teehee
                     End If
                 Next
 
@@ -232,6 +250,8 @@ Public MustInherit Class cSFPGenericIteration
                 For i As Integer = 1 To dataset.nTimeSeries
                     'Enable Time Series
                     Dim ts As cTimeSeries = dataset.TimeSeries(i)
+                    If (ts.IsReference) Then nRef += 1 Else nDrv += 1
+
                     ts.Enabled = Me.Parameters.OriginalTimeSeriesEnabled(i)
                     ts.WtType = Me.Parameters.OriginalTimeSeriesWeight(i)
                 Next
@@ -243,6 +263,8 @@ Public MustInherit Class cSFPGenericIteration
 
         'Apply the enabled time series
         core.UpdateTimeSeries(False)
+
+        Me.Report(cStringUtils.Localize(My.Resources.REPORT_ENABLED_TIMESERIES, nRef, nDrv, dataset.nTimeSeries), eReportState.Success)
 
         Return True
 
@@ -352,6 +374,22 @@ Public MustInherit Class cSFPGenericIteration
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="ISFPIteration.Report()"/>
+    ''' -----------------------------------------------------------------------
+    Public Function Report() As String Implements ISFPIteration.Report
+
+        If (Me.RunState <> ISFPIteration.eRunState.Completed) Then Return ""
+
+        Dim sb As New StringBuilder()
+        sb.AppendLine(String.Format("Iteration '{0}', SS {1}, AIC {2}, AICC {3}", Me.Name, Me.m_ss, Me.m_aic, Me.m_aicc))
+        For i As Integer = 0 To Me.m_report.Count - 1
+            sb.AppendLine(" - " & Me.m_report(i))
+        Next
+        Return sb.ToString()
+
+    End Function
+
 #End Region ' Accessors
 
 #Region " Running "
@@ -367,7 +405,13 @@ Public MustInherit Class cSFPGenericIteration
         ' Skip V resetting if requested
         If (Not Me.Parameters.ResetVsOnRun) Then Return True
         ' Suppress prompt, just reset the vulnerabilities without asking
-        Return core.CheckResetDefaultVulnerabilities(True)
+        If core.CheckResetDefaultVulnerabilities(True) Then
+            Me.Report(My.Resources.REPORT_RESET_V, eReportState.Success)
+            Return True
+        Else
+            Me.Report(My.Resources.REPORT_RESET_V, eReportState.Skipped)
+            Return False
+        End If
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -378,26 +422,36 @@ Public MustInherit Class cSFPGenericIteration
     ''' -----------------------------------------------------------------------
     Protected Function RunSensitivityOfSSToV(core As cCore) As Boolean
 
-        Dim bOK As Boolean = False
         Dim man As cF2TSManager = core.EcosimFitToTimeSeries
+        Dim msg As String = ""
+        Dim bOK As Boolean = False
+
         'Set the number of blocks selected to Max K
         man.nBlockCodes = Me.Parameters.K
 
         'If PredOrPredPreySSToV = true then run SS2VBy Predator
         Select Case Me.Parameters.VulSearchMode
             Case ISFPIteration.eVulSearchMode.Predator
+                msg = cStringUtils.Localize(My.Resources.REPORT_RUN_SENSV_PRED, Me.Parameters.K)
                 If man.RunSensitivitySS2VByPredator(True, TriState.False) Then
                     Debug.Assert(Not man.IsRunning)
                     'Set vulnerabiltiy blocks
                     man.setNBlocksFromSensitivity(Me.Parameters.K)
+                    Me.Report(msg, eReportState.Success)
                     bOK = True
+                Else
+                    Me.Report(msg, eReportState.Error)
                 End If
             Case ISFPIteration.eVulSearchMode.PredPrey
+                msg = cStringUtils.Localize(My.Resources.REPORT_RUN_SENSV_PREDPREY, Me.Parameters.K)
                 If man.RunSensitivitySS2VByPredPrey(True, TriState.False) Then
                     Debug.Assert(Not man.IsRunning)
                     'Set vulnerabiltiy blocks
                     man.setNBlocksFromSensitivity(Me.Parameters.K)
+                    Me.Report(msg, eReportState.Success)
                     bOK = True
+                Else
+                    Me.Report(msg, eReportState.Error)
                 End If
             Case Else
                 Debug.Assert(False, "Unsupported enum")
@@ -414,29 +468,9 @@ Public MustInherit Class cSFPGenericIteration
     ''' <returns>True if a run started successfully.</returns>
     ''' -----------------------------------------------------------------------
     Protected Function RunEcosim(core As cCore) As Boolean
-        Return core.RunEcosim(Nothing, False)
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Run Vulnerability Search iterations according to k estimated parameters
-    ''' </summary>
-    ''' <returns>True if run successful</returns>
-    ''' -----------------------------------------------------------------------
-    Protected Function RunVulnerabilitySearch(core As cCore) As Boolean
-
-        Dim man As cF2TSManager = core.EcosimFitToTimeSeries
-
-        'Setup manager to do a vunerability search
-        man.VulnerabilitySearch = True
-        man.AnomalySearch = False
-        man.VulnerabilityVariance = 10.0
-        'Set the number of blocks selected (Number of parameters to estimate)
-        man.nBlockCodes = Me.EstimatedV
-
-        ' Run the search silently
-        Return man.RunSearch(True, TriState.False)
-
+        Dim bSuccess As Boolean = core.RunEcosim(Nothing, False)
+        Me.Report(My.Resources.REPORT_RUN_ECOSIM, If(bSuccess, eReportState.Success, eReportState.Error))
+        Return bSuccess
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -456,10 +490,12 @@ Public MustInherit Class cSFPGenericIteration
                 shape.ShapeData(i) = sDefaultValue
             Next i
             shape.Update()
+            Me.Report(cStringUtils.Localize(My.Resources.REPORT_RESET_SPLINE, shape.Name), eReportState.Success)
+        Else
+            Me.Report(cStringUtils.Localize(My.Resources.REPORT_RESET_SPLINE, ""), eReportState.Error, My.Resources.REPORT_ERROR_NO_SPLINE)
         End If
 
         ' #1421: do not affect other shapes
-
         ''More than one shape can be applied so reset the other shapes 
         'Dim interactions As cMediatedInteractionManager = core.MediatedInteractionManager
         'For Each shape In core.ForcingShapeManager
@@ -484,6 +520,34 @@ Public MustInherit Class cSFPGenericIteration
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Run Vulnerability Search iterations according to k estimated parameters
+    ''' </summary>
+    ''' <returns>True if run successful</returns>
+    ''' -----------------------------------------------------------------------
+    Protected Function RunVulnerabilitySearch(core As cCore) As Boolean
+
+        Dim man As cF2TSManager = core.EcosimFitToTimeSeries
+        Dim msg As String = cStringUtils.Localize(My.Resources.REPORT_RUN_V, Me.EstimatedV)
+
+        'Setup manager to do a vunerability search
+        man.VulnerabilitySearch = True
+        man.AnomalySearch = False
+        man.VulnerabilityVariance = 10.0
+        'Set the number of blocks selected (Number of parameters to estimate)
+        man.nBlockCodes = Me.EstimatedV
+
+        ' Run the search silently
+        If man.RunSearch(True, TriState.False) Then
+            Me.Report(msg, eReportState.Success)
+            Return True
+        Else
+            Me.Report(msg, eReportState.Error)
+            Return False
+        End If
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Run Anomaly Search according to spline point estimated parameters. This search will only run if a FF is applied to a PP.
     ''' </summary>
     ''' <returns>True if run successful</returns>
@@ -492,6 +556,7 @@ Public MustInherit Class cSFPGenericIteration
 
         Dim man As cF2TSManager = core.EcosimFitToTimeSeries
         Dim iTS As Integer = Me.Parameters.TimeSeriesDataset
+        Dim msg As String = cStringUtils.Localize(My.Resources.REPORT_RUN_SPLINE, Me.SplinePoints)
         Dim bSuccess As Boolean = False
 
         'If there is no applied shape do not run search (This is already checked by the cSFPManager but just to make sure)
@@ -511,7 +576,12 @@ Public MustInherit Class cSFPGenericIteration
             If man.RunSearch(True, TriState.False) Then
                 Debug.Assert(Not man.IsRunning)
                 bSuccess = True
+                Me.Report(msg, eReportState.Success)
+            Else
+                Me.Report(msg, eReportState.Error)
             End If
+        Else
+            Me.Report(msg, eReportState.Error, My.Resources.REPORT_ERROR_NO_SPLINE)
         End If
 
         Return bSuccess
@@ -528,6 +598,7 @@ Public MustInherit Class cSFPGenericIteration
 
         Dim man As cF2TSManager = core.EcosimFitToTimeSeries
         Dim iTS As Integer = Me.Parameters.TimeSeriesDataset
+        Dim msg As String = cStringUtils.Localize(My.Resources.REPORT_RUN_SPLINE, Me.EstimatedV, Me.SplinePoints)
         Dim bSuccess As Boolean = False
 
         'If there is an applied shape and a sensitivity search has been ran : run the search
@@ -551,7 +622,12 @@ Public MustInherit Class cSFPGenericIteration
             If man.RunSearch(True, TriState.False) Then
                 Debug.Assert(Not man.IsRunning)
                 bSuccess = True
+                Me.Report(msg, eReportState.Success)
+            Else
+                Me.Report(msg, eReportState.Error)
             End If
+        Else
+            Me.Report(msg, eReportState.Error, My.Resources.REPORT_ERROR_NO_SPLINE)
         End If
 
         Return bSuccess
@@ -564,6 +640,7 @@ Public MustInherit Class cSFPGenericIteration
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Overridable Sub Clear()
+
         Me.m_lRunMessages.Clear()
 
         ' Do not delete memory allocate in init. Wiping array content should be enough
@@ -574,6 +651,7 @@ Public MustInherit Class cSFPGenericIteration
         'Me.m_anomalyshape = Nothing
         'Me.m_vulnerabilities = Nothing
         'Me.m_fishmortshapes.Clear()
+
     End Sub
 
 #End Region ' Running
@@ -625,6 +703,39 @@ Public MustInherit Class cSFPGenericIteration
 #End Region ' Formatting
 
 #Region " Internals "
+
+    Protected Enum eReportState As Integer
+        Skipped
+        Success
+        [Error]
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Adds an entry to the report.
+    ''' </summary>
+    ''' <param name="msg">The msg to add to the report.</param>
+    ''' <param name="state">Report statel</param>
+    ''' <param name="detail">Optional details to add</param>
+    ''' -----------------------------------------------------------------------
+    Protected Sub Report(msg As String, state As eReportState, Optional detail As String = "")
+
+        Dim succ As String = ""
+        Select Case state
+            Case eReportState.Error : succ = My.Resources.REPORT_ERROR
+            Case eReportState.Skipped : succ = My.Resources.REPORT_SKIPPED
+            Case eReportState.Success : succ = My.Resources.REPORT_SUCCESS
+        End Select
+
+        Dim entry As String = ""
+        If String.IsNullOrEmpty(detail) Then
+            entry = cStringUtils.Localize(My.Resources.REPORT_FORMAT, msg, succ)
+        Else
+            entry = cStringUtils.Localize(My.Resources.REPORT_FORMAT_DETAIL, msg, succ, detail)
+        End If
+
+        Me.m_report.Add(entry)
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
