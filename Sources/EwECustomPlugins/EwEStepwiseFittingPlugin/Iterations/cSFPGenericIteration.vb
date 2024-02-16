@@ -510,6 +510,13 @@ Public MustInherit Class cSFPGenericIteration
         Return True
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the actual selected PP shape.
+    ''' </summary>
+    ''' <param name="core"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Protected Function GetAppliedShape(core As cCore) As cShapeData
         Dim man As cForcingFunctionShapeManager = core.ForcingShapeManager
         If (Me.Parameters.AnomalyShapeIndex > 0) Then
@@ -660,7 +667,7 @@ Public MustInherit Class cSFPGenericIteration
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Return name of run 
+    ''' Returns the iteration base name.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Function BaselineOrFishing() As String
@@ -677,7 +684,7 @@ Public MustInherit Class cSFPGenericIteration
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Return name of hypothesis 
+    ''' Returns the name of the hypotheses for this iteration.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Overridable ReadOnly Property Name() As String _

@@ -390,6 +390,7 @@ Public Class cEcospaceImportExportXYData
             If String.IsNullOrWhiteSpace(strField) Then
                 strField = cEcospaceImportExportXYData.cMAPPING_IMPLICIT
             End If
+            Debug.Assert(Me.m_buffer(strField)(iCell) Is Nothing)
             Me.m_buffer(strField)(iCell) = value
         End Set
     End Property
