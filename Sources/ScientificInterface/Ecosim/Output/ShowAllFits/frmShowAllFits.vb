@@ -315,8 +315,7 @@ Namespace Ecosim
 
                                     Select Case gts.TimeSeriesType
 
-                                        Case eTimeSeriesType.Catches,
-                                             eTimeSeriesType.CatchesRel
+                                        Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesRel
                                             simdata(iTime) = grpOutput.Catch(iTime)
 
                                         Case eTimeSeriesType.TotalMortality
@@ -649,8 +648,7 @@ Namespace Ecosim
                                         sw.Write(",")
                                     End If
                                 Case eAllFitFile.Discards
-                                    If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing _
-                                        Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
+                                    If ts.TimeSeriesType = eTimeSeriesType.Discards Then
                                         sw.Write(cStringUtils.ToCSVField("discards (predicted) " & ts.Name))
                                         sw.Write(",")
                                         sw.Write(cStringUtils.ToCSVField("discards (observed)" & ts.Name))
@@ -708,8 +706,7 @@ Namespace Ecosim
                                             sw.Write(",")
                                         End If
                                     Case eAllFitFile.Catch
-                                        If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing _
-                                            Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
+                                        If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then

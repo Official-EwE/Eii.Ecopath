@@ -1285,19 +1285,34 @@ Public Class cEwEEcologicalIndicatorsPlugin
             Next
         Next
 
+        ' JS 09Feb24: the bit below did not save all cells. No idea why. 
+        'For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
+        '    For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+        '        Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+        '        For iInfo As Integer = 0 To grp.NumIndicators - 1
+        '            Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+        '            If info.Enabled Then
+        '                exp.Value(ind.Location.Y, ind.Location.X, info.OutputName) = info.GetValue(ind)
+        '            End If
+        '        Next iInfo
+        '    Next iGrp
+        'Next ind
+
         Dim exp As New cEcospaceImportExportXYData(Me.m_core, fields.ToArray())
-        ' Write line for cell
-        For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
-            For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-                Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
-                For iInfo As Integer = 0 To grp.NumIndicators - 1
-                    Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                    If info.Enabled Then
+        For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+            For iInfo As Integer = 0 To grp.NumIndicators - 1
+                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+                If info.Enabled Then
+                    Dim n As Integer = 0
+                    For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
                         exp.Value(ind.Location.Y, ind.Location.X, info.OutputName) = info.GetValue(ind)
-                    End If
-                Next iInfo
-            Next iGrp
-        Next ind
+                        n += 1
+                    Next
+                    Debug.Assert(n = Me.m_ecospaceDS.nWaterCells)
+                End If
+            Next iInfo
+        Next iGrp
 
         ' Done
         exp.WriteXYFile(fout, SharedResources.HEADER_COL, SharedResources.HEADER_ROW)

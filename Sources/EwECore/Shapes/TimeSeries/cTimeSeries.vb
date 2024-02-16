@@ -284,23 +284,32 @@ Public MustInherit Class cTimeSeries
         If DatType = eTimeSeriesType.NotSet Then Return False
         Select Case DatType
             Case eTimeSeriesType.BiomassForcing,
-                     eTimeSeriesType.CatchesForcing, eTimeSeriesType.TimeForcing,
-                     eTimeSeriesType.FishingEffort, eTimeSeriesType.FishingMortality, eTimeSeriesType.ConstantTotalMortality,
-                     eTimeSeriesType.DiscardMortality, eTimeSeriesType.DiscardProportion,
-                     eTimeSeriesType.Catchabilities,
-                     eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel,
-                     eTimeSeriesType.EffortCost, eTimeSeriesType.EffortCostRel,
-                     eTimeSeriesType.SailCost, eTimeSeriesType.SailCostRel,
-                     eTimeSeriesType.FixedCost, eTimeSeriesType.FixedCostRel
+                 eTimeSeriesType.CatchesForcing,
+                 eTimeSeriesType.TimeForcing,
+                 eTimeSeriesType.FishingEffort,
+                 eTimeSeriesType.FishingMortality,
+                 eTimeSeriesType.ConstantTotalMortality,
+                 eTimeSeriesType.DiscardMortality,
+                 eTimeSeriesType.DiscardProportion,
+                 eTimeSeriesType.Catchabilities,
+                 eTimeSeriesType.OffVesselPrice,
+                 eTimeSeriesType.OffVesselPriceRel,
+                 eTimeSeriesType.EffortCost,
+                 eTimeSeriesType.EffortCostRel,
+                 eTimeSeriesType.SailCost,
+                 eTimeSeriesType.SailCostRel,
+                 eTimeSeriesType.FixedCost,
+                 eTimeSeriesType.FixedCostRel
                 Return True
             Case eTimeSeriesType.BiomassRel,
-                     eTimeSeriesType.BiomassAbs,
-                     eTimeSeriesType.TotalMortality, eTimeSeriesType.FishingMortalityRef,
-                     eTimeSeriesType.AverageWeight,
-                     eTimeSeriesType.Catches,
-                     eTimeSeriesType.CatchesRel,
-                     eTimeSeriesType.Discards,
-                     eTimeSeriesType.Landings
+                 eTimeSeriesType.BiomassAbs,
+                 eTimeSeriesType.TotalMortality,
+                 eTimeSeriesType.FishingMortalityRef,
+                 eTimeSeriesType.AverageWeight,
+                 eTimeSeriesType.Catches,
+                 eTimeSeriesType.CatchesRel,
+                 eTimeSeriesType.Discards,
+                 eTimeSeriesType.Landings
                 Return False
             Case Else
                 Debug.Assert(False, "Time series type " & DatType & " not accounted for")
