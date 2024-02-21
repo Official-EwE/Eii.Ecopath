@@ -1,0 +1,112 @@
+FutureMares changes 
+
+EwE 6.7.0.18699
+=============================
+Major: EcoIND Ecospace maps fully populated
+
+
+EwE 6.7.0.18662
+=============================
+Major: Time series now displayed as expected on Ecosim group and fleet plots
+Major: MSP tools debugged and operational; getting ready for MSP Challenge fisheries upgrade
+
+EwE 6.7.0.18652
+=============================
+Major: The erased catches fix caused errors on importing time series. All seems OK now
+Major: MCMC normal distribution sampling now works as expected
+
+EwE 6.7.0.18646
+=============================
+Major: F time series release fix had a side effect, erasing all catches under certain circumstances
+Tweak: EwE can now also stop a computer from restarting while the model is busy or has unsaved changes
+
+EwE 6.7.0.18608 - 13 January 2024
+=============================
+Major: Ecosim results correctly partition surviving discards when driven via time series
+Major: Ecosim fleet costing time series apply correctly
+Major: Ecosim discard survival time series apply correctly
+Major: Stepwise Fitting iterations apply successfully to Ecosim, giving the same SS for baseline iterations
+Major: Ecosim F time series now correctly release fishing mortality trends when disabled (also stopped STF from working correctly)
+Major: Ecotracer multi-threading issue fixed that caused 'banding' patterns in environmental concentrations
+Tweak: Added search for groups with time series to Stepwise Fitting
+
+EwE 6.7.0.18558 - 29 Oct 2023
+=============================
+Critical: Ecospace performing dramatically different when reordering groups. This was a shared arenas defaults issue.
+Major: Editing a group+fleet time time series in the values dialog and pressing [ok] no longer causes an indefinite wait cursor
+Major: Ecospace region output correctly handles regions with zero cells
+Minor: Ecosim group plots show "all fleets" item to switch back to "all fleets" view
+Minor: Ecopath discard mortality grid does not show the first group
+Minor: Pasting values in the EwE grids honours space-separated field values
+Minor: Edit fleets dialogue now supports pasting a list of names
+Tweak: "Region from habitats/MPAs" user interface supports aggregation
+
+EwE 6.7.0.18536 - 20 Oct 2023
+============================
+Major: Monte Carlo might generate models that Ecopath rejects and creates a UI lock-up, making it impossible to edit the model
+Tweak: Fixed Ecopath off-vessel price units
+Feature: Ecospace Run > effort maps now show MPA cells for all cells currently closing off a cell for each fleet
+
+EwE 6.7.0.18532 - 10 Oct 2023
+=============================
+Major: Ecospace regional average values now written out from correct Ecospace data
+Minor: Fixed units for Ecospace regional average output
+Feature: Run Ecospace > Fleet effort maps maps now shows only those MPA cells that close an area for a given fleet
+Feature: Autosave header now includes model source location
+
+EwE 6.7.0.18527 - 9 Oct 2023
+============================
+Major: Ecospace regional averages were not reporting catches. Is now fixed
+Feature: Ecospace regional averages now include Other mortality, Consumption, Landings and Value
+
+EwE 6.7.0.18524 - 4 Oct 2023
+============================
+Critical: Monte Carlo works again with altered Ecopath avoiding negative respiration
+Major: Ecosim group plots also shows remaining time series when a fleet is selected
+Tweak: Ecosim group plots content reogranized, with fleet box moved up to facilate fleet selections
+Tweak: Fleet and group listboxes slightly redesigned, with smaller colour boxes and more room for label text
+Tweak: Fleet and group listboxes finally respond correctly to right-to-left reading order locales
+
+EwE 6.7.0.18520 - 3 Oct 2023
+============================
+Major: Ecosim group plots now allow for ah additional fleets to show time series that do not work with cumulative plots
+Major: F data no longer cleared out by F time series in Ecosim group plots
+Major: fleet-only time series can enable again
+Major: time series exported correctly again
+Minor: units were wrong on value columns in fleet definition form
+Tweak: cleaned up exported time series template
+
+EwE 6.7.0.18512 - 1 Oct 2023
+============================
+Major: Fixed Riikka's but where Ecosampler records prevented a fleet from getting deleted
+Major: Fixed bug where EcoIND was computing for excluded cells
+Major: Fixed bug where fleet costing relative time series were not applied correctly
+Minor: Fixed Chris' bug where the Run Ecospace form got confused between groups, fleets and drivers
+Minor: Fixed Chris' bug where Ecospace CSV output had tiny numbers for land or excluded cells
+Minor: Fixed Marta's bug where Ecopath discard mortality form was showing wrong indexes
+Minor: Fixed Xavier's bug where the "Set number of regions" box fired up twice in a row
+Minor: Fixed bug where trait grids showed a "?" for units. Bwech.
+Minor: Fixed inconsistencies in plug-in categories while installing EwE
+Feature: Added biomass emitter
+Feature: Biomass emitter can target habitat maps to facilitate habitat restoration
+Feature: Biomass emitter can add biomass to facilitate habitat restoration
+Feature: Discard proportion (10) and discard mortality (11) time series can be applied to group 0 (all at once)
+Feature: Relative off-vessel price (-15) time series can be applied to group 0 (all at once)
+Feature: Shared arenas are kept at defaults (but they can be reactivated with one statement in the code)
+Feature: Added MSP Challenge integration tools
+Tweak: Updated biomass emitter manual
+
+Note: 
+====
+Time series 10, 11 and -15 can target all groups in a fleet by specifying group 0. You can still
+provide individual fleet+group time series of these types, which get presedence:
+
+	Has time series value fleet + group? 
+	Yes: 
+		Use that
+	No:
+		Has time series value fleet + 0?
+		Yes: 
+			Use that
+		No:
+			Do not apply time series value
