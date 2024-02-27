@@ -84,6 +84,7 @@ Public Class frmMPADynamics
         Me.m_tsbnShowMonths.Image = SharedResources.CalendarHS
         Me.m_tsbnShowFleets.Image = SharedResources.fishing_gear
         Me.m_tsbnExport.Image = SharedResources.ExportHS
+        Me.m_tsbnRun.Image = SharedResources.PlayHS
         Me.m_tsbnAutosave.Image = SharedResources.AutoSaveHS
 
         For i As Integer = 0 To Me.Core.nFleets
@@ -107,6 +108,7 @@ Public Class frmMPADynamics
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
         Me.m_tsbnAutosave.Checked = Me.m_pi.AutoSave
+        Me.m_tsbnRun.Checked = Me.m_engine.Autorun
     End Sub
 
     Public Overrides Sub OnCoreMessage(msg As cMessage)
@@ -127,6 +129,11 @@ Public Class frmMPADynamics
 #End Region ' Overrides
 
 #Region " Event handlers "
+
+    Private Sub OnAutorunClick(sender As Object, e As EventArgs) Handles m_tsbnRun.Click
+        Me.m_engine.Autorun = Not Me.m_engine.Autorun
+        Me.UpdateControls()
+    End Sub
 
     Private Sub OnAutosaveClick(sender As Object, e As EventArgs) Handles m_tsbnAutosave.Click
         Me.m_pi.AutoSave = Not Me.m_pi.AutoSave

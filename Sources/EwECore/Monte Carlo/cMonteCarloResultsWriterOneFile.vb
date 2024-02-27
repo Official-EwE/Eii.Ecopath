@@ -246,14 +246,17 @@ Public Class cMonteCarloResultsWriterOneFile
         Try
             If Not Me.IsSaving() Then Return
 
-            Dim strm As New StreamWriter(Me.OutputFilename)
-
             If Me.Core.SaveWithFileHeader Then
-                strm.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
+                Using sw As New StreamWriter(Me.OutputFilename)
+                    Dim dtFields As New Dictionary(Of String, String)
+
+                    dtFields("NumberOfGroups") = CStr(Me.Core.nGroups)
+                    dtFields("NumberOfTrials") = CStr(Me.MC.Ntrials)
+
+                    sw.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.MonteCarlo, extraFields:=dtFields))
+                    sw.Flush()
+                End Using
             End If
-            strm.Write(cStringUtils.ToCSVField("Num. groups") & "," & Me.Core.nGroups)
-            strm.Write(cStringUtils.ToCSVField("Num. trials") & "," & Me.MC.Ntrials)
-            strm.Close()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".WriteHeader() Exception: " & ex.Message)

@@ -316,8 +316,8 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         End Get
     End Property
 
-    Protected Sub WriteRunInfo(strm As StreamWriter)
-        strm.Write(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
+    Protected Sub WriteRunInfo(strm As StreamWriter, Optional extra As Dictionary(Of String, String) = Nothing)
+        strm.Write(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace, extraFields:=extra))
     End Sub
 
     ''' <summary>

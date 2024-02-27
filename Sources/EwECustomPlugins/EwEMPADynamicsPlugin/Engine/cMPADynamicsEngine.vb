@@ -166,24 +166,27 @@ Public Class cMPADynamicsEngine
                     bSucces = bSucces And Date.TryParseExact(CStr(drow("date")), sFORMATS, sLOCALE, DateTimeStyles.None, timestamp)
                 End If
 
-                If (iMPA >= 1) And bSucces Then
-                    Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
-                    For i As Integer = 1 To cCore.N_MONTHS
-                        state.IsClosed(i) = Me.IsEnforced(Me.ReadSafe(drow, "m" & i, ""))
-                    Next
+                If (timestamp > Me.m_core.EcospaceTimestepToAbsoluteTime(1)) Then
 
-                    For i As Integer = 1 To Me.m_core.nFleets
-                        state.IsEnforced(i) = Me.IsEnforced(Me.ReadSafe(drow, "f" & i, ""))
-                    Next
+                    If (iMPA >= 1) And bSucces Then
+                        Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
+                        For i As Integer = 1 To cCore.N_MONTHS
+                            state.IsClosed(i) = Me.IsEnforced(Me.ReadSafe(drow, "m" & i, ""))
+                        Next
 
-                    If (Not Me.m_dtStates.ContainsKey(timestamp)) Then
-                        Me.m_dtStates(timestamp) = New List(Of cMPAState)
-                    End If
-                    Me.m_dtStates(timestamp).Add(state)
-                Else
-                    Dim strError As String = cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN, CStr(drow("MPA")))
-                    If (lDetails.IndexOf(strError) = -1) Then
-                        lDetails.Add(strError)
+                        For i As Integer = 1 To Me.m_core.nFleets
+                            state.IsEnforced(i) = Me.IsEnforced(Me.ReadSafe(drow, "f" & i, ""))
+                        Next
+
+                        If (Not Me.m_dtStates.ContainsKey(timestamp)) Then
+                            Me.m_dtStates(timestamp) = New List(Of cMPAState)
+                        End If
+                        Me.m_dtStates(timestamp).Add(state)
+                    Else
+                        Dim strError As String = cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN, CStr(drow("MPA")))
+                        If (lDetails.IndexOf(strError) = -1) Then
+                            lDetails.Add(strError)
+                        End If
                     End If
                 End If
 

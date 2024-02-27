@@ -1104,7 +1104,10 @@ Public MustInherit Class cSFPGenericIteration
                     If Me.Parameters.SaveHeaders Then
                         dtFields("IterationName,") = Me.Name
                         dtFields("Data") = "Vulnerabilities"
-                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:== dtFields))
+
+                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:=dtFields))
+                        writer.WriteLine()
+
                         dtFields.Clear()
                     End If
 
@@ -1130,7 +1133,10 @@ Public MustInherit Class cSFPGenericIteration
                     If (Me.Parameters.SaveHeaders) Then
                         dtFields("IterationName,") = Me.Name
                         dtFields("Data") = "Vulnerabilities"
+
                         writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:=dtFields))
+                        writer.WriteLine()
+
                         dtFields.Clear()
                     End If
 
@@ -1165,7 +1171,10 @@ Public MustInherit Class cSFPGenericIteration
                     If (Me.Parameters.SaveHeaders) Then
                         dtFields("IterationName,") = Me.Name
                         dtFields("Data") = "Anommaly"
+
                         writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:=dtFields))
+                        writer.WriteLine()
+
                         dtFields.Clear()
                     End If
                     For i As Integer = 0 To Me.AnomalyShape.Length - 1
@@ -1186,7 +1195,10 @@ Public MustInherit Class cSFPGenericIteration
                     If (Me.Parameters.SaveHeaders) Then
                         dtFields("IterationName,") = Me.Name
                         dtFields("Data") = "Anommaly"
+
                         writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:=dtFields))
+                        writer.WriteLine()
+
                         dtFields.Clear()
                     End If
 
