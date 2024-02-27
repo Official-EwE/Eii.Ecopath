@@ -1069,6 +1069,7 @@ Public MustInherit Class cSFPGenericIteration
         Dim strIterationPath As String = Path.Combine(Me.Parameters.IterationOutputFolder, cFileUtils.ToValidFileName(Me.Name, False))
         Dim writer As StreamWriter = Nothing
         Dim bSuccess As Boolean = True
+        Dim dtFields As New Dictionary(Of String, String)
 
         ' Abort if not ran completed
         ' Note that this assumes that the directory is vigin territory... failed iterations are not obliterated. EwE always makes this harsh assumption, eek
@@ -1101,10 +1102,10 @@ Public MustInherit Class cSFPGenericIteration
                 If (Me.Vulnerabilities IsNot Nothing) Then
                     ' Include default header if needed
                     If Me.Parameters.SaveHeaders Then
-                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                        writer.WriteLine("Iteration Name," + Me.Name)
-                        writer.WriteLine("Data,Vulnerabilities")
-                        writer.WriteLine()
+                        dtFields("IterationName,") = Me.Name
+                        dtFields("Data") = "Vulnerabilities"
+                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:== dtFields))
+                        dtFields.Clear()
                     End If
 
                     ' -- Write header --
@@ -1127,10 +1128,10 @@ Public MustInherit Class cSFPGenericIteration
                 If (Me.Vulnerabilities IsNot Nothing) Then
                     ' Include default header if needed
                     If (Me.Parameters.SaveHeaders) Then
-                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                        writer.WriteLine("Iteration Name," + Me.Name)
-                        writer.WriteLine("Data,Vulnerabilities")
-                        writer.WriteLine()
+                        dtFields("IterationName,") = Me.Name
+                        dtFields("Data") = "Vulnerabilities"
+                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:=dtFields))
+                        dtFields.Clear()
                     End If
 
                     For i As Integer = 1 To core.nGroups
@@ -1162,10 +1163,10 @@ Public MustInherit Class cSFPGenericIteration
                 If (Me.AnomalyShape IsNot Nothing) Then
                     ' Include default header if needed
                     If (Me.Parameters.SaveHeaders) Then
-                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                        writer.WriteLine("Iteration Name," + Me.Name)
-                        writer.WriteLine("Data,Anomaly")
-                        writer.WriteLine()
+                        dtFields("IterationName,") = Me.Name
+                        dtFields("Data") = "Anommaly"
+                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:=dtFields))
+                        dtFields.Clear()
                     End If
                     For i As Integer = 0 To Me.AnomalyShape.Length - 1
                         If (i >= 1) Then writer.Write(",")
@@ -1183,10 +1184,10 @@ Public MustInherit Class cSFPGenericIteration
                     ' Include default header if needed
                     ' Include default header if needed
                     If (Me.Parameters.SaveHeaders) Then
-                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                        writer.WriteLine("Iteration Name," + Me.Name)
-                        writer.WriteLine("Data,Anomaly")
-                        writer.WriteLine()
+                        dtFields("IterationName,") = Me.Name
+                        dtFields("Data") = "Anommaly"
+                        writer.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:=dtFields))
+                        dtFields.Clear()
                     End If
 
                     For i As Integer = 0 To Me.AnomalyShape.Length - 1
