@@ -484,7 +484,7 @@ Public Class cMessageHistory
                     End Select
                 End If
             Catch ex As Exception
-                Debug.Assert(False, ex.Message)
+                'Debug.Assert(False, ex.Message)
             End Try
         End If
 

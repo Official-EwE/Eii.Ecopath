@@ -2772,9 +2772,8 @@ Public Class cCore
     ''' <summary>
     ''' Flag, stating whether results should be saved with default header information.
     ''' </summary>
-    ''' <seealso cref="ExtraFileHeaderFields"/>
-    ''' <seealso cref="DefaultFileHeader(eAutosaveTypes, Integer)"/>
-    ''' <seealso cref="DefaultFileHeader(XmlDocument, eAutosaveTypes, Integer)"/>
+    ''' <seealso cref="DefaultFileHeader(eAutosaveTypes, Integer, Dictionary(Of String, String))"/>
+    ''' <seealso cref="DefaultFileHeader(XmlDocument, eAutosaveTypes, Integer, Dictionary(Of String, String))"/>
     ''' -----------------------------------------------------------------------
     Public Property SaveWithFileHeader As Boolean
         Get
@@ -2834,7 +2833,8 @@ Public Class cCore
                 fields("MapLongitude") = cStringUtils.FormatNumber(Me.m_EcospaceData.Lon1)
                 fields("NoActiveCells") = cStringUtils.FormatNumber(ld.NumActiveCells)
                 fields("EcoSpaceTimeStepLength") = cStringUtils.FormatNumber(Me.m_EcospaceData.TimeStep)
-                fields("CoordinateSystemWKT)") = Me.m_EcospaceData.ProjectionString.Replace("""", "'")
+                fields("CoordinateSystemWKT") = Me.m_EcospaceData.ProjectionString.Replace("""", "'")
+                fields("ExternalDataConfigFile") = Me.SpatialDatasetManager.CurrentConfigFile
 
                 ' Gather spat temp connections
                 Try
@@ -2862,17 +2862,6 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' A 'fieldname'='fieldvalue' dictionary of extra fields to append to the default 
-    ''' file header.
-    ''' </summary>
-    ''' <seealso cref="DefaultFileHeader(eAutosaveTypes, Integer)"/>
-    ''' <seealso cref="DefaultFileHeader(XmlDocument, eAutosaveTypes, Integer)"/>
-    ''' <seealso cref="SaveWithFileHeader"/>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ExtraFileHeaderFields As New Dictionary(Of String, String)
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Returns a default file header for text files for a given 
     ''' <see cref="eAutosaveTypes">auto-save type</see>, representing loaded
     ''' aspects of ecopath, ecosim, ecospace and ecotracer, where applicable.
@@ -2885,14 +2874,16 @@ Public Class cCore
     ''' omitted, the <see cref="cCore.EcosimFirstYear"/> will be used.</param>
     ''' <returns>A text block safe for integration in CSV files.</returns>
     ''' <seealso cref="SaveWithFileHeader"/>
-    ''' <seealso cref="DefaultFileHeader(XmlDocument, eAutosaveTypes, Integer)"/>
-    ''' <seealso cref="ExtraFileHeaderFields"/>
+    ''' <seealso cref="DefaultFileHeader(XmlDocument, eAutosaveTypes, Integer, Dictionary(Of String, String))"/>
     ''' -----------------------------------------------------------------------
     Public Function DefaultFileHeader(savetype As eAutosaveTypes,
-                                      Optional iStartYear As Integer = cCore.NULL_VALUE) As String
+                                      Optional iStartYear As Integer = cCore.NULL_VALUE,
+                                      Optional extraFields As Dictionary(Of String, String) = Nothing) As String
 
         Dim sb As New StringBuilder()
         Dim sm As cCoreStateMonitor = Me.StateMonitor
+
+        If (iStartYear <= 0) Then iStartYear = Me.EcosimFirstYear
 
         sb.AppendLine(cStringUtils.ToCSVField("<HEADER software/>"))
         Dim dt As Dictionary(Of String, String) = HeaderInfo(eAutosaveTypes.NotSet, iStartYear)
@@ -2932,11 +2923,13 @@ Public Class cCore
             Next
         End If
 
-        If (Me.ExtraFileHeaderFields.Count > 0) Then
-            sb.AppendLine(cStringUtils.ToCSVField("<HEADER extra/>"))
-            For Each field As String In Me.ExtraFileHeaderFields.Keys
-                sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(ExtraFileHeaderFields(field)))
-            Next
+        If (extraFields IsNot Nothing) Then
+            If (extraFields.Count > 0) Then
+                sb.AppendLine(cStringUtils.ToCSVField("<HEADER extra/>"))
+                For Each field As String In extraFields.Keys
+                    sb.AppendLine(cStringUtils.ToCSVField(field) & "," & cStringUtils.ToCSVField(extraFields(field)))
+                Next
+            End If
         End If
 
         sb.AppendLine(cStringUtils.ToCSVField("<HEADER end/>"))
@@ -2959,12 +2952,12 @@ Public Class cCore
     ''' omitted, the <see cref="cCore.EcosimFirstYear"/> will be used.</param>
     ''' <returns>A XML node structure describing the EwE run, safe for integration in XML files.</returns>
     ''' <seealso cref="SaveWithFileHeader"/>
-    ''' <seealso cref="DefaultFileHeader(eAutosaveTypes, Integer)"/>
-    ''' <seealso cref="ExtraFileHeaderFields"/>
+    ''' <seealso cref="DefaultFileHeader(eAutosaveTypes, Integer, Dictionary(Of String, String))"/>
     ''' -----------------------------------------------------------------------
     Public Function DefaultFileHeader(doc As XmlDocument,
                                       savetype As eAutosaveTypes,
-                                      Optional iStartYear As Integer = cCore.NULL_VALUE) As XmlNode
+                                      Optional iStartYear As Integer = cCore.NULL_VALUE,
+                                      Optional extraFields As Dictionary(Of String, String) = Nothing) As XmlNode
 
         Dim xnHeader As XmlNode = doc.CreateElement("Header")
         Dim xn As XmlNode = Nothing
@@ -3024,14 +3017,16 @@ Public Class cCore
             xnHeader.AppendChild(xn)
         End If
 
-        If (Me.ExtraFileHeaderFields.Count > 0) Then
-            xn = doc.CreateElement("Extra")
-            For Each field As String In Me.ExtraFileHeaderFields.Keys
-                xa = doc.CreateAttribute(cStringUtils.ToCSVField(field))
-                xa.Value = cXMLUtils.XMLNodeValue(dt(field))
-                xn.Attributes.Append(xa)
-            Next
-            xnHeader.AppendChild(xn)
+        If (extraFields IsNot Nothing) Then
+            If (extraFields.Count > 0) Then
+                xn = doc.CreateElement("Extra")
+                For Each field As String In extraFields.Keys
+                    xa = doc.CreateAttribute(cStringUtils.ToCSVField(field))
+                    xa.Value = cXMLUtils.XMLNodeValue(dt(field))
+                    xn.Attributes.Append(xa)
+                Next
+                xnHeader.AppendChild(xn)
+            End If
         End If
 
         Return xnHeader
@@ -3045,7 +3040,8 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Sub OnSettingsChanged()
         Try
-            Me.Messages.SendMessage(New cMessage("Autosave settings have changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
+            ' ToDo: globalize this
+            Me.Messages.SendMessage(New cMessage("Global settings have changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
         Catch ex As Exception
 
         End Try

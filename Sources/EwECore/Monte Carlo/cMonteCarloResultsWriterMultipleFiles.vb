@@ -194,11 +194,15 @@ Public Class cMonteCarloResultsWriterMultipleFiles
     Private Sub WriteHeader(sw As StreamWriter, iTrial As Integer)
         Try
             If Me.Core.SaveWithFileHeader Then
-                sw.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
-                sw.WriteLine(cStringUtils.ToCSVField("Num. groups") & "," & Me.Core.nGroups)
-                sw.WriteLine(cStringUtils.ToCSVField("Num. trials") & "," & Me.MC.Ntrials)
-                sw.WriteLine(cStringUtils.ToCSVField("Trial") & "," & If(iTrial <= 0, "baseline", CStr(iTrial)))
-                sw.WriteLine(cStringUtils.ToCSVField("SS") & "," & If(iTrial <= 0, cStringUtils.ToCSVField(Me.MC.SSorg), cStringUtils.ToCSVField(Me.MC.SSCurrent)))
+                Dim dtFields As New Dictionary(Of String, String)
+
+                dtFields("NumberOfGroups") = CStr(Me.Core.nGroups)
+                dtFields("NumberOfTrials") = CStr(Me.MC.Ntrials)
+                dtFields("Trial") = If(iTrial <= 0, "baseline", CStr(iTrial))
+                dtFields("SS") = If(iTrial <= 0, cStringUtils.FormatNumber(Me.MC.SSorg), cStringUtils.FormatNumber(Me.MC.SSCurrent))
+
+                sw.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.MonteCarlo, extraFields:=dtFields))
+
             End If
         Catch ex As Exception
             Me.ReportSaveError(ex.Message)

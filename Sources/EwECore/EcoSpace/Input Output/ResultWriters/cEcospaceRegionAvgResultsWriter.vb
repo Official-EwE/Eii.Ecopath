@@ -231,13 +231,11 @@ Public Class cEcospaceRegionAvgResultsWriter
                     sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
                     If Me.m_core.SaveWithFileHeader Then
 
-                        Me.m_core.ExtraFileHeaderFields("Data") = ds.DataDescriptor
-                        Me.m_core.ExtraFileHeaderFields("Area") = ds.AreaDescriptor
-                        Me.m_core.ExtraFileHeaderFields("Number_of_cells") = CStr(ds.nWaterCells)
-
-                        sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
-
-                        Me.m_core.ExtraFileHeaderFields.Clear()
+                        Dim extra As New Dictionary(Of String, String)
+                        extra("Data") = ds.DataDescriptor
+                        extra("Area") = ds.AreaDescriptor
+                        extra("Number_of_cells") = CStr(ds.nWaterCells)
+                        sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace, extraFields:=extra))
                     End If
 
                     Me.WriteData(sw, ds, AvgType)

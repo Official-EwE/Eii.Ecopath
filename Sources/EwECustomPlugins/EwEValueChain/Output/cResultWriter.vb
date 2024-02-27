@@ -197,15 +197,16 @@ Public Class cResultWriter
 
         Dim sb As New StringBuilder()
         Dim core As cCore = Me.m_data.Core
+        Dim dtFields As New Dictionary(Of String, String)
+        dtFields("RunType") = (Me.m_results.RunType.ToString())
 
         ' Append header
         If (Me.m_results.RunType = cModel.eRunTypes.Ecopath) Then
-            sb.AppendLine(core.DefaultFileHeader(eAutosaveTypes.Ecopath))
+            sb.AppendLine(core.DefaultFileHeader(eAutosaveTypes.Ecopath, extraFields:=dtFields))
         Else
-            sb.AppendLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            sb.AppendLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:=dtFields))
         End If
         ' Append value chain run type
-        sb.AppendLine("RunType," & cStringUtils.ToCSVField(Me.m_results.RunType.ToString()))
 
         Return sb.ToString()
 

@@ -1252,9 +1252,9 @@ Public Class frmEwE6
 
     Protected Overrides Sub OnDragOver(e As System.Windows.Forms.DragEventArgs)
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-            Dim astrFiles() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
-            If astrFiles.Length > 0 Then
-                If cDataSourceFactory.GetSupportedType(astrFiles(0)) <> eDataSourceTypes.NotSet Then
+            Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            If files.Length > 0 Then
+                If cDataSourceFactory.GetSupportedType(files(0)) <> eDataSourceTypes.NotSet Then
                     e.Effect = DragDropEffects.All
                 End If
             End If
@@ -1265,9 +1265,9 @@ Public Class frmEwE6
     Protected Overrides Sub OnDragDrop(e As System.Windows.Forms.DragEventArgs)
         If e.Data.GetDataPresent(DataFormats.FileDrop) Then
             Try
-                Dim astrFiles() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
-                If astrFiles.Length > 0 Then
-                    Me.LoadEcopathModel(astrFiles(0), eLoadSourceType.User)
+                Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+                If files.Length > 0 Then
+                    Me.LoadEcopathModel(files(0), eLoadSourceType.User)
                 End If
             Catch ex As Exception
 

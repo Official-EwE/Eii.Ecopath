@@ -128,11 +128,9 @@ Public Class cTransectResultWriterPlugin
 
     Private Sub WriteResult()
 
-        Dim sw As StreamWriter = Nothing
         Dim strName As String = ""
         Dim strFile As String = ""
         Dim strDescriptor As String = ""
-        Dim sValue As Single = 0
 
         For Each t As cTransect In Me.m_data.Transects
 
@@ -143,24 +141,30 @@ Public Class cTransectResultWriterPlugin
                 strFile = Me.FileName(t)
                 Try
                     ' Start writing
-                    sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
-                    If Me.m_core.SaveWithFileHeader Then
-                        sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
-                        sw.WriteLine(cStringUtils.ToCSVField("Transect") & "," & cStringUtils.ToCSVField(t.Name))
-                        sw.WriteLine(cStringUtils.ToCSVField("x0") + "," & cells(0).X)
-                        sw.WriteLine(cStringUtils.ToCSVField("y0") + "," & cells(0).Y)
-                        sw.WriteLine(cStringUtils.ToCSVField("x1") + "," & cells(t.NumCells - 1).X)
-                        sw.WriteLine(cStringUtils.ToCSVField("y1") + "," & cells(t.NumCells - 1).Y)
-                        sw.WriteLine(cStringUtils.ToCSVField("Number of cells") & "," & t.NumCells)
-                        sw.WriteLine()
-                    End If
+                    Using sw As New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
 
-                    Me.WriteData(sw, t)
+                        If Me.m_core.SaveWithFileHeader Then
 
-                    ' Clean up
-                    sw.Flush()
-                    sw.Close()
-                    sw.Dispose()
+                            Dim dtFields As New Dictionary(Of String, String)
+                            dtFields("Transect") = t.Name
+                            dtFields("x0") = CStr(cells(0).X)
+                            dtFields("y0") = CStr(cells(0).Y)
+                            dtFields("x1") = CStr(cells(t.NumCells - 1).X)
+                            dtFields("y1") = CStr(cells(t.NumCells - 1).Y)
+                            dtFields("NumberOfCells") = CStr(t.NumCells)
+
+                            sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace, extraFields:=dtFields))
+                            sw.WriteLine()
+
+                            dtFields.Clear()
+                        End If
+
+                        Me.WriteData(sw, t)
+
+                        ' Clean up
+                        sw.Flush()
+                        sw.Close()
+                    End Using
 
                 Catch ex As Exception
                     cLog.Write(ex, "Failed to write Ecospace average biomass to file for data " + strDescriptor)
