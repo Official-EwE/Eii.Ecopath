@@ -31,6 +31,7 @@ Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports System.Threading.Tasks
 
 #End Region ' Imports
 
@@ -648,21 +649,18 @@ Public Class cEwEEcologicalIndicatorsPlugin
         If Not Me.m_bEcospaceCalculating Then Return
         Try
             ' Compute
-            Dim WaitOb As ManualResetEvent = New ManualResetEvent(False)
-            Dim sw As Stopwatch = Stopwatch.StartNew()
-            cTreadCalculator.ThreadIncrementer = cSystemUtils.ProcessorCount()
+            Dim tasks(Me.m_spacecalculators.Count - 1) As Task
+            Dim sw As New Stopwatch()
+            sw.Start()
 
-            For Each comp As cTreadCalculator In Me.m_spacecalculators
-                comp.WaitHandle = WaitOb
-                Dim thread As New Thread(AddressOf comp.Compute)
-                thread.Start()
+            For i As Integer = 0 To Me.m_spacecalculators.Count - 1
+                Dim comp As cTreadCalculator = Me.m_spacecalculators(i)
+                tasks(i) = Task.Factory.StartNew(AddressOf comp.Compute)
             Next
-            'For Each ind As cIndicators In Me.m_dtIndEcospace.Values
-            '    ind.Compute()
-            'Next
-            WaitOb.WaitOne()
-            'Console.WriteLine("EcoIND space calculated in {0} ms", sw.ElapsedMilliseconds)
+            Task.WaitAll(tasks)
+            Console.WriteLine("EcoIND space indicators calculated in {0} ms", sw.ElapsedMilliseconds)
             If Me.m_bSavingEcospace Then Me.PerformSave(eComponentType.Ecospace)
+            Console.WriteLine("EcoIND space indicators saved in {0} ms", sw.ElapsedMilliseconds)
 
         Catch ex As Exception
 
@@ -1284,19 +1282,6 @@ Public Class cEwEEcologicalIndicatorsPlugin
                 End If
             Next
         Next
-
-        ' JS 09Feb24: the bit below did not save all cells. No idea why. 
-        'For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
-        '    For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
-        '        Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
-        '        For iInfo As Integer = 0 To grp.NumIndicators - 1
-        '            Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-        '            If info.Enabled Then
-        '                exp.Value(ind.Location.Y, ind.Location.X, info.OutputName) = info.GetValue(ind)
-        '            End If
-        '        Next iInfo
-        '    Next iGrp
-        'Next ind
 
         Dim exp As New cEcospaceImportExportXYData(Me.m_core, fields.ToArray())
         For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
