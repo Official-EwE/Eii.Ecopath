@@ -26,16 +26,10 @@ Imports System.Threading
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Utility class to compute a number of indicators in a separate thread. To use 
-''' this, make sure that <see cref="ThreadIncrementer"/> and <see cref="WaitHandle"/> 
-''' are set. <see cref="Add"/> a number of <see cref="cIndicators"/> and call
-''' <see cref="Compute"/> on a thread. The calling thread will block until the
-''' <see cref="WaitHandle"/> decrements <see cref="ThreadIncrementer"/> to zero.
+''' An indicator calculator
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cTreadCalculator
-
-    Friend Shared ThreadIncrementer As Integer
 
     Private m_inds As New List(Of cIndicators)
     Private m_id As Integer = 0
@@ -48,20 +42,10 @@ Public Class cTreadCalculator
         Me.m_inds.Add(ind)
     End Sub
 
-    Public Property WaitHandle As ManualResetEvent = Nothing
-
     Public Sub Compute()
-
         For Each ind As cIndicators In Me.m_inds
             ind.Compute()
         Next
-
-        If (Me.WaitHandle IsNot Nothing) Then
-            If Interlocked.Decrement(cTreadCalculator.ThreadIncrementer) = 0 Then
-                Me.WaitHandle.Set()
-            End If
-        End If
-
     End Sub
 
 End Class
