@@ -693,6 +693,35 @@ Namespace Utilities
 
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Check if a file is in use by another process.
+        ''' </summary>
+        ''' <param name="The_File">The full path of the file.</param>
+        ''' <returns>Return TRUE if is in use, otherwise return FALSE</returns>
+        ''' <remarks>
+        ''' https://gist.github.com/RallyTuning/ca6500dfee46a476a4b33432a6b3da77
+        ''' </remarks>
+        ''' <example>
+        ''' <code>
+        ''' Dim bInUse As Boolean = IsFileInUse("C:\folder\file.txt")
+        ''' </code>
+        ''' </example>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsFileInUse(fn As String) As Boolean
+            Dim bInUse As Boolean = False
+            If IO.File.Exists(fn) Then
+                Try
+                    Using FS As New IO.FileStream(fn, IO.FileMode.Open, IO.FileAccess.ReadWrite, IO.FileShare.None)
+                        'InUse = False
+                    End Using
+                Catch
+                    bInUse = True
+                End Try
+            End If
+            Return bInUse
+        End Function
+
     End Class
 
 End Namespace
