@@ -387,7 +387,7 @@ Namespace Core
         FlowToDet
         ''' <summary>To document</summary>
         NetEfficiency
-        ''' <summary>To document</summary>
+        ''' <summary>Per-group omnivory index</summary>
         OmnivoryIndex
         ''' <summary>To document</summary>
         Respiration

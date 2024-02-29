@@ -20,7 +20,9 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Threading
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports Microsoft.Office.Interop.Access
 
 #End Region ' Imports
@@ -68,9 +70,9 @@ Namespace Database
         ''' <returns>A <see cref="eDatasourceAccessType">database access
         ''' result code</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Compact(strFileFrom As String, _
-                                strConnectionFrom As String, _
-                                strFileTo As String, _
+        Public Function Compact(strFileFrom As String,
+                                strConnectionFrom As String,
+                                strFileTo As String,
                                 strConnectionTo As String) As EwEUtils.Core.eDatasourceAccessType _
             Implements IDatabaseCompact.Compact
 
@@ -94,6 +96,19 @@ Namespace Database
 
                 ' Able to get JET engine?
                 If (engine Is Nothing) Then Return eDatasourceAccessType.Failed_OSUnsupported
+
+                Dim nRetry As Integer = 0
+                Dim bIsFree As Boolean = False
+                While nRetry < 5 And Not bIsFree
+                    If cFileUtils.IsFileInUse(strFileFrom) Or cFileUtils.IsFileInUse(strFileTo) Then
+                        nRetry += 1
+                        Thread.Sleep(500)
+                    Else
+                        bIsFree = True
+                    End If
+                End While
+
+                If (Not bIsFree) Then Return eDatasourceAccessType.Failed_CannotSave
 
                 ' Compact DB
                 engine.CompactDatabase(strFileFrom, strFileTo)

@@ -310,7 +310,7 @@ Namespace Ecopath
                     Me.EstimEEAgain()
                     Me.EstimateTrophicLevels(Me.m_Data.NumGroups, Me.m_Data.NumLiving, Me.m_Data.PP, Me.m_Data.DC, Me.m_Data.TTLX)
                     Me.DetritusCalculations()
-                    Me.Omniv(Me.m_Data.DC, Me.m_Data.TTLX, Me.m_Data.BQB, Me.m_Data.NumGroups)
+                    Me.m_Ecofunctions.Omniv(Me.m_Data.DC, Me.m_Data.TTLX, Me.m_Data.BQB, Me.m_Data.NumGroups)
                     Me.CalcNichePiankaPred()
                     Me.CalcNichePiankaPrey()
                     Me.Chesson()
@@ -904,33 +904,6 @@ Namespace Ecopath
             ' Send messages, if any
             If msgPB0 IsNot Nothing Then Me.m_msgPub.SendMessage(msgPB0)
             If msgQB0 IsNot Nothing Then Me.m_msgPub.SendMessage(msgQB0)
-        End Sub
-
-        Private Sub Omniv(DC(,) As Single, TTLX() As Single, BQB() As Single, NumGroups As Integer)
-            Dim i As Integer, S1 As Single, j As Integer
-
-            For i = 1 To NumGroups
-                S1 = 0
-                BQB(i) = 0
-                If TTLX(i) <> 0 Then
-                    For j = 1 To NumGroups
-                        S1 = S1 + TTLX(j) * DC(i, j)
-                    Next j
-                    BQB(i) = S1
-                End If
-                ' Now BQQ(i%) is the average trophic level of the preys (j%) of i%
-            Next i
-
-            For i = 1 To NumGroups
-                If TTLX(i) <> 0 Then
-                    S1 = 0
-                    For j = 1 To NumGroups
-                        S1 = S1 + CSng(((TTLX(j) - BQB(i)) ^ 2) * DC(i, j))
-                    Next j
-                    BQB(i) = S1
-                End If
-            Next i
-
         End Sub
 
         Private Sub CalcNewExportCatch(OneOnly As Integer)

@@ -269,6 +269,42 @@ Public Class cEcoFunctions
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Calculate the per-group omnivory index
+    ''' </summary>
+    ''' <param name="DC">Diet</param>
+    ''' <param name="TTLX">TTL</param>
+    ''' <param name="BQB"></param>
+    ''' <param name="NumGroups"></param>
+    ''' -----------------------------------------------------------------------
+    Public Sub Omniv(DC(,) As Single, TTLX() As Single, BQB() As Single, NumGroups As Integer)
+        Dim i As Integer, S1 As Single, j As Integer
+
+        For i = 1 To NumGroups
+            S1 = 0
+            BQB(i) = 0
+            If TTLX(i) <> 0 Then
+                For j = 1 To NumGroups
+                    S1 = S1 + TTLX(j) * DC(i, j)
+                Next j
+                BQB(i) = S1
+            End If
+            ' Now BQQ(i%) is the average trophic level of the preys (j%) of i%
+        Next i
+
+        For i = 1 To NumGroups
+            If TTLX(i) <> 0 Then
+                S1 = 0
+                For j = 1 To NumGroups
+                    S1 = S1 + CSng(((TTLX(j) - BQB(i)) ^ 2) * DC(i, j))
+                Next j
+                BQB(i) = S1
+            End If
+        Next i
+
+    End Sub
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
