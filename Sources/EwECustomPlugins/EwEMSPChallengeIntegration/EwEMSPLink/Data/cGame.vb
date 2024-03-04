@@ -623,7 +623,8 @@ Public Class cGame
     Public Const NAME_SURFACE_DIST As String = "Surface disturbance"
     Public Const NAME_ARTIFICIAL_HAB As String = "Artificial habitat"
     Public Const NAME_PROTECTION As String = "Protection"
-    Public Const NAME_FISHING As String = "Fishing"
+    Public Const NAME_FISHING_INT As String = "Fishing intensity"
+    Public Const NAME_FISHING_ECO As String = "Fishing ecologically"
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -640,7 +641,8 @@ Public Class cGame
         Me.Add(New cEnvironmentalPressure(NAME_ARTIFICIAL_HAB, bm.InCol, bm.InRow))
         For i As Integer = 1 To Me.m_core.nFleets
             Me.Add(New cEnvironmentalPressure(NAME_PROTECTION & " " & Me.m_core.EcopathFleetInputs(i).Name, bm.InCol, bm.InRow))
-            Me.Add(New cFishingPressure(NAME_FISHING & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0, False))
+            Me.Add(New cFishingPressure(NAME_FISHING_INT & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0, False))
+            Me.Add(New cFishingPressure(NAME_FISHING_ECO & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0, False))
         Next
 
     End Sub
