@@ -61,20 +61,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fishing ecologically &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property DRIVER_ECOLOGICAL() As String
+            Get
+                Return ResourceManager.GetString("DRIVER_ECOLOGICAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing effort &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property DRIVER_EFFORT() As String
+            Get
+                Return ResourceManager.GetString("DRIVER_EFFORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Map of Env. driver &apos;{0}&apos;.
         '''</summary>
         Friend ReadOnly Property DRIVER_ENV_NAME() As String
             Get
                 Return ResourceManager.GetString("DRIVER_ENV_NAME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Fishing &apos;{0}&apos;.
-        '''</summary>
-        Friend ReadOnly Property DRIVER_FISHING() As String
-            Get
-                Return ResourceManager.GetString("DRIVER_FISHING", resourceCulture)
             End Get
         End Property
         

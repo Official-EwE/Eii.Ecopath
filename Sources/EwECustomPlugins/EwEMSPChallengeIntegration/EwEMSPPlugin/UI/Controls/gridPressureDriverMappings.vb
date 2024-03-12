@@ -45,7 +45,7 @@ Namespace UI
             Index = 0
             Name
             Mapping
-            Mulitplier
+            Value
         End Enum
 
 #End Region ' Internal vars
@@ -80,7 +80,7 @@ Namespace UI
             Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
             Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(My.Resources.HEADER_PRESSURE)
             Me(0, eColumnTypes.Mapping) = New cEwEColumnHeaderCell(My.Resources.HEADER_DRIVER)
-            Me(0, eColumnTypes.Mulitplier) = New cEwEColumnHeaderCell(My.Resources.HEADER_MULTIPLIER)
+            Me(0, eColumnTypes.Value) = New cEwEColumnHeaderCell(My.Resources.HEADER_VALUE)
 
             Me.FixedColumnWidths = False
             Me.FixedColumns = 2
@@ -126,10 +126,13 @@ Namespace UI
                 Me(iRow, eColumnTypes.Mapping).Behaviors.Add(Me.EwEEditHandler)
 
                 If (TypeOf (pressure) Is cFishingPressure) Then
-                    Me(iRow, eColumnTypes.Mulitplier) = New cEwECell(Game.EffortMultiplier(pressure.Name))
-                    Me(iRow, eColumnTypes.Mulitplier).Behaviors.Add(Me.EwEEditHandler)
+                    Me(iRow, eColumnTypes.Value) = New cEwECell(Game.EffortMultiplier(pressure.Name))
+                    Me(iRow, eColumnTypes.Value).Behaviors.Add(Me.EwEEditHandler)
+                ElseIf (TypeOf (pressure) Is cFishingEcoPressure) Then
+                    Me(iRow, eColumnTypes.Value) = New cEwECell(Game.EcologicalFishing(pressure.Name))
+                    Me(iRow, eColumnTypes.Value).Behaviors.Add(Me.EwEEditHandler)
                 Else
-                    Me(iRow, eColumnTypes.Mulitplier) = New cEwECell("", eStyleFlags.Null Or eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.Value) = New cEwECell("", eStyleFlags.Null Or eStyleFlags.NotEditable)
                 End If
 
                 Me.Pressure(iRow) = pressure
@@ -176,9 +179,16 @@ Namespace UI
                         Debug.Assert(False, ex.Message)
                     End Try
 
-                Case eColumnTypes.Mulitplier
-                    Me.Game.EffortMultiplier(strDriver) = DirectCast(cell.GetValue(p), Double)
-                    Me.Shell.OnChanged()
+                Case eColumnTypes.Value
+                    If (TypeOf (pressure) Is cFishingPressure) Then
+                        Me.Game.EffortMultiplier(strDriver) = DirectCast(cell.GetValue(p), Double)
+                        Me.Shell.OnChanged()
+                    ElseIf (TypeOf (pressure) Is cFishingEcoPressure) Then
+                        Game.EcologicalFishing(pressure.Name) = DirectCast(cell.GetValue(p), Boolean)
+                        Me.Shell.OnChanged()
+                    Else
+                        Debug.Assert(False)
+                    End If
 
             End Select
             Return MyBase.OnCellValueChanged(p, cell)

@@ -190,6 +190,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Grid.
+        '''</summary>
+        Friend ReadOnly Property CHOICE_GRID() As String
+            Get
+                Return ResourceManager.GetString("CHOICE_GRID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Scalar.
+        '''</summary>
+        Friend ReadOnly Property CHOICE_SCALAR() As String
+            Get
+                Return ResourceManager.GetString("CHOICE_SCALAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property CopyHS() As System.Drawing.Bitmap
@@ -267,15 +285,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Max. effort multiplier.
-        '''</summary>
-        Friend ReadOnly Property HEADER_MULTIPLIER() As String
-            Get
-                Return ResourceManager.GetString("HEADER_MULTIPLIER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Numerator (weight).
         '''</summary>
         Friend ReadOnly Property HEADER_NUMERATOR() As String
@@ -308,6 +317,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_TESTDATA() As String
             Get
                 Return ResourceManager.GetString("HEADER_TESTDATA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Value.
+        '''</summary>
+        Friend ReadOnly Property HEADER_VALUE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VALUE", resourceCulture)
             End Get
         End Property
         

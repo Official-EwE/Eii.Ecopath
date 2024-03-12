@@ -43,6 +43,7 @@ Public Class cGame
     Private m_pressures As New List(Of cPressure)
     Private m_pressuredrivers As New Dictionary(Of String, String)
     Private m_pressuremultipliers As New Dictionary(Of String, Double)
+    Private m_pressureeco As New Dictionary(Of String, Boolean)
     Private m_outcomes As New List(Of cOutcome)
 
 #End Region ' Private variables
@@ -286,10 +287,10 @@ Public Class cGame
     ''' factor.</para>
     ''' <para>For example, if a fleet catches two commercial species with values of
     ''' 4 and 2 EUR per biomass unit, the <see cref="cEcopathFleetInput.OffVesselValue">
-    ''' off-vessel value</see> will be set to <code>-1 * <see cref="BycatchWeightMultiplier"/> * (4 + 2)</code></para>
+    ''' off-vessel value</see> will be set to <code>-1 * <see cref="BycatchCostMultiplier"/> * (4 + 2)</code></para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Property BycatchWeightMultiplier As Single = 10.0
+    Public Property BycatchCostMultiplier As Single = 10.0
 
 #End Region ' Metadata
 
@@ -339,6 +340,25 @@ Public Class cGame
         Set(value As Double)
             If String.IsNullOrWhiteSpace(pressure) Then Return
             Me.m_pressuremultipliers(pressure) = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the driver multiplier for to a specific pressure.
+    ''' </summary>
+    ''' <param name="pressure">The name of the pressure to find the multiplier for.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Property EcologicalFishing(pressure As String) As Boolean
+        Get
+            If String.IsNullOrWhiteSpace(pressure) Then Return False
+            If (Not Me.m_pressureeco.ContainsKey(pressure)) Then Return False
+            Return Me.m_pressureeco(pressure)
+        End Get
+        Set(value As Boolean)
+            If String.IsNullOrWhiteSpace(pressure) Then Return
+            Me.m_pressureeco(pressure) = value
         End Set
     End Property
 
@@ -505,7 +525,7 @@ Public Class cGame
         Dim items As New List(Of cScalar)
         For Each p As cPressure In Me.Pressures
             If (TypeOf (p) Is cFishingPressure) Then
-                Dim d As cFleetDriver = DirectCast(Me.Driver(p.Name), cFleetDriver)
+                Dim d As cFleetEffortDriver = DirectCast(Me.Driver(p.Name), cFleetEffortDriver)
                 Dim s As New cScalar(p.Name, d.StartValue / Me.EffortMultiplier(p.Name))
                 items.Add(s)
             End If
@@ -623,8 +643,8 @@ Public Class cGame
     Public Const NAME_SURFACE_DIST As String = "Surface disturbance"
     Public Const NAME_ARTIFICIAL_HAB As String = "Artificial habitat"
     Public Const NAME_PROTECTION As String = "Protection"
-    Public Const NAME_FISHING_INT As String = "Fishing intensity"
-    Public Const NAME_FISHING_ECO As String = "Fishing ecologically"
+    Public Const NAME_FISHING As String = "Fishing"
+    Public Const NAME_FISHING_ECO As String = "Ecological fishing"
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -641,8 +661,8 @@ Public Class cGame
         Me.Add(New cEnvironmentalPressure(NAME_ARTIFICIAL_HAB, bm.InCol, bm.InRow))
         For i As Integer = 1 To Me.m_core.nFleets
             Me.Add(New cEnvironmentalPressure(NAME_PROTECTION & " " & Me.m_core.EcopathFleetInputs(i).Name, bm.InCol, bm.InRow))
-            Me.Add(New cFishingPressure(NAME_FISHING_INT & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0, False))
-            Me.Add(New cFishingPressure(NAME_FISHING_ECO & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0, False))
+            Me.Add(New cFishingPressure(NAME_FISHING & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0))
+            Me.Add(New cFishingEcoPressure(NAME_FISHING_ECO & " " & Me.m_core.EcopathFleetInputs(i).Name, False))
         Next
 
     End Sub
@@ -718,7 +738,7 @@ Public Class cGame
         xnGame.Attributes.Append(xa)
 
         xa = doc.CreateAttribute("bycatch_weight")
-        xa.InnerText = cStringUtils.FormatNumber(Me.BycatchWeightMultiplier)
+        xa.InnerText = cStringUtils.FormatNumber(Me.BycatchCostMultiplier)
         xnGame.Attributes.Append(xa)
 
         Dim xnDescr As XmlNode = doc.CreateElement("description")
@@ -735,6 +755,8 @@ Public Class cGame
                 doc.CreateElement("environmental_pressure")
             ElseIf TypeOf p Is cFishingPressure Then
                 doc.CreateElement("fishing_pressure")
+            ElseIf TypeOf p Is cFishingEcoPressure Then
+                doc.CreateElement("fishing_eco")
             Else
                 Debug.Assert(False)
             End If
@@ -766,6 +788,12 @@ Public Class cGame
             If (Me.m_pressuremultipliers.ContainsKey(strKey)) Then
                 xa = doc.CreateAttribute("multiplier")
                 xa.InnerText = cStringUtils.FormatNumber(Me.m_pressuremultipliers(strKey))
+                xnMapping.Attributes.Append(xa)
+            End If
+
+            If (Me.m_pressureeco.ContainsKey(strKey)) Then
+                xa = doc.CreateAttribute("eco_fishing")
+                xa.InnerText = If(Me.m_pressureeco(strKey), "1", "0")
                 xnMapping.Attributes.Append(xa)
             End If
 
@@ -839,7 +867,7 @@ Public Class cGame
                     Case "spinup_years" : Me.SpinupYears = cStringUtils.ConvertToInteger(xa.InnerText)
                     Case "run_years" : Me.RunYears = cStringUtils.ConvertToInteger(xa.InnerText)
                     Case "mpa_cell_closure" : Me.MPACellClosureRatio = cStringUtils.ConvertToSingle(xa.InnerText)
-                    Case "bycatch_weight" : Me.BycatchWeightMultiplier = cStringUtils.ConvertToSingle(xa.InnerText)
+                    Case "bycatch_weight" : Me.BycatchCostMultiplier = cStringUtils.ConvertToSingle(xa.InnerText)
                     Case "calc_indicators" : Me.CalculateIndicators = Convert.ToBoolean(xa.InnerText)
                 End Select
             Next
@@ -877,6 +905,8 @@ Public Class cGame
                                     t = GetType(cEnvironmentalPressure)
                                 Case "fishing_pressure"
                                     t = GetType(cFishingPressure)
+                                Case "fishing_eco"
+                                    t = GetType(cFishingEcoPressure)
                             End Select
                             If (t IsNot Nothing) Then
                                 Me.Add(DirectCast(Activator.CreateInstance(t, {strName}), cPressure))
@@ -892,17 +922,20 @@ Public Class cGame
                             Dim strPressure As String = ""
                             Dim strDriver As String = ""
                             Dim dMultiplier As Double = 1.0!
+                            Dim bEco As Boolean = False
                             For Each xa As XmlAttribute In xnMapping.Attributes
                                 Select Case xa.Name
                                     Case "pressure" : strPressure = HttpUtility.UrlDecode(xa.InnerText)
                                     Case "driver" : strDriver = HttpUtility.UrlDecode(xa.InnerText)
                                         ' ToDo: upgrade this too
                                     Case "multiplier" : dMultiplier = cStringUtils.ConvertToDouble(xa.InnerText)
+                                    Case "eco_fishing" : bEco = (HttpUtility.UrlDecode(xa.InnerText) = "1")
                                 End Select
                             Next
                             If (Not String.IsNullOrWhiteSpace(strPressure)) And (Not String.IsNullOrWhiteSpace(strDriver)) Then
                                 Me.m_pressuredrivers(strPressure) = strDriver
                                 Me.m_pressuremultipliers(strPressure) = dMultiplier
+                                Me.m_pressureeco(strPressure) = bEco
                             End If
                         Next
                     Catch ex As Exception

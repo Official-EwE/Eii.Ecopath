@@ -259,7 +259,7 @@
     <value>m_hdrValidation</value>
   </data>
   <data name="&gt;&gt;m_hdrValidation.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrValidation.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -511,7 +511,7 @@
     <value>m_lblCheckSimFishing</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimFishing.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimFishing.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -550,7 +550,7 @@
     <value>m_lblCheckSimForcing</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimForcing.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimForcing.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -589,7 +589,7 @@
     <value>m_lblCheckGame</value>
   </data>
   <data name="&gt;&gt;m_lblCheckGame.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckGame.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -628,7 +628,7 @@
     <value>m_lblCheckSpaceTimeSeries</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSpaceTimeSeries.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSpaceTimeSeries.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -667,7 +667,7 @@
     <value>m_lblCheckSimTimeSeries</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimTimeSeries.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimTimeSeries.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -1063,7 +1063,7 @@
     <value>m_gridPressureMappings</value>
   </data>
   <data name="&gt;&gt;m_gridPressureMappings.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.gridPressureDriverMappings, EwEMSPPlugin, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.gridPressureDriverMappings, EwEMSPPlugin, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridPressureMappings.Parent" xml:space="preserve">
     <value>m_tpPressures</value>
@@ -1531,7 +1531,7 @@
     <value>m_gridOutcome</value>
   </data>
   <data name="&gt;&gt;m_gridOutcome.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.gridOutcomes, EwEMSPPlugin, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.gridOutcomes, EwEMSPPlugin, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridOutcome.Parent" xml:space="preserve">
     <value>m_scOutputs.Panel2</value>
@@ -1609,7 +1609,7 @@
     <value>m_tsOutcome</value>
   </data>
   <data name="&gt;&gt;m_tsOutcome.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsOutcome.Parent" xml:space="preserve">
     <value>m_scOutputs.Panel2</value>
@@ -1708,7 +1708,7 @@
     <value>Bottom, Left</value>
   </data>
   <data name="m_nudEmulOutcomeRange.Location" type="System.Drawing.Point, System.Drawing">
-    <value>262, 257</value>
+    <value>261, 254</value>
   </data>
   <data name="m_nudEmulOutcomeRange.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 20</value>
@@ -1951,7 +1951,7 @@
     <value>m_hdrEmulRun</value>
   </data>
   <data name="&gt;&gt;m_hdrEmulRun.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEmulRun.Parent" xml:space="preserve">
     <value>m_tpEmulator</value>
@@ -1972,7 +1972,7 @@
     <value>5 years</value>
   </data>
   <data name="m_cmbEmulPauseOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>262, 227</value>
+    <value>261, 227</value>
   </data>
   <data name="m_cmbEmulPauseOptions.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 21</value>
@@ -2016,7 +2016,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnEmulViewOutputFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>363, 256</value>
+    <value>362, 253</value>
   </data>
   <data name="m_btnEmulViewOutputFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 22</value>
@@ -2043,7 +2043,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnEmulStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>474, 256</value>
+    <value>474, 253</value>
   </data>
   <data name="m_btnEmulStop.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 23</value>
@@ -2112,7 +2112,7 @@
     <value>m_gridEmulTestset</value>
   </data>
   <data name="&gt;&gt;m_gridEmulTestset.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.gridEmulator, EwEMSPPlugin, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.gridEmulator, EwEMSPPlugin, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridEmulTestset.Parent" xml:space="preserve">
     <value>m_tpEmulator</value>
@@ -2154,7 +2154,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbSaveOutputMaps.Location" type="System.Drawing.Point, System.Drawing">
-    <value>90, 259</value>
+    <value>89, 256</value>
   </data>
   <data name="m_cbSaveOutputMaps.Size" type="System.Drawing.Size, System.Drawing">
     <value>168, 17</value>
@@ -3111,7 +3111,7 @@ WIth thanks to Jacob Bentley, Giovanni Romagnoni, Magali Gonçalves, Marcela Nas
     <value>m_hdrCredits</value>
   </data>
   <data name="&gt;&gt;m_hdrCredits.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCredits.Parent" xml:space="preserve">
     <value>m_tlpAbout</value>
@@ -7989,12 +7989,6 @@ WIth thanks to Jacob Bentley, Giovanni Romagnoni, Magali Gonçalves, Marcela Nas
   <data name="$this.Text" xml:space="preserve">
     <value>&lt;title&gt;</value>
   </data>
-  <data name="&gt;&gt;m_ilTabIcons.Name" xml:space="preserve">
-    <value>m_ilTabIcons</value>
-  </data>
-  <data name="&gt;&gt;m_ilTabIcons.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_tslOutputRawBinned.Name" xml:space="preserve">
     <value>m_tslOutputRawBinned</value>
   </data>
@@ -8013,10 +8007,16 @@ WIth thanks to Jacob Bentley, Giovanni Romagnoni, Magali Gonçalves, Marcela Nas
   <data name="&gt;&gt;m_tsbnOuputBinned.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_ilTabIcons.Name" xml:space="preserve">
+    <value>m_ilTabIcons</value>
+  </data>
+  <data name="&gt;&gt;m_ilTabIcons.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmGameDesigner</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.18779, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

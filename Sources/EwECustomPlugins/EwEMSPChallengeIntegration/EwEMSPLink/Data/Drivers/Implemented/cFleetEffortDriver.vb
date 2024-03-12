@@ -30,20 +30,19 @@ Imports EwEUtils.Utilities
 ''' a single <see cref="cEcospaceFleet">Ecospace fleet</see>.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cFleetDriver
+Public Class cFleetEffortDriver
     Inherits cDriver
 
 #Region " Private vars "
 
     Private m_fleet As cEcopathFleetInput = Nothing
     Private Const cTINY_NUM = 1.0E-20
-    Private m_penaltyvalue As Single = 0
 
 #End Region ' Private vars
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Create a new <see cref="cFleetDriver"/> to drive the <see cref="cEcospaceFleet.TotalEffMultiplier">
+    ''' Create a new <see cref="cFleetEffortDriver"/> to drive the <see cref="cEcospaceFleet.TotalEffMultiplier">
     ''' Ecospace effort multiplier</see> of a single fleet.
     ''' </summary>
     ''' <param name="core">The <see cref="cCore"/> to connect to.</param>
@@ -51,20 +50,8 @@ Public Class cFleetDriver
     ''' <param name="fleet">The <see cref="cEcospaceFleet">fleet</see> this driver is connected to.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(core As cCore, game As cGame, fleet As cEcopathFleetInput)
-        MyBase.New(core, game, cStringUtils.Localize(My.Resources.DRIVER_FISHING, fleet.Name))
+        MyBase.New(core, game, cStringUtils.Localize(My.Resources.DRIVER_EFFORT, fleet.Name))
         Me.m_fleet = fleet
-
-        ' Calculate cost penalty to impose on bycatch when a fleet is fishing ecologically
-        ' The penalty value is determined as a multipler of the combined off-vessel value for all targeted species
-        Dim sTotOffVesselValue As Single = 0
-
-        For igrp As Integer = 1 To Me.m_core.nGroups
-            If ((fleet.Landings(igrp) + fleet.Discards(igrp)) > 0) And (fleet.OffVesselValue(igrp) > 0) Then
-                sTotOffVesselValue += fleet.OffVesselValue(igrp)
-            End If
-        Next
-        Me.m_penaltyvalue = -1 * Math.Abs((Me.m_game.BycatchWeightMultiplier * sTotOffVesselValue))
-
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -86,16 +73,8 @@ Public Class cFleetDriver
 
         If (bDirect) Then
             Me.m_core.EcospaceDataStructures.SEmult(Me.m_fleet.Index) = Math.Max(cTINY_NUM, Math.Min(1, Math.Max(fp.EffortScalar, 0)) * multiplier)
-            For Each i As Integer In Me.BycatchGroups
-                Me.m_core.EcopathDataStructures.Market(Me.m_fleet.Index, i) = If(fp.bIsEcological, Me.m_penaltyvalue, 0)
-            Next
         Else
             Me.m_core.EcospaceFleetInputs(Me.m_fleet.Index).TotalEffMultiplier = Math.Max(cTINY_NUM, Math.Min(1, Math.Max(fp.EffortScalar, 0)) * multiplier)
-            For Each i As Integer In Me.BycatchGroups
-                ' JS31Jan24: Cannot insert a negative price via the Core IO ojects; the metadata prevents this. Let's discuss with Joe and Villy
-                ' Me.m_core.EcopathFleetInputs(Me.m_fleet.Index).OffVesselValue(i) = If(fp.bIsEcological, Me.m_penaltyvalue, 0)
-                Me.m_core.EcopathDataStructures.Market(Me.m_fleet.Index, i) = If(fp.bIsEcological, Me.m_penaltyvalue, 0)
-            Next
         End If
 
         Return True
@@ -117,26 +96,6 @@ Public Class cFleetDriver
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the groups that this fleet is bycatching (e.g, with no off-vessel value).
-    ''' </summary>
-    ''' <returns>An array with <see cref="ICoreGroup.Index">indices</see> representing
-    ''' the groups that this fleet is bycatching.</returns>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property BycatchGroups As Integer()
-        Get
-            Dim flt As cEcopathFleetInput = Me.m_core.EcopathFleetInputs(Me.m_fleet.Index)
-            Dim lGrps As New List(Of Integer)
-            For igrp As Integer = 1 To Me.m_core.nGroups
-                If ((flt.Landings(igrp) + flt.Discards(igrp)) > 0) And (flt.OffVesselValue(igrp) <= 0) Then
-                    lGrps.Add(igrp)
-                End If
-            Next
-            Return lGrps.ToArray()
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Returns the unique ID for the Ecospace <see cref="cEcospaceFleetInput">fleet</see>.
     ''' </summary>
     ''' <returns>The unique ID for the Ecospace <see cref="cEcospaceFleetInput">fleet</see>.</returns>
@@ -147,7 +106,7 @@ Public Class cFleetDriver
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns that this driver can only be driven by scalar data.
+    ''' Returns that this driver can only be driven by fishing pressure data.
     ''' </summary>
     ''' <returns>The supported pressure type.</returns>
     ''' -----------------------------------------------------------------------

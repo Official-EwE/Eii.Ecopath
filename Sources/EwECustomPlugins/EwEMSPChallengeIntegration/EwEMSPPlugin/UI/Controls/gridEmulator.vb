@@ -121,6 +121,9 @@ Namespace UI
                 If (TypeOf pressure Is cFishingPressure) Then
                     cell = New cEwECell(cStringUtils.ConvertToSingle(Me.m_testset.Testdata(pressure)), style)
                     cell.SuppressZero(cCore.NULL_VALUE) = True
+                ElseIf (TypeOf pressure Is cFishingEcoPressure) Then
+                    cell = New cEwECell(Me.m_testset.Testdata(pressure) = "1", style)
+                    cell.SuppressZero(cCore.NULL_VALUE) = False
                 ElseIf (TypeOf pressure Is cEnvironmentalPressure) Then
                     cell = New cEwECell(Me.m_testset.Testdata(pressure), style)
                 Else
@@ -190,6 +193,11 @@ Namespace UI
                 Dim val As Single = cCore.NULL_VALUE
                 If (cell.GetValue(p) IsNot Nothing) Then val = CSng(cell.GetValue(p))
                 Me.m_testset.Testdata(pressure) = cStringUtils.FormatSingle(val)
+                Me.OnChanged()
+            ElseIf (TypeOf pressure Is cFishingEcoPressure) Then
+                Dim val As String = "0"
+                If (cell.GetValue(p) IsNot Nothing) Then val = CStr(cell.GetValue(p))
+                Me.m_testset.Testdata(pressure) = val
                 Me.OnChanged()
             ElseIf (TypeOf pressure Is cEnvironmentalPressure) Then
                 Me.m_testset.Testdata(pressure) = CStr(cell.GetValue(p))

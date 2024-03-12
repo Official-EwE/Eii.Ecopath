@@ -87,16 +87,21 @@ Namespace UI
             Me.m_tbxPressureName = New System.Windows.Forms.TextBox()
             Me.m_lblPressuresPressure = New System.Windows.Forms.Label()
             Me.m_tpOutcomes = New System.Windows.Forms.TabPage()
+            Me.m_tlpOutcomes = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plOutcomesToolbar = New System.Windows.Forms.Panel()
+            Me.m_cmbOutputTypes = New System.Windows.Forms.ComboBox()
+            Me.m_lblOutcome = New System.Windows.Forms.Label()
+            Me.m_tbxOutcomeName = New System.Windows.Forms.TextBox()
+            Me.m_btnOutcomeDelete = New System.Windows.Forms.Button()
+            Me.m_btnOutcomeAdd = New System.Windows.Forms.Button()
+            Me.m_btnOutcomeRename = New System.Windows.Forms.Button()
             Me.m_scOutputs = New System.Windows.Forms.SplitContainer()
             Me.m_lbOutputs = New System.Windows.Forms.ListBox()
             Me.m_gridOutcome = New EwEMSPPlugin.UI.gridOutcomes()
             Me.m_tsOutcome = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_cmbOutputTypes = New System.Windows.Forms.ComboBox()
-            Me.m_btnOutcomeDelete = New System.Windows.Forms.Button()
-            Me.m_btnOutcomeRename = New System.Windows.Forms.Button()
-            Me.m_btnOutcomeAdd = New System.Windows.Forms.Button()
-            Me.m_tbxOutcomeName = New System.Windows.Forms.TextBox()
-            Me.m_lblOutcome = New System.Windows.Forms.Label()
+            Me.m_tslOutputRawBinned = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tsbnOuputRaw = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnOuputBinned = New System.Windows.Forms.ToolStripButton()
             Me.m_tpEmulator = New System.Windows.Forms.TabPage()
             Me.m_nudEmulOutcomeRange = New System.Windows.Forms.NumericUpDown()
             Me.m_btnTestsetDelete = New System.Windows.Forms.Button()
@@ -137,17 +142,14 @@ Namespace UI
             Me.m_btnGameDelete = New System.Windows.Forms.Button()
             Me.m_btnGameAddFromJSON = New System.Windows.Forms.Button()
             Me.m_btnExport = New System.Windows.Forms.Button()
-            Me.m_tlpOutcomes = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_plOutcomesToolbar = New System.Windows.Forms.Panel()
-            Me.m_tslOutputRawBinned = New System.Windows.Forms.ToolStripLabel()
-            Me.m_tsbnOuputRaw = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnOuputBinned = New System.Windows.Forms.ToolStripButton()
             Me.m_tabConfig.SuspendLayout()
             Me.m_tpEwESettings.SuspendLayout()
             Me.m_tpInformation.SuspendLayout()
             Me.m_tlpInfo.SuspendLayout()
             Me.m_tpPressures.SuspendLayout()
             Me.m_tpOutcomes.SuspendLayout()
+            Me.m_tlpOutcomes.SuspendLayout()
+            Me.m_plOutcomesToolbar.SuspendLayout()
             CType(Me.m_scOutputs, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scOutputs.Panel1.SuspendLayout()
             Me.m_scOutputs.Panel2.SuspendLayout()
@@ -163,8 +165,6 @@ Namespace UI
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbEcoscope, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_tlpOutcomes.SuspendLayout()
-            Me.m_plOutcomesToolbar.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tabConfig
@@ -459,6 +459,63 @@ Namespace UI
             Me.m_tpOutcomes.Name = "m_tpOutcomes"
             Me.m_tpOutcomes.UseVisualStyleBackColor = True
             '
+            'm_tlpOutcomes
+            '
+            resources.ApplyResources(Me.m_tlpOutcomes, "m_tlpOutcomes")
+            Me.m_tlpOutcomes.Controls.Add(Me.m_plOutcomesToolbar, 0, 0)
+            Me.m_tlpOutcomes.Controls.Add(Me.m_scOutputs, 0, 1)
+            Me.m_tlpOutcomes.Name = "m_tlpOutcomes"
+            '
+            'm_plOutcomesToolbar
+            '
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_cmbOutputTypes)
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_lblOutcome)
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_tbxOutcomeName)
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_btnOutcomeDelete)
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_btnOutcomeAdd)
+            Me.m_plOutcomesToolbar.Controls.Add(Me.m_btnOutcomeRename)
+            resources.ApplyResources(Me.m_plOutcomesToolbar, "m_plOutcomesToolbar")
+            Me.m_plOutcomesToolbar.Name = "m_plOutcomesToolbar"
+            '
+            'm_cmbOutputTypes
+            '
+            resources.ApplyResources(Me.m_cmbOutputTypes, "m_cmbOutputTypes")
+            Me.m_cmbOutputTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbOutputTypes.FormattingEnabled = True
+            Me.m_cmbOutputTypes.Name = "m_cmbOutputTypes"
+            Me.m_cmbOutputTypes.Sorted = True
+            '
+            'm_lblOutcome
+            '
+            resources.ApplyResources(Me.m_lblOutcome, "m_lblOutcome")
+            Me.m_lblOutcome.Name = "m_lblOutcome"
+            '
+            'm_tbxOutcomeName
+            '
+            resources.ApplyResources(Me.m_tbxOutcomeName, "m_tbxOutcomeName")
+            Me.m_tbxOutcomeName.Name = "m_tbxOutcomeName"
+            '
+            'm_btnOutcomeDelete
+            '
+            resources.ApplyResources(Me.m_btnOutcomeDelete, "m_btnOutcomeDelete")
+            Me.m_btnOutcomeDelete.Image = Global.EwEMSPPlugin.My.Resources.Resources.delete
+            Me.m_btnOutcomeDelete.Name = "m_btnOutcomeDelete"
+            Me.m_btnOutcomeDelete.UseVisualStyleBackColor = True
+            '
+            'm_btnOutcomeAdd
+            '
+            resources.ApplyResources(Me.m_btnOutcomeAdd, "m_btnOutcomeAdd")
+            Me.m_btnOutcomeAdd.Image = Global.EwEMSPPlugin.My.Resources.Resources.add
+            Me.m_btnOutcomeAdd.Name = "m_btnOutcomeAdd"
+            Me.m_btnOutcomeAdd.UseVisualStyleBackColor = True
+            '
+            'm_btnOutcomeRename
+            '
+            resources.ApplyResources(Me.m_btnOutcomeRename, "m_btnOutcomeRename")
+            Me.m_btnOutcomeRename.Image = Global.EwEMSPPlugin.My.Resources.Resources.change
+            Me.m_btnOutcomeRename.Name = "m_btnOutcomeRename"
+            Me.m_btnOutcomeRename.UseVisualStyleBackColor = True
+            '
             'm_scOutputs
             '
             resources.ApplyResources(Me.m_scOutputs, "m_scOutputs")
@@ -517,48 +574,27 @@ Namespace UI
             'm_tsOutcome
             '
             Me.m_tsOutcome.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsOutcome.ImageScalingSize = New System.Drawing.Size(20, 20)
             Me.m_tsOutcome.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslOutputRawBinned, Me.m_tsbnOuputRaw, Me.m_tsbnOuputBinned})
             resources.ApplyResources(Me.m_tsOutcome, "m_tsOutcome")
             Me.m_tsOutcome.Name = "m_tsOutcome"
             '
-            'm_cmbOutputTypes
+            'm_tslOutputRawBinned
             '
-            resources.ApplyResources(Me.m_cmbOutputTypes, "m_cmbOutputTypes")
-            Me.m_cmbOutputTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbOutputTypes.FormattingEnabled = True
-            Me.m_cmbOutputTypes.Name = "m_cmbOutputTypes"
-            Me.m_cmbOutputTypes.Sorted = True
+            Me.m_tslOutputRawBinned.Name = "m_tslOutputRawBinned"
+            resources.ApplyResources(Me.m_tslOutputRawBinned, "m_tslOutputRawBinned")
             '
-            'm_btnOutcomeDelete
+            'm_tsbnOuputRaw
             '
-            resources.ApplyResources(Me.m_btnOutcomeDelete, "m_btnOutcomeDelete")
-            Me.m_btnOutcomeDelete.Image = Global.EwEMSPPlugin.My.Resources.Resources.delete
-            Me.m_btnOutcomeDelete.Name = "m_btnOutcomeDelete"
-            Me.m_btnOutcomeDelete.UseVisualStyleBackColor = True
+            Me.m_tsbnOuputRaw.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnOuputRaw, "m_tsbnOuputRaw")
+            Me.m_tsbnOuputRaw.Name = "m_tsbnOuputRaw"
             '
-            'm_btnOutcomeRename
+            'm_tsbnOuputBinned
             '
-            resources.ApplyResources(Me.m_btnOutcomeRename, "m_btnOutcomeRename")
-            Me.m_btnOutcomeRename.Image = Global.EwEMSPPlugin.My.Resources.Resources.change
-            Me.m_btnOutcomeRename.Name = "m_btnOutcomeRename"
-            Me.m_btnOutcomeRename.UseVisualStyleBackColor = True
-            '
-            'm_btnOutcomeAdd
-            '
-            resources.ApplyResources(Me.m_btnOutcomeAdd, "m_btnOutcomeAdd")
-            Me.m_btnOutcomeAdd.Image = Global.EwEMSPPlugin.My.Resources.Resources.add
-            Me.m_btnOutcomeAdd.Name = "m_btnOutcomeAdd"
-            Me.m_btnOutcomeAdd.UseVisualStyleBackColor = True
-            '
-            'm_tbxOutcomeName
-            '
-            resources.ApplyResources(Me.m_tbxOutcomeName, "m_tbxOutcomeName")
-            Me.m_tbxOutcomeName.Name = "m_tbxOutcomeName"
-            '
-            'm_lblOutcome
-            '
-            resources.ApplyResources(Me.m_lblOutcome, "m_lblOutcome")
-            Me.m_lblOutcome.Name = "m_lblOutcome"
+            Me.m_tsbnOuputBinned.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnOuputBinned, "m_tsbnOuputBinned")
+            Me.m_tsbnOuputBinned.Name = "m_tsbnOuputBinned"
             '
             'm_tpEmulator
             '
@@ -866,41 +902,6 @@ Namespace UI
             Me.m_btnExport.Name = "m_btnExport"
             Me.m_btnExport.UseVisualStyleBackColor = True
             '
-            'm_tlpOutcomes
-            '
-            resources.ApplyResources(Me.m_tlpOutcomes, "m_tlpOutcomes")
-            Me.m_tlpOutcomes.Controls.Add(Me.m_plOutcomesToolbar, 0, 0)
-            Me.m_tlpOutcomes.Controls.Add(Me.m_scOutputs, 0, 1)
-            Me.m_tlpOutcomes.Name = "m_tlpOutcomes"
-            '
-            'm_plOutcomesToolbar
-            '
-            Me.m_plOutcomesToolbar.Controls.Add(Me.m_cmbOutputTypes)
-            Me.m_plOutcomesToolbar.Controls.Add(Me.m_lblOutcome)
-            Me.m_plOutcomesToolbar.Controls.Add(Me.m_tbxOutcomeName)
-            Me.m_plOutcomesToolbar.Controls.Add(Me.m_btnOutcomeDelete)
-            Me.m_plOutcomesToolbar.Controls.Add(Me.m_btnOutcomeAdd)
-            Me.m_plOutcomesToolbar.Controls.Add(Me.m_btnOutcomeRename)
-            resources.ApplyResources(Me.m_plOutcomesToolbar, "m_plOutcomesToolbar")
-            Me.m_plOutcomesToolbar.Name = "m_plOutcomesToolbar"
-            '
-            'm_tslOutputRawBinned
-            '
-            Me.m_tslOutputRawBinned.Name = "m_tslOutputRawBinned"
-            resources.ApplyResources(Me.m_tslOutputRawBinned, "m_tslOutputRawBinned")
-            '
-            'm_tsbnOuputRaw
-            '
-            Me.m_tsbnOuputRaw.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnOuputRaw, "m_tsbnOuputRaw")
-            Me.m_tsbnOuputRaw.Name = "m_tsbnOuputRaw"
-            '
-            'm_tsbnOuputBinned
-            '
-            Me.m_tsbnOuputBinned.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnOuputBinned, "m_tsbnOuputBinned")
-            Me.m_tsbnOuputBinned.Name = "m_tsbnOuputBinned"
-            '
             'frmGameDesigner
             '
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit
@@ -927,6 +928,9 @@ Namespace UI
             Me.m_tpPressures.ResumeLayout(False)
             Me.m_tpPressures.PerformLayout()
             Me.m_tpOutcomes.ResumeLayout(False)
+            Me.m_tlpOutcomes.ResumeLayout(False)
+            Me.m_plOutcomesToolbar.ResumeLayout(False)
+            Me.m_plOutcomesToolbar.PerformLayout()
             Me.m_scOutputs.Panel1.ResumeLayout(False)
             Me.m_scOutputs.Panel2.ResumeLayout(False)
             Me.m_scOutputs.Panel2.PerformLayout()
@@ -946,9 +950,6 @@ Namespace UI
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbEcoscope, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_tlpOutcomes.ResumeLayout(False)
-            Me.m_plOutcomesToolbar.ResumeLayout(False)
-            Me.m_plOutcomesToolbar.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
