@@ -25,6 +25,8 @@ Imports System.Collections.Generic
 Imports System.Diagnostics
 Imports System.Drawing
 Imports System.Globalization
+Imports System.IO
+Imports System.IO.Compression
 Imports System.Security
 Imports System.Security.Cryptography
 Imports System.Text
@@ -1837,7 +1839,8 @@ Namespace Utilities
                                              Optional dataDepth As Single(,) = Nothing,
                                              Optional bWaterOnly As Boolean = True,
                                              Optional valueFilter As Object = Nothing,
-                                             Optional valueSet As Object = Nothing) As String
+                                             Optional valueSet As Object = Nothing,
+                                             Optional level As CompressionLevel = CompressionLevel.Optimal) As String
 
             ' Can only handle 2-dimensional arrays
             Debug.Assert(data.Rank = 2)
@@ -1900,7 +1903,7 @@ Namespace Utilities
             Next i
 
             ' Done
-            Return sb.ToString
+            Return Compress(sb.ToString(), level)
 
         End Function
 
@@ -1928,6 +1931,8 @@ Namespace Utilities
 
             ' Need 2 dim array
             Debug.Assert(data.Rank = 2)
+
+            strData = Decompress(strData)
 
             Dim lines As String() = strData.Replace("""", "").Split(";"c)
             Dim values As String() = Nothing
@@ -2023,7 +2028,8 @@ Namespace Utilities
                                              InCol As Integer,
                                              Optional dataDepth As Single(,) = Nothing,
                                              Optional bWaterOnly As Boolean = True,
-                                             Optional valueSet As Object = Nothing) As String
+                                             Optional valueSet As Object = Nothing,
+                                             Optional level As CompressionLevel = CompressionLevel.Optimal) As String
 
             ' Need 3 dim array
             Debug.Assert(data.Rank = 3)
@@ -2094,7 +2100,7 @@ Namespace Utilities
             Next i
 
             ' Done
-            Return sb.ToString
+            Return Compress(sb.ToString, level)
 
         End Function
 
@@ -2125,6 +2131,8 @@ Namespace Utilities
 
             ' Need 3 dim array
             Debug.Assert(data.Rank = 3)
+
+            strData = Decompress(strData)
 
             Dim astrLines As String() = strData.Replace("""", "").Split(";"c)
             Dim astrValues As String() = Nothing
@@ -2540,6 +2548,68 @@ Namespace Utilities
         End Function
 
 #End Region ' Encryption
+
+#Region " Compression "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Compress and base64 encode a provided string.
+        ''' </summary>
+        ''' <param name="strIn">The string to compress</param>
+        ''' <param name="level">The <see cref="CompressionLevel">compression level</see> to use.</param>
+        ''' <param name="method">.NET standard is offering other algorithms</param>
+        ''' <returns>The compressed and base64-encoded string.</returns>
+        ''' <seealso cref="Decompress(String)"/>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Compress(strIn As String, level As CompressionLevel, Optional method As String = "gzip") As String
+
+            If (level = CompressionLevel.NoCompression) Then Return strIn
+
+            Dim output As String = ""
+            Using mem As New MemoryStream()
+                Using gz As New GZipStream(mem, level)
+                    Using sw As New StreamWriter(gz)
+                        sw.Write(strIn)
+                        sw.Close()
+                        Dim bytes As Byte() = mem.ToArray()
+                        output = "gzip:" & Convert.ToBase64String(bytes)
+                    End Using
+                    gz.Close()
+                End Using
+                mem.Close()
+            End Using
+            Return output
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Base64 decode and decompress a provided string.
+        ''' </summary>
+        ''' <param name="strIn">The string to decode and decompress.</param>
+        ''' <returns></returns>
+        ''' <seealso cref="Compress(String, CompressionLevel, String)"/>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Decompress(strIn As String) As String
+            If Not strIn.StartsWith("gzip:") Then Return strIn
+
+            Dim output As String = ""
+            Dim bytes As Byte() = Convert.FromBase64String(strIn.Substring(5))
+            Using mem As New MemoryStream(bytes)
+                Using gz As New GZipStream(mem, CompressionMode.Decompress)
+                    Using sr As New StreamReader(gz)
+                        output = sr.ReadToEnd()
+                        sr.Close()
+                    End Using
+                    gz.Close()
+                End Using
+                mem.Close()
+            End Using
+            Return output
+
+        End Function
+
+#End Region ' Compression
 
 #Region " Private classes "
 

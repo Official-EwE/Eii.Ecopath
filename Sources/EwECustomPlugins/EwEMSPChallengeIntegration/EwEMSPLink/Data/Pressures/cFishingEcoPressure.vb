@@ -22,18 +22,18 @@ Option Strict On
 
 #End Region ' Imports
 
-Public Class cFishingPressure
+Public Class cFishingEcoPressure
     Inherits cPressure
 
     Public Sub New(name As String)
         MyBase.New(name)
     End Sub
 
-    Public Sub New(name As String, effortscalar As Single)
+    Public Sub New(name As String, bIsEcological As Boolean)
         Me.New(name)
-        Me.EffortScalar = effortscalar
+        Me.bIsEcological = bIsEcological
     End Sub
 
-    Public Property EffortScalar As Single = 0
+    Public Property bIsEcological As Boolean = False
 
 End Class

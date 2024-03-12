@@ -196,8 +196,8 @@
   <data name="defaults" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defaults.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="HEADER_MULTIPLIER" xml:space="preserve">
-    <value>Max. effort multiplier</value>
+  <data name="HEADER_VALUE" xml:space="preserve">
+    <value>Value</value>
   </data>
   <data name="STATUS_GAME_EXPORT_FAILED" xml:space="preserve">
     <value>MSP game configuration failed to save to {0}</value>
@@ -237,5 +237,11 @@
   </data>
   <data name="HEADER_RAW" xml:space="preserve">
     <value>Raw data</value>
+  </data>
+  <data name="CHOICE_GRID" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="CHOICE_SCALAR" xml:space="preserve">
+    <value>Scalar</value>
   </data>
 </root>

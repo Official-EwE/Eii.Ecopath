@@ -141,6 +141,7 @@ Namespace UI
 
             Me.Core.AddEcospaceTimeStepHandler(Me.m_dgtTimeStep)
             Me.FillGameCombo()
+            Me.FillPressureTypesCombo()
             Me.FillOutputTypesCombo()
             Me.FillTestsetCombo()
             Me.FillStopOptionsCombo()
@@ -485,7 +486,7 @@ Namespace UI
                     Me.m_fpRunYears.Value = game.RunYears
                     Me.m_fpSpinupYears.Value = game.SpinupYears
                     Me.m_fpMAPCellClosure.Value = game.MPACellClosureRatio
-                    Me.m_fpBycatchFee.Value = game.BycatchWeightMultiplier
+                    Me.m_fpBycatchFee.Value = game.BycatchCostMultiplier
                     Me.m_tbxGameName.Text = game.Name
                     Me.m_tbxInfoVersion.Text = game.Version
                     Me.m_tbxInfoAuthor.Text = game.Author
@@ -1335,6 +1336,12 @@ Namespace UI
             End If
 
             Me.OnGameSelected(Me, Nothing)
+        End Sub
+
+        Private Sub FillPressureTypesCombo()
+            Me.m_cmbPressureTypes.Items.Clear()
+            Me.m_cmbPressureTypes.Items.Add(My.Resources.CHOICE_GRID)
+            Me.m_cmbPressureTypes.Items.Add(My.Resources.CHOICE_SCALAR)
         End Sub
 
         Private Sub FillOutputTypesCombo()
