@@ -190,20 +190,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Grid.
+        '''  Looks up a localized string similar to Fishing ecological.
         '''</summary>
-        Friend ReadOnly Property CHOICE_GRID() As String
+        Friend ReadOnly Property CHOICE_FISHING_ECO() As String
             Get
-                Return ResourceManager.GetString("CHOICE_GRID", resourceCulture)
+                Return ResourceManager.GetString("CHOICE_FISHING_ECO", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Scalar.
+        '''  Looks up a localized string similar to Fishing effort multiplier.
         '''</summary>
-        Friend ReadOnly Property CHOICE_SCALAR() As String
+        Friend ReadOnly Property CHOICE_FISHING_EFFORT() As String
             Get
-                Return ResourceManager.GetString("CHOICE_SCALAR", resourceCulture)
+                Return ResourceManager.GetString("CHOICE_FISHING_EFFORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Environmental grid.
+        '''</summary>
+        Friend ReadOnly Property CHOICE_GRID() As String
+            Get
+                Return ResourceManager.GetString("CHOICE_GRID", resourceCulture)
             End Get
         End Property
         

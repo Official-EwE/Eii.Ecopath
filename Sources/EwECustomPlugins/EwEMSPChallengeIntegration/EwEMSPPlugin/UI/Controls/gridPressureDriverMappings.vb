@@ -125,7 +125,7 @@ Namespace UI
                 Me(iRow, eColumnTypes.Mapping) = New SourceGrid2.Cells.Real.Cell(d, edt)
                 Me(iRow, eColumnTypes.Mapping).Behaviors.Add(Me.EwEEditHandler)
 
-                If (TypeOf (pressure) Is cFishingPressure) Then
+                If (TypeOf (pressure) Is cFishingEffortPressure) Then
                     Me(iRow, eColumnTypes.Value) = New cEwECell(Game.EffortMultiplier(pressure.Name))
                     Me(iRow, eColumnTypes.Value).Behaviors.Add(Me.EwEEditHandler)
                 ElseIf (TypeOf (pressure) Is cFishingEcoPressure) Then
@@ -165,6 +165,8 @@ Namespace UI
         Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
             Dim pressure As cPressure = Me.Pressure(p.Row)
+            If pressure Is Nothing Then Return False
+
             Dim strDriver As String = pressure.Name
 
             Select Case DirectCast(p.Column, eColumnTypes)
@@ -180,7 +182,7 @@ Namespace UI
                     End Try
 
                 Case eColumnTypes.Value
-                    If (TypeOf (pressure) Is cFishingPressure) Then
+                    If (TypeOf (pressure) Is cFishingEffortPressure) Then
                         Me.Game.EffortMultiplier(strDriver) = DirectCast(cell.GetValue(p), Double)
                         Me.Shell.OnChanged()
                     ElseIf (TypeOf (pressure) Is cFishingEcoPressure) Then
@@ -191,7 +193,7 @@ Namespace UI
                     End If
 
             End Select
-            Return MyBase.OnCellValueChanged(p, cell)
+            Return True ' MyBase.OnCellValueChanged(p, cell)
 
         End Function
 
@@ -251,21 +253,24 @@ Namespace UI
             lDrivers.Add(Nothing)
             lDrivers.AddRange(Game.Drivers(pressure))
 
-            Dim e As New EditorComboBox(GetType(cDriver))
-            e.StandardValues = lDrivers.ToArray()
-            e.StandardValuesExclusive = True
+            Try
+                Dim e As New EditorComboBox(GetType(cDriver))
+                e.StandardValues = lDrivers.ToArray()
+                e.StandardValuesExclusive = True
+                Return e
+            Catch ex As Exception
 
-            Return e
-
+            End Try
+            Return Nothing
         End Function
 
         Private Property Pressure(ByVal iRow As Integer) As cPressure
             Get
-                If (iRow < 1) Then Return Nothing
+                If (iRow < 1) Or (iRow > Me.RowsCount) Then Return Nothing
                 Return DirectCast(Me.Rows(iRow).Tag, cPressure)
             End Get
             Set(ByVal value As cPressure)
-                If (iRow < 1) Then Return
+                If (iRow < 1) Or (iRow > Me.RowsCount) Then Return
                 Me.Rows(iRow).Tag = value
             End Set
         End Property

@@ -313,7 +313,11 @@ Namespace Database
             Debug.Assert(Me.IsConnected(), "Cannot close a connection that is not open")
 
             If Me.IsConnected Then
-                Me.m_conn.Close()
+                Try
+                    Me.m_conn.Close()
+                Catch ex As Exception
+
+                End Try
             End If
 
             If (Me.m_conn IsNot Nothing) Then

@@ -118,7 +118,7 @@ Namespace UI
                 Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i + 1))
                 Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(pressure.Name)
 
-                If (TypeOf pressure Is cFishingPressure) Then
+                If (TypeOf pressure Is cFishingEffortPressure) Then
                     cell = New cEwECell(cStringUtils.ConvertToSingle(Me.m_testset.Testdata(pressure)), style)
                     cell.SuppressZero(cCore.NULL_VALUE) = True
                 ElseIf (TypeOf pressure Is cFishingEcoPressure) Then
@@ -189,7 +189,7 @@ Namespace UI
 
             Dim pressure As cPressure = Me.Pressure(p.Row)
 
-            If (TypeOf pressure Is cFishingPressure) Then
+            If (TypeOf pressure Is cFishingEffortPressure) Then
                 Dim val As Single = cCore.NULL_VALUE
                 If (cell.GetValue(p) IsNot Nothing) Then val = CSng(cell.GetValue(p))
                 Me.m_testset.Testdata(pressure) = cStringUtils.FormatSingle(val)
