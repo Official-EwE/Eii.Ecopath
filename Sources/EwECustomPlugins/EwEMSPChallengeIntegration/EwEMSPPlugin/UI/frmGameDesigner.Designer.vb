@@ -379,7 +379,6 @@ Namespace UI
             Me.m_cmbPressureTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbPressureTypes.FormattingEnabled = True
             Me.m_cmbPressureTypes.Name = "m_cmbPressureTypes"
-            Me.m_cmbPressureTypes.Sorted = True
             '
             'm_gridPressureMappings
             '

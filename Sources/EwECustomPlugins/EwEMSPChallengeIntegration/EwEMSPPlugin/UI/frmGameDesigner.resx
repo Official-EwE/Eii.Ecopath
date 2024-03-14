@@ -1024,7 +1024,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_cmbPressureTypes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 12</value>
+    <value>272, 13</value>
   </data>
   <data name="m_cmbPressureTypes.Size" type="System.Drawing.Size, System.Drawing">
     <value>121, 21</value>

@@ -462,7 +462,8 @@ Namespace UI
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
         Private Sub OnAnyTypeSelected(sender As Object, e As EventArgs) _
-        Handles m_cmbOutputTypes.SelectedIndexChanged, m_cmbPressureTypes.SelectedIndexChanged
+            Handles m_cmbOutputTypes.SelectedIndexChanged, m_cmbPressureTypes.SelectedIndexChanged
+            If (Me.m_bInupdate) Then Return
             Me.UpdateControls()
         End Sub
 
@@ -744,7 +745,9 @@ Namespace UI
                     Case 0
                         p = New cEnvironmentalPressure(n)
                     Case 1
-                        p = New cFishingPressure(n)
+                        p = New cFishingEffortPressure(n)
+                    Case 2
+                        p = New cFishingEcoPressure(n)
                     Case Else
                         Debug.Assert(False, "Whoopsie")
                 End Select
@@ -853,11 +856,24 @@ Namespace UI
         Private Sub OnPressureSelected() _
             Handles m_gridPressureMappings.OnSelectionChanged
 
+            If (Me.m_bInupdate) Then Return
+            Me.m_bInupdate = True
+
             Dim p As cPressure = Me.m_gridPressureMappings.SelectedPressure
             If (p IsNot Nothing) Then
                 Me.m_tbxPressureName.Text = p.Name
+                'Dim iSel As Integer = -1
+                'If TypeOf p Is cEnvironmentalPressure Then
+                '    iSel = 0
+                'ElseIf TypeOf p Is cFishingEffortPressure Then
+                '    iSel = 1
+                'ElseIf TypeOf p Is cFishingEcoPressure Then
+                '    iSel = 2
+                'End If
+                'Me.m_cmbPressureTypes.SelectedIndex = iSel
             End If
             Me.UpdateControls()
+            Me.m_bInupdate = False
 
         End Sub
 
@@ -1341,7 +1357,8 @@ Namespace UI
         Private Sub FillPressureTypesCombo()
             Me.m_cmbPressureTypes.Items.Clear()
             Me.m_cmbPressureTypes.Items.Add(My.Resources.CHOICE_GRID)
-            Me.m_cmbPressureTypes.Items.Add(My.Resources.CHOICE_SCALAR)
+            Me.m_cmbPressureTypes.Items.Add(My.Resources.CHOICE_FISHING_EFFORT)
+            Me.m_cmbPressureTypes.Items.Add(My.Resources.CHOICE_FISHING_ECO)
         End Sub
 
         Private Sub FillOutputTypesCombo()

@@ -239,9 +239,12 @@
     <value>Raw data</value>
   </data>
   <data name="CHOICE_GRID" xml:space="preserve">
-    <value>Grid</value>
+    <value>Environmental grid</value>
   </data>
-  <data name="CHOICE_SCALAR" xml:space="preserve">
-    <value>Scalar</value>
+  <data name="CHOICE_FISHING_EFFORT" xml:space="preserve">
+    <value>Fishing effort multiplier</value>
+  </data>
+  <data name="CHOICE_FISHING_ECO" xml:space="preserve">
+    <value>Fishing ecological</value>
   </data>
 </root>
