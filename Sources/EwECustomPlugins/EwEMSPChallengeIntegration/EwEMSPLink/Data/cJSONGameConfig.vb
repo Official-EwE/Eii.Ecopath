@@ -233,7 +233,7 @@ Public Class cJSONGameConfig
                     lPressures.Add(p)
                 Next
                 For Each obj As JObject In Me.m_gamedef.fishing
-                    Dim p As New cFishingPressure(obj.Property("name").Value.ToString)
+                    Dim p As New cFishingEffortPressure(obj.Property("name").Value.ToString)
                     lPressures.Add(p)
                 Next
             End If

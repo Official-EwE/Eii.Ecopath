@@ -22,7 +22,7 @@ Option Strict On
 
 #End Region ' Imports
 
-Public Class cFishingPressure
+Public Class cFishingEffortPressure
     Inherits cPressure
 
     Public Sub New(name As String)

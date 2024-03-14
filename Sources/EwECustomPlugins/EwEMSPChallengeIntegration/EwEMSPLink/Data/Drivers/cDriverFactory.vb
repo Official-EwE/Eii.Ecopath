@@ -40,65 +40,65 @@ Friend Class cDriverFactory
     ''' -----------------------------------------------------------------------
     Public Shared Function GetDrivers(core As cCore, game As cGame, Optional pressure As cPressure = Nothing) As cDriver()
 
-        Dim key As String = ""
-        If (pressure IsNot Nothing) Then key = pressure.Name
-        Return GetDrivers(core, game, key)
-
-    End Function
-
-#Region " Internals "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Obtain all drivers for the given fixed named key, or for all drivers if the key is omitted.
-    ''' </summary>
-    ''' <param name="core"></param>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Private Shared Function GetDrivers(core As cCore, game As cGame, key As String) As cDriver()
-
         Dim l As New List(Of cDriver)
-        Dim d As cDriver = Nothing
+        Dim cat As Integer = 0
+        Dim subt As Integer = 0
 
-        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_NOISE) Or key.StartsWith(cGame.NAME_SURFACE_DIST) Or key.StartsWith(cGame.NAME_BOTTOM_DIST) Then
-            For i As Integer = 1 To core.nEnvironmentalDriverLayers
-                d = New cEnvironmentalDriver(core, game, core.EcospaceBasemap.LayerDriver(i))
-                l.Add(d)
-            Next
+        If (pressure IsNot Nothing) Then
+            Dim key As String = pressure.Name.ToLower()
+            If (TypeOf pressure Is cEnvironmentalPressure) Then
+                cat = 1
+                If key.StartsWith(cGame.NAME_NOISE.ToLower()) Or key.StartsWith(cGame.NAME_SURFACE_DIST.ToLower()) Or key.StartsWith(cGame.NAME_BOTTOM_DIST.ToLower()) Then
+                    subt = 1
+                ElseIf key.StartsWith(cGame.NAME_PROTECTION.ToLower()) Then
+                    subt = 2
+                ElseIf key.StartsWith(cGame.NAME_ARTIFICIAL_HAB.ToLower()) Then
+                    subt = 3
+                End If
+            ElseIf (TypeOf pressure Is cFishingEffortPressure) Then
+                cat = 2
+                subt = 1
+            ElseIf (TypeOf pressure Is cFishingEcoPressure) Then
+                cat = 2
+                subt = 2
+            End If
         End If
 
-        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_PROTECTION) Then
-            For i As Integer = 1 To core.nMPAs
-                d = New cMPADriver(core, game, core.EcospaceMPAs(i))
-                l.Add(d)
-            Next
+        If cat = 0 Or cat = 1 Then
+            If (subt = 0 Or subt = 1) Then
+                For i As Integer = 1 To core.nEnvironmentalDriverLayers
+                    l.Add(New cEnvironmentalDriver(core, game, core.EcospaceBasemap.LayerDriver(i)))
+                Next
+            End If
+
+            If (subt = 0 Or subt = 2) Then
+                For i As Integer = 1 To core.nMPAs
+                    l.Add(New cMPADriver(core, game, core.EcospaceMPAs(i)))
+                Next
+            End If
+
+            If (subt = 0 Or subt = 3) Then
+                For i As Integer = 1 To core.nHabitats - 1
+                    l.Add(New cHabitatDriver(core, game, core.EcospaceHabitats(i)))
+                Next
+            End If
         End If
 
-        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_ARTIFICIAL_HAB) Then
-            For i As Integer = 1 To core.nHabitats - 1
-                d = New cHabitatDriver(core, game, core.EcospaceHabitats(i))
-                l.Add(d)
-            Next
-        End If
-
-        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_FISHING) Then
-            For i As Integer = 1 To core.nFleets
-                d = New cFleetEffortDriver(core, game, core.EcopathFleetInputs(i))
-                l.Add(d)
-            Next
-        End If
-
-        If String.IsNullOrWhiteSpace(key) Or key.StartsWith(cGame.NAME_FISHING_ECO) Then
-            For i As Integer = 1 To core.nFleets
-                d = New cFleetEcoDriver(core, game, core.EcopathFleetInputs(i))
-                l.Add(d)
-            Next
+        If (cat = 0 Or cat = 2) Then
+            If (subt = 0 Or subt = 1) Then
+                For i As Integer = 1 To core.nFleets
+                    l.Add(New cFleetEffortDriver(core, game, core.EcopathFleetInputs(i)))
+                Next
+            End If
+            If (subt = 0 Or subt = 2) Then
+                For i As Integer = 1 To core.nFleets
+                    l.Add(New cFleetEcoDriver(core, game, core.EcopathFleetInputs(i)))
+                Next
+            End If
         End If
 
         Return l.ToArray()
 
     End Function
-
-#End Region ' Internals
 
 End Class
