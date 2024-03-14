@@ -524,7 +524,7 @@ Public Class cGame
     Public Function EffortStartValues() As ICollection(Of cScalar)
         Dim items As New List(Of cScalar)
         For Each p As cPressure In Me.Pressures
-            If (TypeOf (p) Is cFishingPressure) Then
+            If (TypeOf (p) Is cFishingEffortPressure) Then
                 Dim d As cFleetEffortDriver = DirectCast(Me.Driver(p.Name), cFleetEffortDriver)
                 Dim s As New cScalar(p.Name, d.StartValue / Me.EffortMultiplier(p.Name))
                 items.Add(s)
@@ -661,7 +661,7 @@ Public Class cGame
         Me.Add(New cEnvironmentalPressure(NAME_ARTIFICIAL_HAB, bm.InCol, bm.InRow))
         For i As Integer = 1 To Me.m_core.nFleets
             Me.Add(New cEnvironmentalPressure(NAME_PROTECTION & " " & Me.m_core.EcopathFleetInputs(i).Name, bm.InCol, bm.InRow))
-            Me.Add(New cFishingPressure(NAME_FISHING & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0))
+            Me.Add(New cFishingEffortPressure(NAME_FISHING & " " & Me.m_core.EcopathFleetInputs(i).Name, 1.0))
             Me.Add(New cFishingEcoPressure(NAME_FISHING_ECO & " " & Me.m_core.EcopathFleetInputs(i).Name, False))
         Next
 
@@ -752,11 +752,11 @@ Public Class cGame
             Dim xnPressure As XmlNode = Nothing
 
             If TypeOf p Is cEnvironmentalPressure Then
-                doc.CreateElement("environmental_pressure")
-            ElseIf TypeOf p Is cFishingPressure Then
-                doc.CreateElement("fishing_pressure")
+                doc.CreateElement("pressure_environmental")
+            ElseIf TypeOf p Is cFishingEffortPressure Then
+                doc.CreateElement("pressure_fishing_intensity")
             ElseIf TypeOf p Is cFishingEcoPressure Then
-                doc.CreateElement("fishing_eco")
+                doc.CreateElement("pressure_fishing_eco")
             Else
                 Debug.Assert(False)
             End If
@@ -887,25 +887,28 @@ Public Class cGame
                     Try
                         For Each xnPressure As XmlNode In xn.ChildNodes
                             Dim strName As String = ""
-                            Dim strDatatype As String = ""
                             Dim t As Type = Nothing
 
                             For Each xa As XmlAttribute In xnPressure.Attributes
                                 Select Case xa.Name
                                     Case "name" : strName = HttpUtility.UrlDecode(xa.InnerText)
-                                    Case "type" : strDatatype = xa.InnerText
+                                    Case "type"
+                                        Select Case xa.InnerText.ToLower()
+                                            Case "grid" : t = GetType(cEnvironmentalPressure)
+                                            Case "scalar" : t = GetType(cFishingEffortPressure)
+                                        End Select
                                 End Select
                             Next
 
                             Select Case xnPressure.Name
                                 Case "pressure"
-                                    ' Backwards compatibility - must upgrade
-                                    t = If(strDatatype.Contains("scalar"), GetType(cFishingPressure), GetType(cEnvironmentalPressure))
-                                Case "environmental_pressure"
+                                    ' t should be obtained from pressure type
+                                    Debug.Assert(t IsNot Nothing)
+                                Case "pressure_environmental"
                                     t = GetType(cEnvironmentalPressure)
-                                Case "fishing_pressure"
-                                    t = GetType(cFishingPressure)
-                                Case "fishing_eco"
+                                Case "pressure_fishing_intensity"
+                                    t = GetType(cFishingEffortPressure)
+                                Case "pressure_fishing_eco"
                                     t = GetType(cFishingEcoPressure)
                             End Select
                             If (t IsNot Nothing) Then

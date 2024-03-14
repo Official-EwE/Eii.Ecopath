@@ -19,6 +19,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
 Imports System.Xml
 Imports EwECore
 Imports EwEUtils.Utilities
@@ -117,6 +118,12 @@ Public Class cEwEMSPLinkData
 
         If (Not String.IsNullOrWhiteSpace(str)) Then
             Try
+#If DEBUG Then
+                Using sw As New StreamWriter("MSP games.xml")
+                    sw.WriteLine(str)
+                    sw.Flush()
+                End Using
+#End If
                 Dim doc As New XmlDocument()
                 doc.LoadXml(str)
                 For Each xnGame As XmlNode In doc.SelectNodes("//game")

@@ -67,9 +67,9 @@ Public Class cFleetEffortDriver
     ''' -----------------------------------------------------------------------
     Public Overrides Function Apply(pressure As cPressure, bDirect As Boolean, Optional multiplier As Double = 1.0!) As Boolean
 
-        If (TypeOf (pressure) IsNot cFishingPressure) Then Return False
+        If (TypeOf (pressure) IsNot cFishingEffortPressure) Then Return False
 
-        Dim fp As cFishingPressure = DirectCast(pressure, cFishingPressure)
+        Dim fp As cFishingEffortPressure = DirectCast(pressure, cFishingEffortPressure)
 
         If (bDirect) Then
             Me.m_core.EcospaceDataStructures.SEmult(Me.m_fleet.Index) = Math.Max(cTINY_NUM, Math.Min(1, Math.Max(fp.EffortScalar, 0)) * multiplier)
@@ -111,7 +111,7 @@ Public Class cFleetEffortDriver
     ''' <returns>The supported pressure type.</returns>
     ''' -----------------------------------------------------------------------
     Public Overrides Function PressureType() As Type
-        Return GetType(cFishingPressure)
+        Return GetType(cFishingEffortPressure)
     End Function
 
 End Class
