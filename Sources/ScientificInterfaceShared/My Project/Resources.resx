@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="TS_TYPE_BIOMASSABS" xml:space="preserve">
-    <value>Absolute biomass</value>
+    <value>B||Biomass</value>
     <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
-    <value>Relative biomass</value>
+    <value>B||Biomass</value>
     <comment>Time series type</comment>
   </data>
-  <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
-    <value>Total mortality</value>
+  <data name="TS_TYPE_TOTALMORTALITY" xml:space="preserve">
+    <value>Tot. mort||Total mortality</value>
     <comment>Time series type</comment>
   </data>
   <data name="STATUS_TIMESERIES_ADDING" xml:space="preserve">
@@ -164,7 +164,7 @@
     <comment>{0}=index, {1}=name</comment>
   </data>
   <data name="TS_TYPE_FISHINGEFFORT" xml:space="preserve">
-    <value>Fishing effort</value>
+    <value>Effort||Fishing effort</value>
     <comment>Time series type</comment>
   </data>
   <data name="GENERIC_CHAR_PERIOD" xml:space="preserve">
@@ -179,7 +179,7 @@
     <comment>| separated list of image filters. Order: bitmap, jpeg, gif, png, tiff</comment>
   </data>
   <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
-    <value>Ecotracer relative concentration</value>
+    <value>Cont. conc.||Contaminant concentration</value>
     <comment>Time series type</comment>
   </data>
   <data name="GENERIC_LABEL_POINT" xml:space="preserve">
@@ -194,12 +194,12 @@
     <value>AED|UAE Dirham|AFN|Afghanistan Afghani|ALL|Albanian Lek|AMD|Armenian Dram|ANG|Antillean Guilder|AOR|Angolan New Kwanza|ARS|Argentinian Peso|AUD|Australian Dollar|AWG|Aruban Florin|AZM|Azerbaijan Manat|BAM|Bosnian Konvertibilna Marka|BBD|Barbadian Dollar|BDT|Bangladesh Taka|BGN|Bulgarian New Lev|BHD|Bahraini Dinar|BIF|Burundian Franc|BMD|Bermudan Dollar|BND|Brunei Dollar|BOB|Bolivian Boliviano|BRL|Brazilian Real|BSD|Bahamas Dollar|BTN|Bhutan Ngultrum|BWP|Botswana Pula|BYB|Belarussian Ruble|BZD|Belizean Dollar|CAD|Canadian Dollar|CDF|Congolese Franc|CHF|Swiss Franc|CLP|Chilean Peso|CNY|Chinese Yuan Renminbi|COP|Colombian Peso|CRC|Costa Rican Colon|CUP|Cuban Peso|CVE|Cape Verdean Escudo|CZK|Czech Koruna|DJF|Djiboutian Franc|DKK|Danish Krone|DOP|Dominican Republic Peso|DZD|Algerian Dinar|ECS|Ecuador Sucre|EEK|Estonian Kroon|EGP|Eqyptian Pound|ETB|Ethiopian Birr|EUR|Euro|FJD|Fijian Dollar|FKP|Falkland Islands Pound|FRF|French Franc|GBP|UK Pound Sterling|GEL|Georgian Lari|GHC|Ghana Cedi|GIP|Gibraltarian Pound|GMD|Gambian Dalasi|GNF|Guinean Franc|GTQ|Guatemalan Quetzal|GYD|Guyanese Dollar|HKD|Hong Kong Dollar|HNL|Honduran Lempira|HRK|Croatian Kuna|HTG|Haitian Gourde|HUF|Hungarian Forint|IDR|Indonesian Rupiah|ILS|Israeli New Sheqel|INR|Indian Rupee|IQD|Iraqi Dinar|IRR|Iranian Rial|ISK|Iceland Krona|JMD|Jamaican Dollar|JOD|Jordanian Dinar|JPY|Japanese Yen|KES|Kenyan Shilling|KGS|Kyrgyzstan Som|KHR|Cambodian Riel|KMF|Comoran Franc|KPW|Korean PR Won (N.Korea)|KRW|Korean Republic Won (S.Korea)|KWD|Kuwaiti Dinar|KYD|Caymanian Dollar|KZT|Kazakhstan Tenge|LAK|Laos Kip|LBP|Lebanese Pound|LKR|Sri Lanka Rupee|LRD|Liberian Dollar|LSL|Lesothian Loti|LTL|Lithuanian Litas|LVL|Latvian Lat|LYD|Libyan Dinar|MAD|Moroccan Dirham|MAD|Moroccan Dirham|MDL|Moldovan Leu|MGF|Malagasy Franc|MKD|Macedonian Denar|MMK|Myanmar Kyat|MNT|Mongolian Tugrik|MOP|Macau Pataca|MRO|Mauritanian Ougiya|MUR|Mauritian Rupee|MVR|Maldivian Rufiyaa|MWK|Malawi Kwacha|MXN|Mexican New Peso|MYR|Malaysian Ringgit|MZM|Mozambique Metical|NAD|Namibia Dollar|NGN|Nigerian Naira|NIO|Nicaraguan Crdoba|NOK|Norwegian Krone|NPR|Nepalese Rupee|NZD|New Zealand Dollar|OMR|Omani Rial|PAB|Panamanian Balboa|PEN|Peruvian New Sol|PGK|Papua New Guinea Kina|PHP|Philippine Piso|PKR|Pakistani Rupee|PLN|Polish New Zloty|PYG|Paraguayan Guaran|QAR|Qatari Riyal|ROL|Romanian Leu|RSD|Serbian Dinar|RUB|Russian Rouble|RWF|Rwandan Franc|SAR|Saudi Riyal|SBD|Solomon Islands Dollar|SCR|Seychelles Rupee|SDD|Sudanese Dinar|SEK|Swedish Krona|SGD|Singaporean Dollar|SHP|Saint Helena Pound|SKK|Slovak Koruna|SLL|Sierra Leone Leone|SOS|Somali Shilling|SRG|Surinamese Guilder|STD|Sáo Tome &amp; Principe Dobra|SVC|Salvadoran Colon|SYP|Syrian Pound|SZL|Swaziland Lilangeni|THB|Thai Baht|TJR|Tajikistan Ruble|TMM|Turkmenistan Manat|TND|Tunisian Dinar|TOP|Tonga Pa'anga|TRY|New Turkish Lira|TTD|Trinidadian Dollar|TWD|Taiwanese Yuan|TZS|Tanzanian Shilling|UAH|Ukraine Hryvnias|UGX|Uganda New Shilling|USD|U.S. Dollar|UYU|Peso Uruguayo|UZS|Uzbekistan Sum|VEB|Venezuelan Bolvar|VND|Vietnamese New Dng|VUV|Vanuatu Vatu|WST|Western Samoan Tala|XAF|CFA Central Franc|XCD|East Caribbean Dollar|XOF|CFA West Franc|XPF|French Polynesian CFA France (CFP)|YER|Yemen Rial|ZAR|South African Rand|ZMK|Zambian Kwacha|ZWD|Zimbabwean Dollar</value>
     <comment>abbr|name pairs, separated by |</comment>
   </data>
-  <data name="TS_TYPE_CONSTTOTALMORT" xml:space="preserve">
-    <value>Constant total mortality</value>
+  <data name="TS_TYPE_CONSTANTTOTALMORTALITY" xml:space="preserve">
+    <value>Const. tot. mort||Constant total mortality</value>
     <comment>Time series type</comment>
   </data>
-  <data name="TS_TYPE_FISHMORTABS" xml:space="preserve">
-    <value>Fishing mortality</value>
+  <data name="TS_TYPE_FISHINGMORTALITY" xml:space="preserve">
+    <value>F||Fishing mortality</value>
     <comment>Time series type</comment>
   </data>
   <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
@@ -227,7 +227,7 @@
     <value>Month</value>
   </data>
   <data name="TS_TYPE_CATCHESFORCING" xml:space="preserve">
-    <value>Catches</value>
+    <value>Catch</value>
     <comment>Time series type</comment>
   </data>
   <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
@@ -257,11 +257,11 @@
     <comment>'Colon' character description</comment>
   </data>
   <data name="TS_TYPE_TRACER_CONCABS" xml:space="preserve">
-    <value>Ecotracer absolute concentration</value>
+    <value>Cont. conc.||Contaminant concentration</value>
     <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_BIOMASSFORCING" xml:space="preserve">
-    <value>Biomass forcing</value>
+    <value>B||Biomass</value>
     <comment>Time series type</comment>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -275,7 +275,7 @@
     <value>Comma-separated text files (*.csv)|*.csv</value>
   </data>
   <data name="TS_TYPE_AVERAGEWEIGHT" xml:space="preserve">
-    <value>Average weight</value>
+    <value>Avg. weight||Average weight</value>
     <comment>Time series type</comment>
   </data>
   <data name="SHAPE_TYPE_TO_SEASONAL_MSG" xml:space="preserve">
@@ -285,8 +285,8 @@
     <value>Updating time series {0}...</value>
     <comment>{0}: time series name</comment>
   </data>
-  <data name="TS_TYPE_CATCHESABS" xml:space="preserve">
-    <value>Catches</value>
+  <data name="TS_TYPE_CATCHESREL" xml:space="preserve">
+    <value>Catch</value>
     <comment>Time series type</comment>
   </data>
   <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">
@@ -1467,10 +1467,6 @@
   </data>
   <data name="HEADER_SS" xml:space="preserve">
     <value>Sum of squares</value>
-  </data>
-  <data name="TS_TYPE_FISHMORTREL" xml:space="preserve">
-    <value>Relative fishing mortality</value>
-    <comment>Time series type</comment>
   </data>
   <data name="ECOLOGY_BATHYDEMERSAL" xml:space="preserve">
     <value>Bathydemersal</value>
@@ -2849,8 +2845,9 @@
   <data name="HEADER_LATIN_NAME" xml:space="preserve">
     <value>Latin name</value>
   </data>
-  <data name="TS_TYPE_CATCHESREL" xml:space="preserve">
-    <value>Relative catches</value>
+  <data name="TS_TYPE_CATCHES" xml:space="preserve">
+    <value>Catch</value>
+    <comment>Time series type</comment>
   </data>
   <data name="HEADER_ASSIGNED_ENV_FORCING" xml:space="preserve">
     <value>Assigned environmental forcing to {0}</value>
@@ -2896,17 +2893,21 @@
   <data name="HEADER_LANDINGS" xml:space="preserve">
     <value>Landings</value>
   </data>
-  <data name="TS_TYPE_DISCARDMORT" xml:space="preserve">
-    <value>Discard mortality</value>
+  <data name="TS_TYPE_DISCARDMORTALITY" xml:space="preserve">
+    <value>Disc. mort||Discard mortality</value>
+    <comment>Time series type</comment>
   </data>
-  <data name="TS_TYPE_DISCARDPROP" xml:space="preserve">
-    <value>Discard proportion</value>
+  <data name="TS_TYPE_DISCARDPROPORTION" xml:space="preserve">
+    <value>Disc. prop||Discard proportion</value>
+    <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_DISCARDS" xml:space="preserve">
     <value>Discards</value>
+    <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_LANDINGS" xml:space="preserve">
     <value>Landings</value>
+    <comment>Time series type</comment>
   </data>
   <data name="HEADER_DISCARDS" xml:space="preserve">
     <value>Discards</value>
@@ -3183,6 +3184,7 @@
   </data>
   <data name="TS_TYPE_CATCHABILITIES" xml:space="preserve">
     <value>Catchabilities</value>
+    <comment>Time series type</comment>
   </data>
   <data name="HEADER_TARGET_SECOND" xml:space="preserve">
     <value>2nd target</value>
@@ -3217,21 +3219,48 @@
     <comment>{0} = field name, {1} = field type</comment>
   </data>
   <data name="TS_TYPE_EFFORTCOST" xml:space="preserve">
-    <value>Effort related costs</value>
+    <value>Eff. rel. costs||Effort related costs</value>
+    <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_EFFORTCOSTREL" xml:space="preserve">
-    <value>Relative effort related costs</value>
+    <value>Eff. rel. costs||Effort related costs</value>
+    <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_OFFVESSELPRICE" xml:space="preserve">
     <value>Off-vessel price</value>
+    <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_OFFVESSELPRICEREL" xml:space="preserve">
-    <value>Relative off-vessel price</value>
+    <value>Off-vessel price</value>
+    <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_SAILCOST" xml:space="preserve">
-    <value>Sailing related costs</value>
+    <value>Sail costs||Sailing related costs</value>
+    <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_SAILCOSTREL" xml:space="preserve">
-    <value>Relative sailing related costs</value>
+    <value>Sail costs||Sailing related costs</value>
+    <comment>Time series type</comment>
+  </data>
+  <data name="TS_TYPE_FISHINGMORTALITYREF" xml:space="preserve">
+    <value>F||Fishing mortality</value>
+  </data>
+  <data name="TS_TYPE_FIXEDCOST" xml:space="preserve">
+    <value>Fix. costs||Fixed costs</value>
+  </data>
+  <data name="TS_TYPE_FIXEDCOSTREL" xml:space="preserve">
+    <value>Fix. costs||Fixed costs</value>
+  </data>
+  <data name="VALUE_GENERIC_ABSOLUTE_ABBR" xml:space="preserve">
+    <value>abs</value>
+  </data>
+  <data name="VALUE_GENERIC_FORCING_ABBR" xml:space="preserve">
+    <value>drv</value>
+  </data>
+  <data name="VALUE_GENERIC_REFERENCE_ABBR" xml:space="preserve">
+    <value>ref</value>
+  </data>
+  <data name="VALUE_GENERIC_RELATIVE_ABBR" xml:space="preserve">
+    <value>rel</value>
   </data>
 </root>

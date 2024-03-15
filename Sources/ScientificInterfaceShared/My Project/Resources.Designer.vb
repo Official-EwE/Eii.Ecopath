@@ -8869,7 +8869,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Average weight.
+        '''  Looks up a localized string similar to Avg. weight||Average weight.
         '''</summary>
         Public ReadOnly Property TS_TYPE_AVERAGEWEIGHT() As String
             Get
@@ -8878,7 +8878,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Absolute biomass.
+        '''  Looks up a localized string similar to B||Biomass.
         '''</summary>
         Public ReadOnly Property TS_TYPE_BIOMASSABS() As String
             Get
@@ -8887,7 +8887,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass forcing.
+        '''  Looks up a localized string similar to B||Biomass.
         '''</summary>
         Public ReadOnly Property TS_TYPE_BIOMASSFORCING() As String
             Get
@@ -8896,7 +8896,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative biomass.
+        '''  Looks up a localized string similar to B||Biomass.
         '''</summary>
         Public ReadOnly Property TS_TYPE_BIOMASSREL() As String
             Get
@@ -8914,16 +8914,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catches.
+        '''  Looks up a localized string similar to Catch.
         '''</summary>
-        Public ReadOnly Property TS_TYPE_CATCHESABS() As String
+        Public ReadOnly Property TS_TYPE_CATCHES() As String
             Get
-                Return ResourceManager.GetString("TS_TYPE_CATCHESABS", resourceCulture)
+                Return ResourceManager.GetString("TS_TYPE_CATCHES", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catches.
+        '''  Looks up a localized string similar to Catch.
         '''</summary>
         Public ReadOnly Property TS_TYPE_CATCHESFORCING() As String
             Get
@@ -8932,7 +8932,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative catches.
+        '''  Looks up a localized string similar to Catch.
         '''</summary>
         Public ReadOnly Property TS_TYPE_CATCHESREL() As String
             Get
@@ -8941,29 +8941,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Constant total mortality.
+        '''  Looks up a localized string similar to Const. tot. mort||Constant total mortality.
         '''</summary>
-        Public ReadOnly Property TS_TYPE_CONSTTOTALMORT() As String
+        Public ReadOnly Property TS_TYPE_CONSTANTTOTALMORTALITY() As String
             Get
-                Return ResourceManager.GetString("TS_TYPE_CONSTTOTALMORT", resourceCulture)
+                Return ResourceManager.GetString("TS_TYPE_CONSTANTTOTALMORTALITY", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Discard mortality.
+        '''  Looks up a localized string similar to Disc. mort||Discard mortality.
         '''</summary>
-        Public ReadOnly Property TS_TYPE_DISCARDMORT() As String
+        Public ReadOnly Property TS_TYPE_DISCARDMORTALITY() As String
             Get
-                Return ResourceManager.GetString("TS_TYPE_DISCARDMORT", resourceCulture)
+                Return ResourceManager.GetString("TS_TYPE_DISCARDMORTALITY", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Discard proportion.
+        '''  Looks up a localized string similar to Disc. prop||Discard proportion.
         '''</summary>
-        Public ReadOnly Property TS_TYPE_DISCARDPROP() As String
+        Public ReadOnly Property TS_TYPE_DISCARDPROPORTION() As String
             Get
-                Return ResourceManager.GetString("TS_TYPE_DISCARDPROP", resourceCulture)
+                Return ResourceManager.GetString("TS_TYPE_DISCARDPROPORTION", resourceCulture)
             End Get
         End Property
         
@@ -8977,7 +8977,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Effort related costs.
+        '''  Looks up a localized string similar to Eff. rel. costs||Effort related costs.
         '''</summary>
         Public ReadOnly Property TS_TYPE_EFFORTCOST() As String
             Get
@@ -8986,7 +8986,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative effort related costs.
+        '''  Looks up a localized string similar to Eff. rel. costs||Effort related costs.
         '''</summary>
         Public ReadOnly Property TS_TYPE_EFFORTCOSTREL() As String
             Get
@@ -8995,7 +8995,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Fishing effort.
+        '''  Looks up a localized string similar to Effort||Fishing effort.
         '''</summary>
         Public ReadOnly Property TS_TYPE_FISHINGEFFORT() As String
             Get
@@ -9004,20 +9004,38 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Fishing mortality.
+        '''  Looks up a localized string similar to F||Fishing mortality.
         '''</summary>
-        Public ReadOnly Property TS_TYPE_FISHMORTABS() As String
+        Public ReadOnly Property TS_TYPE_FISHINGMORTALITY() As String
             Get
-                Return ResourceManager.GetString("TS_TYPE_FISHMORTABS", resourceCulture)
+                Return ResourceManager.GetString("TS_TYPE_FISHINGMORTALITY", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative fishing mortality.
+        '''  Looks up a localized string similar to F||Fishing mortality.
         '''</summary>
-        Public ReadOnly Property TS_TYPE_FISHMORTREL() As String
+        Public ReadOnly Property TS_TYPE_FISHINGMORTALITYREF() As String
             Get
-                Return ResourceManager.GetString("TS_TYPE_FISHMORTREL", resourceCulture)
+                Return ResourceManager.GetString("TS_TYPE_FISHINGMORTALITYREF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fix. costs||Fixed costs.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_FIXEDCOST() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_FIXEDCOST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fix. costs||Fixed costs.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_FIXEDCOSTREL() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_FIXEDCOSTREL", resourceCulture)
             End Get
         End Property
         
@@ -9040,7 +9058,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative off-vessel price.
+        '''  Looks up a localized string similar to Off-vessel price.
         '''</summary>
         Public ReadOnly Property TS_TYPE_OFFVESSELPRICEREL() As String
             Get
@@ -9049,7 +9067,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Sailing related costs.
+        '''  Looks up a localized string similar to Sail costs||Sailing related costs.
         '''</summary>
         Public ReadOnly Property TS_TYPE_SAILCOST() As String
             Get
@@ -9058,7 +9076,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative sailing related costs.
+        '''  Looks up a localized string similar to Sail costs||Sailing related costs.
         '''</summary>
         Public ReadOnly Property TS_TYPE_SAILCOSTREL() As String
             Get
@@ -9076,16 +9094,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Total mortality.
+        '''  Looks up a localized string similar to Tot. mort||Total mortality.
         '''</summary>
-        Public ReadOnly Property TS_TYPE_TOTALMORT() As String
+        Public ReadOnly Property TS_TYPE_TOTALMORTALITY() As String
             Get
-                Return ResourceManager.GetString("TS_TYPE_TOTALMORT", resourceCulture)
+                Return ResourceManager.GetString("TS_TYPE_TOTALMORTALITY", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecotracer absolute concentration.
+        '''  Looks up a localized string similar to Cont. conc.||Contaminant concentration.
         '''</summary>
         Public ReadOnly Property TS_TYPE_TRACER_CONCABS() As String
             Get
@@ -9094,7 +9112,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecotracer relative concentration.
+        '''  Looks up a localized string similar to Cont. conc.||Contaminant concentration.
         '''</summary>
         Public ReadOnly Property TS_TYPE_TRACER_CONCREL() As String
             Get
@@ -9175,11 +9193,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to abs.
+        '''</summary>
+        Public ReadOnly Property VALUE_GENERIC_ABSOLUTE_ABBR() As String
+            Get
+                Return ResourceManager.GetString("VALUE_GENERIC_ABSOLUTE_ABBR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to forcing.
         '''</summary>
         Public ReadOnly Property VALUE_GENERIC_FORCING() As String
             Get
                 Return ResourceManager.GetString("VALUE_GENERIC_FORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to drv.
+        '''</summary>
+        Public ReadOnly Property VALUE_GENERIC_FORCING_ABBR() As String
+            Get
+                Return ResourceManager.GetString("VALUE_GENERIC_FORCING_ABBR", resourceCulture)
             End Get
         End Property
         
@@ -9193,11 +9229,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to ref.
+        '''</summary>
+        Public ReadOnly Property VALUE_GENERIC_REFERENCE_ABBR() As String
+            Get
+                Return ResourceManager.GetString("VALUE_GENERIC_REFERENCE_ABBR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to relative.
         '''</summary>
         Public ReadOnly Property VALUE_GENERIC_RELATIVE() As String
             Get
                 Return ResourceManager.GetString("VALUE_GENERIC_RELATIVE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to rel.
+        '''</summary>
+        Public ReadOnly Property VALUE_GENERIC_RELATIVE_ABBR() As String
+            Get
+                Return ResourceManager.GetString("VALUE_GENERIC_RELATIVE_ABBR", resourceCulture)
             End Get
         End Property
         

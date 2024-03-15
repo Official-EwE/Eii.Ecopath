@@ -54,13 +54,13 @@ Namespace Style
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim strVar As String = cin.GetVarName(vn)
             Dim strDescr As String = cResourceUtils.LoadString("VARIABLE_" & strVar.ToUpper, My.Resources.CoreDefaults.ResourceManager)
-            Dim astrBits As String() = Nothing
+            Dim bits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""
 
             If (Not String.IsNullOrWhiteSpace(strDescr)) Then
-                astrBits = strDescr.Split("|"c)
-                iNumBits = astrBits.Length
+                bits = strDescr.Split("|"c)
+                iNumBits = bits.Length
             Else
                 Return strVar
             End If
@@ -75,9 +75,9 @@ Namespace Style
 
                 If i < iNumBits Then
                     ' Has a part?
-                    If Not String.IsNullOrEmpty(astrBits(i)) Then
+                    If Not String.IsNullOrEmpty(bits(i)) Then
                         ' #Yes: update bit
-                        strBit = astrBits(i).Trim
+                        strBit = bits(i).Trim
                     End If
                 End If
 
