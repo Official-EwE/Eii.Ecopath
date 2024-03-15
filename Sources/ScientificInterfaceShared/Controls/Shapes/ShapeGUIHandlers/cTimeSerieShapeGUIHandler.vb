@@ -59,8 +59,8 @@ Namespace Controls
 
             Public Sub New(t As eTimeSeriesType)
                 Me.m_type = t
-                Dim fmt As New cTimeSeriesTypeFormatter
-                Me.m_strName = fmt.ToString(t, eDescriptorTypes.Abbreviation)
+                Dim fmt As New cTimeSeriesTypeFormatter()
+                Me.m_strName = fmt.ToString(t, eDescriptorTypes.Name)
             End Sub
 
             Public Property NumShapes() As Integer

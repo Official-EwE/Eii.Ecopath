@@ -41,17 +41,50 @@ Namespace Style
             Dim ts As eTimeSeriesType = DirectCast(value, eTimeSeriesType)
             Dim strDescr As String = cResourceUtils.LoadString("TS_TYPE_" & ts.ToString().ToUpper, My.Resources.ResourceManager)
 
-            If String.IsNullOrWhiteSpace(strDescr) Then
-                strDescr = ts.ToString
+            Dim strApplication As String = ""
+            Dim strScale As String = ""
+            Dim strBit As String = ""
+            Dim bits As String() = Nothing
+            Dim iNumBits As Integer = 0
+
+            If (Not String.IsNullOrWhiteSpace(strDescr)) Then
+                bits = strDescr.Split("|"c)
+                iNumBits = bits.Length
+            Else
+                Debug.Assert(False, "ts type " & ts.ToString() & " not localized")
+                Return ts.ToString
             End If
+
+            For i As Integer = 0 To descriptor
+                ' Is first part?
+                If (i = 0) Then
+                    ' #Yes: remember default
+                    strBit = strDescr
+                End If
+
+                If i < iNumBits Then
+                    ' Has a part?
+                    If Not String.IsNullOrEmpty(bits(i)) Then
+                        ' #Yes: update bit
+                        strBit = bits(i).Trim
+                    End If
+                End If
+            Next
 
             Select Case descriptor
                 Case eDescriptorTypes.Description
-                    Dim strApplication As String = If(cTimeSeries.IsDriver(ts), My.Resources.VALUE_GENERIC_FORCING, My.Resources.VALUE_GENERIC_REFERENCE)
-                    Dim strScale As String = If(cTimeSeries.IsAbsolute(ts), My.Resources.VALUE_GENERIC_ABSOLUTE, My.Resources.VALUE_GENERIC_RELATIVE)
-                    Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_POINT, strDescr, strApplication, strScale)
+                    strApplication = If(cTimeSeries.IsDriver(ts), My.Resources.VALUE_GENERIC_FORCING, My.Resources.VALUE_GENERIC_REFERENCE)
+                    strScale = If(cTimeSeries.IsAbsolute(ts), My.Resources.VALUE_GENERIC_ABSOLUTE, My.Resources.VALUE_GENERIC_RELATIVE)
+                Case Else
+                    strApplication = If(cTimeSeries.IsDriver(ts), My.Resources.VALUE_GENERIC_FORCING_ABBR, My.Resources.VALUE_GENERIC_REFERENCE_ABBR)
+                    strScale = If(cTimeSeries.IsAbsolute(ts), My.Resources.VALUE_GENERIC_ABSOLUTE_ABBR, My.Resources.VALUE_GENERIC_RELATIVE_ABBR)
+                    If (descriptor < eDescriptorTypes.Name) Then
+                        strApplication = strApplication.Substring(0, 1)
+                        strScale = strScale.Substring(0, 1)
+                    End If
             End Select
-            Return strDescr
+
+            Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_POINT, strBit, strApplication, strScale)
 
         End Function
 
