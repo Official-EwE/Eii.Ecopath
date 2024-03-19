@@ -19,7 +19,6 @@
 
 Option Strict On
 Imports System.IO
-Imports System.Text.RegularExpressions
 Imports EwEUtils.Utilities
 
 ''' ===========================================================================
@@ -98,9 +97,9 @@ Public Class cPathUtility
     ''' <param name="strPathOut">The resulting path.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function ResolvePath(strMask As String, _
-                                       strPathIn As String, _
-                                       strModelVersion As String, _
+    Public Shared Function ResolvePath(strMask As String,
+                                       strPathIn As String,
+                                       strModelVersion As String,
                                        ByRef strPathOut As String) As Boolean
         Dim strModelFile As String = Path.GetFileNameWithoutExtension(strPathIn)
         Dim strModelPath As String = Path.GetDirectoryName(strPathIn)
@@ -120,8 +119,11 @@ Public Class cPathUtility
     ''' <param name="strPathOut">The resulting path.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function ResolvePath(strMask As String, _
-                                       strModelFile As String, strModelPath As String, strModelExt As String, strModelVersion As String, _
+    Public Shared Function ResolvePath(strMask As String,
+                                       strModelFile As String,
+                                       strModelPath As String,
+                                       strModelExt As String,
+                                       strModelVersion As String,
                                        ByRef strPathOut As String) As Boolean
         ' Pre-doctor
         strPathOut = strMask
@@ -130,9 +132,9 @@ Public Class cPathUtility
         For Each pht As ePathPlaceholderTypes In [Enum].GetValues(GetType(ePathPlaceholderTypes))
             Dim strPattern As String = "{" & pht.ToString & "}"
             If strPathOut.Contains(strPattern) Then
-                strPathOut = cStringUtils.Replace(strPathOut, _
-                                                  strPattern, _
-                                                  ResolvePlaceholder(pht, strModelFile, strModelPath, strModelExt, strModelVersion), _
+                strPathOut = cStringUtils.Replace(strPathOut,
+                                                  strPattern,
+                                                  ResolvePlaceholder(pht, strModelFile, strModelPath, strModelExt, strModelVersion),
                                                   StringComparison.CurrentCultureIgnoreCase)
                 'strPathOut = Regex.Replace(strPathOut, _
                 '                           "{" & pht.ToString & "}", _
@@ -164,10 +166,10 @@ Public Class cPathUtility
     ''' <param name="strModelVersion">The model file version to use.</param>
     ''' <returns>A susbstituted value.</returns>
     ''' -----------------------------------------------------------------------
-    Private Shared Function ResolvePlaceholder(placeholder As ePathPlaceholderTypes, _
-                                               strModelFile As String, _
-                                               strModelPath As String, _
-                                               strModelExt As String, _
+    Private Shared Function ResolvePlaceholder(placeholder As ePathPlaceholderTypes,
+                                               strModelFile As String,
+                                               strModelPath As String,
+                                               strModelExt As String,
                                                strModelVersion As String) As String
 
         Dim strResolved As String = ""
