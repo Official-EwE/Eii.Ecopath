@@ -1357,10 +1357,10 @@ Public Class frmEwE6
 #Region " Plug-ins "
 
     Private Sub LoadPlugins()
-
-        Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
-
+        If (Me.IsDisposed) Then Return
+        If (Me.UIContext Is Nothing) Then Return
         Try
+            Dim alDisabledPlugins As ArrayList = My.Settings.DisabledPlugins
             ' Load plug-ins from EwE root folder
             Me.m_pluginManager.LoadPlugins(alDisabledPlugins, [option]:=SearchOption.TopDirectoryOnly)
             ' Load plug-ins from dedicated plug-ins subfolder, recursively
@@ -1368,13 +1368,18 @@ Public Class frmEwE6
         Catch ex As Exception
             ' Ouch!
         End Try
-
     End Sub
 
     Private Sub AutolaunchPlugins()
-        Using pl As New cPluginAutolaunchHandler(Me.m_pluginManager, Me.UIContext.CommandHandler)
-            ' Hah! The 'using' construction here will deal with proper disposal
-        End Using
+        If (Me.IsDisposed) Then Return
+        If (Me.UIContext Is Nothing) Then Return
+        Try
+            Using pl As New cPluginAutolaunchHandler(Me.m_pluginManager, Me.UIContext.CommandHandler)
+                ' Hah! The 'using' construction here will deal with proper disposal
+            End Using
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 #End Region ' Plug-ins
