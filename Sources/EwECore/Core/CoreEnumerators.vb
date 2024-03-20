@@ -326,8 +326,11 @@ Public Enum eTimeSeriesType As Integer
     FishingMortality = 4
     TotalMortality = 5
     ConstantTotalMortality = -5
+    ''' <summary>Absolute catches, reference</summary>
     Catches = 6
+    ''' <summary>Absolute catches, forcing</summary>
     CatchesForcing = -6
+    ''' <summary>Relative catches, reference</summary>
     CatchesRel = 61
     AverageWeight = 7
     ' EcotracerConcRel = 8
