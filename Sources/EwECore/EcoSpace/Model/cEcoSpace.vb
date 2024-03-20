@@ -839,11 +839,12 @@ Public Class cEcoSpace
                     Exit For
                 End If
 
+                'Read any Spatial Temporal data into memory for this timestep
+                Me.SetSpatialTempData(Me.itt)
+
                 'Set the isFished(fleet,row,col) array
                 Me.setIsFished()
 
-                'Read any Spatial Temporal data into memory for this timestep
-                Me.SetSpatialTempData(Me.itt)
                 ' System.Console.WriteLine("SetSpatialTempData() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - SPSt).ToString)
 
                 'do external processing at the start of the time step i.e. Call Plugins or sub models
@@ -4454,6 +4455,7 @@ exitline:
                     For i = 1 To Me.EcoSpaceData.InRow
                         For j = 1 To Me.EcoSpaceData.InCol
                             'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
+                            EcoSpaceData.EffortSpace(iFlt, i, j) = 0
                             If Me.EcoSpaceData.IsFished(iFlt, i, j) Then
 
                                 'Effort distribution scaled by Effort Zone
