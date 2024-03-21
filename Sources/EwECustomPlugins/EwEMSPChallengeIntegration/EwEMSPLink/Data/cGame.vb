@@ -308,7 +308,13 @@ Public Class cGame
             If String.IsNullOrWhiteSpace(pressure) Then Return Nothing
             If (Not Me.m_pressuredrivers.ContainsKey(pressure)) Then Return Nothing
             For Each t As cDriver In Me.Drivers
-                If (t.ValueID = Me.m_pressuredrivers(pressure)) Then Return t
+                If (t.ValueID = Me.m_pressuredrivers(pressure)) Then
+                    ' Make sure to return the driver assignable to this pressure
+                    Dim p As cPressure = Me.Pressure(pressure)
+                    If p.GetType() Is t.PressureType Then
+                        Return t
+                    End If
+                End If
             Next
             Return Nothing
         End Get
@@ -752,11 +758,11 @@ Public Class cGame
             Dim xnPressure As XmlNode = Nothing
 
             If TypeOf p Is cEnvironmentalPressure Then
-                doc.CreateElement("pressure_environmental")
+                xnPressure = doc.CreateElement("pressure_environmental")
             ElseIf TypeOf p Is cFishingEffortPressure Then
-                doc.CreateElement("pressure_fishing_intensity")
+                xnPressure = doc.CreateElement("pressure_fishing_intensity")
             ElseIf TypeOf p Is cFishingEcoPressure Then
-                doc.CreateElement("pressure_fishing_eco")
+                xnPressure = doc.CreateElement("pressure_fishing_eco")
             Else
                 Debug.Assert(False)
             End If
@@ -930,16 +936,13 @@ Public Class cGame
                                 Select Case xa.Name
                                     Case "pressure" : strPressure = HttpUtility.UrlDecode(xa.InnerText)
                                     Case "driver" : strDriver = HttpUtility.UrlDecode(xa.InnerText)
-                                        ' ToDo: upgrade this too
                                     Case "multiplier" : dMultiplier = cStringUtils.ConvertToDouble(xa.InnerText)
                                     Case "eco_fishing" : bEco = (HttpUtility.UrlDecode(xa.InnerText) = "1")
                                 End Select
                             Next
-                            If (Not String.IsNullOrWhiteSpace(strPressure)) And (Not String.IsNullOrWhiteSpace(strDriver)) Then
-                                Me.m_pressuredrivers(strPressure) = strDriver
-                                Me.m_pressuremultipliers(strPressure) = dMultiplier
-                                Me.m_pressureeco(strPressure) = bEco
-                            End If
+                            Me.m_pressuredrivers(strPressure) = strDriver
+                            Me.m_pressuremultipliers(strPressure) = dMultiplier
+                            Me.m_pressureeco(strPressure) = bEco
                         Next
                     Catch ex As Exception
                         Console.WriteLine("cGame.FromXML-mappings: " & ex.Message)
