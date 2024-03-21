@@ -119,7 +119,7 @@ Public Class cEwEMSPLinkData
         If (Not String.IsNullOrWhiteSpace(str)) Then
             Try
 #If DEBUG Then
-                Using sw As New StreamWriter("MSP games.xml")
+                Using sw As New StreamWriter("MSP game load.xml")
                     sw.WriteLine(str)
                     sw.Flush()
                 End Using
@@ -159,6 +159,14 @@ Public Class cEwEMSPLinkData
         For Each g As cGame In Me.Games
             xnGames.AppendChild(g.ToXML(doc))
         Next
+
+#If DEBUG Then
+        Using sw As New StreamWriter("MSP game save.xml")
+            sw.WriteLine(doc.OuterXml)
+            sw.Flush()
+        End Using
+#End If
+
         Return doc.OuterXml
 
     End Function

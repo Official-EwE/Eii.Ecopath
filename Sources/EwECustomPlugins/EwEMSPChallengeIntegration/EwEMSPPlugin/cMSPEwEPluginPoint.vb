@@ -54,6 +54,7 @@ Public Class cMSPEwEPluginPoint
     Implements IEcospaceInitializedPlugin
     Implements IEcospaceInitRunCompletedPlugin
     Implements IHelpPlugin
+    Implements IAutoRunPlugin
 
 #Region " Private fields "
 
@@ -308,6 +309,32 @@ Public Class cMSPEwEPluginPoint
     End Sub
 
 #End Region ' Ecospace
+
+#Region " Autorun "
+
+    Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
+        Return {eCoreComponentType.Ecospace}
+    End Function
+
+    Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
+        Get
+            Return My.Settings.PauseEcospace
+        End Get
+        Set(value As Boolean)
+            My.Settings.PauseEcospace = value
+            My.Settings.Save()
+
+            Try
+                If Me.HasUI Then
+                    Me.m_frm.Prod()
+                End If
+            Catch ex As Exception
+                ' Ouch
+            End Try
+        End Set
+    End Property
+
+#End Region ' Autorun
 
 #Region " Internals "
 

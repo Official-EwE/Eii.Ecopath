@@ -150,10 +150,6 @@ Namespace UI
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.Ecospace, eCoreComponentType.ShapesManager}
             Me.CoreExecutionState = eCoreExecutionState.EcospaceLoaded
 
-            Me.m_cbEmulPauseSpace.Checked = My.Settings.PauseEcospace
-            Me.m_cmbEmulPauseOptions.SelectedIndex = Math.Max(0, Math.Min(Me.m_cmbEmulPauseOptions.Items.Count - 1, My.Settings.PauseEcospaceInterval))
-            Me.m_cbSaveOutputMaps.Checked = My.Settings.SaveOutputMaps
-
             Me.m_bInupdate = False
             Me.UpdateControls()
 
@@ -169,10 +165,6 @@ Namespace UI
 
             ' To prevent any updates in response to resetting / dying controls
             Me.m_bInupdate = True
-
-            My.Settings.PauseEcospace = Me.m_cbEmulPauseSpace.Checked
-            My.Settings.PauseEcospaceInterval = Me.m_cmbEmulPauseOptions.SelectedIndex
-            My.Settings.SaveOutputMaps = Me.m_cbSaveOutputMaps.Checked
 
             Me.m_qeh.Detach()
 
@@ -226,6 +218,10 @@ Namespace UI
             End Get
         End Property
 
+        Public Sub Prod()
+            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+        End Sub
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Overridden to update the state of controls in this form.
@@ -234,6 +230,7 @@ Namespace UI
         Protected Overrides Sub UpdateControls()
             MyBase.UpdateControls()
 
+            If (Me.IsDisposed) Then Return
             If (Me.UIContext Is Nothing) Then Return
             If (Me.m_bInupdate) Then Return
             If (Me.Core.ActiveEcospaceScenarioIndex <= 0) Then Return
@@ -317,6 +314,10 @@ Namespace UI
             Me.m_btnEmulViewOutputFolder.Enabled = Directory.Exists(Me.OutputPath)
 
             Me.m_cmbEmulTestsets.Enabled = bHasGame
+
+            Me.m_cbEmulPauseSpace.Checked = My.Settings.PauseEcospace
+            Me.m_cmbEmulPauseOptions.SelectedIndex = Math.Max(0, Math.Min(Me.m_cmbEmulPauseOptions.Items.Count - 1, My.Settings.PauseEcospaceInterval))
+            Me.m_cbSaveOutputMaps.Checked = My.Settings.SaveOutputMaps
 
             ' Can only modify test sets when Ecospace is not running
             Me.m_btnTestsetAdd.Enabled = bHasGame And bHasTestsetName And Not bIsEcospaceRunning
@@ -1171,8 +1172,16 @@ Namespace UI
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
         Private Sub OnPauseEcospaceCheckChanged(sender As Object, e As EventArgs) _
-            Handles m_cbEmulPauseSpace.CheckedChanged
+            Handles m_cbEmulPauseSpace.CheckedChanged, m_cmbEmulPauseOptions.SelectedIndexChanged,
+                    m_cbSaveOutputMaps.CheckedChanged
+
+            My.Settings.PauseEcospace = Me.m_cbEmulPauseSpace.Checked
+            My.Settings.PauseEcospaceInterval = Me.m_cmbEmulPauseOptions.SelectedIndex
+            My.Settings.SaveOutputMaps = Me.m_cbSaveOutputMaps.Checked
+            My.Settings.Save()
+
             Me.UpdateControls()
+
         End Sub
 
         ''' -----------------------------------------------------------------------

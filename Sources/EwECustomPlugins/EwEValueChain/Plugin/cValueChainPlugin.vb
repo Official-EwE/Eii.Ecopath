@@ -774,14 +774,16 @@ Public Class cValueChainPlugin
         End Get
         Set(value As Boolean)
             Dim parms As cParameters = Me.m_data.Parameters
-            Select Case type
-                Case eCoreComponentType.Ecopath
-                    parms.RunWithEcopath = value
-                Case eCoreComponentType.Ecosim
-                    parms.RunWithEcosim = value
-                Case eCoreComponentType.FishingPolicySearch
-                    parms.RunWithSearches = value
-            End Select
+            If (parms IsNot Nothing) Then
+                Select Case type
+                    Case eCoreComponentType.Ecopath
+                        parms.RunWithEcopath = value
+                    Case eCoreComponentType.Ecosim
+                        parms.RunWithEcosim = value
+                    Case eCoreComponentType.FishingPolicySearch
+                        parms.RunWithSearches = value
+                End Select
+            End If
         End Set
     End Property
 

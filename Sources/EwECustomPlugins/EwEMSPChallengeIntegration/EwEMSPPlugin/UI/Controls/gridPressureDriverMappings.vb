@@ -185,6 +185,7 @@ Namespace UI
                     If (TypeOf (pressure) Is cFishingEffortPressure) Then
                         Me.Game.EffortMultiplier(strDriver) = DirectCast(cell.GetValue(p), Double)
                         Me.Shell.OnChanged()
+
                     ElseIf (TypeOf (pressure) Is cFishingEcoPressure) Then
                         Game.EcologicalFishing(pressure.Name) = DirectCast(cell.GetValue(p), Boolean)
                         Me.Shell.OnChanged()
