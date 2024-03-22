@@ -310,6 +310,9 @@ Public Class cGame
             For Each t As cDriver In Me.Drivers
                 If (t.ValueID = Me.m_pressuredrivers(pressure)) Then
                     ' Make sure to return the driver assignable to this pressure
+                    ' This extra check is needed to make sure fleet-related pressures end 
+                    ' up in the correct driver (as a single fleet ValueID have have multiple
+                    ' drivers)
                     Dim p As cPressure = Me.Pressure(pressure)
                     If p.GetType() Is t.PressureType Then
                         Return t
@@ -550,7 +553,7 @@ Public Class cGame
     ''' <returns>True if successful.</returns>
     ''' <exception cref="cMELException">A MEL exception will be thrown if something went wrong.</exception>
     ''' -----------------------------------------------------------------------
-    Public Function ApplyPressures(pressurelayers As cPressure(), Optional bDirect As Boolean = False) As Boolean
+    Public Function ApplyPressures(pressurelayers As cPressure(), bDirect As Boolean) As Boolean
 
         Dim bOK As Boolean = True
 
@@ -758,11 +761,11 @@ Public Class cGame
             Dim xnPressure As XmlNode = Nothing
 
             If TypeOf p Is cEnvironmentalPressure Then
-                xnPressure = doc.CreateElement("pressure_environmental")
+                doc.CreateElement("pressure_environmental")
             ElseIf TypeOf p Is cFishingEffortPressure Then
-                xnPressure = doc.CreateElement("pressure_fishing_intensity")
+                doc.CreateElement("pressure_fishing_intensity")
             ElseIf TypeOf p Is cFishingEcoPressure Then
-                xnPressure = doc.CreateElement("pressure_fishing_eco")
+                doc.CreateElement("pressure_fishing_eco")
             Else
                 Debug.Assert(False)
             End If
@@ -936,13 +939,16 @@ Public Class cGame
                                 Select Case xa.Name
                                     Case "pressure" : strPressure = HttpUtility.UrlDecode(xa.InnerText)
                                     Case "driver" : strDriver = HttpUtility.UrlDecode(xa.InnerText)
+                                        ' ToDo: upgrade this too
                                     Case "multiplier" : dMultiplier = cStringUtils.ConvertToDouble(xa.InnerText)
                                     Case "eco_fishing" : bEco = (HttpUtility.UrlDecode(xa.InnerText) = "1")
                                 End Select
                             Next
-                            Me.m_pressuredrivers(strPressure) = strDriver
-                            Me.m_pressuremultipliers(strPressure) = dMultiplier
-                            Me.m_pressureeco(strPressure) = bEco
+                            If (Not String.IsNullOrWhiteSpace(strPressure)) And (Not String.IsNullOrWhiteSpace(strDriver)) Then
+                                Me.m_pressuredrivers(strPressure) = strDriver
+                                Me.m_pressuremultipliers(strPressure) = dMultiplier
+                                Me.m_pressureeco(strPressure) = bEco
+                            End If
                         Next
                     Catch ex As Exception
                         Console.WriteLine("cGame.FromXML-mappings: " & ex.Message)

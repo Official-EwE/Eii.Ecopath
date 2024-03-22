@@ -2,17 +2,17 @@
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
+' of the GNU General Public License version 2 as published by the Free Software
 ' Foundation.
 '
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 ' PURPOSE. See the GNU General Public License for more details.
 '
 ' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
 '
-' Copyright 2016- 
+' Copyright 2016-
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -71,7 +71,7 @@ Public Class cEwEMSPLink
     ''' <summary>
     ''' Nested constructor when used in an EwE plug-in.
     ''' </summary>
-    ''' <param name="core">The core, obtained from the master plug-in, to initailize 
+    ''' <param name="core">The core, obtained from the master plug-in, to initalize
     ''' EwE shell against</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(core As cCore)
@@ -143,7 +143,7 @@ Public Class cEwEMSPLink
     ''' <param name="nrows">Check: the number of rows in the model.</param>
     ''' <param name="pressures">Check: the pressures that the model should support.</param>
     ''' <param name="outcomelayers">Check: the outcomes that the model should support.</param>
-    ''' <param name="outcomerange">Grid data range to bin results to. By default, gridded outcomes 
+    ''' <param name="outcomerange">Grid data range to bin results to. By default, gridded outcomes
     ''' reflect a 10-fold increase or decrease in values.</param>
     ''' <param name="effortstartvalues"><see cref="cScalar"/> values with effort intensity start values in EwE</param>
     ''' <returns>True if successful.</returns>
@@ -274,7 +274,8 @@ Public Class cEwEMSPLink
             Return
         End If
 
-        Me.Controller.Continue(pressures.ToArray(), outcomelayers.ToArray())
+        ' Apply pressures directly into the EwE core
+        Me.Controller.Continue(pressures.ToArray(), outcomelayers.ToArray(), True)
     End Sub
 
     ''' -----------------------------------------------------------------------
