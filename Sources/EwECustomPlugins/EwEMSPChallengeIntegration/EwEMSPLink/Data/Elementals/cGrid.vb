@@ -29,7 +29,7 @@ Imports EwEMSPLink.IO
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Data for a single map in MSP.
+''' Data for a single map in MSP. Data is accessed by col, row (x,y)
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cGrid
@@ -117,12 +117,36 @@ Public Class cGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the zero-base indexed data for the grid, dimensioned as (width x height)
+    ''' Missing data value.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property NoDataValue As Double = -9999
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the data for the grid, dimensioned as (width x height).
+    ''' </summary>
+    ''' <seealso cref="Cell(Integer, Integer)"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Cell As Double(,)
         Get
             Return Me.m_data
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the data for the grid by (x,y) or (column, row)
+    ''' </summary>
+    ''' <param name="x">The zero-based column number to retrieve data for.</param>
+    ''' <param name="y">The zero-based row number to retrieve data for.</param>
+    ''' <seealso cref="Cell"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Cell(x As Integer, y As Integer) As Double
+        Get
+            If (x < 0 Or x >= Me.Width) Then Return Me.NoDataValue
+            If (y < 0 Or y >= Me.Height) Then Return Me.NoDataValue
+            Return Me.m_data(x, y)
         End Get
     End Property
 
