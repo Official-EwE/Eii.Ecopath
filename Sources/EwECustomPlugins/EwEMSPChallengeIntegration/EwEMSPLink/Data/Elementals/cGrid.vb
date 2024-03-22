@@ -142,12 +142,17 @@ Public Class cGrid
     ''' <param name="y">The zero-based row number to retrieve data for.</param>
     ''' <seealso cref="Cell"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Cell(x As Integer, y As Integer) As Double
+    Public Property Cell(x As Integer, y As Integer) As Double
         Get
             If (x < 0 Or x >= Me.Width) Then Return Me.NoDataValue
             If (y < 0 Or y >= Me.Height) Then Return Me.NoDataValue
             Return Me.m_data(x, y)
         End Get
+        Set(value As Double)
+            If (x < 0 Or x >= Me.Width) Then Return
+            If (y < 0 Or y >= Me.Height) Then Return
+            Me.m_data(x, y) = value
+        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
