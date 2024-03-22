@@ -1468,7 +1468,7 @@ Namespace UI
                 End If
 
                 ' Pass pressures on
-                g.ApplyPressures(pressures.ToArray())
+                g.ApplyPressures(pressures.ToArray(), False)
 
             Catch ex As Exception
                 ' Eek!
