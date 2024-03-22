@@ -2,17 +2,17 @@
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
+' of the GNU General Public License version 2 as published by the Free Software
 ' Foundation.
 '
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 ' PURPOSE. See the GNU General Public License for more details.
 '
 ' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
 '
-' Copyright 2016- 
+' Copyright 2016-
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -30,13 +30,13 @@ Imports EwEUtils.Utilities
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Single-threaded Ecospace execution controller for MSP game connectivity. 
+''' Single-threaded Ecospace execution controller for MSP game connectivity.
 ''' All control functions are blocking for the purpose of MEL, waiting for the
 ''' threaded Ecospace model to complete a requested operation.
 ''' </summary>
 ''' <remarks>
 ''' This class is implemented as a plug-in to obtain access to the <see cref="cEcospaceDataStructures">
-''' Ecospace datastructures</see>. 
+''' Ecospace datastructures</see>.
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cEcospaceController
@@ -120,7 +120,7 @@ Public Class cEcospaceController
     ''' <seealso cref="Start"/>
     ''' <seealso cref="[Stop]()"/>
     ''' -----------------------------------------------------------------------
-    Public Sub [Continue](pressures As cPressure(), outcomes As cGrid())
+    Public Sub [Continue](pressures As cPressure(), outcomes As cGrid(), bDirectApplyPressures As Boolean)
 
         Debug.WriteLine("@@ Ecospace controller: continuing")
 
@@ -131,7 +131,7 @@ Public Class cEcospaceController
         Me.m_outcomes = outcomes
 
         If (Me.m_pressures IsNot Nothing) Then
-            Me.m_game.ApplyPressures(Me.m_pressures.ToArray(), True)
+            Me.m_game.ApplyPressures(Me.m_pressures.ToArray(), bDirectApplyPressures)
         End If
 
         Try
@@ -232,7 +232,7 @@ Public Class cEcospaceController
         Dim syncContext As SynchronizationContext = SynchronizationContext.Current
         If (syncContext Is Nothing) Then syncContext = New SynchronizationContext()
 
-        Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.EcospaceRunCompleted, syncContext))
+        Me.m_core.Messages.AddMessageHandler(New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.Ecospace, eMessageType.EcospaceRunCompleted, syncContext))
         ' Debug.WriteLine("@@ Ecospace controller: initialized")
 
     End Sub
@@ -347,7 +347,7 @@ Public Class cEcospaceController
         Me.m_spaceDS.UseSpinUp = (Me.m_spaceDS.SpinUpYears > 0)
         Me.m_spaceDS.bCalTrophicLevel = Me.m_game.CalculateIndicators
 
-        Me.m_core.RunEcoSpace(New cCore.EcoSpaceInterfaceDelegate(AddressOf EcoSpaceCallback))
+        Me.m_core.RunEcospace(New cCore.EcoSpaceInterfaceDelegate(AddressOf EcoSpaceCallback))
         'Debug.WriteLine("@@ Ecospace controller: Ecospace launched")
 
     End Sub
