@@ -8144,7 +8144,7 @@ exitline:
                                 Longi = CSng(Me.EcoSpaceData.Lon1 + (iCol * CellSize))
                                 Lati = CSng(Me.EcoSpaceData.Lat1 - (iRow * CellSize))
 
-                                Dist = Me.CalDistance(LonPort, LatPort, Longi, Lati)
+                                Dist = cEcoSpace.CalDistance(LonPort, LatPort, Longi, Lati, Me.EcoSpaceData.AssumeSquareCells)
                                 minD(iFleet, iRow, iCol) = Math.Min(Dist, minD(iFleet, iRow, iCol))
                             Else
                                 minD(iFleet, iRow, iCol) = 0
@@ -8166,7 +8166,7 @@ exitline:
 
     End Sub
 
-    Private Function CalDistance(ByVal Lon1 As Single, ByVal Lat1 As Single, ByVal Lon2 As Single, ByVal Lat2 As Single) As Single
+    Public Shared Function CalDistance(ByVal Lon1 As Single, ByVal Lat1 As Single, ByVal Lon2 As Single, ByVal Lat2 As Single, bAssumeSquareCells As Boolean) As Single
         'On Local Error GoTo errCalDistance
         'Villy C received this sub is from Reg Watson 04 May 2001, modified to function and dropped last terms, also made types explicit
         'Calculates the distance between two map points Lon1,Lat1 and Lon2,Lat2
@@ -8186,7 +8186,7 @@ exitline:
 
         Dim Dist As Double
 
-        If (Me.EcoSpaceData.AssumeSquareCells) Then
+        If (bAssumeSquareCells) Then
             Dim dx As Double = Lon2 - Lon1
             Dim dy As Double = Lat2 - Lat1
             Dist = Math.Sqrt(dx * dx + dy * dy)
