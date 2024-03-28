@@ -122,7 +122,9 @@
   <ItemGroup>
     <Compile Include="cMSPEwEPluginPoint.vb" />
     <Compile Include="My Project\Settings.vb" />
-    <Compile Include="UI\Controls\gridEmulator.vb" />
+    <Compile Include="UI\Controls\gridEmulator.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\Requirements\cEcosimForcingChecker.vb" />
     <Compile Include="UI\Requirements\cEcosimFishingChecker.vb" />
     <Compile Include="UI\Requirements\cEcosimTimeSeriesChecker.vb" />
@@ -135,8 +137,12 @@
     <Compile Include="UI\frmGameDesigner.Designer.vb">
       <DependentUpon>frmGameDesigner.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmGameDesigner.vb" />
-    <Compile Include="UI\Controls\gridOutcomes.vb" />
+    <Compile Include="UI\frmGameDesigner.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\gridOutcomes.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -153,7 +159,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="UI\Controls\gridPressureDriverMappings.vb" />
+    <Compile Include="UI\Controls\gridPressureDriverMappings.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Test sets\cTestset.vb" />
   </ItemGroup>
   <ItemGroup>

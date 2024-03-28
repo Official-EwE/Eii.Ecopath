@@ -847,6 +847,8 @@ Namespace UI
             Me.m_gridPressureMappings.RefreshContent()
             Me.MSPLink.OnChanged()
 
+            Me.UpdateControls()
+
         End Sub
 
         ''' -----------------------------------------------------------------------
