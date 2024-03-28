@@ -779,11 +779,11 @@ Namespace UI
             'm_tlpLogos
             '
             resources.ApplyResources(Me.m_tlpLogos, "m_tlpLogos")
-            Me.m_tlpLogos.Controls.Add(Me.m_pbEII, 7, 0)
-            Me.m_tlpLogos.Controls.Add(Me.m_pbBUAS, 5, 0)
-            Me.m_tlpLogos.Controls.Add(Me.m_pbRWS, 3, 0)
-            Me.m_tlpLogos.Controls.Add(Me.m_pbMSPChallenge, 1, 0)
-            Me.m_tlpLogos.Controls.Add(Me.m_pbEcoscope, 9, 0)
+            Me.m_tlpLogos.Controls.Add(Me.m_pbEII, 1, 0)
+            Me.m_tlpLogos.Controls.Add(Me.m_pbBUAS, 3, 0)
+            Me.m_tlpLogos.Controls.Add(Me.m_pbRWS, 5, 0)
+            Me.m_tlpLogos.Controls.Add(Me.m_pbEcoscope, 7, 0)
+            Me.m_tlpLogos.Controls.Add(Me.m_pbMSPChallenge, 9, 0)
             Me.m_tlpLogos.Name = "m_tlpLogos"
             '
             'm_pbEII
