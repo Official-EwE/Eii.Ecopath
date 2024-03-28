@@ -259,7 +259,7 @@
     <value>m_hdrValidation</value>
   </data>
   <data name="&gt;&gt;m_hdrValidation.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrValidation.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -511,7 +511,7 @@
     <value>m_lblCheckSimFishing</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimFishing.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimFishing.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -550,7 +550,7 @@
     <value>m_lblCheckSimForcing</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimForcing.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimForcing.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -589,7 +589,7 @@
     <value>m_lblCheckGame</value>
   </data>
   <data name="&gt;&gt;m_lblCheckGame.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckGame.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -628,7 +628,7 @@
     <value>m_lblCheckSpaceTimeSeries</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSpaceTimeSeries.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSpaceTimeSeries.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -667,7 +667,7 @@
     <value>m_lblCheckSimTimeSeries</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimTimeSeries.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimTimeSeries.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -1063,7 +1063,7 @@
     <value>m_gridPressureMappings</value>
   </data>
   <data name="&gt;&gt;m_gridPressureMappings.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.gridPressureDriverMappings, EwEMSPPlugin, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.gridPressureDriverMappings, EwEMSPPlugin, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridPressureMappings.Parent" xml:space="preserve">
     <value>m_tpPressures</value>
@@ -1531,7 +1531,7 @@
     <value>m_gridOutcome</value>
   </data>
   <data name="&gt;&gt;m_gridOutcome.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.gridOutcomes, EwEMSPPlugin, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.gridOutcomes, EwEMSPPlugin, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridOutcome.Parent" xml:space="preserve">
     <value>m_scOutputs.Panel2</value>
@@ -1609,7 +1609,7 @@
     <value>m_tsOutcome</value>
   </data>
   <data name="&gt;&gt;m_tsOutcome.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsOutcome.Parent" xml:space="preserve">
     <value>m_scOutputs.Panel2</value>
@@ -1951,7 +1951,7 @@
     <value>m_hdrEmulRun</value>
   </data>
   <data name="&gt;&gt;m_hdrEmulRun.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEmulRun.Parent" xml:space="preserve">
     <value>m_tpEmulator</value>
@@ -2112,7 +2112,7 @@
     <value>m_gridEmulTestset</value>
   </data>
   <data name="&gt;&gt;m_gridEmulTestset.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.gridEmulator, EwEMSPPlugin, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPPlugin.UI.gridEmulator, EwEMSPPlugin, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridEmulTestset.Parent" xml:space="preserve">
     <value>m_tpEmulator</value>
@@ -2820,14 +2820,11 @@
   <data name="m_pbEII.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="m_pbEII.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="m_pbEII.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_pbEII.Location" type="System.Drawing.Point, System.Drawing">
-    <value>329, 0</value>
+    <value>8, 0</value>
   </data>
   <data name="m_pbEII.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2853,14 +2850,11 @@
   <data name="m_pbBUAS.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="m_pbBUAS.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="m_pbBUAS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_pbBUAS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>222, 0</value>
+    <value>115, 0</value>
   </data>
   <data name="m_pbBUAS.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2886,14 +2880,11 @@
   <data name="m_pbRWS.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="m_pbRWS.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="m_pbRWS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_pbRWS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 0</value>
+    <value>222, 0</value>
   </data>
   <data name="m_pbRWS.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2916,47 +2907,11 @@
   <data name="&gt;&gt;m_pbRWS.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_pbMSPChallenge.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="m_pbMSPChallenge.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_pbMSPChallenge.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_pbMSPChallenge.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 0</value>
-  </data>
-  <data name="m_pbMSPChallenge.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_pbMSPChallenge.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 74</value>
-  </data>
-  <data name="m_pbMSPChallenge.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_pbMSPChallenge.Name" xml:space="preserve">
-    <value>m_pbMSPChallenge</value>
-  </data>
-  <data name="&gt;&gt;m_pbMSPChallenge.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbMSPChallenge.Parent" xml:space="preserve">
-    <value>m_tlpLogos</value>
-  </data>
-  <data name="&gt;&gt;m_pbMSPChallenge.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_pbEcoscope.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="m_pbEcoscope.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="m_pbEcoscope.Location" type="System.Drawing.Point, System.Drawing">
-    <value>436, 0</value>
+    <value>329, 0</value>
   </data>
   <data name="m_pbEcoscope.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2977,6 +2932,36 @@
     <value>m_tlpLogos</value>
   </data>
   <data name="&gt;&gt;m_pbEcoscope.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_pbMSPChallenge.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbMSPChallenge.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbMSPChallenge.Location" type="System.Drawing.Point, System.Drawing">
+    <value>436, 0</value>
+  </data>
+  <data name="m_pbMSPChallenge.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_pbMSPChallenge.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 74</value>
+  </data>
+  <data name="m_pbMSPChallenge.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_pbMSPChallenge.Name" xml:space="preserve">
+    <value>m_pbMSPChallenge</value>
+  </data>
+  <data name="&gt;&gt;m_pbMSPChallenge.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbMSPChallenge.Parent" xml:space="preserve">
+    <value>m_tlpLogos</value>
+  </data>
+  <data name="&gt;&gt;m_pbMSPChallenge.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="m_tlpLogos.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -3007,7 +2992,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpLogos.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbEII" Row="0" RowSpan="1" Column="7" ColumnSpan="1" /&gt;&lt;Control Name="m_pbBUAS" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="m_pbRWS" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_pbMSPChallenge" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbEcoscope" Row="0" RowSpan="1" Column="9" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,8,Percent,20,Absolute,8,Percent,20,Absolute,8,Percent,20,Absolute,8,Percent,20,Absolute,8,Percent,20,Absolute,11" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbEII" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbBUAS" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_pbRWS" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="m_pbEcoscope" Row="0" RowSpan="1" Column="7" ColumnSpan="1" /&gt;&lt;Control Name="m_pbMSPChallenge" Row="0" RowSpan="1" Column="9" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,8,Percent,20,Absolute,8,Percent,20,Absolute,8,Percent,20,Absolute,8,Percent,20,Absolute,8,Percent,20,Absolute,8,Absolute,20" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_lblAboutCredits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -3111,7 +3096,7 @@ WIth thanks to Jacob Bentley, Giovanni Romagnoni, Magali Gonçalves, Marcela Nas
     <value>m_hdrCredits</value>
   </data>
   <data name="&gt;&gt;m_hdrCredits.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCredits.Parent" xml:space="preserve">
     <value>m_tlpAbout</value>
@@ -8017,6 +8002,6 @@ WIth thanks to Jacob Bentley, Giovanni Romagnoni, Magali Gonçalves, Marcela Nas
     <value>frmGameDesigner</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.18803, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.18819, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
