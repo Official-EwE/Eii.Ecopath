@@ -110,6 +110,7 @@ Public Class cGame
     ''' <param name="pressure">The <see cref="cPressure"/> to add.</param>
     ''' -----------------------------------------------------------------------
     Public Sub Add(pressure As cPressure)
+        If (pressure Is Nothing) Then Return
         For Each t As cPressure In Me.Pressures
             If (String.Compare(t.Name, pressure.Name, True) = 0) Then
                 Return
@@ -125,6 +126,7 @@ Public Class cGame
     ''' <param name="pressure">The <see cref="cPressure"/> to remove.</param>
     ''' -----------------------------------------------------------------------
     Public Sub Remove(pressure As cPressure)
+        If (pressure Is Nothing) Then Return
         Me.Driver(pressure.Name) = Nothing
         Me.m_pressures.Remove(pressure)
     End Sub
@@ -151,6 +153,7 @@ Public Class cGame
     ''' <param name="outcome">The <see cref="cOutcome"/> to add.</param>
     ''' -----------------------------------------------------------------------
     Public Sub Add(outcome As cOutcome)
+        If (outcome Is Nothing) then return
         For Each t As cOutcome In Me.Outcomes
             If (String.Compare(t.Name, outcome.Name, True) = 0) Then
                 Return
@@ -166,6 +169,7 @@ Public Class cGame
     ''' <param name="outcome">The <see cref="cOutcome"/> to remove.</param>
     ''' -----------------------------------------------------------------------
     Public Sub Remove(outcome As cOutcome)
+        If (outcome Is Nothing) Then Return
         Me.m_outcomes.Remove(outcome)
     End Sub
 
@@ -314,8 +318,10 @@ Public Class cGame
                     ' up in the correct driver (as a single fleet ValueID have have multiple
                     ' drivers)
                     Dim p As cPressure = Me.Pressure(pressure)
-                    If p.GetType() Is t.PressureType Then
-                        Return t
+                    If (p IsNot Nothing) Then
+                        If p.GetType() Is t.PressureType Then
+                            Return t
+                        End If
                     End If
                 End If
             Next
@@ -761,11 +767,11 @@ Public Class cGame
             Dim xnPressure As XmlNode = Nothing
 
             If TypeOf p Is cEnvironmentalPressure Then
-                doc.CreateElement("pressure_environmental")
+                xnPressure = doc.CreateElement("pressure_environmental")
             ElseIf TypeOf p Is cFishingEffortPressure Then
-                doc.CreateElement("pressure_fishing_intensity")
+                xnPressure = doc.CreateElement("pressure_fishing_intensity")
             ElseIf TypeOf p Is cFishingEcoPressure Then
-                doc.CreateElement("pressure_fishing_eco")
+                xnPressure = doc.CreateElement("pressure_fishing_eco")
             Else
                 Debug.Assert(False)
             End If
