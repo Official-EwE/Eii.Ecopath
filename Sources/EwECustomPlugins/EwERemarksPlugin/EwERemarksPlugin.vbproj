@@ -145,9 +145,7 @@
     <Compile Include="cRemarksPlugin.vb" />
     <Compile Include="Utility\cPropertySorter.vb" />
     <Compile Include="Utility\cRemarkMonitor.vb" />
-    <Compile Include="UI\cRemarksGrid.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="UI\cRemarksGrid.vb" />
     <Compile Include="UI\frmRemarkUI.Designer.vb">
       <DependentUpon>frmRemarkUI.vb</DependentUpon>
     </Compile>
