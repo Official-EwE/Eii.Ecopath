@@ -303,7 +303,6 @@ Namespace Ecopath.Controls.FlowDiagram
 
             Dim c As cCore = Me.UIContext.Core
             Dim link_all(c.nFleets + c.nGroups, c.nFleets + c.nGroups) As Single
-            Dim val_all(c.nFleets + c.nGroups) As Single
             Dim PP_all(c.nFleets + c.nGroups) As Single
             Dim TTLX_all(c.nFleets + c.nGroups) As Single
 
@@ -335,7 +334,6 @@ Namespace Ecopath.Controls.FlowDiagram
                     Me.m_sValueMax = Math.Max(Me.m_sValueMax, sValue)
                     Me.m_sValueMin = Math.Min(Me.m_sValueMin, sValue)
                 End If
-                val_all(i) = sValue
 
                 PP_all(c.nFleets + i) = c.EcopathGroupInputs(i).PP
 
@@ -356,7 +354,6 @@ Namespace Ecopath.Controls.FlowDiagram
                     Me.m_sValueMax = Math.Max(Me.m_sValueMax, sValue)
                     Me.m_sValueMin = Math.Min(Me.m_sValueMin, sValue)
                 End If
-                val_all(i + c.nFleets) = sValue
 
                 ' Just to be explicit: fleets are full-on consumers
                 PP_all(i) = 0
