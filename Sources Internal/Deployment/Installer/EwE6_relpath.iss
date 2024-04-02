@@ -15,7 +15,7 @@
 ; Automated build will provide file version as a command line parameter
 ; /DFileVersion=6.6.{minor release no}.{build no}
 #ifndef FileVersion
-  #define FileVersion "6.7.0.18803"
+  #define FileVersion "6.7.0.18829"
 #endif
 VersionInfoVersion={#FileVersion}
 
@@ -74,6 +74,7 @@ SolidCompression=True
 Compression=lzma2/max 
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
 OutputBaseFilename=ewe_{#MyAppVersion}_setup
+ChangesAssociations=True
 
 #if Compile64Bit == 1
   ; "ArchitecturesInstallIn64BitMode=x64" requests that the install be
@@ -86,7 +87,6 @@ OutputBaseFilename=ewe_{#MyAppVersion}_setup
   ; since it's capable of running 32-bit code too).
 #endif
 UsePreviousAppDir=False
-ChangesAssociations=True
 TimeStampsInUTC=True
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright=(c) {#MyAppPublisher}
