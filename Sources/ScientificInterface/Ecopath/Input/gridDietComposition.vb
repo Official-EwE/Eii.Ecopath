@@ -142,7 +142,7 @@ Namespace Ecopath.Input
                         cell = New cPropertyCell(prop)
 
                         ' Fixes issue #845
-                        If iRow = source.Index Then
+                        If sourceSec.Index = source.Index Then
                             cell.VisualModel = visDiagonal
                         End If
 
