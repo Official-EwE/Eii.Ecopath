@@ -819,7 +819,6 @@ Public Class cEcoSpace
                 'One Off hack to pause the run for the Water Institute's 2017 Gulf Coast Model
                 'Me.HACKAutoPause(its)
                 Dim SPSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
-
                 Me.m_PauseSignal.WaitOne()
 
                 'Ecospace has been stopped
@@ -906,20 +905,22 @@ Public Class cEcoSpace
                 'set tval() (time step forcing value) to the value for this time step for each forcing shape
                 'Time forcing function are disable in EcoSpace via ApplyAVmodifiers() "UseTime" flag
                 'If ApplyAVmodifiers() is called with the UseTime = True then the time forcing function will be used
-                For iRow = 0 To Me.EcoSimData.NumForcingShapes
-                    Me.EcoSimData.tval(iRow) = Me.EcoSimData.zscale(Me.its, iRow)
+                For ifrc As Integer = 0 To Me.EcoSimData.NumForcingShapes
+                    Me.EcoSimData.tval(ifrc) = Me.EcoSimData.zscale(Me.its, ifrc)
                 Next
+
 
                 'ToDo_jb EggProdShapeSplit() make sure this is correct
                 'set current relative reproductive rates for stanzas groups
-                For iRow = 1 To Me.StanzaData.Nsplit
-                    If Me.StanzaData.EggProdShapeSplit(iRow) > 0 Then
+                For iSplt As Integer = 1 To Me.StanzaData.Nsplit
+                    If Me.StanzaData.EggProdShapeSplit(iSplt) > 0 Then
                         'Debug.Assert(m_SimData.tval(m_Stanza.EggProdShapeSplit(i)) = 0)
-                        Me.RelRepStanza(iRow) = Me.EcoSimData.tval(Me.StanzaData.EggProdShapeSplit(iRow)) * Me.StanzaData.RscaleSplit(iRow) / Me.EcoSimData.StartBiomass(Me.StanzaData.EcopathCode(iRow, Me.StanzaData.Nstanza(iRow)))
+                        Me.RelRepStanza(iSplt) = Me.EcoSimData.tval(Me.StanzaData.EggProdShapeSplit(iSplt)) * Me.StanzaData.RscaleSplit(iSplt) / Me.EcoSimData.StartBiomass(Me.StanzaData.EcopathCode(iSplt, Me.StanzaData.Nstanza(iSplt)))
                     End If
                 Next
 
                 If Me.EcoSpaceData.PredictEffort Then
+
 
                     'Sets proportion of discards landed and discarded 
                     'With the Ecosim Discards Forcing time series
@@ -940,6 +941,7 @@ Public Class cEcoSpace
                         'Run Effort Distribtion on all map cells
                         Me.runEffortDistributionNoLoadShare(Me.EcoSpaceData.MonthNow, Me.its, Me.EcoSpaceData.YearNow)
                     End If
+
                     stpwchEffort.Stop()
                 End If
 
@@ -977,6 +979,7 @@ Public Class cEcoSpace
                 Me.runGridSolverThreads()
                 stpwchGrid.Stop()
 
+
                 'Debugging dump grid CPU times to the console
                 'dumpGridRunTimes()
 
@@ -1000,9 +1003,9 @@ Public Class cEcoSpace
                         Next iCol
                     Next iRow
                 Next 'For ip = 1 To m_Data.nvartot
-
                 stpwchIBMMultiStanza.Start()
                 'update total age structure over space for multistanza groups if new method is used
+
                 If Me.EcoSpaceData.NewMultiStanza Then
 
                     Me.UpdateMultiStanza()
@@ -1138,9 +1141,8 @@ Public Class cEcoSpace
                 'System.Console.WriteLine("FindSpatialEquilibrium() SpaceSolver run time(min.) = " & stpwchSolver.Elapsed.TotalMinutes.ToString)
                 'System.Console.WriteLine("FindSpatialEquilibrium() GridSolver run time(min.) = " & stpwchGrid.Elapsed.TotalMinutes.ToString)
                 'System.Console.WriteLine("FindSpatialEquilibrium() PredictEffortDistribution run time(min.) = " & stpwchEffort.Elapsed.TotalMinutes.ToString)
-                System.Console.WriteLine("FindSpatialEquilibrium() Time Step(sec.) = " & (stpwchTotRunTime.Elapsed.TotalSeconds - SPSt).ToString)
-                System.Console.WriteLine("FindSpatialEquilibrium() Total run time(min.) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
-
+                'System.Console.WriteLine("FindSpatialEquilibrium() Time Step(sec.) = " & (stpwchTotRunTime.Elapsed.TotalSeconds - SPSt).ToString)
+                'System.Console.WriteLine("FindSpatialEquilibrium() Total run time(min.) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
             Next Me.EcoSpaceData.TimeNow
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'END OF TIME LOOP
@@ -1480,6 +1482,7 @@ Public Class cEcoSpace
             End If
 
             Dim iForcingIndex As Integer = Me.m_refdata.toForcingTimeStep(iTime, Me.EcoSpaceData.YearNow)
+            'System.Console.WriteLine("Space Forcing Timestep = " + iForcingIndex.ToString + ", " + iTime.ToString + " , " + Me.EcoSpaceData.YearNow.ToString)
 
             Dim SumB As Single
 
@@ -1517,7 +1520,7 @@ Public Class cEcoSpace
                         'fb = 0.08 * WaterCells ' * (1 - m_Data.TimeNow / m_Data.TotalTime) 
                         'jb get the forced biomass value
                         BForced = Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex)
-
+                        'System.Console.WriteLine("Sim Group  B  = " + ip.ToString + " , " + BForced.ToString)
                         For i As Integer = 1 To Me.EcoSpaceData.InRow
                             For j As Integer = 1 To Me.EcoSpaceData.InCol
                                 'Villy
@@ -9104,7 +9107,7 @@ exitline:
             If Me.EcoSpaceData.UseSpinUpBase Then
                 'User want to plot the values relative to the beginning of the Spin-Up period
                 For igrp = 1 To Me.EcoSpaceData.NGroups
-                    Me.EcoSpaceData.BBase(igrp) = Me.Btime(igrp)
+                    Me.EcoSpaceData.BBase(igrp) = Me.EcoPathData.B(igrp) 'Btime(igrp)
 
                     'Base values from Ecosim and EcoPath
                     Me.EcoSpaceData.BaseFishMort(igrp) = Me.EcoSimData.Fish1(igrp)

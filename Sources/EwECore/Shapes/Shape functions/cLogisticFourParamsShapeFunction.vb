@@ -57,7 +57,7 @@ Public Class cLogisticFourParamsShapeFunction
                 Me.m_points(i) = CSng(1.0 + (-1.0 / (1.0 + (x / Inf) ^ Slope)))
 
                 'save to the debug output window so it doesn't show up in the console
-                Debug.WriteLine(x.ToString + ", " + Me.m_points(i).ToString)
+                'Debug.WriteLine(x.ToString + ", " + Me.m_points(i).ToString)
             Next i
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

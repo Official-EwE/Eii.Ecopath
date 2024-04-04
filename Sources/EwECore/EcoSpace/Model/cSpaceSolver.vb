@@ -1216,6 +1216,12 @@ Public Class cSpaceSolver
         'current Y value of each active trophic mediation function
         If Me.m_SimData.BioMedData.MedIsUsed(0) Then
 
+            'jb Feb-2024 When the mediation value was set on the Ecopath biomass 
+            'that biomass is the average across the map.
+            'In Ecospace the biomass can be concentrated 
+            'So to get the original averaged mediation affect
+            'we need to scale the biomass's back to the original Ecopath averaged values
+
             'Calculate B/BRatio
             For i As Integer = 1 To Me.m_Data.NGroups
                 Me.BBRatio(i) = Biom(i) / (Me.m_Data.BRatio(i) + 1.0E-20F)
