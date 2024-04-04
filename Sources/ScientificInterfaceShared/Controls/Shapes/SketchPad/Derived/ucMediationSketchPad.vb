@@ -136,8 +136,11 @@ Namespace Controls
         Public Overrides ReadOnly Property XMarkLabel() As String
             Get
                 If (Not TypeOf (Me.Shape) Is cMediationBaseFunction) Then Return MyBase.XMarkLabel
+
                 Dim medfn As cMediationBaseFunction = DirectCast(Me.Shape, cMediationBaseFunction)
-                Return Me.UIContext.StyleGuide.FormatNumber(medfn.XBase)
+                Dim label As String = "Base Value = " + Me.UIContext.StyleGuide.FormatNumber(medfn.XBase)
+                label += " , X Index = " + Me.UIContext.StyleGuide.FormatNumber(medfn.XBaseIndex)
+                Return label ' Me.UIContext.StyleGuide.FormatNumber(medfn.XBase)
             End Get
         End Property
 
