@@ -697,6 +697,10 @@ Namespace Controls
             Return cCore.NULL_VALUE
         End Function
 
+        'Public Overridable Function XAxisEcopathBase(iShape As Integer) As Integer
+        '    Return cCore.NULL_VALUE
+        'End Function
+
         Public MustOverride Function IsForcing() As Boolean
         Public MustOverride Function IsMediation() As Boolean
         Public MustOverride Function IsTimeSeries() As Boolean

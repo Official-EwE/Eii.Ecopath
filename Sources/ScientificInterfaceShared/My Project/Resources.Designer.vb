@@ -6001,7 +6001,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Parameter.
+        '''  Looks up a localized string similar to Indexed.
         '''</summary>
         Public ReadOnly Property HEADER_PARAMETER() As String
             Get
