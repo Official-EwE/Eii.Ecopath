@@ -317,11 +317,11 @@ Public Class ucEditFlow
         Me.m_tssbConvert.DropDownItems.Clear()
         ' Has a selected unit?
         If (unit IsNot Nothing) Then
-            img = cUnitImageFactory.GetImage(unit.UnitType)
+            img = cValueChainStyleGuide.GetImage(unit.UnitType)
             If (Not TypeOf unit Is cProducerUnit) Then
                 For ut As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Processing To cUnitFactory.eUnitType.Consumer
                     If (unit.UnitType <> ut) Then
-                        Dim item As New ToolStripMenuItem(fmt.ToString(ut), cUnitImageFactory.GetImage(ut), AddressOf Me.OnConvertSelection)
+                        Dim item As New ToolStripMenuItem(fmt.ToString(ut), cValueChainStyleGuide.GetImage(ut), AddressOf Me.OnConvertSelection)
                         item.Tag = ut
                         Me.m_tssbConvert.DropDownItems.Add(item)
                         bCanConvert = True

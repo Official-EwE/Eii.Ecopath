@@ -178,8 +178,8 @@ Public Class plUnitControl
 
         Dim sg As cStyleGuide = Me.m_uic.StyleGuide
         Dim rc As Rectangle = Me.ClientRectangle
-        Dim clrBackground As Color = Color.Black
-        Dim clrBorder As Color = Color.Black
+        Dim clrBackground As Color = cValueChainStyleGuide.GetColor(cUnitFactory.eUnitType.All)
+        Dim clrBorder As Color = Color.Transparent
         Dim clrText As Color = Color.Black
         Dim img As Image = Nothing
 
@@ -188,12 +188,17 @@ Public Class plUnitControl
         rc.Height -= 1
 
         ' Get style colors
-        sg.GetStyleColors(Me.Unit.Style, clrText, clrBackground)
+        sg.GetStyleColors(Me.Unit.Style, clrText, clrBorder)
+
+        If My.Settings.ShowColors Then
+            clrBackground = cValueChainStyleGuide.GetColor(Me.Unit.UnitType)
+            clrText = Color.White
+        End If
 
         If Me.Selected Then
-            clrBackground = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            clrBorder = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
         ElseIf Not Me.Unit.CanCompute Then
-            clrBackground = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
+            clrBorder = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
 #If DEBUG Then
         Else
             If Me.Unit.IsRunError Then
@@ -209,16 +214,20 @@ Public Class plUnitControl
         End Using
 
         ' Draw unit image
-        img = cUnitImageFactory.GetImage(Me.Unit.UnitType)
-        If (img IsNot Nothing) Then
-            Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(16 * Me.ZoomFactor), CInt(16 * Me.ZoomFactor))
-            If cSystemUtils.IsRightToLeft Then
-                rcImage.Offset(2, Me.Height - rcImage.Height - 2)
-            Else
-                rcImage.Offset(Me.Width - rcImage.Width - 2, Me.Height - rcImage.Height - 2)
+        If My.Settings.ShowColors = False Then
+
+            img = cValueChainStyleGuide.GetImage(Me.Unit.UnitType)
+            If (img IsNot Nothing) Then
+                Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(16 * Me.ZoomFactor), CInt(16 * Me.ZoomFactor))
+                If cSystemUtils.IsRightToLeft Then
+                    rcImage.Offset(2, Me.Height - rcImage.Height - 2)
+                Else
+                    rcImage.Offset(Me.Width - rcImage.Width - 2, Me.Height - rcImage.Height - 2)
+                End If
+                e.Graphics.DrawImage(img, rcImage, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel)
             End If
-            e.Graphics.DrawImage(img, rcImage, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel)
         End If
+
         ' Color background with slight transparency to keep image visible
         clrBackground = Color.FromArgb(200, clrBackground.R, clrBackground.G, clrBackground.B)
         Using br As New SolidBrush(clrBackground)
@@ -227,7 +236,19 @@ Public Class plUnitControl
 
         ' Paint unit name or alternate name
         Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
+
             Dim strName As String = ""
+            Dim fmt As New StringFormat()
+
+            If (My.Settings.ShowColors) Then
+                fmt.Alignment = StringAlignment.Center
+                fmt.LineAlignment = StringAlignment.Center
+            Else
+                fmt.Alignment = If(cSystemUtils.IsRightToLeft, StringAlignment.Far, StringAlignment.Near)
+                fmt.LineAlignment = StringAlignment.Near
+            End If
+
+
             If My.Settings.ShowAltNames Then strName = Me.Unit.NameLocal
             If String.IsNullOrWhiteSpace(strName) Then strName = Me.Unit.Name
 
@@ -236,11 +257,13 @@ Public Class plUnitControl
             End If
 
             Using br As New SolidBrush(clrText)
-                e.Graphics.DrawString(strName, ft, br, rc)
+                e.Graphics.DrawString(strName, ft, br, rc, fmt)
             End Using
         End Using
 
-        e.Graphics.DrawRectangle(Pens.Black, rc)
+        Using p As New Pen(clrBorder)
+            e.Graphics.DrawRectangle(p, rc)
+        End Using
 
     End Sub
 

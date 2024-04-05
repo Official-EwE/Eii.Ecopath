@@ -249,9 +249,9 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="fd">The <see cref="cFlowDiagram">data</see> to connect the flow to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Init(uic As cUIContext, _
-                    data As cData, _
-                    fd As cFlowDiagram, _
+    Public Sub Init(uic As cUIContext,
+                    data As cData,
+                    fd As cFlowDiagram,
                     sel As ucSelector2)
 
         If (Not Me.m_data Is Nothing) Then
@@ -299,45 +299,6 @@ Public Class plFlow
         End Set
     End Property
 
-    ' ''' -----------------------------------------------------------------------
-    ' ''' <summary>
-    ' ''' Auto-arrange the units in the flow panel.
-    ' ''' </summary>
-    ' ''' <remarks>
-    ' ''' The initial version of this algorithm is pretty blunt and should be 
-    ' ''' seriously refined.
-    ' ''' </remarks>
-    ' ''' -----------------------------------------------------------------------
-    'Public Sub Arrange()
-
-    '    Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
-    '    Dim uc As plUnitControl = Nothing
-    '    Dim iUnitColumn As Integer = 0
-    '    Dim aiUnitCount([Enum].GetValues(GetType(cUnitFactory.cUnitFormatter)).Length) As Integer
-
-    '    ' Align each unit in its column, where row position is based on unit index
-    '    '    ToDo: include branches, merges into algorithm
-    '    For Each unit As cUnit In Me.m_dtControls.Keys
-    '        iUnitColumn = CInt(unit.UnitType) - 1
-    '        uc = Me.m_dtControls(unit)
-    '        With uc.FlowPos
-    '            .AllowEvents = False
-    '            .Xpos = CInt(ptUnitMargin.X + iUnitColumn * Me.m_iCellWidth)
-    '            .Ypos = CInt(ptUnitMargin.Y + aiUnitCount(iUnitColumn) * Me.m_iCellHeight)
-    '            .AllowEvents = True
-    '        End With
-    '        aiUnitCount(iUnitColumn) += 1
-    '    Next
-
-    '    ' Switch to 'move' mode upon arranging if NOT readonly
-    '    If (Me.EditMode <> eEditMode.ReadOnly) Then
-    '        Me.EditMode = eEditMode.Move
-    '    End If
-
-    '    Me.Refresh()
-
-    'End Sub
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Auto-arrange the units in the flow panel using the GLEE library.
@@ -345,8 +306,7 @@ Public Class plFlow
     ''' -----------------------------------------------------------------------
     Public Sub ArrangeGLEE()
 
-        Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), _
-                                      CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
+        Dim iMargin As Integer = Me.CellMargin()
 
         ' Switch to 'move' mode upon arranging if NOT readonly
         If (Me.EditMode <> eEditMode.ReadOnly) Then
@@ -358,13 +318,13 @@ Public Class plFlow
         Dim nodes As New Dictionary(Of cUnit, Node)
         Dim layers As New Dictionary(Of Type, Microsoft.Glee.LayerEdge)
 
-        g.NodeSeparation = Math.Max(Me.m_sGridMarginRatio * 0.5, Me.m_sGridMarginRatio * 0.5)
+        g.NodeSeparation = 2 * iMargin
 
         ' Feed graph with nodes
         For Each unit As cUnit In Me.m_dtControls.Keys
             Dim uc As plUnitControl = Me.m_dtControls(unit)
             ' Reverse height and width, 'cause the graph will be flipped Vert to Horz
-            Dim n As New Microsoft.Glee.Node(CStr(i), Splines.CurveFactory.CreateBox(uc.Height, uc.Width, New Splines.Point(0, 0)))
+            Dim n As New Microsoft.Glee.Node(CStr(i), Splines.CurveFactory.CreateBox(Me.m_iCellHeight - 2 * iMargin, Me.m_iCellWidth - 2 * iMargin, New Splines.Point(0, 0)))
             g.AddNode(n)
             nodes(unit) = n
             i += 1
@@ -381,7 +341,7 @@ Public Class plFlow
         ' Shazam
         g.CalculateLayout()
 
-        ' Hack: find layouted graph offset. Bounding box cannot be limited by GleeGraph
+        ' Hack: find layouted graph center, and threat that as 0 offset to position flow elements relative to (0,0). Bounding box cannot be limited by GleeGraph
         Dim dx As Integer = Integer.MaxValue
         Dim dy As Integer = Integer.MaxValue
         For Each n As Node In nodes.Values
@@ -397,8 +357,8 @@ Public Class plFlow
             Dim ptc As Splines.Point = n.Center
             ' Switch x and Y to get a horizontal graph
             uc.FlowPos.AllowEvents = False
-            uc.FlowPos.Xpos = CInt(ptc.Y - dy + ptUnitMargin.X)
-            uc.FlowPos.Ypos = CInt(ptc.X - dx + ptUnitMargin.Y)
+            uc.FlowPos.Xpos = Me.XPos(CInt(ptc.Y - dy + iMargin))
+            uc.FlowPos.Ypos = Me.YPos(CInt(ptc.X - dx + iMargin))
             uc.FlowPos.AllowEvents = True
         Next
 
@@ -408,9 +368,7 @@ Public Class plFlow
 
     Private Sub ArrangeQuiet()
 
-        Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), _
-                                      CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
-
+        Dim iMargin As Integer = Me.CellMargin()
         Dim iMinX As Integer = Integer.MaxValue
         Dim iMinY As Integer = Integer.MaxValue
 
@@ -426,8 +384,8 @@ Public Class plFlow
                 Dim fp As cFlowPosition = uc.FlowPos
 
                 fp.AllowEvents = False
-                fp.Xpos = CInt(fp.Xpos - iMinX + ptUnitMargin.X)
-                fp.Ypos = CInt(fp.Ypos - iMinY + ptUnitMargin.Y)
+                fp.Xpos = Me.XPos(CInt(fp.Xpos - iMinX + iMargin))
+                fp.Ypos = Me.YPos(CInt(fp.Ypos - iMinY + iMargin))
                 fp.AllowEvents = True
 
             Next
@@ -626,24 +584,32 @@ Public Class plFlow
         Dim clrFore As Color = Color.Black
         Dim clrBack As Color = Color.Black
         Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+        Dim rc As Rectangle = Me.ClientRectangle
 
         ' Draw form background
         Using br As New SolidBrush(Me.BackColor)
-            e.Graphics.FillRectangle(br, Me.ClientRectangle)
+            e.Graphics.FillRectangle(br, rc)
         End Using
 
         ' Need to draw grid?
         If Me.ShowGrid Then
             ' #Yes: Let's draw that grid then
+
+            e.Graphics.Transform = New Matrix(1, 0, 0, 1, Me.AutoScrollPosition.X, Me.AutoScrollPosition.Y)
+
             ' Use a subtle colour variation on the background by inverting the third bit of its RGB values
             Using p As New Pen(Color.FromArgb(255, Me.BackColor.R Xor 16, Me.BackColor.G Xor 16, Me.BackColor.B Xor 16), 1)
-                For i As Integer = CInt(Me.m_sScale * Me.m_iCellHeight) To Me.Height Step CInt(Me.m_sScale * Me.m_iCellHeight)
-                    e.Graphics.DrawLine(p, 0, i, Me.Width, i)
+                ' Horizontal lines
+                For i As Integer = CInt(Me.m_sScale * Me.m_iCellHeight) To rc.Height Step CInt(Me.m_sScale * Me.m_iCellHeight)
+                    e.Graphics.DrawLine(p, 0, i, rc.Width, i)
                 Next
-                For i As Integer = CInt(Me.m_sScale * Me.m_iCellWidth) To Me.Width Step CInt(Me.m_sScale * Me.m_iCellWidth)
-                    e.Graphics.DrawLine(p, i, 0, i, Me.Height)
+                ' Vertical lines
+                For i As Integer = CInt(Me.m_sScale * Me.m_iCellWidth) To rc.Width Step CInt(Me.m_sScale * Me.m_iCellWidth)
+                    e.Graphics.DrawLine(p, i, 0, i, rc.Height)
                 Next
             End Using
+
+            e.Graphics.ResetTransform()
         End If
 
         ' Draw hit detection bitmap
@@ -866,6 +832,7 @@ Public Class plFlow
     Public Function AddUnit(unit As cUnit, Optional bSelect As Boolean = False) As plUnitControl
 
         Dim fp As cFlowPosition = Nothing
+        Dim iMargin As Integer = Me.CellMargin()
 
         ' Try to get existing flow position for registered diagrams
         If (Me.m_diagram IsNot Nothing) Then
@@ -885,10 +852,10 @@ Public Class plFlow
             End If
 
             fp.AllowEvents = False
-            fp.Xpos = 10
-            fp.Ypos = 10
-            fp.Width = CInt(Me.m_iCellWidth * (1 - Me.m_sGridMarginRatio))
-            fp.Height = CInt(Me.m_iCellHeight * (1 - Me.m_sGridMarginRatio))
+            fp.Xpos = iMargin
+            fp.Ypos = iMargin
+            fp.Width = Me.m_iCellWidth - 2 * iMargin
+            fp.Height = Me.m_iCellHeight - 2 * iMargin
             fp.AllowEvents = True
 
         End If
@@ -961,7 +928,7 @@ Public Class plFlow
 
         If Me.m_data.Parameters.DeletePrompt Then
 
-            Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_DELETEUNIT, unit.Name), _
+            Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_DELETEUNIT, unit.Name),
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.m_uic.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply <> eMessageReply.YES) Then Return False
@@ -975,7 +942,7 @@ Public Class plFlow
     Public Function ConvertUnit(unit As cUnit, convertTo As cUnitFactory.eUnitType) As Boolean
 
         Dim fmt As New cUnitTypeFormatter()
-        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.ToString(unit.UnitType), fmt.ToString(convertTo)), _
+        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.ToString(unit.UnitType), fmt.ToString(convertTo)),
                                          eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
         fmsg.Reply = eMessageReply.YES
         fmsg.Suppressable = True
@@ -1335,14 +1302,19 @@ Public Class plFlow
         If (Me.m_ucDrag IsNot Nothing) Then
             RemoveHandler Me.m_ucDrag.MouseMove, AddressOf Me.TrackMouseMove
             RemoveHandler Me.m_ucDrag.MouseUp, AddressOf Me.TrackMouseUp
+
+            Me.m_ucDrag.FlowPos.Xpos = Me.XPos(Me.m_ucDrag.FlowPos.Xpos)
+            Me.m_ucDrag.FlowPos.Ypos = Me.YPos(Me.m_ucDrag.FlowPos.Ypos)
+
         End If
         Me.m_ucDrag = Nothing
+
+        Me.Invalidate()
+
     End Sub
 
     Private Sub TrackMouseMove(sender As Object, e As System.Windows.Forms.MouseEventArgs)
 
-        Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), _
-                                      CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
         Dim ptMouse As Point = Cursor.Position
 
         ' Drag via flow position
@@ -1350,12 +1322,6 @@ Public Class plFlow
             .AllowEvents = False
             .Xpos = CInt((ptMouse.X - Me.m_ptMouseOffset.X) / Me.m_sScale)
             .Ypos = CInt((ptMouse.Y - Me.m_ptMouseOffset.Y) / Me.m_sScale)
-            If Me.m_bShowGrid Then
-                ' Truncate pos
-                .Xpos = ptUnitMargin.X + CInt(Me.m_iCellWidth * Math.Round(.Xpos / Me.m_iCellWidth))
-                .Ypos = ptUnitMargin.Y + CInt(Me.m_iCellHeight * Math.Round(.Ypos / Me.m_iCellHeight))
-            End If
-
             .AllowEvents = True
         End With
         Me.Refresh()
@@ -1446,9 +1412,9 @@ Public Class plFlow
     ''' <param name="bExternal">Flag stating whether this link represents an 
     ''' 'External' connection.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub PaintLink(g As Graphics, _
-                          ptStart As Point, ptEnd As Point, _
-                          clr As Color, sWeight As Single, _
+    Private Sub PaintLink(g As Graphics,
+                          ptStart As Point, ptEnd As Point,
+                          clr As Color, sWeight As Single,
                           Optional bExternal As Boolean = False)
 
         Dim p As Pen = Nothing
@@ -1563,6 +1529,38 @@ Public Class plFlow
     Private Sub UpdateControls()
 
     End Sub
+
+    ''' <summary>
+    ''' Round a unit's X position to the nearest grid cell, if snapping
+    ''' </summary>
+    ''' <param name="i"></param>
+    ''' <returns></returns>
+    Private Function XPos(i As Integer) As Integer
+        If (Me.m_bShowGrid) Then
+            i = CInt(Math.Max(0, Math.Round(i / Me.m_iCellWidth))) * Me.m_iCellWidth + Me.CellMargin()
+        Else
+            i = Math.Max(0, i)
+        End If
+        Return i
+    End Function
+
+    ''' <summary>
+    ''' Round a unit's Y position to the nearest grid cell, if snapping
+    ''' </summary>
+    ''' <param name="i"></param>
+    ''' <returns></returns>
+    Private Function YPos(i As Integer) As Integer
+        If (Me.m_bShowGrid) Then
+            i = CInt(Math.Max(0, Math.Round(i / Me.m_iCellHeight))) * Me.m_iCellHeight + Me.CellMargin()
+        Else
+            i = Math.Max(0, i)
+        End If
+        Return i
+    End Function
+
+    Private Function CellMargin() As Integer
+        Return CInt(Math.Min(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5, Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
+    End Function
 
 #End Region ' Internals
 

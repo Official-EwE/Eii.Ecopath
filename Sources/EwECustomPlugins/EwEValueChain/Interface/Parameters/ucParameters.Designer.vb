@@ -59,6 +59,7 @@ Partial Class ucParameters
         Me.m_rbAggGroup = New System.Windows.Forms.RadioButton()
         Me.m_lblAgg = New System.Windows.Forms.Label()
         Me.m_cbAutoSave = New System.Windows.Forms.CheckBox()
+        Me.m_cbShowColors = New System.Windows.Forms.CheckBox()
         Me.m_tlpSponsors.SuspendLayout()
         CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbSAUP, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -385,11 +386,23 @@ Partial Class ucParameters
         Me.m_cbAutoSave.Text = "&Automatically save results to CSV file"
         Me.m_cbAutoSave.UseVisualStyleBackColor = True
         '
+        'm_cbShowColors
+        '
+        Me.m_cbShowColors.AutoSize = True
+        Me.m_cbShowColors.Location = New System.Drawing.Point(238, 336)
+        Me.m_cbShowColors.Name = "m_cbShowColors"
+        Me.m_cbShowColors.Size = New System.Drawing.Size(161, 17)
+        Me.m_cbShowColors.TabIndex = 25
+        Me.m_cbShowColors.Text = "&Show colors instead of icons"
+        Me.m_cbShowColors.UseVisualStyleBackColor = True
+        '
         'ucParameters
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoScroll = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.Controls.Add(Me.m_cbShowColors)
         Me.Controls.Add(Me.m_rbAggGroup)
         Me.Controls.Add(Me.m_rbAggFleet)
         Me.Controls.Add(Me.m_rbAggNone)
@@ -458,5 +471,5 @@ Partial Class ucParameters
     Private WithEvents m_lblAgg As System.Windows.Forms.Label
     Private WithEvents m_cbAutoSave As System.Windows.Forms.CheckBox
     Private WithEvents m_pbLenfest As System.Windows.Forms.PictureBox
-
+    Private WithEvents m_cbShowColors As Windows.Forms.CheckBox
 End Class
