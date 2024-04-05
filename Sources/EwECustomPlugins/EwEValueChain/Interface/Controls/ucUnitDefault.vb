@@ -55,7 +55,7 @@ Public Class ucUnitDefault
 
         Using br As New SolidBrush(clr) : e.Graphics.FillRectangle(br, rc) : End Using
 
-        Dim img As Image = cUnitImageFactory.GetImage(Me.UnitType)
+        Dim img As Image = cValueChainStyleGuide.GetImage(Me.UnitType)
         e.Graphics.DrawImage(img, rc.Width / 2.0! - 8, rc.Height - 18, 16, 16)
         img = Nothing
 

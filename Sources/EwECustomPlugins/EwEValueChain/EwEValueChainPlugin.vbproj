@@ -160,7 +160,7 @@
     <Compile Include="Plugin\Output\cNTCPluginFlowDiagram.vb" />
     <Compile Include="Utils\cAggregationModeTypeFormatter.vb" />
     <Compile Include="Utils\cGraphDataTypeFormatter.vb" />
-    <Compile Include="Utils\cUnitImageFactory.vb" />
+    <Compile Include="Utils\cValueChainStyleGuide.vb" />
     <Compile Include="Management\cLandingsLinkManager.vb" />
     <Compile Include="Data\Flow elements\Diagrams\cFlowDiagram.vb" />
     <Compile Include="Data\Flow elements\Diagrams\cFlowPosition.vb" />

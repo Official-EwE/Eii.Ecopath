@@ -244,10 +244,11 @@ Public Class ucParameters
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnAutoSaveChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbAutoSave.CheckedChanged
+    Private Sub OnUserSettingsChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbAutoSave.CheckedChanged, m_cbShowColors.CheckedChanged
         If Me.m_bInUpdate Then Return
         My.Settings.AutosaveResults = Me.m_cbAutoSave.Checked
+        My.Settings.ShowColors = Me.m_cbShowColors.Checked
         Me.m_uic.Core.OnSettingsChanged()
     End Sub
 
@@ -325,6 +326,7 @@ Public Class ucParameters
             Me.m_chkRunWithSearches.Checked = Me.m_params.RunWithSearches
 
             Me.m_cbAutoSave.Checked = My.Settings.AutosaveResults
+            Me.m_cbShowColors.Checked = My.Settings.ShowColors
 
             Me.m_rbAggNone.Checked = (Me.m_params.AggregationMode = cParameters.eAggregationModeType.FullModel)
             Me.m_rbAggFleet.Checked = (Me.m_params.AggregationMode = cParameters.eAggregationModeType.ByFleet)
@@ -333,6 +335,7 @@ Public Class ucParameters
             Me.m_fpFMin.Value = Me.m_params.EquilibriumEffortMin
             Me.m_fpFMax.Value = Me.m_params.EquilibriumEffortMax
             Me.m_fpIncr.Value = Me.m_params.EquilibriumEffortIncrement
+
         Catch ex As Exception
 
         End Try
