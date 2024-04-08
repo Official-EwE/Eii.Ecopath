@@ -1447,9 +1447,9 @@ Public Class cEcospaceDataStructures
         Me.PropEffortFleetZone = New Single(Me.nFleets, Me.nEffZones) {}
 
         For iflt As Integer = 1 To Me.nFleets
-            'Default proportion of effort in an area = 1
+            'Default proportion of effort in an area should sum to  = 1
             For iarea As Integer = 0 To Me.nEffZones
-                Me.PropEffortFleetZone(iflt, iarea) = 1
+                Me.PropEffortFleetZone(iflt, iarea) = CSng(1 / (nEffZones + 1.0E-20))
             Next iarea
         Next
 
