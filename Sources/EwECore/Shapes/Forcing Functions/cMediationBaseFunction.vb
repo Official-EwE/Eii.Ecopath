@@ -150,6 +150,7 @@ Public MustInherit Class cMediationBaseFunction
         End Get
         Set(value As Integer)
             Try
+                If (value <= 0) Or (value >= Me.m_medData.NMedPoints) Then Return
                 Me.m_medData.IMedBase(Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID)) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)

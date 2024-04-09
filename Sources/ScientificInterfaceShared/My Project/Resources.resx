@@ -3263,4 +3263,7 @@
   <data name="VALUE_GENERIC_RELATIVE_ABBR" xml:space="preserve">
     <value>rel</value>
   </data>
+  <data name="LABEL_MEDIATION_XMARK" xml:space="preserve">
+    <value>Base value = {0}, X index = {1}</value>
+  </data>
 </root>
