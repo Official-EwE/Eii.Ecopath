@@ -2528,7 +2528,6 @@ Public Class cEIIXMLDataSource
         Dim iGroupID As Integer = 0
         Dim iGroup As Integer = -1
         Dim iMonth As Integer = 0
-        'Dim sConcentration As Single = 0.0!
         Dim strMap As String = ""
         Dim bSucces As Boolean = True
 
@@ -2546,9 +2545,11 @@ Public Class cEIIXMLDataSource
                     Me.LogMessage(cStringUtils.Localize("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
                 Else
                     strMap = Me.ReadSafe(drow, "Map", "")
-                    cStringUtils.StringToArray(strMap, ecospaceDS.MigMaps(iGroup, iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                    '' Read monthly concentration value
-                    'ecospaceDS.MigConc(iGroup, iMonth) = Me.ReadSafe(drow, "Concentration", 1.0))
+                    If Not String.IsNullOrWhiteSpace(strMap) Then
+                        Dim map(ecospaceDS.InRow + 1, ecospaceDS.InCol + 1) As Single
+                        cStringUtils.StringToArray(strMap, map, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                        ecospaceDS.MigMaps(iGroup, iMonth) = map
+                    End If
                 End If
 
             Catch ex As Exception
