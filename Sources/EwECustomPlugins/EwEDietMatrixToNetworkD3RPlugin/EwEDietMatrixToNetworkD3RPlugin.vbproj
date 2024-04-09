@@ -151,7 +151,9 @@
     <Compile Include="UI\ucNetworkD3Options.Designer.vb">
       <DependentUpon>ucNetworkD3Options.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\ucNetworkD3Options.vb" />
+    <Compile Include="UI\ucNetworkD3Options.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

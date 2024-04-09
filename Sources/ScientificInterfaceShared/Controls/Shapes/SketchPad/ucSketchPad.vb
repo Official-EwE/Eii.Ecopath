@@ -430,6 +430,9 @@ Namespace Controls
             Set(value As Single)
                 Me.m_sXMarkValue = value
                 Me.Invalidate()
+                If (Shape IsNot Nothing) Then
+                    DirectCast(Shape, cMediationBaseFunction).XBaseIndex = CInt(value)
+                End If
             End Set
         End Property
 

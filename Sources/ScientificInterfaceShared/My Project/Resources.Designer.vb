@@ -6001,7 +6001,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Indexed.
+        '''  Looks up a localized string similar to Parameter.
         '''</summary>
         Public ReadOnly Property HEADER_PARAMETER() As String
             Get
@@ -7372,6 +7372,15 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_LABELS() As String
             Get
                 Return ResourceManager.GetString("LABEL_LABELS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Base value = {0}, X index = {1}.
+        '''</summary>
+        Public ReadOnly Property LABEL_MEDIATION_XMARK() As String
+            Get
+                Return ResourceManager.GetString("LABEL_MEDIATION_XMARK", resourceCulture)
             End Get
         End Property
         

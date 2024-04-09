@@ -8169,23 +8169,30 @@ exitline:
 
     End Sub
 
+    ''' <summary>
+    ''' Villy C received this sub is from Reg Watson 04 May 2001, modified to function and dropped last terms, also made types explicit
+    ''' Calculates the distance between two map points Lon1,Lat1 and Lon2,Lat2
+    ''' Points are measured decimal degrees
+    ''' Returns Dist, Long Dist(X), Lat Dist(Y) in either NatMiles or km (DistType)
+    ''' DistType 0=NatMiles, 1=km, 2=degrees
+    ''' Provided by Laura Wing lwing@clausent.demon.co.uk to Ken White
+    ''' Uses a spherical triangle to the pole
+    ''' 3 variations:
+    '''   Same Hemisphere
+    '''   Different Hemisphere
+    '''   Spans Greenwich meridian or anti-meridian
+    ''' Expects - (Neg) for South Latitudes
+    ''' Note: always goes the shortest way... not over pole or wrong way around the world
+    ''' Dist does not have a sign but XDist and YDist do
+    ''' </summary>
+    ''' <param name="Lon1"></param>
+    ''' <param name="Lat1"></param>
+    ''' <param name="Lon2"></param>
+    ''' <param name="Lat2"></param>
+    ''' <param name="bAssumeSquareCells"></param>
+    ''' <returns></returns>
     Public Shared Function CalDistance(ByVal Lon1 As Single, ByVal Lat1 As Single, ByVal Lon2 As Single, ByVal Lat2 As Single, bAssumeSquareCells As Boolean) As Single
         'On Local Error GoTo errCalDistance
-        'Villy C received this sub is from Reg Watson 04 May 2001, modified to function and dropped last terms, also made types explicit
-        'Calculates the distance between two map points Lon1,Lat1 and Lon2,Lat2
-        'Points are measured decimal degrees
-        'Returns Dist, Long Dist(X), Lat Dist(Y) in either NatMiles or km (DistType)
-        'DistType 0=NatMiles, 1=km, 2=degrees
-        'Provided by Laura Wing lwing@clausent.demon.co.uk to Ken White
-        'Uses a spherical triangle to the pole
-        '3 variations:
-        '   Same Hemisphere
-        '   Different Hemisphere
-        '   Spans Greenwich meridian or anti-meridian
-
-        'Expects - (Neg) for South Latitudes
-        'Note: always goes the shortest way... not over pole or wrong way around the world
-        'Dist does not have a sign but XDist and YDist do
 
         Dim Dist As Double
 

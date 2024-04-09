@@ -20,8 +20,10 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Data.Common
 Imports EwECore
 Imports EwECore.Style
+Imports EwEPlugin
 
 #End Region ' Imports
 
@@ -210,9 +212,9 @@ Public Class cOutcome
     ''' -----------------------------------------------------------------------
     Public Function NumItems() As Integer
         Select Case Me.LayerType
-            Case eLayerType.Biomass, eLayerType.Discards
+            Case eLayerType.Biomass, eLayerType.Discards, eLayerType.Bycatch
                 Return Me.m_core.nGroups
-            Case eLayerType.Effort, eLayerType.Catch, eLayerType.Bycatch
+            Case eLayerType.Effort, eLayerType.Catch
                 Return Me.m_core.nFleets
             Case eLayerType.Indicator
                 Return [Enum].GetValues(GetType(eMSPDIversityIndex)).Length
@@ -311,6 +313,8 @@ Public Class cOutcome
                             Select Case Me.m_layertype
                                 Case eLayerType.Biomass
                                     dVal = timestepdata.BiomassMap(iRow, iCol, iItem)
+                                Case eLayerType.Bycatch
+                                    dVal = timestepdata.CatchMap(iRow, iCol, iItem)
                                 Case eLayerType.Catch
                                     dVal = timestepdata.CatchFleetMap(iRow, iCol, iItem)
                                 Case eLayerType.Effort
@@ -326,6 +330,8 @@ Public Class cOutcome
                                         Case Else
                                             Debug.Assert(False, "Indicator unknown")
                                     End Select
+                                Case Else
+                                    Debug.Assert(False, "Layer Type " & Me.m_layertype.ToString() & " Not Supported")
                             End Select
                             If (dVal > 0) Then
                                 a += dVal * Math.Max(0, Math.Min(1, Me.Numerator(iItem)))
