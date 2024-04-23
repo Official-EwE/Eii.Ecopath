@@ -3138,7 +3138,7 @@
     <value>..\resources\ecobase.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AUTOSAVE_ECOPATHRESULTS" xml:space="preserve">
-    <value>Mass-balance</value>
+    <value>Ecopath results</value>
   </data>
   <data name="SHAPEFUNCTION_LOGISTIC_4PARAMS" xml:space="preserve">
     <value>Logistic 4 Parameters</value>

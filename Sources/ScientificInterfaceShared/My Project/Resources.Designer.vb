@@ -238,7 +238,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Mass-balance.
+        '''  Looks up a localized string similar to Ecopath results.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ECOPATHRESULTS() As String
             Get
