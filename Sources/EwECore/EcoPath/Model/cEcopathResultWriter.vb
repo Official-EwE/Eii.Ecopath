@@ -21,6 +21,9 @@
 
 Option Strict On
 Imports System.IO
+Imports System.Net
+Imports EwECore.Style
+Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
@@ -78,20 +81,19 @@ Public Class cEcopathResultWriter
             Return False
         End If
 
-        Dim strFile As String = Path.Combine(strPath, "basic_estimates.csv")
-        If Not Me.WriteResults(strFile) Then
-            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_FAILED, strFile),
-                               eMessageType.DataExport, eCoreComponentType.Ecopath, eMessageImportance.Warning)
+        If Me.WriteBasicEsimates(strPath) And Me.WriteEcopathStats(strPath) Then
+            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_SUCCESS, strPath),
+                               eMessageType.DataExport, eCoreComponentType.Ecopath, eMessageImportance.Information)
+            ' Provide hyperlink to the directory with the files
+            msg.Hyperlink = strPath
             If (Not bQuiet) Then
                 Me.m_core.Messages.SendMessage(msg)
             Else
                 cLog.Write(msg)
             End If
         Else
-            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_SUCCESS, strFile),
-                               eMessageType.DataExport, eCoreComponentType.Ecopath, eMessageImportance.Information)
-            ' Provide hyperlink to the directory with the files
-            msg.Hyperlink = strPath
+            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_FAILED, strPath),
+                               eMessageType.DataExport, eCoreComponentType.Ecopath, eMessageImportance.Warning)
             If (Not bQuiet) Then
                 Me.m_core.Messages.SendMessage(msg)
             Else
@@ -106,16 +108,16 @@ Public Class cEcopathResultWriter
     ''' <summary>
     ''' Write Ecopath estimates to a CSV file.
     ''' </summary>
-    ''' <param name="strFN">The target file name.</param>
+    ''' <param name="strPath">The target path.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function WriteResults(strFN As String) As Boolean
+    Private Function WriteBasicEsimates(strPath As String) As Boolean
 
         Dim sw As StreamWriter = Nothing
         Dim bSuccess As Boolean = True
 
         Try
-            sw = New StreamWriter(strFN)
+            sw = New StreamWriter(Path.Combine(strPath, "basic_estimates.csv"))
         Catch ex As Exception
             bSuccess = False
         End Try
@@ -158,6 +160,48 @@ Public Class cEcopathResultWriter
                 sw.Write(",")
                 sw.Write(cStringUtils.FormatSingle(grp.NatMortPerTotMort)) ' NatMort
                 sw.WriteLine()
+            Next
+            sw.Flush()
+            sw.Close()
+        Else
+            bSuccess = False
+            cLog.Write(Me.ToString + ".WriteCSV() failed to open file.")
+        End If
+        Return bSuccess
+
+    End Function
+
+    Private Function WriteEcopathStats(strPath As String) As Boolean
+
+        Dim sw As StreamWriter = Nothing
+        Dim bSuccess As Boolean = True
+
+        Try
+            sw = New StreamWriter(Path.Combine(strPath, "ecopath_stats.csv"))
+        Catch ex As Exception
+            bSuccess = False
+        End Try
+
+        If (sw IsNot Nothing) Then
+
+            If Me.m_core.SaveWithFileHeader Then
+                sw.Write(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecopath))
+                sw.WriteLine()
+            End If
+
+            Dim data As cEcopathStats = Me.m_core.EcopathStats
+            Dim fmt As New cVarnameTypeFormatter()
+
+            sw.WriteLine("parameter,value")
+
+            For Each var As eVarNameFlags In data.m_values.Keys
+                Dim val As cValue = data.m_values(var)
+                If var <> eVarNameFlags.Index And var <> eVarNameFlags.Name And var <> eVarNameFlags.DBID Then
+                    sw.Write(cStringUtils.ToCSVField(fmt.ToString(var)))
+                    sw.Write(",")
+                    sw.Write(cStringUtils.ToCSVField(val.Value))
+                    sw.WriteLine()
+                End If
             Next
             sw.Flush()
             sw.Close()
