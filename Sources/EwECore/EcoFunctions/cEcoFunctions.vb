@@ -275,7 +275,7 @@ Public Class cEcoFunctions
     ''' </summary>
     ''' <param name="DC">Diet</param>
     ''' <param name="TTLX">TTL</param>
-    ''' <param name="BQB"></param>
+    ''' <param name="BQB">The array to receive the calculated omnivory index</param>
     ''' <param name="NumGroups"></param>
     ''' -----------------------------------------------------------------------
     Public Sub Omniv(DC(,) As Single, TTLX() As Single, BQB() As Single, NumGroups As Integer)

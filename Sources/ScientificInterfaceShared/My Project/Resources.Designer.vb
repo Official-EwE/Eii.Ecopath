@@ -5263,24 +5263,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Connectance Index.
-        '''</summary>
-        Public ReadOnly Property HEADER_INDEX_CONNECTANCE() As String
-            Get
-                Return ResourceManager.GetString("HEADER_INDEX_CONNECTANCE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to System Omnivory Index.
-        '''</summary>
-        Public ReadOnly Property HEADER_INDEX_ONMIVORY() As String
-            Get
-                Return ResourceManager.GetString("HEADER_INDEX_ONMIVORY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Index value.
         '''</summary>
         Public ReadOnly Property HEADER_INDEXVALUE() As String
@@ -5623,15 +5605,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Mean trophic level of the catch.
-        '''</summary>
-        Public ReadOnly Property HEADER_MEAN_CATCH_TL() As String
-            Get
-                Return ResourceManager.GetString("HEADER_MEAN_CATCH_TL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Mean length (cm).
         '''</summary>
         Public ReadOnly Property HEADER_MEAN_LENGTH() As String
@@ -5655,15 +5628,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_MEAN_WEIGHT() As String
             Get
                 Return ResourceManager.GetString("HEADER_MEAN_WEIGHT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Measure of fit, t*.
-        '''</summary>
-        Public ReadOnly Property HEADER_MEASUREOFFIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_MEASUREOFFIT", resourceCulture)
             End Get
         End Property
         
@@ -5808,15 +5772,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_NET_ECONOMIC_VALUE_ABBR() As String
             Get
                 Return ResourceManager.GetString("HEADER_NET_ECONOMIC_VALUE_ABBR", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Net system production.
-        '''</summary>
-        Public ReadOnly Property HEADER_NET_PROD() As String
-            Get
-                Return ResourceManager.GetString("HEADER_NET_PROD", resourceCulture)
             End Get
         End Property
         
@@ -6667,15 +6622,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Total biomass (excluding detritus).
-        '''</summary>
-        Public ReadOnly Property HEADER_SUM_BnonDET() As String
-            Get
-                Return ResourceManager.GetString("HEADER_SUM_BnonDET", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Total biomass/total throughput.
         '''</summary>
         Public ReadOnly Property HEADER_SUM_BT() As String
@@ -6757,29 +6703,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Calculated total net primary production.
-        '''</summary>
-        Public ReadOnly Property HEADER_SUM_NET_PP() As String
-            Get
-                Return ResourceManager.GetString("HEADER_SUM_NET_PP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Total primary production/total respiration.
         '''</summary>
         Public ReadOnly Property HEADER_SUM_PP_RESP() As String
             Get
                 Return ResourceManager.GetString("HEADER_SUM_PP_RESP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Total primary production/total biomass.
-        '''</summary>
-        Public ReadOnly Property HEADER_SUM_PPB() As String
-            Get
-                Return ResourceManager.GetString("HEADER_SUM_PPB", resourceCulture)
             End Get
         End Property
         
@@ -6816,24 +6744,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_SUM_VALUE() As String
             Get
                 Return ResourceManager.GetString("HEADER_SUM_VALUE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Total market value.
-        '''</summary>
-        Public ReadOnly Property HEADER_SUM_VALUE_MARKET() As String
-            Get
-                Return ResourceManager.GetString("HEADER_SUM_VALUE_MARKET", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Total shadow value.
-        '''</summary>
-        Public ReadOnly Property HEADER_SUM_VALUE_SHADOW() As String
-            Get
-                Return ResourceManager.GetString("HEADER_SUM_VALUE_SHADOW", resourceCulture)
             End Get
         End Property
         

@@ -94,6 +94,8 @@ Public Class cIndicesWithoutPPREst
         End Get
     End Property
 
+    ' ToDo: add option to filter data
+
     Public Overrides Sub DisplayData()
 
         Dim paneMaster As MasterPane = Me.Graph.MasterPane
@@ -117,6 +119,13 @@ Public Class cIndicesWithoutPPREst
         AddCurve(My.Resources.LBL_TL_CATCH, Me.NetworkManager.TLCatch, pane, Color.Black)
         'FCI
         AddCurve(My.Resources.LBL_FCI, Me.NetworkManager.FCIEcosim, pane, Color.Brown)
+        ' SysOm
+        AddCurve("SOI", Me.NetworkManager.SysOmnivoryIndex, pane, Color.Orange)
+
+        pane.XAxis.Scale.Min = 1
+        pane.XAxis.Scale.MinAuto = False
+        pane.YAxis.Scale.Min = 0
+        pane.YAxis.Scale.MinAuto = False
 
         'Pane2
         pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_MONTHS, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 2)

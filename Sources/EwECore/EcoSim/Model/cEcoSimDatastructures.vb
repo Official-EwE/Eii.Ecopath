@@ -372,6 +372,12 @@ Public Class cEcosimDatastructures
     Public ForcingShapeType() As eDataTypes
 
     Public Elect(,,) As Single
+
+    ''' <summary>Per-group Omnivory index over time (group x time).</summary>
+    Public BQB(,) As Single
+    ''' <summary>Systen omnivory index over time.</summary>
+    Public SysOm() As Single
+
     ''' <summary>
     '''  Mortalily rate due to predation by Link
     ''' </summary>
@@ -1513,9 +1519,12 @@ Public Class cEcosimDatastructures
         Erase Me.ResultsSumCatchByGroupGear
         Erase Me.ResultsSumFMortByGroupGear
         Erase Me.ResultsSumValueByGroupGear
+        'jb min_B_QB was min 
         Erase Me.ResultsTimeLandingsGroupGear
         Erase Me.ResultsEffort
         Erase Me.Elect
+        Erase Me.BQB
+        Erase Me.SysOm
 
         Erase Me.ResultsSumRelValueByGroup
         Erase Me.ResultsTimeDiscardsGroupGear
@@ -1543,6 +1552,8 @@ Public Class cEcosimDatastructures
         ReDim Me.ResultsSumValueByGear(Me.nGear, nt)
         ReDim Me.ResultsEffort(Me.nGear, nt)
         ReDim Me.Elect(Me.nGroups, Me.nGroups, nt)
+        ReDim Me.BQB(Me.nGroups, nt)
+        ReDim Me.SysOm(nt)
 
         ReDim Me.ProfitByFleet(Me.nGear)
         ReDim Me.EmploymentValueByFleet(Me.nGear)

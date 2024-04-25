@@ -1001,31 +1001,31 @@
     <value>Diversity</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSGROSSEFFICIENCY" xml:space="preserve">
-    <value>Gross efficiency</value>
+    <value>Gross efficiency (catch/net p.p.)</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSMEANTROPHICLEVELCATCH" xml:space="preserve">
-    <value>Mean TL of the catch</value>
+    <value>Mean trophic level of the catch</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSMEASUREOFFIT" xml:space="preserve">
-    <value>Measure of fit</value>
+    <value>Measure of fit, t*</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSNETSYSTEMPRODUCTION" xml:space="preserve">
-    <value>NetSystemProduction</value>
+    <value>Net system production</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSOMNIVINDEX" xml:space="preserve">
-    <value>Omnivory index</value>
+    <value>System omnivory index</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSPEDIGREE" xml:space="preserve">
     <value>Pedigree</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSPROFIT" xml:space="preserve">
-    <value>Profit</value>
+    <value>Total profit</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALBNONDET" xml:space="preserve">
-    <value>TotalBNonDet</value>
+    <value>Total biomass (excluding detritus)</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALBT" xml:space="preserve">
-    <value>TotalBT</value>
+    <value>Total biomass/total throughput</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALCATCH" xml:space="preserve">
     <value>Total catch</value>
@@ -1037,37 +1037,37 @@
     <value>Total cost</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALEXPORTS" xml:space="preserve">
-    <value>Total exports</value>
+    <value>Sum of all exports</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALFIXEDCOST" xml:space="preserve">
     <value>Total fixed cost</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALFLOWDETRITUS" xml:space="preserve">
-    <value>TotalFlowDetritus</value>
+    <value>Sum of all flows into detritus</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALMARKETVALUE" xml:space="preserve">
     <value>Total market value</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALNETPP" xml:space="preserve">
-    <value>TotalNetPP</value>
+    <value>Calculated total net primary production</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALPB" xml:space="preserve">
-    <value>TotalPB</value>
+    <value>Total primary production/total biomass</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALPRESP" xml:space="preserve">
-    <value>TotalPResp</value>
+    <value>Total primary production/total respiration</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALPRODUCTION" xml:space="preserve">
-    <value>Total production</value>
+    <value>Sum of all production</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALRESPFLOW" xml:space="preserve">
-    <value>TotalRespFlow</value>
+    <value>Sum of all respiratory flows</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALSHADOWVALUE" xml:space="preserve">
     <value>Total shadow value</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALTHROUGHPUT" xml:space="preserve">
-    <value>Total throughput</value>
+    <value>Total system throughput</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALVALUE" xml:space="preserve">
     <value>Total value</value>
