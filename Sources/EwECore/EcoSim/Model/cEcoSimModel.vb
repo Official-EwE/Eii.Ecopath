@@ -1024,6 +1024,7 @@ Namespace Ecosim
                     If ((Me.m_search.SearchMode = eSearchModes.NotInSearch) Or (Me.m_Data.bAlwaysCalcTLc)) And Me.m_Data.bTimestepOutput Then
                         Me.EstimateTLs(itime)
                         Me.EstimateTLofCatch(itime)
+                        Me.EstimateMoreStats(itime)
                     End If
 
                     'Compute time step results if the calling routine set bTimestepOutput to True
@@ -1496,7 +1497,7 @@ Namespace Ecosim
                         'Save the discard mortality rate for this timestep
                         Me.m_Data.PropDiscardMortTime(iflt, igrp) = discardmortForced
                         'Propdiscardtime() does NOT include discards that survived
-                        Me.m_Data.Propdiscardtime(iflt, igrp) = (1 - Me.m_Data.PropLandedTime(iflt, igrp)) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
+                        Me.m_Data.PropDiscardTime(iflt, igrp) = (1 - Me.m_Data.PropLandedTime(iflt, igrp)) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
 
                         bFChanged = True
                         bForced = True
@@ -1507,7 +1508,7 @@ Namespace Ecosim
 
                     If discardprop >= 0.0 Then
                         'Propdiscardtime does not include discards that survived
-                        Me.m_Data.Propdiscardtime(iflt, igrp) = discardprop * Me.m_Data.PropDiscardMortTime(iflt, igrp)
+                        Me.m_Data.PropDiscardTime(iflt, igrp) = discardprop * Me.m_Data.PropDiscardMortTime(iflt, igrp)
                         Me.m_Data.PropLandedTime(iflt, igrp) = 1 - discardprop
 
                         bForced = True
@@ -1515,12 +1516,12 @@ Namespace Ecosim
                     End If
 
                     If bFChanged Then
-                        Debug.Assert((Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp)) <= 1.0001, "Opps cEcosimModel.setForcedDiscards() may have calculated an incorrect PropLandedTime() or Propdiscardtime()")
+                        Debug.Assert((Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp)) <= 1.0001, "Opps cEcosimModel.setForcedDiscards() may have calculated an incorrect PropLandedTime() or Propdiscardtime()")
                         'FishMGear() only contains catch that incure mortality
                         'Changing the discard mortality rate changes F
                         'Changing the proportion of landings and discards changes F if discard mort rate is not 1
                         'Calulate the new F from base values 
-                        totCatch = (Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)) * (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp))
+                        totCatch = (Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)) * (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp))
                         'Debug.Assert(Me.m_Data.FishMGear(iflt, igrp) = (totCatch / Me.m_EPData.B(igrp)))
                         Me.m_Data.FishMGear(iflt, igrp) = totCatch / Me.m_EPData.B(igrp)
 
@@ -1957,10 +1958,10 @@ Namespace Ecosim
                     For iFlt As Integer = 1 To Me.m_Data.nGear
                         If Me.m_Data.relQ(iFlt, iGrp) > 0 Then
                             'Make sure PropLandedTime() and Propdiscardtime() don't add up to greater than zero
-                            Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.Propdiscardtime(iFlt, iGrp), 3) <= 1.0!,
+                            Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.PropDiscardTime(iFlt, iGrp), 3) <= 1.0!,
                                         Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
                             'Fishing Mortality "F" computed from base catch rate "q"
-                            Dim FfromQ0 As Single = Me.m_Data.relQ(iFlt, iGrp) * (Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.Propdiscardtime(iFlt, iGrp))
+                            Dim FfromQ0 As Single = Me.m_Data.relQ(iFlt, iGrp) * (Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.PropDiscardTime(iFlt, iGrp))
                             Dim dif As Double = Math.Round(FfromQ0 - Me.m_Data.FishMGear(iFlt, iGrp), 3)
                             'Debug.Assert(dif = 0.0, "relQ and FishMGear are not equal. Something is wrong!")
                         End If
@@ -2339,7 +2340,7 @@ Namespace Ecosim
                                 PropFleet = Me.m_Data.FishRateGear(iflt, iTime) * Me.m_Data.FishMGear(iflt, igrp) / SumEf
 
                                 'multiplier to scale F [fishing mort rate] to Total Catch [total catch including discards that survived]
-                                TotCatchScalar = 1 / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
+                                TotCatchScalar = 1 / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp) + 1.0E-20F)
 
                                 CatchMort = Me.BB(igrp) * Me.m_Data.FishTime(igrp) * PropFleet
 
@@ -2355,7 +2356,7 @@ Namespace Ecosim
                                 Me.m_Data.ResultsLandings(igrp, iflt) = TotCatch * Me.m_Data.PropLandedTime(iflt, igrp)
 
                                 'Catch mortality that is discarded
-                                Me.m_Data.ResultsDiscardsMort(igrp, iflt) = CatchMort * Me.m_Data.Propdiscardtime(iflt, igrp) / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
+                                Me.m_Data.ResultsDiscardsMort(igrp, iflt) = CatchMort * Me.m_Data.PropDiscardTime(iflt, igrp) / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp) + 1.0E-20F)
 
                                 'Total catch that survived = [total catch] - [total catch mortality] 
                                 If Me.m_Data.FishTime(igrp) > 0 Or Me.m_Data.FisForced(igrp) Then
@@ -5124,7 +5125,7 @@ Namespace Ecosim
 
                     Ft = 0
                     For ig = 1 To Me.m_Data.nGear
-                        Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i), 3) <= 1.0!,
+                        Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.PropDiscardTime(ig, i), 3) <= 1.0!,
                                     Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
                         'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
                         'Debug.Assert(m_Data.relQ(ig, i) = 0)
@@ -5824,6 +5825,62 @@ Namespace Ecosim
                 Debug.Assert(False, Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message)
                 Throw New ApplicationException(Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message, ex)
             End Try
+
+        End Sub
+
+        Private Sub EstimateMoreStats(itime As Integer)
+
+            Dim Diet(Me.m_EPData.NumGroups, Me.m_EPData.NumGroups) As Single
+            Dim BQB(Me.m_EPData.NumGroups) As Single
+
+            For i As Integer = 1 To Me.m_EPData.NumLiving  'consumer
+                If Me.m_Data.Eatenby(i) > 0 Then
+                    Dim SumDiet As Single = 0
+                    For j As Integer = 1 To Me.m_EPData.NumGroups  'food
+                        Diet(i, j) = Me.m_Data.Consumpt(j, i) / Me.m_Data.Eatenby(i)
+                        SumDiet += Diet(i, j)
+                    Next
+                    If SumDiet > 0 Then
+                        For j As Integer = 1 To Me.m_EPData.NumGroups  'food
+                            Diet(i, j) /= SumDiet
+                        Next
+                    End If
+                End If
+            Next
+
+            Me.m_Ecofunctions.Omniv(Diet, Me.m_Data.TLSim, BQB, Me.m_EPData.NumGroups)
+            For i As Integer = 1 To Me.m_EPData.NumGroups
+                Me.m_Data.BQB(i, itime) = BQB(i)
+            Next
+
+            Dim min_B_QB As Single = 0
+            For i As Integer = 1 To Me.m_EPData.NumGroups
+                If Me.m_EPData.QB(i) > 0 Then
+                    Dim x As Single = Me.BB(i) * Me.m_EPData.QB(i)
+                    If (min_B_QB = 0) Then
+                        min_B_QB = x
+                    Else
+                        min_B_QB = Math.Min(min_B_QB, x)
+                    End If
+                End If
+            Next i
+
+            Debug.Assert(min_B_QB > 0)
+
+            Dim SysOm As Single = 0
+            Dim SysOmDen As Single = 0
+
+            For i As Integer = 1 To Me.m_EPData.NumLiving
+                If Me.BB(i) * Me.m_EPData.QB(i) / min_B_QB > 0 Then    ' *** CONSUMERS ONLY
+                    SysOm += CSng(Math.Log(Me.BB(i) * Me.m_EPData.QB(i) / min_B_QB) * BQB(i))
+                    SysOmDen += CSng(Math.Log(Me.BB(i) * Me.m_EPData.QB(i) / min_B_QB))
+                End If
+            Next i
+
+            If SysOmDen > 0 Then
+                SysOm /= SysOmDen
+                Me.m_Data.SysOm(itime) = SysOm
+            End If
 
         End Sub
 

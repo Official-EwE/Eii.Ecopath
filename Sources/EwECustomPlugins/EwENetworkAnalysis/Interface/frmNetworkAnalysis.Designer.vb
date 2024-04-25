@@ -203,8 +203,8 @@ Partial Class frmNetworkAnalysis
         '
         Me.tscmbSelection1.BackColor = System.Drawing.SystemColors.Window
         Me.tscmbSelection1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.tscmbSelection1.Name = "tscmbSelection1"
         resources.ApplyResources(Me.tscmbSelection1, "tscmbSelection1")
+        Me.tscmbSelection1.Name = "tscmbSelection1"
         '
         'tslblSelection2
         '
@@ -214,8 +214,8 @@ Partial Class frmNetworkAnalysis
         'tscmbSelection2
         '
         Me.tscmbSelection2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.tscmbSelection2.Name = "tscmbSelection2"
         resources.ApplyResources(Me.tscmbSelection2, "tscmbSelection2")
+        Me.tscmbSelection2.Name = "tscmbSelection2"
         '
         'tsbtnOutputIndicesCSV
         '

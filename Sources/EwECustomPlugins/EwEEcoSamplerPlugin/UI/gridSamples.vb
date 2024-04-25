@@ -114,7 +114,7 @@ Public Class gridSamples
             cell.SuppressZero(0) = True
             Me(iRow, eColumnTypes.NumInvalidEE) = cell
 
-#If ShowRatings Then
+#If ShowPerturbations Then
             Dim sb As New StringBuilder()
             For Each vn As eVarNameFlags In s.PerturbedValues
                 If sb.Length > 0 Then sb.Append(" ")

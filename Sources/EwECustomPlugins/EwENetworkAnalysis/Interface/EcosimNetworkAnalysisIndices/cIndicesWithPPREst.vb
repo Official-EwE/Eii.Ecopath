@@ -135,6 +135,13 @@ Public Class cIndicesWithPPREst
         AddCurve(My.Resources.LBL_LINDEX_REL, Me.NetworkManager.LIndexPlot, pane, Color.DarkKhaki)
         'Psust
         AddCurve("Psust", Me.NetworkManager.PsustPlot, pane, Color.DarkMagenta)
+        ' SysOm
+        AddCurve("SOI", Me.NetworkManager.SysOmnivoryIndex, pane, Color.Orange)
+
+        pane.XAxis.Scale.Min = 1
+        pane.XAxis.Scale.MinAuto = False
+        pane.YAxis.Scale.Min = 0
+        pane.YAxis.Scale.MinAuto = False
 
         'Pane2
         pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_MONTHS, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 2)

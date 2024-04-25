@@ -17,6 +17,8 @@
 ' ===============================================================================
 '
 
+' JS 25Apr2024: Man, the internal design of this UI is still gawddamn horrendous
+
 #Region " Imports "
 
 Option Strict On

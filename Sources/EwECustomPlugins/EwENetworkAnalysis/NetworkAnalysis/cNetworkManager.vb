@@ -2234,6 +2234,20 @@ Public Class cNetworkManager
         End Get
     End Property
 
+    ''' <summary>Pass-through</summary>
+    Public ReadOnly Property SysOmnivoryIndex() As Single()
+        Get
+            Return Me.m_esdata.SysOm
+        End Get
+    End Property
+
+    ''' <summary>Pass-through</summary>
+    Public ReadOnly Property OmnivoryIndex() As Single(,)
+        Get
+            Return Me.m_esdata.BQB
+        End Get
+    End Property
+
 #End Region ' Ecosim Public Properties
 
 #Region " Keystoneness "

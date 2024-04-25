@@ -192,6 +192,8 @@ Public Class cEcopathResultWriter
             Dim data As cEcopathStats = Me.m_core.EcopathStats
             Dim fmt As New cVarnameTypeFormatter()
 
+            ' Todo: add units
+
             sw.WriteLine("parameter,value")
 
             For Each var As eVarNameFlags In data.m_values.Keys

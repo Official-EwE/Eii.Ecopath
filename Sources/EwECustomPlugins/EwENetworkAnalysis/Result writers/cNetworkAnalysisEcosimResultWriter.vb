@@ -39,39 +39,74 @@ Public Class cNetworkAnalysisEcosimResultWriter
 
 #Region " Private vars "
 
+    ''' <summary>
+    ''' The last five columns are PPR only
+    ''' </summary>
     Private Enum eColTypes As Integer
         YEAR = 0
+        ''' <summary>Both</summary>
         THROUGHPUT
+        ''' <summary>Both</summary>
         CAPACITY_ECOSIM
+        ''' <summary>Both</summary>
         ASCEND_IMPORT
+        ''' <summary>Both</summary>
         ASCEND_FLOW
+        ''' <summary>Both</summary>
         ASCEND_EXPORT
+        ''' <summary>Both</summary>
         ASCEND_RESP
+        ''' <summary>Both</summary>
         OVERHEAD_IMPORT
+        ''' <summary>Both</summary>
         OVERHEAD_FLOW
+        ''' <summary>Both</summary>
         OVERHEAD_EXPORT
+        ''' <summary>Both</summary>
         OVERHEAD_RESP
+        ''' <summary>Both</summary>
         PCI
+        ''' <summary>Both</summary>
         FCI
+        ''' <summary>Both</summary>
         PATH_LEN
+        ''' <summary>Both</summary>
         EXPORT
+        ''' <summary>Both</summary>
         RESP_ECOSIM
+        ''' <summary>Both</summary>
         PRIM_PROD
+        ''' <summary>Both</summary>
         PROD
+        ''' <summary>Both</summary>
         BIOMASS
+        ''' <summary>Both</summary>
         [CATCH]
+        ''' <summary>Both</summary>
         PROP_FLOW_DET
+        ''' <summary>Both</summary>
         ASCEND_TOTAL
+        ''' <summary>Both</summary>
         AMI
+        ''' <summary>Both</summary>
         ENTROPY
+        ''' <summary>Both</summary>
         TLc
+        ''' <summary>Both</summary>
         Diversity
+        ''' <summary>Both</summary>
         FIB
+        ''' <summary>Both</summary>
+        SysOm
+        ''' <summary>PPR only</summary>
         DET_TE_W
+        ''' <summary>PPR only</summary>
         PP_TE_W
+        ''' <summary>PPR only</summary>
         TOT_TE_W
-        PPR
+        ''' <summary>PPR only</summary>
         LINDEX
+        ''' <summary>PPR only</summary>
         PSUST
     End Enum
 
@@ -97,7 +132,6 @@ Public Class cNetworkAnalysisEcosimResultWriter
             Return strCol
 
         End Function
-
     End Class
 
 #End Region ' Internal helper classes
@@ -155,13 +189,15 @@ Public Class cNetworkAnalysisEcosimResultWriter
     Private Function GetIndicesWithoutPPRData(bAnnualAverage As Boolean) As String
 
         Dim cols As eColTypes() = DirectCast([Enum].GetValues(GetType(eColTypes)), eColTypes())
-        Dim iNumCols As Integer = cols.Length - 3 ' Exclude PPR columns
+        Dim iNumCols As Integer = cols.Length - 5 ' Exclude PPR columns
         Dim asValues(iNumCols) As Single
         Dim iMonth As Integer = 0
-        Dim iYear As Integer = 0
+        Dim iYearBase As Integer = Me.Manager.Core.EcosimFirstYear
         Dim bLineAdded As Boolean = False
         Dim sb As New StringBuilder()
         Dim fmt As New cColTypeFormatter()
+
+        If (iYearBase = 0) Then iYearBase = 1950
 
         ' Header line
         For j As Integer = 0 To iNumCols - 1
@@ -184,7 +220,7 @@ Public Class cNetworkAnalysisEcosimResultWriter
 
             ' Calc month
             iMonth = (i - 1) Mod cCore.N_MONTHS
-            iYear = CInt(Me.Manager.Core.EcosimFirstYear + Math.Floor((i - 1) / cCore.N_MONTHS))
+            Dim iYear As Integer = CInt(iYearBase + Math.Floor((i - 1) / cCore.N_MONTHS))
 
             bLineAdded = False
 
@@ -228,6 +264,7 @@ Public Class cNetworkAnalysisEcosimResultWriter
                     Case eColTypes.DET_TE_W : asValues(j) += Me.Manager.DetTransferEfficiencyWeighted(i)
                     Case eColTypes.PP_TE_W : asValues(j) += Me.Manager.PPTransferEfficiencyWeighted(i)
                     Case eColTypes.TOT_TE_W : asValues(j) += Me.Manager.TotTransferEfficiencyWeighted(i)
+                    Case eColTypes.SysOm : asValues(j) += Me.Manager.SysOmnivoryIndex(i)
 
                 End Select
 
@@ -276,10 +313,12 @@ Public Class cNetworkAnalysisEcosimResultWriter
         Dim iNumCols As Integer = cols.Length ' Include PPR columns
         Dim asValues(iNumCols) As Single
         Dim iMonth As Integer = 0
-        Dim iYear As Integer = 0
+        Dim iYearBase As Integer = Me.Manager.Core.EcosimFirstYear
         Dim bLineAdded As Boolean = False
         Dim sb As New StringBuilder()
         Dim fmt As New cColTypeFormatter()
+
+        If (iYearBase = 0) Then iYearBase = 1950
 
         ' Header line
         For j As Integer = 0 To iNumCols - 1
@@ -292,7 +331,7 @@ Public Class cNetworkAnalysisEcosimResultWriter
 
             ' Calc month
             iMonth = (i - 1) Mod cCore.N_MONTHS
-            iYear = CInt(Me.Manager.Core.EcosimFirstYear + Math.Floor((i - 1) / cCore.N_MONTHS))
+            Dim iYear As Integer = CInt(iYearBase + Math.Floor((i - 1) / cCore.N_MONTHS))
 
             bLineAdded = False
 
@@ -336,9 +375,9 @@ Public Class cNetworkAnalysisEcosimResultWriter
                     Case eColTypes.DET_TE_W : asValues(j) += Me.Manager.DetTransferEfficiencyWeighted(i)
                     Case eColTypes.PP_TE_W : asValues(j) += Me.Manager.PPTransferEfficiencyWeighted(i)
                     Case eColTypes.TOT_TE_W : asValues(j) += Me.Manager.TotTransferEfficiencyWeighted(i)
-                    Case eColTypes.PPR
                     Case eColTypes.LINDEX : asValues(j) += Me.Manager.LIndexEcosim(i)
                     Case eColTypes.PSUST : asValues(j) += Me.Manager.PsustEcosim(i)
+                    Case eColTypes.SysOm : asValues(j) += Me.Manager.SysOmnivoryIndex(i)
                 End Select
 
                 ' Processing annual averages?

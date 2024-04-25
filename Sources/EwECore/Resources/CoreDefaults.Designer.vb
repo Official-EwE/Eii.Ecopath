@@ -2315,7 +2315,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Gross efficiency.
+        '''  Looks up a localized string similar to Gross efficiency (catch/net p.p.).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSGROSSEFFICIENCY() As String
             Get
@@ -2324,7 +2324,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Mean TL of the catch.
+        '''  Looks up a localized string similar to Mean trophic level of the catch.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSMEANTROPHICLEVELCATCH() As String
             Get
@@ -2333,7 +2333,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Measure of fit.
+        '''  Looks up a localized string similar to Measure of fit, t*.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSMEASUREOFFIT() As String
             Get
@@ -2342,7 +2342,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to NetSystemProduction.
+        '''  Looks up a localized string similar to Net system production.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSNETSYSTEMPRODUCTION() As String
             Get
@@ -2351,7 +2351,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Omnivory index.
+        '''  Looks up a localized string similar to System omnivory index.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSOMNIVINDEX() As String
             Get
@@ -2369,7 +2369,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Profit.
+        '''  Looks up a localized string similar to Total profit.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSPROFIT() As String
             Get
@@ -2378,7 +2378,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to TotalBNonDet.
+        '''  Looks up a localized string similar to Total biomass (excluding detritus).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALBNONDET() As String
             Get
@@ -2387,7 +2387,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to TotalBT.
+        '''  Looks up a localized string similar to Total biomass/total throughput.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALBT() As String
             Get
@@ -2423,7 +2423,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Total exports.
+        '''  Looks up a localized string similar to Sum of all exports.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALEXPORTS() As String
             Get
@@ -2441,7 +2441,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to TotalFlowDetritus.
+        '''  Looks up a localized string similar to Sum of all flows into detritus.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALFLOWDETRITUS() As String
             Get
@@ -2459,7 +2459,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to TotalNetPP.
+        '''  Looks up a localized string similar to Calculated total net primary production.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALNETPP() As String
             Get
@@ -2468,7 +2468,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to TotalPB.
+        '''  Looks up a localized string similar to Total primary production/total biomass.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALPB() As String
             Get
@@ -2477,7 +2477,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to TotalPResp.
+        '''  Looks up a localized string similar to Total primary production/total respiration.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALPRESP() As String
             Get
@@ -2486,7 +2486,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Total production.
+        '''  Looks up a localized string similar to Sum of all production.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALPRODUCTION() As String
             Get
@@ -2495,7 +2495,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to TotalRespFlow.
+        '''  Looks up a localized string similar to Sum of all respiratory flows.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALRESPFLOW() As String
             Get
@@ -2513,7 +2513,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Total throughput.
+        '''  Looks up a localized string similar to Total system throughput.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALTHROUGHPUT() As String
             Get

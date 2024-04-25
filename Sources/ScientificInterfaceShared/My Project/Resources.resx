@@ -814,12 +814,6 @@
   <data name="HEADER_INDEXVALUE" xml:space="preserve">
     <value>Index value</value>
   </data>
-  <data name="HEADER_INDEX_CONNECTANCE" xml:space="preserve">
-    <value>Connectance Index</value>
-  </data>
-  <data name="HEADER_INDEX_ONMIVORY" xml:space="preserve">
-    <value>System Omnivory Index</value>
-  </data>
   <data name="HEADER_INDICATOR" xml:space="preserve">
     <value>Indicator</value>
   </data>
@@ -884,12 +878,6 @@
   <data name="HEADER_MEAN" xml:space="preserve">
     <value>Mean</value>
   </data>
-  <data name="HEADER_MEAN_CATCH_TL" xml:space="preserve">
-    <value>Mean trophic level of the catch</value>
-  </data>
-  <data name="HEADER_MEASUREOFFIT" xml:space="preserve">
-    <value>Measure of fit, t*</value>
-  </data>
   <data name="HEADER_MINWEIGHT" xml:space="preserve">
     <value>Min. weight</value>
   </data>
@@ -913,9 +901,6 @@
   </data>
   <data name="HEADER_NET_ECONOMIC_VALUE_ABBR" xml:space="preserve">
     <value>Econ.</value>
-  </data>
-  <data name="HEADER_NET_PROD" xml:space="preserve">
-    <value>Net system production</value>
   </data>
   <data name="HEADER_NONMARKETVALUE" xml:space="preserve">
     <value>Non-market value</value>
@@ -1077,9 +1062,6 @@
   <data name="HEADER_SUM" xml:space="preserve">
     <value>Sum</value>
   </data>
-  <data name="HEADER_SUM_BnonDET" xml:space="preserve">
-    <value>Total biomass (excluding detritus)</value>
-  </data>
   <data name="HEADER_SUM_BT" xml:space="preserve">
     <value>Total biomass/total throughput</value>
   </data>
@@ -1107,12 +1089,6 @@
   <data name="HEADER_SUM_FLOW_RESP" xml:space="preserve">
     <value>Sum of all respiratory flows</value>
   </data>
-  <data name="HEADER_SUM_NET_PP" xml:space="preserve">
-    <value>Calculated total net primary production</value>
-  </data>
-  <data name="HEADER_SUM_PPB" xml:space="preserve">
-    <value>Total primary production/total biomass</value>
-  </data>
   <data name="HEADER_SUM_PP_RESP" xml:space="preserve">
     <value>Total primary production/total respiration</value>
   </data>
@@ -1127,12 +1103,6 @@
   </data>
   <data name="HEADER_SUM_VALUE" xml:space="preserve">
     <value>Total value</value>
-  </data>
-  <data name="HEADER_SUM_VALUE_MARKET" xml:space="preserve">
-    <value>Total market value</value>
-  </data>
-  <data name="HEADER_SUM_VALUE_SHADOW" xml:space="preserve">
-    <value>Total shadow value</value>
   </data>
   <data name="HEADER_SURVIVAL" xml:space="preserve">
     <value>Survival</value>
