@@ -335,7 +335,9 @@
     <Compile Include="User interface\gridMaxDecreaseEffort.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="User interface\gridQuotaShares.vb" />
+    <Compile Include="User interface\gridQuotaShares.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="User interface\gridRegulations.vb">
       <SubType>Component</SubType>
     </Compile>

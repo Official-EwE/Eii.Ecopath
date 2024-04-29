@@ -170,7 +170,9 @@
     <Compile Include="gridSpinupDiff.Designer.vb">
       <DependentUpon>gridSpinupDiff.vb</DependentUpon>
     </Compile>
-    <Compile Include="gridSpinupDiff.vb" />
+    <Compile Include="gridSpinupDiff.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
