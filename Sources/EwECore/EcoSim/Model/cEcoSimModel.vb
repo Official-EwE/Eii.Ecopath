@@ -1024,7 +1024,7 @@ Namespace Ecosim
                     If ((Me.m_search.SearchMode = eSearchModes.NotInSearch) Or (Me.m_Data.bAlwaysCalcTLc)) And Me.m_Data.bTimestepOutput Then
                         Me.EstimateTLs(itime)
                         Me.EstimateTLofCatch(itime)
-                        Me.EstimateMoreStats(itime)
+                        Me.ComputeMoreStats(itime)
                     End If
 
                     'Compute time step results if the calling routine set bTimestepOutput to True
@@ -5828,7 +5828,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub EstimateMoreStats(itime As Integer)
+        Private Sub ComputeMoreStats(itime As Integer)
 
             Dim Diet(Me.m_EPData.NumGroups, Me.m_EPData.NumGroups) As Single
             Dim BQB(Me.m_EPData.NumGroups) As Single
