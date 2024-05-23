@@ -39,10 +39,17 @@ Friend Class frmSplash
 
         Dim bInvertText As Boolean = False
         Dim now As Date = Date.Now
-        Dim image As Integer = now.DayOfYear Mod 7
+        Dim image As Integer = now.DayOfYear Mod 8
+
 #If DEBUG Then
         'image = 3
 #End If
+
+        ' EwE40
+        If cDateUtils.GetNextEvent(15) = cDateUtils.eNextEvent.EwE40 Then
+            image = 7
+        End If
+
         Select Case image
             Case 0 : Me.BackgroundImage = My.Resources.splash_01
             Case 1 : Me.BackgroundImage = My.Resources.splash_02 : bInvertText = True
@@ -51,7 +58,9 @@ Friend Class frmSplash
             Case 4 : Me.BackgroundImage = My.Resources.splash_05 : bInvertText = True
             Case 5 : Me.BackgroundImage = My.Resources.splash_06 : bInvertText = True
             Case 6 : Me.BackgroundImage = My.Resources.splash_07 : bInvertText = True
+            Case 7 : Me.BackgroundImage = My.Resources.splash_ewe40 : bInvertText = True
         End Select
+
 
         ' Tee hee hee
         If ((now.Month = 4) And (now.Day = 1)) Then

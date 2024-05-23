@@ -64,6 +64,8 @@ Public Class cEwEIcon
                 Return My.Resources.Ecopath4_hohoho
             Case cDateUtils.eNextEvent.DagVanDeLiefde
                 Return My.Resources.Ecopath6_joepie
+            Case cDateUtils.eNextEvent.EwE40
+                Return My.Resources.Ecopath40
         End Select
 
 #If BETA = 1 Then

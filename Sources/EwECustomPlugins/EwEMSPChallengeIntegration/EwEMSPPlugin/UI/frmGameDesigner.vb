@@ -645,10 +645,13 @@ Namespace UI
         Private Sub OnDeleteGame(sender As Object, e As EventArgs) _
             Handles m_btnGameDelete.Click
             Try
-                Me.MSPLink.Data.Remove(Me.SelectedGame())
-                Me.MSPLink.OnChanged()
-                Me.FillGameCombo()
-                Me.UpdateControls()
+                Dim sel As cGame = Me.SelectedGame
+                If Me.PromptDelete(sel) Then
+                    Me.MSPLink.Data.Remove(Me.SelectedGame())
+                    Me.MSPLink.OnChanged()
+                    Me.FillGameCombo()
+                    Me.UpdateControls()
+                End If
             Catch ex As Exception
 
             End Try
@@ -815,14 +818,14 @@ Namespace UI
                 If (g Is Nothing) Then Return
                 If (pressure Is Nothing) Then Return
 
-                ' ToDo: add deletion confirmation message
+                If Me.PromptDelete(pressure) Then
+                    ' Reroute mappings
+                    g.Driver(pressure.Name) = Nothing
+                    g.Remove(pressure)
 
-                ' Reroute mappings
-                g.Driver(pressure.Name) = Nothing
-                g.Remove(pressure)
-
-                Me.m_gridPressureMappings.RefreshContent()
-                Me.MSPLink.OnChanged()
+                    Me.m_gridPressureMappings.RefreshContent()
+                    Me.MSPLink.OnChanged()
+                End If
             Catch ex As Exception
 
             End Try
@@ -862,21 +865,26 @@ Namespace UI
             If (Me.m_bInupdate) Then Return
             Me.m_bInupdate = True
 
-            Dim p As cPressure = Me.m_gridPressureMappings.SelectedPressure
-            If (p IsNot Nothing) Then
-                Me.m_tbxPressureName.Text = p.Name
-                'Dim iSel As Integer = -1
-                'If TypeOf p Is cEnvironmentalPressure Then
-                '    iSel = 0
-                'ElseIf TypeOf p Is cFishingEffortPressure Then
-                '    iSel = 1
-                'ElseIf TypeOf p Is cFishingEcoPressure Then
-                '    iSel = 2
-                'End If
-                'Me.m_cmbPressureTypes.SelectedIndex = iSel
-            End If
-            Me.UpdateControls()
+            Try
+                Dim p As cPressure = Me.m_gridPressureMappings.SelectedPressure
+                If (p IsNot Nothing) Then
+                    Me.m_tbxPressureName.Text = p.Name
+                    'Dim iSel As Integer = -1
+                    'If TypeOf p Is cEnvironmentalPressure Then
+                    '    iSel = 0
+                    'ElseIf TypeOf p Is cFishingEffortPressure Then
+                    '    iSel = 1
+                    'ElseIf TypeOf p Is cFishingEcoPressure Then
+                    '    iSel = 2
+                    'End If
+                    'Me.m_cmbPressureTypes.SelectedIndex = iSel
+                End If
+            Catch ex As Exception
+
+            End Try
             Me.m_bInupdate = False
+
+            Me.UpdateControls()
 
         End Sub
 
@@ -962,13 +970,20 @@ Namespace UI
             Try
 
                 Dim g As cGame = Me.SelectedGame()
-                For Each item As Object In Me.m_lbOutputs.SelectedItems
-                    g.Remove(DirectCast(item, cOutcome))
-                Next
+                Dim test As IMELItem = Nothing
 
-                Me.FillOutcomeListbox()
-                Me.OnOutputSelected(Nothing, Nothing)
-                Me.MSPLink.OnChanged()
+                If Me.m_lbOutputs.SelectedItems.Count = 1 Then
+                    test = DirectCast(Me.m_lbOutputs.SelectedItem, IMELItem)
+                End If
+
+                If (Me.PromptDelete(test)) Then
+                    For Each item As Object In Me.m_lbOutputs.SelectedItems
+                        g.Remove(DirectCast(item, cOutcome))
+                    Next
+                    Me.FillOutcomeListbox()
+                    Me.OnOutputSelected(Nothing, Nothing)
+                    Me.MSPLink.OnChanged()
+                End If
 
             Catch ex As Exception
 
@@ -1598,6 +1613,31 @@ Namespace UI
             Me.Core.Messages.SendMessage(msg)
 
         End Sub
+
+        Private Function PromptDelete(data As IMELItem) As Boolean
+
+            Dim msg As String = ""
+
+            If (data IsNot Nothing) Then
+                Dim datatype As String = ""
+                If (TypeOf (data) Is cGame) Then
+                    datatype = My.Resources.TYPE_GAME
+                ElseIf (TypeOf (data) Is cPressure) Then
+                    datatype = My.Resources.TYPE_PRESSURE
+                ElseIf (TypeOf (data) Is cOutcome) Then
+                    datatype = My.Resources.TYPE_OUTCOME
+                End If
+                msg = cStringUtils.Localize(My.Resources.PROMPT_DELETE_SINGLE, datatype, data.Name)
+            Else
+                msg = My.Resources.PROMPT_DELETE_MULTIPLE
+            End If
+
+            Dim fmsg As New cFeedbackMessage(msg, eCoreComponentType.External, eMessageType.DataModified, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            Me.Core.Messages.SendMessage(fmsg)
+
+            Return fmsg.Reply = eMessageReply.YES
+
+        End Function
 
 #End Region ' Internals
 

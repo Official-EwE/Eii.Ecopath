@@ -368,6 +368,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Are you sure you want to delete multiple items? This cannot be undone.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_DELETE_MULTIPLE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DELETE_MULTIPLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Are you sure you want to delete {0} &quot;{1}&quot;? This cannot be undone.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_DELETE_SINGLE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DELETE_SINGLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Select test map for {0}.
         '''</summary>
         Friend ReadOnly Property PROMPT_SELECT_MAP() As String
@@ -428,6 +446,33 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_TESTSET_LOAD_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("STATUS_TESTSET_LOAD_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Game.
+        '''</summary>
+        Friend ReadOnly Property TYPE_GAME() As String
+            Get
+                Return ResourceManager.GetString("TYPE_GAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Outcome.
+        '''</summary>
+        Friend ReadOnly Property TYPE_OUTCOME() As String
+            Get
+                Return ResourceManager.GetString("TYPE_OUTCOME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Pressure.
+        '''</summary>
+        Friend ReadOnly Property TYPE_PRESSURE() As String
+            Get
+                Return ResourceManager.GetString("TYPE_PRESSURE", resourceCulture)
             End Get
         End Property
         
