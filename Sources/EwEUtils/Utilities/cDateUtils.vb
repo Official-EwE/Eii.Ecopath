@@ -141,6 +141,7 @@ Namespace Utilities
             Easter
             Xmas
             DagVanDeLiefde
+            EwE40
         End Enum
 
         Public Shared Function GetNextEvent(iNumDays As Integer) As eNextEvent
@@ -149,7 +150,9 @@ Namespace Utilities
             Dim dtEaster As DateTime = cDateUtils.Easter(dtNow.Year)
             Dim dtXMas As DateTime = New Date(dtNow.Year, 12, 25)
             Dim dtJoepie As DateTime = New Date(dtNow.Year, 2, 14)
+            Dim dtEwE40 As DateTime = New Date(2024, 6, 8)
 
+            If (dtEwE40 >= dtNow) And (dtEaster.Subtract(dtNow).Days <= iNumDays) Then Return eNextEvent.EwE40
             If (dtEaster >= dtNow) And (dtEaster.Subtract(dtNow).Days <= iNumDays) Then Return eNextEvent.Easter
             If (dtXMas >= dtNow) And (dtXMas.Subtract(dtNow).Days <= iNumDays) Then Return eNextEvent.Xmas
             If (dtJoepie >= dtNow) And (dtJoepie.Subtract(dtNow).Days <= iNumDays / 2) Then Return eNextEvent.DagVanDeLiefde

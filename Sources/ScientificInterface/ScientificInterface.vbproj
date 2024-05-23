@@ -21,7 +21,7 @@
     <SccProvider>
     </SccProvider>
     <OptionStrict>On</OptionStrict>
-    <ApplicationIcon>Resources\Ecopath0.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Ecopath40.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -1383,7 +1383,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Ecopath40.ico" />
     <Content Include="Resources\Ecopath666.ico" />
+    <None Include="Resources\splash_ewe40.png" />
     <None Include="Resources\FuMa_logo.png" />
     <Content Include="Resources\InsertIcons.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

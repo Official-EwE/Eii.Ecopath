@@ -247,4 +247,19 @@
   <data name="CHOICE_FISHING_ECO" xml:space="preserve">
     <value>Fishing ecological</value>
   </data>
+  <data name="PROMPT_DELETE_MULTIPLE" xml:space="preserve">
+    <value>Are you sure you want to delete multiple items? This cannot be undone</value>
+  </data>
+  <data name="PROMPT_DELETE_SINGLE" xml:space="preserve">
+    <value>Are you sure you want to delete {0} "{1}"? This cannot be undone</value>
+  </data>
+  <data name="TYPE_GAME" xml:space="preserve">
+    <value>Game</value>
+  </data>
+  <data name="TYPE_OUTCOME" xml:space="preserve">
+    <value>Outcome</value>
+  </data>
+  <data name="TYPE_PRESSURE" xml:space="preserve">
+    <value>Pressure</value>
+  </data>
 </root>

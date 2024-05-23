@@ -528,6 +528,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         '''</summary>
+        Public ReadOnly Property Ecopath40() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath40", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
         Public ReadOnly Property Ecopath6_joepie() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecopath6_joepie", resourceCulture)
@@ -1538,7 +1548,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath with Ecosim.
+        '''  Looks up a localized string similar to Ecopath with Ecosim 40 years.
         '''</summary>
         Public ReadOnly Property GENERIC_CAPTION() As String
             Get
@@ -4954,6 +4964,16 @@ Namespace My.Resources
         Public ReadOnly Property splash_07() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("splash_07", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property splash_ewe40() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("splash_ewe40", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

@@ -1143,7 +1143,7 @@ Description: {1}</value>
     <value>Fishing rate (relative)</value>
   </data>
   <data name="GENERIC_CAPTION" xml:space="preserve">
-    <value>Ecopath with Ecosim</value>
+    <value>Ecopath with Ecosim 40 years</value>
   </data>
   <data name="LABEL_NAV_ECOPATH_OUTPUT_CONSUMPTION" xml:space="preserve">
     <value>Consumption</value>
@@ -2252,5 +2252,11 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="ECOSIM_GROUPINFO_PROPADDITIVEMORT" xml:space="preserve">
     <value>Additive prop. of predation mortality [0,1]</value>
+  </data>
+  <data name="Ecopath40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ecopath40.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="splash_ewe40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\splash_ewe40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

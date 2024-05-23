@@ -122,7 +122,7 @@ Public Class cOutcome
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the <see cref="eLayerType">categry</see> of the layer.
+    ''' Returns the <see cref="eLayerType">category</see> of the layer.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property LayerType As eLayerType
