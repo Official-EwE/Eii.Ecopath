@@ -4,7 +4,7 @@
 
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 0
+#define Compile64Bit 1  
 #define CodeSigning 1                       ; set to 0 to disable code signing
 
 ; Optional features
@@ -15,7 +15,7 @@
 ; Automated build will provide file version as a command line parameter
 ; /DFileVersion=6.6.{minor release no}.{build no}
 #ifndef FileVersion
-  #define FileVersion "6.7.0.18848"
+  #define FileVersion "6.7.0.18865"
 #endif
 VersionInfoVersion={#FileVersion}
 
@@ -28,14 +28,13 @@ VersionInfoVersion={#FileVersion}
 #endif
 
 ; Standard stuff
-#define MyAppName "Ecopath with Ecosim"
+#define MyAppName "Ecopath with Ecosim 40 years"
 #define MyAppExeName "ewe6.exe"
 #define MyAppPublisher "Ecopath International Initiative"
 #define DefRoot "..\..\..\"
 #define DefDB "Database"
 
 [Setup]
-
 ; Code signing, fundamental for distributing installers and executables:
 ; - EII 2020 .pfx code signing certificate expired 2 Dec 2023. 
 ; - EII 2024 .cer code signing certificate will expire 10 Jan 2027
@@ -57,14 +56,14 @@ AppVersion={#MyAppVersion}
 DefaultDirName={pf}\{#MyAppName} {#MyAppVersion}
 DefaultGroupName={#MyAppName}\Release {#MyAppVersion}
 MinVersion=0,6.1
-SetupIconFile=Ecopath_install.ico
+SetupIconFile=Ecopath40.ico
 #if CodeSigning == 1
 SignTool=codesign /d $q{#MyAppName}$q $f
 #else
 ; NOP
 #endif
 UninstallDisplayIcon={app}\{#MyAppName}
-WizardImageFile=EwE5Logo.bmp
+WizardImageFile=EwE40Logo.bmp
 WizardSmallImageFile=EwE6Header.bmp
 WizardImageStretch=False
 WizardStyle=modern
@@ -90,6 +89,7 @@ UsePreviousAppDir=False
 TimeStampsInUTC=True
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright=(c) {#MyAppPublisher}
+DisableWelcomePage=False
 
 [Dirs]
 Name: "{app}\Includes\LPSolve\"
