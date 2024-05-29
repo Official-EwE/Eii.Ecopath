@@ -84,7 +84,7 @@ Public Class cEcospaceController
     ''' <remarks>Note that this only prepares the threads needed to run. Ecospace
     ''' will only start executing when Continue is called."/>
     ''' </remarks>
-    ''' <seealso cref="[Continue](cPressure(), cGrid())"/>
+    ''' <seealso cref="[Continue](cPressure(), cGrid(), Boolean)"/>
     ''' <seealso cref="[Stop]()"/>
     ''' -----------------------------------------------------------------------
     Public Sub Start(game As cGame)
@@ -154,7 +154,7 @@ Public Class cEcospaceController
     ''' <summary>
     ''' Terminate an Ecospace run.
     ''' </summary>
-    ''' <seealso cref="[Continue](cPressure(), cGrid())"/>
+    ''' <seealso cref="[Continue](cPressure(), cGrid(), Boolean)"/>
     ''' <seealso cref="[Start](cGame)"/>
     ''' -----------------------------------------------------------------------
     Public Sub [Stop]()

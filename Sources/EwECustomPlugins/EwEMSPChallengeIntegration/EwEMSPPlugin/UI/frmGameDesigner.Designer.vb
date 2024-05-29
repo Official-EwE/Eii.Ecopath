@@ -127,21 +127,22 @@ Namespace UI
             Me.m_pbEII = New System.Windows.Forms.PictureBox()
             Me.m_pbBUAS = New System.Windows.Forms.PictureBox()
             Me.m_pbRWS = New System.Windows.Forms.PictureBox()
-            Me.m_pbMSPChallenge = New System.Windows.Forms.PictureBox()
             Me.m_pbEcoscope = New System.Windows.Forms.PictureBox()
+            Me.m_pbMSPChallenge = New System.Windows.Forms.PictureBox()
             Me.m_lblAboutCredits = New System.Windows.Forms.Label()
             Me.m_lblAboutVersion = New System.Windows.Forms.Label()
             Me.m_hdrCredits = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_ilTabIcons = New System.Windows.Forms.ImageList(Me.components)
-            Me.m_cmbGames = New System.Windows.Forms.ComboBox()
-            Me.m_lblGames = New System.Windows.Forms.Label()
-            Me.m_btnGameAdd = New System.Windows.Forms.Button()
-            Me.m_lblGame = New System.Windows.Forms.Label()
-            Me.m_tbxGameName = New System.Windows.Forms.TextBox()
-            Me.m_btnGameRename = New System.Windows.Forms.Button()
-            Me.m_btnGameDelete = New System.Windows.Forms.Button()
-            Me.m_btnGameAddFromJSON = New System.Windows.Forms.Button()
-            Me.m_btnExport = New System.Windows.Forms.Button()
+            Me.m_tsMain = New System.Windows.Forms.ToolStrip()
+            Me.m_tslbGame = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tstbGameName = New System.Windows.Forms.ToolStripTextBox()
+            Me.m_tsbnGameAdd = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnGameEdit = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnGameDelete = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsddGames = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_tsbnImport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.m_tabConfig.SuspendLayout()
             Me.m_tpEwESettings.SuspendLayout()
             Me.m_tpInformation.SuspendLayout()
@@ -163,8 +164,9 @@ Namespace UI
             CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbBUAS, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbEcoscope, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tabConfig
@@ -806,19 +808,19 @@ Namespace UI
             Me.m_pbRWS.Name = "m_pbRWS"
             Me.m_pbRWS.TabStop = False
             '
-            'm_pbMSPChallenge
-            '
-            Me.m_pbMSPChallenge.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.MSP_Challenge_Icon_037c7c
-            resources.ApplyResources(Me.m_pbMSPChallenge, "m_pbMSPChallenge")
-            Me.m_pbMSPChallenge.Name = "m_pbMSPChallenge"
-            Me.m_pbMSPChallenge.TabStop = False
-            '
             'm_pbEcoscope
             '
             Me.m_pbEcoscope.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.EcoScope_logo
             resources.ApplyResources(Me.m_pbEcoscope, "m_pbEcoscope")
             Me.m_pbEcoscope.Name = "m_pbEcoscope"
             Me.m_pbEcoscope.TabStop = False
+            '
+            'm_pbMSPChallenge
+            '
+            Me.m_pbMSPChallenge.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.MSP_Challenge_Icon_037c7c
+            resources.ApplyResources(Me.m_pbMSPChallenge, "m_pbMSPChallenge")
+            Me.m_pbMSPChallenge.Name = "m_pbMSPChallenge"
+            Me.m_pbMSPChallenge.TabStop = False
             '
             'm_lblAboutCredits
             '
@@ -844,76 +846,74 @@ Namespace UI
             resources.ApplyResources(Me.m_ilTabIcons, "m_ilTabIcons")
             Me.m_ilTabIcons.TransparentColor = System.Drawing.Color.Transparent
             '
-            'm_cmbGames
+            'm_tsMain
             '
-            resources.ApplyResources(Me.m_cmbGames, "m_cmbGames")
-            Me.m_cmbGames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbGames.FormattingEnabled = True
-            Me.m_cmbGames.Name = "m_cmbGames"
-            Me.m_cmbGames.Sorted = True
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslbGame, Me.m_tstbGameName, Me.m_tsbnGameAdd, Me.m_tsbnGameEdit, Me.m_tsbnGameDelete, Me.ToolStripSeparator1, Me.m_tsddGames, Me.m_tsbnImport, Me.m_tsbnExport})
+            resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+            Me.m_tsMain.Name = "m_tsMain"
             '
-            'm_lblGames
+            'm_tslbGame
             '
-            resources.ApplyResources(Me.m_lblGames, "m_lblGames")
-            Me.m_lblGames.Name = "m_lblGames"
+            Me.m_tslbGame.Name = "m_tslbGame"
+            resources.ApplyResources(Me.m_tslbGame, "m_tslbGame")
             '
-            'm_btnGameAdd
+            'm_tstbGameName
             '
-            resources.ApplyResources(Me.m_btnGameAdd, "m_btnGameAdd")
-            Me.m_btnGameAdd.Image = Global.EwEMSPPlugin.My.Resources.Resources.add
-            Me.m_btnGameAdd.Name = "m_btnGameAdd"
-            Me.m_btnGameAdd.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_tstbGameName, "m_tstbGameName")
+            Me.m_tstbGameName.Name = "m_tstbGameName"
             '
-            'm_lblGame
+            'm_tsbnGameAdd
             '
-            resources.ApplyResources(Me.m_lblGame, "m_lblGame")
-            Me.m_lblGame.Name = "m_lblGame"
+            Me.m_tsbnGameAdd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnGameAdd.Image = Global.EwEMSPPlugin.My.Resources.Resources.add
+            resources.ApplyResources(Me.m_tsbnGameAdd, "m_tsbnGameAdd")
+            Me.m_tsbnGameAdd.Name = "m_tsbnGameAdd"
             '
-            'm_tbxGameName
+            'm_tsbnGameEdit
             '
-            resources.ApplyResources(Me.m_tbxGameName, "m_tbxGameName")
-            Me.m_tbxGameName.Name = "m_tbxGameName"
+            Me.m_tsbnGameEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnGameEdit.Image = Global.EwEMSPPlugin.My.Resources.Resources.change
+            resources.ApplyResources(Me.m_tsbnGameEdit, "m_tsbnGameEdit")
+            Me.m_tsbnGameEdit.Name = "m_tsbnGameEdit"
             '
-            'm_btnGameRename
+            'm_tsbnGameDelete
             '
-            resources.ApplyResources(Me.m_btnGameRename, "m_btnGameRename")
-            Me.m_btnGameRename.Image = Global.EwEMSPPlugin.My.Resources.Resources.change
-            Me.m_btnGameRename.Name = "m_btnGameRename"
-            Me.m_btnGameRename.UseVisualStyleBackColor = True
+            Me.m_tsbnGameDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnGameDelete.Image = Global.EwEMSPPlugin.My.Resources.Resources.delete
+            resources.ApplyResources(Me.m_tsbnGameDelete, "m_tsbnGameDelete")
+            Me.m_tsbnGameDelete.Name = "m_tsbnGameDelete"
             '
-            'm_btnGameDelete
+            'ToolStripSeparator1
             '
-            resources.ApplyResources(Me.m_btnGameDelete, "m_btnGameDelete")
-            Me.m_btnGameDelete.Image = Global.EwEMSPPlugin.My.Resources.Resources.delete
-            Me.m_btnGameDelete.Name = "m_btnGameDelete"
-            Me.m_btnGameDelete.UseVisualStyleBackColor = True
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
             '
-            'm_btnGameAddFromJSON
+            'm_tsddGames
             '
-            resources.ApplyResources(Me.m_btnGameAddFromJSON, "m_btnGameAddFromJSON")
-            Me.m_btnGameAddFromJSON.Image = Global.EwEMSPPlugin.My.Resources.Resources.logo_json
-            Me.m_btnGameAddFromJSON.Name = "m_btnGameAddFromJSON"
-            Me.m_btnGameAddFromJSON.UseVisualStyleBackColor = True
+            Me.m_tsddGames.AutoToolTip = True
+            Me.m_tsddGames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tsddGames.DropDownWidth = 400
+            Me.m_tsddGames.Name = "m_tsddGames"
+            resources.ApplyResources(Me.m_tsddGames, "m_tsddGames")
             '
-            'm_btnExport
+            'm_tsbnImport
             '
-            resources.ApplyResources(Me.m_btnExport, "m_btnExport")
-            Me.m_btnExport.Name = "m_btnExport"
-            Me.m_btnExport.UseVisualStyleBackColor = True
+            Me.m_tsbnImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnImport, "m_tsbnImport")
+            Me.m_tsbnImport.Name = "m_tsbnImport"
+            '
+            'm_tsbnExport
+            '
+            Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
+            Me.m_tsbnExport.Name = "m_tsbnExport"
             '
             'frmGameDesigner
             '
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit
             resources.ApplyResources(Me, "$this")
-            Me.Controls.Add(Me.m_tbxGameName)
-            Me.Controls.Add(Me.m_lblGame)
-            Me.Controls.Add(Me.m_btnGameAddFromJSON)
-            Me.Controls.Add(Me.m_btnGameDelete)
-            Me.Controls.Add(Me.m_btnGameRename)
-            Me.Controls.Add(Me.m_btnExport)
-            Me.Controls.Add(Me.m_btnGameAdd)
-            Me.Controls.Add(Me.m_lblGames)
-            Me.Controls.Add(Me.m_cmbGames)
+            Me.Controls.Add(Me.m_tsMain)
             Me.Controls.Add(Me.m_tabConfig)
             Me.Name = "frmGameDesigner"
             Me.ShowInTaskbar = False
@@ -947,8 +947,10 @@ Namespace UI
             CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbBUAS, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbEcoscope, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbMSPChallenge, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tsMain.ResumeLayout(False)
+            Me.m_tsMain.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -957,8 +959,6 @@ Namespace UI
         Private WithEvents m_tabConfig As Windows.Forms.TabControl
         Private WithEvents m_tpPressures As Windows.Forms.TabPage
         Private WithEvents m_tpOutcomes As Windows.Forms.TabPage
-        Private WithEvents m_cmbGames As Windows.Forms.ComboBox
-        Private WithEvents m_lblGames As Windows.Forms.Label
         Private WithEvents m_tpEwESettings As Windows.Forms.TabPage
         Private WithEvents m_tbxRunYears As Windows.Forms.TextBox
         Private WithEvents m_tbxSpinupYears As Windows.Forms.TextBox
@@ -984,10 +984,6 @@ Namespace UI
         Private WithEvents m_cmbEmulPauseOptions As Windows.Forms.ComboBox
         Private WithEvents m_cbEmulPauseSpace As Windows.Forms.CheckBox
         Private WithEvents m_ilTabIcons As Windows.Forms.ImageList
-        Private WithEvents m_btnGameAdd As Windows.Forms.Button
-        Private WithEvents m_lblGame As Windows.Forms.Label
-        Private WithEvents m_btnGameRename As Windows.Forms.Button
-        Private WithEvents m_btnGameDelete As Windows.Forms.Button
         Private WithEvents m_btnPressureDefaults As Windows.Forms.Button
         Private WithEvents m_btnPressureDelete As Windows.Forms.Button
         Private WithEvents m_btnPressureRename As Windows.Forms.Button
@@ -1006,12 +1002,10 @@ Namespace UI
         Private WithEvents m_btnTestsetAdd As Windows.Forms.Button
         Private WithEvents m_tbxTestsetName As Windows.Forms.TextBox
         Private WithEvents m_cmbOutputTypes As Windows.Forms.ComboBox
-        Private WithEvents m_tbxGameName As Windows.Forms.TextBox
         Private WithEvents m_lblCheckSimTimeSeries As cImageLabel
         Private WithEvents m_lblCheckSimFishing As cImageLabel
         Private WithEvents m_lblCheckSimForcing As cImageLabel
         Private WithEvents m_lblCheckSpaceTimeSeries As cImageLabel
-        Private WithEvents m_btnGameAddFromJSON As Windows.Forms.Button
         Private WithEvents m_gridOutcome As gridOutcomes
         Private WithEvents m_lblMPACellClosure2 As Windows.Forms.Label
         Private WithEvents m_btnTestsetApply As Windows.Forms.Button
@@ -1036,7 +1030,6 @@ Namespace UI
         Private WithEvents m_lblInfoDescription As Windows.Forms.Label
         Private WithEvents m_btnSettingsUseCurrentScenario As Windows.Forms.Button
         Private WithEvents m_hdrCredits As cEwEHeaderLabel
-        Private WithEvents m_btnExport As Windows.Forms.Button
         Private WithEvents m_nudEmulOutcomeRange As Windows.Forms.NumericUpDown
         Private WithEvents m_pbEcoscope As Windows.Forms.PictureBox
         Private WithEvents m_lblBycatchFee2 As Windows.Forms.Label
@@ -1050,6 +1043,16 @@ Namespace UI
         Private WithEvents m_tsbnOuputBinned As Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnOuputRaw As Windows.Forms.ToolStripButton
         Private WithEvents m_tslOutputRawBinned As Windows.Forms.ToolStripLabel
+        Private WithEvents m_tsMain As Windows.Forms.ToolStrip
+        Private WithEvents m_tslbGame As Windows.Forms.ToolStripLabel
+        Private WithEvents m_tstbGameName As Windows.Forms.ToolStripTextBox
+        Friend WithEvents ToolStripSeparator1 As Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsbnImport As Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnExport As Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnGameAdd As Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnGameEdit As Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnGameDelete As Windows.Forms.ToolStripButton
+        Private WithEvents m_tsddGames As Windows.Forms.ToolStripComboBox
     End Class
 
 End Namespace

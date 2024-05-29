@@ -23,6 +23,7 @@ Imports System.Drawing
 Imports System.IO
 Imports System.Security
 Imports System.Windows.Forms
+Imports System.Xml
 Imports EwECore
 Imports EwECore.DataSources
 Imports EwEMSPLink
@@ -116,6 +117,9 @@ Namespace UI
             Dim ge As cOperatorBase = cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo)
             Dim le As cOperatorBase = cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)
 
+            Me.m_tsbnImport.Image = SharedRecources.ImportHS
+            Me.m_tsbnExport.Image = SharedRecources.ExportHS
+
             Me.m_ilTabIcons.Images.Add(SharedRecources.OK)
             Me.m_ilTabIcons.Images.Add(SharedRecources.Warning)
             Me.m_ilTabIcons.Images.Add(SharedRecources.Critical)
@@ -140,7 +144,7 @@ Namespace UI
             Me.m_qeh.Attach(Me.m_gridOutcome, Me.UIContext, Me.m_tsOutcome, False)
 
             Me.Core.AddEcospaceTimeStepHandler(Me.m_dgtTimeStep)
-            Me.FillGameCombo()
+            Me.FillGamesCombo()
             Me.FillPressureTypesCombo()
             Me.FillOutputTypesCombo()
             Me.FillTestsetCombo()
@@ -242,7 +246,7 @@ Namespace UI
             Dim outcome As cOutcome = Nothing
 
             Dim bHasGame As Boolean = (game IsNot Nothing)
-            Dim bHasGameName As Boolean = (Me.m_tbxGameName.Text.Trim.Length > 3)
+            Dim bHasGameName As Boolean = (Me.m_tstbGameName.Text.Trim.Length > 3)
             Dim bHasDuplicateGameNames As Boolean = False
             Dim bHasGameVersion As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxInfoVersion.Text)
             Dim bHasPressureName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxPressureName.Text)
@@ -275,10 +279,10 @@ Namespace UI
             End If
 
             ' -- Game --
-            Me.m_btnGameAdd.Enabled = bHasGameName And Not bIsEcospaceRunning
-            Me.m_btnGameRename.Enabled = bHasGameName And bHasGame And Not bIsEcospaceRunning
-            Me.m_btnGameDelete.Enabled = bHasGame And Not bIsEcospaceRunning
-            Me.m_cmbGames.Enabled = Not bIsEcospaceRunning
+            Me.m_tsbnGameAdd.Enabled = bHasGameName And Not bIsEcospaceRunning
+            Me.m_tsbnGameEdit.Enabled = bHasGameName And bHasGame And Not bIsEcospaceRunning
+            Me.m_tsbnGameDelete.Enabled = bHasGame And Not bIsEcospaceRunning
+            Me.m_tsddGames.Enabled = Not bIsEcospaceRunning
 
             ' -- Info --
             Me.m_tpInformation.Enabled = bHasGame And Not bIsEcospaceRunning
@@ -389,7 +393,7 @@ Namespace UI
         ''' game is selected.</returns>
         ''' -----------------------------------------------------------------------
         Public Function SelectedGame() As cGame
-            Return DirectCast(Me.m_cmbGames.SelectedItem, cGame)
+            Return DirectCast(Me.m_tsddGames.SelectedItem, cGame)
         End Function
 
 #End Region ' Public access
@@ -451,7 +455,7 @@ Namespace UI
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
         Private Sub OnEditorTextChanged(sender As Object, e As EventArgs) _
-            Handles m_tbxGameName.TextChanged, m_tbxPressureName.TextChanged, m_tbxOutcomeName.TextChanged, m_tbxTestsetName.TextChanged
+            Handles m_tstbGameName.TextChanged, m_tbxPressureName.TextChanged, m_tbxOutcomeName.TextChanged, m_tbxTestsetName.TextChanged
             Me.UpdateControls()
         End Sub
 
@@ -479,7 +483,7 @@ Namespace UI
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnGameSelected(sender As Object, e As EventArgs) Handles m_cmbGames.SelectedIndexChanged
+        Private Sub OnGameSelected(sender As Object, e As EventArgs) Handles m_tsddGames.SelectedIndexChanged
             Try
                 Dim game As cGame = Me.SelectedGame()
 
@@ -489,7 +493,7 @@ Namespace UI
                     Me.m_fpSpinupYears.Value = game.SpinupYears
                     Me.m_fpMAPCellClosure.Value = game.MPACellClosureRatio
                     Me.m_fpBycatchFee.Value = game.BycatchCostMultiplier
-                    Me.m_tbxGameName.Text = game.Name
+                    Me.m_tstbGameName.Text = game.Name
                     Me.m_tbxInfoVersion.Text = game.Version
                     Me.m_tbxInfoAuthor.Text = game.Author
                     Me.m_tbxInfoContact.Text = game.Contact
@@ -501,7 +505,7 @@ Namespace UI
                     Me.m_fpSpinupYears.Value = 10
                     Me.m_fpMAPCellClosure.Value = 0.25
                     Me.m_fpBycatchFee.Value = 10
-                    Me.m_tbxGameName.Text = ""
+                    Me.m_tstbGameName.Text = ""
                     Me.m_tbxInfoVersion.Text = ""
                     Me.m_tbxInfoAuthor.Text = ""
                     Me.m_tbxInfoContact.Text = ""
@@ -529,74 +533,17 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when a <see cref="CGame">game</see> definition needs 
-        ''' to be loaded from the MEL JSON file.
-        ''' </summary>
-        ''' <param name="sender">Ignored.</param>
-        ''' <param name="e">Ignored</param>
-        ''' -----------------------------------------------------------------------
-        Private Sub OnAddGameFromJSONFile(sender As Object, e As EventArgs) _
-            Handles m_btnGameAddFromJSON.Click
-
-            Try
-                Dim cmd As cFileOpenCommand = CType(Me.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-                cmd.Invoke("MSP JSON files|*.json", 0, "Select MSP JSON file to load")
-
-                If (cmd.Result = DialogResult.OK) Then
-                    Try
-                        Dim cfg As New cJSONGameConfig()
-                        cfg.LoadFile(cmd.FileName)
-                        ' Validate Ecospace params
-                        Dim g As New cGame(Me.Core)
-                        g.Name = cfg.Mode
-                        g.Author = Me.Core.DefaultAuthor
-                        g.Contact = Me.Core.DefaultContact
-                        g.EcosimID = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).DBID
-                        g.EcospaceID = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex).DBID
-                        g.OutcomeRange = cfg.OutcomeRange
-
-                        For Each p As cPressure In cfg.Pressures
-                            g.Add(p)
-                        Next
-
-                        For Each outcome As cGrid In cfg.Outcomes
-                            Dim t As cOutcome.eLayerType = cOutcome.eLayerType.Biomass
-                            For Each test As cOutcome.eLayerType In [Enum].GetValues(GetType(cOutcome.eLayerType))
-                                If (outcome.Name.ToLower.Contains(test.ToString.ToLower)) Then
-                                    t = test
-                                End If
-                            Next
-                            g.Add(New cOutcome(Me.Core, outcome.Name, t))
-                        Next
-
-                        Me.MSPLink.Data.Add(g)
-                        Me.MSPLink.OnChanged()
-                        Me.FillGameCombo(g)
-                        Me.UpdateControls()
-
-                    Catch ex As Exception
-
-                    End Try
-
-                End If
-            Catch ex As Exception
-
-            End Try
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Event handler, called when the user wishes to add a <see cref="CGame">game</see>.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
         Private Sub OnAddGame(sender As Object, e As EventArgs) _
-            Handles m_btnGameAdd.Click
+            Handles m_tsbnGameAdd.Click
 
             Try
                 Dim g As New cGame(Me.Core)
-                g.Name = Me.m_tbxGameName.Text
+                g.Name = Me.m_tstbGameName.Text
                 g.Author = Me.Core.DefaultAuthor
                 g.Contact = Me.Core.DefaultContact
                 g.EcosimID = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).DBID
@@ -606,7 +553,7 @@ Namespace UI
 
                 Me.MSPLink.Data.Add(g)
                 Me.MSPLink.OnChanged()
-                Me.FillGameCombo(g)
+                Me.FillGamesCombo(g)
                 Me.UpdateControls()
 
             Catch ex As Exception
@@ -622,13 +569,13 @@ Namespace UI
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
         Private Sub OnRenameGame(sender As Object, e As EventArgs) _
-            Handles m_btnGameRename.Click
+            Handles m_tsbnGameEdit.Click
             Try
                 Dim g As cGame = Me.SelectedGame()
                 If (g IsNot Nothing) Then
-                    g.Name = Me.m_tbxGameName.Text
+                    g.Name = Me.m_tstbGameName.Text
                     Me.MSPLink.OnChanged()
-                    Me.FillGameCombo(g)
+                    Me.FillGamesCombo(g)
                 End If
             Catch ex As Exception
 
@@ -643,13 +590,13 @@ Namespace UI
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
         Private Sub OnDeleteGame(sender As Object, e As EventArgs) _
-            Handles m_btnGameDelete.Click
+            Handles m_tsbnGameDelete.Click
             Try
                 Dim sel As cGame = Me.SelectedGame
                 If Me.PromptDelete(sel) Then
                     Me.MSPLink.Data.Remove(Me.SelectedGame())
                     Me.MSPLink.OnChanged()
-                    Me.FillGameCombo()
+                    Me.FillGamesCombo()
                     Me.UpdateControls()
                 End If
             Catch ex As Exception
@@ -717,7 +664,7 @@ Namespace UI
                     Dim space As cEcospaceScenario = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex)
                     g.EcospaceID = space.DBID
                     Me.MSPLink.OnChanged()
-                    Me.FillGameCombo(g)
+                    Me.FillGamesCombo(g)
                 End If
             Catch ex As Exception
 
@@ -725,7 +672,56 @@ Namespace UI
             Me.UpdateControls()
         End Sub
 
-        ' ToDo: add label click handlers for sim and space too. Even better: make the labels handle this themselves
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler, called when the user imports games.
+        ''' </summary>
+        ''' <param name="sender">Ignored.</param>
+        ''' <param name="e">Ignored</param>
+        ''' -----------------------------------------------------------------------
+        Private Sub OnImportGames(sender As Object, e As EventArgs) Handles m_tsbnImport.Click
+
+            Try
+                Dim cmd As cFileOpenCommand = CType(Me.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+                cmd.Invoke("MSP games file|*.xml", 0, "Select MSP game file to load")
+
+                If (cmd.Result = DialogResult.OK) Then
+                    Using sr As New StreamReader(cmd.FileName)
+                        Me.MSPLink.Data.FromXML(sr.ReadToEnd)
+                    End Using
+                End If
+            Catch ex As Exception
+                ' Plop
+            End Try
+            Me.FillGamesCombo()
+            Me.UpdateControls()
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler, called when the user exports games.
+        ''' </summary>
+        ''' <param name="sender">Ignored.</param>
+        ''' <param name="e">Ignored</param>
+        ''' -----------------------------------------------------------------------
+        Private Sub OnExportGames(sender As Object, e As EventArgs) Handles m_tsbnExport.Click
+
+            Try
+                Dim cmd As cFileSaveCommand = CType(Me.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+                cmd.Invoke("MSP games file|*.xml", 0, "Select MSP game file to save")
+
+                If (cmd.Result = DialogResult.OK) Then
+                    Using sw As New StreamWriter(cmd.FileName)
+                        sw.Write(Me.MSPLink.Data.ToXML())
+                        sw.Flush()
+                    End Using
+                End If
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
 
 #End Region ' Game info and game settings "
 
@@ -1365,16 +1361,16 @@ Namespace UI
             Return DirectCast(Me.m_cmbEmulTestsets.SelectedItem, cTestset)
         End Function
 
-        Private Sub FillGameCombo(Optional sel As cGame = Nothing)
+        Private Sub FillGamesCombo(Optional sel As cGame = Nothing)
 
-            Me.m_cmbGames.Items.Clear()
+            Me.m_tsddGames.Items.Clear()
             For Each cfg As cGame In Me.MSPLink.Data.Games
-                Me.m_cmbGames.Items.Add(cfg)
+                Me.m_tsddGames.Items.Add(cfg)
             Next
             If sel IsNot Nothing Then
-                Me.m_cmbGames.SelectedItem = sel
-            ElseIf (Me.m_cmbGames.Items.Count > 0) Then
-                Me.m_cmbGames.SelectedIndex = 0
+                Me.m_tsddGames.SelectedItem = sel
+            ElseIf (Me.m_tsddGames.Items.Count > 0) Then
+                Me.m_tsddGames.SelectedIndex = 0
             End If
 
             Me.OnGameSelected(Me, Nothing)
@@ -1597,7 +1593,7 @@ Namespace UI
 
         End Sub
 
-        Private Sub OnExportGameData(sender As Object, e As EventArgs) Handles m_btnExport.Click
+        Private Sub OnExportGameData(sender As Object, e As EventArgs)
 
             Dim ds As IEwEDataSource = Me.Core.DataSource
             Dim file As String = Path.Combine(ds.Directory, ds.FileName) & "_MSPgames.xml"

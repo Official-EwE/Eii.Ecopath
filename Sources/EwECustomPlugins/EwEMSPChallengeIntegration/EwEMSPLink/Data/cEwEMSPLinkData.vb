@@ -112,7 +112,7 @@ Public Class cEwEMSPLinkData
     ''' Serialize the games list from XML.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Function FromXML(str As String) As Boolean
+    Public Function FromXML(str As String) As Boolean
 
         Me.m_games.Clear()
 
@@ -146,7 +146,7 @@ Public Class cEwEMSPLinkData
     ''' Serialize the games list to XML.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Function ToXML() As String
+    Public Function ToXML() As String
 
         Dim xnRoot As XmlNode = Nothing
         Dim doc As XmlDocument = cXMLUtils.NewDoc("settings", xnRoot)
