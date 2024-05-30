@@ -651,9 +651,7 @@
     <Compile Include="Controls\Shapes\ShapeValue\frmShapeValue.Designer.vb">
       <DependentUpon>frmShapeValue.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeValue\frmShapeValue.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Controls\Shapes\ShapeValue\frmShapeValue.vb" />
     <Compile Include="Controls\Shapes\ShapeValue\gridShapeValue.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -756,9 +754,7 @@
     <Compile Include="Forms\frmEwE.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmEwEGrid.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Forms\frmEwEGrid.vb" />
     <Compile Include="GeoCode\cGeoCodeLookup.vb" />
     <Compile Include="GeoCode\cMarineRegionsLookup.vb" />
     <Compile Include="GeoCode\cMarineRegionsWSDL.vb" />
