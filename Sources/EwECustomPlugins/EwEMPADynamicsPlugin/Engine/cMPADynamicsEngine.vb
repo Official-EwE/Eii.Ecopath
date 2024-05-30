@@ -60,6 +60,8 @@ Public Class cMPADynamicsEngine
 
 #End Region ' Private vars
 
+    Public Shared timestampZero As New Date(1, 1, 1)
+
 #Region " Construction "
 
     Public Sub New(core As cCore, ds As cEcospaceDataStructures)
@@ -135,14 +137,13 @@ Public Class cMPADynamicsEngine
     ''' Hack 'n slash
     ''' </summary>
     ''' <param name="strCSV"></param>
-    ''' <param name="bAppend"></param>
     ''' <returns></returns>
-    Public Function LoadCSV(strCSV As String, Optional bAppend As Boolean = False) As Boolean
+    Public Function LoadCSV(strCSV As String) As Boolean
 
         Dim bSucces As Boolean = True
         Dim lDetails As New List(Of String)
 
-        If Not bAppend Then Me.m_dtStates.Clear()
+        Me.m_dtStates.Clear()
 
         strCSV = Path.GetFullPath(strCSV)
         Try
@@ -157,8 +158,8 @@ Public Class cMPADynamicsEngine
 
             For Each drow As DataRow In dt.Rows
 
-                Dim timestamp As Date
                 Dim iMPA As Integer = Me.ToMPA(CStr(drow("MPA")))
+                Dim timestamp As Date
 
                 If (iMPA > 0 And iMPA <= Me.m_core.nMPAs) Then
                     If (bTimeStepMode) Then
@@ -167,7 +168,7 @@ Public Class cMPADynamicsEngine
                         bSucces = bSucces And Date.TryParseExact(CStr(drow("date")), sFORMATS, sLOCALE, DateTimeStyles.None, timestamp)
                     End If
 
-                    If (timestamp > Me.m_core.EcospaceTimestepToAbsoluteTime(1)) Then
+                    If (timestamp >= Me.m_core.EcospaceTimestepToAbsoluteTime(1) And timestamp > timestampZero) Then
 
                         If (iMPA >= 1) And bSucces Then
                             Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
@@ -253,11 +254,12 @@ Public Class cMPADynamicsEngine
     Public ReadOnly Property MPAStates(bIncludeStartup As Boolean) As ICollection(Of cMPAState)
         Get
             Dim lStates As New List(Of cMPAState)
+            ' No double work please
+            bIncludeStartup = bIncludeStartup And Not Me.m_dtStates.ContainsKey(timestampZero)
 
             If (bIncludeStartup) Then
-                Dim timestamp As New Date(1, 1, 1)
                 For iMPA As Integer = 1 To Me.m_ds.MPAno
-                    Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
+                    Dim state As New cMPAState(Me.m_ds, iMPA, timestampZero)
                     state.Load()
                     lStates.Add(state)
                 Next

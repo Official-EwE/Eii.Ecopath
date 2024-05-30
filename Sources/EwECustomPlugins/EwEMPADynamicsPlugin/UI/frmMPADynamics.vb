@@ -145,7 +145,7 @@ Public Class frmMPADynamics
             Dim files As String() = CType(e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop), String())
             Me.m_engine.Clear()
             For Each file As String In files
-                Me.m_engine.LoadCSV(file, False)
+                Me.m_engine.LoadCSV(file)
             Next
             Me.UpdateGrid()
         Catch ex As Exception
@@ -221,22 +221,24 @@ Public Class frmMPADynamics
 
                 Dim state As cMPAState = states(i)
                 Dim row As System.Windows.Forms.DataGridViewRow = Me.m_dgvStates.Rows(i)
-                Dim mpa As cEcospaceMPA = Me.Core.EcospaceMPAs(state.MPA)
+                If (state.MPA > 0 And state.MPA <= Me.Core.nMPAs) Then
+                    Dim mpa As cEcospaceMPA = Me.Core.EcospaceMPAs(state.MPA)
 
-                Dim timestamp As Date = state.TimeStamp
-                If (timestamp = New Date(1, 1, 1)) Then
-                    row.Cells("m_colTime").Value = My.Resources.GENERIC_VALUE_INITIAL
-                    row.DefaultCellStyle.BackColor = Drawing.Color.FromArgb(255, 230, 230, 230)
-                Else
-                    row.Cells("m_colTime").Value = state.TimeStamp.ToShortDateString()
+                    Dim timestamp As Date = state.TimeStamp
+                    If (timestamp = cMPADynamicsEngine.timestampZero) Then
+                        row.Cells("m_colTime").Value = My.Resources.GENERIC_VALUE_INITIAL
+                        row.DefaultCellStyle.BackColor = Drawing.Color.FromArgb(255, 230, 230, 230)
+                    Else
+                        row.Cells("m_colTime").Value = cDateUtils.ToShortDateStringFullYear(state.TimeStamp)
+                    End If
+                    row.Cells("m_colMPA").Value = fmt.ToString(mpa)
+                    For j As Integer = 1 To cCore.N_MONTHS
+                        row.Cells("m_colM" & j).Value = Me.ToCellValue(state.IsClosed(j))
+                    Next
+                    For j As Integer = 1 To Me.Core.nFleets
+                        row.Cells("m_colF" & j).Value = Me.ToCellValue(state.IsEnforced(j))
+                    Next
                 End If
-                row.Cells("m_colMPA").Value = fmt.ToString(mpa)
-                For j As Integer = 1 To cCore.N_MONTHS
-                    row.Cells("m_colM" & j).Value = Me.ToCellValue(state.IsClosed(j))
-                Next
-                For j As Integer = 1 To Me.Core.nFleets
-                    row.Cells("m_colF" & j).Value = Me.ToCellValue(state.IsEnforced(j))
-                Next
             Next
         End If
 
