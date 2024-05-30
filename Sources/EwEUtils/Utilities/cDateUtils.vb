@@ -228,6 +228,13 @@ Namespace Utilities
             Return (d1.Date = d2.Date)
         End Function
 
+        Public Shared Function ToShortDateStringFullYear(dt As DateTime) As String
+            Dim ci As CultureInfo = System.Threading.Thread.CurrentThread.CurrentCulture
+            Dim fmt As String = ci.DateTimeFormat.ShortDatePattern
+            If Not fmt.Contains("yyyy") Then fmt = fmt.Replace("yy", "yyyy")
+            Return dt.ToString(fmt)
+        End Function
+
     End Class
 
 End Namespace
