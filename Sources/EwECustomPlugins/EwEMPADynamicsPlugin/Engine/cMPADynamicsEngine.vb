@@ -160,36 +160,42 @@ Public Class cMPADynamicsEngine
                 Dim timestamp As Date
                 Dim iMPA As Integer = Me.ToMPA(CStr(drow("MPA")))
 
-                If (bTimeStepMode) Then
-                    timestamp = Me.m_core.EcospaceTimestepToAbsoluteTime(CInt(drow("timestep")))
-                Else
-                    bSucces = bSucces And Date.TryParseExact(CStr(drow("date")), sFORMATS, sLOCALE, DateTimeStyles.None, timestamp)
-                End If
-
-                If (timestamp > Me.m_core.EcospaceTimestepToAbsoluteTime(1)) Then
-
-                    If (iMPA >= 1) And bSucces Then
-                        Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
-                        For i As Integer = 1 To cCore.N_MONTHS
-                            state.IsClosed(i) = Me.IsEnforced(Me.ReadSafe(drow, "m" & i, ""))
-                        Next
-
-                        For i As Integer = 1 To Me.m_core.nFleets
-                            state.IsEnforced(i) = Me.IsEnforced(Me.ReadSafe(drow, "f" & i, ""))
-                        Next
-
-                        If (Not Me.m_dtStates.ContainsKey(timestamp)) Then
-                            Me.m_dtStates(timestamp) = New List(Of cMPAState)
-                        End If
-                        Me.m_dtStates(timestamp).Add(state)
+                If (iMPA > 0 And iMPA <= Me.m_core.nMPAs) Then
+                    If (bTimeStepMode) Then
+                        timestamp = Me.m_core.EcospaceTimestepToAbsoluteTime(CInt(drow("timestep")))
                     Else
-                        Dim strError As String = cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN, CStr(drow("MPA")))
-                        If (lDetails.IndexOf(strError) = -1) Then
-                            lDetails.Add(strError)
+                        bSucces = bSucces And Date.TryParseExact(CStr(drow("date")), sFORMATS, sLOCALE, DateTimeStyles.None, timestamp)
+                    End If
+
+                    If (timestamp > Me.m_core.EcospaceTimestepToAbsoluteTime(1)) Then
+
+                        If (iMPA >= 1) And bSucces Then
+                            Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
+                            For i As Integer = 1 To cCore.N_MONTHS
+                                state.IsClosed(i) = Me.IsEnforced(Me.ReadSafe(drow, "m" & i, ""))
+                            Next
+
+                            For i As Integer = 1 To Me.m_core.nFleets
+                                state.IsEnforced(i) = Me.IsEnforced(Me.ReadSafe(drow, "f" & i, ""))
+                            Next
+
+                            If (Not Me.m_dtStates.ContainsKey(timestamp)) Then
+                                Me.m_dtStates(timestamp) = New List(Of cMPAState)
+                            End If
+                            Me.m_dtStates(timestamp).Add(state)
+                        Else
+                            Dim strError As String = cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN, CStr(drow("MPA")))
+                            If (lDetails.IndexOf(strError) = -1) Then
+                                lDetails.Add(strError)
+                            End If
                         End If
                     End If
+                Else ' iMPA out of bounds
+                    Dim strError As String = cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN, CStr(drow("MPA")))
+                    If (lDetails.IndexOf(strError) = -1) Then
+                        lDetails.Add(strError)
+                    End If
                 End If
-
             Next
 
             If (bSucces) Then
