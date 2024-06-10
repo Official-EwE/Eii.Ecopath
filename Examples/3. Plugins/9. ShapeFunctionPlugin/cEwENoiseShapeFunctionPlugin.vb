@@ -101,8 +101,8 @@ Public Class cEwENoiseShapeFunctionPlugin
     ''' </summary>
     Private Property Amplitude As Single = 0.1
 
-    Public ReadOnly Property ParamStatus(iParam As Integer) As eStatusFlags _
-    Implements IShapeFunction.ParamStatus
+    Public Overrides ReadOnly Property ParamStatus(iParam As Integer) As eStatusFlags _
+        Implements IShapeFunction.ParamStatus
         Get
             Return eStatusFlags.OK
         End Get

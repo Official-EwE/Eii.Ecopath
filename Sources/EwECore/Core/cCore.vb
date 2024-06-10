@@ -15628,13 +15628,6 @@ Public Class cCore
 
 #Region " Deprecated "
 
-    <Obsolete("Use EcopathFleetInputs instead")>
-    Public ReadOnly Property FleetInputs(iFleet As Integer) As cEcopathFleetInput
-        Get
-            Return Me.EcopathFleetInputs(iFleet)
-        End Get
-    End Property
-
     <Obsolete("Please use nEcosimScenarios instead")>
     Public ReadOnly Property EcosimScenarioCount() As Integer
         Get

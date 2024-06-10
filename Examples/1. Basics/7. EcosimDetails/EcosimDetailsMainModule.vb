@@ -233,7 +233,7 @@ Module EcosimDetailsMainModule
                     If interactionmanager.isLandings(iFleet, iGroup) Then
 
                         Dim interaction As cMediatedInteraction = interactionmanager.LandingInteraction(iFleet, iGroup)
-                        Dim Fleet As cFleetInput = core.FleetInputs(iFleet)
+                        Dim Fleet As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
                         Dim Group As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
                         Dim Application As eForcingFunctionApplication
                         Dim ShapeTest As cForcingFunction = Nothing
@@ -281,7 +281,7 @@ Module EcosimDetailsMainModule
                 writer.WriteLine("group " & group.Name)
             Else
                 ' Time series targets a fleet (perhaps should we test for this?)
-                Dim fleet As cFleetInput = core.FleetInputs(timeseries.DatPool)
+                Dim fleet As cEcopathFleetInput = core.EcopathFleetInputs(timeseries.DatPool)
                 writer.WriteLine("fleet " & fleet.Name)
             End If
 
