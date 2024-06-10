@@ -174,7 +174,7 @@ Module modConnectToR
     Private Function PickRLocation() As String
 
         ' Retrieve last used path to R from the persistent application settings
-        Dim PathToR As String = PickFile("Select R location", "R application|R.ewe", My.Settings.PathToR)
+        Dim PathToR As String = PickFile("Select R location", "R application|r.exe", My.Settings.PathToR)
 
         If Not String.IsNullOrWhiteSpace(PathToR) Then
             ' Store path to R in the persistent application settings for the next time you run this application
