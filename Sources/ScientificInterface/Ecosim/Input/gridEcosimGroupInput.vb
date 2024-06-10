@@ -90,7 +90,6 @@ Namespace Ecosim
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim iStanzaGroup(core.nLivingGroups) As Integer 'Hold the stanza group index
-            Dim iStanzaGroupIndexPrev As Integer = -1
             Dim hgcStanza As cEwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, cEwEHierarchyGridCell)
 
@@ -119,8 +118,7 @@ Namespace Ecosim
                 Else                'If group is a stanza group
 
                     sg = core.StanzaGroups(iStanzaGroup(source.Index))
-                    If iStanzaGroup(source.Index) <> iStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
-
+                    If (Not dtStanzaCells.ContainsKey(sg)) Then
                         iRow = Me.AddRow()
                         hgcStanza = New cEwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)
@@ -136,7 +134,6 @@ Namespace Ecosim
                         Me(iRow, eColumnTypes.SwitchPower) = New cEwERowHeaderCell()
                         Me(iRow, eColumnTypes.AddPredMortProp) = New cEwERowHeaderCell()
 
-                        iStanzaGroupIndexPrev = iStanzaGroup(source.Index)
                         iRow = Me.AddRow
                     Else
                         hgcStanza = dtStanzaCells(sg)
