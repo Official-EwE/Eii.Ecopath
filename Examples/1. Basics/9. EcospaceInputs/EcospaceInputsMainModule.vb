@@ -117,7 +117,7 @@ Module EcospaceInputs
 
         'Populate the Capacity map base on Capacity maps
         For i As Integer = 1 To core.nGroups
-            core.EcospaceGroups(i).CapacityCalculationType = EwEUtils.Core.eEcospaceCapacityCalType.EnvResponses
+            core.EcospaceGroupInputs(i).CapacityCalculationType = EwEUtils.Core.eEcospaceCapacityCalType.EnvResponses
         Next
 
     End Sub

@@ -124,8 +124,7 @@ Public Class cEwESinoidShapeFunctionPlugin
 
 #Region " Shape function "
 
-    Public Sub Init(shape As Object) _
-        Implements IEcosimShapeFunctionPlugin.Init
+    Public Overrides Sub Init(shape As Object)
         MyBase.Init(shape)
     End Sub
 

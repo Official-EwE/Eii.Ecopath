@@ -121,7 +121,7 @@ Module EcosimOutputsMainModule
         Dim sumB As Single
         Dim sumF As Single
         'Fleet definitions
-        Dim fleet As cFleetInput
+        Dim fleet As cEcopathFleetInput
 
         Console.WriteLine("Ecosim results over time")
         Console.WriteLine()
@@ -145,7 +145,7 @@ Module EcosimOutputsMainModule
             For iflt As Integer = 1 To core.nFleets
 
                 'Get the Fleet definitions from the core
-                fleet = core.FleetInputs(iflt)
+                fleet = core.EcopathFleetInputs(iflt)
                 sumF = 0
                 'Is this group fished by this fleet
                 If fleet.Landings(iGrp) + fleet.Discards(iGrp) > 0 Then

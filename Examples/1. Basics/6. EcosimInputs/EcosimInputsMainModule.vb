@@ -104,7 +104,7 @@ Module EcosimInputsMainModule
 
 
     Private Sub VaryFishingEffort()
-        Dim FleetInput As cFleetInput
+        Dim FleetInput As cEcopathFleetInput
         Dim EffortManager As cFishingEffortShapeManger = core.FishingEffortShapeManager
 
         'Ecosim stores Fishing Effort and Fishing Mortality input data in cShapeData objects 
@@ -124,7 +124,7 @@ Module EcosimInputsMainModule
 
             'Get the Fleet Input data for this Fleet
             'cShape objects keeps their array index to core data in the .Index property
-            FleetInput = core.FleetInputs(EffortShape.Index)
+            FleetInput = core.EcopathFleetInputs(EffortShape.Index)
 
             Debug.Assert(EffortShape.Name = FleetInput.Name)
             System.Console.WriteLine("Setting fishing effort * 2 for Fleet " + EffortShape.Name)
@@ -208,7 +208,7 @@ Module EcosimInputsMainModule
         Dim sumB As Single
         Dim sumF As Single
         'Fleet definitions
-        Dim fleet As cFleetInput
+        Dim fleet As cEcopathFleetInput
 
         Console.WriteLine("Ecosim results over time")
         Console.WriteLine()
@@ -232,7 +232,7 @@ Module EcosimInputsMainModule
             For iflt As Integer = 1 To core.nFleets
 
                 'Get the Fleet definitions from the core
-                fleet = core.FleetInputs(iflt)
+                fleet = core.EcopathFleetInputs(iflt)
                 sumF = 0
                 'Is this group fished by this fleet
                 If fleet.Landings(iGrp) + fleet.Discards(iGrp) > 0 Then

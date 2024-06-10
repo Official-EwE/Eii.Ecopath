@@ -29,6 +29,10 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
+''' <summary>
+''' This highly advanced plug-in provides the Steve Mackinson-style sound effects 
+''' that accompany crashing groups in Ecosim. Pffrt.
+''' </summary>
 Public Class cPluginPoint
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
@@ -327,7 +331,7 @@ Public Class cPluginPoint
 
             Dim fmt As New cCoreInterfaceFormatter()
             Dim strMessge As String = String.Format(My.Resources.PROMPT_CRASH,
-                                                    fmt.GetDescriptor(Me.m_core.EcoPathGroupInputs(iGroup)),
+                                                    fmt.ToString(Me.m_core.EcopathGroupInputs(iGroup)),
                                                     Me.m_uic.StyleGuide.FormatNumber(sPerc))
             Dim msg As New cMessage(strMessge, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
             Me.m_core.Messages.SendMessage(msg)
