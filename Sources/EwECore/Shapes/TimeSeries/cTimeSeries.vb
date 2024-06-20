@@ -330,7 +330,8 @@ Public MustInherit Class cTimeSeries
                (DatType = eTimeSeriesType.OffVesselPriceRel) Or
                (DatType = eTimeSeriesType.SailCostRel) Or
                (DatType = eTimeSeriesType.FishingMortalityRef) Or
-               (DatType = eTimeSeriesType.FixedCostRel)
+               (DatType = eTimeSeriesType.FixedCostRel) Or
+               (DatType = eTimeSeriesType.TotalMortality)
     End Function
 
     <Obsolete("Remove when time series properly use cCore.NULL_VALUE")>
