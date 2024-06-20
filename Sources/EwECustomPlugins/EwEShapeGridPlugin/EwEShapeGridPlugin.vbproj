@@ -170,9 +170,7 @@
     <Compile Include="frmShapes.Designer.vb">
       <DependentUpon>frmShapes.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmShapes.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmShapes.vb" />
     <Compile Include="Grids\cShapeDataComparer.vb" />
     <Compile Include="Grids\gridFunctionalResponses.vb">
       <SubType>Component</SubType>

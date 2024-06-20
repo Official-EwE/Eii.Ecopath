@@ -3869,7 +3869,16 @@ Namespace Ecosim
                     'Calculate DatQ() for data types that are relative.
                     'These data may not have been entered in the same units as the internal ecosim mean weight
                     'DatQ() is used to normalize/scale the time series data to model units
-                    If cTimeSeries.IsRelative(Me.m_RefData.AppliedDatType(iDType)) Then
+                    If Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassRel Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.TotalMortality Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.OffVesselPriceRel Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.SailCostRel Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FixedCostRel Then
+
+                        'If cTimeSeries.IsRelative(Me.m_RefData.AppliedDatType(iDType)) Then
                         Me.m_RefData.AppliedDatSS(iDType) = CSng(Me.DatSumZ2(iDType) - Me.DatSumZ(iDType) ^ 2 / Me.DatNobs(iDType))
                         Me.m_RefData.AppliedDatQ(iDType) = Me.DatSumZ(iDType) / Me.DatNobs(iDType)
                         Me.m_RefData.AppliedeDatQ(iDType) = CSng(Math.Exp(Me.m_RefData.AppliedDatQ(iDType)))
@@ -3894,17 +3903,17 @@ Namespace Ecosim
                 For iDType = 1 To Me.m_RefData.AppliedNdatType
                     ' JS 15Feb24: if below are reference time series, then CatchesForcing is misplaced
                     If Me.m_RefData.AppliedDatVal(iDatPt, iDType) > 0 And iYear < Me.m_Data.NumYears + 1 And
-                            cTimeSeries.IsReference(Me.m_RefData.AppliedDatType(iDType)) Then
-                        '(Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassRel Or
-                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassAbs Or
-                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.TotalMortality Or
-                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Catches Or
-                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
-                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Or
-                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
-                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
-                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
-                        'Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings) Then
+                        (Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassRel Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.BiomassAbs Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.TotalMortality Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Catches Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings) Then
+                        'cTimeSeries.IsReference(Me.m_RefData.AppliedDatType(iDType)) Then
 
                         Me.m_RefData.Iobs = Me.m_RefData.Iobs + 1
                         'following debug.print checks to insure m_refdata.Iobs data alignment has been
