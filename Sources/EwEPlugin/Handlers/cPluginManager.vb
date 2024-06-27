@@ -404,19 +404,26 @@ Public Class cPluginManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Load plugins with default options.
+    ''' </summary>
+    ''' <seealso cref="LoadPlugins(String, SearchOption, String())"/>
+    ''' -----------------------------------------------------------------------
+    Public Sub LoadPlugins()
+        Me.LoadPlugins("./", True, {})
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Load all plug-ins that are not marked as 'disabled'.
     ''' </summary>
-    ''' <param name="alDisabledPlugins">Optional ArrayList of file names to 
-    ''' plug-ins that should NOT be enabled. These assemblies will still have to 
-    ''' be known by the manager in case the user wants to enable the assemblies 
-    ''' in the future.</param>
     ''' <param name="strSubfolder">The directory to search for plug-ins relative to
     ''' the EwE startup folder.</param>
-    ''' <param name="option">See <see cref="SearchOption"/>.</param>
+    ''' <param name="bAllDirectories">True to search all directories, false to search the top directory only.</param>
+    ''' <param name="disabledPlugins">Array with file names of plug-ins that should 
+    ''' NOT be enabled. These assemblies will still have to be known by the manager 
+    ''' in case the user wants to enable the assemblies  in the future.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPlugins(Optional alDisabledPlugins As ArrayList = Nothing,
-                           Optional strSubfolder As String = "",
-                           Optional [option] As SearchOption = SearchOption.AllDirectories)
+    Public Sub LoadPlugins(strSubfolder As String, bAllDirectories As Boolean, disabledPlugins As String())
 
         ' Sanity checks - load only once
         If (Me.m_bLoaded) Then Return
@@ -441,15 +448,15 @@ Public Class cPluginManager
         Try
             di = New DirectoryInfo(strPluginPath)
             'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
-            afi = di.GetFiles("*.dll", [option])
+            afi = di.GetFiles("*.dll", If(bAllDirectories, SearchOption.AllDirectories, SearchOption.TopDirectoryOnly))
 
             For Each fi As FileInfo In afi
                 key = fi.FullName.ToLower()
                 Try
-                    If (alDisabledPlugins Is Nothing) Then
+                    If (disabledPlugins Is Nothing) Then
                         bLoadPlugin = True
                     Else
-                        bLoadPlugin = (alDisabledPlugins.IndexOf(key) = -1)
+                        bLoadPlugin = (Array.IndexOf(disabledPlugins, key) = -1)
                     End If
                     Me.LoadPluginAssembly(fi.FullName, bLoadPlugin)
                 Catch ex As Exception
