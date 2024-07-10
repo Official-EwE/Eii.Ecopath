@@ -1548,7 +1548,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath with Ecosim 40 years.
+        '''  Looks up a localized string similar to Ecopath with Ecosim.
         '''</summary>
         Public ReadOnly Property GENERIC_CAPTION() As String
             Get
