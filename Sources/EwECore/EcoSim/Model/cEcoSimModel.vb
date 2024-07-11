@@ -2330,7 +2330,6 @@ Namespace Ecosim
                     Dim TotCatchScalar As Single
                     Dim TotCatch As Single
 
-                    'Debug.Assert(iTime < 601)
 
                     If Me.m_RefData.ForcedFs(igrp, iTime) < 0 Then
                         For iflt = 1 To Me.m_Data.nGear
@@ -2350,7 +2349,8 @@ Namespace Ecosim
                                 'total catch including discard that survived
                                 TotCatch = CatchMort * TotCatchScalar
 
-                                Me.m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime) = TotCatch
+                                ' JS: Increment total
+                                Me.m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime) += TotCatch
 
                                 'Total catch that was landed
                                 Me.m_Data.ResultsLandings(igrp, iflt) = TotCatch * Me.m_Data.PropLandedTime(iflt, igrp)
