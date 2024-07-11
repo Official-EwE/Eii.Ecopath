@@ -74,6 +74,8 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
+            Dim fmt As New cCoreInterfaceFormatter()
+
             'summary
             Me.m_fpStartSum = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSumStart, Me.Core.EcosimModelParameters, eVarNameFlags.EcosimSumStart)
             Me.m_fpEndSum = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSumEnd, Me.Core.EcosimModelParameters, eVarNameFlags.EcosimSumEnd)
@@ -81,7 +83,7 @@ Namespace Ecosim
 
             Me.m_cmbFleets.Items.Clear()
             For i As Integer = 0 To Me.Core.nFleets 'includes the 'combined fleets' object
-                Me.m_cmbFleets.Items.Add(Me.Core.EcosimFleetOutput(i).Name)
+                Me.m_cmbFleets.Items.Add(fmt.ToString(Me.Core.EcosimFleetOutput(i), EwEUtils.Utilities.eDescriptorTypes.Name))
             Next
             Me.m_cmbFleets.SelectedIndex = 0
 
