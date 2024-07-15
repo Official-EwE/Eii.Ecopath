@@ -406,10 +406,23 @@ Public Class cPluginManager
     ''' <summary>
     ''' Load plugins with default options.
     ''' </summary>
-    ''' <seealso cref="LoadPlugins(String, SearchOption, String())"/>
+    ''' <seealso cref="LoadPlugins(String, Boolean, String())"/>
     ''' -----------------------------------------------------------------------
     Public Sub LoadPlugins()
         Me.LoadPlugins("./", True, {})
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load all plug-ins that are not marked as 'disabled'.
+    ''' </summary>
+    ''' <param name="strSubfolder">The directory to search for plug-ins relative 
+    ''' to the EwE startup folder.</param>
+    ''' <param name="bAllDirectories">True to search all directories, false to 
+    ''' search the top directory only.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub LoadPlugins(strSubfolder As String, bAllDirectories As Boolean)
+        Me.LoadPlugins(strSubfolder, bAllDirectories, {})
     End Sub
 
     ''' -----------------------------------------------------------------------

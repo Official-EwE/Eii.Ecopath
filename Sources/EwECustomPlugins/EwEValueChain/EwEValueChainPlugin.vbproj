@@ -201,9 +201,7 @@
     <Compile Include="Interface\Controls\ucLinkDefault.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Interface\Controls\ucLinkGrid.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Interface\Controls\ucLinkGrid.vb" />
     <Compile Include="Interface\Controls\ucGridView.Designer.vb">
       <DependentUpon>ucGridView.vb</DependentUpon>
     </Compile>
@@ -216,9 +214,7 @@
     <Compile Include="Interface\Controls\ucUnitDefault.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Interface\Controls\ucUnitGrid.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Interface\Controls\ucUnitGrid.vb" />
     <Compile Include="Interface\Flow\ucSelector2.Designer.vb">
       <DependentUpon>ucSelector2.vb</DependentUpon>
     </Compile>
@@ -231,9 +227,7 @@
     <Compile Include="Interface\Flow\dlgAddUnits.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Interface\Flow\plFlow.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Interface\Flow\plFlow.vb" />
     <Compile Include="Interface\Flow\plUnitControl.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -262,9 +256,7 @@
     <Compile Include="Interface\Results\ucResults.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Interface\Results\Views\gridEcopathResult.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Interface\Results\Views\gridEcopathResult.vb" />
     <Compile Include="Interface\Results\Views\IGraphView.vb" />
     <Compile Include="Interface\Results\Views\IResultView.vb" />
     <Compile Include="Interface\Results\Views\ucEquilibriumGraph.vb">

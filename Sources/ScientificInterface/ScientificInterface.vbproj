@@ -215,7 +215,9 @@
     <Compile Include="Controls\dlgSelectEnvironmentalResponse.Designer.vb">
       <DependentUpon>dlgSelectEnvironmentalResponse.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\dlgSelectEnvironmentalResponse.vb" />
+    <Compile Include="Controls\dlgSelectEnvironmentalResponse.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecobase\cEcoBaseModelListBox.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -228,7 +230,9 @@
     <Compile Include="Ecopath\frmModelParameters.Designer.vb">
       <DependentUpon>frmModelParameters.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\frmModelParameters.vb" />
+    <Compile Include="Ecopath\frmModelParameters.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Output\gridFisheryOutputDiscard.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -242,7 +246,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Tools\FlowDiagram\cEcopathFlowDiagramData.vb" />
-    <Compile Include="Ecopath\Tools\FlowDiagram\frmEcopathFlowDiagram.vb" />
+    <Compile Include="Ecopath\Tools\FlowDiagram\frmEcopathFlowDiagram.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.Designer.vb">
       <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
     </Compile>
@@ -256,7 +262,9 @@
     <Compile Include="Ecopath\Tools\DietTreeMapDiagram\frmEcopathDietTreeMaps.Designer.vb">
       <DependentUpon>frmEcopathDietTreeMaps.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Tools\DietTreeMapDiagram\frmEcopathDietTreeMaps.vb" />
+    <Compile Include="Ecopath\Tools\DietTreeMapDiagram\frmEcopathDietTreeMaps.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\gridApplyOtherMortShape.Designer.vb">
       <DependentUpon>gridApplyOtherMortShape.vb</DependentUpon>
     </Compile>
@@ -275,18 +283,24 @@
     <Compile Include="Ecosim\Input\EggProduction\frmApplyEP.Designer.vb">
       <DependentUpon>frmApplyEP.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\EggProduction\frmApplyEP.vb" />
+    <Compile Include="Ecosim\Input\EggProduction\frmApplyEP.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\EggProduction\gridApplyEP.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\Arenas\frmEcosimArenaShare.Designer.vb">
       <DependentUpon>frmEcosimArenaShare.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\Arenas\frmEcosimArenaShare.vb" />
+    <Compile Include="Ecosim\Input\Arenas\frmEcosimArenaShare.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimEnvironmentalResponse.Designer.vb">
       <DependentUpon>frmEcosimEnvironmentalResponse.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimEnvironmentalResponse.vb" />
+    <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimEnvironmentalResponse.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\FunctionalResponses\gridApplyFunctionalResponses.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -305,10 +319,14 @@
     <Compile Include="Ecosim\Output\frmEcosimOutputFleetPlots.Designer.vb">
       <DependentUpon>frmEcosimOutputFleetPlots.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\frmEcosimOutputFleetPlots.vb" />
+    <Compile Include="Ecosim\Output\frmEcosimOutputFleetPlots.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimFlowDiagramData.vb" />
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimTreeFlowDiagramRenderer.vb" />
-    <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFlowDiagram.vb" />
+    <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFlowDiagram.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\cConverterPicker.vb" />
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\cDatasetPicker.vb" />
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyConnection.Designer.vb">
@@ -329,7 +347,9 @@
     <Compile Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.Designer.vb">
       <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.vb" />
+    <Compile Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityCalcType.Designer.vb">
       <DependentUpon>gridCapacityCalcType.vb</DependentUpon>
     </Compile>
@@ -339,7 +359,9 @@
     <Compile Include="Ecospace\Input\Capacity\Shape\frmEcospaceEnvironmentalResponses.Designer.vb">
       <DependentUpon>frmEcospaceEnvironmentalResponses.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Shape\frmEcospaceEnvironmentalResponses.vb" />
+    <Compile Include="Ecospace\Input\Capacity\Shape\frmEcospaceEnvironmentalResponses.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\dlgDefineEffortZones.Designer.vb">
       <DependentUpon>dlgDefineEffortZones.vb</DependentUpon>
     </Compile>
@@ -349,19 +371,27 @@
     <Compile Include="Ecospace\Input\frmEcospaceComputedCapacity.Designer.vb">
       <DependentUpon>frmEcospaceComputedCapacity.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\frmEcospaceComputedCapacity.vb" />
+    <Compile Include="Ecospace\Input\frmEcospaceComputedCapacity.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\frmEcospaceHabitatFishery.Designer.vb">
       <DependentUpon>frmEcospaceHabitatFishery.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\frmEcospaceHabitatFishery.vb" />
+    <Compile Include="Ecospace\Input\frmEcospaceHabitatFishery.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\frmEcospaceMPAEnforcement.Designer.vb">
       <DependentUpon>frmEcospaceMPAEnforcement.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\frmEcospaceMPAEnforcement.vb" />
+    <Compile Include="Ecospace\Input\frmEcospaceMPAEnforcement.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\frmMPAs.Designer.vb">
       <DependentUpon>frmMPAs.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\frmMPAs.vb" />
+    <Compile Include="Ecospace\Input\frmMPAs.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\gridEcospaceFTarget.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -380,7 +410,9 @@
     <Compile Include="Ecospace\Input\Mortaility\frmApplyMortalityResponses.Designer.vb">
       <DependentUpon>frmApplyMortalityResponses.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Mortaility\frmApplyMortalityResponses.vb" />
+    <Compile Include="Ecospace\Input\Mortaility\frmApplyMortalityResponses.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\Mortaility\gridApplyMortalityResponses.Designer.vb">
       <DependentUpon>gridApplyMortalityResponses.vb</DependentUpon>
     </Compile>
@@ -406,7 +438,9 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgDefineExternalSpatialData.Designer.vb">
       <DependentUpon>dlgDefineExternalSpatialData.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgDefineExternalSpatialData.vb" />
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgDefineExternalSpatialData.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset management\gridDefineExternalSpatialData.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -456,19 +490,27 @@
     <Compile Include="Ecopath\Input\frmDietComp.Designer.vb">
       <DependentUpon>frmDietComp.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Input\frmDietComp.vb" />
+    <Compile Include="Ecopath\Input\frmDietComp.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFDetritus.Designer.vb">
       <DependentUpon>frmApplyFFDetritus.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFDetritus.vb" />
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFDetritus.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.Designer.vb">
       <DependentUpon>frmApplyFFPrimaryProducer.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.vb" />
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.Designer.vb">
       <DependentUpon>frmApplyMedProducer.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.vb" />
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Output\frmStockRecruitmentPlot.Designer.vb">
       <DependentUpon>frmStockRecruitmentPlot.vb</DependentUpon>
     </Compile>
@@ -488,7 +530,9 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\frmExtermalSpatialData.Designer.vb">
       <DependentUpon>frmExtermalSpatialData.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\frmExtermalSpatialData.vb" />
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\frmExtermalSpatialData.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesToolbox.Designer.vb">
       <DependentUpon>ucSpatialTimeSeriesToolbox.vb</DependentUpon>
     </Compile>
@@ -525,7 +569,9 @@
     <Compile Include="Ecobase\dlgEcobaseImport.Designer.vb">
       <DependentUpon>dlgEcobaseImport.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecobase\dlgEcobaseImport.vb" />
+    <Compile Include="Ecobase\dlgEcobaseImport.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Other\Localization\cTestFormCreation.vb" />
     <Compile Include="Other\Options\AutoRunOptionAssets\gridAutoRun.vb">
       <SubType>Component</SubType>
@@ -605,7 +651,9 @@
     <Compile Include="MSE\MSEBatch\frmMSEBatchFixedF.Designer.vb">
       <DependentUpon>frmMSEBatchFixedF.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSEBatch\frmMSEBatchFixedF.vb" />
+    <Compile Include="MSE\MSEBatch\frmMSEBatchFixedF.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSEBatch\gridMSEBatchFixedF.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -615,11 +663,15 @@
     <Compile Include="MSE\MSEBatch\frmMSEBatchParameters.Designer.vb">
       <DependentUpon>frmMSEBatchParameters.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSEBatch\frmMSEBatchParameters.vb" />
+    <Compile Include="MSE\MSEBatch\frmMSEBatchParameters.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSEBatch\frmMSEBatchTFM.Designer.vb">
       <DependentUpon>frmMSEBatchTFM.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSEBatch\frmMSEBatchTFM.vb" />
+    <Compile Include="MSE\MSEBatch\frmMSEBatchTFM.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSEBatch\gridMSEBatchTFM.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -638,7 +690,9 @@
     <Compile Include="Ecospace\Tools\frmMPAOptimizations.Designer.vb">
       <DependentUpon>frmMPAOptimizations.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Tools\frmMPAOptimizations.vb" />
+    <Compile Include="Ecospace\Tools\frmMPAOptimizations.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecotracer\Input\gridEcotracerInput.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -646,22 +700,30 @@
     <Compile Include="Ecosim\Input\EggProduction\frmEggProduction.Designer.vb">
       <DependentUpon>frmEggProduction.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\EggProduction\frmEggProduction.vb" />
+    <Compile Include="Ecosim\Input\EggProduction\frmEggProduction.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\gridEcosimFleetSizeDynamics.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FishingEffort\frmFishingEffort.Designer.vb">
       <DependentUpon>frmFishingEffort.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\FishingEffort\frmFishingEffort.vb" />
+    <Compile Include="Ecosim\Input\FishingEffort\frmFishingEffort.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\FishingMortality\frmFishingMortality.Designer.vb">
       <DependentUpon>frmFishingMortality.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\FishingMortality\frmFishingMortality.vb" />
+    <Compile Include="Ecosim\Input\FishingMortality\frmFishingMortality.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\TimeSeries\frmTimeSeries.Designer.vb">
       <DependentUpon>frmTimeSeries.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\TimeSeries\frmTimeSeries.vb" />
+    <Compile Include="Ecosim\Input\TimeSeries\frmTimeSeries.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\Vulnerabilities\frmVulnerabilities.Designer.vb">
       <DependentUpon>frmVulnerabilities.vb</DependentUpon>
     </Compile>
@@ -677,7 +739,9 @@
     <Compile Include="Ecosim\Tools\MonteCarlo\frmMCRun.Designer.vb">
       <DependentUpon>frmMCRun.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\MonteCarlo\frmMCRun.vb" />
+    <Compile Include="Ecosim\Tools\MonteCarlo\frmMCRun.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Tools\MonteCarlo\gridMCRunInput.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -693,26 +757,36 @@
     <Compile Include="Ecosim\Output\ShowAllFits\frmShowAllFits.Designer.vb">
       <DependentUpon>frmShowAllFits.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\ShowAllFits\frmShowAllFits.vb" />
+    <Compile Include="Ecosim\Output\ShowAllFits\frmShowAllFits.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\dlgEcosimScenario.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\ForcingFunction\frmForcingFunction.Designer.vb">
       <DependentUpon>frmForcingFunction.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\ForcingFunction\frmForcingFunction.vb" />
+    <Compile Include="Ecosim\Input\ForcingFunction\frmForcingFunction.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\MediationFunction\frmMediationFunction.Designer.vb">
       <DependentUpon>frmMediationFunction.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\MediationFunction\frmMediationFunction.vb" />
+    <Compile Include="Ecosim\Input\MediationFunction\frmMediationFunction.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Output\frmEcosimOutputGroupPlots.Designer.vb">
       <DependentUpon>frmEcosimOutputGroupPlots.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\frmEcosimOutputGroupPlots.vb" />
+    <Compile Include="Ecosim\Output\frmEcosimOutputGroupPlots.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Output\frmEcosimResults.Designer.vb">
       <DependentUpon>frmEcosimResults.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\frmEcosimResults.vb" />
+    <Compile Include="Ecosim\Output\frmEcosimResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Output\gridEcosimResultsFleet.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -740,11 +814,15 @@
     <Compile Include="Ecosim\Tools\Fishing policy search\frmFishingPolicySearch.Designer.vb">
       <DependentUpon>frmFishingPolicySearch.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\Fishing policy search\frmFishingPolicySearch.vb" />
+    <Compile Include="Ecosim\Tools\Fishing policy search\frmFishingPolicySearch.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Tools\Fit to time series\frmFitToTimeSeries.Designer.vb">
       <DependentUpon>frmFitToTimeSeries.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\Fit to time series\frmFitToTimeSeries.vb" />
+    <Compile Include="Ecosim\Tools\Fit to time series\frmFitToTimeSeries.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Search\gridSearchObjectivesFleet.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -784,7 +862,9 @@
     <Compile Include="Ecospace\Input\frmEcospaceMap.Designer.vb">
       <DependentUpon>frmEcospaceMap.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\frmEcospaceMap.vb" />
+    <Compile Include="Ecospace\Input\frmEcospaceMap.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\dlgEditBasemap.Designer.vb">
       <DependentUpon>dlgEditBasemap.vb</DependentUpon>
     </Compile>
@@ -794,7 +874,9 @@
     <Compile Include="Ecospace\Input\frmEcospaceParameters.Designer.vb">
       <DependentUpon>frmEcospaceParameters.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\frmEcospaceParameters.vb" />
+    <Compile Include="Ecospace\Input\frmEcospaceParameters.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\Capacity\Settings\gridHabitatPreference.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -828,29 +910,39 @@
     <Compile Include="Ecospace\Output\frmEcospaceResults.Designer.vb">
       <DependentUpon>frmEcospaceResults.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Output\frmEcospaceResults.vb" />
+    <Compile Include="Ecospace\Output\frmEcospaceResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Output\EcospaceResultsGridGear.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\frmRunEcospace.Designer.vb">
       <DependentUpon>frmRunEcospace.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Output\frmRunEcospace.vb" />
+    <Compile Include="Ecospace\Output\frmRunEcospace.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecotracer\dlgEcotracerScenario.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecotracer\Input\frmEcotracerInput.Designer.vb">
       <DependentUpon>frmEcotracerInput.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecotracer\Input\frmEcotracerInput.vb" />
+    <Compile Include="Ecotracer\Input\frmEcotracerInput.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecotracer\Input\frmEcotracerParameters.Designer.vb">
       <DependentUpon>frmEcotracerParameters.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecotracer\Input\frmEcotracerParameters.vb" />
+    <Compile Include="Ecotracer\Input\frmEcotracerParameters.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecotracer\Output\frmEcotracerOutput.Designer.vb">
       <DependentUpon>frmEcotracerOutput.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecotracer\Output\frmEcotracerOutput.vb" />
+    <Compile Include="Ecotracer\Output\frmEcotracerOutput.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\Application.Designer.vb">
       <DependentUpon>Application.myapp</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -943,14 +1035,18 @@
     <Compile Include="Ecosim\Input\frmEcosimParameters.Designer.vb">
       <DependentUpon>frmEcosimParameters.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\frmEcosimParameters.vb" />
+    <Compile Include="Ecosim\Input\frmEcosimParameters.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\Vulnerabilities\gridVulnerabilities.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\frmRunEcosim.Designer.vb">
       <DependentUpon>frmRunEcosim.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\frmRunEcosim.vb" />
+    <Compile Include="Ecosim\Output\frmRunEcosim.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Other\cCoreController.vb" />
     <Compile Include="Panels\StatusPanel\frmStatusPanel.Designer.vb">
       <DependentUpon>frmStatusPanel.vb</DependentUpon>
@@ -1519,7 +1615,9 @@
     <Compile Include="Ecopath\Output\frmNichePredPreyPlot.Designer.vb">
       <DependentUpon>frmNichePredPreyPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Output\frmNichePredPreyPlot.vb" />
+    <Compile Include="Ecopath\Output\frmNichePredPreyPlot.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Output\frmSizeShiftedConnectancePlot.Designer.vb">
       <DependentUpon>frmSizeShiftedConnectancePlot.vb</DependentUpon>
     </Compile>
@@ -1529,26 +1627,34 @@
     <Compile Include="Ecopath\Tools\Taxonomy and traits\frmTraitInput.Designer.vb">
       <DependentUpon>frmTraitInput.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Tools\Taxonomy and traits\frmTraitInput.vb" />
+    <Compile Include="Ecopath\Tools\Taxonomy and traits\frmTraitInput.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Tools\Taxonomy and traits\gridTraitInput.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\frmFisheryBasicInput.Designer.vb">
       <DependentUpon>frmFisheryBasicInput.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Input\frmFisheryBasicInput.vb" />
+    <Compile Include="Ecopath\Input\frmFisheryBasicInput.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Input\gridFisheryInputDiscardMort.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\frmBasicInput.Designer.vb">
       <DependentUpon>frmBasicInput.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Input\frmBasicInput.vb" />
+    <Compile Include="Ecopath\Input\frmBasicInput.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Tools\Pedigree\cPedigreeStyleGuide.vb" />
     <Compile Include="Ecopath\Tools\Pedigree\frmPedigree.Designer.vb">
       <DependentUpon>frmPedigree.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Tools\Pedigree\frmPedigree.vb" />
+    <Compile Include="Ecopath\Tools\Pedigree\frmPedigree.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Tools\Pedigree\gridPedigree.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1567,22 +1673,30 @@
     <Compile Include="Ecopath\Output\frmPSDContributionPlot.Designer.vb">
       <DependentUpon>frmPSDContributionPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Output\frmPSDContributionPlot.vb" />
+    <Compile Include="Ecopath\Output\frmPSDContributionPlot.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Output\gridPSDContributionResult.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\frmPSDPlotByGroup.Designer.vb">
       <DependentUpon>frmPSDPlotByGroup.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Output\frmPSDPlotByGroup.vb" />
+    <Compile Include="Ecopath\Output\frmPSDPlotByGroup.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Output\frmRunPSD.Designer.vb">
       <DependentUpon>frmRunPSD.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Output\frmRunPSD.vb" />
+    <Compile Include="Ecopath\Output\frmRunPSD.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Output\frmSizeWeight.Designer.vb">
       <DependentUpon>frmSizeWeight.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Output\frmSizeWeight.vb" />
+    <Compile Include="Ecopath\Output\frmSizeWeight.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\gridApplyLandingsShape.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1607,21 +1721,33 @@
     <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFConsumer.Designer.vb">
       <DependentUpon>frmApplyFFConsumer.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFConsumer.vb" />
-    <Compile Include="Controls\frmApplyShapeBase.vb" />
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFConsumer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\frmApplyShapeBase.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedConsumer.Designer.vb">
       <DependentUpon>frmApplyMedConsumer.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedConsumer.vb" />
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedConsumer.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedDetritus.Designer.vb">
       <DependentUpon>frmApplyMedDetritus.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedDetritus.vb" />
-    <Compile Include="Ecosim\Input\ApplyShape\PriceElasticity\frmApplyPriceElasticy.vb" />
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedDetritus.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\PriceElasticity\frmApplyPriceElasticy.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\PriceElasticity\frmPriceElasticity.Designer.vb">
       <DependentUpon>frmPriceElasticity.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\PriceElasticity\frmPriceElasticity.vb" />
+    <Compile Include="Ecosim\Input\PriceElasticity\frmPriceElasticity.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Output\dlgSelectItems.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -1652,7 +1778,9 @@
     <Compile Include="Ecospace\Input\Advection\frmAdvection.Designer.vb">
       <DependentUpon>frmAdvection.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Advection\frmAdvection.vb" />
+    <Compile Include="Ecospace\Input\Advection\frmAdvection.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\Advection\ucWind.Designer.vb">
       <DependentUpon>ucWind.vb</DependentUpon>
     </Compile>
@@ -1662,11 +1790,15 @@
     <Compile Include="Controls\dlgSelectResponse.Designer.vb">
       <DependentUpon>dlgSelectResponse.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\dlgSelectResponse.vb" />
+    <Compile Include="Controls\dlgSelectResponse.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\Capacity\Apply Foraging Responses\frmApplyForagingResponses.Designer.vb">
       <DependentUpon>frmApplyForagingResponses.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply Foraging Responses\frmApplyForagingResponses.vb" />
+    <Compile Include="Ecospace\Input\Capacity\Apply Foraging Responses\frmApplyForagingResponses.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\Capacity\Apply Foraging Responses\gridApplyForagingResponses.Designer.vb">
       <DependentUpon>gridApplyForagingResponses.vb</DependentUpon>
     </Compile>
@@ -1683,25 +1815,35 @@
     <Compile Include="MSE\MSEBatch\frmMSERunBatch.Designer.vb">
       <DependentUpon>frmMSERunBatch.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSEBatch\frmMSERunBatch.vb" />
+    <Compile Include="MSE\MSEBatch\frmMSERunBatch.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\cMSEFishingColorBlockDataSource.vb" />
     <Compile Include="MSE\MSE\cMSEGroupColorBlockDataSource.vb" />
     <Compile Include="MSE\MSE\frmMSERecruitment.Designer.vb">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmMSERecruitment.vb" />
+    <Compile Include="MSE\MSE\frmMSERecruitment.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\frmGroupRefLevels.Designer.vb">
       <DependentUpon>frmGroupRefLevels.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmGroupRefLevels.vb" />
+    <Compile Include="MSE\MSE\frmGroupRefLevels.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\frmQuotaShare.Designer.vb">
       <DependentUpon>frmQuotaShare.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmQuotaShare.vb" />
+    <Compile Include="MSE\MSE\frmQuotaShare.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\frmTFMpolicy.Designer.vb">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmTFMpolicy.vb" />
+    <Compile Include="MSE\MSE\frmTFMpolicy.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\gridQuotaShare.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1740,7 +1882,9 @@
     <Compile Include="Ecosim\Output\frmSuitabilityPlot.Designer.vb">
       <DependentUpon>frmSuitabilityPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\frmSuitabilityPlot.vb" />
+    <Compile Include="Ecosim\Output\frmSuitabilityPlot.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Output\ucSuitabilityPlot.Designer.vb">
       <DependentUpon>ucSuitabilityPlot.vb</DependentUpon>
     </Compile>
@@ -1817,31 +1961,45 @@
     <Compile Include="MSE\MSE\frmMSEAssessFleets.Designer.vb">
       <DependentUpon>frmMSEAssessFleets.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmMSEAssessFleets.vb" />
+    <Compile Include="MSE\MSE\frmMSEAssessFleets.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\frmMSE.Designer.vb">
       <DependentUpon>frmMSE.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmMSE.vb" />
+    <Compile Include="MSE\MSE\frmMSE.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\frmMSEAssessGroups.Designer.vb">
       <DependentUpon>frmMSEAssessGroups.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmMSEAssessGroups.vb" />
+    <Compile Include="MSE\MSE\frmMSEAssessGroups.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\frmMSEPlots.Designer.vb">
       <DependentUpon>frmMSEPlots.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmMSEPlots.vb" />
+    <Compile Include="MSE\MSE\frmMSEPlots.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\frmMSEResults.Designer.vb">
       <DependentUpon>frmMSEResults.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmMSEResults.vb" />
+    <Compile Include="MSE\MSE\frmMSEResults.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\frmMSY.Designer.vb">
       <DependentUpon>frmMSY.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmMSY.vb" />
+    <Compile Include="MSE\MSE\frmMSY.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\frmMSEOptions.Designer.vb">
       <DependentUpon>frmMSEOptions.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmMSEOptions.vb" />
+    <Compile Include="MSE\MSE\frmMSEOptions.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MSE\MSE\gridFleetRefLevels.vb">
       <SubType>Component</SubType>
     </Compile>
