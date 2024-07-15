@@ -137,9 +137,7 @@
     <Compile Include="UI\frmGameDesigner.Designer.vb">
       <DependentUpon>frmGameDesigner.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmGameDesigner.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="UI\frmGameDesigner.vb" />
     <Compile Include="UI\Controls\gridOutcomes.vb">
       <SubType>Component</SubType>
     </Compile>
