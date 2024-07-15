@@ -168,9 +168,7 @@
     <Compile Include="UI\ucEcoEngineerConfigUI.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\ucEcoEngineerSketchPad.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="UI\ucEcoEngineerSketchPad.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

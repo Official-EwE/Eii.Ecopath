@@ -164,7 +164,9 @@
     <Compile Include="frmEcospaceSpinup.Designer.vb">
       <DependentUpon>frmEcospaceSpinup.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmEcospaceSpinup.vb" />
+    <Compile Include="frmEcospaceSpinup.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="gridSpinupDiff.Designer.vb">
       <DependentUpon>gridSpinupDiff.vb</DependentUpon>
     </Compile>
