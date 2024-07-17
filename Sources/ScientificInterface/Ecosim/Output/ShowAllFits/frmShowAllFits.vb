@@ -619,39 +619,51 @@ Namespace Ecosim
                                         sw.Write(",")
                                         sw.Write(cStringUtils.ToCSVField("biomass (observed) " & ts.Name))
                                         sw.Write(",")
+                                        sw.Write(cStringUtils.ToCSVField("biomass (observed scaled) " & ts.Name))
+                                        sw.Write(",")
                                     End If
                                 Case eAllFitFile.Mortality
                                     If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
-                                        sw.Write(cStringUtils.ToCSVField("total mort (predicted)" & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("total mort (predicted) " & ts.Name))
                                         sw.Write(",")
-                                        sw.Write(cStringUtils.ToCSVField("total mort (observed)" & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("total mort (observed) " & ts.Name))
+                                        sw.Write(",")
+                                        sw.Write(cStringUtils.ToCSVField("total mort (observed scaled) " & ts.Name))
                                         sw.Write(",")
                                     End If
                                     If ts.TimeSeriesType = eTimeSeriesType.FishingMortalityRef Then
-                                        sw.Write(cStringUtils.ToCSVField("fish mort (predicted)" & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("fish mort (predicted) " & ts.Name))
                                         sw.Write(",")
-                                        sw.Write(cStringUtils.ToCSVField("fish mort (observed)" & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("fish mort (observed) " & ts.Name))
+                                        sw.Write(",")
+                                        sw.Write(cStringUtils.ToCSVField("fish mort (observed scaled) " & ts.Name))
                                         sw.Write(",")
                                     End If
                                 Case eAllFitFile.Catch
                                     If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
-                                        sw.Write(cStringUtils.ToCSVField("catch (predicted)" & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("catch (predicted) " & ts.Name))
                                         sw.Write(",")
                                         sw.Write(cStringUtils.ToCSVField("catch (observed) " & ts.Name))
+                                        sw.Write(",")
+                                        sw.Write(cStringUtils.ToCSVField("catch (observed scaled) " & ts.Name))
                                         sw.Write(",")
                                     End If
                                 Case eAllFitFile.Landings
                                     If ts.TimeSeriesType = eTimeSeriesType.Landings Then
-                                        sw.Write(cStringUtils.ToCSVField("landings (predicted)" & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("landings (predicted) " & ts.Name))
                                         sw.Write(",")
-                                        sw.Write(cStringUtils.ToCSVField("landings (observed)" & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("landings (observed) " & ts.Name))
+                                        sw.Write(",")
+                                        sw.Write(cStringUtils.ToCSVField("landings (observed scaled) " & ts.Name))
                                         sw.Write(",")
                                     End If
                                 Case eAllFitFile.Discards
                                     If ts.TimeSeriesType = eTimeSeriesType.Discards Then
                                         sw.Write(cStringUtils.ToCSVField("discards (predicted) " & ts.Name))
                                         sw.Write(",")
-                                        sw.Write(cStringUtils.ToCSVField("discards (observed)" & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("discards (observed) " & ts.Name))
+                                        sw.Write(",")
+                                        sw.Write(cStringUtils.ToCSVField("discards (observed scaled) " & ts.Name))
                                         sw.Write(",")
                                     End If
                             End Select
@@ -678,9 +690,11 @@ Namespace Ecosim
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t)))
+                                                sw.Write(",")
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
                                             Else
-                                                sw.Write("")
+                                                sw.Write(",")
                                             End If
                                             sw.Write(",")
                                         End If
@@ -689,9 +703,11 @@ Namespace Ecosim
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t)))
+                                                sw.Write(",")
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
                                             Else
-                                                sw.Write("")
+                                                sw.Write(",")
                                             End If
                                             sw.Write(",")
                                         End If
@@ -699,9 +715,11 @@ Namespace Ecosim
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t)))
+                                                sw.Write(",")
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
                                             Else
-                                                sw.Write("")
+                                                sw.Write(",")
                                             End If
                                             sw.Write(",")
                                         End If
@@ -710,9 +728,11 @@ Namespace Ecosim
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t)))
+                                                sw.Write(",")
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
                                             Else
-                                                sw.Write("")
+                                                sw.Write(",")
                                             End If
                                             sw.Write(",")
                                         End If
@@ -721,9 +741,11 @@ Namespace Ecosim
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t)))
+                                                sw.Write(",")
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
                                             Else
-                                                sw.Write("")
+                                                sw.Write(",")
                                             End If
                                             sw.Write(",")
                                         End If
@@ -732,9 +754,11 @@ Namespace Ecosim
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t)))
+                                                sw.Write(",")
                                                 sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
                                             Else
-                                                sw.Write("")
+                                                sw.Write(",")
                                             End If
                                             sw.Write(",")
                                         End If
