@@ -676,7 +676,6 @@ Namespace Ecosim
                             Dim bWriteTS As Boolean = ((bAnnual = False) Or (1 + ((k - 1) Mod nSteps) = Math.Floor(nSteps / 2)))
 
                             sw.Write(cStringUtils.FormatInteger(k))
-                            sw.Write(",")
                             For j As Integer = 1 To Me.m_lPlots.Count
 
                                 plot = Me.m_lPlots(j - 1)
@@ -687,6 +686,7 @@ Namespace Ecosim
                                 Select Case f
                                     Case eAllFitFile.Biomass
                                         If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
+                                            sw.Write(",")
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
@@ -696,10 +696,10 @@ Namespace Ecosim
                                             Else
                                                 sw.Write(",")
                                             End If
-                                            sw.Write(",")
                                         End If
                                     Case eAllFitFile.Mortality
                                         If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
+                                            sw.Write(",")
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
@@ -709,9 +709,9 @@ Namespace Ecosim
                                             Else
                                                 sw.Write(",")
                                             End If
-                                            sw.Write(",")
                                         End If
                                         If ts.TimeSeriesType = eTimeSeriesType.FishingMortalityRef Then
+                                            sw.Write(",")
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
@@ -721,10 +721,10 @@ Namespace Ecosim
                                             Else
                                                 sw.Write(",")
                                             End If
-                                            sw.Write(",")
                                         End If
                                     Case eAllFitFile.Catch
                                         If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
+                                            sw.Write(",")
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
@@ -734,10 +734,10 @@ Namespace Ecosim
                                             Else
                                                 sw.Write(",")
                                             End If
-                                            sw.Write(",")
                                         End If
                                     Case eAllFitFile.Landings
                                         If ts.TimeSeriesType = eTimeSeriesType.Landings Then
+                                            sw.Write(",")
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
@@ -747,10 +747,10 @@ Namespace Ecosim
                                             Else
                                                 sw.Write(",")
                                             End If
-                                            sw.Write(",")
                                         End If
                                     Case eAllFitFile.Discards
                                         If ts.TimeSeriesType = eTimeSeriesType.Discards Then
+                                            sw.Write(",")
                                             sw.Write(cStringUtils.FormatNumber(plot.SimData(k)))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
@@ -760,7 +760,6 @@ Namespace Ecosim
                                             Else
                                                 sw.Write(",")
                                             End If
-                                            sw.Write(",")
                                         End If
                                 End Select
 
