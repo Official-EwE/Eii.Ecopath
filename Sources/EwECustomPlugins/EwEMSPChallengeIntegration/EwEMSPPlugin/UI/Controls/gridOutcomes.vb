@@ -109,9 +109,9 @@ Namespace UI
                 Dim c As cEwECell = Nothing
 
                 Select Case Me.Output.LayerType
-                    Case cOutcome.eLayerType.Biomass, cOutcome.eLayerType.Discards
+                    Case cOutcome.eLayerType.Biomass, cOutcome.eLayerType.Discards, cOutcome.eLayerType.Bycatch
                         strName = Me.UIContext.Core.EcopathGroupInputs(i).Name
-                    Case cOutcome.eLayerType.Effort, cOutcome.eLayerType.Catch, cOutcome.eLayerType.Bycatch
+                    Case cOutcome.eLayerType.Effort, cOutcome.eLayerType.Catch
                         strName = Me.UIContext.Core.EcopathFleetInputs(i).Name
                     Case cOutcome.eLayerType.Indicator
                         strName = DirectCast(i - 1, cOutcome.eMSPDIversityIndex).ToString()
