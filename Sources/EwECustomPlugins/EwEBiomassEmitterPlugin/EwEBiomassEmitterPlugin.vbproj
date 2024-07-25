@@ -154,7 +154,9 @@
     <Compile Include="UI\frmBiomassEmitter.Designer.vb">
       <DependentUpon>frmBiomassEmitter.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmBiomassEmitter.vb" />
+    <Compile Include="UI\frmBiomassEmitter.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Utility\cBiomassEmitterTimeseriesBuilder.vb" />
     <Compile Include="Engine\cBiomassEmitter.vb" />
     <Compile Include="cEwEBiomassEmitterPlugin.vb" />
