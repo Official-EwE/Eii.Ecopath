@@ -1,3 +1,13 @@
+
+Version 2.1 beta - 25 July 2024
+=============================
+Fixed by-catch config grid issue (by-catch per group, not fleet)
+
+Version 2.0 beta - 5 April 2024
+=============================
+Added by-catch outcomes
+Plug-in connected to auto-run system
+
 Version 1.7.2 - 20 February 2018
 =============================
 Added error feedback when trying to load test sets
