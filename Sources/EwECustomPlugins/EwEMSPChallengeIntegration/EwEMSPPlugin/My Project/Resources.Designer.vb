@@ -477,7 +477,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MSP tools for EwE desktop v 2.0 beta - 5 April 2024.
+        '''  Looks up a localized string similar to MSP tools for EwE desktop v 2.1 beta - 25 July 2024.
         '''</summary>
         Friend ReadOnly Property VERSION() As String
             Get
