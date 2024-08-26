@@ -21,6 +21,7 @@
 
 Option Strict On
 Option Explicit On
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -285,32 +286,48 @@ Namespace Other
 
         Private Sub OnImportColorRamps(sender As Object, e As EventArgs) Handles m_tsbnImport.Click
 
-            ' Experimental feature
-            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(SharedResources.CAPTION_SELECT_FILE, "", SharedResources.FILEFILTER_COLORTABLE)
-            ofd.Multiselect = True
+            Try
+                Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                Dim cmd As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-            If ofd.ShowDialog() = DialogResult.OK Then
-                Dim io As New cColorRampActIO()
-                For Each fn As String In ofd.FileNames
-                    Dim ramp As cBinaryColorRamp = io.Read(fn)
-                    If (ramp IsNot Nothing) Then
-                        ' ToDO: prohibit duplicates
-                        Me.m_lbGradients.Items.Add(ramp)
-                    End If
-                Next
-            End If
+                cmd.Title = SharedResources.CAPTION_SELECT_FILES
+                cmd.AllowMultiple = True
+                cmd.Filters = SharedResources.FILEFILTER_COLORTABLE
+                cmd.Invoke()
+
+                If cmd.Result = DialogResult.OK Then
+                    Dim io As New cColorRampActIO()
+                    For Each fn As String In cmd.FileNames
+                        Dim ramp As cBinaryColorRamp = io.Read(fn)
+                        If (ramp IsNot Nothing) Then
+                            ' ToDO: prohibit duplicates
+                            Me.m_lbGradients.Items.Add(ramp)
+                        End If
+                    Next
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex, "ucOptionsColorRamp.OnImportColorRamps")
+            End Try
         End Sub
 
         Private Sub OnExportColorRamps(sender As Object, e As EventArgs) Handles m_tsbnExport.Click
 
-            Dim sfd As FolderBrowserDialog = cEwEFileDialogHelper.FolderBrowserDialog(SharedResources.LABEL_CHOOSE_FOLDER, "")
+            Try
+                Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
 
-            If sfd.ShowDialog = DialogResult.OK Then
-                Dim io As New cColorRampActIO()
-                For Each item As Object In Me.m_lbGradients.SelectedItems
-                    io.Write(sfd.SelectedPath, DirectCast(item, cColorRamp))
-                Next
-            End If
+                cmd.Invoke()
+
+                If cmd.Result = DialogResult.OK Then
+                    Dim io As New cColorRampActIO()
+                    For Each item As Object In Me.m_lbGradients.SelectedItems
+                        io.Write(cmd.Directory, DirectCast(item, cColorRamp))
+                    Next
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "ucOptionsColorRamp.OnExportColorRamps")
+            End Try
 
         End Sub
 

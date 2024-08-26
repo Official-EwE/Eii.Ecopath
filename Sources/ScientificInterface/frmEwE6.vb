@@ -2755,17 +2755,18 @@ Public Class frmEwE6
         Dim strPath As String = doc.Directory
 
         Try
-            Dim dlgLoad As FolderBrowserDialog = Nothing
+            Dim dlgLoad As OpenFileDialog = Nothing
             dlgLoad = cEwEFileDialogHelper.FolderBrowserDialog(doc.Prompt, strPath)
             doc.Result = dlgLoad.ShowDialog()
-            strPath = dlgLoad.SelectedPath
+
+            If (doc.Result = System.Windows.Forms.DialogResult.OK) Then
+                strPath = System.IO.Path.GetDirectoryName(dlgLoad.FileName)
+                doc.Directory = strPath
+            End If
+
         Catch ex As Exception
             cLog.Write(ex, "OnDirectoryOpen")
         End Try
-
-        If (doc.Result = System.Windows.Forms.DialogResult.OK) Then
-            doc.Directory = strPath
-        End If
 
     End Sub
 
