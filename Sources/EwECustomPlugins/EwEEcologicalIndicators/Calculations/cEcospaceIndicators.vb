@@ -104,6 +104,18 @@ Public Class cEcospaceIndicators
     End Function
 
     ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper function to access the map cell area (col, row) that this indicator represents.
+    ''' </summary>
+    ''' <returns>The Ecosim time that these indicators represent.</returns>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property CellArea() As Single
+        Get
+            Return Me.m_ecospaceDS.CellArea(Me.m_ptLocation.Y, Me.m_ptLocation.X)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cIndicators.ModelBiomass"/>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function ModelBiomass(iGroup As Integer) As Single

@@ -154,16 +154,37 @@ Namespace Controls
         ''' <returns>A file dialog.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function FolderBrowserDialog(strDescription As String,
-                                                   strInitialDirectory As String) As FolderBrowserDialog
+                                                   strInitialDirectory As String) As OpenFileDialog
 
-            Dim dlg As New FolderBrowserDialog()
+            'Dim dlg As New FolderBrowserDialog()
 
-            With dlg
-                .SelectedPath = strInitialDirectory
-                .ShowNewFolderButton = True
-                .Description = strDescription
-            End With
+            'With dlg
+            '    .SelectedPath = strInitialDirectory
+            '    .ShowNewFolderButton = True
+            '    .Description = strDescription
+            'End With
 
+            Dim dlg As New OpenFileDialog()
+
+            ' Set the dialog title
+            dlg.Title = strDescription
+
+            ' This is important, it allows selecting folders
+            dlg.CheckFileExists = False
+            dlg.CheckPathExists = True
+
+            ' Set the initial directory to something reasonable, like the desktop
+            dlg.InitialDirectory = strInitialDirectory
+
+            ' Use a dummy file name so that the dialog allows selecting folders
+            dlg.FileName = My.Resources.PROMPT_FOLDER_SELECTION
+
+            '' Show the dialog and process the result
+            'If openFileDialog.ShowDialog() = DialogResult.OK Then
+            '    ' Get the selected folder path
+            '    Dim folderPath As String = IO.Path.GetDirectoryName(openFileDialog.FileName)
+            '    MessageBox.Show("Selected Folder: " & folderPath)
+            'End If
             ' Hack when SP1 installation is not detected
             Dim pi As PropertyInfo = GetType(FolderBrowserDialog).GetProperty("AutoUpgradeEnabled")
             If (pi IsNot Nothing) Then pi.SetValue(dlg, True, Nothing)
