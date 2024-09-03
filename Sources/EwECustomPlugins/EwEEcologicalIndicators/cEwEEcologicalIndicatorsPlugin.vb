@@ -1131,6 +1131,18 @@ Public Class cEwEEcologicalIndicatorsPlugin
             sw.Flush()
         End Using
 
+#If DEBUG Then
+        strFile = strFile.Replace(".csv", ".debug.csv")
+        Using sw As New StreamWriter(strFile)
+            sw.WriteLine("time,B2,B2Tl,B325,B325TL,B4,B4Tl")
+            ' Write a line for each time step
+            For Each ind As cEcosimIndicators In Me.m_lIndEcosim
+                sw.WriteLine(ind.Time & "," & ind.B2 & "," & ind.B2T & "," & ind.B325 & "," & ind.B325T & "," & ind.B4 & "," & ind.B4T)
+            Next
+            sw.Flush()
+        End Using
+#End If
+
         Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecosim), strFile), eStatusFlags.OK)
 
     End Sub

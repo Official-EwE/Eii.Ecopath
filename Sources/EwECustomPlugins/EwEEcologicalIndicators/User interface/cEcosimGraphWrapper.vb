@@ -109,16 +109,18 @@ Public Class cEcosimGraphWrapper
                 Next
             End If
             strLabelPane = indGroup.Name
+            ' Set master pane title
+            Me.Configure(strLabelPane)
         Else
             ' Indicator mode
             If Not ReferenceEquals(indSingle, Me.m_indCurrent) Then
                 lInfo.Add(indSingle)
             End If
             strLabelPane = indSingle.Name
+            ' Set master pane title
+            Me.Configure("")
         End If
 
-        ' Set master pane title
-        Me.Configure(strLabelPane)
 
         If (lInfo.Count > 0) Then
             ' Create and configure panes
