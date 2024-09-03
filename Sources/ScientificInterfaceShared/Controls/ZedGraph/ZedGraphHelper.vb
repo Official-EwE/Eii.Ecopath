@@ -594,7 +594,7 @@ Namespace Controls
 
             With Me.m_zgc.MasterPane
                 .Title.Text = strTitle
-                .Title.IsVisible = Not String.IsNullOrEmpty(strTitle)
+                .Title.IsVisible = Not String.IsNullOrWhiteSpace(strTitle)
             End With
 
         End Sub

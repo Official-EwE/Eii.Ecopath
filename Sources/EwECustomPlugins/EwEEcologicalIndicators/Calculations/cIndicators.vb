@@ -133,6 +133,16 @@ Public MustInherit Class cIndicators
     ''' <summary>Mean weight of fish in the community </summary>
     Private m_sMWeightb As Single
 
+#If DEBUG Then
+    ' --- DEBUG ---
+    Private m_B2 As Single = 0
+    Private m_B2T As Single = 0
+    Private m_B325 As Single = 0
+    Private m_B325T As Single = 0
+    Private m_B4 As Single = 0
+    Private m_B4T As Single = 0
+#End If
+
 #End Region ' Private variables
 
 #Region " Constructor "
@@ -513,6 +523,14 @@ Public MustInherit Class cIndicators
         If (sTotalB325 = 0) Then Me.m_sTLCo325 = 0 Else Me.m_sTLCo325 = sTLi325Bi / sTotalB325
         If (sTotalB4 = 0) Then Me.m_sTLCo4 = 0 Else Me.m_sTLCo4 = sTLi4Bi / sTotalB4
 
+#If DEBUG Then
+        Me.m_B2 = sTotalB2
+        Me.m_B2T = sTLi2Bi
+        Me.m_B325 = sTotalB325
+        Me.m_B325T = sTLi325Bi
+        Me.m_B4 = sTotalB4
+        Me.m_B4T = sTLi4Bi
+#End If
         ' Species indicators
         Me.m_sEndemicC = sEndemicC
         Me.m_sEndemicB = sEndemicB
@@ -1006,6 +1024,29 @@ Public MustInherit Class cIndicators
     End Function
 
 #End Region ' Size-based indicators
+
+#If DEBUG Then
+
+    Public Function B2() As Single
+        Return Me.m_B2
+    End Function
+    Public Function B2T() As Single
+        Return Me.m_B2T
+    End Function
+    Public Function B325() As Single
+        Return Me.m_B325
+    End Function
+    Public Function B325T() As Single
+        Return Me.m_B325T
+    End Function
+    Public Function B4() As Single
+        Return Me.m_B4
+    End Function
+    Public Function B4T() As Single
+        Return Me.m_B4T
+    End Function
+
+#End If
 
 #End Region ' Outputs
 
