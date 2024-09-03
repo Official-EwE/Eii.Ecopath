@@ -511,7 +511,7 @@ Public MustInherit Class cIndicators
         Me.m_sTLCo = sTLiBi / Me.m_sTotalB
         If (sTotalB2 = 0) Then Me.m_sTLCo2 = 0 Else Me.m_sTLCo2 = sTLi2Bi / sTotalB2
         If (sTotalB325 = 0) Then Me.m_sTLCo325 = 0 Else Me.m_sTLCo325 = sTLi325Bi / sTotalB325
-        If (sTotalB4 = 0) Then Me.m_sTLCo4 =  = 0 Else Me.m_sTLCo4 = sTLi4Bi / sTotalB4
+        If (sTotalB4 = 0) Then Me.m_sTLCo4 = 0 Else Me.m_sTLCo4 = sTLi4Bi / sTotalB4
 
         ' Species indicators
         Me.m_sEndemicC = sEndemicC
