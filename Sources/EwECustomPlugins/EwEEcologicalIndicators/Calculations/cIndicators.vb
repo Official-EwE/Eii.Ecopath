@@ -367,52 +367,51 @@ Public MustInherit Class cIndicators
             sDT = sDT + sD
 
             If sTL >= 2.0 Then
-                sTotalB2 = sTotalB2 + sB
-                sTLi2Bi = sTLi2Bi + (sB * sTL)
+                sTotalB2 += sB
+                sTLi2Bi += (sB * sTL)
             End If
 
             If sTL >= 3.25 Then
-                sTotalB325 = sTotalB325 + sB
-                sTLi325Bi = sTLi325Bi + (sB * sTL)
-                sC325 = sC325 + sC
-                sMTI = sMTI + (sTL * sC)
+                sTotalB325 += sB
+                sTLi325Bi += (sB * sTL)
+                sC325 += sC
+                sMTI += (sTL * sC)
             End If
 
             If sTL >= 4 Then
-                sTotalB4 = sTotalB4 + sB
-                sTLi4Bi = sTLi4Bi + (sB * sTL)
-                sC4 = sC4 + sC
-
+                sTotalB4 += sB
+                sTLi4Bi += (sB * sTL)
+                sC4 += sC
             End If
 
-            sInveB = sInveB + (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Invertebrates))
-            sFishB = sFishB + (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Fishes))
-            sFishC = sFishC + (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Fishes))
-            sInveC = sInveC + (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Invertebrates))
-            sEndemicB = sEndemicB + (sB * ta.GroupBiomassProportion(iGroup, eOccurrenceStatusTypes.Endemic))
-            sEndemicC = sEndemicC + (sC * ta.GroupCatchProportion(iGroup, eOccurrenceStatusTypes.Endemic))
-            sIUCNB = sIUCNB + (sB * ta.GroupBiomassProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
-            sIUCNC = sIUCNC + (sC * ta.GroupCatchProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
-            sMSRB = sMSRB + ((sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Birds)) +
-                             (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Mammals)) +
-                             (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Reptiles)))
-            sMSRC = sMSRC + ((sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Birds)) +
-                             (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Mammals)) +
-                             (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Reptiles)))
-            sDemB = sDemB + (sB * ta.GroupBiomassProportion(iGroup, eEcologyTypes.Demersal)) +
+            sInveB += (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Invertebrates))
+            sFishB += (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Fishes))
+            sFishC += (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Fishes))
+            sInveC += (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Invertebrates))
+            sEndemicB += (sB * ta.GroupBiomassProportion(iGroup, eOccurrenceStatusTypes.Endemic))
+            sEndemicC += (sC * ta.GroupCatchProportion(iGroup, eOccurrenceStatusTypes.Endemic))
+            sIUCNB += (sB * ta.GroupBiomassProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
+            sIUCNC += (sC * ta.GroupCatchProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
+            sMSRB += ((sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Birds)) +
+                (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Mammals)) +
+                (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Reptiles)))
+            sMSRC += ((sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Birds)) +
+                (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Mammals)) +
+                (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Reptiles)))
+            sDemB += (sB * ta.GroupBiomassProportion(iGroup, eEcologyTypes.Demersal)) +
                 (sB * ta.GroupBiomassProportion(iGroup, eEcologyTypes.Benthic)) +
                 (sB * ta.GroupBiomassProportion(iGroup, eEcologyTypes.BathyDemersal))
-            sPelB = sPelB + (sB * ta.GroupBiomassProportion(iGroup, eEcologyTypes.Pelagic)) +
+            sPelB += (sB * ta.GroupBiomassProportion(iGroup, eEcologyTypes.Pelagic)) +
                 (sB * ta.GroupBiomassProportion(iGroup, eEcologyTypes.BathyPelagic)) +
                 (sB * ta.GroupBiomassProportion(iGroup, eEcologyTypes.BenthoPelagic)) +
                 (sB * ta.GroupBiomassProportion(iGroup, eEcologyTypes.PelagicNeritic)) +
                 (sB * ta.GroupBiomassProportion(iGroup, eEcologyTypes.PelagicOceanic))
 
-            sDemC = sDemC + (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Demersal)) +
+            sDemC += (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Demersal)) +
                 (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Benthic)) +
                 (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.BathyDemersal))
 
-            sPelC = sPelC + (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Pelagic)) +
+            sPelC += (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Pelagic)) +
                 (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.BathyPelagic)) +
                 (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.BenthoPelagic)) +
                 (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.PelagicNeritic)) +
@@ -424,37 +423,37 @@ Public MustInherit Class cIndicators
 
                 If taxon.OrganismType = eOrganismTypes.Fishes Then
                     If (taxon.VulnerabilityIndex > 0) Then
-                        sIVIiCi = sIVIiCi + (taxon.VulnerabilityIndex * taxon.PropC * sC)
+                        sIVIiCi += (taxon.VulnerabilityIndex * taxon.PropC * sC)
                     End If
 
                     If (taxon.MeanLifespan > 0) Then
-                        sMLifeSSC = sMLifeSSC + (taxon.MeanLifespan * taxon.PropC * sC)
-                        sMLifeSC = sMLifeSC + (taxon.PropC * sC)
+                        sMLifeSSC += (taxon.MeanLifespan * taxon.PropC * sC)
+                        sMLifeSC += (taxon.PropC * sC)
                     End If
 
                     If (taxon.MeanLifespan > 0) Then
-                        sMLifeSSB = sMLifeSSB + (taxon.MeanLifespan * taxon.PropB * sB)
-                        sMLifeSB = sMLifeSB + (taxon.PropB * sB)
+                        sMLifeSSB += (taxon.MeanLifespan * taxon.PropB * sB)
+                        sMLifeSB += (taxon.PropB * sB)
                     End If
 
                     If (taxon.MeanWeight > 0) Then
-                        sMWeightSC = sMWeightSC + (taxon.MeanWeight * taxon.PropC * sC)
-                        sMWeightC = sMWeightC + (taxon.PropC * sC)
+                        sMWeightSC += (taxon.MeanWeight * taxon.PropC * sC)
+                        sMWeightC += (taxon.PropC * sC)
                     End If
 
                     If (taxon.MeanWeight > 0) Then
-                        sMWeightSB = sMWeightSB + (taxon.MeanWeight * taxon.PropB * sB)
-                        sMWeightB = sMWeightB + (taxon.PropB * sB)
+                        sMWeightSB += (taxon.MeanWeight * taxon.PropB * sB)
+                        sMWeightB += (taxon.PropB * sB)
                     End If
 
                     If (taxon.MeanLength > 0) Then
-                        sMLengthSC = sMLengthSC + (taxon.MeanLength * taxon.PropC * sC)
-                        sMLengthC = sMLengthC + (taxon.PropC * sC)
+                        sMLengthSC += (taxon.MeanLength * taxon.PropC * sC)
+                        sMLengthC += (taxon.PropC * sC)
                     End If
 
                     If (taxon.MeanLength > 0) Then
-                        sMLengthSB = sMLengthSB + (taxon.MeanLength * taxon.PropB * sB)
-                        sMLengthB = sMLengthB + (taxon.PropB * sB)
+                        sMLengthSB += (taxon.MeanLength * taxon.PropB * sB)
+                        sMLengthB += (taxon.PropB * sB)
                     End If
 
                 End If ' fishes
@@ -469,7 +468,7 @@ Public MustInherit Class cIndicators
 
             If (bIsLanded) Then
                 ' Sum biomass for all landed groups
-                sCommB = sCommB + sB
+                sCommB += sB
             End If
 
         Next iGroup
@@ -487,10 +486,10 @@ Public MustInherit Class cIndicators
         Me.m_sInveB = sInveB
         Me.m_sTotalB4 = sTotalB4
         Me.m_sMSRB = sMSRB
-        Me.m_sInveFishB = CSng(If(sFishB = 0, 0, sInveB / sFishB))
+        If (sFishB = 0) Then Me.m_sInveFishB = 0 Else Me.m_sInveFishB = sInveB / sFishB
         Me.m_sDemB = sDemB
         Me.m_sPelB = sPelB
-        Me.m_sDemPelB = CSng(If(sPelB = 0, 0, sDemB / sPelB))
+        If (sPelB = 0) Then Me.m_sDemPelB = 0 Else Me.m_sDemPelB = sDemB / sPelB
         Me.m_sKemptonsQ = Me.ModelKemptionsQ()
         Me.m_sShannonDiversity = Me.ModelShannonDiversity()
 
@@ -498,21 +497,21 @@ Public MustInherit Class cIndicators
         Me.m_sCT = sCT
         Me.m_sFishC = sFishC
         Me.m_sInveC = sInveC
-        Me.m_sInveFishC = CSng(If(sFishC = 0, 0, sInveC / sFishC))
+        If (sFishC = 0) Then Me.m_sInveFishC = 0 Else Me.m_sInveFishC = sInveC / sFishC
         Me.m_sC4 = sC4
         Me.m_sMSRC = sMSRC
         Me.m_sDT = sDT
         Me.m_sDemC = sDemC
         Me.m_sPelC = sPelC
-        Me.m_sDemPelC = CSng(If(sPelC = 0, 0, sDemC / sPelC))
+        If (sPelC = 0) Then Me.m_sDemPelC = 0 Else Me.m_sDemPelC = sDemC / sPelC
 
         ' Trophic indicators
         Me.m_sTLC = Me.ModelTLCatch ' Ha!
         Me.m_sMTI = CSng(If(sC325 = 0, 0, sMTI / sC325))
         Me.m_sTLCo = sTLiBi / Me.m_sTotalB
-        Me.m_sTLCo2 = CSng(If(sTotalB2 = 0, 0, sTLi2Bi / sTotalB2))
-        Me.m_sTLCo325 = CSng(If(sTotalB325 = 0, 0, sTLi325Bi / sTotalB325))
-        Me.m_sTLCo4 = CSng(If(sTotalB4 = 0, 0, sTLi4Bi / sTotalB4))
+        If (sTotalB2 = 0) Then Me.m_sTLCo2 = 0 Else Me.m_sTLCo2 = sTLi2Bi / sTotalB2
+        If (sTotalB325 = 0) Then Me.m_sTLCo325 = 0 Else Me.m_sTLCo325 = sTLi325Bi / sTotalB325
+        If (sTotalB4 = 0) Then Me.m_sTLCo4 =  = 0 Else Me.m_sTLCo4 = sTLi4Bi / sTotalB4
 
         ' Species indicators
         Me.m_sEndemicC = sEndemicC
@@ -522,12 +521,12 @@ Public MustInherit Class cIndicators
         Me.m_sIVIc = CSng(If(sFishC = 0, 0, sIVIiCi / sFishC))
 
         'Size-base indicators
-        Me.m_sMLifeSc = CSng(If(sMLifeSC = 0, 0, sMLifeSSC / sMLifeSC))
-        Me.m_sMLifeSb = CSng(If(sMLifeSB = 0, 0, sMLifeSSB / sMLifeSB))
-        Me.m_sMLengthc = CSng(If(sMLengthC = 0, 0, sMLengthSC / sMLengthC))
-        Me.m_sMLengthb = CSng(If(sMLengthB = 0, 0, sMLengthSB / sMLengthB))
-        Me.m_sMWeightc = CSng(If(sMWeightC = 0, 0, sMWeightSC / sMWeightC))
-        Me.m_sMWeightb = CSng(If(sMWeightB = 0, 0, sMWeightSB / sMWeightB))
+        If (sMLifeSC = 0) Then Me.m_sMLifeSc = 0 Else Me.m_sMLifeSc = sMLifeSSC / sMLifeSC
+        If (sMLifeSB = 0) Then Me.m_sMLifeSb = 0 Else Me.m_sMLifeSb = sMLifeSSB / sMLifeSB
+        If (sMLengthC = 0) Then Me.m_sMLengthc = 0 Else Me.m_sMLengthc = sMLengthSC / sMLengthC
+        If (sMLengthB = 0) Then Me.m_sMLengthb = 0 Else Me.m_sMLengthb = sMLengthSB / sMLengthB
+        If (sMWeightC = 0) Then Me.m_sMWeightc = 0 Else Me.m_sMWeightc = sMWeightSC / sMWeightC
+        If (sMWeightB = 0) Then Me.m_sMWeightb = 0 Else Me.m_sMWeightb = sMWeightSB / sMWeightB
 
         Me.IsComputed = True
 
