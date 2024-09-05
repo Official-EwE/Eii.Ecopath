@@ -86,7 +86,7 @@ Namespace Controls
             ' Config icon
             Me.m_pbIcon.Visible = False
             Try
-                Dim icon As Icon = cResourceUtils.GetMessageBoxIcon(mbi)
+                Dim icon As Icon = cCustomMessageBox.GetMessageBoxIcon(mbi)
                 If icon IsNot Nothing Then
                     Me.m_pbIcon.Image = icon.ToBitmap
                 End If
@@ -176,8 +176,6 @@ Namespace Controls
 #Region " Overrides "
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
-            ' > Plink <
-            cSoundUtilities.PlaySound(Me.m_mbi)
             ' Let base class do its magic
             MyBase.OnLoad(e)
             ' Center

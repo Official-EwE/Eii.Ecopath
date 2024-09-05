@@ -72,7 +72,7 @@ Namespace Ecopath.Input
                     If (dpi.IsDataAvailable(GetType(ITaxonSearchData))) Then
                         Dim img As Image = Nothing
                         If (TypeOf dpi Is IGUIPlugin) Then
-                            img = DirectCast(dpi, IGUIPlugin).ControlImage
+                            img = DirectCast(DirectCast(dpi, IGUIPlugin).ControlImage, Image)
                         End If
                         Dim tsi As ToolStripItem = Me.m_tscmbUpdate.DropDownItems.Add(dpi.DisplayName, img, AddressOf Me.OnClickEngine)
                         tsi.Tag = dpi
@@ -143,7 +143,7 @@ Namespace Ecopath.Input
             'If cfg.IsConfigured Then Return True 
 
             Try
-                ui = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
+                ui = DirectCast(DirectCast(prod, IConfigurablePlugin).GetConfigUI(), Control)
             Catch ex As Exception
                 ui = Nothing
             End Try

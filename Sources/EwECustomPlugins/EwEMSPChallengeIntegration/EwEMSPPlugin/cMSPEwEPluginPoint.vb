@@ -111,7 +111,7 @@ Public Class cMSPEwEPluginPoint
     ''' for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlImage As System.Drawing.Image Implements IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage As Object Implements IGUIPlugin.ControlImage
         Get
             Return My.Resources.MSP_Challenge_Icon_037c7c
         End Get
@@ -228,7 +228,7 @@ Public Class cMSPEwEPluginPoint
     ''' <param name="frmPlugin">A reference to the user interface for this
     ''' plug-in.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
         frmPlugin = Me.GetUI()
     End Sub
 

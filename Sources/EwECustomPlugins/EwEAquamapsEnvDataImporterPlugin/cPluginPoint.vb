@@ -41,7 +41,7 @@ Public Class cPluginPoint
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image _
+    Public ReadOnly Property ControlImage As Object _
         Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
@@ -69,7 +69,7 @@ Public Class cPluginPoint
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements IGUIPlugin.OnControlClick
         Try
             Me.m_uic.FormMain.BeginInvoke(New MethodInvoker(AddressOf Me.LaunchUI))

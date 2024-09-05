@@ -53,7 +53,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="IConfigurable.GetConfigUI"/>
         ''' -----------------------------------------------------------------------
-        Public Function GetConfigUI() As System.Windows.Forms.Control _
+        Public Function GetConfigUI() As Object _
             Implements EwEUtils.Core.IConfigurable.GetConfigUI
 
             Dim pg As New ucAttributeFilterConfigPage()

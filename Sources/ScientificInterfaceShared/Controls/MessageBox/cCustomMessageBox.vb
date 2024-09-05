@@ -36,6 +36,44 @@ Namespace Controls
 
 #Region " Public interfaces "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the system icon for a <see cref="System.Windows.Forms.MessageBoxIcon">message box 
+        ''' icon</see> identifier.
+        ''' </summary>
+        ''' <param name="mbi"><see cref="System.Windows.Forms.MessageBoxIcon">message box icon</see>
+        ''' identifier to get the system icon for.</param>
+        ''' <returns>An <see cref="Icon">Icon</see>, or Nothing if the icon
+        ''' could not be found.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetMessageBoxIcon(mbi As MessageBoxIcon) As Icon
+
+            Dim objIcon As Icon = Nothing
+
+            Select Case mbi
+                Case MessageBoxIcon.Asterisk
+                    objIcon = SystemIcons.Asterisk
+                Case MessageBoxIcon.Error
+                    objIcon = SystemIcons.Error
+                Case MessageBoxIcon.Exclamation
+                    objIcon = SystemIcons.Exclamation
+                Case MessageBoxIcon.Hand,
+                     MessageBoxIcon.Stop
+                    objIcon = SystemIcons.Hand
+                Case MessageBoxIcon.Information
+                    objIcon = SystemIcons.Information
+                Case MessageBoxIcon.Question
+                    objIcon = SystemIcons.Question
+                Case MessageBoxIcon.Warning
+                    objIcon = SystemIcons.Warning
+                Case Else
+                    ' NOP
+            End Select
+
+            Return objIcon
+
+        End Function
+
         Public Shared Function Show(uic As cUIContext, strText As String) As DialogResult
             Return cCustomMessageBox.Show(uic, strText, "")
         End Function

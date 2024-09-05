@@ -154,7 +154,6 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -225,9 +224,6 @@
     <Compile Include="Utilities\cNumberUtils.vb" />
     <Compile Include="Utilities\cResourceUtils.vb" />
     <Compile Include="Utilities\cPropertyUtils.vb" />
-    <Compile Include="Utilities\cSoundUtils.vb">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Utilities\cStringUtils.vb" />
     <Compile Include="Utilities\cUriBuilder.vb" />
     <Compile Include="Utilities\cXMLUtils.vb" />

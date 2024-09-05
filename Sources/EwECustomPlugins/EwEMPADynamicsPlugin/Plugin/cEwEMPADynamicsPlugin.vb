@@ -95,7 +95,7 @@ Public Class cEwEMPADynamicsPlugin
         Me.m_uic = CType(uic, cUIContext)
     End Sub
 
-    Public ReadOnly Property ControlImage As Image Implements IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage As Object Implements IGUIPlugin.ControlImage
         Get
             Return SharedResources.nav_input
         End Get
@@ -113,7 +113,7 @@ Public Class cEwEMPADynamicsPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
         frmPlugin = Me.GetUI()
     End Sub
 

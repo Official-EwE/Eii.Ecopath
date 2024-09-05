@@ -140,7 +140,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IGUIPlugin.ControlImage"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlImage As Image _
+    Public ReadOnly Property ControlImage As Object _
          Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
@@ -170,7 +170,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements IGUIPlugin.OnControlClick
 
         Try

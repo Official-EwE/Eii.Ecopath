@@ -280,7 +280,7 @@ Public Class cEwEStatusBar
         End If
 
         ' Show machine ID when wanted by the user AND a remote desktop session is active
-        Me.m_tsIP.Visible = My.Settings.ShowHostInfo And cSystemUtils.IsRDC
+        Me.m_tsIP.Visible = False ' My.Settings.ShowHostInfo And cSystemUtils.IsRDC
 
     End Sub
 

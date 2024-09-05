@@ -1565,7 +1565,6 @@ Namespace UI
                     Case 2 : bPause = (data.iTimeStep Mod Math.Round(5 * parms.NumberOfTimeStepsPerYear)) = 0
                 End Select
                 If (bPause = True) Then
-                    cSoundUtilities.PlaySound(My.Resources.block)
                     Me.Pulse(eMessageImportance.Information, 5)
                 End If
                 Me.Core.EcospacePaused = bPause

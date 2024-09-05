@@ -112,7 +112,7 @@ Public Class cModelFromEcosimPluginPoint
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
-    Public ReadOnly Property ControlImage() As System.Drawing.Image _
+    Public ReadOnly Property ControlImage() As Object _
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
@@ -128,7 +128,7 @@ Public Class cModelFromEcosimPluginPoint
 
     Public Sub OnControlClick(sender As Object,
                               e As System.EventArgs,
-                              ByRef frmPlugin As System.Windows.Forms.Form) _
+                              ByRef frmPlugin As Object) _
                               Implements EwEPlugin.IGUIPlugin.OnControlClick
         If (Me.m_uic IsNot Nothing) Then
             frmPlugin = DirectCast(Me.UI, System.Windows.Forms.Form)

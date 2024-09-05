@@ -108,14 +108,14 @@ Public Class cMultiSimPlugin
 
 #Region " GUI integration "
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image _
+    Public ReadOnly Property ControlImage As Object _
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing ' My.Resources.logo_canada
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         frmPlugin = Me.UI
     End Sub

@@ -40,7 +40,7 @@ Public MustInherit Class cNavTreeControlPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IGUIPlugin.ControlImage"/>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property ControlImage() As System.Drawing.Image _
+    Public MustOverride ReadOnly Property ControlImage() As Object _
         Implements EwEPlugin.IGUIPlugin.ControlImage
 
     ''' -----------------------------------------------------------------------
@@ -72,7 +72,7 @@ Public MustInherit Class cNavTreeControlPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         frmPlugin = cEwENetworkAnalysisPlugin.SwitchForm(Me.FormPage)
     End Sub

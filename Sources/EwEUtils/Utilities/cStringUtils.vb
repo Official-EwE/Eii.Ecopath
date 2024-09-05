@@ -931,31 +931,6 @@ Namespace Utilities
             Return Convert.ToBase64String(abHash)
         End Function
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' String truncation method, blatantly copied from 
-        ''' http://www.codeproject.com/KB/vb/NewPathCompactPath.aspx
-        ''' </summary>
-        ''' <param name="strSrc">The string to truncate with path ellipses.</param>
-        ''' <param name="iWidth">Allowed width of the string in pixels.</param>
-        ''' <param name="ft">The font to measure the string with.</param>
-        ''' <param name="tfFlags">Optional string format flags</param>
-        ''' <returns>A truncated string.</returns>
-        ''' <remarks>Note that this method does not modify the original string.</remarks>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function CompactString(strSrc As String,
-                                             iWidth As Integer,
-                                             ft As Font,
-                                             Optional tfFlags As TextFormatFlags = TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString) As String
-
-            If (String.IsNullOrWhiteSpace(strSrc)) Then Return ""
-
-            Dim strResult As String = String.Copy(strSrc)
-            TextRenderer.MeasureText(strResult, ft, New Size(iWidth, 0), tfFlags Or TextFormatFlags.ModifyString)
-            Return strResult
-
-        End Function
-
         Private Shared CSV_SEPARATORCHARS As Char() = New Char() {","c, " "c, ControlChars.Tab}
 
         ''' -----------------------------------------------------------------------
@@ -1113,7 +1088,7 @@ Namespace Utilities
         End Function
 
         ''' <summary>Default string split delimiters, in order of decreasing relevance.</summary>
-        Public Shared c_DELIMITERS As Char() = New Char() {Convert.ToChar(Keys.Tab), ";"c, Convert.ToChar(Keys.Space), ","c}
+        Public Shared c_DELIMITERS As Char() = New Char() {Convert.ToChar(9), ";"c, " "c, ","c}
 
         ''' -------------------------------------------------------------------
         ''' <summary>

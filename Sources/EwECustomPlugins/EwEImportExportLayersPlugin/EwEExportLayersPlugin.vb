@@ -42,7 +42,7 @@ Public Class EwEExportLayersPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image Implements IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage As Object Implements IGUIPlugin.ControlImage
         Get
             Return My.Resources.safenet
         End Get
@@ -90,7 +90,7 @@ Public Class EwEExportLayersPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
         Dim io As New cImportExportStyle(Me.m_uic)
         Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog(My.Resources.PROMPT_SELECTFILE_SAVE, "", SharedResources.FILEFILTER_STYLE)
         If sfd.ShowDialog(Me.m_uic.FormMain) = DialogResult.OK Then

@@ -307,17 +307,17 @@ Namespace SystemUtilities
             Return Environment.OSVersion.VersionString
         End Function
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns whether this application is running in a remote desktop session.
-        ''' </summary>
-        ''' <returns>True if this application was running in a remote desktop session.</returns>
-        ''' <remarks>This test should also properly detect VNC. Other protocols have
-        ''' not been evaluated.</remarks>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function IsRDC() As Boolean
-            Return System.Windows.Forms.SystemInformation.TerminalServerSession
-        End Function
+        '''' -----------------------------------------------------------------------
+        '''' <summary>
+        '''' Returns whether this application is running in a remote desktop session.
+        '''' </summary>
+        '''' <returns>True if this application was running in a remote desktop session.</returns>
+        '''' <remarks>This test should also properly detect VNC. Other protocols have
+        '''' not been evaluated.</remarks>
+        '''' -----------------------------------------------------------------------
+        'Public Shared Function IsRDC() As Boolean
+        '    Return System.Windows.Forms.SystemInformation.TerminalServerSession
+        'End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -374,19 +374,6 @@ Namespace SystemUtilities
             If (ver.Major < 6) Then Return False
             Return True
 
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns whether the system is running on battery power.
-        ''' </summary>
-        ''' <returns>True if the system is running on battery power.</returns>
-        ''' <remarks>
-        ''' http://stackoverflow.com/questions/241142/c-sharp-net-how-to-check-if-were-running-on-battery
-        ''' </remarks>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function IsBatteryPower() As Boolean
-            Return (PowerLineStatus.Offline = SystemInformation.PowerStatus.PowerLineStatus)
         End Function
 
         ''' -----------------------------------------------------------------------

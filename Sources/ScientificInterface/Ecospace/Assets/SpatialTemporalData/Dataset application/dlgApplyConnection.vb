@@ -794,7 +794,7 @@ Namespace Ecospace.Controls
             End If
 
             Dim cvConf As IConfigurable = DirectCast(cv, IConfigurable)
-            Dim ctrl As Control = cvConf.GetConfigUI()
+            Dim ctrl As Control = DirectCast(cvConf.GetConfigUI(), Control)
 
             If (ctrl Is Nothing) Then Return cvConf.IsConfigured
 

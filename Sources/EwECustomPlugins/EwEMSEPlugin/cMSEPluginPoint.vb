@@ -309,7 +309,7 @@ Public Class cMSEPluginPoint
         End Try
     End Sub
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         If Not Me.HasUI And Me.CanRun Then
             Me.InvalidateConfiguration()
@@ -381,7 +381,7 @@ Public Class cMSEPluginPoint
         End Get
     End Property
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image _
+    Public ReadOnly Property ControlImage As Object _
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing

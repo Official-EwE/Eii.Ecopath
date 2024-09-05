@@ -420,7 +420,7 @@ Namespace SpatialData
             Me.m_mtbSeasonalEnd.Enabled = Me.m_cbSeasonal.Checked
             Me.m_lblDescription.Visible = (Not Me.m_hdrDescription.IsCollapsed)
             Me.m_tbxDescription.Visible = (Not Me.m_hdrDescription.IsCollapsed)
-            Me.m_lblLocationSample.Text = cStringUtils.CompactString(Me.AbsolutePath(), Me.m_lblLocationSample.Width, Me.m_lblLocationSample.Font)
+            Me.m_lblLocationSample.Text = strPath
 
             If (String.IsNullOrWhiteSpace(Me.m_lblLocationSample.Text)) Then
                 Me.m_lblLocationSample.Text = ScientificInterfaceShared.My.Resources.GENERIC_VALUE_NOTSET

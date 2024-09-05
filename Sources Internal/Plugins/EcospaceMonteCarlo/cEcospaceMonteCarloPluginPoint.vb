@@ -346,7 +346,7 @@ Public Class cEcospaceMonteCarloPluginPoint
     ''' Tell EwE6 what image to show for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage() As Object Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             ' Use an image from the pool of shared resources
             Return ScientificInterfaceShared.My.Resources.fish
@@ -372,7 +372,7 @@ Public Class cEcospaceMonteCarloPluginPoint
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Object) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Dim bHasInterface As Boolean = False
 

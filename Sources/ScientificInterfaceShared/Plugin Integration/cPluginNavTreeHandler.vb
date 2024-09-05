@@ -197,7 +197,7 @@ Namespace Integration
                             tn.ImageIndex = Me.m_tv.ImageList.Images.Count
                             tn.SelectedImageIndex = Me.m_tv.ImageList.Images.Count
                             If (ipNavTree.ControlImage IsNot Nothing) Then
-                                Me.m_tv.ImageList.Images.Add(ipNavTree.ControlImage)
+                                Me.m_tv.ImageList.Images.Add(DirectCast(ipNavTree.ControlImage, Image))
                             Else
                                 Me.m_tv.ImageList.Images.Add(My.Resources.plugin)
                             End If

@@ -248,7 +248,7 @@ Namespace Integration
 
             Dim cmd As cCommand = Nothing
             Dim pcmd As cPluginGUICommand = Nothing
-            Dim frm As Form = Nothing
+            Dim frm As Object = Nothing
 
             Debug.Assert(Me.m_cmdh IsNot Nothing)
 

@@ -4408,7 +4408,7 @@ Public Class frmEwE6
             'End If
 
             Dim dsConf As IConfigurable = DirectCast(ds, IConfigurable)
-            Dim ctrl As Control = dsConf.GetConfigUI()
+            Dim ctrl As Control = DirectCast(dsConf.GetConfigUI(), Control)
             If (ctrl Is Nothing) Then Return
 
             Dim dlg As New dlgConfig(Me.UIContext)

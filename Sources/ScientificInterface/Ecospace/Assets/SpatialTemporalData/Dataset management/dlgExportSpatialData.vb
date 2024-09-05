@@ -264,10 +264,7 @@ Namespace Ecospace.Controls
             Dim bHasSelection As Boolean = (Me.m_clbDatsets.CheckedIndices.Count > 0)
 
             Dim strPathOrg As String = Path.GetDirectoryName(Me.OutputLocation())
-            Dim strPathFit As String = cStringUtils.CompactString(Path.GetDirectoryName(Me.OutputLocation()), _
-                                                                  Me.m_lblFolderPreview.ClientSize.Width, _
-                                                                  Me.m_lblFolderPreview.Font)
-            Me.m_lblFolderPreview.Text = strPathFit
+            Me.m_lblFolderPreview.Text = strPathOrg
             cToolTipShared.GetInstance().SetToolTip(Me.m_lblFolderPreview, strPathOrg)
 
 

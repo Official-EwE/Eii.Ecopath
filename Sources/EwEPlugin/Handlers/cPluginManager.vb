@@ -266,6 +266,8 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public Delegate Function OnConfirmOverwrite(strPlugin As String) As Boolean
 
+#If 0 Then
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Attempt to update all plug-in assemblies.
@@ -391,6 +393,7 @@ Public Class cPluginManager
         Return eAutoUpdateResultTypes.Success_Updated
 
     End Function
+#End If
 
 #End Region ' Updates
 

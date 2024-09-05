@@ -70,7 +70,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IGUIPlugin.ControlImage"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlImage As System.Drawing.Image _
+    Public ReadOnly Property ControlImage As Object _
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return SharedResources.nav_input
@@ -90,7 +90,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         If Not Me.HasForm Then
             Me.m_ui = New frmShapes(Me.GridType)

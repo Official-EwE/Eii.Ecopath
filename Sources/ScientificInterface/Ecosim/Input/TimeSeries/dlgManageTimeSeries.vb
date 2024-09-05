@@ -240,11 +240,6 @@ Public Class dlgManageTimeSeries
         Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.CSV)
     End Sub
 
-    Private Sub OnImportSetClipboardSource(sender As System.Object, e As System.EventArgs) _
-            Handles m_rbImportSourceClipboard.CheckedChanged
-        Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.Clipboard)
-    End Sub
-
     Private Sub OnImportFormatInterval(sender As System.Object, e As ListControlConvertEventArgs) _
             Handles m_cmbImportInterval.Format
         Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
@@ -371,13 +366,6 @@ Public Class dlgManageTimeSeries
 
         ' Update file name control
         Me.m_tbImportFileName.Text = Me.m_strImportFileName
-
-        ' Update source radio buttons
-        If TypeOf Me.m_tr Is cTimeSeriesCSVReader Then
-            Me.m_rbImportSourceTextFile.Checked = True
-        ElseIf TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then
-            Me.m_rbImportSourceClipboard.Checked = True
-        End If
 
         ' Update preview controls
         Me.m_dgvImportPreview.Enabled = bHasPreview
@@ -538,22 +526,10 @@ Public Class dlgManageTimeSeries
     ''' </param>
     ''' -------------------------------------------------------------------
     Private Sub SetSource(src As cTimeSeriesReaderFactory.eTimeSeriesReaderTypes)
-        Select Case src
 
-            Case cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.CSV
-                If TypeOf Me.m_tr Is cTimeSeriesCSVReader Then Return
-                Me.m_tr = New cTimeSeriesCSVReader(Me.m_uic.Core)
-
-            Case cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.Clipboard
-                If TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then Return
-                Me.m_tr = New cTimeSeriesClipboardReader(Me.m_uic.Core)
-
-            Case Else
-                Debug.Assert(False)
-
-        End Select
-
+        Me.m_tr = New cTimeSeriesCSVReader(Me.m_uic.Core)
         Me.ReloadTimeSeries()
+
     End Sub
 
     ''' -------------------------------------------------------------------
@@ -571,12 +547,7 @@ Public Class dlgManageTimeSeries
 
         cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PREVIEW_LOADING)
         Try
-            If TypeOf Me.m_tr Is cTimeSeriesClipboardReader Then
-                Me.m_tr.Read(del, sep, inv)
-            ElseIf TypeOf Me.m_tr Is cTimeSeriesCSVReader Then
-                DirectCast(Me.m_tr, cTimeSeriesCSVReader).Read(Me.m_strImportFileName, del, sep, inv)
-            End If
-
+            DirectCast(Me.m_tr, cTimeSeriesCSVReader).Read(Me.m_strImportFileName, del, sep, inv)
             Me.UpdatePreview()
         Catch ex As Exception
 
