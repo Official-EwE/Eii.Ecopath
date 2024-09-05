@@ -545,7 +545,7 @@ Public Class dlgDefineTaxonomy
         If Not (TypeOf prod Is IConfigurablePlugin) Then Return
 
         Try
-            ui = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
+            ui = DirectCast(DirectCast(prod, IConfigurablePlugin).GetConfigUI(), Control)
         Catch ex As Exception
             ui = Nothing
         End Try

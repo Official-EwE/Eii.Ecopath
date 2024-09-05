@@ -27,7 +27,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class cNavTree04TLD_RelFlows
     Inherits cNavTree01TLD
 
-    Public Overrides ReadOnly Property ControlImage() As System.Drawing.Image
+    Public Overrides ReadOnly Property ControlImage() As Object
         Get
             Return SharedResources.nav_input
         End Get

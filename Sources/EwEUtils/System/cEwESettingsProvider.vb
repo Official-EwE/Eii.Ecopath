@@ -215,17 +215,6 @@ Public Class cEwESettingsProvider
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get previous location of app settings file.
-    ''' </summary>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Protected Function GetAppSettingsPathOld() As String
-        Dim fi As New System.IO.FileInfo(Application.ExecutablePath)
-        Return fi.DirectoryName
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Get location where to store settings file.
     ''' </summary>
     ''' <returns></returns>
@@ -262,32 +251,9 @@ Public Class cEwESettingsProvider
         Get
 
             Dim strSettingsDocPath As String = IO.Path.Combine(GetAppSettingsPath, GetAppSettingsFilename)
-            Dim strSettingsDocPathOld As String = IO.Path.Combine(GetAppSettingsPathOld, GetAppSettingsFilename)
             Dim bFileRead As Boolean = False
             Dim decl As XmlDeclaration = Nothing
             Dim node As XmlNode = Nothing
-
-            ' -----------------
-            ' Settings file migration
-            ' -----------------
-
-            ' Has original (wrong) settings file?
-            If File.Exists(strSettingsDocPathOld) Then
-                ' #Yes: does NOT have new, correct settings file?
-                If (Not File.Exists(strSettingsDocPath)) Then
-                    Try
-                        File.Copy(strSettingsDocPathOld, strSettingsDocPath)
-                    Catch ex As Exception
-                        ' Wow
-                    End Try
-                End If
-
-                Try
-                    File.Delete(strSettingsDocPathOld)
-                Catch ex As Exception
-                    ' Aargh
-                End Try
-            End If
 
             ' Is XML doc present?
             If (Me.m_xmldocSettings Is Nothing) Then

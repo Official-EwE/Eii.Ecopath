@@ -208,17 +208,13 @@ Namespace Integration
                 If Not bError Then
                     If (bPlace) Then
                         ' Create menu item and add it
-                        tsi = New ToolStripMenuItem(ip.DisplayName, ip.ControlImage, AddressOf Me.OnPluginMenuItemClick)
+                        tsi = New ToolStripMenuItem(ip.DisplayName, DirectCast(ip.ControlImage, Image), AddressOf Me.OnPluginMenuItemClick)
                         ' Set name
                         tsi.Name = ip.DisplayName
                         ' Set tooltip text
                         tsi.ToolTipText = cStringUtils.ToTooltip(ip.ControlTooltipText)
                         ' Add tag
                         tsi.Tag = ip
-
-                        If (TypeOf (ip) Is IMenuItemKeyboardShortcutPlugin) Then
-                            tsi.ShortcutKeys = DirectCast(ip, IMenuItemKeyboardShortcutPlugin).ShortcutKeys
-                        End If
 
                         Me.m_lItems.Add(tsi)
 

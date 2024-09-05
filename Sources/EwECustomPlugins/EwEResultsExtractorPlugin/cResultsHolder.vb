@@ -49,7 +49,7 @@ Public Class cResultsHolder
     Private sumSS() As Single
     Private mEcosimModel As Ecosim.cEcosimModel = Nothing
 
-    Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage() As Object Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
@@ -73,7 +73,7 @@ Public Class cResultsHolder
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Dim bHasForm As Boolean = False

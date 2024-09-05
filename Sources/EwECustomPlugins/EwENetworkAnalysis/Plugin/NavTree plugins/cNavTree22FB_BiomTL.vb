@@ -27,7 +27,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class cNavTree22FB_BiomTL
     Inherits cNavTree08FB
 
-    Public Overrides ReadOnly Property ControlImage() As System.Drawing.Image
+    Public Overrides ReadOnly Property ControlImage() As Object
         Get
             Return SharedResources.nav_input
         End Get

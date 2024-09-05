@@ -127,7 +127,9 @@ Public Class cPluginGUICommand
         End If
 
         Try
-            Me.m_ip.OnControlClick(Me.m_sender, Me.m_e, Me.Form)
+            Dim frm As Object = Me.Form
+            Me.m_ip.OnControlClick(Me.m_sender, Me.m_e, frm)
+            Me.Form = DirectCast(frm, Form)
         Catch ex As Exception
             Debug.Assert(False, String.Format("Error {0} occurred while running plugin {1}", ex.Message, Me.m_ip.DisplayName))
         Finally

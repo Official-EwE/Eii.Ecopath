@@ -151,7 +151,7 @@ Public Class EwEEcosamplerPlugin
 
 #Region " Menu plugin "
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image _
+    Public ReadOnly Property ControlImage As Object _
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             ' Return My.Resources.LED
@@ -173,7 +173,7 @@ Public Class EwEEcosamplerPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         frmPlugin = Me.GetUI()

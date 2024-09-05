@@ -256,7 +256,7 @@ Public Class cENARPlugin
     ''' Tell EwE6 what image to show for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage() As Object Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
@@ -281,7 +281,7 @@ Public Class cENARPlugin
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As Object) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Try
             If (Me.m_EcoSpaceData IsNot Nothing) Then

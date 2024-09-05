@@ -604,6 +604,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Public Function Compact(strTarget As String) As eDatasourceAccessType _
             Implements DataSources.IEwEDataSource.Compact
+            Me.Cleanup(strTarget)
             Return Me.m_db.Compact(strTarget, strTarget)
         End Function
 
@@ -11344,6 +11345,58 @@ Namespace DataSources
         End Function
 
 #End Region ' Ecopath samples
+
+#Region " Cleanup "
+
+        Private Function Cleanup(strTarget As String) As Boolean
+
+            Dim bSuccess As Boolean = True
+            Try
+                Dim bOpened As Boolean = False
+
+                If (Not Me.IsOpen) Then
+                    bOpened = (Me.Open(strTarget, Nothing) = eDatasourceAccessType.Success)
+                End If
+
+                If Me.BeginTransaction() Then
+                    ' Dave Chagaris issue
+                    bSuccess = bSuccess And DeleteNonreferencedRecords("EcosimTimeSeriesGroup", "TimeseriesID", "EcosimTimeseries")
+                    bSuccess = bSuccess And DeleteNonreferencedRecords("EcosimTimeSeriesFleet", "TimeseriesID", "EcosimTimeseries")
+                    ' Taxa
+                    bSuccess = bSuccess And DeleteNonreferencedRecords("EcopathGroupTaxon", "TaxonID", "EcopathTaxon")
+                    bSuccess = bSuccess And DeleteNonreferencedRecords("EcopathStanzaTaxon", "TaxonID", "EcopathTaxon")
+                    Me.EndTransaction(bSuccess)
+                Else
+                    bSuccess = False
+                End If
+
+                If bOpened Then
+                    Me.Close()
+                End If
+
+            Catch ex As Exception
+
+            End Try
+            Return bSuccess
+
+        End Function
+
+        Private Function DeleteNonreferencedRecords(strTableFrom As String, key As String, strTableRef As String, Optional keyref As String = "") As Boolean
+
+            If String.IsNullOrWhiteSpace(keyref) Then keyref = key
+            Dim strQuery As String = "DELETE FROM " & strTableFrom & " WHERE NOT EXISTS ( SELECT 1 FROM " & strTableRef & " WHERE " & strTableFrom & "." & key & " = " & strTableRef & "." & keyref & ")"
+
+            If Not Me.m_db.Execute(strQuery) Then
+                ' Clumsy construction but easier to put a breakpoint here ;-)
+                Return False
+            End If
+
+            Return True
+
+        End Function
+
+
+#End Region ' Cleanup
 
     End Class
 

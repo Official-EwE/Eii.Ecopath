@@ -112,7 +112,7 @@ Public Class cEwENetworkAnalysisPlugin
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ControlImage() As System.Drawing.Image
+    Public Overrides ReadOnly Property ControlImage() As Object
         Get
             Return SharedResources.nav_output
         End Get

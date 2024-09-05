@@ -121,7 +121,7 @@ Public Class cSFPPluginPoint
 
 #Region " Menu item "
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image _
+    Public ReadOnly Property ControlImage As Object _
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return ScientificInterfaceShared.My.Resources.Ecosim_32x32
@@ -142,7 +142,7 @@ Public Class cSFPPluginPoint
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Try

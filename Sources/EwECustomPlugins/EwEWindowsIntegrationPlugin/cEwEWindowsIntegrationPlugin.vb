@@ -107,7 +107,7 @@ Public Class cEwEKeepSystemAwakePlugin
         Return True
     End Function
 
-    Public Function GetConfigUI() As Windows.Forms.Control Implements IConfigurable.GetConfigUI
+    Public Function GetConfigUI() As Object Implements IConfigurable.GetConfigUI
         Return New ucConfig(Me)
     End Function
 

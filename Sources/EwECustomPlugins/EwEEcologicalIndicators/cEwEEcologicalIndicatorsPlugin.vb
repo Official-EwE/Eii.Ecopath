@@ -716,7 +716,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage As Object Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
@@ -734,7 +734,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         If (Not Me.HasUI) Then

@@ -111,44 +111,6 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the system icon for a <see cref="System.Windows.Forms.MessageBoxIcon">message box 
-        ''' icon</see> identifier.
-        ''' </summary>
-        ''' <param name="mbi"><see cref="System.Windows.Forms.MessageBoxIcon">message box icon</see>
-        ''' identifier to get the system icon for.</param>
-        ''' <returns>An <see cref="Icon">Icon</see>, or Nothing if the icon
-        ''' could not be found.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function GetMessageBoxIcon(mbi As MessageBoxIcon) As Icon
-
-            Dim objIcon As Icon = Nothing
-
-            Select Case mbi
-                Case MessageBoxIcon.Asterisk
-                    objIcon = SystemIcons.Asterisk
-                Case MessageBoxIcon.Error
-                    objIcon = SystemIcons.Error
-                Case MessageBoxIcon.Exclamation
-                    objIcon = SystemIcons.Exclamation
-                Case MessageBoxIcon.Hand, _
-                     MessageBoxIcon.Stop
-                    objIcon = SystemIcons.Hand
-                Case MessageBoxIcon.Information
-                    objIcon = SystemIcons.Information
-                Case MessageBoxIcon.Question
-                    objIcon = SystemIcons.Question
-                Case MessageBoxIcon.Warning
-                    objIcon = SystemIcons.Warning
-                Case Else
-                    ' NOP
-            End Select
-
-            Return objIcon
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Load a resource string from a .NET assembly.
         ''' <seealso cref="LoadString(String, ResourceManager, CultureInfo)"/>
         ''' <seealso cref="LoadString(String, Assembly, String, CultureInfo)"/>

@@ -77,7 +77,7 @@ Public Class cRemarksPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlImage() As System.Drawing.Image _
+    Public ReadOnly Property ControlImage() As Object _
      Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
@@ -120,7 +120,7 @@ Public Class cRemarksPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements IGUIPlugin.OnControlClick
         Try
             If (Me.m_core Is Nothing) Then Return

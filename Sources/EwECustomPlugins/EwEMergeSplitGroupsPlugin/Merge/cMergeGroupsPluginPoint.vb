@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Controls
 #End Region ' Imports
 
 Public Class cMergeGroupsPluginPoint
-    Implements IMenuItemKeyboardShortcutPlugin
+    Implements IMenuItemPlugin
     Implements IUIContextPlugin
 
 #Region " Private vars "
@@ -40,7 +40,7 @@ Public Class cMergeGroupsPluginPoint
 
 #Region " UI "
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image _
+    Public ReadOnly Property ControlImage As Object _
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
@@ -68,7 +68,7 @@ Public Class cMergeGroupsPluginPoint
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Form) _
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         If (Me.m_uic Is Nothing) Then Return
@@ -107,12 +107,6 @@ Public Class cMergeGroupsPluginPoint
     Public ReadOnly Property MenuItemLocation As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuEcopath"
-        End Get
-    End Property
-
-    Public ReadOnly Property ShortcutKeys As Keys Implements IMenuItemKeyboardShortcutPlugin.ShortcutKeys
-        Get
-            Return Keys.Control Or Keys.D6
         End Get
     End Property
 

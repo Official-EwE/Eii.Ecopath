@@ -144,7 +144,7 @@ Public Class cEcotracerConcentrationDataset
 
 #Region " Configuration "
 
-    Public Function GetConfigUI() As Windows.Forms.Control _
+    Public Function GetConfigUI() As Object _
         Implements IConfigurable.GetConfigUI
         Return New ucConfigureCConcDriver(Me)
     End Function

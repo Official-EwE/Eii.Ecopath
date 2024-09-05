@@ -6747,6 +6747,7 @@ exitline:
     End Sub
 
 
+#If 0 Then
 
     Private Sub readAdvectFile()
         ''Read in Advection Field data.  SM, Jan 7, 2003
@@ -6806,6 +6807,8 @@ exitline:
         End Try
 
     End Sub
+
+#End If
 
 #End Region
 

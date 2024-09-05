@@ -58,7 +58,8 @@ Public Class cTimeSeriesReaderFactory
             Case eTimeSeriesReaderTypes.CSV
                 reader = New cTimeSeriesCSVReader(core)
             Case eTimeSeriesReaderTypes.Clipboard
-                reader = New cTimeSeriesClipboardReader(core)
+                'reader = New cTimeSeriesClipboardReader(core)
+                Return Nothing
             Case Else
                 ' Wtf
                 Debug.Assert(False, String.Format("Unable to create Time series text reader for input source {0}", readerType))

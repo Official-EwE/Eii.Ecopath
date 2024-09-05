@@ -123,19 +123,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.ServiceModel">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.Extensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -163,7 +154,6 @@
     <Compile Include="Plugin templates\Ecotracer\IEcotracerScenarioAddedOrRemovedPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IAutoRunPlugin.vb" />
     <Compile Include="Plugin templates\GUI\ICommandHandlerPlugin.vb" />
-    <Compile Include="Plugin templates\GUI\IMenuItemKeyboardShortcutPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IMenuItemTogglePlugin.vb" />
     <Compile Include="Plugin templates\GUI\IAutoSavePlugin.vb" />
     <Compile Include="Plugin templates\Data exchange\cSearchRunType.vb" />
@@ -248,12 +238,6 @@
     <Compile Include="Plugin templates\MonteCarlo\IMonteCarloResultWriterPlugin.vb" />
     <Compile Include="Plugin templates\MonteCarlo\IMonteCarloBalancedModelWaitLock.vb" />
     <Compile Include="Plugin templates\Search\ISearchPlugin.vb" />
-    <Compile Include="Updating\cAutoUpdate.vb" />
-    <Compile Include="Web References\EwEAutoUpdateRef\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -288,27 +272,6 @@
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://webservice.ecopath.org/EwEAutoUpdate.Web/UpdateService.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\EwEAutoUpdateRef\</RelPath>
-      <UpdateFromURL>http://webservice.ecopath.org/EwEAutoUpdate.Web/UpdateService.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>EwEPlugin_EwEAutoUpdateRef_UpdateService</CachedSettingsPropName>
-    </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Web References\EwEAutoUpdateRef\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
-    <None Include="Web References\EwEAutoUpdateRef\UpdateService.disco" />
-    <None Include="Web References\EwEAutoUpdateRef\UpdateService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
