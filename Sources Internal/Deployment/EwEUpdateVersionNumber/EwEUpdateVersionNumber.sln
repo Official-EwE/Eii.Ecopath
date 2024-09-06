@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwERenameAssemblies", "EwERenameAssemblies.vbproj", "{74760963-7365-4242-90E9-70CE5307A916}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEUpdateVersionNumber", "EwEUpdateVersionNumber.vbproj", "{74760963-7365-4242-90E9-70CE5307A916}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEUtils", "..\..\..\..\Ecopath6\Sources\EwEUtils\EwEUtils.vbproj", "{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEUtils", "..\..\..\Sources\EwEUtils\EwEUtils.vbproj", "{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

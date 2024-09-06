@@ -40,7 +40,7 @@ Module modEngine
 
         Dim arrArgs() As String = cStringUtils.SplitQualified(Command, ",")
         Dim strPathSource As String = "D:\Sources\Ecopath6\" ' arrArgs(0).Replace("""", "").Trim
-        Dim assemblyNumber As String = "6.7.0.18662" ' arrArgs(1).Replace("""", "").Trim
+        Dim assemblyNumber As String = "6.7.0.18910" ' arrArgs(1).Replace("""", "").Trim
 
         ' Find all the files with Assembly Name
         Dim lstrFiles As List(Of String) = GetFilesRecursive(strPathSource, "AssemblyInfo.vb")
