@@ -109,7 +109,7 @@ Public Class cEcosimIndicators
     ''' <inheritdocs cref="cIndicators.ModelTL"/>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function ModelTL(iGroup As Integer) As Single
-        Return Me.EcosimDS.TLSim(iGroup)
+        Return Me.EcosimDS.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TL, iGroup, Me.Time)
     End Function
 
     ''' -----------------------------------------------------------------------
