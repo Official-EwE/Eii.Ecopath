@@ -235,8 +235,8 @@ Public Class dlgManageTimeSeries
         Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.CSV)
     End Sub
 
-    Private Sub OnImportSetTextFileSource(sender As System.Object, e As System.EventArgs) _
-            Handles m_rbImportSourceTextFile.CheckedChanged
+    Private Sub OnImportSetTextFileSource(sender As System.Object, e As System.EventArgs)
+
         Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.CSV)
     End Sub
 

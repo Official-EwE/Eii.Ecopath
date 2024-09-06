@@ -134,7 +134,7 @@ Namespace Ecospace.Controls
             Me.m_btnDelete.Enabled = bHasSelection
             Me.m_btnExport.Enabled = bHasDS
 
-            Me.m_lblConfigValue.Text = Me.m_manSets.CurrentConfigFile
+            Me.m_lblConfigValue.Text = Me.m_manSets.CurrentConfigFile.CompactString(Me.m_lblConfigValue.ClientSize.Width, Me.Font)
 
         End Sub
 
