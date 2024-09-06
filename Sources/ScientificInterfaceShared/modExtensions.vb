@@ -53,6 +53,31 @@ Namespace Extensions
             icon.Dispose()
         End Sub
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' String truncation method, blatantly copied from 
+        ''' http://www.codeproject.com/KB/vb/NewPathCompactPath.aspx
+        ''' </summary>
+        ''' <param name="strSrc">The string to truncate with path ellipses.</param>
+        ''' <param name="iWidth">Allowed width of the string in pixels.</param>
+        ''' <param name="ft">The font to measure the string with.</param>
+        ''' <param name="tfFlags">Optional string format flags</param>
+        ''' <returns>A truncated string.</returns>
+        ''' <remarks>Note that this method does not modify the original string.</remarks>
+        ''' -----------------------------------------------------------------------
+        <Runtime.CompilerServices.Extension()>
+        Public Function CompactString(ByVal strSrc As String,
+                                             ByVal iWidth As Integer,
+                                             ByVal ft As Font,
+                                             Optional ByVal tfFlags As TextFormatFlags = TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString) As String
+
+            If (String.IsNullOrWhiteSpace(strSrc)) Then Return ""
+
+            Dim strResult As String = String.Copy(strSrc)
+            TextRenderer.MeasureText(strResult, ft, New Size(iWidth, 0), tfFlags Or TextFormatFlags.ModifyString)
+            Return strResult
+
+        End Function
     End Module
 
 End Namespace

@@ -191,7 +191,7 @@ Namespace Other
             btn.Enabled = Directory.Exists(strPath)
             btn.Tag = strPath
 
-            tbx.Text = strSample
+            tbx.Text = strSample.CompactString(tbx.ClientRectangle.Width, Me.Font)
 
         End Sub
 

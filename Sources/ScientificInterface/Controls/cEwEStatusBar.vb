@@ -280,6 +280,7 @@ Public Class cEwEStatusBar
         End If
 
         ' Show machine ID when wanted by the user AND a remote desktop session is active
+        ' JS 5 Sep 24: the RDC detection logic has been removed in the move to .NET standard, and needs to be reactivated with an OS-agnostic variant
         Me.m_tsIP.Visible = False ' My.Settings.ShowHostInfo And cSystemUtils.IsRDC
 
     End Sub

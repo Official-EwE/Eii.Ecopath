@@ -21,8 +21,7 @@
 
 Option Strict On
 Imports System.Text
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Extensions.modExtensions
 
 #End Region ' Imports
 
@@ -233,20 +232,20 @@ Namespace Controls
             ' Calc conservative rect
             rcLabel = New Rectangle(iMin, 0, iMax - iMin, Me.ClientRectangle.Height)
 
-            'If (rcLabel.Width > 0) Then
-            '    strTemp = cStringUtils.CompactString(strTemp, rcLabel.Width, Me.Font)
+            If (rcLabel.Width > 0) Then
+                strTemp = strTemp.CompactString(rcLabel.Width, Me.Font)
 
-            '    ' Chop off Nothing characters which will occur when string is shortened.
-            '    '   These chars are recognized and handled well by the String class, but 
-            '    '   Graphics.DrawString may still render such chars and characters beyond it.
-            '    For Each c As Char In strTemp
-            '        If (c = Nothing) Then
-            '            Exit For
-            '        End If
-            '        sbTemp.Append(c)
-            '    Next
+                ' Chop off Nothing characters which will occur when string is shortened.
+                '   These chars are recognized and handled well by the String class, but 
+                '   Graphics.DrawString may still render such chars and characters beyond it.
+                For Each c As Char In strTemp
+                    If (c = Nothing) Then
+                        Exit For
+                    End If
+                    sbTemp.Append(c)
+                Next
 
-            'End If
+            End If
 
             ' Store
             Me.m_strLabel = sbTemp.ToString

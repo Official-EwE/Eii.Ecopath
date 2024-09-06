@@ -26,12 +26,12 @@ Imports System.Globalization
 Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms
-Imports EwECore
 Imports EwECore.SpatialData
 Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Extensions
 
 #End Region ' Imports
 
@@ -420,7 +420,7 @@ Namespace SpatialData
             Me.m_mtbSeasonalEnd.Enabled = Me.m_cbSeasonal.Checked
             Me.m_lblDescription.Visible = (Not Me.m_hdrDescription.IsCollapsed)
             Me.m_tbxDescription.Visible = (Not Me.m_hdrDescription.IsCollapsed)
-            Me.m_lblLocationSample.Text = strPath
+            Me.m_lblLocationSample.Text = strPath.CompactString(Me.m_lblLocationSample.Width, Me.m_lblLocationSample.Font)
 
             If (String.IsNullOrWhiteSpace(Me.m_lblLocationSample.Text)) Then
                 Me.m_lblLocationSample.Text = ScientificInterfaceShared.My.Resources.GENERIC_VALUE_NOTSET

@@ -264,11 +264,10 @@ Namespace Ecospace.Controls
             Dim bHasSelection As Boolean = (Me.m_clbDatsets.CheckedIndices.Count > 0)
 
             Dim strPathOrg As String = Path.GetDirectoryName(Me.OutputLocation())
-            Me.m_lblFolderPreview.Text = strPathOrg
+            Dim strPathFit As String = strPathOrg.CompactString(Me.m_lblFolderPreview.ClientSize.Width, Me.m_lblFolderPreview.Font)
+
+            Me.m_lblFolderPreview.Text = strPathFit
             cToolTipShared.GetInstance().SetToolTip(Me.m_lblFolderPreview, strPathOrg)
-
-
-            Me.m_btnExport.Enabled = bHasTarget And bHasSelection
 
         End Sub
 
