@@ -1,0 +1,36 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Sources\\Ecopath6_Internal\\Sources_Int_Functionalities\\EwEAutomatedBuilds\\EwERenameAssemblies\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{74760963-7365-4242-90E9-70CE5307A916}|EwERenameAssemblies.vbproj|d:\\sources\\ecopath6_internal\\sources_int_functionalities\\eweautomatedbuilds\\ewerenameassemblies\\modengine.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{74760963-7365-4242-90E9-70CE5307A916}|EwERenameAssemblies.vbproj|solutionrelative:modengine.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "modEngine.vb",
+              "DocumentMoniker": "D:\\Sources\\Ecopath6_Internal\\Sources_Int_Functionalities\\EwEAutomatedBuilds\\EwERenameAssemblies\\modEngine.vb",
+              "RelativeDocumentMoniker": "modEngine.vb",
+              "ToolTip": "D:\\Sources\\Ecopath6_Internal\\Sources_Int_Functionalities\\EwEAutomatedBuilds\\EwERenameAssemblies\\modEngine.vb",
+              "RelativeToolTip": "modEngine.vb",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-01-13T21:14:32.093Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

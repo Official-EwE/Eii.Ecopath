@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwERenameAssemblies", "EwERenameAssemblies.vbproj", "{74760963-7365-4242-90E9-70CE5307A916}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEUtils", "..\..\..\..\Ecopath6\Sources\EwEUtils\EwEUtils.vbproj", "{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74760963-7365-4242-90E9-70CE5307A916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74760963-7365-4242-90E9-70CE5307A916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74760963-7365-4242-90E9-70CE5307A916}.Debug|x86.ActiveCfg = Debug|x86
+		{74760963-7365-4242-90E9-70CE5307A916}.Debug|x86.Build.0 = Debug|x86
+		{74760963-7365-4242-90E9-70CE5307A916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74760963-7365-4242-90E9-70CE5307A916}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74760963-7365-4242-90E9-70CE5307A916}.Release|x86.ActiveCfg = Release|Any CPU
+		{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}.Debug|x86.ActiveCfg = Debug|x86
+		{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}.Debug|x86.Build.0 = Debug|x86
+		{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}.Release|x86.ActiveCfg = Release|x86
+		{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

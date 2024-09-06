@@ -1,0 +1,22 @@
+﻿<?xml version="1.0"?>
+<info>
+  <entry
+     kind="dir"
+     path="."
+     revision="1">
+    <url>http://svn.red-bean.com/repos/test</url>
+    <repository>
+      <root>http://svn.red-bean.com/repos/test</root>
+      <uuid>5e7d134a-54fb-0310-bd04-b611643e5c25</uuid>
+    </repository>
+    <wc-info>
+      <schedule>normal</schedule>
+      <depth>infinity</depth>
+    </wc-info>
+    <commit
+       revision="42">
+      <author>sally</author>
+      <date>2003-01-15T23:35:12.847647Z</date>
+    </commit>
+  </entry>
+</info>
