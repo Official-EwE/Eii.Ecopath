@@ -371,10 +371,10 @@ Public MustInherit Class cIndicators
             Dim sTL As Single = Me.ModelTL(iGroup)
             Dim sD As Single = Me.ModelDiscards(iGroup)
 
-            sTotalB = sTotalB + sB
-            sTLiBi = sTLiBi + (sB * sTL)
-            sCT = sCT + sC
-            sDT = sDT + sD
+            sTotalB += sB
+            sTLiBi += (sB * sTL)
+            sCT += sC
+            sDT += sD
 
             If sTL >= 2.0 Then
                 sTotalB2 += sB
