@@ -196,11 +196,15 @@ Namespace Integration
                         If (Me.m_tv.ImageList IsNot Nothing) Then
                             tn.ImageIndex = Me.m_tv.ImageList.Images.Count
                             tn.SelectedImageIndex = Me.m_tv.ImageList.Images.Count
+
+                            ' Resolve image
+                            Dim img As Image = My.Resources.plugin
                             If (ipNavTree.ControlImage IsNot Nothing) Then
-                                Me.m_tv.ImageList.Images.Add(DirectCast(ipNavTree.ControlImage, Image))
-                            Else
-                                Me.m_tv.ImageList.Images.Add(My.Resources.plugin)
+                                If (TypeOf ipNavTree.ControlImage Is Image) Then
+                                    img = DirectCast(ipNavTree.ControlImage, Image)
+                                End If
                             End If
+                            Me.m_tv.ImageList.Images.Add(img)
                         End If
                         ' Regular font
                         tn.NodeFont = New System.Drawing.Font(Me.m_tv.Font, Drawing.FontStyle.Regular)
