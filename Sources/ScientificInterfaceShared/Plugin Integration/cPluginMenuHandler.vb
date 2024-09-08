@@ -207,8 +207,9 @@ Namespace Integration
                 ' Found item position?
                 If Not bError Then
                     If (bPlace) Then
+                        Dim img As Image = TryCast(ip.ControlImage, Image)
                         ' Create menu item and add it
-                        tsi = New ToolStripMenuItem(ip.DisplayName, DirectCast(ip.ControlImage, Image), AddressOf Me.OnPluginMenuItemClick)
+                        tsi = New ToolStripMenuItem(ip.DisplayName, img, AddressOf Me.OnPluginMenuItemClick)
                         ' Set name
                         tsi.Name = ip.DisplayName
                         ' Set tooltip text
