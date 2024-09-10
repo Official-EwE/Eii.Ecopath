@@ -523,7 +523,6 @@ Public Class dlgEcobaseImport
             Me.m_strUserAgreement = data.UserAgreement
 
         Catch ex As Exception
-
         End Try
 
     End Sub

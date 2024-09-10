@@ -35,8 +35,7 @@ Public Interface IGUIPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get an image to show in the control for this plug-in. In EwE 6.*, the 
-    ''' returned image is expected to be a WinForms Image instance.
+    ''' Get a WinForms image to show in the control for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     ReadOnly Property ControlImage() As Object
@@ -55,9 +54,8 @@ Public Interface IGUIPlugin
     ''' </summary>
     ''' <param name="sender">The control that was clicked or activated.</param>
     ''' <param name="e">Event parameters pertaining the control.</param>
-    ''' <param name="frmPlugin">A reference to the control that the plug-in creates
-    ''' or activates in response to this event. In EwE 6.*, this is expected to be
-    ''' a WinForms Form instance.</param>
+    ''' <param name="frmPlugin">A reference to the form that the plug-in creates
+    ''' or activates in response to this event.</param>
     ''' -----------------------------------------------------------------------
     Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object)
 

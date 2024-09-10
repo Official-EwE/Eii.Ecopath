@@ -709,7 +709,7 @@ Public Class cEcosimDatastructures
     Public Function ValidateSharedArenas() As Boolean
 
         ' Indices of ilinksset that refer to an invalid i, j or k
-        Dim iPred, iPrey, iPredShared, nPending As Integer
+        Dim iPred, iPrey, nPending As Integer
         Dim pending(Me.nGroups, Me.nGroups) As Boolean
         Dim lInvalidLinks As New List(Of Integer)
 

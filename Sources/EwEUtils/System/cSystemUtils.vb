@@ -26,6 +26,8 @@ Imports System.Diagnostics
 Imports System.Globalization
 Imports System.IO
 Imports System.Net
+Imports System.Net.NetworkInformation
+Imports System.Reflection
 Imports System.Security.Principal
 Imports System.Threading
 Imports System.Windows.Forms
@@ -140,7 +142,7 @@ Namespace SystemUtilities
                 Else
                     links.Add(url)
                 End If
-                If My.Computer.Network.IsAvailable Then
+                If NetworkInterface.GetIsNetworkAvailable() Then
                     Using client As New WebClient()
                         For Each uri As String In links
                             Using stream As IDisposable = client.OpenRead(uri)
@@ -417,10 +419,11 @@ Namespace SystemUtilities
             End If
 
             If (String.IsNullOrEmpty(ApplicationSettingsFolderName)) Then
-                ' Prefer product name, but uif that does not work, use assembly name
-                ApplicationSettingsFolderName = My.Application.Info.ProductName
-                If (String.IsNullOrEmpty(ApplicationSettingsFolderName)) Then
-                    ApplicationSettingsFolderName = My.Application.Info.AssemblyName
+                ' Prefer product name, but if that does not work, use assembly name
+                Dim an As Assembly = Assembly.GetEntryAssembly()
+                ApplicationSettingsFolderName = an.GetCustomAttribute(Of AssemblyProductAttribute)()?.Product
+                If String.IsNullOrEmpty(ApplicationSettingsFolderName) Then
+                    ApplicationSettingsFolderName = Assembly.GetExecutingAssembly().GetName().Name
                 End If
             End If
 

@@ -152,9 +152,7 @@ Namespace Database
                     ' Get default key
                     Select Case keyValueKind
 
-                        Case RegistryValueKind.String, _
-                             RegistryValueKind.ExpandString, _
-                             RegistryValueKind.MultiString
+                        Case RegistryValueKind.String, RegistryValueKind.ExpandString, RegistryValueKind.MultiString
 
                             strFile = CStr(keyValue).ToLower
 

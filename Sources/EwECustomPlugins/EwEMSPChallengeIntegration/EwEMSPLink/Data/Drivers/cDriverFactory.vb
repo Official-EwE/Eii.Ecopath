@@ -20,7 +20,6 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
 
 #End Region ' Imports
 

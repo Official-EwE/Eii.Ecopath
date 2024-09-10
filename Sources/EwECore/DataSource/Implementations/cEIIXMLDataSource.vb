@@ -23,7 +23,6 @@ Option Strict On
 
 Imports System.IO
 Imports EwECore.DataSources
-Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports System.Xml
@@ -33,11 +32,10 @@ Imports EwEUtils.Utilities
 Imports EwECore.MSE
 Imports EwECore.SpatialData
 Imports EwECore.Auxiliary
-Imports System.Diagnostics.Eventing
-
 
 '
 #End Region ' Imports
+
 #Disable Warning CA1063 ' Implement IDisposable Correctly
 ''' ===========================================================================
 ''' <summary>

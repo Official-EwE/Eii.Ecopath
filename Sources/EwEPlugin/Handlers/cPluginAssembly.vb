@@ -18,8 +18,6 @@
 '
 
 Option Strict On
-Imports System
-Imports System.Collections.Generic
 Imports System.Reflection
 Imports EwEUtils.Utilities
 
@@ -79,9 +77,8 @@ Public Class cPluginAssembly
     ''' <param name="ass">The wrapped <see cref="Assembly"/>.</param>
     ''' <param name="bEnabled">Flag stating that the plug-in assembly is allowed to load.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ass As Assembly, bEnabled As Boolean, strSandbox As String)
+    Public Sub New(ass As Assembly, bEnabled As Boolean)
         Me.m_ass = ass
-        Me.Sandbox = strSandbox
         Me.SessionEnabled = bEnabled
         Me.m_bEnabled = bEnabled
     End Sub
@@ -353,13 +350,6 @@ Public Class cPluginAssembly
             Return Me.m_ass
         End Get
     End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the name of the sandbox the plug-in was loaded in, if any.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Sandbox As String = ""
 
 #End Region ' Assembly metadata
 

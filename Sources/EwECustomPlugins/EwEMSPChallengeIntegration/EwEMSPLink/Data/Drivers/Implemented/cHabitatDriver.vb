@@ -79,7 +79,7 @@ Public Class cHabitatDriver
                 Dim map As Single(,) = Me.m_core.EcospaceDataStructures.PHabType(Me.m_hab.Index)
                 For iRow As Integer = 0 To nRows - 1
                     For iCol As Integer = 0 To nCols - 1
-                        map(iRow + 1, iCol + 1) = Math.Max(0, Math.Min(1, ep.Grid.Cell(iRow, iCol)))
+                        map(iRow + 1, iCol + 1) = Math.Max(0, Math.Min(1, ep.Grid.Cell(iCol, iRow)))
                     Next iCol
                 Next iRow
             Else

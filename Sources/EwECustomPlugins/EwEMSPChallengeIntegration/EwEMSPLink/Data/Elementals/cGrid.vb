@@ -23,7 +23,6 @@ Option Strict On
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEMSPLink.IO
 
 #End Region ' Imports
 
@@ -124,7 +123,7 @@ Public Class cGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the data for the grid, dimensioned as (width x height).
+    ''' Get the data for the grid, dimensioned as (column, row) or (y, x).
     ''' </summary>
     ''' <seealso cref="Cell(Integer, Integer)"/>
     ''' -----------------------------------------------------------------------
@@ -136,22 +135,22 @@ Public Class cGrid
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the data for the grid by (x,y) or (column, row)
+    ''' Get the data for the grid by (column, row) or (y, x).
     ''' </summary>
-    ''' <param name="x">The zero-based column number to retrieve data for.</param>
-    ''' <param name="y">The zero-based row number to retrieve data for.</param>
+    ''' <param name="column">The zero-based column number to retrieve data for.</param>
+    ''' <param name="row">The zero-based row number to retrieve data for.</param>
     ''' <seealso cref="Cell"/>
     ''' -----------------------------------------------------------------------
-    Public Property Cell(x As Integer, y As Integer) As Double
+    Public Property Cell(column As Integer, row As Integer) As Double
         Get
-            If (x < 0 Or x >= Me.Width) Then Return Me.NoDataValue
-            If (y < 0 Or y >= Me.Height) Then Return Me.NoDataValue
-            Return Me.m_data(x, y)
+            If (column < 0 Or column >= Me.Width) Then Return Me.NoDataValue
+            If (row < 0 Or row >= Me.Height) Then Return Me.NoDataValue
+            Return Me.m_data(column, row)
         End Get
         Set(value As Double)
-            If (x < 0 Or x >= Me.Width) Then Return
-            If (y < 0 Or y >= Me.Height) Then Return
-            Me.m_data(x, y) = value
+            If (column < 0 Or column >= Me.Width) Then Return
+            If (row < 0 Or row >= Me.Height) Then Return
+            Me.m_data(column, row) = value
         End Set
     End Property
 
@@ -199,10 +198,10 @@ Public Class cGrid
                 If Not imp.Read(strFile) Then Return False
                 r = imp
 
-            Case ".tif", ".tiff", ".bmp", ".png"
-                Dim imp As New cEcospaceImportExportBitmap(core)
-                If Not imp.Load(strFile) Then Return False
-                r = imp
+            'Case ".tif", ".tiff", ".bmp", ".png"
+            '    Dim imp As New cEcospaceImportExportBitmap(core)
+            '    If Not imp.Load(strFile) Then Return False
+            '    r = imp
 
             Case Else
                 Return False

@@ -200,9 +200,9 @@ Namespace Integration
                             ' Resolve image
                             Dim img As Image = My.Resources.plugin
                             If (ipNavTree.ControlImage IsNot Nothing) Then
-                                If (TypeOf ipNavTree.ControlImage Is Image) Then
-                                    img = DirectCast(ipNavTree.ControlImage, Image)
-                                End If
+                                Me.m_tv.ImageList.Images.Add(DirectCast(ipNavTree.ControlImage, Image))
+                            Else
+                                Me.m_tv.ImageList.Images.Add(My.Resources.plugin)
                             End If
                             Me.m_tv.ImageList.Images.Add(img)
                         End If

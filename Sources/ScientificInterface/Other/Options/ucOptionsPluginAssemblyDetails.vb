@@ -47,7 +47,6 @@ Public Class ucOptionsPluginAssemblyDetails
         Me.m_tbCopyright.Text = pa.Copyright
         Me.m_tbFile.Text = pa.Filename
         Me.m_tbVersion.Text = pa.Version
-        Me.m_tbxTrusted.Text = If(String.IsNullOrWhiteSpace(pa.Sandbox), SharedResources.GENERIC_VALUE_YES, SharedResources.GENERIC_VALUE_NO)
         Me.m_lbLicense.Visible = pa.IsLicensed
         Me.m_tbxLicense.Visible = pa.IsLicensed
 
