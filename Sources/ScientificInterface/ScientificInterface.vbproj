@@ -134,29 +134,6 @@
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\ARM64\Debug\</OutputPath>
-    <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
-    <DocumentationFile>EwE6.xml</DocumentationFile>
-    <NoWarn>42353,42354,42355</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>ARM64</PlatformTarget>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\ARM64\Release\</OutputPath>
-    <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
-    <DocumentationFile>EwE6.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>42353,42354,42355</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>ARM64</PlatformTarget>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPPlus">
       <HintPath>..\EwECore\Includes\EPPlus.dll</HintPath>
@@ -2225,6 +2202,10 @@
       <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
       <Name>EwESpatialAssetsPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECore\EwECore.vbproj">
+      <Project>{cdece065-503a-4562-a955-06777b2f909e}</Project>
+      <Name>EwECore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
       <Project>{317f27e7-08d2-4eb6-abc8-dea7d78951c9}</Project>
       <Name>EwEAquamapsEnvDataImporterPlugin</Name>
@@ -2276,10 +2257,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj">
       <Project>{220ff584-9bfa-4872-949a-52c7a6877b65}</Project>
       <Name>EwEMPADynamicsPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECore\EwECore.vbproj">
-      <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
-      <Name>EwECore</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcoTrophPlugin.vbproj">
       <Project>{fef1031b-9933-4364-ad29-c4f8b2e68382}</Project>

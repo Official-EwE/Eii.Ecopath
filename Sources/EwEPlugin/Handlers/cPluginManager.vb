@@ -137,8 +137,6 @@ Public Class cPluginManager
     ''' <summary>Flag stating whether plug-ins have been loaded.</summary>
     Private m_bLoaded As Boolean = False
 
-    Private m_lsandboxes As New List(Of AppDomain)
-
 #End Region ' Private variables
 
 #Region " Initialization "
@@ -502,7 +500,6 @@ Public Class cPluginManager
         Dim ip As IPlugin = Nothing
         Dim bHasPlugins As Boolean = False
         Dim plugAssem As cPluginAssembly = Nothing
-        Dim strSandbox As String = ""
         Dim key As String = strFileName.ToLower()
 
         ' Sanity check
@@ -512,9 +509,6 @@ Public Class cPluginManager
             Try
                 ' Try to load assembly
                 clsAssembly = Assembly.LoadFrom(strFileName)
-            Catch exLoad As FileLoadException
-                ' Try to load assembly in a sandbox
-                clsAssembly = Me.LoadAssemblySandboxed(strFileName, strSandbox)
             Catch ex As Exception
                 cLog.Write(ex, "cPluginManager.LoadPluginAssembly::LoadFrom(" & strFileName & ")")
             End Try
@@ -523,7 +517,7 @@ Public Class cPluginManager
             If (clsAssembly Is Nothing) Then Return False
 
             ' Create plugin assembly and set initial enabled state
-            plugAssem = New cPluginAssembly(clsAssembly, True, strSandbox)
+            plugAssem = New cPluginAssembly(clsAssembly, True)
             plugAssem.Filename = strFileName
 
             ' Set compatible flag for EwE assemblies
@@ -2769,62 +2763,5 @@ Public Class cPluginManager
     End Function
 
 #End Region ' Private helper methods
-
-#Region " Sandboxing "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Load a sandboxed assembly
-    ''' </summary>
-    ''' <param name="strFile"></param>
-    ''' <param name="strSandbox">Name of the sandbox</param>
-    ''' <returns></returns>
-    ''' <remarks>
-    ''' See https://www.simple-talk.com/dotnet/.net-framework/whats-new-in-code-access-security-in-.net-framework-4.0---part-i/
-    ''' See http://msdn.microsoft.com/en-us/library/bb763046%28v=vs.110%29.aspx
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Private Function LoadAssemblySandboxed(strFile As String, ByRef strSandbox As String) As Assembly
-
-#If 0 Then
-        ' To flag an assembly as unsafe, see http://www.howtogeek.com/70012/what-causes-the-file-downloaded-from-the-internet-warning-and-how-can-i-easily-remove-it/
-        ' In a command prompt, enter:
-        notepad [filename]:Zone.Identifier 
-
-        ' Create the file, and save the following content:
-        [ZoneTransfer]
-        ZoneId = 3
-#End If
-
-        ' First, explore the assembly to load
-
-        ' Abort if not a managed assembly
-        Dim an As AssemblyName = AssemblyName.GetAssemblyName(strFile)
-        If (an Is Nothing) Then Return Nothing
-
-        Dim sn As StrongName = cAssemblyUtils.GetStrongName(an)
-        If (sn Is Nothing) Then Return Nothing
-
-        ' Create the permission set to grant to other assemblies. 
-        Dim ev As New Evidence()
-        ev.AddHostEvidence(New Zone(SecurityZone.MyComputer))
-        Dim pset As PermissionSet = SecurityManager.GetStandardSandbox(ev)
-
-        Dim info As New AppDomainSetup()
-        ' Identify the folder to use for the sandbox.
-        info.ApplicationBase = Path.GetFullPath(strFile)
-
-        strSandbox = "Sandbox" & Path.GetFileNameWithoutExtension(strFile)
-
-        ' Create the sandboxed domain.
-        Dim sandbox As AppDomain = AppDomain.CreateDomain(strSandbox, ev, info, pset, sn)
-        Me.m_lsandboxes.Add(sandbox)
-
-        ' Done
-        Return sandbox.Load(an)
-
-    End Function
-
-#End Region ' Sandboxing
 
 End Class

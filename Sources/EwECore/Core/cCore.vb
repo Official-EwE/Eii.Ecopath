@@ -15154,13 +15154,8 @@ Public Class cCore
     Private Sub m_pluginManager_AssemblyAdded(paAdded As EwEPlugin.cPluginAssembly) _
         Handles m_pluginManager.AssemblyAdded
 
-        If (String.IsNullOrWhiteSpace(paAdded.Sandbox)) Then
-            Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_LOADED, Path.GetFileNameWithoutExtension(paAdded.Filename)),
-                                                    eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
-        Else
-            Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_SANDBOXED, Path.GetFileNameWithoutExtension(paAdded.Filename)),
-                                                    eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
-        End If
+        Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_SANDBOXED, Path.GetFileNameWithoutExtension(paAdded.Filename)),
+                                                eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
         'AddHandler paAdded.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
     End Sub
 

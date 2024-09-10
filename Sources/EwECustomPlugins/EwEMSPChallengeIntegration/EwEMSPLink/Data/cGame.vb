@@ -21,8 +21,8 @@
 
 Option Strict On
 Imports System.Drawing
+Imports System.Net
 Imports System.Text
-Imports System.Web
 Imports System.Xml
 Imports EwECore
 Imports EwEUtils.Utilities
@@ -153,7 +153,7 @@ Public Class cGame
     ''' <param name="outcome">The <see cref="cOutcome"/> to add.</param>
     ''' -----------------------------------------------------------------------
     Public Sub Add(outcome As cOutcome)
-        If (outcome Is Nothing) then return
+        If (outcome Is Nothing) Then Return
         For Each t As cOutcome In Me.Outcomes
             If (String.Compare(t.Name, outcome.Name, True) = 0) Then
                 Return
@@ -713,19 +713,19 @@ Public Class cGame
         Dim xa As XmlAttribute = Nothing
 
         xa = doc.CreateAttribute("name")
-        xa.InnerText = HttpUtility.UrlEncode(Me.Name)
+        xa.InnerText = WebUtility.UrlEncode(Me.Name)
         xnGame.Attributes.Append(xa)
 
         xa = doc.CreateAttribute("version")
-        xa.InnerText = HttpUtility.UrlEncode(Me.Version)
+        xa.InnerText = WebUtility.UrlEncode(Me.Version)
         xnGame.Attributes.Append(xa)
 
         xa = doc.CreateAttribute("author")
-        xa.InnerText = HttpUtility.UrlEncode(Me.Author)
+        xa.InnerText = WebUtility.UrlEncode(Me.Author)
         xnGame.Attributes.Append(xa)
 
         xa = doc.CreateAttribute("contact")
-        xa.InnerText = HttpUtility.UrlEncode(Me.Contact)
+        xa.InnerText = WebUtility.UrlEncode(Me.Contact)
         xnGame.Attributes.Append(xa)
 
         xa = doc.CreateAttribute("ecosim_id")
@@ -757,7 +757,7 @@ Public Class cGame
         xnGame.Attributes.Append(xa)
 
         Dim xnDescr As XmlNode = doc.CreateElement("description")
-        xnDescr.InnerText = HttpUtility.UrlEncode(Me.Description)
+        xnDescr.InnerText = WebUtility.UrlEncode(Me.Description)
         xnGame.AppendChild(xnDescr)
 
         ' Also serialize pressures
@@ -779,7 +779,7 @@ Public Class cGame
             If (xnPressure IsNot Nothing) Then
 
                 xa = doc.CreateAttribute("name")
-                xa.InnerText = HttpUtility.UrlEncode(p.Name)
+                xa.InnerText = WebUtility.UrlEncode(p.Name)
                 xnPressure.Attributes.Append(xa)
                 xnPressures.AppendChild(xnPressure)
 
@@ -793,11 +793,11 @@ Public Class cGame
             Dim xnMapping As XmlNode = doc.CreateElement("mapping")
 
             xa = doc.CreateAttribute("pressure")
-            xa.InnerText = HttpUtility.UrlEncode(strKey)
+            xa.InnerText = WebUtility.UrlEncode(strKey)
             xnMapping.Attributes.Append(xa)
 
             xa = doc.CreateAttribute("driver")
-            xa.InnerText = HttpUtility.UrlEncode(Me.m_pressuredrivers(strKey))
+            xa.InnerText = WebUtility.UrlEncode(Me.m_pressuredrivers(strKey))
             xnMapping.Attributes.Append(xa)
 
             If (Me.m_pressuremultipliers.ContainsKey(strKey)) Then
@@ -824,7 +824,7 @@ Public Class cGame
             Dim xnOutput As XmlNode = doc.CreateElement("output")
 
             xa = doc.CreateAttribute("name")
-            xa.InnerText = HttpUtility.UrlEncode(output.Name)
+            xa.InnerText = WebUtility.UrlEncode(output.Name)
             xnOutput.Attributes.Append(xa)
 
             xa = doc.CreateAttribute("type")
@@ -873,10 +873,10 @@ Public Class cGame
         Try
             For Each xa As XmlAttribute In xnGame.Attributes
                 Select Case xa.Name
-                    Case "name" : Me.Name = HttpUtility.UrlDecode(xa.InnerText)
-                    Case "version" : Me.Version = HttpUtility.UrlDecode(xa.InnerText)
-                    Case "author" : Me.Author = HttpUtility.UrlDecode(xa.InnerText)
-                    Case "contact" : Me.Contact = HttpUtility.UrlDecode(xa.InnerText)
+                    Case "name" : Me.Name = WebUtility.UrlDecode(xa.InnerText)
+                    Case "version" : Me.Version = WebUtility.UrlDecode(xa.InnerText)
+                    Case "author" : Me.Author = WebUtility.UrlDecode(xa.InnerText)
+                    Case "contact" : Me.Contact = WebUtility.UrlDecode(xa.InnerText)
                     Case "ecosim_id" : Me.EcosimID = cStringUtils.ConvertToInteger(xa.InnerText)
                     Case "ecospace_id" : Me.EcospaceID = cStringUtils.ConvertToInteger(xa.InnerText)
                     Case "spinup_years" : Me.SpinupYears = cStringUtils.ConvertToInteger(xa.InnerText)
@@ -894,7 +894,7 @@ Public Class cGame
             Select Case xn.Name
                 Case "description"
                     Try
-                        Me.Description = HttpUtility.UrlDecode(xn.InnerText)
+                        Me.Description = WebUtility.UrlDecode(xn.InnerText)
                     Catch ex As Exception
                         Console.WriteLine("cGame.FromXML-description: " & ex.Message)
                     End Try
@@ -906,7 +906,7 @@ Public Class cGame
 
                             For Each xa As XmlAttribute In xnPressure.Attributes
                                 Select Case xa.Name
-                                    Case "name" : strName = HttpUtility.UrlDecode(xa.InnerText)
+                                    Case "name" : strName = WebUtility.UrlDecode(xa.InnerText)
                                     Case "type"
                                         Select Case xa.InnerText.ToLower()
                                             Case "grid" : t = GetType(cEnvironmentalPressure)
@@ -943,11 +943,11 @@ Public Class cGame
                             Dim bEco As Boolean = False
                             For Each xa As XmlAttribute In xnMapping.Attributes
                                 Select Case xa.Name
-                                    Case "pressure" : strPressure = HttpUtility.UrlDecode(xa.InnerText)
-                                    Case "driver" : strDriver = HttpUtility.UrlDecode(xa.InnerText)
+                                    Case "pressure" : strPressure = WebUtility.UrlDecode(xa.InnerText)
+                                    Case "driver" : strDriver = WebUtility.UrlDecode(xa.InnerText)
                                         ' ToDo: upgrade this too
                                     Case "multiplier" : dMultiplier = cStringUtils.ConvertToDouble(xa.InnerText)
-                                    Case "eco_fishing" : bEco = (HttpUtility.UrlDecode(xa.InnerText) = "1")
+                                    Case "eco_fishing" : bEco = (WebUtility.UrlDecode(xa.InnerText) = "1")
                                 End Select
                             Next
                             If (Not String.IsNullOrWhiteSpace(strPressure)) And (Not String.IsNullOrWhiteSpace(strDriver)) Then
@@ -970,7 +970,7 @@ Public Class cGame
                             Dim bRaw As Boolean = False
                             For Each xa As XmlAttribute In xnOutcome.Attributes
                                 Select Case xa.Name
-                                    Case "name" : strName = HttpUtility.UrlDecode(xa.InnerText)
+                                    Case "name" : strName = WebUtility.UrlDecode(xa.InnerText)
                                     Case "type" : [Enum].TryParse(xa.InnerText, type)
                                     Case "items", "numerators" : strNumerators = xa.InnerText
                                     Case "denominators" : strDenominators = xa.InnerText

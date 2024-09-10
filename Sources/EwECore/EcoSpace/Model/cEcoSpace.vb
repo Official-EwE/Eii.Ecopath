@@ -17,10 +17,8 @@
 ' ===============================================================================
 '
 
-Imports System.Data.Linq
 Imports System.Math
 Imports System.Threading
-Imports System.Threading.Tasks
 Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Core

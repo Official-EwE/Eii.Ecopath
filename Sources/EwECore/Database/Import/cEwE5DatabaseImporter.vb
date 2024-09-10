@@ -21,11 +21,11 @@
 
 Option Strict On
 Imports System.Drawing
-Imports System.Globalization
 Imports System.Text
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
+Imports System.Data
 
 #End Region ' EwECore
 

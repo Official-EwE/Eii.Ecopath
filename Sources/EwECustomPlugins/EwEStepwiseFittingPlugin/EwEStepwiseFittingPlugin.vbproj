@@ -107,25 +107,6 @@
   <PropertyGroup>
     <AssemblyName>EwEStepwiseFittingPlugin</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\ARM64\Debug\</OutputPath>
-    <DocumentationFile>EwEPrebalPlugin.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>ARM64</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\ARM64\Release\</OutputPath>
-    <DocumentationFile>EwEPrebalPlugin.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>ARM64</PlatformTarget>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="SourceGrid2">
       <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
@@ -153,7 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EwECore\EwECore.vbproj">
-      <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
+      <Project>{cdece065-503a-4562-a955-06777b2f909e}</Project>
       <Name>EwECore</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\EwEPlugin\EwEPlugin.vbproj">

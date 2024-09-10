@@ -23,8 +23,6 @@ Option Strict On
 
 Imports System
 Imports System.Collections.Specialized
-Imports System.Web
-Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -85,10 +83,10 @@ Namespace Utilities
             Return MyBase.Uri.AbsoluteUri
         End Function
 
-        Public Sub Navigate(Optional bEndResponse As Boolean = True)
-            Dim strURI As String = Me.ToString()
-            HttpContext.Current.Response.Redirect(strURI, bEndResponse)
-        End Sub
+        'Public Sub Navigate(Optional bEndResponse As Boolean = True)
+        '    Dim strURI As String = Me.ToString()
+        '    HttpContext.Current.Response.Redirect(strURI, bEndResponse)
+        'End Sub
 
 #End Region ' Public methods
 

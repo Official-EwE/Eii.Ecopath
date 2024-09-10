@@ -182,11 +182,11 @@ Public Class cPathUtility
                 Case ePathPlaceholderTypes.ModelPath : strResolved = strModelPath
                 Case ePathPlaceholderTypes.ModelExt : strResolved = strModelExt
                 Case ePathPlaceholderTypes.ModelVersion : strResolved = strModelVersion
-                Case ePathPlaceholderTypes.MyDocuments : strResolved = My.Computer.FileSystem.SpecialDirectories.MyDocuments
-                Case ePathPlaceholderTypes.MyAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
-                Case ePathPlaceholderTypes.Desktop : strResolved = My.Computer.FileSystem.SpecialDirectories.Desktop
-                    'Case ePathPlaceholderTypes.SharedAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.AllUsersApplicationData
-                Case ePathPlaceholderTypes.TempFiles : strResolved = My.Computer.FileSystem.SpecialDirectories.Temp
+                Case ePathPlaceholderTypes.MyDocuments : strResolved = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                Case ePathPlaceholderTypes.MyAppData : strResolved = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                Case ePathPlaceholderTypes.Desktop : strResolved = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+    'Case ePathPlaceholderTypes.SharedAppData : strResolved = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)
+                Case ePathPlaceholderTypes.TempFiles : strResolved = Path.GetTempPath()
                 Case Else : Debug.Assert(False)
             End Select
         Catch ex As Exception

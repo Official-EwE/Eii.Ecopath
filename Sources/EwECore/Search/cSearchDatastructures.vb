@@ -199,7 +199,7 @@ Public Class cSearchDatastructures
     ''' Semaphor provides single thread access to calcEcospaceMonthlyCatch()
     ''' </summary>
     ''' <remarks></remarks>
-    Private m_SearchCatchSemaphor As System.Threading.Semaphore
+    Private m_SearchCatchSemaphor As Object = Nothing
 
     Public DiversityIndex As Double
 
@@ -246,7 +246,12 @@ Public Class cSearchDatastructures
 
         Me.m_EcoFunctions = EcoFunctions
 
-        Me.m_SearchCatchSemaphor = New System.Threading.Semaphore(1, 1, "SearchMontlyCatch")
+        Try
+            Dim semaphore As New System.Threading.Semaphore(1, 1, "SearchMontlyCatch")
+            Me.m_SearchCatchSemaphor = semaphore
+        Catch ex As Exception
+            Console.WriteLine("Cannot create Semaphore: " & ex.Message & ". Skipping.")
+        End Try 
 
         Me.m_EPdata = EPData
 

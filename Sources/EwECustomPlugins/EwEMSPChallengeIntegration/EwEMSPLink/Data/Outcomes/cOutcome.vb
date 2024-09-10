@@ -20,10 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Data.Common
 Imports EwECore
 Imports EwECore.Style
-Imports EwEPlugin
 
 #End Region ' Imports
 

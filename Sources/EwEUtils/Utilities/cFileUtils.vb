@@ -125,43 +125,46 @@ Namespace Utilities
 
         End Function
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Find a file in a directory.
-        ''' </summary>
-        ''' <param name="strFile">Name of the file to locate.</param>
-        ''' <param name="strPath">Directory to search.</param>
-        ''' <param name="bRecursive">Flag stating if subdirectories should be searched recursively.</param>
-        ''' <returns>The full path to the file if found, or an empty string if the file could not be located.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function FindFile(ByVal strFile As String,
-                                        ByVal strPath As String,
-                                        Optional ByVal bRecursive As Boolean = False) As String
+        '''' -------------------------------------------------------------------
+        '''' <summary>
+        '''' Find a file in a directory.
+        '''' </summary>
+        '''' <param name="strFile">Name of the file to locate.</param>
+        '''' <param name="strPath">Directory to search.</param>
+        '''' <param name="bRecursive">Flag stating if subdirectories should be searched recursively.</param>
+        '''' <returns>The full path to the file if found, or an empty string if the file could not be located.</returns>
+        '''' -------------------------------------------------------------------
+        'Public Shared Function FindFile(ByVal strFile As String,
+        '                                ByVal strPath As String,
+        '                                Optional ByVal bRecursive As Boolean = False) As String
 
-            Dim strFullPath As String = Path.Combine(strPath, strFile)
-            Dim fsec As FileSecurity = Nothing
+        '    Dim strFullPath As String = Path.Combine(strPath, strFile)
+        '    Dim fsec As FileSecurity = Nothing
 
-            Try
-                ' Try to be nice
-                If File.Exists(strFullPath) Then Return strFullPath
-                ' Ok, maybe the file is hidden. Let's be less nice.
-                fsec = File.GetAccessControl(strFullPath, AccessControlSections.Group)
-                If fsec IsNot Nothing Then
-                    Return strFullPath
-                End If
-            Catch ex As FileNotFoundException
-                ' Woops
-            End Try
+        '    Try
+        '        ' Try to be nice
+        '        If File.Exists(strFullPath) Then Return strFullPath
+        '        ' Ok, maybe the file is hidden. Let's be less nice.
+        '        fsec = New FileInfo(strFullPath).GetAccessControl()
+        '        ' Copy only the group section
+        '        For Each rule As AuthorizationRule In fsec.GetAccessRules(True, True, GetType(System.Security.Principal.NTAccount))
+        '            If rule.IdentityReference.Value.Contains("Group") Then
+        '                Return strFullPath
+        '            End If
+        '        Next
+        '    Catch ex As FileNotFoundException
+        '        ' Woops
+        '    End Try
 
-            If bRecursive Then
-                For Each strDirectory As String In Directory.GetDirectories(strPath)
-                    strFullPath = FindFile(strFile, strDirectory, bRecursive)
-                    If Not String.IsNullOrEmpty(strFullPath) Then Return strFullPath
-                Next
-            End If
-            Return ""
+        '    If bRecursive Then
+        '        For Each strDirectory As String In Directory.GetDirectories(strPath)
+        '            strFullPath = FindFile(strFile, strDirectory, bRecursive)
+        '            If Not String.IsNullOrEmpty(strFullPath) Then Return strFullPath
+        '        Next
+        '    End If
+        '    Return ""
 
-        End Function
+        'End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>

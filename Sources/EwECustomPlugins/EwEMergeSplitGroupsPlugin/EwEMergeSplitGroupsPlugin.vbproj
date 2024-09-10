@@ -222,10 +222,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
-      <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
-      <Name>EwECore</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
       <Name>EwEPlugin</Name>
@@ -233,6 +229,10 @@
     <ProjectReference Include="..\..\..\Sources\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
       <Name>EwEUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EwECore\EwECore.vbproj">
+      <Project>{cdece065-503a-4562-a955-06777b2f909e}</Project>
+      <Name>EwECore</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
       <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>

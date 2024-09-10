@@ -21,12 +21,10 @@
 
 Option Strict On
 Imports System.IO
-Imports System.Net
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -133,7 +131,7 @@ Public Class cEwEMSPLink
     ''' <summary>
     ''' Load a new game and validate its configuration against the expectations of MEL.
     ''' </summary>
-    ''' <param name="strEwEModelFile">The path or URI to the EwE model to (down)load.</param>
+    ''' <param name="strEwEModelFile">The path to the EwE model to (down)load.</param>
     ''' <param name="mode">The name of the game to load. Leaving the name empty will load the first available game.</param>
     ''' <param name="timestep">Check: the number of time steps per year.</param>
     ''' <param name="longitude">Check: the model longitude origin to validate. Ignored for now because of slight numerical precision differences between MSP, MEL and EwE.</param>
@@ -159,18 +157,6 @@ Public Class cEwEMSPLink
         strEwEModelFile = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), strEwEModelFile)
 
         ' Load model, or download if needed
-        If Not File.Exists(strEwEModelFile) Then
-            Try
-                Dim sc As New WebClient()
-                Dim f As String = cFileUtils.MakeTempFile(Path.GetExtension(strEwEModelFile))
-                sc.DownloadFile(strEwEModelFile, f)
-                strEwEModelFile = f
-            Catch ex As Exception
-                RaiseException("EwEShell.Configuration: Failed to download model from " & strEwEModelFile & ". " & ex.Message, False)
-                Return False
-            End Try
-        End If
-
         If (Not File.Exists(strEwEModelFile)) Then
             RaiseException("EwEShell.Configuration: Model " & strEwEModelFile & " not found", False)
             Return False

@@ -209,7 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
-      <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
+      <Project>{cdece065-503a-4562-a955-06777b2f909e}</Project>
       <Name>EwECore</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj">

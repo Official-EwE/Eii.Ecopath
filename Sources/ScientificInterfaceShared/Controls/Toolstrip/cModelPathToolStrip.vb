@@ -234,18 +234,19 @@ Namespace Controls
 
             If (rcLabel.Width > 0) Then
                 strTemp = strTemp.CompactString(rcLabel.Width, Me.Font)
-
-                ' Chop off Nothing characters which will occur when string is shortened.
-                '   These chars are recognized and handled well by the String class, but 
-                '   Graphics.DrawString may still render such chars and characters beyond it.
-                For Each c As Char In strTemp
-                    If (c = Nothing) Then
-                        Exit For
-                    End If
-                    sbTemp.Append(c)
-                Next
-
             End If
+
+            '    ' Chop off Nothing characters which will occur when string is shortened.
+            '    '   These chars are recognized and handled well by the String class, but 
+            '    '   Graphics.DrawString may still render such chars and characters beyond it.
+            '    For Each c As Char In strTemp
+            '        If (c = Nothing) Then
+            '            Exit For
+            '        End If
+            '        sbTemp.Append(c)
+            '    Next
+
+            'End If
 
             ' Store
             Me.m_strLabel = sbTemp.ToString
