@@ -62,11 +62,6 @@ Namespace UI
             Me.m_tbxSpinupYears = New System.Windows.Forms.TextBox()
             Me.m_lblRunYears = New System.Windows.Forms.Label()
             Me.m_lblSpinupYears = New System.Windows.Forms.Label()
-            Me.m_lblCheckSimFishing = New EwEMSPPlugin.UI.cImageLabel()
-            Me.m_lblCheckSimForcing = New EwEMSPPlugin.UI.cImageLabel()
-            Me.m_lblCheckGame = New EwEMSPPlugin.UI.cImageLabel()
-            Me.m_lblCheckSpaceTimeSeries = New EwEMSPPlugin.UI.cImageLabel()
-            Me.m_lblCheckSimTimeSeries = New EwEMSPPlugin.UI.cImageLabel()
             Me.m_tpInformation = New System.Windows.Forms.TabPage()
             Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblInfoVersion = New System.Windows.Forms.Label()
@@ -79,7 +74,6 @@ Namespace UI
             Me.m_tbxInfoAuthor = New System.Windows.Forms.TextBox()
             Me.m_tpPressures = New System.Windows.Forms.TabPage()
             Me.m_cmbPressureTypes = New System.Windows.Forms.ComboBox()
-            Me.m_gridPressureMappings = New EwEMSPPlugin.UI.gridPressureDriverMappings()
             Me.m_btnPressureDefaults = New System.Windows.Forms.Button()
             Me.m_btnPressureDelete = New System.Windows.Forms.Button()
             Me.m_btnPressureRename = New System.Windows.Forms.Button()
@@ -97,7 +91,6 @@ Namespace UI
             Me.m_btnOutcomeRename = New System.Windows.Forms.Button()
             Me.m_scOutputs = New System.Windows.Forms.SplitContainer()
             Me.m_lbOutputs = New System.Windows.Forms.ListBox()
-            Me.m_gridOutcome = New EwEMSPPlugin.UI.gridOutcomes()
             Me.m_tsOutcome = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tslOutputRawBinned = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsbnOuputRaw = New System.Windows.Forms.ToolStripButton()
@@ -116,7 +109,6 @@ Namespace UI
             Me.m_btnEmulViewOutputFolder = New System.Windows.Forms.Button()
             Me.m_btnEmulStop = New System.Windows.Forms.Button()
             Me.m_lblEmulTestSets = New System.Windows.Forms.Label()
-            Me.m_gridEmulTestset = New EwEMSPPlugin.UI.gridEmulator()
             Me.m_cmbEmulTestsets = New System.Windows.Forms.ComboBox()
             Me.m_cbSaveOutputMaps = New System.Windows.Forms.CheckBox()
             Me.m_cbEmulPauseSpace = New System.Windows.Forms.CheckBox()
@@ -143,6 +135,15 @@ Namespace UI
             Me.m_tsddGames = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tsbnImport = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnRenderScribanTemplate = New System.Windows.Forms.ToolStripButton()
+            Me.m_lblCheckSimFishing = New EwEMSPPlugin.UI.cImageLabel()
+            Me.m_lblCheckSimForcing = New EwEMSPPlugin.UI.cImageLabel()
+            Me.m_lblCheckGame = New EwEMSPPlugin.UI.cImageLabel()
+            Me.m_lblCheckSpaceTimeSeries = New EwEMSPPlugin.UI.cImageLabel()
+            Me.m_lblCheckSimTimeSeries = New EwEMSPPlugin.UI.cImageLabel()
+            Me.m_gridPressureMappings = New EwEMSPPlugin.UI.gridPressureDriverMappings()
+            Me.m_gridOutcome = New EwEMSPPlugin.UI.gridOutcomes()
+            Me.m_gridEmulTestset = New EwEMSPPlugin.UI.gridEmulator()
             Me.m_tabConfig.SuspendLayout()
             Me.m_tpEwESettings.SuspendLayout()
             Me.m_tpInformation.SuspendLayout()
@@ -276,31 +277,6 @@ Namespace UI
             resources.ApplyResources(Me.m_lblSpinupYears, "m_lblSpinupYears")
             Me.m_lblSpinupYears.Name = "m_lblSpinupYears"
             '
-            'm_lblCheckSimFishing
-            '
-            resources.ApplyResources(Me.m_lblCheckSimFishing, "m_lblCheckSimFishing")
-            Me.m_lblCheckSimFishing.Name = "m_lblCheckSimFishing"
-            '
-            'm_lblCheckSimForcing
-            '
-            resources.ApplyResources(Me.m_lblCheckSimForcing, "m_lblCheckSimForcing")
-            Me.m_lblCheckSimForcing.Name = "m_lblCheckSimForcing"
-            '
-            'm_lblCheckGame
-            '
-            resources.ApplyResources(Me.m_lblCheckGame, "m_lblCheckGame")
-            Me.m_lblCheckGame.Name = "m_lblCheckGame"
-            '
-            'm_lblCheckSpaceTimeSeries
-            '
-            resources.ApplyResources(Me.m_lblCheckSpaceTimeSeries, "m_lblCheckSpaceTimeSeries")
-            Me.m_lblCheckSpaceTimeSeries.Name = "m_lblCheckSpaceTimeSeries"
-            '
-            'm_lblCheckSimTimeSeries
-            '
-            resources.ApplyResources(Me.m_lblCheckSimTimeSeries, "m_lblCheckSimTimeSeries")
-            Me.m_lblCheckSimTimeSeries.Name = "m_lblCheckSimTimeSeries"
-            '
             'm_tpInformation
             '
             Me.m_tpInformation.Controls.Add(Me.m_tlpInfo)
@@ -381,39 +357,6 @@ Namespace UI
             Me.m_cmbPressureTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbPressureTypes.FormattingEnabled = True
             Me.m_cmbPressureTypes.Name = "m_cmbPressureTypes"
-            '
-            'm_gridPressureMappings
-            '
-            Me.m_gridPressureMappings.AllowBlockSelect = False
-            resources.ApplyResources(Me.m_gridPressureMappings, "m_gridPressureMappings")
-            Me.m_gridPressureMappings.AutoSizeMinHeight = 10
-            Me.m_gridPressureMappings.AutoSizeMinWidth = 10
-            Me.m_gridPressureMappings.AutoStretchColumnsToFitWidth = True
-            Me.m_gridPressureMappings.AutoStretchRowsToFitHeight = False
-            Me.m_gridPressureMappings.BackColor = System.Drawing.Color.White
-            Me.m_gridPressureMappings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridPressureMappings.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridPressureMappings.CustomSort = False
-            Me.m_gridPressureMappings.DataName = "MEL pressure mappings"
-            Me.m_gridPressureMappings.FixedColumnWidths = False
-            Me.m_gridPressureMappings.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridPressureMappings.Game = Nothing
-            Me.m_gridPressureMappings.GridToolTipActive = True
-            Me.m_gridPressureMappings.IsLayoutSuspended = False
-            Me.m_gridPressureMappings.Name = "m_gridPressureMappings"
-            Me.m_gridPressureMappings.Shell = Nothing
-            Me.m_gridPressureMappings.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridPressureMappings.UIContext = Nothing
             '
             'm_btnPressureDefaults
             '
@@ -538,39 +481,6 @@ Namespace UI
             Me.m_lbOutputs.Name = "m_lbOutputs"
             Me.m_lbOutputs.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
             Me.m_lbOutputs.Sorted = True
-            '
-            'm_gridOutcome
-            '
-            Me.m_gridOutcome.AllowBlockSelect = False
-            Me.m_gridOutcome.AutoSizeMinHeight = 10
-            Me.m_gridOutcome.AutoSizeMinWidth = 10
-            Me.m_gridOutcome.AutoStretchColumnsToFitWidth = True
-            Me.m_gridOutcome.AutoStretchRowsToFitHeight = False
-            Me.m_gridOutcome.BackColor = System.Drawing.Color.White
-            Me.m_gridOutcome.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridOutcome.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridOutcome.CustomSort = False
-            Me.m_gridOutcome.DataName = "grid outcomes"
-            resources.ApplyResources(Me.m_gridOutcome, "m_gridOutcome")
-            Me.m_gridOutcome.FixedColumnWidths = False
-            Me.m_gridOutcome.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridOutcome.GridToolTipActive = True
-            Me.m_gridOutcome.IsLayoutSuspended = False
-            Me.m_gridOutcome.Name = "m_gridOutcome"
-            Me.m_gridOutcome.Output = Nothing
-            Me.m_gridOutcome.Shell = Nothing
-            Me.m_gridOutcome.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridOutcome.UIContext = Nothing
             '
             'm_tsOutcome
             '
@@ -703,39 +613,6 @@ Namespace UI
             resources.ApplyResources(Me.m_lblEmulTestSets, "m_lblEmulTestSets")
             Me.m_lblEmulTestSets.Name = "m_lblEmulTestSets"
             '
-            'm_gridEmulTestset
-            '
-            Me.m_gridEmulTestset.AllowBlockSelect = False
-            resources.ApplyResources(Me.m_gridEmulTestset, "m_gridEmulTestset")
-            Me.m_gridEmulTestset.AutoSizeMinHeight = 10
-            Me.m_gridEmulTestset.AutoSizeMinWidth = 10
-            Me.m_gridEmulTestset.AutoStretchColumnsToFitWidth = True
-            Me.m_gridEmulTestset.AutoStretchRowsToFitHeight = False
-            Me.m_gridEmulTestset.BackColor = System.Drawing.Color.White
-            Me.m_gridEmulTestset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridEmulTestset.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridEmulTestset.CustomSort = False
-            Me.m_gridEmulTestset.DataName = "MEL pressure testdata"
-            Me.m_gridEmulTestset.FixedColumnWidths = False
-            Me.m_gridEmulTestset.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridEmulTestset.Game = Nothing
-            Me.m_gridEmulTestset.GridToolTipActive = True
-            Me.m_gridEmulTestset.IsLayoutSuspended = False
-            Me.m_gridEmulTestset.Name = "m_gridEmulTestset"
-            Me.m_gridEmulTestset.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridEmulTestset.Testset = Nothing
-            Me.m_gridEmulTestset.UIContext = Nothing
-            '
             'm_cmbEmulTestsets
             '
             resources.ApplyResources(Me.m_cmbEmulTestsets, "m_cmbEmulTestsets")
@@ -849,7 +726,7 @@ Namespace UI
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslbGame, Me.m_tstbGameName, Me.m_tsbnGameAdd, Me.m_tsbnGameEdit, Me.m_tsbnGameDelete, Me.ToolStripSeparator1, Me.m_tsddGames, Me.m_tsbnImport, Me.m_tsbnExport})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslbGame, Me.m_tstbGameName, Me.m_tsbnGameAdd, Me.m_tsbnGameEdit, Me.m_tsbnGameDelete, Me.ToolStripSeparator1, Me.m_tsddGames, Me.m_tsbnRenderScribanTemplate, Me.m_tsbnExport, Me.m_tsbnImport})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             '
@@ -899,15 +776,148 @@ Namespace UI
             '
             'm_tsbnImport
             '
+            Me.m_tsbnImport.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             Me.m_tsbnImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnImport, "m_tsbnImport")
             Me.m_tsbnImport.Name = "m_tsbnImport"
             '
             'm_tsbnExport
             '
+            Me.m_tsbnExport.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
             Me.m_tsbnExport.Name = "m_tsbnExport"
+            '
+            'm_tsbnRenderScribanTemplate
+            '
+            Me.m_tsbnRenderScribanTemplate.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.m_tsbnRenderScribanTemplate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnRenderScribanTemplate, "m_tsbnRenderScribanTemplate")
+            Me.m_tsbnRenderScribanTemplate.Name = "m_tsbnRenderScribanTemplate"
+            '
+            'm_lblCheckSimFishing
+            '
+            resources.ApplyResources(Me.m_lblCheckSimFishing, "m_lblCheckSimFishing")
+            Me.m_lblCheckSimFishing.Name = "m_lblCheckSimFishing"
+            '
+            'm_lblCheckSimForcing
+            '
+            resources.ApplyResources(Me.m_lblCheckSimForcing, "m_lblCheckSimForcing")
+            Me.m_lblCheckSimForcing.Name = "m_lblCheckSimForcing"
+            '
+            'm_lblCheckGame
+            '
+            resources.ApplyResources(Me.m_lblCheckGame, "m_lblCheckGame")
+            Me.m_lblCheckGame.Name = "m_lblCheckGame"
+            '
+            'm_lblCheckSpaceTimeSeries
+            '
+            resources.ApplyResources(Me.m_lblCheckSpaceTimeSeries, "m_lblCheckSpaceTimeSeries")
+            Me.m_lblCheckSpaceTimeSeries.Name = "m_lblCheckSpaceTimeSeries"
+            '
+            'm_lblCheckSimTimeSeries
+            '
+            resources.ApplyResources(Me.m_lblCheckSimTimeSeries, "m_lblCheckSimTimeSeries")
+            Me.m_lblCheckSimTimeSeries.Name = "m_lblCheckSimTimeSeries"
+            '
+            'm_gridPressureMappings
+            '
+            Me.m_gridPressureMappings.AllowBlockSelect = False
+            resources.ApplyResources(Me.m_gridPressureMappings, "m_gridPressureMappings")
+            Me.m_gridPressureMappings.AutoSizeMinHeight = 10
+            Me.m_gridPressureMappings.AutoSizeMinWidth = 10
+            Me.m_gridPressureMappings.AutoStretchColumnsToFitWidth = True
+            Me.m_gridPressureMappings.AutoStretchRowsToFitHeight = False
+            Me.m_gridPressureMappings.BackColor = System.Drawing.Color.White
+            Me.m_gridPressureMappings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridPressureMappings.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridPressureMappings.CustomSort = False
+            Me.m_gridPressureMappings.DataName = "MEL pressure mappings"
+            Me.m_gridPressureMappings.FixedColumnWidths = False
+            Me.m_gridPressureMappings.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridPressureMappings.Game = Nothing
+            Me.m_gridPressureMappings.GridToolTipActive = True
+            Me.m_gridPressureMappings.IsLayoutSuspended = False
+            Me.m_gridPressureMappings.Name = "m_gridPressureMappings"
+            Me.m_gridPressureMappings.Shell = Nothing
+            Me.m_gridPressureMappings.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridPressureMappings.UIContext = Nothing
+            '
+            'm_gridOutcome
+            '
+            Me.m_gridOutcome.AllowBlockSelect = False
+            Me.m_gridOutcome.AutoSizeMinHeight = 10
+            Me.m_gridOutcome.AutoSizeMinWidth = 10
+            Me.m_gridOutcome.AutoStretchColumnsToFitWidth = True
+            Me.m_gridOutcome.AutoStretchRowsToFitHeight = False
+            Me.m_gridOutcome.BackColor = System.Drawing.Color.White
+            Me.m_gridOutcome.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridOutcome.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridOutcome.CustomSort = False
+            Me.m_gridOutcome.DataName = "grid outcomes"
+            resources.ApplyResources(Me.m_gridOutcome, "m_gridOutcome")
+            Me.m_gridOutcome.FixedColumnWidths = False
+            Me.m_gridOutcome.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridOutcome.GridToolTipActive = True
+            Me.m_gridOutcome.IsLayoutSuspended = False
+            Me.m_gridOutcome.Name = "m_gridOutcome"
+            Me.m_gridOutcome.Output = Nothing
+            Me.m_gridOutcome.Shell = Nothing
+            Me.m_gridOutcome.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridOutcome.UIContext = Nothing
+            '
+            'm_gridEmulTestset
+            '
+            Me.m_gridEmulTestset.AllowBlockSelect = False
+            resources.ApplyResources(Me.m_gridEmulTestset, "m_gridEmulTestset")
+            Me.m_gridEmulTestset.AutoSizeMinHeight = 10
+            Me.m_gridEmulTestset.AutoSizeMinWidth = 10
+            Me.m_gridEmulTestset.AutoStretchColumnsToFitWidth = True
+            Me.m_gridEmulTestset.AutoStretchRowsToFitHeight = False
+            Me.m_gridEmulTestset.BackColor = System.Drawing.Color.White
+            Me.m_gridEmulTestset.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridEmulTestset.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridEmulTestset.CustomSort = False
+            Me.m_gridEmulTestset.DataName = "MEL pressure testdata"
+            Me.m_gridEmulTestset.FixedColumnWidths = False
+            Me.m_gridEmulTestset.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridEmulTestset.Game = Nothing
+            Me.m_gridEmulTestset.GridToolTipActive = True
+            Me.m_gridEmulTestset.IsLayoutSuspended = False
+            Me.m_gridEmulTestset.Name = "m_gridEmulTestset"
+            Me.m_gridEmulTestset.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridEmulTestset.Testset = Nothing
+            Me.m_gridEmulTestset.UIContext = Nothing
             '
             'frmGameDesigner
             '
@@ -1053,6 +1063,7 @@ Namespace UI
         Private WithEvents m_tsbnGameEdit As Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnGameDelete As Windows.Forms.ToolStripButton
         Private WithEvents m_tsddGames As Windows.Forms.ToolStripComboBox
+        Private WithEvents m_tsbnRenderScribanTemplate As Windows.Forms.ToolStripButton
     End Class
 
 End Namespace

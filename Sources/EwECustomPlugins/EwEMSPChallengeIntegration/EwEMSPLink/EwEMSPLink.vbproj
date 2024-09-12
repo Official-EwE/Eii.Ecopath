@@ -85,9 +85,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Includes\Newtonsoft.Json.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Sources\EwECore\EwECore.vbproj" />
     <ProjectReference Include="..\..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj" />
     <ProjectReference Include="..\..\..\..\Sources\EwEUtils\EwEUtils.vbproj" />

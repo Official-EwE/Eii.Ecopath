@@ -405,6 +405,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property scriban_black_border() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("scriban_black_border", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to MSP game configuration failed to save to {0}.
         '''</summary>
         Friend ReadOnly Property STATUS_GAME_EXPORT_FAILED() As String

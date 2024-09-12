@@ -22,6 +22,8 @@ Option Strict On
 Imports System.Drawing
 Imports System.IO
 Imports System.Security
+Imports System.Text
+Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 Imports System.Xml
 Imports EwECore
@@ -30,9 +32,13 @@ Imports EwEMSPLink
 Imports EwEMSPPlugin.Emulator
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports Scriban
+Imports Scriban.Runtime
 Imports SharedRecources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -119,6 +125,7 @@ Namespace UI
 
             Me.m_tsbnImport.Image = SharedRecources.ImportHS
             Me.m_tsbnExport.Image = SharedRecources.ExportHS
+            Me.m_tsbnRenderScribanTemplate.Image = My.Resources.scriban_black_border
 
             Me.m_ilTabIcons.Images.Add(SharedRecources.OK)
             Me.m_ilTabIcons.Images.Add(SharedRecources.Warning)
@@ -721,6 +728,37 @@ Namespace UI
 
             End Try
 
+        End Sub
+
+
+        Private Sub OnScribanExport(sender As Object, e As EventArgs) Handles m_tsbnRenderScribanTemplate.Click
+            Dim cfg As cGame = Me.SelectedGame()
+            If (cfg Is Nothing) Then Return
+
+            Dim cmd As cFileOpenCommand = CType(Me.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+            cmd.Invoke("MSP Config template|*.json.scriban", 0, "Select MSP Config template file to use")
+            If (cmd.Result <> DialogResult.OK) Then Return
+
+            Dim templateText As String = ReadScribanTemplate(cmd.FileName)
+            If templateText Is Nothing Then Return
+            If Not ExportGeneratedScribanTemplate(cmd.FileName, templateText) Then Return
+            Dim context As TemplateContext = CreateScribanTemplateContext(cfg)
+            Dim result As String = Nothing
+            Try
+                Dim template = Scriban.Template.Parse(templateText)
+                result = template.Render(context)
+            Catch ex As Exception
+                Dim msg As New cMessage("An error occurred: " & ex.Message, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+                Me.Core.Messages.SendMessage(msg)
+                Return
+            End Try
+            If (result Is Nothing) Then Return
+
+            ' Save the result
+            Dim saveCmd As cFileSaveCommand = CType(Me.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+            saveCmd.Invoke("JSON Files|*.json", 0, "Save rendered MSP Config as")
+            If (saveCmd.Result <> DialogResult.OK) Then Return
+            File.WriteAllText(saveCmd.FileName, ReformatJson(result))
         End Sub
 
 #End Region ' Game info and game settings "
@@ -1632,6 +1670,132 @@ Namespace UI
 
             Return fmsg.Reply = eMessageReply.YES
 
+        End Function
+
+        Private Function CreateScribanTemplateContext(cfg As cGame) As TemplateContext
+            ' create a mapping from MPA ID to banned fleet name indices
+            Dim mapIDToFleetIndices As New Dictionary(Of String, List(Of Integer))
+            ' and a mapping from fleets by name
+            Dim fleetIDToIndex As New Dictionary(Of String, Integer)
+            For i As Integer = 1 To m_spacedata.MPAname.Length - 1
+                Dim mpaID As String = MSPLink.Core.EcospaceMPAs(i).GetID()
+                mapIDToFleetIndices.Add(mpaID, New List(Of Integer))
+            Next
+            For i As Integer = 0 To m_spacedata.EcoPathData.FleetName.Length - 1
+                If (m_spacedata.EcoPathData.FleetName(i) Is Nothing) Then Continue For
+                fleetIDToIndex.Add(MSPLink.Core.EcopathFleetInputs(i).GetID, i - 1) ' convert to 0-based
+                For j As Integer = 1 To m_spacedata.MPAname.Length - 1
+                    Dim mpaID As String = MSPLink.Core.EcospaceMPAs(j).GetID()
+                    ' true if an MPA is open to fishing for a given fleet
+                    Dim fishery As Boolean = m_spacedata.MPAfishery(i, j)
+                    If (fishery) Then Continue For
+                    mapIDToFleetIndices(mpaID).Add(i - 1)  ' convert to 0-based
+                Next
+            Next
+
+            ' create a mapping from pressure name to fleet names indices
+            Dim fleetIndices As New List(Of Integer)
+            Dim pressureNameToFleetIndices As New Dictionary(Of String, List(Of Integer))
+            For Each p In cfg.Pressures
+                Dim pressureFleetIndices = New List(Of Integer)
+                Dim driver As cDriver = cfg.Driver(p.Name)
+                Dim mpaDriver As cMPADriver = TryCast(driver, cMPADriver)
+                If mpaDriver IsNot Nothing Then
+                    pressureFleetIndices.AddRange(mapIDToFleetIndices(mpaDriver.ValueID))
+                End If
+                If ((TypeOf driver Is cFleetEcoDriver) Or
+                    (TypeOf driver Is cFleetEffortDriver)) Then
+                    pressureFleetIndices.Add(fleetIDToIndex(driver.ValueID))
+                End If
+                fleetIndices.AddRange(pressureFleetIndices.Select(Function(x) x + 1)) ' convert to 1-based
+                pressureNameToFleetIndices.Add(p.Name, pressureFleetIndices)
+            Next
+
+            Dim fleetNames As New List(Of String)
+            For i As Integer = 0 To m_spacedata.EcoPathData.FleetName.Length - 1
+                If (m_spacedata.EcoPathData.FleetName(i) Is Nothing) Then Continue For
+                If Not fleetIndices.Contains(i) Then Continue For
+                fleetNames.Add(m_spacedata.EcoPathData.FleetName(i))
+            Next
+            Dim data = New ScriptObject From {
+                {"FleetNames", fleetNames}
+            }
+            Dim pressures = New ScriptObject From {
+                {"Environmental", cfg.Pressures.OfType(Of cEnvironmentalPressure)},
+                {"FishingEffort", cfg.Pressures.OfType(Of cFishingEffortPressure)},
+                {"FishingEco", cfg.Pressures.OfType(Of cFishingEcoPressure)}
+            }
+            data.Add("Pressures", pressures)
+            data.Add("PressureNameToFleetIndices", pressureNameToFleetIndices)
+            Dim outcomes = New ScriptObject()
+            For Each value As cOutcome.eLayerType In [Enum].GetValues(GetType(cOutcome.eLayerType))
+                outcomes.Add(value.ToString(), cfg.Outcomes.Where(Function(outcome) outcome.LayerType = value))
+            Next
+            data.Add("Outcomes", outcomes)
+            Dim context As New TemplateContext With {.MemberRenamer = Function(member) member.Name}
+            context.PushGlobal(data)
+            Return context
+        End Function
+
+        Private Function ExportGeneratedScribanTemplate(templateBaseFileName As String, combinedTemplateText As String) As Boolean
+            Dim newFileName As String = templateBaseFileName.Replace(".json.scriban", ".gen.json.scriban")
+            Dim newFilePath As String = Path.Combine(Path.GetDirectoryName(templateBaseFileName), newFileName)
+            Try
+                File.WriteAllText(newFilePath, combinedTemplateText)
+            Catch ex As Exception
+                Dim msg As New cMessage("An error occurred: " & ex.Message, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+                Me.Core.Messages.SendMessage(msg)
+                Return False
+            End Try
+            Return True
+        End Function
+        Private Function ReadScribanTemplate(templateBaseFileName As String) As String
+            ' Read the Scriban template
+            Dim templateText As String = File.ReadAllText(templateBaseFileName)
+            ' Regex to find all include directives in the template
+            Dim includeRegex As New Regex("\{\{\s*\#\# includes:\s*(.+?)\s* \#\#\s*\}\}")
+
+            ' Iterate over matches in reverse order to not mess up the indexes for replacement
+            Dim sbTemplateText As New StringBuilder(templateText)
+            Dim matches As MatchCollection = includeRegex.Matches(templateText)
+            For i As Integer = matches.Count - 1 To 0 Step -1
+                Dim match As Match = matches(i)
+                Dim includesContent As New StringBuilder()
+                ' Split the matched group into individual file include paths
+                Dim includes As String() = Regex.Split(match.Groups(1).Value, "\s*,\s*")
+                For Each include As String In includes
+                    Dim includePath As String = Path.Combine(Path.GetDirectoryName(templateBaseFileName), include.Trim())
+                    Try
+                        includesContent.Append(File.ReadAllText(includePath)).Append(Environment.NewLine)
+                    Catch ex As Exception
+                        Dim msg As New cMessage("An error occurred: " & ex.Message, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+                        Me.Core.Messages.SendMessage(msg)
+                        Return Nothing
+                    End Try
+                Next
+                ' Replace the directive with the content of the included files
+                sbTemplateText.Remove(match.Index, match.Length)
+                sbTemplateText.Insert(match.Index, includesContent.ToString())
+            Next
+
+            ' The final template text with all includes replaced by their content
+            Return sbTemplateText.ToString()
+        End Function
+
+        Private Function ReformatJson(unformattedJson As String) As String
+            Try
+                ' Parse the unformatted JSON into a JToken
+                Dim parsedJson As JToken = JToken.Parse(unformattedJson)
+
+                ' Convert the JToken back into a formatted string with indentation
+                Dim formattedJson As String = parsedJson.ToString(Newtonsoft.Json.Formatting.Indented)
+
+                Return formattedJson
+            Catch ex As JsonReaderException
+                Dim msg As New cMessage("An error occurred: " & ex.Message, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+                Me.Core.Messages.SendMessage(msg)
+                Return unformattedJson
+            End Try
         End Function
 
 #End Region ' Internals
