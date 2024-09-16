@@ -154,12 +154,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwEUtils\EwEUtils.vbproj">
-      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -175,6 +169,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Sources\EwEUtils\EwEUtils.vbproj">
+      <Project>{5c331318-c23e-4eeb-ad1e-2edef85e0205}</Project>
+      <Name>EwEUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

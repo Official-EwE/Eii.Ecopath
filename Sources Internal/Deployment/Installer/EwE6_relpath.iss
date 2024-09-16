@@ -4,7 +4,7 @@
 
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 1
+#define Compile64Bit 0
 #define CodeSigning 1                       ; set to 0 to disable code signing
 
 ; Optional features
@@ -15,7 +15,7 @@
 ; Automated build will provide file version as a command line parameter
 ; /DFileVersion=6.6.{minor release no}.{build no}
 #ifndef FileVersion
-  #define FileVersion "6.7.0.18910"
+  #define FileVersion "6.7.0.18947"
 #endif
 VersionInfoVersion={#FileVersion}
 
