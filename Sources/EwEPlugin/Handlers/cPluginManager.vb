@@ -408,8 +408,9 @@ Public Class cPluginManager
     ''' Load plugins with default options.
     ''' </summary>
     ''' <seealso cref="LoadPlugins(String, Boolean, String())"/>
+    ''' <seealso cref="LoadPlugins(String, Boolean)"/>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPlugins()
+    Public Sub LoadPluginsDefault()
         Me.LoadPlugins("./", True, {})
     End Sub
 
@@ -421,6 +422,8 @@ Public Class cPluginManager
     ''' to the EwE startup folder.</param>
     ''' <param name="bAllDirectories">True to search all directories, false to 
     ''' search the top directory only.</param>
+    ''' <seealso cref="LoadPlugins(String, Boolean, String())"/>
+    ''' <seealso cref="LoadPluginsDefault()"/>
     ''' -----------------------------------------------------------------------
     Public Sub LoadPlugins(strSubfolder As String, bAllDirectories As Boolean)
         Me.LoadPlugins(strSubfolder, bAllDirectories, {})
@@ -436,6 +439,8 @@ Public Class cPluginManager
     ''' <param name="disabledPlugins">Array with file names of plug-ins that should 
     ''' NOT be enabled. These assemblies will still have to be known by the manager 
     ''' in case the user wants to enable the assemblies  in the future.</param>
+    ''' <seealso cref="LoadPlugins(String, Boolean)"/>
+    ''' <seealso cref="LoadPluginsDefault()"/>
     ''' -----------------------------------------------------------------------
     Public Sub LoadPlugins(strSubfolder As String, bAllDirectories As Boolean, disabledPlugins As String())
 
