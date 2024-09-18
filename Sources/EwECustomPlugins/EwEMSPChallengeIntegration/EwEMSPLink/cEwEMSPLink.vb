@@ -52,7 +52,7 @@ Public Class cEwEMSPLink
 
         Dim pm As New cPluginManager()
         Me.Core.PluginManager = pm
-        pm.LoadPlugins()
+        pm.LoadPluginsDefault()
 
         Try
             Me.Controller = CType(pm.GetPlugins(GetType(cEcospaceController))(0), cEcospaceController)
