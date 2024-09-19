@@ -413,9 +413,9 @@ Public Class cPluginManager
     ''' <seealso cref="LoadPlugins(String, Boolean, String())"/>
     ''' <seealso cref="LoadPlugins()"/>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPluginDefault(strSubfolder As String)
-        Me.LoadPlugins(strSubfolder, True, {})
-    End Sub
+    Public Function LoadPluginDefault(strSubfolder As String) As Integer
+        Return Me.LoadPlugins(strSubfolder, True, {})
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -424,9 +424,9 @@ Public Class cPluginManager
     ''' <seealso cref="LoadPlugins(String, Boolean, String())"/>
     ''' <seealso cref="LoadPlugins(String, Boolean)"/>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPlugins()
-        Me.LoadPlugins("./", True, {})
-    End Sub
+    Public Function LoadPlugins() As Integer
+        Return Me.LoadPlugins("./", True, {})
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -439,9 +439,9 @@ Public Class cPluginManager
     ''' <seealso cref="LoadPlugins(String, Boolean, String())"/>
     ''' <seealso cref="LoadPlugins()"/>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPlugins(strSubfolder As String, bAllDirectories As Boolean)
-        Me.LoadPlugins(strSubfolder, bAllDirectories, {})
-    End Sub
+    Public Function LoadPlugins(strSubfolder As String, bAllDirectories As Boolean) As Integer
+        Return Me.LoadPlugins(strSubfolder, bAllDirectories, {})
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -456,10 +456,12 @@ Public Class cPluginManager
     ''' <seealso cref="LoadPlugins(String, Boolean)"/>
     ''' <seealso cref="LoadPlugins()"/>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPlugins(strSubfolder As String, bAllDirectories As Boolean, disabledPlugins As String())
+    Public Function LoadPlugins(strSubfolder As String, bAllDirectories As Boolean, disabledPlugins As String()) As Integer
+
+        Dim nLoaded As Integer = -1
 
         ' Sanity checks - load only once
-        If (Me.m_bLoaded) Then Return
+        If (Me.m_bLoaded) Then Return nLoaded
 
         Dim pluginAssembly As Assembly = Assembly.GetAssembly(GetType(cPluginManager))
         ' Get the location of the plugin manager assembly as the default plug-in path
@@ -475,7 +477,7 @@ Public Class cPluginManager
 
         If Not Directory.Exists(strPluginPath) Then
             cLog.Write("Plugin directory does not exist: " & strPluginPath, eVerboseLevel.Detailed)
-            Return
+            Return 0
         End If
 
         Try
@@ -491,7 +493,9 @@ Public Class cPluginManager
                     Else
                         bLoadPlugin = (Array.IndexOf(disabledPlugins, key) = -1)
                     End If
-                    Me.LoadPluginAssembly(fi.FullName, bLoadPlugin)
+                    If Me.LoadPluginAssembly(fi.FullName, bLoadPlugin) Then
+                        nLoaded += 1
+                    End If
                 Catch ex As Exception
                     ' Ignore this
                     cLog.Write(ex, eVerboseLevel.Detailed, "cPluginManager.LoadPlugins " & fi.FullName)
@@ -501,8 +505,9 @@ Public Class cPluginManager
             ' Kaboom
             cLog.Write(ex, eVerboseLevel.Standard, "cPluginManager.LoadPlugins@" & strPluginPath)
         End Try
+        Return nLoaded
 
-    End Sub
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
