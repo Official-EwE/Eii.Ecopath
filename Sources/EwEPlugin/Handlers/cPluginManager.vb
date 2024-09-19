@@ -405,12 +405,26 @@ Public Class cPluginManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Load all plug-ins that are not marked as 'disabled'.
+    ''' </summary>
+    ''' <param name="strSubfolder">The directory to search for plug-ins relative 
+    ''' to the EwE startup folder and all the directories under.</param>
+    ''' <remarks>This method was added for the benefit of Python interoperability.</remarks>
+    ''' <seealso cref="LoadPlugins(String, Boolean, String())"/>
+    ''' <seealso cref="LoadPlugins()"/>
+    ''' -----------------------------------------------------------------------
+    Public Sub LoadPluginDefault(strSubfolder As String)
+        Me.LoadPlugins(strSubfolder, True, {})
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Load plugins with default options.
     ''' </summary>
     ''' <seealso cref="LoadPlugins(String, Boolean, String())"/>
     ''' <seealso cref="LoadPlugins(String, Boolean)"/>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPluginsDefault()
+    Public Sub LoadPlugins()
         Me.LoadPlugins("./", True, {})
     End Sub
 
@@ -423,7 +437,7 @@ Public Class cPluginManager
     ''' <param name="bAllDirectories">True to search all directories, false to 
     ''' search the top directory only.</param>
     ''' <seealso cref="LoadPlugins(String, Boolean, String())"/>
-    ''' <seealso cref="LoadPluginsDefault()"/>
+    ''' <seealso cref="LoadPlugins()"/>
     ''' -----------------------------------------------------------------------
     Public Sub LoadPlugins(strSubfolder As String, bAllDirectories As Boolean)
         Me.LoadPlugins(strSubfolder, bAllDirectories, {})
@@ -440,7 +454,7 @@ Public Class cPluginManager
     ''' NOT be enabled. These assemblies will still have to be known by the manager 
     ''' in case the user wants to enable the assemblies  in the future.</param>
     ''' <seealso cref="LoadPlugins(String, Boolean)"/>
-    ''' <seealso cref="LoadPluginsDefault()"/>
+    ''' <seealso cref="LoadPlugins()"/>
     ''' -----------------------------------------------------------------------
     Public Sub LoadPlugins(strSubfolder As String, bAllDirectories As Boolean, disabledPlugins As String())
 
