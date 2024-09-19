@@ -71,13 +71,10 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="iRow">One-based Ecospace row index</param>
         ''' <param name="iCol">One-based Ecospace column index</param>
-        ''' <param name="dNoDataValue">No data value to use if either row or 
-        ''' column are invalid, or if the cell does not hold any data.</param>
-        ''' <returns>A value, or <paramref name="dNoDataValue"/> if either row or 
+        ''' <returns>A value, or -9999 if either row or 
         ''' column are invalid, or if the cell does not hold any data.</returns>
         ''' -------------------------------------------------------------------
-        Function Cell(iRow As Integer, iCol As Integer,
-                      Optional dNoDataValue As Double = -9999) As Double
+        Function Cell(iRow As Integer, iCol As Integer) As Double
 
 #End Region ' Data access
 

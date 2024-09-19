@@ -95,29 +95,25 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="iRow">One-based row index in the Ecospace grid.</param>
         ''' <param name="iCol">One-based column index in the Ecospace grid.</param>
-        ''' <param name="dNoDataValue">No data value to use if either row or 
-        ''' column are invalid, or if the cell does not hold any data.</param>
-        ''' <returns>A value, or <paramref name="dNoDataValue"/> if either row or 
+        ''' <returns>A value, or <see cref="cCore.NULL_VALUE"/> if either row or 
         ''' column are invalid, or if the cell does not hold any data.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Cell(ByVal iRow As Integer, _
-                             ByVal iCol As Integer, _
-                             Optional ByVal dNoDataValue As Double = -9999) As Double _
+        Public Function Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Double _
             Implements ISpatialRaster.Cell
 
             iRow -= 1
             iCol -= 1
 
             ' Perform range check
-            If (iRow < 0 Or iRow > Me.m_rs.EndRow) Then Return dNoDataValue
-            If (iCol < 0 Or iCol > Me.m_rs.EndColumn) Then Return dNoDataValue
+            If (iRow < 0 Or iRow > Me.m_rs.EndRow) Then Return cCore.NULL_VALUE
+            If (iCol < 0 Or iCol > Me.m_rs.EndColumn) Then Return cCore.NULL_VALUE
 
             Try
                 Dim dValue As Double = Me.m_rs.Value(iRow, iCol)
-                If (dValue = Me.m_rs.NoDataValue) Or (dValue = dNoDataValue) Then Return dNoDataValue
+                If (dValue = Me.m_rs.NoDataValue) Or (dValue = cCore.NULL_VALUE) Then Return cCore.NULL_VALUE
                 Return dValue
             Catch ex As Exception
-                Return dNoDataValue
+                Return cCore.NULL_VALUE
             End Try
 
         End Function
