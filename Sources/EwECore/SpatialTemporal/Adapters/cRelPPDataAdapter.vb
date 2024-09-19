@@ -90,13 +90,12 @@ Namespace SpatialData
         ''' <see cref="cSpatialScalarDataAdapter.SetCell"/> will scale external data to a the first timestep or a user defined value.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap, _
-                                                  layer As cEcospaceLayer, _
-                                                  conn As cSpatialDataConnection, _
-                                                  iTime As Integer, _
-                                                  dt As Date, _
-                                                  dataExternal As ISpatialRaster, _
-                                                  dNullValue As Double) As Boolean
+        Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap,
+                                                  layer As cEcospaceLayer,
+                                                  conn As cSpatialDataConnection,
+                                                  iTime As Integer,
+                                                  dt As Date,
+                                                  dataExternal As ISpatialRaster) As Boolean
 
             Try
 
@@ -133,7 +132,7 @@ Namespace SpatialData
             End Try
 
             'Return True
-            Return MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNullValue)
+            Return MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal)
 
         End Function
 

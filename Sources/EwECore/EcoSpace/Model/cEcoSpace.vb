@@ -1378,7 +1378,7 @@ Public Class cEcoSpace
                 For Each src As cSpatialDataAdapter In Me.SpatialData.DataAdapters
                     If (src IsNot Nothing) Then
                         Try
-                            src.Populate(iTimeStepCounter, cCore.NULL_VALUE)
+                            src.Populate(iTimeStepCounter)
                         Catch ex As Exception
                             cLog.Write(ex, "cEcospace.SetSpatialTempData " & src.Name & "(" & src.Index & ")")
                         End Try

@@ -77,10 +77,9 @@ Namespace SpatialData
                                                   conn As cSpatialDataConnection,
                                                   iTime As Integer,
                                                   dt As Date,
-                                                  dataExternal As ISpatialRaster,
-                                                  dNoData As Double) As Boolean
+                                                  dataExternal As ISpatialRaster) As Boolean
 
-            If Not MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData) Then Return False
+            If Not MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal) Then Return False
 
 
             'Tell the core IEnvironmentalResponseManager(s) that a layer has changed

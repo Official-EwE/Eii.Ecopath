@@ -62,7 +62,7 @@ Public Class cEcospaceImportExportRaster
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="ISpatialRaster.Cell"/>
     ''' -----------------------------------------------------------------------
-    Public Function Cell(iRow As Integer, iCol As Integer, Optional dNoDataValue As Double = -9999.0) As Double _
+    Public Function Cell(iRow As Integer, iCol As Integer) As Double _
         Implements EwEUtils.SpatialData.ISpatialRaster.Cell
         Return Convert.ToDouble(Me.m_parent.Value(iRow, iCol, Me.m_strField))
     End Function
