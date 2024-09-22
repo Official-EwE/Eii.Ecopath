@@ -331,6 +331,10 @@ Public Class cSearchDatastructures
         End Set
     End Property
 
+    Friend Function culval() As Single
+        Throw New NotImplementedException()
+    End Function
+
     ''' <summary>
     ''' The Fishing Policy Search needs Ecosim to run for an additional 20 years
     ''' </summary>
@@ -998,7 +1002,7 @@ Public Class cSearchDatastructures
         Dim CV As Single
         Dim iFlt As Integer, iGrp As Integer
         Dim CostPenalty As Single
-        Dim CostPenaltyConstant As Integer = 1
+        Dim CostPenaltyConstant As Integer = 10
 
         ReDim Me.CostRatio(Me.m_ecopathData.NumFleet)
 
@@ -1063,22 +1067,19 @@ Public Class cSearchDatastructures
             End If
 
             CostPenalty = 0
+            'VC2024-09-21 POlicy searc with "prevent cost>earnings" does not stop negative values, but it's getting a bit closer
+            ' so made it "limit cost > earnings" on interface instead ;-)
+
             If Me.ValCatchGear(iFlt) > 0 And Me.UseCostPenalty Then
                 Me.CostRatio(iFlt) = Me.NetCost(iFlt) / Me.ValCatchGear(iFlt)
-                If Me.CostRatio(iFlt) < 3.0# Then
-                    CostPenalty = CSng(CostPenaltyConstant * Me.CostRatio(iFlt) ^ 7)
-                    If Me.CostRatio(iFlt) < 3 Then
-                        CostPenalty = CSng(CostPenaltyConstant * Me.CostRatio(iFlt) ^ 7)
-                    Else
-                        CostPenalty = CSng(CostPenaltyConstant * 3 ^ 7 + 1000 * (Me.CostRatio(iFlt) - 3))
-                    End If
-                End If ' If ValCatchGear(i) > 0 And UseCostPenalty Then
-                '      System.Console.WriteLine("Cost R and P = " & CostRatio(i).ToString & ", " & CostPenalty)
-            End If
-            Me.totval = Me.totval - Me.NetCost(iFlt) - CostPenalty
+                CostPenalty = CSng(CostPenaltyConstant * Me.CostRatio(iFlt) ^ 15)
 
+                'System.Console.WriteLine("Cost R and P = " & CostRatio(iFlt).ToString & ", " & CostPenalty)
+            End If
+
+            Me.totval = Me.totval - Me.NetCost(iFlt) - CostPenalty
             Me.Employ = Me.Employ + (Me.ValCatchGear(iFlt) - CostPenalty) * Me.Jobs(iFlt)
-            Me.ValCatchGear(iFlt) = Me.ValCatchGear(iFlt) - Me.NetCost(iFlt) - CostPenalty
+            'Me.ValCatchGear(iFlt) = Me.ValCatchGear(iFlt) - Me.NetCost(iFlt) - CostPenalty
 
         Next
 
@@ -1142,11 +1143,7 @@ Public Class cSearchDatastructures
             CostPenalty = 0
             If Me.ValCatchGear(iflt) > 0 And Me.UseCostPenalty Then
                 Me.CostRatio(iflt) = Me.NetCost(iflt) / Me.ValCatchGear(iflt)
-                If Me.CostRatio(iflt) < 3.0# Then
-                    CostPenalty = CSng(CostPenaltyConstant * Me.CostRatio(iflt) ^ 50)
-                Else
-                    CostPenalty = CSng(CostPenaltyConstant * 3.0! ^ 50.0! + 1000.0! * (Me.CostRatio(iflt) - 3.0!))
-                End If
+                CostPenalty = CSng(CostPenaltyConstant * Me.CostRatio(iflt) ^ 50)
             End If
 
             Me.totval = Me.totval - Me.NetCost(iflt) - CostPenalty

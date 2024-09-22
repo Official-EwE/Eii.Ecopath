@@ -261,7 +261,7 @@ Namespace Ecosim
             Me.m_chkPrevCE.Name = "m_chkPrevCE"
             Me.m_chkPrevCE.Size = New System.Drawing.Size(138, 17)
             Me.m_chkPrevCE.TabIndex = 19
-            Me.m_chkPrevCE.Text = "&Prevent cost > earnings"
+            Me.m_chkPrevCE.Text = "&Limit cost > earnings"
             Me.m_chkPrevCE.UseVisualStyleBackColor = True
             '
             'm_lblDiscRate

@@ -2924,6 +2924,7 @@ Namespace Core
         MandateReb = 3
         Ecological = 4
         BioDiversity = 5
+        CulturalValue = 6
     End Enum
 
 #End Region ' Search criteria results
