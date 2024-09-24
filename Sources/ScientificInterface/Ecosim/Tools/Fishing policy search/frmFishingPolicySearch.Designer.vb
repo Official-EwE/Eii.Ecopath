@@ -201,9 +201,9 @@ Namespace Ecosim
             'm_chkMaxPortUl
             '
             Me.m_chkMaxPortUl.AutoSize = True
-            Me.m_chkMaxPortUl.Location = New System.Drawing.Point(10, 203)
+            Me.m_chkMaxPortUl.Location = New System.Drawing.Point(7, 251)
             Me.m_chkMaxPortUl.Name = "m_chkMaxPortUl"
-            Me.m_chkMaxPortUl.Size = New System.Drawing.Size(108, 14)
+            Me.m_chkMaxPortUl.Size = New System.Drawing.Size(135, 17)
             Me.m_chkMaxPortUl.TabIndex = 16
             Me.m_chkMaxPortUl.Text = "Maximize portfolio &utility"
             Me.m_chkMaxPortUl.UseVisualStyleBackColor = True
@@ -211,9 +211,9 @@ Namespace Ecosim
             'm_chkUsePlugin
             '
             Me.m_chkUsePlugin.AutoSize = True
-            Me.m_chkUsePlugin.Location = New System.Drawing.Point(10, 165)
+            Me.m_chkUsePlugin.Location = New System.Drawing.Point(7, 205)
             Me.m_chkUsePlugin.Name = "m_chkUsePlugin"
-            Me.m_chkUsePlugin.Size = New System.Drawing.Size(122, 14)
+            Me.m_chkUsePlugin.Size = New System.Drawing.Size(152, 17)
             Me.m_chkUsePlugin.TabIndex = 14
             Me.m_chkUsePlugin.Text = "Use p&lug-in economic data"
             Me.m_chkUsePlugin.UseVisualStyleBackColor = True
@@ -221,9 +221,9 @@ Namespace Ecosim
             'm_chkPrevCE
             '
             Me.m_chkPrevCE.AutoSize = True
-            Me.m_chkPrevCE.Location = New System.Drawing.Point(10, 185)
+            Me.m_chkPrevCE.Location = New System.Drawing.Point(7, 228)
             Me.m_chkPrevCE.Name = "m_chkPrevCE"
-            Me.m_chkPrevCE.Size = New System.Drawing.Size(98, 14)
+            Me.m_chkPrevCE.Size = New System.Drawing.Size(122, 17)
             Me.m_chkPrevCE.TabIndex = 15
             Me.m_chkPrevCE.Text = "&Limit cost > earnings"
             Me.m_chkPrevCE.UseVisualStyleBackColor = True
@@ -231,21 +231,25 @@ Namespace Ecosim
             'm_lblDiscRate
             '
             Me.m_lblDiscRate.AutoSize = True
-            Me.m_lblDiscRate.Location = New System.Drawing.Point(8, 20)
+            Me.m_lblDiscRate.Location = New System.Drawing.Point(10, 25)
             Me.m_lblDiscRate.Name = "m_lblDiscRate"
-            Me.m_lblDiscRate.Size = New System.Drawing.Size(58, 10)
+            Me.m_lblDiscRate.Size = New System.Drawing.Size(73, 13)
             Me.m_lblDiscRate.TabIndex = 0
             Me.m_lblDiscRate.Text = "&Discount rate:"
             '
             'm_txtDiscountRate
             '
+            Me.m_txtDiscountRate.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_txtDiscountRate.Location = New System.Drawing.Point(121, 22)
             Me.m_txtDiscountRate.Name = "m_txtDiscountRate"
-            Me.m_txtDiscountRate.Size = New System.Drawing.Size(60, 16)
+            Me.m_txtDiscountRate.Size = New System.Drawing.Size(75, 20)
             Me.m_txtDiscountRate.TabIndex = 1
             '
             'm_nudMaxEffChg
             '
+            Me.m_nudMaxEffChg.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudMaxEffChg.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudMaxEffChg.Location = New System.Drawing.Point(121, 152)
             Me.m_nudMaxEffChg.Name = "m_nudMaxEffChg"
@@ -254,6 +258,8 @@ Namespace Ecosim
             '
             'm_nudBaseYear
             '
+            Me.m_nudBaseYear.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudBaseYear.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudBaseYear.Location = New System.Drawing.Point(121, 126)
             Me.m_nudBaseYear.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
@@ -264,18 +270,18 @@ Namespace Ecosim
             'm_lblBaseYear
             '
             Me.m_lblBaseYear.AutoSize = True
-            Me.m_lblBaseYear.Location = New System.Drawing.Point(8, 102)
+            Me.m_lblBaseYear.Location = New System.Drawing.Point(8, 128)
             Me.m_lblBaseYear.Name = "m_lblBaseYear"
-            Me.m_lblBaseYear.Size = New System.Drawing.Size(46, 10)
+            Me.m_lblBaseYear.Size = New System.Drawing.Size(57, 13)
             Me.m_lblBaseYear.TabIndex = 8
             Me.m_lblBaseYear.Text = "&Base year:"
             '
             'm_lblMaxEffChg
             '
             Me.m_lblMaxEffChg.AutoSize = True
-            Me.m_lblMaxEffChg.Location = New System.Drawing.Point(8, 123)
+            Me.m_lblMaxEffChg.Location = New System.Drawing.Point(8, 154)
             Me.m_lblMaxEffChg.Name = "m_lblMaxEffChg"
-            Me.m_lblMaxEffChg.Size = New System.Drawing.Size(77, 10)
+            Me.m_lblMaxEffChg.Size = New System.Drawing.Size(96, 13)
             Me.m_lblMaxEffChg.TabIndex = 10
             Me.m_lblMaxEffChg.Text = "Max e&ffort change:"
             '
@@ -286,17 +292,17 @@ Namespace Ecosim
             Me.m_cmbSearchUsing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbSearchUsing.FormattingEnabled = True
             Me.m_cmbSearchUsing.Items.AddRange(New Object() {"Fletch", "DFPmin"})
-            Me.m_cmbSearchUsing.Location = New System.Drawing.Point(97, 143)
+            Me.m_cmbSearchUsing.Location = New System.Drawing.Point(121, 178)
             Me.m_cmbSearchUsing.Name = "m_cmbSearchUsing"
-            Me.m_cmbSearchUsing.Size = New System.Drawing.Size(49, 21)
+            Me.m_cmbSearchUsing.Size = New System.Drawing.Size(75, 21)
             Me.m_cmbSearchUsing.TabIndex = 13
             '
             'm_lblSearchUsing
             '
             Me.m_lblSearchUsing.AutoSize = True
-            Me.m_lblSearchUsing.Location = New System.Drawing.Point(8, 146)
+            Me.m_lblSearchUsing.Location = New System.Drawing.Point(8, 181)
             Me.m_lblSearchUsing.Name = "m_lblSearchUsing"
-            Me.m_lblSearchUsing.Size = New System.Drawing.Size(58, 10)
+            Me.m_lblSearchUsing.Size = New System.Drawing.Size(72, 13)
             Me.m_lblSearchUsing.TabIndex = 12
             Me.m_lblSearchUsing.Text = "&Search using:"
             '
@@ -307,22 +313,24 @@ Namespace Ecosim
             Me.m_cmbInitUsing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbInitUsing.FormattingEnabled = True
             Me.m_cmbInitUsing.Items.AddRange(New Object() {"Ecopath base F's", "Current F's", "Random F's"})
-            Me.m_cmbInitUsing.Location = New System.Drawing.Point(97, 38)
+            Me.m_cmbInitUsing.Location = New System.Drawing.Point(121, 47)
             Me.m_cmbInitUsing.Name = "m_cmbInitUsing"
-            Me.m_cmbInitUsing.Size = New System.Drawing.Size(49, 21)
+            Me.m_cmbInitUsing.Size = New System.Drawing.Size(75, 21)
             Me.m_cmbInitUsing.TabIndex = 3
             '
             'm_lblInitUsing
             '
             Me.m_lblInitUsing.AutoSize = True
-            Me.m_lblInitUsing.Location = New System.Drawing.Point(8, 41)
+            Me.m_lblInitUsing.Location = New System.Drawing.Point(10, 50)
             Me.m_lblInitUsing.Name = "m_lblInitUsing"
-            Me.m_lblInitUsing.Size = New System.Drawing.Size(60, 10)
+            Me.m_lblInitUsing.Size = New System.Drawing.Size(75, 13)
             Me.m_lblInitUsing.TabIndex = 2
             Me.m_lblInitUsing.Text = "&Initialize using:"
             '
             'm_nudMaxNumEval
             '
+            Me.m_nudMaxNumEval.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudMaxNumEval.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudMaxNumEval.Location = New System.Drawing.Point(121, 100)
             Me.m_nudMaxNumEval.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
@@ -334,6 +342,8 @@ Namespace Ecosim
             '
             'm_nudNumberOfRuns
             '
+            Me.m_nudNumberOfRuns.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudNumberOfRuns.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudNumberOfRuns.Location = New System.Drawing.Point(121, 74)
             Me.m_nudNumberOfRuns.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
@@ -346,32 +356,31 @@ Namespace Ecosim
             'm_lblMaxNumEval
             '
             Me.m_lblMaxNumEval.AutoSize = True
-            Me.m_lblMaxNumEval.Location = New System.Drawing.Point(8, 82)
+            Me.m_lblMaxNumEval.Location = New System.Drawing.Point(8, 102)
             Me.m_lblMaxNumEval.Name = "m_lblMaxNumEval"
-            Me.m_lblMaxNumEval.Size = New System.Drawing.Size(68, 10)
+            Me.m_lblMaxNumEval.Size = New System.Drawing.Size(85, 13)
             Me.m_lblMaxNumEval.TabIndex = 6
             Me.m_lblMaxNumEval.Text = "Max no of &evals:"
             '
             'm_lblNumOfRuns
             '
             Me.m_lblNumOfRuns.AutoSize = True
-            Me.m_lblNumOfRuns.Location = New System.Drawing.Point(8, 61)
+            Me.m_lblNumOfRuns.Location = New System.Drawing.Point(10, 76)
             Me.m_lblNumOfRuns.Name = "m_lblNumOfRuns"
-            Me.m_lblNumOfRuns.Size = New System.Drawing.Size(66, 10)
+            Me.m_lblNumOfRuns.Size = New System.Drawing.Size(82, 13)
             Me.m_lblNumOfRuns.TabIndex = 4
             Me.m_lblNumOfRuns.Text = "&Number of runs:"
             '
             'm_hdrParms
             '
-            Me.m_hdrParms.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrParms.CanCollapseParent = False
             Me.m_hdrParms.CollapsedParentHeight = 0
+            Me.m_hdrParms.Dock = System.Windows.Forms.DockStyle.Top
             Me.m_hdrParms.ImeMode = System.Windows.Forms.ImeMode.NoControl
             Me.m_hdrParms.IsCollapsed = False
             Me.m_hdrParms.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrParms.Name = "m_hdrParms"
-            Me.m_hdrParms.Size = New System.Drawing.Size(151, 14)
+            Me.m_hdrParms.Size = New System.Drawing.Size(200, 14)
             Me.m_hdrParms.TabIndex = 0
             Me.m_hdrParms.Text = "Parameters"
             Me.m_hdrParms.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -453,7 +462,7 @@ Namespace Ecosim
             '
             Me.m_scObjectives.Panel2.Controls.Add(Me.m_scAarghArghAaargh)
             Me.m_scObjectives.Size = New System.Drawing.Size(784, 145)
-            Me.m_scObjectives.SplitterDistance = 255
+            Me.m_scObjectives.SplitterDistance = 254
             Me.m_scObjectives.TabIndex = 0
             '
             'm_scAarghArghAaargh
@@ -469,7 +478,7 @@ Namespace Ecosim
             'm_scAarghArghAaargh.Panel2
             '
             Me.m_scAarghArghAaargh.Panel2.Controls.Add(Me.m_gridObjGroup)
-            Me.m_scAarghArghAaargh.Size = New System.Drawing.Size(525, 145)
+            Me.m_scAarghArghAaargh.Size = New System.Drawing.Size(526, 145)
             Me.m_scAarghArghAaargh.SplitterDistance = 169
             Me.m_scAarghArghAaargh.TabIndex = 0
             '
@@ -532,7 +541,7 @@ Namespace Ecosim
             Me.m_graphResults.ScrollMinX = 0R
             Me.m_graphResults.ScrollMinY = 0R
             Me.m_graphResults.ScrollMinY2 = 0R
-            Me.m_graphResults.Size = New System.Drawing.Size(627, 116)
+            Me.m_graphResults.Size = New System.Drawing.Size(784, 145)
             Me.m_graphResults.TabIndex = 8
             '
             'm_blocks
@@ -574,7 +583,7 @@ Namespace Ecosim
             Me.m_gridObjWeights.Name = "m_gridObjWeights"
             Me.m_gridObjWeights.ShowMaxPortUtil = False
             Me.m_gridObjWeights.ShowMPAOptParams = False
-            Me.m_gridObjWeights.Size = New System.Drawing.Size(255, 145)
+            Me.m_gridObjWeights.Size = New System.Drawing.Size(254, 145)
             Me.m_gridObjWeights.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -645,7 +654,7 @@ Namespace Ecosim
             Me.m_gridObjGroup.Location = New System.Drawing.Point(0, 0)
             Me.m_gridObjGroup.Manager = Nothing
             Me.m_gridObjGroup.Name = "m_gridObjGroup"
-            Me.m_gridObjGroup.Size = New System.Drawing.Size(352, 145)
+            Me.m_gridObjGroup.Size = New System.Drawing.Size(353, 145)
             Me.m_gridObjGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
