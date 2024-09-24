@@ -179,7 +179,7 @@
   </data>
   <data name="m_btnFleetTradeoffs.Text" xml:space="preserve">
     <value>&amp;Fleet tradeoffs</value>
-  </data>
+  </data>fleet tradeoff
   <data name="m_rbValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>

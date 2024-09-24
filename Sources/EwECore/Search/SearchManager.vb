@@ -149,7 +149,7 @@ Namespace SearchObjectives
 
                 Me.m_parameters.AllowValidation = False
                 Me.m_parameters.BaseYear = coreData.BaseYear
-                Me.m_parameters.GenDiscRate = coreData.GenDiscountFactor
+                'Me.m_parameters.GenDiscRate = coreData.GenDiscountFactor
                 Me.m_parameters.DiscountRate = coreData.DiscountFactor
                 Me.m_parameters.FishingMortalityPenalty = coreData.bUseFishingMortalityPenality
 
@@ -216,7 +216,7 @@ Namespace SearchObjectives
 
                     coreData.UseCostPenalty = Me.m_parameters.PrevCostEarning
                     coreData.BaseYear = Me.m_parameters.BaseYear
-                    coreData.GenDiscountFactor = Me.m_parameters.GenDiscRate
+                    'coreData.GenDiscountFactor = Me.m_parameters.GenDiscRate
                     coreData.DiscountFactor = Me.m_parameters.DiscountRate
                     coreData.bUseFishingMortalityPenality = Me.m_parameters.FishingMortalityPenalty
 
