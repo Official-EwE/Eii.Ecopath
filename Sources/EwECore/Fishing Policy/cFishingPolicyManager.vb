@@ -272,9 +272,9 @@ Namespace FishingPolicy
             'if OptimizeApproach is 'System Objective' then the SearchMethod is flet or dfpmin
             'if  OptimizeApproach is 'Base profitability' then SearchMethod is eSearchOption.BaseProfitability
             'this comes from EwE5
-            If Me.m_parameters.OptimizeApproach = eOptimizeApproachTypes.FleetValues Then
-                coreData.SearchMethod = eSearchOptionTypes.BaseProfitability
-            End If
+            'If Me.m_parameters.OptimizeApproach = eOptimizeApproachTypes.FleetValues Then
+            ' coreData.SearchMethod = eSearchOptionTypes.BaseProfitability
+            'End If
 
         End Function
 

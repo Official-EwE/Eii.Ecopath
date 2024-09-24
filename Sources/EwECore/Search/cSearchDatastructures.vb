@@ -88,7 +88,7 @@ Public Class cSearchDatastructures
     Public MaxEffort As Single
 
     Public DiscountFactor As Single
-    Public GenDiscountFactor As Single
+    'Public GenDiscountFactor As Single
 
 
     'jb in EwE5 these are defined in Fletch.bas
@@ -223,7 +223,7 @@ Public Class cSearchDatastructures
 
     ''' <summary>Intergenerational discount rate for computations</summary>
     ''' <remarks>Dfgrate = 1/(1+GenDiscountFactor)</remarks>
-    Private Dfgrate As Single
+    'Private Dfgrate As Single
 
     ''' <summary>Ratio of intergenerational to standard discount rate </summary>
     '''  <remarks>deltaDDfg = Dfgrate/Drate</remarks>
@@ -261,7 +261,7 @@ Public Class cSearchDatastructures
 
         'set some default values
         Me.DiscountFactor = 0.04F
-        Me.GenDiscountFactor = 0.0F
+        'Me.GenDiscountFactor = 0.0F
         Me.GenT = 20
         Me.nRuns = 1
         Me.nInterations = 2000
@@ -758,21 +758,22 @@ Public Class cSearchDatastructures
         Me.m_ecosimData = EcosimData
 
         Me.Din = 1 - Me.DiscountFactor 'jb DiscountFactor was set to a default of 0.01 in setDefaultParamaters
-        If Me.GenDiscountFactor > 0 Then
+        'VC 2024 removed gen discount
+        'If Me.GenDiscountFactor > 0 Then
 
-            Me.Dfgrate = 1.0F / (1 + Me.GenDiscountFactor)
-            Me.Drate = 1.0F / (1 + Me.DiscountFactor)
-            'if Dfgrate = Drate then tweak Dfgrate so calcDiscoutRate(t) can use the same equation for both cases
-            If Me.Dfgrate = Me.Drate Then Me.Dfgrate += CSng(0.0000001)
-            Me.deltaDDfg = Me.Dfgrate / Me.Drate
-            Me.GenT = 20.0F
+        'Me.Dfgrate = 1.0F / (1 + Me.GenDiscountFactor)
+        'Me.Drate = 1.0F / (1 + Me.DiscountFactor)
+        'if Dfgrate = Drate then tweak Dfgrate so calcDiscoutRate(t) can use the same equation for both cases
+        'If Me.Dfgrate = Me.Drate Then Me.Dfgrate += CSng(0.0000001)
+        'Me.deltaDDfg = Me.Dfgrate / Me.Drate
+        'Me.GenT = 20.0F
 
-            Me.Dgen = 1 - Me.GenDiscountFactor / 20
-            If Me.Din <> 0 Then Me.Dratio = Me.Dgen / Me.Din Else Me.Dratio = CSng(Me.Dgen / 0.01)
-            If Me.Dratio = 1 Then Me.Dratio = 0.9999
-            If Me.Dgen <= 0 Then Me.Dgen = 0.01
-            Me.Dalpha = Me.Dratio / (20 * (1 - Me.Dratio))
-        End If
+        'Me.Dgen = 1 - Me.GenDiscountFactor / 20
+        'If Me.Din <> 0 Then Me.Dratio = Me.Dgen / Me.Din Else Me.Dratio = CSng(Me.Dgen / 0.01)
+        'If Me.Dratio = 1 Then Me.Dratio = 0.9999
+        'If Me.Dgen <= 0 Then Me.Dgen = 0.01
+        'Me.Dalpha = Me.Dratio / (20 * (1 - Me.Dratio))
+        'End If
 
         Me.Ecodistance = 0
         Me.ExistValue = 0
@@ -1161,28 +1162,29 @@ Public Class cSearchDatastructures
     ''' <returns></returns>
     Public Function CalcLTV(YearPastBaseYear As Integer) As Single
         Dim LTV As Single
-        If Me.GenDiscountFactor > 0 Then
+        'vc 2024 drop gen discount
+        'If Me.GenDiscountFactor > 0 Then
 
-            'Use the Intergenerational discount for the extra years of the run
-            'For iyr As Integer = Me.m_ecosimData.NumYears To Me.m_ecosimData.NumYears + ExtraYearsForSearch
-            '    LTV += calcDiscountRate(iyr)
-            'Next
+        'Use the Intergenerational discount for the extra years of the run
+        'For iyr As Integer = Me.m_ecosimData.NumYears To Me.m_ecosimData.NumYears + ExtraYearsForSearch
+        '    LTV += calcDiscountRate(iyr)
+        'Next
 
-            'Long term value using the Intergenerational discount rate from EwE5
-            If Me.DiscountFactor > 0 Then
-                'LTV = DF / DiscountFactor
-                LTV = CSng((1 + Me.Dalpha) / Me.DiscountFactor * Me.Din ^ YearPastBaseYear - Me.Dalpha * (Me.Dgen) ^ YearPastBaseYear / (1 - Me.Dgen))
-            Else
-                If Me.Dgen <> 1 Then LTV = CSng((1 + Me.Dalpha) / 0.01 * Me.Din ^ YearPastBaseYear - Me.Dalpha * Me.Dgen ^ YearPastBaseYear / (1 - Me.Dgen))
-            End If
-        Else
-            'using standard discounting, take last years catch and discount it for 20 years, multiplying it with this factor:
-            LTV = 0
-            For i As Integer = 0 To 19
-                LTV += CSng((1 + Me.DiscountFactor) ^ -i)
-            Next
+        'Long term value using the Intergenerational discount rate from EwE5
+        '    If Me.DiscountFactor > 0 Then
+        'LTV = DF / DiscountFactor
+        '        LTV = CSng((1 + Me.Dalpha) / Me.DiscountFactor * Me.Din ^ YearPastBaseYear - Me.Dalpha * (Me.Dgen) ^ YearPastBaseYear / (1 - Me.Dgen))
+        '    Else
+        '        If Me.Dgen <> 1 Then LTV = CSng((1 + Me.Dalpha) / 0.01 * Me.Din ^ YearPastBaseYear - Me.Dalpha * Me.Dgen ^ YearPastBaseYear / (1 - Me.Dgen))
+        '    End If
+        'Else
+        'using standard discounting, take last years catch and discount it for 20 years, multiplying it with this factor:
+        LTV = 0
+        For i As Integer = 0 To 19
+            LTV += CSng((1 + Me.DiscountFactor) ^ -i)
+        Next
 
-        End If
+        'End If
 
         'System.Console.WriteLine("LTV = " & LTV.ToString)
         Return LTV
@@ -1203,38 +1205,39 @@ Public Class cSearchDatastructures
     Private Function calcDiscountRate(iYear As Integer) As Single
         Dim df As Single
 
-        If Me.GenDiscountFactor > 0 Then
+        'vc 2024 removing gen discount rate
+        'If Me.GenDiscountFactor > 0 Then
 
-            'From 
-            'Intergenerational discounting: a new intuitive approach
-            'Ussif R. Sumaila, Carl Walters
+        'From 
+        'Intergenerational discounting: a new intuitive approach
+        'Ussif R. Sumaila, Carl Walters
 
-            'If Dfgrate = Drate then Dfgrate should have been altered by a small amount see cSearchDataStructures.initForRun()
-            'so we can use the same equation for both cases
-            Debug.Assert(Me.deltaDDfg <> 1, Me.ToString & ".calcDiscountRate() Dfgrate and Drate can not be equal. Check cSearchDataStructures.InitForRun()")
+        'If Dfgrate = Drate then Dfgrate should have been altered by a small amount see cSearchDataStructures.initForRun()
+        'so we can use the same equation for both cases
+        'Debug.Assert(Me.deltaDDfg <> 1, Me.ToString & ".calcDiscountRate() Dfgrate and Drate can not be equal. Check cSearchDataStructures.InitForRun()")
 
-            df = CSng(Me.Drate ^ iYear + Me.Dfgrate * Me.Drate ^ (iYear - 1) / Me.GenT * ((1 - Me.deltaDDfg ^ iYear) / (1 - Me.deltaDDfg)))
+        'df = CSng(Me.Drate ^ iYear + Me.Dfgrate * Me.Drate ^ (iYear - 1) / Me.GenT * ((1 - Me.deltaDDfg ^ iYear) / (1 - Me.deltaDDfg)))
 
-            'Carls original generational discount returns an increasing DF (from EwE5)
-            'DF in Year 1 = 1.0 , year 2 = 1.009...
-            'If Dgen = Din Then
-            '    df = CSng(Din ^ (iYear - 1) + (Dgen * (Din ^ (iYear - 2)) / 20) * (iYear - 1))
-            'Else
-            '    df = CSng((1 + Dalpha) * Din ^ (iYear - 1) - Dalpha * (Din * Dratio) ^ (iYear - 1))
-            'End If
-            'df = 1 - (df - 1)
+        'Carls original generational discount returns an increasing DF (from EwE5)
+        'DF in Year 1 = 1.0 , year 2 = 1.009...
+        'If Dgen = Din Then
+        '    df = CSng(Din ^ (iYear - 1) + (Dgen * (Din ^ (iYear - 2)) / 20) * (iYear - 1))
+        'Else
+        '    df = CSng((1 + Dalpha) * Din ^ (iYear - 1) - Dalpha * (Din * Dratio) ^ (iYear - 1))
+        'End If
+        'df = 1 - (df - 1)
 
-        Else    'traditional discounting
+        'Else    'traditional discounting
 
-            'Present Value = [Value at t] / (1 + [Interest rate]) ^ t
-            'this returns the multiplier
-            df = CSng(1.0F / (1 + Me.DiscountFactor) ^ iYear)
+        'Present Value = [Value at t] / (1 + [Interest rate]) ^ t
+        'this returns the multiplier
+        df = CSng(1.0F / (1 + Me.DiscountFactor) ^ iYear)
             ' Villy's discount factor always returns 1
             'df = CSng(1 ^ -(iYear - 1))
-        End If
+            'End If
 
-        'System.Console.WriteLine("Discount rate = " & df.ToString & " at " & iYear.ToString)
-        Return df
+            'System.Console.WriteLine("Discount rate = " & df.ToString & " at " & iYear.ToString)
+            Return df
 
     End Function
 

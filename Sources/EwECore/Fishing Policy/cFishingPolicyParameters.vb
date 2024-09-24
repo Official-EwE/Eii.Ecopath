@@ -45,7 +45,7 @@ End Enum
 
 Public Enum eOptimizeApproachTypes As Integer
     SystemObjective
-    FleetValues
+    'FleetValues
 End Enum
 
 #End Region
