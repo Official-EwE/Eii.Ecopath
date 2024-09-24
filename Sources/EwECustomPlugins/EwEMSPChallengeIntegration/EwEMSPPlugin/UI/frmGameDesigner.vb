@@ -308,7 +308,7 @@ Namespace UI
             Me.m_tpOutcomes.Enabled = bHasGame And Not bIsEcospaceRunning
             Me.m_btnOutcomeAdd.Enabled = bHasOutcomeName
             Me.m_btnOutcomeRename.Enabled = bHasOutcomeName And bHasOutcomeSelected
-            Me.m_btnOutcomeDelete.Enabled = bHasOutcomesSelected Or bHasOutcomesSelected
+            Me.m_btnOutcomeDelete.Enabled = bHasOutcomeSelected Or bHasOutcomesSelected
             Me.m_tsbnOuputRaw.Enabled = bHasOutcomeSelected
             Me.m_tsbnOuputBinned.Enabled = bHasOutcomeSelected
             If (outcome IsNot Nothing) Then
