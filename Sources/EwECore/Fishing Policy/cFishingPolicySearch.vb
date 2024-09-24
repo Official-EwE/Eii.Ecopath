@@ -632,8 +632,8 @@ Namespace FishingPolicy
                     Me.flet(F, X, n, Me.G, Me.H, dfn, Me.Xm, StepSize, eps, mode, Me.m_searchData.nInterations, iprint, Me.W, iexit)
                 ElseIf SearchMethod = eSearchOptionTypes.DFPmin Then
                     Me.DFPmin(X, n, Gtol, iter, Me.ifn, F)
-                ElseIf SearchMethod = eSearchOptionTypes.BaseProfitability Then 'search for base profitability
-                    Me.SearchForBaseProfitability(X, n)
+                    'ElseIf SearchMethod = eSearchOptionTypes.BaseProfitability Then 'search for base profitability
+                    '    Me.SearchForBaseProfitability(X, n)
                 End If
 
             Catch ex As Exception
@@ -1499,6 +1499,12 @@ endline:    ' '
 
 
         Sub SearchForBaseProfitability(X() As Double, n As Integer)
+
+            'VC 2024-09-23 Not clear what this sub is doing. Results are highly dubious = not correct 
+            ' and since noone is using it, I've removed it from interface and there are no calls to the 
+            ' sub anymore
+
+
             ' Dim totval As Double, Employ As Double, manvalue As Double, ecovalue As Double
             Dim BaseIncome() As Single, Temp As Double
             Dim CostToI() As Single, GainToJ(,) As Single, iter As Integer
@@ -1515,7 +1521,7 @@ endline:    ' '
 
             'exit if search is not over gear types
             If n <> Me.m_searchData.NumFleets Then
-                Me.m_core.Messages.SendMessage(New cMessage("This search method only allows you to search over all fleets. You must set the search blocks to one block per fleet.", _
+                Me.m_core.Messages.SendMessage(New cMessage("This search method only allows you to search over all fleets. You must set the search blocks to one block per fleet.",
                                                     eMessageType.ErrorEncountered, eCoreComponentType.FishingPolicySearch, eMessageImportance.Warning))
                 Exit Sub
             End If
