@@ -53,72 +53,82 @@ Public Class cEcospaceMapDrawer
         Dim maptype As cMapDrawerBase.eMapType = Args.MapType
         Dim RelScaler() As Single = Args.RelMapScaler
         Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
-        Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
 
-        For i As Integer = 1 To Me.InRow
-            For j As Integer = 1 To Me.InCol
-                If CBool(excl.Cell(i, j)) = False Then
+        Using font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.SubTitle)
 
-                    Try
-                        Dim sMapValue As Single = 1.0E-20
-                        Dim icc As Single
-                        Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
-                                                                   CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
-                                                                   CSng(rcPos.Width() / Me.InCol), _
+            For i As Integer = 1 To Me.InRow
+                For j As Integer = 1 To Me.InCol
+                    If CBool(excl.Cell(i, j)) = False Then
+
+                        Try
+                            Dim sMapValue As Single = 1.0E-20
+                            Dim icc As Single
+                            Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol),
+                                                                   CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow),
+                                                                   CSng(rcPos.Width() / Me.InCol),
                                                                    CSng(rcPos.Height() / Me.InRow))
-                        Dim brCell As Brush = Nothing
+                            Dim brCell As Brush = Nothing
 
-                        'If it is water
-                        If Me.m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
-                            ' Water Cell
-                            sMapValue = Me.Map(i, j, iItem) / RelScaler(iItem)
+                            'If it is water
+                            If Me.m_core.EcospaceBasemap.LayerDepth.IsWaterCell(i, j) Then
+                                ' Water Cell
+                                sMapValue = Me.Map(i, j, iItem) / RelScaler(iItem)
 
-                            If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
-                                icc = Me.Colors.Count
-                            ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Or Single.IsNaN(sMapValue) Then
-                                icc = 1
+                                If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
+                                    icc = Me.Colors.Count
+                                ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Or Single.IsNaN(sMapValue) Then
+                                    icc = 1
+                                Else
+                                    icc = Me.Colors.Count * sMapValue / (sMapValue + 1)
+                                End If
+
+                                'Boundary check
+                                icc = Math.Max(Math.Min(Me.Colors.Count - 1, icc), 1)
+                                brCell = New SolidBrush(Me.Colors(CInt(icc)))
+
+                            ElseIf Me.ShowLand Then
+                                ' #Land
+                                brCell = New SolidBrush(Color.Gray)
                             Else
-                                icc = Me.Colors.Count * sMapValue / (sMapValue + 1)
+                                brCell = New SolidBrush(Color.Transparent)
                             End If
 
-                            'Boundary check
-                            icc = Math.Max(Math.Min(Me.Colors.Count - 1, icc), 1)
-                            brCell = New SolidBrush(Me.Colors(CInt(icc)))
+                            Me.Graphics.FillRectangle(brCell, rcfCell)
+                            brCell.Dispose()
 
-                        ElseIf Me.ShowLand Then
-                            ' #Land
-                            brCell = New SolidBrush(Color.Gray)
-                        Else
-                            brCell = New SolidBrush(Color.Transparent)
-                        End If
+                        Catch ex As Exception
+                            'Debug.Assert(False, ex.Message)
+                            Exit Sub
+                        End Try
+                    End If
 
-                        Me.Graphics.FillRectangle(brCell, rcfCell)
-                        brCell.Dispose()
-
-                    Catch ex As Exception
-                        'Debug.Assert(False, ex.Message)
-                        Exit Sub
-                    End Try
-                End If
-
+                Next
             Next
-        Next
 
-        MyBase.DrawMap(iItem, rcPos, Args)
+            Try
+                MyBase.DrawMap(iItem, rcPos, Args)
+            Catch ex As Exception
+                ' This can happen during disposal. Catch and cleanly move on
+            End Try
 
-        If Me.m_sg.ShowMapLabels And Me.Labels IsNot Nothing Then
-            Dim br As Brush = Brushes.Black
-            Dim fmt As New StringFormat()
+            Try
 
-            fmt.Alignment = Me.m_sg.MapLabelPosHorizontal
-            fmt.LineAlignment = Me.m_sg.MapLabelPosVertical
+                If Me.m_sg.ShowMapLabels And Me.Labels IsNot Nothing Then
+                    Dim br As Brush = Brushes.Black
+                    Dim fmt As New StringFormat()
 
-            If Me.m_sg.InvertMapLabelColor Then br = Brushes.White
+                    fmt.Alignment = Me.m_sg.MapLabelPosHorizontal
+                    fmt.LineAlignment = Me.m_sg.MapLabelPosVertical
 
-            Me.Graphics.DrawString(Me.Labels(iItem), font, br, rcPos, fmt)
-        End If
+                    If Me.m_sg.InvertMapLabelColor Then br = Brushes.White
 
-        font.Dispose()
+                    Me.Graphics.DrawString(Me.Labels(iItem), font, br, rcPos, fmt)
+                End If
+            Catch ex As Exception
+                ' Catch and cleanly move on
+            End Try
+
+        End Using
 
     End Sub
 
