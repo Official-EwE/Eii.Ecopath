@@ -47,6 +47,9 @@ Public Class cWebLinks
     Private Const g_EcoBase As String = "https://ecobase.ecopath.org/"
     Private Const g_EcoBaseModelInfo As String = "https://ecobase.ecopath.org/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model={0}"
     Private Const g_Access2010 As String = "https://www.microsoft.com/en-us/download/details.aspx?id=13255"
+    Private Const g_TextBook As String = "https://pressbooks.bccampus.ca/ewemodel"
+    Private Const g_UserGuide As String = "https://pressbooks.bccampus.ca/eweguide"
+
 
     Private m_core As cCore = Nothing
 
@@ -68,6 +71,8 @@ Public Class cWebLinks
         EcoBaseModelInfo
         Access2010
         GoPro
+        EwETextBook
+        EwEUserGuide
     End Enum
 
     Public Function GetURL(type As eLinkType) As String
@@ -86,6 +91,8 @@ Public Class cWebLinks
             Case eLinkType.EcoBaseModelInfo : Return cWebLinks.g_EcoBaseModelInfo
             Case eLinkType.Access2010 : Return cWebLinks.g_Access2010
             Case eLinkType.GoPro : Return cWebLinks.g_GoPro
+            Case eLinkType.EwETextBook : Return cWebLinks.g_TextBook
+            Case eLinkType.EwEUserGuide : Return cWebLinks.g_UserGuide
         End Select
         Return ""
 

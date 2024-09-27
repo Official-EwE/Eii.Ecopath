@@ -36,6 +36,7 @@ Public Class EwEEcosamplerPlugin
     Implements IEcosimInitializedPlugin
     Implements IUIContextPlugin
     Implements INavigationTreeItemPlugin
+    Implements IMenuItemPlugin
     Implements IDockStatePlugin
     Implements ISaveFilterPlugin
     Implements ISearchPlugin
@@ -154,8 +155,7 @@ Public Class EwEEcosamplerPlugin
     Public ReadOnly Property ControlImage As Object _
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
-            ' Return My.Resources.LED
-            Return Nothing
+            Return My.Resources.DeltaHS
         End Get
     End Property
 
@@ -356,6 +356,12 @@ Public Class EwEEcosamplerPlugin
     Friend ReadOnly Property SampleManager As cEcopathSampleManager
         Get
             Return Me.m_sampleman
+        End Get
+    End Property
+
+    Public ReadOnly Property MenuItemLocation As String Implements IMenuItemPlugin.MenuItemLocation
+        Get
+            Return "MenuTools"
         End Get
     End Property
 

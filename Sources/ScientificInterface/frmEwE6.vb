@@ -911,6 +911,23 @@ Public Class frmEwE6
 
     End Sub
 
+    '#If BETA = 1 Then
+
+    '    Public Function IsBetaExpired() As Boolean
+    '        Return (cDateUtils.StartTime > cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cCore))))
+    '    End Function
+
+    '    Private Sub CheckBetaExpired()
+    '        If (Me.m_bExpirationChecked = False) Then
+    '            If (Me.IsBetaExpired()) Then
+    '                Me.AskFeedback(My.Resources.VERSION_EXPIRED, eMessageImportance.Warning, eCoreComponentType.External, strHyperlink:="http://download.ecopath.org")
+    '            End If
+    '            Me.m_bExpirationChecked = True
+    '        End If
+    '    End Sub
+
+    '#End If
+
 #End Region ' Initialization
 
 #Region " Validation "
@@ -934,9 +951,9 @@ Public Class frmEwE6
     End Sub
 
     Private Sub DoValidateSetup()
-#If BETA = 1 Then
-        Me.CheckBetaExpired()
-#End If
+        '#If BETA = 1 Then
+        '        Me.CheckBetaExpired()
+        '#End If
 
         ' Auto-launch plugins
         Me.AutolaunchPlugins()
@@ -3605,15 +3622,15 @@ Public Class frmEwE6
         dlgAbout.ShowDialog(Me)
     End Sub
 
-    Private Sub OnHelpTOC(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpContents.Click
+    Private Sub OnHelpTOC(sender As System.Object, e As System.EventArgs)
         Me.Help.ShowHelp(HelpNavigator.TableOfContents)
     End Sub
 
-    Private Sub OnHelpIndex(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpIndex.Click
+    Private Sub OnHelpIndex(sender As System.Object, e As System.EventArgs)
         Me.Help.ShowHelp(HelpNavigator.KeywordIndex)
     End Sub
 
-    Private Sub OnHelpSearch(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpSearch.Click
+    Private Sub OnHelpSearch(sender As System.Object, e As System.EventArgs)
         Me.Help.ShowHelp(HelpNavigator.Find)
     End Sub
 
@@ -3634,8 +3651,15 @@ Public Class frmEwE6
         End Try
     End Sub
 
+    Private Sub m_tsmiHelpTextBook_Click(sender As Object, e As EventArgs) Handles m_tsmiHelpTextBook.Click
+        Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.EwETextBook)
+    End Sub
+
+    Private Sub m_tsmiHelpUserGuide_Click(sender As Object, e As EventArgs) Handles m_tsmiHelpUserGuide.Click
+        Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.EwEUserGuide)
+    End Sub
+
     Private Sub OnProvideFeedback(cmd As cCommand) Handles m_cmdHelpFeedback.OnInvoke
-        ' Survey monkey URL
         Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.Feedback)
     End Sub
 

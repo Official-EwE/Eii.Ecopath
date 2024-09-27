@@ -216,6 +216,7 @@
     <Content Include="Documentation\Assets\UI-layout.png" />
     <Content Include="Documentation\Assets\UI-recording.png" />
     <Content Include="Documentation\Assets\UI-start.png" />
+    <Content Include="Resources\DeltaHS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

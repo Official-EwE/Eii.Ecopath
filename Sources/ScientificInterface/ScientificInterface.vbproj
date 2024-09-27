@@ -21,7 +21,7 @@
     <SccProvider>
     </SccProvider>
     <OptionStrict>On</OptionStrict>
-    <ApplicationIcon>Resources\Ecopath40.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Ecopath0.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -108,7 +108,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>BETA=0</DefineConstants>
+    <DefineConstants>BETA=1</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>

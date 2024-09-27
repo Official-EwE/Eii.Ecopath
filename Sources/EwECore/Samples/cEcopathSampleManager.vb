@@ -669,7 +669,10 @@ Namespace Samples
 
             ' Some users report samples with negative respiration. That should not happen
             ' Instead of checking for EE, it's more fail-safe to test for the final balance state
-            If (bMustBalance And Not Me.m_core.StateMonitor.HasEcopathBalanced()) Then Return Nothing
+            ' JS 26Sep'24: fixed a bug in Core State Monitor which failed to reset HasEcopathBalanced
+            If (bMustBalance And Not Me.m_core.StateMonitor.HasEcopathBalanced()) Then
+                Return Nothing
+            End If
 
             Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim s As New cEcopathSample(Me.m_core, -1, Me.m_data.nSamples + 1)
