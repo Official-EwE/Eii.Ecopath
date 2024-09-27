@@ -244,6 +244,7 @@ Public Class cCoreStateMonitor
         Dim bEcosimStateChange As Boolean = False
         Dim bEcospaceStateChange As Boolean = False
         Dim bEcotracerStateChange As Boolean = False
+        Dim bEcopathBalanced As Boolean = False
 
         bEcopathStateChange = (iEcopathState <> Me.m_iEcopathState)
         bEcosimStateChange = (iEcosimState <> Me.m_iEcosimState)
@@ -254,11 +255,14 @@ Public Class cCoreStateMonitor
         If (Not bEcopathStateChange And Not bEcosimStateChange And Not bEcospaceStateChange And Not bEcotracerStateChange) And
            (tsForceUpdate <> TriState.True) Then Return
 
+        ' Special: balanced state handling
         ' Accept ecopath state
         iState = iEcopathState
         ' Has ecopath model ran?
         If iState = eCoreExecutionState.EcopathCompleted Then
             ' #Yes: is an ecosim scenario loaded?
+            bEcopathBalanced = Me.m_bEcopathBalanced
+
             If iEcosimState <> eCoreExecutionState.Idle Then
                 ' #Yes: accept ecosim state
                 iState = iEcosimState
@@ -278,6 +282,8 @@ Public Class cCoreStateMonitor
         Me.m_iEcosimState = iEcosimState
         Me.m_iEcospaceState = iEcospaceState
         Me.m_iEcotracerState = iEcotracerState
+        ' JS 26Sept'24: also make sure that balanced flag is cleared when Ecopath loses completion state
+        Me.m_bEcopathBalanced = bEcopathBalanced
 
         ' Update core execution state flag
         Me.m_iExecutionState = iState

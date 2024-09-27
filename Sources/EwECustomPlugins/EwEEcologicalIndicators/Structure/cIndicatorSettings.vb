@@ -36,11 +36,6 @@ Public Class cIndicatorSettings
 #Region " Private variables "
 
     Private m_lIndicatorGroups As New List(Of cIndicatorInfoGroup)
-    Private m_bRunPath As Boolean = False
-    Private m_bRunSim As Boolean = False
-    Private m_bRunSpace As Boolean = False
-    Private m_bRunMC As Boolean = False
-    Private m_bSpaceAnnualOnly As Boolean = True
 
 #End Region ' Private variables
 
@@ -58,65 +53,65 @@ Public Class cIndicatorSettings
 
     Public Property RunWithEcopath As Boolean
         Get
-            Return Me.m_bRunPath
+            Return My.Settings.RunEcopath Or My.Settings.AutoSaveEcopath
         End Get
         Set(value As Boolean)
-            If (value <> Me.m_bRunPath) Then
-                Me.m_bRunPath = value
-                Me.NotifyWorld()
+            If (value <> My.Settings.RunEcopath) Then
+                My.Settings.RunEcopath = value
+                'Me.NotifyWorld()
             End If
         End Set
     End Property
 
     Public Property RunWithEcosim As Boolean
         Get
-            Return Me.m_bRunSim
+            Return My.Settings.RunEcosim Or My.Settings.AutoSaveEcosim
         End Get
         Set(value As Boolean)
-            If (value <> Me.m_bRunSim) Then
-                Me.m_bRunSim = value
-                Me.NotifyWorld()
+            If (value <> My.Settings.RunEcosim) Then
+                My.Settings.RunEcosim = value
+                'Me.NotifyWorld()
             End If
         End Set
     End Property
 
     Public Property RunWithEcospace As Boolean
         Get
-            Return Me.m_bRunSpace
+            Return My.Settings.RunEcospace Or (My.Settings.AutoSaveEcospaceCSV Or My.Settings.AutoSaveEcospaceMaps)
         End Get
         Set(value As Boolean)
-            If (value <> Me.m_bRunSpace) Then
-                Me.m_bRunSpace = value
-                Me.NotifyWorld()
+            If (value <> My.Settings.RunEcospace) Then
+                My.Settings.RunEcospace = value
+                'Me.NotifyWorld()
             End If
         End Set
     End Property
 
     Public Property RunWithMonteCarlo As Boolean
         Get
-            Return Me.m_bRunMC
+            Return My.Settings.RunMCMC Or My.Settings.AutoSaveMCMC
         End Get
         Set(value As Boolean)
-            If (value <> Me.m_bRunMC) Then
-                Me.m_bRunMC = value
-                Me.NotifyWorld()
+            If (value <> My.Settings.RunMCMC) Then
+                My.Settings.RunMCMC = value
+                'Me.NotifyWorld()
             End If
         End Set
     End Property
 
     Public Property EcospaceAnnualOnly As Boolean
         Get
-            Return Me.m_bSpaceAnnualOnly
+            Return My.Settings.AutosaveEcospaceAnnual
         End Get
         Set(value As Boolean)
-            If (value <> Me.m_bSpaceAnnualOnly) Then
-                Me.m_bSpaceAnnualOnly = value
-                Me.NotifyWorld()
+            If (value <> My.Settings.AutosaveEcospaceAnnual) Then
+                My.Settings.AutosaveEcospaceAnnual = value
+                'Me.NotifyWorld()
             End If
         End Set
     End Property
 
-    Private Sub NotifyWorld()
+    Friend Sub NotifyWorld()
         Try
             RaiseEvent OnSettingsChanged(Me, New EventArgs())
         Catch ex As Exception

@@ -113,6 +113,17 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
 #End Region ' Variables
 
+#Region " Construction "
+
+    Public Sub New()
+
+        AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsPropertyChanged
+
+    End Sub
+
+
+#End Region ' Construction
+
 #Region " Plug-in points "
 
 #Region " Generic "
@@ -761,6 +772,14 @@ Public Class cEwEEcologicalIndicatorsPlugin
 #End Region ' UI
 
 #End Region ' Plug-in points
+
+#Region " Events "
+
+    Private Sub OnSettingsPropertyChanged(sender As Object, e As ComponentModel.PropertyChangedEventArgs)
+        Me.m_settings.NotifyWorld()
+    End Sub
+
+#End Region ' Events
 
 #Region " Public bits "
 

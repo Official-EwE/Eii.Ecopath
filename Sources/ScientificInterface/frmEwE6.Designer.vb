@@ -80,10 +80,12 @@ Partial Public Class frmEwE6
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuEcospaceAdvanced = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceLoadXYRefData = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiHelpContents = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuHelp = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpOutdated = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpSearch = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpContents = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpUserGuide = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewMainSite = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewFacebook = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewEcobase = New System.Windows.Forms.ToolStripMenuItem()
@@ -158,19 +160,20 @@ Partial Public Class frmEwE6
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip()
         Me.m_tsbnPreview = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
+        Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbnLicense = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
-        Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_tsddViewItems = New System.Windows.Forms.ToolStripSplitButton()
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnAutosaveConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
+        Me.m_tsmiHelpTextBook = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -393,26 +396,37 @@ Partial Public Class frmEwE6
         PlaceholderToolStripMenuItem.Name = "PlaceholderToolStripMenuItem"
         resources.ApplyResources(PlaceholderToolStripMenuItem, "PlaceholderToolStripMenuItem")
         '
-        'm_tsmiHelpContents
-        '
-        Me.m_tsmiHelpContents.Name = "m_tsmiHelpContents"
-        resources.ApplyResources(Me.m_tsmiHelpContents, "m_tsmiHelpContents")
-        '
         'MenuHelp
         '
-        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, Me.m_tsmiHelpViewEcobase, m_tssHelp3, Me.m_tsmiViewLog, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiHelpRequestSourceCodeAccess, m_tssHelp2, Me.m_tsmiHelpRegister, Me.m_tsmiHelpAbout, Me.m_tsmiHelpFeedback})
+        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpTextBook, Me.m_tsmiHelpUserGuide, Me.m_tsmiHelpOutdated, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, Me.m_tsmiHelpViewEcobase, m_tssHelp3, Me.m_tsmiViewLog, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiHelpRequestSourceCodeAccess, m_tssHelp2, Me.m_tsmiHelpRegister, Me.m_tsmiHelpAbout, Me.m_tsmiHelpFeedback})
         Me.MenuHelp.Name = "MenuHelp"
         resources.ApplyResources(Me.MenuHelp, "MenuHelp")
+        '
+        'm_tsmiHelpOutdated
+        '
+        Me.m_tsmiHelpOutdated.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpSearch, Me.m_tsmiHelpIndex, Me.m_tsmiHelpContents})
+        Me.m_tsmiHelpOutdated.Name = "m_tsmiHelpOutdated"
+        resources.ApplyResources(Me.m_tsmiHelpOutdated, "m_tsmiHelpOutdated")
+        '
+        'm_tsmiHelpSearch
+        '
+        resources.ApplyResources(Me.m_tsmiHelpSearch, "m_tsmiHelpSearch")
+        Me.m_tsmiHelpSearch.Name = "m_tsmiHelpSearch"
         '
         'm_tsmiHelpIndex
         '
         resources.ApplyResources(Me.m_tsmiHelpIndex, "m_tsmiHelpIndex")
         Me.m_tsmiHelpIndex.Name = "m_tsmiHelpIndex"
         '
-        'm_tsmiHelpSearch
+        'm_tsmiHelpContents
         '
-        resources.ApplyResources(Me.m_tsmiHelpSearch, "m_tsmiHelpSearch")
-        Me.m_tsmiHelpSearch.Name = "m_tsmiHelpSearch"
+        Me.m_tsmiHelpContents.Name = "m_tsmiHelpContents"
+        resources.ApplyResources(Me.m_tsmiHelpContents, "m_tsmiHelpContents")
+        '
+        'm_tsmiHelpUserGuide
+        '
+        Me.m_tsmiHelpUserGuide.Name = "m_tsmiHelpUserGuide"
+        resources.ApplyResources(Me.m_tsmiHelpUserGuide, "m_tsmiHelpUserGuide")
         '
         'm_tsmiHelpViewMainSite
         '
@@ -588,6 +602,7 @@ Partial Public Class frmEwE6
         'm_menuMain
         '
         Me.m_menuMain.GripMargin = New System.Windows.Forms.Padding(0)
+        Me.m_menuMain.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.m_menuMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuFile, Me.MenuView, Me.MenuEcopath, Me.MenuEcosim, MenuEcospace, Me.MenuEcotracer, Me.MenuTools, Me.MenuWindows, Me.MenuHelp})
         resources.ApplyResources(Me.m_menuMain, "m_menuMain")
         Me.m_menuMain.MdiWindowListItem = Me.MenuWindows
@@ -793,6 +808,7 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_tsModel.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPreview, sep1, Me.m_tsbSave, Me.m_tslbReadOnly, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, Me.m_tsbnLicense, Me.m_tsbnFeedback, ToolStripSeparator6, Me.m_tsddViewItems, Me.ToolStripSeparator7, Me.m_tsbnAutosaveConfig, Me.m_tsbnAutorunConfig})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
@@ -812,6 +828,12 @@ Partial Public Class frmEwE6
         Me.m_tsbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbSave, "m_tsbSave")
         Me.m_tsbSave.Name = "m_tsbSave"
+        '
+        'm_tslbReadOnly
+        '
+        Me.m_tslbReadOnly.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
+        Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
         '
         'm_tsbEcopath
         '
@@ -854,12 +876,6 @@ Partial Public Class frmEwE6
         Me.m_tsbnFeedback.ForeColor = System.Drawing.SystemColors.Highlight
         Me.m_tsbnFeedback.Name = "m_tsbnFeedback"
         '
-        'm_tslbReadOnly
-        '
-        Me.m_tslbReadOnly.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
-        Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
-        '
         'm_tsddViewItems
         '
         Me.m_tsddViewItems.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -889,9 +905,15 @@ Partial Public Class frmEwE6
         'm_ssMain
         '
         Me.m_ssMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
+        Me.m_ssMain.ImageScalingSize = New System.Drawing.Size(20, 20)
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
+        '
+        'm_tsmiHelpTextBook
+        '
+        Me.m_tsmiHelpTextBook.Name = "m_tsmiHelpTextBook"
+        resources.ApplyResources(Me.m_tsmiHelpTextBook, "m_tsmiHelpTextBook")
         '
         'frmEwE6
         '
@@ -912,11 +934,7 @@ Partial Public Class frmEwE6
         Me.PerformLayout()
 
     End Sub
-
-    Private WithEvents m_tsmiHelpContents As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuHelp As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiHelpIndex As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiHelpSearch As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiHelpAbout As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuWindows As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiOptions As System.Windows.Forms.ToolStripMenuItem
@@ -1025,5 +1043,11 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiHelpViewEcobase As ToolStripMenuItem
     Private WithEvents m_tsmiViewOnline As ToolStripMenuItem
     Private WithEvents m_tsbnLicense As ToolStripButton
+    Private WithEvents m_tsmiHelpSearch As ToolStripMenuItem
+    Private WithEvents m_tsmiHelpIndex As ToolStripMenuItem
+    Private WithEvents m_tsmiHelpContents As ToolStripMenuItem
+    Private WithEvents m_tsmiHelpOutdated As ToolStripMenuItem
+    Private WithEvents m_tsmiHelpTextBook As ToolStripMenuItem
+    Private WithEvents m_tsmiHelpUserGuide As ToolStripMenuItem
 End Class
 
