@@ -209,7 +209,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.FixedCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Percentage)
         Me.Metadata(eVarNameFlags.EffortCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 40, cUnits.Percentage)
         Me.Metadata(eVarNameFlags.SailCost) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 40, cUnits.Percentage)
-        Me.Metadata(eVarNameFlags.OffVesselPrice) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.MonetaryOverKg)
+        Me.Metadata(eVarNameFlags.OffVesselPrice) = New cVariableMetaData(Single.MinValue, Single.MaxValue, ge, lt, 1, cUnits.MonetaryOverKg)
         Me.Metadata(eVarNameFlags.NominalEffort) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.FishingEffort)
         Me.Metadata(eVarNameFlags.Landings) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.CurrencyOverTime)
         Me.Metadata(eVarNameFlags.Discards) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.CurrencyOverTime)
