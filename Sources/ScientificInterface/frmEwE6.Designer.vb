@@ -81,11 +81,12 @@ Partial Public Class frmEwE6
         Me.MenuEcospaceAdvanced = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceLoadXYRefData = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuHelp = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpTextBook = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpUserGuide = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpOutdated = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpSearch = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpContents = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiHelpUserGuide = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewMainSite = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewFacebook = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewEcobase = New System.Windows.Forms.ToolStripMenuItem()
@@ -173,7 +174,6 @@ Partial Public Class frmEwE6
         Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
-        Me.m_tsmiHelpTextBook = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -398,13 +398,23 @@ Partial Public Class frmEwE6
         '
         'MenuHelp
         '
-        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpTextBook, Me.m_tsmiHelpUserGuide, Me.m_tsmiHelpOutdated, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, Me.m_tsmiHelpViewEcobase, m_tssHelp3, Me.m_tsmiViewLog, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiHelpRequestSourceCodeAccess, m_tssHelp2, Me.m_tsmiHelpRegister, Me.m_tsmiHelpAbout, Me.m_tsmiHelpFeedback})
+        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpTextBook, Me.m_tsmiHelpUserGuide, Me.m_tsmiHelpOutdated, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, Me.m_tsmiHelpViewEcobase, m_tssHelp3, Me.m_tsmiViewLog, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiHelpRequestSourceCodeAccess, Me.m_tsmiHelpFeedback, m_tssHelp2, Me.m_tsmiHelpRegister, Me.m_tsmiHelpAbout})
         Me.MenuHelp.Name = "MenuHelp"
         resources.ApplyResources(Me.MenuHelp, "MenuHelp")
         '
+        'm_tsmiHelpTextBook
+        '
+        Me.m_tsmiHelpTextBook.Name = "m_tsmiHelpTextBook"
+        resources.ApplyResources(Me.m_tsmiHelpTextBook, "m_tsmiHelpTextBook")
+        '
+        'm_tsmiHelpUserGuide
+        '
+        Me.m_tsmiHelpUserGuide.Name = "m_tsmiHelpUserGuide"
+        resources.ApplyResources(Me.m_tsmiHelpUserGuide, "m_tsmiHelpUserGuide")
+        '
         'm_tsmiHelpOutdated
         '
-        Me.m_tsmiHelpOutdated.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpSearch, Me.m_tsmiHelpIndex, Me.m_tsmiHelpContents})
+        Me.m_tsmiHelpOutdated.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpSearch, Me.m_tsmiHelpIndex})
         Me.m_tsmiHelpOutdated.Name = "m_tsmiHelpOutdated"
         resources.ApplyResources(Me.m_tsmiHelpOutdated, "m_tsmiHelpOutdated")
         '
@@ -422,11 +432,6 @@ Partial Public Class frmEwE6
         '
         Me.m_tsmiHelpContents.Name = "m_tsmiHelpContents"
         resources.ApplyResources(Me.m_tsmiHelpContents, "m_tsmiHelpContents")
-        '
-        'm_tsmiHelpUserGuide
-        '
-        Me.m_tsmiHelpUserGuide.Name = "m_tsmiHelpUserGuide"
-        resources.ApplyResources(Me.m_tsmiHelpUserGuide, "m_tsmiHelpUserGuide")
         '
         'm_tsmiHelpViewMainSite
         '
@@ -909,11 +914,6 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
-        '
-        'm_tsmiHelpTextBook
-        '
-        Me.m_tsmiHelpTextBook.Name = "m_tsmiHelpTextBook"
-        resources.ApplyResources(Me.m_tsmiHelpTextBook, "m_tsmiHelpTextBook")
         '
         'frmEwE6
         '
