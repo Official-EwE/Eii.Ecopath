@@ -41,10 +41,10 @@ Namespace Ecosim
 
         Private m_gridSystemObjectives As gridFPSResultSystemObjectives = Nothing
         Private m_gridSystemObjectivesMulti As gridFPSResultSystemObjectives = Nothing
-        'Private m_gridFleetValue As gridFPSResultFleetValue = Nothing
+        Private m_gridFleetValue As gridFPSResultFleetValue = Nothing
 
         Private m_fpDiscRate As cPropertyFormatProvider = Nothing
-        'Private m_fpGenDiscRate As cPropertyFormatProvider = Nothing
+        Private m_fpGenDiscRate As cPropertyFormatProvider = Nothing
         Private m_fpUsePlugin As cPropertyFormatProvider = Nothing
 
         Private m_propBaseYear As cProperty = Nothing
@@ -53,7 +53,7 @@ Namespace Ecosim
         Private m_lstOptEnabled As New List(Of cControlEnabler)
         ''' <summary>Results to be plotted</summary>
         Private m_lptsResults() As ResultPoints
-        Private m_zghResults As cZedGraphHelper = Nothing
+        Private m_zghResults As cZedGraphHelper
         Private m_bInUpdate As Boolean = False
 
         Public Sub New()
@@ -96,13 +96,12 @@ Namespace Ecosim
             Me.m_gridSystemObjectivesMulti.UIContext = Me.UIContext
             Me.m_gridSystemObjectivesMulti.Dock = DockStyle.Fill
 
-            'Me.m_gridFleetValue = New gridFPSResultFleetValue()
-            'Me.m_gridFleetValue.UIContext = Me.UIContext
-            'Me.m_gridFleetValue.Dock = DockStyle.Fill
+            Me.m_gridFleetValue = New gridFPSResultFleetValue()
+            Me.m_gridFleetValue.UIContext = Me.UIContext
+            Me.m_gridFleetValue.Dock = DockStyle.Fill
 
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_txtDiscountRate, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
-            'VC 2024 removed gen disc
-            'Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_txtGenDiscount, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
+            Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_txtGenDiscount, Me.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
             Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUsePlugin, Me.Core.FishingPolicyManager.ModelParameters, eVarNameFlags.FPSUseEconomicPlugin)
 
@@ -115,7 +114,7 @@ Namespace Ecosim
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_lblSearchUsing, eOptimizeApproachTypes.SystemObjective))
             'Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkUsePlugin, eOptimizeApproachTypes.SystemObjective))
 
-            'Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkIncludeCCosts, eOptimizeApproachTypes.FleetValues))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries, eCoreComponentType.Ecosim}
 
@@ -143,12 +142,6 @@ Namespace Ecosim
             Me.m_scIterResultMultiRun.Panel1.Controls.Clear()
             Me.m_scIterResultMultiRun.Panel2.Controls.Clear()
 
-            Me.m_gridObjWeights.UIContext = Nothing
-            Me.m_gridObjFleet.UIContext = Nothing
-            Me.m_gridObjGroup.UIContext = Nothing
-            Me.m_gridSystemObjectives.UIContext = Nothing
-            Me.m_gridSystemObjectivesMulti.UIContext = Nothing
-
             Me.m_lstOptEnabled.Clear()
 
             Me.m_blocks.Detach()
@@ -158,11 +151,11 @@ Namespace Ecosim
             Me.m_propBaseYear = Nothing
 
             Me.m_fpDiscRate.Release()
-            'Me.m_fpGenDiscRate.Release()
+            Me.m_fpGenDiscRate.Release()
             Me.m_fpUsePlugin.Release()
             Me.m_fpDiscRate = Nothing
             Me.m_fpUsePlugin = Nothing
-            'Me.m_fpGenDiscRate = Nothing
+            Me.m_fpGenDiscRate = Nothing
 
             Me.m_zghResults.Detach()
             Me.m_zghResults = Nothing
@@ -205,7 +198,14 @@ Namespace Ecosim
                     Me.m_cmbSearchUsing.SelectedIndex = 1
             End Select
 
-            Me.InitMaxSOParams()
+            Select Case Me.m_manager.ModelParameters.OptimizeApproach
+                Case eOptimizeApproachTypes.SystemObjective
+                    Me.m_cmbOptmApproach.SelectedIndex = 0
+                    Me.InitMaxSOParams()
+                Case eOptimizeApproachTypes.FleetValues
+                    Me.m_cmbOptmApproach.SelectedIndex = 1
+                    Me.InitMaxFVParams()
+            End Select
 
             ' Plot graph
             Me.InitResultsPlot()
@@ -228,7 +228,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub InitMaxFVParams()
-            'Me.m_chkIncludeCCosts.Checked = Me.m_manager.ModelParameters.IncludeComp
+            Me.m_chkIncludeCCosts.Checked = Me.m_manager.ModelParameters.IncludeComp
             Me.m_nudMaxEffChg.Value = CDec(Me.m_manager.ModelParameters.MaxEffChange)
             Me.m_nudBaseYear.Value = CDec(Me.m_manager.ObjectiveParameters.BaseYear)
         End Sub
@@ -310,14 +310,21 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnOptmApproach_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) _
-
+            Handles m_cmbOptmApproach.SelectedIndexChanged
 
             ' Check to discard premature events
             If Me.m_manager Is Nothing Then Return
 
-            Me.m_manager.ModelParameters.OptimizeApproach = eOptimizeApproachTypes.SystemObjective
-            Me.InitMaxSOParams()
-            Me.m_gridObjFleet.IsMaximizeByFleetValue = False
+            Select Case Me.m_cmbOptmApproach.SelectedIndex
+                Case 0
+                    Me.m_manager.ModelParameters.OptimizeApproach = eOptimizeApproachTypes.SystemObjective
+                    Me.InitMaxSOParams()
+                    Me.m_gridObjFleet.IsMaximizeByFleetValue = False
+                Case 1
+                    Me.m_manager.ModelParameters.OptimizeApproach = eOptimizeApproachTypes.FleetValues
+                    Me.InitMaxFVParams()
+                    Me.m_gridObjFleet.IsMaximizeByFleetValue = True
+            End Select
 
             Me.UpdateControls()
 
@@ -349,10 +356,10 @@ Namespace Ecosim
             Select Case Me.m_manager.ModelParameters.OptimizeApproach
                 Case eOptimizeApproachTypes.SystemObjective
                     Me.m_scIterResult.Panel2Collapsed = True
-                    'Case eOptimizeApproachTypes.FleetValues
-                    '    Me.m_scIterResult.Panel2Collapsed = False
-                    '    Me.m_scIterResult.Panel2.Controls.Clear()
-                    '    Me.m_scIterResult.Panel2.Controls.Add(Me.m_gridFleetValue)
+                Case eOptimizeApproachTypes.FleetValues
+                    Me.m_scIterResult.Panel2Collapsed = False
+                    Me.m_scIterResult.Panel2.Controls.Clear()
+                    Me.m_scIterResult.Panel2.Controls.Add(Me.m_gridFleetValue)
             End Select
 
             If CInt(Me.m_nudNumberOfRuns.Value) > 1 Then
@@ -379,11 +386,11 @@ Namespace Ecosim
         End Sub
 
         Private Sub cbIncludeCCosts_CheckedChanged(sender As System.Object, e As System.EventArgs) _
-
+            Handles m_chkIncludeCCosts.CheckedChanged
 
             ' Check to discard premature events
             If Me.m_manager Is Nothing Then Return
-            'Me.m_manager.ModelParameters.IncludeComp = Me.m_chkIncludeCCosts.Checked
+            Me.m_manager.ModelParameters.IncludeComp = Me.m_chkIncludeCCosts.Checked
 
         End Sub
 
@@ -483,9 +490,9 @@ Namespace Ecosim
                 'cFishingPolicyManager.SearchResults will be populate with the results of the Search at the current iteration
                 Dim results As cFPSSearchResults = Me.m_manager.SearchResults
 
-                'If Me.m_cmbOptmApproach.SelectedIndex = 1 Then
-                '    Me.m_gridFleetValue.InsertOneIterResult(results)
-                'End If
+                If Me.m_cmbOptmApproach.SelectedIndex = 1 Then
+                    Me.m_gridFleetValue.InsertOneIterResult(results)
+                End If
 
                 Me.m_gridSystemObjectives.InsertOneIterResult(results, Me.m_manager.nSearchBlocks, DirectCast(Me.m_blocks.ParmBlockCodes, ucParmBlockCodes))
 
@@ -569,8 +576,6 @@ Namespace Ecosim
         Private Sub ReInitResultsPlot(nSearchBlocks As Integer, pbc As ucParmBlockCodes)
             Dim zgcr As New ZedGraph.ColorSymbolRotator
 
-            'ToDo: glbalize this
-
             Me.m_graphResults.GraphPane.Legend.Position = ZedGraph.LegendPos.Right
             Me.m_graphResults.GraphPane.Title.IsVisible = False
             Me.m_graphResults.GraphPane.XAxis.Title.Text = "Iterations"
@@ -578,23 +583,25 @@ Namespace Ecosim
 
             Me.m_graphResults.GraphPane.CurveList.Clear()
 
-            Dim results As eSearchCriteriaResultTypes() = CType([Enum].GetValues(GetType(eSearchCriteriaResultTypes)), eSearchCriteriaResultTypes())
+            ' JS 19nov08: let graph figure out the ticks
+            '' Only show major ticks
+            'Me.m_graphResults.GraphPane.XAxis.Scale.MajorStep = 5
+            'Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
+            ReDim Me.m_lptsResults(6) ' + nSearchBlocks) Will not plot blocks yet
 
-            ReDim Me.m_lptsResults(results.Count) ' + nSearchBlocks) Will not plot blocks yet
-
-            Me.m_lptsResults(eSearchCriteriaResultTypes.TotalValue) = New ResultPoints()
+            Me.m_lptsResults(1) = New ResultPoints()
             Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_NET_ECONOMIC_VALUE, Me.m_lptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
 
-            Me.m_lptsResults(eSearchCriteriaResultTypes.Employment) = New ResultPoints()
+            Me.m_lptsResults(2) = New ResultPoints()
             Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_lptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
 
-            Me.m_lptsResults(eSearchCriteriaResultTypes.MandateReb) = New ResultPoints()
+            Me.m_lptsResults(3) = New ResultPoints()
             Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_MANDATED_REBUILDING, Me.m_lptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
 
-            Me.m_lptsResults(eSearchCriteriaResultTypes.Ecological) = New ResultPoints()
+            Me.m_lptsResults(4) = New ResultPoints()
             Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
 
-            Me.m_lptsResults(eSearchCriteriaResultTypes.BioDiversity) = New ResultPoints()
+            Me.m_lptsResults(5) = New ResultPoints()
             Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_BIODIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             ' Will not plot blocks for now
@@ -609,11 +616,17 @@ Namespace Ecosim
 
         Private Sub UpdateResultsGraph(results As cFPSSearchResults)
 
+
+            Dim aiBlocks() As Integer = results.BlockNumber
+            Dim asResults() As Single = results.BlockResults
+
             Try
                 ' Fill output graph
-                For Each sct As eSearchCriteriaResultTypes In [Enum].GetValues(GetType(eSearchCriteriaResultTypes))
-                    Me.m_lptsResults(sct).AddItem(results.CriteriaValues(sct), CSng(results.nCalls))
+                For iResult As Integer = 1 To results.CriteriaValues.Length - 1
+                    Me.m_lptsResults(iResult).AddItem(results.CriteriaValues(iResult), CSng(results.nCalls))
                 Next
+
+                'Me.m_graphResults.GraphPane.XAxis.Scale.Max = m_lptsResults.Count - 1
 
                 Me.m_zghResults.CursorPos = 0.0
                 Me.m_zghResults.RescaleAndRedraw()
@@ -711,10 +724,6 @@ Namespace Ecosim
             End Sub
 
         End Class
-
-        Private Sub m_blocks_Load(sender As Object, e As EventArgs) Handles m_blocks.Load
-
-        End Sub
 
 #End Region ' Helper classes
 
