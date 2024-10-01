@@ -88,7 +88,7 @@ Public Class cEcospaceModelParameters
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
-            val = New cValue(core, 1, eVarNameFlags.EcospaceAllowHabCapGradCorrections, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceUseHabCapGradCorrections, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
@@ -235,7 +235,7 @@ Public Class cEcospaceModelParameters
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Spatial effort distribution penalty variables
-            val = New cValue(core, 1, eVarNameFlags.EcospaceDoPenaltysearch, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(core, 1, eVarNameFlags.EcospaceDoPenaltySearch, eStatusFlags.Null, eValueTypes.Bool)
             val.AffectsRunState = False
             Me.m_values.Add(val.varName, val)
 
@@ -600,12 +600,12 @@ Public Class cEcospaceModelParameters
         End Set
     End Property
 
-    Public Property AllowHabCapGradientCorrections As Boolean
+    Public Property UseHabCapGradientCorrections As Boolean
         Get
-            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceAllowHabCapGradCorrections))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceUseHabCapGradCorrections))
         End Get
         Set(value As Boolean)
-            Me.SetVariable(eVarNameFlags.EcospaceAllowHabCapGradCorrections, value)
+            Me.SetVariable(eVarNameFlags.EcospaceUseHabCapGradCorrections, value)
         End Set
     End Property
 
@@ -693,15 +693,6 @@ Public Class cEcospaceModelParameters
         End Set
     End Property
 
-    Public Property UseLocalMemory() As Boolean
-        Get
-            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceUseLocalMemory))
-        End Get
-        Set(value As Boolean)
-            Me.SetVariable(eVarNameFlags.EcospaceUseLocalMemory, value)
-        End Set
-    End Property
-
     Public Property UseEcosimBiomassForcing() As Boolean
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.EcospaceUseEcosimBiomassForcing))
@@ -783,8 +774,6 @@ Public Class cEcospaceModelParameters
         End Set
     End Property
 
-
-
     Public Property SaveThreadingLog() As Boolean
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.EcospaceSaveThreadingLog))
@@ -796,10 +785,10 @@ Public Class cEcospaceModelParameters
 
     Public Property UseSpatialEffortPenalty() As Boolean
         Get
-            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceDoPenaltysearch))
+            Return CBool(Me.GetVariable(eVarNameFlags.EcospaceDoPenaltySearch))
         End Get
         Set(value As Boolean)
-            Me.SetVariable(eVarNameFlags.EcospaceDoPenaltysearch, value)
+            Me.SetVariable(eVarNameFlags.EcospaceDoPenaltySearch, value)
         End Set
     End Property
 

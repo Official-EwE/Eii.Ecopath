@@ -931,7 +931,7 @@ Public Class cEcoSpace
                     Me.SetPenaltyConstants()
                     If Me.its >= 3 And Not Me.bEffortAdjusted Then Me.AdjustTotalEffort()
                     stpwchEffort.Start()
-                    If Me.EcoSpaceData.bUseEffortDistThreshold Then
+                    If Me.EcoSpaceData.UseEffortDistThreshold Then
                         'Run Effort Distribtion on cells with sailing cost < EffortDistThreshold
                         'this version also shares the load between threads
                         Me.runEffortDistributionLoadShared(Me.EcoSpaceData.MonthNow, Me.its, Me.EcoSpaceData.YearNow)
@@ -3595,7 +3595,7 @@ Public Class cEcoSpace
     ''' <remarks></remarks>
     Public Sub ScaleSailingCost()
 
-        If Me.EcoSpaceData.bUseEffortDistThreshold Then
+        If Me.EcoSpaceData.UseEffortDistThreshold Then
             Me.ScaleSailingByCells()
         Else
             Me.ScaleSailingToUnity()
@@ -3615,7 +3615,7 @@ Public Class cEcoSpace
         Dim Count As Long
         Dim GearNo As Integer
 
-        Debug.Assert(Me.EcoSpaceData.bUseEffortDistThreshold = False, Me.ToString + ".ScaleSailingToUnity() Called with incorrect bDistEffortByCell.")
+        Debug.Assert(Me.EcoSpaceData.UseEffortDistThreshold = False, Me.ToString + ".ScaleSailingToUnity() Called with incorrect bDistEffortByCell.")
 
         ReDim Me.EcoSpaceData.SailScale(Me.EcoSpaceData.nFleets)
         Me.EcoSpaceData.SailScale(0) = 1
@@ -3650,7 +3650,7 @@ Public Class cEcoSpace
         Dim Count As Long
         Dim iFlt As Integer
 
-        Debug.Assert(Me.EcoSpaceData.bUseEffortDistThreshold, Me.ToString + ".ScaleSailingByCells() Called with incorrect bDistEffortByCell.")
+        Debug.Assert(Me.EcoSpaceData.UseEffortDistThreshold, Me.ToString + ".ScaleSailingByCells() Called with incorrect bDistEffortByCell.")
 
         ReDim Me.EcoSpaceData.SailScale(Me.EcoSpaceData.nFleets)
         Me.EcoSpaceData.SailScale(0) = 1
@@ -3723,7 +3723,7 @@ Public Class cEcoSpace
                         If Me.EcoSpaceData.PAreaFished(ig)(i, j) > 1.0 Then Me.EcoSpaceData.PAreaFished(ig)(i, j) = 1.0
 
                         If ResetTotEffort Then
-                            If Not Me.EcoSpaceData.bUseEffortDistThreshold Then
+                            If Not Me.EcoSpaceData.UseEffortDistThreshold Then
                                 'Fishing is only restricted by the Habitat types
                                 Me.EcoSpaceData.TotEffort(ig) += Me.EcoSpaceData.PAreaFished(ig)(i, j)
 
@@ -4315,7 +4315,7 @@ exitline:
                         If bFished Then
                             'If it is still fished check it against the EffortDistThreshold
                             'Include the fishing effort threshold 
-                            If Me.EcoSpaceData.bUseEffortDistThreshold And Me.EcoSpaceData.Sail(ig)(i, j) >= Me.EcoSpaceData.EffortDistThreshold Then
+                            If Me.EcoSpaceData.UseEffortDistThreshold And Me.EcoSpaceData.Sail(ig)(i, j) >= Me.EcoSpaceData.EffortDistThreshold Then
                                 bFished = False
                             End If
                             'System.Console.WriteLine("Fished fleet=" + ig.ToString + " row=" + i.ToString + " col=" + j.ToString)
@@ -4828,7 +4828,7 @@ exitline:
         Dim iLastFleet As Integer
         Dim nCompFleets As Integer
 
-        Debug.Assert(Me.EcoSpaceData.bUseEffortDistThreshold = False, Me.ToString + ".runEffortDistributionNoLoadShare() Called With bUseEffortDistThreshold = True.")
+        Debug.Assert(Me.EcoSpaceData.UseEffortDistThreshold = False, Me.ToString + ".runEffortDistributionNoLoadShare() Called With bUseEffortDistThreshold = True.")
 
         'GC.Collect()
 
@@ -4948,7 +4948,7 @@ exitline:
         Dim nThrds As Integer
         Dim distET As Double
 
-        Debug.Assert(Me.EcoSpaceData.bUseEffortDistThreshold, Me.ToString + ".runEffortDistributionNoLoadShare() Called With bUseEffortDistThreshold = True.")
+        Debug.Assert(Me.EcoSpaceData.UseEffortDistThreshold, Me.ToString + ".runEffortDistributionNoLoadShare() Called With bUseEffortDistThreshold = True.")
 
         'GC.Collect()
         Array.Clear(Me.EcoSpaceData.Ftot, 0, Me.EcoSpaceData.Ftot.Length)
@@ -5137,7 +5137,7 @@ exitline:
         If Not Me.EcoSpaceData.PredictEffort Then Return
         'Don't adjust total effort when using EffortDistThreshold
         'EffortDistThreshold restricts the fishing to small number of cells
-        If Me.EcoSpaceData.bUseEffortDistThreshold Then Return
+        If Me.EcoSpaceData.UseEffortDistThreshold Then Return
 
         ReDim Effort(Me.EcoSpaceData.nFleets)
 
@@ -8504,7 +8504,7 @@ exitline:
 
                     'then do dynamic program iteratation to reset distmin for each cell to minimum distance to cell with habcap>habcapmin
                     'skip iteration if numbad=0
-                    If NumBad > 0 And Me.EcoSpaceData.AllowHabCapGradientCorrections Then
+                    If NumBad > 0 And Me.EcoSpaceData.UseHabCapGradientCorrections Then
                         For iter = 1 To Maxiter
                             For i = 1 To Me.EcoSpaceData.InRow
                                 For j = 1 To Me.EcoSpaceData.InCol

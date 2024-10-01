@@ -345,7 +345,7 @@ Public Class cEcospaceDataStructures
     ''' capacity gradient if input capacity contains values less than <see cref="MinHabCap"/> 
     ''' If false, Ecospace is only allowed to adjust 
     ''' </summary>
-    Public Property AllowHabCapGradientCorrections As Boolean = True
+    Public Property UseHabCapGradientCorrections As Boolean = True
 
     ''' <summary>
     ''' A customizable lowest limit for acceptable habitat 
@@ -428,7 +428,7 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <remarks>
     ''' Used only to distribute total effort across the cells. Does not effect the total effort.
-    ''' If <see cref="cEcospaceDataStructures.bUseEffortDistThreshold">bUseEffortDistThreshold</see> = True this will only include cells below the fishing effort threshold</remarks>
+    ''' If <see cref="cEcospaceDataStructures.UseEffortDistThreshold">bUseEffortDistThreshold</see> = True this will only include cells below the fishing effort threshold</remarks>
     Public SailScale() As Single
 
     ''' <summary>
@@ -700,15 +700,13 @@ Public Class cEcospaceDataStructures
     ''' Boolean flag is fishing effort restricted to cells with a Sail() of less than EffortDistThreshold
     ''' </summary>
     ''' <remarks>True if fishing effort is restricted. False effort is distributed over all water cells.</remarks>
-    Public bUseEffortDistThreshold As Boolean
+    Public UseEffortDistThreshold As Boolean
 
     ''' <summary>
     ''' Threshold value in the Sail(fleet,row,col) [sailing cost map] for a cells inclusion in effort distribution. 
     ''' </summary>
     ''' <remarks></remarks>
     Public EffortDistThreshold As Single
-
-    Public bUseLocalMemory As Boolean
 
     ''' <summary>
     ''' Total number of habitat area cells
@@ -1161,7 +1159,7 @@ Public Class cEcospaceDataStructures
 
             Me.ReDimFleets()
 
-            Me.bUseEffortDistThreshold = False
+            Me.UseEffortDistThreshold = False
             Me.EffortDistThreshold = 10000
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1678,7 +1676,7 @@ Public Class cEcospaceDataStructures
     ''' <remarks> FleetSailCells is used by <see cref="cEcoSpace.PredictEffortDistributionThreadedLoadShared"></see> to calculate effort distribution only on cells in the list</remarks>
     Public Sub PopulateFleetCells()
 
-        If Not Me.bUseEffortDistThreshold Then Return
+        If Not Me.UseEffortDistThreshold Then Return
 
         System.Console.WriteLine("Calculating map cells per fleet.")
         System.Console.WriteLine("Number of water cells " + Me.nWaterCells.ToString)
