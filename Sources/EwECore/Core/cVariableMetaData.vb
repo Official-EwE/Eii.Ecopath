@@ -422,7 +422,6 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcospaceAutosaveAnnualOutput) = New cVariableMetaData(True)
         Me.Metadata(eVarNameFlags.EcospaceAutosaveSelectedGroupsFleetsOnly) = New cVariableMetaData(True)
         Me.Metadata(eVarNameFlags.EcospaceAutosaveFirstTimeStep) = New cVariableMetaData(1, Integer.MaxValue, gt, lt, 1)
-        Me.Metadata(eVarNameFlags.EcospaceUseLocalMemory) = New cVariableMetaData(True)
         Me.Metadata(eVarNameFlags.UseEffortDistThreshold) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.EffortDistThreshold) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 10000)
         Me.Metadata(eVarNameFlags.EcospaceAreaOutputDir) = New cVariableMetaData(1024)
