@@ -154,9 +154,9 @@ Namespace Ecospace
             Me.m_fpAnnualOutput = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAnnualOutput, parms, eVarNameFlags.EcospaceAutosaveAnnualOutput)
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, parms, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
             Me.m_fpMinCapacity = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxMinCap, parms, eVarNameFlags.EcospaceMinForagingCapacity)
-            Me.m_fpAllowHabCapGradCalc = New cPropertyFormatProvider(Me.UIContext, Me.m_cbCalcHabCapGrad, parms, eVarNameFlags.EcospaceAllowHabCapGradCorrections)
+            Me.m_fpAllowHabCapGradCalc = New cPropertyFormatProvider(Me.UIContext, Me.m_cbCalcHabCapGrad, parms, eVarNameFlags.EcospaceUseHabCapGradCorrections)
 
-            Me.m_fpUsePenaltySearch = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUsePenalty, parms, eVarNameFlags.EcospaceDoPenaltysearch)
+            Me.m_fpUsePenaltySearch = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUsePenalty, parms, eVarNameFlags.EcospaceDoPenaltySearch)
             Me.m_fpPenPow = New cPropertyFormatProvider(Me.UIContext, Me.m_tbPenPow, parms, eVarNameFlags.EcospacePenpow)
             Me.m_fpEffortAdjust = New cPropertyFormatProvider(Me.UIContext, Me.m_tbEffortAdjustWeight, parms, eVarNameFlags.EcospaceNoFishWeight)
             Me.m_fpFirstMonthPenalty = New cPropertyFormatProvider(Me.UIContext, Me.m_tbFirstPenaltyMonth, parms, eVarNameFlags.EcospaceFirstPenaltyMonth)

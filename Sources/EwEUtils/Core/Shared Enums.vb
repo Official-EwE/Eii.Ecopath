@@ -470,7 +470,7 @@ Namespace Core
         ''' <summary>  Target f for effort distribution penalty </summary>
         EcospaceFTarget
 
-        EcospaceDoPenaltysearch
+        EcospaceDoPenaltySearch
 
         EcospaceNoFishWeight
 
@@ -711,8 +711,6 @@ Namespace Core
         ''' <summary>To document</summary>
         EffortDistThreshold
         ''' <summary>To document</summary>
-        EcospaceUseLocalMemory
-        ''' <summary>To document</summary>
         EcospaceIBMMovePacketOnStanza
         ''' <summary>User-defined output directory for Ecospace Map output</summary>
         EcospaceMapOutputDir
@@ -742,7 +740,7 @@ Namespace Core
         EcospaceMapDiscards
 
         EcospaceMinForagingCapacity
-        EcospaceAllowHabCapGradCorrections
+        EcospaceUseHabCapGradCorrections
 
         MultiStanzaAge0Numbers
 

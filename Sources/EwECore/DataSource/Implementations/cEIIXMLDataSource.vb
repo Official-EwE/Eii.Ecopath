@@ -2218,10 +2218,11 @@ Public Class cEIIXMLDataSource
             ecospaceDS.Tol = Me.ReadSafe(drow, "Tolerance", 0.01!)
             ecospaceDS.UseSpinUp = Me.ReadSafe(drow, "UseSpinup", False)
             ecospaceDS.SpinUpYears = Me.ReadSafe(drow, "SpinupYears", 10)
-            ecospaceDS.DoPenaltysearch = Me.ReadSafe(drow, "UsePenaltySearch", False)
+            ecospaceDS.DoPenaltysearch = (CByte(Me.ReadSafe(drow, "UsePenaltySearch", 0)) <> 0)
             ecospaceDS.NoFishWeight = Me.ReadSafe(drow, "NoFishWeight", 0.3!)
             ecospaceDS.PenPow = Me.ReadSafe(drow, "PenaltyPower", 10.0!)
             ecospaceDS.FirstPenaltyMonth = Me.ReadSafe(drow, "FirstPenaltyMonth", 60)
+            ecospaceDS.UseHabCapGradientCorrections = (CByte(Me.ReadSafe(drow, "UseHabCapGradientCorrections", 1)) <> 0)
 
             stanzaDS.NPacketsMultiplier = CSng(drow("NumPacketsMultiplier"))
 

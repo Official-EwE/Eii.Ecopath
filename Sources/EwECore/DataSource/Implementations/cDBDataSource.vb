@@ -7552,6 +7552,7 @@ Namespace DataSources
                 ecospaceDS.NoFishWeight = CSng(Me.m_db.ReadSafe(reader, "NoFishWeight", 0.3))
                 ecospaceDS.PenPow = CSng(Me.m_db.ReadSafe(reader, "PenaltyPower", 10))
                 ecospaceDS.FirstPenaltyMonth = CInt(Me.m_db.ReadSafe(reader, "FirstPenaltyMonth", 60))
+                ecospaceDS.UseHabCapGradientCorrections = (CInt(Me.m_db.ReadSafe(reader, "UseHabCapGradientCorrections", 0)) <> 0)
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
                 If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
@@ -7566,7 +7567,7 @@ Namespace DataSources
                 ecospaceDS.AdjustSpace = (CInt(reader("AdjustSpace")) <> 0)
                 ecospaceDS.UseExact = (CInt(reader("UseExact")) <> 0)
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
-                ecospaceDS.bUseEffortDistThreshold = CInt(Me.m_db.ReadSafe(reader, "UseEffortDistrThreshold", 0)) = 1
+                ecospaceDS.UseEffortDistThreshold = CInt(Me.m_db.ReadSafe(reader, "UseEffortDistrThreshold", 0)) = 1
                 ecospaceDS.EffortDistThreshold = CSng(Me.m_db.ReadSafe(reader, "EffortDistrThreshold", 10000))
                 ' ecospaceDS.FitResponseType = DirectCast(CInt(Me.m_db.ReadSafe(reader, "FitResponseType", eFitResponseType.None)), eFitResponseType)
 
@@ -7766,10 +7767,11 @@ Namespace DataSources
                 drow("CoordinateSystemWKT") = ecospaceDS.ProjectionString
                 drow("UseSpinup") = If(ecospaceDS.UseSpinUp, 1, 0)
                 drow("SpinupYears") = ecospaceDS.SpinUpYears
-                drow("UsePenaltySearch") = ecospaceDS.DoPenaltysearch
+                drow("UsePenaltySearch") = If(ecospaceDS.DoPenaltysearch, 1, 0)
                 drow("NoFishWeight") = ecospaceDS.NoFishWeight
                 drow("PenaltyPower") = ecospaceDS.PenPow
                 drow("FirstPenaltyMonth") = ecospaceDS.FirstPenaltyMonth
+                drow("UseHabCapGradientCorrections") = If(ecospaceDS.UseHabCapGradientCorrections, 1, 0)
 
                 drow("TotalTime") = ecospaceDS.TotalTime
                 drow("IFDPower") = ecospaceDS.IFDPower
@@ -7784,7 +7786,7 @@ Namespace DataSources
 
                 drow("AdjustSpace") = ecospaceDS.AdjustSpace
                 drow("UseExact") = ecospaceDS.UseExact
-                drow("UseEffortDistrThreshold") = If(ecospaceDS.bUseEffortDistThreshold, 1, 0)
+                drow("UseEffortDistrThreshold") = If(ecospaceDS.UseEffortDistThreshold, 1, 0)
                 drow("EffortDistrThreshold") = ecospaceDS.EffortDistThreshold
 
                 drow("Tolerance") = ecospaceDS.Tol

@@ -10838,11 +10838,10 @@ Public Class cCore
 
             m_EcospaceModelParams.PacketsMultiplier = Me.m_Stanza.NPacketsMultiplier
 
-            m_EcospaceModelParams.UseEffortDistThreshold = Me.m_EcospaceData.bUseEffortDistThreshold
+            m_EcospaceModelParams.UseEffortDistThreshold = Me.m_EcospaceData.UseEffortDistThreshold
             m_EcospaceModelParams.EffortDistThreshold = Me.m_EcospaceData.EffortDistThreshold
 
-            m_EcospaceModelParams.UseLocalMemory = Me.m_EcospaceData.bUseLocalMemory
-            m_EcospaceModelParams.AllowHabCapGradientCorrections = Me.m_EcospaceData.AllowHabCapGradientCorrections
+            m_EcospaceModelParams.UseHabCapGradientCorrections = Me.m_EcospaceData.UseHabCapGradientCorrections
             m_EcospaceModelParams.MinForagingCapacity = Me.m_EcospaceData.MinHabCap
 
             m_EcospaceModelParams.SpinupEnabled = Me.m_EcospaceData.UseSpinUp
@@ -10924,11 +10923,10 @@ Public Class cCore
         m_EcospaceData.UseSpinUp = m_EcospaceModelParams.SpinupEnabled
         m_EcospaceData.SpinUpYears = m_EcospaceModelParams.SpinupYears
 
-        m_EcospaceData.bUseEffortDistThreshold = m_EcospaceModelParams.UseEffortDistThreshold
+        m_EcospaceData.UseEffortDistThreshold = m_EcospaceModelParams.UseEffortDistThreshold
         m_EcospaceData.EffortDistThreshold = m_EcospaceModelParams.EffortDistThreshold
 
-        m_EcospaceData.bUseLocalMemory = m_EcospaceModelParams.UseLocalMemory
-        m_EcospaceData.AllowHabCapGradientCorrections = m_EcospaceModelParams.AllowHabCapGradientCorrections
+        m_EcospaceData.UseHabCapGradientCorrections = m_EcospaceModelParams.UseHabCapGradientCorrections
         m_EcospaceData.MinHabCap = m_EcospaceModelParams.MinForagingCapacity
 
         m_EcospaceData.EcospaceAreaOutputDir = m_EcospaceModelParams.EcospaceAreaOutputDir
