@@ -73,13 +73,17 @@ Public Class cCConcSpatialRaster
     ''' </summary>
     ''' <param name="iRow">One-based row index in the Ecospace grid.</param>
     ''' <param name="iCol">One-based column index in the Ecospace grid.</param>
-    ''' <returns>A value, or <see cref="cCore.NULL_VALUE"/> if either row or 
+    ''' <param name="dNoDataValue">No data value to use if either row or 
+    ''' column are invalid, or if the cell does not hold any data.</param>
+    ''' <returns>A value, or <paramref name="dNoDataValue"/> if either row or 
     ''' column are invalid, or if the cell does not hold any data.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Double _
+    Public Function Cell(ByVal iRow As Integer,
+                         ByVal iCol As Integer,
+                         Optional ByVal dNoDataValue As Double = -9999) As Double _
         Implements ISpatialRaster.Cell
 
-        If (Me.m_ds.Ccell Is Nothing) Then Return cCore.NULL_VALUE
+        If (Me.m_ds.Ccell Is Nothing) Then Return dNoDataValue
         Return Me.m_ds.Ccell(iRow, iCol, Me.m_iGroup)
 
     End Function
