@@ -218,11 +218,13 @@ Namespace SpatialData
         ''' Populate the core data that this adapter is responsible for.
         ''' </summary>
         ''' <param name="iTime">The one-based Ecospace time step to populate data for.</param>
+        ''' <param name="dNoData">The no data value for the Ecospace layer.</param>
         ''' <param name="layer">The layers to populate. If left to null, all layers
         ''' for the implicit <see cref="VarName"/> will be populated.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function Populate(iTime As Integer, Optional layer As cEcospaceLayer = Nothing) As Boolean
+        Public Overridable Function Populate(iTime As Integer, dNoData As Double,
+                                             Optional layer As cEcospaceLayer = Nothing) As Boolean
 
             Dim strMsg As String = ""
             Dim msg As cMessage = Nothing
@@ -299,7 +301,7 @@ Namespace SpatialData
 
 
                                         ' Integrate data
-                                        Me.Adapt(bm, layer, conn, iTime, dtVirt, dataExternal)
+                                        Me.Adapt(bm, layer, conn, iTime, dtVirt, dataExternal, dNoData)
 
                                         ' Notify world
                                         If (Me.m_core.PluginManager IsNot Nothing) Then
@@ -380,7 +382,8 @@ Namespace SpatialData
                                                      conn As cSpatialDataConnection,
                                                      iTime As Integer,
                                                      dt As Date,
-                                                     dataExternal As ISpatialRaster) As Boolean
+                                                     dataExternal As ISpatialRaster,
+                                                     dNoData As Double) As Boolean
 
             ' To ensure proper usage by inherited classes
             Debug.Assert(bm IsNot Nothing)
@@ -403,13 +406,13 @@ Namespace SpatialData
                     ' For all columns
                     iCol = 1
                     While (iCol <= iNumCols) And (bSuccess = True)
-                        sValue = dataExternal.Cell(iRow, iCol)
+                        sValue = dataExternal.Cell(iRow, iCol, dNoData)
                         ' Is a valid value?
                         If (sValue <> cCore.NULL_VALUE) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
                             ' #Yes: set value
                             bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, sValue)
                         Else
-                            bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, cCore.NULL_VALUE)
+                            bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, dNoData)
                         End If
                         iCol += 1
                     End While ' iCol

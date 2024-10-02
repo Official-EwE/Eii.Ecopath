@@ -150,11 +150,11 @@ Namespace SpatialData
         ''' <remarks></remarks>
         Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap, layer As cEcospaceLayer,
                                                 conn As cSpatialDataConnection, iTime As Integer, dt As Date,
-                                                dataExternal As ISpatialRaster) As Boolean
+                                                dataExternal As ISpatialRaster, dNoData As Double) As Boolean
 
             Me.setIsForced(layer.Index)
 
-            Return MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal)
+            Return MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
 
         End Function
 

@@ -462,7 +462,6 @@ Public Class cPluginManager
 
         ' Sanity checks - load only once
         If (Me.m_bLoaded) Then Return nLoaded
-        nLoaded = 0
 
         Dim pluginAssembly As Assembly = Assembly.GetAssembly(GetType(cPluginManager))
         ' Get the location of the plugin manager assembly as the default plug-in path
@@ -478,7 +477,7 @@ Public Class cPluginManager
 
         If Not Directory.Exists(strPluginPath) Then
             cLog.Write("Plugin directory does not exist: " & strPluginPath, eVerboseLevel.Detailed)
-            Return nLoaded
+            Return 0
         End If
 
         Try
@@ -506,9 +505,6 @@ Public Class cPluginManager
             ' Kaboom
             cLog.Write(ex, eVerboseLevel.Standard, "cPluginManager.LoadPlugins@" & strPluginPath)
         End Try
-
-        Me.m_bLoaded = (nLoaded > 0)
-
         Return nLoaded
 
     End Function

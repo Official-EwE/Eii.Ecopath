@@ -47,9 +47,9 @@ Namespace SpatialData
         ''' Overridden to invalidate fishing area assessments, if any.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap, layer As cEcospaceLayer, conn As cSpatialDataConnection, iTime As Integer, dt As Date, dataExternal As ISpatialRaster) As Boolean
+        Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap, layer As cEcospaceLayer, conn As cSpatialDataConnection, iTime As Integer, dt As Date, dataExternal As ISpatialRaster, dNoData As Double) As Boolean
 
-            If Not MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal) Then Return False
+            If Not MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData) Then Return False
 
             Dim ih As Integer = layer.Index
             Debug.Assert(ih >= 1)
