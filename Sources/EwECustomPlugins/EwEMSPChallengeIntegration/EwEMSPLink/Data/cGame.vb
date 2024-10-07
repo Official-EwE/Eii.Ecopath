@@ -315,7 +315,7 @@ Public Class cGame
                 If (t.ValueID = Me.m_pressuredrivers(pressure)) Then
                     ' Make sure to return the driver assignable to this pressure
                     ' This extra check is needed to make sure fleet-related pressures end 
-                    ' up in the correct driver (as a single fleet ValueID have have multiple
+                    ' up in the correct driver (as a single fleet ValueID can have multiple
                     ' drivers)
                     Dim p As cPressure = Me.Pressure(pressure)
                     If (p IsNot Nothing) Then
@@ -405,8 +405,8 @@ Public Class cGame
 
         Dim sim As cEcoSimScenario = Me.EcosimScenario
         Dim spc As cEcospaceScenario = Me.EcospaceScenario
-        Dim strSim As String = My.Resources.LABEL_ERROR
-        Dim strSpace As String = My.Resources.LABEL_ERROR
+        Dim strSim As String = cStringUtils.Localize(My.Resources.LABEL_ERROR_ECOSIM, Me.EcosimID)
+        Dim strSpace As String = cStringUtils.Localize(My.Resources.LABEL_ERROR_ECOSPACE, Me.EcospaceID)
         If (sim IsNot Nothing) Then strSim = sim.Name
         If (spc IsNot Nothing) Then strSpace = spc.Name
 

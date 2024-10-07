@@ -115,11 +115,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to ERROR.
+        '''  Looks up a localized string similar to Sim scenario &apos;{0}&apos; missing.
         '''</summary>
-        Friend ReadOnly Property LABEL_ERROR() As String
+        Friend ReadOnly Property LABEL_ERROR_ECOSIM() As String
             Get
-                Return ResourceManager.GetString("LABEL_ERROR", resourceCulture)
+                Return ResourceManager.GetString("LABEL_ERROR_ECOSIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Space scenario &apos;{0}&apos; missing.
+        '''</summary>
+        Friend ReadOnly Property LABEL_ERROR_ECOSPACE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_ERROR_ECOSPACE", resourceCulture)
             End Get
         End Property
         
