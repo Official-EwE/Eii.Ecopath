@@ -448,6 +448,12 @@ Public Class cGame
         Return Nothing
     End Function
 
+    Public Function IsValid() As Boolean
+        If (Me.EcosimScenario Is Nothing) Then Return False
+        If (Me.EcospaceScenario Is Nothing) Then Return False
+        Return True
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' MEL API call, validate the game configuration against expected parameters.
