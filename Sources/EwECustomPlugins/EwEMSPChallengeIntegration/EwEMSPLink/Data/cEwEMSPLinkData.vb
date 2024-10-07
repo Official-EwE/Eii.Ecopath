@@ -20,6 +20,10 @@
 
 Option Strict On
 Imports System.IO
+Imports System.Reflection
+Imports System.Resources
+Imports System.Runtime.Serialization
+Imports System.Security.Policy
 Imports System.Xml
 Imports EwECore
 Imports EwEUtils.Utilities
@@ -129,7 +133,12 @@ Public Class cEwEMSPLinkData
                 For Each xnGame As XmlNode In doc.SelectNodes("//game")
                     Dim game As New cGame(Me.m_core)
                     game.FromXML(xnGame)
-                    Me.m_games.Add(game)
+                    If (game.IsValid) Then
+                        Me.m_games.Add(game)
+                    Else
+                        ' ToDo: Marin, this needs proper handling (as a malformed game cannot be automatically resolved)
+                        Console.WriteLine("ALERT!! GANE {0} IS MISSING EITHER ITS ECOSIM OR ECOSPACE SCENARIO; THIS GAME CANNOT BE USED!", game.Name)
+                    End If
                 Next
                 Return True
             Catch ex As Exception
@@ -156,8 +165,13 @@ Public Class cEwEMSPLinkData
         xnGames = doc.CreateElement("games")
         xnRoot.AppendChild(xnGames)
 
-        For Each g As cGame In Me.Games
-            xnGames.AppendChild(g.ToXML(doc))
+        For Each game As cGame In Me.Games
+            If (game.IsValid) Then
+                xnGames.AppendChild(game.ToXML(doc))
+            Else
+                ' ToDo: Marin, this needs proper handling (as a malformed game cannot be automatically resolved)
+                Console.WriteLine("ALERT!! GANE {0} IS MISSING EITHER ITS ECOSIM OR ECOSPACE SCENARIO; THIS GAME WILL NOT BE SAVED!", game.Name)
+            End If
         Next
 
 #If DEBUG Then
