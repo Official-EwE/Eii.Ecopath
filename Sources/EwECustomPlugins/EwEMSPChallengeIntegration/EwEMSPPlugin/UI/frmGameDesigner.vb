@@ -1419,6 +1419,7 @@ Namespace UI
             Me.m_cmbPressureTypes.Items.Add(My.Resources.CHOICE_GRID)
             Me.m_cmbPressureTypes.Items.Add(My.Resources.CHOICE_FISHING_EFFORT)
             Me.m_cmbPressureTypes.Items.Add(My.Resources.CHOICE_FISHING_ECO)
+            Me.m_cmbPressureTypes.SelectedIndex = 0
         End Sub
 
         Private Sub FillOutputTypesCombo()
