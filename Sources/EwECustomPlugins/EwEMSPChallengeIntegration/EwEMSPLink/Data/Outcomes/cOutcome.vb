@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Reflection
 Imports EwECore
 Imports EwECore.Style
 
@@ -189,17 +190,55 @@ Public Class cOutcome
     ''' </returns>
     ''' -----------------------------------------------------------------------
     Public Function IsConfigured() As Boolean
-        Select Case Me.LayerType
-            Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Effort, eLayerType.Discards, eLayerType.Bycatch
-                ' Needs to have data when defined
-                Return Me.NumItems > 0
-            Case eLayerType.Indicator
-                ' Automatically populated
-                Return True
-            Case Else
-                Debug.Assert(False, "Layer type not supported")
-        End Select
+        If Me.IsGroupOutcome Or Me.IsFleetOutcome Then
+            ' Needs to have data when defined
+            Return Me.NumItems > 0
+        End If
+        If Me.IsIndicatorOutcome Then
+            ' Automatically populated
+            Return True
+        End If
+        Debug.Assert(False, "Layer type not supported")
         Return False
+    End Function
+
+    Public Function IsFleetOutcome() As Boolean
+        Return Me.LayerType = eLayerType.Effort Or Me.LayerType = eLayerType.Catch
+    End Function
+
+    Public Function IsGroupOutcome() As Boolean
+        Return Me.LayerType = eLayerType.Biomass Or Me.LayerType = eLayerType.Discards Or Me.LayerType = eLayerType.Bycatch
+    End Function
+
+    Public Function IsIndicatorOutcome() As Boolean
+        Return Me.LayerType = eLayerType.Indicator
+    End Function
+
+    ''' <summary>
+    ''' Returns the <see cref="ICoreInterface.DBID"/> of an item in the output.
+    ''' </summary>
+    ''' <param name="iIndex"></param>
+    ''' <returns></returns>
+    Public Function ItemDBID(iIndex As Integer) As Integer
+        Try
+            Dim ds As cEcopathDataStructures = Me.m_core.EcopathDataStructures
+            If Me.IsGroupOutcome Then Return ds.GroupDBID(iIndex)
+            If Me.IsFleetOutcome Then Return ds.FleetDBID(iIndex)
+        Catch ex As Exception
+            ' Boink
+        End Try
+        Return iIndex
+    End Function
+
+    Public Function ItemIndex(iDBID As Integer) As Integer
+        Try
+            Dim ds As cEcopathDataStructures = Me.m_core.EcopathDataStructures
+            If Me.IsGroupOutcome Then Return Array.IndexOf(ds.GroupDBID, iDBID)
+            If Me.IsFleetOutcome Then Return Array.IndexOf(ds.FleetDBID, iDBID)
+        Catch ex As Exception
+            ' Boink
+        End Try
+        Return iDBID
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -209,16 +248,10 @@ Public Class cOutcome
     ''' <returns>The total number of items that can be aggregated in the outcome layer. </returns>
     ''' -----------------------------------------------------------------------
     Public Function NumItems() As Integer
-        Select Case Me.LayerType
-            Case eLayerType.Biomass, eLayerType.Discards, eLayerType.Bycatch
-                Return Me.m_core.nGroups
-            Case eLayerType.Effort, eLayerType.Catch
-                Return Me.m_core.nFleets
-            Case eLayerType.Indicator
-                Return [Enum].GetValues(GetType(eMSPDIversityIndex)).Length
-            Case Else
-                Debug.Assert(False, "Whoopsie")
-        End Select
+        If Me.IsGroupOutcome Then Return Me.m_core.nGroups
+        If Me.IsFleetOutcome Then Return Me.m_core.nFleets
+        If Me.IsIndicatorOutcome Then Return [Enum].GetValues(GetType(eMSPDIversityIndex)).Length
+        Debug.Assert(False, "Whoopsie")
         Return 0
     End Function
 

@@ -837,8 +837,17 @@ Public Class cGame
             xa.InnerText = output.LayerType().ToString
             xnOutput.Attributes.Append(xa)
 
-            xa = doc.CreateAttribute("numerators")
+            xa = doc.CreateAttribute("identifiers")
             Dim sb As New StringBuilder()
+            For i As Integer = 1 To output.NumItems
+                If (i > 1) Then sb.Append(",")
+                sb.Append(cStringUtils.FormatNumber(output.ItemDBID(i)))
+            Next
+            xa.InnerText = sb.ToString()
+            xnOutput.Attributes.Append(xa)
+
+            xa = doc.CreateAttribute("numerators")
+            sb.Clear()
             For i As Integer = 1 To output.NumItems
                 If (i > 1) Then sb.Append(",")
                 sb.Append(cStringUtils.FormatNumber(output.Numerator(i)))
@@ -973,6 +982,7 @@ Public Class cGame
                             Dim type As cOutcome.eLayerType
                             Dim strNumerators As String = ""
                             Dim strDenominators As String = ""
+                            Dim strItemIDs As String = ""
                             Dim bRaw As Boolean = False
                             For Each xa As XmlAttribute In xnOutcome.Attributes
                                 Select Case xa.Name
@@ -980,6 +990,7 @@ Public Class cGame
                                     Case "type" : [Enum].TryParse(xa.InnerText, type)
                                     Case "items", "numerators" : strNumerators = xa.InnerText
                                     Case "denominators" : strDenominators = xa.InnerText
+                                    Case "identifiers" : strItemIDs = xa.InnerText
                                     Case "raw" : Boolean.TryParse(xa.InnerText, bRaw)
                                 End Select
                             Next
@@ -987,12 +998,20 @@ Public Class cGame
                             Dim output As New cOutcome(Me.m_core, strName, type)
                             If (strNumerators.Contains(",")) Then
                                 Dim nums As String() = strNumerators.Split(","c)
-                                For i As Integer = 1 To Math.Min(nums.Count, output.NumItems)
-                                    output.Numerator(i) = cStringUtils.ConvertToDouble(nums(i - 1))
-                                Next
-                                nums = strDenominators.Split(","c)
-                                For i As Integer = 1 To Math.Min(nums.Count, output.NumItems)
-                                    output.Denominator(i) = cStringUtils.ConvertToDouble(nums(i - 1))
+                                Dim dems As String() = strDenominators.Split(","c)
+                                Dim ids As String() = strItemIDs.Split(","c)
+
+                                For i As Integer = 1 To output.NumItems
+                                    Dim iItem As Integer = i
+                                    ' If item DBIDs are specified then 
+                                    If (ids.Count = output.NumItems) Then
+                                        Dim iPos As Integer = CInt(ids(i))
+                                        If (iPos > 0) Then
+                                            iItem = iPos
+                                        End If
+                                    End If
+                                    output.Numerator(iItem) = cStringUtils.ConvertToDouble(nums(i - 1))
+                                    output.Denominator(iItem) = cStringUtils.ConvertToDouble(nums(i - 1))
                                 Next
                             Else
                                 ' Backward compatibility
