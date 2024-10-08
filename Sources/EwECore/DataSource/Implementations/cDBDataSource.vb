@@ -7552,7 +7552,7 @@ Namespace DataSources
                 ecospaceDS.NoFishWeight = CSng(Me.m_db.ReadSafe(reader, "NoFishWeight", 0.3))
                 ecospaceDS.PenPow = CSng(Me.m_db.ReadSafe(reader, "PenaltyPower", 10))
                 ecospaceDS.FirstPenaltyMonth = CInt(Me.m_db.ReadSafe(reader, "FirstPenaltyMonth", 60))
-                ecospaceDS.UseHabCapGradientCorrections = (CInt(Me.m_db.ReadSafe(reader, "UseHabCapGradientCorrections", 0)) <> 0)
+                ecospaceDS.UseHabCapGradientCorrections = (CInt(Me.m_db.ReadSafe(reader, "UseHabCapGradientCorrections", 1)) <> 0)
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
                 If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
