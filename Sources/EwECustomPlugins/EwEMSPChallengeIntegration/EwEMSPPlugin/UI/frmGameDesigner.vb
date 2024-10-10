@@ -755,10 +755,27 @@ Namespace UI
             If (result Is Nothing) Then Return
 
             ' Save the result
-            Dim saveCmd As cFileSaveCommand = CType(Me.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-            saveCmd.Invoke("JSON Files|*.json", 0, "Save rendered MSP Config as")
-            If (saveCmd.Result <> DialogResult.OK) Then Return
+            Dim saveCmd = CType(Me.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+            Dim retry = True
+            While retry
+                saveCmd.Invoke("JSON Files|*.json", 0, "Save rendered MSP Config as")
+                If (saveCmd.Result <> DialogResult.OK) Then Return
+                retry = saveCmd.FileName.Equals(cmd.FileName.Replace(".json.scriban", ".json"))
+                If retry Then
+                    MessageBox.Show("Cannot overwrite the template file. Please choose another file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
+            End While
             File.WriteAllText(saveCmd.FileName, ReformatJson(result))
+
+            ' Remove all generated files on success which are: *.gen.json.scriban (old style) and *.json.scriban.gen
+            Dim dir As String = Path.GetDirectoryName(cmd.FileName)
+            Dim patterns As String() = {"*.gen.json.scriban", "*.json.scriban.gen"}
+            For Each pattern As String In patterns
+                Dim files As String() = Directory.GetFiles(dir, pattern)
+                For Each f As String In files
+                    File.Delete(f)
+                Next
+            Next
         End Sub
 
 #End Region ' Game info and game settings "
@@ -1739,7 +1756,7 @@ Namespace UI
         End Function
 
         Private Function ExportGeneratedScribanTemplate(templateBaseFileName As String, combinedTemplateText As String) As Boolean
-            Dim newFileName As String = templateBaseFileName.Replace(".json.scriban", ".gen.json.scriban")
+            Dim newFileName As String = templateBaseFileName.Replace(".json.scriban", ".json.scriban.gen")
             Dim newFilePath As String = Path.Combine(Path.GetDirectoryName(templateBaseFileName), newFileName)
             Try
                 File.WriteAllText(newFilePath, combinedTemplateText)
