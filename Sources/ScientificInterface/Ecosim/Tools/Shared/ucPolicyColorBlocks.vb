@@ -45,8 +45,6 @@ Namespace Ecosim
 
 #Region " Private vars "
 
-        Private m_uic As cUIContext = Nothing
-        Private m_clrCurrent As Color
         Private m_bIsSketching As Boolean
         Private m_bShowTooltip As Boolean = True
 
@@ -63,8 +61,6 @@ Namespace Ecosim
 
         Private m_DataSource As IPolicyColorBlockDataSource = Nothing
         Private m_bInit As Boolean
-
-        Private m_BlockSelector As IBlockSelector = Nothing
 
         Private m_ptLast As Point = Nothing
 
@@ -127,12 +123,12 @@ Namespace Ecosim
             If Me.m_bInit Then Me.Detach()
 
             Me.m_DataSource = DataSource
-            Me.m_BlockSelector = BlockSelector
-            Me.m_BlockSelector.UIContext = Me.UIContext
+            Me.ParmBlockCodes = BlockSelector
+            Me.ParmBlockCodes.UIContext = Me.UIContext
 
             Try
 
-                Dim selector As Control = DirectCast(Me.m_BlockSelector, Control)
+                Dim selector As Control = DirectCast(Me.ParmBlockCodes, Control)
                 selector.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Top
                 selector.Size = Me.m_plBlocks.ClientSize ' Ugh
                 Me.m_plBlocks.Controls.Clear()
@@ -149,12 +145,12 @@ Namespace Ecosim
                 System.Console.WriteLine(Me.ToString & ".Attach() Exception: " & ex.Message)
             End Try
 
-            Me.m_DataSource.Attach(Me.m_BlockSelector)
+            Me.m_DataSource.Attach(Me.ParmBlockCodes)
 
-            Me.m_PropBaseYear = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear), cIntegerProperty)
+            Me.m_PropBaseYear = DirectCast(Me.UIContext.PropertyManager.GetProperty(Me.UIContext.Core.FishingPolicyManager.ObjectiveParameters, eVarNameFlags.SearchBaseYear), cIntegerProperty)
             AddHandler Me.m_PropBaseYear.PropertyChanged, AddressOf Me.OnPropChanged
 
-            Me.m_PropEcosimNYears = DirectCast(Me.m_uic.PropertyManager.GetProperty(Me.m_uic.Core.EcosimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
+            Me.m_PropEcosimNYears = DirectCast(Me.UIContext.PropertyManager.GetProperty(Me.UIContext.Core.EcosimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
             AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf Me.OnPropChanged
 
             Me.m_hoverMenu = New ucHoverMenu(Me.UIContext)
@@ -180,7 +176,7 @@ Namespace Ecosim
 
             If (Me.m_bInit) Then
 
-                RemoveHandler Me.m_BlockSelector.OnValueChanged, AddressOf Me.onCVValuesChanged
+                RemoveHandler Me.ParmBlockCodes.OnValueChanged, AddressOf Me.onCVValuesChanged
                 RemoveHandler Me.m_PropBaseYear.PropertyChanged, AddressOf Me.OnPropChanged
                 Me.m_PropBaseYear = Nothing
 
@@ -196,7 +192,7 @@ Namespace Ecosim
 
 
                 Me.m_DataSource = Nothing
-                Me.m_BlockSelector = Nothing
+                Me.ParmBlockCodes = Nothing
 
             End If
 
@@ -208,29 +204,14 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IUIElement.UIContext"/>
         ''' -------------------------------------------------------------------
-        Public Property UIContext() As cUIContext _
-            Implements IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Set(value As cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
+        Public Property UIContext() As cUIContext Implements IUIElement.UIContext
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the color of the currently selected block.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property CurColor() As Color
-            Get
-                Return Me.m_clrCurrent
-            End Get
-            Set(value As Color)
-                Me.m_clrCurrent = value
-            End Set
-        End Property
+        Public Property CurrentColor() As Color
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -239,13 +220,6 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property ParmBlockCodes() As IBlockSelector
-            Get
-                Return Me.m_BlockSelector
-            End Get
-            Set(value As IBlockSelector)
-                Me.m_BlockSelector = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -267,7 +241,7 @@ Namespace Ecosim
         ''' Get/set whether the block editor should show tooltips.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True)> _
+        <Browsable(True)>
         Public Property ShowTooltip() As Boolean
             Get
                 Return Me.m_bShowTooltip
@@ -512,8 +486,8 @@ Namespace Ecosim
             Me.m_nudSeqEndYear.Maximum = Me.m_DataSource.TotalBlocks
             Me.m_nudNumYearsPerBlock.Maximum = Me.m_DataSource.TotalBlocks
 
-            If Me.m_clrCurrent = Nothing Then
-                Me.m_clrCurrent = Color.Green
+            If Me.CurrentColor = Nothing Then
+                Me.CurrentColor = Color.Green
             End If
 
             Me.m_nudNumYearsPerBlock.Value = CDec(Me.m_DataSource.TotalBlocks)
@@ -535,14 +509,14 @@ Namespace Ecosim
                         Dim yPos As Single = i * Me.m_sRowHeight
                         Dim xPos As Single = Me.m_sFirstColWidth + (j - 1) * Me.m_sColWidth
                         ' Ensure proper disposal
-                        Using tmpBrush As New SolidBrush(Me.m_BlockSelector.BlockColor(Me.m_DataSource.BlockCells(i, j)))
+                        Using tmpBrush As New SolidBrush(Me.ParmBlockCodes.BlockColor(Me.m_DataSource.BlockCells(i, j)))
                             g.FillRectangle(tmpBrush, New RectangleF(xPos, yPos, Me.m_sColWidth, Me.m_sRowHeight))
                         End Using
                     Next
                 Next
 
                 ' Draw names area in correct style guide colour
-                Using br As New SolidBrush(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND))
+                Using br As New SolidBrush(Me.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND))
                     g.FillRectangle(br, 0, Me.m_sRowHeight, Me.m_sFirstColWidth, Me.m_pbFishingBlocks.Height - Me.m_sRowHeight)
                 End Using
 
@@ -590,7 +564,7 @@ Namespace Ecosim
             If ptBlock.X > Me.m_iCols Then Return
 
             Dim iBlock As Integer = Me.m_DataSource.BlockCells(ptBlock.Y, ptBlock.X)
-            Me.m_BlockSelector.SelectedBlock = iBlock
+            Me.ParmBlockCodes.SelectedBlock = iBlock
 
         End Sub
 
