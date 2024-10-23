@@ -223,12 +223,18 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub OnGotFocus(sender As Object, e As System.EventArgs)
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-            Dim dsc As cPropertySelectionCommand = DirectCast(cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
+            Try
+                If Me.UIContext Is Nothing Then Return
 
-            If dsc Is Nothing Then Return
+                Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                Dim dsc As cPropertySelectionCommand = DirectCast(cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
 
-            dsc.Invoke(Me.m_prop)
+                If dsc Is Nothing Then Return
+
+                dsc.Invoke(Me.m_prop)
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 #End Region ' Local events 
