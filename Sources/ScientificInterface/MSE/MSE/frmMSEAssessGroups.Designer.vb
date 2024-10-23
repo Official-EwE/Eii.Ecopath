@@ -50,7 +50,7 @@ Partial Class frmMSEAssessGroups
         '
         resources.ApplyResources(Me.m_blocks, "m_blocks")
         Me.m_blocks.ControlPanelVisible = False
-        Me.m_blocks.CurColor = System.Drawing.Color.Empty
+        Me.m_blocks.CurrentColor = System.Drawing.Color.Empty
         Me.m_blocks.Name = "m_blocks"
         Me.m_blocks.ParmBlockCodes = Nothing
         Me.m_blocks.ShowTooltip = True

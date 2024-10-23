@@ -475,7 +475,6 @@ Namespace Ecosim
             'm_blocks
             '
             Me.m_blocks.ControlPanelVisible = True
-            Me.m_blocks.CurColor = System.Drawing.Color.Empty
             Me.m_blocks.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_blocks.Location = New System.Drawing.Point(0, 0)
             Me.m_blocks.Margin = New System.Windows.Forms.Padding(0)
