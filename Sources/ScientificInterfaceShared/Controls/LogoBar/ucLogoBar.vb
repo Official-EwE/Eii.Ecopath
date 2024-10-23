@@ -139,6 +139,8 @@ Public Class ucLogoBar
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         MyBase.OnPaint(e)
 
+        If (Me.UIContext Is Nothing) Then Return
+
         If Not Me.m_bCalculated Then
             Me.CalculateLogoRects()
         End If

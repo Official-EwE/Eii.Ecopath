@@ -41,8 +41,6 @@ Namespace Ecosim
     Public Class ucPolicyColorBlocks
         Implements IUIElement
 
-        Private Const cNUM_ZOOMLEVELS As Integer = 5
-
 #Region " Private vars "
 
         Private m_bIsSketching As Boolean
@@ -63,21 +61,6 @@ Namespace Ecosim
         Private m_bInit As Boolean
 
         Private m_ptLast As Point = Nothing
-
-        ' -- Hoover menu --
-
-        Protected Enum eHoverCommands As Integer
-            ZoomIn
-            ZoomOut
-            ZoomReset
-        End Enum
-
-        ''' <summary>States whether a floating hover menu should be displayed on the blocks.</summary>
-        Private m_bShowHoverMenu As Boolean = True
-        ''' <summary>The hover menu to display on top of blocks.</summary>
-        Private m_hoverMenu As ucHoverMenu = Nothing
-
-        Private m_iZoomLevel As Integer = 2 ' [0, 4]
 
 #End Region ' Private vars
 
@@ -153,13 +136,6 @@ Namespace Ecosim
             Me.m_PropEcosimNYears = DirectCast(Me.UIContext.PropertyManager.GetProperty(Me.UIContext.Core.EcosimModelParameters, eVarNameFlags.EcoSimNYears), cIntegerProperty)
             AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf Me.OnPropChanged
 
-            Me.m_hoverMenu = New ucHoverMenu(Me.UIContext)
-            Me.m_hoverMenu.Attach(Me.m_plScroll)
-            Me.m_hoverMenu.AddItem(SharedResources.ZoomInHS, SharedResources.GENERIC_ZOOM_IN, eHoverCommands.ZoomIn)
-            Me.m_hoverMenu.AddItem(SharedResources.ZoomOutHS, SharedResources.GENERIC_ZOOM_OUT, eHoverCommands.ZoomOut)
-            Me.m_hoverMenu.AddItem(SharedResources.ZoomHS, SharedResources.GENERIC_ZOOM_RESET, eHoverCommands.ZoomReset)
-            AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf Me.OnHoverMenuCommand
-
             Me.m_bInit = True
 
             Me.ReloadData()
@@ -182,14 +158,6 @@ Namespace Ecosim
 
                 RemoveHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf Me.OnPropChanged
                 Me.m_PropEcosimNYears = Nothing
-
-                RemoveHandler Me.m_hoverMenu.OnUserCommand, AddressOf Me.OnHoverMenuCommand
-
-                Me.m_hoverMenu.Detach()
-                'Me.Controls.Remove(Me.m_hoverMenu)
-                Me.m_hoverMenu.Dispose()
-                Me.m_hoverMenu = Nothing
-
 
                 Me.m_DataSource = Nothing
                 Me.ParmBlockCodes = Nothing
@@ -363,41 +331,6 @@ Namespace Ecosim
 
 #Region " Callbacks "
 
-        ''' <summary>Cross-threading delegate.</summary>
-        ''' <param name="cmd"></param>
-        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(cmd As Object)
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Callback for hover menu events.
-        ''' </summary>
-        ''' <param name="cmd"></param>
-        ''' -------------------------------------------------------------------
-        Private Sub OnHoverMenuCommand(cmd As Object)
-
-            If (Not TypeOf cmd Is eHoverCommands) Then Return
-
-            If Me.InvokeRequired Then
-                Me.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf Me.OnHoverMenuCommand), New Object() {cmd})
-                Return
-            End If
-
-            ' Ajdust zoom level
-            Select Case DirectCast(cmd, eHoverCommands)
-                Case eHoverCommands.ZoomIn : Me.m_iZoomLevel += 1
-                Case eHoverCommands.ZoomOut : Me.m_iZoomLevel -= 1
-                Case eHoverCommands.ZoomReset : Me.m_iZoomLevel = CInt(cNUM_ZOOMLEVELS / 2)
-            End Select
-            Me.m_iZoomLevel = Math.Max(0, Math.Min(cNUM_ZOOMLEVELS, Me.m_iZoomLevel))
-
-            Me.m_hoverMenu.IsEnabled(eHoverCommands.ZoomIn) = (Me.m_iZoomLevel < cNUM_ZOOMLEVELS)
-            Me.m_hoverMenu.IsEnabled(eHoverCommands.ZoomOut) = (Me.m_iZoomLevel > 0)
-
-            ' Update
-            Me.ResizeBlocks()
-
-        End Sub
-
         Private Sub OnPropChanged(p As cProperty, cf As cProperty.eChangeFlags)
             Me.Refresh()
         End Sub
@@ -458,7 +391,8 @@ Namespace Ecosim
                 Dim sMinColWidth As Single = CSng((Me.m_plScroll.ClientRectangle.Width - Me.m_sFirstColWidth - 6) / Me.m_DataSource.TotalBlocks)
                 Dim sMaxColWidth As Single = g.MeasureString(CStr(Math.Pow(10, CInt(Math.Log10(Me.m_iCols)) + 1) - 1), Me.Font).Width
 
-                Me.m_sColWidth = sMinColWidth + (Me.m_iZoomLevel * (sMaxColWidth - sMinColWidth) / cNUM_ZOOMLEVELS)
+                Me.m_sColWidth = sMinColWidth + (sMaxColWidth - sMinColWidth)
+
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
