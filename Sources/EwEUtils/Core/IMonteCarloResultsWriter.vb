@@ -34,6 +34,8 @@ Namespace Core
 
         Function DataName() As String
 
+
+
     End Interface
 
 End Namespace
