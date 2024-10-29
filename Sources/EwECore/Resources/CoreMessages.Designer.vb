@@ -2462,6 +2462,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Unable to save fleet trade-off output to &apos;{0}&apos;.
+        '''</summary>
+        Public Shared ReadOnly Property MSE_FLEETTRADEOFF_SAVE_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MSE_FLEETTRADEOFF_SAVE_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fleet trade-off output saved to &apos;{0}&apos;.
+        '''</summary>
+        Public Shared ReadOnly Property MSE_FLEETTRADEOFF_SAVED() As String
+            Get
+                Return ResourceManager.GetString("MSE_FLEETTRADEOFF_SAVED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to MSE Linear Programing Solution failed to find an optimal solution for &apos;{0}&apos; time steps. Check your target fishing mortality rates to make sure you have not overly constrained your model..
         '''</summary>
         Public Shared ReadOnly Property MSE_LPSOLVER_NONOPTIMAL() As String

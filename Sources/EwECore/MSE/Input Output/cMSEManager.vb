@@ -186,7 +186,6 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property GroupOutputs(iGroupIndex As Integer) As cMSEGroupOutput
             Get
                 Return DirectCast(Me.m_lstGroupOutputs(iGroupIndex), cMSEGroupOutput)
@@ -199,8 +198,6 @@ Namespace MSE
                 Return Me.m_lstBiomassStats
             End Get
         End Property
-
-
 
         Public ReadOnly Property BioEstimatesStats() As cCoreInputOutputList(Of cCoreInputOutputBase)
             Get
@@ -232,7 +229,6 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property FleetStats() As cCoreInputOutputList(Of cCoreInputOutputBase)
             Get
                 Return Me.m_lstFleetStats
@@ -258,7 +254,6 @@ Namespace MSE
                 Return DirectCast(Me.m_lstBiomassStats(iGroupIndex), cMSEStats)
             End Get
         End Property
-
 
         Public ReadOnly Property BioEstimatesStats(iGroupIndex As Integer) As cMSEStats
             Get
@@ -1025,11 +1020,9 @@ Namespace MSE
 
         End Function
 
-        Public Sub FleetTradeoffs()
-
+        Public Function FleetTradeoffs() As Boolean
             Me.m_MSE.RunFleetTradeoffs()
-
-        End Sub
+        End Function
 
         ''' <summary>
         ''' Sum quota shares to one.
