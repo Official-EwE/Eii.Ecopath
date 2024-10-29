@@ -25,11 +25,8 @@ Imports EwECore
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports EwEPlugin
-'Imports EwEUtils.Core
-'Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls
-Imports System.Windows.Forms
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
 
 #End Region
 

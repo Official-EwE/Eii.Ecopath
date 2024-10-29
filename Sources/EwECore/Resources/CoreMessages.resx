@@ -1497,4 +1497,12 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="ECOSPACE_LOWEFFPOWER_FLEET" xml:space="preserve">
     <value>Fleet {0} has a effort power of {1}</value>
   </data>
+  <data name="MSE_FLEETTRADEOFF_SAVED" xml:space="preserve">
+    <value>Fleet trade-off output saved to '{0}'</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="MSE_FLEETTRADEOFF_SAVE_ERROR" xml:space="preserve">
+    <value>Unable to save fleet trade-off output to '{0}'</value>
+    <comment>{0}=file location</comment>
+  </data>
 </root>

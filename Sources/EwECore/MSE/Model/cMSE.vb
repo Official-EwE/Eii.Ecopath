@@ -30,6 +30,7 @@ Imports EwEPlugin.Data
 Imports System.Text
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwECore.MSECommandFile
 
 Namespace MSE
 
@@ -218,7 +219,7 @@ Namespace MSE
         Private ReadOnly Property UsePlugin() As Boolean
             Get
                 If (Me.m_EconomicData IsNot Nothing) Then
-                    Return (Me.m_Search.MSEUseEconomicPlugin = True) And _
+                    Return (Me.m_Search.MSEUseEconomicPlugin = True) And
                            (Me.m_EconomicData.EnableData(New cEcosimRunType) = True)
                 End If
                 Return False
@@ -1292,7 +1293,7 @@ Namespace MSE
                     'Forced Mortality (Z)
                     'PoolForceZ(iGroup,0) is used in Derivt() to force mortality PoolForceZ(group, 0) = 0 is No forcng
                     If iyear <= Me.m_refData.AppliedDatPoints Then
-                        Me.m_refData.PoolForceZ(igrp, 0) = CSng(if(Me.m_refData.PoolForceZ(igrp, iForced) > 0, Me.m_refData.PoolForceZ(igrp, iForced), 0))
+                        Me.m_refData.PoolForceZ(igrp, 0) = CSng(If(Me.m_refData.PoolForceZ(igrp, iForced) > 0, Me.m_refData.PoolForceZ(igrp, iForced), 0))
                     End If
 
                 Next igrp
@@ -2066,12 +2067,12 @@ Namespace MSE
                             End If
                             lastEffort = tryEffort
 
-                            System.Console.WriteLine(NumberOfSteps.ToString & ", Fleet = " & iFlt.ToString & _
-                                                     ", MSY effort = " & MSYeffort(iFlt).ToString & _
-                                                     ", Cur effort = " & tryEffort.ToString & _
-                                                     ", toolow = " & TooLowEffort.ToString & _
-                                                     ", toobig = " & TooBigEffort.ToString & _
-                                                     ", maxvalue = " & maxValue.ToString & _
+                            System.Console.WriteLine(NumberOfSteps.ToString & ", Fleet = " & iFlt.ToString &
+                                                     ", MSY effort = " & MSYeffort(iFlt).ToString &
+                                                     ", Cur effort = " & tryEffort.ToString &
+                                                     ", toolow = " & TooLowEffort.ToString &
+                                                     ", toobig = " & TooBigEffort.ToString &
+                                                     ", maxvalue = " & maxValue.ToString &
                                                      ", curvalue = " & CurValue.ToString)
 
                             'tell the interface an iteration has been completed
@@ -2368,12 +2369,12 @@ Namespace MSE
                             End If
                             lastF = tryF
 
-                            System.Console.WriteLine(NumberOfSteps.ToString & ", Group = " & iGrp.ToString & _
-                                                  ", MSY F = " & MSYF(iGrp).ToString & _
-                                                  ", Cur F = " & tryF.ToString & _
-                                                  ", toolow = " & TooLowF.ToString & _
-                                                  ", toobig = " & TooBigF.ToString & _
-                                                  ", maxvalue = " & maxValue.ToString & _
+                            System.Console.WriteLine(NumberOfSteps.ToString & ", Group = " & iGrp.ToString &
+                                                  ", MSY F = " & MSYF(iGrp).ToString &
+                                                  ", Cur F = " & tryF.ToString &
+                                                  ", toolow = " & TooLowF.ToString &
+                                                  ", toobig = " & TooBigF.ToString &
+                                                  ", maxvalue = " & maxValue.ToString &
                                                   ", curvalue = " & CurValue.ToString)
 
                             'tell the interface an iteration has been completed
@@ -2834,8 +2835,11 @@ Namespace MSE
         Public Sub RunFleetTradeoffs()
 
             Me.m_data.StopRun = False
-            Dim buff As StringBuilder
-            Dim strm As StreamWriter
+
+            Dim outdir As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim), "FleetTradeOff")
+            Dim outfn As String = Path.Combine(outdir, "FleetTradeoff.csv")
+            Dim bSuccess As Boolean = True
+
             Try
 
                 'Exit Sub
@@ -2943,43 +2947,52 @@ Namespace MSE
 
 
                 'get the directory to dump the data to
-                Me.m_DataDir = AppDomain.CurrentDomain.BaseDirectory & "Tradeoff\"
-                Dim mName As String = Me.m_core.m_EcopathData.ModelName
+                If cFileUtils.IsDirectoryAvailable(outdir, True) Then
+                    Using strm As New StreamWriter(outfn)
 
-                strm = New StreamWriter(Me.BuildCSVFilename("FleetTradeOff_", mName), False)
-                buff = New StringBuilder()
-                'First a line with a blank, then the fleet names
-                'buff.Append("From\to ,")
-                'For iTo As Integer = 1 To nFleets
-                '   buff.Append(Me.m_epdata.FleetName(iTo).ToString & ", ")
-                'Next
-                'strm.WriteLine(buff)
-                For iFrom As Integer = 1 To nFleets
-                    Try
-                        buff = New StringBuilder()
+                        If Me.m_core.SaveWithFileHeader Then
+                            strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                        End If
 
-                        buff.Append(Me.m_epdata.FleetName(iFrom))
-                        buff.Append(", ")
+                        For iFrom As Integer = 1 To nFleets
+                            Try
+                                Dim buff As New StringBuilder()
 
-                        Dim vSum As Single = 0
-                        For iTo As Integer = 1 To nFleets
-                            buff.Append(cStringUtils.FormatSingle(ValueDifferenceFromTo(iFrom, iTo)))
-                            buff.Append(", ")
-                            vSum += ValueDifferenceFromTo(iFrom, iTo)
+                                buff.Append(cStringUtils.ToCSVField(Me.m_epdata.FleetName(iFrom)))
+                                buff.Append(",")
+
+                                Dim vSum As Single = 0
+                                For iTo As Integer = 1 To nFleets
+                                    buff.Append(cStringUtils.FormatSingle(ValueDifferenceFromTo(iFrom, iTo)))
+                                    buff.Append(",")
+                                    vSum += ValueDifferenceFromTo(iFrom, iTo)
+                                Next
+                                buff.Append(cStringUtils.FormatSingle(vSum))
+                                strm.WriteLine(buff)
+                            Catch ex As Exception
+                                cLog.Write(ex, "cMSE.RunFleetTradeoffs")
+                                bSuccess = False
+                            End Try
                         Next
-                        buff.Append(cStringUtils.FormatSingle(vSum))
-                        strm.WriteLine(buff)
-
-                        buff = Nothing
-                    Catch ex As Exception
-                        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & Me.BuildCSVFilename("FleetTradeOff", Me.m_epdata.FleetName(iFrom)) & " Exception: " & ex.Message)
-                    End Try
-                Next
+                        strm.Flush()
+                        strm.Close()
+                    End Using
+                End If
 
             Catch ex As Exception
-
+                cLog.Write(ex, "cMSE.RunFleetTradeoffs")
+                bSuccess = False
             End Try
-            strm.Close()
+
+            Dim msg As cMessage = Nothing
+            If bSuccess Then
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_FLEETTRADEOFF_SAVED, outfn), eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
+                msg.Hyperlink = outdir
+            Else
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_FLEETTRADEOFF_SAVE_ERROR, outfn), eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Warning)
+            End If
+            Me.m_core.Messages.SendMessage(msg)
+
         End Sub
 
         ''' <summary>

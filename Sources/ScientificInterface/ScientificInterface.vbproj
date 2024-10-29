@@ -2238,6 +2238,10 @@
       <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
       <Name>EwEenaRPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEFleetTradeoffsPlugin\EwEFleetTradeoffsPlugin.vbproj">
+      <Project>{4ff8c327-1a93-4363-8163-d151a2c95c11}</Project>
+      <Name>EwEFleetTradeoffsPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEIBMAgeStructureResultsWriter\EwEIBMAgeStructureResultsWriterPlugin.vbproj">
       <Project>{f08c7b56-076e-4e1b-bb2e-83f53cae262f}</Project>
       <Name>EwEIBMAgeStructureResultsWriterPlugin</Name>
