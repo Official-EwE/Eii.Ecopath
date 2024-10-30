@@ -281,7 +281,7 @@ Namespace MSE
             End Try
         End Sub
 
-        Public Sub Disconnect(ByRef MSECallBack As MSEProgressDelegate, ByRef MSYCallBack As MSYProgressDelegate)
+        Public Sub Disconnect()
             Try
                 Me.m_ProgressDelegate = Nothing
                 Me.m_MSYCallBack = Nothing
@@ -2873,6 +2873,9 @@ Namespace MSE
 
 
                 For iFlt As Integer = 1 To nFleets
+
+                    Me.fireMSYProgress(New cMSYProgressArgs(nFleets, iFlt, 0))
+
                     Dim Manager As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
                     Dim Shape As cShapeData = Nothing
 
@@ -2945,7 +2948,6 @@ Namespace MSE
 
                 Next
 
-
                 'get the directory to dump the data to
                 If cFileUtils.IsDirectoryAvailable(outdir, True) Then
                     Using strm As New StreamWriter(outfn)
@@ -2954,21 +2956,27 @@ Namespace MSE
                             strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
                         End If
 
+                        ' Header
+                        For iFrom As Integer = 1 To nFleets
+                            strm.Write(",")
+                            strm.Write(cStringUtils.ToCSVField(Me.m_epdata.FleetName(iFrom)))
+                        Next
+                        strm.WriteLine()
+
                         For iFrom As Integer = 1 To nFleets
                             Try
-                                Dim buff As New StringBuilder()
 
-                                buff.Append(cStringUtils.ToCSVField(Me.m_epdata.FleetName(iFrom)))
-                                buff.Append(",")
+                                strm.Write(cStringUtils.ToCSVField(Me.m_epdata.FleetName(iFrom)))
+                                strm.Write(",")
 
                                 Dim vSum As Single = 0
                                 For iTo As Integer = 1 To nFleets
-                                    buff.Append(cStringUtils.FormatSingle(ValueDifferenceFromTo(iFrom, iTo)))
-                                    buff.Append(",")
+                                    strm.Write(cStringUtils.FormatSingle(ValueDifferenceFromTo(iFrom, iTo)))
+                                    strm.Write(",")
                                     vSum += ValueDifferenceFromTo(iFrom, iTo)
                                 Next
-                                buff.Append(cStringUtils.FormatSingle(vSum))
-                                strm.WriteLine(buff)
+                                strm.Write(cStringUtils.FormatSingle(vSum))
+                                strm.WriteLine()
                             Catch ex As Exception
                                 cLog.Write(ex, "cMSE.RunFleetTradeoffs")
                                 bSuccess = False
