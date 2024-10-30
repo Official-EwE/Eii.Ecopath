@@ -876,7 +876,7 @@ Namespace MSE
                 Me.m_lstGroupOutputs.Clear()
 
                 Me.m_MSEdata.Clear()
-                Me.m_MSE.Disconnect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
+                Me.m_MSE.Disconnect()
                 Me.m_MSE.Clear()
 
                 Me.m_Batch.Clear()
@@ -1021,7 +1021,9 @@ Namespace MSE
         End Function
 
         Public Function FleetTradeoffs() As Boolean
+            Me.m_MSE.Connect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
             Me.m_MSE.RunFleetTradeoffs()
+            Me.m_MSE.Disconnect()
         End Function
 
         ''' <summary>
@@ -1193,7 +1195,7 @@ Namespace MSE
 
                     Me.m_core.Messages.sendAllMessages()
 
-                    Me.m_MSE.Disconnect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
+                    Me.m_MSE.Disconnect()
 
             End Select
 
