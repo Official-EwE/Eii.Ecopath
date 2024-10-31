@@ -235,7 +235,7 @@ Namespace Ecosim
             Dim img As New Bitmap(rcPrint.Width, rcPrint.Height, PixelFormat.Format32bppArgb)
             img.SetResolution(dpi, dpi)
             Dim g As Graphics = Graphics.FromImage(img)
-            Me.m_doodler.DrawFlowDiagram(g, rcPrint)
+            Me.m_doodler.DrawFlowDiagram(g, rcPrint, False)
             g.Dispose()
             Return img
 
@@ -256,7 +256,7 @@ Namespace Ecosim
             Handles m_pbFlowDiagram.Paint
 
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
-            Me.m_doodler.DrawFlowDiagram(e.Graphics, rc)
+            Me.m_doodler.DrawFlowDiagram(e.Graphics, rc, False)
 
         End Sub
 
@@ -781,7 +781,7 @@ Namespace Ecosim
                     Me.m_data.Refresh()
                     Me.m_pbFlowDiagram.Invalidate()
                     Using g As Graphics = Graphics.FromImage(bmp)
-                        Me.m_doodler.DrawFlowDiagram(g, rc)
+                        Me.m_doodler.DrawFlowDiagram(g, rc, False)
                     End Using
 
                     cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSIMFD_SAVING, CSng(currTimeStep / totTimeSteps))

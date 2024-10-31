@@ -176,7 +176,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim img As New Bitmap(rcPrint.Width, rcPrint.Height, PixelFormat.Format32bppArgb)
             img.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
             Dim g As Graphics = Graphics.FromImage(img)
-            Me.m_doodler.DrawFlowDiagram(g, rcPrint)
+            Me.m_doodler.DrawFlowDiagram(g, rcPrint, False)
             g.Dispose()
             Return img
 
@@ -199,7 +199,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Handles m_pbFlowDiagram.Paint
 
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
-            Me.m_doodler.DrawFlowDiagram(e.Graphics, rc)
+            Me.m_doodler.DrawFlowDiagram(e.Graphics, rc, False)
 
         End Sub
 
@@ -339,6 +339,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim mf As Metafile = Nothing
             Dim bmp As Bitmap = Nothing
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
+            Dim bTransparentBackground As Boolean = False
 
             cmdFS.Invoke(Me.FileName, SharedResources.FILEFILTER_IMAGE & "|" & SharedResources.FILEFILTER_IMAGE_EMF, 6)
             If cmdFS.Result = DialogResult.OK Then
@@ -349,6 +350,7 @@ Namespace Ecopath.Controls.FlowDiagram
                         fmt = Imaging.ImageFormat.Gif
                     Case 4
                         fmt = Imaging.ImageFormat.Png
+                        bTransparentBackground = True
                     Case 5
                         fmt = Imaging.ImageFormat.Tiff
                     Case 6
@@ -360,7 +362,7 @@ Namespace Ecopath.Controls.FlowDiagram
                             g.ReleaseHdc(hdc)
                         End Using
                         Using g As Graphics = Graphics.FromImage(mf)
-                            Me.m_doodler.DrawFlowDiagram(g, rc)
+                            Me.m_doodler.DrawFlowDiagram(g, rc, True)
                         End Using
                         fs.Close()
                         mf.Dispose()
@@ -375,7 +377,7 @@ Namespace Ecopath.Controls.FlowDiagram
                     g.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
                     g.TextRenderingHint = Drawing.Text.TextRenderingHint.ClearTypeGridFit
                     g.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
-                    Me.m_doodler.DrawFlowDiagram(g, rc)
+                    Me.m_doodler.DrawFlowDiagram(g, rc, bTransparentBackground)
                 End Using
 
                 Try

@@ -105,11 +105,11 @@ Namespace Controls
         ''' <param name="g">Graphics to draw onto.</param>
         ''' <param name="rc">Rectangle to draw within.</param>
         ''' -------------------------------------------------------------------
-        Public Sub DrawFlowDiagram(g As Graphics, rc As Rectangle)
+        Public Sub DrawFlowDiagram(g As Graphics, rc As Rectangle, bTransparentBackground As Boolean)
 
             Try
 
-                Me.m_tree.DrawBackground(g, rc)
+                Me.m_tree.DrawBackground(g, rc, bTransparentBackground)
                 Me.m_tree.DrawTitle(g, rc)
                 Me.m_tree.DrawLegend(g, New Point(5, 5))
 

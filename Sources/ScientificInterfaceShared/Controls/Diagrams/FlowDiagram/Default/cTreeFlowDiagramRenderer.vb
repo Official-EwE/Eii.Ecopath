@@ -260,13 +260,13 @@ Namespace Controls
             End Get
         End Property
 
-        Friend Sub DrawBackground(g As Graphics, rc As Rectangle) _
+        Friend Sub DrawBackground(g As Graphics, rc As Rectangle, bTransparentBackground As Boolean) _
             Implements IFlowDiagramRenderer.DrawBackground
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim iUnitHeight As Integer = CInt(rc.Height / Me.m_iNumTrophicLevels)
 
-            Using brBack As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND))
+            Using brBack As New SolidBrush(If(bTransparentBackground, Color.Transparent, sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)))
                 g.FillRectangle(brBack, rc)
             End Using
 

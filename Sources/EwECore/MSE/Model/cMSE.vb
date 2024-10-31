@@ -20,17 +20,10 @@
 Option Strict On
 
 Imports System.IO
-Imports EwECore
-Imports EwECore.Ecosim
 Imports EwECore.ExternalData
+Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports System.Text
-
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwECore.MSECommandFile
 
 Namespace MSE
 
@@ -2832,137 +2825,144 @@ Namespace MSE
 
         End Sub
 
-        Public Sub RunFleetTradeoffs()
+        ''' <summary>
+        ''' Run fleet tradeoff analysis
+        ''' </summary>
+        ''' <param name="sFrom">Start multiplier</param>
+        ''' <param name="sTo">End multiplier</param>
+        ''' <param name="sStep">Effort multiplier step size / increment</param>
+        Public Sub RunFleetTradeoffs(Optional sFrom As Single = 0.9, Optional sTo As Single = 0.9, Optional sStep As Single = 0.1)
 
             Me.m_data.StopRun = False
 
             Dim outdir As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim), "FleetTradeOff")
             Dim outfn As String = Path.Combine(outdir, "FleetTradeoff.csv")
+            Dim nFleets As Integer = Me.m_esData.nGear
             Dim bSuccess As Boolean = True
 
-            Try
+            'get the directory to dump the data to
+            If (Not cFileUtils.IsDirectoryAvailable(outdir, True)) Then Return
 
-                'Exit Sub
+            Using strm As New StreamWriter(outfn)
 
-                'no need to set time just use default: m_core.EcoSimModelParameters.NumberYears = NumberOfYears + 25
-                'this is required to set the base effort values :
-                Me.SetBaseValues()
+                If Me.m_core.SaveWithFileHeader Then
+                    strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                End If
 
-                Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onMSYEcosimTimestep
+                Try
 
-                Me.m_esData.bTimestepOutput = True
-                'let ecosim init to the new values
-                Me.m_Ecosim.Init(True)
-                'run ecosim with the current effort
-                Me.m_Ecosim.Run()
+                    'Exit Sub
 
-                Dim nFleets As Integer = Me.m_esData.nGear
-                Dim FleetBaseValue(nFleets) As Single
-                Dim CurValue() As Single
-                'Store the total base value obtained by each fishery 
-                For iFlt As Integer = 1 To nFleets
-                    'For iGrp As Integer = 1 To m_epdata.NumGroups
-                    For it As Integer = 1 To Me.m_esData.NTimes
-                        FleetBaseValue(iFlt) += Me.m_esData.ResultsSumValueByGear(iFlt, it)  'm_esData.ResultsSumCatchByGroupGear(iGrp, iFlt, it) * Me.m_epdata.Market(iFlt, iGrp)
-                    Next
-                    'all of these values are annual values (even if they are by time step), so divide by number of months:
-                    FleetBaseValue(iFlt) /= Me.m_esData.NTimes
-                    'Next
-                Next
-                Dim ValueDifferenceFromTo(nFleets, nFleets) As Single
+                    'no need to set time just use default: m_core.EcoSimModelParameters.NumberYears = NumberOfYears + 25
+                    'this is required to set the base effort values :
+                    Me.SetBaseValues()
 
+                    Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onMSYEcosimTimestep
 
-                For iFlt As Integer = 1 To nFleets
-
-                    Me.fireMSYProgress(New cMSYProgressArgs(nFleets, iFlt, 0))
-
-                    Dim Manager As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
-                    Dim Shape As cShapeData = Nothing
-
-                    Shape = Manager.Item(iFlt - 1)
-                    Shape.LockUpdates()
-
-                    For iT As Integer = 1 To Me.m_esData.NTimes
-                        Shape.ShapeData(iT) = CSng(0.9 * Me.m_baseEffort(iFlt, iT))
-                    Next
-                    Shape.UnlockUpdates()
-                    Manager.Update()
-
-
-                    'For it As Integer = 1 To Me.m_esData.NTimes
-                    '    Me.m_esData.FishRateGear(iFlt, it) = CSng(1.1 * m_baseEffort(iFlt, it))
-                    'Next
-                    'let ecosim init to the new values ------ no init will overwrite the effort!!!!!
-                    ' Me.m_Ecosim.Init(True)
+                    Me.m_esData.bTimestepOutput = True
+                    'let ecosim init to the new values
+                    Me.m_Ecosim.Init(True)
                     'run ecosim with the current effort
                     Me.m_Ecosim.Run()
 
-                    ReDim CurValue(nFleets)
-                    For iTo As Integer = 1 To nFleets
+                    Dim FleetBaseValue(nFleets) As Single
+                    Dim CurValue() As Single
+                    'Store the total base value obtained by each fishery 
+                    For iFlt As Integer = 1 To nFleets
+                        'For iGrp As Integer = 1 To m_epdata.NumGroups
                         For it As Integer = 1 To Me.m_esData.NTimes
-                            CurValue(iTo) += Me.m_esData.ResultsSumValueByGear(iTo, it)      'm_esData.ResultsSumCatchByGroupGear(iGrp, iFlt, it) * Me.m_epdata.Market(iFlt, iGrp)
+                            FleetBaseValue(iFlt) += Me.m_esData.ResultsSumValueByGear(iFlt, it)  'm_esData.ResultsSumCatchByGroupGear(iGrp, iFlt, it) * Me.m_epdata.Market(iFlt, iGrp)
                         Next
-                        'divide by no months to get the average, which is the annual value:
-                        CurValue(iTo) /= Me.m_esData.NTimes
+                        'all of these values are annual values (even if they are by time step), so divide by number of months:
+                        FleetBaseValue(iFlt) /= Me.m_esData.NTimes
+                        'Next
                     Next
 
+                    Dim nSteps As Integer = CInt(Math.Ceiling(nFleets * (sTo - sFrom) / sStep))
+                    Dim iStep As Integer = 1
 
-                    'If MoreMoney = 0 Then Stop
+                    For sMult As Single = sFrom To sTo Step sStep
 
-                    For iTo As Integer = 1 To nFleets
-                        ValueDifferenceFromTo(iFlt, iTo) = (CurValue(iTo) - FleetBaseValue(iTo)) '/ MoreMoney
-                    Next
+                        Dim ValueDifferenceFromTo(nFleets, nFleets) As Single
+
+                        For iFlt As Integer = 1 To nFleets
+
+                            Me.fireMSYProgress(New cMSYProgressArgs(nSteps, iStep, 0))
+
+                            Dim manEffort As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
+                            Dim shp As cShapeData = Nothing
+
+                            shp = manEffort.Item(iFlt - 1)
+                            shp.LockUpdates()
+                            For iT As Integer = 1 To Me.m_esData.NTimes
+                                shp.ShapeData(iT) = CSng(sMult * Me.m_baseEffort(iFlt, iT))
+                            Next
+                            shp.UnlockUpdates(True)
+
+                            'For it As Integer = 1 To Me.m_esData.NTimes
+                            '    Me.m_esData.FishRateGear(iFlt, it) = CSng(1.1 * m_baseEffort(iFlt, it))
+                            'Next
+                            'let ecosim init to the new values ------ no init will overwrite the effort!!!!!
+                            ' Me.m_Ecosim.Init(True)
+                            'run ecosim with the current effort
+                            Me.m_Ecosim.Run()
+
+                            ReDim CurValue(nFleets)
+                            For iTo As Integer = 1 To nFleets
+                                For it As Integer = 1 To Me.m_esData.NTimes
+                                    CurValue(iTo) += Me.m_esData.ResultsSumValueByGear(iTo, it)      'm_esData.ResultsSumCatchByGroupGear(iGrp, iFlt, it) * Me.m_epdata.Market(iFlt, iGrp)
+                                Next
+                                'divide by no months to get the average, which is the annual value:
+                                CurValue(iTo) /= Me.m_esData.NTimes
+                            Next
 
 
-                    'get the directory to dump the data to
-                    'Me.m_DataDir = AppDomain.CurrentDomain.BaseDirectory & "MSE\"
-                    'strm = New StreamWriter(getFilename("FleetTradeOff", "_Effort"), True)
-                    'For iFrom As Integer = 1 To nFleets
-                    '    Try
-                    '        buff = New StringBuilder
-                    '        For iT As Integer = 1 To m_esData.NTimes Step 12
-                    '            buff.Append(Me.m_esData.FishRateGear(iFrom, iT).ToString & ", ")
-                    '        Next
-                    '        strm.WriteLine(buff)
+                            'If MoreMoney = 0 Then Stop
 
-                    '        buff = Nothing
-                    '    Catch ex As Exception
-                    '        ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
-                    '        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & getFilename("FleetTradeOff", Me.m_epdata.FleetName(iFrom)) & " Exception: " & ex.Message)
-                    '    End Try
-                    'Next
-                    'strm.Close()
+                            For iTo As Integer = 1 To nFleets
+                                ValueDifferenceFromTo(iFlt, iTo) = (CurValue(iTo) - FleetBaseValue(iTo)) '/ MoreMoney
+                            Next
 
-                    'Finally reset the effort to the original effort
-                    'SetEffortToBaseValue(True)
-                    Dim Manager2 As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
-                    Dim Shape2 As cShapeData = Nothing
-                    Shape2 = Manager2.Item(iFlt - 1)
-                    'Reset the fishing values
-                    Shape2.LockUpdates()
-                    For iT As Integer = 1 To Me.m_esData.NTimes
-                        Shape2.ShapeData(iT) = Me.m_baseEffort(iFlt, iT)
-                    Next
-                    Shape2.UnlockUpdates()
-                    Manager2.Update()
 
-                Next
+                            'get the directory to dump the data to
+                            'Me.m_DataDir = AppDomain.CurrentDomain.BaseDirectory & "MSE\"
+                            'strm = New StreamWriter(getFilename("FleetTradeOff", "_Effort"), True)
+                            'For iFrom As Integer = 1 To nFleets
+                            '    Try
+                            '        buff = New StringBuilder
+                            '        For iT As Integer = 1 To m_esData.NTimes Step 12
+                            '            buff.Append(Me.m_esData.FishRateGear(iFrom, iT).ToString & ", ")
+                            '        Next
+                            '        strm.WriteLine(buff)
 
-                'get the directory to dump the data to
-                If cFileUtils.IsDirectoryAvailable(outdir, True) Then
-                    Using strm As New StreamWriter(outfn)
+                            '        buff = Nothing
+                            '    Catch ex As Exception
+                            '        ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
+                            '        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & getFilename("FleetTradeOff", Me.m_epdata.FleetName(iFrom)) & " Exception: " & ex.Message)
+                            '    End Try
+                            'Next
+                            'strm.Close()
 
-                        If Me.m_core.SaveWithFileHeader Then
-                            strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                        End If
+                            'Finally reset the effort to the original effort
+                            'SetEffortToBaseValue(True)
+                            shp = manEffort.Item(iFlt - 1)
+                            'Reset the fishing values
+                            shp.LockUpdates()
+                            For iT As Integer = 1 To Me.m_esData.NTimes
+                                shp.ShapeData(iT) = Me.m_baseEffort(iFlt, iT)
+                            Next
+                            shp.UnlockUpdates(True)
 
+                        Next iFlt
+
+                        If nSteps > 1 Then strm.WriteLine()
+                        strm.WriteLine("EffortMultiplier,{0}", cStringUtils.ToCSVField(sMult))
                         ' Header
                         For iFrom As Integer = 1 To nFleets
                             strm.Write(",")
                             strm.Write(cStringUtils.ToCSVField(Me.m_epdata.FleetName(iFrom)))
                         Next
                         strm.WriteLine()
-
                         For iFrom As Integer = 1 To nFleets
                             Try
 
@@ -2982,15 +2982,20 @@ Namespace MSE
                                 bSuccess = False
                             End Try
                         Next
-                        strm.Flush()
-                        strm.Close()
-                    End Using
-                End If
 
-            Catch ex As Exception
-                cLog.Write(ex, "cMSE.RunFleetTradeoffs")
-                bSuccess = False
-            End Try
+                        iStep += 1
+
+                    Next sMult
+
+                Catch ex As Exception
+                    cLog.Write(ex, "cMSE.RunFleetTradeoffs")
+                    bSuccess = False
+                End Try
+
+                strm.Flush()
+                strm.Close()
+
+            End Using
 
             Dim msg As cMessage = Nothing
             If bSuccess Then

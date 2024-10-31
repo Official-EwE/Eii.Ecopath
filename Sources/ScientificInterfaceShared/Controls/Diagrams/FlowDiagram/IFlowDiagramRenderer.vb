@@ -42,7 +42,8 @@ Namespace Controls
         ''' <summary>Draw the background of the flow diagram. Here trophic level lines etc. should be rendered.</summary>
         ''' <param name="g"></param>
         ''' <param name="rc"></param>
-        Sub DrawBackground(g As Graphics, rc As Rectangle)
+        ''' <param name="bTransparentBackground">Flag, stating if the backgroung should be transparent or solid</param>
+        Sub DrawBackground(g As Graphics, rc As Rectangle, bTransparentBackground As Boolean)
         Sub DrawTitle(g As Graphics, rc As Rectangle)
         Sub DrawNode(g As Graphics, rc As Rectangle, iGroup As Integer, highlight As eFDHighlightType)
         Sub DrawConnection(g As Graphics, rc As Rectangle, iPred As Integer, iPrey As Integer, highlight As eFDHighlightType)
