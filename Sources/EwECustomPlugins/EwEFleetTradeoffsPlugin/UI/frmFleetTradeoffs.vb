@@ -6,6 +6,10 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Public Class frmFleetTradeoffs
 
+    Private m_fpFrom As cEwEFormatProvider = Nothing
+    Private m_fpTo As cEwEFormatProvider = Nothing
+    Private m_fpStepsize As cEwEFormatProvider = Nothing
+
     Public Sub New(uic As cUIContext)
 
         Me.InitializeComponent()
@@ -19,6 +23,16 @@ Public Class frmFleetTradeoffs
 
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
+
+        Dim md As New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        Me.m_fpFrom = New cEwEFormatProvider(Me.UIContext, Me.m_tbxFrom, GetType(Single), md)
+        Me.m_fpTo = New cEwEFormatProvider(Me.UIContext, Me.m_tbxTo, GetType(Single), md)
+        Me.m_fpStepsize = New cEwEFormatProvider(Me.UIContext, Me.m_tbxStep, GetType(Single), md)
+
+        Me.m_fpFrom.Value = 0.9
+        Me.m_fpTo.Value = 0.9
+        Me.m_fpStepsize.Value = 0.1
+
         Me.CenterToParent()
     End Sub
 
@@ -32,7 +46,7 @@ Public Class frmFleetTradeoffs
 
         Me.m_progress.Visible = True
         Try
-            manager.FleetTradeoffs()
+            manager.FleetTradeoffs(CSng(Me.m_fpFrom.Value), CSng(Me.m_fpTo.Value), CSng(Me.m_fpStepsize.Value))
         Catch ex As Exception
 
         End Try

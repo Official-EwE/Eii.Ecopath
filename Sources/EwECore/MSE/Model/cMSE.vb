@@ -2831,7 +2831,7 @@ Namespace MSE
         ''' <param name="sFrom">Start multiplier</param>
         ''' <param name="sTo">End multiplier</param>
         ''' <param name="sStep">Effort multiplier step size / increment</param>
-        Public Sub RunFleetTradeoffs(Optional sFrom As Single = 0.9, Optional sTo As Single = 0.9, Optional sStep As Single = 0.1)
+        Public Function RunFleetTradeoffs(Optional sFrom As Single = 0.9, Optional sTo As Single = 0.9, Optional sStep As Single = 0.1) As Boolean
 
             Me.m_data.StopRun = False
 
@@ -2841,7 +2841,7 @@ Namespace MSE
             Dim bSuccess As Boolean = True
 
             'get the directory to dump the data to
-            If (Not cFileUtils.IsDirectoryAvailable(outdir, True)) Then Return
+            If (Not cFileUtils.IsDirectoryAvailable(outdir, True)) Then Return bSuccess
 
             Using strm As New StreamWriter(outfn)
 
@@ -3005,8 +3005,9 @@ Namespace MSE
                 msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_FLEETTRADEOFF_SAVE_ERROR, outfn), eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Warning)
             End If
             Me.m_core.Messages.SendMessage(msg)
+            Return bSuccess
 
-        End Sub
+        End Function
 
         ''' <summary>
         ''' Normally distrubute random number where mean = 0 std = 1

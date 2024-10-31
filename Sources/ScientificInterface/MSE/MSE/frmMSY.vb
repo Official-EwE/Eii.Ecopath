@@ -93,7 +93,7 @@ Public Class frmMSY
             For i As Integer = 1 To Me.UIContext.Core.nFleets
                 sb.AppendLine(cStringUtils.Localize(My.Resources.MSE_ITERATION_LINE, cStringUtils.vbTab, i, Me.StyleGuide.FormatNumber(Me.MSY(i))))
             Next
-            Me.txtMSYresults.Text = sb.ToString
+            Me.m_txtMSYresults.Text = sb.ToString
         End If
 
     End Sub
@@ -119,26 +119,6 @@ Public Class frmMSY
     Private Sub OnStop(sender As System.Object, e As System.EventArgs) _
         Handles m_btnStop.Click
         Me.m_mse.StopRun(0)
-    End Sub
-
-    Private Sub btFleetTradeoffs_Click(sender As System.Object, e As System.EventArgs) _
-        Handles m_btnFleetTradeoffs.Click
-
-        Try
-            'get the number of fleets for the progress updates
-            Me.m_nFleets = Me.UIContext.Core.nFleets
-
-            'connect and disconnect every time we run the MSY
-            Me.m_mse.Connect(Nothing, AddressOf Me.OnMSYProgress)
-            Me.m_mse.FleetTradeoffs()
-            Me.m_mse.Disconnect()
-
-            MessageBox.Show(SharedResources.GENERIC_LABEL_FINISHED)
-
-        Catch ex As Exception
-
-        End Try
-
     End Sub
 
 End Class
