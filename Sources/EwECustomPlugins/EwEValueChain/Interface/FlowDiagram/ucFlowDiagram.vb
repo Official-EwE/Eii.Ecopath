@@ -150,7 +150,7 @@ Public Class ucFlowDiagram
 
         Try
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
-            Me.m_doodler.DrawFlowDiagram(e.Graphics, rc)
+            Me.m_doodler.DrawFlowDiagram(e.Graphics, rc, False)
         Catch ex As Exception
 
         End Try
@@ -270,6 +270,7 @@ Public Class ucFlowDiagram
         Dim bmp As Bitmap = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
         Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
         Dim strModelName As String = Me.m_uic.Core.EwEModel.Name
+        Dim bTransparentBackground As Boolean = False
 
         cmdFS.Invoke(cFileUtils.ToValidFileName(strModelName & "value chain flow diagram", False), SharedResources.FILEFILTER_IMAGE & "|" & SharedResources.FILEFILTER_IMAGE_EMF, 6)
         If cmdFS.Result = DialogResult.OK Then
@@ -280,6 +281,7 @@ Public Class ucFlowDiagram
                     fmt = Imaging.ImageFormat.Gif
                 Case 4
                     fmt = Imaging.ImageFormat.Png
+                    bTransparentBackground = True
                 Case 5
                     fmt = Imaging.ImageFormat.Tiff
                 Case 6
@@ -290,7 +292,7 @@ Public Class ucFlowDiagram
                         g.ReleaseHdc(hdc)
                     End Using
                     Using g As Graphics = Graphics.FromImage(mf)
-                        Me.m_doodler.DrawFlowDiagram(g, rc)
+                        Me.m_doodler.DrawFlowDiagram(g, rc, True)
                     End Using
                     fs.Close()
                     mf.Dispose()
@@ -302,7 +304,7 @@ Public Class ucFlowDiagram
 
             bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
             Using g As Graphics = Graphics.FromImage(bmp)
-                Me.m_doodler.DrawFlowDiagram(g, rc)
+                Me.m_doodler.DrawFlowDiagram(g, rc, bTransparentBackground)
             End Using
 
             Try
