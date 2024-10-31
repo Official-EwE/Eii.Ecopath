@@ -4,7 +4,7 @@
 
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 0
+#define Compile64Bit 1
 #define CodeSigning 1                       ; set to 0 to disable code signing
 
 ; Optional features
@@ -15,7 +15,7 @@
 ; Automated build will provide file version as a command line parameter
 ; /DFileVersion=6.6.{minor release no}.{build no}
 #ifndef FileVersion
-  #define FileVersion "6.7.0.18992"
+  #define FileVersion "6.7.0.19005"
 #endif
 VersionInfoVersion={#FileVersion}
 
@@ -142,6 +142,7 @@ Source: "{#DefRoot}{#DefSrc}\EwEValueChainPlugin.dll"; DestDir: "{app}\Plugins";
 Source: "{#DefRoot}{#DefSrc}\UserGuide\ChristensenValueChainMS.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\valuechain
 Source: "{#DefRoot}{#DefSrc}\EwEEcologicalIndicatorsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecolind
 Source: "{#DefRoot}{#DefSrc}\EwEEcoTrophPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecotroph
+Source: "{#DefRoot}{#DefSrc}\EwEFleetTradeoffsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\fleetTO
 
 ; Input
 Source: "{#DefRoot}{#DefSrc}\EwEWoRMSPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\worms
@@ -328,6 +329,7 @@ Name: "plugin\analysis\ecotroph"; Description: "EcoTroph"; Types: custom full
 Name: "plugin\analysis\na"; Description: "Network Analysis"; Types: compact custom full
 Name: "plugin\analysis\prebal"; Description: "Pre-balance diagnostics"; Types: full custom
 Name: "plugin\analysis\valuechain"; Description: "Value chain"; Types: full
+Name: "plugin\analysis\fleetTO"; Description: "Fleet trade-offs"; Types: full
 Name: "plugin\input"; Description: "Data retrieval"; Types: full custom
 Name: "plugin\input\worms"; Description: "WoRMS taxonomy search"; Types: full
 Name: "plugin\input\mergegroups"; Description: "Merge groups"; Types: full
