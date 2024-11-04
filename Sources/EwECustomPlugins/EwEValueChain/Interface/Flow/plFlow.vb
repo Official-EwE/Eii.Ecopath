@@ -1433,7 +1433,7 @@ Public Class plFlow
             ' 'No: Render a line of a width representing this weight. Weight is a value between
             '      0 and 1. Pen sizes of this magnitude do not show up well, therefore the actual
             '      pen width is an arbitrary 3 * sWeight to make it look better.
-            p = New Pen(clr, sWeight * 2.5!)
+            p = New Pen(clr, sWeight * My.Settings.LinkWIdth)
         End If
 
         ' External link?
@@ -1442,7 +1442,7 @@ Public Class plFlow
             p.DashStyle = Drawing2D.DashStyle.Dash
         End If
 
-        p.CustomEndCap = New AdjustableArrowCap(4, 4)
+        p.CustomEndCap = New AdjustableArrowCap(2 * My.Settings.LinkWIdth, 2 * My.Settings.LinkWIdth)
         g.DrawLine(p, ptStartScaled, ptEndScaled)
 
         p.Dispose()
