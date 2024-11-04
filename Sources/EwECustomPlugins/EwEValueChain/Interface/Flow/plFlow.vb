@@ -1430,9 +1430,7 @@ Public Class plFlow
             p = New Pen(clr, 1)
             p.DashStyle = Drawing2D.DashStyle.Dot
         Else
-            ' 'No: Render a line of a width representing this weight. Weight is a value between
-            '      0 and 1. Pen sizes of this magnitude do not show up well, therefore the actual
-            '      pen width is an arbitrary 3 * sWeight to make it look better.
+            ' 'No: Render a line of a width representing this weight
             p = New Pen(clr, sWeight * My.Settings.LinkWIdth)
         End If
 
