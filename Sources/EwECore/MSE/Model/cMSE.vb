@@ -2831,12 +2831,11 @@ Namespace MSE
         ''' <param name="sFrom">Start multiplier</param>
         ''' <param name="sTo">End multiplier</param>
         ''' <param name="sStep">Effort multiplier step size / increment</param>
-        Public Function RunFleetTradeoffs(Optional sFrom As Single = 0.9, Optional sTo As Single = 0.9, Optional sStep As Single = 0.1) As Boolean
+        Public Function RunFleetTradeoffs(outDir As String, Optional sFrom As Single = 0.9, Optional sTo As Single = 0.9, Optional sStep As Single = 0.1) As Boolean
 
             Me.m_data.StopRun = False
 
-            Dim outdir As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim), "FleetTradeOff")
-            Dim outfn As String = Path.Combine(outdir, "FleetTradeoff.csv")
+            Dim outfn As String = Path.Combine(outDir, "FleetTradeoff.csv")
             Dim nFleets As Integer = Me.m_esData.nGear
             Dim bSuccess As Boolean = True
 
