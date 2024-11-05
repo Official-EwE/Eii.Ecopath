@@ -22,6 +22,9 @@ Partial Class frmFleetTradeoffs
         Me.m_tbxFrom = New System.Windows.Forms.TextBox()
         Me.m_tbxTo = New System.Windows.Forms.TextBox()
         Me.m_tbxStep = New System.Windows.Forms.TextBox()
+        Me.m_lblOutput = New System.Windows.Forms.Label()
+        Me.m_tbxOutput = New System.Windows.Forms.TextBox()
+        Me.m_btnChangeOutput = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'm_btnRun
@@ -78,6 +81,23 @@ Partial Class frmFleetTradeoffs
         resources.ApplyResources(Me.m_tbxStep, "m_tbxStep")
         Me.m_tbxStep.Name = "m_tbxStep"
         '
+        'm_lblOutput
+        '
+        resources.ApplyResources(Me.m_lblOutput, "m_lblOutput")
+        Me.m_lblOutput.Name = "m_lblOutput"
+        '
+        'm_tbxOutput
+        '
+        resources.ApplyResources(Me.m_tbxOutput, "m_tbxOutput")
+        Me.m_tbxOutput.Name = "m_tbxOutput"
+        Me.m_tbxOutput.ReadOnly = True
+        '
+        'm_btnChangeOutput
+        '
+        resources.ApplyResources(Me.m_btnChangeOutput, "m_btnChangeOutput")
+        Me.m_btnChangeOutput.Name = "m_btnChangeOutput"
+        Me.m_btnChangeOutput.UseVisualStyleBackColor = True
+        '
         'frmFleetTradeoffs
         '
         Me.AcceptButton = Me.m_btnRun
@@ -85,6 +105,9 @@ Partial Class frmFleetTradeoffs
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_btnChangeOutput)
+        Me.Controls.Add(Me.m_tbxOutput)
+        Me.Controls.Add(Me.m_lblOutput)
         Me.Controls.Add(Me.m_tbxStep)
         Me.Controls.Add(Me.m_tbxTo)
         Me.Controls.Add(Me.m_tbxFrom)
@@ -115,4 +138,7 @@ Partial Class frmFleetTradeoffs
     Private WithEvents m_tbxFrom As Windows.Forms.TextBox
     Private WithEvents m_tbxTo As Windows.Forms.TextBox
     Private WithEvents m_tbxStep As Windows.Forms.TextBox
+    Private WithEvents m_lblOutput As Windows.Forms.Label
+    Private WithEvents m_tbxOutput As Windows.Forms.TextBox
+    Private WithEvents m_btnChangeOutput As Windows.Forms.Button
 End Class

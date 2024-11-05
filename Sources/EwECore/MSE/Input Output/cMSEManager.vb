@@ -1020,11 +1020,11 @@ Namespace MSE
 
         End Function
 
-        Public Function FleetTradeoffs(sFrom As Single, sTo As Single, Optional sStepSize As Single = 0.1) As Boolean
+        Public Function FleetTradeoffs(outDir As String, sFrom As Single, sTo As Single, Optional sStepSize As Single = 0.1) As Boolean
             Dim bSuccess As Boolean = False
             Try
                 Me.m_MSE.Connect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
-                bSuccess = Me.m_MSE.RunFleetTradeoffs(sFrom, sTo, sStepSize)
+                bSuccess = Me.m_MSE.RunFleetTradeoffs(outDir, sFrom, sTo, sStepSize)
                 Me.m_MSE.Disconnect()
             Catch ex As Exception
                 cLog.Write(ex, "cMSEManager.FleetTradeoffs")

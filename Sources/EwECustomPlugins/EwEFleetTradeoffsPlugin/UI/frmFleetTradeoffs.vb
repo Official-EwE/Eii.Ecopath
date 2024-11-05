@@ -1,7 +1,11 @@
-﻿Imports EwECore
+﻿Imports System.IO
+Imports EwECore
 Imports EwECore.MSE
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Definitions
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Public Class frmFleetTradeoffs
@@ -34,7 +38,11 @@ Public Class frmFleetTradeoffs
         Me.m_fpStepsize.Value = 0.1
 
         Me.CenterToParent()
+        Me.UpdateControls()
+
     End Sub
+
+#Region " Events "
 
     Private Sub OnRun(sender As Object, e As EventArgs) Handles m_btnRun.Click
 
@@ -46,7 +54,7 @@ Public Class frmFleetTradeoffs
 
         Me.m_progress.Visible = True
         Try
-            manager.FleetTradeoffs(CSng(Me.m_fpFrom.Value), CSng(Me.m_fpTo.Value), CSng(Me.m_fpStepsize.Value))
+            manager.FleetTradeoffs(Me.OutPath, CSng(Me.m_fpFrom.Value), CSng(Me.m_fpTo.Value), CSng(Me.m_fpStepsize.Value))
         Catch ex As Exception
 
         End Try
@@ -59,11 +67,41 @@ Public Class frmFleetTradeoffs
 
     Private Sub OnDetailedProgress(MSYProgress As cMSYProgressArgs)
         Try
-            Me.m_progress.Value = 100 * (MSYProgress.FleetIndex / Math.Max(MSYProgress.Iteration, 1))
+            Me.m_progress.Value = CInt(100 * (MSYProgress.FleetIndex / Math.Max(MSYProgress.Iteration, 1)))
             Me.m_progress.Refresh()
         Catch ex As Exception
 
         End Try
     End Sub
+
+    Private Sub OnChangeOutputLocation(sender As Object, e As EventArgs) Handles m_btnChangeOutput.Click
+        Try
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmd As cShowOptionsCommand = CType(cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
+            cmd.Invoke(eApplicationOptionTypes.FileLocations)
+            Me.UpdateControls()
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
+
+#End Region ' Events
+
+#Region " Internals "
+
+    Private ReadOnly Property OutPath As String
+        Get
+            Return Path.Combine(Me.UIContext.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), "FleetTradeOff")
+        End Get
+    End Property
+
+    Private Sub UpdateControls()
+
+        If (Me.UIContext Is Nothing) Then Return
+        Me.m_tbxOutput.Text = Me.OutPath
+
+    End Sub
+
+#End Region ' Internals
 
 End Class

@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>359, 208</value>
+    <value>382, 249</value>
   </data>
   <data name="m_btnRun.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -154,7 +154,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>278, 208</value>
+    <value>301, 249</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -175,7 +175,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="m_lblInfo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -184,7 +184,7 @@
     <value>12, 9</value>
   </data>
   <data name="m_lblInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>419, 184</value>
+    <value>442, 225</value>
   </data>
   <data name="m_lblInfo.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -208,16 +208,16 @@ The results will be saved to a CSV file, which you can analyze and plot as descr
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblInfo.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="m_progress.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_progress.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 208</value>
+    <value>12, 249</value>
   </data>
   <data name="m_progress.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 23</value>
+    <value>282, 23</value>
   </data>
   <data name="m_progress.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -232,7 +232,7 @@ The results will be saved to a CSV file, which you can analyze and plot as descr
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_progress.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="m_lblStart.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -262,7 +262,7 @@ The results will be saved to a CSV file, which you can analyze and plot as descr
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblStart.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="m_.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -289,7 +289,7 @@ The results will be saved to a CSV file, which you can analyze and plot as descr
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -316,7 +316,7 @@ The results will be saved to a CSV file, which you can analyze and plot as descr
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="m_tbxFrom.Location" type="System.Drawing.Point, System.Drawing">
     <value>116, 127</value>
@@ -337,7 +337,7 @@ The results will be saved to a CSV file, which you can analyze and plot as descr
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxFrom.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="m_tbxTo.Location" type="System.Drawing.Point, System.Drawing">
     <value>116, 153</value>
@@ -358,7 +358,7 @@ The results will be saved to a CSV file, which you can analyze and plot as descr
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxTo.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="m_tbxStep.Location" type="System.Drawing.Point, System.Drawing">
     <value>116, 179</value>
@@ -379,6 +379,84 @@ The results will be saved to a CSV file, which you can analyze and plot as descr
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxStep.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_lblOutput.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblOutput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 208</value>
+  </data>
+  <data name="m_lblOutput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="m_lblOutput.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_lblOutput.Text" xml:space="preserve">
+    <value>Output location:</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutput.Name" xml:space="preserve">
+    <value>m_lblOutput</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutput.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutput.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tbxOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxOutput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>116, 205</value>
+  </data>
+  <data name="m_tbxOutput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>260, 20</value>
+  </data>
+  <data name="m_tbxOutput.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;m_tbxOutput.Name" xml:space="preserve">
+    <value>m_tbxOutput</value>
+  </data>
+  <data name="&gt;&gt;m_tbxOutput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxOutput.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxOutput.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_btnChangeOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnChangeOutput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>382, 205</value>
+  </data>
+  <data name="m_btnChangeOutput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnChangeOutput.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_btnChangeOutput.Text" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="&gt;&gt;m_btnChangeOutput.Name" xml:space="preserve">
+    <value>m_btnChangeOutput</value>
+  </data>
+  <data name="&gt;&gt;m_btnChangeOutput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnChangeOutput.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnChangeOutput.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -388,7 +466,7 @@ The results will be saved to a CSV file, which you can analyze and plot as descr
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>446, 243</value>
+    <value>469, 284</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
