@@ -16,12 +16,6 @@ Partial Class frmFleetTradeoffs
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_lblInfo = New System.Windows.Forms.Label()
         Me.m_progress = New System.Windows.Forms.ProgressBar()
-        Me.m_lblStart = New System.Windows.Forms.Label()
-        Me.m_ = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.m_tbxFrom = New System.Windows.Forms.TextBox()
-        Me.m_tbxTo = New System.Windows.Forms.TextBox()
-        Me.m_tbxStep = New System.Windows.Forms.TextBox()
         Me.m_lblOutput = New System.Windows.Forms.Label()
         Me.m_tbxOutput = New System.Windows.Forms.TextBox()
         Me.m_btnChangeOutput = New System.Windows.Forms.Button()
@@ -51,36 +45,6 @@ Partial Class frmFleetTradeoffs
         Me.m_progress.Name = "m_progress"
         Me.m_progress.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         '
-        'm_lblStart
-        '
-        resources.ApplyResources(Me.m_lblStart, "m_lblStart")
-        Me.m_lblStart.Name = "m_lblStart"
-        '
-        'm_
-        '
-        resources.ApplyResources(Me.m_, "m_")
-        Me.m_.Name = "m_"
-        '
-        'Label1
-        '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
-        '
-        'm_tbxFrom
-        '
-        resources.ApplyResources(Me.m_tbxFrom, "m_tbxFrom")
-        Me.m_tbxFrom.Name = "m_tbxFrom"
-        '
-        'm_tbxTo
-        '
-        resources.ApplyResources(Me.m_tbxTo, "m_tbxTo")
-        Me.m_tbxTo.Name = "m_tbxTo"
-        '
-        'm_tbxStep
-        '
-        resources.ApplyResources(Me.m_tbxStep, "m_tbxStep")
-        Me.m_tbxStep.Name = "m_tbxStep"
-        '
         'm_lblOutput
         '
         resources.ApplyResources(Me.m_lblOutput, "m_lblOutput")
@@ -108,12 +72,6 @@ Partial Class frmFleetTradeoffs
         Me.Controls.Add(Me.m_btnChangeOutput)
         Me.Controls.Add(Me.m_tbxOutput)
         Me.Controls.Add(Me.m_lblOutput)
-        Me.Controls.Add(Me.m_tbxStep)
-        Me.Controls.Add(Me.m_tbxTo)
-        Me.Controls.Add(Me.m_tbxFrom)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.m_)
-        Me.Controls.Add(Me.m_lblStart)
         Me.Controls.Add(Me.m_progress)
         Me.Controls.Add(Me.m_lblInfo)
         Me.Controls.Add(Me.m_btnCancel)
@@ -132,12 +90,6 @@ Partial Class frmFleetTradeoffs
     Friend WithEvents m_btnCancel As Windows.Forms.Button
     Private WithEvents m_lblInfo As Windows.Forms.Label
     Private WithEvents m_progress As Windows.Forms.ProgressBar
-    Friend WithEvents m_lblStart As Windows.Forms.Label
-    Friend WithEvents m_ As Windows.Forms.Label
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Private WithEvents m_tbxFrom As Windows.Forms.TextBox
-    Private WithEvents m_tbxTo As Windows.Forms.TextBox
-    Private WithEvents m_tbxStep As Windows.Forms.TextBox
     Private WithEvents m_lblOutput As Windows.Forms.Label
     Private WithEvents m_tbxOutput As Windows.Forms.TextBox
     Private WithEvents m_btnChangeOutput As Windows.Forms.Button
