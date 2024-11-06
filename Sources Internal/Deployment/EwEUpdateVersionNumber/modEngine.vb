@@ -16,6 +16,7 @@
 ' ===============================================================================
 '
 Option Strict On
+Imports System.Data.Sql
 Imports System.IO
 Imports EwEUtils.Utilities
 
@@ -42,13 +43,22 @@ Module modEngine
         Dim strPathSource As String = "D:\Sources\Ecopath6\" ' arrArgs(0).Replace("""", "").Trim
         Dim assemblyNumber As String = "6.7.0.19005" ' arrArgs(1).Replace("""", "").Trim
 
+#If 0 Then
         ' Find all the files with Assembly Name
-        Dim lstrFiles As List(Of String) = GetFilesRecursive(strPathSource, "AssemblyInfo.vb")
+        Dim files As List(Of String) = GetFilesRecursive(strPathSource, "AssemblyInfo.vb")
 
-        ' Change the assembly names in directories.
-        For Each strFile As String In lstrFiles
-            ChangeAssemblyName(strFile, assemblyNumber)
+        For Each file As String In files
+            ReplaceVersionNumber(file, assemblyNumber)
         Next
+#Else
+        Dim files As List(Of String) = GetFilesRecursive(strPathSource, "*.vbproj")
+        files.AddRange(GetFilesRecursive(strPathSource, "*.sln"))
+
+        For Each file As String In files
+            RemoveAMDTarget(file)
+        Next
+
+#End If
 
         Console.WriteLine()
         Console.WriteLine("Done, press any key to exit")
@@ -70,7 +80,7 @@ Module modEngine
     ''' <param name="strVersionNew">The assembly file number in the format of "#.#.#.#",
     ''' formalized as {major}.{minor}.{subrelease}.{buildnumber}</param>
     ''' -----------------------------------------------------------------------
-    Sub ChangeAssemblyName(ByVal strFile As String, ByVal strVersionNew As String)
+    Sub ReplaceVersionNumber(ByVal strFile As String, ByVal strVersionNew As String)
 
         ' Check for jewels first
         If IO.File.Exists(strFile) Then
@@ -115,6 +125,69 @@ Module modEngine
             Catch ex As Exception
                 Debug.Assert(False, "Whoopsy renaming assembly" & strFile)
             End Try
+        End If
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <param name="strFile">The exact file including the filename and extension</param>
+    ''' -----------------------------------------------------------------------
+    Sub RemoveAMDTarget(ByVal strFile As String)
+
+        ' Check for jewels first
+        If IO.File.Exists(strFile) Then
+
+            Console.WriteLine("Updating {0}", strFile)
+
+            Dim lines As New List(Of String)
+            Dim line As String
+            Dim bChanged As Boolean = False
+            Dim bSkip As Boolean = False
+
+            Using sr As New StreamReader(strFile)
+                While Not sr.EndOfStream
+                    line = sr.ReadLine()
+
+                    If Not bSkip Then
+                        If line.Contains("<PropertyGroup") And line.Contains("|ARM") Then
+                            bSkip = True
+                            bChanged = True
+                        End If
+                    End If
+
+                    If Not bSkip Then
+                        If Not String.IsNullOrWhiteSpace(line) Then
+
+                            If (Not line.Substring(0, 1) = "'") And (Not line.Substring(0, 2) = "//") Then
+                                ' #Yes: is assembly version or file version line?
+                                If line.Contains("Platforms") And line.Contains("ARM") Then
+                                    ' #Yes: Get current version number
+                                    line = line.Replace("ARM64", "").Replace("ARM32", "").Replace(";;", ";")
+                                    bChanged = True
+                                End If
+                            End If
+
+                            If line.Contains("|ARM") Then
+                                line = ""
+                                bChanged = True
+                            End If
+                        End If
+
+                        If Not String.IsNullOrWhiteSpace(line) Then
+                            lines.Add(line)
+                        End If
+                    Else
+                        bSkip = Not line.Contains("</PropertyGroup>")
+                    End If
+
+                End While
+            End Using
+
+            If bChanged Then
+                bChanged = bChanged
+                IO.File.WriteAllLines(strFile, lines)
+            End If
+
         End If
 
     End Sub
