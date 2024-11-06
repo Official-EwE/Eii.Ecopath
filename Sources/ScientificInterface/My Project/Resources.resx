@@ -696,7 +696,7 @@ Description: {1}</value>
     <comment>{0} = EwE5 model name</comment>
   </data>
   <data name="license" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\license.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>..\Resources\license.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;iso-8859-1</value>
   </data>
   <data name="LEGEND_BYBIOMASS" xml:space="preserve">
     <value>By biomass</value>
@@ -795,10 +795,10 @@ Description: {1}</value>
     <value>Max rel. feeding time</value>
   </data>
   <data name="acknowledgements" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\acknowledgements.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>..\Resources\acknowledgements.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;iso-8859-1</value>
   </data>
   <data name="team" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\team.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>..\Resources\team.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;iso-8859-1</value>
   </data>
   <data name="STATUS_MODEL_SAVE_404" xml:space="preserve">
     <value>Unable to save your model to location '{0}'.</value>
@@ -1091,7 +1091,7 @@ Description: {1}</value>
     <value>Off-vessel price</value>
   </data>
   <data name="STATUS_MODEL_ACCESS_OS" xml:space="preserve">
-    <value>Your system does not have to proper drivers installed to read the file format of model '{0}'. Install the 'Microsoft Access Database Engine 2010 Redistributable' from the Microsoft website to use Access 2010 (ACCDB) databases.</value>
+    <value>Your system does not have to proper drivers installed to read the file format of model '{0}'. Install the 'Microsoft Access Database Engine Redistributable' from the Microsoft website to use Access ACCDB databases.</value>
   </data>
   <data name="IMPORT_FILE_FAILED" xml:space="preserve">
     <value>Failed to import {0}</value>
