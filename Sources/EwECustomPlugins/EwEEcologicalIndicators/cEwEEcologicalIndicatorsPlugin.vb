@@ -729,7 +729,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
     Public ReadOnly Property ControlImage As Object Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
-            Return Nothing
+            Return My.Resources.indicator16x16
         End Get
     End Property
 
