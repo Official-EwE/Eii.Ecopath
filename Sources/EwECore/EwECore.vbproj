@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFrameworks>net48;net6.0</TargetFrameworks>
-    <Platforms>x86;x64;AnyCPU</Platforms>
+    <Platforms>x86;x64;AnyCPU;ARM64</Platforms>
     <SccProjectName></SccProjectName>
     <SccLocalPath></SccLocalPath>
     <SccAuxPath></SccAuxPath>
@@ -49,7 +49,21 @@
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
     <DefineConstants>DISCARDS=1</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>EwECore.xml</DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
+    <DefineConstants>DISCARDS=1</DefineConstants>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>EwECore.xml</DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <OutputPath>bin\x86\Release\</OutputPath>
     <DocumentationFile>EwECore.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
@@ -108,6 +122,9 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Platform)' == 'x86'">
  	<Reference Include="Includes\LPSolve\win32\lpsolve55.dll" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)'=='ARM64'">
+    <Reference Include="Includes\LPSolve\win32\lpsolve55.dll" />
   </ItemGroup>
   <ItemGroup Condition="'$(Platform)' == 'x64'">
  	<Reference Include="Includes\LPSolve\win64\lpsolve55.dll" />
