@@ -62,25 +62,31 @@ Friend Class cDBUpdate6_60_00_18
         Dim hasLevels(cEcopathDataStructures.PedigreeVariables.Length) As Boolean
         Dim bSuccess As Boolean = True
 
-        While reader.Read()
+        Try
 
-            Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
-            ' fudge, no need to issue a database update
-            If var = eVarNameFlags.Biomass Then var = eVarNameFlags.BiomassAreaInput
-            Dim i As Integer = Array.IndexOf(cEcopathDataStructures.PedigreeVariables, var)
-            If (i >= 0) Then hasLevels(i) = True
-        End While
-        db.ReleaseReader(reader)
+            While reader.Read()
 
-        Dim iNextID As Integer = CInt(db.GetValue("SELECT MAX(LevelID) FROM Pedigree")) + 1
+                Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
+                ' fudge, no need to issue a database update
+                If var = eVarNameFlags.Biomass Then var = eVarNameFlags.BiomassAreaInput
+                Dim i As Integer = Array.IndexOf(cEcopathDataStructures.PedigreeVariables, var)
+                If (i >= 0) Then hasLevels(i) = True
+            End While
+            db.ReleaseReader(reader)
 
-        For i As Integer = 0 To cEcopathDataStructures.PedigreeVariables.Length - 1
-            Dim var As eVarNameFlags = cEcopathDataStructures.PedigreeVariables(i)
-            If (Not hasLevels(i)) Then
-                bSuccess = bSuccess And Me.CreateDefaults(db, var, iNextID)
-            End If
-        Next
-        Return bSuccess
+            Dim iNextID As Integer = CInt(db.GetValue("SELECT MAX(LevelID) FROM Pedigree")) + 1
+
+            For i As Integer = 0 To cEcopathDataStructures.PedigreeVariables.Length - 1
+                Dim var As eVarNameFlags = cEcopathDataStructures.PedigreeVariables(i)
+                If (Not hasLevels(i)) Then
+                    bSuccess = bSuccess And Me.CreateDefaults(db, var, iNextID)
+                End If
+            Next
+        Catch ex As Exception
+            cLog.Write(ex, "DB update 65.60018")
+        End Try
+
+        Return bSuccess Or True
 
     End Function
 
