@@ -144,7 +144,7 @@ Friend Class cDBUpdate6_60_00_18
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim strSQL As String = String.Format("INSERT INTO Pedigree (LevelID, Sequence, LevelName, Description, VarName, IndexValue, Confidence) " &
                                              "VALUES ({0}, {1}, '{2}', '{3}', '{4}', {5}, {6})",
-                                             iLevelID, iLevelID, resName, resName, CStr(cin.GetVarName(var)), sIndexValue, iConfidenceInterval)
+                                             iLevelID, iLevelID, resName, resName, CStr(cin.GetVarName(var)), cStringUtils.FormatSingle(sIndexValue), iConfidenceInterval)
         iLevelID += 1
         Return db.Execute(strSQL)
 
