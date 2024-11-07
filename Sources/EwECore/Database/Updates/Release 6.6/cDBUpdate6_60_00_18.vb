@@ -86,7 +86,7 @@ Friend Class cDBUpdate6_60_00_18
             cLog.Write(ex, "DB update 65.60018")
         End Try
 
-        Return bSuccess Or True
+        Return bSuccess
 
     End Function
 
