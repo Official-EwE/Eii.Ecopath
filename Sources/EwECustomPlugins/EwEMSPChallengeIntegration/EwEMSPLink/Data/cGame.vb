@@ -22,6 +22,7 @@
 Option Strict On
 Imports System.Drawing
 Imports System.Net
+Imports System.Net.Mail
 Imports System.Text
 Imports System.Xml
 Imports EwECore
@@ -45,6 +46,7 @@ Public Class cGame
     Private m_pressuremultipliers As New Dictionary(Of String, Double)
     Private m_pressureeco As New Dictionary(Of String, Boolean)
     Private m_outcomes As New List(Of cOutcome)
+    Private m_pedigreeIndex As Single = 0
 
 #End Region ' Private variables
 
@@ -295,6 +297,12 @@ Public Class cGame
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Property BycatchCostMultiplier As Single = 10.0
+
+    Public ReadOnly Property PedigreeIndex As Single
+        Get
+            Return Me.m_pedigreeIndex
+        End Get
+    End Property
 
 #End Region ' Metadata
 
@@ -644,6 +652,15 @@ Public Class cGame
     ''' <exception cref="cMELException">A MEL exception will be thrown if something went wrong.</exception>
     ''' -----------------------------------------------------------------------
     Public Function Load() As Boolean
+
+        Me.m_pedigreeIndex = 0
+
+        If (Not Me.m_core.RunEcopath) Then
+            cEwEMSPLink.RaiseException("Game load error; failed to balance Ecopath", True)
+            Return False
+        End If
+
+        Me.m_pedigreeIndex = Me.m_core.EcopathStats.Pedigree
 
         If (Not Me.m_core.LoadEcosimScenario(Me.EcosimScenario)) Then
             cEwEMSPLink.RaiseException("Game load error; failed to load Ecosim scenario with ID " & Me.EcosimID, True)
