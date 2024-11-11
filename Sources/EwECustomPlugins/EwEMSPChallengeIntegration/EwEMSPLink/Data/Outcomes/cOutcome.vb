@@ -321,7 +321,7 @@ Public Class cOutcome
         outcomerange = Math.Max(2, outcomerange)
 
         Select Case Me.m_layertype
-            Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Discards
+            Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Discards, eLayerType.Bycatch
                 grid.Units = Me.m_units.ToString(cUnits.Currency) ' "t/km²"
             Case eLayerType.Effort
                 ' ToDo: obtain from metadata once it's there
@@ -329,7 +329,7 @@ Public Class cOutcome
             Case eLayerType.Indicator
                 grid.Units = My.Resources.UNITS_RATIO
             Case Else
-                Debug.Assert(False, "Whoopsie")
+                Debug.Assert(False, "Layer type " & Me.m_layertype.ToString() & " not supported")
         End Select
 
         Try
