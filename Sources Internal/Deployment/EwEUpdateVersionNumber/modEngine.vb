@@ -39,14 +39,11 @@ Module modEngine
         ' Run this with the following command line arguments in the project properties > debug > command line parameters (or hard-ode them here)
         ' "D:\Sources\Ecopath6\" "6.7.0.17322"
 
-        Dim arrArgs() As String = cStringUtils.SplitQualified(Command, ",")
-        Dim strPathSource As String = "D:\Sources\Ecopath6\" ' arrArgs(0).Replace("""", "").Trim
-        Dim assemblyNumber As String = "6.7.0.19005" ' arrArgs(1).Replace("""", "").Trim
+        Dim strPathSource As String = "D:\Sources\Ecopath6\"
 
-#If 0 Then
-        ' Find all the files with Assembly Name
+#If 1 Then
+        Dim assemblyNumber As String = "6.7.0.19025" ' arrArgs(1).Replace("""", "").Trim
         Dim files As List(Of String) = GetFilesRecursive(strPathSource, "AssemblyInfo.vb")
-
         For Each file As String In files
             ReplaceVersionNumber(file, assemblyNumber)
         Next
