@@ -810,14 +810,68 @@ Public Class cEIIXMLDataSource
     ''' -----------------------------------------------------------------------
     Private Function LoadPedigreeLevels() As Boolean
 
+        ' Init data structure
+        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim dtPedigree As DataTable = Me.ReadTable("Pedigree")
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
+        Dim iLevel As Integer = 1
+        Dim bSucces As Boolean = True
 
         ' Init data structure
-        ecopathDS.NumPedigreeLevels = 0
+        ecopathDS.NumPedigreeLevels = dtPedigree.Rows.Count()
+
+        ' Allocate space
         ecopathDS.RedimPedigree()
+
+
+        Try
+            For Each drow As DataRow In dtPedigree.Rows
+
+                ecopathDS.PedigreeLevelDBID(iLevel) = CInt(drow("LevelID"))
+                ecopathDS.PedigreeLevelName(iLevel) = Me.ToLocalizedDefault(CStr(drow("LevelName")), 0)
+                ecopathDS.PedigreeLevelDescription(iLevel) = Me.ToLocalizedDefault(Me.ReadSafe(drow, "Description", ""))
+
+                Dim var As eVarNameFlags = cin.GetVarName(CStr(drow("VarName")))
+                ' fudge, no need to issue a database update
+                If var = eVarNameFlags.Biomass Then var = eVarNameFlags.BiomassAreaInput
+                ecopathDS.PedigreeLevelVarName(iLevel) = var
+
+                ecopathDS.PedigreeLevelIndexValue(iLevel) = CSng(drow("IndexValue"))
+                ecopathDS.PedigreeLevelConfidence(iLevel) = CInt(drow("Confidence"))
+                ecopathDS.PedigreeLevelColor(iLevel) = CInt(Me.ReadSafe(drow, "LevelColor", 0))
+
+                iLevel += 1
+
+            Next
+
+        Catch ex As Exception
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading pedigree", ex.Message))
+            bSucces = False
+        End Try
+
+        ' Sanity check
+        Debug.Assert(iLevel - 1 = ecopathDS.NumPedigreeLevels)
 
         Return True
 
+    End Function
+
+    Private Function ToLocalizedDefault(str As String, Optional part As Integer = 0) As String
+
+        If (String.IsNullOrWhiteSpace(str)) Then Return ""
+        If (Not str.StartsWith("[")) Or (Not str.EndsWith("]")) Then Return str
+
+        str = str.Substring(1, str.Length - 2).Trim()
+        str = cResourceUtils.LoadString(str, My.Resources.CoreDefaults.ResourceManager)
+        If (str.Contains("|"c)) Then
+            Dim bits() As String = str.Split("|"c)
+            If bits.Length > part Then
+                Return bits(part)
+            Else
+                Return bits(0)
+            End If
+        End If
+        Return str
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -827,7 +881,37 @@ Public Class cEIIXMLDataSource
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function LoadPedigreeAssignments() As Boolean
-        Return True
+
+        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
+        Dim dtPedigree As DataTable = Me.ReadTable("EcopathGroupPedigree")
+        Dim iGroup As Integer
+        Dim iVariable As Integer
+        Dim iLevel As Integer
+        Dim bSucces As Boolean = True
+
+        Try
+
+            For Each drow As DataRow In dtPedigree.Rows
+
+                iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(drow("GroupID")))
+                iVariable = Array.IndexOf(cEcopathDataStructures.PedigreeVariables, cin.GetVarName(CStr(drow("VarName"))))
+                iLevel = Array.IndexOf(ecopathDS.PedigreeLevelDBID, CInt(Me.ReadSafe(drow, "LevelID", 0)))
+
+                If (iGroup >= 1) And (iVariable >= 1) And (iLevel > 0) Then
+                    ecopathDS.Pedigree(iGroup, iVariable) = iLevel
+                Else
+                    ' NOP... log message?
+                End If
+
+            Next
+        Catch ex As Exception
+            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading pedigree assignments", ex.Message))
+            bSucces = False
+        End Try
+
+        Return bSucces
+
     End Function
 
     ''' -------------------------------------------------------------------

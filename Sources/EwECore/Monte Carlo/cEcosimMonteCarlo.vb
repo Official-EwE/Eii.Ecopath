@@ -444,7 +444,6 @@ Public Class cEcosimMonteCarlo
     Friend Function LoadFromPedigree(varname As eVarNameFlags) As Boolean
 
         Dim opt As Integer ' Opt = CV
-        Dim man As cPedigreeManager = Nothing
         Dim parm As eMCParams = eMCParams.NotSet
         Dim iVar As Integer = Me.m_core.PedigreeVariableIndex(varname)
         Dim bCalcLimits As Boolean = False
