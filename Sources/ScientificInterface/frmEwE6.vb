@@ -23,6 +23,7 @@ Option Explicit On
 Option Strict On
 
 Imports System.ComponentModel
+Imports System.Globalization
 Imports System.IO
 Imports System.Threading
 Imports EwECore
@@ -340,8 +341,7 @@ Public Class frmEwE6
 
 #If 0 Then
         ' Uncomment to torture EwE and see if all decimal comma / point issues have been solved
-        Dim culture As CultureInfo = DirectCast(CultureInfo.CurrentCulture.Clone(), CultureInfo)
-        culture.NumberFormat.NumberDecimalSeparator = ","
+        Dim culture As CultureInfo = CultureInfo.GetCultureInfo("nl-NL")
         Thread.CurrentThread.CurrentCulture = culture
         Thread.CurrentThread.CurrentUICulture = culture
 #End If

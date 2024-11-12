@@ -3502,7 +3502,7 @@ Namespace Database
                 Dim sVersion As Single = GetVersion()
                 Try
                     ' Try EwE6 version first
-                    Dim reader As IDataReader = Me.GetReader("SELECT EwEVersion FROM UpdateLog WHERE Version=" & sVersion)
+                    Dim reader As IDataReader = Me.GetReader("SELECT EwEVersion FROM UpdateLog WHERE Version=" & cStringUtils.FormatSingle(sVersion))
                     While reader.Read()
                         Me.m_strEwEversion = cStringUtils.Localize(My.Resources.VERSION_NO, CStr(Me.ReadSafe(reader, "EwEVersion", "")))
                     End While
@@ -3517,7 +3517,7 @@ Namespace Database
                     End If
 
                 Catch ex As Exception
-                    Me.m_strEwEversion = "?"
+                    Me.m_strEwEversion = My.Resources.VERSION_PREVIOUS
                 End Try
             End If
             Return Me.m_strEwEversion
@@ -3541,10 +3541,10 @@ Namespace Database
 
             If (sVersion < 6.120003!) Then
                 strSQL = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date]) VALUES('{0}', '{1}', '{2}')",
-                                                 sVersion, strRemark, dtNow.ToShortDateString())
+                                                 cStringUtils.FormatSingle(sVersion), strRemark, dtNow.ToShortDateString())
             Else
                 strSQL = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date], [EwEVersion]) VALUES('{0}', '{1}', '{2}', '{3}')",
-                                                 sVersion, strRemark, dtNow.ToShortDateString(), version.ToString())
+                                                 cStringUtils.FormatSingle(sVersion), strRemark, dtNow.ToShortDateString(), version.ToString())
             End If
             Dim bSucces As Boolean = True
             Try
