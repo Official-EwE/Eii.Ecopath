@@ -56,7 +56,7 @@ Partial Class dlgMergeGroups
         Me.m_rbQB = New System.Windows.Forms.RadioButton()
         Me.m_rbPB = New System.Windows.Forms.RadioButton()
         Me.m_rbB = New System.Windows.Forms.RadioButton()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_lblEstimate = New System.Windows.Forms.Label()
         Me.m_cmbMerge = New System.Windows.Forms.ComboBox()
         Me.m_tcInputs = New System.Windows.Forms.TabControl()
         Me.m_tabBasicInput = New System.Windows.Forms.TabPage()
@@ -65,12 +65,16 @@ Partial Class dlgMergeGroups
         Me.m_gridDietComp = New EwEMergeSplitGroupsPlugin.gridDietComposition()
         Me.m_tabTaxonomy = New System.Windows.Forms.TabPage()
         Me.m_gridTaxa = New EwEMergeSplitGroupsPlugin.gridTaxonomy()
+        Me.m_tlpBasicInput = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_plEstimate = New System.Windows.Forms.Panel()
         Me.m_tlpLogo.SuspendLayout()
         CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tcInputs.SuspendLayout()
         Me.m_tabBasicInput.SuspendLayout()
         Me.m_tabDiets.SuspendLayout()
         Me.m_tabTaxonomy.SuspendLayout()
+        Me.m_tlpBasicInput.SuspendLayout()
+        Me.m_plEstimate.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_lblTarget
@@ -153,10 +157,10 @@ Partial Class dlgMergeGroups
         Me.m_rbB.TabStop = True
         Me.m_rbB.UseVisualStyleBackColor = True
         '
-        'Label1
+        'm_lblEstimate
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.m_lblEstimate, "m_lblEstimate")
+        Me.m_lblEstimate.Name = "m_lblEstimate"
         '
         'm_cmbMerge
         '
@@ -176,12 +180,7 @@ Partial Class dlgMergeGroups
         '
         'm_tabBasicInput
         '
-        Me.m_tabBasicInput.Controls.Add(Me.Label1)
-        Me.m_tabBasicInput.Controls.Add(Me.m_grid)
-        Me.m_tabBasicInput.Controls.Add(Me.m_rbB)
-        Me.m_tabBasicInput.Controls.Add(Me.m_rbEE)
-        Me.m_tabBasicInput.Controls.Add(Me.m_rbPB)
-        Me.m_tabBasicInput.Controls.Add(Me.m_rbQB)
+        Me.m_tabBasicInput.Controls.Add(Me.m_tlpBasicInput)
         resources.ApplyResources(Me.m_tabBasicInput, "m_tabBasicInput")
         Me.m_tabBasicInput.Name = "m_tabBasicInput"
         Me.m_tabBasicInput.UseVisualStyleBackColor = True
@@ -189,10 +188,9 @@ Partial Class dlgMergeGroups
         'm_grid
         '
         Me.m_grid.AllowBlockSelect = True
-        resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
         Me.m_grid.AutoStretchRowsToFitHeight = False
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -201,6 +199,7 @@ Partial Class dlgMergeGroups
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
         Me.m_grid.DataName = "grid content"
+        resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.FixedColumnWidths = True
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
@@ -293,6 +292,23 @@ Partial Class dlgMergeGroups
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridTaxa.UIContext = Nothing
         '
+        'm_tlpBasicInput
+        '
+        resources.ApplyResources(Me.m_tlpBasicInput, "m_tlpBasicInput")
+        Me.m_tlpBasicInput.Controls.Add(Me.m_grid, 0, 1)
+        Me.m_tlpBasicInput.Controls.Add(Me.m_plEstimate, 0, 0)
+        Me.m_tlpBasicInput.Name = "m_tlpBasicInput"
+        '
+        'm_plEstimate
+        '
+        Me.m_plEstimate.Controls.Add(Me.m_lblEstimate)
+        Me.m_plEstimate.Controls.Add(Me.m_rbQB)
+        Me.m_plEstimate.Controls.Add(Me.m_rbB)
+        Me.m_plEstimate.Controls.Add(Me.m_rbPB)
+        Me.m_plEstimate.Controls.Add(Me.m_rbEE)
+        resources.ApplyResources(Me.m_plEstimate, "m_plEstimate")
+        Me.m_plEstimate.Name = "m_plEstimate"
+        '
         'dlgMergeGroups
         '
         resources.ApplyResources(Me, "$this")
@@ -315,9 +331,11 @@ Partial Class dlgMergeGroups
         CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tcInputs.ResumeLayout(False)
         Me.m_tabBasicInput.ResumeLayout(False)
-        Me.m_tabBasicInput.PerformLayout()
         Me.m_tabDiets.ResumeLayout(False)
         Me.m_tabTaxonomy.ResumeLayout(False)
+        Me.m_tlpBasicInput.ResumeLayout(False)
+        Me.m_plEstimate.ResumeLayout(False)
+        Me.m_plEstimate.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -336,7 +354,7 @@ Partial Class dlgMergeGroups
     Private WithEvents m_rbQB As System.Windows.Forms.RadioButton
     Private WithEvents m_rbPB As System.Windows.Forms.RadioButton
     Private WithEvents m_rbB As System.Windows.Forms.RadioButton
-    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_lblEstimate As System.Windows.Forms.Label
     Private WithEvents m_cmbMerge As System.Windows.Forms.ComboBox
     Private WithEvents m_grid As gridGroupInput
     Private WithEvents m_tcInputs As System.Windows.Forms.TabControl
@@ -345,4 +363,6 @@ Partial Class dlgMergeGroups
     Private WithEvents m_gridDietComp As gridDietComposition
     Private WithEvents m_tabTaxonomy As System.Windows.Forms.TabPage
     Private WithEvents m_gridTaxa As gridTaxonomy
+    Private WithEvents m_tlpBasicInput As Windows.Forms.TableLayoutPanel
+    Private WithEvents m_plEstimate As Windows.Forms.Panel
 End Class
