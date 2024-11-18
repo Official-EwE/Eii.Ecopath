@@ -113,6 +113,7 @@ Namespace Ecospace.Basemap
             '
             resources.ApplyResources(Me.m_ucLayers, "m_ucLayers")
             Me.m_ucLayers.BackColor = System.Drawing.SystemColors.Control
+            Me.m_ucLayers.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_ucLayers.Name = "m_ucLayers"
             Me.m_ucLayers.UIContext = Nothing
             '
