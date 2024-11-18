@@ -821,6 +821,18 @@ Namespace Utilities
 
         End Function
 
+        Public Shared Function FormatMemory(dValue As Double) As String
+            Dim units As String() = {"b", "Kb", "Mb", "Gb", "Tb", "Pb"}
+            Dim i As Integer = 0
+
+            While dValue > 1024 And i < units.Length - 1
+                i += 1
+                dValue /= 1024
+            End While
+
+            Return cStringUtils.Localize("{0} {1}", Math.Round(dValue, 3), units(i))
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Format a date for persistent storage.
