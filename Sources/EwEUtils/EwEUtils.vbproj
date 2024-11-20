@@ -142,6 +142,6 @@
     <Folder Include="Commands\" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'net48' ">
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.8" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.0" />
   </ItemGroup>
 </Project>
