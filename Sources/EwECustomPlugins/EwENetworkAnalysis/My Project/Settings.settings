@@ -17,5 +17,11 @@
     <Setting Name="AutosaveEcosimWoPPR" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="CalcPathsAndCycles" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CalculationTimeOut" Type="System.Int64" Scope="User">
+      <Value Profile="(Default)">60000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
