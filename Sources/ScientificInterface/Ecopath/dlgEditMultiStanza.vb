@@ -365,7 +365,7 @@ Namespace Ecopath
             Me.m_cbFFecun.Checked = stanza.FixedFecundity
             Me.m_cbEggAtSpawn.Checked = stanza.EggAtSpawn
 
-            Me.m_grid.CalculateStanzaParameters()
+            'Me.m_grid.CalculateStanzaParameters()
             Me.m_grid.RefreshContent()
 
             Me.UpdateGraph(Me.m_zgc)
