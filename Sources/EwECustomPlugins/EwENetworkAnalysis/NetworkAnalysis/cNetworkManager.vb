@@ -137,12 +137,12 @@ Public Class cNetworkManager
         Me.m_core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopNetworkAnalysis))
     End Sub
 
-    Public Property SkipCyclesPathways As Boolean
+    Public Property CalculateCyclesPathways As Boolean
         Get
-            Return Me.m_econetwork.SkipCyclesPathways
+            Return Me.m_econetwork.CalculateCyclesPathways
         End Get
         Set(value As Boolean)
-            Me.m_econetwork.SkipCyclesPathways = value
+            Me.m_econetwork.CalculateCyclesPathways = value
         End Set
     End Property
 

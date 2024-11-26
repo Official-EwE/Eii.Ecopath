@@ -2138,12 +2138,22 @@ EndOfImp:
     ''' <summary>
     ''' Scary stuff to pass large model deadlocks
     ''' </summary>
-    Public Property SkipCyclesPathways As Boolean = False
+    Public Property CalculateCyclesPathways As Boolean
+        Get
+            Return My.Settings.CalcPathsAndCycles
+        End Get
+        Set(value As Boolean)
+            If (value <> My.Settings.CalcPathsAndCycles) Then
+                My.Settings.CalcPathsAndCycles = value
+                My.Settings.Save()
+            End If
+        End Set
+    End Property
 
     Private Sub FindCycles(ByRef Cons() As Single)
 
         ' Wow!
-        If Me.SkipCyclesPathways Then Return
+        If Not Me.CalculateCyclesPathways Then Return
 
         'CycDC [previously called CD] contains the proportion
         'of the diet that is the minimum

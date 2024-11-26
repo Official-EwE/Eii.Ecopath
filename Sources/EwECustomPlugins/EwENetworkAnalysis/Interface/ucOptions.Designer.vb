@@ -40,7 +40,7 @@ Partial Class ucOptions
         Me.m_cbAutosaveEcopath = New System.Windows.Forms.CheckBox()
         Me.m_cbAutosaveEcosimWoPPR = New System.Windows.Forms.CheckBox()
         Me.m_cbAutosaveEcosimWithPPR = New System.Windows.Forms.CheckBox()
-        Me.m_cbSkipCyclesPathways = New System.Windows.Forms.CheckBox()
+        Me.m_cbCalculateCyclesPathways = New System.Windows.Forms.CheckBox()
         Me.m_lblSkipCyclesPathways = New System.Windows.Forms.Label()
         CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -109,11 +109,11 @@ Partial Class ucOptions
         Me.m_cbAutosaveEcosimWithPPR.Name = "m_cbAutosaveEcosimWithPPR"
         Me.m_cbAutosaveEcosimWithPPR.UseVisualStyleBackColor = True
         '
-        'm_cbSkipCyclesPathways
+        'm_cbCalculateCyclesPathways
         '
-        resources.ApplyResources(Me.m_cbSkipCyclesPathways, "m_cbSkipCyclesPathways")
-        Me.m_cbSkipCyclesPathways.Name = "m_cbSkipCyclesPathways"
-        Me.m_cbSkipCyclesPathways.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_cbCalculateCyclesPathways, "m_cbCalculateCyclesPathways")
+        Me.m_cbCalculateCyclesPathways.Name = "m_cbCalculateCyclesPathways"
+        Me.m_cbCalculateCyclesPathways.UseVisualStyleBackColor = True
         '
         'm_lblSkipCyclesPathways
         '
@@ -126,7 +126,7 @@ Partial Class ucOptions
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_lblSkipCyclesPathways)
-        Me.Controls.Add(Me.m_cbSkipCyclesPathways)
+        Me.Controls.Add(Me.m_cbCalculateCyclesPathways)
         Me.Controls.Add(Me.m_cbAutosaveEcosimWithPPR)
         Me.Controls.Add(Me.m_cbAutosaveEcosimWoPPR)
         Me.Controls.Add(Me.m_cbAutosaveEcopath)
@@ -153,6 +153,6 @@ Partial Class ucOptions
     Private WithEvents m_cbAutosaveEcopath As System.Windows.Forms.CheckBox
     Private WithEvents m_cbAutosaveEcosimWoPPR As System.Windows.Forms.CheckBox
     Private WithEvents m_cbAutosaveEcosimWithPPR As System.Windows.Forms.CheckBox
-    Private WithEvents m_cbSkipCyclesPathways As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbCalculateCyclesPathways As System.Windows.Forms.CheckBox
     Private WithEvents m_lblSkipCyclesPathways As System.Windows.Forms.Label
 End Class

@@ -49,7 +49,7 @@ Public Class ucOptions
         Me.m_man = cEwENetworkAnalysisPlugin.thePlugin.Manager
         Me.m_cbUseTimeout.Checked = Me.m_man.UseAbortTimer
         Me.m_nudTimeOut.Value = CInt(Me.m_man.TimeOutMilSecs / (1000 * 60))
-        Me.m_cbSkipCyclesPathways.Checked = Me.m_man.SkipCyclesPathways
+        Me.m_cbCalculateCyclesPathways.Checked = Me.m_man.CalculateCyclesPathways
 
         Me.m_cbh = New cCheckboxHierarchy(Me.m_cbAutosaveRoot)
         Me.m_cbh.Add(Me.m_cbAutosaveEcopath, Me.m_cbAutosaveRoot)
@@ -81,13 +81,12 @@ Public Class ucOptions
     Private Sub UpdateControls()
 
         Me.m_nudTimeOut.Enabled = Me.m_cbUseTimeout.Checked
-        Me.m_lblSkipCyclesPathways.Visible = Me.m_cbSkipCyclesPathways.Checked
 
     End Sub
 
 #Region " Event handlers "
 
-    Private Sub OnNoCyclesPathwaysChanged(sender As Object, e As EventArgs) Handles m_cbSkipCyclesPathways.CheckedChanged
+    Private Sub OnNoCyclesPathwaysChanged(sender As Object, e As EventArgs) Handles m_cbCalculateCyclesPathways.CheckedChanged
 
         If Me.m_bInUpdate Then Return
         Me.UpdateControls()
@@ -141,7 +140,7 @@ Public Class ucOptions
 
         Me.m_man.TimeOutMilSecs = CInt(Me.m_nudTimeOut.Value * 1000 * 60)
         Me.m_man.UseAbortTimer = Me.m_cbUseTimeout.Checked
-        Me.m_man.SkipCyclesPathways = Me.m_cbSkipCyclesPathways.Checked
+        Me.m_man.CalculateCyclesPathways = Me.m_cbCalculateCyclesPathways.Checked
 
         My.Settings.AutosaveEcosimWoPPR = Me.m_cbAutosaveEcosimWoPPR.Checked
         My.Settings.AutosaveEcosimWithPPR = Me.m_cbAutosaveEcosimWithPPR.Checked
@@ -160,7 +159,7 @@ Public Class ucOptions
         Me.m_cbUseTimeout.Checked = True
         Me.m_nudTimeOut.Value = 30
         Me.m_cbAutosaveRoot.Checked = False
-        Me.m_cbSkipCyclesPathways.Checked = False
+        Me.m_cbCalculateCyclesPathways.Checked = False
     End Sub
 
 
