@@ -343,7 +343,7 @@ Namespace Interop
             Rwrapper.StartInfo.Arguments = "--slave"
 
             ' Suppress R user interface
-            Rwrapper.StartInfo.CreateNoWindow = True
+            Rwrapper.StartInfo.CreateNoWindow = False
 
             ' Do the elevation bit if needed
             If (Me.RunElevated) Then
@@ -404,6 +404,8 @@ Namespace Interop
             ' Clean up
             Rwrapper.Close()
             Rwrapper.Dispose()
+
+            Me.m_bSuccess = bSuccess
 
             Me.RaiseRunCompleted()
 

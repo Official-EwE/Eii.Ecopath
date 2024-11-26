@@ -114,9 +114,17 @@ Module modConnectToR
 
     Private Sub DumpROutputAndErrors(connection As cRBridge)
 
+        Console.WriteLine()
+        Console.WriteLine("Input:")
+        For i As Integer = 0 To connection.Input.Length - 1
+            Console.WriteLine(connection.Input(i))
+        Next
+
         ' Did R run successfully?
         If connection.LastRunSuccess Then
+
             ' #Yes: write R ouptut to the console window
+            Console.WriteLine()
             Console.WriteLine("Output:")
             For i As Integer = 0 To connection.Output.Length - 1
                 Console.WriteLine(connection.Output(i))

@@ -1837,6 +1837,7 @@ Namespace DataSources
                 drow = writer.NewRow()
                 drow("StanzaID") = iStanzaID
                 drow("StanzaName") = strStanzaName
+                drow("WmatWinf") = 2.25
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)
