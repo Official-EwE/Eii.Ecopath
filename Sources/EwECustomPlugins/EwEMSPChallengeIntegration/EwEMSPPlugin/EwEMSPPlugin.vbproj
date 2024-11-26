@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\Scriban.5.12.0\build\\Scriban.props" Condition="Exists('..\..\..\packages\Scriban.5.12.0\build\\Scriban.props')" />
+  <Import Project="..\..\..\packages\Scriban.5.12.0\build\Scriban.props" Condition="Exists('..\..\..\packages\Scriban.5.12.0\build\Scriban.props')" />
   <Import Project="..\..\..\packages\Scriban.5.10.0\build\Scriban.props" Condition="Exists('..\..\..\packages\Scriban.5.10.0\build\Scriban.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -94,8 +94,8 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Scriban, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Scriban.5.12.0\lib\netstandard2.0\Scriban.dll</HintPath>
+    <Reference Include="Scriban.Signed, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5675fb69b15f2433, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Scriban.Signed.5.12.0\lib\netstandard2.0\Scriban.Signed.dll</HintPath>
     </Reference>
     <Reference Include="SourceGrid2">
       <HintPath>..\..\..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
@@ -268,17 +268,6 @@
     <None Include="Resources\logo-json.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\Scriban.5.10.0\build\Scriban.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Scriban.5.10.0\build\Scriban.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\Scriban.5.10.0\build\Scriban.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Scriban.5.10.0\build\Scriban.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\Scriban.5.12.0\build\\Scriban.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Scriban.5.12.0\build\\Scriban.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\Scriban.5.12.0\build\\Scriban.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Scriban.5.12.0\build\\Scriban.targets'))" />
-  </Target>
-  <Import Project="..\..\..\packages\Scriban.5.10.0\build\Scriban.targets" Condition="Exists('..\..\..\packages\Scriban.5.10.0\build\Scriban.targets')" />
-  <Import Project="..\..\..\packages\Scriban.5.12.0\build\\Scriban.targets" Condition="Exists('..\..\..\packages\Scriban.5.12.0\build\\Scriban.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

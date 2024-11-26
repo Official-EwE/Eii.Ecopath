@@ -264,6 +264,20 @@ Public Class gridDefineGroups
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' States whether the group has changed producer/consumer/detritus role.
+        ''' </summary>
+        ''' <returns>
+        ''' True when <see cref="PP">PP</see> has changed.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function IsRoleChanged(group As cEcoPathGroupInput) As Boolean
+            If (Me.IsNew()) Then Return False
+            Debug.Assert(Me.GroupDBID = group.DBID)
+            Return (group.PP <> Me.PP)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' States whether the group is to be created.
         ''' </summary>
         ''' -------------------------------------------------------------------

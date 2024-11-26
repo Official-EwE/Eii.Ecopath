@@ -55,6 +55,10 @@ Partial Class dlgDefineEcosimFunctionalResponses
         Me.m_graph = New ScientificInterfaceShared.ucDriverResponseView()
         Me.m_rbForaging = New System.Windows.Forms.RadioButton()
         Me.m_rbMortality = New System.Windows.Forms.RadioButton()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_plGroups = New System.Windows.Forms.Panel()
+        Me.TableLayoutPanel1.SuspendLayout()
+        Me.m_plGroups.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -73,22 +77,20 @@ Partial Class dlgDefineEcosimFunctionalResponses
         'm_btnRemove
         '
         resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
-        Me.m_btnRemove.Image = Global.ScientificInterfaceShared.My.Resources.Resources.DeleteHS
         Me.m_btnRemove.Name = "m_btnRemove"
         Me.m_btnRemove.UseVisualStyleBackColor = True
         '
         'm_btnAdd
         '
         resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
-        Me.m_btnAdd.Image = Global.ScientificInterfaceShared.My.Resources.Resources.AddHS
         Me.m_btnAdd.Name = "m_btnAdd"
         Me.m_btnAdd.UseVisualStyleBackColor = True
         '
         'm_hdrReponse
         '
-        resources.ApplyResources(Me.m_hdrReponse, "m_hdrReponse")
         Me.m_hdrReponse.CanCollapseParent = False
         Me.m_hdrReponse.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrReponse, "m_hdrReponse")
         Me.m_hdrReponse.IsCollapsed = False
         Me.m_hdrReponse.Name = "m_hdrReponse"
         '
@@ -107,6 +109,7 @@ Partial Class dlgDefineEcosimFunctionalResponses
         Me.m_lbxGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.m_lbxGroups.ShowAllGroupsItem = False
         Me.m_lbxGroups.SortThreshold = -9999.0!
+        Me.m_lbxGroups.VisibleGroups = Nothing
         '
         'm_hdrConfig
         '
@@ -149,30 +152,44 @@ Partial Class dlgDefineEcosimFunctionalResponses
         Me.m_rbMortality.Name = "m_rbMortality"
         Me.m_rbMortality.UseVisualStyleBackColor = True
         '
+        'TableLayoutPanel1
+        '
+        resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+        Me.TableLayoutPanel1.Controls.Add(Me.m_graph, 1, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_btnOk, 1, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_hdrReponse, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_hdrConfig, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_plGroups, 0, 1)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        '
+        'm_plGroups
+        '
+        Me.m_plGroups.Controls.Add(Me.m_tvDrivers)
+        Me.m_plGroups.Controls.Add(Me.m_rbMortality)
+        Me.m_plGroups.Controls.Add(Me.m_btnAdd)
+        Me.m_plGroups.Controls.Add(Me.m_rbForaging)
+        Me.m_plGroups.Controls.Add(Me.m_btnRemove)
+        Me.m_plGroups.Controls.Add(Me.m_lblDrivers)
+        Me.m_plGroups.Controls.Add(Me.m_lbxGroups)
+        Me.m_plGroups.Controls.Add(Me.m_lblGroups)
+        resources.ApplyResources(Me.m_plGroups, "m_plGroups")
+        Me.m_plGroups.Name = "m_plGroups"
+        '
         'dlgDefineEcosimFunctionalResponses
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.Controls.Add(Me.m_rbMortality)
-        Me.Controls.Add(Me.m_rbForaging)
-        Me.Controls.Add(Me.m_graph)
-        Me.Controls.Add(Me.m_lblDrivers)
-        Me.Controls.Add(Me.m_lblGroups)
-        Me.Controls.Add(Me.m_hdrReponse)
-        Me.Controls.Add(Me.m_lbxGroups)
-        Me.Controls.Add(Me.m_hdrConfig)
-        Me.Controls.Add(Me.m_btnRemove)
-        Me.Controls.Add(Me.m_btnAdd)
-        Me.Controls.Add(Me.m_btnOk)
-        Me.Controls.Add(Me.m_tvDrivers)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgDefineEcosimFunctionalResponses"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.m_plGroups.ResumeLayout(False)
+        Me.m_plGroups.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -188,4 +205,6 @@ Partial Class dlgDefineEcosimFunctionalResponses
     Private WithEvents m_graph As ucDriverResponseView
     Friend WithEvents m_rbForaging As RadioButton
     Friend WithEvents m_rbMortality As RadioButton
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+    Private WithEvents m_plGroups As Panel
 End Class

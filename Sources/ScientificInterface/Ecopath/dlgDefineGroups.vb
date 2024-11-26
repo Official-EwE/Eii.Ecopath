@@ -170,9 +170,6 @@ Namespace Ecopath
 
 #End Region ' Updating
 
-        Private Sub CheckBox1_CheckedChanged(sender As System.Object, e As System.EventArgs)
-
-        End Sub
     End Class
 
 End Namespace
