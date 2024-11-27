@@ -261,6 +261,7 @@ Friend Class cStyleGuideUpdater
             .MapLabelPosHorizontal = CType(My.Settings.MapLabelPosHorz, StringAlignment)
             .MapLabelPosVertical = CType(My.Settings.MapLabelPosVert, StringAlignment)
             .UseHabitatAreaCorrection = My.Settings.UseHabitatAreaCorrection
+            .NodeSymbolSize = My.Settings.NodeSymbolSize
 
             .PreferredDPI = My.Settings.OutputDPI
 
@@ -331,6 +332,7 @@ Friend Class cStyleGuideUpdater
             My.Settings.MapLabelPosHorz = .MapLabelPosHorizontal
             My.Settings.MapLabelPosVert = .MapLabelPosVertical
             My.Settings.MapShowLabelInvertedColor = .InvertMapLabelColor
+            My.Settings.NodeSymbolSize = .NodeSymbolSize
 
             My.Settings.UseHabitatAreaCorrection = .UseHabitatAreaCorrection
 
