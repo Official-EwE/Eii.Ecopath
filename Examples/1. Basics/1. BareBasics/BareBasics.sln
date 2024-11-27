@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "BareBasics", "BareBasics.vbproj", "{9F093EFF-3D45-4876-9E01-8A1694F7631A}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEUtils", "..\..\..\Sources\EwEUtils\EwEUtils.vbproj", "{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}"
@@ -21,7 +23,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{9F093EFF-3D45-4876-9E01-8A1694F7631A}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{9F093EFF-3D45-4876-9E01-8A1694F7631A}.Debug|Any CPU.Build.0 = Debug|x86
-		{9F093EFF-3D45-4876-9E01-8A1694F7631A}.Debug|x64.ActiveCfg = Debug|x86
+		{9F093EFF-3D45-4876-9E01-8A1694F7631A}.Debug|x64.ActiveCfg = Debug|x64
+		{9F093EFF-3D45-4876-9E01-8A1694F7631A}.Debug|x64.Build.0 = Debug|x64
 		{9F093EFF-3D45-4876-9E01-8A1694F7631A}.Debug|x86.ActiveCfg = Debug|x86
 		{9F093EFF-3D45-4876-9E01-8A1694F7631A}.Debug|x86.Build.0 = Debug|x86
 		{9F093EFF-3D45-4876-9E01-8A1694F7631A}.Release|Any CPU.ActiveCfg = Release|x86
