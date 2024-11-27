@@ -195,6 +195,8 @@ Namespace Style
         Private m_tsShowAxisLabels As TriState = TriState.UseDefault
         ''' <summary>Show transparent backgrounds where applicable</summary>
         Private m_bTransparentBackgrounds As Boolean = False
+        ''' <summary>Size for node symbols (timeseries plots etc)</summary>
+        Private m_iNodeSymbolSize As Integer = 6
 
         ' -- group visibility --
         Private m_dtItemVisibilityPresets As New Dictionary(Of String, cItemVisibilityPreset)
@@ -1131,6 +1133,25 @@ Namespace Style
         Public Property UseHabitatAreaCorrection As Boolean = False
 
 #End Region ' Maps and charts
+
+#Region " Plots "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set how graphs the size of time series fots.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property NodeSymbolSize() As Integer
+            Get
+                Return Me.m_iNodeSymbolSize
+            End Get
+            Set(value As Integer)
+                Me.m_iNodeSymbolSize = value
+                Me.GraphStyleChanged()
+            End Set
+        End Property
+
+#End Region ' Plots
 
 #Region " Generic "
 

@@ -65,4 +65,10 @@ Public Class cSFPGroupsWithTimeSeries
         End Get
     End Property
 
+    Public Overrides ReadOnly Property IsGroupsWithTimeSeriesOnly As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
 End Class

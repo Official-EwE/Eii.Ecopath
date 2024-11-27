@@ -644,6 +644,22 @@ Public Class frmRun
         Me.m_grid.UpdateContent()
     End Sub
 
+    Private Sub OnSelectTSOnly(sender As Object, e As EventArgs) _
+        Handles m_btnSelectTS.Click
+        Try
+            ' Enable Baseline iterations for running
+            For Each it As ISFPIteration In Me.m_engine.Iterations
+                If (it.IsGroupsWithTimeSeriesOnly) Then
+                    it.Enabled = True
+                End If
+            Next
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+        Me.m_grid.UpdateContent()
+
+    End Sub
+
     Private Sub OnSelectFishin(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSelectFishing.Click
         Try

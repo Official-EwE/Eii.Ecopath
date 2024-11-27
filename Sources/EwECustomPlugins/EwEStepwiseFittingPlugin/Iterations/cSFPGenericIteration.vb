@@ -707,6 +707,12 @@ Public MustInherit Class cSFPGenericIteration
         End Get
     End Property
 
+    Public Overridable ReadOnly Property IsGroupsWithTimeSeriesOnly As Boolean Implements ISFPIteration.IsGroupsWithTimeSeriesOnly
+        Get
+            Return False
+        End Get
+    End Property
+
 #End Region ' Formatting
 
 #Region " Internals "

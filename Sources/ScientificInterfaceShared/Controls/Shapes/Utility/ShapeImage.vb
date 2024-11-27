@@ -38,10 +38,6 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     Public Class cShapeImage
 
-        Public Const cDOT_SIZE As Integer = 6
-        'Public Const cICON_WIDTH As Integer = 48
-        'Public Const cICON_HEIGHT As Integer = 48
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' This helper method converts the coordinates of model point to those of the image point
@@ -52,8 +48,8 @@ Namespace Controls
         ''' <param name="sYMax">Clip rectangle vert. axis corresponds to [0, syMax].</param>
         ''' <returns>A point in the clip rectangle that corresponds to ptModel.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToImagePoint(ptModel As PointF, _
-                                    rcClip As Rectangle, _
+        Public Shared Function ToImagePoint(ptModel As PointF,
+                                    rcClip As Rectangle,
                                     sXMax As Single, sYMax As Single) As PointF
 
             Dim ptImage As PointF = Nothing
@@ -159,6 +155,7 @@ Namespace Controls
             Dim brShape As New SolidBrush(clr)
             Dim pnShape As New Pen(clr, 1)
             Dim pnMark As New Pen(Color.Blue, 1)
+            Dim iDotSize As Integer = uic.StyleGuide.NodeSymbolSize
 
             pnMark.DashStyle = DashStyle.Dash
 
@@ -217,8 +214,8 @@ Namespace Controls
                             If If(bDrawZero, asData(i) > 0.0!, asData(i) <> cCore.NULL_VALUE) Then
                                 pt1 = cShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
                                 g.FillEllipse(brShape,
-                                        CSng(pt1.X - cDOT_SIZE / 2), CSng(pt1.Y - cDOT_SIZE / 2),
-                                        CSng(cDOT_SIZE), CSng(cDOT_SIZE))
+                                        CSng(pt1.X - iDotSize / 2), CSng(pt1.Y - iDotSize / 2),
+                                        CSng(iDotSize), CSng(iDotSize))
                             End If
                         Next
                     Else
@@ -259,18 +256,18 @@ Namespace Controls
                             Select Case drawMode
                                 Case eSketchDrawModeTypes.TimeSeriesDriver
                                     g.FillEllipse(brShape,
-                                        CSng(pt.X - cDOT_SIZE / 2), CSng(pt.Y - cDOT_SIZE / 2),
-                                        CSng(cDOT_SIZE), CSng(cDOT_SIZE))
+                                        CSng(pt.X - iDotSize / 2), CSng(pt.Y - iDotSize / 2),
+                                        CSng(iDotSize), CSng(iDotSize))
                                 Case eSketchDrawModeTypes.TimeSeriesRefAbs
                                     g.DrawRectangle(pnShape,
-                                        CSng(pt.X - cDOT_SIZE / 2), CSng(pt.Y - cDOT_SIZE / 2),
-                                        CSng(cDOT_SIZE), CSng(cDOT_SIZE))
+                                        CSng(pt.X - iDotSize / 2), CSng(pt.Y - iDotSize / 2),
+                                        CSng(iDotSize), CSng(iDotSize))
                                 Case eSketchDrawModeTypes.TimeSeriesRefRel
                                     Dim pts(3) As PointF
-                                    pts(0) = New PointF(pt.X, CSng(pt.Y - cDOT_SIZE / 2))
-                                    pts(1) = New PointF(CSng(pt.X + cDOT_SIZE / 2), pt.Y)
-                                    pts(2) = New PointF(pt.X, CSng(pt.Y + cDOT_SIZE / 2))
-                                    pts(3) = New PointF(CSng(pt.X - cDOT_SIZE / 2), pt.Y)
+                                    pts(0) = New PointF(pt.X, CSng(pt.Y - iDotSize / 2))
+                                    pts(1) = New PointF(CSng(pt.X + iDotSize / 2), pt.Y)
+                                    pts(2) = New PointF(pt.X, CSng(pt.Y + iDotSize / 2))
+                                    pts(3) = New PointF(CSng(pt.X - iDotSize / 2), pt.Y)
                                     g.DrawPolygon(pnShape, pts)
                             End Select
                         End If

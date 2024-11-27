@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Basic Express 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EcopathOutputs", "EcopathOutputs.vbproj", "{E2DB8CE5-128C-43D5-AD5B-BC5A9C692F8D}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEUtils", "..\..\..\Sources\EwEUtils\EwEUtils.vbproj", "{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}"
@@ -21,7 +23,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E2DB8CE5-128C-43D5-AD5B-BC5A9C692F8D}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{E2DB8CE5-128C-43D5-AD5B-BC5A9C692F8D}.Debug|Any CPU.Build.0 = Debug|x86
-		{E2DB8CE5-128C-43D5-AD5B-BC5A9C692F8D}.Debug|x64.ActiveCfg = Debug|x86
+		{E2DB8CE5-128C-43D5-AD5B-BC5A9C692F8D}.Debug|x64.ActiveCfg = Debug|x64
+		{E2DB8CE5-128C-43D5-AD5B-BC5A9C692F8D}.Debug|x64.Build.0 = Debug|x64
 		{E2DB8CE5-128C-43D5-AD5B-BC5A9C692F8D}.Debug|x86.ActiveCfg = Debug|x86
 		{E2DB8CE5-128C-43D5-AD5B-BC5A9C692F8D}.Debug|x86.Build.0 = Debug|x86
 		{E2DB8CE5-128C-43D5-AD5B-BC5A9C692F8D}.Release|Any CPU.ActiveCfg = Release|x86
