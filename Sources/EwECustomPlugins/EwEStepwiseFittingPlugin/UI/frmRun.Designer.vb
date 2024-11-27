@@ -74,6 +74,7 @@ Partial Class frmRun
         Me.m_nudK = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumVars = New System.Windows.Forms.Label()
         Me.m_nudNoThreads = New System.Windows.Forms.NumericUpDown()
+        Me.m_btnSelectTS = New System.Windows.Forms.Button()
         CType(Me.m_nudStepSize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plModel.SuspendLayout()
@@ -255,6 +256,7 @@ Partial Class frmRun
         'm_plConfig
         '
         resources.ApplyResources(Me.m_plConfig, "m_plConfig")
+        Me.m_plConfig.Controls.Add(Me.m_btnSelectTS)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectFishing)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectBaseline)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectFandVandA)
@@ -464,6 +466,12 @@ Partial Class frmRun
         Me.m_nudNoThreads.Name = "m_nudNoThreads"
         Me.m_nudNoThreads.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
+        'm_btnSelectTS
+        '
+        resources.ApplyResources(Me.m_btnSelectTS, "m_btnSelectTS")
+        Me.m_btnSelectTS.Name = "m_btnSelectTS"
+        Me.m_btnSelectTS.UseVisualStyleBackColor = True
+        '
         'frmRun
         '
         resources.ApplyResources(Me, "$this")
@@ -539,4 +547,5 @@ Partial Class frmRun
     Friend WithEvents m_tbxVUlCap As Windows.Forms.TextBox
     Friend WithEvents Label1 As Windows.Forms.Label
     Private WithEvents m_cbResetVs As Windows.Forms.CheckBox
+    Private WithEvents m_btnSelectTS As Windows.Forms.Button
 End Class

@@ -136,10 +136,17 @@ Public Interface ISFPIteration
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the iteration type to be Baseline = true or Fishing = false
+    ''' Get the iteration type to be Baseline = true or Fishing = false
     ''' </summary>
     ''' -----------------------------------------------------------------------
     ReadOnly Property BaseSearchMode As eBaseSearchMode
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get whether this iteration uses groups with time series only.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    ReadOnly Property IsGroupsWithTimeSeriesOnly As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
