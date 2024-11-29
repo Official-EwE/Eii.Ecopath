@@ -8,7 +8,7 @@ Module Module1
     Sub Main()
 
         ' Control vars
-        Dim bmpIn As String = "P:\Projects\EwE\Resources\EwE stock art\Logos\Ecopath_noshade_large.jpg"
+        Dim bmpIn As String = "P:\Projects\EwE\Resources\EwE stock art\Logos\Ecopath.png"
         Dim mapOut As String = Path.Combine(".", "BmpBasemap_" & Path.GetFileNameWithoutExtension(bmpIn) & ".asc")
         Dim nocells As Integer = 50
 
@@ -21,7 +21,7 @@ Module Module1
         Dim rnd As New Random()
         Dim scale As Single = CSng(rnd.NextDouble * 5)
 
-        ' Decide on no. of pix that will feed each basemap cell, based on the min. no of desired cells
+        ' Decide on no. of pix that will feed each basemap cell, based on the min. no of desired basemap cells
         Dim nopix As Integer = CInt(Math.Min(w / nocells, h / nocells))
 
         ' This will give the basemap with and height
@@ -50,10 +50,17 @@ Module Module1
                     ' Process the bitmap pixels for the cell
                     For sx As Integer = 0 To nopix - 1
                         For sy As Integer = 0 To nopix - 1
-                            ' Count up the R, G and B colours
-                            Dim px As Color = bmp.GetPixel(icol * nopix + sx, irow * nopix + sy)
-                            colTot = colTot + px.R + px.G + px.B
-                            nTot += 3
+
+                            Dim pixX As Integer = icol * nopix + sx
+                            Dim pixY As Integer = irow * nopix + sy
+
+                            ' Just making sure
+                            If (pixX < w And pixY < h) Then
+                                ' Count up the R, G and B colours
+                                Dim px As Color = bmp.GetPixel(pixX, pixY)
+                                colTot = colTot + px.R + px.G + px.B
+                                nTot += 3
+                            End If
                         Next
                     Next
 
@@ -64,8 +71,8 @@ Module Module1
                     Dim sMapVal As Single = Math.Max(0, colTot - 55) * scale
 
                     ' ASCII writing
-                    If (icol > 0) Then sw.Write(sMapVal)
-                    sw.Write(colTot)
+                    If (icol > 0) Then sw.Write(" ")
+                    sw.Write(sMapVal)
                 Next
                 sw.WriteLine()
             Next
