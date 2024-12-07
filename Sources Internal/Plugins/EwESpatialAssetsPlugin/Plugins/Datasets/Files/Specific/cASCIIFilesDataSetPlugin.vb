@@ -34,6 +34,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace SpatialData
 
+    ''' <summary>
+    ''' JS 07/12/24: fixed number format to en-US standard (according to ChatGPT)
+    ''' </summary>
     Public Class cASCIIFilesDataSetPlugin
         Inherits cMultiFileDataSetPlugin
 
@@ -265,15 +268,17 @@ Namespace SpatialData
                             checksum = CByte(checksum Or &H8)
 
                         Case "cellsize", "dx", "dy"
-                            bIsError = Not Single.TryParse(strValue, sCellSize)
-                            bIsError = bIsError Or (sCellSize <= 0)
+                            ' Fixed en-US format
+                            sCellSize = cStringUtils.ConvertToSingle(strValue, -9999, ".")
+                            bIsError = bIsError Or (sCellSize <= 0) Or (sCellSize = -9999)
                             checksum = CByte(checksum Or &H10)
 
                         Case "nodatavalue", "nodata_value"
                             If (strValue = "nan" Or strValue = "na") Then
                                 sValueNone = -9999
                             Else
-                                bIsError = Not Single.TryParse(strValue, sValueNone)
+                                sValueNone = cStringUtils.ConvertToSingle(strValue, -6666, ".")
+                                bIsError = bIsError Or (sValueNone = 6666)
                             End If
                             checksum = CByte(checksum Or &H20)
 
@@ -354,7 +359,8 @@ Namespace SpatialData
                                 If (bits(iCol) = "nan" Or bits(iCol) = "na") Then
                                     rs.Value(iRow, iCol) = rs.NoDataValue
                                 Else
-                                    bValueError = bValueError Or Not Double.TryParse(bits(iCol), rs.Value(iRow, iCol))
+                                    rs.Value(iRow, iCol) = cStringUtils.ConvertToDouble(bits(iCol), -9999, ".")
+                                    bValueError = bValueError Or (rs.Value(iRow, iCol) = -9999)
                                     bDataCorrect = bDataCorrect And Not bValueError
                                 End If
                             Next iCol
