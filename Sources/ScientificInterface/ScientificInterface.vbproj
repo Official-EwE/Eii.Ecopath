@@ -1365,6 +1365,7 @@
     <Content Include="Resources\Ecopath666.ico" />
     <None Include="Resources\splash_ewe40.png" />
     <None Include="Resources\FuMa_logo.png" />
+    <None Include="Resources\ecopath_blackfriday.ico" />
     <Content Include="Resources\InsertIcons.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

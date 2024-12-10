@@ -22,11 +22,12 @@
 Option Strict On
 Imports System.IO
 Imports EwECore
+Imports EwECore.Database
 Imports EwEUtils.Core
+Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Database
 
 #End Region ' Imports
 
@@ -55,7 +56,7 @@ Public Class cData
     Private m_lFlowDiagrams As New List(Of cFlowDiagram)
     Private m_lFlowPositions As New List(Of cFlowPosition)
 
-    Private m_db As New cDatabase()
+    Private m_db As New cDatabaseLink()
     Private m_strDBName As String = ""
 
     Private m_bChanged As Boolean = False
@@ -111,63 +112,88 @@ Public Class cData
 
 #Region " Database access "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load a value chain from an open database.
+    ''' </summary>
+    ''' <param name="strModelName"></param>
+    ''' <returns>True if successful.</returns>
+    ''' <remarks>
+    ''' This code was refactored in 2024 to use an exclusively opened database 
+    ''' rather than opening the database more than once. The popularity of cloud 
+    ''' data providers  has become a hazard to Access databases; exclusive 
+    ''' file access is the most solid solution.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Function Load(strModelName As String) As Boolean
 
-        Dim strOldDBName As String = cData.GetDatabaseFileName(strModelName)
-        Dim strDBName As String = ""
+        Dim strDBName As String = cData.GetDatabaseFileName(strModelName)
         Dim dst As eDataSourceTypes = eDataSourceTypes.NotSet
-        Dim bMigrate As Boolean = False
         Dim bSucces As Boolean = False
 
         Me.Close()
 
-        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_LOADING)
-
-        ' Open for migration
-        If File.Exists(strOldDBName) Then
-            strDBName = strOldDBName
+        ' Does external value chain model exist?
+        If (File.Exists(strDBName)) Then
+            ' #Yes: determine import format
             Select Case Path.GetExtension(strDBName).ToLower
                 Case ".ewevcmdb" : dst = eDataSourceTypes.Access2003
                 Case ".ewevcaccdb" : dst = eDataSourceTypes.Access2007
             End Select
-            bMigrate = True
-        Else
-            strDBName = strModelName
+
+            ' Is external DB that needs importing?
+            If (dst <> eDataSourceTypes.NotSet) Then
+                ' #Yes: create a temporary database to load the external model with
+                Try
+                    Dim dbTemp As New cEwEAccessDatabase()
+                    If dbTemp.Open(strDBName, dst, True) = eDatasourceAccessType.Success Then
+                        Dim dlTemp As New cDatabaseLink()
+                        dlTemp.Attach(dbTemp)
+                        dlTemp.LoadModel(Me)
+                        dlTemp.Detach()
+                    End If
+                    dbTemp.Close()
+
+                    ' Flag that data has changed, and save to the current datasource
+                    Me.IsChanged = True
+                    If Me.m_db.Attach(Me.m_core.DataSource.Connection) = eDatasourceAccessType.Success Then
+                        Me.Save()
+                        Me.m_db.Detach()
+                    End If
+                Catch ex As Exception
+                    Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_MERGE_FAILED, Path.GetFileName(strDBName), ex.Message),
+                           eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Critical)
+                    bSucces = False
+                    Return False
+                End Try
+
+                Try
+                    File.Copy(strDBName, Path.ChangeExtension(strDBName, "backup"))
+                    File.Delete(strDBName)
+                Catch ex As Exception
+                    ' Ignore this
+                End Try
+
+                Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_MERGE_SUCCESS, Path.GetFileName(strDBName), Path.GetFileName(strModelName)),
+                           eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Information)
+            End If
         End If
 
-        If Me.m_db.Open(strDBName, dst) = eDatasourceAccessType.Success Then
+        ' Open normally to core datasource
+        If Me.m_db.Attach(Me.m_core.DataSource.Connection) = eDatasourceAccessType.Success Then
 
             Me.m_bInitializing = True
             bSucces = Me.m_db.LoadModel(Me)
 
             If bSucces = False Then
                 Me.SendMessage("Failed to load value chain from database, see error log for details.", eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
-                Me.m_db.Close()
+                Me.m_db.Detach()
                 Return False
-            End If
-
-            If bMigrate Then
-
-                Me.m_db.Close()
-                Me.m_db.Open(strModelName)
-                Me.IsChanged = True
-                Me.Save()
-
-                Try
-                    File.Delete(strOldDBName)
-                Catch ex As Exception
-
-                End Try
-                Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_MERGED, Path.GetFileName(strOldDBName), Path.GetFileName(strModelName)), _
-                               eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Information)
-
             End If
             Me.m_bInitializing = False
         End If
 
         Me.m_strDBName = strModelName
-
-        cApplicationStatusNotifier.EndProgress(Me.Core)
 
         ' Start clean
         Me.IsChanged = False
@@ -178,7 +204,7 @@ Public Class cData
 
     Public Function Close() As Boolean
         If Me.m_db.IsConnected Then
-            Me.m_db.Close()
+            Me.m_db.Detach()
         End If
         Me.Clear()
     End Function
@@ -189,15 +215,13 @@ Public Class cData
         If (Not Me.m_db.IsConnected) Then Return bSucces
         If (Not Me.IsChanged) Then Return bSucces
 
-        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SAVING)
         bSucces = Me.m_db.SaveModel(Me)
-        cApplicationStatusNotifier.EndProgress(Me.Core)
 
         If bSucces Then Me.IsChanged = False
         Return bSucces
     End Function
 
-    Public ReadOnly Property Database() As cDatabase
+    Public ReadOnly Property Database() As cDatabaseLink
         Get
             Return Me.m_db
         End Get

@@ -54,7 +54,7 @@ Namespace Database
         ''' <summary>A connection to an OleDb database, if any.</summary>
         Public m_conn As OleDbConnection = Nothing
         ''' <summary>The connection string to connect to a MDB database.</summary>
-        Private m_strConnectionMDB As String = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source={0};"
+        Private m_strConnectionMDB As String = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source={0};Mode=Share Exclusive;"
         ' Download from http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=13255.
         ' only works if office is 64 bit too. To detect
         ' To determine if office 2010 is 32 bit or 64 bit, we could check a registry key named 
@@ -62,7 +62,7 @@ Namespace Database
         ' Also here is a resource with a same question you could refer to: 
         ' Detect whether Office 2010 is 32bit or 64bit via the registry (http://stackoverflow.com/questions/2203980/detect-whether-office-2010-is-32bit-or-64bit-via-the-registry).
         ''' <summary>The connection string to connect to a ACCDB database.</summary>
-        Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Persist Security Info=False;"
+        Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Mode=Share Exclusive;Data Source={0};"
         ''' <summary>File name to access database.</summary>
         Private m_strFileName As String = ""
 

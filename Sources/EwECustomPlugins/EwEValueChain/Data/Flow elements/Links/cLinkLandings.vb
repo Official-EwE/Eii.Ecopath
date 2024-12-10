@@ -233,12 +233,14 @@ Public Class cLinkLandings
     End Property
 
     Public Overrides Function IsVisible() As Boolean
-        Dim fleet As cEcopathFleetInput = DirectCast(Me.Source, cProducerUnit).Fleet
-        Dim group As cEcoPathGroupInput = Me.Group
-        If (fleet IsNot Nothing) And (group IsNot Nothing) Then
-            Return (fleet.Landings(group.Index) > 0)
+        If (TypeOf Me.Source Is cProducerUnit) Then
+            Dim fleet As cEcopathFleetInput = DirectCast(Me.Source, cProducerUnit).Fleet
+            Dim group As cEcoPathGroupInput = Me.Group
+            If (fleet IsNot Nothing) And (group IsNot Nothing) Then
+                Return (fleet.Landings(group.Index) > 0)
+            End If
         End If
-        Return False
+        Return True
     End Function
 
     Public Overrides ReadOnly Property Style() As ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags

@@ -604,6 +604,8 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Public Function Compact(strTarget As String) As eDatasourceAccessType _
             Implements DataSources.IEwEDataSource.Compact
+
+            ' Can only occur when not connected
             Me.Cleanup(strTarget)
             Return Me.m_db.Compact(strTarget, strTarget)
         End Function
@@ -11354,27 +11356,23 @@ Namespace DataSources
 
         Private Function Cleanup(strTarget As String) As Boolean
 
+            If (Me.IsOpen) Then Return False
+
             Dim bSuccess As Boolean = True
             Try
-                Dim bOpened As Boolean = False
+                If (Me.Open(strTarget, Nothing) = eDatasourceAccessType.Success) Then
+                    If Me.BeginTransaction() Then
+                        ' Dave Chagaris issue
+                        bSuccess = bSuccess And DeleteNonreferencedRecords("EcosimTimeSeriesGroup", "TimeseriesID", "EcosimTimeseries")
+                        bSuccess = bSuccess And DeleteNonreferencedRecords("EcosimTimeSeriesFleet", "TimeseriesID", "EcosimTimeseries")
+                        ' Taxa
+                        bSuccess = bSuccess And DeleteNonreferencedRecords("EcopathGroupTaxon", "TaxonID", "EcopathTaxon")
+                        bSuccess = bSuccess And DeleteNonreferencedRecords("EcopathStanzaTaxon", "TaxonID", "EcopathTaxon")
+                        Me.EndTransaction(bSuccess)
+                    Else
+                        bSuccess = False
+                    End If
 
-                If (Not Me.IsOpen) Then
-                    bOpened = (Me.Open(strTarget, Nothing) = eDatasourceAccessType.Success)
-                End If
-
-                If Me.BeginTransaction() Then
-                    ' Dave Chagaris issue
-                    bSuccess = bSuccess And DeleteNonreferencedRecords("EcosimTimeSeriesGroup", "TimeseriesID", "EcosimTimeseries")
-                    bSuccess = bSuccess And DeleteNonreferencedRecords("EcosimTimeSeriesFleet", "TimeseriesID", "EcosimTimeseries")
-                    ' Taxa
-                    bSuccess = bSuccess And DeleteNonreferencedRecords("EcopathGroupTaxon", "TaxonID", "EcopathTaxon")
-                    bSuccess = bSuccess And DeleteNonreferencedRecords("EcopathStanzaTaxon", "TaxonID", "EcopathTaxon")
-                    Me.EndTransaction(bSuccess)
-                Else
-                    bSuccess = False
-                End If
-
-                If bOpened Then
                     Me.Close()
                 End If
 

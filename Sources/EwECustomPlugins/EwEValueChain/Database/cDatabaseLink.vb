@@ -20,11 +20,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Database
-Imports EwEUtils.Core
-Imports System.IO
 Imports System.Reflection
-Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.Database
+Imports EwEUtils.Database.cEwEDatabase
 
 #End Region ' Imports
 
@@ -33,32 +32,28 @@ Imports EwECore
 ''' 
 ''' </summary>
 ''' ===========================================================================
-Public Class cDatabase
-    Inherits EwECore.Database.cEwEAccessDatabase
+Public Class cDatabaseLink
+
+    Private m_db As cEwEDatabase = Nothing
 
 #Region " Load "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Overridden to update the database when opened
-    ''' </summary>
-    ''' <param name="strDatabase"></param>
-    ''' <param name="databaseType">Type to use to open the database. Set this
-    ''' to 'NotSet' to auto-detect the database type.</param>
-    ''' <returns>True if connected succesfully.</returns>
-    ''' -------------------------------------------------------------------
-    Public Overrides Function Open(strDatabase As String, _
-                                   Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
-                                   Optional bReadOnly As Boolean = False) As eDatasourceAccessType
+    Public Function Attach(conn As Object) As eDatasourceAccessType
 
-        Dim result As eDatasourceAccessType = MyBase.Open(strDatabase, databaseType, bReadOnly)
-        If result = eDatasourceAccessType.Opened Then
-            Me.OOPEnabled = True
-            Me.UpdateDatabase()
+        If (TypeOf conn Is cEwEDatabase) Then
+            Me.m_db = DirectCast(conn, cEwEDatabase)
+            Me.m_db.OOPEnabled = True
+            Return eDatasourceAccessType.Opened
         End If
-        Return result
+
+        Me.m_db = Nothing
+        Return eDatasourceAccessType.Failed_Unknown
 
     End Function
+
+    Public Sub Detach()
+        Me.m_db = Nothing
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -69,14 +64,16 @@ Public Class cDatabase
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(data As cData) As Boolean
 
+        If Not Me.IsConnected() Then Return False
+
         Dim aObjects As cOOPStorable() = Nothing
         Dim bSucces As Boolean = True
 
-        Me.OOPFlushObjectCache()
+        Me.m_db.OOPFlushObjectCache()
         data.Clear()
 
         Try
-            aObjects = Me.ReadObjects(GetType(cParameters))
+            aObjects = Me.m_db.ReadObjects(GetType(cParameters))
         Catch ex As Exception
             bSucces = False
             cLog.Write(ex, "ValueChain::LoadModel - reading objects")
@@ -93,51 +90,51 @@ Public Class cDatabase
         Try
 
             ' Load default units
-            aObjects = Me.ReadObjects(GetType(cProducerUnitDefault), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cProducerUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
-            aObjects = Me.ReadObjects(GetType(cProcessingUnitDefault), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cProcessingUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
-            aObjects = Me.ReadObjects(GetType(cDistributionUnitDefault), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cDistributionUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
-            aObjects = Me.ReadObjects(GetType(cWholesalerUnitDefault), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cWholesalerUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
-            aObjects = Me.ReadObjects(GetType(cRetailerUnitDefault), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cRetailerUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
-            aObjects = Me.ReadObjects(GetType(cConsumerUnitDefault), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cConsumerUnitDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddUnitDefault(DirectCast(obj, cUnit)) : Next
 
             ' Load default links
-            aObjects = Me.ReadObjects(GetType(cLinkDefault), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cLinkDefault), False)
             For Each obj As cOOPStorable In aObjects : data.AddLinkDefault(DirectCast(obj, cLinkDefault)) : Next
 
             ' Load units
-            aObjects = Me.ReadObjects(GetType(cProducerUnit), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cProducerUnit), False)
             For Each obj As cOOPStorable In aObjects
                 data.AddUnit(DirectCast(obj, cUnit))
             Next
-            aObjects = Me.ReadObjects(GetType(cProcessingUnit), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cProcessingUnit), False)
             For Each obj As cOOPStorable In aObjects
                 data.AddUnit(DirectCast(obj, cUnit))
             Next
-            aObjects = Me.ReadObjects(GetType(cDistributionUnit), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cDistributionUnit), False)
             For Each obj As cOOPStorable In aObjects
                 data.AddUnit(DirectCast(obj, cUnit))
             Next
-            aObjects = Me.ReadObjects(GetType(cWholesalerUnit), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cWholesalerUnit), False)
             For Each obj As cOOPStorable In aObjects
                 data.AddUnit(DirectCast(obj, cUnit))
             Next
-            aObjects = Me.ReadObjects(GetType(cRetailerUnit), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cRetailerUnit), False)
             For Each obj As cOOPStorable In aObjects
                 data.AddUnit(DirectCast(obj, cUnit))
             Next
-            aObjects = Me.ReadObjects(GetType(cConsumerUnit), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cConsumerUnit), False)
             For Each obj As cOOPStorable In aObjects
                 data.AddUnit(DirectCast(obj, cUnit))
             Next
 
             ' Load links
-            aObjects = Me.ReadObjects(GetType(cLink), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cLink), False)
             For Each obj As cOOPStorable In aObjects
                 ' Is old-fashioned producer link?
                 Dim l As cLink = DirectCast(obj, cLink)
@@ -162,17 +159,17 @@ Public Class cDatabase
                     data.AddLink(DirectCast(obj, cLink))
                 End If
             Next
-            aObjects = Me.ReadObjects(GetType(cLinkLandings), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cLinkLandings), False)
             For Each obj As cOOPStorable In aObjects
                 data.AddLink(DirectCast(obj, cLink))
             Next
 
             ' Load flow diagrams
-            aObjects = Me.ReadObjects(GetType(cFlowDiagram), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cFlowDiagram), False)
             For Each obj As cOOPStorable In aObjects : data.CreateFlowDiagram(DirectCast(obj, cFlowDiagram)) : Next
 
             ' Load flow positions
-            aObjects = Me.ReadObjects(GetType(cFlowPosition), False)
+            aObjects = Me.m_db.ReadObjects(GetType(cFlowPosition), False)
             For Each obj As cOOPStorable In aObjects
                 data.AddFlowPosition(DirectCast(obj, cFlowPosition))
             Next
@@ -192,35 +189,37 @@ Public Class cDatabase
 
     Public Function SaveModel(data As cData) As Boolean
 
+        If Not Me.IsConnected() Then Return False
+
         Dim bSucces As Boolean = True
         Dim ass As Assembly = Assembly.GetAssembly(GetType(cUnit))
 
-        Me.OOPFlushObjectCache()
-        Me.OOPFlushSchemaCache()
+        Me.m_db.OOPFlushObjectCache()
+        Me.m_db.OOPFlushSchemaCache()
 
         ' JS 17Nov11: Use OOP transaction to minimize time on getting and releasing adapters
-        If Me.OOPBeginTransaction(ass, True) Then
+        If Me.m_db.OOPBeginTransaction(ass, True) Then
 
             Try
                 ' Store model parameters
-                bSucces = bSucces And Me.WriteObject(data.Parameters)
+                bSucces = bSucces And Me.m_db.WriteObject(data.Parameters)
 
                 ' Store default units
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Producer))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Processing))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Distribution))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Wholesaler))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Retailer))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Consumer))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Producer))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Processing))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Distribution))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Wholesaler))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Retailer))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Consumer))
 
                 ' Store units
                 For i As Integer = 0 To data.UnitCount - 1
-                    bSucces = bSucces And Me.WriteObject(data.Unit(i))
+                    bSucces = bSucces And Me.m_db.WriteObject(data.Unit(i))
                 Next
 
                 ' Store flow diagrams
                 For i As Integer = 0 To data.FlowDiagramCount - 1
-                    bSucces = bSucces And Me.WriteObject(data.FlowDiagram(i))
+                    bSucces = bSucces And Me.m_db.WriteObject(data.FlowDiagram(i))
                 Next i
 
             Catch ex As Exception
@@ -230,15 +229,15 @@ Public Class cDatabase
             Try
 
                 ' Store default links
-                bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.ProducerToProcessing))
-                bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.ProcessingToDistribution))
-                bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.DistributionToWholeseller))
-                bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.WholesellerToRetailer))
-                bSucces = bSucces And Me.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.RetailerToConsumer))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.ProducerToProcessing))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.ProcessingToDistribution))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.DistributionToWholeseller))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.WholesellerToRetailer))
+                bSucces = bSucces And Me.m_db.WriteObject(data.GetLinkDefault(cLinkFactory.eLinkType.RetailerToConsumer))
 
                 ' Store links
                 For i As Integer = 0 To data.LinkCount - 1
-                    bSucces = bSucces And Me.WriteObject(data.Link(i))
+                    bSucces = bSucces And Me.m_db.WriteObject(data.Link(i))
                 Next
 
             Catch ex As Exception
@@ -247,13 +246,13 @@ Public Class cDatabase
 
             ' Store flow positions
             For i As Integer = 0 To data.FlowPositionCount - 1
-                bSucces = bSucces And Me.WriteObject(data.FlowPosition(i))
+                bSucces = bSucces And Me.m_db.WriteObject(data.FlowPosition(i))
             Next
 
             If bSucces Then
-                bSucces = Me.OOPCommitTransaction(True)
+                bSucces = Me.m_db.OOPCommitTransaction(True)
             Else
-                Me.OOPRollbackTransaction()
+                Me.m_db.OOPRollbackTransaction()
             End If
 
         End If
@@ -263,29 +262,35 @@ Public Class cDatabase
 
 #End Region ' Save
 
-#Region " Updates "
+#Region " Pass through "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Run consecutive updates to bring the database schema up to date.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Function UpdateDatabase() As Boolean
-
-        Dim sVersion As Single = Me.GetVersion()
-        Dim bSucces As Boolean = True
-
-        Me.BeginTransaction()
-
-        If bSucces Then
-            Me.CommitTransaction()
-        Else
-            Me.RollbackTransaction()
-        End If
-
-        Return bSucces
+    Public Function IsConnected() As Boolean
+        Return (Me.m_db IsNot Nothing)
     End Function
 
-#End Region ' Updates
+    Public Sub BeginTransaction()
+        If Me.IsConnected() Then
+            Me.m_db.BeginTransaction()
+        End If
+    End Sub
+
+    Public Sub CommitTransaction(bCommit As Boolean)
+        If Me.IsConnected() Then
+            Me.m_db.CommitTransaction(bCommit)
+        End If
+    End Sub
+
+    Public Sub RollbackTransaction()
+        If Me.IsConnected() Then
+            Me.m_db.RollbackTransaction()
+        End If
+    End Sub
+
+    Public Function DeleteObject(obj As cOOPStorable) As Boolean
+        If Not Me.IsConnected() Then Return False
+        Return Me.m_db.DeleteObject(obj)
+    End Function
+
+#End Region ' Pass through
 
 End Class

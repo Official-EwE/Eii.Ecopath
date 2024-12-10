@@ -315,7 +315,7 @@
   <data name="STATUS_LOADING" xml:space="preserve">
     <value>Loading value chain model, please wait...</value>
   </data>
-  <data name="STATUS_MERGED" xml:space="preserve">
+  <data name="STATUS_MERGE_SUCCESS" xml:space="preserve">
     <value>Value chain data file '{0}' merged into Ecopath model '{1}'</value>
     <comment>{0}: value chain model file. {1}: ecopath model</comment>
   </data>
@@ -496,5 +496,9 @@
   </data>
   <data name="Lenfest_Logo_50px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\lenfest logo_50px.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="STATUS_MERGE_FAILED" xml:space="preserve">
+    <value>Failed to merge tne old value chain model {0} into the current model database. {1}</value>
+    <comment>{0}=vc database name; {1}: exception text</comment>
   </data>
 </root>

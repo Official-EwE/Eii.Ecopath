@@ -20,16 +20,11 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports System
-Imports System.Diagnostics
+Imports System.ComponentModel
 Imports System.Data
 Imports System.Data.OleDb
 Imports System.Data.SqlClient
-Imports System.Data.Common
 Imports System.Reflection
-Imports System.ComponentModel
-Imports System.Collections.Generic
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
@@ -2292,7 +2287,7 @@ Namespace Database
         ''' Turn on or off OOP capabilities
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Property OOPEnabled() As Boolean
+        Public Property OOPEnabled() As Boolean
             Get
                 Return Me.m_bOOPEnabled
             End Get
@@ -2329,7 +2324,7 @@ Namespace Database
         ''' Internal admin helper; clear the saved object cache.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Sub OOPFlushObjectCache()
+        Public Sub OOPFlushObjectCache()
             Me.m_OOPObjectCache.Clear()
         End Sub
 
@@ -2338,7 +2333,7 @@ Namespace Database
         ''' Internal admin helper; clear the verified schema cache.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Sub OOPFlushSchemaCache()
+        Public Sub OOPFlushSchemaCache()
             Me.m_OOPObjectSchemaVerified.Clear()
         End Sub
 
