@@ -128,7 +128,7 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\cDatabase.vb" />
+    <Compile Include="Database\cDatabaseLink.vb" />
     <Compile Include="Data\cData.vb" />
     <Compile Include="Interface\FlowDiagram\cFlowDiagramData.vb" />
     <Compile Include="Interface\FlowDiagram\ucFlowDiagram.Designer.vb">

@@ -58,7 +58,7 @@ Public Class ucParameters
     ''' <summary>
     ''' Constructor.
     ''' </summary>
-    ''' <param name="data">The data to paramterize.</param>
+    ''' <param name="data">The data to parameterize.</param>
     ''' <param name="uic">UI context of EwE GUI.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(data As cData, uic As cUIContext)

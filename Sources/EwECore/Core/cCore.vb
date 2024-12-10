@@ -3200,6 +3200,7 @@ Public Class cCore
             Dim db As cEwEDatabase = DirectCast(ds.Connection, cEwEDatabase)
             Dim dbUpd As New cDatabaseUpdater(Me, 6.0!)
             Dim msg As cMessage = Nothing
+            Dim ver As Single = db.GetVersion()
 
             If dbUpd.HasUpdates(db) Then
                 ' Create a copy of the database for select types
@@ -3210,7 +3211,7 @@ Public Class cCore
                     If File.Exists(strSrc) Then
 
                         ' User wants to make a backup?
-                        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, db.Name, db.GetEwEVersion),
+                        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, db.Name, ver),
                                                          eCoreComponentType.DataSource, eMessageType.Any,
                                                          eMessageImportance.Information,
                                                          eMessageReplyStyle.YES_NO_CANCEL)
@@ -3497,8 +3498,7 @@ Public Class cCore
         Debug.Assert(ds IsNot Nothing, Me.ToString & "LoadModel() Datasource can not be NULL.")
         Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid data source type specified")
 
-        ' Only perform a total close if not reopening for the same datasource
-        If Not Me.CloseModel(Not ReferenceEquals(ds, Me.DataSource)) Then Return False
+        If Not Me.CloseModel() Then Return False
 
         Me.m_Ecopath.RunState = Ecopath.eEcopathRunState.NotRun
         Me.m_EcopathData.ActiveEcosimScenario = -1
@@ -3732,15 +3732,6 @@ Public Class cCore
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function CloseModel() As Boolean
-        Return Me.CloseModel(True)
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Close the model and optionally terminate the datasource
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Function CloseModel(bTotalCleanup As Boolean) As Boolean
 
         'Stop any running search
         For Each tp As IThreadedProcess In Me.m_ThreadedProcesses
@@ -3767,16 +3758,17 @@ Public Class cCore
             ' Has data source?
             If (Me.DataSource IsNot Nothing) Then
                 ' #Yes: has open connection?
-                If DataSource.Connection IsNot Nothing Then
+                If Me.DataSource.Connection IsNot Nothing Then
                     ' '#Yes: close plug-in data sources, close plug-in 
                     If (Me.PluginManager IsNot Nothing) Then
                         Me.PluginManager.CloseDatabase()
                         Me.PluginManager.CloseModel()
                     End If
-                    If bTotalCleanup Then DataSource.Close()
+
+                    Me.DataSource.Close()
                 End If
                 ' Release data source
-                DataSource = Nothing
+                Me.DataSource = Nothing
             End If
 
         Catch ex As Exception

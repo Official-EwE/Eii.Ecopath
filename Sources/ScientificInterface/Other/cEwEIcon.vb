@@ -66,10 +66,12 @@ Public Class cEwEIcon
                 Return My.Resources.Ecopath6_joepie
             Case cDateUtils.eNextEvent.EwE40
                 Return My.Resources.Ecopath40
+            Case cDateUtils.eNextEvent.BlackFriday
+                Return My.Resources.ecopath_blackfriday
         End Select
 
 #If BETA = 1 Then
-                Return My.Resources.Ecopath2_beta
+        Return My.Resources.Ecopath2_beta
 #End If
 
         SyncLock m_syncroot

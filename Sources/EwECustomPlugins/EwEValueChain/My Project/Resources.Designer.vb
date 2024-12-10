@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -612,11 +612,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to merge tne old value chain model {0} into the current model database. {1}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_MERGE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MERGE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Value chain data file &apos;{0}&apos; merged into Ecopath model &apos;{1}&apos;.
         '''</summary>
-        Friend ReadOnly Property STATUS_MERGED() As String
+        Friend ReadOnly Property STATUS_MERGE_SUCCESS() As String
             Get
-                Return ResourceManager.GetString("STATUS_MERGED", resourceCulture)
+                Return ResourceManager.GetString("STATUS_MERGE_SUCCESS", resourceCulture)
             End Get
         End Property
         
