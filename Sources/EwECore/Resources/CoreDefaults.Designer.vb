@@ -1793,7 +1793,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to CImmig.
+        '''  Looks up a localized string similar to C. immig||Conc. in immigrating biomass|Concentration in immigrating biomass.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_CIMMIG() As String
             Get
@@ -2045,7 +2045,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to CZero.
+        '''  Looks up a localized string similar to CZero||Initial conc.|Initial concentration.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_CZERO() As String
             Get

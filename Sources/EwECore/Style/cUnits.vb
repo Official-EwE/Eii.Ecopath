@@ -169,6 +169,7 @@ Namespace Style
         Public Shared ReadOnly Property Year As String = "[year]"
         Public Shared ReadOnly Property FishingEffort As String = "[kilowattdays]/[time]"
         Public Shared ReadOnly Property Percentage As String = "[%]"
+        Public Shared ReadOnly Property Contaminants As String = "[contaminants]"
 
         Public Shared ReadOnly Property MonetaryCurrency As String = cUnits.MonetaryOverKg & " x " & cUnits.Currency
 

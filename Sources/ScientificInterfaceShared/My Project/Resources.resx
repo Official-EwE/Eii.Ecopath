@@ -1177,12 +1177,6 @@
   <data name="HEADER_RECRUITMENT_CV" xml:space="preserve">
     <value>Recruitment CV</value>
   </data>
-  <data name="HEADER_CONCENTRATION_INITIAL" xml:space="preserve">
-    <value>Initial conc. (t/t)</value>
-  </data>
-  <data name="HEADER_CONCENTRATION_IN_IMM_B" xml:space="preserve">
-    <value>Conc. in immigrating biomass (t/t)</value>
-  </data>
   <data name="HEADER_PHYSICAL_DECAY_RATE" xml:space="preserve">
     <value>Physical decay rate</value>
   </data>

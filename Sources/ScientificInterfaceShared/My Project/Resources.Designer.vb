@@ -4318,24 +4318,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Conc. in immigrating biomass (t/t).
-        '''</summary>
-        Public ReadOnly Property HEADER_CONCENTRATION_IN_IMM_B() As String
-            Get
-                Return ResourceManager.GetString("HEADER_CONCENTRATION_IN_IMM_B", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Initial conc. (t/t).
-        '''</summary>
-        Public ReadOnly Property HEADER_CONCENTRATION_INITIAL() As String
-            Get
-                Return ResourceManager.GetString("HEADER_CONCENTRATION_INITIAL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Concentration / Biomass (cumulative).
         '''</summary>
         Public ReadOnly Property HEADER_CONCENTRATION_OVER_B() As String
