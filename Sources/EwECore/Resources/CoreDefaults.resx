@@ -896,7 +896,7 @@
     <value>CExcretionRate</value>
   </data>
   <data name="VARIABLE_CIMMIG" xml:space="preserve">
-    <value>CImmig</value>
+    <value>C. immig||Conc. in immigrating biomass|Concentration in immigrating biomass</value>
   </data>
   <data name="VARIABLE_CINFLOW" xml:space="preserve">
     <value>CInflow</value>
@@ -944,7 +944,7 @@
     <value>CyclePath</value>
   </data>
   <data name="VARIABLE_CZERO" xml:space="preserve">
-    <value>CZero</value>
+    <value>CZero||Initial conc.|Initial concentration</value>
   </data>
   <data name="VARIABLE_DATAQ" xml:space="preserve">
     <value>DataQ</value>

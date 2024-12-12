@@ -527,7 +527,6 @@ Public Class cVariableMetaData
 
         ' -- Ecotracer --
         ' parameters
-        Me.Metadata(eVarNameFlags.CZero) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.CInflow) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.COutflow) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.CPhysicalDecayRate) = New cVariableMetaData(0, Single.MaxValue, ge, lt,, cUnits.CurrencyOverTime)
@@ -535,7 +534,8 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.ConMaxTimeSteps) = New cVariableMetaData(0, Integer.MaxValue, ge, lt)
 
         ' group in
-        Me.Metadata(eVarNameFlags.CImmig) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.CZero) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Contaminants & "/" & cUnits.Area)
+        Me.Metadata(eVarNameFlags.CImmig) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Contaminants & "/" & cUnits.Area)
         Me.Metadata(eVarNameFlags.CEnvironment) = New cVariableMetaData(0, Single.MaxValue, ge, lt,, "t/t/t/[Time]")
         Me.Metadata(eVarNameFlags.CAssimilationProp) = New cVariableMetaData(0, 1, ge, lt)
         Me.Metadata(eVarNameFlags.CMetablismRate) = New cVariableMetaData(0 + Single.Epsilon, Single.MaxValue, gt, lt,, "t/[Time]")
