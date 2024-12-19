@@ -351,6 +351,39 @@ Public Class cMPADynamicsEngine
 
 #End Region ' Public access
 
+#Region " Persistence "
+
+    Private Const KEY_GENERAL As String = "General"
+    Private Const SETTING_CSV As String = "CSV"
+
+    Friend Sub SavePersistent(text As String)
+        Dim ad As cAuxiliaryData = Me.m_core.AuxillaryData(Me.DataName)
+        Dim textC As String = cStringUtils.Compress(text, Compression.CompressionLevel.Optimal)
+        ad.Settings.WriteSetting(KEY_GENERAL, SETTING_CSV, textC)
+    End Sub
+
+    Friend Sub LoadPersistent()
+
+        Dim ad As cAuxiliaryData = Me.m_core.AuxillaryData(Me.DataName)
+        Dim textC As String = ad.Settings.ReadSetting(KEY_GENERAL, SETTING_CSV, "")
+        If Not String.IsNullOrWhiteSpace(textC) Then
+            Dim textUC As String = cStringUtils.Decompress(textC)
+            Me.LoadText(textUC, Nothing)
+        End If
+
+    End Sub
+
+    Private Function DataName() As String
+        Dim sc As cEcospaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
+        Return String.Format("MPADynamics_{0}", sc.DBID)
+    End Function
+
+    Private Function TimestepName(dt As DateTime) As String
+        Return String.Format("time_{0}-{1}-{2}", dt.Year, dt.Month, dt.Day)
+    End Function
+
+#End Region ' Persistence
+
 #Region " Internals "
 
     ''' <summary>
@@ -594,40 +627,6 @@ Public Class cMPADynamicsEngine
 
     End Sub
 
-    Private Const KEY_GENERAL As String = "General"
-    Private Const SETTING_CSV As String = "CSV"
-
-    Friend Sub SavePersistent(text As String)
-        Dim ad As cAuxiliaryData = Me.m_core.AuxillaryData(Me.DataName)
-        Dim textC As String = cStringUtils.Compress(text, Compression.CompressionLevel.Optimal)
-        ad.Settings.WriteSetting(KEY_GENERAL, SETTING_CSV, textC)
-    End Sub
-
-    Friend Sub LoadPersistent()
-
-        Dim ad As cAuxiliaryData = Me.m_core.AuxillaryData(Me.DataName)
-        Dim textC As String = ad.Settings.ReadSetting(KEY_GENERAL, SETTING_CSV, "")
-        If Not String.IsNullOrWhiteSpace(textC) Then
-            Dim textUC As String = cStringUtils.Decompress(textC)
-            Me.LoadText(textUC, Nothing)
-        End If
-
-    End Sub
-
 #End Region ' Internals
-
-#Region " Helpers "
-
-    Private Function DataName() As String
-        Dim sc As cEcospaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
-        Return String.Format("MPADynamics_{0}", sc.DBID)
-    End Function
-
-    Private Function TimestepName(dt As DateTime) As String
-        Return String.Format("time_{0}-{1}-{2}", dt.Year, dt.Month, dt.Day)
-    End Function
-
-
-#End Region ' Helpers
 
 End Class
