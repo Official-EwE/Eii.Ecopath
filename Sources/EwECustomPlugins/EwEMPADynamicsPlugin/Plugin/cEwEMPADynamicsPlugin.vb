@@ -144,8 +144,13 @@ Public Class cEwEMPADynamicsPlugin
     End Sub
 
     Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements IEcospaceInitializedPlugin.EcospaceInitialized
+
         Me.m_spaceDS = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
         Me.m_engine = New cMPADynamicsEngine(Me.m_core, Me.m_spaceDS)
+
+        ' Load MPA dynamics config from persistent settings
+        Me.m_engine.LoadPersistent()
+
     End Sub
 
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted

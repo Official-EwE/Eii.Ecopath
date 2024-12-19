@@ -77,12 +77,12 @@ Public Class cVariableStatus
     ''' <param name="MessageSource"><see cref="eCoreComponentType">EwE component</see> that sent this variable belongs to.</param>
     ''' <param name="iIndex">Index of the <paramref name="MessageSource">EwE component </paramref> that this variable belongs to.</param>
     ''' <param name="iArrayIndex">Secundary index within <paramref name="VarName"/>, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
-    Sub New(StatusFlag As eStatusFlags, _
-            MessageStr As String, _
-            VarName As eVarNameFlags, _
-            TypeOfData As eDataTypes, _
-            MessageSource As eCoreComponentType, _
-            iIndex As Integer, _
+    Sub New(StatusFlag As eStatusFlags,
+            MessageStr As String,
+            VarName As eVarNameFlags,
+            TypeOfData As eDataTypes,
+            MessageSource As eCoreComponentType,
+            iIndex As Integer,
             Optional iArrayIndex As Integer = cCore.NULL_VALUE)
 
         Me.VarName = VarName
@@ -108,13 +108,13 @@ Public Class cVariableStatus
     ''' <param name="MessageSource"><see cref="eCoreComponentType">EwE component</see> that sent this variable belongs to.</param>
     ''' <param name="iIndex">Index of the <paramref name="MessageSource">EwE component </paramref> that this variable belongs to.</param>
     ''' <param name="iArrayIndex">Secundary index within <paramref name="VarName"/>, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
-    Sub New(ParentCoreDataObject As ICoreInterface, _
-            StatusFlag As eStatusFlags, _
-            MessageStr As String, _
-            VarName As eVarNameFlags, _
-            TypeOfData As eDataTypes, _
-            MessageSource As eCoreComponentType, _
-            iIndex As Integer, _
+    Sub New(ParentCoreDataObject As ICoreInterface,
+            StatusFlag As eStatusFlags,
+            MessageStr As String,
+            VarName As eVarNameFlags,
+            TypeOfData As eDataTypes,
+            MessageSource As eCoreComponentType,
+            iIndex As Integer,
             Optional iArrayIndex As Integer = cCore.NULL_VALUE)
 
         Me.VarName = VarName
@@ -136,16 +136,18 @@ Public Class cVariableStatus
     ''' <param name="MessageStr">Message to accompany this variable status.</param>
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> that this status applies to.</param>
     ''' <param name="iArrayIndex">Secundary index within <paramref name="VarName"/>, or <see cref="cCore.NULL_VALUE">CORE NULL</see> if not applicable.</param>
-    Sub New(ParentCoreDataObject As ICoreInterface, _
-            StatusFlag As eStatusFlags, MessageStr As String, VarName As eVarNameFlags, _
+    Sub New(ParentCoreDataObject As ICoreInterface,
+            StatusFlag As eStatusFlags, MessageStr As String, VarName As eVarNameFlags,
             Optional iArrayIndex As Integer = cCore.NULL_VALUE)
 
         Me.VarName = VarName
         Me.Status = StatusFlag
         Me.Message = MessageStr
-        Me.Source = ParentCoreDataObject.CoreComponent
-        Me.DataType = ParentCoreDataObject.DataType
-        Me.Index = ParentCoreDataObject.Index
+        If (ParentCoreDataObject IsNot Nothing) Then
+            Me.Source = ParentCoreDataObject.CoreComponent
+            Me.DataType = ParentCoreDataObject.DataType
+            Me.Index = ParentCoreDataObject.Index
+        End If
         Me.CoreDataObject = ParentCoreDataObject
         Me.iArrayIndex = iArrayIndex
 

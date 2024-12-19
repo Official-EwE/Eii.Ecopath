@@ -23,8 +23,11 @@ Option Strict On
 Imports System.Drawing
 Imports System.Globalization
 Imports System.IO
+Imports System.Text
+Imports System.Web
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip
 Imports EwECore
+Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
@@ -134,25 +137,49 @@ Public Class cMPADynamicsEngine
     End Sub
 
     ''' <summary>
-    ''' Hack 'n slash
+    ''' Read a CSV file
     ''' </summary>
-    ''' <param name="strCSV"></param>
+    ''' <param name="strCSV">CSV file name to read</param>
     ''' <returns></returns>
     Public Function LoadCSV(strCSV As String) As Boolean
 
-        Dim bSucces As Boolean = True
         Dim lDetails As New List(Of String)
+        Dim strText As String = ""
+        Dim bSucces As Boolean = False
 
         Me.m_dtStates.Clear()
-
         strCSV = Path.GetFullPath(strCSV)
         Try
-            Dim strText As String = ""
             Using sr As New StreamReader(strCSV)
                 strText = sr.ReadToEnd()
             End Using
+            bSucces = Me.LoadText(strText, lDetails)
 
-            Dim dt As DataTable = Me.LoadText(strText)
+            If (bSucces) Then
+                Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_SUCCESS, strCSV), eMessageImportance.Information)
+                Me.SavePersistent(strText)
+            Else
+                Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ""), eMessageImportance.Critical, lDetails)
+                Me.m_dtStates.Clear()
+            End If
+
+        Catch ex As Exception
+            Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ex.Message), eMessageImportance.Critical)
+            ' NOP
+        End Try
+
+        Me.Autorun = bSucces
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadText(strText As String, lDetails As List(Of String)) As Boolean
+
+        Dim bSucces As Boolean = True
+
+        Try
+            Dim dt As DataTable = Me.TextToDatatable(strText)
             If (dt Is Nothing) Then Return False
             Dim bTimeStepMode As Boolean = dt.Columns.Contains("timestep")
 
@@ -184,14 +211,15 @@ Public Class cMPADynamicsEngine
                                 Me.m_dtStates(timestamp) = New List(Of cMPAState)
                             End If
                             Me.m_dtStates(timestamp).Add(state)
-                        Else
+                        ElseIf (lDetails IsNot Nothing) Then
                             Dim strError As String = cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN, CStr(drow("MPA")))
                             If (lDetails.IndexOf(strError) = -1) Then
                                 lDetails.Add(strError)
                             End If
                         End If
                     End If
-                Else ' iMPA out of bounds
+                ElseIf (lDetails IsNot Nothing) Then
+                    ' iMPA out of bounds
                     Dim strError As String = cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN, CStr(drow("MPA")))
                     If (lDetails.IndexOf(strError) = -1) Then
                         lDetails.Add(strError)
@@ -199,17 +227,7 @@ Public Class cMPADynamicsEngine
                 End If
             Next
 
-            If (bSucces) Then
-                Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_SUCCESS, strCSV), eMessageImportance.Information)
-            Else
-                Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ""), eMessageImportance.Critical, lDetails)
-                Me.m_dtStates.Clear()
-            End If
-
-            Me.Autorun = bSucces
-
         Catch ex As Exception
-            Me.SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ex.Message), eMessageImportance.Critical)
             bSucces = False
         End Try
 
@@ -335,7 +353,12 @@ Public Class cMPADynamicsEngine
 
 #Region " Internals "
 
-    Private Function LoadText(strText As String) As DataTable
+    ''' <summary>
+    ''' Convert comma-separated text into a datatable.
+    ''' </summary>
+    ''' <param name="strText"></param>
+    ''' <returns></returns>
+    Private Function TextToDatatable(strText As String) As DataTable
 
         Try
             Dim sr As New StringReader(strText)
@@ -571,6 +594,40 @@ Public Class cMPADynamicsEngine
 
     End Sub
 
+    Private Const KEY_GENERAL As String = "General"
+    Private Const SETTING_CSV As String = "CSV"
+
+    Friend Sub SavePersistent(text As String)
+        Dim ad As cAuxiliaryData = Me.m_core.AuxillaryData(Me.DataName)
+        Dim textC As String = cStringUtils.Compress(text, Compression.CompressionLevel.Optimal)
+        ad.Settings.WriteSetting(KEY_GENERAL, SETTING_CSV, textC)
+    End Sub
+
+    Friend Sub LoadPersistent()
+
+        Dim ad As cAuxiliaryData = Me.m_core.AuxillaryData(Me.DataName)
+        Dim textC As String = ad.Settings.ReadSetting(KEY_GENERAL, SETTING_CSV, "")
+        If Not String.IsNullOrWhiteSpace(textC) Then
+            Dim textUC As String = cStringUtils.Decompress(textC)
+            Me.LoadText(textUC, Nothing)
+        End If
+
+    End Sub
+
 #End Region ' Internals
+
+#Region " Helpers "
+
+    Private Function DataName() As String
+        Dim sc As cEcospaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
+        Return String.Format("MPADynamics_{0}", sc.DBID)
+    End Function
+
+    Private Function TimestepName(dt As DateTime) As String
+        Return String.Format("time_{0}-{1}-{2}", dt.Year, dt.Month, dt.Day)
+    End Function
+
+
+#End Region ' Helpers
 
 End Class
