@@ -298,6 +298,8 @@ Public Class cOutcome
         grid.Clear()
         grid.IsValid = False
 
+        ' Should not have been fired. JS to backtrack
+        If (timestepdata.iTimeStep <= 0) Then Return False
         If (timestepdata.iTimeStep = 1) Then Me.Calibrate(timestepdata)
 
         Debug.Assert(Me.m_scalar > 0)
