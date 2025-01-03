@@ -31,11 +31,15 @@ Imports EwEUtils.Utilities
 #End Region ' Imports
 
 ' Enable caching of writers to improve database save performance. This should be tested thoroughly before including in a release
-#Const USE_WRITERCACHE = 0
+' Note that writers will ONLY be cached while in a transaction!
+#Const USE_WRITERCACHE = 1
 
 #If VERBOSE Then
 #Const VERBOSE_LEVEL = 4
 #End If
+
+' Writer caching does not work when outside a transaction. Code should be changed:
+' - Keep all writers in dicitionary, commit when releasing the transaction
 
 Namespace Database
 
@@ -69,6 +73,8 @@ Namespace Database
 
             Private m_dtSchema As DataTable = Nothing
             Private m_bDisposed As Boolean = False
+
+            Friend m_refcount As Integer = 0
 
 #If DEBUG Then
             Private ReadOnly m_ID As Integer = 0
@@ -107,7 +113,7 @@ Namespace Database
                 If (Me.m_bDisposed = False) Then
                     Me.m_bDisposed = True
 #If VERBOSE_LEVEL > 2 Then
-                    Debug.WriteLine("DB writer " & Me.m_ID & " disposed")
+                    Debug.WriteLine("DB writer " & Me.m_ID & " disposed, refcount " & me.m_refcount)
 #End If
                     If Me.IsConnected Then Me.Disconnect(True)
                 End If
@@ -731,7 +737,8 @@ Namespace Database
         Private m_transaction As IDbTransaction = Nothing
 
 #If USE_WRITERCACHE Then
-        ''' <summary>Cache of DB writers obtained during a transaction for quick DB writing.</summary>
+        ''' <summary>Cache of DB writers obtained during a transaction for quick DB writing; the 
+        ''' process of obtaining and releasing writers can really slow big DB jobs down.</summary>
         Private m_dtWriters As New Dictionary(Of String, cEwEDbWriter)
 #End If
 
@@ -767,7 +774,7 @@ Namespace Database
         Public Function CommitTransaction(Optional bRollbackOnError As Boolean = True) As Boolean
             If (Me.m_transaction Is Nothing) Then Return False
             Try
-                Me.ReleaseCachedWriters()
+                Me.ReleaseCachedWriters(True)
                 Me.m_transaction.Commit()
                 Me.m_transaction = Nothing
                 Return True
@@ -791,7 +798,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function RollbackTransaction() As Boolean
             Try
-                Me.ReleaseCachedWriters()
+                Me.ReleaseCachedWriters(False)
                 Me.m_transaction.Rollback()
                 Me.m_transaction = Nothing
                 Return True
@@ -822,9 +829,11 @@ Namespace Database
         ''' <seealso cref="RollbackTransaction()"/>
         ''' <seealso cref="CommitTransaction(Boolean)"/>
         ''' -------------------------------------------------------------------
-        Private Sub ReleaseCachedWriters()
+        Private Sub ReleaseCachedWriters(bCommit As Boolean)
 #If USE_WRITERCACHE Then
             For Each writer As cEwEDbWriter In Me.m_dtWriters.Values
+                If bCommit Then writer.Commit()
+                Console.WriteLine("cEwEDatabase: Releasing writer rollback failed: {0}", writer.GetTableName(), writer.m_refcount)
                 writer.Dispose()
             Next
             Me.m_dtWriters.Clear()
@@ -924,12 +933,12 @@ Namespace Database
             Dim bIsValid As Boolean = False
 
 #If USE_WRITERCACHE Then
-                ' When in transaction, try to obtain cached writer
-                If (Me.m_transaction IsNot Nothing) Then
-                    If (Me.m_dtWriters.ContainsKey(key)) Then
-                        writer = Me.m_dtWriters(key)
-                    End If
+            ' When in transaction, try to obtain cached writer
+            If (Me.m_transaction IsNot Nothing) Then
+                If (Me.m_dtWriters.ContainsKey(key)) Then
+                    writer = Me.m_dtWriters(key)
                 End If
+            End If
 #End If
 
             ' The writer may have perished due to a rollback 
@@ -943,11 +952,13 @@ Namespace Database
                 writer = New cEwEDbWriter(Me, strTable)
             End If
 
+            writer.m_refcount += 1
+
 #If USE_WRITERCACHE Then
-                ' When in transaction, keep writers at hand - experimental feature, debug mode only
-                If (Me.m_transaction IsNot Nothing) Then
-                    Me.m_dtWriters(key) = writer
-                End If
+            ' When in transaction, keep writers at hand - experimental feature, debug mode only
+            If (Me.m_transaction IsNot Nothing) Then
+                Me.m_dtWriters(key) = writer
+            End If
 #End If
 
             Return writer
@@ -966,22 +977,15 @@ Namespace Database
 
             Dim bSuccess As Boolean = False
 
-#If USE_WRITERCACHE Then
-            Dim key As String = writer.GetTableName().ToLower()
+            writer.m_refcount -= 1
 
-            If (Me.m_dtWriters.ContainsKey(key)) Then
-                If bSaveChanges Then
-                    bSuccess = writer.Commit()
-                Else
-                    writer.Disconnect(False)
-                    ' Remove from cache
-                    Me.m_dtWriters.Remove(key)
-                End If
-            End If
-#Else
+#If USE_WRITERCACHE Then
+            ' Don't do anything while in transaction
+            If (Me.m_transaction IsNot Nothing) Then Return True
+#End If
             bSuccess = writer.Disconnect(bSaveChanges)
             writer.Dispose()
-#End If
+
             Return bSuccess
         End Function
 
