@@ -407,12 +407,13 @@ Namespace SpatialData
                     iCol = 1
                     While (iCol <= iNumCols) And (bSuccess = True)
                         sValue = dataExternal.Cell(iRow, iCol, dNoData)
-                        ' Is a valid value?
-                        If (sValue <> cCore.NULL_VALUE) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
+                        ' Is a valid value? ... and not sure if the depth layer exception is smart here
+                        If (sValue <> dNoData) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
                             ' #Yes: set value
                             bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, sValue)
                         Else
-                            bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, dNoData)
+                            ' No: ignore NoData value
+                            'bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, dNoData)
                         End If
                         iCol += 1
                     End While ' iCol
