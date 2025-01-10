@@ -214,7 +214,6 @@ Namespace Controls
             Dim iMin As Integer = 0
             Dim iMax As Integer = Me.ClientRectangle.Width
             Dim strTemp As String = String.Copy(Me.m_strPath)
-            Dim sbTemp As New StringBuilder()
             Dim rcLabel As Rectangle = Nothing
 
             ' ToDo: enable for right-to-left reading order
@@ -236,20 +235,9 @@ Namespace Controls
                 strTemp = strTemp.CompactString(rcLabel.Width, Me.Font)
             End If
 
-            '    ' Chop off Nothing characters which will occur when string is shortened.
-            '    '   These chars are recognized and handled well by the String class, but 
-            '    '   Graphics.DrawString may still render such chars and characters beyond it.
-            '    For Each c As Char In strTemp
-            '        If (c = Nothing) Then
-            '            Exit For
-            '        End If
-            '        sbTemp.Append(c)
-            '    Next
-
-            'End If
 
             ' Store
-            Me.m_strLabel = sbTemp.ToString
+            Me.m_strLabel = strTemp.Trim
             Me.m_rcLabel = rcLabel
 
         End Sub
