@@ -52,18 +52,6 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Supported value conversion modes for a <see cref="cSpatialScalarDataAdapter"/>.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Enum eScaleType As Byte
-            ''' <summary>Values are applied as-is: no scaling is performed.</summary>
-            Absolute = 0
-            ''' <summary>Value are scaled before being applied.</summary>
-            Relative
-        End Enum
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' States if this adapter can scale to a base value.
         ''' </summary>
         ''' <seealso cref="CalculateScalar(Double, Double)"/>

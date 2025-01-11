@@ -34,8 +34,10 @@ Namespace SpatialData
     ''' </summary>
     Public Class cSpatialDataStructures
 
-        Private m_pathDS As cEcopathDataStructures
-        Private m_spaceDS As cEcospaceDataStructures
+        ''' <summary>Defined just in case ever needed</summary>
+        Private ReadOnly m_pathDS As cEcopathDataStructures = Nothing
+        ''' <summary>Defined just in case ever needed</summary>
+        Private ReadOnly m_spaceDS As cEcospaceDataStructures = Nothing
 
         ''' <summary>Availalable data adapters</summary>
         Public DataAdapters As New List(Of cSpatialDataAdapter)
@@ -65,6 +67,15 @@ Namespace SpatialData
             Next adt
 
         End Sub
+
+        Public ReadOnly Property GetDataAdapter(vn As eVarNameFlags) As cSpatialDataAdapter
+            Get
+                For Each adt As cSpatialDataAdapter In Me.DataAdapters
+                    If (adt.VarName = vn) Then Return adt
+                Next
+                Return Nothing
+            End Get
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -104,7 +115,7 @@ Namespace SpatialData
             ''' <summary>Data scale, if any.</summary>
             Public Property Scale As Single
             ''' <summary></summary>
-            Public Property ScaleType As Byte
+            Public Property ScaleType As eScaleType
 
             Public Property CustomDateStart As DateTime
             Public Property CustomDateEnd As DateTime

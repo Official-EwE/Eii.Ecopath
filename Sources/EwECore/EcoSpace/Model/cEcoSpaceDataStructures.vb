@@ -2715,8 +2715,8 @@ Public Class cEcospaceDataStructures
     ''' and <paramref name="iIndex">indexes</paramref> are dealt with properly.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Public Function getLayerID(varname As eVarNameFlags, iIndex As Integer) As Integer
-        Dim arr As Integer() = Me.getLayerIDs(varname)
+    Public Function GetLayerID(varname As eVarNameFlags, iIndex As Integer) As Integer
+        Dim arr As Integer() = Me.GetLayerIDs(varname)
         If ((iIndex < 0) Or (iIndex >= arr.Length)) Then Return cCore.NULL_VALUE
         Return arr(iIndex)
     End Function
@@ -2731,7 +2731,7 @@ Public Class cEcospaceDataStructures
     ''' are dealt with properly.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Public ReadOnly Property getLayerIDs(varname As eVarNameFlags) As Integer()
+    Public ReadOnly Property GetLayerIDs(varname As eVarNameFlags) As Integer()
         Get
             Select Case varname
                 Case eVarNameFlags.LayerBiomassForcing : Return Me.GroupDBID
@@ -2746,10 +2746,28 @@ Public Class cEcospaceDataStructures
                 Case eVarNameFlags.LayerPort : Return Me.FleetDBID
                 Case eVarNameFlags.LayerSail : Return Me.FleetDBID
                 Case eVarNameFlags.LayerAdvection : Return New Integer() {0, 1, 2}
-
-
             End Select
             Return New Integer() {0, 1}
+        End Get
+    End Property
+
+    Public ReadOnly Property GetLayerDataType(varname As eVarNameFlags) As eDataTypes
+        Get
+            Select Case varname
+                Case eVarNameFlags.LayerBiomassForcing : Return eDataTypes.EcospaceGroup
+                Case eVarNameFlags.LayerBiomassRelativeForcing : Return eDataTypes.EcospaceGroup
+                Case eVarNameFlags.LayerDriver : Return eDataTypes.EcospaceLayerDriver
+                Case eVarNameFlags.LayerHabitat : Return eDataTypes.EcospaceHabitat
+                Case eVarNameFlags.LayerHabitatCapacity : Return eDataTypes.EcospaceGroup
+                Case eVarNameFlags.LayerHabitatCapacityInput : Return eDataTypes.EcospaceGroup
+                Case eVarNameFlags.LayerImportance : Return eDataTypes.EcospaceLayerImportance
+                Case eVarNameFlags.LayerMigration : Return eDataTypes.EcospaceGroup
+                Case eVarNameFlags.LayerMPA : Return eDataTypes.EcospaceMPA
+                Case eVarNameFlags.LayerPort : Return eDataTypes.EcospaceFleet
+                Case eVarNameFlags.LayerSail : Return eDataTypes.EcospaceFleet
+                Case eVarNameFlags.LayerAdvection : Return eDataTypes.EcospaceLayerAdvection
+            End Select
+            Return eDataTypes.NotSet
         End Get
     End Property
 

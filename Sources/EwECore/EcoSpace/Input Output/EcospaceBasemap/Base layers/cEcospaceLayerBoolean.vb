@@ -51,7 +51,7 @@ Public Class cEcospaceLayerBoolean
                    varName As eVarNameFlags,
                    Optional iIndex As Integer = cCore.NULL_VALUE)
 
-        MyBase.New(core, core.m_EcospaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Boolean))
+        MyBase.New(core, core.m_EcospaceData.GetLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Boolean))
 
     End Sub
 

@@ -2349,6 +2349,7 @@ Public Class cEIIXMLDataSource
         bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceDataConnections(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceDisabledDataConnections(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceDisabledCapacityDrivers(iScenarioID)
         'bSucces = bSucces And Me.LoadAuxillaryData()
 
@@ -2902,11 +2903,12 @@ Public Class cEIIXMLDataSource
 
         spatialDS.SetDefaults()
 
+        dt.DefaultView.Sort = "Sequence ASC"
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
             Try
                 Dim var As eVarNameFlags = cin.GetVarName(CStr(drow("VarName")))
-                Dim iLayer As Integer = Array.IndexOf(spaceDS.getLayerIDs(var), CInt(Me.ReadSafe(drow, "LayerID", 1)))
+                Dim iLayer As Integer = Array.IndexOf(spaceDS.GetLayerIDs(var), CInt(Me.ReadSafe(drow, "LayerID", 1)))
                 Dim iConn As Integer = -1
 
                 ' May link to unknown layer
@@ -2929,7 +2931,7 @@ Public Class cEIIXMLDataSource
                         item.ConverterTypeName = Me.ReadSafe(drow, "ConverterTypeName", "")
                         item.ConverterConfig = Web.HttpUtility.UrlDecode(Me.ReadSafe(drow, "ConverterCfg", ""))
                         item.Scale = Me.ReadSafe(drow, "Scale", 1.0!)
-                        item.ScaleType = Me.ReadSafe(drow, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative)
+                        item.ScaleType = Me.ReadSafe(drow, "ScaleType", eScaleType.Relative)
                         item.CustomDateStart = Date.Parse(CStr(Me.ReadSafe(drow, "CustomDateStart", Date.MaxValue.ToString("yyyy/MM/dd"))))
                         item.CustomDateEnd = Date.Parse(CStr(Me.ReadSafe(drow, "CustomDateEnd", Date.MinValue.ToString("yyyy/MM/dd"))))
 
@@ -2941,6 +2943,39 @@ Public Class cEIIXMLDataSource
                 cLog.Write(ex, "cEIIXMLDataSource::LoadDataAdapters")
             End Try
 
+        Next
+        dt.Clear()
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceDisabledDataConnections(iScenarioID As Integer) As Boolean
+
+        Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
+        Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
+        Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDataConnectionDisabled")
+        Dim adt As cSpatialDataAdapter = Nothing
+        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim bSucces As Boolean = True
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
+            Try
+                Dim var As eVarNameFlags = cin.GetVarName(CStr(drow("VarName")))
+                Dim iLayer As Integer = Array.IndexOf(spaceDS.GetLayerIDs(var), CInt(Me.ReadSafe(drow, "LayerID", 1)))
+
+                adt = spatialDS.GetDataAdapter(var)
+                If (iLayer > 0 And adt IsNot Nothing) Then
+                    adt.AllowValidation = False
+                    adt.IsEnabled(iLayer) = False
+                    adt.AllowValidation = True
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex, "cEIIXMLDataSource::LoadDataAdapters")
+                bSucces = False
+            End Try
         Next
         dt.Clear()
         Return bSucces
@@ -3775,11 +3810,11 @@ Public Class cEIIXMLDataSource
 
         Try
             If row.Table.Columns.Contains(strField) Then
-                Dim type As Type = GetType(T)
+                Dim ttarget As Type = GetType(T)
                 Dim val As Object = row(strField)
 
                 If Not Convert.IsDBNull(val) Then
-                    If type.IsEnum Then
+                    If ttarget.IsEnum Then
                         val = CInt(val)
                         objResult = DirectCast(val, T)
                     Else
