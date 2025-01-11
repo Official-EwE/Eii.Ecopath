@@ -100,8 +100,8 @@ Namespace SpatialData
         ''' <returns>A value, or <paramref name="dNoDataValue"/> if either row or 
         ''' column are invalid, or if the cell does not hold any data.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Cell(ByVal iRow As Integer, _
-                             ByVal iCol As Integer, _
+        Public Function Cell(ByVal iRow As Integer,
+                             ByVal iCol As Integer,
                              Optional ByVal dNoDataValue As Double = -9999) As Double _
             Implements ISpatialRaster.Cell
 
@@ -114,7 +114,9 @@ Namespace SpatialData
 
             Try
                 Dim dValue As Double = Me.m_rs.Value(iRow, iCol)
-                If (dValue = Me.m_rs.NoDataValue) Or (dValue = dNoDataValue) Then Return dNoDataValue
+                If (dValue = Me.m_rs.NoDataValue) Or (dValue = dNoDataValue) Then
+                    Return dNoDataValue
+                End If
                 Return dValue
             Catch ex As Exception
                 Return dNoDataValue

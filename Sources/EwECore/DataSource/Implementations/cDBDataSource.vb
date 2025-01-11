@@ -20,9 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports System.Diagnostics.Eventing
-Imports System.Reflection
 Imports System.Text
 Imports EwECore.Auxiliary
 Imports EwECore.MSE
@@ -30,6 +27,8 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
+Imports OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
+
 
 #End Region ' Imports
 
@@ -7618,7 +7617,10 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcospaceMonthlyMaps(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceImportanceLayers(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
+            bSucces = bSucces And Me.LoadEcospaceCapacityDrivers(iScenarioID)
+            bSucces = bSucces And Me.LoadEcospaceDisbledDriverLayers(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceDataConnections(iScenarioID)
+            bSucces = bSucces And Me.LoadEcospaceDisabledDataConnections(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
 
             Me.ClearChanged(s_EcospaceComponents)
@@ -7819,6 +7821,7 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcospaceImportanceLayers(idm)
             bSucces = bSucces And Me.SaveEcospaceCapacityLayers(idm)
             bSucces = bSucces And Me.SaveEcospaceDataConnections(idm)
+            bSucces = bSucces And Me.SaveEcospaceDataConnectionsDisabled(idm)
 
             Return bSucces
 
@@ -9824,7 +9827,7 @@ Namespace DataSources
                 readerLayer = Nothing
             End Try
 
-            Return bSucces And Me.LoadEcospaceCapacityDrivers(iScenarioID) And Me.LoadEcospaceDisbledDriverLayers(iScenarioID)
+            Return bSucces
 
         End Function
 
@@ -10175,14 +10178,16 @@ Namespace DataSources
                 Try
                     ' JS 23Nov20: Sh!t, this should have been stored by eDatatype, not eVarname! 
                     '             Storing the varname STRING is at least robust, but deviates from the EwE DB norms...
-                    Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
+                    Dim vn As String = CStr(reader("VarName"))
+                    Dim var As eVarNameFlags = cin.GetVarName(vn)
                     Dim iLayerID As Integer = CInt(Me.m_db.ReadSafe(reader, "LayerID", 1))
-                    Dim iLayer As Integer = Array.IndexOf(Me.getLayerIDs(var), iLayerID)
+                    Dim iLayer As Integer = Array.IndexOf(spaceDS.GetLayerIDs(var), iLayerID)
                     Dim iConn As Integer = -1
                     Dim iYear As Integer = 0
 
                     ' May link to unknown layer
                     If (iLayer > 0) Then
+
                         ' Find next available connection slot
                         For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
                             Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, i)
@@ -10200,7 +10205,7 @@ Namespace DataSources
                             item.ConverterTypeName = CStr(Me.m_db.ReadSafe(reader, "ConverterTypeName", ""))
                             item.ConverterConfig = CStr(Me.m_db.ReadSafe(reader, "ConverterCfg", ""))
                             item.Scale = CSng(Me.m_db.ReadSafe(reader, "Scale", 1.0!))
-                            item.ScaleType = CType(Me.m_db.ReadSafe(reader, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
+                            item.ScaleType = CType(Me.m_db.ReadSafe(reader, "ScaleType", eScaleType.Relative), eScaleType)
                             item.CustomDateStart = Date.Parse(CStr(Me.m_db.ReadSafe(reader, "CustomDateStart", Date.MaxValue.ToString("yyyy/MM/dd"))))
                             item.CustomDateEnd = Date.Parse(CStr(Me.m_db.ReadSafe(reader, "CustomDateEnd", Date.MinValue.ToString("yyyy/MM/dd"))))
                         End If
@@ -10208,8 +10213,8 @@ Namespace DataSources
 
                 Catch ex As Exception
                     Me.LogError(String.Format("Error {0} occurred loading Ecospace ext data connections for scenario {1}", ex.Message, iScenarioID))
-                    bSucces = False
                     cLog.Write(ex, "DBDataSource::LoadEcospaceDataConnections")
+                    bSucces = False
                 End Try
             End While
 
@@ -10218,6 +10223,49 @@ Namespace DataSources
 
         End Function
 
+        Private Function LoadEcospaceDisabledDataConnections(iScenarioID As Integer) As Boolean
+
+            Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
+            Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
+            Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
+            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDataConnectionDisabled WHERE (ScenarioID={0})", iScenarioID))
+            Dim adt As cSpatialDataAdapter = Nothing
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim bSucces As Boolean = True
+
+            If (reader Is Nothing) Then Return Me.IsReadOnly
+
+            While (reader.Read())
+                Try
+                    Dim vn As String = CStr(reader("VarName"))
+                    Dim var As eVarNameFlags = cin.GetVarName(vn)
+                    Dim iLayerID As Integer = CInt(Me.m_db.ReadSafe(reader, "LayerID", 1))
+                    Dim iLayer As Integer = Array.IndexOf(spaceDS.GetLayerIDs(var), iLayerID)
+
+                    adt = spatialDS.GetDataAdapter(var)
+                    If (iLayer > 0 And adt IsNot Nothing) Then
+                        adt.AllowValidation = False
+                        adt.IsEnabled(iLayer) = False
+                        adt.AllowValidation = True
+                    End If
+
+                Catch ex As Exception
+                    Me.LogError(String.Format("Error {0} occurred loading Ecospace ext data connections disabled state for scenario {1}", ex.Message, iScenarioID))
+                    cLog.Write(ex, "DBDataSource::LoadEcospaceDataConnectionsDisabled")
+                    bSucces = False
+                End Try
+            End While
+
+            Me.m_db.ReleaseReader(reader)
+            Return bSucces
+
+        End Function
+
+        ''' <summary>
+        ''' This also saves the layer disabled state
+        ''' </summary>
+        ''' <param name="idm"></param>
+        ''' <returns></returns>
         Private Function SaveEcospaceDataConnections(idm As cIDMappings) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
@@ -10225,10 +10273,10 @@ Namespace DataSources
             Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim iLayerID As Integer = -1
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim wr As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim bSucces As Boolean = True
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
             Dim iSequence As Integer = 1
@@ -10240,60 +10288,24 @@ Namespace DataSources
             Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0})", iScenarioID))
 
             Try
-                writer = Me.m_db.GetWriter("EcospaceScenarioDataConnection")
-                dt = writer.GetDataTable()
+                wr = Me.m_db.GetWriter("EcospaceScenarioDataConnection")
+                dt = wr.GetDataTable()
 
                 For Each adt As cSpatialDataAdapter In spatialDS.DataAdapters
+                    Dim vn As String = cin.GetVarName(adt.VarName)
                     For i As Integer = 1 To adt.MaxLength
                         For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
                             cfg = spatialDS.Item(adt.VarName, i, j)
                             If (cfg IsNot Nothing) Then
                                 Dim strDataset As String = cfg.DatasetGUID
                                 If Not String.IsNullOrWhiteSpace(strDataset) Then
-                                    drow = writer.NewRow()
+
+                                    iLayerID = ecospaceDS.getLayerID(adt.VarName, i)
+                                    iLayerID = idm.GetID(ecospaceDS.GetLayerDataType(adt.VarName), iLayerID) ' Needs mapping
+
+                                    drow = wr.NewRow()
                                     drow("ScenarioID") = iScenarioID
-                                    drow("VarName") = cin.GetVarName(adt.VarName)
-                                    iLayerID = Me.getLayerID(adt.VarName, i)
-
-                                    ' ID linkages
-                                    Select Case adt.VarName
-                                        Case eVarNameFlags.LayerPort, eVarNameFlags.SailCost
-                                            ' Map id-ed by fleet
-                                            ' iLayerID is an Ecospace fleet. However, ID mapping is based on Ecopath fleets.
-                                            Dim iEcopathFleetID As Integer = ecopathDS.FleetDBID(i)
-                                            iLayerID = idm.GetID(eDataTypes.EcospaceFleet, iEcopathFleetID)
-
-                                        Case eVarNameFlags.LayerBiomassForcing, eVarNameFlags.LayerBiomassRelativeForcing,
-                                             eVarNameFlags.LayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacityInput,
-                                             eVarNameFlags.LayerMigration
-                                            ' Map id-ed by group
-                                            ' iLayerID is an Ecospace group. However, ID mapping is based on Ecopath groups.
-                                            Dim iEcopathGroupID As Integer = ecopathDS.GroupDBID(i)
-                                            iLayerID = idm.GetID(eDataTypes.EcospaceGroup, iEcopathGroupID)
-
-                                        Case eVarNameFlags.LayerDriver
-                                            ' Map id-ed uniquely
-                                            iLayerID = idm.GetID(eDataTypes.EcospaceLayerDriver, iLayerID)
-
-                                        Case eVarNameFlags.LayerHabitat
-                                            ' Map id-ed by habitat
-                                            iLayerID = idm.GetID(eDataTypes.EcospaceHabitat, iLayerID)
-
-                                        Case eVarNameFlags.LayerImportance
-                                            ' Map id-ed uniquely
-                                            iLayerID = idm.GetID(eDataTypes.EcospaceLayerImportance, iLayerID)
-
-                                        Case eVarNameFlags.LayerMPA
-                                            ' Map id-ed with mpa
-                                            iLayerID = idm.GetID(eDataTypes.EcospaceLayerMPA, iLayerID)
-
-                                        Case eVarNameFlags.LayerIBMAge1Forcing
-                                            'beats me....
-                                            'iSequence = i
-                                            iLayerID = idm.GetID(eDataTypes.EcospaceLayerMPA, iLayerID)
-
-                                    End Select
-
+                                    drow("VarName") = vn
                                     drow("LayerID") = iLayerID
                                     drow("Sequence") = iSequence
                                     drow("DatasetGUID") = strDataset
@@ -10304,55 +10316,79 @@ Namespace DataSources
                                     drow("ScaleType") = cfg.ScaleType
                                     drow("CustomDateStart") = cfg.CustomDateStart.ToString("yyyy/MM/dd")
                                     drow("CustomDateEnd") = cfg.CustomDateEnd.ToString("yyyy/MM/dd")
-                                    writer.AddRow(drow)
+                                    wr.AddRow(drow)
 
                                     iSequence += 1
                                 End If
                             End If
                         Next j
+
                     Next i
                 Next adt
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred saving Ecospace ext data connections for scenario {1}", ex.Message, iScenarioID))
+                cLog.Write(ex, "DBDataSource::SaveEcospaceDataConnections")
                 bSucces = False
             End Try
 
-            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
-            writer = Nothing
+            bSucces = bSucces And Me.m_db.ReleaseWriter(wr, bSucces)
+            wr = Nothing
 
             Return bSucces
 
         End Function
 
-        Private Function getLayerID(varname As eVarNameFlags, iIndex As Integer) As Integer
-            Dim arr As Integer() = Me.getLayerIDs(varname)
-            If ((iIndex < 0) Or (iIndex >= arr.Length)) Then Return cCore.NULL_VALUE
-            Return arr(iIndex)
+        Private Function SaveEcospaceDataConnectionsDisabled(idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
+            Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
+            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim iLayerID As Integer = -1
+            Dim dt As DataTable = Nothing
+            Dim wr As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim bSucces As Boolean = True
+
+            ' Get mapped scenario ID, in case saving to a different scenario
+            iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
+
+            Try
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataConnectionDisabled WHERE (ScenarioID={0})", iScenarioID))
+
+                wr = Me.m_db.GetWriter("EcospaceScenarioDataConnectionDisabled")
+                dt = wr.GetDataTable()
+
+                For Each adt As cSpatialDataAdapter In spatialDS.DataAdapters
+                    Dim vn As String = cin.GetVarName(adt.VarName)
+                    For i As Integer = 1 To adt.MaxLength
+
+                        If (Not adt.IsEnabled(i)) Then
+
+                            iLayerID = ecospaceDS.GetLayerID(adt.VarName, i)
+                            iLayerID = idm.GetID(ecospaceDS.GetLayerDataType(adt.VarName), iLayerID) ' Needs mapping
+
+                            drow = dt.NewRow()
+                            drow("ScenarioID") = iScenarioID
+                            drow("LayerID") = iLayerID
+                            drow("VarName") = vn
+                            dt.Rows.Add(drow) ' Never thought about this: is adding to datatable enough? Adding to writer = adding to datatable? Same thing?
+                        End If
+                    Next
+                Next
+
+            Catch ex As Exception
+                Me.LogError(String.Format("Error {0} occurred saving Ecospace ext data connection disabled state for scenario {1}", ex.Message, iScenarioID))
+                cLog.Write(ex, "DBDataSource::SaveEcospaceDataConnectionsDisabled")
+                bSucces = False
+            End Try
+
+            bSucces = bSucces And Me.m_db.ReleaseWriter(wr, bSucces)
+            Return bSucces
+
         End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Obtain a layer DBID for any varname and index.
-        ''' </summary>
-        ''' <param name="varname"></param>
-        ''' <remarks>
-        ''' This method is robust to any type of abuse; non-registered <paramref name="varname">variables</paramref>
-        ''' are dealt with properly.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Private ReadOnly Property getLayerIDs(varname As eVarNameFlags) As Integer()
-            Get
-                If varname = eVarNameFlags.LayerIBMAge1Forcing Then
-                    Return Me.m_core.m_Stanza.StanzaDBID
-                Else
-                    Return Me.m_core.m_EcospaceData.getLayerIDs(varname)
-                End If
-
-                Return New Integer() {0, 1}
-            End Get
-
-        End Property
 
 #End Region ' Data adapters
 

@@ -479,3 +479,14 @@ End Enum
 
 #End Region ' Diversity index
 
+''' -------------------------------------------------------------------
+''' <summary>
+''' Supported value conversion modes for spatial data.
+''' </summary>
+''' -------------------------------------------------------------------
+Public Enum eScaleType As Integer
+    ''' <summary>Values are applied as-is: no scaling is performed.</summary>
+    Absolute = 0
+    ''' <summary>Value are scaled before being applied.</summary>
+    Relative
+End Enum

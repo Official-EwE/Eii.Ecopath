@@ -99892,20 +99892,20 @@
           <Messages>
            <Message TypeName="EnumStorageShouldBeInt32" Category="Microsoft.Design" CheckId="CA1028" Created="2013-01-04 15:43:22Z">
             <Issue Name="NotInt32">
-             <Item>'cSpatialScalarDataAdapterBase.eScaleType'</Item>
+             <Item>'eScaleType'</Item>
              <Item>'Byte'</Item>
             </Issue>
            </Message>
            <Message Id="e" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2013-01-04 15:43:22Z">
             <Issue Name="Type">
              <Item>e</Item>
-             <Item>'cSpatialScalarDataAdapterBase.eScaleType'</Item>
+             <Item>'eScaleType'</Item>
              <Item>E</Item>
             </Issue>
            </Message>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2013-01-04 15:43:22Z">
             <Issue>
-             <Item>'cSpatialScalarDataAdapterBase.eScaleType'</Item>
+             <Item>'eScaleType'</Item>
             </Issue>
            </Message>
           </Messages>

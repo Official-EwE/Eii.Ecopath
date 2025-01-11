@@ -24,17 +24,14 @@ Imports System.Reflection
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
-
-' ToDo_JS: Load and save converter configuration
 
 Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Manages the connections between available <see cref="cSpatialDataAdapter"/>s 
+    ''' Manages the connections of available <see cref="cSpatialDataAdapter"/>s 
     ''' and <see cref="ISpatialDataSet"/>s
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -152,7 +149,7 @@ Namespace SpatialData
                                 conn.Dataset = ds
                                 conn.Converter = Me.m_datasetManager.CreateConverter(cfg)
                                 conn.Scale = cfg.Scale
-                                conn.ScaleType = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
+                                conn.ScaleType = cfg.ScaleType
                                 conn.CustomDateStart = cfg.CustomDateStart
                                 conn.CustomDateEnd = cfg.CustomDateEnd
                             End If
@@ -209,7 +206,7 @@ Namespace SpatialData
                             Me.m_datasetManager.UpdateDataset(conn.Dataset, cfg)
                             Me.m_datasetManager.UpdateConverter(conn.Converter, cfg)
                             cfg.Scale = conn.Scale
-                            cfg.ScaleType = CByte(conn.ScaleType)
+                            cfg.ScaleType = conn.ScaleType
                             cfg.CustomDateStart = If(conn.UseDefaultDateStart, Date.MaxValue, conn.CustomDateStart)
                             cfg.CustomDateEnd = If(conn.UseDefaultDateEnd, Date.MinValue, conn.CustomDateEnd)
                         Else

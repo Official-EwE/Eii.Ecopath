@@ -459,9 +459,9 @@ Namespace Ecospace.Controls
             Try
                 If (Me.m_bIsScaling) Then
                     If (Me.m_rbAbsolute.Checked) Then
-                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Absolute
+                        conn.ScaleType = eScaleType.Absolute
                     Else
-                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        conn.ScaleType = eScaleType.Relative
                         conn.Scale = CSng(Me.m_fpScale.Value)
                     End If
 
@@ -491,7 +491,7 @@ Namespace Ecospace.Controls
 
             Try
                 conn.Scale = CSng(Me.m_fpScale.Value)
-                conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                conn.ScaleType = eScaleType.Relative
 
                 ' Invalidate the cached data for this dataset
                 cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
@@ -546,7 +546,7 @@ Namespace Ecospace.Controls
                         ' Only when ok
                         Me.m_fpScale.Value = CSng(dScale)
                         conn.Scale = CSng(dScale)
-                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        conn.ScaleType = eScaleType.Relative
                         Me.LayerChanged()
 
                 End Select
@@ -590,10 +590,10 @@ Namespace Ecospace.Controls
             If (conn IsNot Nothing) Then
                 Try
                     If (Me.m_rbAbsolute.Checked) Then
-                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Absolute
+                        conn.ScaleType = eScaleType.Absolute
                         Me.m_fpScale.Enabled = False
                     Else
-                        conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
+                        conn.ScaleType = eScaleType.Relative
                         conn.Scale = CSng(Me.m_fpScale.Value)
                         Me.m_fpScale.Enabled = True
                     End If
@@ -890,9 +890,9 @@ Namespace Ecospace.Controls
             Me.m_bInUpdate = True
 
             Select Case conn.ScaleType
-                Case cSpatialScalarDataAdapterBase.eScaleType.Absolute
+                Case eScaleType.Absolute
                     Me.m_rbAbsolute.Checked = True
-                Case cSpatialScalarDataAdapterBase.eScaleType.Relative
+                Case eScaleType.Relative
                     Me.m_rbRelative.Checked = True
             End Select
             Me.m_fpScale.Value = conn.Scale
