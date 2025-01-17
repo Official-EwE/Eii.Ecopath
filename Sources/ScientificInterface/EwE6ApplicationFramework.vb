@@ -211,15 +211,23 @@ Module EwE6ApplicationFramework
     ''' <returns></returns>
     Public Function EwERelease() As String
 
+        Dim strRelease As String = ""
         Select Case EwE6ApplicationFramework.ReleaseMode
             Case eReleaseMode.Beta
-                Return My.Resources.VERSION_BETA
+                strRelease = My.Resources.VERSION_BETA
             Case eReleaseMode.Dev
-                Return My.Resources.VERSION_DEVELOPMENT
+                strRelease = My.Resources.VERSION_DEVELOPMENT
             Case eReleaseMode.Release
                 ' NOP
         End Select
-        Return ""
+
+#If DEBUG Then
+        If Not String.IsNullOrWhiteSpace(strRelease) Then
+            strRelease &= ", "
+        End If
+        strRelease += "DEBUG " & AppContext.BaseDirectory
+#End If
+        Return strRelease
 
     End Function
 
