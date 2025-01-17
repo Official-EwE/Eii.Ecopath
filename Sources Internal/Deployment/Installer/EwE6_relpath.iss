@@ -4,7 +4,7 @@
 
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 0
+#define Compile64Bit 1
 #define CodeSigning 1                       ; set to 0 to disable code signing
 
 ; Optional features
@@ -35,7 +35,6 @@ VersionInfoVersion={#FileVersion}
 #define DefDB "Database"
 
 [Setup]
-
 ; Code signing, fundamental for distributing installers and executables:
 ; - EII 2020 .pfx code signing certificate expired 2 Dec 2023. 
 ; - EII 2024 .cer code signing certificate will expire 10 Jan 2027
@@ -54,9 +53,9 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL=https://ecopathinternational.org
 AppSupportURL=mailto:support@ecopath.org
 AppVersion={#MyAppVersion}
-DefaultDirName={pf}\{#MyAppName} {#MyAppVersion}
+DefaultDirName={commonpf}\{#MyAppName} {#MyAppVersion}
 DefaultGroupName={#MyAppName}\Release {#MyAppVersion}
-MinVersion=0,6.1
+MinVersion=0,6.1sp1
 SetupIconFile=Ecopath_install.ico
 #if CodeSigning == 1
 SignTool=codesign /d $q{#MyAppName}$q $f
@@ -81,7 +80,7 @@ ChangesAssociations=True
   ; done in "64-bit mode" on x64, meaning it should use the native
   ; 64-bit Program Files directory and the 64-bit view of the registry.
   ; On all other architectures it will install in "32-bit mode".
-  ArchitecturesInstallIn64BitMode=x64
+  ArchitecturesInstallIn64BitMode=x64compatible
   ; Note: We don't set ProcessorsAllowed because we want this
   ; installation to run on all architectures (including Itanium,
   ; since it's capable of running 32-bit code too).
@@ -392,6 +391,8 @@ UseRelativePaths=True
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Flags: postinstall skipifsilent; Description: "Run {#MyAppName}"
 
+// [PostCompile]
+// #emit "cmd.exe /C GenerateChecksum.bat " + '"' + OutFile + '" "' + OutFileSHA256 + '"'
 
 [Code]
 // https://stackoverflow.com/questions/4104011/inno-setup-verify-that-net-4-0-is-installed
@@ -510,6 +511,31 @@ begin
     end;
 end;
 
+
+// Generate and return a SHA 256 checksum for a file
+// Blueprint served up by ChatGPT
+function GenerateSHA256Checksum(FileName: String): String;
+var
+  ResultCode: Integer;
+  Command: String;
+  OutFile: String;
+begin
+  // Build the command to call the batch file
+  Outfile := ExtractFileDir(FileName) + '\' + ChangeFileExt(FileName, 'SHA256');
+  Command := 'cmd.exe /C "GenerateChecksum.bat "' + FileName + '" "' + OutFile + '"';
+
+  // Run the batch file
+  if Exec('cmd.exe', '/C ' + Command, '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+  begin
+    if ResultCode = 0 then
+      Result := 'Checksum generated successfully: ' + OutFile
+    else
+      Result := 'Error generating checksum. Batch file returned code: ' + IntToStr(ResultCode);
+  end
+  else
+    Result := 'Error launching batch file.';
+end;
+
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
     case CurStep of
@@ -519,6 +545,7 @@ begin
             begin
                 InstallFramework();
             end;
+ 
         end;
     end;
 end;
