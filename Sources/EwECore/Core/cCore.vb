@@ -3226,8 +3226,13 @@ Public Class cCore
 
                             ' Try to resolve path
                             cPathUtility.ResolvePath(Me.BackupFileMask, strSrc, db.GetVersion.ToString, strDest)
+
+                            ' Need to close the DS for now
+                            Dim name As String = ds.ToString
+                            ds.Close()
                             ' Create backup
                             bSucces = cFileUtils.CreateBackup(strSrc, strDest)
+                            ds.Open(name, Me)
 
                             If bSucces Then
                                 msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_SUCCESS, strDest),
