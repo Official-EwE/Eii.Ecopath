@@ -1694,7 +1694,7 @@ Public Class frmEwE6
                 If diff > 28 Then ' Start warning four weeks prior expiration
                     Me.m_tsbnLicense.Image = SharedResources.license_ok
                 ElseIf diff > 0 Then
-                    Me.m_tsbnLicense.Image = SharedResources.license_expiring
+                    Me.m_tsbnLicense.Image = SharedResources.Warning
                 Else
                     Me.m_tsbnLicense.Image = SharedResources.license_expired
                 End If
