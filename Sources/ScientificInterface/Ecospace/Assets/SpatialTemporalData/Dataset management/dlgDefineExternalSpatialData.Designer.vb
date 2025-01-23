@@ -61,6 +61,8 @@ Namespace Ecospace.Controls
             Me.m_btnManageConfigurations = New System.Windows.Forms.Button()
             Me.m_gridDatasets = New ScientificInterface.Ecospace.Controls.gridDefineExternalSpatialData()
             Me.m_hdrSharing = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnImport = New System.Windows.Forms.Button()
+            Me.BUTTON_CANCEL = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_btnDelete
@@ -154,8 +156,8 @@ Namespace Ecospace.Controls
             Me.m_gridDatasets.BackColor = System.Drawing.Color.White
             Me.m_gridDatasets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridDatasets.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridDatasets.CustomSort = False
             Me.m_gridDatasets.DataName = "grid content"
             Me.m_gridDatasets.FixedColumnWidths = False
@@ -165,14 +167,14 @@ Namespace Ecospace.Controls
             Me.m_gridDatasets.Name = "m_gridDatasets"
             Me.m_gridDatasets.SelectedDataset = Nothing
             Me.m_gridDatasets.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatasets.UIContext = Nothing
             '
             'm_hdrSharing
@@ -183,12 +185,25 @@ Namespace Ecospace.Controls
             Me.m_hdrSharing.IsCollapsed = False
             Me.m_hdrSharing.Name = "m_hdrSharing"
             '
+            'm_btnImport
+            '
+            resources.ApplyResources(Me.m_btnImport, "m_btnImport")
+            Me.m_btnImport.Name = "m_btnImport"
+            Me.m_btnImport.UseVisualStyleBackColor = True
+            '
+            'BUTTON_CANCEL
+            '
+            resources.ApplyResources(Me.BUTTON_CANCEL, "BUTTON_CANCEL")
+            Me.BUTTON_CANCEL.Name = "BUTTON_CANCEL"
+            Me.BUTTON_CANCEL.UseVisualStyleBackColor = True
+            '
             'dlgDefineExternalSpatialData
             '
             Me.AcceptButton = Me.m_btnOK
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_btnImport)
             Me.Controls.Add(Me.m_lblConfigValue)
             Me.Controls.Add(Me.m_lblConfig)
             Me.Controls.Add(Me.m_hdrDefineConnections)
@@ -197,6 +212,7 @@ Namespace Ecospace.Controls
             Me.Controls.Add(Me.m_lblNew)
             Me.Controls.Add(Me.m_cmbTemplates)
             Me.Controls.Add(Me.m_cbEnableIndexing)
+            Me.Controls.Add(Me.BUTTON_CANCEL)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_gridDatasets)
             Me.Controls.Add(Me.m_btnManageConfigurations)
@@ -229,6 +245,8 @@ Namespace Ecospace.Controls
         Private WithEvents m_hdrDefineConnections As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_btnManageConfigurations As System.Windows.Forms.Button
         Private WithEvents m_hdrSharing As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnImport As Button
+        Private WithEvents BUTTON_CANCEL As Button
     End Class
 
 End Namespace

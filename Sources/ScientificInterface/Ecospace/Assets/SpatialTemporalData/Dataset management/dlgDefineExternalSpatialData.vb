@@ -26,7 +26,7 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -132,6 +132,7 @@ Namespace Ecospace.Controls
             Me.m_btnCreate.Enabled = bHasTemplate
             Me.m_btnConfigure.Enabled = bHasSelection And bCanConfig
             Me.m_btnDelete.Enabled = bHasSelection
+            Me.m_btnImport.Enabled = bHasTemplate
             Me.m_btnExport.Enabled = bHasDS
 
             Me.m_lblConfigValue.Text = Me.m_manSets.CurrentConfigFile.CompactString(Me.m_lblConfigValue.ClientSize.Width, Me.Font)
@@ -178,6 +179,24 @@ Namespace Ecospace.Controls
                 Debug.Assert(False, ex.Message)
             End Try
             Me.UpdateControls()
+        End Sub
+
+
+        Private Sub OnImport(sender As Object, e As EventArgs) _
+            Handles m_btnImport.Click
+            Try
+                ' ToDo: localize this
+                Dim dlg As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select spatial config file to import from", "", ScientificInterfaceShared.My.Resources.FILEFILTER_XML)
+                If dlg.ShowDialog() = DialogResult.OK Then
+                    Dim datasets As ISpatialDataSet() = cSpatialDataConfigFile.GetDatasets(dlg.FileName)
+                    If (datasets.Count > 0) Then
+                        Me.m_manSets.AddRange(datasets, True)
+                        Me.Reload()
+                    End If
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "dlgDefineExternalSpatialData::OnImport")
+            End Try
         End Sub
 
         Private Sub OnExport(sender As System.Object, e As System.EventArgs) _
@@ -234,6 +253,14 @@ Namespace Ecospace.Controls
             Me.m_manSets.Save()
             Me.Close()
         End Sub
+
+        Private Sub OnCancel(sender As Object, e As EventArgs) _
+            Handles BUTTON_CANCEL.Click
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.m_manSets.Reload(True)
+            Me.Close()
+        End Sub
+
 
         Private Sub OnManageConfigurations(sender As System.Object, e As System.EventArgs) _
             Handles m_btnManageConfigurations.Click
@@ -352,8 +379,7 @@ Namespace Ecospace.Controls
             If (sets Is Nothing) Then Return False
             If (sets.Length = 0) Then Return False
 
-            ' ToDo: globalize this
-            Dim fmsg As New cFeedbackMessage("This operation cannot be undone. Are you sure?", _
+            Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(SharedResources.GENERIC_CONFIRMDELETE_PROMPT, sets.Count),
                                              eCoreComponentType.Ecospace, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             fmsg.Reply = eMessageReply.NO
             Me.m_uic.Core.Messages.SendMessage(fmsg)
@@ -371,6 +397,7 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
 
         End Function
+
 
 #End Region ' Internals 
 

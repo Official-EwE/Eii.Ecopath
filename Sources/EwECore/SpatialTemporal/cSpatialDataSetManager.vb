@@ -160,14 +160,15 @@ Namespace SpatialData
         ''' <returns>False if the config file is corrupted, True otherwise.</returns>
         ''' <remarks>This method can also be used to import extra datasets.</remarks>
         ''' -------------------------------------------------------------------
-        Public Function Load(Optional strFile As String = "",
-                             Optional bClearFirst As Boolean = True) As Boolean
+        Public Function Load(Optional strFile As String = "", Optional bClearFirst As Boolean = True) As Boolean
 
             Dim bSuccess As Boolean = False
 
             If (bClearFirst) Then Me.Clear()
 
-            If (String.IsNullOrWhiteSpace(strFile)) Then strFile = cSpatialDataSetManager.DefaultConfigFile()
+            If (String.IsNullOrWhiteSpace(strFile)) Then
+                strFile = Me.CurrentConfigFile()
+            End If
 
             Me.m_strConfigFile = strFile
 
@@ -175,13 +176,14 @@ Namespace SpatialData
             '     file content and purpose, etc. This warrants a unique class to maintain this info.
             Dim cfg As New cSpatialDataConfigFile()
             If cfg.Initialize(strFile) Then
-                If cfg.Load(Me.m_core, Me) Then
 
+                Dim datasets() As ISpatialDataSet = cfg.Load(strFile)
+                If (datasets.Count > 0) Then
+                    Me.AddRange(datasets, False)
                     Me.DataDescription = cfg.Description
                     Me.DataAuthor = cfg.Author
                     Me.DataContact = cfg.Contact
                     bSuccess = True
-
                 End If
             End If
 
@@ -222,15 +224,18 @@ Namespace SpatialData
             If (datasets Is Nothing) Then
                 datasets = Me.Datasets()
             End If
-            If (datasets.Length = 0) Then Return False
-
-            If (String.IsNullOrWhiteSpace(strAuthor)) Then strAuthor = Me.DataAuthor
-            If (String.IsNullOrWhiteSpace(strContact)) Then strContact = Me.DataContact
-            If (String.IsNullOrWhiteSpace(strDescription)) Then strDescription = Me.DataDescription
 
             ' Any switch of destination other than to the default location is considered as an export
             Dim bExporting As Boolean = (cFileUtils.Equals(strFile, cSpatialDataSetManager.DefaultConfigFile) = False) And
                                         (cFileUtils.Equals(strFile, Me.CurrentConfigFile()) = False) And bExportData
+
+            ' No need to do this ;-)
+            If (bExporting And datasets.Length = 0) Then Return False
+
+            ' Complement missing properties
+            If (String.IsNullOrWhiteSpace(strAuthor)) Then strAuthor = Me.DataAuthor
+            If (String.IsNullOrWhiteSpace(strContact)) Then strContact = Me.DataContact
+            If (String.IsNullOrWhiteSpace(strDescription)) Then strDescription = Me.DataDescription
 
             ' Create dir
             strPath = Path.GetDirectoryName(strFile)
@@ -389,6 +394,25 @@ Namespace SpatialData
                 item.GUID = Guid.NewGuid()
             End If
             Me.UpdateIndexer()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <see cref="Add"/> a range of spatial data sets.
+        ''' -------------------------------------------------------------------
+        Public Sub AddRange(datasets As ICollection(Of ISpatialDataSet), bInvalidateCore As Boolean)
+            For Each ds As ISpatialDataSet In datasets
+                If (ds IsNot Nothing) Then
+                    Dim bAdd As Boolean = False
+                    If (Not (ds.GUID.Equals(Guid.Empty))) Then
+                        bAdd = (Me.Find(ds.GUID) Is Nothing)
+                    End If
+                    If bAdd Then
+                        If TypeOf ds Is IPlugin Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
+                        Me.Add(ds)
+                    End If
+                End If
+            Next
+            If bInvalidateCore Then Me.Changed()
         End Sub
 
         ''' -------------------------------------------------------------------

@@ -107,8 +107,9 @@ Namespace SpatialData
 
 #Region " Internals "
 
-        Friend Function Create(strFile As String) As Boolean
-            Me.FileName = strFile
+        Shared Function GetDatasets(strFile As String) As ISpatialDataSet()
+            Dim cfg As New cSpatialDataConfigFile()
+            Return cfg.Load(strFile)
         End Function
 
         Friend Function Initialize(strFile As String) As Boolean
@@ -162,83 +163,71 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Initializes the manager with datasets, loaded from persistent storage.
+        ''' Load the spatial datasets from a config file.
         ''' </summary>
         ''' <returns>False if the config file is corrupted, True otherwise.</returns>
         ''' <remarks>This method can also be used to import extra datasets.</remarks>
         ''' -------------------------------------------------------------------
-        Friend Function Load(core As cCore,
-                             man As cSpatialDataSetManager) As Boolean
+        Public Function Load(strFile As String) As ISpatialDataSet()
 
-            Dim strFile As String = Me.FileName
-            Dim strRoot As String = Path.GetDirectoryName(Me.FileName)
+            Dim strRoot As String = Path.GetDirectoryName(strFile)
             Dim doc As New XmlDocument()
             Dim xnRoot As XmlNode = Nothing
             Dim xa As XmlAttribute = Nothing
             Dim ds As ISpatialDataSet = Nothing
             Dim an As AssemblyName = Nothing
-            Dim msgWarning As cMessage = Nothing
             Dim bSuccess As Boolean = False
+            Dim datasets As New List(Of ISpatialDataSet)
 
-            If Not File.Exists(strFile) Then Return False
+            If File.Exists(strFile) Then
 
-            ' Load datasets
-            doc.Load(strFile)
+                ' Load datasets
+                doc.Load(strFile)
 
-            For Each xnRoot In doc.GetElementsByTagName("Datasets")
-                'Found a "Datasets" tag in the file
-                bSuccess = True
-                For Each xn As XmlNode In xnRoot.ChildNodes
-                    ds = Nothing
-                    If (xn.Name = "Dataset") Then
-                        xa = xn.Attributes("Type")
-                        If (xa IsNot Nothing) Then
-                            Try
-                                Dim strTypeName As String = xa.InnerText
-                                ' Type name mapping
-                                strTypeName = strTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin")
-                                ' Get plug-in
-                                Dim t As Type = cTypeUtils.StringToType(strTypeName)
-                                If (t Is Nothing) Then
-                                    t = GetType(cSpatialDatasetPlaceholder)
-                                End If
+                For Each xnRoot In doc.GetElementsByTagName("Datasets")
+                    'Found a "Datasets" tag in the file
+                    bSuccess = True
+                    For Each xn As XmlNode In xnRoot.ChildNodes
+                        ds = Nothing
+                        If (xn.Name = "Dataset") Then
+                            xa = xn.Attributes("Type")
+                            If (xa IsNot Nothing) Then
+                                Try
+                                    Dim strTypeName As String = xa.InnerText
+                                    ' Type name mapping
+                                    strTypeName = strTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin")
+                                    ' Get plug-in
+                                    Dim t As Type = cTypeUtils.StringToType(strTypeName)
+                                    If (t Is Nothing) Then
+                                        t = GetType(cSpatialDatasetPlaceholder)
+                                    End If
 
-                                ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
-                                If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(core)
+                                    ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
+                                    ' If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(core)
 
-                                If (TypeOf ds Is cSpatialDatasetPlaceholder) Then
-                                    DirectCast(ds, cSpatialDatasetPlaceholder).PreservedType = xa.InnerText
-                                End If
-                                ds.Configuration(doc, strRoot) = xn.ChildNodes(0)
+                                    If (TypeOf ds Is cSpatialDatasetPlaceholder) Then
+                                        DirectCast(ds, cSpatialDatasetPlaceholder).PreservedType = xa.InnerText
+                                    End If
+                                    ds.Configuration(doc, strRoot) = xn.ChildNodes(0)
 
-                                ' Assign GUID
-                                xa = xn.Attributes("GUID")
-                                ds.GUID = Guid.Parse(xa.InnerText)
+                                    ' Assign GUID
+                                    xa = xn.Attributes("GUID")
+                                    ds.GUID = Guid.Parse(xa.InnerText)
 
-                            Catch ex As Exception
-                                ds = Nothing
-                                bSuccess = False
-                                cLog.Write(ex, "cSpatialDataSetManager.Load(" & strFile & ")")
-                            End Try
+                                Catch ex As Exception
+                                    ds = Nothing
+                                    bSuccess = False
+                                    cLog.Write(ex, "cSpatialDataSetManager.Load(" & strFile & ")")
+                                End Try
 
-                            Dim bAdd As Boolean = False
-                            If (ds IsNot Nothing) Then
-                                bAdd = True
-                                If (Not (ds.GUID.Equals(Guid.Empty))) Then
-                                    bAdd = (man.Find(ds.GUID) Is Nothing)
-                                End If
+                                datasets.Add(ds)
                             End If
-                            If bAdd Then man.Add(ds)
                         End If
-                    End If
-                Next ' xn
-            Next ' xnRoot
-
-            If (msgWarning IsNot Nothing) Then
-                core.Messages.SendMessage(msgWarning)
+                    Next ' xn
+                Next ' xnRoot
             End If
 
-            Return bSuccess
+            Return datasets.ToArray()
 
         End Function
 
