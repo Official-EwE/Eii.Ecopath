@@ -386,6 +386,10 @@ Public MustInherit Class cCoreInputOutputBase
         End Set
     End Property
 
+    Public Function Variables() As eVarNameFlags()
+        Return Me.m_values.Keys.ToArray()
+    End Function
+
 #End Region ' Public Functions/Methods
 
 #Region " Mustoverride Methods "
