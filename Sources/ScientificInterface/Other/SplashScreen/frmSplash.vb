@@ -45,10 +45,10 @@ Friend Class frmSplash
         'image = 3
 #End If
 
-        ' EwE40
-        If cDateUtils.GetNextEvent(15) = cDateUtils.eNextEvent.EwE40 Then
-            image = 7
-        End If
+        Select Case cDateUtils.GetNextEvent()
+            Case cDateUtils.eNextEvent.EwE40 : image = 40
+            Case cDateUtils.eNextEvent.Fools : image = 666
+        End Select
 
         Select Case image
             Case 0 : Me.BackgroundImage = My.Resources.splash_01
@@ -58,15 +58,9 @@ Friend Class frmSplash
             Case 4 : Me.BackgroundImage = My.Resources.splash_05 : bInvertText = True
             Case 5 : Me.BackgroundImage = My.Resources.splash_06 : bInvertText = True
             Case 6 : Me.BackgroundImage = My.Resources.splash_07 : bInvertText = True
-            Case 7 : Me.BackgroundImage = My.Resources.splash_ewe40 : bInvertText = True
+            Case 40 : Me.BackgroundImage = My.Resources.splash_ewe40 : bInvertText = True
+            Case 666 : Me.BackgroundImage = My.Resources.splash_xx : bInvertText = True
         End Select
-
-
-        ' Tee hee hee
-        If ((now.Month = 4) And (now.Day = 1)) Then
-            Me.BackgroundImage = My.Resources.splash_xx
-            bInvertText = True
-        End If
 
         Me.Text = My.Resources.GENERIC_CAPTION
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Stretch
