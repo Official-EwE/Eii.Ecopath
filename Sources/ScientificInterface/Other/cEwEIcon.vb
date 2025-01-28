@@ -57,7 +57,7 @@ Public Class cEwEIcon
         End If
 
         ' Prepare icon
-        Select Case cDateUtils.GetNextEvent(15)
+        Select Case cDateUtils.GetNextEvent()
             Case cDateUtils.eNextEvent.Easter
                 Return My.Resources.Ecopath3_easter
             Case cDateUtils.eNextEvent.Xmas
