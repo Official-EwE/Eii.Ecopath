@@ -23,7 +23,6 @@ Option Explicit On
 Option Strict On
 
 Imports System.ComponentModel
-Imports System.Globalization
 Imports System.IO
 Imports System.Threading
 Imports EwECore
@@ -3421,10 +3420,10 @@ Public Class frmEwE6
     Private Sub OnUpdateAutosaveResults(cmd As cCommand) Handles m_cmdAutosaveConfig.OnUpdate
         ' Check if any autosave option set
         Dim bAutoSaving As Boolean = False
-        Dim nodes As eAutosaveTypes() = New eAutosaveTypes() {eAutosaveTypes.Ecopath, eAutosaveTypes.Ecosim, eAutosaveTypes.Ecospace}
+        Dim nodesExclude As eAutosaveTypes() = New eAutosaveTypes() {eAutosaveTypes.Ecopath, eAutosaveTypes.Ecosim, eAutosaveTypes.Ecospace}
         For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
             ' Exclude nodes
-            If Me.Core.Autosave(setting) And Array.IndexOf(nodes, setting) = -1 Then
+            If Me.Core.Autosave(setting) And Array.IndexOf(nodesExclude, setting) = -1 Then
                 bAutoSaving = True
                 Exit For
             End If
@@ -3451,12 +3450,20 @@ Public Class frmEwE6
     ''' Command update handler; enables and disables the <see cref="m_cmdAutorunConfig">Auto run results command</see>.
     ''' </summary>
     Private Sub OnUpdateAutorunConfig(cmd As cCommand) Handles m_cmdAutorunConfig.OnUpdate
-        ' Check if any autosave option set
+        ' Check if any autorun option is set
         Dim bAutoRunning As Boolean = False
+        Dim csm As cCoreStateMonitor = Me.Core.StateMonitor
+
         If (Me.m_pluginManager IsNot Nothing) Then
             For Each pi As IAutoRunPlugin In Me.m_pluginManager.GetPlugins(GetType(IAutoRunPlugin))
+                Dim bInclude As Boolean = False
                 For Each comp As eCoreComponentType In pi.AutoRunTypes
-                    If pi.AutoRun(comp) Then
+                    Select Case comp
+                        Case eCoreComponentType.Ecopath : bInclude = (csm.HasEcopathLoaded)
+                        Case eCoreComponentType.Ecosim, eCoreComponentType.EcoSimMonteCarlo : bInclude = (csm.HasEcosimLoaded)
+                        Case eCoreComponentType.Ecospace : bInclude = (csm.HasEcospaceLoaded)
+                    End Select
+                    If pi.AutoRun(comp) And bInclude Then
                         bAutoRunning = True
                         Exit For
                     End If
