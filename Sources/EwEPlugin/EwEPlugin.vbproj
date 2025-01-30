@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;net6.0</TargetFrameworks>
+    <TargetFrameworks>net48</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU;</Platforms>
     <OutputType>Library</OutputType>
     <SignAssembly>true</SignAssembly>
