@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48;net6.0</TargetFrameworks>
+    <TargetFrameworks>net48</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU</Platforms>
     <SccProjectName></SccProjectName>
     <SccLocalPath></SccLocalPath>

@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports System.ComponentModel
-Imports System.Data
 Imports System.Data.OleDb
 Imports System.Data.SqlClient
 Imports System.Reflection
@@ -29,10 +28,6 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
-
-' Enable caching of writers to improve database save performance. This should be tested thoroughly before including in a release
-' Note that writers will ONLY be cached while in a transaction!
-#Const USE_WRITERCACHE = 1
 
 #If VERBOSE Then
 #Const VERBOSE_LEVEL = 4
@@ -736,12 +731,6 @@ Namespace Database
         ''' <summary>The current transaction, if any.</summary>
         Private m_transaction As IDbTransaction = Nothing
 
-#If USE_WRITERCACHE Then
-        ''' <summary>Cache of DB writers obtained during a transaction for quick DB writing; the 
-        ''' process of obtaining and releasing writers can really slow big DB jobs down.</summary>
-        Private m_dtWriters As New Dictionary(Of String, cEwEDbWriter)
-#End If
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Begins a transaction for the current <see cref="GetConnection">Connection</see>.
@@ -774,7 +763,6 @@ Namespace Database
         Public Function CommitTransaction(Optional bRollbackOnError As Boolean = True) As Boolean
             If (Me.m_transaction Is Nothing) Then Return False
             Try
-                Me.ReleaseCachedWriters(True)
                 Me.m_transaction.Commit()
                 Me.m_transaction = Nothing
                 Return True
@@ -798,7 +786,6 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function RollbackTransaction() As Boolean
             Try
-                Me.ReleaseCachedWriters(False)
                 Me.m_transaction.Rollback()
                 Me.m_transaction = Nothing
                 Return True
@@ -819,26 +806,6 @@ Namespace Database
         Protected Function Transaction() As IDbTransaction
             Return Me.m_transaction
         End Function
-
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper method; release the cache of database writers.
-        ''' </summary>
-        ''' <seealso cref="BeginTransaction()"/>
-        ''' <seealso cref="RollbackTransaction()"/>
-        ''' <seealso cref="CommitTransaction(Boolean)"/>
-        ''' -------------------------------------------------------------------
-        Private Sub ReleaseCachedWriters(bCommit As Boolean)
-#If USE_WRITERCACHE Then
-            For Each writer As cEwEDbWriter In Me.m_dtWriters.Values
-                If bCommit Then writer.Commit()
-                Console.WriteLine("cEwEDatabase: Releasing writer rollback failed: {0}", writer.GetTableName(), writer.m_refcount)
-                writer.Dispose()
-            Next
-            Me.m_dtWriters.Clear()
-#End If
-        End Sub
 
 #End Region ' Transaction
 
@@ -932,15 +899,6 @@ Namespace Database
             Dim writer As cEwEDbWriter = Nothing
             Dim bIsValid As Boolean = False
 
-#If USE_WRITERCACHE Then
-            ' When in transaction, try to obtain cached writer
-            If (Me.m_transaction IsNot Nothing) Then
-                If (Me.m_dtWriters.ContainsKey(key)) Then
-                    writer = Me.m_dtWriters(key)
-                End If
-            End If
-#End If
-
             ' The writer may have perished due to a rollback 
             If (writer IsNot Nothing) Then
                 bIsValid = writer.IsConnected()
@@ -953,14 +911,6 @@ Namespace Database
             End If
 
             writer.m_refcount += 1
-
-#If USE_WRITERCACHE Then
-            ' When in transaction, keep writers at hand - experimental feature, debug mode only
-            If (Me.m_transaction IsNot Nothing) Then
-                Me.m_dtWriters(key) = writer
-            End If
-#End If
-
             Return writer
         End Function
 
@@ -978,11 +928,6 @@ Namespace Database
             Dim bSuccess As Boolean = False
 
             writer.m_refcount -= 1
-
-#If USE_WRITERCACHE Then
-            ' Don't do anything while in transaction
-            If (Me.m_transaction IsNot Nothing) Then Return True
-#End If
             bSuccess = writer.Disconnect(bSaveChanges)
             writer.Dispose()
 
