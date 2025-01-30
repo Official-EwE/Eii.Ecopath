@@ -460,13 +460,9 @@ Namespace Samples
         Public Function ImportFromModel(strModel As String) As Boolean
 
             Dim core As New cCore()
-            Dim ds As IEwEDataSource = cDataSourceFactory.Create(strModel)
             Dim bSuccess As Boolean = False
 
-            If (ds Is Nothing) Then Return bSuccess
-            If (ds.Open(strModel, core, eDataSourceTypes.NotSet, True) <> eDatasourceAccessType.Opened) Then Return False
-
-            If (core.LoadModel(ds)) Then
+            If (core.LoadModel(strModel)) Then
 
                 ' JS 25Apr16: User is responsible for importing from a compatible model
 
@@ -490,8 +486,6 @@ Namespace Samples
 
             End If
 
-            If (ds.IsOpen) Then ds.Close()
-            ds.Dispose()
             core.Dispose()
 
             Return bSuccess

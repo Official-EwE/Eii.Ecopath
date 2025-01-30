@@ -74,14 +74,10 @@ Public Class cDatabaseReader
 
     Private Function getCoreFromFilename(strModel As String) As cCore
         Dim core As New cCore()
-        Dim ds As EwECore.DataSources.IEwEDataSource = EwECore.DataSources.cDataSourceFactory.Create(strModel)
         Dim bReturnCore As Boolean = False
         Dim bBalanced As Boolean = False
 
-        If (ds Is Nothing) Then Return Nothing
-        If (ds.Open(strModel, core, eDataSourceTypes.NotSet, True) <> eDatasourceAccessType.Opened) Then Return Nothing
-
-        If (core.LoadModel(ds)) Then
+        If (core.LoadModel(strModel)) Then
 
             If core.RunEcopath(bBalanced) Then
                 If bBalanced Then
@@ -98,9 +94,6 @@ Public Class cDatabaseReader
             End If
 
         End If
-
-        If (ds.IsOpen) Then ds.Close()
-        ds.Dispose()
 
         If bReturnCore Then
             Return core

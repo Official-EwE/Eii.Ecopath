@@ -283,21 +283,16 @@ Public Class cEcopathModelFromEcosim
             atResult = db.Create(strFileName, strModelName, True, strAuthor:=Me.m_core.DefaultAuthor)
             If (atResult = eDatasourceAccessType.Created) Then
 
-                Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFileName)
-                If ds.Open(strFileName, coreDest) = eDatasourceAccessType.Opened Then
-                    If coreDest.LoadModel(ds) Then
-                        If Me.CreateItems(coreDest) Then
-                            Me.PopulateItems(coreDest, iTime, BACalculation, iNumYearsAverage, WeightPower)
-                        End If
+                If coreDest.LoadModel(strFileName) Then
+                    If Me.CreateItems(coreDest) Then
+                        Me.PopulateItems(coreDest, iTime, BACalculation, iNumYearsAverage, WeightPower)
                     End If
+                    coreDest.CloseModel()
+
+                    db = Nothing
+                    coreDest = Nothing
+
                 End If
-
-                coreDest.CloseModel()
-
-                db = Nothing
-                ds = Nothing
-                coreDest = Nothing
-
             End If
 
         Catch ex As Exception

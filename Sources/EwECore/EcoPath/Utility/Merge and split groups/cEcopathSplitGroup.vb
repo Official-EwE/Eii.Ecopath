@@ -101,7 +101,7 @@ Namespace Ecopath
                 Me.m_core.StateMonitor.UpdateDataState(Me.m_core.DataSource)
                 Me.m_core.SaveChanges(True)
 
-                Me.m_core.LoadModel(Me.m_core.DataSource)
+                Me.m_core.LoadModel(Me.m_core.DataSource.FileName)
 
             End If
 

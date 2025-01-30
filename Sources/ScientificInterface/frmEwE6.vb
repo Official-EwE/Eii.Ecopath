@@ -1439,7 +1439,16 @@ Public Class frmEwE6
     ''' This logic will need to change entirely. A database 
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Private Function CovertToEwE6(ByRef strFileName As String) As cEwEDatabase.eCompatibilityTypes
+    Private Function CovertToEwE6(strFileName As String) As cEwEDatabase.eCompatibilityTypes
+
+        ' Obvious check: let's make we don't already have this model open
+        If (Not String.IsNullOrWhiteSpace(Me.SelectedFileName)) Then
+
+            Dim f1 As String = Path.GetFullPath(strFileName)
+            Dim f2 As String = Path.GetFullPath(Me.SelectedFileName)
+            If (String.Compare(f1, f2, True) = 0) Then Return cEwEDatabase.eCompatibilityTypes.EwE6
+
+        End If
 
         Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
         Dim access As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
@@ -2148,12 +2157,6 @@ Public Class frmEwE6
 
         End Select
 
-        ' Can close the current open model, if any?
-        If Not Me.CloseEcopathModel() Then
-            ' #No: cannot close - abort
-            Return False
-        End If
-
         Select Case Me.CovertToEwE6(strFileName)
             Case cEwEDatabase.eCompatibilityTypes.EwE6
                 ' EwE6 database? OK
@@ -2168,40 +2171,25 @@ Public Class frmEwE6
         ' Abort if no new file name given
         If String.IsNullOrEmpty(strFileName) Then Return True
 
-        ' Create datasource on the selected file
-        ds = cDataSourceFactory.Create(strFileName)
+        Select Case loadsource
 
-        If (ds Is Nothing) Then
-            Select Case loadsource
-
-                Case eLoadSourceType.MRU
+            Case eLoadSourceType.MRU
                     ' Should not occur
 
-                Case eLoadSourceType.User, eLoadSourceType.CommandLine
-                    ' Unable to load model, show generic error
-                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_INVALIDMODEL, strFileName),
-                                   eMessageImportance.Warning, eCoreComponentType.DataSource)
+            Case eLoadSourceType.User, eLoadSourceType.CommandLine
+                ' Unable to load model, show generic error
+                Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_INVALIDMODEL, strFileName),
+                               eMessageImportance.Warning, eCoreComponentType.DataSource)
 
-                Case eLoadSourceType.API
-                    ' Ok then
+            Case eLoadSourceType.API
+                ' Ok then
 
-            End Select
-            Return False
-        End If
+        End Select
 
         ' Update MRU
         Me.AddModelMRU(strFileName)
 
-        ' Open the datasource
-        atResult = ds.Open(strFileName, Me.Core, eDataSourceTypes.NotSet, bReadOnly)
-
-        If (atResult <> eDatasourceAccessType.Success) Then
-            Me.ReportFileAccessError(atResult, strFileName)
-            Return False
-        End If
-
-        ' Ok, now let's see if the core can work with this
-        If Me.Core.LoadModel(ds) Then
+        If Me.Core.LoadModel(strFileName) Then
             ' Set core paths
             Me.UpdateCorePaths(True)
             Me.PopulateScenarioDropdowns()
