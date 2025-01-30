@@ -958,7 +958,7 @@ Public Class cCore
 
                 ' Reload restructured data
                 ' JS 17 May 2010: If a scenario does not need reloading then the scenario is explicitly discarded.
-                If (Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecopath) Then Me.LoadModel(DataSource)
+                If (Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecopath) Then Me.LoadModel(Me.DataSource.ToString())
                 If (iEcosimScenarioToLoad >= 0) Then Me.LoadEcosimScenario(iEcosimScenarioToLoad) Else Me.m_StateMonitor.SetEcoSimLoaded(Me.m_batchChangeLevel >= eBatchChangeLevelFlags.Ecosim)
                 If (iEcospaceScenarioToLoad >= 0) Then Me.LoadEcospaceScenario(iEcospaceScenarioToLoad) Else Me.m_StateMonitor.SetEcospaceLoaded(Me.m_batchChangeLevel >= eBatchChangeLevelFlags.Ecospace)
                 If (iEcotracerScenarioToLoad >= 0) Then Me.LoadEcotracerScenario(iEcotracerScenarioToLoad) Else Me.m_StateMonitor.SetEcotracerLoaded(Me.m_batchChangeLevel >= eBatchChangeLevelFlags.Ecotracer)
@@ -3475,58 +3475,51 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(strFile As String) As Boolean
 
-        Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFile)
-        If (ds Is Nothing) Then Return False
+        Dim bNeedClosing As Boolean = False
 
-        If ds.Open(strFile, Me) <> eDatasourceAccessType.Opened Then Return False
-        Return Me.LoadModel(ds)
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Load the Ecopath model from a given Datasource.
-    ''' </summary>
-    ''' <param name="ds">A <see cref="IEwEDataSource">IEwEDataSource</see>-derived
-    ''' object that provides access to the model. Note that the datasource must
-    ''' already be <see cref="IEwEDataSource.Open">opened</see>.</param>
-    ''' <returns>True if the model was loaded successfully. False otherwise</returns>
-    ''' <remarks>The given data source will be remembered here for subsequent 
-    ''' <see cref="SaveModel">SaveModel</see> and SaveEcosimScenario calls.</remarks>
-    ''' -----------------------------------------------------------------------
-    Public Function LoadModel(ds As IEwEDataSource) As Boolean
+        If (Me.DataSource IsNot Nothing) Then
+            If (String.Compare(strFile, Me.DataSource.ToString, True) <> 0) Then
+                ' Close model
+                If Not Me.CloseModel() Then Return False
+            End If
+        End If
 
         Dim dsEcopath As IEcopathDataSource = Nothing
         Dim bsuccess As Boolean
-
-        ' Sanity checks
-        Debug.Assert(ds IsNot Nothing, Me.ToString & "LoadModel() Datasource can not be NULL.")
-        Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid data source type specified")
-
-        If Not Me.CloseModel() Then Return False
 
         Me.m_Ecopath.RunState = Ecopath.eEcopathRunState.NotRun
         Me.m_EcopathData.ActiveEcosimScenario = -1
         Me.m_EcopathData.ActiveEcospaceScenario = -1
         Me.m_EcopathData.ActiveEcotracerScenario = -1
 
-        'm_bCoreIsInit was set in InitCore()
-        If Not m_bCoreIsInit Then
-            'core has not been initialized this can not be run
-            Debug.Assert(False, "The Core has not been initialized. Call InitCore() first.")
-            ' Flag data as gone
-            Me.m_StateMonitor.SetEcopathLoaded(False)
-            SendEcopathLoadMessage(ds, "Core not initialized")
-            Return False
-        End If
+        If (Me.DataSource Is Nothing) Then
+            ' Remember the new data source
+            Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFile)
+            If (ds Is Nothing) Then Return False
 
-        ' Run any available updates on the data source
-        If Not Me.UpdateDatasource(ds) Then
-            Return False
-        End If
+            If ds.Open(strFile, Me) <> eDatasourceAccessType.Opened Then Return False
 
-        ' Remember the new data source
-        DataSource = ds
+            ' Sanity checks
+            Debug.Assert(ds IsNot Nothing, Me.ToString & "LoadModel() Datasource can not be NULL.")
+            Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid data source type specified")
+
+            'm_bCoreIsInit was set in InitCore()
+            If Not m_bCoreIsInit Then
+                'core has not been initialized this can not be run
+                Debug.Assert(False, "The Core has not been initialized. Call InitCore() first.")
+                ' Flag data as gone
+                Me.m_StateMonitor.SetEcopathLoaded(False)
+                SendEcopathLoadMessage(ds, "Core not initialized")
+                Return False
+            End If
+
+            ' Run any available updates on the data source
+            If Not Me.UpdateDatasource(ds) Then
+                Return False
+            End If
+
+            Me.DataSource = ds
+        End If
 
         Try
 
@@ -3535,7 +3528,7 @@ Public Class cCore
             If dsEcopath.LoadModel() Then
 
                 If (Me.PluginManager IsNot Nothing) Then
-                    Me.PluginManager.OpenDatabase(ds.ToString)
+                    Me.PluginManager.OpenDatabase(strFile)
                 End If
 
                 'build model
@@ -3617,14 +3610,14 @@ Public Class cCore
             ' Flag data as gone
             Me.m_StateMonitor.SetEcopathLoaded(False)
             ' Major Error
-            Me.SendEcopathLoadMessage(ds, ex.Message)
+            Me.SendEcopathLoadMessage(DataSource, ex.Message)
             ' Release data source
             DataSource = Nothing
             ' Report error
             Return False
         End Try
 
-        Me.SendEcopathLoadMessage(ds)
+        Me.SendEcopathLoadMessage(DataSource)
 
         ' Invoke plugin point
         If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.LoadModel(DataSource)
