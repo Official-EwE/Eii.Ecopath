@@ -923,6 +923,19 @@ Namespace Utilities
             Return sbHex.ToString
         End Function
 
+        Public Shared Function FromHexString(strValue As String) As Byte()
+            Dim lBy As New List(Of Byte)
+            If (Not String.IsNullOrEmpty(strValue)) Then
+                Dim n As Integer = strValue.Count
+                For i As Integer = 0 To (n - 1) \ 2
+                    Dim strT As String = strValue.Substring(0, Math.Min(2, strValue.Length))
+                    strValue = strValue.Substring(2)
+                    lBy.Add(Convert.ToByte(Convert.ToInt32(strT, 16)))
+                Next
+            End If
+            Return lBy.ToArray()
+        End Function
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Convert a string into a base64 MD5 hash.
