@@ -247,7 +247,7 @@ Public Class cSearchDatastructures
         Me.m_EcoFunctions = EcoFunctions
 
         Try
-            Dim semaphore As New System.Threading.Semaphore(1, 1, "SearchMontlyCatch")
+            Dim semaphore As New System.Threading.Semaphore(1, 1)
             Me.m_SearchCatchSemaphor = semaphore
         Catch ex As Exception
             Console.WriteLine("Cannot create Semaphore: " & ex.Message & ". Skipping.")
