@@ -23,35 +23,21 @@ Option Strict On
 
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
+Imports System.Drawing.Imaging
 Imports System.IO
-Imports System.Runtime.Serialization.Formatters
-Imports System.Runtime.Serialization.Formatters.Binary
-Imports System.Runtime.Serialization
-Imports System.Reflection
+Imports System.Text.Json
+Imports System.Text.Json.Serialization
 Imports EwEUtils
+Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
 Namespace Auxiliary
 
-    <Serializable()> _
+    <Serializable()>
     Public NotInheritable Class cVisualStyle
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper class, stores custom visualization information for data entities.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        <Flags>
-        Public Enum eVisualStyleTypes As Integer
-            NotSet = 0
-            ForeColor = 1
-            BackColor = 2
-            Hatch = 4
-            Image = 8
-            Font = 16
-            Gradient = 32
-        End Enum
+#Region " Private vars "
 
         Private m_hatchStyle As HatchStyle = Drawing2D.HatchStyle.DiagonalCross
         Private m_clrFore As Color = Color.Black
@@ -65,8 +51,12 @@ Namespace Auxiliary
         Private m_gradientColors As Color() = Nothing
         Private m_gradientBreaks As Double() = Nothing
         Private m_gradientName As String = ""
-        <NonSerialized()> _
+        <NonSerialized()>
         Private m_container As cAuxiliaryData = Nothing
+
+#End Region ' Private vars
+
+        Public Shared ReadOnly FixedImageFormat As ImageFormat = ImageFormat.Png
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -114,6 +104,22 @@ Namespace Auxiliary
             Return vs
 
         End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper class, stores custom visualization information for data entities.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        <Flags>
+        Public Enum eVisualStyleTypes As Integer
+            NotSet = 0
+            ForeColor = 1
+            BackColor = 2
+            Hatch = 4
+            Image = 8
+            Font = 16
+            Gradient = 32
+        End Enum
 
         Public Sub Read(vs As cVisualStyle)
             If (vs Is Nothing) Then Return
@@ -172,6 +178,7 @@ Namespace Auxiliary
         ''' Get/set the image for a visual style, if any.
         ''' </summary>
         ''' -----------------------------------------------------------------------
+        <JsonIgnore>
         Public Property Image() As Image
             Get
                 Return Me.m_img
@@ -180,6 +187,39 @@ Namespace Auxiliary
                 If Not Equals(value, Me.m_img) Then
                     Me.m_img = value
                     Me.Update()
+                End If
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Serialize an image to and from a Hex string.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -----------------------------------------------------------------------
+        <JsonInclude>
+        Public Property ImageString As String
+            Get
+                If Me.Image IsNot Nothing Then
+                    Using ms As New MemoryStream()
+                        Me.Image.Save(ms, cVisualStyle.FixedImageFormat)
+                        Dim imageData As Byte() = ms.ToArray()
+                        Return cStringUtils.ToHexString(imageData)
+                    End Using
+                End If
+                Return Nothing
+            End Get
+            Set(value As String)
+                If Not String.IsNullOrEmpty(value) Then
+                    Dim imageData As Byte() = cStringUtils.FromHexString(value)
+                    Using ms As New MemoryStream(imageData)
+                        ' Build temp image
+                        Dim imgTemp As New Bitmap(ms)
+                        ' Just making sure
+                        Debug.Assert(imgTemp.RawFormat.Equals(cVisualStyle.FixedImageFormat))
+                        ' Clone the image to drop reliance on the memory stream it was created from
+                        Me.Image = New Bitmap(imgTemp)
+                    End Using
                 End If
             End Set
         End Property
@@ -386,49 +426,18 @@ Namespace Auxiliary
     ''' ===========================================================================
     Public Class cVisualStyleReader
 
-        Public Shared Function StyleToString(vs As cVisualStyle) As String
+        Public Shared Function StyleToString(style As cVisualStyle) As String
+            Dim jsonString As String = String.Empty
 
-            Dim strResult As String = String.Empty
-            Dim bf As New Binary.BinaryFormatter()
-            Dim ms As New MemoryStream()
+            Try
+                jsonString = JsonSerializer.Serialize(style)
+                Return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jsonString))
+            Catch ex As Exception
+                ' Handle exception appropriately
+            End Try
 
-            If (vs Is Nothing) Then Return ""
-
-            ' Write object to mem stream
-            bf.AssemblyFormat = FormatterAssemblyStyle.Simple
-            bf.Serialize(ms, vs)
-            strResult = System.Convert.ToBase64String(ms.ToArray(), Base64FormattingOptions.None)
-
-            ms.Close()
-            ms = Nothing
-
-            Return strResult
-
+            Return jsonString
         End Function
-
-        Private Class cVisualStyleNamespaceMapper
-            Inherits SerializationBinder
-
-            Public Overrides Function BindToType(assemblyName As String, strType As String) As System.Type
-
-                If (strType.Contains("EwECore")) Then
-                    Select Case strType
-                        Case "EwECore.cVisualStyle"
-                            strType = GetType(cVisualStyle).ToString
-                    End Select
-                End If
-
-                For Each ass As Assembly In AppDomain.CurrentDomain.GetAssemblies()
-                    Dim t As Type = ass.GetType(strType, False, True)
-                    If (t IsNot Nothing) Then
-                        Return t
-                    End If
-                Next
-                Return Nothing
-
-            End Function
-
-        End Class
 
         Public Shared Function StringToStyle(str As String) As cVisualStyle
 
@@ -436,22 +445,13 @@ Namespace Auxiliary
 
             If String.IsNullOrEmpty(str) Then Return vsResult
 
-            Dim bf As New BinaryFormatter()
-            Dim ms As MemoryStream = Nothing
-            Dim ab As Byte() = Nothing
-
-            ' Ignore assembly version differences
-            bf.AssemblyFormat = FormatterAssemblyStyle.Simple
-            ' Perform type mapping
-            bf.Binder = New cVisualStyleNamespaceMapper()
-
             Try
-                ab = System.Convert.FromBase64String(str)
-                ms = New MemoryStream(ab)
-                vsResult = CType(bf.Deserialize(ms), cVisualStyle)
+                Dim jsonString As String = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(str))
+                vsResult = JsonSerializer.Deserialize(Of cVisualStyle)(jsonString)
             Catch ex As Exception
-
+                ' Handle exception appropriately
             End Try
+
             Return vsResult
 
         End Function
