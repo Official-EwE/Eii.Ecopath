@@ -298,9 +298,8 @@ Public Class cOutcome
         grid.Clear()
         grid.IsValid = False
 
-        ' Should not have been fired. JS to backtrack
-        If (timestepdata.iTimeStep <= 0) Then Return False
-        If (timestepdata.iTimeStep = 1) Then Me.Calibrate(timestepdata)
+        If timestepdata.iTimeStep = 0 Then Return False
+        If timestepdata.iTimeStep = 1 Then Me.Calibrate(timestepdata)
 
         Debug.Assert(Me.m_scalar > 0)
 
@@ -322,7 +321,7 @@ Public Class cOutcome
         ' Ensure reasonable value range
         outcomerange = Math.Max(2, outcomerange)
 
-        Select Case Me.m_layertype
+		Select Case Me.m_layertype
             Case eLayerType.Biomass, eLayerType.Catch, eLayerType.Discards, eLayerType.Bycatch
                 grid.Units = Me.m_units.ToString(cUnits.Currency) ' "t/km²"
             Case eLayerType.Effort
