@@ -25,6 +25,8 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
 Imports System.IO
+Imports System.Runtime.Serialization.Formatters
+Imports System.Runtime.Serialization.Formatters.Binary
 Imports System.Text.Json
 Imports System.Text.Json.Serialization
 Imports EwEUtils
@@ -431,7 +433,7 @@ Namespace Auxiliary
 
             Try
                 jsonString = JsonSerializer.Serialize(style)
-                Return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jsonString))
+                Return "v2:" + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jsonString))
             Catch ex As Exception
                 ' Handle exception appropriately
             End Try
@@ -445,14 +447,34 @@ Namespace Auxiliary
 
             If String.IsNullOrEmpty(str) Then Return vsResult
 
-            Try
-                Dim jsonString As String = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(str))
-                vsResult = JsonSerializer.Deserialize(Of cVisualStyle)(jsonString)
-            Catch ex As Exception
-                ' Handle exception appropriately
-            End Try
+            If (str.StartsWith("v2:")) Then
+                Try
+                    Dim jsonString As String = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(str.Substring(3)))
+                    vsResult = JsonSerializer.Deserialize(Of cVisualStyle)(jsonString)
+                    Return vsResult
+                Catch ex As Exception
+                    ' Handle exception appropriately
+                End Try
+            End If
 
-            Return vsResult
+#If NETFRAMEWORK Then
+            Dim bf As New BinaryFormatter()
+            Dim ms As MemoryStream = Nothing
+            Dim ab As Byte() = Nothing
+
+            ' Ignore assembly version differences
+            bf.AssemblyFormat = FormatterAssemblyStyle.Simple
+
+            Try
+                ab = System.Convert.FromBase64String(str)
+                ms = New MemoryStream(ab)
+                vsResult = CType(bf.Deserialize(ms), cVisualStyle)
+                Return vsResult
+            Catch ex As Exception
+
+            End Try
+#End If
+            Return Nothing
 
         End Function
 
