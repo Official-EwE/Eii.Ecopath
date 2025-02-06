@@ -566,7 +566,7 @@
     <value>Ports||Ports map</value>
   </data>
   <data name="VARIABLE_LAYERREGION" xml:space="preserve">
-    <value>Regions||Map of statistical regions</value>
+    <value>Regions||Regions map</value>
   </data>
   <data name="VARIABLE_LAYERCONTAMINANTRELATIVEDISTRIBUTION" xml:space="preserve">
     <value>Rel. C||Rel. contaminant distribution</value>

@@ -17,11 +17,6 @@
 ' ===============================================================================
 '
 
-' ToDo_JS: external data enabled must become persistent
-'  - eVarNameFlags.EcospaceIsExternalDataEnabled has been declared
-'  - Database update has been declared
-'  - Need to define a data structure to read this data into (=awkward, LayerDBID + eDataType)
-
 ' ToDo_JS: perhaps add the ability to pre-load and cache external maps X time steps ahead on a separate thread?
 '  - Aim is to speed up loading external data while Ecospace computes. Is worthwhile for EcoOcean, but
 '    may be less of a benefit for smaller maps / less external data. It also allows for parallel
