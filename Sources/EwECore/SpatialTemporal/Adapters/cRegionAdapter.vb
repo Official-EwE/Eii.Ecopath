@@ -15,37 +15,20 @@
 ' Copyright 1991- 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
-'
-
-#Region " Imports "
 
 Option Strict On
+Imports EwECore.SpatialData
 Imports EwEUtils.Core
 
-#End Region ' Imports
+Public Class cRegionAdapter
+    Inherits cSpatialDataAdapter
 
-''' <summary>
-''' Layer providing access to Ecospace region data.
-''' </summary>
-Public Class cEcospaceLayerRegion
-    Inherits cEcospaceLayerInteger
-
-    Public Sub New(theCore As cCore, manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, "", eVarNameFlags.LayerRegion, 1)
-        Me.m_dataType = eDataTypes.EcospaceLayerRegion
+    Public Sub New(core As cCore, var As eVarNameFlags, cc As eCoreCounterTypes)
+        MyBase.New(core, var, cc)
     End Sub
 
-    ''' <summary>
-    ''' Overridden to return the max region value.
-    ''' </summary>
-    Public Overrides ReadOnly Property MaxValue As Single
-        Get
-            Return Me.m_core.nRegions
-        End Get
-    End Property
-
-    Protected Overrides Function DefaultName() As String
-        Return My.Resources.CoreDefaults.CORE_DEFAULT_REGION
+    Protected Overrides Function SetCell(layer As cEcospaceLayer, conn As cSpatialDataConnection, iRow As Integer, iCol As Integer, sCellValueAtT As Double) As Boolean
+        Return MyBase.SetCell(layer, conn, iRow, iCol, CInt(sCellValueAtT))
     End Function
 
 End Class
