@@ -4610,7 +4610,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Regions||Map of statistical regions.
+        '''  Looks up a localized string similar to Regions||Regions map.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERREGION() As String
             Get
