@@ -460,7 +460,7 @@ Public Class cEwEMSPLink
             cLog.Write("MEL exception thrown: " & strError)
             If (bEwEDetails) Then strError = strError & " See EwE error log for details"
 
-            Debug.WriteLine("EwEShell Throwing exception '" & strError & "'")
+            Console.WriteLine("EwEShell Throwing exception '" & strError & "'")
 
             Dim ex As New cMELException(strError)
             Throw ex
