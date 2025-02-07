@@ -22,7 +22,6 @@
 Option Strict On
 Imports System.Drawing
 Imports System.Net
-Imports System.Net.Mail
 Imports System.Text
 Imports System.Xml
 Imports EwECore
@@ -555,6 +554,10 @@ Public Class cGame
         For Each p As cPressure In Me.Pressures
             If (TypeOf (p) Is cFishingEffortPressure) Then
                 Dim d As cFleetEffortDriver = DirectCast(Me.Driver(p.Name), cFleetEffortDriver)
+                if (d is Nothing) then
+                    cEwEMSPLink.RaiseException("Validation failed; pressure '" & p.Name & "' is not connected to an Ecospace driver.", False)
+                    Continue For
+                End If
                 Dim s As New cScalar(p.Name, d.StartValue / Me.EffortMultiplier(p.Name))
                 items.Add(s)
             End If
@@ -1015,20 +1018,12 @@ Public Class cGame
                             Dim output As New cOutcome(Me.m_core, strName, type)
                             If (strNumerators.Contains(",")) Then
                                 Dim nums As String() = strNumerators.Split(","c)
-                                Dim dems As String() = strDenominators.Split(","c)
-                                Dim ids As String() = strItemIDs.Split(","c)
-
-                                For i As Integer = 1 To output.NumItems
-                                    Dim iItem As Integer = i
-                                    ' If item DBIDs are specified then 
-                                    If (ids.Count = output.NumItems) Then
-                                        Dim iPos As Integer = CInt(ids(i))
-                                        If (iPos > 0) Then
-                                            iItem = iPos
-                                        End If
-                                    End If
-                                    output.Numerator(iItem) = cStringUtils.ConvertToDouble(nums(i - 1))
-                                    output.Denominator(iItem) = cStringUtils.ConvertToDouble(nums(i - 1))
+                                For i As Integer = 1 To Math.Min(nums.Count, output.NumItems)
+                                    output.Numerator(i) = cStringUtils.ConvertToDouble(nums(i - 1))
+                                Next
+                                nums = strDenominators.Split(","c)
+                                For i As Integer = 1 To Math.Min(nums.Count, output.NumItems)
+                                    output.Denominator(i) = cStringUtils.ConvertToDouble(nums(i - 1))
                                 Next
                             Else
                                 ' Backward compatibility
