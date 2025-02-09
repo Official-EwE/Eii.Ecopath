@@ -1516,6 +1516,8 @@ Public Class frmEwE6
         Dim strHyperlink As String = ""
 
         Select Case atResult
+            Case eDatasourceAccessType.Failed_AlreadyInUse
+                strMessage = cStringUtils.Localize(My.Resources.STATUS_MODEL_ACCESS_ALREADYOPEN, strFileName)
             Case eDatasourceAccessType.Failed_ReadOnly
                 strMessage = cStringUtils.Localize(My.Resources.STATUS_MODEL_ACCESS_READONLY, strFileName)
             Case eDatasourceAccessType.Failed_OSUnsupported

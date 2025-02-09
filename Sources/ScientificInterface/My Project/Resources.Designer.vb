@@ -5360,6 +5360,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The model database &apos;{0}&apos; is already open. Please close the other program and try again..
+        '''</summary>
+        Public ReadOnly Property STATUS_MODEL_ACCESS_ALREADYOPEN() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MODEL_ACCESS_ALREADYOPEN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to An error occurred while attempting to access model &apos;{0}&apos;..
         '''</summary>
         Public ReadOnly Property STATUS_MODEL_ACCESS_FAILED() As String
