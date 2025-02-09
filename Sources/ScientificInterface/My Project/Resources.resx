@@ -2265,4 +2265,8 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="ecopath_blackfriday" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ecopath_blackfriday.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="STATUS_MODEL_ACCESS_ALREADYOPEN" xml:space="preserve">
+    <value>The model database '{0}' is already open. Please close the other program and try again.</value>
+    <comment>{0}=file name</comment>
+  </data>
 </root>

@@ -2884,6 +2884,8 @@ Namespace Core
     Public Enum eDatasourceAccessType As Integer
         ''' <summary>Database operation successful</summary>
         Success = 0
+        ''' <summary>Database is already open elsewhere</summary>
+        Failed_AlreadyInUse
         ''' <summary>Database could not be saved in the indicated location</summary>
         Failed_CannotSave
         ''' <summary>An unknown database type was requested</summary>
