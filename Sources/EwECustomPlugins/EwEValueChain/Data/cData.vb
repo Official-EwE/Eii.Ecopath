@@ -810,25 +810,25 @@ Public Class cData
         Return Me.m_lLinks(iIndex)
     End Function
 
-    Public Function CreateLandingsLink(unitSource As cProducerUnit, unitTarget As cUnit, group As cEcoPathGroupInput, ByRef bError As Boolean) As cLinkLandings
+    Public Function CreateLandingsLink(unitSource As cProducerUnit, unitTarget As cUnit, group As cEcoPathGroupInput, ByRef bError As Boolean, Optional bQuiet As Boolean = False) As cLinkLandings
 
         ' Sanity check
         If (unitSource Is Nothing) Or (unitTarget Is Nothing) Then
-            Me.SendMessage(My.Resources.ERROR_LINK_NEEDUNITS)
+            If Not bQuiet Then Me.SendMessage(My.Resources.ERROR_LINK_NEEDUNITS)
             bError = True
             Return Nothing
         End If
 
         ' Check if link is allowed
         If Not cLinkFactory.CanCreateLink(unitSource, unitTarget) Then
-            Me.SendMessage(My.Resources.ERROR_LINK_NOTALLOWED)
+            If Not bQuiet Then Me.SendMessage(My.Resources.ERROR_LINK_NOTALLOWED)
             bError = True
             Return Nothing
         End If
 
         ' Check for loop
         If unitTarget.IsLoop(unitSource) Then
-            Me.SendMessage(My.Resources.ERROR_LINK_LOOP)
+            If Not bQuiet Then Me.SendMessage(My.Resources.ERROR_LINK_LOOP)
             bError = True
             Return Nothing
         End If
@@ -836,7 +836,7 @@ Public Class cData
         ' Check for already present link
         If unitSource.HasTarget(unitTarget, group) Then
             Dim fmt As New cCoreInterfaceFormatter()
-            Me.SendMessage(cStringUtils.Localize(My.Resources.ERROR_LINK_DUPLICATE, fmt.ToString(group)))
+            If Not bQuiet Then Me.SendMessage(cStringUtils.Localize(My.Resources.ERROR_LINK_DUPLICATE, fmt.ToString(group)))
             bError = True
             Return Nothing
         End If
