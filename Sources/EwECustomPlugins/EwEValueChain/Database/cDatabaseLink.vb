@@ -133,7 +133,18 @@ Public Class cDatabaseLink
                 data.AddUnit(DirectCast(obj, cUnit))
             Next
 
-            ' Load links
+            ' Load imported (new) links first
+            aObjects = Me.m_db.ReadObjects(GetType(cLinkLandings), False)
+            For Each obj As cOOPStorable In aObjects
+                Dim ll As cLinkLandings = DirectCast(obj, cLinkLandings)
+                ll.Group = data.FindEcopathGroupByID(ll.EcopathGroupID)
+                If ll.Group IsNot Nothing Then
+                    data.AddLink(ll)
+                Else
+                    ll = ll
+                End If
+            Next
+            ' Import old-fashioned links after and convert them to cLinkLandings
             aObjects = Me.m_db.ReadObjects(GetType(cLink), False)
             For Each obj As cOOPStorable In aObjects
                 ' Is old-fashioned producer link?
@@ -159,10 +170,7 @@ Public Class cDatabaseLink
                     data.AddLink(DirectCast(obj, cLink))
                 End If
             Next
-            aObjects = Me.m_db.ReadObjects(GetType(cLinkLandings), False)
-            For Each obj As cOOPStorable In aObjects
-                data.AddLink(DirectCast(obj, cLink))
-            Next
+
 
             ' Load flow diagrams
             aObjects = Me.m_db.ReadObjects(GetType(cFlowDiagram), False)

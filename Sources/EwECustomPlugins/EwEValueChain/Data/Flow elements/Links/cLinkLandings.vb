@@ -251,6 +251,13 @@ Public Class cLinkLandings
         End Get
     End Property
 
+    Public Overrides Function Equals(obj As Object) As Boolean
+        If (obj Is Nothing) Then Return False
+        If (Not TypeOf obj Is cLinkLandings) Then Return False
+        Dim ll As cLinkLandings = DirectCast(obj, cLinkLandings)
+        Return MyBase.Equals(obj) And (ll.Group.DBID = Me.Group.DBID)
+    End Function
+
 #End Region ' Overrides
 
 End Class
