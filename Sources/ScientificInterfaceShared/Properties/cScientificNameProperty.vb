@@ -97,9 +97,15 @@ Namespace Properties
 
 #Region " Internals "
 
+        Private m_bInUpdate As Boolean = False
+
         Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
+            ' To avoid infinite loops due to poor use
+            If (Me.m_bInUpdate) Then Return
+            Me.m_bInUpdate = True
             ' Pass it on!
-            Me.OnPropertyChanged(Me, cf)
+            Me.FireChangeNotification(eChangeFlags.Value)
+            Me.m_bInUpdate = False
         End Sub
 
         Private Function Register(vn As eVarNameFlags) As cStringProperty
