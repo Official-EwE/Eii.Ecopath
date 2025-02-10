@@ -738,7 +738,7 @@ Public Class cData
         End If
     End Sub
 
-    Private Function FindEcopathGroupByID(iDBID As Integer) As cEcoPathGroupInput
+    Friend Function FindEcopathGroupByID(iDBID As Integer) As cEcoPathGroupInput
         Dim group As cEcoPathGroupInput = Nothing
         For i As Integer = 1 To Me.m_core.nGroups
             group = Me.m_core.EcopathGroupInputs(i)
@@ -747,7 +747,7 @@ Public Class cData
         Return Nothing
     End Function
 
-    Private Function FindEcopathFleetByID(iDBID As Integer) As cEcopathFleetInput
+    Friend Function FindEcopathFleetByID(iDBID As Integer) As cEcopathFleetInput
         Dim fleet As cEcopathFleetInput = Nothing
         For i As Integer = 1 To Me.m_core.nFleets
             fleet = Me.m_core.EcopathFleetInputs(i)
@@ -878,6 +878,9 @@ Public Class cData
             Return Nothing
         End If
 
+        ' Check if not already exists
+
+
         ' Check for loop
         If unitTarget.IsLoop(unitSource) Then
             Me.SendMessage(My.Resources.ERROR_LINK_LOOP)
@@ -917,12 +920,14 @@ Public Class cData
     ''' Add an output link to the local administration
     ''' </summary>
     ''' <param name="link"></param>
-    Public Sub AddLink(link As cLink)
+    Public Function AddLink(link As cLink) As Boolean
 
         ' Sanity check
         Debug.Assert(link IsNot Nothing)
         Debug.Assert(link.Target IsNot Nothing)
         Debug.Assert(link.Source IsNot Nothing)
+
+        If Me.HasLink(link) Then Return False
 
         Me.m_lLinks.Add(link)
         link.Source.AddLink(link)
@@ -937,8 +942,9 @@ Public Class cData
 
         ' Start listening for link change events
         AddHandler link.OnChanged, AddressOf Me.OnElementChanged
+        Return True
 
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Remove an output link from the local administration
@@ -961,6 +967,15 @@ Public Class cData
         Me.m_lLinks.Remove(link)
         link.Source.RemoveLink(link)
     End Sub
+
+    Public Function HasLink(link As cLink) As Boolean
+        For Each l As cLink In Me.m_lLinks
+            If link.Equals(l) And l.Equals(link) Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
 
     Public Sub OnGroupLinkChanged(unit As cEwEDatabase.cOOPStorable)
         If TypeOf unit Is cLinkLandings Then

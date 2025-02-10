@@ -201,10 +201,7 @@ Public MustInherit Class cUnit
     ''' <param name="iTimeStep"></param>
     ''' <param name="iUnit">The unit to aggregate by.</param>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub Process(results As cResults, _
-                                   input As cInput, _
-                                   iTimeStep As Integer, _
-                                   iUnit As Integer)
+    Public Overridable Sub Process(results As cResults, input As cInput, iTimeStep As Integer, iUnit As Integer)
 
         Dim sTotalOutputBiomass As Single = 0
         Dim sTotalOutputValue As Single = 0
@@ -228,7 +225,7 @@ Public MustInherit Class cUnit
                 Dim sOutputBiomass As Single = link.BiomassRatio * input.Tons
                 Dim sOutputValue As Single = 0
 
-                If ((link.ValuePerTon <> 1.0!) And (link.ValuePerTon <> 0)) Or _
+                If ((link.ValuePerTon <> 1.0!) And (link.ValuePerTon <> 0)) Or
                     (input.Tons = 0) Then
                     sOutputValue = link.ValuePerTon * sOutputBiomass
                 Else

@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports System.ComponentModel
+Imports System.Runtime.Remoting
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
@@ -37,11 +38,11 @@ Imports ScientificInterfaceShared.Style
 ''' cLinkDefaults
 ''' </remarks>
 ''' ===========================================================================
-<TypeConverter(GetType(cPropertySorter)), _
-    DefaultProperty("Name"), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
 Public Class cLink
-    : Inherits cLinkDefault
+    Inherits cLinkDefault
 
 #Region " Helper classes "
 
@@ -84,8 +85,8 @@ Public Class cLink
         ''' <summary>
         ''' Convert unit to unit
         ''' </summary>
-        Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, _
-                culture As System.Globalization.CultureInfo, _
+        Public Overrides Function ConvertFrom(context As ITypeDescriptorContext,
+                culture As System.Globalization.CultureInfo,
                 value As Object) As Object
             Return MyBase.ConvertFrom(context, culture, value)
         End Function
@@ -93,9 +94,9 @@ Public Class cLink
         ''' <summary>
         ''' Convert unit to unit name
         ''' </summary>
-        Public Overrides Function ConvertTo(context As ITypeDescriptorContext, _
-                culture As System.Globalization.CultureInfo, _
-                value As Object, _
+        Public Overrides Function ConvertTo(context As ITypeDescriptorContext,
+                culture As System.Globalization.CultureInfo,
+                value As Object,
                 destinationType As System.Type) As Object
 
             If TypeOf value Is cUnit Then
@@ -123,11 +124,11 @@ Public Class cLink
         MyBase.New()
     End Sub
 
-    <Browsable(True), _
-        Category(cCATEGORY_GENERIC), _
-        DisplayName("Name"), _
-        Description("Name of this link"), _
-        cPropertySorter.PropertyOrder(1)> _
+    <Browsable(True),
+        Category(cCATEGORY_GENERIC),
+        DisplayName("Name"),
+        Description("Name of this link"),
+        cPropertySorter.PropertyOrder(1)>
     Public Overrides Property Name() As String
         Get
             If String.IsNullOrWhiteSpace(Me.m_strName) Then
@@ -145,12 +146,12 @@ Public Class cLink
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(cCATEGORY_GENERIC), _
-        DisplayName("Source"), _
-        Description("Source unit for this link"), _
-        cPropertySorter.PropertyOrder(2), _
-        TypeConverter(GetType(cStaticUnitConverter))> _
+    <Browsable(True),
+        Category(cCATEGORY_GENERIC),
+        DisplayName("Source"),
+        Description("Source unit for this link"),
+        cPropertySorter.PropertyOrder(2),
+        TypeConverter(GetType(cStaticUnitConverter))>
     Public Property Source() As cUnit
         Get
             Return Me.m_source
@@ -161,12 +162,12 @@ Public Class cLink
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(cCATEGORY_GENERIC), _
-        DisplayName("Target"), _
-        Description("Target unit for this link"), _
-        cPropertySorter.PropertyOrder(3), _
-        TypeConverter(GetType(cStaticUnitConverter))> _
+    <Browsable(True),
+        Category(cCATEGORY_GENERIC),
+        DisplayName("Target"),
+        Description("Target unit for this link"),
+        cPropertySorter.PropertyOrder(3),
+        TypeConverter(GetType(cStaticUnitConverter))>
     Public Property Target() As cUnit
         Get
             Return Me.m_target
@@ -177,11 +178,11 @@ Public Class cLink
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(cCATEGORY_GENERIC), _
-        DisplayName("External"), _
-        Description("True when source and target differ in nationality."), _
-        cPropertySorter.PropertyOrder(4)> _
+    <Browsable(True),
+        Category(cCATEGORY_GENERIC),
+        DisplayName("External"),
+        Description("True when source and target differ in nationality."),
+        cPropertySorter.PropertyOrder(4)>
     Public ReadOnly Property External() As Boolean
         Get
             If Me.Source Is Nothing Then Return False
@@ -195,7 +196,7 @@ Public Class cLink
     ''' Returns the Style for this link
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overridable ReadOnly Property Style() As cStyleGuide.eStyleFlags
         Get
             Dim st As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
@@ -203,6 +204,13 @@ Public Class cLink
             Return st
         End Get
     End Property
+
+    Public Overrides Function Equals(obj As Object) As Boolean
+        If (obj Is Nothing) Then Return False
+        If (Not TypeOf obj Is cLink) Then Return False
+        Dim l As cLink = DirectCast(obj, cLink)
+        Return (Me.Source.DBID = l.Source.DBID) And (Me.Target.DBID = l.Target.DBID)
+    End Function
 
     Public Overrides Function ToString() As String
         Return Me.Name & " " & Me.BiomassRatio.ToString()
