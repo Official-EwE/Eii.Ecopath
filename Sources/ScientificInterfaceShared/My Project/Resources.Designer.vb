@@ -8896,6 +8896,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Energy||Energy content.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_ENERGYCONTENT() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_ENERGYCONTENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Effort||Fishing effort.
         '''</summary>
         Public ReadOnly Property TS_TYPE_FISHINGEFFORT() As String

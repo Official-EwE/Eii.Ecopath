@@ -402,6 +402,7 @@ Public Class cEIIXMLDataSource
                 ecopathDS.Immig(iGroup) = CSng(row("Immigration"))
                 ecopathDS.Emigration(iGroup) = CSng(row("Emigration"))
                 ecopathDS.Emig(iGroup) = Me.ReadSafe(row, "EmigRate", 0.0!)
+                ecopathDS.Energy(iGroup) = Me.ReadSafe(row, "Energy", 1.0!)
 
                 ' PSD
                 ecopathDS.vbK(iGroup) = Me.ReadSafe(row, "VBK", -1.0!)
@@ -3844,12 +3845,12 @@ Public Class cEIIXMLDataSource
                 Catch ex As Exception
                 End Try
             ElseIf TypeOf objResult Is Boolean Then
-                Try
-                    If (Convert.ToBoolean(objResult) = Convert.ToBoolean(objValueIgnore)) Then
-                        objResult = objValueDefault
-                    End If
-                Catch ex As Exception
-                End Try
+                'Try
+                '    If (Convert.ToBoolean(objResult) = Convert.ToBoolean(objValueIgnore)) Then
+                '        objResult = objValueDefault
+                '    End If
+                'Catch ex As Exception
+                'End Try
             Else
                 Try
                     If (Convert.ToSingle(objResult) = Convert.ToSingle(objValueIgnore)) Then

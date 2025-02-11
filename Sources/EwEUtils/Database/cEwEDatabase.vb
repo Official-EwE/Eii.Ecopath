@@ -763,6 +763,7 @@ Namespace Database
         Public Function CommitTransaction(Optional bRollbackOnError As Boolean = True) As Boolean
             If (Me.m_transaction Is Nothing) Then Return False
             Try
+                'Me.ReleaseCachedWriters(True)
                 Me.m_transaction.Commit()
                 Me.m_transaction = Nothing
                 Return True
@@ -786,6 +787,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Function RollbackTransaction() As Boolean
             Try
+                'Me.ReleaseCachedWriters(False)
                 Me.m_transaction.Rollback()
                 Me.m_transaction = Nothing
                 Return True
@@ -912,6 +914,7 @@ Namespace Database
 
             writer.m_refcount += 1
             Return writer
+
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1167,7 +1170,7 @@ Namespace Database
         ''' <param name="reader">The <see cref="IDataReader">IDataReader</see> to read from.</param>
         ''' <param name="strField">The name of the DB field (column) to read.</param>
         ''' <param name="objValueDefault">A default value to return if the field could not be read.</param>
-        ''' <param name="objValueIgnore">Value to interpret as 'no value. When encountered, the default value will be returned.</param>
+        ''' <param name="objValueIgnore">Value to interpret as 'no value'. When encountered, the default value will be returned.</param>
         ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
         ''' -----------------------------------------------------------------------
         Public Function ReadSafe(reader As IDataReader,

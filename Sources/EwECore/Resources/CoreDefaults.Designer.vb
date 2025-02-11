@@ -3557,6 +3557,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Energy|||Energy content multiplier.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_ENERGY() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_ENERGY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Effort response power.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_EPOWER() As String

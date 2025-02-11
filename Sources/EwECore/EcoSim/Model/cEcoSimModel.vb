@@ -22,6 +22,7 @@
 Option Strict On
 Option Explicit On
 
+Imports System.Runtime.CompilerServices
 Imports System.Threading
 Imports EwECore.MSE
 Imports EwEPlugin
@@ -107,6 +108,7 @@ Namespace Ecosim
         ' Private Ntimes As Integer
         Private StepsPerYear As Integer
         Private TimeNow As Integer
+        Private YearNow As Integer
         Private DeltaT As Single 'delta time in years one month set in SetTimeSteps
         Private nvar As Integer
 
@@ -136,20 +138,23 @@ Namespace Ecosim
         Private IadCode() As Integer, IjuCode() As Integer, IecoCode() As Integer
 
         Private nGroups As Integer
-        Private Sc() As Single, Irun As Integer 'arrays for state checking to debug ecosim when runs don't repeat
-        Private mean_BdyWt(,) As Single, Qmult() As Single, CurrentProfit() As Single
+        Private Irun As Integer 'arrays for state checking to debug ecosim when runs don't repeat
+        Private Qmult() As Single, CurrentProfit() As Single
         Private CurrentIncome() As Single, CapBase() As Single ', PcapBase() As Single
         Private EscalePar() As Single, CapTime() As Single ', Epower() As Single
         ' Private CapDepreciate() As Single
         ' Private CapBaseGrowth() As Single,
         Private CapGrowthFactor() As Single
         Private CostPenaltyConstant As Double
-        Private PoolForceTemp() As Boolean
         Private BestTime() As Single
         '       Epower(ig)    effort response power parameter, default 3.0
         '       PcapBase(ig)  initial effort as proportion of initial capital capacity, default 0.5
         '       CapDepreciate(ig)  capital depreciation rate, default 0.06
         '       CapBaseGrowth(ig) initial capital growth rate (proportional, /year), default 0.2
+
+        'Adding energy content to EwE: Villy 2025-01-14
+        Public EnergyBase() As Single
+        Public EnergyUsed As Boolean
 
         'Private BaseConsumption(50, 50) As Single
         'Parameter names changed as follows:
@@ -183,7 +188,6 @@ Namespace Ecosim
         Private fishingrate As Single, fstepp As Single, lastharvest As Single, equilharvest As Single
         Private lastvalue As Single, equilvalue As Single, cbval As Single, equilstock As Single
         Private LinScale As Single
-        Private Save() As Single
         Public Srec() As Single 'ww changed to public
         Private TimeSeriesFile As String
 
@@ -199,8 +203,6 @@ Namespace Ecosim
         Private DatDev(,) As Single
 
         Private NutPBmax As Single
-        Private BAoverBiomass() As Single
-        Private EXoverBiomass() As Single
         Private maxKageMax As Object
 
 
@@ -353,6 +355,9 @@ Namespace Ecosim
                 Me.BaseValueOfHarvest()
                 Me.BaseValueOfFishMGear()
                 Me.SetRelativeCatchabilities()
+
+                ' Prey relative energy base calculation, Villy 2025-01-16
+                Me.EnergyBaseCalculation()
 
 #If DEBUG Then
                 'Make sure FishMGear and relQ are set correctly 
@@ -654,10 +659,30 @@ Namespace Ecosim
                 For igrp As Integer = 1 To Me.nGroups
                     'jb 7-Jan-2010 addded PropDiscardMort() so the default for discards contain only the mort
                     Me.m_Data.PropDiscardMortTime(iflt, igrp) = Me.m_EPData.PropDiscardMort(iflt, igrp)
-                    Me.m_Data.Propdiscardtime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
+                    Me.m_Data.PropDiscardTime(iflt, igrp) = Me.m_EPData.PropDiscard(iflt, igrp) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
                     Me.m_Data.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
 
                 Next
+            Next
+
+        End Sub
+
+        'Energy calculation, just needs to be done once after Ecosim is loaded
+        ' Ccould instead be done when Ecopath model is balanced, it only usse Ecopath input
+
+        Private Sub EnergyBaseCalculation()
+            For i As Integer = 1 To Me.nGroups          'predator
+                Me.EnergyBase(i) = 0
+                For j As Integer = 1 To Me.nGroups      'prey
+                    If Me.m_EPData.QB(i) > 0 Then
+                        Me.EnergyBase(i) = Me.EnergyBase(i) + Me.EcopathData.DC(i, j) * Me.m_EPData.Energy(j)
+                    End If
+                Next
+                If (EnergyBase(i) = 0) Then EnergyBase(i) = 1 ' To avoid divisions by zero etc
+
+                If (Me.EnergyBase(i) <> 1) Then
+                    Me.EnergyUsed = True
+                End If
             Next
 
         End Sub
@@ -864,7 +889,7 @@ Namespace Ecosim
 
             t = 0
             itime = 0
-            Me.TimeNow = 1
+            Me.TimeNow = 1 : Me.YearNow = 1
             Me.m_search.Ecodistance = 0
             Me.m_search.ExistValue = 0
 
@@ -901,7 +926,7 @@ Namespace Ecosim
                         For iFlt As Integer = 1 To Me.m_EPData.NumFleet
                             For j = 1 To Me.m_EPData.NumGroups
                                 'Don't include discards that survived  Propdiscardtime() does not include survivors
-                                FSearch = Me.m_Data.relQ(iFlt, j) * (Me.m_Data.PropLandedTime(iFlt, j) + Me.m_Data.Propdiscardtime(iFlt, j))
+                                FSearch = Me.m_Data.relQ(iFlt, j) * (Me.m_Data.PropLandedTime(iFlt, j) + Me.m_Data.PropDiscardTime(iFlt, j))
                                 Me.m_search.FishYear(j) += Fgear(iFlt) * FSearch * QYear(iFlt)
                                 '********following line stops gear overwrite for cases where
                                 'model has been fit to historical data by using species F forcing
@@ -922,6 +947,7 @@ Namespace Ecosim
 
                     itime = itime + 1
                     Me.TimeNow = itime
+                    Me.YearNow = iyr
                     Dim itt As Integer = Math.Min(itime, NumberOfYears * Me.StepsPerYear)
 
                     'set QMult() multiplier (density dependent catchability) as a function of the current biomass for this timestep
@@ -1088,7 +1114,7 @@ Namespace Ecosim
 
             'TimeNow needs to be set back to the first timestep 
             'so it can be used by derivt() outside RunModelValue() and rk4()
-            Me.TimeNow = 1
+            Me.TimeNow = 1 : Me.YearNow = 1
 
         End Sub
 
@@ -1346,6 +1372,7 @@ Namespace Ecosim
             Return value
 
         End Function
+
 
         Private Sub setForcedBiomass(ByVal iModelTimeStep As Integer, iYear As Integer)
             Dim iGrp As Integer
@@ -2843,6 +2870,11 @@ Namespace Ecosim
             'Imported Detritus after forcing function has been applied
             Dim DetInFlow As Single
 
+            'Adding relative prey energy content to EwE: Villy 2025-01-14
+            Dim Eaten(Me.nGroups) As Single
+            Dim EnergyRel(Me.nGroups) As Single
+            'End of energy
+
             ReDim aeff(Me.m_Data.inlinks)
             ReDim Veff(Me.m_Data.inlinks)
             ReDim Hdent(Me.nGroups)
@@ -2985,20 +3017,40 @@ Namespace Ecosim
 
                     'ADDED CODE FOR CONTAMINANT ACCOUNTING
                     If Me.m_TracerData.EcoSimConSimOn = True Then
-                        If Biomass(i) > 0 Then
-                            Me.m_ConTracer.ConKtrophic(ii) = eat / Biomass(i)
-                        Else
-                            Me.m_ConTracer.ConKtrophic(ii) = 0
+                            If Biomass(i) > 0 Then
+                                Me.m_ConTracer.ConKtrophic(ii) = eat / Biomass(i)
+                            Else
+                                Me.m_ConTracer.ConKtrophic(ii) = 0
+                            End If
                         End If
-                    End If
 
-                Next 'For ii = 1 To m_Data.inlinks
+                    Next 'For ii = 1 To m_Data.inlinks
 
                 If Me.m_Data.TrophicOff Then
                     For i = 1 To Me.m_EPData.NumLiving
                         Me.m_Data.Eatenof(i) = (Me.Mtotal(i) - Me.m_Data.mo(i) * (1 - Me.m_Data.MoPred(i) + Me.m_Data.MoPred(i) * Me.m_Data.Ftime(i))) * Biomass(i)
                     Next
                 End If
+
+
+                'Added relative energy content, Villy 2025-01-14
+                'calc total eaten by each consumer group
+                If Me.EnergyUsed Then
+                    For j = 1 To Me.m_EPData.NumLiving
+                        For i = 1 To Me.nGroups
+                            Eaten(j) = Eaten(j) + Me.m_Data.simDCAtT(j, i)
+                        Next
+                    Next
+                    'Calc relative energy in food
+                    For j = 1 To Me.m_EPData.NumLiving
+                        If Eaten(j) > 0 Then        'a consumer
+                            For i = 1 To Me.nGroups
+                                EnergyRel(j) = EnergyRel(j) + Me.m_Data.simDCAtT(j, i) / Eaten(j) * Me.m_EPData.Energy(i)
+                            Next
+                        End If
+                    Next
+                End If
+                'End of energy
 
                 For i = 1 To Me.nGroups
                     Me.m_Data.Eatenby(i) = Me.m_Data.Eatenby(i) + Biomass(i) * Me.m_Data.QBoutside(i)
@@ -3084,9 +3136,14 @@ Namespace Ecosim
                         Else
                             Me.SimGEtemp(i) = Me.m_Data.SimGE(i)
                         End If
+                        'Added relative energy content, Villy 2025-01-14
+                        If Me.EnergyUsed And Me.EnergyBase(i) > 0 Then
+                            Me.SimGEtemp(i) = Me.SimGEtemp(i) * EnergyRel(i) / Me.EnergyBase(i)
+                        End If
+                        'End energy
 
                         deriv(i) = Me.m_EPData.Immig(i) + Biomass(i) * Me.pbb(i) + Me.SimGEtemp(i) * Me.m_Data.Eatenby(i) - Me.m_Data.loss(i)
-                        Me.biomeq(i) = (Me.m_EPData.Immig(i) + Me.m_Data.SimGE(i) * Me.m_Data.Eatenby(i) + Me.pbb(i) * Biomass(i)) / (Me.m_Data.loss(i) / Biomass(i))
+                        Me.biomeq(i) = (Me.m_EPData.Immig(i) + Me.SimGEtemp(i) * Me.m_Data.Eatenby(i) + Me.pbb(i) * Biomass(i)) / (Me.m_Data.loss(i) / Biomass(i))
                     Else
                         'Detritus group
                         'Flow to detritus from imports and immigration
@@ -3220,7 +3277,7 @@ Namespace Ecosim
             'VC changed tzero in CJWs version to TimeJuv()
             'find initial state for delay-difference model pools
             Dim i As Integer
-            Me.TimeNow = 1
+            Me.TimeNow = 1 : Me.YearNow = 1
 
             ReDim Me.Srec(Me.nGroups)
             ReDim Me.SimGES(Me.nGroups)
@@ -3308,6 +3365,14 @@ Namespace Ecosim
                 DefineArenasAndFlowList()
             End If
             Me.SetArenaVulandSearchRates()
+
+            'Adding relative energy content, Villy 2025-01-14
+            ReDim EnergyBase(Me.nGroups)
+            For i = 1 To Me.m_EPData.NumLiving
+                For j = 1 To Me.nGroups
+                    EnergyBase(i) += Me.m_EPData.DC(i, j) * Me.m_EPData.Energy(j)
+                Next
+            Next
 
         End Sub
 
@@ -5554,6 +5619,7 @@ Namespace Ecosim
                 ' Ntimes 
                 d.StepsPerYear = Me.StepsPerYear
                 d.TimeNow = Me.TimeNow
+                d.YearNow = Me.YearNow
                 d.DeltaT = Me.DeltaT
                 d.nvar = Me.nvar
                 d.DoingEiiSaving2Round = Me.DoingEiiSaving2Round
@@ -5564,8 +5630,6 @@ Namespace Ecosim
                 d.BaseValue = Me.BaseValue
                 d.A = DirectCast(Me.A.Clone, Single(,))
                 d.dydx = DirectCast(Me.dydx.Clone, Single())
-                'ConKdet.clone 
-                'd.GearIncludeInEquil = GearIncludeInEquil.Clone
 
                 d.BB = DirectCast(Me.BB.Clone, Single())
                 d.pbbase = DirectCast(Me.pbbase.Clone, Single())
@@ -5579,42 +5643,16 @@ Namespace Ecosim
                 d.IadCode = DirectCast(Me.IadCode.Clone, Integer())
                 d.IjuCode = DirectCast(Me.IjuCode.Clone, Integer())
                 d.IecoCode = DirectCast(Me.IecoCode.Clone, Integer())
+                d.EnergyBase = DirectCast(Me.EnergyBase.Clone, Single())
 
                 d.nGroups = Me.nGroups
-                'd.Sc = Sc.Clone
                 d.Irun = Me.Irun
-                'd.mean_BdyWt = mean_BdyWt.Clone
                 d.Qmult = DirectCast(Me.Qmult.Clone, Single())
-                'd.CurrentProfit = CurrentProfit.Clone
-                'd.CurrentIncome = CurrentIncome.Clone
-                'd.CapBase = CapBase.Clone
-                'd.PcapBase = PcapBase.Clone
                 d.EscalePar = DirectCast(Me.EscalePar.Clone, Single())
-                'd.CapTime = CapTime.Clone
-                'd.Epower = Epower.Clone
-                '  d.PredictSimEffort = PredictSimEffort
-                'd.CapDepreciate = CapDepreciate.Clone
-                'd.CapBaseGrowth = CapBaseGrowth.Clone
                 d.CapGrowthFactor = DirectCast(Me.CapGrowthFactor.Clone, Single())
                 d.CostPenaltyConstant = Me.CostPenaltyConstant
-                '      d.UseCostPenalty = UseCostPenalty
-                '     d.CostRatio = CostRatio.Clone
-                'd.PoolForceTemp = PoolForceTemp.Clone
                 d.BestTime = DirectCast(Me.BestTime.Clone, Single())
-                '   d.AssessPower = AssessPower
-                'd.GstockPred = GstockPred.Clone
-                'd.RstockPred = RstockPred.Clone
-                'd.KalmanGain = KalmanGain.Clone
-                '       Epower(ig)    effort response power parameter, default 3.0
-                '       PcapBase(ig)  initial effort as proportion of initial capital capacity, default 0.5
-                '       CapDepreciate(ig)  capital depreciation rate, default 0.06
-                '       CapBaseGrowth(ig) initial capital growth rate (proportional, /year), default 0.2
 
-                'd.BaseConsumption = DirectCast(BaseConsumption.Clone, Single(,))
-
-
-                ' d.XplotLast = XplotLast.Clone
-                '  d.YplotLast = YplotLast.Clone
                 d.fbasetest = Me.fbasetest
                 d.fstep = Me.fstep
                 d.fishingrate = Me.fishingrate
@@ -5626,46 +5664,29 @@ Namespace Ecosim
                 d.cbval = Me.cbval
                 d.equilstock = Me.equilstock
                 d.LinScale = Me.LinScale
-                'd.Save = Save.Clone
                 d.Srec = DirectCast(Me.Srec.Clone, Single())
                 d.TimeSeriesFile = Me.TimeSeriesFile
 
-
-                'm_refData.NdatType , m_refData.NdatYear , DatName.clone As String, m_refData.DatPool.clone 
-                'DatType.clone , m_refData.DatVal.clone , m_refData.DatYear.clone 
                 d.DatSumZ = DirectCast(Me.DatSumZ.Clone, Single())
                 d.DatSumZ2 = DirectCast(Me.DatSumZ2.Clone, Single())
                 d.DatNobs = DirectCast(Me.DatNobs.Clone, Integer())
-
-                ' Datq.clone , m_refdata.DatSS.clone 
 
                 d.NobsTime = DirectCast(Me.NobsTime.Clone, Single())
                 d.m_RefData.Erpred = DirectCast(Me.m_RefData.Erpred.Clone, Single())
                 d.m_RefData.Yhat = DirectCast(Me.m_RefData.Yhat.Clone, Single())
                 d.DatDev = DirectCast(Me.DatDev.Clone, Single(,))
-                ' m_refdata.Iobs 
 
                 d.NutPBmax = Me.NutPBmax
-                'ToDetritus.clone 
-                'd.BAoverBiomass = BAoverBiomass.Clone
-                'd.EXoverBiomass = EXoverBiomass.Clone
                 d.maxKageMax = Me.maxKageMax
 
-                'Ftime.clone 
-                'Publicm_data.Hden.clone 
                 d.CBlast = DirectCast(Me.CBlast.Clone, Single())
                 d.PredPerBiomass = DirectCast(Me.PredPerBiomass.Clone, Single())
-
-                ' d.ResetPred = ResetPred.Clone
-
 
                 ' ConKtrophic.clone 
                 d.pbb = DirectCast(Me.pbb.Clone, Single())
                 d.SimGEtemp = DirectCast(Me.SimGEtemp.Clone, Single())
                 d.biomeq = DirectCast(Me.biomeq.Clone, Single())
 
-                ' Wt.clone 
-                '  WtType.clone 
                 d.deriv = DirectCast(Me.deriv.Clone, Single())
                 d.RiskRate = DirectCast(Me.RiskRate.Clone, Single())
                 d.Qopt = DirectCast(Me.Qopt.Clone, Single())

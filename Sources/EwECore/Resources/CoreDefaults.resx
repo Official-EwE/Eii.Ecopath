@@ -2944,4 +2944,7 @@
   <data name="ECOSPACE_REGAVG_TL" xml:space="preserve">
     <value>Average regional trophic level by group</value>
   </data>
+  <data name="VARIABLE_ENERGY" xml:space="preserve">
+    <value>Energy|||Energy content multiplier</value>
+  </data>
 </root>

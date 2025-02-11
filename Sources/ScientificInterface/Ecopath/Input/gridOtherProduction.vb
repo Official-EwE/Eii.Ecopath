@@ -52,6 +52,7 @@ Namespace Ecopath.Input
             EmigRate
             BioAccum
             BioAccumRate
+            Energy
         End Enum
 
         Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
@@ -73,6 +74,7 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.EmigRate) = New cEwEColumnHeaderCell(eVarNameFlags.EmigRate)
             Me(0, eColumnTypes.BioAccum) = New cEwEColumnHeaderCell(eVarNameFlags.BioAccumInput)
             Me(0, eColumnTypes.BioAccumRate) = New cEwEColumnHeaderCell(eVarNameFlags.BioAccumRate, eDescriptorTypes.Abbreviation)
+            Me(0, eColumnTypes.Energy) = New cEwEColumnHeaderCell(eVarNameFlags.Energy, eDescriptorTypes.Abbreviation)
 
             Me.FixedColumns = 2
 
@@ -126,6 +128,7 @@ Namespace Ecopath.Input
                 Me(iRow, eColumnTypes.EmigRate) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.EmigRate)
                 Me(iRow, eColumnTypes.BioAccum) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccumInput)
                 Me(iRow, eColumnTypes.BioAccumRate) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccumRate)
+                Me(iRow, eColumnTypes.Energy) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.Energy)
 
             Next
 

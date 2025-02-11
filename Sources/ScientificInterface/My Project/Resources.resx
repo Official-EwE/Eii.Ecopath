@@ -1294,7 +1294,7 @@ Location: {1}</value>
     <comment>Used in complex item management dialogs. States that an item will be deleted once the dialog is applied</comment>
   </data>
   <data name="VALUE_PREVIEW" xml:space="preserve">
-    <value>AaBbCcYyZz</value>
+    <value>Ecopath rocks!</value>
     <comment>Preview text for color options page</comment>
   </data>
   <data name="STATUS_SPATIALTEMPORAL_CALCULATING" xml:space="preserve">
@@ -2087,7 +2087,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="OPTIONS_PAGE_GENERAL" xml:space="preserve">
     <value>General</value>
   </data>
-  <data name="OPTIONS_PAGE_GRAPHS" xml:space="preserve">
+  <data name="OPTIONS_PAGE_GRAPHSCHARTS" xml:space="preserve">
     <value>Graphs and charts</value>
   </data>
   <data name="OPTIONS_PAGE_INSTALLED" xml:space="preserve">

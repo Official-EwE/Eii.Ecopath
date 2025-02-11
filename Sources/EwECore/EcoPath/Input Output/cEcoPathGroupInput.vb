@@ -138,6 +138,9 @@ Public Class cEcoPathGroupInput
         val.AffectsRunState = False
         val.Stored = False
         Me.m_values.Add(val.varName, val)
+        ' Energy
+        val = New cValue(core, New Single, eVarNameFlags.Energy, eStatusFlags.Null, eValueTypes.Sng)
+        Me.m_values.Add(val.varName, val)
 
         ' -- arrays --
 
@@ -557,6 +560,22 @@ Public Class cEcoPathGroupInput
 
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the relative <see cref="cEcopathDataStructures.Energy">energy</see>
+    ''' contant for this group.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property Energy As Single
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.Energy))
+        End Get
+
+        Set(value As Single)
+            Me.SetVariable(eVarNameFlags.Energy, value)
+        End Set
+    End Property
+
     Public Property VBK() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.VBK))
@@ -961,6 +980,23 @@ Public Class cEcoPathGroupInput
         End Set
 
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="eStatusFlags">status</see> of the 
+    ''' <see cref="Energy">energy value</see> of this group.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property EnergyStatus As eStatusFlags
+        Get
+            Return Me.GetStatus(eVarNameFlags.Energy)
+        End Get
+
+        Friend Set(value As eStatusFlags)
+            Me.SetStatus(eVarNameFlags.Energy, value)
+        End Set
+    End Property
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

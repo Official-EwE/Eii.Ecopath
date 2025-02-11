@@ -161,8 +161,8 @@ Namespace Definitions
         Gradients
         ''' <summary>Font options.</summary>
         Fonts
-        ''' <summary>Graph options.</summary>
-        Graphs
+        ''' <summary>Graph and charts options.</summary>
+        GraphsCharts
         ''' <summary>Map options.</summary>
         ReferenceMaps
         ''' <summary>Plug-in options.</summary>

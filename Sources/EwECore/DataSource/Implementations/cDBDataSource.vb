@@ -2040,6 +2040,7 @@ Namespace DataSources
                     ecopathDS.Immig(iGroup) = CSng(reader("Immigration"))
                     ecopathDS.Emigration(iGroup) = CSng(reader("Emigration"))
                     ecopathDS.Emig(iGroup) = CSng(Me.m_db.ReadSafe(reader, "EmigRate", 0.0!))
+                    ecopathDS.Energy(iGroup) = CSng(Me.m_db.ReadSafe(reader, "Energy", 1.0!))
 
                     ' PSD
                     ecopathDS.vbK(iGroup) = CSng(Me.m_db.ReadSafe(reader, "VBK", -1))
@@ -2147,6 +2148,7 @@ Namespace DataSources
                     drow("Immigration") = ecopathDS.Immig(iGroup)
                     drow("Emigration") = ecopathDS.Emigration(iGroup)
                     drow("EmigRate") = ecopathDS.Emig(iGroup)
+                    drow("Energy") = ecopathDS.Energy(iGroup)
                     drow("PoolColor") = String.Format("{0:x8}", ecopathDS.GroupColor(iGroup))
 
                     'PSD
@@ -3752,7 +3754,7 @@ Namespace DataSources
 
                 ecosimDS.NutBaseFreeProp = CSng(reader("NutBaseFreeProp"))
                 ecosimDS.NutPBmax = CSng(reader("NutPBmax"))
-                ecosimDS.UseVarPQ = False
+                ecosimDS.UseVarPQ = (CInt(Me.m_db.ReadSafe(reader, "UseVarPQ", False)) <> 0)
                 ecosimDS.ForagingTimeLowerLimit = CSng(Me.m_db.ReadSafe(reader, "ForagingTimeLowerLimit", 0.01))
 
             Catch ex As Exception
@@ -3877,7 +3879,7 @@ Namespace DataSources
                 drow("NutBaseFreeProp") = ecosimDS.NutBaseFreeProp
                 drow("NutForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.NutForceNumber)
                 drow("NutPBmax") = ecosimDS.NutPBmax
-                'drow("UseVarPQ") = ecosimDS.UseVarPQ
+                drow("UseVarPQ") = ecosimDS.UseVarPQ
                 ' ------------------------------------------
                 drow("LastSaved") = cDateUtils.DateToJulian()
                 drow("LastSavedVersion") = cAssemblyUtils.GetVersion().ToString

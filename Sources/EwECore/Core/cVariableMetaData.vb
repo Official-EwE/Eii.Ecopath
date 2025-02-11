@@ -155,6 +155,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.TmaxInput) = New cVariableMetaData(0, Single.MaxValue, gt, le, cCore.NULL_VALUE, cUnits.Time)
         Me.Metadata(eVarNameFlags.IsFished) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.PP) = New cVariableMetaData(0, 2, ge, le)
+        Me.Metadata(eVarNameFlags.Energy) = New cVariableMetaData(0.0001, Single.MaxValue, ge, lt, 1)
         ' out
         Me.Metadata(eVarNameFlags.BiomassAreaOutput) = cVariableMetaData.Get(eVarNameFlags.BiomassAreaInput)
         Me.Metadata(eVarNameFlags.PBOutput) = cVariableMetaData.Get(eVarNameFlags.PBInput)
