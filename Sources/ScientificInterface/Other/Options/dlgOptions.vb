@@ -72,22 +72,23 @@ Namespace Other
             ' Create nodes
             Me.m_tvOptions.Nodes.Clear()
 
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_GENERAL, eApplicationOptionTypes.General.ToString(), GetType(ucOptionsGeneral)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_FILEMANAGEMENT, eApplicationOptionTypes.Autosave.ToString(), GetType(ucOptionsFileManagement)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_SPATTEMP, eApplicationOptionTypes.SpatialTemporal.ToString(), GetType(ucOptionsSpatialTemporal)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_GENERAL, eApplicationOptionTypes.General, GetType(ucOptionsGeneral)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_FILEMANAGEMENT, eApplicationOptionTypes.Autosave, GetType(ucOptionsFileManagement)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_SPATTEMP, eApplicationOptionTypes.SpatialTemporal, GetType(ucOptionsSpatialTemporal)))
 
             Dim tnAppearance As New TreeNode(My.Resources.OPTIONS_PAGE_APPEARANCE)
-            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_WINDOW, eApplicationOptionTypes.Window.ToString(), GetType(ucOptionsPresentation)))
-            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_COLORS, eApplicationOptionTypes.Colours.ToString(), GetType(ucOptionsStatusColors)))
-            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_GRADIENTS, eApplicationOptionTypes.Gradients.ToString(), GetType(ucOptionsColorRamps)))
-            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_FONTS, eApplicationOptionTypes.Fonts.ToString(), GetType(ucOptionsGraphs)))
-            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_MAPS, eApplicationOptionTypes.ReferenceMaps.ToString(), GetType(ucOptionsMap)))
-            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_PEDIGREE, eApplicationOptionTypes.Pedigree.ToString(), GetType(ucOptionsPedigree)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_WINDOW, eApplicationOptionTypes.Window, GetType(ucOptionsPresentation)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_COLORS, eApplicationOptionTypes.Colours, GetType(ucOptionsStatusColors)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_GRADIENTS, eApplicationOptionTypes.Gradients, GetType(ucOptionsColorRamps)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_GRAPHSCHARTS, eApplicationOptionTypes.GraphsCharts, GetType(ucOptionsGraphsCharts)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_FONTS, eApplicationOptionTypes.Fonts, GetType(ucOptionsFonts)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_MAPS, eApplicationOptionTypes.ReferenceMaps, GetType(ucOptionsMap)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_PEDIGREE, eApplicationOptionTypes.Pedigree, GetType(ucOptionsPedigree)))
             Me.m_tvOptions.Nodes.Add(tnAppearance)
 
             Dim tnPlugins As New TreeNode(My.Resources.OPTIONS_PAGE_PLUGINS)
-            tnPlugins.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_INSTALLED, eApplicationOptionTypes.Plugins.ToString(), GetType(ucOptionsPlugins)))
-            tnPlugins.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_AUTORUN, eApplicationOptionTypes.AutoRun.ToString(), GetType(ucOptionsAutoRun)))
+            tnPlugins.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_INSTALLED, eApplicationOptionTypes.Plugins, GetType(ucOptionsPlugins)))
+            tnPlugins.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_AUTORUN, eApplicationOptionTypes.AutoRun, GetType(ucOptionsAutoRun)))
 
             ' Add options pages provided by plug-ins
             Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
@@ -207,6 +208,13 @@ Namespace Other
 #End Region ' Event handlers
 
 #Region " Internals "
+
+        Private Function CreateNode(strLabel As String, app As eApplicationOptionTypes, type As Type) As TreeNode
+            Dim strVerb As String = app.ToString()
+            Dim tn As New TreeNode(strLabel) With {.Tag = strVerb}
+            Me.m_dtNodes(strVerb) = type
+            Return tn
+        End Function
 
         Private Function CreateNode(strLabel As String, strVerb As String, type As Type) As TreeNode
             Dim tn As New TreeNode(strLabel) With {.Tag = strVerb}

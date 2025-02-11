@@ -3230,4 +3230,7 @@
   <data name="LABEL_MEDIATION_XMARK" xml:space="preserve">
     <value>Base value = {0}, X index = {1}</value>
   </data>
+  <data name="TS_TYPE_ENERGYCONTENT" xml:space="preserve">
+    <value>Energy||Energy content</value>
+  </data>
 </root>

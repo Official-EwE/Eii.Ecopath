@@ -565,6 +565,12 @@
     <Compile Include="Other\Options\ucOptionsColorRamps.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Other\Options\ucOptionsFonts.Designer.vb">
+      <DependentUpon>ucOptionsFonts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\ucOptionsFonts.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Other\SplashScreen\frmSplash.Designer.vb">
       <DependentUpon>frmSplash.vb</DependentUpon>
     </Compile>
@@ -1267,6 +1273,9 @@
     <EmbeddedResource Include="Other\Options\ucOptionsColorRamps.resx">
       <DependentUpon>ucOptionsColorRamps.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\ucOptionsFonts.resx">
+      <DependentUpon>ucOptionsFonts.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Other\SplashScreen\frmSplash.resx">
       <DependentUpon>frmSplash.vb</DependentUpon>
     </EmbeddedResource>
@@ -1569,8 +1578,8 @@
       <DependentUpon>ucImportPageWelcome.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\ucOptionsGraphs.resx">
-      <DependentUpon>ucOptionsGraphs.vb</DependentUpon>
+    <EmbeddedResource Include="Other\Options\ucOptionsGraphsCharts.resx">
+      <DependentUpon>ucOptionsGraphsCharts.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Controls\cEwEStatusBar.vb">
@@ -1929,10 +1938,10 @@
     <Compile Include="Other\Options\ucOptionsPluginDetails.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Other\Options\ucOptionsGraphs.Designer.vb">
-      <DependentUpon>ucOptionsGraphs.vb</DependentUpon>
+    <Compile Include="Other\Options\ucOptionsGraphsCharts.Designer.vb">
+      <DependentUpon>ucOptionsGraphsCharts.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\Options\ucOptionsGraphs.vb">
+    <Compile Include="Other\Options\ucOptionsGraphsCharts.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\cMessageStateHandler.vb" />

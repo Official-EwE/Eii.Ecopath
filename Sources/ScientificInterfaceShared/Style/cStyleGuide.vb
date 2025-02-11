@@ -196,7 +196,7 @@ Namespace Style
         ''' <summary>Show transparent backgrounds where applicable</summary>
         Private m_bTransparentBackgrounds As Boolean = False
         ''' <summary>Size for node symbols (timeseries plots etc)</summary>
-        Private m_iNodeSymbolSize As Integer = 6
+        Private m_iNodeSymbolSize As Integer = 4
 
         ' -- group visibility --
         Private m_dtItemVisibilityPresets As New Dictionary(Of String, cItemVisibilityPreset)
@@ -1143,6 +1143,7 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Property NodeSymbolSize() As Integer
             Get
+                If (m_iNodeSymbolSize = cCore.NULL_VALUE) Then Return 4
                 Return Me.m_iNodeSymbolSize
             End Get
             Set(value As Integer)

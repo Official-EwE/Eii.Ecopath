@@ -21,7 +21,7 @@ Imports ScientificInterfaceShared
 
 Namespace Other
 
-    Partial Class ucOptionsGraphs
+    Partial Class ucOptionsGraphsCharts
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.
@@ -41,26 +41,18 @@ Namespace Other
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGraphs))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGraphsCharts))
             Me.m_hdr1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lblThumbnailSize = New System.Windows.Forms.Label()
             Me.m_nudThumbnailSize = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_rbLegendAlways = New System.Windows.Forms.RadioButton()
             Me.m_rbLegendSelective = New System.Windows.Forms.RadioButton()
             Me.m_lblThumbnailUnit = New System.Windows.Forms.Label()
-            Me.m_nudFontSize = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_lblFontSize = New System.Windows.Forms.Label()
-            Me.m_lblExample = New System.Windows.Forms.Label()
-            Me.m_hdr2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_cbFontStyle = New System.Windows.Forms.ComboBox()
-            Me.m_lblItemFontStyle = New System.Windows.Forms.Label()
-            Me.m_cbFontFamily = New System.Windows.Forms.ComboBox()
-            Me.lblItemForeColor = New System.Windows.Forms.Label()
-            Me.m_lbFontTypes = New System.Windows.Forms.ListBox()
             Me.Label1 = New System.Windows.Forms.Label()
-            Me.m_lblDescription = New System.Windows.Forms.Label()
+            Me.m_nudChartSymbols = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblSizeOfSymbols = New System.Windows.Forms.Label()
             CType(Me.m_nudThumbnailSize, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_nudFontSize, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudChartSymbols, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_hdr1
@@ -104,101 +96,41 @@ Namespace Other
             resources.ApplyResources(Me.m_lblThumbnailUnit, "m_lblThumbnailUnit")
             Me.m_lblThumbnailUnit.Name = "m_lblThumbnailUnit"
             '
-            'm_nudFontSize
-            '
-            resources.ApplyResources(Me.m_nudFontSize, "m_nudFontSize")
-            Me.m_nudFontSize.DecimalPlaces = 2
-            Me.m_nudFontSize.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            Me.m_nudFontSize.Maximum = New Decimal(New Integer() {24, 0, 0, 0})
-            Me.m_nudFontSize.Minimum = New Decimal(New Integer() {4, 0, 0, 0})
-            Me.m_nudFontSize.Name = "m_nudFontSize"
-            Me.m_nudFontSize.Value = New Decimal(New Integer() {825, 0, 0, 131072})
-            '
-            'm_lblFontSize
-            '
-            resources.ApplyResources(Me.m_lblFontSize, "m_lblFontSize")
-            Me.m_lblFontSize.Name = "m_lblFontSize"
-            '
-            'm_lblExample
-            '
-            resources.ApplyResources(Me.m_lblExample, "m_lblExample")
-            Me.m_lblExample.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_lblExample.Name = "m_lblExample"
-            '
-            'm_hdr2
-            '
-            resources.ApplyResources(Me.m_hdr2, "m_hdr2")
-            Me.m_hdr2.CanCollapseParent = False
-            Me.m_hdr2.CollapsedParentHeight = 0
-            Me.m_hdr2.IsCollapsed = False
-            Me.m_hdr2.Name = "m_hdr2"
-            '
-            'm_cbFontStyle
-            '
-            resources.ApplyResources(Me.m_cbFontStyle, "m_cbFontStyle")
-            Me.m_cbFontStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cbFontStyle.FormattingEnabled = True
-            Me.m_cbFontStyle.Items.AddRange(New Object() {resources.GetString("m_cbFontStyle.Items"), resources.GetString("m_cbFontStyle.Items1"), resources.GetString("m_cbFontStyle.Items2"), resources.GetString("m_cbFontStyle.Items3")})
-            Me.m_cbFontStyle.Name = "m_cbFontStyle"
-            '
-            'm_lblItemFontStyle
-            '
-            resources.ApplyResources(Me.m_lblItemFontStyle, "m_lblItemFontStyle")
-            Me.m_lblItemFontStyle.Name = "m_lblItemFontStyle"
-            '
-            'm_cbFontFamily
-            '
-            resources.ApplyResources(Me.m_cbFontFamily, "m_cbFontFamily")
-            Me.m_cbFontFamily.BackColor = System.Drawing.Color.White
-            Me.m_cbFontFamily.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.m_cbFontFamily.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cbFontFamily.FormattingEnabled = True
-            Me.m_cbFontFamily.Name = "m_cbFontFamily"
-            '
-            'lblItemForeColor
-            '
-            resources.ApplyResources(Me.lblItemForeColor, "lblItemForeColor")
-            Me.lblItemForeColor.Name = "lblItemForeColor"
-            '
-            'm_lbFontTypes
-            '
-            resources.ApplyResources(Me.m_lbFontTypes, "m_lbFontTypes")
-            Me.m_lbFontTypes.Name = "m_lbFontTypes"
-            '
             'Label1
             '
             resources.ApplyResources(Me.Label1, "Label1")
             Me.Label1.Name = "Label1"
             '
-            'm_lblDescription
+            'm_nudChartSymbols
             '
-            resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
-            Me.m_lblDescription.Name = "m_lblDescription"
+            Me.m_nudChartSymbols.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+            resources.ApplyResources(Me.m_nudChartSymbols, "m_nudChartSymbols")
+            Me.m_nudChartSymbols.Maximum = New Decimal(New Integer() {20, 0, 0, 0})
+            Me.m_nudChartSymbols.Minimum = New Decimal(New Integer() {4, 0, 0, 0})
+            Me.m_nudChartSymbols.Name = "m_nudChartSymbols"
+            Me.m_nudChartSymbols.Value = New Decimal(New Integer() {5, 0, 0, 0})
             '
-            'ucOptionsGraphs
+            'm_lblSizeOfSymbols
+            '
+            resources.ApplyResources(Me.m_lblSizeOfSymbols, "m_lblSizeOfSymbols")
+            Me.m_lblSizeOfSymbols.Name = "m_lblSizeOfSymbols"
+            '
+            'ucOptionsGraphsCharts
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-            Me.Controls.Add(Me.m_lblDescription)
-            Me.Controls.Add(Me.m_lblExample)
+            Me.Controls.Add(Me.Label1)
+            Me.Controls.Add(Me.m_nudChartSymbols)
+            Me.Controls.Add(Me.m_lblSizeOfSymbols)
             Me.Controls.Add(Me.m_lblThumbnailUnit)
             Me.Controls.Add(Me.m_rbLegendAlways)
             Me.Controls.Add(Me.m_nudThumbnailSize)
             Me.Controls.Add(Me.m_lblThumbnailSize)
-            Me.Controls.Add(Me.m_nudFontSize)
             Me.Controls.Add(Me.m_rbLegendSelective)
-            Me.Controls.Add(Me.m_lblFontSize)
-            Me.Controls.Add(Me.m_hdr2)
-            Me.Controls.Add(Me.m_cbFontStyle)
-            Me.Controls.Add(Me.Label1)
-            Me.Controls.Add(Me.m_lblItemFontStyle)
-            Me.Controls.Add(Me.m_cbFontFamily)
-            Me.Controls.Add(Me.lblItemForeColor)
-            Me.Controls.Add(Me.m_lbFontTypes)
             Me.Controls.Add(Me.m_hdr1)
-            Me.Name = "ucOptionsGraphs"
+            Me.Name = "ucOptionsGraphsCharts"
             CType(Me.m_nudThumbnailSize, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_nudFontSize, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudChartSymbols, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -208,18 +140,10 @@ Namespace Other
         Private WithEvents m_rbLegendAlways As System.Windows.Forms.RadioButton
         Private WithEvents m_rbLegendSelective As System.Windows.Forms.RadioButton
         Private WithEvents m_lblThumbnailUnit As System.Windows.Forms.Label
-        Private WithEvents m_lblFontSize As System.Windows.Forms.Label
-        Private WithEvents m_lblExample As System.Windows.Forms.Label
-        Private WithEvents m_hdr2 As cEwEHeaderLabel
-        Private WithEvents m_lblItemFontStyle As System.Windows.Forms.Label
-        Private WithEvents m_cbFontFamily As System.Windows.Forms.ComboBox
-        Private WithEvents lblItemForeColor As System.Windows.Forms.Label
-        Private WithEvents m_lbFontTypes As System.Windows.Forms.ListBox
-        Private WithEvents m_cbFontStyle As System.Windows.Forms.ComboBox
-        Private WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_nudThumbnailSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Private WithEvents m_nudFontSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Private WithEvents m_lblDescription As Label
+        Private WithEvents Label1 As Label
+        Private WithEvents m_nudChartSymbols As cEwENumericUpDown
+        Private WithEvents m_lblSizeOfSymbols As Label
     End Class
 End Namespace
 

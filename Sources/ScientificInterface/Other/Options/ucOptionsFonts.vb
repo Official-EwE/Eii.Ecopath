@@ -33,7 +33,7 @@ Namespace Other
     ''' User control; implements the Options > Graph settings interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class ucOptionsGraphs
+    Public Class ucOptionsFonts
         Implements IOptionsPage
         Implements IUIElement
 
@@ -117,9 +117,6 @@ Namespace Other
             Me.InitializeComponent()
             Me.UIContext = uic
 
-            ' Invisible init
-            Me.FillFontFamiliesComboBox()
-            Me.FillFontTypesListBox(False)
 
         End Sub
 
@@ -134,21 +131,11 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+            ' Invisible init
+            Me.FillFontFamiliesComboBox()
+            Me.FillFontTypesListBox(False)
+
             MyBase.OnLoad(e)
-
-            Me.m_nudThumbnailSize.Value = CDec(Math.Max(Me.m_nudThumbnailSize.Minimum, Math.Min(Me.m_nudThumbnailSize.Maximum, Me.UIContext.StyleGuide.ThumbnailSize)))
-
-            Select Case Me.UIContext.StyleGuide.ShowLegends
-                Case TriState.UseDefault, TriState.False
-                    Me.m_rbLegendSelective.Checked = True
-                Case TriState.True
-                    Me.m_rbLegendAlways.Checked = True
-                    'Case TriState.False
-                    '    Me.m_rbLegendNever.Checked = True
-            End Select
-
-            Me.m_lbFontTypes.SelectedIndex = 0
-            Me.m_lblExample.Text = My.Resources.VALUE_PREVIEW
 
         End Sub
 
@@ -260,19 +247,8 @@ Namespace Other
             If Not Me.CanApply Then Return IOptionsPage.eApplyResultType.Failed
 
             Dim fti As cFontTypeItem = Nothing
-            Dim tsShowLegends As TriState = TriState.UseDefault
-
-            If Me.m_rbLegendAlways.Checked Then
-                tsShowLegends = TriState.True
-                'ElseIf Me.m_rbLegendNever.Checked Then
-                '    tsShowLegends = TriState.False
-            End If
-
+  
             Me.UIContext.StyleGuide.SuspendEvents()
-
-            ' Update thumbnails, legend settings
-            Me.UIContext.StyleGuide.ThumbnailSize = CInt(Me.m_nudThumbnailSize.Value)
-            Me.UIContext.StyleGuide.ShowLegends = tsShowLegends
 
             ' Update fonts
             For i As Integer = 0 To Me.m_lbFontTypes.Items.Count - 1
@@ -452,6 +428,7 @@ Namespace Other
             End Set
         End Property
 
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Helper methods to draw a custom listcontrol item 
@@ -459,17 +436,23 @@ Namespace Other
         ''' <remarks>This method is called by both Listbox drawItem event handlers</remarks>
         ''' -------------------------------------------------------------------
         Private Sub UpdatePreview()
+            Me.m_plPreview.Invalidate()
+        End Sub
+
+        Private Sub OnPaintPreview(sender As Object, e As PaintEventArgs) Handles m_plPreview.Paint
 
             Dim fti As cFontTypeItem = Me.SelectedFontType
 
-            If (fti Is Nothing) Then
-                Me.m_lblExample.Visible = False
-            Else
-                Dim ft As Font = Me.m_lblExample.Font
-                Me.m_lblExample.Visible = True
-                Me.m_lblExample.Font = New Font(fti.FontFamilyName, fti.FontSize, fti.FontStyle, GraphicsUnit.Point)
-                ft.Dispose()
-            End If
+            e.Graphics.FillRectangle(SystemBrushes.Window, e.ClipRectangle)
+
+            If (fti Is Nothing) Then Return
+
+            Using ft As New Font(fti.FontFamilyName, fti.FontSize, fti.FontStyle, GraphicsUnit.Point)
+                Dim fmt As New StringFormat()
+                fmt.Alignment = StringAlignment.Center
+                fmt.LineAlignment = StringAlignment.Center
+                e.Graphics.DrawString(My.Resources.VALUE_PREVIEW, ft, SystemBrushes.ControlText, Me.m_plPreview.ClientRectangle, fmt)
+            End Using
 
         End Sub
 

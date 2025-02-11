@@ -200,6 +200,7 @@ Public Class cEcopathDataStructures
     ''' <summary>Flag stating whether diets have been modified since the last time Ecopath has ran.</summary>
     Public DietsModified As Boolean
     Public PProd As Single
+    Public Energy() As Single
 
     Public DietChanged(,) As Integer
 
@@ -489,6 +490,7 @@ Public Class cEcopathDataStructures
         ReDim Me.Emigration(Me.NumGroups)
         ReDim Me.Emig(Me.NumGroups)
         ReDim Me.Shadow(Me.NumGroups)
+        ReDim Me.Energy(Me.NumGroups)
         ReDim Me.GroupIsFish(Me.NumGroups)
         ReDim Me.GroupIsInvert(Me.NumGroups)
         ReDim Me.PropLanded(Me.NumFleet, Me.NumGroups)
@@ -521,6 +523,7 @@ Public Class cEcopathDataStructures
                 Me.CVpar(j, i) = 0.1
             Next j
             Me.CVpar(5, i) = 0.05
+            Me.Energy(i) = 1
         Next i
 
         'Stanzagroup  needed when importing eii files

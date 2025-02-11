@@ -4014,6 +4014,7 @@ Public Class cCore
                 group.VBK = m_EcopathData.vbK(iGroup)
                 group.PoolColor = m_EcopathData.GroupColor(iGroup)
                 group.NonMarketValue = m_EcopathData.Shadow(iGroup)
+                group.Energy = m_EcopathData.Energy(iGroup)
 
                 For i As Integer = 1 To nGroups
                     group.IsPrey(i) = False
@@ -4120,6 +4121,7 @@ Public Class cCore
 
                 m_EcopathData.GroupColor(iGroup) = Input.PoolColor
                 m_EcopathData.Shadow(iGroup) = Input.NonMarketValue()
+                m_EcopathData.Energy(iGroup) = Input.Energy
 
                 'from the original code MakeUnknownUnknown
                 m_EcopathData.BAInput(iGroup) = If(m_EcopathData.BaBi(iGroup) <> 0 And m_EcopathData.B(iGroup) > 0,

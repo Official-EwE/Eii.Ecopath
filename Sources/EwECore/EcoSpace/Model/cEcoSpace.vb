@@ -3352,6 +3352,17 @@ Public Class cEcoSpace
         Dim ToDetritus() As Single
         ReDim ToDetritus(Me.EcoSpaceData.NGroups)
 
+        'Adding relative prey energy content to EwE: Villy 2025-01-14
+        Dim Eaten() As Single
+        Dim EnergyRel() As Single
+        Dim SpaceDC(,) As Single
+        ReDim Eaten(Me.EcoSpaceData.NGroups)
+        ReDim EnergyRel(Me.EcoSpaceData.NGroups)
+        ReDim SpaceDC(Me.EcoSpaceData.NGroups, Me.EcoSpaceData.NGroups)
+
+        'End of energy
+
+
         If Me.EcoSimData.BioMedData.MedIsUsed(0) Then Me.EcoSim.SetMedFunctions(Biomass)
 
         Me.EcoSim.setpred(Biomass)
@@ -3464,6 +3475,7 @@ Public Class cEcoSpace
             Me.EcoSimData.Eatenof(i) = Me.EcoSimData.Eatenof(i) + eat
             Me.EcoSimData.Eatenby(j) = Me.EcoSimData.Eatenby(j) + eat
             'If m_SimData.IndicesOn Then m_SimData.Consumpt(i, j) = m_SimData.Consumpt(i, j) + eat
+            SpaceDC(j, i) = eat 'DCmean just used for convenience to store the sim diets
 
             'If frmSim1.IndicesOn Then Consumption(i, j) = Consumption(i, j) + eat
             'ToDetritus = ToDetritus + GS(j) * eat       'DF should be considered
@@ -3475,48 +3487,76 @@ Public Class cEcoSpace
 
         Next
 
+        'Added relative energy content, Villy 2025-01-14+16
+        'calc total eaten by each consumer group
+        If Me.EcoSim.EnergyUsed Then
+            For j = 1 To Me.EcoSpaceData.nLiving
+                For i = 1 To Me.EcoSpaceData.NGroups
+                    Eaten(j) = Eaten(j) + SpaceDC(j, i)
+                Next
+            Next
+            'Calc relative energy in food
+            For j = 1 To Me.EcoSpaceData.nLiving
+                If Eaten(j) > 0 Then        'a consumer
+                    For i = 1 To Me.EcoSpaceData.NGroups
+                        EnergyRel(j) = EnergyRel(j) + SpaceDC(j, i) / Eaten(j) * Me.EcoPathData.Energy(i)
+                    Next
+                End If
+            Next
+            'End of energy
+            'Added relative energy content, Villy 2025-01-14+16
+        End If
+
         'Make the detritus calculations here:
         Me.EcoSim.SimDetritusMT(Me.its, Biomass, Me.EcoSimData.FishRateGear, Me.EcoSimData.Eatenby, Me.EcoSimData.Eatenof, ToDetritus, GrpDet)
 
-        For i = 1 To Me.EcoSpaceData.NGroups
+            For i = 1 To Me.EcoSpaceData.NGroups
 
-            Me.EcoSimData.Eatenby(i) = Me.EcoSimData.Eatenby(i) + Me.EcoSimData.QBoutside(i) * Biomass(i)
+                Me.EcoSimData.Eatenby(i) = Me.EcoSimData.Eatenby(i) + Me.EcoSimData.QBoutside(i) * Biomass(i)
 
-            If i <= Me.EcoSpaceData.nLiving Then      'Living group
-                Pmult = 1.0#
-                Me.EcoSim.ApplyAVmodifiers(Me.its, Pmult, Veff(1), Mo, i, i, False)
+                If i <= Me.EcoSpaceData.nLiving Then      'Living group
+                    Pmult = 1.0#
+                    Me.EcoSim.ApplyAVmodifiers(Me.its, Pmult, Veff(1), Mo, i, i, False)
 
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                'Changed 3-Mar-2017
-                'Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
-                'There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
-                '1)      There is a line that calculates pbb(i):
-                'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
-                'change the term m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) in this line to just
-                '2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
-                '(this allows primary production rate to as much as double as nutrient concentrations increase)
-                '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'Changed 3-Mar-2017
+                    'Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
+                    'There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
+                    '1)      There is a line that calculates pbb(i):
+                    'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                    'change the term m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) in this line to just
+                    '2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
+                    '(this allows primary production rate to as much as double as nutrient concentrations increase)
+                    '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
 
-                'pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * m_SimData.NutFree / (m_SimData.NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
-                'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
-                Me.pbb(i) = 2 * EatEff(i) * Me.EcoSimData.NutFree / (Me.EcoSimData.NutFree + Me.EcoSimData.NutFreeBase(i)) * Pmult * Me.EcoSimData.pbm(i) / (1 + Biomass(i) * Me.PbSpace(i))
+                    'pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * m_SimData.NutFree / (m_SimData.NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
+                    'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
+                    Me.pbb(i) = 2 * EatEff(i) * Me.EcoSimData.NutFree / (Me.EcoSimData.NutFree + Me.EcoSimData.NutFreeBase(i)) * Pmult * Me.EcoSimData.pbm(i) / (1 + Biomass(i) * Me.PbSpace(i))
 
-                Me.loss(i) = Me.EcoSimData.Eatenof(i) + (Me.EcoSimData.mo(i) * (1 - Me.EcoSimData.MoPred(i) + Me.EcoSimData.MoPred(i) * Me.EcoSimData.Ftime(i)) + Me.EcoPathData.Emig(i) + Me.EcoSimData.FishTime(i)) * Biomass(i)
-                'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
-                'biomeq(i) = (Immig(i) + simGE(i) * Eatenby(i) + pbb(i) * Biomass(i)) / (loss(i) / Biomass(i))
+                    Me.loss(i) = Me.EcoSimData.Eatenof(i) + (Me.EcoSimData.mo(i) * (1 - Me.EcoSimData.MoPred(i) + Me.EcoSimData.MoPred(i) * Me.EcoSimData.Ftime(i)) + Me.EcoPathData.Emig(i) + Me.EcoSimData.FishTime(i)) * Biomass(i)
+                    'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
+                    'biomeq(i) = (Immig(i) + simGE(i) * Eatenby(i) + pbb(i) * Biomass(i)) / (loss(i) / Biomass(i))
 
-                If Me.EcoSimData.UseVarPQ And Me.EcoPathData.vbK(i) > 0 Then
-                    SimGEt = Me.EcoSimData.AssimEff(i) * Me.loss(i) / Biomass(i) / (Me.loss(i) / Biomass(i) + 3 * Me.EcoPathData.vbK(i))
-                Else
-                    SimGEt = Me.EcoSimData.SimGE(i)
-                End If
+                    If Me.EcoSimData.UseVarPQ And Me.EcoPathData.vbK(i) > 0 Then
+                        SimGEt = Me.EcoSimData.AssimEff(i) * Me.loss(i) / Biomass(i) / (Me.loss(i) / Biomass(i) + 3 * Me.EcoPathData.vbK(i))
+                    Else
+                        SimGEt = Me.EcoSimData.SimGE(i)
+                    End If
 
-                Flowin(i) = Me.EcoPathData.Immig(i) + SimGEt * Me.EcoSimData.Eatenby(i) + Me.pbb(i) * Biomass(i)
+                    'Added relative energy content, Villy 2025-01-14
+                    If Me.EcoSim.EnergyUsed And Me.EcoSim.EnergyBase(i) > 0 Then
+                        SimGEt = SimGEt * EnergyRel(i) / Me.EcoSim.EnergyBase(i)
+                    End If
+                    'SimGEt = SimGEt * EnergyRel(i) / Me.EcoSim.EnergyContent(i, Me.EcoSpaceData.MonthNow, Me.EcoSpaceData.YearNow) ' Piped through time series
+                    'End energy
 
-                If Biomass(i) > 1.0E-20 Then
-                    FlowoutRate(i) = Me.loss(i) / Biomass(i)
-                Else
-                    FlowoutRate(i) = 100
+
+                    Flowin(i) = Me.EcoPathData.Immig(i) + SimGEt * Me.EcoSimData.Eatenby(i) + Me.pbb(i) * Biomass(i)
+
+                    If Biomass(i) > 1.0E-20 Then
+                        FlowoutRate(i) = Me.loss(i) / Biomass(i)
+                    Else
+                        FlowoutRate(i) = 100
                 End If
                 'If Abs(Flowin(i) - loss(i)) > 0.1 * loss(i) Then Stop
             Else                'Detritus group

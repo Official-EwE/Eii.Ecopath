@@ -4123,9 +4123,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Graphs and charts.
         '''</summary>
-        Public ReadOnly Property OPTIONS_PAGE_GRAPHS() As String
+        Public ReadOnly Property OPTIONS_PAGE_GRAPHSCHARTS() As String
             Get
-                Return ResourceManager.GetString("OPTIONS_PAGE_GRAPHS", resourceCulture)
+                Return ResourceManager.GetString("OPTIONS_PAGE_GRAPHSCHARTS", resourceCulture)
             End Get
         End Property
         
@@ -5902,7 +5902,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to AaBbCcYyZz.
+        '''  Looks up a localized string similar to Ecopath rocks!.
         '''</summary>
         Public ReadOnly Property VALUE_PREVIEW() As String
             Get

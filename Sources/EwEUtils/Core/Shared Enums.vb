@@ -192,6 +192,8 @@ Namespace Core
         NonMarketValue
         ''' <summary>To document</summary>
         DiscardFate
+        ''' <summary>Group energy content scalar</summary>
+        Energy
 
         EcopathCatchTotalByFleetGroup
 

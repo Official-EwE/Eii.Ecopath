@@ -99,7 +99,6 @@ Public Class cEcoSimModelParameters
 
             'UseVarPQ
             val = New cValue(core, New Boolean, eVarNameFlags.UseVarPQ, eStatusFlags.Null, eValueTypes.Bool)
-            val.Stored = False
             Me.m_values.Add(val.varName, val)
 
             'BiomassOn
