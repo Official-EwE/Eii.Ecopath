@@ -2167,25 +2167,21 @@ Public Class frmEwE6
                 bReadOnly = True
             Case Else
                 ' No EwE6 database? abort
-                Return False
-        End Select
+                Select Case loadsource
 
-        ' Abort if no new file name given
-        If String.IsNullOrEmpty(strFileName) Then Return True
-
-        Select Case loadsource
-
-            Case eLoadSourceType.MRU
+                    Case eLoadSourceType.MRU
                     ' Should not occur
 
-            Case eLoadSourceType.User, eLoadSourceType.CommandLine
-                ' Unable to load model, show generic error
-                Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_INVALIDMODEL, strFileName),
-                               eMessageImportance.Warning, eCoreComponentType.DataSource)
+                    Case eLoadSourceType.User, eLoadSourceType.CommandLine
+                        ' Unable to load model, show generic error
+                        Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_INVALIDMODEL, strFileName),
+                                       eMessageImportance.Warning, eCoreComponentType.DataSource)
 
-            Case eLoadSourceType.API
-                ' Ok then
+                    Case eLoadSourceType.API
+                        ' Ok then
 
+                        Return False
+                End Select
         End Select
 
         ' Update MRU
