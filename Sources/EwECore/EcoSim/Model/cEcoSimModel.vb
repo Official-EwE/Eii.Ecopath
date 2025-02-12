@@ -21,8 +21,6 @@
 
 Option Strict On
 Option Explicit On
-
-Imports System.Runtime.CompilerServices
 Imports System.Threading
 Imports EwECore.MSE
 Imports EwEPlugin
