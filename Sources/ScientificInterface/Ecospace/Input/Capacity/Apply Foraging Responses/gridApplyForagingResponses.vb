@@ -99,13 +99,27 @@ Namespace Ecospace
             Try
                 Dim Manager As IEnvironmentalResponseManager = Me.Core.CapacityMapInteractionManager
                 Dim ShapeManager As cEnviroResponseShapeManager = Me.Core.EnviroResponseShapeManager
-                Dim ff As cForcingFunction
+                Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+                Dim ff As cForcingFunction = Nothing
+                Dim prop As cProperty = Nothing
                 Dim strLabel As String
 
                 For igrp As Integer = 1 To Me.Core.nGroups
                     Dim grp As cEcospaceGroupInput = Me.Core.EcospaceGroupInputs(igrp)
                     For imap As Integer = 1 To Manager.nEnviroData
                         Dim map As IEnviroInputData = Manager.EnviroData(imap)
+
+                        prop = Nothing
+                        If (imap = 1) Then
+                            prop = Me.PropertyManager.GetProperty(bm.LayerDepth, eVarNameFlags.EcospaceCapacityEnabled)
+                        Else
+                            prop = Me.PropertyManager.GetProperty(bm.LayerDriver(imap - 1), eVarNameFlags.EcospaceCapacityEnabled)
+                        End If
+                        If (prop IsNot Nothing) Then
+                            Me.m_lProps.Add(prop)
+                            AddHandler prop.PropertyChanged, AddressOf Me.OnPropertyChanged
+                        End If
+
                         strLabel = ""
                         Dim ishp As Integer = map.ResponseIndexForGroup(igrp)
                         If ishp > 0 Then
@@ -118,13 +132,11 @@ Namespace Ecospace
                         Me(igrp, imap + 1).Behaviors.Add(Me.m_bmCell)
                     Next
 
-                    Dim prop As cProperty = Me.PropertyManager.GetProperty(grp, eVarNameFlags.EcospaceCapCalType)
+                    prop = Me.PropertyManager.GetProperty(grp, eVarNameFlags.EcospaceCapCalType)
                     Me.m_lProps.Add(prop)
                     AddHandler prop.PropertyChanged, AddressOf Me.OnPropertyChanged
-
-                    Me.UpdateRow(grp)
-
                 Next
+                Me.UpdateCellStates()
             Catch ex As Exception
 
             End Try
@@ -194,7 +206,7 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
-            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroupInput))
+            Me.UpdateCellStates()
         End Sub
 
         Private Sub ShowSelectionDialog(SelectionType As eEnvironmentalResponseSelectionType, iGrp As Integer, iDriver As Integer)
@@ -216,24 +228,31 @@ Namespace Ecospace
             End Try
         End Sub
 
-        Private Sub UpdateRow(grp As cEcospaceGroupInput)
+        Private Sub UpdateCellStates()
 
-            Dim iGroup As Integer = grp.Index
-            Dim style As cStyleGuide.eStyleFlags
+            Dim Manager As IEnvironmentalResponseManager = Me.Core.CapacityMapInteractionManager
+            Dim ShapeManager As cEnviroResponseShapeManager = Me.Core.EnviroResponseShapeManager
             Dim mapManager As IEnvironmentalResponseManager = Me.Core.CapacityMapInteractionManager
 
-            If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Then
-                style = cStyleGuide.eStyleFlags.OK
-            Else
-                style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
-            End If
+            For igrp As Integer = 1 To Me.Core.nGroups
+                Dim grp As cEcospaceGroupInput = Me.Core.EcospaceGroupInputs(igrp)
+                Dim iGroup As Integer = grp.Index
 
-            For iMap As Integer = 1 To mapManager.nEnviroData
-                Dim cell As cEwECell = CType(Me(iGroup, 1 + iMap), cEwECell)
-                Dim map As IEnviroInputData = mapManager.EnviroData(iMap)
-                ' Reflect
-                cell.Style = style Or If(map.IsCapacityEnabled, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
-                Me.InvalidateCell(cell)
+                For imap As Integer = 1 To Manager.nEnviroData
+                    Dim map As IEnviroInputData = Manager.EnviroData(imap)
+                    Dim cell As cEwECell = CType(Me(iGroup, 1 + imap), cEwECell)
+
+                    Dim style As cStyleGuide.eStyleFlags
+                    If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) And (map.IsCapacityEnabled) Then
+
+                        style = cStyleGuide.eStyleFlags.OK
+                    Else
+                        style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
+                    End If
+                    cell.Style = style
+                    ' Reflect
+                    Me.InvalidateCell(cell)
+                Next
             Next
 
         End Sub
