@@ -31,6 +31,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports DotSpatial.Projections
+Imports System.Linq
 
 #End Region ' Imports
 
@@ -387,8 +388,12 @@ Namespace SpatialData
             xn = doc.CreateElement("Files")
             xnMaster.AppendChild(xn)
 
-            For Each tf As cTemporalFile In Me.m_lFiles
+            Dim files As cTemporalFile() = Me.m_lFiles.ToArray()
+            Array.Sort(files, New cTemporalFileSorter())
 
+            For i As Integer = 0 To files.Count - 1
+
+                Dim tf As cTemporalFile = files(i)
                 Dim strFile As String = tf.FileName
 
                 xnChild = doc.CreateElement("File")
