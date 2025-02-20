@@ -2428,6 +2428,7 @@ Namespace Ecosim
 
                         CatchByGroup = Me.BB(igrp) * Me.m_Data.FishTime(igrp)
 
+                        Me.m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime) = CatchByGroup
                         Me.m_Data.ResultsLandings(igrp, 0) = CatchByGroup ' * Me.m_Data.PropLandedTime(0, igrp)
 
                         Me.m_Results.BCatch(igrp, 0) = CatchByGroup
