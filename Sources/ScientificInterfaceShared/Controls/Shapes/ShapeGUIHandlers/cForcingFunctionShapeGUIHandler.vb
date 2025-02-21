@@ -224,6 +224,8 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.FilterName
                     Return True
+                Case eShapeCommandTypes.ShowAsDetails, eShapeCommandTypes.ShowAsThumbnails
+                    Return Me.AllowDetailView
                 Case Else
                     Return False
             End Select
@@ -253,6 +255,9 @@ Namespace Controls
             End If
 
             Select Case cmd
+
+                Case eShapeCommandTypes.ShowAsDetails, eShapeCommandTypes.ShowAsThumbnails
+                    Return Me.AllowDetailView
 
                 Case eShapeCommandTypes.Add,
                      eShapeCommandTypes.ResetAll
@@ -348,6 +353,12 @@ Namespace Controls
                     Catch ex As Exception
                         ' Whoah
                     End Try
+
+                Case eShapeCommandTypes.ShowAsDetails
+                    Me.ShapeToolBox.ViewMode = ucShapeToolbox.eViewModes.Details
+
+                Case eShapeCommandTypes.ShowAsThumbnails
+                    Me.ShapeToolBox.ViewMode = ucShapeToolbox.eViewModes.Thumbnails
 
                 Case Else
                     'Debug.Assert(False, cStringUtils.Localize("Command {0} not supported", cmd))

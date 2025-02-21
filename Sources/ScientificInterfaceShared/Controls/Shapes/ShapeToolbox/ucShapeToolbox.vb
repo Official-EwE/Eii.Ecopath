@@ -27,6 +27,7 @@ Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
+Imports System.Linq
 
 #End Region ' Imports
 
@@ -331,6 +332,28 @@ Namespace Controls
 #End Region ' IUIElement implementation
 
 #Region " Helper methods "
+        Public Enum eViewModes As Integer
+            Thumbnails
+            Details
+        End Enum
+
+        Public Property ViewMode As eViewModes
+            Get
+                If (Me.m_lvShapes.View = View.Details) Then
+                    Return eViewModes.Details
+                End If
+                Return eViewModes.Thumbnails
+            End Get
+            Set(value As eViewModes)
+                Select Case value
+                    Case eViewModes.Details
+                        Me.m_lvShapes.View = View.Details
+                    Case eViewModes.Thumbnails
+                        Me.m_lvShapes.View = View.LargeIcon
+                End Select
+                Me.RefreshContent(Me.Selection)
+            End Set
+        End Property
 
         ''' <summary>
         ''' Create a thumbnail image for a shape
@@ -441,7 +464,7 @@ Namespace Controls
             Me.m_bContentRefreshRequested = False
 
             Dim iThumbSize As Integer = Me.m_uic.StyleGuide.ThumbnailSize
-            Dim largeImageList As New ImageList
+            Dim largeImageList As New ImageList()
             Dim item As ListViewItem = Nothing
             Dim shape As cShapeData = Nothing
             Dim bShowApplyTick As Boolean = False
@@ -449,6 +472,18 @@ Namespace Controls
 
             Me.m_lvShapes.SuspendLayout()
             Me.m_bInUpdate = True
+
+            ' ToDO: globalize this
+            If (Me.m_lvShapes.Columns.Count = 0) Then
+                Me.m_lvShapes.Columns.Add("", 40)
+                Me.m_lvShapes.Columns.Add("Name", 80)
+                If (Me.DetailExtraColumns IsNot Nothing) Then
+                    For i As Integer = 0 To Me.DetailExtraColumns.Count - 1
+                        Me.m_lvShapes.Columns.Add(Me.DetailExtraColumns(i), 80)
+                    Next
+                End If
+                Me.m_lvShapes.FullRowSelect = True
+            End If
 
             'Clear the thumbnail list
             Me.m_lvShapes.Items.Clear()
@@ -470,7 +505,23 @@ Namespace Controls
                     ' Add thumbnail image
                     largeImageList.Images.Add(Me.GetThumbnail(shape))
                     ' Create list view item
-                    item = New ListViewItem(String.Format(My.Resources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
+                    Dim items As New List(Of String)
+                    If Me.ViewMode = eViewModes.Details Then
+                        items.Add(CStr(shape.Index))
+                        items.Add(shape.Name)
+                    Else
+                        items.Add(String.Format(My.Resources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
+                    End If
+
+                    If (Me.DetailViewCustomColumnValuesCallback IsNot Nothing) Then
+                        Try
+                            items.AddRange(DetailViewCustomColumnValuesCallback.Invoke(shape))
+                        Catch ex As Exception
+
+                        End Try
+                    End If
+
+                    item = New ListViewItem(items.ToArray)
                     item.ImageIndex = i
                     item.Tag = shape
                     If TypeOf shape Is cTimeSeries Then
@@ -482,10 +533,12 @@ Namespace Controls
                 Next
 
                 ' Apply the lot
-                Me.m_lvShapes.View = View.LargeIcon
+                'Me.m_lvShapes.View = View.LargeIcon
                 Me.m_lvShapes.LargeImageList = largeImageList
 
             End If
+
+
 
             Me.m_lvShapes.ResumeLayout()
 
@@ -555,20 +608,16 @@ Namespace Controls
 
 #End Region ' Helper methods
 
+#Region " Detail view "
+
+        Public Delegate Function DetailViewCustomColumnValuesCallbackDelegate(share As cShapeData) As String()
+
+        Friend Property DetailViewCustomColumnValuesCallback As DetailViewCustomColumnValuesCallbackDelegate
+        Friend Property DetailExtraColumns As String()
+
+#End Region ' Detail view
+
 #Region " Event handlers "
-
-        'Protected Overrides Sub OnLoad(e As System.EventArgs)
-
-        '    MyBase.OnLoad(e)
-
-        '    If (Me.m_uic Is Nothing) Then Return
-
-        '    Me.m_bInUpdate = True
-        '    Me.Selection = Nothing
-        '    Me.UpdateThumbnails(Nothing)
-        '    Me.m_bInUpdate = False
-
-        'End Sub
 
         ''' <summary>
         ''' Modify shape data.

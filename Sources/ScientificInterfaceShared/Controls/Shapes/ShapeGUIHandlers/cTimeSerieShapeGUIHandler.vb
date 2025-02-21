@@ -26,6 +26,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
+Imports System.Windows.Media
 
 #End Region ' Imports
 
@@ -37,7 +38,7 @@ Namespace Controls
     ''' handling <see cref="cTimeSeries">Time Series shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(True)> _
+    <CLSCompliant(True)>
     Public Class cTimeSeriesShapeGUIHandler
         Inherits cShapeGUIHandler
 
@@ -92,7 +93,7 @@ Namespace Controls
 #End Region ' Filter
 
         Public Sub New(uic As cUIContext)
-            MyBase.new(uic)
+            MyBase.New(uic)
         End Sub
 
 #Region " Baseclass overrides "
@@ -106,9 +107,9 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overloads Sub Attach(stb As ucShapeToolbox, _
-                                    stbtb As ucShapeToolboxToolbar, _
-                                    sp As ucSketchPad, _
+        Public Overloads Sub Attach(stb As ucShapeToolbox,
+                                    stbtb As ucShapeToolboxToolbar,
+                                    sp As ucSketchPad,
                                     sptb As ucSketchPadToolbar)
 
             MyBase.Attach(stb, stbtb, sp, sptb)
@@ -180,6 +181,8 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.FilterName
                     Return True
+                Case eShapeCommandTypes.ShowAsDetails, eShapeCommandTypes.ShowAsThumbnails
+                    Return Me.AllowDetailView
                 Case Else
                     ' Debug.Assert(False, cStringUtils.Localize("Command {0} not supported", cmd))
             End Select
@@ -228,6 +231,9 @@ Namespace Controls
                      cShapeGUIHandler.eShapeCommandTypes.SaveAsImage
                     Return bHasSingleSelection
 
+                Case eShapeCommandTypes.ShowAsDetails, eShapeCommandTypes.ShowAsThumbnails
+                    Return Me.AllowDetailView
+
             End Select
 
             Return False
@@ -243,7 +249,7 @@ Namespace Controls
         ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(cmd As eShapeCommandTypes, _
+        Public Overrides Sub ExecuteCommand(cmd As eShapeCommandTypes,
              Optional ashapes As cShapeData() = Nothing, Optional data As Object = Nothing)
 
             If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
@@ -571,12 +577,12 @@ Namespace Controls
                 strMessage = cStringUtils.Localize(My.Resources.PROMPT_TIMESERIES_DELETE_MULTIPLE, ashapes.Length)
             End If
 
-            fms = New cFeedbackMessage(strMessage, _
-                                       eCoreComponentType.ShapesManager, _
-                                       eMessageType.Any, _
-                                       eMessageImportance.Warning, _
-                                       eMessageReplyStyle.YES_NO, _
-                                       eDataTypes.TimeSeriesDataset, _
+            fms = New cFeedbackMessage(strMessage,
+                                       eCoreComponentType.ShapesManager,
+                                       eMessageType.Any,
+                                       eMessageImportance.Warning,
+                                       eMessageReplyStyle.YES_NO,
+                                       eDataTypes.TimeSeriesDataset,
                                        eMessageReply.OK)
             Me.Core.Messages.SendMessage(fms, True)
             If (fms.Reply = eMessageReply.NO) Then Return
@@ -650,7 +656,7 @@ Namespace Controls
         ''' has been provided, this mode indicates how the new selection should 
         ''' be made.</param>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateShapeList(Optional ashapeSelect As cShapeData() = Nothing, _
+        Private Sub UpdateShapeList(Optional ashapeSelect As cShapeData() = Nothing,
                 Optional selectMode As eAutoSelectMode = eAutoSelectMode.SelectCurrentShape)
 
             Dim ts As cTimeSeries = Nothing
@@ -711,6 +717,63 @@ Namespace Controls
         End Sub
 
 #End Region ' Helper methods
+
+#Region " Details view "
+
+        Public Overrides ReadOnly Property AllowDetailView As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property DetailViewCustomColumns As String()
+            Get
+                ' ToDo: Globalize this
+                Return {My.Resources.HEADER_TYPE, My.Resources.HEADER_WEIGHT,
+                        cStringUtils.Localize("{0} or {1}", My.Resources.VALUE_GENERIC_REFERENCE, My.Resources.VALUE_GENERIC_FORCING),
+                        cStringUtils.Localize("{0} or {1}", My.Resources.VALUE_GENERIC_ABSOLUTE, My.Resources.VALUE_GENERIC_RELATIVE),
+                        cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, My.Resources.HEADER_TARGET, 1),
+                        cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, My.Resources.HEADER_TARGET, 2)}
+            End Get
+        End Property
+
+        Public Overrides Function DetailViewCustomColumnValues(shape As cShapeData) As String()
+
+            Debug.Assert(shape IsNot Nothing)
+
+            Dim values(5) As String
+            Dim fmt As New cCoreInterfaceFormatter()
+
+            If (TypeOf shape Is cTimeSeries) Then
+                Dim ts As cTimeSeries = DirectCast(shape, cTimeSeries)
+
+                ' Type
+                values(0) = ts.TimeSeriesType.ToString()
+                ' Weight
+                values(1) = Me.StyleGuide.FormatNumber(ts.WtType)
+                ' Driver or Reference
+                values(2) = If(ts.IsReference, My.Resources.VALUE_GENERIC_REFERENCE, My.Resources.VALUE_GENERIC_FORCING)
+                ' Absolute or reference
+                values(3) = If(ts.IsAbsolute, My.Resources.VALUE_GENERIC_ABSOLUTE, My.Resources.VALUE_GENERIC_RELATIVE)
+                ' Pool 1 and 2
+                If TypeOf ts Is cGroupTimeSeries Then
+                    values(3) = fmt.ToString(Me.Core.EcopathGroupInputs(ts.DatPool))
+                ElseIf TypeOf ts Is cFleetTimeSeries Then
+                    values(3) = fmt.ToString(Me.Core.EcopathFleetInputs(ts.DatPool))
+                    If (ts.DatPoolSec > 0) Then
+                        values(4) = fmt.ToString(Me.Core.EcopathGroupInputs(ts.DatPool))
+                    End If
+                Else
+                    ' Should never happen, unless a new type of time series is defined.
+                    Debug.Assert(False)
+                End If
+
+            End If
+            Return values
+
+        End Function
+
+#End Region ' Details view
 
         Protected Overrides Function ShapeManager() As EwECore.cBaseShapeManager
             Return Nothing
