@@ -191,6 +191,43 @@ Namespace Controls
             Return True
         End Function
 
+        Public Overrides ReadOnly Property AllowDetailView As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property DetailViewCustomColumns As String()
+            Get
+                Return {"Function type", "Response min", "Response max"}
+            End Get
+        End Property
+
+        Public Overrides Function DetailViewCustomColumnValues(shape As cShapeData) As String()
+
+            Dim values(2) As String
+            Dim fmt As New cShapeFunctionTypeFormatter()
+            Dim type As eShapeFunctionType = eShapeFunctionType.NotSet
+
+            If (TypeOf shape Is cMediationBaseFunction) Then
+                Dim mf As cMediationBaseFunction = DirectCast(shape, cMediationBaseFunction)
+                values(0) = fmt.ToString(mf.ShapeFunctionType)
+
+                If (TypeOf shape Is cEnviroResponseFunction) Then
+                    Dim erf As cEnviroResponseFunction = DirectCast(shape, cEnviroResponseFunction)
+                    Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(mf.ShapeFunctionType, Me.Core.PluginManager)
+                    If (fn.IsDistribution) Then
+                        values(1) = Me.StyleGuide.FormatNumber(erf.ResponseLeftLimit)
+                        values(2) = Me.StyleGuide.FormatNumber(erf.ResponseRightLimit)
+                    End If
+                End If
+            Else
+                values(0) = fmt.ToString(eShapeFunctionType.NotSet)
+            End If
+
+            Return values
+        End Function
+
     End Class
 
 End Namespace

@@ -45,6 +45,9 @@ Namespace Controls
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucShapeToolboxToolbar))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnShowAsThumbnails = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnShowAsDetails = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbImport = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbExport = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbLoad = New System.Windows.Forms.ToolStripButton()
@@ -71,10 +74,27 @@ Namespace Controls
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToBaseline, Me.m_tsbSetToValue, Me.m_tsbResetAll, Me.m_tscmbFilter, Me.m_ts3, Me.m_tsbnShowExtraData, Me.m_tsbnDiscardExtraData, Me.m_tsbnFilterCase, Me.m_tstbxFilterName, Me.m_tslFilter})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnShowAsThumbnails, Me.m_tsbnShowAsDetails, Me.ToolStripSeparator1, Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToBaseline, Me.m_tsbSetToValue, Me.m_tsbResetAll, Me.m_tscmbFilter, Me.m_ts3, Me.m_tsbnShowExtraData, Me.m_tsbnDiscardExtraData, Me.m_tsbnFilterCase, Me.m_tstbxFilterName, Me.m_tslFilter})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnShowAsThumbnails
+            '
+            Me.m_tsbnShowAsThumbnails.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnShowAsThumbnails, "m_tsbnShowAsThumbnails")
+            Me.m_tsbnShowAsThumbnails.Name = "m_tsbnShowAsThumbnails"
+            '
+            'm_tsbnShowAsDetails
+            '
+            Me.m_tsbnShowAsDetails.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnShowAsDetails, "m_tsbnShowAsDetails")
+            Me.m_tsbnShowAsDetails.Name = "m_tsbnShowAsDetails"
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
             '
             'm_tsbImport
             '
@@ -191,9 +211,9 @@ Namespace Controls
             'm_tstbxFilterName
             '
             Me.m_tstbxFilterName.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            resources.ApplyResources(Me.m_tstbxFilterName, "m_tstbxFilterName")
             Me.m_tstbxFilterName.Name = "m_tstbxFilterName"
             Me.m_tstbxFilterName.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
-            resources.ApplyResources(Me.m_tstbxFilterName, "m_tstbxFilterName")
             '
             'm_tslFilter
             '
@@ -235,7 +255,9 @@ Namespace Controls
         Private WithEvents m_tsbnFilterCase As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tstbxFilterName As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tslFilter As System.Windows.Forms.ToolStripLabel
-
+        Private WithEvents m_tsbnShowAsThumbnails As ToolStripButton
+        Private WithEvents m_tsbnShowAsDetails As ToolStripButton
+        Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
     End Class
 
 End Namespace

@@ -38,6 +38,9 @@ Namespace Controls
         Public Sub New()
             Me.InitializeComponent()
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.UserPaint, True)
+
+            Me.m_tsbnShowAsThumbnails.Image = My.Resources.timeseries
+            Me.m_tsbnShowAsDetails.Image = My.Resources.Info
         End Sub
 
 #End Region ' Constructors
@@ -92,6 +95,8 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.FilterName, Me.m_tsbnFilterCase)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ShowExtraData, Me.m_tsbnShowExtraData)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DiscardExtraData, Me.m_tsbnDiscardExtraData)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAsDetails, Me.m_tsbnShowAsDetails)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAsThumbnails, Me.m_tsbnShowAsThumbnails)
 
             Dim astrFilters As String() = Me.m_handler.Filters()
             Me.m_tscmbFilter.Items.Clear()
@@ -134,6 +139,16 @@ Namespace Controls
 #End Region ' Helper methods
 
 #Region " Event handlers "
+
+        Private Sub tsbShowAsDetails(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowAsDetails.Click
+            If (Me.m_handler Is Nothing) Then Return
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAsDetails)
+        End Sub
+
+        Private Sub tsbShowAsThumbnails(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowAsThumbnails.Click
+            If (Me.m_handler Is Nothing) Then Return
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAsThumbnails)
+        End Sub
 
         Private Sub tsbAdd_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbAdd.Click
             If (Me.m_handler Is Nothing) Then Return

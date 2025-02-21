@@ -2166,22 +2166,8 @@ Public Class frmEwE6
                 ' Newer version: try to open
                 bReadOnly = True
             Case Else
-                ' No EwE6 database? abort
-                Select Case loadsource
-
-                    Case eLoadSourceType.MRU
-                    ' Should not occur
-
-                    Case eLoadSourceType.User, eLoadSourceType.CommandLine
-                        ' Unable to load model, show generic error
-                        Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_INVALIDMODEL, strFileName),
-                                       eMessageImportance.Warning, eCoreComponentType.DataSource)
-
-                    Case eLoadSourceType.API
-                        ' Ok then
-
-                        Return False
-                End Select
+                ' Could also be opened elsewhere
+                Return False
         End Select
 
         ' Update MRU
@@ -4531,7 +4517,10 @@ Public Class frmEwE6
                             Dim rs As EwEUtils.SpatialData.ISpatialRaster = imp.ToRaster
                             For ir As Integer = 1 To rs.NumRows
                                 For ic As Integer = 1 To rs.NumCols
-                                    l.Cell(ir, ic) = rs.Cell(ir, ic)
+                                    Dim dVal As Double = rs.Cell(ir, ic)
+                                    If (dVal <> rs.NoData) Then
+                                        l.Cell(ir, ic) = dVal
+                                    End If
                                 Next
                             Next
                             l.Invalidate()

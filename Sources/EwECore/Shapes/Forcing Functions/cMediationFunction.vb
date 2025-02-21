@@ -19,7 +19,6 @@
 
 Option Strict On
 Imports EwEUtils.Core
-#Region " cMediationFunction "
 
 ''' <summary>
 ''' Mediation functions inherit their base functionality from cMediationBaseFunction 
@@ -277,5 +276,4 @@ Public Class cMediationFunction
 
 End Class
 
-#End Region
 

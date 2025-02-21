@@ -23,6 +23,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -36,7 +37,7 @@ Namespace Controls
     ''' <see cref="cShapeData">shape</see> selection and/or modification interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(True)> _
+    <CLSCompliant(True)>
     Public MustInherit Class cShapeGUIHandler
         Implements IUIElement
 
@@ -96,6 +97,10 @@ Namespace Controls
             ShowExtraData
             ''' <summary>Purge extra, unused data.</summary>
             DiscardExtraData
+            ''' <summary>Toggle view to details.</summary>
+            ShowAsDetails
+            ''' <summary>Toggle view to large thumbnails.</summary>
+            ShowAsThumbnails
         End Enum
 
 #Region " Private variables "
@@ -140,19 +145,25 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Attach(stb As ucShapeToolbox, _
-                                      stbtb As ucShapeToolboxToolbar, _
-                                      sp As ucSketchPad, _
-                                      sptb As ucSketchPadToolbar)
+        Public Overridable Sub Attach(stb As ucShapeToolbox, stbtb As ucShapeToolboxToolbar, sp As ucSketchPad, sptb As ucSketchPadToolbar)
 
             Me.ShapeToolBox = stb
             Me.ShapeToolBoxToolbar = stbtb
             Me.SketchPad = sp
             Me.SketchPadToolbar = sptb
 
+            If (Me.AllowDetailView) And (Me.ShapeToolBox IsNot Nothing) Then
+                Me.ShapeToolBox.DetailViewCustomColumnValuesCallback = AddressOf DetailViewCustomColumnValues
+                Me.ShapeToolBox.DetailExtraColumns = Me.DetailViewCustomColumns
+            End If
         End Sub
 
         Public Overridable Sub Detach()
+
+            If (Me.AllowDetailView) And (Me.ShapeToolBox IsNot Nothing) Then
+                Me.ShapeToolBox.DetailViewCustomColumnValuesCallback = Nothing
+            End If
+
             Me.ShapeToolBox = Nothing
             Me.ShapeToolBoxToolbar = Nothing
             Me.SketchPad = Nothing
@@ -254,8 +265,8 @@ Namespace Controls
         ''' <param name="shape">The <see cref="EwECore.cShapeData">shape</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
-        Public MustOverride Sub ExecuteCommand(cmd As eShapeCommandTypes, _
-                Optional shape As cShapeData() = Nothing, _
+        Public MustOverride Sub ExecuteCommand(cmd As eShapeCommandTypes,
+                Optional shape As cShapeData() = Nothing,
                 Optional data As Object = Nothing)
 
         ''' -------------------------------------------------------------------
@@ -455,10 +466,10 @@ Namespace Controls
 
                 ' Let sketchpad save the image
                 If sp.SaveAsImage(shape, cmdFS.FileName, imgFormat, strError) Then
-                    msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, shape.Name, cmdFS.FileName), _
+                    msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, shape.Name, cmdFS.FileName),
                             eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
                 Else
-                    msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, shape.Name, cmdFS.FileName, strError), _
+                    msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, shape.Name, cmdFS.FileName, strError),
                             eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
                 End If
                 ' Provide feedback on result
@@ -489,11 +500,11 @@ Namespace Controls
                 Me.SelectedShape.IsSeasonal = False
             Else
                 If Not Me.SelectedShape.IsSeasonal Then
-                    fms = New cFeedbackMessage(My.Resources.SHAPE_TYPE_TO_SEASONAL_MSG, _
-                                               eCoreComponentType.ShapesManager, _
-                                               eMessageType.Any, _
-                                               eMessageImportance.Information, _
-                                               eMessageReplyStyle.YES_NO, _
+                    fms = New cFeedbackMessage(My.Resources.SHAPE_TYPE_TO_SEASONAL_MSG,
+                                               eCoreComponentType.ShapesManager,
+                                               eMessageType.Any,
+                                               eMessageImportance.Information,
+                                               eMessageReplyStyle.YES_NO,
                                                eDataTypes.Forcing, eMessageReply.YES)
                     Me.Core.Messages.SendMessage(fms, True)
                     If fms.Reply = eMessageReply.YES Then
@@ -578,6 +589,13 @@ Namespace Controls
             Get
                 Debug.Assert(Me.UIContext IsNot Nothing)
                 Return Me.UIContext.Core
+            End Get
+        End Property
+
+        Public ReadOnly Property StyleGuide() As cStyleGuide
+            Get
+                Debug.Assert(Me.UIContext IsNot Nothing)
+                Return Me.UIContext.StyleGuide
             End Get
         End Property
 
@@ -705,6 +723,33 @@ Namespace Controls
         Public MustOverride Function IsMediation() As Boolean
         Public MustOverride Function IsTimeSeries() As Boolean
         Public MustOverride Function IsResponse() As Boolean
+
+#Region " Detail view "
+
+        ''' <summary>
+        ''' Get whether detail view is supported
+        ''' </summary>
+        ''' <returns></returns>
+        Public Overridable ReadOnly Property AllowDetailView() As Boolean
+
+        ''' <summary>
+        ''' If detail view is supported, return the names of the context-sensitive columns to 
+        ''' show. Note that the first three  columns are always predefined: icon, number, and shape name.
+        ''' </summary>
+        ''' <returns></returns>
+        Public Overridable ReadOnly Property DetailViewCustomColumns() As String()
+
+        ''' <summary>
+        ''' If detail view is supported, return the values of the context-sensitive columns to 
+        ''' show. Note that the first three columns are always predefined: icon, number, and shape name.
+        ''' Do not provide these columns, please ;-)
+        ''' </summary>
+        ''' <returns></returns>
+        Public Overridable Function DetailViewCustomColumnValues(shape As cShapeData) As String()
+            Return {}
+        End Function
+
+#End Region ' Detail view
 
 #End Region ' Public access
 
