@@ -736,8 +736,8 @@ Namespace Controls
             Get
                 ' ToDo: Globalize this
                 Return {My.Resources.HEADER_TYPE, My.Resources.HEADER_WEIGHT,
-                        cStringUtils.Localize("{0} or {1}", My.Resources.VALUE_GENERIC_REFERENCE, My.Resources.VALUE_GENERIC_FORCING),
-                        cStringUtils.Localize("{0} or {1}", My.Resources.VALUE_GENERIC_ABSOLUTE, My.Resources.VALUE_GENERIC_RELATIVE),
+                        cStringUtils.ToSentenceCase(cStringUtils.Localize("{0} or {1}", My.Resources.VALUE_GENERIC_REFERENCE, My.Resources.VALUE_GENERIC_FORCING)),
+                        cStringUtils.ToSentenceCase(cStringUtils.Localize("{0} or {1}", My.Resources.VALUE_GENERIC_ABSOLUTE, My.Resources.VALUE_GENERIC_RELATIVE)),
                         cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, My.Resources.HEADER_TARGET, 1),
                         cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, My.Resources.HEADER_TARGET, 2)}
             End Get
