@@ -285,7 +285,13 @@ Namespace Controls
                 Case eShapeCommandTypes.Weight
                     Me.WeightTimeSeries()
 
+                Case eShapeCommandTypes.ShowAsDetails
+                    Me.ShapeToolBox.ViewMode = ucShapeToolbox.eViewModes.Details
+
+                Case eShapeCommandTypes.ShowAsThumbnails
+                    Me.ShapeToolBox.ViewMode = ucShapeToolbox.eViewModes.Thumbnails
             End Select
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -757,11 +763,11 @@ Namespace Controls
                 values(3) = If(ts.IsAbsolute, My.Resources.VALUE_GENERIC_ABSOLUTE, My.Resources.VALUE_GENERIC_RELATIVE)
                 ' Pool 1 and 2
                 If TypeOf ts Is cGroupTimeSeries Then
-                    values(3) = fmt.ToString(Me.Core.EcopathGroupInputs(ts.DatPool))
+                    values(4) = fmt.ToString(Me.Core.EcopathGroupInputs(ts.DatPool))
                 ElseIf TypeOf ts Is cFleetTimeSeries Then
-                    values(3) = fmt.ToString(Me.Core.EcopathFleetInputs(ts.DatPool))
+                    values(4) = fmt.ToString(Me.Core.EcopathFleetInputs(ts.DatPool))
                     If (ts.DatPoolSec > 0) Then
-                        values(4) = fmt.ToString(Me.Core.EcopathGroupInputs(ts.DatPool))
+                        values(5) = fmt.ToString(Me.Core.EcopathGroupInputs(ts.DatPool))
                     End If
                 Else
                     ' Should never happen, unless a new type of time series is defined.
