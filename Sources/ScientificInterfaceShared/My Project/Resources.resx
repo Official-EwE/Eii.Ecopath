@@ -3233,4 +3233,7 @@
   <data name="TS_TYPE_ENERGYCONTENT" xml:space="preserve">
     <value>Energy||Energy content</value>
   </data>
+  <data name="HEADER_FUNCTIONTYPE" xml:space="preserve">
+    <value>Function type</value>
+  </data>
 </root>

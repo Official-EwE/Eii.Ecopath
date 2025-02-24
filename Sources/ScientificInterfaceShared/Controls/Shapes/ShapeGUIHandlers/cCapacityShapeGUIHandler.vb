@@ -82,9 +82,9 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.ExecuteCommand"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
-                                          Optional ashapes() As EwECore.cShapeData = Nothing, _
-                                          Optional data As Object = Nothing)
+        Public Overrides Sub ExecuteCommand(cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes,
+                                            Optional ashapes() As EwECore.cShapeData = Nothing,
+                                            Optional data As Object = Nothing)
 
             Try
                 Select Case cmd
@@ -199,7 +199,7 @@ Namespace Controls
 
         Public Overrides ReadOnly Property DetailViewCustomColumns As String()
             Get
-                Return {"Function type", "Response min", "Response max"}
+                Return {My.Resources.HEADER_FUNCTIONTYPE, My.Resources.HEADER_X_MIN, My.Resources.HEADER_X_MAX}
             End Get
         End Property
 
