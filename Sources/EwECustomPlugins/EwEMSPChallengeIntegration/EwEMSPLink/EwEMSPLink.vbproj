@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48;net6.0</TargetFrameworks>
+    <TargetFrameworks>net48</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU;</Platforms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
@@ -88,11 +88,5 @@
     <ProjectReference Include="..\..\..\..\Sources\EwECore\EwECore.vbproj" />
     <ProjectReference Include="..\..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj" />
     <ProjectReference Include="..\..\..\..\Sources\EwEUtils\EwEUtils.vbproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
 </Project>

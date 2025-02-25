@@ -244,10 +244,7 @@ Public Class cProducerUnit
 
     End Sub
 
-    Protected Overrides Function Calculate(results As cResults, _
-            sInputBiomass As Single, sInputValue As Single, _
-            sOutputBiomass As Single, sOutputValue As Single, _
-            iTimeStep As Integer) As Boolean
+    Protected Overrides Function Calculate(results As cResults, sInputBiomass As Single, sInputValue As Single, sOutputBiomass As Single, sOutputValue As Single, iTimeStep As Integer) As Boolean
         Dim bSucces As Boolean
 
         'VC090310: Producer cost needs to reflect ecosim effort. 
@@ -694,9 +691,7 @@ Public Class cProducerUnit
         Me.m_asLandingsValue(iGroup) = sValue
     End Sub
 
-    Public Overloads Sub Process(results As cResults, _
-                                 iTimeStep As Integer, _
-                                 iItem As Integer)
+    Public Overloads Sub Process(results As cResults, iTimeStep As Integer, iItem As Integer)
 
         Dim sTotalOutputBiomass As Single = 0
         Dim sTotalOutputValue As Single = 0
