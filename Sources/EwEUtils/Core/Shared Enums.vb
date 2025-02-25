@@ -3049,6 +3049,7 @@ Namespace Core
         InvalidModel_EffPower0
         InvalidModel_HabCapLow
         InvalidModel_MigMapsMissing
+        InvalidModel_Regions
 
         ''' <summary>MSE has completed a model run of some sort</summary>
         MSERunCompleted

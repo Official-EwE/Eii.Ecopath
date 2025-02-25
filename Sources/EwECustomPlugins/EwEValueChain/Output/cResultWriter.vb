@@ -134,7 +134,7 @@ Public Class cResultWriter
                     sw.Close()
 
                     vars.Add(New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_SAVERESULT_DETAIL, strFile),
-                                 eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+                                                 eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
                 End Using
             Next
         Catch ex As Exception
@@ -148,7 +148,7 @@ Public Class cResultWriter
         If (Me.m_msg Is Nothing) Then
             ' #No: create one
             Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_SUCCESS, pout),
-                                        eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             ' Set hyperlink
             Me.m_msg.Hyperlink = pout
         End If

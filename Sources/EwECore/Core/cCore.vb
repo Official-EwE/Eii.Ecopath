@@ -42,6 +42,7 @@ Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
 Imports EwELicense
+Imports System.Web.Management
 
 #End Region ' Imports
 
@@ -9548,6 +9549,61 @@ Public Class cCore
         Catch ex As Exception
 
         End Try
+
+        ' Various region checks
+        Dim nRegions As Integer = Me.nRegions
+        If (nRegions > 0) Then
+            Dim sbWarnings As New StringBuilder()
+            Dim bWoops As Boolean = False
+            sbWarnings.AppendLine(My.Resources.CoreMessages.REGIONS_PRERUN_WARNING)
+
+            If (nRegions > Me.EcospaceDataStructures.nWaterCells / 4) Then
+                ' That's a pile of regions. Alert user
+                sbWarnings.AppendLine(My.Resources.CoreMessages.REGIONS_WARNING_TOOMANY)
+                bWoops = True
+            End If
+
+            Dim nMaxAllocatedRegions As Integer = 0
+            Dim hsValid As New HashSet(Of Integer)
+            Dim hsInvalid As New HashSet(Of Integer)
+            For iRow As Integer = 1 To Me.EcospaceDataStructures.InRow
+                For iCol As Integer = 1 To Me.EcospaceDataStructures.InCol
+                    If Me.EcospaceDataStructures.Depth(iRow, iCol) > 0 Then
+                        Dim iReg As Integer = Me.EcospaceDataStructures.Region(iRow, iCol)
+                        If (iReg > 0) Then
+                            If (iReg <= nRegions) Then
+                                hsValid.Add(iReg)
+                            Else
+                                hsInvalid.Add(iReg)
+                            End If
+                        End If
+                    End If
+                Next
+            Next
+
+            If (hsInvalid.Count > 0) Then
+                ' nRegions may be set too low
+                sbWarnings.AppendLine(cStringUtils.Localize(My.Resources.CoreMessages.REGIONS_WARNING_UNUSED, hsInvalid.Count))
+                bWoops = True
+            End If
+
+            If hsValid.Count < Me.nRegions Then
+                ' Not all regions spoken for
+                sbWarnings.AppendLine(cStringUtils.Localize(My.Resources.CoreMessages.REGIONS_WARNING_NOCELLS, Me.nRegions - hsValid.Count))
+                bWoops = True
+            End If
+
+            If (bWoops) Then
+                msg = New cFeedbackMessage(sbWarnings.ToString(), eCoreComponentType.Ecospace, eMessageType.InvalidModel_Regions, eMessageImportance.Warning, eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+                msg.Suppressable = True
+
+                Me.m_publisher.SendMessage(msg)
+                If msg.Reply = eMessageReply.NO Then
+                    Return False
+                End If
+            End If
+
+        End If
         Return True
 
     End Function
