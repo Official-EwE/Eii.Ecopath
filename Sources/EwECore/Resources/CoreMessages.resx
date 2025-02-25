@@ -1505,4 +1505,16 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Unable to save fleet trade-off output to '{0}'</value>
     <comment>{0}=file location</comment>
   </data>
+  <data name="REGIONS_PRERUN_WARNING" xml:space="preserve">
+    <value>There may be some issues with regions. Do you want to continue running Ecospace?</value>
+  </data>
+  <data name="REGIONS_WARNING_NOCELLS" xml:space="preserve">
+    <value>The regions map is missing values for {0} region(s)</value>
+  </data>
+  <data name="REGIONS_WARNING_TOOMANY" xml:space="preserve">
+    <value>There are a relatively high number of regions defined</value>
+  </data>
+  <data name="REGIONS_WARNING_UNUSED" xml:space="preserve">
+    <value>There are {0} region(s) defined that will not be used by Ecospace</value>
+  </data>
 </root>

@@ -2768,6 +2768,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to There may be some issues with regions. Do you want to continue running Ecospace?.
+        '''</summary>
+        Public Shared ReadOnly Property REGIONS_PRERUN_WARNING() As String
+            Get
+                Return ResourceManager.GetString("REGIONS_PRERUN_WARNING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The regions map is missing values for {0} region(s).
+        '''</summary>
+        Public Shared ReadOnly Property REGIONS_WARNING_NOCELLS() As String
+            Get
+                Return ResourceManager.GetString("REGIONS_WARNING_NOCELLS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to There are a relatively high number of regions defined.
+        '''</summary>
+        Public Shared ReadOnly Property REGIONS_WARNING_TOOMANY() As String
+            Get
+                Return ResourceManager.GetString("REGIONS_WARNING_TOOMANY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to There are {0} region(s) defined that will not be used by Ecospace.
+        '''</summary>
+        Public Shared ReadOnly Property REGIONS_WARNING_UNUSED() As String
+            Get
+                Return ResourceManager.GetString("REGIONS_WARNING_UNUSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to You must re-load Ecospace for your changes to take affect..
         '''</summary>
         Public Shared ReadOnly Property RELOAD_ECOSPACE() As String
