@@ -234,11 +234,7 @@ Public Class cModel
     ''' <param name="iTimeStep">1 when running Ecopath.</param>
     ''' <param name="ecosimResults"></param>
     ''' <param name="ecosimDS"></param>
-    Public Function RunTimeStep(data As cData, _
-                        result As cResults, _
-                        iTimeStep As Integer, _
-                        Optional ecosimResults As cEcoSimResults = Nothing, _
-                        Optional ecosimDS As cEcosimDatastructures = Nothing) As Boolean
+    Public Function RunTimeStep(data As cData, result As cResults, iTimeStep As Integer, Optional ecosimResults As cEcoSimResults = Nothing, Optional ecosimDS As cEcosimDatastructures = Nothing) As Boolean
 
         Dim bAllowedToRun As Boolean = False
         Dim iBaseYear As Integer = 0
@@ -304,11 +300,7 @@ Public Class cModel
     ''' <param name="iTimeStep">1 when running Ecopath.</param>
     ''' <param name="ecosimResults"></param>
     ''' <param name="ecosimDS"></param>
-    Private Function RunFullModel(data As cData, _
-                        result As cResults, _
-                        iTimeStep As Integer, _
-                        ecosimResults As cEcoSimResults, _
-                        ecosimDS As cEcosimDatastructures) As Boolean
+    Private Function RunFullModel(data As cData, result As cResults, iTimeStep As Integer, ecosimResults As cEcoSimResults, ecosimDS As cEcosimDatastructures) As Boolean
 
         Dim prodUnit As cProducerUnit = Nothing
         Dim iFleet As Integer = 0
@@ -325,8 +317,8 @@ Public Class cModel
             If (prodUnit.Fleet IsNot Nothing) Then
                 iFleet = prodUnit.Fleet.Index
                 For iGroupSrc = 1 To data.Core.nGroups
-                    prodUnit.SetLandings(iGroupSrc, _
-                                         Me.GetLandings(data.Core, iFleet, iGroupSrc, iTimeStep, ecosimResults, ecosimDS), _
+                    prodUnit.SetLandings(iGroupSrc,
+                                         Me.GetLandings(data.Core, iFleet, iGroupSrc, iTimeStep, ecosimResults, ecosimDS),
                                          Me.GetLandingValue(data.Core, iFleet, iGroupSrc, iTimeStep, ecosimResults, ecosimDS))
                 Next iGroupSrc
             End If
@@ -353,11 +345,7 @@ Public Class cModel
     ''' <param name="ecosimResults"></param>
     ''' <param name="ecosimDS"></param>
     ''' <returns></returns>
-    Public Function RunTimeStepByFleet(data As cData, _
-                                       result As cResults, _
-                                       iTimeStep As Integer, _
-                                       ecosimResults As cEcoSimResults, _
-                                       ecosimDS As cEcosimDatastructures) As Boolean
+    Public Function RunTimeStepByFleet(data As cData, result As cResults, iTimeStep As Integer, ecosimResults As cEcoSimResults, ecosimDS As cEcosimDatastructures) As Boolean
 
         Dim prodUnit As cProducerUnit = Nothing
         Dim iFleetSrc As Integer = 0 ' Fleet that is the landings source for a given producer unit
@@ -387,8 +375,8 @@ Public Class cModel
                             prodUnit.SetLandings(iGroupSrc, 0, 0)
                         Else
                             ' #No: Run this fleet using standard landings and value
-                            prodUnit.SetLandings(iGroupSrc, _
-                                                 Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS), _
+                            prodUnit.SetLandings(iGroupSrc,
+                                                 Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS),
                                                  Me.GetLandingValue(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS))
                         End If
 
@@ -415,11 +403,7 @@ Public Class cModel
     ''' <param name="ecosimResults"></param>
     ''' <param name="ecosimDS"></param>
     ''' <returns></returns>
-    Public Function RunTimeStepByLanding(data As cData, _
-                                         result As cResults, _
-                                         iTimeStep As Integer, _
-                                         ecosimResults As cEcoSimResults, _
-                                         ecosimDS As cEcosimDatastructures) As Boolean
+    Public Function RunTimeStepByLanding(data As cData, result As cResults, iTimeStep As Integer, ecosimResults As cEcoSimResults, ecosimDS As cEcosimDatastructures) As Boolean
 
         Dim grpRun As cEcoPathGroupInput = Nothing
         Dim flt As cEcopathFleetInput = Nothing
@@ -526,8 +510,7 @@ Public Class cModel
 
     End Function
 
-    Friend Sub SaveResults(data As cData,
-                           result As cResults)
+    Friend Sub SaveResults(data As cData, result As cResults, Optional iYear As Integer = 0)
 
         Try
 

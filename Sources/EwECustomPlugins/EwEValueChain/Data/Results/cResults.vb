@@ -215,10 +215,10 @@ Public Class cResults
 
     ''' <summary>Contributions of an item (fleet, group, ..) to a unit per timestep to the total value.</summary>
     ''' <remarks>Indexed as (item, time step, unit sequence).</remarks>
-    Private m_asItemValueContribution As Single(,,)
+    Private m_ValueContribution As Single(,,)
     ''' <summary>Contributions of an item (fleet, group, ..) to a unit per timestep to the total biomass.</summary>
     ''' <remarks>Indexed as (item, time step, unit sequence).</remarks>
-    Private m_asItemBiomassContribution As Single(,,)
+    Private m_BiomassContribution As Single(,,)
 
     ''' <summary>Max no of time steps.</summary>
     Private m_iMaxTimeStep As Integer = 0
@@ -355,35 +355,35 @@ Public Class cResults
         Select Case graph
 
             Case eGraphDataType.CostRevenue
-                vars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal, _
-                                                      cResults.eVariableType.Cost, _
+                vars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal,
+                                                      cResults.eVariableType.Cost,
                                                       cResults.eVariableType.Profit}
 
             Case eGraphDataType.Cost
-                vars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture, _
-                                                      cResults.eVariableType.CostInput, _
-                                                      cResults.eVariableType.CostManagementRoyaltyCertification, _
-                                                      cResults.eVariableType.CostManagementRoyaltyCertificationObservers, _
+                vars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture,
+                                                      cResults.eVariableType.CostInput,
+                                                      cResults.eVariableType.CostManagementRoyaltyCertification,
+                                                      cResults.eVariableType.CostManagementRoyaltyCertificationObservers,
                                                       cResults.eVariableType.CostRawmaterial}
 
             Case eGraphDataType.Revenue
-                vars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets, _
-                                                      cResults.eVariableType.RevenueSubsidies, _
-                                                      cResults.eVariableType.RevenueProductsMain, _
-                                                      cResults.eVariableType.RevenueProductsOther, _
+                vars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets,
+                                                      cResults.eVariableType.RevenueSubsidies,
+                                                      cResults.eVariableType.RevenueProductsMain,
+                                                      cResults.eVariableType.RevenueProductsOther,
                                                       cResults.eVariableType.RevenueAgriculture}
 
             Case eGraphDataType.Jobs
-                vars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal, _
-                                                      cResults.eVariableType.NumberOfJobsMaleTotal, _
+                vars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal,
+                                                      cResults.eVariableType.NumberOfJobsMaleTotal,
                                                       cResults.eVariableType.NumberOfJobsFemaleTotal}
             Case eGraphDataType.Dependents
-                vars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal, _
-                                                      cResults.eVariableType.NumberOfWorkerDependents, _
-                                                      cResults.eVariableType.NumberOfWorkerFemales, _
-                                                      cResults.eVariableType.NumberOfWorkerMales, _
-                                                      cResults.eVariableType.NumberOfOwnerMales, _
-                                                      cResults.eVariableType.NumberOfOwnerFemales, _
+                vars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal,
+                                                      cResults.eVariableType.NumberOfWorkerDependents,
+                                                      cResults.eVariableType.NumberOfWorkerFemales,
+                                                      cResults.eVariableType.NumberOfWorkerMales,
+                                                      cResults.eVariableType.NumberOfOwnerMales,
+                                                      cResults.eVariableType.NumberOfOwnerFemales,
                                                       cResults.eVariableType.NumberOfOwnerDependents}
 
             Case Else
@@ -397,20 +397,20 @@ Public Class cResults
     Public Shared Function GetVariableContributionType(var As eVariableType) As eContributionType
 
         Select Case var
-            Case eVariableType.NumberOfDependentsTotal, _
-                eVariableType.NumberOfJobsFemaleTotal, _
-                eVariableType.NumberOfJobsMaleTotal, _
-                eVariableType.NumberOfJobsTotal, _
-                eVariableType.NumberOfOwnerDependents, _
-                eVariableType.NumberOfOwnerFemales, _
-                eVariableType.NumberOfOwnerMales, _
-                eVariableType.NumberOfWorkerDependents, _
-                eVariableType.NumberOfWorkerFemales, _
-                eVariableType.NumberOfWorkerMales, _
-                eVariableType.NumberOfWorkerOther, _
+            Case eVariableType.NumberOfDependentsTotal,
+                eVariableType.NumberOfJobsFemaleTotal,
+                eVariableType.NumberOfJobsMaleTotal,
+                eVariableType.NumberOfJobsTotal,
+                eVariableType.NumberOfOwnerDependents,
+                eVariableType.NumberOfOwnerFemales,
+                eVariableType.NumberOfOwnerMales,
+                eVariableType.NumberOfWorkerDependents,
+                eVariableType.NumberOfWorkerFemales,
+                eVariableType.NumberOfWorkerMales,
+                eVariableType.NumberOfWorkerOther,
                 eVariableType.NumberOfWorkerPartTime
                 Return eContributionType.Biomass
-            Case eVariableType.Production, _
+            Case eVariableType.Production,
                 eVariableType.ProductionLive
                 Return eContributionType.Biomass
         End Select
@@ -439,14 +439,13 @@ Public Class cResults
         Me.m_runType = runType
 
         Me.m_BiomassFlows = Nothing
-        Me.m_asItemValueContribution = Nothing
-        Me.m_asItemBiomassContribution = Nothing
+        Me.m_ValueContribution = Nothing
+        Me.m_BiomassContribution = Nothing
 
         GC.Collect()
 
-        ReDim Me.m_asItemValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
-        ReDim Me.m_asItemBiomassContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
-
+        ReDim Me.m_ValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+        ReDim Me.m_BiomassContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
         ReDim Me.m_BiomassFlows(nNumUnits, nNumUnits)
 
     End Sub
@@ -460,10 +459,7 @@ Public Class cResults
     ''' <param name="sValue">Value to save</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Store(unit As cUnit, _
-                          var As eVariableType, _
-                          sValue As Single, _
-                          iTimeStep As Integer) As Boolean
+    Public Function Store(unit As cUnit, var As eVariableType, sValue As Single, iTimeStep As Integer) As Boolean
 
         Try
 
@@ -527,10 +523,10 @@ Public Class cResults
     ''' <param name="iItem"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function Result(unit As cUnit, _
-                           var As eVariableType, _
-                           iTimeStep As Integer, _
-                           iItem As Integer, _
+    Public Function Result(unit As cUnit,
+                           var As eVariableType,
+                           iTimeStep As Integer,
+                           iItem As Integer,
                            contr As eContributionType) As Single
 
         Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep)
@@ -607,8 +603,8 @@ Public Class cResults
 
 #Region " Totals "
 
-    Public Function GetSnapshotTotal(vartype As eVariableType, _
-                                    objKey As Object, _
+    Public Function GetSnapshotTotal(vartype As eVariableType,
+                                    objKey As Object,
                                     Optional lUnits As cUnit() = Nothing) As Single
         Dim sTotal As Single = 0.0!
 
@@ -636,10 +632,10 @@ Public Class cResults
     ''' <param name="contr"><see cref="eContributionType"/> to extract contribution for.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetTimeStepTotal(vartype As eVariableType, _
-                                     iTimeStep As Integer, _
-                                     lUnits As cUnit(), _
-                                     iItem As Integer, _
+    Public Function GetTimeStepTotal(vartype As eVariableType,
+                                     iTimeStep As Integer,
+                                     lUnits As cUnit(),
+                                     iItem As Integer,
                                      contr As eContributionType) As Single
 
         Dim sTotal As Single = 0.0!
@@ -666,9 +662,9 @@ Public Class cResults
     ''' <param name="iItem">Item to filter by.</param>
     ''' <returns>A total value.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetTotal(vartype As eVariableType, _
-                             Optional lUnits As cUnit() = Nothing, _
-                             Optional iItem As Integer = 0, _
+    Public Function GetTotal(vartype As eVariableType,
+                             Optional lUnits As cUnit() = Nothing,
+                             Optional iItem As Integer = 0,
                              Optional contr As eContributionType = eContributionType.Value) As Single
 
         Dim sTotal As Single = 0.0!
@@ -731,10 +727,10 @@ Public Class cResults
     ''' very closely approximate) the value for the unit for the default chain.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub StoreContribution(iItem As Integer, _
-                                 unit As cUnit, _
-                                 iTimeStep As Integer, _
-                                 sValueContribution As Single, _
+    Public Sub StoreContribution(iItem As Integer,
+                                 unit As cUnit,
+                                 iTimeStep As Integer,
+                                 sValueContribution As Single,
                                  sBiomassContribution As Single)
 
         Dim bOkidoki As Boolean = False
@@ -748,8 +744,8 @@ Public Class cResults
         If bOkidoki Then
             Try
                 ' Append contribution in case this is called multiple times for a single ([fleet|group], unit combo)
-                Me.m_asItemValueContribution(iItem, unit.Sequence, iTimeStep) += sValueContribution
-                Me.m_asItemBiomassContribution(iItem, unit.Sequence, iTimeStep) += sBiomassContribution
+                Me.m_ValueContribution(iItem, unit.Sequence, iTimeStep) += sValueContribution
+                Me.m_BiomassContribution(iItem, unit.Sequence, iTimeStep) += sBiomassContribution
             Catch ex As Exception
                 ' Whoah!
             End Try
@@ -767,10 +763,10 @@ Public Class cResults
     ''' <param name="unit"></param>
     ''' <param name="iTimestep"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub GetContributionRatios(iItem As Integer, _
-                                     unit As cUnit, _
-                                     iTimestep As Integer, _
-                                     ByRef sValueContribution As Single, _
+    Public Sub GetContributionRatios(iItem As Integer,
+                                     unit As cUnit,
+                                     iTimestep As Integer,
+                                     ByRef sValueContribution As Single,
                                      ByRef sBiomassContribution As Single)
 
         Dim sAllItemsValue As Single = 0 ' Value contribution for 'all fleets' calculation
@@ -798,12 +794,12 @@ Public Class cResults
 
         If bOkidoki Then
             Try
-                sAllItemsValue = Me.m_asItemValueContribution(0, unit.Sequence, iTimestep)
-                sAllItemsBiomass = Me.m_asItemBiomassContribution(0, unit.Sequence, iTimestep)
+                sAllItemsValue = Me.m_ValueContribution(0, unit.Sequence, iTimestep)
+                sAllItemsBiomass = Me.m_BiomassContribution(0, unit.Sequence, iTimestep)
 
                 For i As Integer = 1 To Me.m_iMaxItem
-                    sTotalValue += Me.m_asItemValueContribution(i, unit.Sequence, iTimestep)
-                    sTotalBiomass += Me.m_asItemBiomassContribution(i, unit.Sequence, iTimestep)
+                    sTotalValue += Me.m_ValueContribution(i, unit.Sequence, iTimestep)
+                    sTotalBiomass += Me.m_BiomassContribution(i, unit.Sequence, iTimestep)
                 Next
 
                 ' ************** VALIDATION ***************
@@ -812,8 +808,8 @@ Public Class cResults
                 'Debug.Assert(sAllFleetBiomass = sTotalBiomass, "Error: contribution of individual fleets does not match the contributions of all fleets.")
                 ' ************** VALIDATION ***************
 
-                sContrValue = Me.m_asItemValueContribution(iItem, unit.Sequence, iTimestep)
-                sContrBiomass = Me.m_asItemBiomassContribution(iItem, unit.Sequence, iTimestep)
+                sContrValue = Me.m_ValueContribution(iItem, unit.Sequence, iTimestep)
+                sContrBiomass = Me.m_BiomassContribution(iItem, unit.Sequence, iTimestep)
             Catch ex As Exception
                 Debug.Assert(False, "VC: Failure obtaining contribution for item")
             End Try

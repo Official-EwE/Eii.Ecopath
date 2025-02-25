@@ -73,68 +73,89 @@ Public Class cResultWriter
     ''' <param name="strItem"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteResults(agg As cParameters.eAggregationModeType, _
-                                 iItem As Integer, _
-                                 strItem As String) As Boolean
+    Public Function WriteResults(agg As cParameters.eAggregationModeType, iItem As Integer, strItem As String) As Boolean
 
-        Dim strFile As String = Me.GetFileName(agg, strItem)
-        Dim sw As StreamWriter = Nothing
         Dim vs As cVariableStatus = Nothing
+        Dim iTimeStart As Integer = If(Me.m_results.RunType = cModel.eRunTypes.Ecopath, 0, 1)
+        Dim iTimeEnd As Integer = If(Me.m_results.RunType = cModel.eRunTypes.Ecopath, 0, Me.m_results.NumTimeSteps)
 
-        ' Sanity check
-        If String.IsNullOrWhiteSpace(strFile) Then Return False
+        Dim pout As String = ""
+        Select Case Me.m_results.RunType
+            Case cModel.eRunTypes.Ecopath
+                pout = Path.Combine(Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecopath), "ValueChain")
+            Case cModel.eRunTypes.Ecosim
+                pout = Path.Combine(Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), "ValueChain")
+            Case cModel.eRunTypes.Equilibrium
+                Return False
+        End Select
+        If Not cFileUtils.IsDirectoryAvailable(pout, True) Then Return False
 
-        ' Try to open file
+        Dim vars As New List(Of cVariableStatus)
+
         Try
-            sw = New StreamWriter(strFile, False)
+            For iStep As Integer = iTimeStart To iTimeEnd
+                Dim strFile As String = Me.GetFileName(agg, strItem, iStep)
+
+                If String.IsNullOrWhiteSpace(strFile) Then Return False
+                Using sw As New StreamWriter(Path.Combine(pout, strFile))
+
+                    ' Start write process
+
+                    ' Write EwE header
+                    If Me.m_data.Core.SaveWithFileHeader Then
+                        sw.WriteLine(Me.GetModelDetails())
+                        sw.WriteLine()
+                    End If
+
+                    ' Write data header
+                    sw.Write("Variable")
+                    For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
+                        sw.Write(",")
+                        sw.Write(cStringUtils.ToCSVField(u.Name))
+                    Next
+                    sw.WriteLine("")
+
+                    ' Write data
+                    For Each v As cResults.eVariableType In [Enum].GetValues(GetType(cResults.eVariableType))
+                        sw.Write(cStringUtils.ToCSVField(v.ToString))
+                        For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
+                            sw.Write(",")
+                            Dim result As Single = 0
+                            If (Me.m_results.RunType = cModel.eRunTypes.Ecopath) Then
+                                result = Me.m_results.GetTotal(v, New cUnit() {u}, iItem, cResults.GetVariableContributionType(v))
+                            Else
+                                result = Me.m_results.GetTimeStepTotal(v, iStep, New cUnit() {u}, iItem, cResults.GetVariableContributionType(v))
+                            End If
+                            sw.Write(cStringUtils.FormatNumber(result))
+                        Next
+                        sw.WriteLine("")
+                    Next
+                    sw.Flush()
+                    sw.Close()
+
+                    vars.Add(New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_SAVERESULT_DETAIL, strFile),
+                                 eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+                End Using
+            Next
         Catch ex As Exception
             ' Waah!
-            Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_FAILED, Path.GetDirectoryName(strFile), ex.Message),
+            Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_FAILED, pout, ex.Message),
                                     eMessageType.DataExport, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
             Return False
         End Try
 
-        ' -------------
-        ' Start write process
-
-        ' Write EwE header
-        If Me.m_data.Core.SaveWithFileHeader Then
-            sw.WriteLine(Me.GetModelDetails())
-            sw.WriteLine()
-        End If
-
-        ' Write data header
-        sw.Write("Variable")
-        For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
-            sw.Write(",")
-            sw.Write(cStringUtils.ToCSVField(u.Name))
-        Next
-        sw.WriteLine("")
-
-        ' Write data
-        For Each v As cResults.eVariableType In [Enum].GetValues(GetType(cResults.eVariableType))
-            sw.Write(cStringUtils.ToCSVField(v.ToString))
-            For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
-                sw.Write(",")
-                sw.Write(cStringUtils.FormatNumber(Me.m_results.GetTotal(v, New cUnit() {u}, iItem, cResults.GetVariableContributionType(v))))
-            Next
-            sw.WriteLine("")
-        Next
-        sw.Close()
-
         ' Already has save result message?
         If (Me.m_msg Is Nothing) Then
             ' #No: create one
-            Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)),
+            Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_SUCCESS, pout),
                                         eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             ' Set hyperlink
-            Me.m_msg.Hyperlink = Path.GetDirectoryName(strFile)
+            Me.m_msg.Hyperlink = pout
         End If
 
-        ' Add status to message
-        vs = New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_SAVERESULT_DETAIL, strFile),
-                                 eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
-        Me.m_msg.AddVariable(vs)
+        For i As Integer = 0 To vars.Count - 1
+            Me.m_msg.AddVariable(vars(i))
+        Next
 
         ' We're done, Jim
         Return True
@@ -149,31 +170,20 @@ Public Class cResultWriter
     ''' <param name="strItem"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetFileName(agg As cParameters.eAggregationModeType,
-                                 strItem As String) As String
+    Private Function GetFileName(agg As cParameters.eAggregationModeType, strItem As String, Optional iTimeStep As Integer = 0) As String
 
-        Dim strPath As String = ""
         Dim strFile As String = ""
+        strFile = cStringUtils.Localize("valuechain_{0}.csv", agg.ToString())
 
-        Select Case Me.m_results.RunType
-            Case cModel.eRunTypes.Ecopath
-                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecopath), "ValueChain")
-            Case cModel.eRunTypes.Ecosim
-                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), "ValueChain")
-            Case cModel.eRunTypes.Equilibrium
-                Return ""
-                'strPath = Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecopath, strPrefix:="ValueChain_")
-        End Select
-
-        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return ""
-
-        If String.IsNullOrWhiteSpace(strItem) Then
-            strFile = cStringUtils.Localize("valuechain_{0}.csv", agg.ToString())
-        Else
-            strFile = cStringUtils.Localize("valuechain_{0}_{1}.csv", agg.ToString(), strItem)
+        If Not String.IsNullOrWhiteSpace(strItem) Then
+            strFile = cStringUtils.Localize("{0}_{1}", strFile, strItem)
         End If
 
-        Return Path.Combine(strPath, cFileUtils.ToValidFileName(strFile, False))
+        If (iTimeStep > 0) Then
+            strFile = cStringUtils.Localize("{0}_{1:0000}", strFile, iTimeStep)
+        End If
+
+        Return cFileUtils.ToValidFileName(strFile, False) & ".csv"
 
     End Function
 
