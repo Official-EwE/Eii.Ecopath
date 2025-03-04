@@ -798,7 +798,7 @@ Public Class dlgManageTimeSeries
         End Try
 
         ' TS dataset delete will reload Ecopath. It's a bit too brutal but hey, it will properly re-initialize TS
-        Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSucces)
+        Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSucces)
         cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
         Return bSucces
