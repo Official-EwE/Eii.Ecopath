@@ -8887,6 +8887,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Discards by group.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_DISCARDSTOTALREF() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_DISCARDSTOTALREF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Eff. rel. costs||Effort related costs.
         '''</summary>
         Public ReadOnly Property TS_TYPE_EFFORTCOST() As String

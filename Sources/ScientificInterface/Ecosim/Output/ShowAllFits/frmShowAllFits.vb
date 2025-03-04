@@ -329,6 +329,9 @@ Namespace Ecosim
                                                 simdata(iTime) = grpOutput.AvgWeight(iTime)
                                             End If
 
+                                        Case eTimeSeriesType.DiscardsTotalRef
+                                            simdata(iTime) = grpOutput.DiscardByFleet(0, iTime)
+
                                         Case Else
                                             simdata(iTime) = grpOutput.Biomass(iTime)
 
@@ -431,6 +434,7 @@ Namespace Ecosim
 
             If Me.m_chkShowDiscards.Checked Then
                 Me.m_lShownPlotsType.Add(eTimeSeriesType.Discards)
+                Me.m_lShownPlotsType.Add(eTimeSeriesType.DiscardsTotalRef)
             End If
 
             If Me.m_chkShowLandings.Checked Then
