@@ -1054,7 +1054,9 @@ Namespace Ecosim
                     'Compute time step results if the calling routine set bTimestepOutput to True
                     If Me.m_Data.bTimestepOutput Then
                         Me.PopulateResults(itime, ipct, iyr)
-                        Me.FireOnTimeStep(itime)
+                        If Not Me.m_search.SearchMode = eSearchModes.FitToTimeSeries Then
+                            Me.FireOnTimeStep(itime)
+                        End If
                     End If
 
                     If (Me.m_pluginManager IsNot Nothing) Then Me.m_pluginManager.EcosimEndTimeStep(Me.BB, Me.m_Data, itime, Me.m_Results)
@@ -2395,6 +2397,9 @@ Namespace Ecosim
                                     Me.m_Data.ResultsDiscardsSurvived(igrp, iflt) = Me.m_Data.relQ(iflt, igrp) * Me.m_Data.FishRateGear(iflt, iTime) * Me.BB(igrp) * (1 - Me.m_Data.PropDiscardMortTime(iflt, igrp))
                                 End If
 
+                                Me.m_Data.ResultsDiscardsSurvived(igrp, 0) += Me.m_Data.ResultsDiscardsSurvived(igrp, iflt)
+                                Me.m_Data.ResultsDiscardsMort(igrp, 0) += Me.m_Data.ResultsDiscardsMort(igrp, iflt)
+
                                 Me.m_Data.ResultsTimeLandingsGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsLandings(igrp, iflt)
                                 Me.m_Data.ResultsTimeDiscardsSurvivedGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsDiscardsSurvived(igrp, iflt)
                                 Me.m_Data.ResultsTimeDiscardsMortGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsDiscardsMort(igrp, iflt)
@@ -2413,6 +2418,10 @@ Namespace Ecosim
                                 Me.m_Data.ResultsSumCatchByGear(0, iTime) += Me.m_Data.ResultsSumCatchByGear(iflt, iTime)
                                 Me.m_Data.ResultsSumFMortByGroupGear(igrp, 0, iTime) += Me.m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime)
                                 Me.m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) += Me.m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime)
+                                'Discards
+                                Me.m_Data.ResultsTimeDiscardsGroupGear(igrp, 0, iTime) += Me.m_Data.ResultsTimeDiscardsGroupGear(igrp, iflt, iTime)
+                                Me.m_Data.ResultsTimeDiscardsSurvivedGroupGear(igrp, 0, iTime) += Me.m_Data.ResultsTimeDiscardsSurvivedGroupGear(igrp, iflt, iTime)
+                                Me.m_Data.ResultsTimeDiscardsMortGroupGear(igrp, 0, iTime) += Me.m_Data.ResultsTimeDiscardsMortGroupGear(igrp, iflt, iTime)
 
                                 'Results for this time step by group, gear
                                 Me.m_Results.BCatch(igrp, iflt) = TotCatch
@@ -2658,6 +2667,7 @@ Namespace Ecosim
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.DiscardsTotalRef Or
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings Or
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef) Then
 
@@ -2723,6 +2733,19 @@ Namespace Ecosim
                                     iflt = Me.m_RefData.AppliedDatPool(iDType)
                                     igrp = Me.m_RefData.AppliedDatPoolSec(iDType)
                                     predDiscard = Me.m_Data.ResultsDiscardsMort(igrp, iflt) + Me.m_Data.ResultsDiscardsSurvived(igrp, iflt)
+                                    If predDiscard = 0 Then predDiscard = 1.0E-20
+
+                                    Zstat = CSng(Math.Log(obsDiscard / predDiscard))
+                                    Me.m_RefData.Yhat(Me.m_RefData.Iobs) = CSng(Math.Log(obsDiscard))
+
+                                Case eTimeSeriesType.DiscardsTotalRef
+
+                                    Dim igrp As Integer
+                                    Dim predDiscard As Single
+                                    Dim obsDiscard As Single = Me.m_RefData.AppliedDatVal(iDYear, iDType)
+                                    If obsDiscard = 0.0 Then obsDiscard = 1.0E-20
+                                    igrp = Me.m_RefData.AppliedDatPool(iDType)
+                                    predDiscard = Me.m_Data.ResultsDiscardsMort(igrp, 0) + Me.m_Data.ResultsDiscardsSurvived(igrp, 0)
                                     If predDiscard = 0 Then predDiscard = 1.0E-20
 
                                     Zstat = CSng(Math.Log(obsDiscard / predDiscard))
@@ -3974,6 +3997,7 @@ Namespace Ecosim
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.DiscardsTotalRef Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings) Then
@@ -5922,6 +5946,10 @@ Namespace Ecosim
             Dim Alpha(,) As Single
             'On Local Error Resume Next
             Dim SumBio() As Single
+
+            If Me.m_search.SearchMode = eSearchModes.FitToTimeSeries Then
+                Return
+            End If
 
             Try
 

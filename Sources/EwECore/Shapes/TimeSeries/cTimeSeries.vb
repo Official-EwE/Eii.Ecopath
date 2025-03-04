@@ -309,6 +309,7 @@ Public MustInherit Class cTimeSeries
                  eTimeSeriesType.Catches,
                  eTimeSeriesType.CatchesRel,
                  eTimeSeriesType.Discards,
+                 eTimeSeriesType.DiscardsTotalRef,
                  eTimeSeriesType.Landings
                 Return False
             Case Else
@@ -341,6 +342,7 @@ Public MustInherit Class cTimeSeries
                DatType = eTimeSeriesType.DiscardProportion Or
                DatType = eTimeSeriesType.Landings Or
                DatType = eTimeSeriesType.Discards Or
+               DatType = eTimeSeriesType.DiscardsTotalRef Or
                DatType = eTimeSeriesType.OffVesselPrice
     End Function
 

@@ -642,7 +642,7 @@ Namespace FitToTimeSeries
                 'make sure the fishing policy search is turned off
                 Me.m_core.m_SearchData.SearchMode = eSearchModes.FitToTimeSeries
                 'No timestep ouput
-                Me.m_core.m_EcoSimData.bTimestepOutput = False
+                Me.m_core.m_EcoSimData.bTimestepOutput = True
 
                 'make sure ecosim does not call the interface 
                 'setting bTimestepOutput = False should have had the same effect
@@ -1517,6 +1517,9 @@ Namespace FitToTimeSeries
                 For i = 1 To Me.VBlock.GetUpperBound(0) '15
                     If Me.IsBlockEstimated(i) = True Then
                         If Par(Me.TotalTime + i) < 34.538 Then
+                            If Par(Me.TotalTime + i) <> 0 Then
+                                Debug.Print(CStr(Par(Me.TotalTime + i)))
+                            End If
                             Me.VBlock(i) = 1 + CSng(Math.Exp(Par(Me.TotalTime + i)))
                         Else
                             Me.VBlock(i) = 1 + CSng(Math.Exp(34.538))
@@ -1531,7 +1534,6 @@ Namespace FitToTimeSeries
                     i = Me.m_esdata.Iarena(ii) : j = Me.m_esdata.Jarena(ii)
                     If Me.VblockCode(ii) > 0 Then
                         Me.m_esdata.VulMult(i, j) = Me.VBlock(Me.VblockCode(ii))
-                        ' m_esdata.VulMult(i, j) = 2
                         Me.m_ecosim.setvulratecell(i, j, Me.m_esdata.VulMult(i, j))
                         '****REMOVED BY CJW SEPT 2001; UNSAFE HERE******
                         ' MakeAMatrixCell i, j
