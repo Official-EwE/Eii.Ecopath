@@ -947,6 +947,12 @@ Public Class cTimeSeriesDataStructures
                                 Me.Iobs = Me.Iobs + 1
                             End If
 
+                        Case eTimeSeriesType.DiscardsTotalRef
+                            iGrp = Me.AppliedDatPoolSec(iDType)
+                            If (iGrp > 0 And iGrp <= nGroups) Then
+                                Me.Iobs = Me.Iobs + 1
+                            End If
+
                         Case eTimeSeriesType.Catchabilities
                             iFlt = Me.AppliedDatPool(iDType)
                             iGrp = Me.AppliedDatPoolSec(iDType)
