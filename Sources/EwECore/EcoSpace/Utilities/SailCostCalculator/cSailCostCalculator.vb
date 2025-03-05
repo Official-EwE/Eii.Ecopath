@@ -22,25 +22,43 @@ Option Strict On
 
 #End Region ' Imports
 
+''' -----------------------------------------------------------------------------
+''' <summary>
+''' Utility class to calculate sailing costs for each fleet based on the location
+''' of their ports. Costs are calculated as port distances in km, working around 
+''' land masses.
+''' </summary>
+''' -----------------------------------------------------------------------------
 Public Class cSailCostCalculator
 
-    ' Directions (N, S, E, W)
-    Private m_dcol As Integer() = {0, 0, -1, 1}
-    Private m_drow As Integer() = {-1, 1, 0, 0}
+#Region " Private vars "
+
+    ' -- Horizontal and vertical movement vectors --
+    'Private m_dcol As Integer() = {0, 0, -1, 1}
+    'Private m_drow As Integer() = {-1, 1, 0, 0}
+
+    ' -- Movement vectors, also diagonally --
+    Private m_dcol As Integer() = {-1, 0, 1, -1, 1, -1, 0, 1}
+    Private m_drow As Integer() = {-1, -1, -1, 0, 0, 1, 1, 1}
 
     Private m_ds As cEcospaceDataStructures = Nothing
 
+#End Region ' Private vars
+
     Public Sub New(ds As cEcospaceDataStructures)
         Me.m_ds = ds
-        ' Cell widths already calculated in cEcospaceDatastructures.CalculateCellWidths
     End Sub
 
     Public Function CalculateCostOfSailing() As Boolean
 
+        Dim distance(,) As Double = New Double(Me.m_ds.InRow, Me.m_ds.InCol) {}
+        Dim pq As New cSailCostCalculatorPriorityQueue(Me.m_ds.InRow, Me.m_ds.InCol)
+        Dim n As Integer = Me.m_dcol.Count
+
         For iFleet As Integer = 1 To m_ds.nFleets
 
-            Dim distance(,) As Double = New Double(Me.m_ds.InRow, Me.m_ds.InCol) {}
-            Dim pq As New cSailCostCalculatorPriorityQueue(Me.m_ds.InRow, Me.m_ds.InCol) ' Min-heap priority queue
+            ' Should not be neceessary, but hey
+            pq.Clear()
 
             ' Initialize distances and enqueue all ports with zero distance
             For row As Integer = 1 To Me.m_ds.InRow
@@ -61,29 +79,40 @@ Public Class cSailCostCalculator
 
                     Dim currentDist As Double = distance(row, col)
 
-                    ' Expand in four directions
-                    For i As Integer = 0 To 3
-                        Dim ncol As Integer = col + m_dcol(i)
-                        Dim nrow As Integer = row + m_drow(i)
+                    ' Explore all movement vectors
+                    For i As Integer = 0 To n - 1
 
-                        ' Wrap-around for east-west boundaries
+                        Dim ncol As Integer = col + Me.m_dcol(i)
+                        Dim nrow As Integer = row + Me.m_drow(i)
+
+                        ' Wrap-around east-west boundaries for global models
                         If (Me.m_ds.IsGlobalMap) Then
                             ncol = 1 + ((ncol - 1 + Me.m_ds.InCol) Mod Me.m_ds.InCol)
                         End If
 
                         ' Check bounds 
-                        If nrow >= 1 And nrow <= Me.m_ds.InRow And ncol >= 1 And ncol <= Me.m_ds.InCol Then
+                        If ((nrow >= 1) And (nrow <= Me.m_ds.InRow) And (ncol >= 1) And (ncol <= Me.m_ds.InCol)) Then
+
                             ' Is modelled cell?
                             If Me.m_ds.Depth(nrow, ncol) > 0 Then
 
-                                ' Get precomputed cell width
+                                ' Obtain EW and NS movement vectors
                                 Dim kmEastWest As Double = Me.m_ds.CellLength * Me.m_ds.RelativeCellWidth(nrow)
                                 Dim kmNorthSouth As Double = Me.m_ds.CellLength
-                                Dim stepDistance As Double = If(m_dcol(i) <> 0, kmEastWest, kmNorthSouth)
+                                Dim stepDistance As Double = 0
+                                ' Determine relevant directions
+                                Dim bIsDiag As Boolean = (Me.m_drow(i) <> 0) And (Me.m_dcol(i) <> 0)
+                                Dim bIsEW As Boolean = (Me.m_dcol(i) <> 0)
 
+                                ' Calculate actual step distance
+                                If (bIsDiag) Then
+                                    stepDistance = Math.Sqrt(kmEastWest * kmEastWest + kmNorthSouth * kmNorthSouth)
+                                Else
+                                    stepDistance = If(bIsEW, kmEastWest, kmNorthSouth)
+                                End If
                                 Dim newDist As Double = currentDist + stepDistance
 
-                                ' Relaxation: Update if new distance is shorter
+                                ' Update and queue a new point if new distance is shorter
                                 If newDist < distance(nrow, ncol) Then
                                     If pq.Enqueue(newDist, nrow, ncol) Then
                                         distance(nrow, ncol) = newDist
