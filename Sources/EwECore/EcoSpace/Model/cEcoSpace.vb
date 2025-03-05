@@ -3807,7 +3807,7 @@ Public Class cEcoSpace
         AdScale = 315.36 / Me.EcoSpaceData.CellLength
 
         'set depth for the boundary cells to be equal to the depth just inside the model
-        Me.EcoSpaceData.Width(0) = Me.EcoSpaceData.Width(1)
+        Me.EcoSpaceData.RelativeCellWidth(0) = Me.EcoSpaceData.RelativeCellWidth(1)
         'm_Data.Width(m_Data.InRow + 1) = m_Data.Width(m_Data.InRow)
         For i = 1 To Me.EcoSpaceData.InRow
             Me.EcoSpaceData.Depth(i, 0) = Me.EcoSpaceData.Depth(i, 1)
@@ -3921,33 +3921,33 @@ Public Class cEcoSpace
                             If i > 0 And i < Me.EcoSpaceData.InRow Then
 
                                 If Me.EcoSpaceData.HabCap(ip)(i + 1, j) = Me.EcoSpaceData.HabCap(ip)(i, j) Then
-                                    Me.Bcw(i + 1, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.Width(i)
-                                    Me.C(i, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.Width(i)
+                                    Me.Bcw(i + 1, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.RelativeCellWidth(i)
+                                    Me.C(i, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.RelativeCellWidth(i)
                                 ElseIf Me.EcoSpaceData.HabCap(ip)(i + 1, j) > Me.EcoSpaceData.HabCap(ip)(i, j) Then
-                                    Me.Bcw(i + 1, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.Width(i)
-                                    Me.C(i, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.HabCap(ip)(i, j) / Me.EcoSpaceData.HabCap(ip)(i + 1, j) * Me.EcoSpaceData.Width(i)
+                                    Me.Bcw(i + 1, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.RelativeCellWidth(i)
+                                    Me.C(i, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.HabCap(ip)(i, j) / Me.EcoSpaceData.HabCap(ip)(i + 1, j) * Me.EcoSpaceData.RelativeCellWidth(i)
                                 Else
-                                    Me.Bcw(i + 1, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.HabCap(ip)(i + 1, j) / Me.EcoSpaceData.HabCap(ip)(i, j) * Me.EcoSpaceData.Width(i)
-                                    Me.C(i, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.Width(i)
+                                    Me.Bcw(i + 1, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.HabCap(ip)(i + 1, j) / Me.EcoSpaceData.HabCap(ip)(i, j) * Me.EcoSpaceData.RelativeCellWidth(i)
+                                    Me.C(i, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.RelativeCellWidth(i)
                                 End If
 
                                 If Me.EcoSpaceData.IsAdvected(ip) Then
                                     'jb 1-Dec-2016 Include cell width scaler in Y velocity movements
                                     If Me.EcoSpaceData.Yvel(i, j) > 0 Then
-                                        Me.Bcw(i + 1, j, ip) = Me.Bcw(i + 1, j, ip) + Me.EcoSpaceData.Yvel(i, j) * AdScale * Me.EcoSpaceData.Width(i)
+                                        Me.Bcw(i + 1, j, ip) = Me.Bcw(i + 1, j, ip) + Me.EcoSpaceData.Yvel(i, j) * AdScale * Me.EcoSpaceData.RelativeCellWidth(i)
                                     Else
-                                        Me.C(i, j, ip) = Me.C(i, j, ip) - Me.EcoSpaceData.Yvel(i, j) * AdScale * Me.EcoSpaceData.Width(i)
+                                        Me.C(i, j, ip) = Me.C(i, j, ip) - Me.EcoSpaceData.Yvel(i, j) * AdScale * Me.EcoSpaceData.RelativeCellWidth(i)
                                     End If
 
                                 End If
                             Else
                                 If Me.EcoSpaceData.IsAdvected(ip) Then
                                     If Me.EcoSpaceData.Yvel(i, j) > 0 Then
-                                        Me.C(i, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.Width(i) 'from row i+1 to i
-                                        Me.Bcw(i + 1, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.Width(i) + Me.EcoSpaceData.Yvel(i, j) * AdScale ' + AdvectSouth 'from i to i+1
+                                        Me.C(i, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.RelativeCellWidth(i) 'from row i+1 to i
+                                        Me.Bcw(i + 1, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.RelativeCellWidth(i) + Me.EcoSpaceData.Yvel(i, j) * AdScale ' + AdvectSouth 'from i to i+1
                                     Else
-                                        Me.C(i, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.Width(i) - Me.EcoSpaceData.Yvel(i, j) * AdScale 'from row i+1 to i
-                                        Me.Bcw(i + 1, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.Width(i)
+                                        Me.C(i, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.RelativeCellWidth(i) - Me.EcoSpaceData.Yvel(i, j) * AdScale 'from row i+1 to i
+                                        Me.Bcw(i + 1, j, ip) = Me.EcoSpaceData.Mrate(ip) * Me.EcoSpaceData.RelativeCellWidth(i)
                                     End If
                                 Else
                                     Me.C(i, j, ip) = 0
@@ -8105,108 +8105,9 @@ exitline:
             End If
         End If
 
-        Dim iRow As Integer
-        Dim iColPortX As Integer
-        Dim iRowPortY As Integer
-        Dim iCol As Integer
-        Dim iPort As Integer
-        Dim iFleet As Integer
-        Dim Ports As Integer
-        Dim minD(,,) As Single
-        Dim Dist As Single
-        Dim Lati As Single
-        Dim Longi As Single
-        Dim LatPort As Single
-        Dim LonPort As Single
-        Dim PortX() As Integer
-        Dim PortY() As Integer
-        Dim Disti As Single
-
-        ' This calculation does NOT take the shape of land into account
-
-        Ports = 0
-        For iRow = 1 To Me.EcoSpaceData.InRow
-            For iCol = 1 To Me.EcoSpaceData.InCol
-                Me.EcoSpaceData.Port(0)(iRow, iCol) = False
-                For iFleet = 1 To Me.EcoSpaceData.nFleets
-                    If Me.EcoSpaceData.Port(iFleet)(iRow, iCol) = True Then
-                        Ports += 1
-                        Me.EcoSpaceData.Port(0)(iRow, iCol) = True
-                        Exit For
-                    End If
-                Next
-            Next
-        Next
-        ReDim PortX(Ports)
-        ReDim PortY(Ports)
-        Ports = 0
-
-        For iRow = 1 To Me.EcoSpaceData.InRow
-            For iCol = 1 To Me.EcoSpaceData.InCol
-                If Me.EcoSpaceData.Port(0)(iRow, iCol) = True Then
-                    Ports += 1
-                    'PortX(Ports) = i
-                    'PortY(Ports) = j
-
-                    'm_Data.InRow = Y = Lat
-                    'm_Data.InCol = X = Lon
-                    PortX(Ports) = iCol
-                    PortY(Ports) = iRow
-                End If
-            Next
-        Next
-
-        ReDim minD(Me.EcoSpaceData.nFleets, Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
-        For iFleet = 0 To Me.EcoSpaceData.nFleets
-            For iRow = 1 To Me.EcoSpaceData.InRow
-                For iCol = 1 To Me.EcoSpaceData.InCol
-                    minD(iFleet, iRow, iCol) = Single.MaxValue
-                Next iCol
-            Next iRow
-        Next iFleet
-
-        'Cell size in degress at the equator
-        Dim CellSize As Single = cEcospaceDataStructures.ToCellSize(Me.EcoSpaceData.CellLength, Me.EcoSpaceData.AssumeSquareCells)
-
-        For iPort = 1 To Ports      'go port by port
-            iColPortX = PortX(iPort)
-            iRowPortY = PortY(iPort)
-
-            'Port location in degrees
-            'm_Data.InRow = Y = Lat
-            'm_Data.InCol = X = Lon
-            LonPort = CSng(Me.EcoSpaceData.Lon1 + (iColPortX * CellSize))
-            LatPort = CSng(Me.EcoSpaceData.Lat1 - (iRowPortY * CellSize))
-
-            For iFleet = 0 To Me.EcoSpaceData.nFleets
-                ' Is this fleet based in a this port?
-                If Me.EcoSpaceData.Port(iFleet)(iRowPortY, iColPortX) Then
-
-                    For iRow = 1 To Me.EcoSpaceData.InRow
-                        For iCol = 1 To Me.EcoSpaceData.InCol
-                            If Me.EcoSpaceData.Depth(iRow, iCol) > 0 Then 'water cell
-                                Longi = CSng(Me.EcoSpaceData.Lon1 + (iCol * CellSize))
-                                Lati = CSng(Me.EcoSpaceData.Lat1 - (iRow * CellSize))
-
-                                Dist = cEcoSpace.CalDistance(LonPort, LatPort, Longi, Lati, Me.EcoSpaceData.AssumeSquareCells)
-                                minD(iFleet, iRow, iCol) = Math.Min(Dist, minD(iFleet, iRow, iCol))
-                            Else
-                                minD(iFleet, iRow, iCol) = 0
-                            End If
-                        Next iCol
-                    Next iRow
-                End If
-            Next iFleet
-        Next iPort
-
-        For iFleet = 0 To Me.EcoSpaceData.nFleets
-            For iRow = 1 To Me.EcoSpaceData.InRow
-                For iCol = 1 To Me.EcoSpaceData.InCol
-                    If minD(iFleet, iRow, iCol) < Single.MaxValue Then Disti = minD(iFleet, iRow, iCol) Else Disti = 0.0!
-                    Me.EcoSpaceData.Sail(iFleet)(iRow, iCol) = Disti
-                Next iCol
-            Next iRow
-        Next iFleet
+        ' JS 04 March 2025: added a lightning fast alternative with the help of ChatGPT
+        Dim calc As New cSailCostCalculator(Me.EcoSpaceData)
+        calc.CalculateCostOfSailing()
 
     End Sub
 

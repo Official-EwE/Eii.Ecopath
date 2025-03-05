@@ -22,12 +22,11 @@
 Option Strict On
 Imports System.IO
 Imports System.Reflection
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
 Imports EwELicense
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

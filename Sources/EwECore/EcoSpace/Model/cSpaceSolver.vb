@@ -481,7 +481,7 @@ Public Class cSpaceSolver
             Me.TotFisheriesDiscards = 0
 
             'Cell area in KM2 at the equator * relative width of the cell
-            CellAreaKM2 = CSng(Me.m_Data.CellLength ^ 2.0) * Me.m_Data.Width(i)
+            CellAreaKM2 = CSng(Me.m_Data.CellLength ^ 2.0) * Me.m_Data.RelativeCellWidth(i)
 
             If Me.m_TracerData.EcoSpaceConSimOn Then
                 'set contaminant concentration for the environment
