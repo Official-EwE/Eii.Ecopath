@@ -14676,7 +14676,7 @@ Public Class cCore
             Case eDataTypes.EcospaceBasemap
 
                 If value.varName = eVarNameFlags.Latitude Then
-                    Me.m_EcospaceData.CalculateCellWidth()
+                    Me.m_EcospaceData.CalculateCellTaperingNM()
                 End If
 
         End Select

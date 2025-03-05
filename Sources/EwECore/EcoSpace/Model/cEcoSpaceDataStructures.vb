@@ -185,6 +185,8 @@ Public Class cEcospaceDataStructures
     Public Lat1 As Single
     ''' <summary>Longitude of upper left coordinate of the current basemap.</summary>
     Public Lon1 As Single
+    ''' <summary>Flag, states whether the map represents the global ocean.</summary>
+    Public IsGlobalMap As Boolean
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     ''' <summary> Total number of stanza groups </summary>
@@ -612,7 +614,10 @@ Public Class cEcospaceDataStructures
     ''' <remarks>Used to check that the user has set capacities for all groups </remarks>
     Public MaxHabCap() As Single
 
-    Public Width() As Single
+    ''' <summary>
+    ''' Relative cell width due to lattitude tapering, unless <see cref="AssumeSquareCells"/> is set.
+    ''' </summary>
+    Public RelativeCellWidth() As Single
 
     Public SaveAnnual As Boolean = True
     Public SaveSelectedGroupsFleetsOnly As Boolean = False
@@ -2070,7 +2075,7 @@ Public Class cEcospaceDataStructures
             ReDim Me.MPAmonth(12, 1)
             ReDim Me.IsFished(Me.nFleets, Me.InRow, Me.InCol)
             ReDim Me.EffZones(Me.InRow, Me.InCol)
-            ReDim Me.Width(Me.InRow)
+            ReDim Me.RelativeCellWidth(Me.InRow)
 
             Me.allocate(Me.MonthlyXvel, 12, Me.InRow + 1, Me.InCol + 1)
             Me.allocate(Me.MonthlyYvel, 12, Me.InRow + 1, Me.InCol + 1)
@@ -2084,7 +2089,8 @@ Public Class cEcospaceDataStructures
             Me.ReDimEffortZones()
 
             'Populate the Width() array
-            Me.CalculateCellWidth()
+            'Me.CalculateCellWidth()
+            Me.CalculateRelCellWidths()
 
             For i = 1 To Me.InRow
                 For j = 1 To Me.InCol      'Default Values for new maps
@@ -2115,28 +2121,72 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-    Friend Sub CalculateCellWidth()
+    '''' <summary>
+    '''' This method assumes nautical miles and gave wonky results.
+    '''' JS 04Mar25 replaced this method by CalculateRelCellWidths.
+    '''' </summary>
+    'Friend Sub CalculateCellWidth()
 
-        Dim halfcell As Single = Me.CellLength / 2 / (60 * 1.852F)
-        Dim dtLat As Single
+    '    Dim halfcell As Single = Me.CellLength / 2 / (60 * 1.852F)
+    '    Dim dtLat As Single
+    '    For i As Integer = 1 To Me.InRow
+
+    '        dtLat = Me.CellLength * (i - 1) / (60 * 1.852F) - halfcell
+    '        'System.Console.WriteLine((Lat1 - dtLat).ToString + ", ")
+
+    '        'jb 28-Nov-2013 find width for the center of the cell
+    '        If (Me.AssumeSquareCells) Then
+    '            Me.RelativeCellWidth(i) = 1
+    '        Else
+    '            'half a cell height in degrees 
+    '            Dim Lat As Single = Me.Lat1 - dtLat
+    '            Me.RelativeCellWidth(i) = CSng(Math.Cos(Lat / 90.0 * Math.PI / 2.0))
+    '        End If
+
+    '    Next i
+
+    'End Sub
+
+    ''' <summary>
+    ''' Simplified algorithm to calculate the relative cell widths in
+    ''' the assumed WGS84 projection. This code assumes that the model 
+    ''' uses km
+    ''' </summary>
+    Friend Sub CalculateRelCellWidths()
+
+        ' Approximate km per degree of latitude
+        Const KM_PER_DEGREE As Single = 111.12F
+        'Const MN_PER_DEGREE As Single = KM_PER_DEGREE / 1.852F
+
+        Dim 
+        ' Approximate cell size in decimal degree
+        Dim CellSizeDD As Single = Me.CellLength / KM_PER_DEGREE
+        ' Starting latitude cell centroid
+        Dim toplatCtr As Single = Me.Lat1 - CellSizeDD / 2
+
         For i As Integer = 1 To Me.InRow
 
-            dtLat = Me.CellLength * (i - 1) / (60 * 1.852F) - halfcell
-            'System.Console.WriteLine((Lat1 - dtLat).ToString + ", ")
-
-            'jb 28-Nov-2013 find width for the center of the cell
             If (Me.AssumeSquareCells) Then
-                Me.Width(i) = 1
+                Me.RelativeCellWidth(i) = 1
             Else
-                'half a cell height in degrees 
-                Dim Lat As Single = Me.Lat1 - dtLat
-                Me.Width(i) = CSng(Math.Cos(Lat / 90.0 * Math.PI / 2.0))
+                ' Calculate latitude of the cell center
+                Dim Lat As Single = toplatCtr - (i - 1) * CellSizeDD
+                ' Convert latitude to radians
+                Dim latRad As Double = Lat * (Math.PI / 180.0)
+                ' Adjust width using the cosine of latitude
+                Me.RelativeCellWidth(i) = CSng(Math.Abs(Math.Cos(latRad)))
             End If
-
         Next i
 
+        If (Me.AssumeSquareCells) Then
+            Me.IsGlobalMap = False
+        Else
+            Me.IsGlobalMap = ((Me.InCol * CellSizeDD) > 359)
+        End If
 
     End Sub
+
+
 
 
     Public Sub RedimConSimVars()
