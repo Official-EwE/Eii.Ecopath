@@ -2088,8 +2088,7 @@ Public Class cEcospaceDataStructures
 
             Me.ReDimEffortZones()
 
-            'Populate the Width() array
-            'Me.CalculateCellWidth()
+            'Calculate the relative cell widths due to latitude tapering, if applicable
             Me.CalculateRelCellWidths()
 
             For i = 1 To Me.InRow
@@ -2158,7 +2157,6 @@ Public Class cEcospaceDataStructures
         Const KM_PER_DEGREE As Single = 111.12F
         'Const MN_PER_DEGREE As Single = KM_PER_DEGREE / 1.852F
 
-        Dim 
         ' Approximate cell size in decimal degree
         Dim CellSizeDD As Single = Me.CellLength / KM_PER_DEGREE
         ' Starting latitude cell centroid
