@@ -2376,8 +2376,7 @@ Namespace Ecosim
                                 'total catch including discard that survived
                                 TotCatch = CatchMort * TotCatchScalar
 
-                                ' JS: Increment total
-                                Me.m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime) += TotCatch
+                                Me.m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime) = TotCatch
 
                                 'Total catch that was landed
                                 Me.m_Data.ResultsLandings(igrp, iflt) = TotCatch * Me.m_Data.PropLandedTime(iflt, igrp)
