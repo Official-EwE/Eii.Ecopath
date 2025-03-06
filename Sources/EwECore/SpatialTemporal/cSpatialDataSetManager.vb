@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports System.IO
-Imports System.Reflection
 Imports System.Xml
 Imports EwEPlugin
 Imports EwEUtils.Core
@@ -384,6 +383,24 @@ Namespace SpatialData
 #Region " Dataset list interface "
 
         ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Determine if one or more datasets are already defined. The dataset check
+        ''' is performed by checking the <see cref="ISpatialDataSet.GUID"/>.
+        ''' </summary>
+        ''' <param name="datasets">The dataset(s) to check.</param>
+        ''' <returns>True if one or more dataset(s) are already present.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Contains(datasets As ICollection(Of ISpatialDataSet)) As Boolean
+            If (datasets Is Nothing) Then Return False
+            For Each ds As ISpatialDataSet In datasets
+                If (Not (ds.GUID.Equals(Guid.Empty))) Then
+                    If (Me.Find(ds.GUID) IsNot Nothing) Then Return True
+                End If
+            Next
+            Return False
+        End Function
+
+        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Add"/>
         ''' -------------------------------------------------------------------
         Public Sub Add(item As ISpatialDataSet) _
@@ -397,7 +414,12 @@ Namespace SpatialData
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <see cref="Add"/> a range of spatial data sets.
+        ''' <summary>
+        ''' <see cref="Add(ISpatialDataSet)"/> a range of spatial datasets.
+        ''' </summary>
+        ''' <param name="datasets">The dataset(s) to add.</param>
+        ''' <param name="bInvalidateCore">Flag, states whether to flag the EwE
+        ''' database as needing for saving.</param>
         ''' -------------------------------------------------------------------
         Public Sub AddRange(datasets As ICollection(Of ISpatialDataSet), bInvalidateCore As Boolean)
             For Each ds As ISpatialDataSet In datasets
@@ -409,6 +431,28 @@ Namespace SpatialData
                     If bAdd Then
                         If TypeOf ds Is IPlugin Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
                         Me.Add(ds)
+                    End If
+                End If
+            Next
+            If bInvalidateCore Then Me.Changed()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <see cref="Remove(ISpatialDataSet)"/> a range of spatial datasets.
+        ''' </summary>
+        ''' <param name="datasets">The dataset(s) to add.</param>
+        ''' <param name="bInvalidateCore">Flag, states whether to flag the EwE
+        ''' database as needing for saving.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub RemoveRange(datasets As ICollection(Of ISpatialDataSet), bInvalidateCore As Boolean)
+            For Each ds As ISpatialDataSet In datasets
+                If (ds IsNot Nothing) Then
+                    If (Not (ds.GUID.Equals(Guid.Empty))) Then
+                        Dim dsTest As ISpatialDataSet = Me.Find(ds.GUID)
+                        If (dsTest IsNot Nothing) Then
+                            Me.Remove(ds)
+                        End If
                     End If
                 End If
             Next

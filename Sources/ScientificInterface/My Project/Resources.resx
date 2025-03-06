@@ -2269,4 +2269,10 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>The model database '{0}' is already open. Please close the other program and try again.</value>
     <comment>{0}=file name</comment>
   </data>
+  <data name="PROMPT_SPATIALTEMPORAL_IMPORT" xml:space="preserve">
+    <value>Select spatial config file to import from</value>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_IMPORT_REPLACE_EXISTING" xml:space="preserve">
+    <value>One or more datasets are already present. Do you want to replace these with new data?</value>
+  </data>
 </root>

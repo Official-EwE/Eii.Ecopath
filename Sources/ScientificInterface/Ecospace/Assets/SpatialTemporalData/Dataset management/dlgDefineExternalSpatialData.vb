@@ -185,11 +185,27 @@ Namespace Ecospace.Controls
         Private Sub OnImport(sender As Object, e As EventArgs) _
             Handles m_btnImport.Click
             Try
-                ' ToDo: localize this
-                Dim dlg As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select spatial config file to import from", "", ScientificInterfaceShared.My.Resources.FILEFILTER_XML)
+
+                Dim dlg As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SPATIALTEMPORAL_IMPORT, "", ScientificInterfaceShared.My.Resources.FILEFILTER_XML)
                 If dlg.ShowDialog() = DialogResult.OK Then
                     Dim datasets As ISpatialDataSet() = cSpatialDataConfigFile.GetDatasets(dlg.FileName)
                     If (datasets.Count > 0) Then
+                        ' Check if already existing
+                        If (Me.m_manSets.Contains(datasets)) Then
+                            ' #Yes: prompt user what to do
+                            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_SPATIALTEMPORAL_IMPORT_REPLACE_EXISTING, eCoreComponentType.External, eMessageType.DataImport, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
+                            Me.Core.Messages.SendMessage(fmsg)
+
+                            Select Case fmsg.Reply
+                                Case eMessageReply.CANCEL
+                                    Return
+                                Case eMessageReply.YES
+                                    Me.m_manSets.RemoveRange(datasets, False)
+                                Case eMessageReply.NO
+                                    ' NOP: default behaviour will not overwrite existing datasets
+                            End Select
+                        End If
+
                         Me.m_manSets.AddRange(datasets, True)
                         Me.Reload()
                     End If
