@@ -4568,6 +4568,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Select spatial config file to import from.
+        '''</summary>
+        Public ReadOnly Property PROMPT_SPATIALTEMPORAL_IMPORT() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SPATIALTEMPORAL_IMPORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to One or more datasets are already present. Do you want to replace these with new data?.
+        '''</summary>
+        Public ReadOnly Property PROMPT_SPATIALTEMPORAL_IMPORT_REPLACE_EXISTING() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SPATIALTEMPORAL_IMPORT_REPLACE_EXISTING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to One or more stanza configurations do not have life stages assigned. Do you want to do this now?.
         '''</summary>
         Public ReadOnly Property PROMPT_STANZA_MISSING_LIFESTAGES() As String
