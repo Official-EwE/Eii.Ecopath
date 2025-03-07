@@ -131,8 +131,8 @@
     <value>Failed to record Monte Carlo balanced model, recording has stopped. Please see the error log for details.</value>
   </data>
   <data name="RECORD_REPORT" xml:space="preserve">
-    <value>{0} Monte Carlo samples recorded</value>
-    <comment>{0} = sample count</comment>
+    <value>{0} Monte Carlo samples recorded, {1} samples rejected</value>
+    <comment>{0} = recorded sample count, {1} = rejected sample count</comment>
   </data>
   <data name="DISPLAYNAME" xml:space="preserve">
     <value>Ecosampler</value>

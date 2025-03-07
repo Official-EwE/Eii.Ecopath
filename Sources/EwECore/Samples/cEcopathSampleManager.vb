@@ -22,6 +22,7 @@
 Option Strict On
 Imports System.Globalization
 Imports System.Text
+Imports EwECore.Database
 Imports EwECore.DataSources
 Imports EwECore.Ecopath
 Imports EwEUtils.Core
@@ -46,14 +47,17 @@ Namespace Samples
 #Region " Private vars "
 
         Private m_core As cCore = Nothing
-        Private m_data As cEcopathSampleDatastructures = Nothing
-        Private m_rnd As Random = Nothing
 
-        ' -- Batch run ariables --
+        Private m_data As cEcopathSampleDatastructures = Nothing
+
+        ' -- Batch run variables --
         Private m_iRunLength As Integer
         Private m_iRunStart As Integer
         Private m_bRandomize As Boolean = False
         Private m_bStopRun As Boolean
+
+        ' -- Recording variables --
+        Private m_strTempFileName As String = ""
 
 #End Region ' Private vars
 
@@ -192,7 +196,6 @@ Namespace Samples
         Friend Sub New(core As cCore)
             Me.m_core = core
             Me.m_data = core.m_SampleData
-            Me.m_rnd = New Random()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -277,7 +280,20 @@ Namespace Samples
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub Init()
-            Me.m_core.Messages.AddMessage(New cMessage("Samples have been added", eMessageType.DataAddedOrRemoved, eCoreComponentType.EcopathSample, eMessageImportance.Maintenance))
+            ' NOP
+        End Sub
+
+        Public Sub StartRecording()
+
+            Me.m_strTempFileName = Me.ExportModelToText()
+
+        End Sub
+
+        Public Sub StopRecording()
+
+            cFileUtils.PurgeTempFile(Me.m_strTempFileName)
+            Me.m_strTempFileName = ""
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -296,6 +312,7 @@ Namespace Samples
             Me.m_data.m_loaded = Nothing
             Me.m_data.m_backup = Nothing
 
+            ' Broad maintenance notification
             Me.m_core.Messages.AddMessage(New cMessage("Samples have been removed", eMessageType.DataAddedOrRemoved, eCoreComponentType.EcopathSample, eMessageImportance.Maintenance))
 
         End Sub
@@ -315,20 +332,19 @@ Namespace Samples
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Record an <see cref="cEcopathSample"/> from the current values in Ecopath.
-        ''' <seealso cref="cEcopathSample"/>
+        ''' Record an <see cref="cEcopathSample"/> in response to Monte Carlo
+        ''' resampling.
         ''' </summary>
         ''' <param name="strBaseHash">The hash code for the original model.</param>
-        ''' <param name="mc">Monte Carlo to obtain values from.</param>
         ''' <returns>A valid sample, or Nothing if an error occurred.</returns>
+        ''' <seealso cref="cEcopathSample"/>
         ''' -------------------------------------------------------------------
-        Public Function Record(strBaseHash As String, mc As cEcosimMonteCarlo) As cEcopathSample
+        Public Function Record(strBaseHash As String) As cEcopathSample
 
-            Dim s As cEcopathSample = Me.MakeSnapshot(True, mc)
+            Dim s As cEcopathSample = Me.MakeSnapshot(eSnapshotMode.MonteCarlo)
             Dim bSuccess As Boolean = False
 
             If (s IsNot Nothing) Then
-
                 s.Hash = strBaseHash
 
                 Me.m_data.m_samples.Add(s)
@@ -344,9 +360,8 @@ Namespace Samples
                 ds.EndTransaction(bSuccess)
 
                 If (bSuccess) Then
+                    ' Broad maintenance notification
                     Me.m_core.Messages.SendMessage(New cMessage("Sample has been added", eMessageType.DataAddedOrRemoved, eCoreComponentType.EcopathSample, eMessageImportance.Maintenance))
-                Else
-                    Me.m_core.Messages.SendMessage(New cMessage("Samples was not added", eMessageType.ErrorEncountered, eCoreComponentType.EcopathSample, eMessageImportance.Critical))
                 End If
             End If
 
@@ -365,6 +380,7 @@ Namespace Samples
         Public Function StoreEcosimDiagnostics(sample As cEcopathSample, mc As cEcosimMonteCarlo, esdata As cEcosimDatastructures) As Boolean
             If (mc IsNot Nothing And sample IsNot Nothing) Then
                 sample.SS = esdata.SS
+                ' Broad maintenance notification
                 Me.m_core.Messages.SendMessage(New cMessage("Samples have been updated", eMessageType.DataModified, eCoreComponentType.EcopathSample, eMessageImportance.Maintenance))
             End If
         End Function
@@ -406,7 +422,9 @@ Namespace Samples
                 Me.m_data.m_samples(i - 1).Index = i
             Next
 
+            ' Broad maintenance notification
             Me.m_core.Messages.SendMessage(New cMessage("Samples have been deleted", eMessageType.DataAddedOrRemoved, eCoreComponentType.EcopathSample, eMessageImportance.Maintenance))
+
             Return bSuccess
 
         End Function
@@ -553,7 +571,9 @@ Namespace Samples
             End If
 
             If bChanged Then
+                ' Broad maintenance notification
                 Me.m_core.Messages.SendMessage(New cMessage("Sample load state has changed", eMessageType.DataModified, eCoreComponentType.EcopathSample, eMessageImportance.Maintenance))
+
                 If (bRefresh) Then
                     Me.m_core.LoadEcopathInputs()
                     Me.m_core.LoadEcopathFleetInputs()
@@ -630,7 +650,7 @@ Namespace Samples
 
         Private Function BackupEcopath() As Boolean
             If Not Me.HasBackup Then
-                Me.m_data.m_backup = Me.MakeSnapshot(False, Nothing)
+                Me.m_data.m_backup = Me.MakeSnapshot(eSnapshotMode.EcopathBackup)
             End If
             Return Me.HasBackup()
         End Function
@@ -649,24 +669,22 @@ Namespace Samples
             Return (Me.m_data.m_backup IsNot Nothing)
         End Function
 
+        Private Enum eSnapshotMode As Integer
+            EcopathBackup = 0
+            MonteCarlo
+        End Enum
+
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create a model snapshot from Ecopath.
+        ''' Create a model snapshot, either an Ecopath backup sample or a sample
+        ''' triggered by a Monte Carlo search.
         ''' </summary>
-        ''' <param name="bMustBalance"></param>
-        ''' <param name="mc"></param>
+        ''' <param name="mode"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function MakeSnapshot(bMustBalance As Boolean, mc As cEcosimMonteCarlo) As cEcopathSample
+        Private Function MakeSnapshot(mode As eSnapshotMode) As cEcopathSample
 
             If (Me.m_core Is Nothing) Then Return Nothing
-
-            ' Some users report samples with negative respiration. That should not happen
-            ' Instead of checking for EE, it's more fail-safe to test for the final balance state
-            ' JS 26Sep'24: fixed a bug in Core State Monitor which failed to reset HasEcopathBalanced
-            If (bMustBalance And Not Me.m_core.StateMonitor.HasEcopathBalanced()) Then
-                Return Nothing
-            End If
 
             Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
             Dim s As New cEcopathSample(Me.m_core, -1, Me.m_data.nSamples + 1)
@@ -675,102 +693,127 @@ Namespace Samples
             s.Generated = Date.Now()
             s.Hash = ""
 
-            ' Grab parameters
+            Select Case mode
+                Case eSnapshotMode.MonteCarlo
 
-            ' Making a copy from Monte Carlo perturbations?
-            If (mc IsNot Nothing) Then
+                    Debug.WriteLine("EcoSampler: making MC snapshot " & s.Name)
 
-                Debug.WriteLine("EcoSampler: making MC snapshot " & s.Name)
+                    ' #Yes: obtain data from Ecopath output vars that Monte Carlo has produced
+                    For iGroup As Integer = 1 To epdata.NumGroups
 
-                ' #Yes: obtain data from Ecopath output vars that Monte Carlo has produced
-                For iGroup As Integer = 1 To epdata.NumGroups
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'jb 20-Aug-2020 Original code to just store the perturbated values.
+                        'Changed to save all values even if they were NOT being perturbed by the Monte Carlo (IsVariable(iGroup) = False)
+                        'The new algo stores the complete Ecopath parameters set making it easier (more robust) to restore the model
+                        'Multi Stanza groups set non-leading variables to IsVariable(igroup) = False.
+                        'But these values have actually been varied by the MultiStanza code in response to the perturbated values  
+                        's.B(iGroup) = If(mc.IsVariable(iGroup, eMCParams.Biomass), epdata.B(iGroup), cCore.NULL_VALUE)
+                        's.PB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.PB), epdata.PB(iGroup), cCore.NULL_VALUE)
+                        's.QB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.QB), epdata.QB(iGroup), cCore.NULL_VALUE)
+                        's.EE(iGroup) = If(mc.IsVariable(iGroup, eMCParams.EE), epdata.EE(iGroup), cCore.NULL_VALUE)
 
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'jb 20-Aug-2020 Original code to just store the perturbated values.
-                    'Changed to save all values even if they were NOT being perturbated by the Monte Carlo (IsVariable(iGroup) = False)
-                    'The new algo stores the complete Ecopath parameters set making it easier (more robust) to restore the model
-                    'Multi Stanza groups set non-leading variables to IsVariable(igroup) = False.
-                    'But these values have actually been varied by the MultiStanza code in response to the perturbated values  
-                    's.B(iGroup) = If(mc.IsVariable(iGroup, eMCParams.Biomass), epdata.B(iGroup), cCore.NULL_VALUE)
-                    's.PB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.PB), epdata.PB(iGroup), cCore.NULL_VALUE)
-                    's.QB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.QB), epdata.QB(iGroup), cCore.NULL_VALUE)
-                    's.EE(iGroup) = If(mc.IsVariable(iGroup, eMCParams.EE), epdata.EE(iGroup), cCore.NULL_VALUE)
+                        'If (mc.IsVariable(iGroup, eMCParams.BaBi)) Then
+                        '    s.BaBi(iGroup) = epdata.BaBi(iGroup)
+                        '    s.BA(iGroup) = cCore.NULL_VALUE
+                        'Else
+                        '    s.BaBi(iGroup) = cCore.NULL_VALUE
+                        '    s.BA(iGroup) = epdata.BA(iGroup)
+                        'End If
 
-                    'If (mc.IsVariable(iGroup, eMCParams.BaBi)) Then
-                    '    s.BaBi(iGroup) = epdata.BaBi(iGroup)
-                    '    s.BA(iGroup) = cCore.NULL_VALUE
-                    'Else
-                    '    s.BaBi(iGroup) = cCore.NULL_VALUE
-                    '    s.BA(iGroup) = epdata.BA(iGroup)
-                    'End If
+                        'For iFleet As Integer = 1 To epdata.NumFleet
+                        '    s.Landing(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Landings), epdata.Landing(iFleet, iGroup), cCore.NULL_VALUE)
+                        '    s.Discard(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Discards), epdata.Discard(iFleet, iGroup), cCore.NULL_VALUE)
+                        'Next
 
-                    'For iFleet As Integer = 1 To epdata.NumFleet
-                    '    s.Landing(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Landings), epdata.Landing(iFleet, iGroup), cCore.NULL_VALUE)
-                    '    s.Discard(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Discards), epdata.Discard(iFleet, iGroup), cCore.NULL_VALUE)
-                    'Next
+                        'For iPred As Integer = 1 To epdata.NumLiving
+                        '    s.DC(iPred, iGroup) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iGroup), cCore.NULL_VALUE)
+                        'Next
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                    'For iPred As Integer = 1 To epdata.NumLiving
-                    '    s.DC(iPred, iGroup) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iGroup), cCore.NULL_VALUE)
-                    'Next
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        s.B(iGroup) = If(epdata.Binput(iGroup) <> cCore.NULL_VALUE, epdata.B(iGroup), cCore.NULL_VALUE)
+                        s.PB(iGroup) = If(epdata.PBinput(iGroup) <> cCore.NULL_VALUE, epdata.PB(iGroup), cCore.NULL_VALUE) 'epdata.PB(iGroup)
+                        s.QB(iGroup) = If(epdata.QBinput(iGroup) <> cCore.NULL_VALUE, epdata.QB(iGroup), cCore.NULL_VALUE) ' epdata.QB(iGroup)
+                        s.EE(iGroup) = If(epdata.EEinput(iGroup) <> cCore.NULL_VALUE, epdata.EE(iGroup), cCore.NULL_VALUE) 'epdata.EE(iGroup)
 
-                    s.B(iGroup) = If(epdata.Binput(iGroup) <> cCore.NULL_VALUE, epdata.B(iGroup), cCore.NULL_VALUE)
-                    s.PB(iGroup) = If(epdata.PBinput(iGroup) <> cCore.NULL_VALUE, epdata.PB(iGroup), cCore.NULL_VALUE) 'epdata.PB(iGroup)
-                    s.QB(iGroup) = If(epdata.QBinput(iGroup) <> cCore.NULL_VALUE, epdata.QB(iGroup), cCore.NULL_VALUE) ' epdata.QB(iGroup)
-                    s.EE(iGroup) = If(epdata.EEinput(iGroup) <> cCore.NULL_VALUE, epdata.EE(iGroup), cCore.NULL_VALUE) 'epdata.EE(iGroup)
+                        'For BA and BaBi don't use cCore.NULL_VALUE to flag it as not set
+                        'so just use the values that come out of the MC
+                        s.BaBi(iGroup) = epdata.BaBi(iGroup)
+                        s.BA(iGroup) = epdata.BAInput(iGroup)
 
-                    'For BA and BaBi don't use cCore.NULL_VALUE to flag it as not set
-                    'so just use the values that come out of the MC
-                    s.BaBi(iGroup) = epdata.BaBi(iGroup)
-                    s.BA(iGroup) = epdata.BAInput(iGroup)
+                        For iFleet As Integer = 1 To epdata.NumFleet
+                            s.Landing(iFleet, iGroup) = epdata.Landing(iFleet, iGroup)
+                            s.Discard(iFleet, iGroup) = epdata.Discard(iFleet, iGroup)
+                        Next iFleet
 
-                    For iFleet As Integer = 1 To epdata.NumFleet
-                        s.Landing(iFleet, iGroup) = epdata.Landing(iFleet, iGroup)
-                        s.Discard(iFleet, iGroup) = epdata.Discard(iFleet, iGroup)
-                    Next iFleet
+                    Next iGroup
 
-                Next iGroup
-
-                ' Diets
-                For iPred As Integer = 1 To epdata.NumLiving
-                    For iPrey As Integer = 0 To epdata.NumGroups
-                        s.DC(iPred, iPrey) = epdata.DC(iPred, iPrey)
-                    Next
-                Next
-
-            Else ' If (mc IsNot Nothing) Then
-
-                ' #No: obtain data from current input vars
-                s.AllowValidation = False
-                s.Name = "<backup>"
-                s.AllowValidation = True
-
-                Debug.WriteLine("EcoSampler: making backup snapshot")
-
-                For iGroup As Integer = 1 To epdata.NumGroups
-
-                    s.B(iGroup) = epdata.Binput(iGroup)
-                    s.PB(iGroup) = epdata.PBinput(iGroup)
-                    s.QB(iGroup) = epdata.QBinput(iGroup)
-                    s.EE(iGroup) = epdata.EEinput(iGroup)
-                    s.BA(iGroup) = epdata.BAInput(iGroup)
-                    s.BaBi(iGroup) = epdata.BaBi(iGroup)
-
-                    For iFleet As Integer = 1 To epdata.NumFleet
-                        s.Landing(iFleet, iGroup) = epdata.Landing(iFleet, iGroup)
-                        s.Discard(iFleet, iGroup) = epdata.Discard(iFleet, iGroup)
+                    ' Diets
+                    For iPred As Integer = 1 To epdata.NumLiving
+                        For iPrey As Integer = 0 To epdata.NumGroups
+                            s.DC(iPred, iPrey) = epdata.DC(iPred, iPrey)
+                        Next
                     Next
 
-                Next
+                    ' JS 07Mar'25: Now make sure the sample actually works in a test core
+                    Dim bBalanced As Boolean = False
+                    Try
+                        ' Try whether the sample leads to a balanced model on a pristine core
+                        Dim coretest As New cCore()
+                        If (coretest.LoadModel(Me.m_strTempFileName)) Then
+                            Dim man As New cEcopathSampleManager(coretest)
+                            If man.LoadSnapshot(s) Then
+                                coretest.RunEcopath(bBalanced)
+                            End If
+                            coretest.CloseModel()
+                        End If
+                        coretest.Dispose()
+                    Catch ex As Exception
+                        ' Whoah!
+                    End Try
 
-                ' Diets
-                For iPred As Integer = 1 To epdata.NumLiving
-                    For iPrey As Integer = 0 To epdata.NumGroups
-                        s.DC(iPred, iPrey) = epdata.DC(iPred, iPrey)
+                    If (Not bBalanced) Then
+                        s = Nothing
+                        ' ToDo: inform user?
+                    End If
+
+                Case eSnapshotMode.EcopathBackup
+
+                    Debug.WriteLine("EcoSampler: making Ecopath snapshot " & s.Name)
+
+                    ' #No: obtain data from current input vars
+                    s.AllowValidation = False
+                    s.Name = "<backup>"
+                    s.AllowValidation = True
+
+                    Debug.WriteLine("EcoSampler: making backup snapshot")
+
+                    For iGroup As Integer = 1 To epdata.NumGroups
+
+                        s.B(iGroup) = epdata.Binput(iGroup)
+                        s.PB(iGroup) = epdata.PBinput(iGroup)
+                        s.QB(iGroup) = epdata.QBinput(iGroup)
+                        s.EE(iGroup) = epdata.EEinput(iGroup)
+                        s.BA(iGroup) = epdata.BAInput(iGroup)
+                        s.BaBi(iGroup) = epdata.BaBi(iGroup)
+
+                        For iFleet As Integer = 1 To epdata.NumFleet
+                            s.Landing(iFleet, iGroup) = epdata.Landing(iFleet, iGroup)
+                            s.Discard(iFleet, iGroup) = epdata.Discard(iFleet, iGroup)
+                        Next
+
                     Next
-                Next
 
-            End If
+                    ' Diets
+                    For iPred As Integer = 1 To epdata.NumLiving
+                        For iPrey As Integer = 0 To epdata.NumGroups
+                            s.DC(iPred, iPrey) = epdata.DC(iPred, iPrey)
+                        Next
+                    Next
+
+                Case Else
+                    Debug.Assert(False)
+
+            End Select
 
             Return s
 
@@ -783,7 +826,7 @@ Namespace Samples
         ''' <param name="s"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function LoadSnapshot(s As cEcopathSample) As Boolean
+        Friend Function LoadSnapshot(s As cEcopathSample) As Boolean
 
             ' Sanity checks
             If (Me.m_core Is Nothing) Then Return False
@@ -915,8 +958,8 @@ Namespace Samples
                         s.DBID = id
                         s.AllowValidation = True
                         n += 1
-                        Else
-                            bSuccess = False
+                    Else
+                        bSuccess = False
                     End If
 
                 End If
@@ -931,6 +974,26 @@ Namespace Samples
             End If
 
             Return True
+
+        End Function
+
+        Private Function ExportModelToText() As String
+
+            Dim strSource As String = Me.m_core.DataSource.ToString()
+            Dim strTempFile As String = cFileUtils.MakeTempFile(".eiixml")
+
+            Dim ds As IEwEDataSource = Me.m_core.DataSource
+            If Not (TypeOf ds Is cDBDataSource) Then Return strSource
+            Dim dbds As cDBDataSource = DirectCast(ds, cDBDataSource)
+            If Not (TypeOf dbds.Connection Is cEwEAccessDatabase) Then Return strSource
+            Dim db As cEwEAccessDatabase = DirectCast(dbds.Connection, cEwEAccessDatabase)
+            ds = cDataSourceFactory.Create(eDataSourceTypes.EIIXML)
+            If DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strTempFile) Then
+                Me.m_strTempFileName = strTempFile
+                Return strTempFile
+            End If
+
+            Return strSource
 
         End Function
 

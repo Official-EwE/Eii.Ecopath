@@ -49,6 +49,7 @@ Public Class EwEEcosamplerPlugin
     Private m_montecarlo As cEcosimMonteCarlo = Nothing
     Private m_esdata As cEcosimDatastructures = Nothing
     Private m_iNumRecordedSamples As Integer = 0
+    Private m_iNumRejectedSamples As Integer = 0
     Private m_ui As frmSamples = Nothing
 
     Private m_strBaseHash As String = ""
@@ -218,6 +219,8 @@ Public Class EwEEcosamplerPlugin
         Me.m_bValidateRespirationOrg = Me.m_montecarlo.ValidateRespiration
         Me.m_montecarlo.ValidateRespiration = True
 
+        Me.m_sampleman.StartRecording()
+
     End Sub
 
     Private m_sampleCurrent As cEcopathSample = Nothing
@@ -229,9 +232,11 @@ Public Class EwEEcosamplerPlugin
 
         Try
             ' Note that the SS has not been calculated here!!
-            Me.m_sampleCurrent = Me.m_sampleman.Record(Me.m_strBaseHash, Me.m_montecarlo)
+            Me.m_sampleCurrent = Me.m_sampleman.Record(Me.m_strBaseHash)
             If (Me.m_sampleCurrent IsNot Nothing) Then
                 Me.m_iNumRecordedSamples += 1
+            Else
+                Me.m_iNumRejectedSamples += 1
             End If
         Catch ex As Exception
             Dim msg As New cMessage(My.Resources.RECORD_ERROR,
@@ -254,6 +259,8 @@ Public Class EwEEcosamplerPlugin
             Me.m_sampleman.StoreEcosimDiagnostics(Me.m_sampleCurrent, Me.m_montecarlo, Me.m_esdata)
             Me.m_sampleCurrent = Nothing
         End If
+
+
     End Sub
 
     Public Sub MonteCarloRunCompleted() _
@@ -265,14 +272,18 @@ Public Class EwEEcosamplerPlugin
         Me.m_montecarlo.ValidateRespiration = Me.m_bValidateRespirationOrg
         Me.m_bValidateRespirationOrg = False
         Me.m_uic.Core.SaveChanges(True)
+        Me.m_sampleman.StopRecording()
 
         Try
-            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.RECORD_REPORT, Me.m_iNumRecordedSamples),
+            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.RECORD_REPORT, Me.m_iNumRecordedSamples, Me.m_iNumRejectedSamples),
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
             Me.m_uic.Core.Messages.SendMessage(msg)
         Catch ex As Exception
             cLog.Write(ex, "EwESampleRecorderPlugin.MonteCarloRunCompleted")
         End Try
+
+        Me.m_iNumRecordedSamples = 0
+        Me.m_iNumRejectedSamples = 0
 
     End Sub
 
@@ -293,8 +304,9 @@ Public Class EwEEcosamplerPlugin
 
         If (Not Me.IsRecording) Then Return
 
-        ' Reset # newly recorded samples
+        ' Reset samples count
         Me.m_iNumRecordedSamples = 0
+        Me.m_iNumRejectedSamples = 0
         ' Grab model hash key that will be stored with recorded samples
         Me.m_strBaseHash = Me.m_sampleman.ModelHash
 
