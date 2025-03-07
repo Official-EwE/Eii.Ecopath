@@ -190,7 +190,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} Monte Carlo samples recorded.
+        '''  Looks up a localized string similar to {0} Monte Carlo samples recorded, {1} samples rejected.
         '''</summary>
         Friend ReadOnly Property RECORD_REPORT() As String
             Get
