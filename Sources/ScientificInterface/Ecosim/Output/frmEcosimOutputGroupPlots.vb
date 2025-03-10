@@ -608,8 +608,8 @@ Namespace Ecosim
                             For Each li As LineItem In Me.GetTimeSeriesLineItems(ts, iGroupSel)
                                 Me.AddCurveToGraphPane(ePlot.F, li)
                             Next li
-                        Case eTimeSeriesType.DiscardsTotalRef 'By Group
-                            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.DiscardsTotalRef, iGroupSel)
+                        Case eTimeSeriesType.DiscardsTotalAbs, eTimeSeriesType.DiscardsTotalRel 'By Group
+                            For Each li As LineItem In Me.GetTimeSeriesLineItems(ts, iGroupSel)
                                 Me.AddCurveToGraphPane(ePlot.Discards, li)
                             Next li
                         Case eTimeSeriesType.Discards 'By Fleet, group

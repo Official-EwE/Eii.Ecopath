@@ -3236,8 +3236,12 @@
   <data name="HEADER_FUNCTIONTYPE" xml:space="preserve">
     <value>Function type</value>
   </data>
-  <data name="TS_TYPE_DISCARDSTOTALREF" xml:space="preserve">
-    <value>Discards by group</value>
+  <data name="TS_TYPE_DISCARDSTOTALABS" xml:space="preserve">
+    <value>Discards absolute by group</value>
+    <comment>Time series type</comment>
+  </data>
+  <data name="TS_TYPE_DISCARDSTOTALREL" xml:space="preserve">
+    <value>Discards relative by group</value>
     <comment>Time series type</comment>
   </data>
 </root>

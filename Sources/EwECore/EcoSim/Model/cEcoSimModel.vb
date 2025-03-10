@@ -2666,7 +2666,8 @@ Namespace Ecosim
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
-                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.DiscardsTotalRef Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.DiscardsTotalAbs Or
+                            Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.DiscardsTotalRel Or
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings Or
                             Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef) Then
 
@@ -2737,7 +2738,7 @@ Namespace Ecosim
                                     Zstat = CSng(Math.Log(obsDiscard / predDiscard))
                                     Me.m_RefData.Yhat(Me.m_RefData.Iobs) = CSng(Math.Log(obsDiscard))
 
-                                Case eTimeSeriesType.DiscardsTotalRef
+                                Case eTimeSeriesType.DiscardsTotalAbs, eTimeSeriesType.DiscardsTotalRel
 
                                     Dim igrp As Integer
                                     Dim predDiscard As Single
@@ -3038,14 +3039,14 @@ Namespace Ecosim
 
                     'ADDED CODE FOR CONTAMINANT ACCOUNTING
                     If Me.m_TracerData.EcoSimConSimOn = True Then
-                            If Biomass(i) > 0 Then
-                                Me.m_ConTracer.ConKtrophic(ii) = eat / Biomass(i)
-                            Else
-                                Me.m_ConTracer.ConKtrophic(ii) = 0
-                            End If
+                        If Biomass(i) > 0 Then
+                            Me.m_ConTracer.ConKtrophic(ii) = eat / Biomass(i)
+                        Else
+                            Me.m_ConTracer.ConKtrophic(ii) = 0
                         End If
+                    End If
 
-                    Next 'For ii = 1 To m_Data.inlinks
+                Next 'For ii = 1 To m_Data.inlinks
 
                 If Me.m_Data.TrophicOff Then
                     For i = 1 To Me.m_EPData.NumLiving
@@ -3962,6 +3963,7 @@ Namespace Ecosim
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.OffVesselPriceRel Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.SailCostRel Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.DiscardsTotalRel Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FixedCostRel Then
 
                         'If cTimeSeries.IsRelative(Me.m_RefData.AppliedDatType(iDType)) Then
@@ -3996,7 +3998,8 @@ Namespace Ecosim
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesForcing Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.AverageWeight Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Discards Or
-                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.DiscardsTotalRef Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.DiscardsTotalAbs Or
+                        Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.DiscardsTotalRel Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.CatchesRel Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.FishingMortalityRef Or
                         Me.m_RefData.AppliedDatType(iDType) = eTimeSeriesType.Landings) Then
