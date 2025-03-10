@@ -359,8 +359,10 @@ Public Enum eTimeSeriesType As Integer
     SailCostRel = -SailCost
     ''' <summary>Absolute fixed cost (by fleet x driver)</summary>
     FixedCost = 18
-
-    DiscardsTotalRef = 19
+    ''' <summary>Total discards on a group across all fleets Relative values</summary>
+    DiscardsTotalAbs = 19
+    ''' <summary>Total discards on a group across all fleets Absolute values</summary>
+    DiscardsTotalRel = 20
     ''' <summary>Fixed cost multiplier (by fleet x driver)</summary>
     FixedCostRel = -FixedCost
 

@@ -8887,11 +8887,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Discards by group.
+        '''  Looks up a localized string similar to Discards absolute by group.
         '''</summary>
-        Public ReadOnly Property TS_TYPE_DISCARDSTOTALREF() As String
+        Public ReadOnly Property TS_TYPE_DISCARDSTOTALABS() As String
             Get
-                Return ResourceManager.GetString("TS_TYPE_DISCARDSTOTALREF", resourceCulture)
+                Return ResourceManager.GetString("TS_TYPE_DISCARDSTOTALABS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discards relative by group.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_DISCARDSTOTALREL() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_DISCARDSTOTALREL", resourceCulture)
             End Get
         End Property
         

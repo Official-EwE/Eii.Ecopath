@@ -947,7 +947,7 @@ Public Class cTimeSeriesDataStructures
                                 Me.Iobs = Me.Iobs + 1
                             End If
 
-                        Case eTimeSeriesType.DiscardsTotalRef
+                        Case eTimeSeriesType.DiscardsTotalAbs, eTimeSeriesType.DiscardsTotalRel
                             iGrp = Me.AppliedDatPoolSec(iDType)
                             If (iGrp > 0 And iGrp <= nGroups) Then
                                 Me.Iobs = Me.Iobs + 1
