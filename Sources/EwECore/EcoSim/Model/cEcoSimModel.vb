@@ -150,10 +150,6 @@ Namespace Ecosim
         '       CapDepreciate(ig)  capital depreciation rate, default 0.06
         '       CapBaseGrowth(ig) initial capital growth rate (proportional, /year), default 0.2
 
-        'Adding energy content to EwE: Villy 2025-01-14
-        Public EnergyBase() As Single
-        Public EnergyUsed As Boolean
-
         'Private BaseConsumption(50, 50) As Single
         'Parameter names changed as follows:
         'In CW's ECOSIM  In ECOPATH
@@ -353,9 +349,6 @@ Namespace Ecosim
                 Me.BaseValueOfHarvest()
                 Me.BaseValueOfFishMGear()
                 Me.SetRelativeCatchabilities()
-
-                ' Prey relative energy base calculation, Villy 2025-01-16
-                Me.EnergyBaseCalculation()
 
 #If DEBUG Then
                 'Make sure FishMGear and relQ are set correctly 
@@ -661,26 +654,6 @@ Namespace Ecosim
                     Me.m_Data.PropLandedTime(iflt, igrp) = Me.m_EPData.PropLanded(iflt, igrp)
 
                 Next
-            Next
-
-        End Sub
-
-        'Energy calculation, just needs to be done once after Ecosim is loaded
-        ' Ccould instead be done when Ecopath model is balanced, it only usse Ecopath input
-
-        Private Sub EnergyBaseCalculation()
-            For i As Integer = 1 To Me.nGroups          'predator
-                Me.EnergyBase(i) = 0
-                For j As Integer = 1 To Me.nGroups      'prey
-                    If Me.m_EPData.QB(i) > 0 Then
-                        Me.EnergyBase(i) = Me.EnergyBase(i) + Me.EcopathData.DC(i, j) * Me.m_EPData.Energy(j)
-                    End If
-                Next
-                If (EnergyBase(i) = 0) Then EnergyBase(i) = 1 ' To avoid divisions by zero etc
-
-                If (Me.EnergyBase(i) <> 1) Then
-                    Me.EnergyUsed = True
-                End If
             Next
 
         End Sub
@@ -2892,11 +2865,6 @@ Namespace Ecosim
             'Imported Detritus after forcing function has been applied
             Dim DetInFlow As Single
 
-            'Adding relative prey energy content to EwE: Villy 2025-01-14
-            Dim Eaten(Me.nGroups) As Single
-            Dim EnergyRel(Me.nGroups) As Single
-            'End of energy
-
             ReDim aeff(Me.m_Data.inlinks)
             ReDim Veff(Me.m_Data.inlinks)
             ReDim Hdent(Me.nGroups)
@@ -3054,26 +3022,6 @@ Namespace Ecosim
                     Next
                 End If
 
-
-                'Added relative energy content, Villy 2025-01-14
-                'calc total eaten by each consumer group
-                If Me.EnergyUsed Then
-                    For j = 1 To Me.m_EPData.NumLiving
-                        For i = 1 To Me.nGroups
-                            Eaten(j) = Eaten(j) + Me.m_Data.simDCAtT(j, i)
-                        Next
-                    Next
-                    'Calc relative energy in food
-                    For j = 1 To Me.m_EPData.NumLiving
-                        If Eaten(j) > 0 Then        'a consumer
-                            For i = 1 To Me.nGroups
-                                EnergyRel(j) = EnergyRel(j) + Me.m_Data.simDCAtT(j, i) / Eaten(j) * Me.m_EPData.Energy(i)
-                            Next
-                        End If
-                    Next
-                End If
-                'End of energy
-
                 For i = 1 To Me.nGroups
                     Me.m_Data.Eatenby(i) = Me.m_Data.Eatenby(i) + Biomass(i) * Me.m_Data.QBoutside(i)
                 Next
@@ -3158,14 +3106,9 @@ Namespace Ecosim
                         Else
                             Me.SimGEtemp(i) = Me.m_Data.SimGE(i)
                         End If
-                        'Added relative energy content, Villy 2025-01-14
-                        If Me.EnergyUsed And Me.EnergyBase(i) > 0 Then
-                            Me.SimGEtemp(i) = Me.SimGEtemp(i) * EnergyRel(i) / Me.EnergyBase(i)
-                        End If
-                        'End energy
 
                         deriv(i) = Me.m_EPData.Immig(i) + Biomass(i) * Me.pbb(i) + Me.SimGEtemp(i) * Me.m_Data.Eatenby(i) - Me.m_Data.loss(i)
-                        Me.biomeq(i) = (Me.m_EPData.Immig(i) + Me.SimGEtemp(i) * Me.m_Data.Eatenby(i) + Me.pbb(i) * Biomass(i)) / (Me.m_Data.loss(i) / Biomass(i))
+                        Me.biomeq(i) = (Me.m_EPData.Immig(i) + Me.m_Data.SimGE(i) * Me.m_Data.Eatenby(i) + Me.pbb(i) * Biomass(i)) / (Me.m_Data.loss(i) / Biomass(i))
                     Else
                         'Detritus group
                         'Flow to detritus from imports and immigration
@@ -3387,14 +3330,6 @@ Namespace Ecosim
                 DefineArenasAndFlowList()
             End If
             Me.SetArenaVulandSearchRates()
-
-            'Adding relative energy content, Villy 2025-01-14
-            ReDim EnergyBase(Me.nGroups)
-            For i = 1 To Me.m_EPData.NumLiving
-                For j = 1 To Me.nGroups
-                    EnergyBase(i) += Me.m_EPData.DC(i, j) * Me.m_EPData.Energy(j)
-                Next
-            Next
 
         End Sub
 
@@ -5668,7 +5603,6 @@ Namespace Ecosim
                 d.IadCode = DirectCast(Me.IadCode.Clone, Integer())
                 d.IjuCode = DirectCast(Me.IjuCode.Clone, Integer())
                 d.IecoCode = DirectCast(Me.IecoCode.Clone, Integer())
-                d.EnergyBase = DirectCast(Me.EnergyBase.Clone, Single())
 
                 d.nGroups = Me.nGroups
                 d.Irun = Me.Irun
