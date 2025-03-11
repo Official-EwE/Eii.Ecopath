@@ -3487,26 +3487,6 @@ Public Class cEcoSpace
 
         Next
 
-        'Added relative energy content, Villy 2025-01-14+16
-        'calc total eaten by each consumer group
-        If Me.EcoSim.EnergyUsed Then
-            For j = 1 To Me.EcoSpaceData.nLiving
-                For i = 1 To Me.EcoSpaceData.NGroups
-                    Eaten(j) = Eaten(j) + SpaceDC(j, i)
-                Next
-            Next
-            'Calc relative energy in food
-            For j = 1 To Me.EcoSpaceData.nLiving
-                If Eaten(j) > 0 Then        'a consumer
-                    For i = 1 To Me.EcoSpaceData.NGroups
-                        EnergyRel(j) = EnergyRel(j) + SpaceDC(j, i) / Eaten(j) * Me.EcoPathData.Energy(i)
-                    Next
-                End If
-            Next
-            'End of energy
-            'Added relative energy content, Villy 2025-01-14+16
-        End If
-
         'Make the detritus calculations here:
         Me.EcoSim.SimDetritusMT(Me.its, Biomass, Me.EcoSimData.FishRateGear, Me.EcoSimData.Eatenby, Me.EcoSimData.Eatenof, ToDetritus, GrpDet)
 
@@ -3542,15 +3522,6 @@ Public Class cEcoSpace
                     Else
                         SimGEt = Me.EcoSimData.SimGE(i)
                     End If
-
-                    'Added relative energy content, Villy 2025-01-14
-                    If Me.EcoSim.EnergyUsed And Me.EcoSim.EnergyBase(i) > 0 Then
-                        SimGEt = SimGEt * EnergyRel(i) / Me.EcoSim.EnergyBase(i)
-                    End If
-                    'SimGEt = SimGEt * EnergyRel(i) / Me.EcoSim.EnergyContent(i, Me.EcoSpaceData.MonthNow, Me.EcoSpaceData.YearNow) ' Piped through time series
-                    'End energy
-
-
                     Flowin(i) = Me.EcoPathData.Immig(i) + SimGEt * Me.EcoSimData.Eatenby(i) + Me.pbb(i) * Biomass(i)
 
                     If Biomass(i) > 1.0E-20 Then
