@@ -3544,7 +3544,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Free version.
+        '''  Looks up a localized string similar to Academic version.
         '''</summary>
         Public ReadOnly Property LICENSE_FREE() As String
             Get
@@ -4721,7 +4721,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Free version.
+        '''  Looks up a localized string similar to Academic version.
         '''</summary>
         Public ReadOnly Property REGISTRATION_NONE() As String
             Get
