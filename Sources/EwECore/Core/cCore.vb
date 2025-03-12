@@ -2346,7 +2346,7 @@ Public Class cCore
         Try
             ' Try to add TS to the data source
             If DirectCast(DataSource, IEcosimDatasource).RemoveTimeSeriesDataset(dataset.Index) Then
-                Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
+                Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eCoreComponentType.TimeSeries, eDataTypes.TimeSeriesDataset)
                 bSucces = True
             End If
         Catch ex As Exception
