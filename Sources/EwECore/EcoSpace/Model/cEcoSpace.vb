@@ -3487,6 +3487,26 @@ Public Class cEcoSpace
 
         Next
 
+        'Added relative energy content, Villy 2025-01-14+16  2025-03-12
+        'calc total eaten by each consumer group
+        If Me.EcoSim.EnergyUsed Then
+            For j = 1 To Me.EcoSpaceData.nLiving
+                For i = 1 To Me.EcoSpaceData.NGroups
+                    Eaten(j) = Eaten(j) + SpaceDC(j, i)
+                Next
+            Next
+            'Calc relative energy in food
+            For j = 1 To Me.EcoSpaceData.nLiving
+                If Eaten(j) > 0 Then        'a consumer
+                    For i = 1 To Me.EcoSpaceData.NGroups
+                        EnergyRel(j) = EnergyRel(j) + SpaceDC(j, i) / Eaten(j) * Me.EcoPathData.Energy(i)
+                    Next
+                End If
+            Next
+            'End of energy
+            'Added relative energy content, Villy 2025-01-14+16
+        End If
+
         'Make the detritus calculations here:
         Me.EcoSim.SimDetritusMT(Me.its, Biomass, Me.EcoSimData.FishRateGear, Me.EcoSimData.Eatenby, Me.EcoSimData.Eatenof, ToDetritus, GrpDet)
 
@@ -3514,15 +3534,26 @@ Public Class cEcoSpace
                     Me.pbb(i) = 2 * EatEff(i) * Me.EcoSimData.NutFree / (Me.EcoSimData.NutFree + Me.EcoSimData.NutFreeBase(i)) * Pmult * Me.EcoSimData.pbm(i) / (1 + Biomass(i) * Me.PbSpace(i))
 
                     Me.loss(i) = Me.EcoSimData.Eatenof(i) + (Me.EcoSimData.mo(i) * (1 - Me.EcoSimData.MoPred(i) + Me.EcoSimData.MoPred(i) * Me.EcoSimData.Ftime(i)) + Me.EcoPathData.Emig(i) + Me.EcoSimData.FishTime(i)) * Biomass(i)
-                    'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
-                    'biomeq(i) = (Immig(i) + simGE(i) * Eatenby(i) + pbb(i) * Biomass(i)) / (loss(i) / Biomass(i))
+                'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
+                'biomeq(i) = (Immig(i) + simGE(i) * Eatenby(i) + pbb(i) * Biomass(i)) / (loss(i) / Biomass(i))
 
-                    If Me.EcoSimData.UseVarPQ And Me.EcoPathData.vbK(i) > 0 Then
-                        SimGEt = Me.EcoSimData.AssimEff(i) * Me.loss(i) / Biomass(i) / (Me.loss(i) / Biomass(i) + 3 * Me.EcoPathData.vbK(i))
-                    Else
-                        SimGEt = Me.EcoSimData.SimGE(i)
-                    End If
-                    Flowin(i) = Me.EcoPathData.Immig(i) + SimGEt * Me.EcoSimData.Eatenby(i) + Me.pbb(i) * Biomass(i)
+                If Me.EcoSimData.UseVarPQ And Me.EcoPathData.vbK(i) > 0 Then
+                    SimGEt = Me.EcoSimData.AssimEff(i) * Me.loss(i) / Biomass(i) / (Me.loss(i) / Biomass(i) + 3 * Me.EcoPathData.vbK(i))
+                Else
+                    SimGEt = Me.EcoSimData.SimGE(i)
+                End If
+
+                ' VC 2025-03-12 before making energy active, find model that can be used for 
+                ' comparison
+                ' Also check that the Ecopath+Ecosim energybase corresponds to the ecospace one (as assumed below)
+                'Added relative energy content, Villy 2025-01-14  2025-03-12
+                If Me.EcoSim.EnergyUsed And Me.EcoSim.EnergyBase(i) > 0 Then
+                    '    SimGEt = SimGEt * EnergyRel(i) / Me.EcoSim.EnergyBase(i)
+                End If
+                'SimGEt = SimGEt * EnergyRel(i) / Me.EcoSim.EnergyContent(i, Me.EcoSpaceData.MonthNow, Me.EcoSpaceData.YearNow) ' Piped through time series
+                'End energy
+
+                Flowin(i) = Me.EcoPathData.Immig(i) + SimGEt * Me.EcoSimData.Eatenby(i) + Me.pbb(i) * Biomass(i)
 
                     If Biomass(i) > 1.0E-20 Then
                         FlowoutRate(i) = Me.loss(i) / Biomass(i)
