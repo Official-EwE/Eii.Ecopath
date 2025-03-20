@@ -42,7 +42,7 @@ Module modEngine
         Dim strPathSource As String = "D:\Sources\Ecopath6\"
 
 #If 1 Then
-        Dim assemblyNumber As String = "6.7.0.19025" ' arrArgs(1).Replace("""", "").Trim
+        Dim assemblyNumber As String = "6.7.0.19295" ' arrArgs(1).Replace("""", "").Trim
         Dim files As List(Of String) = GetFilesRecursive(strPathSource, "AssemblyInfo.vb")
         For Each file As String In files
             ReplaceVersionNumber(file, assemblyNumber)
