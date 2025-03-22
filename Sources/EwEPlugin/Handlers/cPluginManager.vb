@@ -481,6 +481,8 @@ Public Class cPluginManager
         End If
 
         Try
+            nLoaded = 0
+
             di = New DirectoryInfo(strPluginPath)
             'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
             afi = di.GetFiles("*.dll", If(bAllDirectories, SearchOption.AllDirectories, SearchOption.TopDirectoryOnly))
