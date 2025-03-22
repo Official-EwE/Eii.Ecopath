@@ -47,13 +47,13 @@ Namespace Controls
             Me.InitializeComponent()
         End Sub
 
-        Protected Overrides Sub DrawShape(shape As EwECore.cShapeData, _
-                rcImage As System.Drawing.Rectangle, _
-                g As System.Drawing.Graphics, _
-                clr As System.Drawing.Color, _
-                bDrawLabels As Boolean, _
-                drawMode As eSketchDrawModeTypes, _
-                iXMax As Integer, _
+        Protected Overrides Sub DrawShape(shape As EwECore.cShapeData,
+                rcImage As System.Drawing.Rectangle,
+                g As System.Drawing.Graphics,
+                clr As System.Drawing.Color,
+                bDrawLabels As Boolean,
+                drawMode As eSketchDrawModeTypes,
+                iXMax As Integer,
                 sYMax As Single)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -122,8 +122,8 @@ Namespace Controls
             End Using
         End Sub
 
-        <Browsable(True), _
-         Category("Mediation")> _
+        <Browsable(True),
+         Category("Mediation")>
         Public Property XAxisLabel() As String
             Get
                 Return Me.m_strXAxisLabel
@@ -182,8 +182,14 @@ Namespace Controls
 
             Dim sb As New StringBuilder()
             Dim ff As cMediationBaseFunction = DirectCast(Me.Shape, cMediationBaseFunction)
-
-            sb.AppendLine(cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, ff.ID + 1, Me.Shape.Name))
+            Dim name As String = Me.Shape.Name
+            If (TypeOf Me.Shape Is cEnviroResponseFunction) Then
+                Dim env As cEnviroResponseFunction = DirectCast(ff, cEnviroResponseFunction)
+                If Not String.IsNullOrEmpty(env.Units) Then
+                    name = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, name, env.Units)
+                End If
+            End If
+            sb.AppendLine(cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, ff.ID + 1, name))
 
             If (ff.ShapeFunctionType <> eShapeFunctionType.NotSet) Then
                 Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(ff, Me.UIContext.Core.PluginManager)

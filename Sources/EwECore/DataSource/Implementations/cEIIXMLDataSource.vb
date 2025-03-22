@@ -1755,7 +1755,7 @@ Public Class cEIIXMLDataSource
             medData.IMedBase(iMediationShape) = Me.ReadSafe(drow, "IMedBase", CInt(1200 / 3))
             medData.XAxisMin(iMediationShape) = Me.ReadSafe(drow, "XAxisMin", 0!)
             medData.XAxisMax(iMediationShape) = Me.ReadSafe(drow, "XAxisMax", 1.0!)
-
+            medData.Units(iMediationShape) = Me.ReadSafe(drow, "Units", "")
         Catch ex As Exception
             Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
             bSucces = False

@@ -78,6 +78,7 @@ Public Class cMediationDataStructures
 
     Public XAxisMin() As Single
     Public XAxisMax() As Single
+    Public Units() As String
 
     Public Sub New()
         Me.NMedPoints = N_DEFAULT_MEDIATIONPOINTS
@@ -111,6 +112,7 @@ Public Class cMediationDataStructures
 
         ReDim Me.XAxisMin(Me.MediationShapes)
         ReDim Me.XAxisMax(Me.MediationShapes)
+        ReDim Me.Units(Me.MediationShapes)
 
         ReDim Me.PriceMedFuncNum(nGroups, nFleets, MAXFUNCTIONS)
 

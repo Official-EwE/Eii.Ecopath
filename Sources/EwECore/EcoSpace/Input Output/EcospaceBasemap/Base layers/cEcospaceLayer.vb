@@ -22,6 +22,7 @@
 Option Strict On
 Imports EwECore.Core
 Imports EwECore.SpatialData
+Imports EwECore.Style
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
@@ -216,7 +217,24 @@ Public MustInherit Class cEcospaceLayer
         End Get
     End Property
 
+    Public Overrides Property Units(Optional varName As eVarNameFlags = eVarNameFlags.Name) As String
+        Get
+            Return MyBase.Units(Me.VarName)
+        End Get
+        Set(value As String)
+        End Set
+    End Property
+
     Public Overridable Property Description() As String
+        Get
+            Dim fmt As New cVarnameTypeFormatter()
+            Return fmt.ToString(Me.VarName, eDescriptorTypes.Description)
+        End Get
+        Set(value As String)
+            ' NOP
+        End Set
+    End Property
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

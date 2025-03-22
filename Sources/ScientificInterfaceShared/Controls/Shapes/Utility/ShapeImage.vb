@@ -351,12 +351,12 @@ Namespace Controls
         ''' should be displayed in the lower left corner of the shape
         ''' (or lower right, depending on locale reading order).</param>
         ''' -------------------------------------------------------------------
-        Public Shared Function IconImage(uic As cUIContext, _
-                shape As cShapeData, _
-                clr As Color, _
-                dm As eSketchDrawModeTypes, _
-                iXMax As Integer, _
-                Optional sYMax As Single = cCore.NULL_VALUE, _
+        Public Shared Function IconImage(uic As cUIContext,
+                shape As cShapeData,
+                clr As Color,
+                dm As eSketchDrawModeTypes,
+                iXMax As Integer,
+                Optional sYMax As Single = cCore.NULL_VALUE,
                 Optional bShowWarning As Boolean = False) As System.Drawing.Image
 
             Dim sg As cStyleGuide = uic.StyleGuide
@@ -386,13 +386,13 @@ Namespace Controls
                         Dim rc As Rectangle = Nothing
                         If cSystemUtils.IsRightToLeft Then
                             ' RtoL reading order: draw image in lower left corner
-                            rc = New Rectangle(0, _
-                                               Math.Max(0, bmp.Height - iOverlaySize), _
+                            rc = New Rectangle(0,
+                                               Math.Max(0, bmp.Height - iOverlaySize),
                                                iOverlaySize, iOverlaySize)
                         Else
                             ' LtoR reading order: draw image in lower right corner
-                            rc = New Rectangle(Math.Max(0, bmp.Width - iOverlaySize), _
-                                               Math.Max(0, bmp.Height - iOverlaySize), _
+                            rc = New Rectangle(Math.Max(0, bmp.Width - iOverlaySize),
+                                               Math.Max(0, bmp.Height - iOverlaySize),
                                                iOverlaySize, iOverlaySize)
                         End If
                         g.DrawIcon(icoOverlay, rc)

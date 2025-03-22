@@ -27,8 +27,6 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
-Imports OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
-
 
 #End Region ' Imports
 
@@ -5442,6 +5440,7 @@ Namespace DataSources
                 medData.IMedBase(iMediationShape) = CInt(Me.m_db.ReadSafe(readerShape, "IMedBase", 1200 / 3))
                 medData.XAxisMin(iMediationShape) = CSng(Me.m_db.ReadSafe(readerShape, "XAxisMin", 0))
                 medData.XAxisMax(iMediationShape) = CSng(Me.m_db.ReadSafe(readerShape, "XAxisMax", 1))
+                medData.Units(iMediationShape) = CStr(Me.m_db.ReadSafe(readerShape, "Units", ""))
                 Me.m_db.ReleaseReader(readerShape)
                 readerShape = Nothing
 
@@ -6084,6 +6083,7 @@ Namespace DataSources
                 drow("FunctionParams") = cStringUtils.ParamArrayToString(shapeParms.ShapeFunctionParams)
                 drow("XAxisMin") = medData.XAxisMin(iShape)
                 drow("XAxisMax") = medData.XAxisMax(iShape)
+                drow("Units") = medData.Units(iShape)
 
                 ' Assemble Zscale
                 For ipt As Integer = 1 To medData.NMedPoints
