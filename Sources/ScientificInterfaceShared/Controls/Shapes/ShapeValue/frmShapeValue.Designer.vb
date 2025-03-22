@@ -53,6 +53,8 @@ Partial Class frmShapeValue
         Me.m_lblNoOfPoints = New System.Windows.Forms.Label()
         Me.m_lblNumPoints = New System.Windows.Forms.Label()
         Me.m_tlpAll = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_txtXMax = New System.Windows.Forms.TextBox()
+        Me.m_lblXMax = New System.Windows.Forms.Label()
         Me.m_tlpNoOfYears = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnSetNoOfYears = New System.Windows.Forms.Button()
         Me.pnlValueGrid = New System.Windows.Forms.Panel()
@@ -63,12 +65,12 @@ Partial Class frmShapeValue
         Me.m_txtXBase = New System.Windows.Forms.TextBox()
         Me.m_lblPoolCodeSec = New System.Windows.Forms.Label()
         Me.m_cmbPoolCodeSec = New System.Windows.Forms.ComboBox()
+        Me.m_lblXMin = New System.Windows.Forms.Label()
+        Me.m_lblUnits = New System.Windows.Forms.Label()
+        Me.m_txtXMin = New System.Windows.Forms.TextBox()
+        Me.m_tbxUnits = New System.Windows.Forms.TextBox()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
-        Me.m_lblXMin = New System.Windows.Forms.Label()
-        Me.m_lblXMax = New System.Windows.Forms.Label()
-        Me.m_txtXMin = New System.Windows.Forms.TextBox()
-        Me.m_txtXMax = New System.Windows.Forms.TextBox()
         Me.m_tlpAll.SuspendLayout()
         Me.m_tlpNoOfYears.SuspendLayout()
         Me.pnlValueGrid.SuspendLayout()
@@ -136,29 +138,41 @@ Partial Class frmShapeValue
         'm_tlpAll
         '
         resources.ApplyResources(Me.m_tlpAll, "m_tlpAll")
+        Me.m_tlpAll.Controls.Add(Me.m_txtXMax, 1, 7)
+        Me.m_tlpAll.Controls.Add(Me.m_lblXMax, 0, 7)
         Me.m_tlpAll.Controls.Add(Me.m_txtName, 1, 0)
         Me.m_tlpAll.Controls.Add(Me.m_cmbTSType, 1, 1)
-        Me.m_tlpAll.Controls.Add(Me.m_lblValues, 0, 9)
+        Me.m_tlpAll.Controls.Add(Me.m_lblValues, 0, 10)
         Me.m_tlpAll.Controls.Add(Me.m_lblTSType, 0, 1)
         Me.m_tlpAll.Controls.Add(Me.m_lblPoolCode, 0, 2)
         Me.m_tlpAll.Controls.Add(Me.m_cmbPoolCode, 1, 2)
         Me.m_tlpAll.Controls.Add(Me.m_txtWeight, 1, 4)
         Me.m_tlpAll.Controls.Add(Me.m_lblName, 0, 0)
         Me.m_tlpAll.Controls.Add(Me.m_lblWeight, 0, 4)
-        Me.m_tlpAll.Controls.Add(Me.m_lblNoOfPoints, 0, 10)
-        Me.m_tlpAll.Controls.Add(Me.m_tlpNoOfYears, 1, 10)
-        Me.m_tlpAll.Controls.Add(Me.pnlValueGrid, 1, 9)
-        Me.m_tlpAll.Controls.Add(Me.m_lblViewAs, 0, 8)
-        Me.m_tlpAll.Controls.Add(Me.m_cmbViewAs, 1, 8)
+        Me.m_tlpAll.Controls.Add(Me.m_lblNoOfPoints, 0, 11)
+        Me.m_tlpAll.Controls.Add(Me.m_tlpNoOfYears, 1, 11)
+        Me.m_tlpAll.Controls.Add(Me.pnlValueGrid, 1, 10)
+        Me.m_tlpAll.Controls.Add(Me.m_lblViewAs, 0, 9)
+        Me.m_tlpAll.Controls.Add(Me.m_cmbViewAs, 1, 9)
         Me.m_tlpAll.Controls.Add(Me.m_lblXBase, 0, 5)
         Me.m_tlpAll.Controls.Add(Me.m_txtXBase, 1, 5)
         Me.m_tlpAll.Controls.Add(Me.m_lblPoolCodeSec, 0, 3)
         Me.m_tlpAll.Controls.Add(Me.m_cmbPoolCodeSec, 1, 3)
         Me.m_tlpAll.Controls.Add(Me.m_lblXMin, 0, 6)
-        Me.m_tlpAll.Controls.Add(Me.m_lblXMax, 0, 7)
+        Me.m_tlpAll.Controls.Add(Me.m_lblUnits, 0, 8)
         Me.m_tlpAll.Controls.Add(Me.m_txtXMin, 1, 6)
-        Me.m_tlpAll.Controls.Add(Me.m_txtXMax, 1, 7)
+        Me.m_tlpAll.Controls.Add(Me.m_tbxUnits, 1, 8)
         Me.m_tlpAll.Name = "m_tlpAll"
+        '
+        'm_txtXMax
+        '
+        resources.ApplyResources(Me.m_txtXMax, "m_txtXMax")
+        Me.m_txtXMax.Name = "m_txtXMax"
+        '
+        'm_lblXMax
+        '
+        resources.ApplyResources(Me.m_lblXMax, "m_lblXMax")
+        Me.m_lblXMax.Name = "m_lblXMax"
         '
         'm_tlpNoOfYears
         '
@@ -247,6 +261,26 @@ Partial Class frmShapeValue
         Me.m_cmbPoolCodeSec.FormattingEnabled = True
         Me.m_cmbPoolCodeSec.Name = "m_cmbPoolCodeSec"
         '
+        'm_lblXMin
+        '
+        resources.ApplyResources(Me.m_lblXMin, "m_lblXMin")
+        Me.m_lblXMin.Name = "m_lblXMin"
+        '
+        'm_lblUnits
+        '
+        resources.ApplyResources(Me.m_lblUnits, "m_lblUnits")
+        Me.m_lblUnits.Name = "m_lblUnits"
+        '
+        'm_txtXMin
+        '
+        resources.ApplyResources(Me.m_txtXMin, "m_txtXMin")
+        Me.m_txtXMin.Name = "m_txtXMin"
+        '
+        'm_tbxUnits
+        '
+        resources.ApplyResources(Me.m_tbxUnits, "m_tbxUnits")
+        Me.m_tbxUnits.Name = "m_tbxUnits"
+        '
         'm_btnOK
         '
         resources.ApplyResources(Me.m_btnOK, "m_btnOK")
@@ -260,26 +294,6 @@ Partial Class frmShapeValue
         Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
-        '
-        'm_lblXMin
-        '
-        resources.ApplyResources(Me.m_lblXMin, "m_lblXMin")
-        Me.m_lblXMin.Name = "m_lblXMin"
-        '
-        'm_lblXMax
-        '
-        resources.ApplyResources(Me.m_lblXMax, "m_lblXMax")
-        Me.m_lblXMax.Name = "m_lblXMax"
-        '
-        'm_txtXMin
-        '
-        resources.ApplyResources(Me.m_txtXMin, "m_txtXMin")
-        Me.m_txtXMin.Name = "m_txtXMin"
-        '
-        'm_txtXMax
-        '
-        resources.ApplyResources(Me.m_txtXMax, "m_txtXMax")
-        Me.m_txtXMax.Name = "m_txtXMax"
         '
         'frmShapeValue
         '
@@ -328,8 +342,10 @@ Partial Class frmShapeValue
     Private WithEvents m_lblPoolCodeSec As Label
     Private WithEvents m_cmbPoolCodeSec As ComboBox
     Private WithEvents m_lblXMin As Label
-    Private WithEvents m_lblXMax As Label
+    Private WithEvents m_lblUnits As Label
     Private WithEvents m_txtXMin As TextBox
+    Private WithEvents m_tbxUnits As TextBox
     Private WithEvents m_txtXMax As TextBox
+    Private WithEvents m_lblXMax As Label
 End Class
 

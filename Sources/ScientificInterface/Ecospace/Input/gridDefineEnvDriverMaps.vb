@@ -89,16 +89,8 @@ Namespace Ecospace
                 Me.Layer = Layer
                 Me.Name = Layer.Name
                 Me.WasCapacityEnabled = bIsCapacityEnabled
-                If (TypeOf Layer Is cEcospaceLayerDriver) Then
-                    Me.Description = DirectCast(Layer, cEcospaceLayerDriver).Description
-                    Me.Units = DirectCast(Layer, cEcospaceLayerDriver).Units
-                Else
-                    ' Fixed description
-                    Dim fmt As New cVarnameTypeFormatter()
-                    Me.Description = fmt.ToString(Layer.VarName, eDescriptorTypes.Description)
-                    ' Standard units
-                    Me.Units = cVariableMetaData.Get(Layer.VarName).Units
-                End If
+                Me.Description = Layer.Description
+                Me.Units = Layer.Units
                 Me.Status = eItemStatusTypes.Original
                 Me.IsCapacityEnabled = bIsCapacityEnabled
                 Me.IsEditable = bEditable
@@ -441,7 +433,7 @@ Namespace Ecospace
             Dim bEditable As Boolean = li.IsEditable
 
             pos = New Position(iRow, eColumnTypes.LayerIndex)
-            aCells(eColumnTypes.LayerIndex).SetValue(pos, iRow)
+            aCells(eColumnTypes.LayerIndex).SetValue(pos, If(iRow = 1, 0, li.Layer.Index))
 
             pos = New Position(iRow, eColumnTypes.LayerName)
             aCells(eColumnTypes.LayerName).SetValue(pos, li.Name)
@@ -957,7 +949,7 @@ Namespace Ecospace
                     For iLayer = 1 To Me.m_alLayers.Count - 1
                         ' Get local admin unit
                         li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
-                        ' Find core layer with same BDID (cannot use cached cEcospaceBasemap instances since the core has reloaded)
+                        ' Find core layer with same DBID (cannot use cached cEcospaceBasemap instances since the core has reloaded)
                         Dim bFound As Boolean = False
                         ' For every core layer instance (and yes, this array is one-based)
                         For iLayTest As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
@@ -973,6 +965,7 @@ Namespace Ecospace
                                     layTest.IsCapacityEnabled = li.IsCapacityEnabled
                                 End If
                                 bFound = True
+                                Me.Core.onChanged(layTest, eMessageType.DataModified)
                             End If
                         Next
 

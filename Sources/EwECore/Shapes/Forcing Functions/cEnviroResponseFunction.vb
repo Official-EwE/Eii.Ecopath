@@ -68,6 +68,19 @@ Public Class cEnviroResponseFunction
     End Property
 
     ''' <summary>
+    ''' Get/set the units of the response function. These will be inert in the model,
+    ''' units only serve to advice the user on response application.
+    ''' </summary>
+    Public Property Units() As String
+        Get
+            Return Me.m_medData.Units(Me.Index)
+        End Get
+        Set(value As String)
+            Me.m_medData.Units(Me.Index) = value
+        End Set
+    End Property
+
+    ''' <summary>
     ''' Maximum value of the input map that the response will be computed for. 
     ''' All values greater than this will return the last value of the response function. 
     ''' </summary>

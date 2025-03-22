@@ -136,7 +136,7 @@ Namespace Controls.EwEGrid
         ''' <param name="strUnit">The <see cref="cUnits">unit string</see> to set.
         ''' To clear units, simply pass in an empty string.</param>
         ''' -------------------------------------------------------------------
-        Protected Sub SetUnits(strUnit As String)
+        Public Sub SetUnits(strUnit As String)
             Me.m_strUnit = strUnit
         End Sub
 

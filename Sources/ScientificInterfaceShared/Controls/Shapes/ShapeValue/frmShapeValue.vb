@@ -273,7 +273,7 @@ Public Class frmShapeValue
     End Sub
 
     Private Sub AnyTextChanged(sender As Object, e As System.EventArgs) _
-        Handles m_txtWeight.TextChanged, m_lblNumPoints.TextChanged, m_txtName.TextChanged, m_txtXBase.TextChanged, m_txtXMin.TextChanged, m_txtXMax.TextChanged
+        Handles m_txtWeight.TextChanged, m_lblNumPoints.TextChanged, m_txtName.TextChanged, m_txtXBase.TextChanged, m_txtXMin.TextChanged, m_tbxUnits.TextChanged
         'Lazy update
         Me.BeginInvoke(New MethodInvoker(AddressOf Me.UpdateControls))
     End Sub
@@ -363,8 +363,8 @@ Public Class frmShapeValue
 
         Me.m_lblXMin.Visible = bIsResponse
         Me.m_txtXMin.Visible = Me.m_lblXMin.Visible
-        Me.m_lblXMax.Visible = Me.m_lblXMin.Visible
-        Me.m_txtXMax.Visible = Me.m_lblXMin.Visible
+        Me.m_lblUnits.Visible = Me.m_lblXMin.Visible
+        Me.m_tbxUnits.Visible = Me.m_lblXMin.Visible
 
         If (bIsMediation) Then
             Me.m_fpXBase.Value = DirectCast(Me.m_shape, cMediationBaseFunction).XBaseIndex
@@ -374,6 +374,7 @@ Public Class frmShapeValue
             Dim fn As cEnviroResponseFunction = DirectCast(Me.m_shape, cEnviroResponseFunction)
             Me.m_fpXMin.Value = fn.ResponseLeftLimit
             Me.m_fpXMax.Value = fn.ResponseRightLimit
+            Me.m_tbxUnits.Text = fn.Units
 
             Dim sf As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(fn, Me.Core.PluginManager)
             If (sf IsNot Nothing) Then
@@ -408,6 +409,7 @@ Public Class frmShapeValue
 
         Me.m_lblViewAs.Visible = False
         Me.m_cmbViewAs.Visible = False
+
 
         If (ts IsNot Nothing) Then
             Me.m_txtName.Text = ts.Name
@@ -464,6 +466,12 @@ Public Class frmShapeValue
 
         Me.m_lblXBase.Visible = False
         Me.m_txtXBase.Visible = False
+        Me.m_lblXMax.Visible = False
+        Me.m_txtXMax.Visible = False
+        Me.m_lblXMin.Visible = False
+        Me.m_txtXMin.Visible = False
+        Me.m_lblUnits.Visible = False
+        Me.m_tbxUnits.Visible = False
 
         Me.m_lblViewAs.Visible = False
         Me.m_cmbViewAs.Visible = False
@@ -552,6 +560,7 @@ Public Class frmShapeValue
         If (bIsResponse) Then
             DirectCast(ff, cEnviroResponseFunction).ResponseLeftLimit = CSng(Me.m_fpXMin.Value)
             DirectCast(ff, cEnviroResponseFunction).ResponseRightLimit = CSng(Me.m_fpXMax.Value)
+            DirectCast(ff, cEnviroResponseFunction).Units = CStr(Me.m_tbxUnits.Text)
         End If
 
         ' Update the shape

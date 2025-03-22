@@ -442,7 +442,7 @@ Namespace Ecopath.Tools
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="cEwEGrid.MessageSource"/>
+        ''' <inheritdoc cref="cEwEGrid.OnCellClicked(Position, Cells.ICellVirtual)"/>
         ''' <summary>
         ''' Overridden to track variable changes.
         ''' </summary>

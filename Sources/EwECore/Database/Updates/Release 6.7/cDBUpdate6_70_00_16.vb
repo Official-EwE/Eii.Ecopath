@@ -40,7 +40,7 @@ Imports System.Drawing.Imaging
 ''' <summary>
 ''' <para>Database update 6.70.0.16:</para>
 ''' <para>
-''' Made hab cap gradient correction flag persistent.
+''' Changed cVisualStyle serialization format.
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------

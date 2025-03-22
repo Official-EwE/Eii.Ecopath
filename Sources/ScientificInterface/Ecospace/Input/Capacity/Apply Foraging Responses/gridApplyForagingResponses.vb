@@ -46,16 +46,52 @@ Namespace Ecospace
 #Region " Private vars "
 
         Private m_lProps As New List(Of cProperty)
+        Private m_mhEcospace As cMessageHandler = Nothing
 
 #End Region ' Private vars
 
 #Region " Overrides "
+
+        Public Overrides Property UIContext As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(value As cUIContext)
+
+                If (Me.UIContext IsNot Nothing) Then
+                    ' Deconfigure
+                    Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+                    Me.m_mhEcospace.Dispose()
+                End If
+                MyBase.UIContext = value
+                If (Me.UIContext IsNot Nothing) Then
+                    Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecospace, eMessageType.DataModified, Me.UIContext.SyncObject)
+                    Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
+#If DEBUG Then
+                    Me.m_mhEcospace.Name = "gridApplyForagingResponses"
+#End If
+                End If
+            End Set
+        End Property
 
         Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
             Get
                 Return True
             End Get
         End Property
+
+        Public Overrides Sub OnCoreMessage(ByRef msg As cMessage)
+            If (Not Me.IsDisposed) Then
+                Try
+                    If (msg.DataType = eDataTypes.EcospaceLayerDriver) Then
+                        Me.UpdateUnits()
+                    End If
+                Catch ex As Exception
+
+                End Try
+                MyBase.OnCoreMessage(msg)
+            End If
+        End Sub
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
@@ -64,8 +100,9 @@ Namespace Ecospace
 
             Dim group As cCoreGroupBase = Nothing
             Dim mapManager As IEnvironmentalResponseManager = Me.Core.CapacityMapInteractionManager
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
             Dim map As IEnviroInputData = Nothing
-            Dim fmt As New cCoreInterfaceFormatter()
+            Dim strUnit As String = ""
 
             ' Define grid dimensions
             Me.Redim(Me.Core.nGroups + 1, mapManager.nEnviroData + 2)
@@ -73,7 +110,13 @@ Namespace Ecospace
             For iMap As Integer = 1 To mapManager.nEnviroData
 
                 map = mapManager.EnviroData(iMap)
-                Me(0, 1 + iMap) = New cPropertyColumnHeaderCell(Me.PropertyManager, DirectCast(map, cEnviroInputMap).Layer, eVarNameFlags.Name)
+                If (iMap = 1) Then
+                    strUnit = bm.LayerDepth.Units
+                Else
+                    strUnit = ""
+                End If
+
+                Me(0, 1 + iMap) = New cPropertyColumnHeaderCell(Me.PropertyManager, DirectCast(map, cEnviroInputMap).Layer, eVarNameFlags.Name, strUnit:=strUnit)
                 Me(0, 1 + iMap).Behaviors.Add(Me.m_bmRowCol)
 
             Next iMap
@@ -92,6 +135,7 @@ Namespace Ecospace
                 Me(iGroup, 1).Behaviors.Add(Me.m_bmRowCol)
             Next
 
+            UpdateUnits()
         End Sub
 
         Protected Overrides Sub FillData()
@@ -140,6 +184,22 @@ Namespace Ecospace
             Catch ex As Exception
 
             End Try
+
+        End Sub
+
+        Protected Sub UpdateUnits()
+
+            Dim mapManager As IEnvironmentalResponseManager = Me.Core.CapacityMapInteractionManager
+            Dim map As IEnviroInputData = Nothing
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim prop As cPropertyHeaderCell = Nothing
+
+            For iMap As Integer = 2 To mapManager.nEnviroData
+                map = mapManager.EnviroData(iMap)
+                prop = DirectCast(Me(0, 1 + iMap), cPropertyHeaderCell)
+                prop.SetUnits(bm.LayerDriver(iMap - 1).Units)
+                prop.Invalidate()
+            Next
 
         End Sub
 
