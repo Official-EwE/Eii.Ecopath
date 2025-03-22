@@ -453,15 +453,17 @@ Public Class cPluginManager
     ''' <param name="disabledPlugins">Array with file names of plug-ins that should 
     ''' NOT be enabled. These assemblies will still have to be known by the manager 
     ''' in case the user wants to enable the assemblies  in the future.</param>
+    ''' <returns>-1 if plug-ins were already loaded, or an actual load count if a true
+    ''' load attempt was made.</returns>
     ''' <seealso cref="LoadPlugins(String, Boolean)"/>
     ''' <seealso cref="LoadPlugins()"/>
     ''' -----------------------------------------------------------------------
     Public Function LoadPlugins(strSubfolder As String, bAllDirectories As Boolean, disabledPlugins As String()) As Integer
 
-        Dim nLoaded As Integer = -1
+        Dim nLoaded As Integer = 0
 
         ' Sanity checks - load only once
-        If (Me.m_bLoaded) Then Return nLoaded
+        If (Me.m_bLoaded) Then Return -1
 
         Dim pluginAssembly As Assembly = Assembly.GetAssembly(GetType(cPluginManager))
         ' Get the location of the plugin manager assembly as the default plug-in path
@@ -477,12 +479,10 @@ Public Class cPluginManager
 
         If Not Directory.Exists(strPluginPath) Then
             cLog.Write("Plugin directory does not exist: " & strPluginPath, eVerboseLevel.Detailed)
-            Return 0
+            Return nLoaded
         End If
 
         Try
-            nLoaded = 0
-
             di = New DirectoryInfo(strPluginPath)
             'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
             afi = di.GetFiles("*.dll", If(bAllDirectories, SearchOption.AllDirectories, SearchOption.TopDirectoryOnly))
