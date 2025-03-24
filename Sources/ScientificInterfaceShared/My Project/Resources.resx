@@ -1785,7 +1785,7 @@
     <comment>{0}: target</comment>
   </data>
   <data name="HEADER_RESPONSE_TARGET" xml:space="preserve">
-    <value>Response function '{0}'</value>
+    <value>Response fn '{0}'</value>
     <comment>{0}: target</comment>
   </data>
   <data name="fish" type="System.Resources.ResXFileRef, System.Windows.Forms">
