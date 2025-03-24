@@ -326,6 +326,7 @@ Public Class ucDriverResponseView
         Me.m_lblXMax.Text = cStyleGuide.ToControlLabel(strXMax)
         Me.m_fpMin.Enabled = bCanSetMinMax
         Me.m_fpMax.Enabled = bCanSetMinMax
+        Me.m_btnDefaultMinMax.Enabled = bCanSetMinMax
 
         Me.m_lblMean.Text = cStyleGuide.ToControlLabel(strMean)
         Me.m_fpMean.Enabled = bCanSetMeanSD
@@ -448,9 +449,10 @@ Public Class ucDriverResponseView
 
             'add the last point out at the end of the graph
             lstPts.Add(XDataMax, Me.m_shape.ShapeData(Me.m_shape.nPoints) * YScale)
+            Dim name As String = cStringUtils.Localize(My.Resources.HEADER_RESPONSE_TARGET, fmt.ToString(Me.m_shape))
+            If Not String.IsNullOrWhiteSpace(Me.m_shape.Units) Then name = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, name, Me.m_shape.Units)
 
-            Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_RESPONSE_TARGET, fmt.ToString(Me.m_shape)),
-                                                         lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)
+            Dim il As LineItem = Me.m_zgh.CreateLineItem(name, lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             'X axis for plotting
@@ -519,12 +521,18 @@ Public Class ucDriverResponseView
             For ipt As Integer = 1 To histPts.Length - 1
                 histData.Add(histPts(ipt).X - binWidth, histPts(ipt).Y)
                 histData.Add(histPts(ipt).X, histPts(ipt).Y)
-
                 Ymax = Math.Max(Ymax, histPts(ipt).Y)
             Next
 
-            li = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, Me.m_driver.Name),
-                                                         histData, cZedGraphMediationHelper.eEnvResponseLineType.Histogram)
+            Dim name As String = cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, Me.m_driver.Name)
+            Dim units As String = """"
+            If TypeOf Me.m_driver Is cEcosimEnviroInputData Then
+            Else
+                Dim m As cEnviroInputMap = DirectCast(Me.m_driver, cEnviroInputMap)
+                units = m.Layer.Units
+            End If
+            If Not String.IsNullOrWhiteSpace(units) Then name = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, name, units)
+            li = Me.m_zgh.CreateLineItem(name, histData, cZedGraphMediationHelper.eEnvResponseLineType.Histogram)
 
             li.IsY2Axis = True
             li.Line.Fill = New Fill(cColorUtils.GetVariant(li.Color, 0.5))

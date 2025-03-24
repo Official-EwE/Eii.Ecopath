@@ -6361,7 +6361,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Response function &apos;{0}&apos;.
+        '''  Looks up a localized string similar to Response fn &apos;{0}&apos;.
         '''</summary>
         Public ReadOnly Property HEADER_RESPONSE_TARGET() As String
             Get
