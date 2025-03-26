@@ -375,6 +375,7 @@ Namespace Ecospace
 
                 ewec = New cEwECell(0, GetType(Integer))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
+                ewec.SuppressZero(0) = True
                 Me(iRow, eColumnTypes.LayerIndex) = ewec
 
                 Me(iRow, eColumnTypes.LayerName) = New cEwECell("", GetType(String), style)
@@ -433,7 +434,7 @@ Namespace Ecospace
             Dim bEditable As Boolean = li.IsEditable
 
             pos = New Position(iRow, eColumnTypes.LayerIndex)
-            aCells(eColumnTypes.LayerIndex).SetValue(pos, If(iRow = 1, 0, li.Layer.Index))
+            aCells(eColumnTypes.LayerIndex).SetValue(pos, iRow)
 
             pos = New Position(iRow, eColumnTypes.LayerName)
             aCells(eColumnTypes.LayerName).SetValue(pos, li.Name)
