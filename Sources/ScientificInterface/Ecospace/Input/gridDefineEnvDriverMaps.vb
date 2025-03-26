@@ -434,7 +434,7 @@ Namespace Ecospace
             Dim bEditable As Boolean = li.IsEditable
 
             pos = New Position(iRow, eColumnTypes.LayerIndex)
-            aCells(eColumnTypes.LayerIndex).SetValue(pos, iRow)
+            aCells(eColumnTypes.LayerIndex).SetValue(pos, iRow - 1)
 
             pos = New Position(iRow, eColumnTypes.LayerName)
             aCells(eColumnTypes.LayerName).SetValue(pos, li.Name)
