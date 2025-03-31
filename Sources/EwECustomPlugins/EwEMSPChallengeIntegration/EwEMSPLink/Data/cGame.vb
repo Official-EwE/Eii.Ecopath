@@ -497,12 +497,12 @@ Public Class cGame
         End If
 
         'If (longitude <> cCore.NULL_VALUE) And (latitude <> cCore.NULL_VALUE) And ((Math.Abs(longitude - ptTL.X) > 0.01) Or (Math.Abs(latitude - ptTL.Y) > 0.01)) Then
-        '    cEwEShell.RaiseException("Validation failed; spatial bounds lon=" & ptTL.X & ", lat=" & ptTL.Y & " expected.", False)
+        '    cEwEMSPLink.RaiseException("Validation failed; spatial bounds lon=" & ptTL.X & ", lat=" & ptTL.Y & " expected.", False)
         '    bOK = False
         'End If
 
         'If (size <> cCore.NULL_VALUE) And (Math.Abs(bm.CellSize - size) > 0.01) Then
-        '    cEwEShell.RaiseException("Validation failed; cell size " & bm.CellSize & " expected.", False)
+        '    cEwEMSPLink.RaiseException("Validation failed; cell size " & bm.CellSize & " expected.", False)
         '    bOK = False
         'End If
 

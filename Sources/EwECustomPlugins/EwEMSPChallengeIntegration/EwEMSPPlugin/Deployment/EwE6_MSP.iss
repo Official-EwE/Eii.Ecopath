@@ -83,7 +83,7 @@ Source: "{#DefRoot}{#DefSrc}\UserGuide\Link - 2010 - Adding rigor to ecological 
 Source: "{#DefRoot}{#DefSrc}\UserGuide\ResultsExtractorPlug.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\output\resultextractor
 Source: "{#DefRoot}{#DefSrc}\Tools\code_for_plotting_dirichlets.R"; DestDir: "{app}\Tools\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EwEShell.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EwEMSPLink.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE tools for MSP user guide.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 
 [Components]

@@ -19,8 +19,8 @@
     <Language>en-US</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\EwEMSPPlugin.vbproj" />
-      <DocumentationSource sourceFile="..\bin\x86\Debug\EwEShell.dll" />
-      <DocumentationSource sourceFile="..\bin\x86\Debug\EwEShell.xml" />
+      <DocumentationSource sourceFile="..\bin\x86\Debug\EwEMSPLink.dll" />
+      <DocumentationSource sourceFile="..\bin\x86\Debug\EwEMSPLink.xml" />
     </DocumentationSources>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
@@ -46,15 +46,15 @@
     <NamespaceSummaries>
       <NamespaceSummaryItem name="G:EwEMSPPlugin" isDocumented="True">'EwE tools for MSP' is a set of two .NET assemblies that assist Ecopath with Ecosim (EwE) modellers in the task of preparing and testing an Ecospace scenario for game play in the Maritime Strategic Planning (MSP) Challenge 2050 software, and provides all the necessary building blocks to intregrate an EwE model into MSP game play.</NamespaceSummaryItem>
       <NamespaceSummaryItem name="EwEMSPPlugin" isDocumented="True">Maritime Strategic Planning Challenge 2050 plug-in for EwE desktop</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="EwEShell" isDocumented="True">Maritime Strategic Planning Challenge 2050 foundation classes for connecting MEL (MSP - EwE link) and the Ecopath with Ecosim modeling approach</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEMSPLink" isDocumented="True">Maritime Strategic Planning Challenge 2050 foundation classes for connecting MEL (MSP - EwE link) and the Ecopath with Ecosim modeling approach</NamespaceSummaryItem>
       <NamespaceSummaryItem name="EwEMSPPlugin.My" isDocumented="True" />
-      <NamespaceSummaryItem name="EwEShell.My" isDocumented="True" />
+      <NamespaceSummaryItem name="EwEMSPLink.My" isDocumented="True" />
       <NamespaceSummaryItem name="EwEMSPPlugin.UI" isDocumented="True">User interface elements for the Maritime Strategic Planning Challenge 2050 plug-in for EwE desktop</NamespaceSummaryItem>
       <NamespaceSummaryItem name="EwEMSPPlugin.Emulator" isDocumented="True">MEL emulator support for Maritime Strategic Planning Challenge 2050 plug-in for EwE desktop</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="EwEShell.IO" isDocumented="True">Input / Output classes for EwEShell</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEMSPLink.IO" isDocumented="True">Input / Output classes for EwEMSPLink</NamespaceSummaryItem>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
       <NamespaceSummaryItem name="EwEMSPPlugin (Group)" isGroup="True" isDocumented="True">'EwE tools for MSP' is a set of two .NET assemblies that assist Ecopath with Ecosim (EwE) modellers in the task of preparing and testing an Ecospace scenario for game play in the Maritime Strategic Planning (MSP) Challenge 2050 software, and provides all the necessary building blocks to intregrate an EwE model into MSP game play.</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="EwEShell (Group)" isGroup="True" isDocumented="True">Maritime Strategic Planning Challenge 2050 foundation classes for connecting MEL (MSP - EwE link) and the Ecopath with Ecosim modeling approach</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEMSPLink (Group)" isGroup="True" isDocumented="True">Maritime Strategic Planning Challenge 2050 foundation classes for connecting MEL (MSP - EwE link) and the Ecopath with Ecosim modeling approach</NamespaceSummaryItem>
     </NamespaceSummaries>
     <VisibleItems>Attributes, ExplicitInterfaceImplementations, Protected, SealedProtected, ProtectedInternalAsProtected</VisibleItems>
   </PropertyGroup>

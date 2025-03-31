@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="EwEShell.cGame" Collapsed="true">
+  <Class Name="EwEMSPLink.cGame" Collapsed="true">
     <Position X="3" Y="2.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="Pressures" Type="EwEShell.cPressure" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="Pressures" Type="EwEMSPLink.cPressure" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="3" Y="3" />
         <Point X="2.062" Y="3" />
@@ -15,12 +15,12 @@
         <Position X="-0.337" Y="0.286" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="Outputs" Type="EwEShell.cOutput">
+    <AssociationLine Name="Outputs" Type="EwEMSPLink.cOutput">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-0.322" Y="0.329" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="Drivers(EwEShell.cPressure.eDataTypes)" Type="EwEShell.cDriver" FixedToPoint="true">
+    <AssociationLine Name="Drivers(EwEMSPLink.cPressure.eDataTypes)" Type="EwEMSPLink.cDriver" FixedToPoint="true">
       <Path>
         <Point X="3.75" Y="3.312" />
         <Point X="3.75" Y="4" />
@@ -33,16 +33,16 @@
     <ShowAsCollectionAssociation>
       <Property Name="Pressures" />
       <Property Name="Outputs" />
-      <Property Name="Drivers(EwEShell.cPressure.eDataTypes)" />
+      <Property Name="Drivers(EwEMSPLink.cPressure.eDataTypes)" />
     </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="EwEShell.cShellData" Collapsed="true">
+  <Class Name="EwEMSPLink.cShellData" Collapsed="true">
     <Position X="3" Y="1.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="Games" Type="EwEShell.cGame">
+    <AssociationLine Name="Games" Type="EwEMSPLink.cGame">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-0.256" Y="0.247" />
       </MemberNameLabel>
@@ -52,12 +52,12 @@
       <Property Name="Games" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="EwEShell.cDriver" Collapsed="true">
+  <Class Name="EwEMSPLink.cDriver" Collapsed="true">
     <Position X="3" Y="4" Width="1.5" />
     <TypeIdentifier />
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="EwEShell.cOutput" Collapsed="true">
+  <Class Name="EwEMSPLink.cOutput" Collapsed="true">
     <Position X="4.75" Y="4" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
@@ -65,21 +65,21 @@
     <TypeIdentifier />
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="EwEShell.cEffortDriver" Collapsed="true">
+  <Class Name="EwEMSPLink.cEffortDriver" Collapsed="true">
     <Position X="0.5" Y="5.25" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="EwEShell.cEnvironmentalDriver" Collapsed="true">
+  <Class Name="EwEMSPLink.cEnvironmentalDriver" Collapsed="true">
     <Position X="2.25" Y="5.25" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="EwEShell.cHabitatDriver" Collapsed="true">
+  <Class Name="EwEMSPLink.cHabitatDriver" Collapsed="true">
     <Position X="4" Y="5.25" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="EwEShell.cMPADriver" Collapsed="true">
+  <Class Name="EwEMSPLink.cMPADriver" Collapsed="true">
     <Position X="5.75" Y="5.25" Width="1.5" />
-    <InheritanceLine Type="EwEShell.cDriver" FixedFromPoint="true">
+    <InheritanceLine Type="EwEMSPLink.cDriver" FixedFromPoint="true">
       <Path>
         <Point X="3.75" Y="4.562" />
         <Point X="3.75" Y="4.875" />
@@ -89,7 +89,7 @@
     </InheritanceLine>
     <TypeIdentifier />
   </Class>
-  <Class Name="EwEShell.cPressure" Collapsed="true">
+  <Class Name="EwEMSPLink.cPressure" Collapsed="true">
     <Position X="1.25" Y="4" Width="1.5" />
     <Compartments>
       <Compartment Name="Properties" Collapsed="true" />
@@ -126,7 +126,7 @@
         <Position X="0.318" Y="-0.109" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="Shell" Type="EwEShell.cEwEShell">
+    <AssociationLine Name="Shell" Type="EwEMSPLink.cEwEMSPLink">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.424" Y="-0.079" />
       </MemberNameLabel>
@@ -191,9 +191,9 @@
       <FileName>UI\Controls\gridOutcomes.vb</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="EwEShell.cEwEShell" Collapsed="true">
+  <Class Name="EwEMSPLink.cEwEMSPLink" Collapsed="true">
     <Position X="3" Y="0.5" Width="1.5" />
-    <AssociationLine Name="Data" Type="EwEShell.cShellData">
+    <AssociationLine Name="Data" Type="EwEMSPLink.cShellData">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-0.217" Y="0.139" />
       </MemberNameLabel>
