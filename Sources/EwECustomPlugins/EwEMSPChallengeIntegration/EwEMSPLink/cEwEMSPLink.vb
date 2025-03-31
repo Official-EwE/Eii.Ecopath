@@ -57,7 +57,7 @@ Public Class cEwEMSPLink
         Try
             Me.Controller = CType(pm.GetPlugins(GetType(cEcospaceController))(0), cEcospaceController)
         Catch ex As Exception
-            RaiseException("EwEShell.Constructor failed to locate Ecospace controller plug-in. " & ex.Message, False)
+            RaiseException("EwEMSPLink.Constructor failed to locate Ecospace controller plug-in. " & ex.Message, False)
         End Try
 
         'Me.Controller.IsSaveOutput = True
@@ -99,7 +99,7 @@ Public Class cEwEMSPLink
             sr.Close()
             Return Configuration(strJSON, effortstartvalues)
         Catch ex As Exception
-            RaiseException("EwEShell.ConfigurationFromFile unable to read JSON file. " & ex.Message, False)
+            RaiseException("EwEMSPLink.ConfigurationFromFile unable to read JSON file. " & ex.Message, False)
             Return False
         End Try
     End Function
@@ -118,7 +118,7 @@ Public Class cEwEMSPLink
         Try
             cfg.Load(strJSON)
         Catch ex As Exception
-            RaiseException("EwEShell.Configuration unable to parse JSON text. " & ex.Message, False)
+            RaiseException("EwEMSPLink.Configuration unable to parse JSON text. " & ex.Message, False)
         End Try
 
         Return Me.Configuration(cfg.EwEModelFile, cfg.Mode, cfg.Timestep,
@@ -158,27 +158,27 @@ Public Class cEwEMSPLink
 
         ' Load model, or download if needed
         If (Not File.Exists(strEwEModelFile)) Then
-            RaiseException("EwEShell.Configuration: Model " & strEwEModelFile & " not found", False)
+            RaiseException("EwEMSPLink.Configuration: Model " & strEwEModelFile & " not found", False)
             Return False
         End If
         Debug.WriteLine("Model file " & strEwEModelFile & " exists")
 
         If Not Core.LoadModel(strEwEModelFile) Then
-            RaiseException("EwEShell.Configuration: Model " & strEwEModelFile & " cannot be loaded by the EwE core.", True)
+            RaiseException("EwEMSPLink.Configuration: Model " & strEwEModelFile & " cannot be loaded by the EwE core.", True)
             Return False
         End If
-        Debug.WriteLine("EwEShell model " & Core.EwEModel.Name & " loaded")
+        Debug.WriteLine("EwEMSPLink model " & Core.EwEModel.Name & " loaded")
 
         If Not LoadConfiguration() Then
-            RaiseException("EwEShell.Configuration: Game descriptions not found in model, or could not be loaded.", False)
+            RaiseException("EwEMSPLink.Configuration: Game descriptions not found in model, or could not be loaded.", False)
             Return False
         End If
-        Debug.WriteLine("EwEShell configuration loaded: " & Me.Data.Games.Count & " games")
+        Debug.WriteLine("EwEMSPLink configuration loaded: " & Me.Data.Games.Count & " games")
 
         m_game = Data.Game(mode)
 
         If (m_game Is Nothing) Then
-            RaiseException("EwEShell.Configuration: There is no game defined for mode '" & mode & "'", True)
+            RaiseException("EwEMSPLink.Configuration: There is no game defined for mode '" & mode & "'", True)
             Return False
         End If
 
@@ -187,7 +187,7 @@ Public Class cEwEMSPLink
             Me.Terminate()
             Return False
         End If
-        Debug.WriteLine("EwEShell game '" & Me.m_game.Name & "' loaded, version " & Me.m_game.Version)
+        Debug.WriteLine("EwEMSPLink game '" & Me.m_game.Name & "' loaded, version " & Me.m_game.Version)
 
         ' *shudder*
         Me.m_game.OutcomeRange = outcomerange
@@ -204,7 +204,7 @@ Public Class cEwEMSPLink
             effortstartvalues.AddRange(Me.m_game.EffortStartValues())
         End If
 
-        Debug.WriteLine("EwEShell configuration validated")
+        Debug.WriteLine("EwEMSPLink configuration validated")
 
         Return True
 
@@ -222,12 +222,12 @@ Public Class cEwEMSPLink
         '             layer content which is needed for any Spinup period
 
         If (Me.Controller Is Nothing) Then
-            RaiseException("EwEShell.Startup can only execute in console mode.", False)
+            RaiseException("EwEMSPLink.Startup can only execute in console mode.", False)
             Return
         End If
 
         If (Me.m_game Is Nothing) Then
-            RaiseException("EwEShell.Startup game undefined, call Configuration first. Startup aborted.", False)
+            RaiseException("EwEMSPLink.Startup game undefined, call Configuration first. Startup aborted.", False)
             Return
         End If
 
@@ -246,17 +246,17 @@ Public Class cEwEMSPLink
     Public Sub Tick(pressures As List(Of cPressure), outcomelayers As List(Of cGrid))
 
         If (Me.Controller Is Nothing) Then
-            RaiseException("EwEShell.Run can only execute in console mode", False)
+            RaiseException("EwEMSPLink.Run can only execute in console mode", False)
             Return
         End If
 
         If (Me.m_game Is Nothing) Then
-            RaiseException("EwEShell.Run game undefined, call Configuration first. Run aborted.", False)
+            RaiseException("EwEMSPLink.Run game undefined, call Configuration first. Run aborted.", False)
             Return
         End If
 
         If (Not Me.Controller.IsRunning) Then
-            RaiseException("EwEShell.Run game not running, call Startup first. Run aborted.", False)
+            RaiseException("EwEMSPLink.Run game not running, call Startup first. Run aborted.", False)
             Return
         End If
 
@@ -272,7 +272,7 @@ Public Class cEwEMSPLink
     Public Sub Terminate()
 
         If (Me.Controller Is Nothing) Then
-            RaiseException("EwEShell.Terminate can only execute in console mode", False)
+            RaiseException("EwEMSPLink.Terminate can only execute in console mode", False)
             Return
         End If
 
@@ -460,7 +460,7 @@ Public Class cEwEMSPLink
             cLog.Write("MEL exception thrown: " & strError)
             If (bEwEDetails) Then strError = strError & " See EwE error log for details"
 
-            Console.WriteLine("EwEShell Throwing exception '" & strError & "'")
+            Console.WriteLine("EwEMSPLink Throwing exception '" & strError & "'")
 
             Dim ex As New cMELException(strError)
             Throw ex
