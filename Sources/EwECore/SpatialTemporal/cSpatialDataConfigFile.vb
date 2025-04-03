@@ -170,7 +170,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function Load(strFile As String) As ISpatialDataSet()
 
-            Dim strRoot As String = Path.GetDirectoryName(strFile)
+            Dim strRoot As String = Path.GetDirectoryName(Path.GetFullPath(strFile))
             Dim doc As New XmlDocument()
             Dim xnRoot As XmlNode = Nothing
             Dim xa As XmlAttribute = Nothing
