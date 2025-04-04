@@ -652,9 +652,11 @@ Public Class cValueChainPlugin
         ' Only respond to fishing policy search
         If (ds.SearchMode <> eSearchModes.FishingPolicy) Then Return
 
-        'ds.SectorProfit = Me.Results.GetTotal(cEcostResults.eVariableType.Profit)
-        'ds.SectorTotalValue = Me.Results.GetTotal(cEcostResults.eVariableType.RevenueTotal)
-        'ds.SectorJobs = Me.Results.GetTotal(cEcostResults.eVariableType.NumberOfJobsTotal)
+        ' Overwrite values in the search datastructures with desired value chain output
+        ds.profit = Me.Results.GetTotal(cResults.eVariableType.Profit)
+
+        'ds.??? = Me.Results.GetTotal(cResults.eVariableType.RevenueTotal)
+        ' ds.Jobs = Me.Results.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
 
     End Sub
 

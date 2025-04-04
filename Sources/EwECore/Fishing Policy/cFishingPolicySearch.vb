@@ -312,7 +312,7 @@ Namespace FishingPolicy
             'get the base values used by FUNC to tell the change between the current run and the base run
             Me.m_ecosim.RunModelValue(Me.TotalTime, Me.m_searchData.Frates, nBlocksUsed)
 
-            If Me.m_pluginManager IsNot Nothing Then
+            If Me.m_searchData.FPSUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
                 Me.m_pluginManager.PostRunSearchResults(Me.m_searchData)
             End If
 

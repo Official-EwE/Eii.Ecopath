@@ -112,7 +112,7 @@ Namespace Ecosim
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkPrevCE, eOptimizeApproachTypes.SystemObjective))
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_cmbSearchUsing, eOptimizeApproachTypes.SystemObjective))
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_lblSearchUsing, eOptimizeApproachTypes.SystemObjective))
-            'Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkUsePlugin, eOptimizeApproachTypes.SystemObjective))
+            Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkUsePlugin, eOptimizeApproachTypes.SystemObjective))
 
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
@@ -240,7 +240,7 @@ Namespace Ecosim
                 ct.Enabled(optAproach)
             Next
 
-            Me.m_fpUsePlugin.Enabled = (optAproach = eOptimizeApproachTypes.SystemObjective)
+            Me.m_chkUsePlugin.Enabled = (optAproach = eOptimizeApproachTypes.SystemObjective)
 
         End Sub
 
