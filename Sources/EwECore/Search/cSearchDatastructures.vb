@@ -103,6 +103,8 @@ Public Class cSearchDatastructures
 
     ''' <summary>Structure rel weight </summary>
     Public BGoalValue() As Single
+    ''' <summary>Is group used for biodiversity calculations</summary>
+    Public BiodivUsed() As Boolean
     ''' <summary>Mandated rebuilding </summary>
     Public MGoalValue() As Single
 
@@ -210,6 +212,7 @@ Public Class cSearchDatastructures
     Private m_EcoFunctions As cEcoFunctions
 
     Private m_EPdata As cEcopathDataStructures
+    Private m_ecosimData As cEcosimDatastructures
 
 #End Region
 
@@ -221,8 +224,8 @@ Public Class cSearchDatastructures
     ''' <remarks>Drate = 1/(1+DiscountFactor)</remarks>
     Private Drate As Single
 
-    ''' <summary>Intergenerational discount rate for computations</summary>
-    ''' <remarks>Dfgrate = 1/(1+GenDiscountFactor)</remarks>
+    '''' <summary>Intergenerational discount rate for computations</summary>
+    '''' <remarks>Dfgrate = 1/(1+GenDiscountFactor)</remarks>
     'Private Dfgrate As Single
 
     ''' <summary>Ratio of intergenerational to standard discount rate </summary>
@@ -235,8 +238,6 @@ Public Class cSearchDatastructures
 
     Private Din As Single, Dgen As Single, Dratio As Single
     Private Dalpha As Single
-    Private m_ecopathData As cEcopathDataStructures
-    Private m_ecosimData As cEcosimDatastructures
 
 #End Region
 
@@ -251,7 +252,7 @@ Public Class cSearchDatastructures
             Me.m_SearchCatchSemaphor = semaphore
         Catch ex As Exception
             Console.WriteLine("Cannot create Semaphore: " & ex.Message & ". Skipping.")
-        End Try 
+        End Try
 
         Me.m_EPdata = EPData
 
@@ -281,6 +282,7 @@ Public Class cSearchDatastructures
         Me.Jobs = Nothing ' (NumFleets)
         Me.TargetProfitability = Nothing ' (NumFleets)
         Me.BGoalValue = Nothing ' (NumGroups)
+        Me.BiodivUsed = Nothing ' (NumGroups)
         Me.MGoalValue = Nothing ' (NumGroups)
         Me.ValCatch = Nothing ' (NumFleets, NumGroups)
         Me.NetCost = Nothing ' (NumFleets)
@@ -351,7 +353,7 @@ Public Class cSearchDatastructures
 
         Set(value As Integer)
             Me.m_NBlocks = value
-            Me.setDefaultFRates()
+            Me.SetDefaultFRates()
         End Set
 
     End Property
@@ -444,13 +446,13 @@ Public Class cSearchDatastructures
     End Function
 
 
-
     Private Function RedimGroups() As Boolean
 
         Try
 
             ReDim Me.BGoalValue(Me.NumGroups)
             ReDim Me.MGoalValue(Me.NumGroups)
+            ReDim Me.BiodivUsed(Me.NumGroups)
 
             ReDim Me.ValCatch(Me.NumFleets, Me.NumGroups)
             ReDim Me.NetCost(Me.NumFleets)
@@ -490,7 +492,7 @@ Public Class cSearchDatastructures
                 Me.m_ExtraYears = 20
             End If
 
-            Me.setDefaultOptimizationValues()
+            Me.SetDefaultOptimizationValues()
 
         Else
 
@@ -505,18 +507,31 @@ Public Class cSearchDatastructures
     ''' Set default values for the optimiation. These are values that are set the same for every run.
     ''' </summary>
     ''' <remarks>from frmOptF.Load_Form() </remarks>
-    Public Sub setDefaultOptimizationValues()
+    Public Sub SetDefaultOptimizationValues()
 
         'If DiscountFactor = 0 Then DiscountFactor = 0.04
         'If GenDiscountFactor = 0 Then GenDiscountFactor = 0.1
         'If BaseYear = 0 Then BaseYear = 1
 
-        Me.setDefaultFRates()
-
+        Me.SetDefaultFRates()
+        Me.SetDefaultBiodivUsed()
     End Sub
 
+    ''' <summary>
+    ''' Set default values for including groups in the biodiversity calculations.
+    ''' </summary>
+    Private Sub SetDefaultBiodivUsed()
+        For i As Integer = 1 To Me.NumGroups
+            Dim bUse As Boolean = False
+            If (i < Me.NumLiving) Then
+                ' By default only include consumers to calculate biodiversity indicators
+                bUse = (Me.m_EPdata.PP(i) = 0)
+            End If
+            Me.BiodivUsed(i) = bUse
+        Next
+    End Sub
 
-    Private Sub setDefaultFRates()
+    Private Sub SetDefaultFRates()
         Dim i As Integer
 
         If Me.m_NBlocks = 0 Then
@@ -639,7 +654,7 @@ Public Class cSearchDatastructures
 
         Try
             'clear out the old data
-            Me.setDefaultFRates()
+            Me.SetDefaultFRates()
 
             'needed for EcopathBaseF get the Ecopath fishing rate for the base year
             Me.setBaseYearEffort(EcosimData)
@@ -754,7 +769,7 @@ Public Class cSearchDatastructures
             Next
         Next
 
-        Me.m_ecopathData = EcoPathData
+        'Me.m_EPdata = EcoPathData ' Already done
         Me.m_ecosimData = EcosimData
 
         Me.Din = 1 - Me.DiscountFactor 'jb DiscountFactor was set to a default of 0.01 in setDefaultParamaters
@@ -812,7 +827,7 @@ Public Class cSearchDatastructures
         End If
         'DF = 1
 
-        For iFlt As Integer = 1 To Me.m_ecopathData.NumFleet
+        For iFlt As Integer = 1 To Me.m_EPdata.NumFleet
 
             If Me.BaseYearCost(iFlt) > 0 Then
                 Me.NetCost(iFlt) += Me.DF * Me.BaseYearCost(iFlt) * (Fgear(iFlt) / Me.BaseYearEffort(iFlt))
@@ -832,13 +847,13 @@ Public Class cSearchDatastructures
 
         'When Ecosim is run for a Fishing Policy Search it is run for 20 years past the end of the regular run length(cSearchDataStructures.ExtraYearsForSearch)
         'Constrain the year index to the Ecosim run length so the effort set by the FPS for the last year is used for the extra years
-        Dim iyf As Integer = CInt(if(iYear <= Me.m_ecosimData.NumYears, iYear, Me.m_ecosimData.NumYears))
+        Dim iyf As Integer = CInt(If(iYear <= Me.m_ecosimData.NumYears, iYear, Me.m_ecosimData.NumYears))
 
         Debug.Assert(Me.SearchMode = eSearchModes.FishingPolicy, "Ecosim BUG warning: setting fishing effort to values computed by Fishing Policy Search when not in search!")
 
         'in the Fishing policy search
         'If the search has set an effort then use that value to populate Fgear()
-        For iFlt As Integer = 1 To Me.m_ecopathData.NumFleet
+        For iFlt As Integer = 1 To Me.m_EPdata.NumFleet
 
             If Me.FblockCode(iFlt, iyf) > 0 Then  'And bBaseYearSet?
                 'Fishing policy search has set an effort 
@@ -885,7 +900,7 @@ Public Class cSearchDatastructures
                 End If
                 'DF = 1
 
-                For i As Integer = 1 To Me.m_ecopathData.NumFleet
+                For i As Integer = 1 To Me.m_EPdata.NumFleet
 
                     If Me.FblockCode(i, iYear) > 0 Then
                         Fgear(i) = RelFopt(Me.ParNumber(Me.FblockCode(i, iYear)))
@@ -893,7 +908,7 @@ Public Class cSearchDatastructures
                         Fgear(i) = Me.m_ecosimData.FishRateGear(i, 12 * iYear - 11)
                     End If
 
-                    For j As Integer = 1 To Me.m_ecopathData.NumGroups
+                    For j As Integer = 1 To Me.m_EPdata.NumGroups
                         Me.FishYear(j) = Me.FishYear(j) + Fgear(i) * Me.m_ecosimData.relQ(i, j)
                     Next j
                 Next i
@@ -918,7 +933,7 @@ Public Class cSearchDatastructures
 
         Dim LogB As Single
         Dim EcoDistTime As Single
-        For i = 1 To Me.m_ecopathData.NumLiving
+        For i = 1 To Me.m_EPdata.NumLiving
             'Ecovalue = Ecovalue - BGoalValue(i) * (bb(i) / m_data.StartBiomass(i) - BGoal(i)) ^ 2
             Me.ecovalue = Me.ecovalue + Me.BGoalValue(i) * Biomass(i) / Me.m_ecosimData.StartBiomass(i)
             LogB = CSng(Math.Log(Biomass(i) / Me.m_ecosimData.StartBiomass(i)))
@@ -936,17 +951,17 @@ Public Class cSearchDatastructures
         Next i
 
         'System.Console.WriteLine(ecovalue.ToString)
-        Select Case Me.m_ecopathData.DiversityIndexType
+        Select Case Me.m_EPdata.DiversityIndexType
             Case eDiversityIndexType.KemptonsQ
-                Me.DiversityIndex = Me.DiversityIndex + Me.m_EcoFunctions.KemptonsQ(Me.m_ecopathData.NumLiving, Me.m_ecopathData.TTLX, Biomass, 0.25)
+                Me.DiversityIndex = Me.DiversityIndex + Me.m_EcoFunctions.KemptonsQ(Me.m_EPdata.NumLiving, Me.m_EPdata.TTLX, Biomass, 0.25)
             Case eDiversityIndexType.Shannon
-                Me.DiversityIndex = Me.DiversityIndex + Me.m_EcoFunctions.ShannonDiversityIndex(Me.m_ecopathData.NumLiving, Biomass)
+                Me.DiversityIndex = Me.DiversityIndex + Me.m_EcoFunctions.ShannonDiversityIndex(Me.m_EPdata.NumLiving, Biomass)
         End Select
 
         EcoDistTime = CSng(Math.Sqrt(EcoDistTime))
         Me.Ecodistance = Me.Ecodistance + Me.DF * EcoDistTime
 
-        'For i = 1 To m_ecopathData.NumLiving
+        'For i = 1 To m_epData.NumLiving
         '    'Ecovalue = Ecovalue - BGoalValue(i) * (bb(i) / m_data.StartBiomass(i) - BGoal(i)) ^ 2
         '    If MGoalValue(i) > 0 Then
         '        If Biomass(i) / m_ecosimData.StartBiomass(i) < MGoalValue(i) Then 'not yet reached the mandated threshold
@@ -971,14 +986,14 @@ Public Class cSearchDatastructures
 
         If iYear = Me.BaseYear And Not Me.bBaseYearSet Then
             Me.bBaseYearSet = True
-            For i As Integer = 1 To Me.m_ecopathData.NumFleet
+            For i As Integer = 1 To Me.m_EPdata.NumFleet
 
                 CV = 0
-                For j As Integer = 1 To Me.m_ecopathData.NumLiving
-                    CV = CV + Me.CatchYear(i, j) / nSpatialCells * Me.m_ecopathData.Market(i, j) '* m_ecopathData.PropLanded(i, j)
+                For j As Integer = 1 To Me.m_EPdata.NumLiving
+                    CV = CV + Me.CatchYear(i, j) / nSpatialCells * Me.m_EPdata.Market(i, j) '* m_epData.PropLanded(i, j)
                 Next
                 '   m_search.BaseYearIncome(i) = CV
-                Me.BaseYearCost(i) = CV * (Me.m_ecopathData.CostPct(i, 2) + Me.m_ecopathData.CostPct(i, 3)) / 100
+                Me.BaseYearCost(i) = CV * (Me.m_EPdata.CostPct(i, 2) + Me.m_EPdata.CostPct(i, 3)) / 100
                 '061221VC: the baseyearcost above doesn't include fixed costs
                 'this is probably how it should be, as it troublesome to include it in all
                 'other cost calculations in the optimizations, it should [costpct(i,1)]
@@ -996,8 +1011,8 @@ Public Class cSearchDatastructures
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     End Sub
 
-    Public Sub EcosimSummarizeIndicators(Biomass() As Single, Fgear() As Single, _
-                                            ModelRunLength As Integer, ModelRunLengthPostBaseYear As Integer, _
+    Public Sub EcosimSummarizeIndicators(Biomass() As Single, Fgear() As Single,
+                                            ModelRunLength As Integer, ModelRunLengthPostBaseYear As Integer,
                                             PriceMedData As cMediationDataStructures)
         Dim LTV As Single 'Long term value
         Dim CV As Single
@@ -1005,7 +1020,7 @@ Public Class cSearchDatastructures
         Dim CostPenalty As Single
         Dim CostPenaltyConstant As Integer = 10
 
-        ReDim Me.CostRatio(Me.m_ecopathData.NumFleet)
+        ReDim Me.CostRatio(Me.m_EPdata.NumFleet)
 
         Me.totval = 0
         Me.Employ = 0
@@ -1014,29 +1029,29 @@ Public Class cSearchDatastructures
         Me.DiversityIndex = Me.DiversityIndex / ModelRunLength
 
         ' calculate last year incomes and costs by gear
-        For iFlt = 1 To Me.m_ecopathData.NumFleet
+        For iFlt = 1 To Me.m_EPdata.NumFleet
             'If BaseYearCost(i) > 0 Then
             'LastYearCost(i) = Fgear(i) * BaseYearCost(i) / BaseYearEffort(i)
             'Else
-            '    LastYearCost(i) = Fgear(i) * (m_ecopathData.cost(i, 2) + m_ecopathData.cost(i, 3))
+            '    LastYearCost(i) = Fgear(i) * (m_epData.cost(i, 2) + m_epData.cost(i, 3))
             'End If
 
             CV = 0
-            For iGrp = 1 To Me.m_ecopathData.NumLiving
+            For iGrp = 1 To Me.m_EPdata.NumLiving
                 If Me.CatchYear(iFlt, iGrp) > 0 Then
-                    Me.LastYearIncomeSpecies(iFlt, iGrp) = Me.CatchYear(iFlt, iGrp) * Me.m_ecopathData.Market(iFlt, iGrp) * Me.m_ecopathData.PropLanded(iFlt, iGrp)
+                    Me.LastYearIncomeSpecies(iFlt, iGrp) = Me.CatchYear(iFlt, iGrp) * Me.m_EPdata.Market(iFlt, iGrp) * Me.m_EPdata.PropLanded(iFlt, iGrp)
                     CV = CV + Me.LastYearIncomeSpecies(iFlt, iGrp)
                 End If
             Next
             Me.LastYearIncome(iFlt) = CV
         Next
 
-        Me.ExistValue = Me.ExistValue / (Me.m_ecopathData.NumLiving * ModelRunLengthPostBaseYear)
+        Me.ExistValue = Me.ExistValue / (Me.m_EPdata.NumLiving * ModelRunLengthPostBaseYear)
 
         LTV = Me.CalcLTV(ModelRunLengthPostBaseYear)
 
-        For iFlt = 1 To Me.m_ecopathData.NumFleet
-            For iGrp = 1 To Me.m_ecopathData.NumLiving
+        For iFlt = 1 To Me.m_EPdata.NumFleet
+            For iGrp = 1 To Me.m_EPdata.NumLiving
                 If Me.ValCatch(iFlt, iGrp) > 0 Then
                     'Was done using end biomass:
                     'Vlocal = (ValCatch(i, j) + bb(j) * Fgear(i) * relQ(i, j) * LTV) * Market(i, j)
@@ -1044,14 +1059,14 @@ Public Class cSearchDatastructures
                     'addition to be based on equilibrium biomass
                     'If Abs((bb(j) - biomeq(j)) / m_data.StartBiomass(j)) > 1 Then Stop
 
-                    'Dim Vlocal As Single = ValCatch(iFlt, iGrp) + (m_ecopathData.PropLanded(iFlt, iGrp) * Biomass(iGrp) _
-                    '* Fgear(iFlt) * m_ecosimData.relQ(iFlt, iGrp) * LTV) * m_ecopathData.Market(iFlt, iGrp)
+                    'Dim Vlocal As Single = ValCatch(iFlt, iGrp) + (m_epData.PropLanded(iFlt, iGrp) * Biomass(iGrp) _
+                    '* Fgear(iFlt) * m_ecosimData.relQ(iFlt, iGrp) * LTV) * m_epData.Market(iFlt, iGrp)
 
                     'jb 27-Apr-2011 changed again to include Price Elasticity of Supply
                     'Assumes 
                     'PriceMedData.SetPriceMedFunctions() was called with the landings from the last timestep in Ecosim
                     'Both ValCatch(fleets,groups) and CatchYear(fleets,groups) are from the last Ecosim timestep 
-                    Dim Vlocal As Single = Me.ValCatch(iFlt, iGrp) + Me.CatchYear(iFlt, iGrp) * Me.m_ecopathData.Market(iFlt, iGrp) * PriceMedData.getPESMult(iGrp, iFlt) * LTV
+                    Dim Vlocal As Single = Me.ValCatch(iFlt, iGrp) + Me.CatchYear(iFlt, iGrp) * Me.m_EPdata.Market(iFlt, iGrp) * PriceMedData.getPESMult(iGrp, iFlt) * LTV
 
                     Me.totval = Me.totval + Vlocal
                     Me.ValCatchGear(iFlt) = Me.ValCatchGear(iFlt) + Vlocal
@@ -1059,7 +1074,7 @@ Public Class cSearchDatastructures
             Next
         Next
 
-        For iFlt = 1 To Me.m_ecopathData.NumFleet
+        For iFlt = 1 To Me.m_EPdata.NumFleet
 
             'NetCost() = [Sum of NetCost] + [long term value of the last time step]
             'totval includes the same accounting
@@ -1087,8 +1102,8 @@ Public Class cSearchDatastructures
     End Sub
 
 
-    Public Sub EcoSpaceSummarizeIndicators(Fgear() As Single, ModelRunLength As Integer, _
-                                           ModelRunLengthPostBaseYear As Integer, _
+    Public Sub EcoSpaceSummarizeIndicators(Fgear() As Single, ModelRunLength As Integer,
+                                           ModelRunLengthPostBaseYear As Integer,
                                            nWaterCells As Integer)
         Dim LTV As Single 'Long term value
         Dim iflt As Integer, igrp As Integer
@@ -1098,15 +1113,15 @@ Public Class cSearchDatastructures
         Me.totval = 0
         Me.Employ = 0
 
-        Me.ExistValue = Me.ExistValue / (Me.m_ecopathData.NumLiving * ModelRunLength)
+        Me.ExistValue = Me.ExistValue / (Me.m_EPdata.NumLiving * ModelRunLength)
 
         'Diversity index (either KemptonQ or Shannon index) is the sum of KemptonQ across all time steps
         Me.DiversityIndex = Me.DiversityIndex / ModelRunLength
 
         LTV = Me.CalcLTV(ModelRunLengthPostBaseYear)
 
-        For iflt = 1 To Me.m_ecopathData.NumFleet
-            For igrp = 1 To Me.m_ecopathData.NumLiving
+        For iflt = 1 To Me.m_EPdata.NumFleet
+            For igrp = 1 To Me.m_EPdata.NumLiving
                 If Me.ValCatch(iflt, igrp) > 0 Then
                     Me.ValCatch(iflt, igrp) = Me.ValCatch(iflt, igrp) / nWaterCells
                     'Was done using end biomass:
@@ -1115,7 +1130,7 @@ Public Class cSearchDatastructures
                     'addition to be based on equilibrium biomass
                     'If Abs((bb(j) - biomeq(j)) / m_data.StartBiomass(j)) > 1 Then Stop
 
-                    Dim Vlocal As Single = Me.ValCatch(iflt, igrp) + Me.CatchYear(iflt, igrp) / nWaterCells * LTV * Me.m_ecopathData.Market(iflt, igrp)
+                    Dim Vlocal As Single = Me.ValCatch(iflt, igrp) + Me.CatchYear(iflt, igrp) / nWaterCells * LTV * Me.m_EPdata.Market(iflt, igrp)
 
                     Me.totval = Me.totval + Vlocal
                     Me.ValCatchGear(iflt) = Me.ValCatchGear(iflt) + Vlocal
@@ -1128,8 +1143,8 @@ Public Class cSearchDatastructures
         Next
 
         Dim CostPenalty As Single ', TotalFishingCost As Single
-        ReDim Me.CostRatio(Me.m_ecopathData.NumFleet)
-        For iflt = 1 To Me.m_ecopathData.NumFleet
+        ReDim Me.CostRatio(Me.m_EPdata.NumFleet)
+        For iflt = 1 To Me.m_EPdata.NumFleet
 
             If Me.BaseYearCost(iflt) > 0 And Me.BaseYearEffort(iflt) > 0 Then
                 Me.NetCost(iflt) += Fgear(iflt) * Me.BaseYearCost(iflt) / Me.BaseYearEffort(iflt) * LTV
@@ -1138,7 +1153,7 @@ Public Class cSearchDatastructures
 
             'NetCost() = [Sum of NetCost] + [long term value of the last time step]
             'totval includes the same accounting
-            '  NetCost(iflt) = NetCost(iflt) + Fgear(iflt) * nWaterCells * (m_ecopathData.cost(iflt, 2) + m_ecopathData.cost(iflt, 3)) * LTV
+            '  NetCost(iflt) = NetCost(iflt) + Fgear(iflt) * nWaterCells * (m_epData.cost(iflt, 2) + m_epData.cost(iflt, 3)) * LTV
             ' TotalFishingCost = TotalFishingCost + NetCost(iflt)
 
             CostPenalty = 0

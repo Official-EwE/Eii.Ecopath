@@ -1021,6 +1021,8 @@ Namespace Core
         FPSValueComponentType
         ''' <summary>To document</summary>
         FPSGroupStrucRelWeight
+        ''' <summary>Is a group used in the Fishing Policy Search biodiversity assessment</summary>
+        FPSGroupBiodivUsed
 
         ''' <summary>To document</summary>
         FPSFleetJobCatchValue

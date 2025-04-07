@@ -262,6 +262,10 @@ Namespace SearchObjectives
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
+            val = New cValue(core, New Boolean, eVarNameFlags.FPSGroupBiodivUsed, eStatusFlags.Null, eValueTypes.Bool)
+            val.Stored = False
+            Me.m_values.Add(val.varName, val)
+
             'Fishing Limit
             val = New cValue(core, New Single, eVarNameFlags.FPSFishingLimit, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
@@ -290,6 +294,16 @@ Namespace SearchObjectives
 
             Set(value As Single)
                 Me.SetVariable(eVarNameFlags.FPSGroupStrucRelWeight, value)
+            End Set
+        End Property
+
+        Public Property BiodiversityUsed() As Boolean
+            Get
+                Return CType(Me.GetVariable(eVarNameFlags.FPSGroupBiodivUsed), Boolean)
+            End Get
+
+            Set(value As Boolean)
+                Me.SetVariable(eVarNameFlags.FPSGroupBiodivUsed, value)
             End Set
         End Property
 

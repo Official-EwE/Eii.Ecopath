@@ -167,6 +167,7 @@ Namespace SearchObjectives
 
                     grp.MandRelBiom = coreData.MGoalValue(grp.Index)
                     grp.StrucRelWeight = coreData.BGoalValue(grp.Index)
+                    grp.BiodiversityUsed = coreData.BiodivUsed(grp.Index)
                     grp.FishingLimit = coreData.FLimit(grp.Index)
 
                     grp.AllowValidation = True
@@ -239,6 +240,7 @@ Namespace SearchObjectives
 
                         coreData.MGoalValue(grp.Index) = grp.MandRelBiom
                         coreData.BGoalValue(grp.Index) = grp.StrucRelWeight
+                        coreData.BiodivUsed(grp.Index) = grp.BiodiversityUsed
                         coreData.FLimit(grp.Index) = grp.FishingLimit
 
                     Next grp
