@@ -48,6 +48,7 @@ Namespace Ecosim
             Group
             ManRB
             StructureW
+            BiodivUsed
             FLimit
         End Enum
 
@@ -81,6 +82,7 @@ Namespace Ecosim
             Me(0, eColumnTypes.Group) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUP)
             Me(0, eColumnTypes.ManRB) = New cEwEColumnHeaderCell(SharedResources.HEADER_MANDATED_BIOMASS_RELATIVE)
             Me(0, eColumnTypes.StructureW) = New cEwEColumnHeaderCell(SharedResources.HEADER_STRUCTURERELATIVEWEIGHT)
+            Me(0, eColumnTypes.BiodivUsed) = New cEwEColumnHeaderCell(SharedResources.HEADER_BIODIVERSITY)
             Me(0, eColumnTypes.FLimit) = New cEwEColumnHeaderCell(SharedResources.HEADER_MAXFISHINGMORTAILITY)
 
         End Sub
@@ -100,6 +102,7 @@ Namespace Ecosim
                 Me(i, eColumnTypes.Group) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 Me(i, eColumnTypes.ManRB) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSGroupMandRelBiom)
                 Me(i, eColumnTypes.StructureW) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSGroupStrucRelWeight)
+                Me(i, eColumnTypes.BiodivUsed) = New cPropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.FPSGroupBiodivUsed)
                 Me(i, eColumnTypes.FLimit) = New cPropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSFishingLimit)
             Next
 

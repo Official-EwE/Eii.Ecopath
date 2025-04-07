@@ -545,6 +545,7 @@ Public Class cVariableMetaData
         ' groups
         Me.Metadata(eVarNameFlags.FPSGroupMandRelBiom) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.FPSGroupStrucRelWeight) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.FPSGroupBiodivUsed) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.FPSFishingLimit) = New cVariableMetaData(0, 1000, ge, le)
 
         ' fleet 
