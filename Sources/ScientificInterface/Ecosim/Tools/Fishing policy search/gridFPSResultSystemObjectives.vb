@@ -65,7 +65,7 @@ Namespace Ecosim
             Me(0, eColumnTypes.Iteration) = New cEwEColumnHeaderCell(SharedResources.HEADER_NUMCALLS)
             Me(0, eColumnTypes.Total) = New cEwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
 
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.TotalValue) = New cEwEColumnHeaderCell(SharedResources.HEADER_NET_ECONOMIC_VALUE_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Profit) = New cEwEColumnHeaderCell(SharedResources.HEADER_NET_ECONOMIC_VALUE_ABBR)
             Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Employment) = New cEwEColumnHeaderCell(SharedResources.HEADER_SOCIAL)
             Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.MandateReb) = New cEwEColumnHeaderCell(SharedResources.HEADER_MANDATED_ABBR)
             Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Ecological) = New cEwEColumnHeaderCell(SharedResources.HEADER_ECOSYSTEM_STRUCTURE_ABBR)

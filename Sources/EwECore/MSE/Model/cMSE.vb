@@ -148,7 +148,7 @@ Namespace MSE
 
         Private BestTime() As Single
         Private EcoValueBase As Single, ManValueBase As Single
-        Private TotValBase As Single, EmployBase As Single
+        Private ProfitBase As Single, EmployBase As Single
 
         Private m_pluginManager As cPluginManager
         Private m_orgPredictEffort As Boolean
@@ -493,8 +493,8 @@ Namespace MSE
                 Me.m_data.BaseEcoVal = Me.m_Search.ecovalue
 
                 'cal base BestTotalValue (TotValBase,EmployBase... were set in SetBaseValues()
-                Me.m_data.BestTotalValue = CSng(Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_Search.totval / Me.TotValBase +
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / Me.EmployBase +
+                Me.m_data.BestTotalValue = CSng(Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_Search.profit / Me.ProfitBase +
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.employ / Me.EmployBase +
                                  Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / Me.ManValueBase +
                                  Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / Me.EcoValueBase)
 
@@ -513,7 +513,7 @@ Namespace MSE
             'RunModelValue TotalTime, TotValBase, EmployBase, EcoValueBase, lnF(), N, False
             Me.EcoValueBase = 0
             Me.ManValueBase = 0
-            Me.TotValBase = 0
+            Me.ProfitBase = 0
             Me.EmployBase = 0
 
             For i = 1 To Me.m_epdata.NumLiving
@@ -528,7 +528,7 @@ Namespace MSE
             For i = 1 To Me.m_epdata.NumLiving
                 For j = 1 To Me.m_epdata.NumFleet
                     Cval = Me.m_esData.StartBiomass(i) * Me.m_esData.relQ(j, i) * Me.m_epdata.Market(j, i)
-                    Me.TotValBase = Me.TotValBase + Cval  '.5 here assumes cost likely 80% of income
+                    Me.ProfitBase = Me.ProfitBase + Cval  '.5 here assumes cost likely 80% of income
                     Me.EmployBase = Me.EmployBase + Cval * Me.m_Search.Jobs(j)
                 Next
             Next
@@ -547,14 +547,14 @@ Namespace MSE
             Array.Copy(Me.m_esData.FisForced, Me.m_baseFishForced, n)
 
             If Me.m_Search.DiscountFactor > 0 Then
-                Me.TotValBase = Math.Abs(Me.TotValBase) / Me.m_Search.DiscountFactor
-                Me.EmployBase = Math.Abs(Me.EmployBase) / Me.m_Search.DiscountFactor
+                Me.ProfitBase = Math.Abs(Me.ProfitBase) / Me.m_Search.DiscountFactor
+                Me.ProfitBase = Math.Abs(Me.EmployBase) / Me.m_Search.DiscountFactor
             End If
 
             Me.ManValueBase = Math.Abs(Me.ManValueBase)
             Me.EcoValueBase = Math.Abs(Me.EcoValueBase)
 
-            If Me.TotValBase < 1.0E-20 Then Me.TotValBase = 1.0E-20
+            If Me.ProfitBase < 1.0E-20 Then Me.ProfitBase = 1.0E-20
             If Me.EmployBase < 1.0E-20 Then Me.EmployBase = 1.0E-20
             If Me.ManValueBase < 1.0E-20 Then Me.ManValueBase = 1.0E-20
             If Me.EcoValueBase < 1.0E-20 Then Me.EcoValueBase = 1.0E-20
@@ -920,7 +920,7 @@ Namespace MSE
         Private Sub getMeanValues(NTrials As Integer)
 
             Me.m_data.sumEmployVal = Me.m_data.sumEmployVal / NTrials
-            Me.m_data.SumTotVal = Me.m_data.SumTotVal / NTrials
+            Me.m_data.SumProfit = Me.m_data.SumProfit / NTrials
             Me.m_data.sumManVal = Me.m_data.sumManVal / NTrials
             Me.m_data.sumEcoVal = Me.m_data.sumEcoVal / NTrials
             Me.m_data.sumWeightedValues = Me.m_data.sumWeightedValues / NTrials
@@ -935,13 +935,13 @@ Namespace MSE
         Private Sub SumValues()
 
             Me.m_data.sumEmployVal += CSng(Me.m_Search.Employ)
-            Me.m_data.SumTotVal += CSng(Me.m_Search.totval)
+            Me.m_data.SumProfit += CSng(Me.m_Search.profit)
             Me.m_data.sumManVal += CSng(Me.m_Search.manvalue)
             Me.m_data.sumEcoVal += CSng(Me.m_Search.ecovalue)
 
             Me.m_data.sumWeightedValues = CSng(Me.m_data.sumWeightedValues +
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_Search.totval / Me.TotValBase +
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / Me.EmployBase +
+                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_Search.profit / Me.ProfitBase +
+                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.employ / Me.EmployBase +
                     Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / Me.ManValueBase +
                     Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / Me.EcoValueBase)
 

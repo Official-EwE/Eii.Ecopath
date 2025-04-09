@@ -121,7 +121,7 @@ Namespace MSE
         ''' <summary>sum of employment value over all the completed trials</summary>
         Public sumEmployVal As Single
         ''' <summary>sum of economic over all the completed trials</summary>
-        Public SumTotVal As Single
+        Public SumProfit As Single
         ''' <summary>sum of mandated value over all the completed trials</summary>
         Public sumManVal As Single
         ''' <summary>sum of ecological value (biomass) over all the completed trials</summary>

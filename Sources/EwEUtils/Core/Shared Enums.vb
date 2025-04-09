@@ -2923,7 +2923,7 @@ Namespace Core
     '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eSearchCriteriaResultTypes As Integer
-        TotalValue = 1
+        Profit = 1
         Employment = 2
         MandateReb = 3
         Ecological = 4
