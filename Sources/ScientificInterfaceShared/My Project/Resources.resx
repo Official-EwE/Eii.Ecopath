@@ -855,7 +855,7 @@
     <value>Mandat.</value>
   </data>
   <data name="HEADER_MANDATED_BIOMASS_RELATIVE" xml:space="preserve">
-    <value>Mandated rel. biom</value>
+    <value>Mandated rel.biom</value>
   </data>
   <data name="HEADER_MANDATED_REBUILDING" xml:space="preserve">
     <value>Mandated rebuilding</value>

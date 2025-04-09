@@ -145,10 +145,17 @@ Public Class cSearchDatastructures
     'Public profit As Single
 
     Public totval As Double
-    Public Employ As Double
+    Public profit As Double
+    Public employ As Double
     Public manvalue As Double
     Public ecovalue As Double
-    Public profit As Double
+
+
+    'VC 20250403 These sector variables were not defined and were remarked out where used below
+    Public SectorProfit As Double
+    'Public SectorTotalValue As Double
+    'Public SectorJobs As Double
+
 
     ''' <summary>Value of Catch</summary>
     ''' <remarks>By (fleet, livingGroup)
@@ -360,8 +367,8 @@ Public Class cSearchDatastructures
 
     Public ReadOnly Property WeightedTotal() As Single
         Get
-            Return CSng(Me.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.totval +
-                Me.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.Employ +
+            Return CSng(Me.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.profit +
+                Me.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.employ +
                 Me.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.manvalue +
                 Me.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.ecovalue +
                 Me.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.DiversityIndex)
@@ -795,7 +802,7 @@ Public Class cSearchDatastructures
         Me.ecovalue = 0
         Me.totval = 0
         Me.profit = 0
-        Me.Employ = 0
+        Me.employ = 0
         Me.manvalue = 0
         Me.DiversityIndex = 0
 
@@ -1023,7 +1030,7 @@ Public Class cSearchDatastructures
         ReDim Me.CostRatio(Me.m_EPdata.NumFleet)
 
         Me.totval = 0
-        Me.Employ = 0
+        Me.employ = 0
         Me.profit = 0
 
         Me.DiversityIndex = Me.DiversityIndex / ModelRunLength
@@ -1074,6 +1081,12 @@ Public Class cSearchDatastructures
             Next
         Next
 
+        'VC 20250407  For ease, once upon a time, we used totval for profit in the SearchDatastructures.vb
+        ' that is a bit confusing, so I've changed it to use profit instead (was alreay defined, but not used
+        ' it calls for inititally setting profit = totval, then subtractin cost
+        Me.profit = Me.totval
+
+
         For iFlt = 1 To Me.m_EPdata.NumFleet
 
             'NetCost() = [Sum of NetCost] + [long term value of the last time step]
@@ -1093,8 +1106,8 @@ Public Class cSearchDatastructures
                 'System.Console.WriteLine("Cost R and P = " & CostRatio(iFlt).ToString & ", " & CostPenalty)
             End If
 
-            Me.totval = Me.totval - Me.NetCost(iFlt) - CostPenalty
-            Me.Employ = Me.Employ + (Me.ValCatchGear(iFlt) - CostPenalty) * Me.Jobs(iFlt)
+            Me.profit = Me.profit - Me.NetCost(iFlt) - CostPenalty
+            Me.employ = Me.employ + (Me.ValCatchGear(iFlt) - CostPenalty) * Me.Jobs(iFlt)
             'Me.ValCatchGear(iFlt) = Me.ValCatchGear(iFlt) - Me.NetCost(iFlt) - CostPenalty
 
         Next
@@ -1111,7 +1124,8 @@ Public Class cSearchDatastructures
         Dim CostPenaltyConstant As Integer = 1
 
         Me.totval = 0
-        Me.Employ = 0
+        Me.profit = 0
+        Me.employ = 0
 
         Me.ExistValue = Me.ExistValue / (Me.m_EPdata.NumLiving * ModelRunLength)
 
@@ -1144,6 +1158,12 @@ Public Class cSearchDatastructures
 
         Dim CostPenalty As Single ', TotalFishingCost As Single
         ReDim Me.CostRatio(Me.m_EPdata.NumFleet)
+
+        'VC 20250407 making profit actually use profit, not totval.
+        ' First setting it = totval then subtracting cost
+        Me.profit = Me.totval
+
+
         For iflt = 1 To Me.m_EPdata.NumFleet
 
             If Me.BaseYearCost(iflt) > 0 And Me.BaseYearEffort(iflt) > 0 Then
@@ -1162,9 +1182,9 @@ Public Class cSearchDatastructures
                 CostPenalty = CSng(CostPenaltyConstant * Me.CostRatio(iflt) ^ 50)
             End If
 
-            Me.totval = Me.totval - Me.NetCost(iflt) - CostPenalty
+            Me.profit = Me.profit - Me.NetCost(iflt) - CostPenalty
 
-            Me.Employ = Me.Employ + (Me.ValCatchGear(iflt) - CostPenalty) * Me.Jobs(iflt)
+            Me.employ = Me.employ + (Me.ValCatchGear(iflt) - CostPenalty) * Me.Jobs(iflt)
             Me.ValCatchGear(iflt) = Me.ValCatchGear(iflt) - Me.NetCost(iflt) - CostPenalty
         Next
 

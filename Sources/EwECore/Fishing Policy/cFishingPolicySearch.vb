@@ -76,7 +76,7 @@ Namespace FishingPolicy
         Public MaxRuns As Integer
         Public PrintOn As Boolean
         Public TotalTime As Integer
-        Public TotValBase As Double
+        Public ProfitBase As Double
         Public EmployBase As Double
         Public ManValueBase As Double
         Public EcoValueBase As Double
@@ -174,6 +174,7 @@ Namespace FishingPolicy
 
             'run the model
             Try
+
                 Me.runSearch()
             Catch ex As Exception
                 'add a message to the manager
@@ -191,6 +192,7 @@ Namespace FishingPolicy
             '            Hi Villy if econ is 'net economic value' it is totval calculated in cSearchDatastructures.EcosimSummarizeIndicators()
             '[14:46:10] Joe Buszowski says: if econ is Ecosystem structure then it is ecovalue calculated in cSearchDatastructures.calcYearlySummaryValues()
             '[14:48:52] Joe Buszowski says: The actual values that appear in the interface are calculated in cFishingPolicySearch.FUNC()
+            ' VC 20250407 I changed it so that profit = totval-cost is used for profit instead of totval 
 
             Try
 
@@ -198,6 +200,7 @@ Namespace FishingPolicy
 
                 Me.SearchFailed = False
                 Me.StopEstimation = False
+
 
                 Me.m_searchData = Me.m_core.m_SearchData
                 Me.m_searchData.SearchMode = eSearchModes.FishingPolicy 'make sure the search is turned on this will also set some default values based on the flag
@@ -316,14 +319,14 @@ Namespace FishingPolicy
                 Me.m_pluginManager.PostRunSearchResults(Me.m_searchData)
             End If
 
-            Me.TotValBase = Me.m_searchData.totval
+            Me.ProfitBase = Me.m_searchData.profit
             Me.EmployBase = Me.m_searchData.Employ
             Me.ManValueBase = Me.m_searchData.manvalue
             Me.EcoValueBase = Me.m_searchData.ecovalue
             Me.BioDivBase = Me.m_searchData.DiversityIndex
 
-            If Me.TotValBase = 0 Then Me.TotValBase = 1
-            If Me.TotValBase < 0 Then Me.TotValBase = -Me.TotValBase
+            If Me.ProfitBase = 0 Then Me.ProfitBase = 1
+            If Me.ProfitBase < 0 Then Me.ProfitBase = -Me.ProfitBase
             If Me.EmployBase = 0 Then Me.EmployBase = 1
             If Me.EmployBase < 0 Then Me.EmployBase = -Me.EmployBase
             If Me.ManValueBase = 0 Then Me.ManValueBase = 1
@@ -1123,14 +1126,14 @@ endline:    ' '
                     Me.VlocalPenalty = Me.VlocalPenalty + 0.001 * X(i) ^ 2
                 Next
 
-                If Me.TotValBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.TotalValue) = CSng(Me.m_searchData.totval / Me.TotValBase)
-                If Me.EmployBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.Employment) = CSng(Me.m_searchData.Employ / Me.EmployBase)
+                If Me.ProfitBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.Profit) = CSng(Me.m_searchData.profit / Me.ProfitBase)
+                If Me.EmployBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.Employment) = CSng(Me.m_searchData.employ / Me.EmployBase)
                 If Me.ManValueBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.MandateReb) = CSng(Me.m_searchData.manvalue / Me.ManValueBase)
                 If Me.EcoValueBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.Ecological) = CSng(Me.m_searchData.ecovalue / Me.EcoValueBase)
                 If Me.BioDivBase <> 0 Then Me.CritValue(eSearchCriteriaResultTypes.BioDiversity) = CSng(Me.m_searchData.DiversityIndex / Me.BioDivBase)
 
-                returnvalue = Me.VlocalPenalty - Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_searchData.totval / Me.TotValBase -
-                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_searchData.Employ / Me.EmployBase -
+                returnvalue = Me.VlocalPenalty - Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_searchData.profit / Me.ProfitBase -
+                        Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_searchData.employ / Me.EmployBase -
                         Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_searchData.manvalue / Me.ManValueBase -
                         Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_searchData.ecovalue / Me.EcoValueBase -
                         Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.m_searchData.DiversityIndex / Me.BioDivBase
@@ -1153,7 +1156,7 @@ endline:    ' '
                     Else
                         LogUtil = Math.Log(0.5) + 1 / 0.5 * (Me.CritValue(1) + 1 - 0.5) - 1 / 0.25 * (Me.CritValue(1) + 1 - 0.5) ^ 2
                     End If
-                    returnvalue = -Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * LogUtil +
+                    returnvalue = -Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Profit) * LogUtil +
                                    Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_searchData.Ecodistance -
                                    Me.m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.ExistValue
                 End If

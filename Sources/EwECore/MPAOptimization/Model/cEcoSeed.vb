@@ -244,8 +244,8 @@ Namespace EcoSeed
                             Me.m_EcoSpace.Run()
                             If Me.m_data.StopRun Then Exit Do
 
-                            CurSum = 0 + Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_search.totval / Me.TotValBase +
-                                Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_search.Employ / Me.EmployBase +
+                            CurSum = 0 + Me.m_search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_search.profit / Me.ProfitBase +
+                                Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_search.employ / Me.EmployBase +
                                 Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_search.manvalue / Me.ManValueBase +
                                 Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_search.ecovalue / Me.EcoValueBase +
                                 Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.m_search.DiversityIndex / Me.DiversityBase
@@ -257,7 +257,7 @@ Namespace EcoSeed
                             Me.m_data.objFuncEcologicalValue = CSng(Me.m_search.ecovalue / Me.EcoValueBase)
                             Me.m_data.objFuncMandatedValue = CSng(Me.m_search.manvalue / Me.ManValueBase)
                             Me.m_data.objFuncSocialValue = CSng(Me.m_search.Employ / Me.EmployBase)
-                            Me.m_data.objFuncEconomicValue = CSng(Me.m_search.totval / Me.TotValBase)
+                            Me.m_data.objFuncEconomicValue = CSng(Me.m_search.totval / Me.ProfitBase)
                             Me.m_data.objFuncBiodiversity = CSng(Me.m_search.DiversityIndex / Me.DiversityBase)
                             Me.m_data.objFuncAreaBorder = CSng(AreaBordary / Me.AreaBoundBase)
                             Me.m_data.objFuncTotal = (Me.m_search.WeightedTotal + AreaBordary * Me.m_data.BoundaryWeight) / Me.TotWeightedValueBase

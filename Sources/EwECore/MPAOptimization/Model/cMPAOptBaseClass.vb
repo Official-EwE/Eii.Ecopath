@@ -91,7 +91,7 @@ Public MustInherit Class cMPAOptBaseClass
 
     Protected TotWeightedValueBase As Single
     'Protected EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, DiversityBase As Single, AreaBoundBase As Single
-    Protected EmployBase As Double, TotValBase As Double, ManValueBase As Double, EcoValueBase As Double, DiversityBase As Double, AreaBoundBase As Double
+    Protected EmployBase As Double, ProfitBase As Double, ManValueBase As Double, EcoValueBase As Double, DiversityBase As Double, AreaBoundBase As Double
 
     Protected TargetSumMax As Single
 
@@ -300,10 +300,10 @@ Public MustInherit Class cMPAOptBaseClass
 
         Try
 
-            curSum = Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.m_search.totval / Me.TotValBase + _
-                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_search.Employ / Me.EmployBase + _
-                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_search.manvalue / Me.ManValueBase + _
-                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_search.ecovalue / Me.EcoValueBase + _
+            curSum = Me.m_search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_search.profit / Me.ProfitBase +
+                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_search.employ / Me.EmployBase +
+                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_search.manvalue / Me.ManValueBase +
+                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_search.ecovalue / Me.EcoValueBase +
                      Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.m_search.DiversityIndex / Me.DiversityBase
 
 
@@ -317,7 +317,7 @@ Public MustInherit Class cMPAOptBaseClass
             Me.m_data.objFuncEcologicalValue = CSng(Me.m_search.ecovalue / Me.EcoValueBase)
             Me.m_data.objFuncMandatedValue = CSng(Me.m_search.manvalue / Me.ManValueBase)
             Me.m_data.objFuncSocialValue = CSng(Me.m_search.Employ / Me.EmployBase)
-            Me.m_data.objFuncEconomicValue = CSng(Me.m_search.totval / Me.TotValBase)
+            Me.m_data.objFuncEconomicValue = CSng(Me.m_search.profit / Me.ProfitBase)
             Me.m_data.objFuncBiodiversity = CSng(Me.m_search.DiversityIndex / Me.DiversityBase)
             Me.m_data.objFuncAreaBorder = Me.AreaBoundary '/ AreaBoundBase
 
@@ -420,9 +420,9 @@ Public MustInherit Class cMPAOptBaseClass
 
     Protected Overridable Sub dumpSearchValues(search As cSearchDatastructures)
 
-        System.Console.WriteLine("Total Value = " & search.totval / Me.TotValBase & _
-                                    ", Employ Value = " & search.Employ / Me.EmployBase & _
-                                    ", Mandated Value = " & search.manvalue / Me.ManValueBase & _
+        System.Console.WriteLine("Total Value = " & search.profit / Me.ProfitBase &
+                                    ", Employ Value = " & search.employ / Me.EmployBase &
+                                    ", Mandated Value = " & search.manvalue / Me.ManValueBase &
                                     ", Eco Value = " & search.ecovalue / Me.EcoValueBase)
     End Sub
 
@@ -554,15 +554,15 @@ Public MustInherit Class cMPAOptBaseClass
         Me.m_EcoSpace.Run()
 
         'values were set in the search object by EcoSpace.Run()
-        Me.EmployBase = Me.m_search.Employ
-        Me.TotValBase = Me.m_search.totval
+        Me.EmployBase = Me.m_search.employ
+        Me.ProfitBase = Me.m_search.profit
         Me.ManValueBase = Me.m_search.manvalue
         Me.EcoValueBase = Me.m_search.ecovalue
         Me.DiversityBase = Me.m_search.DiversityIndex
         Me.AreaBoundBase = Me.CalculateAreaOverBondaryLength()
 
-        If Me.TotValBase = 0 Then Me.TotValBase = 1
-        If Me.TotValBase < 0 Then Me.TotValBase = -Me.TotValBase
+        If Me.ProfitBase = 0 Then Me.ProfitBase = 1
+        If Me.ProfitBase < 0 Then Me.ProfitBase = -Me.ProfitBase
         If Me.EmployBase = 0 Then Me.EmployBase = 1
         If Me.EmployBase < 0 Then Me.EmployBase = -Me.EmployBase
         If Me.ManValueBase = 0 Then Me.ManValueBase = 1
@@ -570,7 +570,7 @@ Public MustInherit Class cMPAOptBaseClass
         If Me.AreaBoundBase = 0 Then Me.AreaBoundBase = 1
         If Me.DiversityBase = 0 Then Me.DiversityBase = 1
 
-        Me.TotWeightedValueBase = CSng(0 + Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.TotValBase +
+        Me.TotWeightedValueBase = CSng(0 + Me.m_search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.ProfitBase +
                         Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.EmployBase +
                         Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.ManValueBase +
                         Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.EcoValueBase +
@@ -623,22 +623,22 @@ Public MustInherit Class cMPAOptBaseClass
         writer.WriteLine("Objective weights for run")
         writer.WriteLine("Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Boundary")
         writer.WriteLine()
-        writer.WriteLine(String.Format("{0},{1},{2},{3},{4}", _
-                cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue)), _
-                cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment)), _
-                cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb)), _
-                cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological)), _
-                cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity)), _
+        writer.WriteLine(String.Format("{0},{1},{2},{3},{4}",
+                cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.Profit)),
+                cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment)),
+                cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb)),
+                cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological)),
+                cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity)),
                 cStringUtils.FormatNumber(Me.m_data.BoundaryWeight)))
         writer.WriteLine()
         writer.WriteLine("Base Values")
         writer.WriteLine("Economic, Social, Mandated, Ecosystem, Biomass diversity, Area/Boundary")
-        writer.WriteLine(String.Format("{0},{1},{2},{3},{4},{5}", _
-                cStringUtils.FormatNumber(Me.TotValBase), _
-                cStringUtils.FormatNumber(Me.EmployBase), _
-                cStringUtils.FormatNumber(Me.ManValueBase), _
-                cStringUtils.FormatNumber(Me.EcoValueBase), _
-                cStringUtils.FormatNumber(Me.DiversityBase), _
+        writer.WriteLine(String.Format("{0},{1},{2},{3},{4},{5}",
+                cStringUtils.FormatNumber(Me.ProfitBase),
+                cStringUtils.FormatNumber(Me.EmployBase),
+                cStringUtils.FormatNumber(Me.ManValueBase),
+                cStringUtils.FormatNumber(Me.EcoValueBase),
+                cStringUtils.FormatNumber(Me.DiversityBase),
                 cStringUtils.FormatNumber(Me.AreaBoundBase)))
         writer.WriteLine()
         'writer.WriteLine("Data Format")

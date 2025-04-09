@@ -88993,17 +88993,17 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#SumTotVal">
+           <Member Name="#SumProfit">
             <Messages>
              <Message TypeName="DoNotDeclareVisibleInstanceFields" Category="Microsoft.Design" CheckId="CA1051" Created="2013-01-04 15:43:22Z">
               <Issue>
-               <Item>'cMSEDataStructures.SumTotVal'</Item>
+               <Item>'cMSEDataStructures.SumProfit'</Item>
               </Issue>
              </Message>
              <Message Id="Val" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2013-01-04 15:43:22Z">
               <Issue Name="Member">
                <Item>Val</Item>
-               <Item>'cMSEDataStructures.SumTotVal'</Item>
+               <Item>'cMSEDataStructures.SumProfit'</Item>
               </Issue>
              </Message>
             </Messages>

@@ -5497,7 +5497,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Mandated rel. biom.
+        '''  Looks up a localized string similar to Mandated rel.biom.
         '''</summary>
         Public ReadOnly Property HEADER_MANDATED_BIOMASS_RELATIVE() As String
             Get

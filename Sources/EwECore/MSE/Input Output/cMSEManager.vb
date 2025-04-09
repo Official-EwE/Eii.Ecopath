@@ -1289,7 +1289,7 @@ Namespace MSE
             Me.m_output.WeightedMeanTotalValue = Me.m_MSEdata.sumWeightedValues / Me.m_MSEdata.CurrentIteration
             Me.m_output.BestTotalValue = Me.m_MSEdata.BestTotalValue
 
-            Me.m_output.MeanEconomicValue = Me.m_MSEdata.SumTotVal / Me.m_MSEdata.CurrentIteration
+            Me.m_output.MeanEconomicValue = Me.m_MSEdata.SumProfit / Me.m_MSEdata.CurrentIteration
             Me.m_output.MeanEcologicalValue = Me.m_MSEdata.sumEcoVal / Me.m_MSEdata.CurrentIteration
             Me.m_output.MeanEmployValue = Me.m_MSEdata.sumEmployVal / Me.m_MSEdata.CurrentIteration
             Me.m_output.MeanMandatedValue = Me.m_MSEdata.sumManVal / Me.m_MSEdata.CurrentIteration

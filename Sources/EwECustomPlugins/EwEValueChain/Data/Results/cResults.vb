@@ -261,6 +261,8 @@ Public Class cResults
         CostSalariesShares
         CostTotalInputOther
 
+        Profit
+
         ''' <summary> The value of the fish products  </summary>
         RevenueProductsMain
         ''' <summary> Revenue from Agricultural products, should they be making any such as a byproduct </summary>
@@ -273,7 +275,7 @@ Public Class cResults
         ''' <remarks>over tonnes</remarks>
         RevenueSubsidies
         RevenueTotal
-        Profit
+
         TotalUtility
 
         NumberOfWorkerFemales

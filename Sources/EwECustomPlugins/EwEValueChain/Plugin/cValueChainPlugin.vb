@@ -144,7 +144,7 @@ Public Class cValueChainPlugin
             sb.AppendLine("")
             sb.AppendLine("This plug-in calculates a range of economic and social-economic indicators based on Ecopath and Ecosim data, where users can define economic systems as value chains of desired complexity.")
             sb.AppendLine("")
-            sb.AppendLine("This plug-in was developed in conjunction with the ECOST project (http://www.ird.fr/ecostproject), and was partially funded by the North Sea Centre in Hirtshals, Denmark.")
+            sb.AppendLine("This plug-in was initially developed in conjunction with the ECOST project (http://www.ird.fr/ecostproject), and was partially funded by the North Sea Centre in Hirtshals, Denmark.")
             Return sb.ToString()
         End Get
     End Property
@@ -160,9 +160,10 @@ Public Class cValueChainPlugin
         Debug.Assert(Me.m_bInitOK = False)
 
         ' To prevent multiple calls
-        Me.m_bInitOK = False
+        m_bInitOK = False
 
         Try
+
             If (TypeOf core Is EwECore.cCore) Then
 
                 Me.m_core = DirectCast(core, EwECore.cCore)
@@ -374,7 +375,9 @@ Public Class cValueChainPlugin
         End If
 
         ' Prepare data
+
         Me.m_data.InitRun()
+
 
     End Sub
 
@@ -616,9 +619,10 @@ Public Class cValueChainPlugin
 
         ' Reset values that this plug-in will (hopefully) deliver.
         'VC090402: updated the blowe to use the value chain searchDS parameters (which is what I need)
-        ds.profit = 0
-        ds.totval = 0
-        ds.Employ = 0
+        'Only profit and employ are needed, don't need resetting.
+        'ds.profit = 0
+        'ds.totval = 0
+        'ds.employ = 0
 
     End Sub
 
@@ -654,9 +658,8 @@ Public Class cValueChainPlugin
 
         ' Overwrite values in the search datastructures with desired value chain output
         ds.profit = Me.Results.GetTotal(cResults.eVariableType.Profit)
-
-        'ds.??? = Me.Results.GetTotal(cResults.eVariableType.RevenueTotal)
-        ' ds.Jobs = Me.Results.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
+        'ds.totval = Me.Results.GetTotal(cResults.eVariableType.RevenueTotal)      'VC 2025040Z
+        ds.employ = Me.Results.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
 
     End Sub
 
