@@ -239,6 +239,9 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.StanzaCB) = New cVariableMetaData(0, Single.MaxValue, ge, lt) ' Default, units, range?
         Me.Metadata(eVarNameFlags.StanzaMortaility) = New cVariableMetaData(0, Single.MaxValue, ge, lt) ' Default, units, range?
 
+        ' -- Indicators --
+        Me.Metadata(eVarNameFlags.GroupUsedInIndicators) = New cVariableMetaData()
+
         ' -- Ecopath stats --
         Me.Metadata(eVarNameFlags.EcopathStatsTotalConsumption) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
         Me.Metadata(eVarNameFlags.EcopathStatsTotalExports) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
@@ -545,7 +548,6 @@ Public Class cVariableMetaData
         ' groups
         Me.Metadata(eVarNameFlags.FPSGroupMandRelBiom) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.FPSGroupStrucRelWeight) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
-        Me.Metadata(eVarNameFlags.FPSGroupBiodivUsed) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.FPSFishingLimit) = New cVariableMetaData(0, 1000, ge, le)
 
         ' fleet 
