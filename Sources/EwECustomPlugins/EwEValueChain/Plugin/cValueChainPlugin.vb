@@ -68,6 +68,7 @@ Public Class cValueChainPlugin
     Private m_ddx As cPluginData = Nothing
 
     Private m_searchds As cSearchDatastructures = Nothing
+    Private m_bInSearch As Boolean = False
 
 #End Region ' Privates
 
@@ -609,18 +610,7 @@ Public Class cValueChainPlugin
     Public Sub SearchInitialized(SearchDatastructures As Object) _
         Implements EwEPlugin.ISearchPlugin.SearchInitialized
 
-        Dim ds As cSearchDatastructures = DirectCast(SearchDatastructures, cSearchDatastructures)
-        Dim parms As cParameters = Me.m_data.Parameters
-
-        ' Abort if no params
-        If (parms Is Nothing) Then Return
-
-        ' Only respond to fishing policy search when allowed to respond
-        If (parms.RunWithSearches = False) Then Return
-        ' Only respond to fishing policy search
-        If (ds.SearchMode <> eSearchModes.FishingPolicy) Then Return
-
-        ' Grab the ref while we can
+        ' Grab a reference to the search data structures
         Me.m_searchds = DirectCast(SearchDatastructures, cSearchDatastructures)
 
     End Sub
@@ -633,14 +623,27 @@ Public Class cValueChainPlugin
     Public Sub SearchIterationsStarting() Implements _
         EwEPlugin.ISearchPlugin.SearchIterationsStarting
 
-        If (Me.m_searchds IsNot Nothing) Then
-            ' Reset values that this plug-in will (hopefully) deliver.
-            'VC090402: updated the blowe to use the value chain searchDS parameters (which is what I need)
-            'Only profit and employ are needed, don't need resetting.
-            Me.m_searchds.profit = 0
-            Me.m_searchds.totval = 0
-            Me.m_searchds.employ = 0
-        End If
+        ' Assume the worst
+        Me.m_bInSearch = False
+
+        Dim parms As cParameters = Me.m_data.Parameters
+
+        ' Abort if no params. That would be quite dramatic, but well...
+        If (parms Is Nothing) Then Return
+
+        ' Only respond to fishing policy search when allowed to respond
+        If (parms.RunWithSearches = False) Then Return
+        ' Only respond to fishing policy search
+        If (Me.m_searchds.SearchMode <> eSearchModes.FishingPolicy) Then Return
+
+        Me.m_bInSearch = True
+        ' Reset values that this plug-in will (hopefully) deliver.
+
+        'VC090402: updated the blowe to use the value chain searchDS parameters (which is what I need)
+        'Only profit and employ are needed, don't need resetting.
+        Me.m_searchds.profit = 0
+        Me.m_searchds.totval = 0
+        Me.m_searchds.employ = 0
 
     End Sub
 
@@ -653,29 +656,28 @@ Public Class cValueChainPlugin
     Public Sub PostRunSearchResults(SearchDatastructures As Object) _
         Implements EwEPlugin.ISearchPlugin.PostRunSearchResults
 
-        Dim ds As cSearchDatastructures = DirectCast(SearchDatastructures, cSearchDatastructures)
-        Dim parms As cParameters = Me.m_data.Parameters
+        ' Working with a search?
+        If Me.m_bInSearch Then
 
-        ' Abort if no params
-        If (parms Is Nothing) Then Return
+            Debug.Assert(Me.m_searchds IsNot Nothing)
 
-        ' Only respond to fishing policy search when allowed to respond
-        If (parms.RunWithSearches = False) Then Return
-        ' Only respond to fishing policy search
-        If (ds.SearchMode <> eSearchModes.FishingPolicy) Then Return
+            ' Overwrite values in the search datastructures with desired value chain output
+            Me.m_searchds.profit = Me.Results.GetTotal(cResults.eVariableType.Profit)
+            'ds.totval = Me.Results.GetTotal(cResults.eVariableType.RevenueTotal)      'VC 2025040Z
+            Me.m_searchds.employ = Me.Results.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
 
-        ' Overwrite values in the search datastructures with desired value chain output
-        ds.profit = Me.Results.GetTotal(cResults.eVariableType.Profit)
-        'ds.totval = Me.Results.GetTotal(cResults.eVariableType.RevenueTotal)      'VC 2025040Z
-        ds.employ = Me.Results.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
+        End If
 
     End Sub
 
+    ''' <summary>
+    ''' Search has come to an end.
+    ''' </summary>
+    ''' <param name="SearchDatastructures"></param>
     Public Sub SearchCompleted(SearchDatastructures As Object) _
         Implements EwEPlugin.ISearchPlugin.SearchCompleted
 
-        ' Forget search data structures
-        Me.m_searchds = Nothing
+        Me.m_bInSearch = False
 
     End Sub
 
