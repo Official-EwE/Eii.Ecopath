@@ -67,6 +67,8 @@ Public Class cValueChainPlugin
     ''' <summary>Ooooh, that was long ago...</summary>
     Private m_ddx As cPluginData = Nothing
 
+    Private m_searchds As cSearchDatastructures = Nothing
+
 #End Region ' Privates
 
 #Region " Singleton "
@@ -594,6 +596,7 @@ Public Class cValueChainPlugin
         Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
         Me.m_bIsEnabled = bEnable
     End Function
+
 #End Region ' Data exchange
 
 #Region " Search "
@@ -617,12 +620,8 @@ Public Class cValueChainPlugin
         ' Only respond to fishing policy search
         If (ds.SearchMode <> eSearchModes.FishingPolicy) Then Return
 
-        ' Reset values that this plug-in will (hopefully) deliver.
-        'VC090402: updated the blowe to use the value chain searchDS parameters (which is what I need)
-        'Only profit and employ are needed, don't need resetting.
-        'ds.profit = 0
-        'ds.totval = 0
-        'ds.employ = 0
+        ' Grab the ref while we can
+        Me.m_searchds = DirectCast(SearchDatastructures, cSearchDatastructures)
 
     End Sub
 
@@ -633,7 +632,16 @@ Public Class cValueChainPlugin
     ''' -----------------------------------------------------------------------
     Public Sub SearchIterationsStarting() Implements _
         EwEPlugin.ISearchPlugin.SearchIterationsStarting
-        ' NOP
+
+        If (Me.m_searchds IsNot Nothing) Then
+            ' Reset values that this plug-in will (hopefully) deliver.
+            'VC090402: updated the blowe to use the value chain searchDS parameters (which is what I need)
+            'Only profit and employ are needed, don't need resetting.
+            Me.m_searchds.profit = 0
+            Me.m_searchds.totval = 0
+            Me.m_searchds.employ = 0
+        End If
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -665,6 +673,9 @@ Public Class cValueChainPlugin
 
     Public Sub SearchCompleted(SearchDatastructures As Object) _
         Implements EwEPlugin.ISearchPlugin.SearchCompleted
+
+        ' Forget search data structures
+        Me.m_searchds = Nothing
 
     End Sub
 
