@@ -201,6 +201,8 @@ Public Class cEcopathDataStructures
     Public DietsModified As Boolean
     Public PProd As Single
     Public Energy() As Single
+    ''' <summary>Is group used for indicator calculations</summary>
+    Public UsedInIndicators() As Boolean
 
     Public DietChanged(,) As Integer
 
@@ -491,6 +493,8 @@ Public Class cEcopathDataStructures
         ReDim Me.Emig(Me.NumGroups)
         ReDim Me.Shadow(Me.NumGroups)
         ReDim Me.Energy(Me.NumGroups)
+        ReDim Me.UsedInIndicators(Me.NumGroups)
+
         ReDim Me.GroupIsFish(Me.NumGroups)
         ReDim Me.GroupIsInvert(Me.NumGroups)
         ReDim Me.PropLanded(Me.NumFleet, Me.NumGroups)

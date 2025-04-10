@@ -103,8 +103,6 @@ Public Class cSearchDatastructures
 
     ''' <summary>Structure rel weight </summary>
     Public BGoalValue() As Single
-    ''' <summary>Is group used for biodiversity calculations</summary>
-    Public BiodivUsed() As Boolean
     ''' <summary>Mandated rebuilding </summary>
     Public MGoalValue() As Single
 
@@ -289,7 +287,6 @@ Public Class cSearchDatastructures
         Me.Jobs = Nothing ' (NumFleets)
         Me.TargetProfitability = Nothing ' (NumFleets)
         Me.BGoalValue = Nothing ' (NumGroups)
-        Me.BiodivUsed = Nothing ' (NumGroups)
         Me.MGoalValue = Nothing ' (NumGroups)
         Me.ValCatch = Nothing ' (NumFleets, NumGroups)
         Me.NetCost = Nothing ' (NumFleets)
@@ -459,7 +456,6 @@ Public Class cSearchDatastructures
 
             ReDim Me.BGoalValue(Me.NumGroups)
             ReDim Me.MGoalValue(Me.NumGroups)
-            ReDim Me.BiodivUsed(Me.NumGroups)
 
             ReDim Me.ValCatch(Me.NumFleets, Me.NumGroups)
             ReDim Me.NetCost(Me.NumFleets)
@@ -521,21 +517,6 @@ Public Class cSearchDatastructures
         'If BaseYear = 0 Then BaseYear = 1
 
         Me.SetDefaultFRates()
-        Me.SetDefaultBiodivUsed()
-    End Sub
-
-    ''' <summary>
-    ''' Set default values for including groups in the biodiversity calculations.
-    ''' </summary>
-    Private Sub SetDefaultBiodivUsed()
-        For i As Integer = 1 To Me.NumGroups
-            Dim bUse As Boolean = False
-            If (i < Me.NumLiving) Then
-                ' By default only include consumers to calculate biodiversity indicators
-                bUse = (Me.m_EPdata.PP(i) = 0)
-            End If
-            Me.BiodivUsed(i) = bUse
-        Next
     End Sub
 
     Private Sub SetDefaultFRates()

@@ -194,6 +194,8 @@ Namespace Core
         DiscardFate
         ''' <summary>Group energy content scalar</summary>
         Energy
+        ''' <summary>Is a group used in the calculation of inidicators</summary>
+        GroupUsedInIndicators
 
         EcopathCatchTotalByFleetGroup
 
@@ -1021,8 +1023,6 @@ Namespace Core
         FPSValueComponentType
         ''' <summary>To document</summary>
         FPSGroupStrucRelWeight
-        ''' <summary>Is a group used in the Fishing Policy Search biodiversity assessment</summary>
-        FPSGroupBiodivUsed
 
         ''' <summary>To document</summary>
         FPSFleetJobCatchValue
