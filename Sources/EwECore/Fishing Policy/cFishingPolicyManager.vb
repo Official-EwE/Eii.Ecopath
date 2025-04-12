@@ -129,7 +129,7 @@ Namespace FishingPolicy
                 'search.setDefaultBGoal(m_core.m_EcoPathData.PB)
 
                 'set block codes to defaults, a code for each fleet
-                search.setDefaultFBlockCodes()
+                search.SetDefaultFBlockCodes()
 
                 'this will set ParNumber() and BlockNumber() based on the defaults set above
                 search.SetFletchPars()

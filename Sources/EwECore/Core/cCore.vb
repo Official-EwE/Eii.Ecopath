@@ -7199,7 +7199,7 @@ Public Class cCore
         ' JS 01Dec10: This method should be bullet-proof. Search data is for instance not 
         '             present if this method is called when no model has been loaded.
         If (Me.m_SearchData IsNot Nothing) Then
-            Me.m_SearchData.redimTime(0)
+            Me.m_SearchData.RedimTime(0)
         End If
 
         For Each man As cBaseShapeManager In Me.m_ShapeManagers.Values
@@ -8134,7 +8134,7 @@ Public Class cCore
             'forcing data needs to be the max of Reference data years and Ecosim Years
             Me.m_TSData.LoadForcingData()
 
-            Me.m_SearchData.redimTime(m_EcoSimData.NumYears)
+            Me.m_SearchData.RedimTime(m_EcoSimData.NumYears)
 
             Me.m_EcospaceData.TotalTime = m_EcoSimData.NumYears
             'changed the run length for ecospace reset the summary periods to defaults
@@ -14421,7 +14421,7 @@ Public Class cCore
 
                         If (value.varName = eVarNameFlags.PBInput) And (Me.m_StateMonitor.HasEcosimLoaded) Then
                             'update bgoal from the new PB
-                            Me.m_SearchData.setDefaultBGoal(Me.m_EcopathData.PBinput) 'use PBInput because PB has not been updated at this time
+                            Me.m_SearchData.SetDefaultBGoal(Me.m_EcopathData.PBinput) 'use PBInput because PB has not been updated at this time
                             'load the values into the search manager
                             'if Ecosim has not been loaded SearchObjectiveManager.Load() will do nothing
                             Me.m_SearchManagers(eDataTypes.SearchObjectiveManager).Load()
@@ -15290,21 +15290,21 @@ Public Class cCore
         End Try
     End Sub
 
-    Private Sub DestroySearchManagers()
-        Try
-            'Search manager are initialized each time a model is loaded
-            For Each man As ISearchObjective In Me.m_SearchManagers.Values
-                man.Clear()
-            Next
-            Me.m_SearchManagers.Clear()
-            If Me.m_SearchData IsNot Nothing Then
-                Me.m_SearchData.Clear()
-                RemoveHandler Me.m_SearchData.OnSearchStateChanged, AddressOf Me.OnSearchChanged
-            End If
-        Catch ex As Exception
+    'Private Sub DestroySearchManagers()
+    '    Try
+    '        'Search manager are initialized each time a model is loaded
+    '        For Each man As ISearchObjective In Me.m_SearchManagers.Values
+    '            man.Clear()
+    '        Next
+    '        Me.m_SearchManagers.Clear()
+    '        If Me.m_SearchData IsNot Nothing Then
+    '            Me.m_SearchData.Dispose()
+    '            RemoveHandler Me.m_SearchData.OnSearchStateChanged, AddressOf Me.OnSearchChanged
+    '        End If
+    '    Catch ex As Exception
 
-        End Try
-    End Sub
+    '    End Try
+    'End Sub
 
     Private Sub OnSearchChanged(searchmode As eSearchModes)
         Me.m_StateMonitor.SetIsSearching(searchmode)

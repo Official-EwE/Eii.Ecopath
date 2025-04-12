@@ -142,11 +142,11 @@ Public Class cSearchDatastructures
     'Public ecovalue As Single
     'Public profit As Single
 
-    Public totval As Double
-    Public profit As Double
-    Public employ As Double
-    Public manvalue As Double
-    Public ecovalue As Double
+    Public TotVal As Double
+    Public Profit As Double
+    Public Employ As Double
+    Public ManValue As Double
+    Public EcoValue As Double
 
 
     'VC 20250403 These sector variables were not defined and were remarked out where used below
@@ -274,7 +274,7 @@ Public Class cSearchDatastructures
 
     End Sub
 
-    Public Sub Clear()
+    Public Sub Dispose()
 
         Me.LastYearIncome = Nothing ' (NumFleets)
         Me.Jobs = Nothing ' (NumFleets)
@@ -328,15 +328,6 @@ Public Class cSearchDatastructures
         End Get
     End Property
 
-    Public Property bUseFishingMortalityPenality() As Boolean
-        Get
-            Return Me.UseFishingMortalityPenalty
-        End Get
-        Set(value As Boolean)
-            Me.UseFishingMortalityPenalty = value
-        End Set
-    End Property
-
     Friend Function culval() As Single
         Throw New NotImplementedException()
     End Function
@@ -364,10 +355,10 @@ Public Class cSearchDatastructures
 
     Public ReadOnly Property WeightedTotal() As Single
         Get
-            Return CSng(Me.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.profit +
-                Me.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.employ +
-                Me.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.manvalue +
-                Me.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.ecovalue +
+            Return CSng(Me.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.Profit +
+                Me.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.Employ +
+                Me.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.ManValue +
+                Me.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.EcoValue +
                 Me.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.DiversityIndex)
         End Get
     End Property
@@ -424,13 +415,13 @@ Public Class cSearchDatastructures
         End Try
     End Function
 
-    Friend Function redimTime(NumberOfYears As Integer) As Boolean
+    Friend Function RedimTime(NumberOfYears As Integer) As Boolean
         Try
 
             Me.NYears = NumberOfYears
             ReDim Me.FblockCode(Me.NumFleets, Me.NYears)
 
-            Me.setDefaultFBlockCodes()
+            Me.SetDefaultFBlockCodes()
 
         Catch ex As Exception
             Debug.Assert(False)
@@ -445,7 +436,7 @@ Public Class cSearchDatastructures
         Dim bSuccess As Boolean = True
         bSuccess = bSuccess And Me.RedimGroups()
         bSuccess = bSuccess And Me.RedimFleets()
-        bSuccess = bSuccess And Me.redimTime(NumberOfYears)
+        bSuccess = bSuccess And Me.RedimTime(NumberOfYears)
         Return bSuccess
     End Function
 
@@ -470,7 +461,7 @@ Public Class cSearchDatastructures
     End Function
 
 
-    Public Sub redimForRun()
+    Public Sub RedimForRun()
         ReDim Me.BaseYearIncome(Me.NumFleets)
         ReDim Me.BaseYearCost(Me.NumFleets)
 
@@ -534,7 +525,7 @@ Public Class cSearchDatastructures
 
     End Sub
 
-    Public Sub setDefaultBGoal(PB() As Single)
+    Public Sub SetDefaultBGoal(PB() As Single)
         Dim i As Integer
 
         For i = 1 To Me.NumLiving
@@ -585,11 +576,12 @@ Public Class cSearchDatastructures
         Return n
 
     End Function
+
     ''' <summary>
     ''' Sets the search blocks to the minimum number needed to have the search turned on
     ''' </summary>
     ''' <remarks>Used when the search blocks need to be dimensioned but not used e.g. Ecoseed</remarks>
-    Public Sub setMinSearchBlocks()
+    Public Sub SetMinSearchBlocks()
 
         Me.nBlocks = 1
         ReDim Me.FblockCode(Me.NumFleets, Me.NYears)
@@ -599,8 +591,7 @@ Public Class cSearchDatastructures
     ''' <summary>
     ''' Set default FBlockCodes to a unique code for each fleet
     ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub setDefaultFBlockCodes()
+    Public Sub SetDefaultFBlockCodes()
 
         For iFlt As Integer = 1 To Me.NumFleets
             For j As Integer = 2 To Me.NYears
@@ -780,15 +771,14 @@ Public Class cSearchDatastructures
 
         Me.Ecodistance = 0
         Me.ExistValue = 0
-        Me.ecovalue = 0
-        Me.totval = 0
-        Me.profit = 0
-        Me.employ = 0
-        Me.manvalue = 0
+        Me.EcoValue = 0
+        Me.TotVal = 0
+        Me.Profit = 0
+        Me.Employ = 0
+        Me.ManValue = 0
         Me.DiversityIndex = 0
 
     End Sub
-
 
 #End Region
 
@@ -923,16 +913,16 @@ Public Class cSearchDatastructures
         Dim EcoDistTime As Single
         For i = 1 To Me.m_EPdata.NumLiving
             'Ecovalue = Ecovalue - BGoalValue(i) * (bb(i) / m_data.StartBiomass(i) - BGoal(i)) ^ 2
-            Me.ecovalue = Me.ecovalue + Me.BGoalValue(i) * Biomass(i) / Me.m_ecosimData.StartBiomass(i)
+            Me.EcoValue = Me.EcoValue + Me.BGoalValue(i) * Biomass(i) / Me.m_ecosimData.StartBiomass(i)
             LogB = CSng(Math.Log(Biomass(i) / Me.m_ecosimData.StartBiomass(i)))
             EcoDistTime = CSng(EcoDistTime + LogB ^ 2)
             Me.ExistValue = Me.ExistValue + LogB * Me.BGoalValue(i)
 
             If Me.MGoalValue(i) > 0 Then
                 If Biomass(i) / Me.m_ecosimData.StartBiomass(i) < Me.MGoalValue(i) Then 'not yet reached the mandated threshold
-                    Me.manvalue = Me.manvalue + Biomass(i) / Me.m_ecosimData.StartBiomass(i)
+                    Me.ManValue = Me.ManValue + Biomass(i) / Me.m_ecosimData.StartBiomass(i)
                 Else
-                    Me.manvalue = Me.manvalue + Me.MGoalValue(i)
+                    Me.ManValue = Me.ManValue + Me.MGoalValue(i)
                 End If
             End If
 
@@ -1010,9 +1000,9 @@ Public Class cSearchDatastructures
 
         ReDim Me.CostRatio(Me.m_EPdata.NumFleet)
 
-        Me.totval = 0
-        Me.employ = 0
-        Me.profit = 0
+        Me.TotVal = 0
+        Me.Employ = 0
+        Me.Profit = 0
 
         Me.DiversityIndex = Me.DiversityIndex / ModelRunLength
 
@@ -1056,7 +1046,7 @@ Public Class cSearchDatastructures
                     'Both ValCatch(fleets,groups) and CatchYear(fleets,groups) are from the last Ecosim timestep 
                     Dim Vlocal As Single = Me.ValCatch(iFlt, iGrp) + Me.CatchYear(iFlt, iGrp) * Me.m_EPdata.Market(iFlt, iGrp) * PriceMedData.getPESMult(iGrp, iFlt) * LTV
 
-                    Me.totval = Me.totval + Vlocal
+                    Me.TotVal = Me.TotVal + Vlocal
                     Me.ValCatchGear(iFlt) = Me.ValCatchGear(iFlt) + Vlocal
                 End If
             Next
@@ -1065,7 +1055,7 @@ Public Class cSearchDatastructures
         'VC 20250407  For ease, once upon a time, we used totval for profit in the SearchDatastructures.vb
         ' that is a bit confusing, so I've changed it to use profit instead (was alreay defined, but not used
         ' it calls for inititally setting profit = totval, then subtractin cost
-        Me.profit = Me.totval
+        Me.Profit = Me.TotVal
 
 
         For iFlt = 1 To Me.m_EPdata.NumFleet
@@ -1087,8 +1077,8 @@ Public Class cSearchDatastructures
                 'System.Console.WriteLine("Cost R and P = " & CostRatio(iFlt).ToString & ", " & CostPenalty)
             End If
 
-            Me.profit = Me.profit - Me.NetCost(iFlt) - CostPenalty
-            Me.employ = Me.employ + (Me.ValCatchGear(iFlt) - CostPenalty) * Me.Jobs(iFlt)
+            Me.Profit = Me.Profit - Me.NetCost(iFlt) - CostPenalty
+            Me.Employ = Me.Employ + (Me.ValCatchGear(iFlt) - CostPenalty) * Me.Jobs(iFlt)
             'Me.ValCatchGear(iFlt) = Me.ValCatchGear(iFlt) - Me.NetCost(iFlt) - CostPenalty
 
         Next
@@ -1104,9 +1094,9 @@ Public Class cSearchDatastructures
 
         Dim CostPenaltyConstant As Integer = 1
 
-        Me.totval = 0
-        Me.profit = 0
-        Me.employ = 0
+        Me.TotVal = 0
+        Me.Profit = 0
+        Me.Employ = 0
 
         Me.ExistValue = Me.ExistValue / (Me.m_EPdata.NumLiving * ModelRunLength)
 
@@ -1127,7 +1117,7 @@ Public Class cSearchDatastructures
 
                     Dim Vlocal As Single = Me.ValCatch(iflt, igrp) + Me.CatchYear(iflt, igrp) / nWaterCells * LTV * Me.m_EPdata.Market(iflt, igrp)
 
-                    Me.totval = Me.totval + Vlocal
+                    Me.TotVal = Me.TotVal + Vlocal
                     Me.ValCatchGear(iflt) = Me.ValCatchGear(iflt) + Vlocal
 
                     System.Console.Write(CSng(Me.ValCatch(iflt, igrp) / ModelRunLengthPostBaseYear).ToString & ", ")
@@ -1142,7 +1132,7 @@ Public Class cSearchDatastructures
 
         'VC 20250407 making profit actually use profit, not totval.
         ' First setting it = totval then subtracting cost
-        Me.profit = Me.totval
+        Me.Profit = Me.TotVal
 
 
         For iflt = 1 To Me.m_EPdata.NumFleet
@@ -1163,9 +1153,9 @@ Public Class cSearchDatastructures
                 CostPenalty = CSng(CostPenaltyConstant * Me.CostRatio(iflt) ^ 50)
             End If
 
-            Me.profit = Me.profit - Me.NetCost(iflt) - CostPenalty
+            Me.Profit = Me.Profit - Me.NetCost(iflt) - CostPenalty
 
-            Me.employ = Me.employ + (Me.ValCatchGear(iflt) - CostPenalty) * Me.Jobs(iflt)
+            Me.Employ = Me.Employ + (Me.ValCatchGear(iflt) - CostPenalty) * Me.Jobs(iflt)
             Me.ValCatchGear(iflt) = Me.ValCatchGear(iflt) - Me.NetCost(iflt) - CostPenalty
         Next
 

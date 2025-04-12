@@ -26,7 +26,6 @@ Imports EwECore.Database
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -248,6 +247,7 @@ Public Class cData
 #Region " Database helpers "
 
     Private Shared Function GetDatabaseFileName(strModelName As String) As String
+        If (String.IsNullOrEmpty(strModelName)) Then Return ""
         Dim strPath As String = Path.GetDirectoryName(strModelName)
         Dim strFileName As String = Path.GetFileNameWithoutExtension(strModelName) + ".ewevcmdb"
         Return Path.Combine(strPath, strFileName)

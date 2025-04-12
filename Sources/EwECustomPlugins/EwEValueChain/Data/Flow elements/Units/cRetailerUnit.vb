@@ -37,9 +37,9 @@ Public Class cRetailerUnit
 
 #Region " Calculations "
 
-    Protected Overrides Function Calculate(results As cResults, _
-            sInputBiomass As Single, sInputValue As Single, _
-            sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overrides Function Calculate(results As cResults,
+            sInputBiomass As Single, sInputValue As Single,
+            sOutputBiomass As Single, sOutputValue As Single,
             iTimeStep As Integer) As Boolean
 
         Return MyBase.Calculate(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)

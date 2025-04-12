@@ -242,7 +242,7 @@ Public Class cMPARandomSearch
             Me.InitIsMPA()
 
             Me.m_search.SearchMode = eSearchModes.SpatialOpt
-            Me.m_search.setMinSearchBlocks()
+            Me.m_search.SetMinSearchBlocks()
             Me.getBaseValues()
 
             Me.WriteOutputFileHeader(writer)

@@ -124,6 +124,7 @@ Public Class cLink
         MyBase.New()
     End Sub
 
+
     <Browsable(True),
         Category(cCATEGORY_GENERIC),
         DisplayName("Name"),

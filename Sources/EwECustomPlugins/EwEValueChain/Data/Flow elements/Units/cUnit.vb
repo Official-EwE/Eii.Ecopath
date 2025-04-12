@@ -180,6 +180,7 @@ Public MustInherit Class cUnit
     Public Overridable Sub InitRun(iSequence As Integer)
         Me.Sequence = iSequence
         Me.m_bRunStarted = True
+        Me.Clear()
     End Sub
 
     ''' -----------------------------------------------------------------------

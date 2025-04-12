@@ -378,9 +378,7 @@ Public Class cValueChainPlugin
         End If
 
         ' Prepare data
-
         Me.m_data.InitRun()
-
 
     End Sub
 
@@ -637,13 +635,14 @@ Public Class cValueChainPlugin
         If (Me.m_searchds.SearchMode <> eSearchModes.FishingPolicy) Then Return
 
         Me.m_bInSearch = True
-        ' Reset values that this plug-in will (hopefully) deliver.
+        Me.m_data.InitRun()
 
-        'VC090402: updated the blowe to use the value chain searchDS parameters (which is what I need)
-        'Only profit and employ are needed, don't need resetting.
-        Me.m_searchds.profit = 0
-        Me.m_searchds.totval = 0
-        Me.m_searchds.employ = 0
+        ' JS 11 Apr 25: tracking down why repeated FPS + VC runs differ
+
+        ' Here the value chain can clear out any search data values that it may have left.
+        ' However, that should not make any difference:
+        ' - The Value Chain has been cleared for a run already
+        ' - The Search Data Structures have been cleared for a run too.
 
     End Sub
 
@@ -661,10 +660,15 @@ Public Class cValueChainPlugin
 
             Debug.Assert(Me.m_searchds IsNot Nothing)
 
+            Dim profit = Me.Results.GetTotal(cResults.eVariableType.Profit)
+            Dim employ = Me.Results.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
+
+            Console.WriteLine("VC out ? search: Profit {0}, Employ {1}", profit, employ)
+
             ' Overwrite values in the search datastructures with desired value chain output
-            Me.m_searchds.profit = Me.Results.GetTotal(cResults.eVariableType.Profit)
+            Me.m_searchds.Profit = profit
             'ds.totval = Me.Results.GetTotal(cResults.eVariableType.RevenueTotal)      'VC 2025040Z
-            Me.m_searchds.employ = Me.Results.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
+            Me.m_searchds.Employ = employ
 
         End If
 

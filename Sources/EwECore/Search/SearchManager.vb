@@ -87,7 +87,7 @@ Namespace SearchObjectives
                 Dim search As cSearchDatastructures = Me.m_core.m_SearchData
 
                 'sets BGoalValue() as a function of PB from last ecopath run
-                search.setDefaultBGoal(Me.m_core.m_EcopathData.PB)
+                search.SetDefaultBGoal(Me.m_core.m_EcopathData.PB)
                 'discount factor, FLimit, Default F rates
                 search.setDefaultOptimizationValues()
 
@@ -151,7 +151,7 @@ Namespace SearchObjectives
                 Me.m_parameters.BaseYear = coreData.BaseYear
                 'Me.m_parameters.GenDiscRate = coreData.GenDiscountFactor
                 Me.m_parameters.DiscountRate = coreData.DiscountFactor
-                Me.m_parameters.FishingMortalityPenalty = coreData.bUseFishingMortalityPenality
+                Me.m_parameters.FishingMortalityPenalty = coreData.UseFishingMortalityPenalty
 
                 Me.m_parameters.PrevCostEarning = coreData.UseCostPenalty
 
@@ -218,7 +218,7 @@ Namespace SearchObjectives
                     coreData.BaseYear = Me.m_parameters.BaseYear
                     'coreData.GenDiscountFactor = Me.m_parameters.GenDiscRate
                     coreData.DiscountFactor = Me.m_parameters.DiscountRate
-                    coreData.bUseFishingMortalityPenality = Me.m_parameters.FishingMortalityPenalty
+                    coreData.UseFishingMortalityPenalty = Me.m_parameters.FishingMortalityPenalty
 
                 Case eDataTypes.SearchObjectiveFleetInput
 
