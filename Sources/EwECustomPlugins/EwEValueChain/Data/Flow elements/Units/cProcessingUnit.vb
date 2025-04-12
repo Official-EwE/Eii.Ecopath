@@ -44,9 +44,9 @@ Public Class cProcessingUnit
 
 #Region " Calculations "
 
-    Protected Overrides Function Calculate(results As cResults, _
-            sInputBiomass As Single, sInputValue As Single, _
-            sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overrides Function Calculate(results As cResults,
+            sInputBiomass As Single, sInputValue As Single,
+            sOutputBiomass As Single, sOutputValue As Single,
             iTimeStep As Integer) As Boolean
 
         Dim bSucces As Boolean = MyBase.Calculate(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
@@ -58,9 +58,9 @@ Public Class cProcessingUnit
 
     End Function
 
-    Protected Overridable Function CalcAgriculturalCost(result As cResults, _
-            sInputBiomass As Single, sInputValue As Single, _
-            sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcAgriculturalCost(result As cResults,
+            sInputBiomass As Single, sInputValue As Single,
+            sOutputBiomass As Single, sOutputValue As Single,
             iTimeStep As Integer) As Boolean
 
         Dim AgriCost As Single = sOutputBiomass * Me.AgriculturalInput

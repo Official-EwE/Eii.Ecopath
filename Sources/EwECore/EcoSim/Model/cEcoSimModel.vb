@@ -784,10 +784,10 @@ Namespace Ecosim
 
             Me.RunModelValue(NumberOfYears, frateopt, nopt)
 
-            totval = Me.m_search.totval
+            totval = Me.m_search.TotVal
             Employ = Me.m_search.Employ
-            manvalue = Me.m_search.manvalue
-            ecovalue = Me.m_search.ecovalue
+            manvalue = Me.m_search.ManValue
+            ecovalue = Me.m_search.EcoValue
 
         End Sub
 
@@ -851,7 +851,7 @@ Namespace Ecosim
             '*
             If Me.m_search.bInSearch Then
                 'NEEDS TO RECALCULATE BASECOST ETC
-                Me.m_search.redimForRun()
+                Me.m_search.RedimForRun()
                 Me.m_search.bBaseYearSet = False
 
                 ReDim Preserve Me.m_Data.FishRateNo(Me.m_EPData.NumGroups, 12 * (NumberOfYears + ExtraTime))
@@ -2221,7 +2221,7 @@ Namespace Ecosim
         Public Sub setSearchOff()
             Me.m_Data.bTimestepOutput = True
             Me.m_search.SearchMode = eSearchModes.NotInSearch 'turn off the fishing policy search
-            Me.m_search.setMinSearchBlocks()
+            Me.m_search.SetMinSearchBlocks()
             '  m_search.clearBaseYear() 'sets baseyear to zero
         End Sub
 

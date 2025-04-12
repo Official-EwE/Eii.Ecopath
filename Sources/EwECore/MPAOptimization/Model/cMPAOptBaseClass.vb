@@ -300,10 +300,10 @@ Public MustInherit Class cMPAOptBaseClass
 
         Try
 
-            curSum = Me.m_search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_search.profit / Me.ProfitBase +
-                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_search.employ / Me.EmployBase +
-                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_search.manvalue / Me.ManValueBase +
-                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_search.ecovalue / Me.EcoValueBase +
+            curSum = Me.m_search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_search.Profit / Me.ProfitBase +
+                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_search.Employ / Me.EmployBase +
+                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_search.ManValue / Me.ManValueBase +
+                     Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_search.EcoValue / Me.EcoValueBase +
                      Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.m_search.DiversityIndex / Me.DiversityBase
 
 
@@ -314,10 +314,10 @@ Public MustInherit Class cMPAOptBaseClass
 
             'calculate the relative values in to data structures 
             'so they can be use to populate the Input/Output object for the interface
-            Me.m_data.objFuncEcologicalValue = CSng(Me.m_search.ecovalue / Me.EcoValueBase)
-            Me.m_data.objFuncMandatedValue = CSng(Me.m_search.manvalue / Me.ManValueBase)
+            Me.m_data.objFuncEcologicalValue = CSng(Me.m_search.EcoValue / Me.EcoValueBase)
+            Me.m_data.objFuncMandatedValue = CSng(Me.m_search.ManValue / Me.ManValueBase)
             Me.m_data.objFuncSocialValue = CSng(Me.m_search.Employ / Me.EmployBase)
-            Me.m_data.objFuncEconomicValue = CSng(Me.m_search.profit / Me.ProfitBase)
+            Me.m_data.objFuncEconomicValue = CSng(Me.m_search.Profit / Me.ProfitBase)
             Me.m_data.objFuncBiodiversity = CSng(Me.m_search.DiversityIndex / Me.DiversityBase)
             Me.m_data.objFuncAreaBorder = Me.AreaBoundary '/ AreaBoundBase
 
@@ -420,10 +420,10 @@ Public MustInherit Class cMPAOptBaseClass
 
     Protected Overridable Sub dumpSearchValues(search As cSearchDatastructures)
 
-        System.Console.WriteLine("Total Value = " & search.profit / Me.ProfitBase &
-                                    ", Employ Value = " & search.employ / Me.EmployBase &
-                                    ", Mandated Value = " & search.manvalue / Me.ManValueBase &
-                                    ", Eco Value = " & search.ecovalue / Me.EcoValueBase)
+        System.Console.WriteLine("Total Value = " & search.Profit / Me.ProfitBase &
+                                    ", Employ Value = " & search.Employ / Me.EmployBase &
+                                    ", Mandated Value = " & search.ManValue / Me.ManValueBase &
+                                    ", Eco Value = " & search.EcoValue / Me.EcoValueBase)
     End Sub
 
 
@@ -538,7 +538,7 @@ Public MustInherit Class cMPAOptBaseClass
 
     Protected Sub getBaseValues()
 
-        Me.m_search.redimForRun()
+        Me.m_search.RedimForRun()
 
         'on the first call to ecospace ecoseed makes a copy of Biomass(), FTime()... See KeepOrReloadCellValues() at the user defined start time-step
         'then on subsequient calls it starts ecospace at the user defined start time-step and copies the values from the original call back to ecospace
@@ -554,10 +554,10 @@ Public MustInherit Class cMPAOptBaseClass
         Me.m_EcoSpace.Run()
 
         'values were set in the search object by EcoSpace.Run()
-        Me.EmployBase = Me.m_search.employ
-        Me.ProfitBase = Me.m_search.profit
-        Me.ManValueBase = Me.m_search.manvalue
-        Me.EcoValueBase = Me.m_search.ecovalue
+        Me.EmployBase = Me.m_search.Employ
+        Me.ProfitBase = Me.m_search.Profit
+        Me.ManValueBase = Me.m_search.ManValue
+        Me.EcoValueBase = Me.m_search.EcoValue
         Me.DiversityBase = Me.m_search.DiversityIndex
         Me.AreaBoundBase = Me.CalculateAreaOverBondaryLength()
 

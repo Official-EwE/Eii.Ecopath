@@ -487,16 +487,16 @@ Namespace MSE
                 Me.m_Ecosim.Run()
 
                 'get the base values from the search data
-                Me.m_data.BaseTotalVal = Me.m_Search.totval
+                Me.m_data.BaseTotalVal = Me.m_Search.TotVal
                 Me.m_data.BaseEmployVal = Me.m_Search.Employ
-                Me.m_data.BaseManValue = Me.m_Search.manvalue
-                Me.m_data.BaseEcoVal = Me.m_Search.ecovalue
+                Me.m_data.BaseManValue = Me.m_Search.ManValue
+                Me.m_data.BaseEcoVal = Me.m_Search.EcoValue
 
                 'cal base BestTotalValue (TotValBase,EmployBase... were set in SetBaseValues()
-                Me.m_data.BestTotalValue = CSng(Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_Search.profit / Me.ProfitBase +
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.employ / Me.EmployBase +
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / Me.ManValueBase +
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / Me.EcoValueBase)
+                Me.m_data.BestTotalValue = CSng(Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_Search.Profit / Me.ProfitBase +
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / Me.EmployBase +
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.ManValue / Me.ManValueBase +
+                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.EcoValue / Me.EcoValueBase)
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -664,7 +664,7 @@ Namespace MSE
                 Me.m_data.InitForRun()
 
                 Me.m_Search.initForRun(Me.m_epdata, Me.m_esData)
-                Me.m_Search.setMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
+                Me.m_Search.SetMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
                 If Me.m_Search.BaseYear = 0 Then Me.m_Search.BaseYear = 1
                 Me.m_Search.setBaseYearEffort(Me.m_esData)
 
@@ -935,15 +935,15 @@ Namespace MSE
         Private Sub SumValues()
 
             Me.m_data.sumEmployVal += CSng(Me.m_Search.Employ)
-            Me.m_data.SumProfit += CSng(Me.m_Search.profit)
-            Me.m_data.sumManVal += CSng(Me.m_Search.manvalue)
-            Me.m_data.sumEcoVal += CSng(Me.m_Search.ecovalue)
+            Me.m_data.SumProfit += CSng(Me.m_Search.Profit)
+            Me.m_data.sumManVal += CSng(Me.m_Search.ManValue)
+            Me.m_data.sumEcoVal += CSng(Me.m_Search.EcoValue)
 
             Me.m_data.sumWeightedValues = CSng(Me.m_data.sumWeightedValues +
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_Search.profit / Me.ProfitBase +
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.employ / Me.EmployBase +
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.manvalue / Me.ManValueBase +
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.ecovalue / Me.EcoValueBase)
+                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_Search.Profit / Me.ProfitBase +
+                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / Me.EmployBase +
+                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.ManValue / Me.ManValueBase +
+                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.EcoValue / Me.EcoValueBase)
 
         End Sub
 

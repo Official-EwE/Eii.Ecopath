@@ -357,36 +357,36 @@ Public Class cResults
         Select Case graph
 
             Case eGraphDataType.CostRevenue
-                vars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal,
-                                                      cResults.eVariableType.Cost,
-                                                      cResults.eVariableType.Profit}
+                vars = New eVariableType() {eVariableType.RevenueTotal,
+                                            eVariableType.Cost,
+                                            eVariableType.Profit}
 
             Case eGraphDataType.Cost
-                vars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture,
-                                                      cResults.eVariableType.CostInput,
-                                                      cResults.eVariableType.CostManagementRoyaltyCertification,
-                                                      cResults.eVariableType.CostManagementRoyaltyCertificationObservers,
-                                                      cResults.eVariableType.CostRawmaterial}
+                vars = New eVariableType() {eVariableType.CostAgriculture,
+                                            eVariableType.CostInput,
+                                            eVariableType.CostManagementRoyaltyCertification,
+                                            eVariableType.CostManagementRoyaltyCertificationObservers,
+                                            eVariableType.CostRawmaterial}
 
             Case eGraphDataType.Revenue
-                vars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets,
-                                                      cResults.eVariableType.RevenueSubsidies,
-                                                      cResults.eVariableType.RevenueProductsMain,
-                                                      cResults.eVariableType.RevenueProductsOther,
-                                                      cResults.eVariableType.RevenueAgriculture}
+                vars = New eVariableType() {eVariableType.RevenueTickets,
+                                            eVariableType.RevenueSubsidies,
+                                            eVariableType.RevenueProductsMain,
+                                            eVariableType.RevenueProductsOther,
+                                            eVariableType.RevenueAgriculture}
 
             Case eGraphDataType.Jobs
-                vars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal,
-                                                      cResults.eVariableType.NumberOfJobsMaleTotal,
-                                                      cResults.eVariableType.NumberOfJobsFemaleTotal}
+                vars = New eVariableType() {eVariableType.NumberOfJobsTotal,
+                                            eVariableType.NumberOfJobsMaleTotal,
+                                            eVariableType.NumberOfJobsFemaleTotal}
             Case eGraphDataType.Dependents
-                vars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal,
-                                                      cResults.eVariableType.NumberOfWorkerDependents,
-                                                      cResults.eVariableType.NumberOfWorkerFemales,
-                                                      cResults.eVariableType.NumberOfWorkerMales,
-                                                      cResults.eVariableType.NumberOfOwnerMales,
-                                                      cResults.eVariableType.NumberOfOwnerFemales,
-                                                      cResults.eVariableType.NumberOfOwnerDependents}
+                vars = New eVariableType() {eVariableType.NumberOfDependentsTotal,
+                                            eVariableType.NumberOfWorkerDependents,
+                                            eVariableType.NumberOfWorkerFemales,
+                                            eVariableType.NumberOfWorkerMales,
+                                            eVariableType.NumberOfOwnerMales,
+                                            eVariableType.NumberOfOwnerFemales,
+                                            eVariableType.NumberOfOwnerDependents}
 
             Case Else
                 Debug.Assert(False)
@@ -440,15 +440,13 @@ Public Class cResults
         Me.m_iMaxItem = 0
         Me.m_runType = runType
 
-        Me.m_BiomassFlows = Nothing
-        Me.m_ValueContribution = Nothing
-        Me.m_BiomassContribution = Nothing
+        ReDim Preserve Me.m_ValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+        ReDim Preserve Me.m_BiomassContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+        ReDim Preserve Me.m_BiomassFlows(nNumUnits, nNumUnits)
 
-        GC.Collect()
-
-        ReDim Me.m_ValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
-        ReDim Me.m_BiomassContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
-        ReDim Me.m_BiomassFlows(nNumUnits, nNumUnits)
+        Array.Clear(Me.m_ValueContribution, 0, Me.m_ValueContribution.Length)
+        Array.Clear(Me.m_BiomassContribution, 0, Me.m_BiomassContribution.Length)
+        Array.Clear(Me.m_BiomassFlows, 0, Me.m_BiomassFlows.Length)
 
     End Sub
 
@@ -464,7 +462,6 @@ Public Class cResults
     Public Function Store(unit As cUnit, var As eVariableType, sValue As Single, iTimeStep As Integer) As Boolean
 
         Try
-
             Me.m_iMaxTimeStep = Math.Max(Me.m_iMaxTimeStep, iTimeStep)
             Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep)
             rs.Results(var, unit.Sequence) = sValue
@@ -486,6 +483,7 @@ Public Class cResults
     ''' -----------------------------------------------------------------------
     Public Function StoreSnapshot(objKey As Object, iTimeStep As Integer) As Boolean
 
+        ' Why on earth are we cloning here?!?! 
         Dim tsr As cTimeStepResults = Me.GetTimeStepResult(iTimeStep).Clone
         Me.m_dtSnapshots(objKey) = tsr
         Return True
@@ -591,13 +589,10 @@ Public Class cResults
     ''' -----------------------------------------------------------------------
     Public Property FlowsBiomass(iSource As Integer, iTarget As Integer) As Double
         Get
-            If (Me.m_BiomassFlows Is Nothing) Then Return 0
             Return Me.m_BiomassFlows(iSource, iTarget)
         End Get
         Set(value As Double)
-            If (Me.m_BiomassFlows IsNot Nothing) Then
-                Me.m_BiomassFlows(iSource, iTarget) = value
-            End If
+            Me.m_BiomassFlows(iSource, iTarget) = value
         End Set
     End Property
 
@@ -832,4 +827,5 @@ Public Class cResults
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
+
 End Class

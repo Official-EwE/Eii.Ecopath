@@ -99,8 +99,8 @@ Public Class cModel
                 For sEffort As Single = sMin To sMax Step data.Parameters.EquilibriumEffortIncrement
 
                     ' Update status text
-                    cApplicationStatusNotifier.UpdateProgress(data.Core, _
-                                                              String.Format(My.Resources.STATUS_PROGRESS_EQUILIBIRUM, fleet.Name, Math.Round(sEffort, 2)), _
+                    cApplicationStatusNotifier.UpdateProgress(data.Core,
+                                                              String.Format(My.Resources.STATUS_PROGRESS_EQUILIBIRUM, fleet.Name, Math.Round(sEffort, 2)),
                                                               CSng(iStep / iNumSteps))
                     ' Set effort
                     Me.SetFishingEffort(data, iFleet, sEffort)

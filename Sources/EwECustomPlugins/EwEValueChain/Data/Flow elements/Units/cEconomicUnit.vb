@@ -113,12 +113,16 @@ Public MustInherit Class cEconomicUnit
     End Sub
 
 #End Region ' Constructor
+    Public Overrides Sub InitRun(iSequence As Integer)
+        MyBase.InitRun(iSequence)
+        ' No state variables to clear here
+    End Sub
 
 #Region " Calculations "
 
-    Protected Overrides Function Calculate(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overrides Function Calculate(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         'The production unit needs to do the same calculations as the MyBase=cEconomicUnit, but:
