@@ -403,8 +403,9 @@ Namespace FishingPolicy
                 Next
 
                 Dim WeightCorrection As Single
-                If Me.m_searchData.ValWeight(1) + Me.m_searchData.ValWeight(2) + Me.m_searchData.ValWeight(3) + Me.m_searchData.ValWeight(4) > 0 Then
-                    WeightCorrection = Me.m_searchData.ValWeight(1) + Me.m_searchData.ValWeight(2) + Me.m_searchData.ValWeight(3) + Me.m_searchData.ValWeight(4)
+                'VC 20250419 the calculations below only included 4 of the 5 ValWeights, so added no 5
+                If Me.m_searchData.ValWeight(1) + Me.m_searchData.ValWeight(2) + Me.m_searchData.ValWeight(3) + Me.m_searchData.ValWeight(4) + Me.m_searchData.ValWeight(5) > 0 Then
+                    WeightCorrection = Me.m_searchData.ValWeight(1) + Me.m_searchData.ValWeight(2) + Me.m_searchData.ValWeight(3) + Me.m_searchData.ValWeight(4) + Me.m_searchData.ValWeight(5)
                 End If
                 If WeightCorrection <= 0 Then WeightCorrection = 1
 
@@ -617,11 +618,15 @@ Namespace FishingPolicy
                 'jb 24-Mar-2021 flet() was not varying the results of each search iteration enough to find any sort of a difference/gradient for each search variable.
                 'Setting the step size to larger (from StepSize = 0.0001 to StepSize = 0.001) fixes this and it was able to search through the varaible space.
                 'This does not affect the DFPmin() fuunction. It has it's own way of setting the step size
-                'StepSize = 0.0001 'default
-                StepSize = 0.001
+                StepSize = 0.0001 'default
+                'StepSize = 0.000001
                 Gtol = 0.0000000001 'Default
 
-                eps = 0.000001
+                ' VC 20250419 eps is tolerance for when to stop optimization
+                ' trying to make it a bit more tolerant to speed up runs a bit
+                'eps = 0.000001
+                eps = 0.001
+
                 mode = 1
                 maxfn = Me.MaxNoOfIterations
                 iprint = 1
@@ -1051,6 +1056,8 @@ pte:        ' continue
             GoTo endline
 
 100:        ' continue
+            'VC 20250419 Carl is suggesting to set Z = 0.000001
+            'Z = 0.000001  'hh * Xm(i)
 
             For i = 1 To n
                 Z = hh * Xm(i)
