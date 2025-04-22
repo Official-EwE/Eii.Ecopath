@@ -134,7 +134,6 @@ Public Class cSearchDatastructures
     Public UseCostPenalty As Boolean
     Public CostRatio() As Single
 
-
     'results of the search
     'Public totval As Single
     'Public Employ As Single
@@ -606,7 +605,12 @@ Public Class cSearchDatastructures
         Dim rd As New Random
 
         For i As Integer = 1 To Me.nBlocks
-            Me.Frates(i) = -1 + 2 * rd.NextDouble
+            'The effort in policy search is  exp(Frates)
+            'Me.Frates(i) = -1 + 2 * rd.NextDouble
+            'VC 20250417 Changed Frates to the below to get random effort between 0.5 and 1.0 of Ecopath base effort
+            'VC 202050417 also scaled it to the BaseYearEffort, which may be very different from unity effort.
+            'Me.Frates(i) = (-0.7 + 0.7 * rd.NextDouble) * Me.BaseYearEffort(i)
+            Me.Frates(i) = Math.Log((Me.BaseYearEffort(i) / 2 + (rd.NextDouble) / 2 * Me.BaseYearEffort(i)))
         Next
 
     End Sub
@@ -778,6 +782,7 @@ Public Class cSearchDatastructures
         Me.ManValue = 0
         Me.DiversityIndex = 0
 
+
     End Sub
 
 #End Region
@@ -808,6 +813,7 @@ Public Class cSearchDatastructures
         For iFlt As Integer = 1 To Me.m_EPdata.NumFleet
 
             If Me.BaseYearCost(iFlt) > 0 Then
+                'VC20250417: Scaled NetCost with BaseYearEffort
                 Me.NetCost(iFlt) += Me.DF * Me.BaseYearCost(iFlt) * (Fgear(iFlt) / Me.BaseYearEffort(iFlt))
             End If
 
@@ -962,6 +968,9 @@ Public Class cSearchDatastructures
         'and would cause a crash if NumFleet = 0 in BaseYearIncome(1) = 0 BaseYearIncome() was dimmed by NumFleet
         'Here it is replaced with bBaseYearSet to set the base year only once at the start of a run
 
+
+        'VC 20250417: Problem: when using a later baseyear the baseyearcost should not be calculated
+        'from the Ecopath catches as they are now. Trying to "fix" this by multiplying BaseYearEffort on the BaseYearCost
         If iYear = Me.BaseYear And Not Me.bBaseYearSet Then
             Me.bBaseYearSet = True
             For i As Integer = 1 To Me.m_EPdata.NumFleet
@@ -971,7 +980,8 @@ Public Class cSearchDatastructures
                     CV = CV + Me.CatchYear(i, j) / nSpatialCells * Me.m_EPdata.Market(i, j) '* m_epData.PropLanded(i, j)
                 Next
                 '   m_search.BaseYearIncome(i) = CV
-                Me.BaseYearCost(i) = CV * (Me.m_EPdata.CostPct(i, 2) + Me.m_EPdata.CostPct(i, 3)) / 100
+                Me.BaseYearCost(i) = CV * (Me.m_EPdata.CostPct(i, 2) + Me.m_EPdata.CostPct(i, 3)) / 100 * Me.BaseYearEffort(i)
+
                 '061221VC: the baseyearcost above doesn't include fixed costs
                 'this is probably how it should be, as it troublesome to include it in all
                 'other cost calculations in the optimizations, it should [costpct(i,1)]
@@ -1067,11 +1077,12 @@ Public Class cSearchDatastructures
             End If
 
             CostPenalty = 0
-            'VC2024-09-21 POlicy searc with "prevent cost>earnings" does not stop negative values, but it's getting a bit closer
-            ' so made it "limit cost > earnings" on interface instead ;-)
+            'VC 2024-09-21 POlicy searc with "prevent cost>earnings" does not stop negative values, but it's getting a bit closer
+            '
+            Me.CostRatio(iFlt) = Me.NetCost(iFlt) / Me.ValCatchGear(iFlt)
 
-            If Me.ValCatchGear(iFlt) > 0 And Me.UseCostPenalty Then
-                Me.CostRatio(iFlt) = Me.NetCost(iFlt) / Me.ValCatchGear(iFlt)
+            If Me.ValCatchGear(iFlt) > 0 And Me.UseCostPenalty And Me.CostRatio(iFlt) > 1 Then
+                'Me.CostRatio(iFlt) = Me.NetCost(iFlt) / Me.ValCatchGear(iFlt)
                 CostPenalty = CSng(CostPenaltyConstant * Me.CostRatio(iFlt) ^ 15)
 
                 'System.Console.WriteLine("Cost R and P = " & CostRatio(iFlt).ToString & ", " & CostPenalty)
