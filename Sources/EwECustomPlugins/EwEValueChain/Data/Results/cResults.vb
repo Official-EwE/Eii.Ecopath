@@ -440,13 +440,9 @@ Public Class cResults
         Me.m_iMaxItem = 0
         Me.m_runType = runType
 
-        ReDim Preserve Me.m_ValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
-        ReDim Preserve Me.m_BiomassContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
-        ReDim Preserve Me.m_BiomassFlows(nNumUnits, nNumUnits)
-
-        Array.Clear(Me.m_ValueContribution, 0, Me.m_ValueContribution.Length)
-        Array.Clear(Me.m_BiomassContribution, 0, Me.m_BiomassContribution.Length)
-        Array.Clear(Me.m_BiomassFlows, 0, Me.m_BiomassFlows.Length)
+        ReDim Me.m_ValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+        ReDim Me.m_BiomassContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+        ReDim Me.m_BiomassFlows(nNumUnits, nNumUnits)
 
     End Sub
 
@@ -463,7 +459,7 @@ Public Class cResults
 
         Try
             Me.m_iMaxTimeStep = Math.Max(Me.m_iMaxTimeStep, iTimeStep)
-            Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep)
+            Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep, True)
             rs.Results(var, unit.Sequence) = sValue
 
         Catch ex As Exception
@@ -484,7 +480,7 @@ Public Class cResults
     Public Function StoreSnapshot(objKey As Object, iTimeStep As Integer) As Boolean
 
         ' Why on earth are we cloning here?!?! 
-        Dim tsr As cTimeStepResults = Me.GetTimeStepResult(iTimeStep).Clone
+        Dim tsr As cTimeStepResults = Me.GetTimeStepResult(iTimeStep, True).Clone
         Me.m_dtSnapshots(objKey) = tsr
         Return True
 
@@ -529,24 +525,32 @@ Public Class cResults
                            iItem As Integer,
                            contr As eContributionType) As Single
 
-        Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep)
-        Dim sValue As Single = rs.Results(var, unit.Sequence)
-        Dim sContrVal As Single = 0
-        Dim sContrBio As Single = 0
+        Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep, False)
+        If (rs IsNot Nothing) Then
 
-        Me.GetContributionRatios(iItem, unit, iTimeStep, sContrVal, sContrBio)
+            Dim sValue As Single = rs.Results(var, unit.Sequence)
+            Dim sContrVal As Single = 0
+            Dim sContrBio As Single = 0
 
-        Select Case contr
-            Case eContributionType.Value
-                Return sValue * sContrVal
-            Case eContributionType.Biomass
-                Return sValue * sContrBio
-        End Select
+            Me.GetContributionRatios(iItem, unit, iTimeStep, sContrVal, sContrBio)
+
+            Select Case contr
+                Case eContributionType.Value
+                    Return sValue * sContrVal
+                Case eContributionType.Biomass
+                    Return sValue * sContrBio
+            End Select
+        End If
+
+        Return 0
 
     End Function
 
     Public Sub CalculateDerivedValues(iTimeStep As Integer)
-        Me.GetTimeStepResult(iTimeStep).CalculateDerivedValues()
+        Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep, False)
+        If (rs IsNot Nothing) Then
+            rs.CalculateDerivedValues()
+        End If
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -670,7 +674,7 @@ Public Class cResults
             lUnits = Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
         End If
 
-        For iTimestep = 0 To Me.m_iMaxTimeStep
+        For iTimestep = 1 To Me.m_iMaxTimeStep
             For Each unit As cUnit In lUnits
                 sTotal += Me.Result(unit, vartype, iTimestep, iItem, contr)
             Next
@@ -684,12 +688,14 @@ Public Class cResults
 
 #Region " Internals "
 
-    Private Function GetTimeStepResult(iTimeStep As Integer) As cTimeStepResults
+    Private Function GetTimeStepResult(iTimeStep As Integer, bCreateIfMissing As Boolean) As cTimeStepResults
 
         Dim tsr As cTimeStepResults = Nothing
         If Not Me.m_dtResultTimeStep.ContainsKey(iTimeStep) Then
-            tsr = New cTimeStepResults(Me.m_data, iTimeStep)
-            Me.m_dtResultTimeStep.Add(iTimeStep, tsr)
+            If (bCreateIfMissing) Then
+                tsr = New cTimeStepResults(Me.m_data, iTimeStep)
+                Me.m_dtResultTimeStep.Add(iTimeStep, tsr)
+            End If
         Else
             tsr = Me.m_dtResultTimeStep(iTimeStep)
         End If

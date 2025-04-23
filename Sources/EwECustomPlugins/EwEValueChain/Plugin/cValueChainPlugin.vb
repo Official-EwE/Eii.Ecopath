@@ -278,6 +278,7 @@ Public Class cValueChainPlugin
     Public Function LoadModel(dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.LoadModel
 
+
         ' Sanity checks
         Debug.Assert(Me.m_data.IsChanged() = False)
 
@@ -306,6 +307,7 @@ Public Class cValueChainPlugin
 
     Private Function CloseModel() As Boolean _
         Implements IEcopathPlugin.CloseModel
+        Me.m_data.Save()
         ' NOP
     End Function
 
@@ -404,8 +406,8 @@ Public Class cValueChainPlugin
 
         ' Run VC model
         Me.m_model.RunTimeStep(Me.m_data, Me.m_result, iTimeStep, DirectCast(ecosimresults, cEcoSimResults), DirectCast(EcosimDatastructures, cEcosimDatastructures))
-        ' Send out data
-        Me.BroadcastResults(iTimeStep)
+        '' Send out data
+        'Me.BroadcastResults(iTimeStep)
 
     End Sub
 
@@ -637,6 +639,8 @@ Public Class cValueChainPlugin
         Me.m_bInSearch = True
         Me.m_data.InitRun()
 
+        Me.m_result.Reset(cModel.eRunTypes.Ecosim)
+
         ' JS 11 Apr 25: tracking down why repeated FPS + VC runs differ
 
         ' Here the value chain can clear out any search data values that it may have left.
@@ -660,8 +664,8 @@ Public Class cValueChainPlugin
 
             Debug.Assert(Me.m_searchds IsNot Nothing)
 
-            Dim profit = Me.Results.GetTotal(cResults.eVariableType.Profit)
-            Dim employ = Me.Results.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
+            Dim profit = Me.m_result.GetTotal(cResults.eVariableType.Profit)
+            Dim employ = Me.m_result.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
 
             Console.WriteLine("VC out ? search: Profit {0}, Employ {1}", profit, employ)
 
@@ -669,6 +673,8 @@ Public Class cValueChainPlugin
             Me.m_searchds.Profit = profit
             'ds.totval = Me.Results.GetTotal(cResults.eVariableType.RevenueTotal)      'VC 2025040Z
             Me.m_searchds.Employ = employ
+
+            Me.m_result.Reset(cModel.eRunTypes.Ecosim)
 
         End If
 
@@ -691,31 +697,31 @@ Public Class cValueChainPlugin
 
 #Region " Exhibitionism "
 
-    Public ReadOnly Property Data() As cData
+    Public ReadOnly Property Data As cData
         Get
             Return Me.m_data
         End Get
     End Property
 
-    Public ReadOnly Property Model() As cModel
+    Public ReadOnly Property Model As cModel
         Get
             Return Me.m_model
         End Get
     End Property
 
-    Public ReadOnly Property Results() As cResults
+    Public ReadOnly Property Results As cResults
         Get
             Return Me.m_result
         End Get
     End Property
 
-    Public ReadOnly Property Core() As cCore
+    Public ReadOnly Property Core As cCore
         Get
             Return Me.m_core
         End Get
     End Property
 
-    Public ReadOnly Property Context() As cUIContext
+    Public ReadOnly Property Context As cUIContext
         Get
             Return Me.m_uic
         End Get

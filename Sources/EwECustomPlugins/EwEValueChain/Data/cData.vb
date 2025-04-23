@@ -43,7 +43,6 @@ Public Class cData
 
 #Region " Private vars "
 
-    Private m_strDatabase As String = ""
     Private m_parameters As cParameters = New cParameters()
 
     Private m_lUnits As New List(Of cUnit)

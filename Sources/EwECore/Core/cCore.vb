@@ -2408,6 +2408,9 @@ Public Class cCore
         ' In a batch?
         If (Me.m_iBatchLock > 0) Then Return True
 
+        ' Just to be sure
+        Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+
         ' Assess tracer
         Dim bIsModified As Boolean = Me.m_StateMonitor.IsEcotracerModified()
         If (savelevel = eBatchChangeLevelFlags.Ecotracer) Then If Not bIsModified Then Return True
@@ -3478,12 +3481,7 @@ Public Class cCore
 
         Dim bNeedClosing As Boolean = False
 
-        If (Me.DataSource IsNot Nothing) Then
-            If (String.Compare(strFile, Me.DataSource.ToString, True) <> 0) Then
-                ' Close model
-                If Not Me.CloseModel() Then Return False
-            End If
-        End If
+        If Not Me.CloseModel() Then Return False
 
         Dim dsEcopath As IEcopathDataSource = Nothing
         Dim bsuccess As Boolean

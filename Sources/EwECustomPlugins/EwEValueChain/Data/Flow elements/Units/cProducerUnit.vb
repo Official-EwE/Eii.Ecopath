@@ -32,9 +32,9 @@ Imports System.Text
 ''' <summary>
 ''' 
 ''' </summary>
-<TypeConverter(GetType(cPropertySorter)), _
-    DefaultProperty("Name"), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
 Public Class cProducerUnit
     Inherits cEconomicUnit
 
@@ -100,8 +100,8 @@ Public Class cProducerUnit
         ''' <summary>
         ''' Convert fleet name to DBID
         ''' </summary>
-        Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, _
-                culture As System.Globalization.CultureInfo, _
+        Public Overrides Function ConvertFrom(context As ITypeDescriptorContext,
+                culture As System.Globalization.CultureInfo,
                 value As Object) As Object
 
             If TypeOf value Is String Then
@@ -125,9 +125,9 @@ Public Class cProducerUnit
         ''' <summary>
         ''' Convert DBID to fleet name
         ''' </summary>
-        Public Overrides Function ConvertTo(context As ITypeDescriptorContext, _
-                culture As System.Globalization.CultureInfo, _
-                value As Object, _
+        Public Overrides Function ConvertTo(context As ITypeDescriptorContext,
+                culture As System.Globalization.CultureInfo,
+                value As Object,
                 destinationType As System.Type) As Object
 
             If TypeOf value Is Integer Then
@@ -704,9 +704,6 @@ Public Class cProducerUnit
             sBTot += Me.m_landings(iGroup)
             sValTot += Me.m_values(iGroup)
         Next
-
-        ' Enable this to ensure that the chain is few with consistent data
-        'Console.WriteLine("TS {0}, Prod {1}: TotB={2}, TotV={3}", iTimeStep, Me.Sequence, sBTot, sValTot)
 
         ' No item specified?
         If iItem = 0 Then

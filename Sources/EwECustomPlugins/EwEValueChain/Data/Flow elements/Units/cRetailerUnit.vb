@@ -25,9 +25,9 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-<TypeConverter(GetType(cPropertySorter)), _
-    DefaultProperty("Name"), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
 Public Class cRetailerUnit
     Inherits cEconomicUnit
 
@@ -56,7 +56,7 @@ Public Class cRetailerUnit
         End Get
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
         Get
             Return cUnitFactory.eUnitType.Retailer

@@ -32,12 +32,12 @@ Imports EwEUtils.Utilities
 ''' class objects.
 ''' </summary>
 ''' ===========================================================================
-<TypeConverter(GetType(cPropertySorter)), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    Serializable()>
 Public Class cProducerUnitDefault
     Inherits cProducerUnit
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overrides Property Name() As String
         Get
             Return "Default"
@@ -46,14 +46,14 @@ Public Class cProducerUnitDefault
         End Set
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overrides ReadOnly Property Category() As String
         Get
             Return ""
         End Get
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overrides Property EcopathFleetID() As Integer
         Get
         End Get
@@ -61,7 +61,7 @@ Public Class cProducerUnitDefault
         End Set
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overrides Property Fleet() As EwECore.cEcopathFleetInput
         Get
             Return Nothing

@@ -25,9 +25,9 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-<TypeConverter(GetType(cPropertySorter)), _
-    DefaultProperty("Name"), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
 Public MustInherit Class cEconomicUnit
     Inherits cUnit
 
@@ -164,9 +164,9 @@ Public MustInherit Class cEconomicUnit
 
 #End Region
 
-    Protected Overridable Function CalcProductionLiveWeight(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcProductionLiveWeight(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim ToBeCalculated As Single = 0
@@ -177,9 +177,9 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Revenue "
 
-    Protected Overridable Function CalcProducts(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcProducts(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.EnergyProducts + Me.IndustrialProducts + Me.ServiceProducts)
@@ -191,9 +191,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcSubsidy(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcSubsidy(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.SubsidyEnergy + Me.SubsidyOther)
@@ -205,9 +205,9 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Cost "
 
-    Protected Overridable Function CalcRawmaterialCost(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcRawmaterialCost(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         If Me.Broker = False Then
@@ -217,9 +217,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcInputCost(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcInputCost(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.CapitalInput + Me.EnergyCost + Me.IndustrialCost + Me.ServiceCost)
@@ -227,9 +227,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcManagementRoyaltyCertificationCost(results As cResults, _
-               sInputBiomass As Single, sInputValue As Single, _
-               sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcManagementRoyaltyCertificationCost(results As cResults,
+               sInputBiomass As Single, sInputValue As Single,
+               sOutputBiomass As Single, sOutputValue As Single,
                iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.m_ManagementCost + Me.m_RoyaltyCost + Me.m_CertificationCost)
@@ -239,9 +239,9 @@ Public MustInherit Class cEconomicUnit
 
 
 
-    Protected Overridable Function CalcTax(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcTax(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.TaxEnvironmental + Me.TaxExport + Me.TaxProduction + Me.TaxVAT + Me.m_TaxesImport + Me.LicenseTax)
@@ -250,9 +250,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcWorkerPay(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcWorkerPay(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single
@@ -265,9 +265,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcOwnerPay(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcOwnerPay(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single
@@ -284,9 +284,9 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Social "
 
-    Protected Overridable Function CalcWorkerFemales(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcWorkerFemales(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_WorkerFemale
@@ -294,9 +294,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcWorkerMales(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcWorkerMales(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_WorkerMale
@@ -305,9 +305,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcWorkerParttime(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcWorkerParttime(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_WorkerParttime
@@ -315,9 +315,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcWorkerOther(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcWorkerOther(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_WorkerOther
@@ -326,9 +326,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcOwnerMales(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcOwnerMales(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_OwnerMale
@@ -337,9 +337,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcOwnerFemales(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcOwnerFemales(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * Me.m_OwnerFemale
@@ -347,9 +347,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcWorkerDependents(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcWorkerDependents(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.m_WorkerFemaleDependents * Me.m_WorkerFemale + Me.m_WorkerMaleDependents * Me.m_WorkerMale)
@@ -357,9 +357,9 @@ Public MustInherit Class cEconomicUnit
         Return True
     End Function
 
-    Protected Overridable Function CalcOwnerDependents(results As cResults, _
-                sInputBiomass As Single, sInputValue As Single, _
-                sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcOwnerDependents(results As cResults,
+                sInputBiomass As Single, sInputValue As Single,
+                sOutputBiomass As Single, sOutputValue As Single,
                 iTimeStep As Integer) As Boolean
 
         Dim sSum As Single = sOutputBiomass * (Me.m_OwnerFemaleDependents * Me.m_OwnerFemale + Me.m_OwnerMaleDependents * Me.m_OwnerMale)
@@ -375,12 +375,12 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Products "
 
-    <Browsable(True), _
-        Category(sPROPCAT_PRODUCTS), _
-        DisplayName("Energy products"), _
-        Description("Energy products per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(2)> _
+    <Browsable(True),
+        Category(sPROPCAT_PRODUCTS),
+        DisplayName("Energy products"),
+        Description("Energy products per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(2)>
     Public Property EnergyProducts() As Single
         Get
             Return Me.m_EnergyProducts
@@ -391,12 +391,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_PRODUCTS), _
-        DisplayName("Industrial products"), _
-        Description("Revenue of industrial products per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(3)> _
+    <Browsable(True),
+        Category(sPROPCAT_PRODUCTS),
+        DisplayName("Industrial products"),
+        Description("Revenue of industrial products per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(3)>
     Public Property IndustrialProducts() As Single
         Get
             Return Me.m_IndustrialProducts
@@ -407,12 +407,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_PRODUCTS), _
-        DisplayName("Service products"), _
-        Description("Revenue of services per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(4)> _
+    <Browsable(True),
+        Category(sPROPCAT_PRODUCTS),
+        DisplayName("Service products"),
+        Description("Revenue of services per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(4)>
     Public Property ServiceProducts() As Single
         Get
             Return Me.m_ServiceProducts
@@ -423,12 +423,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SUBSIDIES), _
-        DisplayName("Energy subsidy"), _
-        Description("Energy subsidy per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(1)> _
+    <Browsable(True),
+        Category(sPROPCAT_SUBSIDIES),
+        DisplayName("Energy subsidy"),
+        Description("Energy subsidy per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(1)>
     Public Property SubsidyEnergy() As Single
         Get
             Return Me.m_SubsidyEnergy
@@ -439,12 +439,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SUBSIDIES), _
-        DisplayName("Other subsidies"), _
-        Description("Other subsidies per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(2)> _
+    <Browsable(True),
+        Category(sPROPCAT_SUBSIDIES),
+        DisplayName("Other subsidies"),
+        Description("Other subsidies per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(2)>
     Public Property SubsidyOther() As Single
         Get
             Return Me.m_SubsidyOther
@@ -455,11 +455,11 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-     Category(sPROPCAT_GENERAL), _
-     DisplayName("Broker"), _
-     Description("States whether this unit functions as a broker"), _
-     cPropertySorter.PropertyOrder(5)> _
+    <Browsable(True),
+     Category(sPROPCAT_GENERAL),
+     DisplayName("Broker"),
+     Description("States whether this unit functions as a broker"),
+     cPropertySorter.PropertyOrder(5)>
     Public Overridable Property Broker() As Boolean
         Get
             Return Me.m_bBroker
@@ -473,13 +473,13 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Pay "
 
-    <Browsable(True), _
-         Category(sPROPCAT_PAY), _
-         DisplayName("Female worker pay"), _
-         Description("Female worker pay per tonnes of product"), _
-         DefaultValue(0.0!), _
-         cPropertySorter.PropertyOrder(1)> _
-      Public Property WorkerFemalePay() As Single
+    <Browsable(True),
+         Category(sPROPCAT_PAY),
+         DisplayName("Female worker pay"),
+         Description("Female worker pay per tonnes of product"),
+         DefaultValue(0.0!),
+         cPropertySorter.PropertyOrder(1)>
+    Public Property WorkerFemalePay() As Single
         Get
             Return Me.m_WorkerFemalePay
         End Get
@@ -489,12 +489,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_PAY), _
-        DisplayName("Male worker pay"), _
-        Description("Male worker pay per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(2)> _
+    <Browsable(True),
+        Category(sPROPCAT_PAY),
+        DisplayName("Male worker pay"),
+        Description("Male worker pay per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(2)>
     Public Property WorkerMalePay() As Single
         Get
             Return Me.m_WorkerMalePay
@@ -505,12 +505,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_PAY), _
-        DisplayName("Female owners pay"), _
-        Description("Female owners pay per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(3)> _
+    <Browsable(True),
+        Category(sPROPCAT_PAY),
+        DisplayName("Female owners pay"),
+        Description("Female owners pay per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(3)>
     Public Property OwnerFemalePay() As Single
         Get
             Return Me.m_OwnerFemalePay
@@ -521,12 +521,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_PAY), _
-        DisplayName("Male owners pay"), _
-        Description("Male owners pay per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(4)> _
+    <Browsable(True),
+        Category(sPROPCAT_PAY),
+        DisplayName("Male owners pay"),
+        Description("Male owners pay per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(4)>
     Public Property OwnerMalePay() As Single
         Get
             Return Me.m_OwnerMalePay
@@ -537,12 +537,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_PAY), _
-        DisplayName("Other worker pay"), _
-        Description("Other worker pay per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(10)> _
+    <Browsable(True),
+        Category(sPROPCAT_PAY),
+        DisplayName("Other worker pay"),
+        Description("Other worker pay per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(10)>
     Public Property WorkerOtherPay() As Single
         Get
             Return Me.m_WorkerOtherPay
@@ -557,13 +557,13 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Share "
 
-    <Browsable(True), _
-         Category(sPROPCAT_SHARE), _
-         DisplayName("Female worker share"), _
-         Description("Female worker share in % of revenue"), _
-         DefaultValue(0.0!), _
-         cPropertySorter.PropertyOrder(1)> _
-      Public Property WorkerFemaleshare() As Single
+    <Browsable(True),
+         Category(sPROPCAT_SHARE),
+         DisplayName("Female worker share"),
+         Description("Female worker share in % of revenue"),
+         DefaultValue(0.0!),
+         cPropertySorter.PropertyOrder(1)>
+    Public Property WorkerFemaleshare() As Single
         Get
             Return Me.m_WorkerFemaleShare
         End Get
@@ -573,12 +573,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SHARE), _
-        DisplayName("Male worker share"), _
-        Description("Male worker share in % of revenue"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(2)> _
+    <Browsable(True),
+        Category(sPROPCAT_SHARE),
+        DisplayName("Male worker share"),
+        Description("Male worker share in % of revenue"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(2)>
     Public Property WorkerMaleshare() As Single
         Get
             Return Me.m_WorkerMaleShare
@@ -589,12 +589,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SHARE), _
-        DisplayName("Female owners share"), _
-        Description("Female owners share in % of revenue"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(3)> _
+    <Browsable(True),
+        Category(sPROPCAT_SHARE),
+        DisplayName("Female owners share"),
+        Description("Female owners share in % of revenue"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(3)>
     Public Property OwnerFemaleshare() As Single
         Get
             Return Me.m_OwnerFemaleShare
@@ -605,13 +605,13 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SHARE), _
-        DisplayName("Male owners share"), _
-        Description("Male owners share in % of revenue"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(4)> _
- Public Property OwnerMaleshare() As Single
+    <Browsable(True),
+        Category(sPROPCAT_SHARE),
+        DisplayName("Male owners share"),
+        Description("Male owners share in % of revenue"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(4)>
+    Public Property OwnerMaleshare() As Single
         Get
             Return Me.m_OwnerMaleShare
         End Get
@@ -625,12 +625,12 @@ Public MustInherit Class cEconomicUnit
 
 #Region " Input cost "
 
-    <Browsable(True), _
-        Category(sPROPCAT_INPUTCOST), _
-        DisplayName("Capital cost"), _
-        Description("Capital cost per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(2)> _
+    <Browsable(True),
+        Category(sPROPCAT_INPUTCOST),
+        DisplayName("Capital cost"),
+        Description("Capital cost per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(2)>
     Public Property CapitalInput() As Single
         Get
             Return Me.m_CapitalCost
@@ -641,12 +641,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_INPUTCOST), _
-        DisplayName("Energy cost"), _
-        Description("Energy cost per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(3)> _
+    <Browsable(True),
+        Category(sPROPCAT_INPUTCOST),
+        DisplayName("Energy cost"),
+        Description("Energy cost per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(3)>
     Public Property EnergyCost() As Single
         Get
             Return Me.m_EnergyCost
@@ -657,12 +657,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_INPUTCOST), _
-        DisplayName("Industrial cost"), _
-        Description("Industrial cost per tonnes of product"), _
-        DefaultValue(0), _
-        cPropertySorter.PropertyOrder(4)> _
+    <Browsable(True),
+        Category(sPROPCAT_INPUTCOST),
+        DisplayName("Industrial cost"),
+        Description("Industrial cost per tonnes of product"),
+        DefaultValue(0),
+        cPropertySorter.PropertyOrder(4)>
     Public Property IndustrialCost() As Single
         Get
             Return Me.m_IndustrialCost
@@ -673,12 +673,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_INPUTCOST), _
-        DisplayName("Services cost"), _
-        Description("Services cost per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(5)> _
+    <Browsable(True),
+        Category(sPROPCAT_INPUTCOST),
+        DisplayName("Services cost"),
+        Description("Services cost per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(5)>
     Public Property ServiceCost() As Single
         Get
             Return Me.m_ServiceCost
@@ -689,12 +689,12 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_INPUTCOST), _
-        DisplayName("Management cost"), _
-        Description("Management cost per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(6)> _
+    <Browsable(True),
+        Category(sPROPCAT_INPUTCOST),
+        DisplayName("Management cost"),
+        Description("Management cost per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(6)>
     Public Property ManagementCost() As Single
         Get
             Return Me.m_ManagementCost
@@ -705,13 +705,13 @@ Public MustInherit Class cEconomicUnit
         End Set
     End Property
 
-    <Browsable(True), _
-    Category(sPROPCAT_INPUTCOST), _
-    DisplayName("Royalty cost"), _
-    Description("Royalty cost per tonnes of product"), _
-    DefaultValue(0.0!), _
-    cPropertySorter.PropertyOrder(7)> _
-Public Property RoyaltyCost() As Single
+    <Browsable(True),
+    Category(sPROPCAT_INPUTCOST),
+    DisplayName("Royalty cost"),
+    Description("Royalty cost per tonnes of product"),
+    DefaultValue(0.0!),
+    cPropertySorter.PropertyOrder(7)>
+    Public Property RoyaltyCost() As Single
         Get
             Return Me.m_RoyaltyCost
         End Get
@@ -721,13 +721,13 @@ Public Property RoyaltyCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-    Category(sPROPCAT_INPUTCOST), _
-    DisplayName("Certification cost"), _
-    Description("Certification cost per tonnes of product"), _
-    DefaultValue(0.0!), _
-    cPropertySorter.PropertyOrder(8)> _
-Public Property CertificationCost() As Single
+    <Browsable(True),
+    Category(sPROPCAT_INPUTCOST),
+    DisplayName("Certification cost"),
+    Description("Certification cost per tonnes of product"),
+    DefaultValue(0.0!),
+    cPropertySorter.PropertyOrder(8)>
+    Public Property CertificationCost() As Single
         Get
             Return Me.m_CertificationCost
         End Get
@@ -741,12 +741,12 @@ Public Property CertificationCost() As Single
 
 #Region " Taxes "
 
-    <Browsable(True), _
-        Category(sPROPCAT_TAXES), _
-        DisplayName("Environmental tax"), _
-        Description("Environmental tax per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(1)> _
+    <Browsable(True),
+        Category(sPROPCAT_TAXES),
+        DisplayName("Environmental tax"),
+        Description("Environmental tax per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(1)>
     Public Property TaxEnvironmental() As Single
         Get
             Return Me.m_TaxesEnvironmental
@@ -757,13 +757,13 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-         Category(sPROPCAT_TAXES), _
-        DisplayName("Export tax"), _
-         Description("Export tax per tonnes of product"), _
-         DefaultValue(0.0!), _
-         cPropertySorter.PropertyOrder(2)> _
-     Public Property TaxExport() As Single
+    <Browsable(True),
+         Category(sPROPCAT_TAXES),
+        DisplayName("Export tax"),
+         Description("Export tax per tonnes of product"),
+         DefaultValue(0.0!),
+         cPropertySorter.PropertyOrder(2)>
+    Public Property TaxExport() As Single
         Get
             Return Me.m_TaxesExport
         End Get
@@ -773,12 +773,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_TAXES), _
-        DisplayName("Import tax"), _
-        Description("Import tax per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(3)> _
+    <Browsable(True),
+        Category(sPROPCAT_TAXES),
+        DisplayName("Import tax"),
+        Description("Import tax per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(3)>
     Public Property TaxImport() As Single
         Get
             Return Me.m_TaxesImport
@@ -789,13 +789,13 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_TAXES), _
-        DisplayName("Production tax"), _
-        Description("Production tax per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(4)> _
-     Public Property TaxProduction() As Single
+    <Browsable(True),
+        Category(sPROPCAT_TAXES),
+        DisplayName("Production tax"),
+        Description("Production tax per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(4)>
+    Public Property TaxProduction() As Single
         Get
             Return Me.m_TaxesProduction
         End Get
@@ -805,13 +805,13 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-         Category(sPROPCAT_TAXES), _
-         DisplayName("VAT tax"), _
-         Description("VAT tax per tonnes of product"), _
-         DefaultValue(0.0!), _
-         cPropertySorter.PropertyOrder(6)> _
-     Public Property TaxVAT() As Single
+    <Browsable(True),
+         Category(sPROPCAT_TAXES),
+         DisplayName("VAT tax"),
+         Description("VAT tax per tonnes of product"),
+         DefaultValue(0.0!),
+         cPropertySorter.PropertyOrder(6)>
+    Public Property TaxVAT() As Single
         Get
             Return Me.m_TaxesVAT
         End Get
@@ -821,12 +821,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_TAXES), _
-        DisplayName("Profit tax (prop.)"), _
-        Description("Tax as proportion of profit"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(6)> _
+    <Browsable(True),
+        Category(sPROPCAT_TAXES),
+        DisplayName("Profit tax (prop.)"),
+        Description("Tax as proportion of profit"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(6)>
     Public Property ProfitTax() As Single
         Get
             Return Me.m_TaxesProfit
@@ -837,12 +837,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_TAXES), _
-        DisplayName("License tax"), _
-        Description("License tax per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(7)> _
+    <Browsable(True),
+        Category(sPROPCAT_TAXES),
+        DisplayName("License tax"),
+        Description("License tax per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(7)>
     Public Property LicenseTax() As Single
         Get
             Return Me.m_TaxesLicense
@@ -857,12 +857,12 @@ Public Property CertificationCost() As Single
 
 #Region " Social "
 
-    <Browsable(True), _
-        Category(sPROPCAT_SOCIAL), _
-        DisplayName("No. female workers"), _
-        Description("Number of female workers per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(1)> _
+    <Browsable(True),
+        Category(sPROPCAT_SOCIAL),
+        DisplayName("No. female workers"),
+        Description("Number of female workers per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(1)>
     Public Property WorkerFemale() As Single
         Get
             Return Me.m_WorkerFemale
@@ -873,12 +873,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SOCIAL), _
-        DisplayName("No. male workers"), _
-        Description("Number of male workers per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(2)> _
+    <Browsable(True),
+        Category(sPROPCAT_SOCIAL),
+        DisplayName("No. male workers"),
+        Description("Number of male workers per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(2)>
     Public Property WorkerMale() As Single
         Get
             Return Me.m_WorkerMale
@@ -889,12 +889,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SOCIAL), _
-        DisplayName("No part-time workers"), _
-        Description("Number of part-time workers per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(3)> _
+    <Browsable(True),
+        Category(sPROPCAT_SOCIAL),
+        DisplayName("No part-time workers"),
+        Description("Number of part-time workers per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(3)>
     Public Property WorkerParttime() As Single
         Get
             Return Me.m_WorkerParttime
@@ -905,12 +905,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SOCIAL), _
-        DisplayName("No. other workers"), _
-        Description("Number of other workers per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(4)> _
+    <Browsable(True),
+        Category(sPROPCAT_SOCIAL),
+        DisplayName("No. other workers"),
+        Description("Number of other workers per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(4)>
     Public Property WorkerOther() As Single
         Get
             Return Me.m_WorkerOther
@@ -921,12 +921,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SOCIAL), _
-        DisplayName("No. female owners"), _
-        Description("Number of female owners per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(10)> _
+    <Browsable(True),
+        Category(sPROPCAT_SOCIAL),
+        DisplayName("No. female owners"),
+        Description("Number of female owners per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(10)>
     Public Property OwnerFemale() As Single
         Get
             Return Me.m_OwnerFemale
@@ -937,12 +937,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SOCIAL), _
-        DisplayName("No. male owners"), _
-        Description("Number of male owners per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(11)> _
+    <Browsable(True),
+        Category(sPROPCAT_SOCIAL),
+        DisplayName("No. male owners"),
+        Description("Number of male owners per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(11)>
     Public Property OwnerMale() As Single
         Get
             Return Me.m_OwnerMale
@@ -953,12 +953,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SOCIAL), _
-        DisplayName("Female worker dependents"), _
-        Description("Number of dependents per female worker"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(20)> _
+    <Browsable(True),
+        Category(sPROPCAT_SOCIAL),
+        DisplayName("Female worker dependents"),
+        Description("Number of dependents per female worker"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(20)>
     Public Property WorkerFemaleDependents() As Single
         Get
             Return Me.m_WorkerFemaleDependents
@@ -969,12 +969,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SOCIAL), _
-        DisplayName("Male worker dependents"), _
-        Description("Number of dependents per male worker"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(21)> _
+    <Browsable(True),
+        Category(sPROPCAT_SOCIAL),
+        DisplayName("Male worker dependents"),
+        Description("Number of dependents per male worker"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(21)>
     Public Property WorkerMaleDependents() As Single
         Get
             Return Me.m_WorkerMaleDependents
@@ -985,12 +985,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SOCIAL), _
-        DisplayName("Female owner dependents"), _
-        Description("Number of dependents per female owner"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(30)> _
+    <Browsable(True),
+        Category(sPROPCAT_SOCIAL),
+        DisplayName("Female owner dependents"),
+        Description("Number of dependents per female owner"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(30)>
     Public Property OwnerFemaleDependents() As Single
         Get
             Return Me.m_OwnerFemaleDependents
@@ -1001,12 +1001,12 @@ Public Property CertificationCost() As Single
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_SOCIAL), _
-        DisplayName("Male owner dependents"), _
-        Description("Number of dependents per male owner"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(31)> _
+    <Browsable(True),
+        Category(sPROPCAT_SOCIAL),
+        DisplayName("Male owner dependents"),
+        Description("Number of dependents per male owner"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(31)>
     Public Property OwnerMaleDependents() As Single
         Get
             Return Me.m_OwnerMaleDependents

@@ -30,9 +30,9 @@ Imports EwEUtils.Utilities
 ''' This class represents a group of distribution units in the Ecost economic model.
 ''' </summary>
 ''' ===========================================================================
-<TypeConverter(GetType(cPropertySorter)), _
-    DefaultProperty("Name"), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
 Public Class cDistributionUnit
     Inherits cEconomicUnit
 
@@ -84,7 +84,7 @@ Public Class cDistributionUnit
 
 #End Region ' General
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
         Get
             Return cUnitFactory.eUnitType.Distribution
