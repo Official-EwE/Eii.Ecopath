@@ -32,12 +32,12 @@ Imports EwEUtils.Utilities
 ''' class objects.
 ''' </summary>
 ''' ===========================================================================
-<TypeConverter(GetType(cPropertySorter)), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    Serializable()>
 Public Class cWholesalerUnitDefault
     Inherits cWholesalerUnit
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overrides Property Name() As String
         Get
             Return "Default"
@@ -46,7 +46,7 @@ Public Class cWholesalerUnitDefault
         End Set
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overrides ReadOnly Property Category() As String
         Get
             Return ""

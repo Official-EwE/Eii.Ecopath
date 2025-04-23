@@ -25,9 +25,9 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-<TypeConverter(GetType(cPropertySorter)), _
-    DefaultProperty("Name"), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
 Public Class cProcessingUnit
     Inherits cEconomicUnit
 
@@ -54,6 +54,10 @@ Public Class cProcessingUnit
         bSucces = bSucces And Me.CalcAgriculturalCost(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
         ' ..but adds Agricultural revenue from such products, should there by any
         bSucces = bSucces And Me.CalcAgriculturalProducts(results, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue, iTimeStep)
+
+        ' JS 23 Apr 25: debugging for inconsistencies. No issues found here.
+        'Console.WriteLine("{0} @{1} -> {2} > B > {3}, {4} > V {5}", Me.Name, iTimeStep, sInputBiomass, sInputValue, sOutputBiomass, sOutputValue)
+
         Return bSucces
 
     End Function
@@ -69,9 +73,9 @@ Public Class cProcessingUnit
 
     End Function
 
-    Protected Overridable Function CalcAgriculturalProducts(result As cResults, _
-            sInputBiomass As Single, sInputValue As Single, _
-            sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function CalcAgriculturalProducts(result As cResults,
+            sInputBiomass As Single, sInputValue As Single,
+            sOutputBiomass As Single, sOutputValue As Single,
             iTimeStep As Integer) As Boolean
 
         Dim AgriRevenue As Single = sOutputBiomass * Me.AgriculturalProducts
@@ -84,13 +88,13 @@ Public Class cProcessingUnit
 
 #Region " Properties "
 
-    <Browsable(True), _
-        Category(sPROPCAT_PRODUCTS), _
-        DisplayName("Revenue (agricultural)"), _
-        Description("Revenue for agricultural products per tonnes of product"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(101)> _
-        Public Property AgriculturalProducts() As Single
+    <Browsable(True),
+        Category(sPROPCAT_PRODUCTS),
+        DisplayName("Revenue (agricultural)"),
+        Description("Revenue for agricultural products per tonnes of product"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(101)>
+    Public Property AgriculturalProducts() As Single
         Get
             Return Me.m_AgriculturalProducts
         End Get
@@ -100,13 +104,13 @@ Public Class cProcessingUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_INPUTCOST), _
-        DisplayName("Cost (agricultural)"), _
-        Description("Agricultural input cost per tonnes of products"), _
-        DefaultValue(0.0!), _
-        cPropertySorter.PropertyOrder(102)> _
-        Public Property AgriculturalInput() As Single
+    <Browsable(True),
+        Category(sPROPCAT_INPUTCOST),
+        DisplayName("Cost (agricultural)"),
+        Description("Agricultural input cost per tonnes of products"),
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(102)>
+    Public Property AgriculturalInput() As Single
         Get
             Return Me.m_AgriculturalInput
         End Get
@@ -122,7 +126,7 @@ Public Class cProcessingUnit
         End Get
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
         Get
             Return cUnitFactory.eUnitType.Processing

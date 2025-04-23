@@ -31,9 +31,9 @@ Imports EwEUtils.Utilities
 ''' Consumers form the end of economic flow chains.
 ''' </summary>
 ''' ===========================================================================
-<TypeConverter(GetType(cPropertySorter)), _
-    DefaultProperty("Name"), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
 Public Class cConsumerUnit
     Inherits cUnit
 
@@ -57,7 +57,7 @@ Public Class cConsumerUnit
 
 #End Region ' General
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
         Get
             Return cUnitFactory.eUnitType.Consumer

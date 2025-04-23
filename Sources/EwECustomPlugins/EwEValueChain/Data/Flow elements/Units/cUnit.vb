@@ -211,8 +211,11 @@ Public MustInherit Class cUnit
         ' Store received values
         Me.m_lReceivedInputs.Add(input)
 
+        ' Sanity check
+        Debug.Assert(Me.m_lReceivedInputs.Count <= Me.LinkInCount())
+
         ' At least expected inputs received?
-        If (Me.m_lReceivedInputs.Count >= Me.LinkInCount()) Then
+        If (Me.m_lReceivedInputs.Count = Me.LinkInCount()) Then
 
             ' #Yes: Process combined inputs
             input = Me.ProcessAndSumInputs(Me.m_lReceivedInputs, results)
