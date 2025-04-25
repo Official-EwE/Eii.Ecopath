@@ -10274,7 +10274,7 @@ Namespace DataSources
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcospaceData
             Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
-            Dim iLayerID As Integer = -1
+            Dim iLayerID As Integer = -1 ' DBID for connected layer
             Dim wr As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
@@ -10295,15 +10295,26 @@ Namespace DataSources
 
                 For Each adt As cSpatialDataAdapter In spatialDS.DataAdapters
                     Dim vn As String = cin.GetVarName(adt.VarName)
-                    For i As Integer = 1 To adt.MaxLength
-                        For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
-                            cfg = spatialDS.Item(adt.VarName, i, j)
+                    For iLayer As Integer = 1 To adt.MaxLength
+                        For iConnection As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+                            cfg = spatialDS.Item(adt.VarName, iLayer, iConnection)
                             If (cfg IsNot Nothing) Then
                                 Dim strDataset As String = cfg.DatasetGUID
                                 If Not String.IsNullOrWhiteSpace(strDataset) Then
 
-                                    iLayerID = ecospaceDS.getLayerID(adt.VarName, i)
-                                    iLayerID = idm.GetID(ecospaceDS.GetLayerDataType(adt.VarName), iLayerID) ' Needs mapping
+                                    iLayerID = ecospaceDS.GetLayerID(adt.VarName, iLayer) ' Get Ecospace ID
+
+                                    ' Needs mapping, but this is nasty
+                                    Dim dattype As eDataTypes = ecospaceDS.GetLayerDataType(adt.VarName)
+
+                                    ' Ecospace groups map to Ecopath groups
+                                    If (dattype = eDataTypes.EcospaceGroup) Then
+                                        iLayerID = idm.GetID(dattype, ecospaceDS.EcopathGroupDBID(iLayer))
+                                    End If
+                                    ' Ecospace fleets map to Ecopath fleets
+                                    If (dattype = eDataTypes.EcospaceFleet) Then
+                                        iLayerID = idm.GetID(dattype, ecospaceDS.EcopathFleetDBID(iLayer))
+                                    End If
 
                                     drow = wr.NewRow()
                                     drow("ScenarioID") = iScenarioID
@@ -10323,9 +10334,9 @@ Namespace DataSources
                                     iSequence += 1
                                 End If
                             End If
-                        Next j
+                        Next iConnection
 
-                    Next i
+                    Next iLayer
                 Next adt
 
             Catch ex As Exception
