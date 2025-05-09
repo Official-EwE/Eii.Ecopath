@@ -3333,6 +3333,23 @@ Namespace Core
 
 #End Region ' Exploitation types
 
+#Region " FeedingGuild "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating the feeding guild
+    '''</summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eFeedingGuild As Integer
+        NotSet = 0
+        Carnivore
+        Piscivore
+        Omnivore
+        Herbivore
+    End Enum
+
+#End Region ' FeedingGuild
+
 #Region " Automated update types "
 
     ''' -----------------------------------------------------------------------
