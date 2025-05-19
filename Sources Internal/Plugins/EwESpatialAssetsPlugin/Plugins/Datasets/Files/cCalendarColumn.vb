@@ -53,23 +53,25 @@ Public Class cCalendarCell
         Me.Style.Format = "yyyy/MM"
     End Sub
 
-    Public Overrides Sub InitializeEditingControl(ByVal rowIndex As Integer, _
-        ByVal initialFormattedValue As Object, _
+    Public Overrides Sub InitializeEditingControl(ByVal rowIndex As Integer,
+        ByVal initialFormattedValue As Object,
         ByVal dataGridViewCellStyle As DataGridViewCellStyle)
 
         ' Set the value of the editing control to the current cell value.
-        MyBase.InitializeEditingControl(rowIndex, initialFormattedValue, _
+        MyBase.InitializeEditingControl(rowIndex, initialFormattedValue,
             dataGridViewCellStyle)
 
-        Dim ctl As cCalendarEditingControl = _
+        Dim ctl As cCalendarEditingControl =
             CType(Me.DataGridView.EditingControl, cCalendarEditingControl)
 
         ' Use the default row value when Value property is null.
-        If (Me.Value Is Nothing) Then
+        Try
+            If (Me.Value IsNot Nothing) Then
+                ctl.Value = CType(Me.Value, DateTime)
+            End If
+        Catch ex As Exception
             ctl.Value = CType(Me.DefaultNewRowValue, DateTime)
-        Else
-            ctl.Value = CType(Me.Value, DateTime)
-        End If
+        End Try
     End Sub
 
     Public Overrides ReadOnly Property EditType() As Type
@@ -89,7 +91,7 @@ Public Class cCalendarCell
     Public Overrides ReadOnly Property DefaultNewRowValue() As Object
         Get
             ' Use the current DateTime and time as the default value.
-            Return DateTime.Now
+            Return New DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)
         End Get
     End Property
 

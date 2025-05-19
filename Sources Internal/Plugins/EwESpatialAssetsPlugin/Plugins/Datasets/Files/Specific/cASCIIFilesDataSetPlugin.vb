@@ -359,9 +359,12 @@ Namespace SpatialData
                                 If (bits(iCol) = "nan" Or bits(iCol) = "na") Then
                                     rs.Value(iRow, iCol) = rs.NoDataValue
                                 Else
-                                    rs.Value(iRow, iCol) = cStringUtils.ConvertToDouble(bits(iCol), -9999, ".")
-                                    bValueError = bValueError Or (rs.Value(iRow, iCol) = -9999)
-                                    bDataCorrect = bDataCorrect And Not bValueError
+                                    ' JS: Do not cCore.NULL_VALUE to detect errors!!
+                                    Dim val As Double = cStringUtils.ConvertToDouble(bits(iCol), -99999, ".")
+                                    If (val = -99999) Then
+                                        bValueError = True : bDataCorrect = True : val = rs.NoDataValue
+                                    End If
+                                    rs.Value(iRow, iCol) = val
                                 End If
                             Next iCol
                             iRow += 1
