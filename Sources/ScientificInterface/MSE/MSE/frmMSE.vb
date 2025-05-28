@@ -102,8 +102,8 @@ Public Class frmMSE
 
         Me.m_plotter = New cMSEPlotter
         Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.m_zgc)
-        Me.m_plotter.PlotType = eMSEPlotTypes.Line
-        Me.m_plotter.DataType = eMSEPlotData.Biomass
+        Me.m_plotter.PlotType = ePlotTypes.Line
+        Me.m_plotter.DataType = ePlotData.Biomass
 
         Me.m_ckSave.Checked = Me.Core.Autosave(eAutosaveTypes.MSE)
         Me.UpdateControls(eMSEStates.InActive)
