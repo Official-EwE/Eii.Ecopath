@@ -33,45 +33,6 @@ Imports EwECore.Style
 
 #End Region
 
-#Region "Enumerators"
-
-''' -----------------------------------------------------------------------
-''' <summary>
-''' Type of data being plotted.
-''' </summary>
-''' <remarks>This can't be EwECore.eDataTypes because the data comes from the same Core objects. 
-''' Can't use eVarNameFlags because there is more than one type of data in a plot.</remarks>
-''' -----------------------------------------------------------------------
-Public Enum eMSEPlotData As Integer
-    NotSet = 0
-    Biomass
-    GroupCatch
-    FleetValue
-    Effort
-    BioEst
-    FleetTotValue
-    Value
-    FishingMortalityComparison
-End Enum
-
-''' -----------------------------------------------------------------------
-''' <summary>
-''' Enumerated type, stating supported types of MSE plots.
-''' </summary>
-''' -----------------------------------------------------------------------
-Friend Enum eMSEPlotTypes
-    ''' <summary>Plot a historgram.</summary>
-    Histogram
-    ''' <summary>Plot a mass lines plot.</summary>
-    Values
-    ''' <summary>Plot a single line.</summary>
-    Line
-End Enum
-
-#End Region
-
-#Region "Plotting Class"
-
 Friend Class cMSERefPoint
 
     Private m_low As Single
@@ -114,8 +75,8 @@ Friend Class cMSEPlotter
     Private m_zdGraph As ZedGraphControl
     Private m_manager As cMSEManager
     Private m_nvis As Integer
-    Private m_type As eMSEPlotTypes
-    Private m_dataType As eMSEPlotData
+    Private m_type As ePlotTypes
+    Private m_dataType As ePlotData
     Private m_Data As List(Of cCoreGroupBase)
     Private m_RefPoints As List(Of cMSERefPoint)
     Private m_nLines As Integer
@@ -131,8 +92,8 @@ Friend Class cMSEPlotter
     ''' </summary>
     ''' <param name="uic">UI context to use.</param>
     ''' <param name="graph">Graph to use.</param>
-    Public Sub Init(uic As cUIContext, _
-                    MSEManager As cMSEManager, _
+    Public Sub Init(uic As cUIContext,
+                    MSEManager As cMSEManager,
                     graph As ZedGraphControl)
 
         Me.m_uic = uic
@@ -164,11 +125,11 @@ Friend Class cMSEPlotter
     ''' <summary>
     ''' Get/set how the current data is to be plotted.
     ''' </summary>
-    Public Property PlotType() As eMSEPlotTypes
+    Public Property PlotType() As ePlotTypes
         Get
             Return Me.m_type
         End Get
-        Set(value As eMSEPlotTypes)
+        Set(value As ePlotTypes)
             Me.m_type = value
         End Set
     End Property
@@ -176,11 +137,11 @@ Friend Class cMSEPlotter
     ''' <summary>
     ''' What type of data is being plotted. Used mostly for labels
     ''' </summary>
-    Public Property DataType() As eMSEPlotData
+    Public Property DataType() As ePlotData
         Get
             Return Me.m_dataType
         End Get
-        Set(value As eMSEPlotData)
+        Set(value As ePlotData)
             Me.m_dataType = value
         End Set
     End Property
@@ -219,7 +180,7 @@ Friend Class cMSEPlotter
 
             If Me.m_Data IsNot Nothing Then
 
-                If Me.m_type <> eMSEPlotTypes.Line Then
+                If Me.m_type <> ePlotTypes.Line Then
                     Me.m_zgh.NumPanes = Me.NumVisPanes
                     Me.ClearGraphs()
                     Me.ConfigPanes()
@@ -228,11 +189,11 @@ Friend Class cMSEPlotter
                 Me.plotRefLines()
 
                 Select Case Me.m_type
-                    Case eMSEPlotTypes.Histogram
+                    Case ePlotTypes.Histogram
                         Me.PlotHistoGram()
-                    Case eMSEPlotTypes.Values
+                    Case ePlotTypes.Values
                         Me.PlotValues()
-                    Case eMSEPlotTypes.Line
+                    Case ePlotTypes.Line
                         Me.Plotline()
                 End Select
 
@@ -267,7 +228,7 @@ Friend Class cMSEPlotter
 
             'if we are adding one line at a time
             'and this is the first line then configure the panes
-            If Me.m_type = eMSEPlotTypes.Line And Me.m_nLines = 0 Then
+            If Me.m_type = ePlotTypes.Line And Me.m_nLines = 0 Then
                 Me.ConfigValuePanes()
             End If
 
@@ -290,7 +251,7 @@ Friend Class cMSEPlotter
         Try
 
             'Only data added one line at a time should be plotted this way
-            If Me.m_type <> eMSEPlotTypes.Line Then Exit Sub
+            If Me.m_type <> ePlotTypes.Line Then Exit Sub
 
             For Each data As cCoreGroupBase In Me.m_Data
                 ipane += 1
@@ -334,7 +295,7 @@ Friend Class cMSEPlotter
                 End If
 
                 'Do NOT rescale if this is a Histogram
-                If Me.m_type <> eMSEPlotTypes.Histogram Then
+                If Me.m_type <> ePlotTypes.Histogram Then
                     ' Me.m_zgh.AutoscalePane(ipane) = True
                 End If
 
@@ -357,21 +318,21 @@ Friend Class cMSEPlotter
         Try
             Select Case Me.m_dataType
 
-                Case eMSEPlotData.Biomass
+                Case ePlotData.Biomass
                     Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
                     refPoint = New cMSERefPoint(grp.BiomassRefLower, grp.BiomassRefUpper)
 
-                Case eMSEPlotData.BioEst
+                Case ePlotData.BioEst
                     Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
                     refPoint = New cMSERefPoint(grp.BiomassEstRefLower, grp.BiomassEstRefUpper)
 
-                Case eMSEPlotData.GroupCatch
+                Case ePlotData.GroupCatch
                     Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
                     refPoint = New cMSERefPoint(grp.CatchRefLower, grp.CatchRefUpper)
-                Case eMSEPlotData.FleetValue
+                Case ePlotData.FleetValue
                     Dim flt As cMSEFleetInput = Me.m_manager.EcopathFleetInputs(ItemIndex)
                     refPoint = New cMSERefPoint(flt.CatchRefLower, flt.CatchRefUpper)
-                Case eMSEPlotData.Effort
+                Case ePlotData.Effort
                     Dim flt As cMSEFleetInput = Me.m_manager.EcopathFleetInputs(ItemIndex)
                     refPoint = New cMSERefPoint(flt.EffortRefLower, flt.EffortRefUpper)
 
@@ -392,9 +353,9 @@ Friend Class cMSEPlotter
 #Region "Private methods"
 
     Private Sub ConfigPanes()
-        If Me.m_type = eMSEPlotTypes.Histogram Then
+        If Me.m_type = ePlotTypes.Histogram Then
             Me.ConfigHistoPanes()
-        ElseIf Me.m_type = eMSEPlotTypes.Values Or Me.m_type = eMSEPlotTypes.Line Then
+        ElseIf Me.m_type = ePlotTypes.Values Or Me.m_type = ePlotTypes.Line Then
             Me.ConfigValuePanes()
         End If
     End Sub
@@ -422,12 +383,12 @@ Friend Class cMSEPlotter
 
         If Me.m_uic.StyleGuide.GroupVisible(GroupIndex) Then
 
-            If Me.m_dataType <> eMSEPlotData.GroupCatch Then
+            If Me.m_dataType <> ePlotData.GroupCatch Then
                 Return True
             End If
 
             Dim grp As cEcoPathGroupInput = Me.m_uic.Core.EcopathGroupInputs(GroupIndex)
-            If Me.m_dataType = eMSEPlotData.GroupCatch And grp.IsFished Then
+            If Me.m_dataType = ePlotData.GroupCatch And grp.IsFished Then
                 'For ePlotData.GroupCatch only fished groups are visible
                 Return True
             End If
@@ -444,7 +405,7 @@ Friend Class cMSEPlotter
 
         Select Case Me.m_dataType
 
-            Case eMSEPlotData.Biomass, eMSEPlotData.GroupCatch, eMSEPlotData.BioEst
+            Case ePlotData.Biomass, ePlotData.GroupCatch, ePlotData.BioEst
                 'By group
                 Dim grp As cCoreGroupBase = Nothing
                 For i As Integer = 1 To Me.m_manager.NumGroups
@@ -453,15 +414,15 @@ Friend Class cMSEPlotter
                     If Me.IsGroupVisible(grp.Index) Then
                         'Only configure the pane if this group is visible
                         ipane += 1
-                        Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart, _
-                                               CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
+                        Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart,
+                                               CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)),
                                                Me.YLabel, 0, 0, False, LegendPos.Top, ipane)
                         Me.m_zgh.AutoscalePane(ipane) = True
                     End If
 
                 Next
 
-            Case eMSEPlotData.FishingMortalityComparison
+            Case ePlotData.FishingMortalityComparison
                 'By group
                 Dim grp As cCoreGroupBase = Nothing
                 For i As Integer = 1 To Me.m_manager.NumGroups
@@ -470,36 +431,36 @@ Friend Class cMSEPlotter
                     If Me.IsGroupVisible(grp.Index) Then
                         'Only configure the pane if this group is visible
                         ipane += 1
-                        Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart, _
-                                               CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
+                        Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart,
+                                               CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)),
                                                Me.YLabel, 0, 1.0, False, LegendPos.Top, ipane)
                         Me.m_zgh.AutoscalePane(ipane) = True
                     End If
 
                 Next
 
-            Case eMSEPlotData.Effort, eMSEPlotData.FleetValue
+            Case ePlotData.Effort, ePlotData.FleetValue
                 'By Fleet
                 Dim flt As cEcopathFleetInput
                 For iflt As Integer = 1 To Me.m_uic.Core.nFleets
                     flt = Me.m_uic.Core.EcopathFleetInputs(iflt)
                     If Me.m_uic.StyleGuide.FleetVisible(flt.Index) Then
                         ipane += 1
-                        Me.m_zgh.ConfigurePane(flt.Name, Me.XLabel, xStart, _
-                                               CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
-                                               Me.YLabel, 0, 0, _
+                        Me.m_zgh.ConfigurePane(flt.Name, Me.XLabel, xStart,
+                                               CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)),
+                                               Me.YLabel, 0, 0,
                                                False, LegendPos.Top, ipane)
                         Me.m_zgh.AutoscalePane(ipane) = True
                     End If
                 Next
 
-            Case eMSEPlotData.FleetTotValue
+            Case ePlotData.FleetTotValue
 
                 'By Fleet
 
-                Me.m_zgh.ConfigurePane("Value combined fleets", Me.XLabel, xStart, _
-                                       CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
-                                       Me.YLabel, 0, 0, _
+                Me.m_zgh.ConfigurePane("Value combined fleets", Me.XLabel, xStart,
+                                       CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)),
+                                       Me.YLabel, 0, 0,
                                        False, LegendPos.Top, 1)
                 Me.m_zgh.AutoscalePane(1) = True
 
@@ -514,20 +475,20 @@ Friend Class cMSEPlotter
         Get
             Select Case Me.m_type
 
-                Case eMSEPlotTypes.Histogram
+                Case ePlotTypes.Histogram
                     Return SharedResources.HEADER_PROBABILITY
 
-                Case eMSEPlotTypes.Line, eMSEPlotTypes.Values
+                Case ePlotTypes.Line, ePlotTypes.Values
                     Select Case Me.m_dataType
-                        Case eMSEPlotData.Biomass
+                        Case ePlotData.Biomass
                             Return SharedResources.HEADER_BIOMASS
-                        Case eMSEPlotData.Effort
+                        Case ePlotData.Effort
                             Return SharedResources.HEADER_EFFORT
-                        Case eMSEPlotData.FleetValue
+                        Case ePlotData.FleetValue
                             Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, SharedResources.HEADER_CATCHVALUE, Me.m_uic.StyleGuide.FormatUnitString(cUnits.Monetary))
-                        Case eMSEPlotData.GroupCatch
+                        Case ePlotData.GroupCatch
                             Return SharedResources.HEADER_CATCH_WEIGHT
-                        Case eMSEPlotData.FishingMortalityComparison
+                        Case ePlotData.FishingMortalityComparison
                             ' ToDo: add Y label
                             Return ""
                     End Select
@@ -545,24 +506,24 @@ Friend Class cMSEPlotter
         Get
             Select Case Me.m_type
 
-                Case eMSEPlotTypes.Histogram
+                Case ePlotTypes.Histogram
 
                     Select Case Me.m_dataType
-                        Case eMSEPlotData.Biomass
+                        Case ePlotData.Biomass
                             ' ToDo: add unit
                             Return SharedResources.HEADER_BIOMASS
-                        Case eMSEPlotData.Effort
+                        Case ePlotData.Effort
                             ' ToDo: add unit
                             Return SharedResources.HEADER_EFFORT
-                        Case eMSEPlotData.FleetValue
+                        Case ePlotData.FleetValue
                             'Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCHVALUE_UNIT, _
                             '                                            New cUnitFormatter() {cUnitFormatter.Monetary})
-                        Case eMSEPlotData.GroupCatch
+                        Case ePlotData.GroupCatch
                             ' ToDo: add unit
                             Return SharedResources.HEADER_CATCH_WEIGHT
                     End Select
 
-                Case eMSEPlotTypes.Line, eMSEPlotTypes.Values
+                Case ePlotTypes.Line, ePlotTypes.Values
 
                     Return SharedResources.HEADER_YEAR
 
@@ -845,7 +806,7 @@ Friend Class cMSEPlotter
 
         Me.RemoveRefLines(pane)
 
-        If Me.m_type = eMSEPlotTypes.Histogram Then
+        If Me.m_type = ePlotTypes.Histogram Then
             'Histogram plot
 
             Dim pplLB As New PointPairList
@@ -946,11 +907,11 @@ Friend Class cMSEPlotter
 
     Friend Function NumVisPanes() As Integer
 
-        If Me.m_dataType = eMSEPlotData.FleetTotValue Then
+        If Me.m_dataType = ePlotData.FleetTotValue Then
             Return 1
         End If
 
-        If Me.m_dataType = eMSEPlotData.Effort Or Me.m_dataType = eMSEPlotData.FleetValue Then
+        If Me.m_dataType = ePlotData.Effort Or Me.m_dataType = ePlotData.FleetValue Then
             Return Me.NumVisFleets()
         End If
 
@@ -961,6 +922,3 @@ Friend Class cMSEPlotter
 #End Region
 
 End Class
-
-#End Region
-

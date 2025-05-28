@@ -38,8 +38,8 @@ Public Class frmMSEPlots
     Private m_paneMaster As MasterPane = Nothing
     Private m_plotter As cMSEPlotter
     Private m_MSEEvents As cMSEEventSource
-    Private m_curPlotType As eMSEPlotTypes
-    Private m_curPlotData As eMSEPlotData
+    Private m_curPlotType As ePlotTypes
+    Private m_curPlotData As ePlotData
 
     Public Sub New()
         Me.InitializeComponent()
@@ -66,19 +66,19 @@ Public Class frmMSEPlots
             AddHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         End If
 
-        Me.m_rbHisto.Tag = eMSEPlotTypes.Histogram
-        Me.m_rbValues.Tag = eMSEPlotTypes.Values
+        Me.m_rbHisto.Tag = ePlotTypes.Histogram
+        Me.m_rbValues.Tag = ePlotTypes.Values
 
-        Me.m_rbGroupBiomass.Tag = eMSEPlotData.Biomass
-        Me.m_rbGroupCatch.Tag = eMSEPlotData.GroupCatch
-        Me.m_rbFleetValue.Tag = eMSEPlotData.FleetValue
-        Me.m_rbEffort.Tag = eMSEPlotData.Effort
-        Me.m_rbBioEst.Tag = eMSEPlotData.BioEst
-        Me.m_rbTotFleetValue.Tag = eMSEPlotData.FleetTotValue
-        Me.m_rbFComparison.Tag = eMSEPlotData.FishingMortalityComparison
+        Me.m_rbGroupBiomass.Tag = ePlotData.Biomass
+        Me.m_rbGroupCatch.Tag = ePlotData.GroupCatch
+        Me.m_rbFleetValue.Tag = ePlotData.FleetValue
+        Me.m_rbEffort.Tag = ePlotData.Effort
+        Me.m_rbBioEst.Tag = ePlotData.BioEst
+        Me.m_rbTotFleetValue.Tag = ePlotData.FleetTotValue
+        Me.m_rbFComparison.Tag = ePlotData.FishingMortalityComparison
 
-        Me.m_curPlotData = eMSEPlotData.Biomass
-        Me.m_curPlotType = eMSEPlotTypes.Histogram
+        Me.m_curPlotData = ePlotData.Biomass
+        Me.m_curPlotType = ePlotTypes.Histogram
 
 
         Try
@@ -115,7 +115,7 @@ Public Class frmMSEPlots
     End Sub
 
     Private Sub PlotGroupData(lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), _
-                              PlotType As eMSEPlotTypes, DataType As eMSEPlotData)
+                              PlotType As ePlotTypes, DataType As ePlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
@@ -140,7 +140,7 @@ Public Class frmMSEPlots
     End Sub
 
     Private Sub PlotFleetData(lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), _
-                              PlotType As eMSEPlotTypes, DataType As eMSEPlotData)
+                              PlotType As ePlotTypes, DataType As ePlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
@@ -161,7 +161,7 @@ Public Class frmMSEPlots
 
     End Sub
 
-    Private Sub PlotFleetTotValData(TotFleetValue As cMSEStats, PlotType As eMSEPlotTypes, DataType As eMSEPlotData)
+    Private Sub PlotFleetTotValData(TotFleetValue As cMSEStats, PlotType As ePlotTypes, DataType As ePlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
@@ -181,19 +181,19 @@ Public Class frmMSEPlots
     Private Sub DrawPlots()
 
         Select Case Me.m_curPlotData
-            Case eMSEPlotData.Biomass
+            Case ePlotData.Biomass
                 Me.PlotGroupData(Me.m_MSE.BiomassStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case eMSEPlotData.BioEst
+            Case ePlotData.BioEst
                 Me.PlotGroupData(Me.m_MSE.BioEstimatesStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case eMSEPlotData.GroupCatch
+            Case ePlotData.GroupCatch
                 Me.PlotGroupData(Me.m_MSE.GroupCatchStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case eMSEPlotData.FleetValue
+            Case ePlotData.FleetValue
                 Me.PlotFleetData(Me.m_MSE.FleetStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case eMSEPlotData.Effort
+            Case ePlotData.Effort
                 Me.PlotFleetData(Me.m_MSE.EffortStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case eMSEPlotData.FleetTotValue
+            Case ePlotData.FleetTotValue
                 Me.PlotFleetTotValData(Me.m_MSE.TotalFleetValueStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case eMSEPlotData.FishingMortalityComparison
+            Case ePlotData.FishingMortalityComparison
                 Me.PlotGroupData(Me.m_MSE.FCompareStats, Me.m_curPlotType, Me.m_curPlotData)
         End Select
 
@@ -215,7 +215,7 @@ Public Class frmMSEPlots
                     Debug.Assert(False, "Radio button does not have a tag")
                     Return
                 End If
-                Me.m_curPlotData = DirectCast(tag, eMSEPlotData)
+                Me.m_curPlotData = DirectCast(tag, ePlotData)
                 Me.UpdateControls()
                 Me.Cursor = Cursors.WaitCursor
                 Me.DrawPlots()
@@ -237,7 +237,7 @@ Public Class frmMSEPlots
             If DirectCast(sender, RadioButton).Checked Then
                 Dim tag As Object = DirectCast(sender, RadioButton).Tag
                 If tag Is Nothing Then Exit Sub
-                Me.m_curPlotType = DirectCast(tag, eMSEPlotTypes)
+                Me.m_curPlotType = DirectCast(tag, ePlotTypes)
                 Me.Cursor = Cursors.WaitCursor
                 Me.m_plotter.PlotType = Me.m_curPlotType
                 Me.DrawPlots()

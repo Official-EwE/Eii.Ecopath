@@ -251,5 +251,22 @@ Namespace Definitions
         Driver
     End Enum
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Type of data being plotted.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum ePlotData As Integer
+        NotSet = 0
+        Biomass
+        GroupCatch
+        FleetValue
+        Effort
+        BioEst
+        FleetTotValue
+        Value
+        FishingMortalityComparison
+    End Enum
+
 End Namespace
 
