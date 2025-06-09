@@ -955,6 +955,9 @@ Public Class cEcoSpace
                 Array.Clear(Me.EcoSpaceData.CatchFleetMap, 0, Me.EcoSpaceData.CatchFleetMap.Length)
                 Array.Clear(Me.EcoSpaceData.Landings, 0, Me.EcoSpaceData.Landings.Length)
                 Array.Clear(Me.EcoSpaceData.DiscardsMap, 0, Me.EcoSpaceData.DiscardsMap.Length)
+                Array.Clear(Me.EcoSpaceData.CatchGroupFleetMap, 0, Me.EcoSpaceData.CatchGroupFleetMap.Length)
+                Array.Clear(Me.EcoSpaceData.DiscardMortGroupFleetMap, 0, Me.EcoSpaceData.DiscardMortGroupFleetMap.Length)
+                Array.Clear(Me.EcoSpaceData.DiscardSurviveGroupFleetMap, 0, Me.EcoSpaceData.DiscardSurviveGroupFleetMap.Length)
 
                 If Me.ContaiminantTracerData.EcoSpaceConSimOn Then
                     'drive contaminant concentration with external data
