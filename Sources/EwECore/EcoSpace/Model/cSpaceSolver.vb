@@ -1298,6 +1298,7 @@ Public Class cSpaceSolver
         Dim cellCatch As Single
         Dim cellLandings As Single
         Dim cellValue As Single
+        Dim cellDiscards As Single
         Dim iFlt As Integer
         Dim iGrp As Integer
         Dim st As Double = Me.m_stpWatch.Elapsed.TotalSeconds
@@ -1365,8 +1366,27 @@ Public Class cSpaceSolver
 
                                 'Discards map used by the Biodiversity plugin
                                 'Include discards that survived
-                                Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += Biomass(iGrp) * Me.m_SimData.relQ(iFlt, iGrp) * (1 - Me.m_SimData.PropLandedTime(iFlt, iGrp)) * Me.m_Data.EffortSpace(iFlt, iRow, iCol)
-                                ' Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += cellCatch * Me.m_SimData.Propdiscardtime(iFlt, iGrp)
+                                cellDiscards = Biomass(iGrp) * Me.m_Data.EffortSpace(iFlt, iRow, iCol) * Me.m_SimData.relQ(iFlt, iGrp) * (1 - Me.m_SimData.PropLandedTime(iFlt, iGrp))
+                                Me.m_Data.DiscardsMap(iRow, iCol, iGrp) += cellDiscards
+
+                                If (Me.m_Data.CatchGroupFleetMap(iFlt, iGrp) Is Nothing) Then
+                                    Dim map(Me.m_Data.InRow, Me.m_Data.InCol) As Single
+                                    Me.m_Data.CatchGroupFleetMap(iFlt, iGrp) = map
+                                End If
+                                Me.m_Data.CatchGroupFleetMap(iFlt, iGrp)(iRow, iCol) += cellCatch
+
+                                If (Me.m_Data.DiscardMortGroupFleetMap(iFlt, iGrp) Is Nothing) Then
+                                    Dim map(Me.m_Data.InRow, Me.m_Data.InCol) As Single
+                                    Me.m_Data.DiscardMortGroupFleetMap(iFlt, iGrp) = map
+                                End If
+                                Me.m_Data.DiscardMortGroupFleetMap(iFlt, iGrp)(iRow, iCol) += cellDiscards * Me.m_SimData.PropDiscardMortTime(iFlt, iGrp)
+
+                                If (Me.m_Data.DiscardSurviveGroupFleetMap(iFlt, iGrp) Is Nothing) Then
+                                    Dim map(Me.m_Data.InRow, Me.m_Data.InCol) As Single
+                                    Me.m_Data.DiscardSurviveGroupFleetMap(iFlt, iGrp) = map
+                                End If
+                                Me.m_Data.DiscardSurviveGroupFleetMap(iFlt, iGrp)(iRow, iCol) += cellDiscards * (1 - Me.m_SimData.PropDiscardMortTime(iFlt, iGrp))
+
                             End If
                         End If
                     Next iFlt

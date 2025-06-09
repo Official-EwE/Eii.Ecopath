@@ -24,8 +24,6 @@ Imports EwEUtils.Extensions
 
 #End Region ' Imports
 
-#Region "Public Class definitions"
-
 Public Class cEcospaceDataStructures
 
 #Region "Public Fields"
@@ -241,13 +239,17 @@ Public Class cEcospaceDataStructures
 
     ''' <summary>Catch by Row, Col, Group.</summary>
     Public CatchMap(,,) As Single
-
     ''' <summary>Catch by Row, Col, Fleet.</summary>
     Public CatchFleetMap(,,) As Single
-
-    ''' <summary>Discards (all? mortality?) by Row, Col, Group.</summary>
-    ''' <remarks>This is not exposed by the interface at this time. It was included for the Biodiversity plugin and can only be accessed via code.</remarks>
+    ''' <summary>All discards by Row, Col, Group.</summary>
     Public DiscardsMap(,,) As Single
+
+    ''' <summary>Catch by (Fleet, Group)(row, col)</summary>
+    Public CatchGroupFleetMap(,)(,) As Single
+    ''' <summary>Discard mortality by (Fleet, Group)(row, col)</summary>
+    Public DiscardMortGroupFleetMap(,)(,) As Single
+    ''' <summary>Discard survival by (Fleet, Group)(row, col)</summary>
+    Public DiscardSurviveGroupFleetMap(,)(,) As Single
 
     ''' <summary>User-entered depth map</summary>
     Public DepthInput(,) As Single
@@ -2012,6 +2014,9 @@ Public Class cEcospaceDataStructures
             Me.allocate(Me.CatchMap, Me.InRow, Me.InCol, Me.NGroups)
             Me.allocate(Me.DiscardsMap, Me.InRow, Me.InCol, Me.NGroups)
             Me.allocate(Me.CatchFleetMap, Me.InRow, Me.InCol, Me.nFleets)
+            ReDim Me.CatchGroupFleetMap(Me.nFleets, Me.NGroups)
+            ReDim Me.DiscardMortGroupFleetMap(Me.nFleets, Me.NGroups)
+            ReDim Me.DiscardSurviveGroupFleetMap(Me.nFleets, Me.NGroups)
 
             'For Nereus EcoOcean there are more fleets than groups
             'so dimension the fleets first
@@ -2875,7 +2880,3 @@ Public Class cEcospaceDataStructures
     End Function
 
 End Class
-
-#End Region
-
-
