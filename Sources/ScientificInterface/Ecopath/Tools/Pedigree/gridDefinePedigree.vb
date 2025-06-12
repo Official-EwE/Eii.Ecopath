@@ -28,6 +28,7 @@ Imports ScientificInterface.Other
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
+Imports System.Runtime.CompilerServices
 
 #End Region ' Imports
 
@@ -36,9 +37,9 @@ Imports SourceGrid2.Cells
 ''' Grid class for the Edit Pedigree Levels interface.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-<CLSCompliant(False)> _
-   Public Class gridDefinePedigree
-    : Inherits cEwEGrid
+<CLSCompliant(False)>
+Public Class gridDefinePedigree
+    Inherits cEwEGrid
 
 #Region " Private vars "
 
@@ -140,7 +141,7 @@ Imports SourceGrid2.Cells
                     Me.m_bConfigChanged = True
                 Else
                     Me.m_bConfigChanged = Me.m_bConfigChanged Or (lvlInfo.Index <> (iLevel + 1))
-                    Me.m_bLevelsChanged = Me.m_bLevelsChanged Or lvlInfo.IsChanged(Me.m_man.Level(lvlInfo.Index))
+                    Me.m_bLevelsChanged = Me.m_bLevelsChanged Or lvlInfo.IsChanged()
                 End If
             Next iLevel
 
@@ -174,11 +175,10 @@ Imports SourceGrid2.Cells
 
         Public Sub Sort()
             ' Sort the list
-            Me.m_lfiLevels.Sort(New cPedigreeInfoListSorter)
-            ' Invalidate all index positions, regardless if sort changed anything. This can be improved one day.
-            For Each lvlInfo As cPedigreeLevelInfo In Me.m_lfiLevels
-                ' Reset indices
-                lvlInfo.Index = -1
+            Dim levels As cPedigreeLevelInfo() = m_lfiLevels.ToArray()
+            Array.Sort(levels, New cPedigreeInfoListSorter())
+            For i As Integer = 0 To levels.Count
+                levels(i).Index = i + 1
             Next
         End Sub
 
@@ -188,6 +188,9 @@ Imports SourceGrid2.Cells
             Dim level As cPedigreeLevel = Nothing
             Dim iLevel As Integer = 0
             Dim bSuccess As Boolean = True
+
+            ' Get a new manager as the core may have reloaded
+            Me.m_man = Me.m_core.GetPedigreeManager(Me.m_vn)
 
             ' Handle added and removed items
             If (Me.m_bConfigChanged) Then
@@ -235,15 +238,16 @@ Imports SourceGrid2.Cells
 
                 ' Build quick map of (reloaded) levels
                 Dim dtLevels As New Dictionary(Of Integer, cPedigreeLevel)
-                For iLevel As Integer = 1 To Me.m_man.NumLevels
-                    level = Me.m_man.Level(iLevel)
-                    dtLevels(level.DBID) = level
+                For Each li As cPedigreeLevelInfo In Me.m_lfiLevels
+                    If (Not li.IsNew()) Then
+                        dtLevels(li.Level.DBID) = li.Level
+                    End If
                 Next
 
                 For Each lvlInfo As cPedigreeLevelInfo In Me.m_lfiLevels
                     If Not lvlInfo.IsNew Then
                         level = dtLevels(lvlInfo.LevelDBID)
-                        If lvlInfo.IsChanged(level) Then
+                        If lvlInfo.IsChanged() Then
                             ' Only commint changes to prevent unnecessary updates
                             If level.Name <> lvlInfo.Name Then level.Name = lvlInfo.Name
                             If level.PoolColor <> lvlInfo.Color Then level.PoolColor = lvlInfo.Color
@@ -253,9 +257,9 @@ Imports SourceGrid2.Cells
                         End If
                     End If
                 Next
+                Me.m_man.UpdatePedigreeLevels()
             End If
 
-            Me.m_man.UpdatePedigreeLevels()
             Return bSuccess
 
         End Function
@@ -274,6 +278,8 @@ Imports SourceGrid2.Cells
         ''' <summary>The status of a Level in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
+        Public ReadOnly Property Level As cPedigreeLevel
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor, initializes a new instanze of this class.
@@ -285,6 +291,8 @@ Imports SourceGrid2.Cells
         Public Sub New(level As cPedigreeLevel)
 
             Debug.Assert(level IsNot Nothing)
+
+            Me.Level = level
 
             Me.LevelDBID = level.DBID
             Me.LevelIndex = level.Index
@@ -308,6 +316,7 @@ Imports SourceGrid2.Cells
                        Optional sIndexValue As Single = 0.0!,
                        Optional iConfidenceInterval As Integer = 0)
 
+            Me.LevelDBID = cCore.NULL_VALUE
             Me.Name = strName
             Me.Description = ""
             Me.Color = 0
@@ -391,7 +400,7 @@ Imports SourceGrid2.Cells
         End Property
 
         Public Function IsNew() As Boolean
-            Return (Me.LevelDBID = cCore.NULL_VALUE)
+            Return (Me.Level Is Nothing)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -404,13 +413,15 @@ Imports SourceGrid2.Cells
         ''' has been changed.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged(level As cPedigreeLevel) As Boolean
-            If (Me.LevelDBID <> level.DBID) Then Return False
-            Return (level.Name <> Me.Name) Or
-                   (level.PoolColor <> Me.Color) Or
-                   (level.Description <> Me.Description) Or
-                   (level.IndexValue <> Me.IndexValue) Or
-                   (level.ConfidenceInterval <> Me.ConfidenceInterval)
+        Public Function IsChanged() As Boolean
+            If (Me.Level Is Nothing) Then Return False
+            If (Me.LevelDBID <> Me.Level.DBID) Then Return False
+            Return (Me.Level.Name <> Me.Name) Or
+                   (Me.Level.PoolColor <> Me.Color) Or
+                   (Me.Level.Description <> Me.Description) Or
+                   (Me.Level.IndexValue <> Me.IndexValue) Or
+                   (Me.Level.ConfidenceInterval <> Me.ConfidenceInterval) Or
+                   (Me.Level.Sequence <> Me.Index)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1007,39 +1018,32 @@ Imports SourceGrid2.Cells
             bConfigChanged = bConfigChanged Or manInfo.ConfigChanged
         Next
 
-        If bConfigChanged Then
+        If bConfigChanged Or bLevelsChanged Then
 
             ' Ooh!
-            If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
-            cApplicationStatusNotifier.StartProgress(Me.Core, SharedResources.GENERIC_STATUS_APPLYCHANGES)
+            If Not Me.Core.SetBatchLock(If(bConfigChanged, cCore.eBatchLockType.Restructure, cCore.eBatchLockType.Update)) Then Return False
 
-            Try
-                For Each manInfo As cPedigreeManagerInfo In Me.m_dictConfigs.Values
-                    bSucces = bSucces And manInfo.ApplyConfigChanges()
-                Next
-            Catch ex As Exception
+            If bConfigChanged Then
 
-            End Try
+                Try
+                    For Each manInfo As cPedigreeManagerInfo In Me.m_dictConfigs.Values
+                        bSucces = bSucces And manInfo.ApplyConfigChanges()
+                    Next
+                Catch ex As Exception
 
-            cApplicationStatusNotifier.EndProgress(Me.Core)
-            ' The core will reload now
-            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
+                End Try
+            End If
 
-        End If
-
-        If bLevelsChanged Then
-
-            Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
-
-            Try
-                For Each manInfo As cPedigreeManagerInfo In Me.m_dictConfigs.Values
-                    bSucces = bSucces And manInfo.ApplyLevelChanges()
-                Next
-            Catch ex As Exception
-            End Try
+            If bLevelsChanged Then
+                Try
+                    For Each manInfo As cPedigreeManagerInfo In Me.m_dictConfigs.Values
+                        bSucces = bSucces And manInfo.ApplyLevelChanges()
+                    Next
+                Catch ex As Exception
+                End Try
+            End If
 
             Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath)
-
         End If
 
         Return bSucces
