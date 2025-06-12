@@ -68,6 +68,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
         Me.m_bCalcExtrasOld = Me.Core.m_EcoSimData.bAlwaysCalcTLc
 
         If cFileUtils.IsDirectoryAvailable(Me.DataDir, True) Then
+            ' Write baseline
             Me.Save(cCore.NULL_VALUE)
             Me.Core.m_EcoSimData.bAlwaysCalcTLc = True
         Else
@@ -79,6 +80,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
     ''' <summary>
     ''' Save data to file.
     ''' </summary>
+    ''' <param name="iTrial">THe trial number, where 0 is the baseline.</param>
     Public Sub Save(iTrial As Integer) Implements IMonteCarloResultsWriter.Save
 
         If Not Me.IsSaving() Then Return
@@ -88,7 +90,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
         Try
             If (iTrial <= 0) Then
-
+                ' -- Baseline --
                 For Each par As eMCParams In [Enum].GetValues(GetType(eMCParams))
                     If (Me.MC.IsEnabled(par)) Then
                         Dim sw As StreamWriter = Nothing
@@ -107,7 +109,8 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
                     End If
                 Next
-            ElseIf (iTrial < Integer.MaxValue) Then
+            ElseIf (1 <= ITrial And iTrial < Integer.MaxValue) Then
+                ' -- Iteration --
                 For Each par As eMCParams In [Enum].GetValues(GetType(eMCParams))
                     If (Me.MC.IsEnabled(par)) Then
                         Dim sw As StreamWriter = Nothing
@@ -266,7 +269,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                                 Case eMCParams.Discards
                                     val = Me.Core.m_EcopathData.Discard(iFleet, iGroup)
                             End Select
-                            sw.Write(",{0}", If(val > 0, cStringUtils.ToCSVField(val), ""))
+                            sw.WriteLine(",{0}", If(val > 0, cStringUtils.ToCSVField(val), ""))
                         End If
                     Next iFleet
                 Next iGroup
