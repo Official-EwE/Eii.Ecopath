@@ -14645,7 +14645,7 @@ Public Class cCore
 
                 Select Case value.varName
 
-                    Case eVarNameFlags.mcBAcv, eVarNameFlags.mcBcv, eVarNameFlags.mcEEcv, eVarNameFlags.mcPBcv, eVarNameFlags.mcVUcv, eVarNameFlags.mcQBcv, eVarNameFlags.mcDCcv
+                    Case eVarNameFlags.mcBAcv, eVarNameFlags.mcBcv, eVarNameFlags.mcEEcv, eVarNameFlags.mcPBcv, eVarNameFlags.mcVUcv, eVarNameFlags.mcQBcv, eVarNameFlags.mcDCcv, eVarNameFlags.mcDiscardscv, eVarNameFlags.mcLandingscv
 
                         Me.m_MonteCarlo.CalculateUpperLowerLimits()
                         Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified,
