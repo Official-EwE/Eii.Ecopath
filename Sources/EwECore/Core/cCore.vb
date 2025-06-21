@@ -2833,8 +2833,8 @@ Public Class cCore
                 fields("MapCols") = cStringUtils.FormatNumber(Me.m_EcospaceData.InCol)
                 fields("MapCellLength") = cStringUtils.FormatNumber(Me.m_EcospaceData.CellLength)
                 fields("MapCellSize") = cStringUtils.FormatNumber(Me.m_EcospaceBasemap.CellSize())
-                fields("MapLatitude") = cStringUtils.FormatNumber(Me.m_EcospaceData.Lat1)
-                fields("MapLongitude") = cStringUtils.FormatNumber(Me.m_EcospaceData.Lon1)
+                fields("MapTopLeftLat") = cStringUtils.FormatNumber(Me.m_EcospaceData.Lat1)
+                fields("MapTopLeftLon") = cStringUtils.FormatNumber(Me.m_EcospaceData.Lon1)
                 fields("NoActiveCells") = cStringUtils.FormatNumber(ld.NumActiveCells)
                 fields("EcoSpaceTimeStepLength") = cStringUtils.FormatNumber(Me.m_EcospaceData.TimeStep)
                 fields("CoordinateSystemWKT") = Me.m_EcospaceData.ProjectionString.Replace("""", "'")
@@ -2843,12 +2843,16 @@ Public Class cCore
                 ' Gather spat temp connections
                 Try
                     For Each adt As cSpatialDataAdapter In man.Adapters
-                        For Each conn As cSpatialDataConnection In adt.Connections(bEnabledOnly:=True)
-                            If conn.IsConfigured Then
-                                Dim l As cEcospaceLayer = bm.Layer(adt.VarName, conn.iLayer)
-                                If (l IsNot Nothing) Then
-                                    fields("Layer " & conn.iLayer & " " & l.Name) = conn.Dataset.CustomName
-                                End If
+                        ' Only map layers delivered by the Ecospace basemap are listed in the header. That may not be enough
+                        For Each l As cEcospaceLayer In Me.EcospaceBasemap.Layers(adt.VarName)
+                            If (l IsNot Nothing) Then
+                                Dim conns() As cSpatialDataConnection = adt.Connections(l.Index, True)
+                                For i As Integer = 1 To conns.Count
+                                    Dim conn As cSpatialDataConnection = conns(i - 1)
+                                    If (conn.IsConfigured) Then
+                                        fields("Layer_" & adt.VarName.ToString() & "_" & i & "_""" & l.Name & """") = conn.Dataset.CustomName
+                                    End If
+                                Next
                             End If
                         Next
                     Next
