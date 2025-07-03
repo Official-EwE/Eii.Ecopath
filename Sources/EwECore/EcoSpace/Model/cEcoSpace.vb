@@ -637,6 +637,9 @@ Public Class cEcoSpace
 
     Public Property isPaused() As Boolean
         Get
+            ' Do not pause in spin-up
+            If (Me.EcoSpaceData.bInSpinUp) Then Return False
+
             'this is confusing
             'WaitOne(0) will wait for Zero time and return True or False
             'True if the signal state is "Signaled", the wait handle is not in use, in our case it is NOT Paused
