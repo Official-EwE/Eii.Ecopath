@@ -2495,7 +2495,7 @@ Public Class cEIIXMLDataSource
                     ecospaceDS.MPAmonth(iMonth + 1, iMPA) = (strMPAMonth.Substring(iMonth, 1) = "1")
                 Next iMonth
                 strMap = Me.ReadSafe(drow, "MPAMap", "")
-                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, True)
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 iMPA += 1
 
             Catch ex As Exception
