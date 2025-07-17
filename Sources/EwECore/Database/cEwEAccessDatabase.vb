@@ -63,6 +63,12 @@ Namespace Database
         ' Detect whether Office 2010 is 32bit or 64bit via the registry (http://stackoverflow.com/questions/2203980/detect-whether-office-2010-is-32bit-or-64bit-via-the-registry).
         ''' <summary>The connection string to connect to a ACCDB database.</summary>
         Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Mode=Share Exclusive;Data Source={0};"
+
+        '17-Jul-2025 Connection string without Exclusive opening mode
+        'This is needed for running the console on multiple instances of the same model with different data.
+        'Right now it has to be switched on in code(obviously).
+        'Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};"
+
         ''' <summary>File name to access database.</summary>
         Private m_strFileName As String = ""
 
