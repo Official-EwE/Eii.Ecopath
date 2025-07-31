@@ -141,6 +141,8 @@ Public Class cTimeSeriesDataStructures
     Public PoolForceCatch(,) As Single
     Public ForcedFs(,) As Single
 
+    ''' <summary>Proportion of total landings. By Fleet,Group,Time</summary>
+    Public PoolForceLandings(,,) As Single
     ''' <summary>Proportion of total catch that is discarded. By Fleet,Group,Time</summary>
     Public PoolForceDiscardProp(,,) As Single
     ''' <summary>Proportion of discards that incur mortality. By Fleet,Group,Time</summary>
@@ -254,6 +256,7 @@ Public Class cTimeSeriesDataStructures
             Array.Clear(Me.PoolForceCatch, 0, Me.PoolForceCatch.Length)
             Array.Clear(Me.PoolForceZ, 0, Me.PoolForceZ.Length)
 
+            Array.Clear(Me.PoolForceLandings, 0, Me.PoolForceLandings.Length)
             Array.Clear(Me.PoolForceDiscardMort, 0, Me.PoolForceDiscardMort.Length)
             Array.Clear(Me.PoolForceDiscardProp, 0, Me.PoolForceDiscardProp.Length)
             Array.Clear(Me.PoolForceCatchabilities, 0, Me.PoolForceCatchabilities.Length)
@@ -303,6 +306,7 @@ Public Class cTimeSeriesDataStructures
         Erase Me.PoolForceCatch
         Erase Me.PoolForceZ
 
+        Erase Me.PoolForceLandings
         Erase Me.PoolForceDiscardProp
         Erase Me.PoolForceDiscardMort
         Erase Me.PoolForceCatchabilities
@@ -526,6 +530,7 @@ Public Class cTimeSeriesDataStructures
                     Next
                 Next
 
+                ReDim Me.PoolForceLandings(Me.nFleets, Me.nGroups, npoints)
                 ReDim Me.PoolForceDiscardMort(Me.nFleets, Me.nGroups, npoints)
                 ReDim Me.PoolForceDiscardProp(Me.nFleets, Me.nGroups, npoints)
                 ReDim Me.PoolForceCatchabilities(Me.nFleets, Me.nGroups, npoints)
@@ -590,6 +595,7 @@ Public Class cTimeSeriesDataStructures
                 For iflt As Integer = 0 To Me.nFleets
                     For ipt As Integer = n + 1 To npoints
                         For igrp As Integer = 0 To Me.nGroups
+                            Me.PoolForceLandings(iflt, igrp, ipt) = cCore.NULL_VALUE
                             Me.PoolForceDiscardMort(iflt, igrp, ipt) = cCore.NULL_VALUE
                             Me.PoolForceDiscardProp(iflt, igrp, ipt) = cCore.NULL_VALUE
                             Me.PoolForceCatchabilities(iflt, igrp, ipt) = cCore.NULL_VALUE
@@ -916,6 +922,20 @@ Public Class cTimeSeriesDataStructures
                             'jb EwE6 does not have split pools! I'm not sure if this also applies to multi stanza groups??
                             If Me.AppliedDatVal(iDatPt, iDType) > 0 Then Me.Iobs = Me.Iobs + 1
 
+#If FORCELANDINGS Then
+                        Case eTimeSeriesType.LandingsForcing
+                            iFlt = Me.AppliedDatPool(iDType)
+                            iGrp = Me.AppliedDatPoolSec(iDType)
+                            ' Group 0 not allowed for this timeseries type
+                            If (iGrp > 0 And iFlt > 0 And iGrp <= nGroups And iFlt <= nFleets) Then
+                                If value > 1.0 Then
+                                    value = 1.0
+                                    bDisFailedValidation = True
+                                End If
+                                Me.PoolForceLandings(iFlt, iGrp, iDatPt) = value
+                            End If
+#End If
+
                         Case eTimeSeriesType.DiscardMortality
                             iFlt = Me.AppliedDatPool(iDType)
                             iGrp = Me.AppliedDatPoolSec(iDType)
@@ -1089,12 +1109,10 @@ Public Class cTimeSeriesDataStructures
         'set all points past the reference data to the default Ecopath values!
         For iflt As Integer = 0 To Me.nFleets
             For igrp As Integer = 0 To Me.nGroups
-
                 For ipt As Integer = 0 To nSimPoints
                     Me.PoolForceDiscardMort(iflt, igrp, ipt) = cCore.NULL_VALUE
                     Me.PoolForceDiscardProp(iflt, igrp, ipt) = cCore.NULL_VALUE
                 Next
-
             Next
         Next
 

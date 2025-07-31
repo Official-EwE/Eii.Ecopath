@@ -301,6 +301,12 @@ Public MustInherit Class cTimeSeries
                  eTimeSeriesType.FixedCost,
                  eTimeSeriesType.FixedCostRel
                 Return True
+
+#If FORCELANDINGS Then
+            Case eTimeSeriesType.LandingsForcing
+                Return True
+#End If
+
             Case eTimeSeriesType.BiomassRel,
                  eTimeSeriesType.BiomassAbs,
                  eTimeSeriesType.TotalMortality,
@@ -389,6 +395,11 @@ Public MustInherit Class cTimeSeries
                  eTimeSeriesType.Catchabilities,
                  eTimeSeriesType.OffVesselPrice, eTimeSeriesType.OffVesselPriceRel
                 Return eTimeSeriesCategoryType.FleetGroup
+
+#If FORCELANDINGS Then
+            Case eTimeSeriesType.LandingsForcing 
+                Return eTimeSeriesCategoryType.FleetGroup
+#End If
 
             Case Else
                 Return eTimeSeriesCategoryType.Group

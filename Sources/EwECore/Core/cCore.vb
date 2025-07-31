@@ -35,14 +35,13 @@ Imports EwECore.Samples
 Imports EwECore.SearchObjectives
 Imports EwECore.SpatialData
 Imports EwECore.ValueWrapper
+Imports EwELicense
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.SpatialData
-Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
-Imports EwELicense
-Imports System.Web.Management
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
