@@ -110,7 +110,6 @@ Namespace Ecosim
         Private DeltaT As Single 'delta time in years one month set in SetTimeSteps
         Private nvar As Integer
 
-        Private DoingEiiSaving2Round As Boolean
         Private MakeTestData As Boolean
         Private AbortRun As Boolean
         Private IsDatWtSet As Boolean
@@ -5650,7 +5649,6 @@ Namespace Ecosim
                 d.YearNow = Me.YearNow
                 d.DeltaT = Me.DeltaT
                 d.nvar = Me.nvar
-                d.DoingEiiSaving2Round = Me.DoingEiiSaving2Round
                 d.MakeTestData = Me.MakeTestData
                 d.AbortRun = Me.AbortRun
                 d.IsDatWtSet = Me.IsDatWtSet

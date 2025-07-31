@@ -322,7 +322,9 @@ Public Enum eTimeSeriesType As Integer
     BiomassForcing = -1
     ''' <summary>Time forcing, forcing</summary>
     TimeForcing = 2
+    ''' <summary>Effort forcing</summary>
     FishingEffort = 3
+    ''' <summary>F forcing</summary>
     FishingMortality = 4
     TotalMortality = 5
     ConstantTotalMortality = -5
@@ -345,27 +347,30 @@ Public Enum eTimeSeriesType As Integer
     Discards = 13
     ''' <summary>Catchabilities (fleet x group, driver)</summary>
     Catchabilities = 14
-    ''' <summary>Absolute off-vessel price (by fleet x group x driver)</summary>
+    ''' <summary>Absolute off-vessel price (by fleet x group, driver)</summary>
     OffVesselPrice = 15
-    ''' <summary>Relative off-vessel price (by fleet x group x driver)</summary>
+    ''' <summary>Relative off-vessel price (by fleet x group, driver)</summary>
     OffVesselPriceRel = -OffVesselPrice
-    ''' <summary>Effort cost multiplier (by fleet x driver)</summary>
+    ''' <summary>Effort cost multiplier (by fleet, driver)</summary>
     EffortCost = 16
-    ''' <summary>Effort cost multiplier (by fleet x driver)</summary>
+    ''' <summary>Effort cost multiplier (by fleet, driver)</summary>
     EffortCostRel = -EffortCost
-    ''' <summary>Absolute Sailing cost (by fleet x driver)</summary>
+    ''' <summary>Absolute Sailing cost (by fleet, driver)</summary>
     SailCost = 17
-    ''' <summary>Relative sailing cost (multiplier; by fleet x driver)</summary>
+    ''' <summary>Relative sailing cost (multiplier; by fleet, driver)</summary>
     SailCostRel = -SailCost
-    ''' <summary>Absolute fixed cost (by fleet x driver)</summary>
+    ''' <summary>Absolute fixed cost (by fleet, driver)</summary>
     FixedCost = 18
     ''' <summary>Total discards on a group across all fleets Relative values</summary>
     DiscardsTotalAbs = 19
     ''' <summary>Total discards on a group across all fleets Absolute values</summary>
     DiscardsTotalRel = 20
-    ''' <summary>Fixed cost multiplier (by fleet x driver)</summary>
+    ''' <summary>Fixed cost multiplier (by fleet, driver)</summary>
     FixedCostRel = -FixedCost
-
+#If FORCELANDINGS Then
+    ''' <summary>Absolute landings (by fleet x group, driver)</summary>
+    LandingsForcing = 21
+#End If
     FishingMortalityRef = 104
     NotSet = cCore.NULL_VALUE
 End Enum

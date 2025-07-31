@@ -8986,6 +8986,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Landing.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_LANDINGSFORCING() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_LANDINGSFORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Off-vessel price.
         '''</summary>
         Public ReadOnly Property TS_TYPE_OFFVESSELPRICE() As String
