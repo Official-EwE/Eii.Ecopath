@@ -2,8 +2,6 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <C:\Program Files (x86)\Inno Download Plugin\idp.iss>
 
-#define VTApiKey "6202df9c8dfc19c314a6a8bb037f6191fee52f3a5d8e0899c0aa41c65ff4d322"
-
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
 #define Compile64Bit 0                     ; set to 0 to compile 32 bit
@@ -90,11 +88,7 @@ UsePreviousAppDir=False
 TimeStampsInUTC=True
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoCopyright=(c) {#MyAppPublisher}
-OutputDir=Output
-
-#define MyOutputBase "ewe_" + MyAppVersion + "_32-bit_setup"
-#define OutputPath "Output\\" + MyOutputBase + ".exe"
-OutputBaseFilename={#MyOutputBase}
+OutputBaseFilename=ewe_{#MyAppVersion}_setup
 
 [Dirs]
 Name: "{app}\Includes\LPSolve\"
@@ -401,9 +395,6 @@ UseRelativePaths=True
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Flags: postinstall skipifsilent; Description: "Run {#MyAppName}"
-
-// [PostCompile]
-// #emit "tools\\EwE_PostBuildTool.exe """ + OutputPath + """ " + VTApiKey
 
 [Code]
 // https://stackoverflow.com/questions/4104011/inno-setup-verify-that-net-4-0-is-installed
