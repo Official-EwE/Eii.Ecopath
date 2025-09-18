@@ -2188,7 +2188,11 @@ Public Class frmEwE6
         Else
             Dim msg As New cMessage(cStringUtils.Localize(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Critical)
             Me.Core.Messages.SendMessage(msg)
-            ds.Close()
+            Try
+                If (ds IsNot Nothing) Then ds.Close()
+            Catch ex As Exception
+                ' Ssst
+            End Try
             Return False
         End If
 

@@ -15,7 +15,7 @@
 ; Automated build will provide file version as a command line parameter
 ; /DFileVersion=6.6.{minor release no}.{build no}
 #ifndef FileVersion
-  #define FileVersion "6.7.0.19431"
+  #define FileVersion "6.7.0.19540"
 #endif
 VersionInfoVersion={#FileVersion}
 
