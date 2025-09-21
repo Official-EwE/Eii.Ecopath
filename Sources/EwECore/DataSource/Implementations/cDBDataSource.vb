@@ -10875,7 +10875,7 @@ Namespace DataSources
 
                     ad.DBID = CInt(reader("DBID"))
                     ad.Remark = strRemark
-                    ad.VisualStyle = cVisualStyleReader.StringToStyle(strVisualStyle)
+                    ad.VisualStyle = cVisualStyle.DeserializeStyle(strVisualStyle)
                     ad.Settings.Load(CStr(Me.m_db.ReadSafe(reader, "Settings", "")))
 
                     ad.AllowValidation = True
@@ -10921,7 +10921,7 @@ Namespace DataSources
                         drow("DBID") = ad.DBID
                         drow("ValueID") = strValueID
                         drow("Remark") = ad.Remark
-                        drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
+                        drow("VisualStyle") = cVisualStyle.SerializeStyle(ad.VisualStyle)
                         drow("Settings") = ad.Settings.ToString()
 
                         writer.AddRow(drow)
@@ -10984,7 +10984,7 @@ Namespace DataSources
                             drow("DBID") = iAdDBID
                             drow("ValueID") = key.ToString
                             drow("Remark") = ad.Remark
-                            drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
+                            drow("VisualStyle") = cVisualStyle.SerializeStyle(ad.VisualStyle)
                             ' Add
                             writer.AddRow(drow)
                             ' Next

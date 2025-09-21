@@ -785,7 +785,7 @@ Public Class cEIIXMLDataSource
 
                 ad.DBID = CInt(drow("DBID"))
                 ad.Remark = strRemark
-                ad.VisualStyle = cVisualStyleReader.StringToStyle(strVisualStyle)
+                ad.VisualStyle = cVisualStyle.DeserializeStyle(strVisualStyle)
                 ad.Settings.Load(Me.ReadSafe(drow, "Settings", ""))
 
                 ad.AllowValidation = True

@@ -1,4 +1,4 @@
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -25,16 +25,74 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
 Imports System.IO
-Imports System.Runtime.Serialization.Formatters
 Imports System.Runtime.Serialization.Formatters.Binary
-Imports System.Text.Json
-Imports System.Text.Json.Serialization
 Imports EwEUtils
-Imports EwEUtils.Utilities
+Imports Newtonsoft.Json
 
 #End Region ' Imports 
 
 Namespace Auxiliary
+
+    <Flags>
+    Public Enum VisualFontStyle As Integer
+        Regular = 0
+        Bold = 1
+        Italic = 2
+        Underline = 4
+        Strikeout = 8
+    End Enum
+
+    Public Enum VisualHatchStyle As Integer
+        None = 0
+        Horizontal
+        Vertical
+        ForwardDiagonal
+        BackwardDiagonal
+        Cross
+        DiagonalCross
+        ' add the few you actually use; keep it minimal
+    End Enum
+
+    Public Class VisualStyleDto
+        Public Property foreColor As String          ' "#RRGGBBAA"
+        Public Property backColor As String
+        Public Property hatch As VisualHatchStyle
+        Public Property fontName As String
+        Public Property fontSize As Single
+        Public Property fontStyle As VisualFontStyle
+        Public Property imageBase64 As String        ' PNG as base64 or Nothing
+        Public Property colorRampId As Integer
+        Public Property colorRampBreaks As Double()
+        Public Property colorRampColors As String()  ' each "#RRGGBBAA"
+        Public Property colorRampName As String
+    End Class
+
+    ' "#RRGGBBAA" <-> System.Drawing.Color
+    Public Class ColorHexJsonConverter
+        Inherits JsonConverter(Of System.Drawing.Color)
+
+        Public Overrides Function ReadJson(reader As JsonReader,
+                                       objectType As Type,
+                                       existingValue As System.Drawing.Color,
+                                       hasExistingValue As Boolean,
+                                       serializer As JsonSerializer) As System.Drawing.Color
+            Dim s = TryCast(reader.Value, String)
+            If String.IsNullOrEmpty(s) Then Return System.Drawing.Color.Empty
+            If s(0) = "#"c Then s = s.Substring(1)
+            Dim r = Convert.ToByte(s.Substring(0, 2), 16)
+            Dim g = Convert.ToByte(s.Substring(2, 2), 16)
+            Dim b = Convert.ToByte(s.Substring(4, 2), 16)
+            Dim a As Byte = If(s.Length >= 8, Convert.ToByte(s.Substring(6, 2), 16), CByte(255))
+            Return System.Drawing.Color.FromArgb(a, r, g, b)
+        End Function
+
+        Public Overrides Sub WriteJson(writer As JsonWriter,
+                                   value As System.Drawing.Color,
+                                   serializer As JsonSerializer)
+            Dim hex = $"#{value.R:X2}{value.G:X2}{value.B:X2}{value.A:X2}"
+            writer.WriteValue(hex)
+        End Sub
+    End Class
 
     <Serializable()>
     Public NotInheritable Class cVisualStyle
@@ -59,6 +117,146 @@ Namespace Auxiliary
 #End Region ' Private vars
 
         Public Shared ReadOnly FixedImageFormat As ImageFormat = ImageFormat.Png
+
+        Private Shared Function ColorToHex(c As System.Drawing.Color) As String
+            Return $"#{c.R:X2}{c.G:X2}{c.B:X2}{c.A:X2}"
+        End Function
+
+        Private Shared Function HexToColor(s As String) As System.Drawing.Color
+            If String.IsNullOrEmpty(s) Then Return System.Drawing.Color.Empty
+            If s(0) = "#"c Then s = s.Substring(1)
+            Dim r = Convert.ToByte(s.Substring(0, 2), 16)
+            Dim g = Convert.ToByte(s.Substring(2, 2), 16)
+            Dim b = Convert.ToByte(s.Substring(4, 2), 16)
+            Dim a As Byte = 255
+            If s.Length >= 8 Then a = Convert.ToByte(s.Substring(6, 2), 16)
+            Return System.Drawing.Color.FromArgb(a, r, g, b)
+        End Function
+
+        Public Shared Function ToDto(vs As cVisualStyle) As VisualStyleDto
+            Dim dto As New VisualStyleDto With {
+                .foreColor = ColorToHex(vs.ForeColour),
+                .backColor = ColorToHex(vs.BackColour),
+                .hatch = ToVisualHatch(vs.HatchStyle),
+                .fontName = vs.FontName,
+                .fontSize = vs.FontSize,
+                .fontStyle = ToVisualFontStyle(vs.FontStyle),
+                .imageBase64 = vs.ImageString,                           ' already PNG→base64
+                .colorRampId = vs.ColorRampID,
+                .colorRampBreaks = vs.ColorRampBreaks,
+                .colorRampColors = If(vs.ColorRampColors Is Nothing, Nothing,
+                                      vs.ColorRampColors.Select(Function(c) ColorToHex(c)).ToArray()),
+                .colorRampName = vs.ColorRampName
+            }
+            Return dto
+        End Function
+
+        ' Apply DTO back to runtime object
+        Public Shared Sub ApplyDto(vs As cVisualStyle, dto As VisualStyleDto)
+            If dto Is Nothing Then Return
+            vs.ForeColour = HexToColor(dto.foreColor)
+            vs.BackColour = HexToColor(dto.backColor)
+            vs.HatchStyle = FromVisualHatch(dto.hatch)
+            vs.FontName = dto.fontName
+            vs.FontSize = dto.fontSize
+            vs.FontStyle = FromVisualFontStyle(dto.fontStyle)
+            vs.ImageString = dto.imageBase64
+            vs.ColorRampID = dto.colorRampId
+            vs.ColorRampBreaks = dto.colorRampBreaks
+            vs.ColorRampColors = If(dto.colorRampColors Is Nothing, Nothing,
+                             dto.colorRampColors.Select(Function(s) HexToColor(s)).ToArray())
+            vs.ColorRampName = dto.colorRampName
+        End Sub
+
+        Private Shared Function ToVisualFontStyle(fs As System.Drawing.FontStyle) As VisualFontStyle
+            Dim v As VisualFontStyle = VisualFontStyle.Regular
+            If (fs And System.Drawing.FontStyle.Bold) <> 0 Then v = v Or VisualFontStyle.Bold
+            If (fs And System.Drawing.FontStyle.Italic) <> 0 Then v = v Or VisualFontStyle.Italic
+            If (fs And System.Drawing.FontStyle.Underline) <> 0 Then v = v Or VisualFontStyle.Underline
+            If (fs And System.Drawing.FontStyle.Strikeout) <> 0 Then v = v Or VisualFontStyle.Strikeout
+            Return v
+        End Function
+
+        Private Shared Function FromVisualFontStyle(v As VisualFontStyle) As System.Drawing.FontStyle
+            Dim fs As System.Drawing.FontStyle = System.Drawing.FontStyle.Regular
+            If (v And VisualFontStyle.Bold) <> 0 Then fs = fs Or System.Drawing.FontStyle.Bold
+            If (v And VisualFontStyle.Italic) <> 0 Then fs = fs Or System.Drawing.FontStyle.Italic
+            If (v And VisualFontStyle.Underline) <> 0 Then fs = fs Or System.Drawing.FontStyle.Underline
+            If (v And VisualFontStyle.Strikeout) <> 0 Then fs = fs Or System.Drawing.FontStyle.Strikeout
+            Return fs
+        End Function
+
+        Private Shared Function ToVisualHatch(h As System.Drawing.Drawing2D.HatchStyle) As VisualHatchStyle
+            Select Case h
+                Case Drawing2D.HatchStyle.Horizontal : Return VisualHatchStyle.Horizontal
+                Case Drawing2D.HatchStyle.Vertical : Return VisualHatchStyle.Vertical
+                Case Drawing2D.HatchStyle.ForwardDiagonal : Return VisualHatchStyle.ForwardDiagonal
+                Case Drawing2D.HatchStyle.BackwardDiagonal : Return VisualHatchStyle.BackwardDiagonal
+                Case Drawing2D.HatchStyle.Cross : Return VisualHatchStyle.Cross
+                Case Drawing2D.HatchStyle.DiagonalCross : Return VisualHatchStyle.DiagonalCross
+                Case Else : Return VisualHatchStyle.None
+            End Select
+        End Function
+
+        Private Shared Function FromVisualHatch(v As VisualHatchStyle) As System.Drawing.Drawing2D.HatchStyle
+            Select Case v
+                Case VisualHatchStyle.Horizontal : Return Drawing2D.HatchStyle.Horizontal
+                Case VisualHatchStyle.Vertical : Return Drawing2D.HatchStyle.Vertical
+                Case VisualHatchStyle.ForwardDiagonal : Return Drawing2D.HatchStyle.ForwardDiagonal
+                Case VisualHatchStyle.BackwardDiagonal : Return Drawing2D.HatchStyle.BackwardDiagonal
+                Case VisualHatchStyle.Cross : Return Drawing2D.HatchStyle.Cross
+                Case VisualHatchStyle.DiagonalCross : Return Drawing2D.HatchStyle.DiagonalCross
+                Case Else : Return Drawing2D.HatchStyle.Divot ' or a sensible default
+            End Select
+        End Function
+
+        Public Shared Function SerializeStyle(vs As cVisualStyle) As String
+            Dim dto = ToDto(vs)
+#If NETFRAMEWORK Then
+            Dim json = Newtonsoft.Json.JsonConvert.SerializeObject(dto, Newtonsoft.Json.Formatting.None)
+#Else
+    Dim json = System.Text.Json.JsonSerializer.Serialize(dto)
+#End If
+            Dim bytes = System.Text.Encoding.UTF8.GetBytes(json)
+            Return "v3:" & Convert.ToBase64String(bytes)
+        End Function
+
+        Public Shared Function DeserializeStyle(s As String) As cVisualStyle
+            If String.IsNullOrEmpty(s) Then Return Nothing
+
+            If s.StartsWith("v3:", StringComparison.Ordinal) Then
+                Dim blob = Convert.FromBase64String(s.Substring(3))
+                Dim jsonBytes As Byte() = blob
+                Dim json = System.Text.Encoding.UTF8.GetString(jsonBytes)
+#If NETFRAMEWORK Then
+                Dim dto = Newtonsoft.Json.JsonConvert.DeserializeObject(Of VisualStyleDto)(json)
+#Else
+        Dim dto = System.Text.Json.JsonSerializer.Deserialize(Of VisualStyleDto)(json)
+#End If
+                Dim vs As New cVisualStyle()
+                ApplyDto(vs, dto)
+                Return vs
+            End If
+
+            ' Legacy fallback → BinaryFormatter (4.8 only)
+#If NETFRAMEWORK Then
+            Try
+                Dim ab = Convert.FromBase64String(s)
+                Using ms As New MemoryStream(ab)
+                    Dim bf As New Runtime.Serialization.Formatters.Binary.BinaryFormatter() With {
+                .AssemblyFormat = Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+            }
+                    Dim oldVs = TryCast(bf.Deserialize(ms), cVisualStyle)
+                    If oldVs Is Nothing Then Return Nothing
+                    ' Immediately upgrade to v2 DTO on first read if you like:
+                    Return oldVs
+                End Using
+            Catch
+            End Try
+#End If
+
+            Return Nothing
+        End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -199,32 +397,31 @@ Namespace Auxiliary
         ''' </summary>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        <JsonInclude>
         Public Property ImageString As String
             Get
                 If Me.Image IsNot Nothing Then
                     Using ms As New MemoryStream()
-                        Me.Image.Save(ms, cVisualStyle.FixedImageFormat)
-                        Dim imageData As Byte() = ms.ToArray()
-                        Return cStringUtils.ToHexString(imageData)
+                        Me.Image.Save(ms, cVisualStyle.FixedImageFormat) ' PNG
+                        Return Convert.ToBase64String(ms.ToArray())
                     End Using
                 End If
                 Return Nothing
             End Get
             Set(value As String)
-                If Not String.IsNullOrEmpty(value) Then
-                    Dim imageData As Byte() = cStringUtils.FromHexString(value)
-                    Using ms As New MemoryStream(imageData)
-                        ' Build temp image
-                        Dim imgTemp As New Bitmap(ms)
-                        ' Just making sure
-                        Debug.Assert(imgTemp.RawFormat.Equals(cVisualStyle.FixedImageFormat))
-                        ' Clone the image to drop reliance on the memory stream it was created from
+                If String.IsNullOrEmpty(value) Then
+                    Me.Image = Nothing
+                    Return
+                End If
+                Dim imageData As Byte() = Convert.FromBase64String(value)
+                Using ms As New MemoryStream(imageData)
+                    Using imgTemp As New Bitmap(ms)
+                        ' Clone to detach from stream; also ensures we hold a real GDI+ image
                         Me.Image = New Bitmap(imgTemp)
                     End Using
-                End If
+                End Using
             End Set
         End Property
+
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -420,64 +617,5 @@ Namespace Auxiliary
         End Sub
 
     End Class ' cVisualStyle
-
-    ''' ===========================================================================
-    ''' <summary>
-    ''' Helper class for serializing a visual style to text.
-    ''' </summary>
-    ''' ===========================================================================
-    Public Class cVisualStyleReader
-
-        Public Shared Function StyleToString(style As cVisualStyle) As String
-            Dim jsonString As String = String.Empty
-
-            Try
-                jsonString = JsonSerializer.Serialize(style)
-                Return "v2:" + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(jsonString))
-            Catch ex As Exception
-                ' Handle exception appropriately
-            End Try
-
-            Return jsonString
-        End Function
-
-        Public Shared Function StringToStyle(str As String) As cVisualStyle
-
-            Dim vsResult As cVisualStyle = Nothing
-
-            If String.IsNullOrEmpty(str) Then Return vsResult
-
-            If (str.StartsWith("v2:")) Then
-                Try
-                    Dim jsonString As String = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(str.Substring(3)))
-                    vsResult = JsonSerializer.Deserialize(Of cVisualStyle)(jsonString)
-                    Return vsResult
-                Catch ex As Exception
-                    ' Handle exception appropriately
-                End Try
-            End If
-
-#If NETFRAMEWORK Then
-            Dim bf As New BinaryFormatter()
-            Dim ms As MemoryStream = Nothing
-            Dim ab As Byte() = Nothing
-
-            ' Ignore assembly version differences
-            bf.AssemblyFormat = FormatterAssemblyStyle.Simple
-
-            Try
-                ab = System.Convert.FromBase64String(str)
-                ms = New MemoryStream(ab)
-                vsResult = CType(bf.Deserialize(ms), cVisualStyle)
-                Return vsResult
-            Catch ex As Exception
-
-            End Try
-#End If
-            Return Nothing
-
-        End Function
-
-    End Class
 
 End Namespace ' Auxillary

@@ -191,7 +191,7 @@ Namespace Style
                 Dim vn As eVarNameFlags = cin.GetVarName(cn.GetAttribute("varname"))
                 Dim index As Integer = CInt(cn.GetAttribute("index"))
                 Dim value As String = cn.GetAttribute("data")
-                Me.Add(name, cVisualStyleReader.StringToStyle(value), vn, index)
+                Me.Add(name, cVisualStyle.DeserializeStyle(value), vn, index)
             Next
             Return True
 
@@ -239,7 +239,7 @@ Namespace Style
                 xn.Attributes.Append(xa)
 
                 xa = doc.CreateAttribute("data")
-                xa.InnerText = cVisualStyleReader.StyleToString(data.VisualStyle)
+                xa.InnerText = cVisualStyle.SerializeStyle(data.VisualStyle)
                 xn.Attributes.Append(xa)
 
                 xnRoot.AppendChild(xn)
