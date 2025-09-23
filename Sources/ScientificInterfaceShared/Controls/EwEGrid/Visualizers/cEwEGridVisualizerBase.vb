@@ -21,11 +21,9 @@
 
 Option Strict On
 Imports EwEUtils.SystemUtilities
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
 
 #End Region ' Imports
 
@@ -164,7 +162,7 @@ Namespace Controls.EwEGrid
             End If
 
             If Not cell.Grid.Enabled Then
-                clrFore = EwEUtils.Utilities.cColorUtils.GetVariant(clrFore, 0.5)
+                clrFore = cColorUtils.GetVariant(clrFore, 0.5)
             End If
 
             ' Does cell have focus?

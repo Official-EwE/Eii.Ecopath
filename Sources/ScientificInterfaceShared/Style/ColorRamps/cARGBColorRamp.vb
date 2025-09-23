@@ -19,6 +19,7 @@
 
 Option Strict On
 Imports EwECore
+Imports EwEUtils.UserInterface
 
 Namespace Style
 
@@ -38,9 +39,9 @@ Namespace Style
         Inherits cColorRamp
 
         ''' <summary>Gradient break colours</summary>
-        Private m_colors() As Color
+        Private m_colors() As VisualColor
         ''' <summary>Gradient break values - ABSOLUTE</summary>
-        Private m_absbreaks() As Double
+        Private m_breaks() As Double
         ''' <summary>Gradient break values - RELATIVE</summary>
         Private m_relbreaks() As Double
 
@@ -80,7 +81,7 @@ Namespace Style
         ''' </code>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(name As String, ByVal colors() As Color, ByVal breaks() As Double, Optional iSystemID As Integer = cCore.NULL_VALUE)
+        Public Sub New(name As String, ByVal colors() As VisualColor, ByVal breaks() As Double, Optional iSystemID As Integer = cCore.NULL_VALUE)
 
             MyBase.New(iSystemID, iSystemID > 0)
 
@@ -92,6 +93,10 @@ Namespace Style
 
         End Sub
 
+        Public Sub New(name As String, ByVal colors() As Color, ByVal breaks() As Double, Optional iSystemID As Integer = cCore.NULL_VALUE)
+            Me.New(name, cStyleGuide.ToVisualColors(colors), breaks, iSystemID)
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Create a cARGBColorRamp with the colors equally distributed.
@@ -100,7 +105,7 @@ Namespace Style
         ''' <param name="colors"></param>
         ''' <param name="iSystemID"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(name As String, ByVal colors() As Color, Optional iSystemID As Integer = cCore.NULL_VALUE)
+        Public Sub New(name As String, ByVal colors() As VisualColor, Optional iSystemID As Integer = cCore.NULL_VALUE)
 
             MyBase.New(iSystemID, iSystemID > 0)
 
@@ -111,8 +116,8 @@ Namespace Style
             Next
 
             For i As Integer = 0 To n
-                Dim c As Color = colors(i)
-                If c.A = 0 Then colors(i) = Color.FromArgb(255, c.R, c.G, c.B)
+                Dim c As VisualColor = colors(i)
+                If c.A = 0 Then colors(i) = New VisualColor(c.R, c.G, c.B)
             Next
 
             Me.GradientColors = colors
@@ -141,7 +146,7 @@ Namespace Style
         ''' <param name="dValueMax">The maximum value to scale the value to. By default, it is assumed that a colour must be retrieved on a scale from [0..1]</param>
         ''' <returns>The colour for a given value.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetColor(dValue As Double, Optional dValueMax As Double = 1.0) As Color
+        Public Overrides Function GetColorInvariant(dValue As Double, Optional dValueMax As Double = 1.0) As VisualColor
 
             ' Pre
             Debug.Assert(Me.m_relbreaks.Length = Me.m_colors.Length)
@@ -155,27 +160,27 @@ Namespace Style
             dValueMax = 1.0
 
             ' Find first index
-            bFound = (dValue <= Me.m_absbreaks(0))
+            bFound = (dValue <= Me.m_breaks(0))
             While Not bFound
                 nIndex += 1
-                bFound = (nIndex = Me.m_absbreaks.Length)
+                bFound = (nIndex = Me.m_breaks.Length)
                 If Not bFound Then
-                    bFound = (dValue <= Me.m_absbreaks(nIndex))
+                    bFound = (dValue <= Me.m_breaks(nIndex))
                 End If
             End While
 
             ' Below first level? Return first colour without interpolating
             If (nIndex = 0) Then Return Me.m_colors(0)
             ' Past last level? Return formar-last level without interpolating
-            If (nIndex = Me.m_absbreaks.Length) Then Return Me.m_colors(nIndex - 1)
+            If (nIndex = Me.m_breaks.Length) Then Return Me.m_colors(nIndex - 1)
             ' Exactly at a known level? Return the level colour withour interpolating
-            If dValue = Me.m_absbreaks(nIndex) Then Return Me.m_colors(nIndex)
+            If dValue = Me.m_breaks(nIndex) Then Return Me.m_colors(nIndex)
 
             ' must interpolate
-            Dim c1 As Color = Me.m_colors(nIndex - 1)
-            Dim c2 As Color = Me.m_colors(nIndex)
-            Dim dX As Double = Me.m_absbreaks(nIndex) - Me.m_absbreaks(nIndex - 1)
-            Dim dPosX As Double = dValue - Me.m_absbreaks(nIndex - 1)
+            Dim c1 As VisualColor = Me.m_colors(nIndex - 1)
+            Dim c2 As VisualColor = Me.m_colors(nIndex)
+            Dim dX As Double = Me.m_breaks(nIndex) - Me.m_breaks(nIndex - 1)
+            Dim dPosX As Double = dValue - Me.m_breaks(nIndex - 1)
 
             Dim dRatio As Double = (dPosX / dX)
 
@@ -183,10 +188,7 @@ Namespace Style
                 dRatio = 1.0
             End If
 
-            Return Color.FromArgb(Me.Interpolate(c1.A, c2.A, dRatio),
-                                  Me.Interpolate(c1.R, c2.R, dRatio),
-                                  Me.Interpolate(c1.G, c2.G, dRatio),
-                                  Me.Interpolate(c1.B, c2.B, dRatio))
+            Return New VisualColor(Me.Interpolate(c1.R, c2.R, dRatio), Me.Interpolate(c1.G, c2.G, dRatio), Me.Interpolate(c1.B, c2.B, dRatio), Me.Interpolate(c1.A, c2.A, dRatio))
 
         End Function
 
@@ -199,12 +201,12 @@ Namespace Style
         ''' use the gradient.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property GradientColors As Color()
+        Public Property GradientColors As VisualColor()
             Get
                 Return Me.m_colors
             End Get
-            Set(value As Color())
-                Me.m_colors = CType(value.Clone(), Color())
+            Set(value As VisualColor())
+                Me.m_colors = CType(value.Clone(), VisualColor())
             End Set
         End Property
 
@@ -222,12 +224,12 @@ Namespace Style
                 Return Me.m_relbreaks
             End Get
             Set(value As Double())
-                ReDim Me.m_absbreaks(value.Length - 1)
+                ReDim Me.m_breaks(value.Length - 1)
                 ReDim Me.m_relbreaks(value.Length - 1)
                 Dim dTotalPos As Double = 0.0#
                 For i As Integer = 0 To value.Length - 1
                     dTotalPos += CDbl(Math.Abs(value(i)))
-                    Me.m_absbreaks(i) = dTotalPos
+                    Me.m_breaks(i) = dTotalPos
                     Me.m_relbreaks(i) = value(i)
                 Next
             End Set

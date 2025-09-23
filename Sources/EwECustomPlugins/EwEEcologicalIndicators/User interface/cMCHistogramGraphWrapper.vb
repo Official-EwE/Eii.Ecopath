@@ -27,6 +27,7 @@ Imports System.Text
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Utilities
 
 #End Region ' Imports
 

@@ -22,8 +22,9 @@ Option Strict On
 Imports System.IO
 Imports System.Security.Cryptography
 Imports System.Text
-Imports ScientificInterfaceShared.Style
+Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -44,7 +45,7 @@ Public Class cColorRampActIO
 
     Public Function Read(fn As String) As cBinaryColorRamp
 
-        Dim colors As New List(Of Color)
+        Dim colors As New List(Of VisualColor)
         Dim name As String = Path.GetFileNameWithoutExtension(fn)
 
         Dim md5Hasher As MD5 = MD5.Create()
@@ -57,7 +58,7 @@ Public Class cColorRampActIO
                 Dim done As Boolean = False
                 While Not done
                     If (bytes.Length = 3) Then
-                        colors.Add(Color.FromArgb(255, bytes(0), bytes(1), bytes(2)))
+                        colors.Add(VisualColor.FromArgb(255, bytes(0), bytes(1), bytes(2)))
                     Else
                         done = True
                     End If
@@ -76,7 +77,7 @@ Public Class cColorRampActIO
             Using stream As New FileStream(fn, FileMode.Create)
                 Using sw As New BinaryWriter(stream)
                     For i As Integer = 0 To 255
-                        Dim color As Color = ramp.GetColor(i / 255)
+                        Dim color As VisualColor = ramp.GetColorInvariant(i / 255)
                         sw.Write(color.R)
                         sw.Write(color.G)
                         sw.Write(color.B)

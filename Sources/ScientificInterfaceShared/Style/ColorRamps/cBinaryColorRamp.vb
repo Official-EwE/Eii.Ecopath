@@ -20,6 +20,7 @@
 
 Option Strict On
 Option Explicit On
+Imports EwEUtils.UserInterface
 
 #End Region ' Imports
 
@@ -28,7 +29,7 @@ Namespace Style
     Public Class cBinaryColorRamp
         Inherits cColorRamp
 
-        Public Sub New(id As Integer, name As String, colors As Color())
+        Public Sub New(id As Integer, name As String, colors As VisualColor())
             MyBase.New(id, False)
             Me.Colors = colors
             Me.Name = name
@@ -42,7 +43,7 @@ Namespace Style
         ''' <param name="dValueMax">The maximum value to scale the value to. By default, it is assumed that a colour must be retrieved on a scale from [0..1]</param>
         ''' <returns>The colour for a given value.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetColor(dValue As Double, Optional dValueMax As Double = 1) As Color
+        Public Overrides Function GetColorInvariant(dValue As Double, Optional dValueMax As Double = 1) As VisualColor
 
             Dim n As Integer = Me.Colors.Length
             Dim iColor As Integer = 0
@@ -50,10 +51,10 @@ Namespace Style
                 iColor = CInt(Math.Floor((n - 1) * dValue / dValueMax))
                 Return Me.Colors(iColor)
             End If
-            Return Color.Black
+            Return VisualColor.FromArgb(&HFF000000)
         End Function
 
-        Public ReadOnly Property Colors As Color()
+        Public ReadOnly Property Colors As VisualColor()
 
     End Class
 

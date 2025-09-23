@@ -23,6 +23,7 @@ Option Strict On
 Imports System.ComponentModel
 Imports EwECore.Auxiliary
 Imports EwEUtils
+Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -38,7 +39,7 @@ Namespace Controls
 
 #Region " Private parts "
 
-        Private m_lColors As New List(Of Color)
+        Private m_lColors As New List(Of VisualColor)
         Private m_ramp As cColorRamp = Nothing
 
 #End Region ' Private parts
@@ -152,7 +153,7 @@ Namespace Controls
 
             If (Me.m_bInUpdate) Then Return
 
-            Dim clr As Color = Color.FromArgb(CInt(m_nudAlpha.Value), CInt(m_nudRed.Value), CInt(m_nudGreen.Value), CInt(m_nudBlue.Value))
+            Dim clr As VisualColor = VisualColor.FromArgb(CInt(m_nudAlpha.Value), CInt(m_nudRed.Value), CInt(m_nudGreen.Value), CInt(m_nudBlue.Value))
             Me.m_lColors(Me.m_slGradient.CurrentKnob) = clr
             Me.ApplyColorsToGradient()
 
@@ -166,7 +167,7 @@ Namespace Controls
 
             If (Me.m_bInUpdate) Then Return
 
-            Dim clr As Color = Color.FromArgb(CInt(m_slAlpha.Value), CInt(m_slRed.Value), CInt(m_slGreen.Value), CInt(m_slBlue.Value))
+            Dim clr As VisualColor = VisualColor.FromArgb(CInt(m_slAlpha.Value), CInt(m_slRed.Value), CInt(m_slGreen.Value), CInt(m_slBlue.Value))
             Me.m_lColors(Me.m_slGradient.CurrentKnob) = clr
             Me.ApplyColorsToGradient()
 
@@ -180,7 +181,7 @@ Namespace Controls
 
             Dim grad As cARGBColorRamp = DirectCast(Me.m_ramp, cARGBColorRamp)
             Me.m_slGradient.Add()
-            Me.m_lColors.Add(grad.GetColor(Me.m_slGradient.Value(0) / Me.m_slGradient.Maximum))
+            Me.m_lColors.Add(grad.GetColorInvariant(Me.m_slGradient.Value(0) / Me.m_slGradient.Maximum))
             Me.UpdateARGBGradient(grad)
             Me.UpdateControls()
 
@@ -267,7 +268,7 @@ Namespace Controls
             End Get
         End Property
 
-        Private Sub SetARGBGradient(breaks() As Double, colors() As Color)
+        Private Sub SetARGBGradient(breaks() As Double, colors() As VisualColor)
 
             Me.m_bInUpdate = True
 
@@ -335,8 +336,8 @@ Namespace Controls
 
             Try
                 If Me.IsEditable Then
-                    Dim clr As Color = Me.m_lColors(Me.m_slGradient.CurrentKnob)
-                    Me.m_pbCurrentColor.BackColor = clr
+                    Dim clr As VisualColor = Me.m_lColors(Me.m_slGradient.CurrentKnob)
+                    Me.m_pbCurrentColor.BackColor = cStyleGuide.FromVisualColor(clr)
 
                     Me.m_slRed.Value = clr.R
                     Me.m_nudRed.Value = clr.R
@@ -381,9 +382,9 @@ Namespace Controls
         Private Sub PickColor()
 
             Dim dlg As New cEwEColorDialog()
-            dlg.Color = Me.m_lColors(Me.m_slGradient.CurrentKnob)
+            dlg.Color = cStyleGuide.FromVisualColor(Me.m_lColors(Me.m_slGradient.CurrentKnob))
             If dlg.ShowDialog(Me) <> DialogResult.OK Then Return
-            Me.m_lColors(Me.m_slGradient.CurrentKnob) = dlg.Color
+            Me.m_lColors(Me.m_slGradient.CurrentKnob) = cStyleGuide.ToVisualColor(dlg.Color)
 
             Me.ApplyColorsToGradient()
 
@@ -416,7 +417,7 @@ Namespace Controls
 
             ' Create breaks and colours arrays for gradient from sorted knob list
             Dim lPos As New List(Of Double)
-            Dim lColor As New List(Of Color)
+            Dim lColor As New List(Of VisualColor)
             Dim iLast As Integer = 0
 
             For i As Integer = 0 To lKnobsSorted.Count - 1

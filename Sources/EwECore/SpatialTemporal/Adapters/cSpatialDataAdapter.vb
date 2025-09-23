@@ -338,6 +338,8 @@ Namespace SpatialData
 
         End Function
 
+        Protected Property PreserveLayerData As Boolean = True
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Perform pre-run initializations for all adapters such as preserving
@@ -345,8 +347,9 @@ Namespace SpatialData
         ''' own initialization in.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub InitRun()
-            Me.SaveLayerData()
+        Public Overridable Sub InitRun(bPreserveLayerData As Boolean)
+            Me.PreserveLayerData = bPreserveLayerData
+            If (Me.PreserveLayerData) Then Me.SaveLayerData()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -357,7 +360,7 @@ Namespace SpatialData
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Sub EndRun()
-            Me.RestoreLayerData()
+            If (Me.PreserveLayerData) Then Me.RestoreLayerData()
         End Sub
 
 

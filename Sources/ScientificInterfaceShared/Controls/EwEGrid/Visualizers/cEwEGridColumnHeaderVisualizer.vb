@@ -20,13 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
-Imports System.Drawing
-Imports EwECore
-Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
 
 #End Region ' Imports
 
@@ -74,7 +69,7 @@ Namespace Controls.EwEGrid
             If cell.Grid.Enabled Then
                 Me.ForeColor = SystemColors.ControlText
             Else
-                Me.ForeColor = EwEUtils.Utilities.cColorUtils.GetVariant(SystemColors.ControlText, 0.5)
+                Me.ForeColor = cColorUtils.GetVariant(SystemColors.ControlText, 0.5)
             End If
             MyBase.DrawCell_ImageAndText(cell, pos, e, rc, p_Status)
         End Sub

@@ -22,16 +22,15 @@
 Option Strict On
 
 Imports System.IO
-Imports System.Runtime.ExceptionServices
 Imports System.Text
 Imports EwECore
 Imports EwECore.Style
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Utilities
 Imports ZedGraph
 
 #End Region ' Imports

@@ -68,12 +68,17 @@ Namespace Emulator
         Public Property Testdata(pressure As cPressure) As String
             Get
                 If (Not Me.m_inputs.ContainsKey(pressure)) Then
-                    If (TypeOf pressure Is cFishingEffortPressure) Then Return CStr(cCore.NULL_VALUE)
+                    If (TypeOf pressure Is cFishingEffortPressure) Then Return CStr(1.0F)
                     Return ""
                 End If
                 Return Me.m_inputs(pressure)
             End Get
             Set(value As String)
+                If (TypeOf pressure Is cFishingEffortPressure) Then
+                    If (value = CStr(cCore.NULL_VALUE)) Then
+                        value = CStr(1.0F)
+                    End If
+                End If
                 Me.m_inputs(pressure) = value
             End Set
         End Property

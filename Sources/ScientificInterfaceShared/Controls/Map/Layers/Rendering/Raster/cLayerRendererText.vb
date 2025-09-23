@@ -76,7 +76,7 @@ Namespace Controls.Map.Layers
 
                     If (value IsNot Nothing) And (Me.m_ft IsNot Nothing) Then
                         Dim strValue As String = CStr(value)
-                        Using br As New SolidBrush(Me.VisualStyle.BackColour)
+                        Using br As New SolidBrush(cStyleGuide.FromVisualColor(Me.VisualStyle.BackColour))
                             g.FillRectangle(br, rc)
                         End Using
                         ' Draw value
@@ -93,8 +93,8 @@ Namespace Controls.Map.Layers
             If Me.VisualStyle Is Nothing Then
                 Me.m_brFore = cRasterLayerRenderer.brDEFAULT
             Else
-                Me.m_brFore = New SolidBrush(Me.VisualStyle.ForeColour)
-                Me.m_ft = New Font(Me.VisualStyle.FontName, Me.VisualStyle.FontSize, Me.VisualStyle.FontStyle)
+                Me.m_brFore = New SolidBrush(cStyleGuide.FromVisualColor(Me.VisualStyle.ForeColour))
+                Me.m_ft = New Font(Me.VisualStyle.FontName, Me.VisualStyle.FontSize, cStyleGuide.FromVisualFontStyle(Me.VisualStyle.FontStyle))
             End If
         End Sub
 

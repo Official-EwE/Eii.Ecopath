@@ -190,6 +190,8 @@ Namespace SpatialData
             End Get
         End Property
 
+        Public Property LogFilePath As String = ""
+
 #End Region ' Public access
 
 #Region " Internals "
@@ -211,7 +213,7 @@ Namespace SpatialData
         Private Sub WriteMessage()
 
             Dim sb As New StringBuilder()
-            Dim strPath As String = ""
+            Dim strPath As String = Me.LogFilePath
             Dim strFile As String = ""
             Dim strModel As String = ""
             Dim sep As String = cStringUtils.vbTab
@@ -229,7 +231,9 @@ Namespace SpatialData
                 '    strPath = Me.m_core.OutputPath
                 'End If
 
-                strPath = Path.GetDirectoryName(strModel)
+                If (String.IsNullOrWhiteSpace(strPath) Or Not Directory.Exists(strPath)) Then
+                    strPath = Path.GetDirectoryName(strModel)
+                End If
                 strFile = Path.GetFileNameWithoutExtension(strModel)
 
                 Me.m_strLogFileName = Path.Combine(strPath, strFile & "_spatiallog.txt")

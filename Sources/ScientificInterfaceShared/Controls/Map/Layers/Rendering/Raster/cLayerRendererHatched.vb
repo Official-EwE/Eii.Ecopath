@@ -42,11 +42,10 @@ Namespace Controls.Map.Layers
             MyBase.New(uic, vs, cVisualStyle.eVisualStyleTypes.ForeColor Or cVisualStyle.eVisualStyleTypes.BackColor Or cVisualStyle.eVisualStyleTypes.Hatch)
         End Sub
 
-        Public Overrides Sub RenderPreview(g As Graphics,
-                                           rc As RectangleF,
-                                           Optional iSymbol As Integer = 0)
+        Public Overrides Sub RenderPreview(g As Graphics, rc As RectangleF, Optional iSymbol As Integer = 0)
             If Me.IsStyleValid Then
-                Using br As New HatchBrush(Me.VisualStyle.HatchStyle, Me.VisualStyle.ForeColour, Me.VisualStyle.BackColour)
+                ' This is going to be slow....
+                Using br As New HatchBrush(cStyleGuide.FromVisualHatch(Me.VisualStyle.HatchStyle), cStyleGuide.FromVisualColor(Me.VisualStyle.ForeColour), cStyleGuide.FromVisualColor(Me.VisualStyle.BackColour))
                     g.FillRectangle(br, rc)
                 End Using
             Else
@@ -54,16 +53,12 @@ Namespace Controls.Map.Layers
             End If
         End Sub
 
-        Public Overrides Sub RenderCell(g As System.Drawing.Graphics,
-                                        rc As System.Drawing.RectangleF,
-                                        layer As cEcospaceLayer,
-                                        value As Object,
-                                        style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub RenderCell(g As System.Drawing.Graphics, rc As System.Drawing.RectangleF, layer As cEcospaceLayer, value As Object, style As cStyleGuide.eStyleFlags)
             Me.RenderPreview(g, rc)
         End Sub
 
         Protected Overrides Function IsStyleValid() As Boolean
-            Return ((Me.VisualStyle.HatchStyle >= 0) And (CInt(Me.VisualStyle.HatchStyle) < [Enum].GetValues(GetType(System.Drawing.Drawing2D.HatchStyle)).Length))
+            Return True ' ((Me.VisualStyle.HatchStyle >= 0) And (CInt(Me.VisualStyle.HatchStyle) < [Enum].GetValues(GetType(System.Drawing.Drawing2D.HatchStyle)).Length))
         End Function
 
         Public Overrides Function GetDisplayText(value As Object) As String

@@ -83,6 +83,11 @@ Public Class cEcospaceDataStructures
     ''' WKT projection string for the Ecospace coordinate system
     ''' </summary>
     Friend ProjectionString As String = DEFAULT_COORDINATESYSTEM
+    ''' <summary>
+    ''' Flag to disable preserving and restoring layer data when working with external data.
+    ''' This flag can save timne when running Ecospace experiments without saving the model.
+    ''' </summary>
+    Property PreserveLayerData As Boolean = True
 
     Public CurrentForce As Boolean
     'jb Ecoseed may get move to an object

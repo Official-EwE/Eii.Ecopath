@@ -30,6 +30,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Utilities
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -190,15 +191,15 @@ Public Class cPrebalZedGraphHelper
 
                 'If (sg.GroupVisible(grp.Index)) Then
                 If (bIsComputed) Then
-                        pptlComputed.Add(New PointPair(j, pd.Data(i)))
-                    Else
-                        pptlEntered.Add(New PointPair(j, pd.Data(i)))
-                    End If
-                    j += 1
-                    If (pd.Data(i) > 0) Then
-                        sMax = Math.Max(sMax, pd.Data(i))
-                        sMin = Math.Min(sMin, pd.Data(i))
-                    End If
+                    pptlComputed.Add(New PointPair(j, pd.Data(i)))
+                Else
+                    pptlEntered.Add(New PointPair(j, pd.Data(i)))
+                End If
+                j += 1
+                If (pd.Data(i) > 0) Then
+                    sMax = Math.Max(sMax, pd.Data(i))
+                    sMin = Math.Min(sMin, pd.Data(i))
+                End If
                 'End If
 
                 pplRegression.Add(New PointPair(j, pd.Data(i)))

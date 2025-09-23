@@ -556,6 +556,7 @@ Public Class cPluginManager
             Try
                 types = clsAssembly.GetTypes()
             Catch ex As Exception
+                Console.WriteLine("PluginManager: assembly '{0}' could not be examined for types, {1}", strFileName, ex.Message)
                 cLog.Write(ex, "cPluginManager.LoadPluginAssembly::GetTypes(" & strFileName & ")")
                 Return False
             End Try

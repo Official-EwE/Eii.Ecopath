@@ -112,14 +112,10 @@ Namespace SpatialData
 
         End Sub
 
-
-        Public Overrides Sub InitRun()
-            MyBase.InitRun()
-
+        Public Overrides Sub InitRun(bPreserveLayerData As Boolean)
+            MyBase.InitRun(bPreserveLayerData)
             Me.InitForcingMaps()
-
         End Sub
-
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialScalarDataAdapter.Initialize"/>.

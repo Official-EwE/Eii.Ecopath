@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48</TargetFrameworks>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU</Platforms>
     <SccProjectName></SccProjectName>
     <SccLocalPath></SccLocalPath>
@@ -24,6 +24,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	<PlatformTarget>AnyCPU</PlatformTarget>
@@ -69,15 +71,22 @@
   </PropertyGroup>
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>EwECore</AssemblyName>
+    <RootNamespace>EwECore</RootNamespace>
+    <PackageId>Eii.Ecopath.EwECore</PackageId>
+    <Title>Ecopath with Ecosim Core</Title>
+    <Description>A description of the EwECore package</Description>
+    <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwECore</PackageProjectUrl>
+    <IncludeSymbols>True</IncludeSymbols>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <Version>6.7.1</Version>
+    <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\EPPlus.dll</HintPath>
-    </Reference>
-    <Reference Include="EwELicense, Version=6.7.0.17768, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Includes\EwELicense.dll</HintPath>
     </Reference>
     <Reference Include="Interop.JRO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=1d875393b3ebcad0, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.interop.access.dao, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
@@ -85,14 +94,6 @@
     <Reference Update="System">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.dll</HintPath>
     </Reference>
-	<Reference Include="TreeksLicensingLibrary2">
-	  <HintPath>Includes\TreeksLicensingLibrary2.dll</HintPath>
-	</Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.Linq" />
-	<Reference Include="System.Web" />
-	<Reference Include="System.Web.Services" />
   </ItemGroup>
   <ItemGroup Condition="'$(Platform)' == 'x86'">
  	<Reference Include="Includes\LPSolve\win32\lpsolve55.dll" />
@@ -163,10 +164,6 @@
     <EmbeddedResource Include="Resources\EwE6.accdb" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
-    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Update="Resources\CoreDefaults.resx">
       <SubType>Designer</SubType>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -205,6 +202,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.1" />
@@ -213,5 +211,18 @@
     <Compile Remove="EcoSpace\Input Output\ResultWriters\Data sources\cRegionTLResultsDataSource.vb" />
     <Compile Remove="Shapes\TimeSeries\Readers\cTimeSeriesClipboardReader.vb" />
     <Compile Remove="Validators\cValidatorOutput.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ServiceModel.Primitives">
+      <Version>8.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EwEPlugin\EwEPlugin_dotnet.vbproj" >
+      <PackageId>Eii.Ecopath.EwEPlugin</PackageId>
+    </ProjectReference>
+    <ProjectReference Include="..\EwEUtils\EwEUtils_dotnet.vbproj">
+      <PackageId>Eii.Ecopath.EwEUtils</PackageId>
+    </ProjectReference>
   </ItemGroup>
 </Project>

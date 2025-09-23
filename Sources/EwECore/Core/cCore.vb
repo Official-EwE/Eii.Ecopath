@@ -196,7 +196,9 @@ Public Class cCore
     Private m_SampleManager As Samples.cEcopathSampleManager = Nothing
     Private m_ArenaManager As cEcosimArenaManager = Nothing
 
+#If Not NET Then
     Private m_license As cLicense = Nothing
+#End If
 
 #End Region ' Generic variables
 
@@ -9207,6 +9209,41 @@ Public Class cCore
     ''' which the time represented by a given time step is added. The resulting 
     ''' date is rounded to the first day of the month.</remarks>
     ''' -------------------------------------------------------------------
+    Public Function EcosimTimestepToAbsoluteTime(iTime As Integer) As DateTime
+
+        Dim iYear As Integer = Me.EcosimFirstYear + (iTime - 1) \ cCore.N_MONTHS
+        Dim iMonth As Integer = ((iTime - 1) Mod cCore.N_MONTHS) + 1
+        Return New DateTime(iYear, iMonth, 1)
+
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Convert an absolute time to an Ecospace time step.
+    ''' </summary>
+    ''' <param name="dt">The date to convert to a time step.</param>
+    ''' <returns></returns>
+    ''' <remarks>The resulting time step is calculated from difference in time steps,
+    ''' rounded to months, between the given time and the <see cref="EcosimFirstYear"/>.</remarks>
+    ''' -------------------------------------------------------------------
+    Public Function AbsoluteTimeToEcosimTimestep(dt As DateTime) As Integer
+
+        Dim dtStart As New Date(Math.Max(Me.EcosimFirstYear, 1), 1, 1)
+        Dim sTime As Single = (dt.Year - dtStart.Year) + CSng((dt.Month - dtStart.Month) / cCore.N_MONTHS)
+        Return CInt(sTime * cCore.N_MONTHS) + 1 ' Timesteps are one-based!
+
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Convert an Ecospace time step to absolute time.
+    ''' </summary>
+    ''' <param name="iTime">The Ecospace time step to convert.</param>
+    ''' <returns>The absolute time represented by a time step.</returns>
+    ''' <remarks>The absolute time is based on the <see cref="EcosimFirstYear"/>, to
+    ''' which the time represented by a given time step is added. The resulting 
+    ''' date is rounded to the first day of the month.</remarks>
+    ''' -------------------------------------------------------------------
     Public Function EcospaceTimestepToAbsoluteTime(iTime As Integer) As DateTime
 
         ' Translate ecospace time step to year and month
@@ -9447,9 +9484,13 @@ Public Class cCore
 
     End Sub
 
-
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set Ecospace to pause
+    ''' </summary>
+    ''' <returns>True if Ecosapce is set to pause.</returns>
+    ''' -----------------------------------------------------------------------
     Public Property EcospacePaused() As Boolean
-
         Get
             Return Me.m_Ecospace.isPaused
         End Get
@@ -9458,7 +9499,6 @@ Public Class cCore
             Me.m_Ecospace.isPaused = value
             Me.m_StateMonitor.SetIsPaused()
         End Set
-
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -15553,6 +15593,7 @@ Public Class cCore
 
 #End Region
 
+#If Not NET Then
 #Region " License "
 
     <CLSCompliant(False)>
@@ -15566,6 +15607,7 @@ Public Class cCore
     End Property
 
 #End Region ' License
+#End If
 
 #Region " Deprecated "
 

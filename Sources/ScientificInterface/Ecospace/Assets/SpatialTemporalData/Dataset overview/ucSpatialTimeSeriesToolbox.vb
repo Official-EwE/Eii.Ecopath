@@ -25,8 +25,7 @@ Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Utilities
 
 #End Region ' Imports
 

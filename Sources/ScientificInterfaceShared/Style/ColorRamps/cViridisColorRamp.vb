@@ -18,7 +18,7 @@
 '
 
 Option Strict On
-Imports System.Drawing
+Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 
 Namespace Style
@@ -71,7 +71,7 @@ Namespace Style
         ''' <param name="dValueMax">The maximum value to scale the value to. By default, it is assumed that a colour must be retrieved on a scale from [0..1]</param>
         ''' <returns>The colour for a given value.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetColor(dValue As Double, Optional dValueMax As Double = 1.0) As Color
+        Public Overrides Function GetColorInvariant(dValue As Double, Optional dValueMax As Double = 1.0) As VisualColor
 
             Dim RPrev, RNext As Integer
             Dim GPrev, GNext As Integer
@@ -93,9 +93,7 @@ Namespace Style
             Me.ToRGB(Me.m_ramps(Me.Option, iPrev), RPrev, GPrev, BPrev)
             Me.ToRGB(Me.m_ramps(Me.Option, iNext), RNext, GNext, BNext)
 
-            Return Color.FromArgb(255, CByte(Math.Round(Me.Interpolate(RPrev, RNext, dx))),
-                                       CByte(Math.Round(Me.Interpolate(GPrev, GNext, dx))),
-                                       CByte(Math.Round(Me.Interpolate(BPrev, BNext, dx))))
+            Return New VisualColor(CByte(Math.Round(Me.Interpolate(RPrev, RNext, dx))), CByte(Math.Round(Me.Interpolate(GPrev, GNext, dx))), CByte(Math.Round(Me.Interpolate(BPrev, BNext, dx))))
         End Function
 
         Private Sub ToRGB(n As Integer, ByRef r As Integer, ByRef g As Integer, ByRef b As Integer)

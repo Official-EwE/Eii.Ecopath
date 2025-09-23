@@ -24,6 +24,7 @@ Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
 Imports EwEUtils.Core
+Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
@@ -351,9 +352,9 @@ Namespace Controls.Map
 
                     If (vs Is Nothing) Then
                         vs = New cVisualStyle()
-                        vs.ForeColour = Color.DarkGray
-                        vs.BackColour = Color.FromArgb(64, 255, 255, 255)
-                        vs.HatchStyle = Drawing2D.HatchStyle.LightUpwardDiagonal
+                        vs.ForeColour = VisualColor.FromArgb(&HFF060606)
+                        vs.BackColour = VisualColor.FromArgb(64, 255, 255, 255)
+                        vs.HatchStyle = VisualHatchStyle.BackwardDiagonal
                         ad.AllowValidation = False
                         ad.VisualStyle = vs
                         ad.AllowValidation = True

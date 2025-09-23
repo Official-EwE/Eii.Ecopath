@@ -59,8 +59,8 @@ Namespace SpatialData
 
 #Region " Overrides "
 
-        Public Overrides Sub InitRun()
-            MyBase.InitRun()
+        Public Overrides Sub InitRun(bPreserveLayerData As Boolean)
+            MyBase.InitRun(bPreserveLayerData)
 
             'Called at the start of each run
             'Allocate arrays for the base layers and boolean flags 

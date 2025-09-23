@@ -21,13 +21,13 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Utilities
-Imports ScientificInterface.Other
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
-Imports SourceGrid2.VisualModels
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Utilities
+Imports SourceGrid2
 Imports SourceGrid2.Cells
+Imports SourceGrid2.VisualModels
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

@@ -23,17 +23,20 @@ Option Strict On
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 Imports System.Text
-Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Utilities
 
 #End Region ' Imports
 
 Namespace Controls
+
+
+    ' ToDo: base on styleguide
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -300,10 +303,7 @@ Namespace Controls
 
         End Sub
 
-        Friend Sub DrawNode(g As Graphics,
-                            rc As Rectangle,
-                            iNode As Integer,
-                            highlight As IFlowDiagramRenderer.eFDHighlightType) _
+        Friend Sub DrawNode(g As Graphics, rc As Rectangle, iNode As Integer, highlight As IFlowDiagramRenderer.eFDHighlightType) _
             Implements IFlowDiagramRenderer.DrawNode
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide

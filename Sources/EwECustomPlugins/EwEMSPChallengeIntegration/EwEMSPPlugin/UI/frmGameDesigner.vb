@@ -322,7 +322,7 @@ Namespace UI
             Me.m_btnEmulStop.Enabled = bIsEcospaceRunning
             Me.m_cbSaveOutputMaps.Enabled = Not bIsEcospaceRunning
             Me.m_nudEmulOutcomeRange.Enabled = Not bIsEcospaceRunning And bHasGame
-            Me.m_btnEmulViewOutputFolder.Enabled = Directory.Exists(Me.OutputPath)
+            Me.m_btnEmulViewOutputFolder.Enabled = True
 
             Me.m_cmbEmulTestsets.Enabled = bHasGame
 
@@ -1314,6 +1314,10 @@ Namespace UI
         Private Sub OnEmulViewOutputFolder(sender As Object, e As EventArgs) _
             Handles m_btnEmulViewOutputFolder.Click
 
+            If Not Directory.Exists(Me.OutputPath) Then
+                Directory.CreateDirectory(Me.OutputPath)
+            End If
+
             Try
                 Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
                 cmd.Invoke(Me.OutputPath)
@@ -1495,7 +1499,6 @@ Namespace UI
         End Sub
 
         Private Sub ApplyTestset()
-
             Dim g As cGame = Me.SelectedGame()
             If (g Is Nothing) Then Return
 
@@ -1506,38 +1509,36 @@ Namespace UI
                                     eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
 
             Try
+                If Me.m_cbSaveOutputMaps.Checked And Not Directory.Exists(Me.OutputPath) Then
+                    Directory.CreateDirectory(Me.OutputPath)
+                End If
                 If (testset IsNot Nothing) Then
                     For Each p As cPressure In testset.Pressures
                         Dim data As String = testset.Testdata(p)
-                        If (Not String.IsNullOrWhiteSpace(data)) Then
-                            Dim vs As cVariableStatus = Nothing
-
-                            ' XXX REWRITE THIS XXX
-                            'Select Case p.DataType
-                            '    Case cPressure.eDataTypes.Grid
-                            '        Dim psim As New cPressure(p.Name, bm.InCol, bm.InRow)
-                            '        If psim.Grid.Load(data, Me.UIContext.Core) Then
-                            '            pressures.Add(psim)
-                            '        Else
-                            '            msg.Message = cStringUtils.Localize(My.Resources.STATUS_TESTSET_LOAD_FAILED, testset.Name)
-                            '            vs = New cVariableStatus(eStatusFlags.ErrorEncountered, cStringUtils.Localize(My.Resources.STATUS_TESTDATA_MAP_REJECTED, p.Name, data),
-                            '                                     eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.Ecospace, 0)
-                            '            msg.AddVariable(vs)
-                            '        End If
-                            '    Case cPressure.eDataTypes.Scalar
-                            '        If Double.TryParse(data, p.Scalar) Then
-                            '            pressures.Add(p)
-                            '        End If
-                            '    Case Else
-                            '        Debug.Assert(False)
-                            'End Select
+                        If (String.IsNullOrWhiteSpace(data)) Then Continue For
+                        If (TypeOf p Is cEnvironmentalPressure) Then
+                            Dim psim As New cEnvironmentalPressure(p.Name, bm.InCol, bm.InRow)
+                            If Not psim.Grid.Load(data, Me.UIContext.Core) Then
+                                msg.Message = cStringUtils.Localize(My.Resources.STATUS_TESTSET_LOAD_FAILED, testset.Name)
+                                msg.AddVariable(New cVariableStatus(eStatusFlags.ErrorEncountered, cStringUtils.Localize(My.Resources.STATUS_TESTDATA_MAP_REJECTED, p.Name, data),
+                                    eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.Ecospace, 0))
+                            End If
+                            pressures.Add(psim)
+                            Continue For
                         End If
-
+                        If (TypeOf p Is cFishingEffortPressure) Then
+                            Dim effortScalar As Single = cStringUtils.ConvertToSingle(data, 1.0F)
+                            pressures.Add(New cFishingEffortPressure(p.Name, effortScalar))
+                            Continue For
+                        End If
+                        If (TypeOf p Is cFishingEcoPressure) Then
+                            pressures.Add(New cFishingEcoPressure(p.Name, data = "True"))
+                        End If
                     Next
                 End If
 
                 ' Pass pressures on
-                g.ApplyPressures(pressures.ToArray(), False)
+                g.ApplyPressures(pressures.ToArray(), True)
 
             Catch ex As Exception
                 ' Eek!
@@ -1586,8 +1587,10 @@ Namespace UI
                 Dim msg As New cMessage("MSP outcomes saved to disk for Ecospace timestep " & data.iTimeStep, eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Information)
 
                 For Each grid As cGrid In outcomes
-
                     If (grid.IsValid) Then
+                        Dim strMeansFile As String = Path.Combine(Me.OutputPath,
+                            cFileUtils.ToValidFileName("means_" & grid.Name & ".txt", False))
+                        File.AppendAllLines(strMeansFile, New String() {data.iTimeStep.ToString("D4") & ": " & grid.Mean.ToString("F7")})
 
                         Dim strFile As String = cFileUtils.ToValidFileName("outcome_" & grid.Name & "_" & data.iTimeStep.ToString("D4") & ".asc", False)
                         Dim vs As cVariableStatus = Nothing

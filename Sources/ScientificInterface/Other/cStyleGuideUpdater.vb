@@ -25,6 +25,7 @@ Imports System.Text
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwEUtils.Core
+Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -462,7 +463,7 @@ Friend Class cStyleGuideUpdater
         Dim sb As New StringBuilder()
         sb.Append("""" & ramp.Name.Replace("""", "") & """")
         For j As Integer = 0 To ramp.GradientBreaks.Count - 1
-            Dim clr As Color = ramp.GradientColors(j)
+            Dim clr As VisualColor = ramp.GradientColors(j)
             sb.Append("," & cStringUtils.ToHexString(New Byte() {clr.A, clr.R, clr.G, clr.B}))
             sb.Append("," & cStringUtils.FormatNumber(ramp.GradientBreaks(j)))
         Next
@@ -490,12 +491,12 @@ Friend Class cStyleGuideUpdater
 
     Private Function StringToBinaryColorRamp(item As String) As cBinaryColorRamp
         Try
-            Dim colors As New List(Of Color)
+            Dim colors As New List(Of VisualColor)
             Dim bits As String() = cStringUtils.SplitQualified(item, ","c)
             For i As Integer = 2 To bits.Length - 1
                 Dim iBase As Integer = Convert.ToInt32(bits(i), 16)
                 Dim iColor As Integer = iBase Or 255 << 24
-                Dim color As Color = Color.FromArgb(iColor)
+                Dim color As VisualColor = VisualColor.FromArgb(iColor)
                 colors.Add(color)
             Next
             Return New cBinaryColorRamp(CInt(bits(1)), bits(0), colors.ToArray())
@@ -524,7 +525,7 @@ Friend Class cStyleGuideUpdater
         sb.Append("""" & ramp.Name.Replace("""", "") & """")
         sb.Append("," & ramp.ID)
         For j As Integer = 0 To ramp.Colors.Count - 1
-            Dim clr As Color = ramp.Colors(j)
+            Dim clr As VisualColor = ramp.Colors(j)
             sb.Append(",")
             sb.Append(cStringUtils.ToHexString(New Byte() {clr.R, clr.G, clr.B}))
         Next

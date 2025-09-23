@@ -22,6 +22,7 @@
 Option Strict On
 Imports System.Drawing.Drawing2D
 Imports EwECore.Auxiliary
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -66,8 +67,8 @@ Namespace Controls
         ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
         ''' <param name="style">Aspect of the style that needs editing.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(uic As cUIContext, _
-                         vs As cVisualStyle, _
+        Public Sub New(uic As cUIContext,
+                         vs As cVisualStyle,
                          style As cVisualStyle.eVisualStyleTypes)
             MyBase.New(uic, vs, style)
 
@@ -88,9 +89,9 @@ Namespace Controls
             Me.m_form.Width = Me.m_control.Width + 24
             Me.m_form.Height = Me.m_control.Height + 10
 
-            Me.SelectedForeColor = vs.ForeColour
-            Me.SelectedBackColor = vs.BackColour
-            Me.SelectedHatchStyle = vs.HatchStyle
+            Me.SelectedForeColor = cStyleGuide.FromVisualColor(vs.ForeColour)
+            Me.SelectedBackColor = cStyleGuide.FromVisualColor(vs.BackColour)
+            Me.SelectedHatchStyle = cStyleGuide.FromVisualHatch(vs.HatchStyle)
 
             Me.UpdateControls()
 
@@ -107,17 +108,17 @@ Namespace Controls
             Set(value As cVisualStyle)
                 MyBase.VisualStyle = value
                 If (MyBase.VisualStyle IsNot Nothing) And (Me.m_control IsNot Nothing) Then
-                    Me.SelectedForeColor = MyBase.VisualStyle.ForeColour
-                    Me.SelectedBackColor = MyBase.VisualStyle.BackColour
-                    Me.SelectedHatchStyle = MyBase.VisualStyle.HatchStyle
+                    Me.SelectedForeColor = cStyleGuide.FromVisualColor(MyBase.VisualStyle.ForeColour)
+                    Me.SelectedBackColor = cStyleGuide.FromVisualColor(MyBase.VisualStyle.BackColour)
+                    Me.SelectedHatchStyle = cStyleGuide.FromVisualHatch(MyBase.VisualStyle.HatchStyle)
                 End If
             End Set
         End Property
 
         Public Overrides Function Apply(vs As cVisualStyle) As Boolean
-            vs.ForeColour = Me.SelectedForeColor
-            vs.BackColour = Me.SelectedBackColor
-            vs.HatchStyle = Me.SelectedHatchStyle
+            vs.ForeColour = cStyleGuide.ToVisualColor(Me.SelectedForeColor)
+            vs.BackColour = cStyleGuide.ToVisualColor(Me.SelectedBackColor)
+            vs.HatchStyle = cStyleGuide.ToVisualHatch(Me.SelectedHatchStyle)
             Return True
         End Function
 
