@@ -20,6 +20,7 @@
 
 Option Strict On
 Option Explicit On
+Imports EwEUtils.UserInterface
 
 #End Region ' Imports
 
@@ -59,7 +60,7 @@ Namespace Style
         ''' <param name="dValueMax">The maximum value to scale the value to. By default, it is assumed that a colour must be retrieved on a scale from [0..1]</param>
         ''' <returns>The colour for a given value.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetColor(dValue As Double, Optional dValueMax As Double = 1.0) As Color
+        Public Overrides Function GetColorInvariant(dValue As Double, Optional dValueMax As Double = 1.0) As VisualColor
 
             Const sMaxColor As Double = 250
 
@@ -117,7 +118,7 @@ Namespace Style
                 sGrn = Math.Min(sGrn, sMaxColor)
             End If
 
-            Return Color.FromArgb(255, CByte(Math.Round(sRed)), CByte(Math.Round(sGrn)), CByte(Math.Round(sBlu)))
+            Return New VisualColor(CByte(Math.Round(sRed)), CByte(Math.Round(sGrn)), CByte(Math.Round(sBlu)))
         End Function
 
     End Class

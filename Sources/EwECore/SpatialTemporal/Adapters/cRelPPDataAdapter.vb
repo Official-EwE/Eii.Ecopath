@@ -73,12 +73,11 @@ Namespace SpatialData
         ''' Overridden to clear the PP scale factor.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub InitRun()
-            MyBase.InitRun()
+        Public Overrides Sub InitRun(bPreserveLayerData As Boolean)
+            MyBase.InitRun(bPreserveLayerData)
 
             ' Reset preserved PP scale
             Me.m_sPreservedScale = cCore.NULL_VALUE
-
         End Sub
 
         ''' -------------------------------------------------------------------

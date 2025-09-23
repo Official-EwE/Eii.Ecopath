@@ -6,9 +6,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DocumentationFile>EwEMSPLink.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
@@ -86,7 +83,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Sources\EwECore\EwECore.vbproj" />
-    <ProjectReference Include="..\..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj" />
-    <ProjectReference Include="..\..\..\..\Sources\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
 </Project>

@@ -97,6 +97,7 @@ public class MEL
         }
         foreach (cGrid grid in outputs)
         {
+			ConsoleLogger.Info($"Outcome: name={grid.Name}, mean={grid.Mean}, units={grid.Units}, numValueCells={grid.NumValueCells}");
             SubmitBitmapForStorage(grid);
         }
     }

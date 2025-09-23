@@ -793,6 +793,7 @@
     <Compile Include="Settings\cFormSettings.vb" />
     <Compile Include="Settings\cSettingsParser.vb" />
     <Compile Include="Settings\IXMLDocSettings.vb" />
+    <Compile Include="Style\cColorUtils.vb" />
     <Compile Include="Style\ColorRamps\cARGBColorRamp.vb" />
     <Compile Include="Style\ColorRamps\cBinaryColorRamp.vb" />
     <Compile Include="Style\ColorRamps\cColorRamp.vb" />

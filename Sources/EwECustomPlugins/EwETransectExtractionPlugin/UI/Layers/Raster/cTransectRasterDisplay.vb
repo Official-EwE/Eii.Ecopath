@@ -22,6 +22,7 @@
 Option Strict On
 Imports System.Drawing
 Imports EwECore.Auxiliary
+Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
@@ -41,9 +42,9 @@ Public Class cTransectRasterDisplay
 
         Dim sg As cStyleGuide = uic.StyleGuide
 
-        s_vs.HatchStyle = Drawing2D.HatchStyle.Percent50
-        s_vs.ForeColour = Color.FromArgb(128, sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT))
-        s_vs.BackColour = Color.FromArgb(128, Color.Black)
+        s_vs.HatchStyle = VisualHatchStyle.Percent50
+        s_vs.ForeColour = VisualColor.FromArgb(128, sg.ApplicationColorInvariant(cStyleGuide.eApplicationColorType.HIGHLIGHT))
+        s_vs.BackColour = VisualColor.FromArgb(128, VisualColor.FromArgb(0))
 
         Me.RenderMode = eLayerRenderType.Always
     End Sub

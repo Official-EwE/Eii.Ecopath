@@ -924,9 +924,128 @@ Public Class cEIIXMLDataSource
     Private Function LoadEcopathTaxon() As Boolean
 
         Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
-        taxonDS.NumTaxon = 0
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim dt As DataTable = Me.ReadTable("EcopathTaxon")
+        taxonDS.NumTaxon = dt.Rows.Count
+
         taxonDS.RedimTaxon()
+        Dim iTaxon As Integer = 1
+        Dim bSucces As Boolean = True
+
+        dt.DefaultView.Sort = "TaxonID ASC"
+
+        Try
+            For Each row As DataRow In dt.DefaultView.ToTable.Rows
+                taxonDS.TaxonDBID(iTaxon) = CInt(row("TaxonID"))
+                taxonDS.TaxonCodeFB(iTaxon) = Me.ReadSafe(row, "CodeFB", cCore.NULL_VALUE)
+                taxonDS.TaxonCodeSLB(iTaxon) = Me.ReadSafe(row, "CodeSLB", cCore.NULL_VALUE)
+                taxonDS.TaxonCodeSAUP(iTaxon) = Me.ReadSafe(row, "CodeSAUP", cCore.NULL_VALUE)
+                taxonDS.TaxonCodeAquaMaps(iTaxon) = Me.ReadSafe(row, "CodeAquaMaps", "")
+                taxonDS.TaxonCodeAphia(iTaxon) = Me.ReadSafe(row, "CodeAphia", "")
+                taxonDS.TaxonCodeOBIS(iTaxon) = Me.ReadSafe(row, "CodeOBIS", cCore.NULL_VALUE)
+                taxonDS.TaxonCodeFAO(iTaxon) = Me.ReadSafe(row, "CodeFAO", "")
+                taxonDS.TaxonCodeLSID(iTaxon) = Me.ReadSafe(row, "CodeLCID", "")
+                taxonDS.TaxonClass(iTaxon) = Me.ReadSafe(row, "ClassName", "")
+                taxonDS.TaxonOrder(iTaxon) = Me.ReadSafe(row, "OrderName", "")
+                taxonDS.TaxonFamily(iTaxon) = Me.ReadSafe(row, "FamilyName", "")
+                taxonDS.TaxonGenus(iTaxon) = Me.ReadSafe(row, "GenusName", "")
+                taxonDS.TaxonSpecies(iTaxon) = Me.ReadSafe(row, "SpeciesName", "")
+                taxonDS.TaxonName(iTaxon) = Me.ReadSafe(row, "CommonName", "")
+                taxonDS.TaxonSource(iTaxon) = Me.ReadSafe(row, "SourceName", "")
+                taxonDS.TaxonSourceKey(iTaxon) = Me.ReadSafe(row, "SourceKey", "")
+                taxonDS.TaxonEcologyType(iTaxon) = Me.ReadSafe(row, "EcologyType", eEcologyTypes.NotSet)
+                taxonDS.TaxonOrganismType(iTaxon) = Me.ReadSafe(row, "OrganismType", eOrganismTypes.NotSet)
+                taxonDS.TaxonIUCNConservationStatus(iTaxon) = Me.ReadSafe(row, "ConservationStatus", eIUCNConservationStatusTypes.NotSet)
+                taxonDS.TaxonExploitationStatus(iTaxon) = Me.ReadSafe(row, "Exploited", eExploitationTypes.NotSet)
+                taxonDS.TaxonOccurrenceStatus(iTaxon) = Me.ReadSafe(row, "OccurrenceStatus", eOccurrenceStatusTypes.NotSet)
+                taxonDS.TaxonMeanWeight(iTaxon) = Me.ReadSafe(row, "MeanWeight", cCore.NULL_VALUE)
+                taxonDS.TaxonMeanLength(iTaxon) = Me.ReadSafe(row, "MeanLength", cCore.NULL_VALUE)
+                taxonDS.TaxonMaxLength(iTaxon) = Me.ReadSafe(row, "MaxLength", cCore.NULL_VALUE)
+                taxonDS.TaxonWinf(iTaxon) = Me.ReadSafe(row, "Winf", cCore.NULL_VALUE)
+                taxonDS.TaxonK(iTaxon) = Me.ReadSafe(row, "vbgfK", cCore.NULL_VALUE)
+                taxonDS.TaxonMaxLength(iTaxon) = Me.ReadSafe(row, "MaxLength", cCore.NULL_VALUE)
+                taxonDS.TaxonMeanLifeSpan(iTaxon) = Me.ReadSafe(row, "MeanLifeSpan", cCore.NULL_VALUE)
+                taxonDS.TaxonVulnerabilityIndex(iTaxon) = Me.ReadSafe(row, "VulnerabiltyIndex", cCore.NULL_VALUE)
+                taxonDS.TaxonLastUpdated(iTaxon) = Me.ReadSafe(row, "LastUpdated", -1)
+                iTaxon += 1
+            Next
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}", ex.Message, iTaxon))
+            bSucces = False
+        End Try
+
+        Debug.Assert(iTaxon - 1 = taxonDS.NumTaxon)
+
+        ' Read taxa assignments
+        bSucces = bSucces And Me.LoadEcopathGroupTaxon()
+        bSucces = bSucces And Me.LoadEcopathStanzaTaxon()
         Return True
+
+    End Function
+
+    Private Function LoadEcopathGroupTaxon() As Boolean
+
+        Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
+        Dim dt As DataTable = Me.ReadTable("EcopathGroupTaxon")
+        Dim iTaxon As Integer = 1
+        Dim iGroup As Integer = 1
+        Dim bSucces As Boolean = True
+
+        Try
+            For Each row As DataRow In dt.DefaultView.ToTable.Rows
+                iTaxon = Array.IndexOf(taxonDS.TaxonDBID, CInt(row("TaxonID")))
+                iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(row("EcopathGroupID")))
+
+                If (iTaxon > 0 And iGroup > 0) Then
+                    taxonDS.TaxonTarget(iTaxon) = iGroup
+                    taxonDS.IsTaxonStanza(iTaxon) = False
+                    taxonDS.TaxonPropBiomass(iTaxon) = CSng(row("Proportion"))
+                    taxonDS.TaxonPropCatch(iTaxon) = Me.ReadSafe(row, "PropCatch", 0)
+                End If
+            Next
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}, group {2}", ex.Message, iTaxon, iGroup))
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcopathStanzaTaxon() As Boolean
+
+        Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
+        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim dt As DataTable = Me.ReadTable("EcopathStanzaTaxon")
+        Dim iTaxon As Integer = 1
+        Dim iStanza As Integer = 1
+        Dim bSucces As Boolean = True
+
+        Try
+            For Each row As DataRow In dt.DefaultView.ToTable.Rows
+                iTaxon = Array.IndexOf(taxonDS.TaxonDBID, CInt(row("TaxonID")))
+                iStanza = Array.IndexOf(stanzaDS.StanzaDBID, CInt(row("StanzaID")))
+
+                If (iTaxon > 0 And iStanza > 0) Then
+                    taxonDS.TaxonTarget(iTaxon) = iStanza
+                    taxonDS.IsTaxonStanza(iTaxon) = True
+                    taxonDS.TaxonPropBiomass(iTaxon) = 1
+                    taxonDS.TaxonPropCatch(iTaxon) = 1
+                End If
+            Next
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading taxon {1}, stanza {2}", ex.Message, iTaxon, iStanza))
+            bSucces = False
+        End Try
+
+        Return bSucces
 
     End Function
 
@@ -1352,7 +1471,7 @@ Public Class cEIIXMLDataSource
                         sPeatArena = CSng(drow("PeatArena"))
 
                         ' Grab arena no. as initialized from current set-up
-                        iArenaNo = ecosimDS.ArenaNo(iPrey, iPred) ' CInt(Me.m_db.ReadSafe(reader, "Sequence", 1)) ' Fallback
+                        iArenaNo = ecosimDS.ArenaNo(iPrey, iPred) ' CInt(Me.ReadSafe(row, "Sequence", 1)) ' Fallback
 
                         If (iPred > 0 And iPrey > 0 And iPredShared > 0 And sPeatArena > 0 And iArenaNo > 0) Then
                             ii += 1

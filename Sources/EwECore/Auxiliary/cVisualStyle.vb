@@ -22,36 +22,16 @@
 Option Strict On
 
 Imports System.Drawing
-Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
 Imports System.IO
-Imports System.Runtime.Serialization.Formatters.Binary
 Imports EwEUtils
+Imports EwEUtils.UserInterface
 Imports Newtonsoft.Json
 
 #End Region ' Imports 
 
 Namespace Auxiliary
 
-    <Flags>
-    Public Enum VisualFontStyle As Integer
-        Regular = 0
-        Bold = 1
-        Italic = 2
-        Underline = 4
-        Strikeout = 8
-    End Enum
-
-    Public Enum VisualHatchStyle As Integer
-        None = 0
-        Horizontal
-        Vertical
-        ForwardDiagonal
-        BackwardDiagonal
-        Cross
-        DiagonalCross
-        ' add the few you actually use; keep it minimal
-    End Enum
 
     Public Class VisualStyleDto
         Public Property foreColor As String          ' "#RRGGBBAA"
@@ -71,11 +51,7 @@ Namespace Auxiliary
     Public Class ColorHexJsonConverter
         Inherits JsonConverter(Of System.Drawing.Color)
 
-        Public Overrides Function ReadJson(reader As JsonReader,
-                                       objectType As Type,
-                                       existingValue As System.Drawing.Color,
-                                       hasExistingValue As Boolean,
-                                       serializer As JsonSerializer) As System.Drawing.Color
+        Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As System.Drawing.Color, hasExistingValue As Boolean, serializer As JsonSerializer) As System.Drawing.Color
             Dim s = TryCast(reader.Value, String)
             If String.IsNullOrEmpty(s) Then Return System.Drawing.Color.Empty
             If s(0) = "#"c Then s = s.Substring(1)
@@ -86,9 +62,7 @@ Namespace Auxiliary
             Return System.Drawing.Color.FromArgb(a, r, g, b)
         End Function
 
-        Public Overrides Sub WriteJson(writer As JsonWriter,
-                                   value As System.Drawing.Color,
-                                   serializer As JsonSerializer)
+        Public Overrides Sub WriteJson(writer As JsonWriter, value As System.Drawing.Color, serializer As JsonSerializer)
             Dim hex = $"#{value.R:X2}{value.G:X2}{value.B:X2}{value.A:X2}"
             writer.WriteValue(hex)
         End Sub
@@ -99,16 +73,16 @@ Namespace Auxiliary
 
 #Region " Private vars "
 
-        Private m_hatchStyle As HatchStyle = Drawing2D.HatchStyle.DiagonalCross
-        Private m_clrFore As Color = Color.Black
-        Private m_clrBack As Color = Color.Transparent
+        Private m_hatchStyle As VisualHatchStyle = VisualHatchStyle.DiagonalCross
+        Private m_clrFore As VisualColor = VisualColor.FromHex("#00000000")
+        Private m_clrBack As VisualColor = VisualColor.FromHex("#000000FF")
         Private m_img As Image = Nothing
         Private m_strFontName As String = "Arial"
         Private m_sFontSize As Single = 8.0!
-        Private m_fontstyle As FontStyle = FontStyle.Regular
+        Private m_fontstyle As VisualFontStyle = VisualFontStyle.Regular
         ''' <summary>To identify stock gradients</summary>
         Private m_gradientID As Integer = cCore.NULL_VALUE
-        Private m_gradientColors As Color() = Nothing
+        Private m_gradientColors As VisualColor() = Nothing
         Private m_gradientBreaks As Double() = Nothing
         Private m_gradientName As String = ""
         <NonSerialized()>
@@ -116,36 +90,37 @@ Namespace Auxiliary
 
 #End Region ' Private vars
 
+        ' Windows migration, won;t work on .NET Core
         Public Shared ReadOnly FixedImageFormat As ImageFormat = ImageFormat.Png
 
         Private Shared Function ColorToHex(c As System.Drawing.Color) As String
             Return $"#{c.R:X2}{c.G:X2}{c.B:X2}{c.A:X2}"
         End Function
 
-        Private Shared Function HexToColor(s As String) As System.Drawing.Color
-            If String.IsNullOrEmpty(s) Then Return System.Drawing.Color.Empty
+        Private Shared Function HexToColor(s As String) As VisualColor
+            If String.IsNullOrEmpty(s) Then Return VisualColor.FromArgb(&HFFF0F0F0)
             If s(0) = "#"c Then s = s.Substring(1)
             Dim r = Convert.ToByte(s.Substring(0, 2), 16)
             Dim g = Convert.ToByte(s.Substring(2, 2), 16)
             Dim b = Convert.ToByte(s.Substring(4, 2), 16)
             Dim a As Byte = 255
             If s.Length >= 8 Then a = Convert.ToByte(s.Substring(6, 2), 16)
-            Return System.Drawing.Color.FromArgb(a, r, g, b)
+            Return VisualColor.FromArgb(a, r, g, b)
         End Function
 
         Public Shared Function ToDto(vs As cVisualStyle) As VisualStyleDto
             Dim dto As New VisualStyleDto With {
-                .foreColor = ColorToHex(vs.ForeColour),
-                .backColor = ColorToHex(vs.BackColour),
-                .hatch = ToVisualHatch(vs.HatchStyle),
+                .foreColor = vs.ForeColour.ToString(),
+                .backColor = vs.BackColour.ToString(),
+                .hatch = vs.HatchStyle,
                 .fontName = vs.FontName,
                 .fontSize = vs.FontSize,
-                .fontStyle = ToVisualFontStyle(vs.FontStyle),
+                .fontStyle = vs.FontStyle,
                 .imageBase64 = vs.ImageString,                           ' already PNG→base64
                 .colorRampId = vs.ColorRampID,
                 .colorRampBreaks = vs.ColorRampBreaks,
                 .colorRampColors = If(vs.ColorRampColors Is Nothing, Nothing,
-                                      vs.ColorRampColors.Select(Function(c) ColorToHex(c)).ToArray()),
+                                      vs.ColorRampColors.Select(Function(c) c.ToString()).ToArray()),
                 .colorRampName = vs.ColorRampName
             }
             Return dto
@@ -156,59 +131,16 @@ Namespace Auxiliary
             If dto Is Nothing Then Return
             vs.ForeColour = HexToColor(dto.foreColor)
             vs.BackColour = HexToColor(dto.backColor)
-            vs.HatchStyle = FromVisualHatch(dto.hatch)
+            vs.HatchStyle = dto.hatch
             vs.FontName = dto.fontName
             vs.FontSize = dto.fontSize
-            vs.FontStyle = FromVisualFontStyle(dto.fontStyle)
+            vs.FontStyle = dto.fontStyle
             vs.ImageString = dto.imageBase64
             vs.ColorRampID = dto.colorRampId
             vs.ColorRampBreaks = dto.colorRampBreaks
-            vs.ColorRampColors = If(dto.colorRampColors Is Nothing, Nothing,
-                             dto.colorRampColors.Select(Function(s) HexToColor(s)).ToArray())
+            vs.ColorRampColors = If(dto.colorRampColors Is Nothing, Nothing, dto.colorRampColors.Select(Function(s) HexToColor(s)).ToArray())
             vs.ColorRampName = dto.colorRampName
         End Sub
-
-        Private Shared Function ToVisualFontStyle(fs As System.Drawing.FontStyle) As VisualFontStyle
-            Dim v As VisualFontStyle = VisualFontStyle.Regular
-            If (fs And System.Drawing.FontStyle.Bold) <> 0 Then v = v Or VisualFontStyle.Bold
-            If (fs And System.Drawing.FontStyle.Italic) <> 0 Then v = v Or VisualFontStyle.Italic
-            If (fs And System.Drawing.FontStyle.Underline) <> 0 Then v = v Or VisualFontStyle.Underline
-            If (fs And System.Drawing.FontStyle.Strikeout) <> 0 Then v = v Or VisualFontStyle.Strikeout
-            Return v
-        End Function
-
-        Private Shared Function FromVisualFontStyle(v As VisualFontStyle) As System.Drawing.FontStyle
-            Dim fs As System.Drawing.FontStyle = System.Drawing.FontStyle.Regular
-            If (v And VisualFontStyle.Bold) <> 0 Then fs = fs Or System.Drawing.FontStyle.Bold
-            If (v And VisualFontStyle.Italic) <> 0 Then fs = fs Or System.Drawing.FontStyle.Italic
-            If (v And VisualFontStyle.Underline) <> 0 Then fs = fs Or System.Drawing.FontStyle.Underline
-            If (v And VisualFontStyle.Strikeout) <> 0 Then fs = fs Or System.Drawing.FontStyle.Strikeout
-            Return fs
-        End Function
-
-        Private Shared Function ToVisualHatch(h As System.Drawing.Drawing2D.HatchStyle) As VisualHatchStyle
-            Select Case h
-                Case Drawing2D.HatchStyle.Horizontal : Return VisualHatchStyle.Horizontal
-                Case Drawing2D.HatchStyle.Vertical : Return VisualHatchStyle.Vertical
-                Case Drawing2D.HatchStyle.ForwardDiagonal : Return VisualHatchStyle.ForwardDiagonal
-                Case Drawing2D.HatchStyle.BackwardDiagonal : Return VisualHatchStyle.BackwardDiagonal
-                Case Drawing2D.HatchStyle.Cross : Return VisualHatchStyle.Cross
-                Case Drawing2D.HatchStyle.DiagonalCross : Return VisualHatchStyle.DiagonalCross
-                Case Else : Return VisualHatchStyle.None
-            End Select
-        End Function
-
-        Private Shared Function FromVisualHatch(v As VisualHatchStyle) As System.Drawing.Drawing2D.HatchStyle
-            Select Case v
-                Case VisualHatchStyle.Horizontal : Return Drawing2D.HatchStyle.Horizontal
-                Case VisualHatchStyle.Vertical : Return Drawing2D.HatchStyle.Vertical
-                Case VisualHatchStyle.ForwardDiagonal : Return Drawing2D.HatchStyle.ForwardDiagonal
-                Case VisualHatchStyle.BackwardDiagonal : Return Drawing2D.HatchStyle.BackwardDiagonal
-                Case VisualHatchStyle.Cross : Return Drawing2D.HatchStyle.Cross
-                Case VisualHatchStyle.DiagonalCross : Return Drawing2D.HatchStyle.DiagonalCross
-                Case Else : Return Drawing2D.HatchStyle.Divot ' or a sensible default
-            End Select
-        End Function
 
         Public Shared Function SerializeStyle(vs As cVisualStyle) As String
             Dim dto = ToDto(vs)
@@ -344,11 +276,11 @@ Namespace Auxiliary
         ''' Get/set the <see cref="Color">foreground colour</see> for a visual style, if any.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property ForeColour() As Color
+        Public Property ForeColour() As VisualColor
             Get
                 Return Me.m_clrFore
             End Get
-            Set(value As Color)
+            Set(value As VisualColor)
                 If (value <> Me.m_clrFore) Then
                     Me.m_clrFore = value
                     Me.Update()
@@ -361,11 +293,11 @@ Namespace Auxiliary
         ''' Get/set the <see cref="Color">background colour</see> for a visual style, if any.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property BackColour() As Color
+        Public Property BackColour() As VisualColor
             Get
                 Return Me.m_clrBack
             End Get
-            Set(value As Color)
+            Set(value As VisualColor)
                 If (value <> Me.m_clrBack) Then
                     Me.m_clrBack = value
                     Me.Update()
@@ -428,11 +360,11 @@ Namespace Auxiliary
         ''' Get/set the <see cref="HatchStyle">hatch style</see> for a visual style, if any.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property HatchStyle() As HatchStyle
+        Public Property HatchStyle() As VisualHatchStyle
             Get
                 Return Me.m_hatchStyle
             End Get
-            Set(value As HatchStyle)
+            Set(value As VisualHatchStyle)
                 If (value <> Me.m_hatchStyle) Then
                     Me.m_hatchStyle = value
                     Me.Update()
@@ -479,11 +411,11 @@ Namespace Auxiliary
         ''' Get/set the <see cref="Font.Style">font style</see> for a visual style, if any.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property FontStyle() As FontStyle
+        Public Property FontStyle() As VisualFontStyle
             Get
                 Return Me.m_fontstyle
             End Get
-            Set(value As FontStyle)
+            Set(value As VisualFontStyle)
                 If (value <> Me.m_fontstyle) Then
                     Me.m_fontstyle = value
                     Me.Update()
@@ -519,11 +451,11 @@ Namespace Auxiliary
         ''' gradient breaks</see>.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Property ColorRampColors As Color()
+        Public Property ColorRampColors As VisualColor()
             Get
                 Return Me.m_gradientColors
             End Get
-            Set(value As Color())
+            Set(value As VisualColor())
                 Me.m_gradientColors = value
                 Me.Update()
             End Set

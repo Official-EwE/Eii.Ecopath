@@ -36,7 +36,9 @@ Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Drawing
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Utilities
 
 #End Region ' Imports
 
@@ -176,7 +178,7 @@ Namespace Style
         ''' <summary>States whether the StyleGuide contains unsaved changes</summary>
         Private m_bChanged As Boolean = False
         ''' <summary>Application colour scheme.</summary>
-        Private m_dtApplicationColors As New Dictionary(Of cStyleGuide.eApplicationColorType, Color)
+        Private m_dtApplicationColors As New Dictionary(Of cStyleGuide.eApplicationColorType, VisualColor)
         ''' <summary>Shape colour scheme.</summary>
         Private m_dtShapeColors As New Dictionary(Of eDataTypes, Color)
 
@@ -278,6 +280,30 @@ Namespace Style
 #End Region ' Construction & destruction
 
 #Region " Public access "
+
+        Public Shared Function ToVisualColor(clr As Color) As VisualColor
+            Return VisualColor.FromArgb(clr.A, clr.R, clr.G, clr.B)
+        End Function
+
+        Public Shared Function ToVisualColors(clr As Color()) As VisualColor()
+            Dim out As New List(Of VisualColor)
+            For i As Integer = 0 To clr.Count - 1
+                out.Add(ToVisualColor(clr(i)))
+            Next
+            Return out.ToArray()
+        End Function
+
+        Public Shared Function FromVisualColor(clr As VisualColor) As Color
+            Return Color.FromArgb(clr.A, clr.R, clr.G, clr.B)
+        End Function
+
+        Public Shared Function FromVisualColors(clr As VisualColor()) As Color()
+            Dim out As New List(Of Color)
+            For i As Integer = 0 To clr.Count - 1
+                out.Add(FromVisualColor(clr(i)))
+            Next
+            Return out.ToArray()
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1172,6 +1198,21 @@ Namespace Style
 
 #Region " Group "
 
+        ''' <summary>
+        ''' Windows Facade
+        ''' </summary>
+        ''' <param name="core"></param>
+        ''' <param name="iGroup"></param>
+        ''' <returns></returns>
+        Public Property GroupColor(core As cCore, iGroup As Integer) As Color
+            Get
+                Return FromVisualColor(Me.GroupColorInvariant(core, iGroup))
+            End Get
+            Set(value As Color)
+                Me.GroupColorInvariant(core, iGroup) = ToVisualColor(value)
+            End Set
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the color to represent a group.
@@ -1181,30 +1222,35 @@ Namespace Style
         ''' trigger the style guide to issue default colours for groups.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property GroupColor(core As cCore, iGroup As Integer) As Color
+        Private Property GroupColorInvariant(core As cCore, iGroup As Integer) As VisualColor
             Get
-                Dim clr As Color = Color.Transparent
+                Dim clr As VisualColor = VisualColor.FromArgb(0, 0, 0, 0)
                 If (0 < iGroup) And (iGroup <= core.nGroups) Then
                     Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(iGroup)
-                    clr = cColorUtils.IntToColor(grp.PoolColor)
+                    clr = cColorUtils.IntToColorInvariant(grp.PoolColor)
                 End If
                 If clr.A = 0 Then
-                    clr = Me.GroupColorDefault(core, iGroup)
+                    clr = Me.GroupColorDefaultInvariant(core, iGroup)
                 End If
                 Return clr
             End Get
-            Set(value As Color)
+            Set(value As VisualColor)
                 If (0 < iGroup) And (iGroup <= core.nGroups) Then
                     Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(iGroup)
+                    Dim i As Integer = cColorUtils.ColorInvariantToInt(value)
                     ' Optimization
-                    If grp.PoolColor = cColorUtils.ColorToInt(value) Then Return
+                    If grp.PoolColor = i Then Return
                     ' Apply
-                    grp.PoolColor = cColorUtils.ColorToInt(value)
+                    grp.PoolColor = i
                     ' Notify the world
                     Me.ColorsChanged()
                 End If
             End Set
         End Property
+
+        Public Function GroupColorDefault(core As cCore, iGroup As Integer) As Color
+            Return FromVisualColor(GroupColorDefaultInvariant(core, iGroup))
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1216,10 +1262,13 @@ Namespace Style
         ''' Default group colours are picked from the Ecopath 5 group colour scheme.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function GroupColorDefault(core As cCore,
-                                           iGroup As Integer) As Color
-            If (iGroup = 0) Then Return Color.Gray
-            Return Me.GroupColorDefault(iGroup, core.nGroups)
+        Public Function GroupColorDefaultInvariant(core As cCore, iGroup As Integer) As VisualColor
+            If (iGroup = 0) Then Return VisualColor.FromArgb(&HFF808080)
+            Return Me.GroupColorDefaultInvariant(iGroup, core.nGroups)
+        End Function
+
+        Public Function GroupColorDefault(iGroup As Integer, nGroups As Integer) As Color
+            Return FromVisualColor(GroupColorDefaultInvariant(iGroup, nGroups))
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1232,9 +1281,8 @@ Namespace Style
         ''' Default group colours are picked from the Ecopath 5 group colour scheme.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function GroupColorDefault(iGroup As Integer,
-                                           nGroups As Integer) As Color
-            Return Me.DefaultColorRamp.GetColor(iGroup, nGroups)
+        Public Function GroupColorDefaultInvariant(iGroup As Integer, nGroups As Integer) As VisualColor
+            Return Me.DefaultColorRamp.GetColorInvariant(iGroup, nGroups)
         End Function
 
 #End Region ' Group
@@ -1243,6 +1291,16 @@ Namespace Style
 
         ''' <summary>Color ramp for obtaining fleet colors</summary>
         Public Property FleetColorRamp As cColorRamp = Nothing
+
+        Public Property FleetColor(core As cCore, iFleet As Integer) As Color
+            Get
+                Return FromVisualColor(FleetColorInvariant(core, iFleet))
+            End Get
+            Set(value As Color)
+                FleetColorInvariant(core, iFleet) = ToVisualColor(value)
+            End Set
+        End Property
+
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1253,30 +1311,35 @@ Namespace Style
         ''' trigger the style guide to issue default colours for fleets.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property FleetColor(core As cCore, iFleet As Integer) As Color
+        Public Property FleetColorInvariant(core As cCore, iFleet As Integer) As VisualColor
             Get
-                Dim clr As Color = Color.Transparent
+                Dim clr As VisualColor = VisualColor.FromArgb(0, 255, 255, 255)
                 If (0 <= iFleet) And (iFleet <= core.nFleets) Then
                     Dim flt As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
-                    clr = cColorUtils.IntToColor(flt.PoolColor)
+                    clr = cColorUtils.IntToColorInvariant(flt.PoolColor)
                 End If
                 If clr.A = 0 Then
-                    clr = Me.FleetColorDefault(core, iFleet)
+                    clr = Me.FleetColorDefaultInvariant(core, iFleet)
                 End If
                 Return clr
             End Get
-            Set(value As Color)
+            Set(value As VisualColor)
                 If (0 <= iFleet) And (iFleet <= core.nFleets) Then
                     Dim flt As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
+                    Dim i As Integer = cColorUtils.ColorInvariantToInt(value)
                     ' Optimization
-                    If flt.PoolColor = cColorUtils.ColorToInt(value) Then Return
+                    If flt.PoolColor = i Then Return
                     ' Apply
-                    flt.PoolColor = cColorUtils.ColorToInt(value)
+                    flt.PoolColor = i
                     ' Notify the world
                     Me.ColorsChanged()
                 End If
             End Set
         End Property
+
+        Public Function FleetColorDefault(iFleet As Integer, nFleets As Integer) As Color
+            Return FromVisualColor(FleetColorDefaultInvariant(iFleet, nFleets))
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1290,10 +1353,13 @@ Namespace Style
         ''' green to blue.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function FleetColorDefault(iFleet As Integer,
-                                           nFleets As Integer) As Color
-            If (iFleet = 0) Then Return Color.Gray
-            Return Me.FleetColorRamp.GetColor(iFleet, nFleets)
+        Public Function FleetColorDefaultInvariant(iFleet As Integer, nFleets As Integer) As VisualColor
+            If (iFleet = 0) Then Return VisualColor.FromArgb(&HFF808080)
+            Return Me.FleetColorRamp.GetColorInvariant(iFleet, nFleets)
+        End Function
+
+        Public Function FleetColorDefault(core As cCore, iFleet As Integer) As Color
+            Return FromVisualColor(FleetColorDefaultInvariant(core, iFleet))
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1307,9 +1373,8 @@ Namespace Style
         ''' green to blue.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function FleetColorDefault(core As cCore,
-                                           iFleet As Integer) As Color
-            Return FleetColorDefault(iFleet, core.nFleets)
+        Public Function FleetColorDefaultInvariant(core As cCore, iFleet As Integer) As VisualColor
+            Return FleetColorDefaultInvariant(iFleet, core.nFleets)
         End Function
 
 #End Region ' Fleet 
@@ -1341,6 +1406,15 @@ Namespace Style
             End Set
         End Property
 
+        Public Property PedigreeColor(core As cCore, vn As eVarNameFlags, iLevel As Integer) As Color
+            Get
+                Return FromVisualColor(PedigreeColorInvariant(core, vn, iLevel))
+            End Get
+            Set(value As Color)
+                PedigreeColorInvariant(core, vn, iLevel) = ToVisualColor(value)
+            End Set
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the color to represent a pedigree level.
@@ -1350,29 +1424,29 @@ Namespace Style
         ''' trigger the style guide to issue default colours for pedigree levels.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property PedigreeColor(core As cCore, vn As eVarNameFlags, iLevel As Integer) As Color
+        Public Property PedigreeColorInvariant(core As cCore, vn As eVarNameFlags, iLevel As Integer) As VisualColor
             Get
-                Dim clr As Color = Color.Transparent
+                Dim clr As VisualColor = VisualColor.FromArgb(&HFF808080)
                 Dim man As cPedigreeManager = core.GetPedigreeManager(vn)
                 If (man Is Nothing) Then Return clr
                 If (0 < iLevel) And (iLevel <= man.NumLevels) Then
                     Dim lvl As cPedigreeLevel = man.Level(iLevel)
-                    clr = cColorUtils.IntToColor(lvl.PoolColor)
+                    clr = cColorUtils.IntToColorInvariant(lvl.PoolColor)
                 End If
                 If clr.A = 0 Then
-                    clr = Me.PedigreeColorDefault(iLevel, man.NumLevels)
+                    clr = Me.PedigreeColorDefaultInvariant(iLevel, man.NumLevels)
                 End If
                 Return clr
             End Get
-            Set(value As Color)
+            Set(value As VisualColor)
                 Dim man As cPedigreeManager = core.GetPedigreeManager(vn)
                 If (man IsNot Nothing) Then
                     If (0 < iLevel) And (iLevel <= man.NumLevels) Then
                         Dim lvl As cPedigreeLevel = man.Level(iLevel)
                         ' Optimization
-                        If lvl.PoolColor = cColorUtils.ColorToInt(value) Then Return
+                        If lvl.PoolColor = cColorUtils.ColorInvariantToInt(value) Then Return
                         ' Apply
-                        lvl.PoolColor = cColorUtils.ColorToInt(value)
+                        lvl.PoolColor = cColorUtils.ColorInvariantToInt(value)
                         ' Notify the world
                         Me.ColorsChanged()
                     End If
@@ -1380,19 +1454,8 @@ Namespace Style
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns a default colour for a pedigree level.
-        ''' </summary>
-        ''' <param name="iLevel">The level index to obtain the default colour for.</param>
-        ''' <param name="nLevels">Number of levels to scale colour by.</param>
-        ''' <returns>
-        ''' Default pedigree colours are picked from a SAUP/EwE5 colour ramp.
-        ''' </returns>
-        ''' -------------------------------------------------------------------
-        Public Function PedigreeColorDefault(iLevel As Integer,
-                                              nLevels As Integer) As Color
-            Return Me.DefaultColorRamp.GetColor(iLevel - 1, nLevels)
+        Public Function PedigreeColorDefault(core As cCore, iLevel As Integer, vn As eVarNameFlags) As Color
+            Return FromVisualColor(PedigreeColorDefaultInvariant(core, iLevel, vn))
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1407,11 +1470,27 @@ Namespace Style
         ''' green to blue.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function PedigreeColorDefault(core As cCore,
-                                              iLevel As Integer,
-                                              vn As eVarNameFlags) As Color
+        Public Function PedigreeColorDefaultInvariant(core As cCore, iLevel As Integer, vn As eVarNameFlags) As VisualColor
             Debug.Assert(core.IsPedigreeVariableSupported(vn))
-            Return PedigreeColorDefault(iLevel, core.GetPedigreeManager(vn).NumLevels)
+            Return PedigreeColorDefaultInvariant(iLevel, core.GetPedigreeManager(vn).NumLevels)
+        End Function
+
+        Public Function PedigreeColorDefault(iLevel As Integer, nLevels As Integer) As Color
+            Return FromVisualColor(PedigreeColorDefaultInvariant(iLevel, nLevels))
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a default colour for a pedigree level.
+        ''' </summary>
+        ''' <param name="iLevel">The level index to obtain the default colour for.</param>
+        ''' <param name="nLevels">Number of levels to scale colour by.</param>
+        ''' <returns>
+        ''' Default pedigree colours are picked from a SAUP/EwE5 colour ramp.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function PedigreeColorDefaultInvariant(iLevel As Integer, nLevels As Integer) As VisualColor
+            Return Me.DefaultColorRamp.GetColorInvariant(iLevel - 1, nLevels)
         End Function
 
 #End Region ' Pedigree
@@ -1485,9 +1564,7 @@ Namespace Style
         ''' mere informational style flags.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub GetStyleColors(eStatus As cStyleGuide.eStyleFlags,
-                                  ByRef colorText As Color,
-                                  ByRef colorBackground As Color)
+        Public Sub GetStyleColors(eStatus As cStyleGuide.eStyleFlags, ByRef colorText As Color, ByRef colorBackground As Color)
 
             ' Default priorities, used when the provided priorities did not yield
             ' a status to display, or when no priority sequence has been provided.
@@ -1562,10 +1639,24 @@ Namespace Style
             Next i
 
             ' Finally fetch the real colours
-            If eColorText > 0 Then colorText = Color.FromArgb(Me.ApplicationColor(eColorText).ToArgb)
-            If eColorBack > 0 Then colorBackground = Color.FromArgb(Me.ApplicationColor(eColorBack).ToArgb)
+            If eColorText > 0 Then colorText = Me.ApplicationColor(eColorText)
+            If eColorBack > 0 Then colorBackground = Me.ApplicationColor(eColorBack)
 
         End Sub
+
+        ''' <summary>
+        ''' Windows Facade
+        ''' </summary>
+        ''' <param name="colorType"></param>
+        ''' <returns></returns>
+        Public Property ApplicationColor(colorType As cStyleGuide.eApplicationColorType) As Color
+            Get
+                Return FromVisualColor(Me.ApplicationColorInvariant(colorType))
+            End Get
+            Set(value As Color)
+                Me.ApplicationColorInvariant(colorType) = ToVisualColor(value)
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1574,7 +1665,7 @@ Namespace Style
         ''' <param name="colorType">The <see cref="eApplicationColorType">application feedback type</see>
         ''' to affect.</param>
         ''' -------------------------------------------------------------------
-        Public Property ApplicationColor(colorType As cStyleGuide.eApplicationColorType) As Color
+        Public Property ApplicationColorInvariant(colorType As cStyleGuide.eApplicationColorType) As VisualColor
             Get
                 ' Sanity check
                 If (Me.m_dtApplicationColors.ContainsKey(colorType)) Then
@@ -1582,7 +1673,7 @@ Namespace Style
                 End If
                 Return DefaultColor(colorType)
             End Get
-            Set(value As Color)
+            Set(value As VisualColor)
                 ' Optimization
                 If (Me.m_dtApplicationColors.ContainsKey(colorType)) Then
                     If Me.m_dtApplicationColors(colorType) = value Then Return
@@ -1721,17 +1812,24 @@ Namespace Style
 
 #Region " Generics "
 
+        Public Function DefaultColors(iNumLevels As Integer) As List(Of Color)
+            Dim lColors As New List(Of Color)
+            For i As Integer = 0 To iNumLevels
+                lColors.Add(FromVisualColor(Me.DefaultColorRamp.GetColorInvariant(i, iNumLevels)))
+            Next
+            Return lColors
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return a list of colours, picked from the Ecopath 5 group colour
         ''' scheme.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Function DefaultColors(iNumLevels As Integer) As List(Of Color)
-            Dim lColors As New List(Of Color)
+        Public Function DefaultColorsInvariant(iNumLevels As Integer) As List(Of VisualColor)
+            Dim lColors As New List(Of VisualColor)
             For i As Integer = 0 To iNumLevels
-                Dim clr As Color = Me.DefaultColorRamp.GetColor(i, iNumLevels)
-                lColors.Add(clr)
+                lColors.Add(Me.DefaultColorRamp.GetColorInvariant(i, iNumLevels))
             Next
             Return lColors
         End Function
@@ -1753,7 +1851,8 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NextRandomColor() As Color
             Get
-                Return cColorUtils.RandomColor(Color.Gray)
+                Dim clr As VisualColor = cColorUtils.RandomColor(VisualColor.FromArgb(&HFF808080))
+                Return FromVisualColor(clr)
             End Get
         End Property
 
@@ -1769,11 +1868,7 @@ Namespace Style
         ''' <param name="iValueRange"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function CalculateAlternatingColors(i As Integer,
-                                                           iLen As Integer,
-                                                          Optional iHueScale As Integer = 9,
-                                                          Optional iSaturationRange As Integer = 240,
-                                                          Optional iValueRange As Integer = 200) As HSV
+        Public Shared Function CalculateAlternatingColors(i As Integer, iLen As Integer, Optional iHueScale As Integer = 9, Optional iSaturationRange As Integer = 240, Optional iValueRange As Integer = 200) As HSV
 
             Dim nCount As Integer = CInt(Math.Ceiling(Math.Sqrt(iLen / iHueScale)))
             Dim iHueTick As Integer = 255 \ iHueScale
@@ -2324,48 +2419,47 @@ Namespace Style
             My.Resources.glyph_circles_small
         }
 
-        Private DefaultHatchPatterns As HatchStyle() = CType([Enum].GetValues(GetType(HatchStyle)), HatchStyle())
+        Private DefaultHatchPatterns As VisualHatchStyle() = CType([Enum].GetValues(GetType(VisualHatchStyle)), VisualHatchStyle())
 
         Public Shared SystemColorRamps As cColorRamp() = {
             New cEwEColorRamp(My.Resources.COLORRAMP_EWE, 0.15!, 1.0!),
-            New cARGBColorRamp(My.Resources.COLORRAMP_FLEETS, New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#}, 1),
+            New cARGBColorRamp(My.Resources.COLORRAMP_FLEETS, New VisualColor() {VisualColor.FromArgb(&HFF008000), VisualColor.FromArgb(&HFF90FF90), VisualColor.FromArgb(&HFFADD8E6), VisualColor.FromArgb(&HFF0000FF), VisualColor.FromArgb(&HFF00008B)}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#}, 1),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.A),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.B),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.C),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.D),
             New cViridisColorRamp(cViridisColorRamp.eViridisOptions.E),
-            New cARGBColorRamp("Venngage.com vibrant palette 1", New Color() {Color.FromArgb(&HBFD7), Color.FromArgb(&HB4C5), Color.FromArgb(&H73E6), Color.FromArgb(&H2546F0), Color.FromArgb(&H5928ED)}, 21),
-            New cARGBColorRamp("Venngage.com vibrant palette 2", New Color() {Color.FromArgb(&HEDCA84), Color.FromArgb(&HEAEA72), Color.FromArgb(&H9EC767), Color.FromArgb(&H93DBA5), Color.FromArgb(&H64B7A9)}, 22),
-            New cARGBColorRamp("Venngage.com monochromatic palette 1", New Color() {Color.FromArgb(&HB3C7F7), Color.FromArgb(&H8BABF1), Color.FromArgb(&H73E6), Color.FromArgb(&H461CF), Color.FromArgb(&H54FB9)}, 23),
-            New cARGBColorRamp("Venngage.com monochromatic palette 2", New Color() {Color.FromArgb(&HD5E8C7), Color.FromArgb(&HC3DDAE), Color.FromArgb(&H9EC767), Color.FromArgb(&H89B062), Color.FromArgb(&H749B4E)}, 24),
-            New cARGBColorRamp("Venngage.com contrasting palette 1", New Color() {Color.FromArgb(&HC44601), Color.FromArgb(&H57600), Color.FromArgb(&H8BABF1), Color.FromArgb(&H73E6), Color.FromArgb(&H54FB9)}, 25),
-            New cARGBColorRamp("Venngage.com contrasting palette 2", New Color() {Color.FromArgb(&H5BA300), Color.FromArgb(&H89CE00), Color.FromArgb(&H74E6), Color.FromArgb(&HE6308A), Color.FromArgb(&HB51963)}, 26),
-            New cARGBColorRamp("Venngage.com pastel palette 1", New Color() {Color.FromArgb(&H90D8B2), Color.FromArgb(&H8DD2DD), Color.FromArgb(&H8BABF1), Color.FromArgb(&H8B95F6), Color.FromArgb(&H9B8BF4)}, 27),
-            New cARGBColorRamp("Venngage.com pastel palette 2", New Color() {Color.FromArgb(&HFAAF90), Color.FromArgb(&HFCC9B5), Color.FromArgb(&HD9E4FF), Color.FromArgb(&HB3C7F7), Color.FromArgb(&H8BABF1)}, 28),
-            New cARGBColorRamp("Venngage.com dark to light 1", New Color() {Color.FromArgb(&H29356), Color.FromArgb(&H9EB0), Color.FromArgb(&H73E6), Color.FromArgb(&H606FF3), Color.FromArgb(&H9B8BF4)}, 29),
-            New cARGBColorRamp("Venngage.com dark to light 2", New Color() {Color.FromArgb(&HC1975D), Color.FromArgb(&HD5CF5D), Color.FromArgb(&H9EC676), Color.FromArgb(&HA7CAB6), Color.FromArgb(&HA4D4CB)}, 30)
+            New cARGBColorRamp("Venngage.com vibrant palette 1", New VisualColor() {VisualColor.FromArgb(&HBFD7), VisualColor.FromArgb(&HB4C5), VisualColor.FromArgb(&H73E6), VisualColor.FromArgb(&H2546F0), VisualColor.FromArgb(&H5928ED)}, 21),
+            New cARGBColorRamp("Venngage.com vibrant palette 2", New VisualColor() {VisualColor.FromArgb(&HEDCA84), VisualColor.FromArgb(&HEAEA72), VisualColor.FromArgb(&H9EC767), VisualColor.FromArgb(&H93DBA5), VisualColor.FromArgb(&H64B7A9)}, 22),
+            New cARGBColorRamp("Venngage.com monochromatic palette 1", New VisualColor() {VisualColor.FromArgb(&HB3C7F7), VisualColor.FromArgb(&H8BABF1), VisualColor.FromArgb(&H73E6), VisualColor.FromArgb(&H461CF), VisualColor.FromArgb(&H54FB9)}, 23),
+            New cARGBColorRamp("Venngage.com monochromatic palette 2", New VisualColor() {VisualColor.FromArgb(&HD5E8C7), VisualColor.FromArgb(&HC3DDAE), VisualColor.FromArgb(&H9EC767), VisualColor.FromArgb(&H89B062), VisualColor.FromArgb(&H749B4E)}, 24),
+            New cARGBColorRamp("Venngage.com contrasting palette 1", New VisualColor() {VisualColor.FromArgb(&HC44601), VisualColor.FromArgb(&H57600), VisualColor.FromArgb(&H8BABF1), VisualColor.FromArgb(&H73E6), VisualColor.FromArgb(&H54FB9)}, 25),
+            New cARGBColorRamp("Venngage.com contrasting palette 2", New VisualColor() {VisualColor.FromArgb(&H5BA300), VisualColor.FromArgb(&H89CE00), VisualColor.FromArgb(&H74E6), VisualColor.FromArgb(&HE6308A), VisualColor.FromArgb(&HB51963)}, 26),
+            New cARGBColorRamp("Venngage.com pastel palette 1", New VisualColor() {VisualColor.FromArgb(&H90D8B2), VisualColor.FromArgb(&H8DD2DD), VisualColor.FromArgb(&H8BABF1), VisualColor.FromArgb(&H8B95F6), VisualColor.FromArgb(&H9B8BF4)}, 27),
+            New cARGBColorRamp("Venngage.com pastel palette 2", New VisualColor() {VisualColor.FromArgb(&HFAAF90), VisualColor.FromArgb(&HFCC9B5), VisualColor.FromArgb(&HD9E4FF), VisualColor.FromArgb(&HB3C7F7), VisualColor.FromArgb(&H8BABF1)}, 28),
+            New cARGBColorRamp("Venngage.com dark to light 1", New VisualColor() {VisualColor.FromArgb(&H29356), VisualColor.FromArgb(&H9EB0), VisualColor.FromArgb(&H73E6), VisualColor.FromArgb(&H606FF3), VisualColor.FromArgb(&H9B8BF4)}, 29),
+            New cARGBColorRamp("Venngage.com dark to light 2", New VisualColor() {VisualColor.FromArgb(&HC1975D), VisualColor.FromArgb(&HD5CF5D), VisualColor.FromArgb(&H9EC676), VisualColor.FromArgb(&HA7CAB6), VisualColor.FromArgb(&HA4D4CB)}, 30)
         }
 
         ' ToDo: globalize ramp names
         Public Shared DefaultArgbRamps As cARGBColorRamp() = {
-            New cARGBColorRamp("Reds", New Color() {Color.FromArgb(250, 230, 230), Color.FromArgb(250, 24, 24)}, New Double() {0, 1}),
-            New cARGBColorRamp("Yellows", New Color() {Color.FromArgb(250, 250, 230), Color.FromArgb(250, 250, 24)}, New Double() {0, 1}),
-            New cARGBColorRamp("Greens", New Color() {Color.FromArgb(230, 250, 230), Color.FromArgb(24, 250, 24)}, New Double() {0, 1}),
-            New cARGBColorRamp("Light blues", New Color() {Color.FromArgb(230, 250, 250), Color.FromArgb(24, 250, 250)}, New Double() {0, 1}),
-            New cARGBColorRamp("Dark blues", New Color() {Color.FromArgb(230, 230, 250), Color.FromArgb(24, 24, 250)}, New Double() {0, 1}),
-            New cARGBColorRamp("Magentas", New Color() {Color.FromArgb(250, 230, 250), Color.FromArgb(240, 24, 250)}, New Double() {0, 1}),
-            New cARGBColorRamp("Grays", New Color() {Color.FromArgb(230, 230, 230), Color.FromArgb(24, 24, 24)}, New Double() {0, 1}),
-            New cARGBColorRamp("Purples", New Color() {Color.FromArgb(240, 240, 255), Color.LightBlue, Color.MediumPurple, Color.Purple}, New Double() {0, 1 / 3, 1 / 3, 1 / 3}),
-            New cARGBColorRamp("Foilage", New Color() {Color.FromArgb(240, 255, 240), Color.LightGreen, Color.DarkGreen}, New Double() {0, 1 / 3, 2 / 3}),
-            New cARGBColorRamp("Underwater", New Color() {Color.LightBlue, Color.DarkBlue}, New Double() {0, 1}),
-            New cARGBColorRamp("Sands", New Color() {Color.LemonChiffon, Color.Orange, Color.SaddleBrown}, New Double() {0, 0.5, 0.5}),
-            New cARGBColorRamp("Earthy", New Color() {Color.LightYellow, Color.SaddleBrown}, New Double() {0, 1}),
-            New cARGBColorRamp("Contrast 1", New Color() {Color.DarkGreen, Color.White, Color.DarkRed}, New Double() {0, 0.5, 0.5}),
-            New cARGBColorRamp("Contrast 2", New Color() {Color.DarkGreen, Color.LightGreen, Color.White, Color.OrangeRed, Color.DarkRed}, New Double() {0, 0.25, 0.25, 0.25, 0.25}),
-            New cARGBColorRamp("Land and sea", New Color() {Color.DarkGreen, Color.LightGreen, Color.LightYellow, Color.White, Color.LightBlue, Color.DarkBlue}, New Double() {0, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 3}),
-            New cARGBColorRamp("Careful with that axe, Eugene", New Color() {Color.FromArgb(255, 0, 0), Color.FromArgb(255, 255, 0), Color.FromArgb(0, 255, 0), Color.FromArgb(0, 255, 255), Color.FromArgb(0, 0, 255), Color.FromArgb(255, 0, 255), Color.FromArgb(255, 0, 0)}, New Double() {0, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6})
+            New cARGBColorRamp("Reds", New VisualColor() {VisualColor.FromArgb(250, 230, 230), VisualColor.FromArgb(250, 24, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp("Yellows", New VisualColor() {VisualColor.FromArgb(250, 250, 230), VisualColor.FromArgb(250, 250, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp("Greens", New VisualColor() {VisualColor.FromArgb(230, 250, 230), VisualColor.FromArgb(24, 250, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp("Light blues", New VisualColor() {VisualColor.FromArgb(230, 250, 250), VisualColor.FromArgb(24, 250, 250)}, New Double() {0, 1}),
+            New cARGBColorRamp("Dark blues", New VisualColor() {VisualColor.FromArgb(230, 230, 250), VisualColor.FromArgb(24, 24, 250)}, New Double() {0, 1}),
+            New cARGBColorRamp("Magentas", New VisualColor() {VisualColor.FromArgb(250, 230, 250), VisualColor.FromArgb(240, 24, 250)}, New Double() {0, 1}),
+            New cARGBColorRamp("Grays", New VisualColor() {VisualColor.FromArgb(230, 230, 230), VisualColor.FromArgb(24, 24, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp("Purples", New VisualColor() {VisualColor.FromArgb(240, 240, 255), VisualColor.FromArgb(&HFFADD8E6), VisualColor.FromArgb(&HFF9370D8), VisualColor.FromArgb(&HFF800080)}, New Double() {0, 1 / 3, 1 / 3, 1 / 3}),
+            New cARGBColorRamp("Foilage", New VisualColor() {VisualColor.FromArgb(240, 255, 240), VisualColor.FromArgb(&HFF90FF90), VisualColor.FromArgb(&HFF006400)}, New Double() {0, 1 / 3, 2 / 3}),
+            New cARGBColorRamp("Underwater", New VisualColor() {VisualColor.FromArgb(&HFFADD8E6), VisualColor.FromArgb(&HFF00008B)}, New Double() {0, 1}),
+            New cARGBColorRamp("Sands", New VisualColor() {VisualColor.FromArgb(&HFFFFFACD), VisualColor.FromArgb(&HFFFFA500), VisualColor.FromArgb(&HFF8B451B)}, New Double() {0, 0.5, 0.5}),
+            New cARGBColorRamp("Earthy", New VisualColor() {VisualColor.FromArgb(&HFFFFE0), VisualColor.FromArgb(&HFF8B451B)}, New Double() {0, 1}),
+            New cARGBColorRamp("Contrast 1", New VisualColor() {VisualColor.FromArgb(&HFF006400), VisualColor.FromArgb(&HFFF0F0F0), VisualColor.FromArgb(&HFF8B0000)}, New Double() {0, 0.5, 0.5}),
+            New cARGBColorRamp("Contrast 2", New VisualColor() {VisualColor.FromArgb(&HFF006400), VisualColor.FromArgb(&HFF90FF90), VisualColor.FromArgb(&HFF0F0F0), VisualColor.FromArgb(&HFFFF4500), VisualColor.FromArgb(&HFF8B0000)}, New Double() {0, 0.25, 0.25, 0.25, 0.25}),
+            New cARGBColorRamp("Land and sea", New VisualColor() {VisualColor.FromArgb(&HFF006400), VisualColor.FromArgb(&HFF90FF90), VisualColor.FromArgb(&HFFFFE0), VisualColor.FromArgb(&HFFF0F0F0), VisualColor.FromArgb(&HFFADD8E6), VisualColor.FromArgb(&HFF006400)}, New Double() {0, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 3}),
+            New cARGBColorRamp("Careful with that axe, Eugene", New VisualColor() {VisualColor.FromArgb(255, 0, 0), VisualColor.FromArgb(255, 255, 0), VisualColor.FromArgb(0, 255, 0), VisualColor.FromArgb(0, 255, 255), VisualColor.FromArgb(0, 0, 255), VisualColor.FromArgb(255, 0, 255), VisualColor.FromArgb(255, 0, 0)}, New Double() {0, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6})
         }
-
         Private m_brHightLightDefault As Brush = Brushes.Red
 
         ''' <summary>Enumerated type providing supported types of brushes.</summary>
@@ -2388,7 +2482,7 @@ Namespace Style
                 Case eBrushType.Color
                     Debug.Assert(nBrushes >= 0)
                     ReDim avs(nBrushes)
-                    Me.GetColors(avs)
+                    Me.GetColorsInvariant(avs)
 
                 Case eBrushType.Glyphs
                     nBrushes = DefaultGlyphs.Length
@@ -2431,7 +2525,7 @@ Namespace Style
 
 #Region " Internal implementation "
 
-        Private Sub GetColors(avs() As cVisualStyle)
+        Private Sub GetColorsInvariant(avs() As cVisualStyle)
 
             Dim vs As cVisualStyle = Nothing
             Dim clrramp As cColorRamp = Me.DefaultColorRamp
@@ -2440,7 +2534,7 @@ Namespace Style
             For i As Integer = 0 To avs.Length - 1
                 ' Build visual style
                 vs = New cVisualStyle()
-                vs.ForeColour = clrramp.GetColor(i, avs.Length - 1)
+                vs.ForeColour = clrramp.GetColorInvariant(i, avs.Length - 1)
                 ' Store
                 avs(i) = vs
             Next i
@@ -2455,8 +2549,8 @@ Namespace Style
             For i As Integer = 0 To avs.Length - 1
 
                 vs = New cVisualStyle()
-                vs.ForeColour = Color.Gray
-                vs.BackColour = Color.Transparent
+                vs.ForeColour = VisualColor.FromArgb(&HFFD0D0D0)
+                vs.BackColour = VisualColor.FromArgb(&H0)
                 vs.Image = images(iGlyphIndex)
 
                 avs(i) = vs
@@ -2468,7 +2562,35 @@ Namespace Style
 
         End Sub
 
-        Private Sub GetPatterns(avs() As cVisualStyle, hatches As HatchStyle())
+        ' === MIGRATION CODE which needs duplicating in the Windows UI. Yuck ===
+        Public Shared Function ToVisualFontStyle(fs As System.Drawing.FontStyle) As VisualFontStyle
+            Dim v As VisualFontStyle = VisualFontStyle.Regular
+            If (fs And System.Drawing.FontStyle.Bold) <> 0 Then v = v Or VisualFontStyle.Bold
+            If (fs And System.Drawing.FontStyle.Italic) <> 0 Then v = v Or VisualFontStyle.Italic
+            If (fs And System.Drawing.FontStyle.Underline) <> 0 Then v = v Or VisualFontStyle.Underline
+            If (fs And System.Drawing.FontStyle.Strikeout) <> 0 Then v = v Or VisualFontStyle.Strikeout
+            Return v
+        End Function
+
+
+        Public Shared Function FromVisualFontStyle(v As VisualFontStyle) As System.Drawing.FontStyle
+            Dim fs As System.Drawing.FontStyle = System.Drawing.FontStyle.Regular
+            If (v And VisualFontStyle.Bold) <> 0 Then fs = fs Or System.Drawing.FontStyle.Bold
+            If (v And VisualFontStyle.Italic) <> 0 Then fs = fs Or System.Drawing.FontStyle.Italic
+            If (v And VisualFontStyle.Underline) <> 0 Then fs = fs Or System.Drawing.FontStyle.Underline
+            If (v And VisualFontStyle.Strikeout) <> 0 Then fs = fs Or System.Drawing.FontStyle.Strikeout
+            Return fs
+        End Function
+
+        Public Shared Function ToVisualHatch(h As System.Drawing.Drawing2D.HatchStyle) As VisualHatchStyle
+            Return DirectCast(CInt(h), VisualHatchStyle)
+        End Function
+
+        Public Shared Function FromVisualHatch(v As VisualHatchStyle) As System.Drawing.Drawing2D.HatchStyle
+            Return DirectCast(CInt(v), System.Drawing.Drawing2D.HatchStyle)
+        End Function
+
+        Private Sub GetPatterns(avs() As cVisualStyle, hatches As VisualHatchStyle())
 
             Dim vs As cVisualStyle = Nothing
             Dim iPatternIndex As Integer = 0
@@ -2610,7 +2732,7 @@ Namespace Style
                 Case eStatusFlags.MissingParameter
                     Return Color.Yellow
                 Case eStatusFlags.OK
-                    Return Color.LightGreen
+                    Return Color.FromArgb(&HFF90FF90)
                 Case Else
                     Debug.Assert(False, "Status not supported")
             End Select
@@ -2780,38 +2902,38 @@ Namespace Style
 
 #Region " Internal implementation "
 
-        Private Function DefaultColor(colorType As eApplicationColorType) As Color
+        Private Function DefaultColor(colorType As eApplicationColorType) As VisualColor
             Select Case colorType
-                Case eApplicationColorType.DEFAULT_TEXT : Return Color.Black
-                Case eApplicationColorType.DEFAULT_BACKGROUND : Return Color.White
-                Case eApplicationColorType.NAMES_TEXT : Return Color.Black
-                Case eApplicationColorType.NAMES_BACKGROUND : Return Color.FromArgb(255, 233, 245, 255)
-                Case eApplicationColorType.HIGHLIGHT : Return Color.Orange
-                Case eApplicationColorType.INVALIDMODELRESULT_TEXT : Return Color.DarkViolet
-                Case eApplicationColorType.FAILEDVALIDATION_TEXT : Return Color.DarkGoldenrod
-                Case eApplicationColorType.GENERICERROR_BACKGROUND : Return Color.OrangeRed
-                Case eApplicationColorType.COMPUTED_TEXT : Return Color.FromArgb(255, 0, 0, 244)
+                Case eApplicationColorType.DEFAULT_TEXT : Return VisualColor.FromArgb(&HFF000000)
+                Case eApplicationColorType.DEFAULT_BACKGROUND : Return VisualColor.FromArgb(&HFFFFFFFF)
+                Case eApplicationColorType.NAMES_TEXT : Return VisualColor.FromArgb(&HFF000000)
+                Case eApplicationColorType.NAMES_BACKGROUND : Return VisualColor.FromArgb(255, 233, 245, 255)
+                Case eApplicationColorType.HIGHLIGHT : Return VisualColor.FromArgb(&HFFFFA500)
+                Case eApplicationColorType.INVALIDMODELRESULT_TEXT : Return VisualColor.FromArgb(&HFF9400D3)
+                Case eApplicationColorType.FAILEDVALIDATION_TEXT : Return VisualColor.FromArgb(&HFFB8860B)
+                Case eApplicationColorType.GENERICERROR_BACKGROUND : Return VisualColor.FromArgb(&HFFFF4500)
+                Case eApplicationColorType.COMPUTED_TEXT : Return VisualColor.FromArgb(255, 0, 0, 244)
                     'Case eApplicationColorType.FISHINGPRESSURE_TEXT : Return Color.Red
                     'Case eApplicationColorType.PROFIT_TEXT : Return Color.Blue
                     'Case eApplicationColorType.TOTALCATCH_TEXT : Return Color.LightCoral
                     'Case eApplicationColorType.TROPHICLINK_TEXT : Return Color.LavenderBlush
-                Case eApplicationColorType.CHECKED_BACKGROUND : Return Color.Coral
-                Case eApplicationColorType.REMARKS_BACKGROUND : Return Color.White
-                Case eApplicationColorType.SUM_BACKGROUND : Return Color.FromArgb(255, 255, 254, 225)
-                Case eApplicationColorType.READONLY_BACKGROUND : Return Color.FromArgb(255, 231, 235, 250)
-                Case eApplicationColorType.MISSINGPARAMETER_BACKGROUND : Return Color.FromArgb(255, 182, 134, 221)
-                Case eApplicationColorType.IMAGE_BACKGROUND : Return Color.White
-                Case eApplicationColorType.PLOT_BACKGROUND : Return Color.White
-                Case eApplicationColorType.MAP_BACKGROUND : Return Color.Azure
-                Case eApplicationColorType.PEDIGREE : Return Color.Orange
-                Case eApplicationColorType.PREDATOR : Return Color.Red
-                Case eApplicationColorType.PREY : Return Color.Green
+                Case eApplicationColorType.CHECKED_BACKGROUND : Return VisualColor.FromArgb(&HFFFF7F50)
+                Case eApplicationColorType.REMARKS_BACKGROUND : Return VisualColor.FromArgb(&HFFFFFFFF)
+                Case eApplicationColorType.SUM_BACKGROUND : Return VisualColor.FromArgb(255, 255, 254, 225)
+                Case eApplicationColorType.READONLY_BACKGROUND : Return VisualColor.FromArgb(255, 231, 235, 250)
+                Case eApplicationColorType.MISSINGPARAMETER_BACKGROUND : Return VisualColor.FromArgb(255, 182, 134, 221)
+                Case eApplicationColorType.IMAGE_BACKGROUND : Return VisualColor.FromArgb(&HFFFFFFFF)
+                Case eApplicationColorType.PLOT_BACKGROUND : Return VisualColor.FromArgb(&HFFFFFFFF)
+                Case eApplicationColorType.MAP_BACKGROUND : Return VisualColor.FromArgb(&HFFF0FFFF)
+                Case eApplicationColorType.PEDIGREE : Return VisualColor.FromArgb(&HFFFFA400)
+                Case eApplicationColorType.PREDATOR : Return VisualColor.FromArgb(&HFFFF0000)
+                Case eApplicationColorType.PREY : Return VisualColor.FromArgb(&HFF008000)
                 Case eApplicationColorType.NotSet
-                    Return Color.Transparent
+                    Return VisualColor.FromArgb(&H0)
             End Select
             ' This should not happen, a default should always be available
             Debug.Assert(False)
-            Return Color.Black
+            Return VisualColor.FromArgb(&HFF000000)
         End Function
 
         Private Function DefaultFontFamilyName(ft As eApplicationFontType) As String
@@ -2845,7 +2967,7 @@ Namespace Style
                 Case eDataTypes.FishMort : Return Color.DarkGray
                 Case eDataTypes.PriceMediation : Return Color.FromArgb(255, 41, 233, 41)
                 Case eDataTypes.Mediation : Return Color.FromArgb(255, 81, 133, 255)
-                Case eDataTypes.GroupTimeSeries, eDataTypes.FleetTimeSeries : Return Color.DarkGreen
+                Case eDataTypes.GroupTimeSeries, eDataTypes.FleetTimeSeries : Return Color.FromArgb(&HFF006400)
                 Case Else
                     Debug.Assert(False)
             End Select

@@ -1,3 +1,4 @@
+Option Strict On
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -19,7 +20,9 @@
 
 #Region " Imports "
 
-Option Strict On
+Imports EwEUtils.UserInterface
+
+
 
 #End Region ' Imports
 
@@ -89,6 +92,16 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Property ColorOffsetEnd() As Single = 1.0
 
+        ''' <summary>
+        ''' Facade
+        ''' </summary>
+        ''' <param name="dValue"></param>
+        ''' <param name="dValueMax"></param>
+        ''' <returns></returns>
+        Public Function GetColor(dValue As Double, Optional dValueMax As Double = 1.0) As Color
+            Return cStyleGuide.FromVisualColor(Me.GetColorInvariant(dValue, dValueMax))
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns a colour for a given value from the ramp.
@@ -98,7 +111,8 @@ Namespace Style
         ''' <returns>The colour for the given value.</returns>
         ''' <remarks>Override this method to implement a specific ColorRamp.</remarks>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function GetColor(dValue As Double, Optional dValueMax As Double = 1.0) As Color
+        Public MustOverride Function GetColorInvariant(dValue As Double, Optional dValueMax As Double = 1.0) As VisualColor
+
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -127,13 +141,14 @@ Namespace Style
 
         End Function
 
-        Protected Function Interpolate(nVal1 As Integer, nVal2 As Integer, dRatio As Double) As Integer
+        Protected Function Interpolate(nVal1 As Integer, nVal2 As Integer, dRatio As Double) As Byte
             Try
-                Return CInt(Math.Round(nVal1 + (nVal2 - nVal1) * dRatio))
+                Return CByte(CInt(Math.Round(nVal1 + (nVal2 - nVal1) * dRatio)))
             Catch ex As Exception
                 Return 0
             End Try
         End Function
+
 
     End Class
 

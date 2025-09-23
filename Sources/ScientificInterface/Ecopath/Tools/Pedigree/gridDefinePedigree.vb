@@ -29,6 +29,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports System.Runtime.CompilerServices
+Imports ScientificInterfaceShared.Utilities
 
 #End Region ' Imports
 

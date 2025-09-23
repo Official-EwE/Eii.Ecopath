@@ -2116,7 +2116,6 @@ Public Class frmEwE6
     Private Function LoadEcopathModel(strFileName As String,
                                       loadsource As eLoadSourceType) As Boolean
 
-        Dim ds As IEwEDataSource = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
         Dim bReadOnly As Boolean = False
 
@@ -2188,11 +2187,6 @@ Public Class frmEwE6
         Else
             Dim msg As New cMessage(cStringUtils.Localize(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Critical)
             Me.Core.Messages.SendMessage(msg)
-            Try
-                If (ds IsNot Nothing) Then ds.Close()
-            Catch ex As Exception
-                ' Ssst
-            End Try
             Return False
         End If
 

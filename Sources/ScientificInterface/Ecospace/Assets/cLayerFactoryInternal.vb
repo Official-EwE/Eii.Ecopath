@@ -78,7 +78,7 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerMPASeed
 
                     vs = New cVisualStyle()
-                    vs.ForeColour = Color.CornflowerBlue
+                    vs.ForeColour = cStyleGuide.ToVisualColor(Color.CornflowerBlue)
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(uic, vs)
@@ -95,7 +95,7 @@ Namespace Ecospace.Basemap.Layers
                     Debug.Assert(layerData IsNot Nothing, "Cannot link to core data")
 
                     vs = New cVisualStyle()
-                    vs.ForeColour = Color.LightGreen
+                    vs.ForeColour = cStyleGuide.ToVisualColor(Color.LightGreen)
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(uic, vs)
@@ -112,8 +112,8 @@ Namespace Ecospace.Basemap.Layers
                     Debug.Assert(layerData IsNot Nothing, "Cannot link to core data")
 
                     vs = New cVisualStyle()
-                    vs.ForeColour = Color.DarkGreen
-                    vs.BackColour = Color.Transparent
+                    vs.ForeColour = cStyleGuide.ToVisualColor(Color.DarkGreen)
+                    vs.BackColour = cStyleGuide.ToVisualColor(Color.Transparent)
 
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(uic, vs)
@@ -129,8 +129,8 @@ Namespace Ecospace.Basemap.Layers
 
                     If (layerData IsNot Nothing) Then
                         vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        vs.BackColour = Color.Blue
+                        vs.ForeColour = cStyleGuide.ToVisualColor(Color.Black)
+                        vs.BackColour = cStyleGuide.ToVisualColor(Color.Blue)
 
                         renderer = New cLayerRendererValue(uic, vs)
                         renderer.RenderMode = eLayerRenderType.Always

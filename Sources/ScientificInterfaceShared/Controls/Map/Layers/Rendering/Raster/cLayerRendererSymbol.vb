@@ -46,7 +46,7 @@ Namespace Controls.Map.Layers
                                             rc As RectangleF,
                                             Optional iSymbol As Integer = 0)
 
-            Me.RenderSymbol(g, rc, Me.VisualStyle.ForeColour)
+            Me.RenderSymbol(g, rc, cStyleGuide.FromVisualColor(Me.VisualStyle.ForeColour))
 
         End Sub
 

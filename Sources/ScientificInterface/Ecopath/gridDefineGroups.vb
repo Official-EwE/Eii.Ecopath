@@ -25,10 +25,9 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Drawing
 Imports EwEUtils.Utilities
-Imports ScientificInterface
-Imports ScientificInterfaceShared.Commands
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

@@ -22,6 +22,7 @@
 Option Strict On
 Imports System.IO
 Imports EwECore
+Imports EwEMSPLink.IO
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -198,10 +199,10 @@ Public Class cGrid
                 If Not imp.Read(strFile) Then Return False
                 r = imp
 
-            'Case ".tif", ".tiff", ".bmp", ".png"
-            '    Dim imp As New cEcospaceImportExportBitmap(core)
-            '    If Not imp.Load(strFile) Then Return False
-            '    r = imp
+            Case ".tif", ".tiff" ', ".bmp", ".png"
+                Dim imp As New cEcospaceImportExportBitmap(core)
+                If Not imp.Load(strFile) Then Return False
+                r = imp
 
             Case Else
                 Return False

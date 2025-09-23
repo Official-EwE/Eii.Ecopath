@@ -175,10 +175,10 @@ Namespace Controls.Map.Layers
             If (vs Is Nothing) Then
                 Me.ForeBrush = cRasterLayerRenderer.brDEFAULT
             Else
-                Me.ForeBrush = New SolidBrush(vs.ForeColour)
+                Me.ForeBrush = New SolidBrush(cStyleGuide.FromVisualColor(vs.ForeColour))
 
                 If (Me.Font IsNot Nothing) Then Me.Font.Dispose()
-                Me.Font = New Font(vs.FontName, Me.VisualStyle.FontSize, Me.VisualStyle.FontStyle)
+                Me.Font = New Font(vs.FontName, Me.VisualStyle.FontSize, cStyleGuide.FromVisualFontStyle(Me.VisualStyle.FontStyle))
 
                 Me.ColorRamp = Me.UIContext.StyleGuide.GetColorRamp(vs)
             End If

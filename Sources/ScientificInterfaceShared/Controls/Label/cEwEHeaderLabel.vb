@@ -21,10 +21,9 @@
 
 Option Strict On
 Imports System.ComponentModel
-Imports System.Globalization
 Imports System.Threading
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Utilities
 
 #End Region ' Imports
 

@@ -74,13 +74,13 @@ Namespace SpatialData
         ''' advection is connected to external data.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub InitRun()
+        Public Overrides Sub InitRun(bPreserveLayerData As Boolean)
             ' Is connected to external data?
             If Me.IsConnected(0) Or Me.IsConnected(1) Then
                 ' #Yes: block the use of monthly advection vectors
                 Me.m_spaceData.isAdvectionForced = True
             End If
-            MyBase.InitRun()
+            MyBase.InitRun(bPreserveLayerData)
         End Sub
 
         ''' -------------------------------------------------------------------

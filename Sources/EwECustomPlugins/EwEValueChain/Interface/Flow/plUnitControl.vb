@@ -27,6 +27,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Database.cEwEDatabase
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Utilities
 
 #End Region ' Imports
 

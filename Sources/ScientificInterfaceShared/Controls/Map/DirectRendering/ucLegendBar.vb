@@ -39,7 +39,7 @@ Namespace Controls
         Private m_uic As cUIContext = Nothing
 
         Private m_strLabelHigh As String = ""
-        Private m_clrHigh As Color = Color.DarkGreen
+        Private m_clrHigh As Color = Color.FromArgb(&HFF006400)
 
         Private m_strLabelLow As String = ""
         Private m_clrLow As Color = Color.Red

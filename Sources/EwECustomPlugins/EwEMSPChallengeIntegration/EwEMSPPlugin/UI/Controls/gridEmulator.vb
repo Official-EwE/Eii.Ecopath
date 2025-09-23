@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEMSPPlugin.Emulator
@@ -119,10 +120,10 @@ Namespace UI
                 Me(iRow, eColumnTypes.Name) = New cEwERowHeaderCell(pressure.Name)
 
                 If (TypeOf pressure Is cFishingEffortPressure) Then
-                    cell = New cEwECell(cStringUtils.ConvertToSingle(Me.m_testset.Testdata(pressure)), style)
-                    cell.SuppressZero(cCore.NULL_VALUE) = True
+                    cell = New cEwECell(cStringUtils.ConvertToSingle(Me.m_testset.Testdata(pressure), 1.0F), style)
+                    cell.SuppressZero(cCore.NULL_VALUE) = False
                 ElseIf (TypeOf pressure Is cFishingEcoPressure) Then
-                    cell = New cEwECell(Me.m_testset.Testdata(pressure) = "1", style)
+                    cell = New cEwECell(Me.m_testset.Testdata(pressure) = "True", style)
                     cell.SuppressZero(cCore.NULL_VALUE) = False
                 ElseIf (TypeOf pressure Is cEnvironmentalPressure) Then
                     cell = New cEwECell(Me.m_testset.Testdata(pressure), style)
@@ -167,11 +168,27 @@ Namespace UI
                 If (ofd.ShowDialog() = DialogResult.OK) Then
                     Me.m_testset.Testdata(pressure) = ofd.FileName
                     Me(p.Row, p.Column).SetValue(p, ofd.FileName)
+                    AutoFillEnvironmentalPressureFilenames(Path.GetDirectoryName(ofd.FileName))
                 End If
                 Return
             End If
             MyBase.OnCellClicked(p, cell)
 
+        End Sub
+
+        Private Sub AutoFillEnvironmentalPressureFilenames(baseDir As String)
+            For row As Integer = 1 To Me.m_testset.Pressures.Count
+                Dim p2 As cPressure = Me.m_testset.Pressures(row - 1)
+                If Not (TypeOf p2 Is cEnvironmentalPressure) Then Continue For ' Skip non-environmental pressures
+                If Me(row, eColumnTypes.Testdata).Value.ToString <> "" Then Continue For ' Skip already filled cells
+                Dim possibleExtensions As String() = {".asc", ".tif", ".tiff"}
+                For Each ext As String In possibleExtensions
+                    Dim filename As String = "mel_" + p2.Name.Replace(" ", "_") + ext
+                    If Not File.Exists(Path.Combine(baseDir, filename)) Then Continue For ' Skip non-existing files
+                    Dim pos = New Position(row, eColumnTypes.Testdata)
+                    Me(row, eColumnTypes.Testdata).SetValue(pos, Path.Combine(baseDir, filename))
+                Next
+            Next
         End Sub
 
         ''' -------------------------------------------------------------------

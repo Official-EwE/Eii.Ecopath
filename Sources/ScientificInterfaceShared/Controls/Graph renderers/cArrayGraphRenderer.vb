@@ -21,10 +21,11 @@
 
 Option Strict On
 Option Explicit On
+Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Text
-Imports System.ComponentModel
+Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -55,7 +56,8 @@ Namespace Controls
         Private Const c_LEGENDCELLSIZE As Single = 10
 
         Public Sub New()
-            Me.m_colorramp = New cARGBColorRamp("MTI", New Color() {Color.DarkRed, Color.Red, Color.White, Color.Blue, Color.DarkBlue}, New Double() {0, 0.25, 0.25, 0.25, 0.25})
+            Me.m_colorramp = New cARGBColorRamp("MTI", New VisualColor() {VisualColor.FromArgb(&HFF8B0000), VisualColor.FromArgb(&HFFFF0000), VisualColor.FromArgb(&HFFFFFFFF), VisualColor.FromArgb(&HFF0000FF), VisualColor.FromArgb(&HFF00008B)},
+                                                New Double() {0, 0.25, 0.25, 0.25, 0.25})
         End Sub
 
         ''' -----------------------------------------------------------------------

@@ -44,12 +44,8 @@ Namespace SpatialData
 
 #Region " Overrides "
 
-        Public Overrides Sub InitRun()
-            ' NOP
-        End Sub
-
-        Public Overrides Sub EndRun()
-            ' NOP
+        Public Overrides Sub InitRun(bPreserveLayerData As Boolean)
+            MyBase.InitRun(False)
         End Sub
 
 #End Region

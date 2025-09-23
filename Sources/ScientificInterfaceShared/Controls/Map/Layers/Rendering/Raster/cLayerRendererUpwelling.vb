@@ -89,7 +89,7 @@ Namespace Controls.Map.Layers
                                       rc.Width / 4.0!, rc.Height / 4.0!)
                     End Using
                 Else
-                    Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
+                    Using p As New Pen(cStyleGuide.FromVisualColor(Me.VisualStyle.ForeColour), 0.001!)
                         g.DrawLine(p,
                                    ptfCenter.X - rc.Width / 4.0!, ptfCenter.Y,
                                    ptfCenter.X + rc.Width / 4.0!, ptfCenter.Y)

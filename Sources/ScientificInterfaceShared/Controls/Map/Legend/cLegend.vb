@@ -29,6 +29,7 @@ Imports EwECore
 Imports System.IO
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports EwEUtils.UserInterface
 
 #End Region ' Imports
 
@@ -71,6 +72,14 @@ Namespace Controls.Map
             Public Sub New(uic As cUIContext, strName As String, strUnits As String, strLabelMin As String, strLabelMax As String,
                            Optional breaks As Double() = Nothing, Optional colors() As Color = Nothing)
 
+                ' Bwech
+                Dim l As New List(Of VisualColor)
+                If (colors IsNot Nothing) Then
+                    For i As Integer = 0 To colors.Length
+                        l.Add(cStyleGuide.ToVisualColor(colors(i)))
+                    Next
+                End If
+
                 If String.IsNullOrWhiteSpace(strUnits) Then
                     Me.Label = strName
                 Else
@@ -82,7 +91,7 @@ Namespace Controls.Map
                 Dim vs As New Auxiliary.cVisualStyle()
                 If (breaks IsNot Nothing And colors IsNot Nothing) Then
                     vs.ColorRampBreaks = breaks
-                    vs.ColorRampColors = colors
+                    vs.ColorRampColors = l.ToArray()
                 End If
                 Me.Renderer = New cLayerRendererValue(uic, vs)
                 Me.Renderer.LabelMin = strLabelMin

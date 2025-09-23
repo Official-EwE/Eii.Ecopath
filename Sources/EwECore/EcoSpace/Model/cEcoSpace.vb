@@ -946,8 +946,6 @@ Public Class cEcoSpace
                     stpwchEffort.Stop()
                 End If
 
-                If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.EcospacePostFishingEffortModTimestep(Me.EcoSpaceData, Me.itt)
-
                 ReDim Me.Btime(Me.EcoSpaceData.NGroups) 'this clears out btime
                 ReDim Me.ConTotal(Me.EcoSpaceData.NGroups)
 
@@ -961,6 +959,9 @@ Public Class cEcoSpace
                 Array.Clear(Me.EcoSpaceData.CatchGroupFleetMap, 0, Me.EcoSpaceData.CatchGroupFleetMap.Length)
                 Array.Clear(Me.EcoSpaceData.DiscardMortGroupFleetMap, 0, Me.EcoSpaceData.DiscardMortGroupFleetMap.Length)
                 Array.Clear(Me.EcoSpaceData.DiscardSurviveGroupFleetMap, 0, Me.EcoSpaceData.DiscardSurviveGroupFleetMap.Length)
+
+                ' Call effort logic after clearing out results
+                If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.EcospacePostFishingEffortModTimestep(Me.EcoSpaceData, Me.itt)
 
                 If Me.ContaiminantTracerData.EcoSpaceConSimOn Then
                     'drive contaminant concentration with external data
@@ -3006,7 +3007,7 @@ Public Class cEcoSpace
                 For Each src As cSpatialDataAdapter In Me.SpatialData.DataAdapters
                     If (src IsNot Nothing) Then
                         Try
-                            src.InitRun()
+                            src.InitRun(Me.EcoSpaceData.PreserveLayerData)
                         Catch ex As Exception
                             cLog.Write(ex, "cEcospace::Run.InitAdapters " & src.Name & "(" & src.Index & ")")
                         End Try

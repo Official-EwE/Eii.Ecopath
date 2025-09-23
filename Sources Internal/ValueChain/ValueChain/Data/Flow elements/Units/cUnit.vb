@@ -1,0 +1,440 @@
+' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- 
+'    Ecopath International Initiative, Barcelona, Spain
+' ===============================================================================
+'
+
+#Region " Imports "
+
+Option Strict On
+Imports System.ComponentModel
+Imports System.Reflection
+Imports ValueChain.Utilities
+Imports EwEUtils.Database
+Imports EwECore
+Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
+
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
+Public MustInherit Class cUnit
+    Inherits cValueChainEntity
+
+    Protected Const sPROPCAT_GENERAL As String = "01. General"
+    Protected Const sPROPCAT_VALIDATION As String = "02. Validation"
+    Protected Const sPROPCAT_PRODUCTS As String = "03. Products ($/t)"
+    Protected Const sPROPCAT_REVENUE As String = "04. Revenue ($/effort)"
+    Protected Const sPROPCAT_SUBSIDIES As String = "05. Subsidies ($/t)"
+    Protected Const sPROPCAT_PAY As String = "06. Pay ($/t)"
+    Protected Const sPROPCAT_SHARE As String = "07. Share (% revenue)"
+    Protected Const sPROPCAT_INPUTCOST As String = "08. Input cost ($/t)"
+    Protected Const sPROPCAT_TAXES As String = "09. Taxes ($/t)"
+    Protected Const sPROPCAT_SOCIAL As String = "10. Social (#/t)"
+
+    ''' <summary>Index of the unit, which this unit needs to store its values in the Results object</summary>
+    Private m_iSequence As Integer = 0
+    ''' <summary>List of input variables that this unit needs in order to perform its calculations.</summary>
+    Protected m_lReceivedInputs As New List(Of cInput)
+    ''' <summary>Name of the unit</summary>
+    Private m_strName As String
+    ''' <summary>Local name of the unit.</summary>
+    Private m_strNameLocal As String
+    ''' <summary>Nationality of a unit.</summary>
+    Private m_iNationality As Integer
+
+    Private m_bCanCompute As Boolean = False
+    Private m_bRunStarted As Boolean = False
+
+    ''' <summary>Units that receive outputs from this unit.</summary>
+    Protected m_llinkOutput As New List(Of cLink)
+    ''' <summary>Units that provide inputs for this unit.</summary>
+    Protected m_llinkInput As New List(Of cLink)
+
+#Region " Constructor "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub New()
+        MyBase.New()
+    End Sub
+
+#End Region ' Constructor
+
+#Region " Links "
+
+    Public Function LinkOutCount() As Integer
+        Return Me.m_llinkOutput.Count
+    End Function
+
+    Public Function LinkOut(iIndex As Integer) As cLink
+        Return Me.m_llinkOutput(iIndex)
+    End Function
+
+    ''' <summary>
+    ''' Get all links directly linking to a target.
+    ''' </summary>
+    ''' <param name="unitTarget"></param>
+    ''' <returns></returns>
+    Public Function Links(unitTarget As cUnit) As cLink()
+        Dim lLinks As New List(Of cLink)
+        For Each link As cLink In Me.m_llinkOutput
+            If ReferenceEquals(link.Target, unitTarget) Then
+                lLinks.Add(link)
+            End If
+        Next
+        Return lLinks.ToArray
+    End Function
+
+    Public Sub AddLink(link As cLink)
+
+        ' Sanity check
+        Debug.Assert(ReferenceEquals(link.Source, Me))
+
+        Me.m_llinkOutput.Add(link)
+        link.Target.AddInputLink(link)
+    End Sub
+
+    Public Sub RemoveLink(link As cLink)
+        Me.m_llinkOutput.Remove(link)
+        link.Target.RemoveInputLink(link)
+    End Sub
+
+    Public Function LinkInCount() As Integer
+        Return Me.m_llinkInput.Count
+    End Function
+
+    Public Function LinkIn(iIndex As Integer) As cLink
+        Return Me.m_llinkInput(iIndex)
+    End Function
+
+    Protected Sub AddInputLink(link As cLink)
+        ' Sanity check
+        Debug.Assert(ReferenceEquals(link.Target, Me))
+        Me.m_llinkInput.Add(link)
+        Me.UpdateComputeStatus()
+    End Sub
+
+    Protected Sub RemoveInputLink(link As cLink)
+        Me.m_llinkInput.Remove(link)
+        Me.UpdateComputeStatus()
+    End Sub
+
+    Public Function IsLoop(unit As cUnit) As Boolean
+
+        ' Linked to self?
+        Dim bIsLoop As Boolean = ReferenceEquals(unit, Me)
+
+        ' If no loop yet
+        If Not bIsLoop Then
+            ' Follow each output link
+            For Each link As cLink In Me.m_llinkOutput
+                ' See the target link is the requesting unit
+                If link.Target.IsLoop(unit) Then bIsLoop = True : Exit For
+            Next link
+        End If
+
+        Return bIsLoop
+    End Function
+
+    'Public Overridable Function HasTarget(unit As cUnit) As Boolean
+
+    '    ' Follow each output link
+    '    For Each link As cLink In Me.m_llinkOutput
+    '        ' See the target link is the requesting unit
+    '        If Object.ReferenceEquals(link.Target, unit) Then Return True
+    '    Next link
+    '    Return False
+
+    'End Function
+
+#End Region ' Links 
+
+#Region " Running "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Initialize the unit for a new Ecosim or Ecospace run.
+    ''' </summary>
+    ''' <param name="iSequence">The sequence number to assign to this unit for the run.</param>
+    ''' -----------------------------------------------------------------------
+    Friend Overridable Sub InitRun(iSequence As Integer)
+        Me.Sequence = iSequence
+        Me.m_bRunStarted = True
+        Me.Clear()
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Initialize the unit for running a chain.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Friend Overridable Sub Clear()
+        ' Clear all pending inputs
+        Me.m_lReceivedInputs.Clear()
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Calculate the economics for this unit.
+    ''' </summary>
+    ''' <param name="results"></param>
+    ''' <param name="input"></param>
+    ''' <param name="iTimeStep"></param>
+    ''' <param name="iUnit">The unit to aggregate by.</param>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Sub Process(results As cResults, input As cInput, iTimeStep As Integer, iUnit As Integer)
+
+        Dim sTotalOutputBiomass As Single = 0
+        Dim sTotalOutputValue As Single = 0
+        Dim sValuePerTon As Single = 0.0!
+
+        ' Store received values
+        Me.m_lReceivedInputs.Add(input)
+
+        ' Sanity check
+        Debug.Assert(Me.m_lReceivedInputs.Count <= Me.LinkInCount())
+
+        ' At least expected inputs received?
+        If (Me.m_lReceivedInputs.Count = Me.LinkInCount()) Then
+
+            ' #Yes: Process combined inputs
+            input = Me.ProcessAndSumInputs(Me.m_lReceivedInputs, results)
+
+            ' Store the amount that each fleet contributes to the total
+            results.StoreContribution(iUnit, Me, iTimeStep, input.Value, input.Tons)
+
+            ' Determine outgoing biomass
+            For Each link As cLink In Me.m_llinkOutput
+                ' Determine output biomass for a single link
+                Dim sOutputBiomass As Single = link.BiomassRatio * input.Tons
+                Dim sOutputValue As Single = 0
+
+                If ((link.ValuePerTon <> 1.0!) And (link.ValuePerTon <> 0)) Or
+                    (input.Tons = 0) Then
+                    sOutputValue = link.ValuePerTon * sOutputBiomass
+                Else
+                    sOutputValue = (input.Value / input.Tons) * link.ValueRatio * sOutputBiomass
+                End If
+
+                sTotalOutputBiomass += sOutputBiomass
+                sTotalOutputValue += sOutputValue
+
+                link.Target.Process(results, New cInput(Me, sOutputBiomass, sOutputValue), iTimeStep, iUnit)
+
+            Next
+
+            ' Running for all fleet?
+            If iUnit = 0 Then
+                ' #Yes: make all calculations. Calculations are not necessary when running for individual fleets
+                '       where only transfer ratios are collected.
+                Me.Calculate(results, input.Tons, input.Value, sTotalOutputBiomass, sTotalOutputValue, iTimeStep)
+            End If
+
+        End If
+
+    End Sub
+
+    Protected Function ProcessAndSumInputs(lInputs As List(Of cInput), results As cResults) As cInput
+
+        Dim sTonsTotal As Single = 0.0
+        Dim sValueTotal As Single = 0.0
+
+        For Each input As cInput In lInputs
+            If input.Tons > 0 Then
+
+                sTonsTotal += input.Tons
+                sValueTotal += input.Value
+
+                results.FlowsBiomass(input.Source.Sequence, Me.Sequence) += input.Tons
+
+            End If
+        Next
+        Return New cInput(Nothing, sTonsTotal, sValueTotal)
+
+    End Function
+
+    ''' <summary>
+    ''' Make all calculations.
+    ''' </summary>
+    ''' <param name="results">The results object to store calculation results in.</param>
+    Protected Overridable Function Calculate(results As cResults,
+            sInputBiomass As Single, sInputValue As Single,
+            sOutputBiomass As Single, sOutputValue As Single,
+            iTimeStep As Integer) As Boolean
+
+        ' All good
+        Return True
+
+    End Function
+
+    ''' <summary>
+    ''' Assess whether a unit is ready to compute, e.g. when all its
+    ''' inputs are (in)directly connected to EwE model data.
+    ''' </summary>
+    Private Sub UpdateComputeStatus()
+
+        ' Check if all input links can compute
+        Dim bCanCompute As Boolean = True
+        Dim bHasInputs As Boolean = False
+        For Each LinkIn As cLink In Me.m_llinkInput
+            bCanCompute = bCanCompute And LinkIn.Source.CanCompute
+            bHasInputs = True
+        Next
+        bCanCompute = bCanCompute And bHasInputs
+
+        ' No changes? Abort
+        If (bCanCompute = Me.CanCompute) Then Return
+
+        Me.m_bCanCompute = bCanCompute
+
+        For Each linkOut As cLink In Me.m_llinkOutput
+            linkOut.Target.UpdateComputeStatus()
+        Next
+
+    End Sub
+
+#End Region ' Running
+
+#Region " Properties "
+
+    Public Overrides Function ToString() As String
+        Return Me.Name
+    End Function
+
+    <Browsable(False)>
+    Public Property Sequence() As Integer
+        Get
+            Return Me.m_iSequence
+        End Get
+        Private Set(value As Integer)
+            Me.m_iSequence = value
+        End Set
+    End Property
+
+    <Browsable(False)>
+    Public MustOverride ReadOnly Property UnitType() As cUnitFactory.eUnitType
+
+    <Browsable(False)>
+    Public Overridable ReadOnly Property HasError() As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
+    '<Browsable(False)> _
+    'Public Overridable ReadOnly Property Style() As cStyleGuide.eStyleFlags
+    '    Get
+    '        Return cStyleGuide.eStyleFlags.OK
+    '    End Get
+    'End Property
+
+    <Browsable(False)>
+    Public Overridable ReadOnly Property CanCompute() As Boolean
+        Get
+            Return Me.m_bCanCompute
+        End Get
+    End Property
+
+    <Browsable(False)>
+    Public Overridable ReadOnly Property IsRunError() As Boolean
+        Get
+            ' Return if all results received OR when not ready to run yet
+            Return (Me.m_lReceivedInputs.Count < Me.m_llinkInput.Count) And Me.m_bRunStarted
+        End Get
+    End Property
+
+#Region " General "
+
+    <Browsable(True),
+        Category(sPROPCAT_GENERAL),
+        DisplayName("Name"),
+        Description("Name of this unit"),
+        cPropertySorter.PropertyOrder(1)>
+    Public Overridable Property Name() As String
+        Get
+            Return Me.m_strName
+        End Get
+        Set(value As String)
+            Me.m_strName = value
+            Me.SetChanged()
+        End Set
+    End Property
+
+    <Browsable(True),
+        Category(sPROPCAT_GENERAL),
+        DisplayName("Category"),
+        Description("Category to which this unit belongs"),
+        cPropertySorter.PropertyOrder(2)>
+    Public MustOverride ReadOnly Property Category() As String
+
+    <Browsable(True),
+        Category(sPROPCAT_VALIDATION),
+        DisplayName("Biomass ratio"),
+        Description("Total biomass ratio passed out of this unit"),
+        cPropertySorter.PropertyOrder(8)>
+    Public Overridable ReadOnly Property BiomassRatio() As String
+        Get
+            Dim sTot As Single = 0
+            For i As Integer = 0 To Me.LinkOutCount - 1
+                sTot += Me.LinkOut(i).BiomassRatio
+            Next
+            Return sTot.ToString()
+        End Get
+    End Property
+
+    <Browsable(True),
+        Category(sPROPCAT_GENERAL),
+        DisplayName("Nationality"),
+        Description("Nationality of this unit"),
+        cPropertySorter.PropertyOrder(4)>
+    Public Overridable Property Nationality() As Integer
+        Get
+            Return Me.m_iNationality
+        End Get
+        Set(value As Integer)
+            Me.m_iNationality = value
+            Me.SetChanged()
+        End Set
+    End Property
+
+    <Browsable(True),
+        Category(sPROPCAT_GENERAL),
+        DisplayName("Name (local)"),
+        Description("Local name of this unit"),
+        cPropertySorter.PropertyOrder(5)>
+    Public Overridable Property NameLocal() As String
+        Get
+            Return Me.m_strNameLocal
+        End Get
+        Set(value As String)
+            Me.m_strNameLocal = value
+            Me.SetChanged()
+        End Set
+    End Property
+
+    <Browsable(False)>
+    Public MustOverride ReadOnly Property IsDefault As Boolean
+
+#End Region ' General
+
+#End Region ' Properties
+
+End Class
