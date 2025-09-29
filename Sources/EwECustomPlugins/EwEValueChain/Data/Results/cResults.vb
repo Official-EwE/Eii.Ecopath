@@ -117,30 +117,30 @@ Public Class cResults
                 Dim sDependentsTotal As Single = 0.0!
                 Dim sGDP As Single = 0.0!
 
-                sRevenueProductsOther = Me.m_results(eVariableType.RevenueProductsOther, unit.Sequence) + _
+                sRevenueProductsOther = Me.m_results(eVariableType.RevenueProductsOther, unit.Sequence) +
                         Me.m_results(eVariableType.RevenueAgriculture, unit.Sequence)
 
                 sRevenueTickets = Me.m_results(eVariableType.RevenueTickets, unit.Sequence)
 
-                sRevenue = sRevenueProductsOther + sRevenueTickets + _
+                sRevenue = sRevenueProductsOther + sRevenueTickets +
                         Me.m_results(eVariableType.RevenueSubsidies, unit.Sequence)
 
                 'If isBroker = False Then  'this is not a broker, so the revenus from selling the product is theirs, and it counts in the utility
                 sRevenue += Me.m_results(eVariableType.RevenueProductsMain, unit.Sequence)
 
                 ' Cost
-                sCostSalariesShares = Me.m_results(eVariableType.CostWorker, unit.Sequence) + _
+                sCostSalariesShares = Me.m_results(eVariableType.CostWorker, unit.Sequence) +
                         Me.m_results(eVariableType.CostOwner, unit.Sequence)
 
-                sCostManagementRoyaltyCertificationObserver = Me.m_results(eVariableType.CostManagementRoyaltyCertification, unit.Sequence) + _
+                sCostManagementRoyaltyCertificationObserver = Me.m_results(eVariableType.CostManagementRoyaltyCertification, unit.Sequence) +
                         Me.m_results(eVariableType.CostObserver, unit.Sequence)
 
-                sCostlInputOther = Me.m_results(eVariableType.CostAgriculture, unit.Sequence) + _
+                sCostlInputOther = Me.m_results(eVariableType.CostAgriculture, unit.Sequence) +
                         Me.m_results(eVariableType.CostInput, unit.Sequence)
 
-                sCost = sCostSalariesShares + _
-                        sCostlInputOther + _
-                        Me.m_results(eVariableType.CostTaxes, unit.Sequence) + _
+                sCost = sCostSalariesShares +
+                        sCostlInputOther +
+                        Me.m_results(eVariableType.CostTaxes, unit.Sequence) +
                         sCostManagementRoyaltyCertificationObserver
 
                 sCost += Me.m_results(eVariableType.CostRawmaterial, unit.Sequence)
@@ -161,14 +161,14 @@ Public Class cResults
                 sTotalUtility = If(sProfit < 0, sCost, sRevenue)
 
                 ' Jobs
-                sTotalJobsMale = Me.m_results(eVariableType.NumberOfWorkerMales, unit.Sequence) + _
+                sTotalJobsMale = Me.m_results(eVariableType.NumberOfWorkerMales, unit.Sequence) +
                         Me.m_results(eVariableType.NumberOfOwnerMales, unit.Sequence)
-                sTotalJobsFemale = Me.m_results(eVariableType.NumberOfWorkerFemales, unit.Sequence) + _
+                sTotalJobsFemale = Me.m_results(eVariableType.NumberOfWorkerFemales, unit.Sequence) +
                         Me.m_results(eVariableType.NumberOfOwnerFemales, unit.Sequence)
                 sTotalJobs = sTotalJobsFemale + sTotalJobsMale
 
                 ' Dependents, total
-                sDependentsTotal = Me.m_results(eVariableType.NumberOfOwnerDependents, unit.Sequence) + _
+                sDependentsTotal = Me.m_results(eVariableType.NumberOfOwnerDependents, unit.Sequence) +
                         Me.m_results(eVariableType.NumberOfWorkerDependents, unit.Sequence)
 
                 ' Store
@@ -188,8 +188,8 @@ Public Class cResults
 
                 Me.m_results(eVariableType.NumberOfDependentsTotal, unit.Sequence) = sDependentsTotal
 
-                sGDP = Me.m_results(eVariableType.CostSalariesShares, unit.Sequence) + _
-                       Me.m_results(eVariableType.CostTaxes, unit.Sequence) + _
+                sGDP = Me.m_results(eVariableType.CostSalariesShares, unit.Sequence) +
+                       Me.m_results(eVariableType.CostTaxes, unit.Sequence) +
                        Me.m_results(eVariableType.CostManagementRoyaltyCertificationObservers, unit.Sequence) +
                        Me.m_results(eVariableType.Profit, unit.Sequence) -
                        Me.m_results(eVariableType.RevenueSubsidies, unit.Sequence)

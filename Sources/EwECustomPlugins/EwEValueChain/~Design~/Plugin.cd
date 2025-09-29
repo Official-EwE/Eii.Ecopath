@@ -55,11 +55,11 @@
       <FileName>Model\cModel.vb</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="EwEValueChainPlugin.cResults" Collapsed="true">
+  <Class Name="EwEValueChainPlugin.cValueChainResults" Collapsed="true">
     <Position X="8" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACBAIBAAAkBAAACYAAAAQACEgAAAAIQCgQAQEAQEA=</HashCode>
-      <FileName>Data\Results\cResults.vb</FileName>
+      <FileName>Data\Results\cValueChainResults.vb</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EwEValueChainPlugin.cLandingsLinkManager" Collapsed="true">

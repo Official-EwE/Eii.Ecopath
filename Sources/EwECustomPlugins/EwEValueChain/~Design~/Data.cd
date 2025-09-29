@@ -44,7 +44,7 @@
       <FileName>Data\Parameters\cParameters.vb</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="EwEValueChainPlugin.cResults" HideInheritanceLine="true">
+  <Class Name="EwEValueChainPlugin.cValueChainResults" HideInheritanceLine="true">
     <Position X="7.5" Y="1.75" Width="2" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
@@ -52,14 +52,14 @@
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <NestedTypes>
-      <Class Name="EwEValueChainPlugin.cResults.cTimeStepResults" Collapsed="true">
+      <Class Name="EwEValueChainPlugin.cValueChainResults.cTimeStepResults" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>Data\Results\cResults.vb</NewMemberFileName>
+          <NewMemberFileName>Data\Results\cValueChainResults.vb</NewMemberFileName>
         </TypeIdentifier>
       </Class>
-      <Enum Name="EwEValueChainPlugin.cResults.eVariableType" Collapsed="true">
+      <Enum Name="EwEValueChainPlugin.cValueChainResults.eVariableType" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>Data\Results\cResults.vb</NewMemberFileName>
+          <NewMemberFileName>Data\Results\cValueChainResults.vb</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
@@ -74,7 +74,7 @@
     </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAACBAIBAAAkBAAACYAAAAQACEgAAAAIQCgQAQEAQEA=</HashCode>
-      <FileName>Data\Results\cResults.vb</FileName>
+      <FileName>Data\Results\cValueChainResults.vb</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="m_data" />
