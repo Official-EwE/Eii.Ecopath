@@ -20,16 +20,16 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Reflection
 Imports System.Text
 Imports System.Threading
 Imports EwECore
 Imports EwEPlugin
-Imports EwEPlugin.Data
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
+Imports ValueChain
+Imports ValueChainUI
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -51,15 +51,17 @@ Public Class cValueChainPlugin
 #Region " Privates "
 
     Private m_uic As cUIContext = Nothing
-    Private m_core As EwECore.cCore = Nothing
+    Private m_core As cCore = Nothing
+    Private m_controller As cValueChainController = Nothing
+    Private m_data As cValueChainData = Nothing
+    Private m_results As cValueChainResults = Nothing
     Private m_bInitOK As Boolean = False
     Private m_form As frmMain = Nothing
-    Private m_data As cData = Nothing
     Private m_bIsEnabled As Boolean = True
-    Private m_model As cModel = Nothing
-    Private m_result As cResults = Nothing
-    Private m_mhEcopath As cMessageHandler = Nothing
-    Private m_linkman As cLandingsLinkManager = Nothing
+
+    'Private m_mhEcopath As cMessageHandler = Nothing
+    'Private m_linkman As cLandingsLinkManager = Nothing
+
     Private m_syncobj As SynchronizationContext = Nothing
 
     ' Data exchange
@@ -82,7 +84,7 @@ Public Class cValueChainPlugin
         End If
     End Sub
 
-    Public Shared Function SwitchForm(page As frmMain.eValueChainPageTypes) As frmMain
+    Public Shared Function SwitchForm(page As eValueChainPageTypes) As frmMain
 
         ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
         Dim bIsFormReady As Boolean = False
@@ -95,7 +97,7 @@ Public Class cValueChainPlugin
             ' Does form still exist?
             If Not cValueChainPlugin._inst_.HasInterface() Then
                 ' #No: create it
-                frm = New frmMain(cValueChainPlugin._inst_)
+                frm = New frmMain(cValueChainPlugin._inst_.m_uic, cValueChainPlugin._inst_.m_controller)
                 cValueChainPlugin._inst_.m_form = frm
             Else
                 frm = cValueChainPlugin._inst_.m_form
@@ -120,12 +122,12 @@ Public Class cValueChainPlugin
 
     Public Overrides ReadOnly Property DisplayName() As String
         Get
-            Return My.Resources.GENERIC_CAPTION
+            Return "Value chain"
         End Get
     End Property
 
-    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
-        Return frmMain.eValueChainPageTypes.Parameters
+    Public Overrides Function FormPage() As eValueChainPageTypes
+        Return eValueChainPageTypes.Parameters
     End Function
 
     Public Overrides ReadOnly Property NavigationTreeItemLocation() As String
@@ -171,23 +173,20 @@ Public Class cValueChainPlugin
 
                 Me.m_core = DirectCast(core, EwECore.cCore)
                 Me.m_ddx = New cPluginData(cTypeUtils.TypeToString(Me.GetType()))
-                Me.m_data = New cData(Me.m_core)
-                Me.m_model = New cModel()
-                Me.m_result = New cResults(Me.m_data)
-                Me.m_linkman = New cLandingsLinkManager(Me.m_data, Me.m_core)
+                Me.m_data = New cValueChainData()
+                Me.m_results = New cValueChainResults(Me.m_data)
+                Me.m_controller = New cValueChainController(Me.m_core, m_data, m_results)
+                'Me.m_linkman = New cLandingsLinkManager(Me.m_data, Me.m_core)
                 Me.m_syncobj = SynchronizationContext.Current
 
                 If (Me.m_syncobj Is Nothing) Then
                     Me.m_syncobj = New SynchronizationContext()
                 End If
-                Me.m_mhEcopath = New cMessageHandler(AddressOf Me.OnEcopathMessage,
-                                                     eCoreComponentType.Ecopath,
-                                                     eMessageType.DataValidation,
-                                                     Me.m_syncobj)
-#If DEBUG Then
-                Me.m_mhEcopath.Name = "ValueChain::Ecopath"
-#End If
-                Me.m_core.Messages.AddMessageHandler(Me.m_mhEcopath)
+                'Me.m_mhEcopath = New cMessageHandler(AddressOf Me.OnEcopathMessage, eCoreComponentType.Ecopath, eMessageType.DataValidation, Me.m_syncobj)
+                '#If DEBUG Then
+                'Me.m_mhEcopath.Name = "ValueChain::Ecopath"
+                '#End If
+                'Me.m_core.Messages.AddMessageHandler(Me.m_mhEcopath)
 
                 ' Done initializing
                 Me.m_bInitOK = True
@@ -208,12 +207,12 @@ Public Class cValueChainPlugin
 
     Public Sub Dispose() _
         Implements EwEPlugin.IDisposedPlugin.Dispose
-        ' Clean up message handler
-        If (Me.m_mhEcopath IsNot Nothing) Then
-            Me.m_core.Messages.RemoveMessageHandler(Me.m_mhEcopath)
-            Me.m_mhEcopath.Dispose()
-            Me.m_mhEcopath = Nothing
-        End If
+        '' Clean up message handler
+        'If (Me.m_mhEcopath IsNot Nothing) Then
+        '    Me.m_core.Messages.RemoveMessageHandler(Me.m_mhEcopath)
+        '    Me.m_mhEcopath.Dispose()
+        '    Me.m_mhEcopath = Nothing
+        'End If
     End Sub
 
 #Region " GUI "
@@ -252,7 +251,7 @@ Public Class cValueChainPlugin
             Me.m_form.Dispose()
         End If
         Me.m_form = Nothing
-        Me.m_data.Close()
+        'Me.m_data.Close()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -282,11 +281,7 @@ Public Class cValueChainPlugin
         ' Sanity checks
         Debug.Assert(Me.m_data.IsChanged() = False)
 
-        If Me.m_data.Load(Me.m_core.DataSource.ToString) Then
-            ' Manage incoming DB to weed out dead stuff
-            Me.m_linkman.ManageLinks()
-            Return True
-        End If
+        ' ToDo: load via Entity Framework
 
         Return False
 
@@ -302,7 +297,10 @@ Public Class cValueChainPlugin
     ''' -----------------------------------------------------------------------
     Public Function SaveModel(dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.SaveModel
-        Return Me.m_data.Save()
+
+        ' ToDo: Save via Entity Framework
+        Return False
+
     End Function
 
     Private Function CloseModel() As Boolean _
@@ -331,15 +329,15 @@ Public Class cValueChainPlugin
         If (parms.RunWithEcopath = False) Then Return
 
         ' Running in auto mode?
-        If (Me.m_model.IsManualRunMode = False) Then
+        If (Me.m_controller.IsManualRunMode = False) Then
             ' #Yes: prepare results for receiving Ecopath results
-            Me.m_result.Reset(cModel.eRunTypes.Ecopath)
+            Me.m_results.Reset(Me.m_core.nFleets, Me.m_core.nGroups, 0)
         End If
 
         ' Prepare data
         Me.m_data.InitRun()
         ' Run a single time step
-        Me.m_model.RunTimeStep(Me.m_data, Me.m_result, 1)
+        Me.m_controller.RunTimeStep(Me.m_data, Me.m_results, 1)
 
 #If DEBUG Then
         Debug.Assert(Me.m_data.HasCompletedRun(), "Chain computations are broken; one or more units did not compute")
@@ -349,7 +347,7 @@ Public Class cValueChainPlugin
         Me.BroadcastResults(1)
 
         If Me.AutoSave Then
-            Me.m_model.SaveResults(Me.m_data, Me.m_result)
+            Me.m_controller.SaveResults(Me.m_data, Me.m_results)
         End If
 
     End Sub
@@ -374,9 +372,9 @@ Public Class cValueChainPlugin
         If (parms.RunWithEcosim = False) Then Return
 
         ' Running in auto mode?
-        If (Me.m_model.IsManualRunMode = False) Then
+        If (Me.m_controller.IsManualRunMode = False) Then
             ' #Yes: prepare results for receiving Ecosim results
-            Me.m_result.Reset(cModel.eRunTypes.Ecosim)
+            Me.m_results.Reset(Me.m_core.nFleets, Me.m_core.nGroups, Me.m_core.nEcosimTimeSteps)
         End If
 
         ' Prepare data
@@ -402,10 +400,10 @@ Public Class cValueChainPlugin
         ' Abort if not allowed to run with Ecosim
         If (parms.RunWithEcosim = False) Then Return
         '' Do not run with searches if disabled
-        If (Me.m_data.Core.StateMonitor.IsSearching <> parms.RunWithSearches) Then Return
+        If (Me.m_core.StateMonitor.IsSearching <> parms.RunWithSearches) Then Return
 
         ' Run VC model
-        Me.m_model.RunTimeStep(Me.m_data, Me.m_result, iTimeStep, DirectCast(ecosimresults, cEcoSimResults), DirectCast(EcosimDatastructures, cEcosimDatastructures))
+        Me.m_controller.RunTimeStep(Me.m_data, Me.m_results, iTimeStep, DirectCast(ecosimresults, cEcoSimResults), DirectCast(EcosimDatastructures, cEcosimDatastructures))
         '' Send out data
         'Me.BroadcastResults(iTimeStep)
 
@@ -432,7 +430,7 @@ Public Class cValueChainPlugin
         End If
 
         If Me.AutoSave Then
-            Me.m_model.SaveResults(Me.m_data, Me.m_result)
+            Me.m_controller.SaveResults(Me.m_data, Me.m_results)
         End If
 
     End Sub
@@ -446,18 +444,18 @@ Public Class cValueChainPlugin
         If (Me.m_dataBroadcaster IsNot Nothing) And (Me.m_bIsEnabled = True) Then
 
             ' Fill exchange data based on the type of computed results
-            Select Case Me.m_result.RunType
-                Case cModel.eRunTypes.Ecopath
+            Select Case Me.m_controller.RunType
+                Case eRunTypes.Ecopath
                     Me.m_ddx.m_runType = New cEcopathRunType()
-                Case cModel.eRunTypes.Ecosim
+                Case eRunTypes.Ecosim
                     Me.m_ddx.m_runType = New cEcosimRunType()
             End Select
 
-            Me.m_ddx.Resize(Me.m_data.Core.nFleets)
+            Me.m_ddx.Resize(Me.m_core.nFleets)
             Me.m_ddx.m_iTimeStep = iTimeStep
 
             Me.Populate(DirectCast(Me.m_ddx.Total, cPluginData.cVCEconomicData), iTimeStep, 0)
-            For iFleet As Integer = 1 To Me.m_data.Core.nFleets - 1
+            For iFleet As Integer = 1 To Me.m_core.nFleets - 1
                 Me.Populate(DirectCast(Me.m_ddx.Subtotal(iFleet), cPluginData.cVCEconomicData), iTimeStep, iFleet)
             Next iFleet
 
@@ -468,31 +466,31 @@ Public Class cValueChainPlugin
 
     Private Sub Populate(data As cPluginData.cVCEconomicData, iTimeStep As Integer, iFleet As Integer)
 
-        data.m_sCost = Me.GetValue(cResults.eVariableType.Cost, iTimeStep, iFleet)
-        data.m_sCostInput = Me.GetValue(cResults.eVariableType.CostRawmaterial, iTimeStep, iFleet)
-        data.m_sCostLicenseObservers = Me.GetValue(cResults.eVariableType.CostManagementRoyaltyCertificationObservers, iTimeStep, iFleet)
-        data.m_sCostSalariesShares = Me.GetValue(cResults.eVariableType.CostSalariesShares, iTimeStep, iFleet)
-        data.m_sCostTaxes = Me.GetValue(cResults.eVariableType.CostTaxes, iTimeStep, iFleet)
-        data.m_sCostTotalInputOther = Me.GetValue(cResults.eVariableType.CostTotalInputOther, iTimeStep, iFleet)
-        data.m_sNumberOfDependentsTotal = Me.GetValue(cResults.eVariableType.NumberOfDependentsTotal, iTimeStep, iFleet)
-        data.m_sNumberOfJobsFemaleTotal = Me.GetValue(cResults.eVariableType.NumberOfJobsFemaleTotal, iTimeStep, iFleet)
-        data.m_sNumberOfJobsMaleTotal = Me.GetValue(cResults.eVariableType.NumberOfJobsMaleTotal, iTimeStep, iFleet)
-        data.m_sNumberOfJobsTotal = Me.GetValue(cResults.eVariableType.NumberOfJobsTotal, iTimeStep, iFleet)
-        data.m_sNumberOfOwnerDependents = Me.GetValue(cResults.eVariableType.NumberOfOwnerDependents, iTimeStep, iFleet)
-        data.m_sNumberOfWorkerDependents = Me.GetValue(cResults.eVariableType.NumberOfWorkerDependents, iTimeStep, iFleet)
-        data.m_sProduction = Me.GetValue(cResults.eVariableType.Production, iTimeStep, iFleet)
-        data.m_sProductionLive = Me.GetValue(cResults.eVariableType.ProductionLive, iTimeStep, iFleet)
-        data.m_sProfit = Me.GetValue(cResults.eVariableType.Profit, iTimeStep, iFleet)
-        data.m_sRevenueProductsMain = Me.GetValue(cResults.eVariableType.RevenueProductsMain, iTimeStep, iFleet)
-        data.m_sRevenueProductsOther = Me.GetValue(cResults.eVariableType.RevenueProductsOther, iTimeStep, iFleet)
-        data.m_sRevenueSubsidies = Me.GetValue(cResults.eVariableType.RevenueSubsidies, iTimeStep, iFleet)
-        data.m_sRevenueTotal = Me.GetValue(cResults.eVariableType.RevenueTotal, iTimeStep, iFleet)
-        data.m_sThroughput = Me.GetValue(cResults.eVariableType.TotalUtility, iTimeStep, iFleet)
+        data.m_sCost = Me.GetValue(cValueChainResults.eVariableType.Cost, iTimeStep, iFleet)
+        data.m_sCostInput = Me.GetValue(cValueChainResults.eVariableType.CostRawmaterial, iTimeStep, iFleet)
+        data.m_sCostLicenseObservers = Me.GetValue(cValueChainResults.eVariableType.CostManagementRoyaltyCertificationObservers, iTimeStep, iFleet)
+        data.m_sCostSalariesShares = Me.GetValue(cValueChainResults.eVariableType.CostSalariesShares, iTimeStep, iFleet)
+        data.m_sCostTaxes = Me.GetValue(cValueChainResults.eVariableType.CostTaxes, iTimeStep, iFleet)
+        data.m_sCostTotalInputOther = Me.GetValue(cValueChainResults.eVariableType.CostTotalInputOther, iTimeStep, iFleet)
+        data.m_sNumberOfDependentsTotal = Me.GetValue(cValueChainResults.eVariableType.NumberOfDependentsTotal, iTimeStep, iFleet)
+        data.m_sNumberOfJobsFemaleTotal = Me.GetValue(cValueChainResults.eVariableType.NumberOfJobsFemaleTotal, iTimeStep, iFleet)
+        data.m_sNumberOfJobsMaleTotal = Me.GetValue(cValueChainResults.eVariableType.NumberOfJobsMaleTotal, iTimeStep, iFleet)
+        data.m_sNumberOfJobsTotal = Me.GetValue(cValueChainResults.eVariableType.NumberOfJobsTotal, iTimeStep, iFleet)
+        data.m_sNumberOfOwnerDependents = Me.GetValue(cValueChainResults.eVariableType.NumberOfOwnerDependents, iTimeStep, iFleet)
+        data.m_sNumberOfWorkerDependents = Me.GetValue(cValueChainResults.eVariableType.NumberOfWorkerDependents, iTimeStep, iFleet)
+        data.m_sProduction = Me.GetValue(cValueChainResults.eVariableType.Production, iTimeStep, iFleet)
+        data.m_sProductionLive = Me.GetValue(cValueChainResults.eVariableType.ProductionLive, iTimeStep, iFleet)
+        data.m_sProfit = Me.GetValue(cValueChainResults.eVariableType.Profit, iTimeStep, iFleet)
+        data.m_sRevenueProductsMain = Me.GetValue(cValueChainResults.eVariableType.RevenueProductsMain, iTimeStep, iFleet)
+        data.m_sRevenueProductsOther = Me.GetValue(cValueChainResults.eVariableType.RevenueProductsOther, iTimeStep, iFleet)
+        data.m_sRevenueSubsidies = Me.GetValue(cValueChainResults.eVariableType.RevenueSubsidies, iTimeStep, iFleet)
+        data.m_sRevenueTotal = Me.GetValue(cValueChainResults.eVariableType.RevenueTotal, iTimeStep, iFleet)
+        data.m_sThroughput = Me.GetValue(cValueChainResults.eVariableType.TotalUtility, iTimeStep, iFleet)
 
     End Sub
 
-    Private Function GetValue(vn As cResults.eVariableType, iTimeStep As Integer, iFleet As Integer) As Single
-        Return Me.m_result.GetTimeStepTotal(vn, iTimeStep, Nothing, iFleet, cResults.GetVariableContributionType(vn))
+    Private Function GetValue(vn As cValueChainResults.eVariableType, iTimeStep As Integer, iFleet As Integer) As Single
+        Return Me.m_results.GetTimeStepTotal(vn, iTimeStep, Nothing, iFleet, cValueChainResults.GetVariableContributionType(vn))
     End Function
 
 
@@ -548,7 +546,7 @@ Public Class cValueChainPlugin
 
         If Not (typeData Is GetType(IEconomicData)) Then Return False
 
-        Dim parms As cParameters = Me.Data.Parameters
+        Dim parms As cParameters = Me.m_data.Parameters
         If (parms Is Nothing) Then Return False
 
         If TypeOf runtype Is cEcopathRunType Then
@@ -570,7 +568,7 @@ Public Class cValueChainPlugin
     Public Sub SetEnabled(typeData As System.Type, runType As IRunType, bEnabled As Boolean) _
         Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
 
-        Dim parms As cParameters = Me.Data.Parameters
+        Dim parms As cParameters = Me.m_data.Parameters
         If (parms Is Nothing) Then Return
         If Not (typeData Is GetType(IEconomicData)) Then Return
 
@@ -639,7 +637,7 @@ Public Class cValueChainPlugin
         Me.m_bInSearch = True
         Me.m_data.InitRun()
 
-        Me.m_result.Reset(cModel.eRunTypes.Ecosim)
+        Me.m_results.Reset(Me.m_core.nFleets, Me.m_core.nGroups, Me.m_core.nEcosimTimeSteps)
 
         ' JS 11 Apr 25: tracking down why repeated FPS + VC runs differ
 
@@ -664,17 +662,17 @@ Public Class cValueChainPlugin
 
             Debug.Assert(Me.m_searchds IsNot Nothing)
 
-            Dim profit = Me.m_result.GetTotal(cResults.eVariableType.Profit)
-            Dim employ = Me.m_result.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
+            Dim profit = Me.m_results.GetTotal(cValueChainResults.eVariableType.Profit)
+            Dim employ = Me.m_results.GetTotal(cValueChainResults.eVariableType.NumberOfJobsTotal)
 
             Console.WriteLine("VC out ? search: Profit {0}, Employ {1}", profit, employ)
 
             ' Overwrite values in the search datastructures with desired value chain output
             Me.m_searchds.Profit = profit
-            'ds.totval = Me.Results.GetTotal(cResults.eVariableType.RevenueTotal)      'VC 2025040Z
+            'ds.totval = Me.Results.GetTotal(cValueChainResults.eVariableType.RevenueTotal)      'VC 2025040Z
             Me.m_searchds.Employ = employ
 
-            Me.m_result.Reset(cModel.eRunTypes.Ecosim)
+            Me.m_results.Reset(Me.m_core.nFleets, Me.m_core.nGroups, Me.m_core.nEcosimTimeSteps)
 
         End If
 
@@ -695,57 +693,11 @@ Public Class cValueChainPlugin
 
 #End Region ' Plugin point implementation
 
-#Region " Exhibitionism "
-
-    Public ReadOnly Property Data As cData
-        Get
-            Return Me.m_data
-        End Get
-    End Property
-
-    Public ReadOnly Property Model As cModel
-        Get
-            Return Me.m_model
-        End Get
-    End Property
-
-    Public ReadOnly Property Results As cResults
-        Get
-            Return Me.m_result
-        End Get
-    End Property
-
-    Public ReadOnly Property Core As cCore
-        Get
-            Return Me.m_core
-        End Get
-    End Property
-
-    Public ReadOnly Property Context As cUIContext
-        Get
-            Return Me.m_uic
-        End Get
-    End Property
-
-#End Region ' Exhibitionism
-
 #Region " Helpers "
-
-    Private Sub OnEcopathMessage(ByRef msg As cMessage)
-
-        ' Something in Ecopath has changed
-        Try
-            Me.m_linkman.OnEcopathMessage(msg)
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-
-    End Sub
 
     Private Function HasInterface() As Boolean
         If Me.m_form Is Nothing Then Return False
-        If Me.m_form.IsDisposed Then Return False
-        Return True
+        Return (Not Me.m_form.IsDisposed)
     End Function
 
 #End Region ' Helpers

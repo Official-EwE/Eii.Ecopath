@@ -34,8 +34,8 @@ Public Class cNTCPluginTabWholeseller
         End Get
     End Property
 
-    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
-        Return frmMain.eValueChainPageTypes.TableWholesellers
+    Public Overrides Function FormPage() As eValueChainPageTypes
+        Return eValueChainPageTypes.TableWholesellers
     End Function
 
     Public Overrides ReadOnly Property Description() As String

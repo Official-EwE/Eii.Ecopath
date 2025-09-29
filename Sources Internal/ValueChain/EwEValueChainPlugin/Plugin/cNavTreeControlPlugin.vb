@@ -55,7 +55,7 @@ Public MustInherit Class cNavTreeControlPlugin
     Public Overridable ReadOnly Property ControlTooltipText() As String _
         Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return My.Resources.GENERIC_TOOLTIP
+            Return ""
         End Get
     End Property
 
@@ -130,7 +130,7 @@ Public MustInherit Class cNavTreeControlPlugin
     ''' </summary>
     ''' <returns>The page to navigate to when this plug-in point is activated.</returns>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Function FormPage() As frmMain.eValueChainPageTypes
+    Public MustOverride Function FormPage() As eValueChainPageTypes
 
     Protected Function NavTreeNodeRoot() As String
         Return "ndParameterization|ndEcopathOutput|ndEcopathOutputTools"

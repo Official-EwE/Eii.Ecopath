@@ -34,8 +34,8 @@ Public Class cNTCPluginFlow
         End Get
     End Property
 
-    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
-        Return frmMain.eValueChainPageTypes.Flow
+    Public Overrides Function FormPage() As eValueChainPageTypes
+        Return eValueChainPageTypes.Flow
     End Function
 
     Public Overrides ReadOnly Property Description() As String

@@ -34,8 +34,8 @@ Public Class cNTCPluginParameters
         End Get
     End Property
 
-    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
-        Return frmMain.eValueChainPageTypes.Parameters
+    Public Overrides Function FormPage() As eValueChainPageTypes
+        Return eValueChainPageTypes.Parameters
     End Function
 
     Public Overrides ReadOnly Property Description() As String

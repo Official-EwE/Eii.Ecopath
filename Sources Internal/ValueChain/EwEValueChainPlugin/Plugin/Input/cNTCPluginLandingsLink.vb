@@ -34,8 +34,8 @@ Public Class cNTCPluginTabLandLink
         End Get
     End Property
 
-    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
-        Return frmMain.eValueChainPageTypes.TableLandingsLinks
+    Public Overrides Function FormPage() As eValueChainPageTypes
+        Return eValueChainPageTypes.TableLandingsLinks
     End Function
 
     Public Overrides ReadOnly Property Description() As String

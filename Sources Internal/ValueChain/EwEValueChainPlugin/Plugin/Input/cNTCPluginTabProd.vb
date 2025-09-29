@@ -34,8 +34,8 @@ Public Class cNTCPluginTabProd
         End Get
     End Property
 
-    Public Overrides Function FormPage() As frmMain.eValueChainPageTypes
-        Return frmMain.eValueChainPageTypes.TableProducers
+    Public Overrides Function FormPage() As eValueChainPageTypes
+        Return eValueChainPageTypes.TableProducers
     End Function
 
     Public Overrides ReadOnly Property Description() As String

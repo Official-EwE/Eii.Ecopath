@@ -302,6 +302,9 @@ Public Class cValueChainPlugin
     ''' -----------------------------------------------------------------------
     Public Function SaveModel(dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.SaveModel
+
+        ' ToDo: also save via Entity Framework
+
         Return Me.m_data.Save()
     End Function
 

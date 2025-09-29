@@ -18,8 +18,9 @@
 '
 
 Option Strict On
+Imports core
 Imports EwECore
-Imports EwEUtils.Core
+Imports ValueChain
 
 Public Class cComputeLandingPortions
 
@@ -27,28 +28,27 @@ Public Class cComputeLandingPortions
     Private m_sumCatch() As Single
     Private m_sumValue() As Single
 
-    Public Sub New(data As cData, iTimeStep As Integer, runType As cModel.eRunTypes)
-        Me.Compute(data, iTimeStep, runType)
+    Public Sub New(core As cCore, data As cValueChainData, iTimeStep As Integer, runType As eRunTypes)
+        Me.Compute(core, data, iTimeStep, runType)
     End Sub
 
-    Private Function Compute(data As cData, iTimeStep As Integer, runType As cModel.eRunTypes) As Boolean
+    Private Function Compute(core As cCore, data As cValueChainData, iTimeStep As Integer, runType As eRunTypes) As Boolean
 
-        Dim EwECore As cCore = data.Core
         Dim RunOK As Boolean
 
         'check if there's an ecosim scenario loaded:
-        If EwECore.ActiveEcosimScenarioIndex > 0 Then
-            'Dim res As New cResults(edEcostData)
-            Dim model As cEwEModel = data.Core.EwEModel
+        If core.ActiveEcosimScenarioIndex > 0 Then
+            'Dim res As New cValueChainResults(edEcostData)
+            Dim model As cEwEModel = core.EwEModel
             Dim mu As cProducerUnit = Nothing
             Dim input As cInput = Nothing
             Dim sArea As Single = model.Area
             'Dim sLandings As Single = 0.0
             'Dim sLandingPrice As Single = 0.0
 
-            'nGroups = EwECore.nGroups
-            'nFleets = EwECore.nFleets
-            'nYears = EwECore.nTimeSeriesYears
+            'nGroups = core.nGroups
+            'nFleets = core.nFleets
+            'nYears = core.nTimeSeriesYears
             Dim NoProducers As Integer
             '=??? edEcostData.GetUnits(cUnitFactory.cUnitFormatter.Producer)
             'not sure if this number can be read so instead summing up below
@@ -68,7 +68,7 @@ Public Class cComputeLandingPortions
                     '    'ProducerReference(group, Fleet) = NoProducers
                     'Else
                     '    ' #No: aggregate over all groups which are caught by fleet
-                    '    For iGroup As Integer = 1 To EwECore.nGroups
+                    '    For iGroup As Integer = 1 To core.nGroups
                     '        'set the producerreference
 
                     '    Next iGroup
@@ -78,25 +78,25 @@ Public Class cComputeLandingPortions
             Next
 
             'Store the catch from the timeseries if it is a catch TS:
-            Dim iTSCatch(EwECore.nGroups, EwECore.nTimeSeriesYears) As Single
-            Dim iSpTimeSeriesCatch(EwECore.nGroups) As Boolean
+            Dim iTSCatch(core.nGroups, core.nTimeSeriesYears) As Single
+            Dim iSpTimeSeriesCatch(core.nGroups) As Boolean
 
-            'only do the next if there's time series, if so EwECore.nTimeSeriesYears > 0
-            If EwECore.nTimeSeriesYears > 0 Then
-                For iTS As Integer = 1 To EwECore.nTimeSeries
-                    Dim ts As cTimeSeries = EwECore.EcosimTimeSeries(iTS)
+            'only do the next if there's time series, if so core.nTimeSeriesYears > 0
+            If core.nTimeSeriesYears > 0 Then
+                For iTS As Integer = 1 To core.nTimeSeries
+                    Dim ts As cTimeSeries = core.EcosimTimeSeries(iTS)
 
                     If TypeOf (ts) Is cGroupTimeSeries Then
                         Dim grpTS As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
 
-                        If ts.TimeSeriesType = eTimeSeriesType.Catches Or _
-                           ts.TimeSeriesType = eTimeSeriesType.CatchesRel Or _
+                        If ts.TimeSeriesType = eTimeSeriesType.Catches Or
+                           ts.TimeSeriesType = eTimeSeriesType.CatchesRel Or
                            ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
                             ' The group that the TS is applied to
                             Dim iSp As Integer = grpTS.GroupIndex
 
                             iSpTimeSeriesCatch(iSp) = True
-                            For iYr As Integer = 1 To EwECore.nTimeSeriesYears
+                            For iYr As Integer = 1 To core.nTimeSeriesYears
                                 'read the timeseries data into the itscatch matrix
                                 iTSCatch(iSp, iYr) = grpTS.DatVal(iYr)
                             Next
@@ -117,19 +117,19 @@ Public Class cComputeLandingPortions
             '(as well as discards -- overall or by fleet if available) 
             'summed on top of each other
 
-            Dim ProportionOfLanding(EwECore.nGroups, EwECore.nFleets) As Single
-            For iSp As Integer = 1 To EwECore.nGroups
+            Dim ProportionOfLanding(core.nGroups, core.nFleets) As Single
+            For iSp As Integer = 1 To core.nGroups
                 If iSpTimeSeriesCatch(iSp) Then
                     Dim sumCatch As Single = 0
-                    For iFt As Integer = 1 To EwECore.nFleets
-                        If EwECore.EcopathFleetInputs(iFt).Landings(iSp) > 0 Then
-                            sumCatch += EwECore.EcopathFleetInputs(iFt).Landings(iSp)
+                    For iFt As Integer = 1 To core.nFleets
+                        If core.EcopathFleetInputs(iFt).Landings(iSp) > 0 Then
+                            sumCatch += core.EcopathFleetInputs(iFt).Landings(iSp)
                         End If
                     Next
                     If sumCatch > 0 Then
-                        For iFt As Integer = 1 To EwECore.nFleets
-                            If EwECore.EcopathFleetInputs(iFt).Landings(iSp) > 0 Then
-                                ProportionOfLanding(iSp, iFt) = EwECore.EcopathFleetInputs(iFt).Landings(iSp) / sumCatch
+                        For iFt As Integer = 1 To core.nFleets
+                            If core.EcopathFleetInputs(iFt).Landings(iSp) > 0 Then
+                                ProportionOfLanding(iSp, iFt) = core.EcopathFleetInputs(iFt).Landings(iSp) / sumCatch
                             End If
                         Next
                     End If
@@ -141,14 +141,14 @@ Public Class cComputeLandingPortions
             'I presume here (for lack of knowledge of how it has been implemented)
             'that there is a matrix, which stores 'producer-association', somewhat like this
 
-            ReDim Me.m_ProducerReference(EwECore.nGroups, EwECore.nGroups)
+            ReDim Me.m_ProducerReference(core.nGroups, core.nGroups)
             'then assume that when the flow is set up we read the producer ID into the ProducerReference
             'and that we thus can cycle through species/groups and read producer number
 
             'not sure this is needed, but what
-            'RunOK = EwECore.RunEcoPath()
+            'RunOK = core.RunEcoPath()
 
-            'RunOK = RunOK And EwECore.RunEcoSim()
+            'RunOK = RunOK And core.RunEcoSim()
 
 
             'the timeseries catches are annual values, so sum up for every year only
@@ -164,26 +164,26 @@ Public Class cComputeLandingPortions
                 ReDim Me.m_sumCatch(NoProducers)
                 ReDim Me.m_sumValue(NoProducers)
 
-                For iSp As Integer = 1 To EwECore.nGroups
-                    For iFt As Integer = 1 To EwECore.nFleets
+                For iSp As Integer = 1 To core.nGroups
+                    For iFt As Integer = 1 To core.nFleets
                         'Is this species/fleet combination associated with a producer?
                         If Me.m_ProducerReference(iSp, iFt) > 0 Then
                             'If there is a TS catch then use it
                             If iSpTimeSeriesCatch(iSp) Then
-                                Me.m_sumCatch(Me.m_ProducerReference(iSp, iFt)) += _
+                                Me.m_sumCatch(Me.m_ProducerReference(iSp, iFt)) +=
                                     iTSCatch(iSp, iYr) * ProportionOfLanding(iSp, iFt) * sArea
                                 'sum value = landing x marketprice (which is really landingprice
-                                Me.m_sumValue(Me.m_ProducerReference(iSp, iFt)) += _
+                                Me.m_sumValue(Me.m_ProducerReference(iSp, iFt)) +=
                                     iTSCatch(iSp, iYr) * ProportionOfLanding(iSp, iFt) _
-                                    * EwECore.EcopathFleetInputs(iFt).OffVesselValue(iSp)
+                                    * core.EcopathFleetInputs(iFt).OffVesselValue(iSp)
                             Else        'if not then use the Ecosim landing
-                                Me.m_sumCatch(Me.m_ProducerReference(iSp, iFt)) += _
-                                    EwECore.EcosimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcosimGroupOutputs(iSp).FishMort(iTimeStep) _
+                                Me.m_sumCatch(Me.m_ProducerReference(iSp, iFt)) +=
+                                    core.EcosimGroupOutputs(iSp).Biomass(iTimeStep) * core.EcosimGroupOutputs(iSp).FishMort(iTimeStep) _
                                     * sArea
                                 'sum value = landing x marketprice (which is really landingprice
-                                Me.m_sumValue(Me.m_ProducerReference(iSp, iFt)) += _
-                                    EwECore.EcosimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcosimGroupOutputs(iSp).FishMort(iTimeStep) _
-                                    * EwECore.EcopathFleetInputs(iFt).OffVesselValue(iSp) * sArea
+                                Me.m_sumValue(Me.m_ProducerReference(iSp, iFt)) +=
+                                    core.EcosimGroupOutputs(iSp).Biomass(iTimeStep) * core.EcosimGroupOutputs(iSp).FishMort(iTimeStep) _
+                                    * core.EcopathFleetInputs(iFt).OffVesselValue(iSp) * sArea
                             End If
                         End If
                     Next 'fleet
