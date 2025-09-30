@@ -2203,18 +2203,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EcospaceMonteCarlo\EcospaceMonteCarlo.vbproj">
-      <Project>{df752fa0-b8c1-4de1-9b9b-d1adf678b64e}</Project>
-      <Name>EcospaceMonteCarlo</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
-      <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
-      <Name>EwEEcospaceSpinupPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
-      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
-      <Name>EwESpatialAssetsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{cdece065-503a-4562-a955-06777b2f909e}</Project>
       <Name>EwECore</Name>
