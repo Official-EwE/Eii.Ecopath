@@ -68,7 +68,7 @@ Public Class cData
     Private m_lItems As New List(Of cCoreInputOutputBase)
 
 #If DEBUG Then
-    Private m_valueChainStorageService As ValueChainStorageService = Nothing
+    Private m_valueChainStorageService As IValueChainStorageService = Nothing
 #End If
 
 #End Region ' Private vars 
@@ -207,7 +207,7 @@ Public Class cData
         Me.IsChanged = False
 
 #If DEBUG Then
-        m_valueChainStorageService.LoadValueChain(ValueChainStorageService.GetSQLiteFilePathFromAccessFilePath(Me.m_strDBName))
+        m_valueChainStorageService.LoadValueChain(m_valueChainStorageService.GetSQLiteFilePathFromAccessFilePath(Me.m_strDBName))
 #End If
         Return bSucces And Me.m_db.IsConnected
 
@@ -229,7 +229,7 @@ Public Class cData
         bSucces = Me.m_db.SaveModel(Me)
 
 #If DEBUG Then
-        bSucces = bSucces And SaveValueChain(ValueChainStorageService.GetSQLiteFilePathFromAccessFilePath(Me.m_strDBName))
+        bSucces = bSucces And SaveValueChain(m_valueChainStorageService.GetSQLiteFilePathFromAccessFilePath(Me.m_strDBName))
 #End If
 
         If bSucces Then Me.IsChanged = False
@@ -1514,6 +1514,57 @@ Public Class cData
             }) _
             .ToList()
 
+        Dim distributionUnits As List(Of DistributionUnit) = Me.m_lUnits _
+            .Where(Function(p) TypeOf p Is cDistributionUnit) _
+            .Cast(Of cDistributionUnit)() _
+            .Where(Function(p) p IsNot Nothing) _
+            .Select(Function(p As cDistributionUnit) New DistributionUnit With {
+                .DBID = p.DBID,                         '
+                .Name = p.Name,                         ' derived from cUnit
+                .NameLocal = p.NameLocal,               ' derived from cUnit
+                .Sequence = p.Sequence,                 ' derived from cUnit
+                .Nationality = p.Nationality,           ' derived from cUnit
+                .Broker = p.Broker,                     ' derived from cEconomicUnit
+                .CapitalInput = p.CapitalInput,         '  derived from cEconomicUnit
+                .CertificationCost = p.CertificationCost,   ' derived from cEconomicUnit
+                .EnergyCost = p.EnergyCost,             ' derived from cEconomicUnit
+                .EnergyProducts = p.EnergyProducts,     ' derived from cEconomicUnit
+                .IndustrialCost = p.IndustrialCost,     ' derived from cEconomicUnit
+                .IndustrialProducts = p.IndustrialProducts, ' derived from cEconomicUnit
+                .ManagementCost = p.ManagementCost,     ' derived from cEconomicUnit
+                .LicenseTax = p.LicenseTax,             ' derived from cEconomicUnit
+                .SubsidyOther = p.SubsidyOther,         ' derived from cEconomicUnit
+                .SubsidyEnergy = p.SubsidyEnergy,       ' derived from cEconomicUnit
+                .ServiceProducts = p.ServiceProducts,   ' derived from cEconomicUnit
+                .ServiceCost = p.ServiceCost,           ' derived from cEconomicUnit
+                .RoyaltyCost = p.RoyaltyCost,           ' derived from cEconomicUnit
+                .OwnerFemale = p.OwnerFemale,           ' derived from cEconomicUnit
+                .OwnerMale = p.OwnerMale,               ' derived from cEconomicUnit
+                .OwnerFemalePay = p.OwnerFemalePay,     ' derived from cEconomicUnit
+                .OwnerFemaleshare = p.OwnerFemaleshare, ' derived from cEconomicUnit
+                .OwnerMalePay = p.OwnerMalePay,         ' derived from cEconomicUnit
+                .OwnerMaleshare = p.OwnerMaleshare,     ' derived from cEconomicUnit
+                .OwnerFemaleDependents = p.OwnerFemaleDependents,   ' derived from cEconomicUnit
+                .OwnerMaleDependents = p.OwnerMaleDependents,       ' derived from cEconomicUnit
+                .ProfitTax = p.ProfitTax,               ' derived from cEconomicUnit
+                .TaxImport = p.TaxImport,               ' derived from cEconomicUnit
+                .TaxExport = p.TaxExport,               ' derived from cEconomicUnit
+                .TaxVAT = p.TaxVAT,                     ' derived from cEconomicUnit
+                .TaxProduction = p.TaxProduction,       ' derived from cEconomicUnit
+                .TaxEnvironmental = p.TaxEnvironmental, ' derived from cEconomicUnit
+                .WorkerFemale = p.WorkerFemale,         ' derived from cEconomicUnit
+                .WorkerFemalePay = p.WorkerFemalePay,   ' derived from cEconomicUnit
+                .WorkerFemaleshare = p.WorkerFemaleshare,   ' derived from cEconomicUnit
+                .WorkerMale = p.WorkerMale,             ' derived from cEconomicUnit
+                .WorkerMalePay = p.WorkerMalePay,       ' derived from cEconomicUnit
+                .WorkerMaleshare = p.WorkerMaleshare,   ' derived from cEconomicUnit
+                .WorkerOther = p.WorkerOther,           ' derived from cEconomicUnit
+                .WorkerOtherPay = p.WorkerOtherPay,     ' derived from cEconomicUnit
+                .WorkerParttime = p.WorkerParttime,     ' derived from cEconomicUnit
+                .WorkerFemaleDependents = p.WorkerFemaleDependents,     ' derived from cEconomicUnit
+                .WorkerMaleDependents = p.WorkerMaleDependents         ' derived from cEconomicUnit
+            }) _
+            .ToList()
 
         Dim consumerUnits As List(Of ConsumerUnit) = Me.m_lUnits _
             .Where(Function(p) TypeOf p Is cConsumerUnit) _
@@ -1528,7 +1579,7 @@ Public Class cData
             }) _
             .ToList()
 
-        Return m_valueChainStorageService.SaveValueChain(accessDbFilePath, parameter, links, consumerUnits, processingUnits, wholesalerUnits, retailerUnits, producerUnits)
+        Return m_valueChainStorageService.SaveValueChain(accessDbFilePath, parameter, links, consumerUnits, processingUnits, wholesalerUnits, retailerUnits, producerUnits, distributionUnits)
     End Function
 
 #End Region ' Internals

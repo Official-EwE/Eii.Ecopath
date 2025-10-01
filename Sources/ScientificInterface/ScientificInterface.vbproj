@@ -2319,10 +2319,6 @@
       <Project>{e87e552b-c82f-4984-9249-631dac727633}</Project>
       <Name>EwEValueChainPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj">
-      <Project>{1e820a5f-bd1a-4ece-9656-6824cf2d537e}</Project>
-      <Name>EwEValueChainPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEWindowsIntegrationPlugin\EwEWindowsIntegrationPlugin.vbproj">
       <Project>{1b798fde-56cf-427f-9889-9930d34318e9}</Project>
       <Name>EwEWindowsIntegrationPlugin</Name>
