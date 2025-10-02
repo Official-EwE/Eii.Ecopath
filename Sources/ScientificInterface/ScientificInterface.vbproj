@@ -2354,11 +2354,6 @@
   <ItemGroup>
     <Folder Include="Other\Update\" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Eii.ValueChain.Storage">
-      <Version>1.0.15</Version>
-    </PackageReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
