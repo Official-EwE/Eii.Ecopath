@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
-    <Platforms>x86;x64;AnyCPU;</Platforms>
     <OutputType>Library</OutputType>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <Platforms>x86;x64;AnyCPU</Platforms>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwEPlugin.snk</AssemblyOriginatorKeyFile>
     <PublishUrl>publish\</PublishUrl>
@@ -24,20 +24,31 @@
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <AssemblyName>EwEPlugin</AssemblyName>
     <RootNamespace>EwEPlugin</RootNamespace>
+    <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
     <DebugType>portable</DebugType>
   </PropertyGroup>
   <PropertyGroup>
-    <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
     <PackageId>Eii.Ecopath.EwEPlugin</PackageId>
     <Title>Ecopath with Ecosim Plugin</Title>
     <Description>A description of the EwEPlugin package</Description>
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwEPlugin</PackageProjectUrl>
-    <IncludeSymbols>True</IncludeSymbols>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.1</Version>
+    <Version>6.7.2</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>$(Project URL)</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    <IncludeReferencedProjects>True</IncludeReferencedProjects>
+    <Company>EII</Company>
+    <PackageIcon>EII_plain_128x128.png</PackageIcon>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="True" PackagePath="\" />
+    <None Include="..\..\EII_plain_128x128.png" Pack="True" PackagePath="\" />
+    <None Include="Includes\*.*" Pack="true" PackagePath="Includes\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	<PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>EwEPlugin.xml</DocumentationFile>
