@@ -172,9 +172,9 @@ Public Class ucResults
 
 #Region " Constructor "
 
-    Public Sub New(uic As cUIContext, _
-                   data As cData, _
-                   model As cModel, _
+    Public Sub New(uic As cUIContext,
+                   data As cData,
+                   model As cModel,
                    result As cResults)
 
         Me.InitializeComponent()

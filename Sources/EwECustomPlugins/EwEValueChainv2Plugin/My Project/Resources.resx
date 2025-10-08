@@ -1,0 +1,503 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="sautxt_50px" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+        JLkXQfqlJfKySSn/2QD/2wBDAAICAgICAgICAgIDAgICAwQDAgIDBAUEBAQEBAUGBQUFBQUFBgYHBwgH
+        BwYJCQoKCQkMDAwMDAwMDAwMDAwMDAz/2wBDAQMDAwUEBQkGBgkNCgkKDQ8ODg4ODw8MDAwMDA8PDAwM
+        DAwMDwwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAAyADMDAREAAhEBAxEB/8QAHwAAAAcB
+        AQEBAQAAAAAAAAAABAUDAgYBAAcICQoL/8QAtRAAAgEDAwIEAgYHAwQCBgJzAQIDEQQABSESMUFRBhNh
+        InGBFDKRoQcVsUIjwVLR4TMWYvAkcoLxJUM0U5KismNzwjVEJ5OjszYXVGR0w9LiCCaDCQoYGYSURUak
+        tFbTVSga8uPzxNTk9GV1hZWltcXV5fVmdoaWprbG1ub2N0dXZ3eHl6e3x9fn9zhIWGh4iJiouMjY6Pgp
+        OUlZaXmJmam5ydnp+So6SlpqeoqaqrrK2ur6/8QAHwEAAgIDAQEBAQEAAAAAAAAAAQACAwQFBgcICQoL
+        /8QAtREAAgIBAgMFBQQFBgQIAwNtAQACEQMEIRIxQQVRE2EiBnGBkTKhsfAUwdHhI0IVUmJy8TMkNEOC
+        FpJTJaJjssIHc9I14kSDF1STCAkKGBkmNkUaJ2R0VTfyo7PDKCnT4/OElKS0xNTk9GV1hZWltcXV5fVG
+        VmZ2hpamtsbW5vZHV2d3h5ent8fX5/c4SFhoeIiYqLjI2Oj4OUlZaXmJmam5ydnp+So6SlpqeoqaqrrK
+        2ur6/90ABAAH/9oADAMBAAIRAxEAPwD7DefPz18ueTbuKC3tZNdtNL8y6f5b8/anb+p6Wgy6lCsts1wE
+        jdpDIZIowEHFWlT1GQGudL2X7L59bEkngMsUsmIGryiBqXDuKqpS33IhLhEi4WfWwxmudEA/0b/A+e7F
+        Py//ADF/MbzVqP5zeWdS0Ce9g0q+1kflj5ytrdbfT7y3jJSCxebmV9WPnGyymiyKxpvG+Z/a3Y+g0mPR
+        5seQAyjj8bGTc4k7ymB/NNSBjziR3Si1YM+XIckSORPCeQroHj3l/wD5x5/OUv8AkQfNd/o+oj8m72at
+        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
+</value>
+  </data>
+  <data name="ValueChain_32x32" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAydJREFUOE91
+        kGtI02EcRl/MCiooXH4pXIHQzVIrt6W76DRRs+Wl0D4USBDdKDNvhZattlg3m5m1cjK36SKzLEutLHPO
+        udkSI/M2MuYUrbmWgRmk2xP7E6MGna/P7xx4X0L+Q0c827czZSv9TWpsgDGRN8d7/y8d8Wxu156U+t7z
+        BdNWxW2MKGQwiwqmuvel1xqTtzK87z3o+GE+hu2RxRZZieubrhX2di0m9W34on2N77rXmGxvhUVW4uxM
+        jRV6uxT6uIjiEbUcX588hOVxHfrqH8HQ1IiJYQusvT3oqVZS24i6AoYd0Wf+kVs5wdz+onzXuLIcE6oK
+        fNNUoltThR9TU3AzYbOhWSKCQyWH+6avKH9WFxse4gno4iLqh65JMCaVwH7jCuwyKYylUrx/a0K3yYSa
+        61KMlV2FvfQyxq5J4L7VC6JVlNy8eZWvIS1x2lyYg9GiPIyLC9EvEWLK4cCo1YqZmRk4bDYYTudT2+iZ
+        PAwW5sCwW2CnAi1RDLoxYzc+HD+Eodxj6BcL0dPQAPuEHaViMXq7uqhnvJLfgfmCEAOis9BmZeJt1hG0
+        beMvIdqkeHrn0UzohSJ0qTUwqqoxbrXC6XSiVl2FjwODVED/8iVaThWiOfckWrKy8eZENtp3ChYTbdK2
+        Oe0HDv54lp2HFqEITefEmHQ4YGzT4ZHmLp7V1VGBdyYT7ialQrp6HRr2ZkCbnm7zfOLT5OQHNXsy8PTA
+        YcgTBPg8PAyXy4UPJhNmZ2epQFPNfUjXrodsTRDKNjHRnLSjwhNoSExgKVhs55U163FxdRAupe6C4fkL
+        WIY+YchshraxERfiEqBmsaEJ24LamNhfdTH8dZ6Am2oOT1weEgblRgbUXD7knCiUcqNQEs5FeWQMFMwI
+        qBjhUHL5qIqMzvtHdrNhCX1eRuCGezdDwlxlm1hQ8mKg5PBRyeJAERGJm0wOboUynGkr1lYE+6309fYJ
+        IX7zCVm6M3BRQNWRwKCB4o3Mn7fCeZBx+bjKZE/vp6/qC1iwvJKQpdsJoc31tv/gjtCWE0ILJYTGW+Tj
+        L1jo4+8WeITQQgihLSPEb97fxm+9LuLhf2peKQAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="GENERIC_CAPTION" xml:space="preserve">
+    <value>Value chain (new)</value>
+  </data>
+  <data name="GENERIC_TOOLTIP" xml:space="preserve">
+    <value>Value chain plug-in, repackaged</value>
+  </data>
+  <data name="NAVTREE_INPUT_DEFAULTS" xml:space="preserve">
+    <value>Defaults</value>
+  </data>
+  <data name="NAVTREE_INPUT_FLOW" xml:space="preserve">
+    <value>Flow</value>
+  </data>
+  <data name="NAVTREE_INPUT_PARAMETERS" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLES" xml:space="preserve">
+    <value>Components</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_CONSUMERS" xml:space="preserve">
+    <value>Consumers</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_DISTRIBUTORS" xml:space="preserve">
+    <value>Distributors</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_WHOLESALERS" xml:space="preserve">
+    <value>Wholesalers</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_PROCESSORS" xml:space="preserve">
+    <value>Processors</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_PRODUCERS" xml:space="preserve">
+    <value>Producers</value>
+  </data>
+  <data name="NAVTREE_OUTPUT_RUN" xml:space="preserve">
+    <value>Run value chain</value>
+  </data>
+  <data name="STATUS_RUNNING_ECOPATH" xml:space="preserve">
+    <value>Running value chain for Ecopath, please wait...</value>
+  </data>
+  <data name="STATUS_RUNNING_ECOSIM" xml:space="preserve">
+    <value>Running value chain for Ecosim, please wait...</value>
+  </data>
+  <data name="STATUS_RUNNING_EQUILIBRIUM" xml:space="preserve">
+    <value>Running value chain Equilibrium search, please wait...</value>
+  </data>
+  <data name="STATUS_PROGRESS_EQUILIBIRUM" xml:space="preserve">
+    <value>Running value chain equilibrium fleet {0}, effort {1}</value>
+    <comment>{0}: fleet name, {1}: effort</comment>
+  </data>
+  <data name="STATUS_LOADING" xml:space="preserve">
+    <value>Loading value chain model, please wait...</value>
+  </data>
+  <data name="STATUS_MERGE_SUCCESS" xml:space="preserve">
+    <value>Value chain data file '{0}' merged into Ecopath model '{1}'</value>
+    <comment>{0}: value chain model file. {1}: ecopath model</comment>
+  </data>
+  <data name="STATUS_SAVING" xml:space="preserve">
+    <value>Saving value chain model, please wait...</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_RETAILERS" xml:space="preserve">
+    <value>Retailers</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_LANDINGLINKS" xml:space="preserve">
+    <value>Landings</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_LINKS" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="ERROR_LINK_DUPLICATE" xml:space="preserve">
+    <value>Link already present for group '{0}'</value>
+    <comment>{0} = group name</comment>
+  </data>
+  <data name="ERROR_LINK_LOOP" xml:space="preserve">
+    <value>This will create a loop which is not allowed</value>
+  </data>
+  <data name="ERROR_LINK_NEEDUNITS" xml:space="preserve">
+    <value>A link needs a source and a target</value>
+  </data>
+  <data name="ERROR_LINK_NOTALLOWED" xml:space="preserve">
+    <value>This type of link is not allowed</value>
+  </data>
+  <data name="CORE_DEFAULT_CONSUMER" xml:space="preserve">
+    <value>Consumer {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="CORE_DEFAULT_DISTRIBUTION" xml:space="preserve">
+    <value>Distribution {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="CORE_DEFAULT_PROCESSING" xml:space="preserve">
+    <value>Processing {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="CORE_DEFAULT_PRODUCER" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CORE_DEFAULT_RETAILER" xml:space="preserve">
+    <value>Retailer {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="CORE_DEFAULT_WHOLESALER" xml:space="preserve">
+    <value>Wholesaler {0}</value>
+    <comment>{0}: sequential number</comment>
+  </data>
+  <data name="PROMPT_DELETELINK" xml:space="preserve">
+    <value>Do you wish to delete link '{0}'? This action cannot be undone.</value>
+    <comment>{0}: link name</comment>
+  </data>
+  <data name="PROMPT_DELETEUNIT" xml:space="preserve">
+    <value>Do you wish to delete unit '{0}'? This action cannot be undone.</value>
+    <comment>{0}: unit name</comment>
+  </data>
+  <data name="PROMPT_AUTOLAYOUT" xml:space="preserve">
+    <value>Are you sure you want to arrange the diagram layout?</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ValueChain" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ValueChain.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HEADER_COST" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="HEADER_DEPENDENTS" xml:space="preserve">
+    <value>Dependents</value>
+  </data>
+  <data name="HEADER_JOBS" xml:space="preserve">
+    <value>Jobs</value>
+  </data>
+  <data name="HEADER_REVENUE" xml:space="preserve">
+    <value>Revenue</value>
+  </data>
+  <data name="HEADER_REV_COST" xml:space="preserve">
+    <value>Revenue and cost</value>
+  </data>
+  <data name="PROMPT_CONVERT_UNIT" xml:space="preserve">
+    <value>Are you sure you want to convert {0} from type '{1}' to type '{2}'?</value>
+    <comment>{0}: unit name, {1}: unit original type, {2}: unit target type</comment>
+  </data>
+  <data name="UNIT_TYPE_CONSUMER" xml:space="preserve">
+    <value>Consumer</value>
+  </data>
+  <data name="UNIT_TYPE_DISTRIBUTION" xml:space="preserve">
+    <value>Distribution</value>
+  </data>
+  <data name="UNIT_TYPE_PROCESSING" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="UNIT_TYPE_PRODUCER" xml:space="preserve">
+    <value>Producer</value>
+  </data>
+  <data name="UNIT_TYPE_RETAILER" xml:space="preserve">
+    <value>Retailer</value>
+  </data>
+  <data name="UNIT_TYPE_WHOLESALER" xml:space="preserve">
+    <value>Wholesaler</value>
+  </data>
+  <data name="HEADER_CATEGORIES" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="AGGREGATION_MODE_BYFLEET" xml:space="preserve">
+    <value>Results by fleet</value>
+  </data>
+  <data name="AGGREGATION_MODE_BYGROUP" xml:space="preserve">
+    <value>Results by group</value>
+  </data>
+  <data name="AGGREGATION_MODE_FULLMODEL" xml:space="preserve">
+    <value>Unaggregated</value>
+  </data>
+  <data name="translate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\translate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PROMPT_SAVERESULTS_FAILED" xml:space="preserve">
+    <value>Value chain results failed to save to '{0}'. {1}</value>
+    <comment>{0}=file location, {1}=error message</comment>
+  </data>
+  <data name="PROMPT_SAVERESULTS_SUCCESS" xml:space="preserve">
+    <value>Value chain results save to '{0}'</value>
+    <comment>{0}=file location</comment>
+  </data>
+  <data name="PROMPT_SAVERESULT_DETAIL" xml:space="preserve">
+    <value>Saved '{0}'</value>
+    <comment>{0}=detail that saved</comment>
+  </data>
+  <data name="NAVTREE_OUTPUT_FLOWDIAGRAM" xml:space="preserve">
+    <value>Flow diagram</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_COST" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_COSTREVENUE" xml:space="preserve">
+    <value>Cost and Revenue</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_DEPENDENTS" xml:space="preserve">
+    <value>Dependents</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_JOBS" xml:space="preserve">
+    <value>Jobs</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_REVENUE" xml:space="preserve">
+    <value>Revenue</value>
+  </data>
+  <data name="ERROR_LINK_NEEDFLEET" xml:space="preserve">
+    <value>Please connect this producer to an Ecopath fleet first</value>
+  </data>
+  <data name="ecost_256x256" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ecost_256x256.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8_depot_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icons8-depot-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8_factory_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icons8-factory-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8_fishing_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icons8-fishing-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8_meal_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icons8-meal-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8_money_bag_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icons8-money-bag-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8_shipped_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icons8-shipped-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FormulaEvaluatorHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\formulaevaluatorhs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8_shopping_cart_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\icons8-shopping-cart-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lenfest_Logo_50px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\lenfest logo_50px.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="STATUS_MERGE_FAILED" xml:space="preserve">
+    <value>Failed to merge tne old value chain model {0} into the current model database. {1}</value>
+    <comment>{0}=vc database name; {1}: exception text</comment>
+  </data>
+</root>
