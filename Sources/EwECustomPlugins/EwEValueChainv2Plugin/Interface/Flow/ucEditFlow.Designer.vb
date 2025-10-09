@@ -60,11 +60,11 @@ Partial Class ucEditFlow
         Me.m_ts5 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tssbConvert = New System.Windows.Forms.ToolStripDropDownButton()
         Me.m_split = New System.Windows.Forms.SplitContainer()
-        Me.m_plFlow = New EwEValueChainPlugin.plFlow()
+        Me.m_plFlow = New plFlow()
         Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pgDetails = New System.Windows.Forms.PropertyGrid()
         Me.m_hdrDetails = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_selector = New EwEValueChainPlugin.ucSelector2()
+        Me.m_selector = New ucSelector2()
         Me.m_tsMain.SuspendLayout()
         CType(Me.m_split, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_split.Panel1.SuspendLayout()
@@ -248,7 +248,7 @@ Partial Class ucEditFlow
         'm_tsbLocalNames
         '
         Me.m_tsbLocalNames.CheckOnClick = True
-        Me.m_tsbLocalNames.Image = Global.EwEValueChainPlugin.My.Resources.Resources.translate
+        Me.m_tsbLocalNames.Image = My.Resources.Resources.translate
         Me.m_tsbLocalNames.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsbLocalNames.Name = "m_tsbLocalNames"
         Me.m_tsbLocalNames.Size = New System.Drawing.Size(77, 35)
@@ -307,7 +307,7 @@ Partial Class ucEditFlow
         Me.m_plFlow.AutoScroll = True
         Me.m_plFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.m_plFlow.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plFlow.EditMode = EwEValueChainPlugin.plFlow.eEditMode.Move
+        Me.m_plFlow.EditMode = plFlow.eEditMode.Move
         Me.m_plFlow.ItemFilter = Nothing
         Me.m_plFlow.Location = New System.Drawing.Point(0, 0)
         Me.m_plFlow.Name = "m_plFlow"
@@ -412,12 +412,12 @@ Partial Class ucEditFlow
     Private WithEvents m_tsmiExportToImage As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiSave As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tlpDetails As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_selector As EwEValueChainPlugin.ucSelector2
+    Private WithEvents m_selector As ucSelector2
     Private WithEvents m_hdrDetails As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tssbConvert As System.Windows.Forms.ToolStripDropDownButton
     Private WithEvents m_ts1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_ts5 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbLocalNames As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_plFlow As EwEValueChainPlugin.plFlow
+    Private WithEvents m_plFlow As plFlow
 
 End Class

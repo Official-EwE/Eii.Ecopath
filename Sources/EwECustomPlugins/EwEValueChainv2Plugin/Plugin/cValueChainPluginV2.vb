@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Runtime.Remoting.Messaging
 Imports System.Text
 Imports System.Threading
 Imports EwECore
@@ -29,7 +28,6 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
-Imports ValueChainUI
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -51,7 +49,6 @@ Public Class cValueChainPluginV2
 
 #Region " Privates "
 
-    Private m_uic As cUIContext = Nothing
     Private m_core As cCore = Nothing
     Private m_controller As cValueChainController = Nothing
     Private m_data As cValueChainData = Nothing
@@ -102,7 +99,7 @@ Public Class cValueChainPluginV2
 
     Public ReadOnly Property Context As cUIContext
         Get
-            Return Me.m_uic
+            Return Me.UIContext
         End Get
     End Property
 
@@ -228,11 +225,6 @@ Public Class cValueChainPluginV2
     End Sub
 
 #Region " GUI "
-
-    Public Sub UIContext(uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
-        Me.m_uic = DirectCast(uic, cUIContext)
-    End Sub
 
 #End Region ' GUI
 

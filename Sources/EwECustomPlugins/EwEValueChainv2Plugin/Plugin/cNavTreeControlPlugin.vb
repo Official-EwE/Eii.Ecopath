@@ -35,6 +35,7 @@ Public MustInherit Class cNavTreeControlPlugin
     Implements IUIContextPlugin
 
     Private m_piMain As cValueChainPluginV2 = Nothing
+    Private m_uic As cUIContext = Nothing
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.Name"/>
@@ -145,18 +146,23 @@ Public MustInherit Class cNavTreeControlPlugin
         Return "ndParameterization|ndEcopathOutput|ndEcopathOutputTools"
     End Function
 
-    Public Sub UIContext(uicObj As Object) Implements IUIContextPlugin.UIContext
-        Dim uic As cUIContext = DirectCast(uicObj, cUIContext)
-        If (uic IsNot Nothing) Then
-            Dim pm As cPluginManager = uic.Core.PluginManager
+    Public ReadOnly Property UIContext As cUIContext
+        Get
+            Return Me.m_uic
+        End Get
+    End Property
+
+    Public Overridable Sub SetUIContext(uicObj As Object) Implements IUIContextPlugin.UIContext
+        Me.m_uic = DirectCast(uicObj, cUIContext)
+        If (Me.m_uic IsNot Nothing) Then
+            Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
             Dim pic As ICollection(Of IPlugin) = pm.GetPlugins(GetType(cValueChainPluginV2))
             If (pic IsNot Nothing AndAlso pic.Count > 0) Then
                 Me.m_piMain = DirectCast(pic.ElementAt(0), cValueChainPluginV2)
             End If
         End If
 
-        Debug.Assert(Me.m_piMain IsNot Nothing
-                     )
+        Debug.Assert(Me.m_piMain IsNot Nothing)
     End Sub
 
     ''' -----------------------------------------------------------------------
