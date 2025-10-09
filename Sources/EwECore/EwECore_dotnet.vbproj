@@ -3,10 +3,6 @@
     <OutputType>Library</OutputType>
     <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU</Platforms>
-    <SccProjectName></SccProjectName>
-    <SccLocalPath></SccLocalPath>
-    <SccAuxPath></SccAuxPath>
-    <SccProvider></SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwECore.snk</AssemblyOriginatorKeyFile>
     <PublishUrl>publish\</PublishUrl>
@@ -24,9 +20,35 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <AssemblyName>EwECore</AssemblyName>
+    <RootNamespace>EwECore</RootNamespace>
     <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
     <DebugType>portable</DebugType>
   </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>Eii.Ecopath.EwECore</PackageId>
+    <Title>Ecopath with Ecosim Core</Title>
+    <Description>A description of the EwECore package</Description>
+    <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwECore</PackageProjectUrl>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <Version>6.7.2</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>$(Project URL)</RepositoryUrl>
+    <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    <IncludeReferencedProjects>True</IncludeReferencedProjects>
+    <Company>EII</Company>
+    <PackageIcon>EII_plain_128x128.png</PackageIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="True" PackagePath="\" />
+    <None Include="..\..\EII_plain_128x128.png" Pack="True" PackagePath="\" />
+    <None Include="Includes\*.*" Pack="true" PackagePath="Includes\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	<PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>EwECore.xml</DocumentationFile>
@@ -68,20 +90,6 @@
     <DocumentationFile>EwECore.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
     <DebugType>none</DebugType>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AssemblyName>EwECore</AssemblyName>
-    <RootNamespace>EwECore</RootNamespace>
-    <PackageId>Eii.Ecopath.EwECore</PackageId>
-    <Title>Ecopath with Ecosim Core</Title>
-    <Description>A description of the EwECore package</Description>
-    <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwECore</PackageProjectUrl>
-    <IncludeSymbols>True</IncludeSymbols>
-    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.1</Version>
-    <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
