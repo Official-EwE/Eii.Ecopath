@@ -406,10 +406,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Eii.ValueChain">
-      <Version>1.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="Eii.ValueChain.Storage">
-      <Version>1.0.25</Version>
+      <Version>1.0.5</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
