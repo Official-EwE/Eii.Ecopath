@@ -24,7 +24,6 @@ Imports System.IO
 Imports System.Linq
 Imports Eii.ValueChain.Storage
 Imports Eii.ValueChain.Storage.Models
-Imports Eii.ValueChain.Storage.Models.Models
 Imports EwECore
 Imports EwECore.Database
 Imports EwEUtils.Core
