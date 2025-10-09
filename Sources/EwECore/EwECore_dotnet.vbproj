@@ -210,10 +210,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="System.Text.Json" Version="9.0.1" />
+    <PackageReference Include="System.Text.Json" Version="9.0.9" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="EcoSpace\Input Output\ResultWriters\Data sources\cRegionTLResultsDataSource.vb" />
@@ -222,11 +222,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.ServiceModel.Primitives">
-      <Version>8.1.0</Version>
+      <Version>8.1.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EwEPlugin\EwEPlugin_dotnet.vbproj" >
+    <ProjectReference Include="..\EwEPlugin\EwEPlugin_dotnet.vbproj">
       <PackageId>Eii.Ecopath.EwEPlugin</PackageId>
     </ProjectReference>
     <ProjectReference Include="..\EwEUtils\EwEUtils_dotnet.vbproj">
