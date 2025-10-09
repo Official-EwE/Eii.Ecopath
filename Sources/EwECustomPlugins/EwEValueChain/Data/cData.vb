@@ -573,11 +573,11 @@ Public Class cData
                 bAdd = True
             End If
             ' Hide default units
-            If (TypeOf unit Is cProducerUnitDefault) Or _
-                (TypeOf unit Is cProcessingUnitDefault) Or _
-                (TypeOf unit Is cDistributionUnitDefault) Or _
-                (TypeOf unit Is cWholesalerUnitDefault) Or _
-                (TypeOf unit Is cRetailerUnitDefault) Or _
+            If (TypeOf unit Is cProducerUnitDefault) Or
+                (TypeOf unit Is cProcessingUnitDefault) Or
+                (TypeOf unit Is cDistributionUnitDefault) Or
+                (TypeOf unit Is cWholesalerUnitDefault) Or
+                (TypeOf unit Is cRetailerUnitDefault) Or
                 (TypeOf unit Is cConsumerUnitDefault) Then
                 bAdd = False
             End If
@@ -1263,9 +1263,9 @@ Public Class cData
         Next
     End Sub
 
-    Public Sub SendMessage(strMessage As String, _
-                            Optional msgtype As eMessageType = eMessageType.Any, _
-                            Optional corecomp As eCoreComponentType = eCoreComponentType.External, _
+    Public Sub SendMessage(strMessage As String,
+                            Optional msgtype As eMessageType = eMessageType.Any,
+                            Optional corecomp As eCoreComponentType = eCoreComponentType.External,
                             Optional importance As eMessageImportance = eMessageImportance.Warning)
         Dim msg As New cMessage(strMessage, msgtype, corecomp, importance)
         If (Me.m_core IsNot Nothing) Then
@@ -1579,7 +1579,32 @@ Public Class cData
             }) _
             .ToList()
 
-        Return m_valueChainStorageService.SaveValueChain(accessDbFilePath, parameter, links, consumerUnits, processingUnits, wholesalerUnits, retailerUnits, producerUnits, distributionUnits)
+        Dim flowDiagrams As List(Of FlowDiagram) = Me.m_lFlowDiagrams _
+            .Where(Function(p) TypeOf p Is cFlowDiagram) _
+            .Cast(Of cFlowDiagram)() _
+            .Where(Function(p) p IsNot Nothing) _
+            .Select(Function(p As cFlowDiagram) New FlowDiagram With {
+                .DBID = p.DBID,                         '
+                .Name = p.Name
+            }) _
+            .ToList()
+
+        Dim flowPositions As List(Of FlowPosition) = Me.m_lFlowPositions _
+            .Where(Function(p) TypeOf p Is cFlowPosition) _
+            .Cast(Of cFlowPosition)() _
+            .Where(Function(p) p IsNot Nothing) _
+            .Select(Function(p As cFlowPosition) New FlowPosition With {
+                .DBID = p.DBID,                         '
+                .Xpos = p.Xpos,
+                .Ypos = p.Ypos,
+                .Width = p.Width,
+                .Height = p.Height,
+                .Unit = p.Unit.DBID,
+                .Diagram = p.Diagram.DBID
+            }) _
+            .ToList()
+
+        Return m_valueChainStorageService.SaveValueChain(accessDbFilePath, parameter, links, consumerUnits, processingUnits, wholesalerUnits, retailerUnits, producerUnits, distributionUnits, flowDiagrams, flowPositions)
     End Function
 
 #End Region ' Internals
