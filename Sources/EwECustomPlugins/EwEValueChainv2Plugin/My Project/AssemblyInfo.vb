@@ -32,8 +32,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("ValueChainPlugin")> 
 <Assembly: AssemblyDescription("Value Chain - an economic fisheries model for EwE6")>
 <Assembly: AssemblyCompany("Ecopath International Initiative Research Association")>
-<Assembly: AssemblyProduct("ValueChainPlugin")> 
-<Assembly: AssemblyCopyright("Copyright © 2009")> 
+<Assembly: AssemblyProduct("ValueChainPlugin")>
+<Assembly: AssemblyCopyright("Copyright © 2025")>
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 
