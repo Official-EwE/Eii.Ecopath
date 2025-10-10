@@ -20,12 +20,14 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
 Imports System.Text
 Imports System.Threading
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEValueChainV2Plugin.cValueChainPluginV2
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -69,32 +71,6 @@ Public Class cValueChainPluginV2
 
 #End Region ' Privates
 
-    Public Function SwitchForm(page As eValueChainPageTypes) As frmMain
-
-        ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
-        Dim bIsFormReady As Boolean = False
-        Dim frm As frmMain = Nothing
-
-        'Interface item has been clicked
-        'Show the Ecotroph interface
-        If Me.m_bInitOK Then
-
-            ' Does form still exist?
-            If Not Me.HasInterface() Then
-                ' #No: create it
-                frm = New frmMain(Me)
-                Me.m_form = frm
-            Else
-                frm = Me.m_form
-            End If
-            frm.ShowForm(page)
-        Else
-            Debug.Assert(False, "Plugin was not initialized properly.")
-        End If
-        Return frm
-
-    End Function
-
 #Region " IPlugin point implementation "
 
     Public ReadOnly Property Context As cUIContext
@@ -131,7 +107,7 @@ Public Class cValueChainPluginV2
 
     Public Overrides ReadOnly Property DisplayName() As String
         Get
-            Return "Value chain"
+            Return "Value chain (v2)"
         End Get
     End Property
 
@@ -191,6 +167,9 @@ Public Class cValueChainPluginV2
                 If (Me.m_syncobj Is Nothing) Then
                     Me.m_syncobj = New SynchronizationContext()
                 End If
+
+                AddHandler Me.m_data.DataChanged, AddressOf OnDataChanged
+
                 'Me.m_mhEcopath = New cMessageHandler(AddressOf Me.OnEcopathMessage, eCoreComponentType.Ecopath, eMessageType.DataValidation, Me.m_syncobj)
                 '#If DEBUG Then
                 'Me.m_mhEcopath.Name = "ValueChain::Ecopath"
@@ -212,6 +191,23 @@ Public Class cValueChainPluginV2
 
         End Try
 
+    End Sub
+
+    Public Class Blip
+        Inherits cCoreInputOutputBase
+
+        Public Sub New(core As cCore)
+            MyBase.New(core)
+            Me.m_coreComponent = eCoreComponentType.External
+            Me.m_dataType = eDataTypes.External
+        End Sub
+    End Class
+
+    Private Sub OnDataChanged(sender As Object, args As EventArgs)
+        If (Me.m_bInitOK) And (Me.m_core IsNot Nothing) And (Me.m_data.IsChanged = True) Then
+            ' Send dummy object to receive a plug-in save notification when due
+            Me.m_core.onChanged(New Blip(Me.m_core))
+        End If
     End Sub
 
     Public Sub Dispose() _
@@ -281,11 +277,16 @@ Public Class cValueChainPluginV2
     Public Function LoadModel(dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.LoadModel
 
-
         ' Sanity checks
         Debug.Assert(Me.m_data.IsChanged() = False)
 
-        ' ToDo: load via Entity Framework
+        Dim strSQL As String = Path.ChangeExtension(Me.m_core.DataSource.ToString, ".sqlite")
+        If Me.m_data.Load(strSQL) Then
+            ' Manage incoming DB to weed out any remaining dead stuff if the EwE model were to have changed
+            Dim lm As New cLandingsLinkManager(Me.m_controller, Me.m_data, Me.m_core)
+            lm.ManageLinkLandings()
+            Return True
+        End If
 
         Return False
 
@@ -302,7 +303,7 @@ Public Class cValueChainPluginV2
     Public Function SaveModel(dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.SaveModel
 
-        ' ToDo: Save via Entity Framework
+        Me.m_data.Save()
         Return False
 
     End Function
@@ -696,6 +697,36 @@ Public Class cValueChainPluginV2
 #End Region ' Search
 
 #End Region ' Plugin point implementation
+
+#Region " Navigation "
+
+    Friend Function SwitchForm(page As eValueChainPageTypes) As frmMain
+
+        ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
+        Dim bIsFormReady As Boolean = False
+        Dim frm As frmMain = Nothing
+
+        'Interface item has been clicked
+        'Show the Ecotroph interface
+        If Me.m_bInitOK Then
+
+            ' Does form still exist?
+            If Not Me.HasInterface() Then
+                ' #No: create it
+                frm = New frmMain(Me)
+                Me.m_form = frm
+            Else
+                frm = Me.m_form
+            End If
+            frm.ShowForm(page)
+        Else
+            Debug.Assert(False, "Plugin was not initialized properly.")
+        End If
+        Return frm
+
+    End Function
+
+#End Region ' Navigation
 
 #Region " Helpers "
 

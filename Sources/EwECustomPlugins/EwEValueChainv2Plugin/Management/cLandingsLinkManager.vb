@@ -45,23 +45,32 @@ Public Class cLandingsLinkManager
         If (msg.DataType <> EwEUtils.Core.eDataTypes.FleetInput) Then Return
         If (Not msg.HasVariable(eVarNameFlags.Landings)) Then Return
 
-        Me.ManageLinks()
+        Me.ManageLinkLandings()
 
     End Sub
 
-    Public Sub ManageLinks()
+    ''' <summary>
+    ''' Remove discontinued landings links and create new defaults where needed.
+    ''' </summary>
+    Public Sub ManageLinkLandings()
 
-        Dim aLinks As cLink() = Nothing
+        ' Iterate over all links and check:
+        ' - Do the source and target exist? If not, flag the link for deletion (should not have orphans, but ok)
+        ' - Does the source producer still catch the selected species? If no, flag the link for deletion
+
+
+        Dim links As cLink() = Nothing
         Dim link As cLinkLandings = Nothing
         Dim fleet As cEcopathFleetInput = Nothing
         Dim group As cEcoPathGroupInput = Nothing
-        Dim dtTarget As New Dictionary(Of cUnit, List(Of String))
         Dim landings As List(Of String) = Nothing
         Dim bDummy As Boolean
 
+        Dim dtTarget As New Dictionary(Of cUnit, List(Of String))
+
         ' Delete all invisible links
-        aLinks = Me.m_data.GetLinks(GetType(cLinkLandings), True)
-        For Each link In aLinks
+        links = Me.m_data.GetLinks(GetType(cLinkLandings), True)
+        For Each link In links
             If (Not link.IsVisible) Then
                 ' Delete link
                 Console.WriteLine("> VC: Link {0} no longer has landings, delete", link)
@@ -80,13 +89,10 @@ Public Class cLandingsLinkManager
                 ' Get link
                 link = DirectCast(prod.LinkOut(iLink), cLinkLandings)
                 ' Only handle relevant links
-                If (link.IsVisible) Then
-                    ' Update admin
-                    If Not dtTarget.ContainsKey(link.Target) Then
-                        dtTarget(link.Target) = New List(Of String)
-                    End If
-                    dtTarget(link.Target).Add(link.Species)
+                If Not dtTarget.ContainsKey(link.Target) Then
+                    dtTarget(link.Target) = New List(Of String)
                 End If
+                dtTarget(link.Target).Add(link.Species)
             Next
 
             ' Check if has all landings exist for targets
@@ -113,5 +119,16 @@ Public Class cLandingsLinkManager
         Next prod
 
     End Sub
+
+    'Private Function IsRelevant(link As cLink) As Boolean
+
+    '    If (TypeOf link.Source Is cProducerUnit) Then
+    '        Dim fleet As cEcopathFleetInput = DirectCast(link.Source, cProducerUnit).Fleet
+    '        Dim group As cEcoPathGroupInput = Me.group
+    '        If (fleet IsNot Nothing) And (group IsNot Nothing) Then
+    '            Return (fleet.Landings(group.Index) > 0)
+    '        End If
+    '    End If
+    'End Function
 
 End Class

@@ -207,7 +207,8 @@ Public Class cData
         Me.IsChanged = False
 
 #If DEBUG Then
-        m_valueChainStorageService.LoadValueChain(m_valueChainStorageService.GetSQLiteFilePathFromAccessFilePath(Me.m_strDBName))
+        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".sqlite")
+        m_valueChainStorageService.LoadValueChain(strSQL)
 #End If
         Return bSucces And Me.m_db.IsConnected
 
@@ -226,11 +227,8 @@ Public Class cData
         If (Not Me.m_db.IsConnected) Then Return bSucces
         If (Not Me.IsChanged) Then Return bSucces
 
-        bSucces = Me.m_db.SaveModel(Me)
-
-#If DEBUG Then
-        bSucces = bSucces And SaveValueChain(m_valueChainStorageService.GetSQLiteFilePathFromAccessFilePath(Me.m_strDBName))
-#End If
+        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".sqlite")
+        bSucces = Me.m_db.SaveModel(Me) And SaveValueChain(strSQL)
 
         If bSucces Then Me.IsChanged = False
         Return bSucces
