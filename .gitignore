@@ -427,4 +427,5 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
-
+# Rider files
+.idea
