@@ -35,6 +35,7 @@ Public MustInherit Class cNavTreeControlPlugin
     Implements IUIContextPlugin
 
     Private m_piMain As cValueChainPluginV2 = Nothing
+    Private m_uic As cUIContext = Nothing
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.Name"/>
@@ -80,7 +81,18 @@ Public MustInherit Class cNavTreeControlPlugin
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         Try
-            frmPlugin = m_piMain.SwitchForm(Me.FormPage)
+            ' Resolve master plug-in on first use
+            If (Me.m_uic IsNot Nothing And Me.m_piMain Is Nothing) Then
+                Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
+                Dim pic As ICollection(Of IPlugin) = pm.GetPlugins(GetType(cValueChainPluginV2))
+                If (pic IsNot Nothing AndAlso pic.Count > 0) Then
+                    Me.m_piMain = DirectCast(pic.ElementAt(0), cValueChainPluginV2)
+                End If
+            End If
+
+            Debug.Assert(Me.m_piMain IsNot Nothing)
+
+            frmPlugin = Me.m_piMain.SwitchForm(Me.FormPage)
         Catch ex As Exception
             ' WHoah!
         End Try
@@ -145,18 +157,14 @@ Public MustInherit Class cNavTreeControlPlugin
         Return "ndParameterization|ndEcopathOutput|ndEcopathOutputTools"
     End Function
 
-    Public Sub UIContext(uicObj As Object) Implements IUIContextPlugin.UIContext
-        Dim uic As cUIContext = DirectCast(uicObj, cUIContext)
-        If (uic IsNot Nothing) Then
-            Dim pm As cPluginManager = uic.Core.PluginManager
-            Dim pic As ICollection(Of IPlugin) = pm.GetPlugins(GetType(cValueChainPluginV2))
-            If (pic IsNot Nothing AndAlso pic.Count > 0) Then
-                Me.m_piMain = DirectCast(pic.ElementAt(0), cValueChainPluginV2)
-            End If
-        End If
+    Public ReadOnly Property UIContext As cUIContext
+        Get
+            Return Me.m_uic
+        End Get
+    End Property
 
-        Debug.Assert(Me.m_piMain IsNot Nothing
-                     )
+    Public Overridable Sub SetUIContext(uicObj As Object) Implements IUIContextPlugin.UIContext
+        Me.m_uic = DirectCast(uicObj, cUIContext)
     End Sub
 
     ''' -----------------------------------------------------------------------

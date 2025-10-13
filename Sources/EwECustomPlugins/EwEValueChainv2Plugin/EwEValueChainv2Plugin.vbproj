@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{83E8548D-B23E-38DF-A8F5-06A5AD7BD649}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EwEValueChainPlugin</RootNamespace>
-    <AssemblyName>EwEValueChainPlugin</AssemblyName>
+    <RootNamespace>EwEValueChainV2Plugin</RootNamespace>
+    <AssemblyName>EwEValueChainV2Plugin</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -45,7 +45,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEValueChainV2Plugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>x86</PlatformTarget>
@@ -56,7 +56,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEValueChainV2Plugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -65,7 +65,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEValueChainV2Plugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -74,7 +74,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEValueChainV2Plugin.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <DebugType>None</DebugType>
@@ -86,7 +86,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEValueChainV2Plugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -95,7 +95,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DocumentationFile>EwEValueChainPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEValueChainV2Plugin.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -129,18 +129,6 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interface\FlowDiagram\cFlowDiagramData.vb" />
-    <Compile Include="Interface\FlowDiagram\ucFlowDiagram.Designer.vb">
-      <DependentUpon>ucFlowDiagram.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Interface\FlowDiagram\ucFlowDiagram.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Plugin\Output\cNTCPluginFlowDiagram.vb" />
-    <Compile Include="Utils\cAggregationModeTypeFormatter.vb" />
-    <Compile Include="Utils\cGraphDataTypeFormatter.vb" />
-    <Compile Include="Utils\cValueChainStyleGuide.vb" />
-    <Compile Include="Management\cLandingsLinkManager.vb" />
     <Compile Include="Interface\Controls\ucDefault.vb">
       <SubType>UserControl</SubType>
     </Compile>
@@ -148,6 +136,12 @@
       <DependentUpon>ucDefaults.vb</DependentUpon>
     </Compile>
     <Compile Include="Interface\Controls\ucDefaults.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Interface\Controls\ucGridView.Designer.vb">
+      <DependentUpon>ucGridView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Controls\ucGridView.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Interface\Controls\ucLinkDefault.Designer.vb">
@@ -159,12 +153,6 @@
     <Compile Include="Interface\Controls\ucLinkGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Interface\Controls\ucGridView.Designer.vb">
-      <DependentUpon>ucGridView.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Interface\Controls\ucGridView.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Interface\Controls\ucUnitDefault.Designer.vb">
       <DependentUpon>ucUnitDefault.vb</DependentUpon>
     </Compile>
@@ -174,10 +162,11 @@
     <Compile Include="Interface\Controls\ucUnitGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Interface\Flow\ucSelector2.Designer.vb">
-      <DependentUpon>ucSelector2.vb</DependentUpon>
+    <Compile Include="Interface\FlowDiagram\cFlowDiagramData.vb" />
+    <Compile Include="Interface\FlowDiagram\ucFlowDiagram.Designer.vb">
+      <DependentUpon>ucFlowDiagram.vb</DependentUpon>
     </Compile>
-    <Compile Include="Interface\Flow\ucSelector2.vb">
+    <Compile Include="Interface\FlowDiagram\ucFlowDiagram.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Interface\Flow\dlgAddUnits.Designer.vb">
@@ -186,6 +175,7 @@
     <Compile Include="Interface\Flow\dlgAddUnits.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Interface\Flow\LinkWrapper.vb" />
     <Compile Include="Interface\Flow\plFlow.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -198,7 +188,12 @@
     <Compile Include="Interface\Flow\ucEditFlow.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Interface\Flow\LinkWrapper.vb" />
+    <Compile Include="Interface\Flow\ucSelector2.Designer.vb">
+      <DependentUpon>ucSelector2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\Flow\ucSelector2.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Interface\frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
     </Compile>
@@ -222,14 +217,32 @@
     </Compile>
     <Compile Include="Interface\Results\Views\IGraphView.vb" />
     <Compile Include="Interface\Results\Views\IResultView.vb" />
-    <Compile Include="Interface\Results\Views\ucEquilibriumGraph.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Interface\Results\Views\ucEcosimGraph.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Interface\Results\Views\ucEquilibriumGraph.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Management\cLandingsLinkManager.vb" />
     <Compile Include="Model\cComputeLandingsProportions.vb" />
     <Compile Include="Model\cValueChainController.vb" />
+    <Compile Include="Plugin\cNavTreeControlPlugin.vb" />
+    <Compile Include="Plugin\cPluginData.vb" />
+    <Compile Include="Plugin\cValueChainPluginV2.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginDefaults.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginFlow.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginLandingsLink.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginLink.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginParameters.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabCons.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabDistr.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTables.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabProc.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabProd.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabRetailer.vb" />
+    <Compile Include="Plugin\Input\cNTCPluginTabWholeseller.vb" />
+    <Compile Include="Plugin\Output\cNTCPluginFlowDiagram.vb" />
+    <Compile Include="Plugin\Output\cNTCPluginRun.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -247,56 +260,31 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="My Project\Settings.vb" />
-    <Compile Include="Plugin\cNavTreeControlPlugin.vb" />
-    <Compile Include="Plugin\cPluginData.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginDefaults.vb" />
-    <Compile Include="Plugin\cValueChainPluginV2.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginFlow.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginParameters.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginTabRetailer.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginLandingsLink.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginLink.vb" />
-    <Compile Include="Plugin\Output\cNTCPluginRun.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginTables.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginTabProd.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginTabProc.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginTabDistr.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginTabWholeseller.vb" />
-    <Compile Include="Plugin\Input\cNTCPluginTabCons.vb" />
+    <Compile Include="Utils\cAggregationModeTypeFormatter.vb" />
+    <Compile Include="Utils\cGraphDataTypeFormatter.vb" />
     <Compile Include="Utils\cUnitTypeFormatter.vb" />
+    <Compile Include="Utils\cValueChainStyleGuide.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Interface\Controls\ucDefault.resx">
       <DependentUpon>ucDefault.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Controls\ucDefaults.resx">
+      <DependentUpon>ucDefaults.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interface\Controls\ucGridView.resx">
       <DependentUpon>ucGridView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Controls\ucLinkDefault.resx">
+      <DependentUpon>ucLinkDefault.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\Controls\ucUnitDefault.resx">
       <DependentUpon>ucUnitDefault.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\FlowDiagram\ucFlowDiagram.resx">
       <DependentUpon>ucFlowDiagram.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Interface\Flow\ucSelector2.resx">
-      <DependentUpon>ucSelector2.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Interface\Controls\ucDefaults.resx">
-      <DependentUpon>ucDefaults.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Interface\Controls\ucLinkDefault.resx">
-      <DependentUpon>ucLinkDefault.vb</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\Flow\dlgAddUnits.resx">
       <DependentUpon>dlgAddUnits.vb</DependentUpon>
@@ -308,6 +296,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\Flow\ucEditFlow.resx">
       <DependentUpon>ucEditFlow.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Flow\ucSelector2.resx">
+      <DependentUpon>ucSelector2.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\frmMain.resx">
@@ -322,10 +314,29 @@
       <DependentUpon>ucResults.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\..\..\Sources\EwE.licenseheader">
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="app.config" />
+    <None Include="Resources\ecost_256x256.png" />
+    <None Include="Resources\eqgraphhs.png" />
+    <None Include="Resources\FormulaEvaluatorHS.png" />
+    <None Include="Resources\Lenfest Logo_50px.jpg" />
+    <None Include="Resources\RelationshipsHS.png" />
+    <None Include="Resources\sautxt_50px.jpg" />
+    <None Include="Resources\saveHS.png" />
+    <None Include="Resources\ThumbnailLoadingHS.png" />
+    <None Include="Resources\ValueChain.ico" />
+    <None Include="Resources\wholesaler.png" />
+    <None Include="Resources\ZoomHS.png" />
     <None Include="ValueChainPluginv2.snk" />
     <None Include="~Design~\Units.cd" />
     <None Include="My Project\Application.myapp">
@@ -337,21 +348,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Lenfest Logo_50px.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sautxt_50px.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ZoomHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FormulaEvaluatorHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\eqgraphhs.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EwECore\EwECore.vbproj">
@@ -372,41 +368,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\saveHS.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RelationshipsHS.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="~Design~\Data.cd" />
     <None Include="~Design~\FlowDiagram.cd" />
     <None Include="~Design~\Links.cd" />
-    <None Include="Resources\ThumbnailLoadingHS.png" />
     <None Include="UserGuide\ChristensenValueChainMS.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="~Design~\Plugin.cd" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ecost_256x256.png" />
-    <Content Include="Resources\icons8-depot-32.png" />
-    <Content Include="Resources\icons8-factory-32.png" />
-    <Content Include="Resources\icons8-fishing-32.png" />
-    <Content Include="Resources\icons8-meal-32.png" />
-    <Content Include="Resources\icons8-money-bag-32.png" />
-    <Content Include="Resources\icons8-shipped-32.png" />
-    <Content Include="Resources\icons8-shopping-cart-32.png" />
-    <Content Include="Resources\translate.png" />
-    <Content Include="Resources\wholesaler_small.png" />
-    <None Include="Resources\ValueChain.ico" />
-    <None Include="Resources\wholesaler.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Eii.ValueChain">
-      <Version>1.0.5</Version>
+      <Version>1.0.14</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -425,6 +400,19 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\icons8-depot-32.png" />
+    <Content Include="Resources\icons8-factory-32.png" />
+    <Content Include="Resources\icons8-fishing-32.png" />
+    <Content Include="Resources\icons8-meal-32.png" />
+    <Content Include="Resources\icons8-money-bag-32.png" />
+    <Content Include="Resources\icons8-shipped-32.png" />
+    <Content Include="Resources\icons8-shopping-cart-32.png" />
+    <Content Include="Resources\market.png" />
+    <Content Include="Resources\market_mono.png" />
+    <Content Include="Resources\translate.png" />
+    <Content Include="Resources\wholesaler_small.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

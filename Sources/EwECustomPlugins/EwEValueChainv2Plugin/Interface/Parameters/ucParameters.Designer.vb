@@ -93,7 +93,7 @@ Partial Class ucParameters
         'm_pbLenfest
         '
         Me.m_pbLenfest.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_pbLenfest.Image = Global.EwEValueChainPlugin.My.Resources.Resources.Lenfest_Logo_50px
+        Me.m_pbLenfest.Image = My.Resources.Resources.Lenfest_Logo_50px
         Me.m_pbLenfest.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.m_pbLenfest.Location = New System.Drawing.Point(3, 3)
         Me.m_pbLenfest.Name = "m_pbLenfest"
@@ -105,7 +105,7 @@ Partial Class ucParameters
         'm_pbSAUP
         '
         Me.m_pbSAUP.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_pbSAUP.Image = Global.EwEValueChainPlugin.My.Resources.Resources.sautxt_50px
+        Me.m_pbSAUP.Image = My.Resources.Resources.sautxt_50px
         Me.m_pbSAUP.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.m_pbSAUP.Location = New System.Drawing.Point(235, 3)
         Me.m_pbSAUP.Name = "m_pbSAUP"
@@ -116,7 +116,7 @@ Partial Class ucParameters
         '
         'm_pbEcostProject
         '
-        Me.m_pbEcostProject.BackgroundImage = Global.EwEValueChainPlugin.My.Resources.Resources.ecost_256x256
+        Me.m_pbEcostProject.BackgroundImage = My.Resources.Resources.ecost_256x256
         Me.m_pbEcostProject.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
         Me.m_pbEcostProject.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_pbEcostProject.ImeMode = System.Windows.Forms.ImeMode.NoControl

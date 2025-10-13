@@ -55,7 +55,7 @@ Partial Class ucResults
         Me.m_tsbnSave = New System.Windows.Forms.ToolStripButton()
         Me.m_btnRunEcosim = New System.Windows.Forms.Button()
         Me.m_scResults = New System.Windows.Forms.SplitContainer()
-        Me.m_plFlow = New EwEValueChainPlugin.plFlow()
+        Me.m_plFlow = New plFlow()
         Me.m_btnRunEquilibrium = New System.Windows.Forms.Button()
         Me.m_lblAgg = New System.Windows.Forms.Label()
         Me.m_cmbAgg = New System.Windows.Forms.ComboBox()
@@ -235,7 +235,7 @@ Partial Class ucResults
         '
         Me.m_plFlow.AutoScroll = True
         Me.m_plFlow.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plFlow.EditMode = EwEValueChainPlugin.plFlow.eEditMode.[ReadOnly]
+        Me.m_plFlow.EditMode = plFlow.eEditMode.[ReadOnly]
         Me.m_plFlow.ItemFilter = Nothing
         Me.m_plFlow.Location = New System.Drawing.Point(0, 0)
         Me.m_plFlow.Margin = New System.Windows.Forms.Padding(0)
