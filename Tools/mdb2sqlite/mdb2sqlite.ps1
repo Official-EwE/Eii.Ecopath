@@ -8,6 +8,9 @@
 .PARAMETER outDatabase
     Path to the output .sqlite file.
 .EXAMPLE
+    .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
+    Converts the specified .mdb file to a .sqlite file using the same name but with .sqlite extension.
+.EXAMPLE
     .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
     Converts the specified .mdb file to a .sqlite file.
 .EXAMPLE
@@ -20,8 +23,8 @@
 #>
 
 param (
-	[string]$inDatabase,
-    [string]$outDatabase,
+    [string]$inDatabase,
+    [string]$outDatabase = $null,
 	[switch]$generateExe    
 )
 
@@ -202,13 +205,10 @@ if ($args -contains "-Help" -or $args -contains "-?") {
     exit 0
 }
 
+
 $errMsg = $False
 if (-not $inDatabase) {
     Show-SimpleError "Input database file path (-inDatabase) is required."
-    $errMsg = $True
-}
-if (-not $outDatabase) {
-    Show-SimpleError "Output database file path (-outDatabase) is required."
     $errMsg = $True
 }
 if ($inDatabase) {
@@ -220,6 +220,12 @@ if ($inDatabase) {
 if ($errMsg) {
     Get-Help $scriptFile -Examples | Out-String
     exit 1
+}
+
+# If outDatabase is not set, use inDatabase path with .sqlite extension
+if (-not $outDatabase) {
+    $outDatabase = [System.IO.Path]::ChangeExtension($inDatabase, ".sqlite")
+    Write-Host "Output database not specified. Using: $outDatabase"
 }
 
 if (Test-Path $outDatabase -PathType Leaf) {
