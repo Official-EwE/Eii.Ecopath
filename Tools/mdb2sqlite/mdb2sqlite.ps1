@@ -17,6 +17,7 @@
     .\mdb2sqlite.ps1 -generateExe
     Generates the mdb2sqlite.exe executable from this script.
 .LINK
+    https://www.sqlite.org/download.html - Source of SQLite tools
     https://github.com/mdbtools/mdbtools - Source of mdbtools
     https://github.com/mdbtools/mdbtools/tree/dev/doc - Documentation for mdbtools
     https://github.com/lsgunth/mdbtools-win - Windows build of mdbtools
@@ -27,129 +28,6 @@ param (
     [string]$outDatabase = $null,
 	[switch]$generateExe    
 )
-
-function Restore-Ps2Exe {
-	if (-not (Get-Module -ListAvailable -Name ps2exe)) {
-		Write-Host "ps2exe module not found. Installing..."
-		Install-Module ps2exe -Force -Scope CurrentUser
-	} else {
-		Write-Host "ps2exe module is already installed."
-	}
-}
-
-function Ensure-MdbtoolsWinCache {
-    param (
-        [string]$scriptDir
-    )      
-	$cacheFolder = Join-Path $scriptDir '.Cache'
-	$targetFolder = Join-Path $cacheFolder 'mdbtools-win'
-	if (-not (Test-Path $targetFolder)) {
-		Write-Host "Setting up .Cache/mdbtools-win..."
-		if (-not (Test-Path $cacheFolder)) {
-			New-Item -ItemType Directory -Path $cacheFolder | Out-Null
-		}
-		$zipUrl = 'https://github.com/lsgunth/mdbtools-win/archive/refs/heads/master.zip'
-		$zipPath = Join-Path $cacheFolder 'master.zip'
-		Write-Host "Downloading mdbtools-win master.zip..."
-		Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
-		Write-Host "Extracting master.zip..."
-		Add-Type -AssemblyName System.IO.Compression.FileSystem
-		[System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $cacheFolder)
-		Remove-Item $zipPath
-		$extractedFolder = Join-Path $cacheFolder 'mdbtools-win-master'
-		if (Test-Path $extractedFolder) {
-			Rename-Item -Path $extractedFolder -NewName 'mdbtools-win'
-			Write-Host "Renamed mdbtools-win-master to mdbtools-win."
-		} else {
-			Write-Host "Extraction failed: mdbtools-win-master folder not found."
-		}
-	}
-}
-
-function Convert-MdbToSqlite {
-    param (
-        [string]$scriptDir,
-        [string]$inDatabase,
-        [string]$outDatabase
-    )
-
-    Ensure-MdbtoolsWinCache -scriptDir $scriptDir
-
-    $cacheFolder = Join-Path $scriptDir '.Cache'
-    $conversionSql = Join-Path $cacheFolder 'conversion.sql'
-    $mdbtoolsFolder = Join-Path $cacheFolder 'mdbtools-win'
-
-    $schemaExe = Join-Path $mdbtoolsFolder 'mdb-schema.exe'
-    $tablesExe = Join-Path $mdbtoolsFolder 'mdb-tables.exe'
-    $exportExe = Join-Path $mdbtoolsFolder 'mdb-export.exe'
-
-    # Check for required mdbtools executables
-    $missingExe = @()
-    foreach ($exe in @($schemaExe, $tablesExe, $exportExe)) {
-        if (-not (Test-Path $exe)) {
-            $missingExe += $exe
-        }
-    }
-    if ($missingExe.Count -gt 0) {
-        Write-Error "Missing required mdbtools executables: $($missingExe -join ', ')"
-        return
-    }
-
-    Write-Host "Starting conversion: $inDatabase to $outDatabase"
-    Write-Host "Generating conversion.sql script..."
-    "BEGIN;" | Set-Content -Path $conversionSql
-
-    Write-Host "Extracting schema using mdb-schema.exe..."
-    $schemaOut = & $schemaExe $inDatabase "sqlite"
-    Add-Content -Path $conversionSql -Value $schemaOut
-
-    Write-Host "Getting table names using mdb-tables.exe..."
-    $tablesOut = & $tablesExe -1 $inDatabase
-    $tables = $tablesOut -split "`r?`n" | Where-Object { $_ -ne "" }
-    Write-Host "Found tables: $($tables -join ', ')"
-
-    Write-Host "Exporting tables using mdb-export.exe..."
-    foreach ($table in $tables) {
-        Write-Host "Exporting table: $table"
-        $tableSql = & $exportExe -I sqlite $inDatabase $table
-        # Replace inf and -inf with NULL in SQL insert statements
-        $tableSql = $tableSql -replace '(\(|,)-?inf(?=,|\))', '$1NULL'
-        Add-Content -Path $conversionSql -Value $tableSql
-    }
-
-    Write-Host "Finalizing conversion.sql script..."
-    "COMMIT;" | Add-Content -Path $conversionSql
-
-    Write-Host "Creating SQLite database and importing data..."
-    $sqliteDll = Join-Path $scriptDir 'System.Data.SQLite.dll'
-    $connectionString = "Data Source=$outDatabase;Version=3;"
-    Add-Type -Path $sqliteDll
-    $sqliteConnectionType = [System.Data.SQLite.SQLiteConnection]
-    $conn = New-Object $sqliteConnectionType($connectionString)
-    $conn.Open()
-    $sql = Get-Content -Path $conversionSql -Raw
-    $cmd = $conn.CreateCommand()
-    $cmd.CommandText = $sql
-    $hasError = $False
-    try {
-        $affectedRows = $cmd.ExecuteNonQuery()
-        Write-Host "SQL import completed. Rows affected: $affectedRows"
-    } catch {
-        Show-SimpleError "Error executing SQL: $($_.Exception.Message)"
-        $hasError = $True
-    }
-    $conn.Close()
-    $conn.Dispose()
-    $cmd = $null
-    $conn = $null
-    [GC]::Collect()
-    [GC]::WaitForPendingFinalizers()
-    if ($hasError) {
-        exit 1
-    }
-    Write-Host "Conversion complete: $outDatabase created."
-}
-
 
 function Show-SimpleError {
     param ($message)
@@ -173,6 +51,156 @@ function Show-Warning {
         [string]$message
     )
     Write-Warning $message # -ForegroundColor Orange
+}
+
+function Restore-Ps2Exe {
+	if (-not (Get-Module -ListAvailable -Name ps2exe)) {
+		Write-Host "ps2exe module not found. Installing..."
+		Install-Module ps2exe -Force -Scope CurrentUser
+	} else {
+		Write-Host "ps2exe module is already installed."
+	}
+}
+
+function Install-Mdbtools {
+    param (
+        [string]$scriptDir
+    )
+    if ($IsWindows -or $env:OS -eq 'Windows_NT') {
+        $cacheFolder = Join-Path $scriptDir '.Cache'
+        $targetFolder = Join-Path $cacheFolder 'mdbtools-win'
+        if (-not (Test-Path $targetFolder)) {
+            Write-Host "Setting up .Cache/mdbtools-win..."
+            if (-not (Test-Path $cacheFolder)) {
+                New-Item -ItemType Directory -Path $cacheFolder | Out-Null
+            }
+            $zipUrl = 'https://github.com/lsgunth/mdbtools-win/archive/refs/heads/master.zip'
+            $zipPath = Join-Path $cacheFolder 'master.zip'
+            Write-Host "Downloading mdbtools-win master.zip..."
+            Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
+            Write-Host "Extracting master.zip..."
+            Add-Type -AssemblyName System.IO.Compression.FileSystem
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $cacheFolder)
+            Remove-Item $zipPath
+            $extractedFolder = Join-Path $cacheFolder 'mdbtools-win-master'
+            if (Test-Path $extractedFolder) {
+                Rename-Item -Path $extractedFolder -NewName 'mdbtools-win'
+                Write-Host "Renamed mdbtools-win-master to mdbtools-win."
+            } else {
+                Write-Host "Extraction failed: mdbtools-win-master folder not found."
+            }
+        }
+        # Add $targetFolder to PATH for this session
+        $env:PATH = "$targetFolder;$env:PATH"
+        Write-Host "Added $targetFolder to PATH."
+    } else { # Non-Windows (Linux or MacOS)
+        Write-Host "Detected Linux. Checking for mdbtools..."
+        $mdbtoolsInstalled = $null -ne (Get-Command mdb-schema -ErrorAction SilentlyContinue)
+        if (-not $mdbtoolsInstalled) {
+            Write-Host "mdbtools not found. Installing via apt..."
+            sudo apt update
+            sudo apt install -y mdbtools
+        } else {
+            Write-Host "mdbtools is already installed."
+        }
+    }
+}
+
+function Install-Sqlite {
+    param (
+        [string]$scriptDir
+    )
+    if ($IsWindows -or $env:OS -eq 'Windows_NT') {
+        $sqliteExe = Join-Path $scriptDir 'sqlite3.exe'
+        if (-not (Test-Path $sqliteExe -PathType Leaf)) {
+            Show-SimpleError "sqlite.exe not found in $scriptDir. Please download sqlite.exe and place it in the script directory."
+            exit 1
+        }
+    } else { # Non-Windows (Linux or MacOS)
+        Write-Host "Detected Linux. Checking for sqlite3..."
+        $sqliteInstalled = $null -ne (Get-Command sqlite3 -ErrorAction SilentlyContinue)
+        if (-not $sqliteInstalled) {
+            Write-Host "sqlite3 not found. Installing via apt..."
+            sudo apt update
+            sudo apt install -y sqlite3
+        } else {
+            Write-Host "sqlite3 is already installed."
+        }
+    }    
+}
+
+function Convert-MdbToSqlite {
+    param (
+        [string]$scriptDir,
+        [string]$inDatabase,
+        [string]$outDatabase
+    )
+
+    Install-Mdbtools -scriptDir $scriptDir
+    Install-Sqlite -scriptDir $scriptDir
+
+    $cacheFolder = Join-Path $scriptDir '.Cache'
+    $conversionSql = Join-Path $cacheFolder 'conversion.sql'
+
+    # Use executables from PATH, no .exe extension
+    $schemaExe = "mdb-schema"
+    $tablesExe = "mdb-tables"
+    $exportExe = "mdb-export"
+
+    # Check for required mdbtools executables in PATH
+    $missingExe = @()
+    foreach ($exe in @($schemaExe, $tablesExe, $exportExe)) {
+        if (-not (Get-Command $exe -ErrorAction SilentlyContinue)) {
+            $missingExe += $exe
+        }
+    }
+    if ($missingExe.Count -gt 0) {
+        Write-Error "Missing required mdbtools executables in PATH: $($missingExe -join ', ')"
+        return
+    }
+
+    Write-Host "Starting conversion: $inDatabase to $outDatabase"
+    Write-Host "Generating conversion.sql script..."
+    "BEGIN;" | Set-Content -Path $conversionSql
+
+    Write-Host "Extracting schema using mdb-schema..."
+    $schemaOut = & $schemaExe $inDatabase "sqlite"
+    Add-Content -Path $conversionSql -Value $schemaOut
+
+    Write-Host "Getting table names using mdb-tables..."
+    $tablesOut = & $tablesExe -1 $inDatabase
+    $tables = $tablesOut -split "`r?`n" | Where-Object { $_ -ne "" }
+    Write-Host "Found tables: $($tables -join ', ')"
+
+    Write-Host "Exporting tables using mdb-export..."
+    foreach ($table in $tables) {
+        Write-Host "Exporting table: $table"
+        $tableSql = & $exportExe -q "'" -I sqlite $inDatabase $table
+        # Replace inf and -inf with NULL in SQL insert statements
+        $tableSql = $tableSql -replace '(\(|,)-?inf(?=,|\))', '$1NULL'
+        Add-Content -Path $conversionSql -Value $tableSql
+    }
+
+    Write-Host "Finalizing conversion.sql script..."
+    "COMMIT;" | Add-Content -Path $conversionSql
+
+    Write-Host "Creating SQLite database and importing data..."
+    $errorFile = Join-Path $cacheFolder 'sqlite_error.txt'
+    if ($IsWindows -or $env:OS -eq 'Windows_NT') {
+        $importCmd = "cmd /c `"sqlite3 `"`"$outDatabase`"`" < `"`"$conversionSql`"`" 2> `"`"$errorFile`"`" `" "
+    } else {
+        $importCmd = "/bin/bash -c 'sqlite3 `"$outDatabase`" < `"$conversionSql`" 2> `"$errorFile`"'"
+    }
+
+    Write-Host "Running: $importCmd"    
+    Invoke-Expression $importCmd
+    $errorText = if (Test-Path $errorFile) { Get-Content $errorFile -Raw } else { '' }
+    if ($errorText) {
+        Show-SimpleError "sqlite3 import failed: $errorText"
+        exit 1
+    } else {
+        Write-Host "Conversion complete: $outDatabase created."
+    }
 }
 
 if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript") {

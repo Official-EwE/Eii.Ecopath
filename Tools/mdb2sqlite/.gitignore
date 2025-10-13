@@ -1,2 +1,5 @@
 # Ignore Visual Studio Code settings folder
 .vscode
+
+# sqlite files
+output.sqlite-journal
