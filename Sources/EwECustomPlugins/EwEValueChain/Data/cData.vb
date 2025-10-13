@@ -207,7 +207,6 @@ Public Class cData
         Me.IsChanged = False
 
 #If DEBUG Then
-    m_valueChainStorageService.LoadValueChain(Path.ChangeExtension(Me.m_strDBName, ".sqlite"))
         Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".sqlite")
         m_valueChainStorageService.LoadValueChain(strSQL)
 #End If
@@ -230,9 +229,6 @@ Public Class cData
 
         bSucces = Me.m_db.SaveModel(Me)
 
-#If DEBUG Then
-    bSucces = bSucces And SaveValueChain(Path.ChangeExtension(Me.m_strDBName, ".sqlite"))
-#End If
         Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".sqlite")
         bSucces = Me.m_db.SaveModel(Me) And SaveValueChain(strSQL)
 
@@ -1283,6 +1279,7 @@ Public Class cData
 
     Private Function SaveValueChain(accessDbFilePath As String) As Boolean
 
+#If DEBUG Then
         Dim parameter As Parameter = New Parameter With {
             .DBID = Me.m_parameters.DBID,
             .EquilibriumEffortIncrement = Me.m_parameters.EquilibriumEffortIncrement,
@@ -1622,6 +1619,9 @@ Public Class cData
             .ToList()
 
         Return m_valueChainStorageService.SaveValueChain(accessDbFilePath, parameter, links, linkLandings, consumerUnits, processingUnits, wholesalerUnits, retailerUnits, producerUnits, distributionUnits, flowDiagrams, flowPositions)
+#Else
+        Return true
+#End If
     End Function
 
 #End Region ' Internals
