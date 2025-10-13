@@ -8,13 +8,15 @@
 .PARAMETER outDatabase
     Path to the output .sqlite file.
 .EXAMPLE
-    .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
-    Converts the specified .mdb file to a .sqlite file using the same name but with .sqlite extension.
+    On Windows: .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
+    On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
+    Converts the specified .mdb file to a .sqlite file using the same name but with .sqlite extension.    
 .EXAMPLE
-    .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
+    On Windows: .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
+    On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
     Converts the specified .mdb file to a .sqlite file.
 .EXAMPLE
-    .\mdb2sqlite.ps1 -generateExe
+    Windows only: .\mdb2sqlite.ps1 -generateExe
     Generates the mdb2sqlite.exe executable from this script.
 .LINK
     https://www.sqlite.org/download.html - Source of SQLite tools
@@ -219,6 +221,10 @@ if (-not (Test-Path $scriptFile -PathType Leaf)) {
 Write-Host "Script dir: $scriptDir"
 
 if ($generateExe) {
+    if ($IsWindows -or $env:OS -eq 'Windows_NT') {
+        Show-SimpleError "Error: -generateExe option is only supported on Windows."
+        exit 1
+    }
 	Restore-Ps2Exe
 	Write-Host "Running Invoke-ps2exe to generate mdb2sqlite.exe..."
     $inputFile = $scriptFile
