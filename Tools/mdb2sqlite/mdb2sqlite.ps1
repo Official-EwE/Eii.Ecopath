@@ -234,8 +234,8 @@ if (-not (Test-Path $scriptFile -PathType Leaf)) {
 Write-Host "Script dir: $scriptDir"
 
 if ($generateExe) {
-    if ($IsWindows -or $env:OS -eq 'Windows_NT') {
-        Show-SimpleError "Error: -generateExe option is only supported on Windows."
+    if (-Not ($IsWindows -or ($env:OS -eq 'Windows_NT'))) {
+        Show-SimpleError "Error: -generateExe option is only supported on Windows. Found: $env:OS"
         exit 1
     }
 	Restore-Ps2Exe
