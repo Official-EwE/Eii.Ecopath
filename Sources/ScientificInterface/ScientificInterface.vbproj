@@ -2311,9 +2311,9 @@
       <Project>{86d3251d-678f-4ab3-9c95-3d29d8fa7797}</Project>
       <Name>EwETransectExtractionPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj">
-      <Project>{e87e552b-c82f-4984-9249-631dac727633}</Project>
-      <Name>EwEValueChainPlugin</Name>
+    <ProjectReference Include="..\EwECustomPlugins\EwEValueChainv2Plugin\EwEValueChainv2Plugin.vbproj">
+      <Project>{83e8548d-b23e-38df-a8f5-06a5ad7bd649}</Project>
+      <Name>EwEValueChainv2Plugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEWindowsIntegrationPlugin\EwEWindowsIntegrationPlugin.vbproj">
       <Project>{1b798fde-56cf-427f-9889-9930d34318e9}</Project>
