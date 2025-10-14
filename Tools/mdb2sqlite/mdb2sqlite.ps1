@@ -8,7 +8,7 @@
 .PARAMETER outDatabase
     Path to the output .sqlite file.
 .EXAMPLE
-    mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
+    .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
     On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
     Converts the specified .mdb file to a .sqlite file using the same name but with .sqlite extension.    
 .EXAMPLE
