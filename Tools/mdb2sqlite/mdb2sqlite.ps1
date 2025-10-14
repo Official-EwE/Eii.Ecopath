@@ -8,15 +8,15 @@
 .PARAMETER outDatabase
     Path to the output .sqlite file.
 .EXAMPLE
-    mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
+    .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
     On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
     Converts the specified .mdb file to a .sqlite file using the same name but with .sqlite extension.    
 .EXAMPLE
-    mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
+    .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
     On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
     Converts the specified .mdb file to a .sqlite file.
 .EXAMPLE
-    mdb2sqlite.ps1 -generateExe
+    .\mdb2sqlite.ps1 -generateExe
     This is only for Windows users.
     Generates the mdb2sqlite.exe executable from this script.
 .LINK
@@ -130,7 +130,7 @@ function Install-Sqlite {
             Show-SimpleError "sqlite.exe not found in $scriptDir. Please download sqlite.exe and place it in the script directory."
             exit 1
         }
-    } else { # Non-Windows (Linux or MacOS)
+    } else { # Non-Windows (assuming Linux-based and supporting "apt"  so Ubuntu/Debian)
         Write-Host "Detected Linux. Checking for sqlite3..."
         $sqliteInstalled = $null -ne (Get-Command sqlite3 -ErrorAction SilentlyContinue)
         if (-not $sqliteInstalled) {
@@ -217,6 +217,7 @@ function Convert-MdbToSqlite {
     }
 }
 
+# as documented by https://github.com/MScholtes/PS2EXE?tab=readme-ov-file#script-variables
 if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript") {
     $scriptDir = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
 } else {
@@ -228,7 +229,7 @@ if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript") {
 
 $scriptFile = Join-Path $scriptDir 'mdb2sqlite.ps1'
 if (-not (Test-Path $scriptFile -PathType Leaf)) {
-    Show-Warning "Warning: $scriptFile does not exist in the current directory. Unable to use Get-Help."
+    Show-Warning "Warning: $scriptFile does not exist in the current directory. Unable to use Get-Help from exe."
 }
 Write-Host "Script dir: $scriptDir"
 
