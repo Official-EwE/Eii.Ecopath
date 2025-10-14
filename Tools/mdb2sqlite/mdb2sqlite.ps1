@@ -77,7 +77,7 @@ function Install-Mdbtools {
             if (-not (Test-Path $cacheFolder)) {
                 New-Item -ItemType Directory -Path $cacheFolder | Out-Null
             }
-            $zipUrl = 'https://github.com/lsgunth/mdbtools-win/archive/refs/heads/master.zip'
+            $zipUrl = 'https://github.com/Official-EwE/mdbtools-win/archive/refs/heads/master.zip'
             $zipPath = Join-Path $cacheFolder 'master.zip'
             Write-Host "Downloading mdbtools-win master.zip..."
             Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
@@ -100,9 +100,20 @@ function Install-Mdbtools {
         Write-Host "Detected Linux. Checking for mdbtools..."
         $mdbtoolsInstalled = $null -ne (Get-Command mdb-schema -ErrorAction SilentlyContinue)
         if (-not $mdbtoolsInstalled) {
-            Write-Host "mdbtools not found. Installing via apt..."
+            # we need to build from source as apt-get version is too old, we need v1.0.1 or later
+            Write-Host "mdbtools not found. Installing from source..."
+            Remove-Item -Recurse -Force -ErrorAction SilentlyContinue ./.Cache/mdbtools
+            sudo git clone https://github.com/mdbtools/mdbtools.git ./.Cache/mdbtools            
             sudo apt update
-            sudo apt install -y mdbtools
+            sudo apt upgrade -y
+            sudo apt install -y libtool automake autoconf gettext pkg-config bison flex libglib2.0-* make            
+            Set-Location ./.Cache/mdbtools
+            sudo autoreconf -i -f
+            sudo ./configure --disable-dependency-trackingmd
+            sudo make
+            sudo make install
+            sudo ldconfig
+            Set-Location $scriptDir
         } else {
             Write-Host "mdbtools is already installed."
         }
@@ -167,7 +178,7 @@ function Convert-MdbToSqlite {
     "BEGIN;" | Set-Content -Path $conversionSql
 
     Write-Host "Extracting schema using mdb-schema..."
-    $schemaOut = & $schemaExe $inDatabase "sqlite"
+    $schemaOut = & $schemaExe --no-not-null $inDatabase "sqlite"
     Add-Content -Path $conversionSql -Value $schemaOut
 
     Write-Host "Getting table names using mdb-tables..."
