@@ -177,11 +177,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Includes\EPPlus.dll" />
-    <Content Include="Includes\EwELicense.dll" />
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Includes\ProjNet.dll" />
-    <Content Include="Includes\TreeksLicensingLibrary2.dll" />
     <Content Include="Includes\Troschuetz.Random.dll" />
     <Content Include="Resources\gpl-2.0.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -205,6 +203,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Eii.Ecopath.Licence" Version="1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.9" />
