@@ -232,10 +232,10 @@ Public Class ucLinkGrid
             If (TypeOf l Is cLinkLandings) Then
                 Dim ll As cLinkLandings = DirectCast(l, cLinkLandings)
                 If (Me.m_group IsNot Nothing) Then
-                    bUse = bUse And (String.Compare(ll.Species, Me.m_group.Name, True) = 0)
+                    bUse = bUse And (String.Compare(ll.SpeciesCode, Me.m_group.Name, True) = 0)
                 End If
                 If (Me.m_fleet IsNot Nothing) Then
-                    bUse = bUse And (Object.Equals(DirectCast(ll.Source, cProducerUnit).Fleet, Me.m_fleet))
+                    bUse = bUse And (Object.Equals(DirectCast(ll.Source, cProducerUnit).GearCode, Me.m_fleet))
                 End If
             End If
 

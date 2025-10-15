@@ -321,7 +321,7 @@ Public Class cValueChainController
 
             ' Get actual producer
             prodUnit = DirectCast(unit, cProducerUnit)
-            Dim flt As cEcopathFleetInput = Me.FindFleet(prodUnit.Fleet)
+            Dim flt As cEcopathFleetInput = Me.FindFleet(prodUnit.GearCode)
             If (flt IsNot Nothing) Then
                 iFleet = flt.Index
                 For iGroupSrc = 1 To m_core.nGroups
@@ -373,7 +373,7 @@ Public Class cValueChainController
 
                 ' Get actual producer
                 prodUnit = DirectCast(unit, cProducerUnit)
-                fltSrc = FindFleet(prodUnit.Fleet)
+                fltSrc = FindFleet(prodUnit.GearCode)
                 If (fltSrc IsNot Nothing) Then
                     ' Get fleet
                     Dim iFleetSrc As Integer = fltSrc.Index
@@ -438,7 +438,7 @@ Public Class cValueChainController
 
                 ' Get actual producer and its connected fleet
                 prodUnit = DirectCast(unit, cProducerUnit)
-                flt = FindFleet(prodUnit.Fleet)
+                flt = FindFleet(prodUnit.GearCode)
 
                 ' Has a fleet?
                 If (flt IsNot Nothing) Then
