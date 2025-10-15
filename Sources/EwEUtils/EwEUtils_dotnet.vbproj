@@ -93,6 +93,11 @@
     <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Commands\**" />
+    <EmbeddedResource Remove="Commands\**" />
+    <None Remove="Commands\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Update="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
@@ -144,9 +149,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.9" />
