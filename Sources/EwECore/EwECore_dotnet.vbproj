@@ -34,7 +34,7 @@
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwECore</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.3</Version>
+    <Version>6.7.5</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>$(Project URL)</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
@@ -208,7 +208,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.Licence" Version="1.0.1" />
+    <PackageReference Include="Eii.Ecopath.EwEPlugin" Version="6.7.3" />
+    <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.2" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
@@ -223,13 +224,5 @@
     <PackageReference Include="System.ServiceModel.Primitives">
       <Version>8.1.2</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EwEPlugin\EwEPlugin_dotnet.vbproj">
-      <PackageId>Eii.Ecopath.EwEPlugin</PackageId>
-    </ProjectReference>
-    <ProjectReference Include="..\EwEUtils\EwEUtils_dotnet.vbproj">
-      <PackageId>Eii.Ecopath.EwEUtils</PackageId>
-    </ProjectReference>
   </ItemGroup>
 </Project>

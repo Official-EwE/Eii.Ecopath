@@ -34,7 +34,7 @@
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwEPlugin</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.2</Version>
+    <Version>6.7.3</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>$(Project URL)</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
@@ -85,6 +85,11 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Update="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
@@ -147,9 +152,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="Plugin templates\Ecosim\IEcosimFunctionalResponsePlugin.vb" />
     <Compile Remove="Plugin templates\GUI\IMenuItemKeyboardShortcutPlugin.vb" />
     <Compile Remove="Plugin templates\GUI\IOptionsPagePlugin.vb" />
@@ -157,8 +159,6 @@
     <Compile Remove="Web References\EwEAutoUpdateRef\Reference.vb" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EwEUtils\EwEUtils_dotnet.vbproj">
-      <PackageId>Eii.Ecopath.EwEUtils</PackageId>
-    </ProjectReference>
+    <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.2" />
   </ItemGroup>
 </Project>
