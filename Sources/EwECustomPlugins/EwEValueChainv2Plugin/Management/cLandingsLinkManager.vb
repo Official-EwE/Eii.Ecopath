@@ -82,7 +82,7 @@ Public Class cLandingsLinkManager
         For Each prod As cProducerUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
 
             ' Get fleet
-            fleet = Me.m_model.FindFleet(prod.Fleet)
+            fleet = Me.m_model.FindFleet(prod.GearCode)
 
             ' Count all existing links by target
             For iLink As Integer = 0 To prod.LinkOutCount - 1
@@ -92,7 +92,7 @@ Public Class cLandingsLinkManager
                 If Not dtTarget.ContainsKey(link.Target) Then
                     dtTarget(link.Target) = New List(Of String)
                 End If
-                dtTarget(link.Target).Add(link.Species)
+                dtTarget(link.Target).Add(link.SpeciesCode)
             Next
 
             ' Check if has all landings exist for targets

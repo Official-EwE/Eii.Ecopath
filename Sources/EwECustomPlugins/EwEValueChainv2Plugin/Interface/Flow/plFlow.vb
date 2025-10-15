@@ -751,7 +751,7 @@ Public Class plFlow
             fleet = core.EcopathFleetInputs(iFleet)
             For Each unit As cUnit In lUnits
                 pu = DirectCast(unit, cProducerUnit)
-                If (ReferenceEquals(fleet, pu.Fleet)) Then
+                If (ReferenceEquals(fleet, pu.GearCode)) Then
                     bProducerExists = True
                     Exit For
                 End If
@@ -761,7 +761,7 @@ Public Class plFlow
                 ' #Yes: create it
                 pu = DirectCast(Me.CreateUnit(cUnitFactory.eUnitType.Producer), cProducerUnit)
                 pu.AllowEvents = False
-                pu.Fleet = fleet.Name
+                pu.GearCode = fleet.Name
                 pu.AllowEvents = True
             End If
         Next iFleet
@@ -1097,7 +1097,7 @@ Public Class plFlow
                     If TypeOf unitSelected Is cProducerUnit Then
                         ' Do not create link if there are no landings
                         Dim prodSelected As cProducerUnit = DirectCast(unitSelected, cProducerUnit)
-                        If (prodSelected.Fleet Is Nothing) Then
+                        If (prodSelected.GearCode Is Nothing) Then
                             'Me.m_data.SendMessage(My.Resources.ERROR_LINK_NEEDFLEET)
                             Return
                         End If

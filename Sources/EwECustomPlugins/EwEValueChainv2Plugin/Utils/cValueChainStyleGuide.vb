@@ -76,7 +76,7 @@ Public Class cValueChainStyleGuide
 
             If (TypeOf unit Is cProducerUnit) Then
                 Dim pu As cProducerUnit = DirectCast(unit, cProducerUnit)
-                If (Not String.IsNullOrWhiteSpace(pu.Fleet)) Then st = st Or cStyleGuide.eStyleFlags.ValueComputed
+                If (Not String.IsNullOrWhiteSpace(pu.GearCode)) Then st = st Or cStyleGuide.eStyleFlags.ValueComputed
             End If
         End If
 

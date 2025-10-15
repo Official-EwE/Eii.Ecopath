@@ -1524,7 +1524,8 @@ Public Class cData
                 .WorkerMaleDependents = p.WorkerMaleDependents,         ' derived from cEconomicUnit
                 .ObserverCost = p.ObserverCost,                    ' specific to cProducerUnit
                 .ObserverRate = p.ObserverRate,                    ' specific to cProducerUnit
-                .TicketProducts = p.TicketProducts                 ' specific to cProducerUnit
+                .TicketProducts = p.TicketProducts,                 ' specific to cProducerUnit
+                .GearCode = p.GearCode                           ' specific to cProducerUnit
             }) _
             .ToList()
 

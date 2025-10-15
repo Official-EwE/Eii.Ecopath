@@ -60,7 +60,7 @@ Public Class cComputeLandingPortions
                 ' Get actual metier unit
                 mu = DirectCast(unit, cProducerUnit)
 
-                If (mu.Fleet IsNot Nothing) Then
+                If (mu.GearCode IsNot Nothing) Then
                     ' Has a group?
                     ' JS: Revise this with introduction of group links
                     'If (mu.Group IsNot Nothing) Then
