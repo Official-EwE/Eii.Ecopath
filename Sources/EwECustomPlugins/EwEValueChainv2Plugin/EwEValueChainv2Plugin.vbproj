@@ -380,11 +380,6 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.ValueChain">
-      <Version>1.0.17</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -413,6 +408,11 @@
     <Content Include="Resources\market_mono.png" />
     <Content Include="Resources\translate.png" />
     <Content Include="Resources\wholesaler_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Eii.ValueChain">
+      <Version>1.0.25</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
