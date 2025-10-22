@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU</Platforms>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwEPlugin.snk</AssemblyOriginatorKeyFile>
@@ -34,7 +34,7 @@
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwEPlugin</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.3</Version>
+    <Version>6.7.4</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>$(Project URL)</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
@@ -159,6 +159,6 @@
     <Compile Remove="Web References\EwEAutoUpdateRef\Reference.vb" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.2" />
+    <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.3" />
   </ItemGroup>
 </Project>
