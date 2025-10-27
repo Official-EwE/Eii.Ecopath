@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFrameworks>net48</TargetFrameworks>
@@ -66,6 +66,11 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <WarningLevel>0</WarningLevel>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Commands\**" />
+    <EmbeddedResource Remove="Commands\**" />
+    <None Remove="Commands\**" />
+  </ItemGroup>
   <ItemGroup> 
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data.Linq" />
@@ -126,6 +131,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Commands\" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.10" />
   </ItemGroup>
 </Project>

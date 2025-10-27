@@ -25,7 +25,10 @@ Imports System.Reflection
 Imports EwECore
 Imports EwELicense
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
+Imports Serilog
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -46,6 +49,17 @@ Module EwE6ApplicationFramework
 #End Region ' Private vars 
 
     Public Sub Main()
+
+        ' Configure Serilog
+        Log.Logger = New LoggerConfiguration() _
+            .MinimumLevel.Debug() _
+            .WriteTo.File("Logs\log-.txt", rollingInterval:=RollingInterval.Day) _
+            .CreateLogger()
+
+        ' Initialize LoggerFactory
+        LoggingContext.LoggerFactory = LoggerFactory.Create(Sub(builder)
+                                                                builder.AddSerilog()
+                                                            End Sub)
 
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf OnResolveAssembly
 

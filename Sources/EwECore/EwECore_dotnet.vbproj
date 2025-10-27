@@ -211,7 +211,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.EwEPlugin" Version="6.7.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.10" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
@@ -229,5 +229,9 @@
     <PackageReference Include="System.ServiceModel.Primitives">
       <Version>8.1.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EwEPlugin\EwEPlugin_dotnet.vbproj" />
+    <ProjectReference Include="..\EwEUtils\EwEUtils_dotnet.vbproj" />
   </ItemGroup>
 </Project>

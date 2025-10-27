@@ -22,7 +22,9 @@
 Option Strict On
 Imports System.Threading
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 
 #End Region ' Imports
 
@@ -97,6 +99,8 @@ Namespace Ecospace.Advection
 
         Private Delegate Sub CallingThreadDelegate()
 
+        Private ReadOnly _logger As ILogger = LoggingContext.CreateLogger(Of cAdvectionManager)()
+
 #End Region ' Private Variables
 
 #Region " Construction and Initialization "
@@ -108,7 +112,6 @@ Namespace Ecospace.Advection
         ''' </summary>
         ''' -------------------------------------------------------------------
         Friend Sub New()
-
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -175,6 +178,7 @@ Namespace Ecospace.Advection
                 Return True
 
             Catch ex As Exception
+                _logger.LogError(ex, "cAdvectionManager.Init Exception")
                 cLog.Write(ex)
                 Return False
             End Try
@@ -230,7 +234,7 @@ Namespace Ecospace.Advection
                     Me.m_parameters.Clear()
                 End If
             Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
+                System.Diagnostics.Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
             End Try
 
         End Sub
@@ -281,7 +285,7 @@ Namespace Ecospace.Advection
         ''' <remarks></remarks>
         Public Function RunPhysicsModel() As Boolean
 
-            Debug.Assert(Not Me.m_core.StateMonitor.IsBusy,
+            System.Diagnostics.Debug.Assert(Not Me.m_core.StateMonitor.IsBusy,
                          Me.ToString + ".RunPhysicsModel() The Statemonitor thinks the Advection model is already running! This might be a bug.")
             If (Me.m_core.StateMonitor.IsBusy) Then Return False
 
@@ -303,6 +307,7 @@ Namespace Ecospace.Advection
             Try
                 bSuccess = Me.m_comp.RunPhysicsModel()
             Catch ex As Exception
+                _logger.LogError(ex, "cAdvectionManager.RunPhysicsModel Exception")
                 cLog.Write(ex)
                 Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
                                                          eMessageType.ErrorEncountered,
@@ -348,6 +353,7 @@ Namespace Ecospace.Advection
                 thrd.Start()
 
             Catch ex As Exception
+                _logger.LogError(ex, "cAdvectionManager.RunPhysicsModel(..) Exception")
                 cLog.Write(ex)
                 Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
                                                          eMessageType.ErrorEncountered,
@@ -378,6 +384,7 @@ Namespace Ecospace.Advection
             Try
                 Me.m_comp.RunPhysicsModel()
             Catch ex As Exception
+                _logger.LogError(ex, "cAdvectionManager.RunThreaded Exception")
                 cLog.Write(ex, "cAdvectionManager.RunThreaded")
             End Try
 
@@ -398,7 +405,7 @@ Namespace Ecospace.Advection
                 Return
 
             Catch ex As Exception
-                Debug.Assert(False, "Opps Exception in cAdvectionManager.ClearAdvectionResults(): " & ex.Message)
+                System.Diagnostics.Debug.Assert(False, "Opps Exception in cAdvectionManager.ClearAdvectionResults(): " & ex.Message)
             End Try
 
         End Sub
@@ -415,6 +422,7 @@ Namespace Ecospace.Advection
                 Next
                 Return True
             Catch ex As Exception
+                _logger.LogError(ex, "cAdvectionManager.Revert Exception")
                 cLog.Write(ex)
             End Try
             Return False
@@ -444,6 +452,7 @@ Namespace Ecospace.Advection
                 End If
 
             Catch ex As Exception
+                _logger.LogError(ex, "cAdvectionManager.OnAdvectionCalcsStartedHandler Exception")
                 cLog.Write(ex)
             End Try
 
