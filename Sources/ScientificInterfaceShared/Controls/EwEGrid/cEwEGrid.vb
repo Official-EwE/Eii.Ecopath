@@ -1434,8 +1434,9 @@ Namespace Controls.EwEGrid
                     End If
                 End If
             End If
-
             Me.RaiseSelectionChangeEvent()
+
+            Me.InvalidateCells()
 
         End Sub
 

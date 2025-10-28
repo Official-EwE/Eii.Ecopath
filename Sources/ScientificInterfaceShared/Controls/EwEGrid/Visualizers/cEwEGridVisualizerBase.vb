@@ -81,11 +81,11 @@ Namespace Controls.EwEGrid
         ''' Overidden to draw background using EwE color styles
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_Background( _
-                cell As SourceGrid2.Cells.ICellVirtual, _
-                pos As SourceGrid2.Position, _
-                e As System.Windows.Forms.PaintEventArgs, _
-                rc As System.Drawing.Rectangle, _
+        Protected Overrides Sub DrawCell_Background(
+                cell As SourceGrid2.Cells.ICellVirtual,
+                pos As SourceGrid2.Position,
+                e As System.Windows.Forms.PaintEventArgs,
+                rc As System.Drawing.Rectangle,
                 status As SourceGrid2.DrawCellStatus)
 
             If cell Is Nothing Then Return
@@ -101,7 +101,7 @@ Namespace Controls.EwEGrid
             End If
 
             ' Does cell have focus?
-            If (status = DrawCellStatus.Focus) Then
+            If (status = DrawCellStatus.Focus) Or ((style And cStyleGuide.eStyleFlags.Checked) = cStyleGuide.eStyleFlags.Checked) Then
                 ' #Yes: obtain standard focus bk color
                 clrBack = Me.FocusBackColor
                 ' Is cell selected?

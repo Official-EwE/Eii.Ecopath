@@ -21,12 +21,11 @@
 
 Option Strict On
 Imports System.ComponentModel
+Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
