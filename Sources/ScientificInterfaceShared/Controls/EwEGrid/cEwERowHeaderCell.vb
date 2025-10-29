@@ -23,6 +23,8 @@ Option Strict On
 Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -33,9 +35,9 @@ Namespace Controls.EwEGrid
     ''' EwERowHeaderCell implements a EwERowHeaderCell to implement row headers. 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class cEwERowHeaderCell
-        : Inherits cEwEHeaderCell
+        Inherits cEwEHeaderCell
 
 #Region " Construction "
 
@@ -73,6 +75,22 @@ Namespace Controls.EwEGrid
                                  New cVarnameTypeFormatter().ToString(varname, eDescriptorTypes.Name),
                                  strUnitMask), strUnit)
         End Sub
+
+        Public Overrides Property Style As cStyleGuide.eStyleFlags
+            Get
+                Dim s As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable Or MyBase.Style)
+                Dim sel As Selection = Me.Grid.Selection
+                If sel IsNot Nothing Then
+                    If sel.ContainsRow(Me.Row) Then
+                        s = s Or cStyleGuide.eStyleFlags.Checked
+                    End If
+                End If
+                Return s
+            End Get
+            Set(value As cStyleGuide.eStyleFlags)
+                MyBase.Style = value
+            End Set
+        End Property
 
 #End Region ' Construction 
 

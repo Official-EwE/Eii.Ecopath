@@ -23,6 +23,8 @@ Imports EwECore
 Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
+Imports SourceGrid2
 Imports SourceGrid2.VisualModels
 
 #End Region ' Imports
@@ -80,6 +82,22 @@ Namespace Controls.EwEGrid
         End Sub
 
 #End Region ' Construction / destruction
+
+        Public Overrides Property Style As cStyleGuide.eStyleFlags
+            Get
+                Dim s As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable Or MyBase.Style)
+                Dim sel As Selection = Me.Grid.Selection
+                If sel IsNot Nothing Then
+                    If sel.ContainsColumn(Me.Column) Then
+                        s = s Or cStyleGuide.eStyleFlags.Checked
+                    End If
+                End If
+                Return s
+            End Get
+            Set(value As cStyleGuide.eStyleFlags)
+                MyBase.Style = value
+            End Set
+        End Property
 
     End Class
 

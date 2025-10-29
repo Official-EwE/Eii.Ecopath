@@ -24,6 +24,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
+Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
 
 #End Region ' Imports
@@ -105,21 +106,28 @@ Namespace Controls.EwEGrid
             Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnit)
         End Sub
 
+#End Region ' Construction 
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Row headers always use <see cref="cStyleGuide.eStyleFlags.Names">Names</see> style.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Property Style() As Style.cStyleGuide.eStyleFlags
+        Public Overrides Property Style As cStyleGuide.eStyleFlags
             Get
-                Return MyBase.Style Or cStyleGuide.eStyleFlags.Names
+                Dim s As cStyleGuide.eStyleFlags = MyBase.Style Or cStyleGuide.eStyleFlags.Names
+                Dim sel As Selection = Me.Grid.Selection
+                If sel IsNot Nothing Then
+                    If sel.ContainsRow(Me.Row) Then
+                        s = s Or cStyleGuide.eStyleFlags.Checked
+                    End If
+                End If
+                Return s
             End Get
-            Set(value As Style.cStyleGuide.eStyleFlags)
+            Set(value As cStyleGuide.eStyleFlags)
                 MyBase.Style = value
             End Set
         End Property
-
-#End Region ' Construction 
 
     End Class
 

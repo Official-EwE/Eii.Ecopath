@@ -191,8 +191,8 @@ Namespace UserInterface
         '     Specifies hatch style System.Drawing.Drawing2D.HatchStyle.Horizontal.
         Min = 0
         '     Specifies hatch style System.Drawing.Drawing2D.HatchStyle.SolidDiamond.
-        Max = 4    
-End Enum
+        Max = 4
+    End Enum
 
     ''' <summary>
     ''' OS-independent colour container
@@ -204,31 +204,39 @@ End Enum
         Public ReadOnly R As Byte
         Public ReadOnly G As Byte
         Public ReadOnly B As Byte
-        Public Sub New(r As Byte, g As Byte, b As Byte, Optional a As Byte = 255)
+
+        Public Sub New(a As Byte, r As Byte, g As Byte, b As Byte)
             Me.A = a : Me.R = r : Me.G = g : Me.B = b
+        End Sub
+
+        Public Sub New(r As Byte, g As Byte, b As Byte)
+            Me.New(255, r, g, b)
         End Sub
 
         Public Shared Function FromHex(hex As String) As VisualColor
             If String.IsNullOrEmpty(hex) Then Return New VisualColor(0, 0, 0, 0)
             If hex(0) = "#"c Then hex = hex.Substring(1)
+            Dim a As Byte = 255
+            If hex.Length >= 8 Then
+                a = Convert.ToByte(hex.Substring(0, 2), 16)
+                hex = hex.Substring(2)
+            End If
             Dim r = Convert.ToByte(hex.Substring(0, 2), 16)
             Dim g = Convert.ToByte(hex.Substring(2, 2), 16)
             Dim b = Convert.ToByte(hex.Substring(4, 2), 16)
-            Dim a As Byte = 255
-            If hex.Length >= 8 Then a = Convert.ToByte(hex.Substring(6, 2), 16)
-            Return New VisualColor(r, g, b, a)
+            Return New VisualColor(a, r, g, b)
         End Function
 
         Public Function ToHex() As String
-            Return $"#{R:X2}{G:X2}{B:X2}{A:X2}"
+            Return $"#{A:X2}{R:X2}{G:X2}{B:X2}"
         End Function
 
         Public Shared Function FromArgb(r As Byte, g As Byte, b As Byte) As VisualColor
-            Return New VisualColor(r, g, b, 255)
+            Return New VisualColor(r, g, b)
         End Function
 
         Public Shared Function FromArgb(a As Byte, r As Byte, g As Byte, b As Byte) As VisualColor
-            Return New VisualColor(r, g, b, a)
+            Return New VisualColor(a, r, g, b)
         End Function
 
         ' Integer components (0..255); clamps just in case
@@ -250,7 +258,7 @@ End Enum
                 Dim r As Byte = CByte((argb >> 16) And &HFF)
                 Dim g As Byte = CByte((argb >> 8) And &HFF)
                 Dim b As Byte = CByte(argb And &HFF)
-                Return FromArgb(255, r, g, b)
+                Return FromArgb(r, g, b)
             End If
         End Function
 
@@ -263,7 +271,7 @@ End Enum
 
         ' Convenience: RGB with implicit alpha=255
         Public Shared Function FromRgb(r As Byte, g As Byte, b As Byte) As VisualColor
-            Return New VisualColor(r, g, b, 255)
+            Return New VisualColor(r, g, b)
         End Function
 
         Private Shared Function ClampByte(v As Integer) As Byte

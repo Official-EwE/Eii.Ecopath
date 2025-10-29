@@ -23,6 +23,8 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
+Imports ScientificInterfaceShared.Style
+Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
 
 #End Region ' Imports
@@ -46,7 +48,7 @@ Namespace Controls.EwEGrid
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)>
     Public Class cPropertyColumnHeaderCell
-         Inherits cPropertyHeaderCell
+        Inherits cPropertyHeaderCell
 
         ''' <summary>One visualizer for all cells</summary>
         Private Shared g_visualizer As New cEwEGridColumnHeaderVisualizer()
@@ -137,11 +139,27 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnPropertyChanged(prop As Properties.cProperty, changeFlags As Properties.cProperty.eChangeFlags)
             MyBase.OnPropertyChanged(prop, changeFlags)
-            If (ReferenceEquals(prop, Me.m_propTooltip) And _
+            If (ReferenceEquals(prop, Me.m_propTooltip) And
                 (changeFlags And cProperty.eChangeFlags.Value) = cProperty.eChangeFlags.Value) Then
                 Me.UpdateTooltip()
             End If
         End Sub
+
+        Public Overrides Property Style As cStyleGuide.eStyleFlags
+            Get
+                Dim s As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable Or MyBase.Style)
+                Dim sel As Selection = Me.Grid.Selection
+                If sel IsNot Nothing Then
+                    If sel.ContainsColumn(Me.Column) Then
+                        s = s Or cStyleGuide.eStyleFlags.Checked
+                    End If
+                End If
+                Return s
+            End Get
+            Set(value As cStyleGuide.eStyleFlags)
+                MyBase.Style = value
+            End Set
+        End Property
 
 #End Region ' Overrides
 

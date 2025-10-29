@@ -74,8 +74,8 @@ Namespace Auxiliary
 #Region " Private vars "
 
         Private m_hatchStyle As VisualHatchStyle = VisualHatchStyle.DiagonalCross
-        Private m_clrFore As VisualColor = VisualColor.FromHex("#00000000")
-        Private m_clrBack As VisualColor = VisualColor.FromHex("#000000FF")
+        Private m_clrFore As VisualColor = VisualColor.FromHex("#FF000000")
+        Private m_clrBack As VisualColor = VisualColor.FromHex("#00FFFFFF")
         Private m_img As Image = Nothing
         Private m_strFontName As String = "Arial"
         Private m_sFontSize As Single = 8.0!
@@ -110,8 +110,8 @@ Namespace Auxiliary
 
         Public Shared Function ToDto(vs As cVisualStyle) As VisualStyleDto
             Dim dto As New VisualStyleDto With {
-                .foreColor = vs.ForeColour.ToString(),
-                .backColor = vs.BackColour.ToString(),
+                .foreColor = vs.ForeColour.ToHex(),
+                .backColor = vs.BackColour.ToHex(),
                 .hatch = vs.HatchStyle,
                 .fontName = vs.FontName,
                 .fontSize = vs.FontSize,
@@ -176,9 +176,10 @@ Namespace Auxiliary
                 Dim ab = Convert.FromBase64String(s)
                 Using ms As New MemoryStream(ab)
                     Dim bf As New Runtime.Serialization.Formatters.Binary.BinaryFormatter() With {
-                .AssemblyFormat = Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
-            }
-                    Dim oldVs = TryCast(bf.Deserialize(ms), cVisualStyle)
+                       .AssemblyFormat = Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                    }
+                    Dim obj = bf.Deserialize(ms)
+                    Dim oldVs = TryCast(obj, cVisualStyle)
                     If oldVs Is Nothing Then Return Nothing
                     ' Immediately upgrade to v2 DTO on first read if you like:
                     Return oldVs
