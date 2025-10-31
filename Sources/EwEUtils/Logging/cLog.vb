@@ -39,7 +39,7 @@ Namespace Core
 
 #Region " Private Data "
 
-        Pri vate Shared m_lock As New ReaderWriterLock()
+        Private Shared m_lock As New ReaderWriterLock()
         Private Shared m_logwriter As cXMLLogWriter = Nothing
         Private Shared m_typeLogWriter As Type = GetType(cXMLLogWriter)
         Private Shared m_strModelPath As String = ""
