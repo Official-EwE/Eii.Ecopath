@@ -21,7 +21,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '9.0.x'
 
       - name: Authenticate to GitHub Packages
         run: |
@@ -32,7 +32,7 @@ jobs:
         shell: pwsh
 
       - name: Restore dependencies
-        run: dotnet restore 'EwE6.sln'
+        run: dotnet restore 'ScientificInterface/ScientificInterface.vbproj'
         working-directory: ./Sources
         shell: pwsh
 
