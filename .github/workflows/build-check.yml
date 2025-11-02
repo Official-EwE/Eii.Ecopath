@@ -1,16 +1,40 @@
-# name: Build Check
-# on:
-#   pull_request:
-#     branches:
-#       - master
+name: Build Check
 
-# jobs:
-#   build:
-#     runs-on: windows-latest
+on:
+  pull_request:
+    branches:
+      - master
 
-#     steps:
-#       - name: Use custom NuGet build check action
-#         uses: Official-EwE/Eii.GithubActions/BuildCheckNet48Net80@master    # can also be BuildCheckNet48Net80@v.. etc
-#         with:
-#           gh-packages-token: ${{ secrets.GH_PACKAGES_TOKEN }}
-#           solution-file: "Sources/EwE6.sln"
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Authenticate to GitHub Packages
+        run: |
+          dotnet nuget update source "github-Official-EwE" `
+            --username "${{ github.repository_owner }}" `
+            --password "${{ secrets.GH_PACKAGES_READ_TOKEN }}" `
+            --store-password-in-clear-text
+        shell: pwsh
+
+      - name: Restore dependencies
+        run: dotnet restore 
+        shell: pwsh
+
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+        shell: pwsh
