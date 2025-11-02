@@ -32,11 +32,11 @@ jobs:
         shell: pwsh
 
       - name: Restore dependencies
-        run: dotnet restore 
+        run: dotnet restore 'EwE6.sln'
         working-directory: ./Sources
         shell: pwsh
 
       - name: Build solution
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build 'EwE6.sln' --configuration Release --no-restore
         working-directory: ./Sources
         shell: pwsh
