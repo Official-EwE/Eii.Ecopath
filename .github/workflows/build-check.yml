@@ -37,6 +37,6 @@ jobs:
         shell: pwsh
 
       - name: Build solution
-        run: dotnet build 'EwE6.sln' --configuration Release --no-restore
+        run: msbuild 'EwE6.sln' --configuration Release --no-restore
         working-directory: ./Sources
         shell: pwsh
