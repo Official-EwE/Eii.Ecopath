@@ -33,8 +33,10 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore 
+        working-directory: ./Sources
         shell: pwsh
 
       - name: Build solution
         run: dotnet build --configuration Release --no-restore
+        working-directory: ./Sources
         shell: pwsh
