@@ -53,7 +53,8 @@ Module EwE6ApplicationFramework
         ' Configure Serilog
         Log.Logger = New LoggerConfiguration() _
             .MinimumLevel.Debug() _
-            .WriteTo.File("Logs\log-.txt", rollingInterval:=RollingInterval.Day) _
+            .Enrich.WithThreadId() _
+            .WriteTo.File("Logs\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Thread:{ThreadId}] {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
             .CreateLogger()
 
         ' Initialize LoggerFactory
