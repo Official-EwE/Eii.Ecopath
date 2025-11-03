@@ -39,15 +39,18 @@ Imports EwELicense
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports EwEUtils.Logging
 Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
+
 
 #End Region ' Imports
-
 #Disable Warning IDE0017 ' Suppress "Object initialization can be simplified" 
 #Disable Warning IDE0009 ' Suppress "Add Me qualification" 
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class to handle all interactions between a user interface layer, a 
@@ -195,6 +198,8 @@ Public Class cCore
 
     Private m_SampleManager As Samples.cEcopathSampleManager = Nothing
     Private m_ArenaManager As cEcosimArenaManager = Nothing
+    Private ReadOnly _logger As ILogger = LoggingContext.CreateLogger(Of cCore)()
+
 
 #If Not NET Then
     Private m_license As cLicense = Nothing
@@ -3483,7 +3488,7 @@ Public Class cCore
     ''' <returns>True if the model was loaded successfully. False otherwise</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(strFile As String) As Boolean
-
+        _logger.LogInformation("Loading Ecopath model from file: {0}", strFile)
         Dim bNeedClosing As Boolean = False
 
         If Not Me.CloseModel() Then Return False

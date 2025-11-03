@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -234,7 +235,7 @@ Namespace Ecospace.Advection
                     Me.m_parameters.Clear()
                 End If
             Catch ex As Exception
-                System.Diagnostics.Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
+                Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
             End Try
 
         End Sub
@@ -285,7 +286,7 @@ Namespace Ecospace.Advection
         ''' <remarks></remarks>
         Public Function RunPhysicsModel() As Boolean
 
-            System.Diagnostics.Debug.Assert(Not Me.m_core.StateMonitor.IsBusy,
+            Debug.Assert(Not Me.m_core.StateMonitor.IsBusy,
                          Me.ToString + ".RunPhysicsModel() The Statemonitor thinks the Advection model is already running! This might be a bug.")
             If (Me.m_core.StateMonitor.IsBusy) Then Return False
 
@@ -405,7 +406,7 @@ Namespace Ecospace.Advection
                 Return
 
             Catch ex As Exception
-                System.Diagnostics.Debug.Assert(False, "Opps Exception in cAdvectionManager.ClearAdvectionResults(): " & ex.Message)
+                Debug.Assert(False, "Opps Exception in cAdvectionManager.ClearAdvectionResults(): " & ex.Message)
             End Try
 
         End Sub

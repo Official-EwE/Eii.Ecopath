@@ -26,11 +26,13 @@ Imports System.Threading
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
-Imports EwEValueChainV2Plugin.cValueChainPluginV2
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -68,6 +70,7 @@ Public Class cValueChainPluginV2
 
     Private m_searchds As cSearchDatastructures = Nothing
     Private m_bInSearch As Boolean = False
+    Private ReadOnly _logger As ILogger = LoggingContext.CreateLogger(Of cValueChainPluginV2)()
 
 #End Region ' Privates
 
@@ -281,12 +284,17 @@ Public Class cValueChainPluginV2
         Debug.Assert(Me.m_data.IsChanged() = False)
 
         Dim strSQL As String = Path.ChangeExtension(Me.m_core.DataSource.ToString, ".sqlite")
-        If Me.m_data.Load(strSQL) Then
-            ' Manage incoming DB to weed out any remaining dead stuff if the EwE model were to have changed
-            Dim lm As New cLandingsLinkManager(Me.m_controller, Me.m_data, Me.m_core)
-            lm.ManageLinkLandings()
-            Return True
-        End If
+        Try
+            If Me.m_data.Load(strSQL) Then
+                ' Manage incoming DB to weed out any remaining dead stuff if the EwE model were to have changed
+                Dim lm As New cLandingsLinkManager(Me.m_controller, Me.m_data, Me.m_core)
+                lm.ManageLinkLandings()
+                Return True
+            End If
+        Catch ex As Exception
+            _logger.LogError(ex, "VC::cValueChainPluginV2.LoadModel")
+            Throw
+        End Try
 
         Return False
 
