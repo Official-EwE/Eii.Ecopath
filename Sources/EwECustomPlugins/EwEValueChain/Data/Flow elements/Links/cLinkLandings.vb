@@ -21,11 +21,12 @@
 
 Option Strict On
 Imports System.ComponentModel
-Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -34,11 +35,11 @@ Imports ScientificInterfaceShared.Style
 ''' Species-dependent link.
 ''' </summary>
 ''' ===========================================================================
-<TypeConverter(GetType(cPropertySorter)),
-    DefaultProperty("Landings"),
-    Serializable()>
+<TypeConverter(GetType(cPropertySorter)), _
+    DefaultProperty("Landings"), _
+    Serializable()> _
 Public Class cLinkLandings
-    Inherits cLink
+    : Inherits cLink
 
 #Region " Helper classes "
 
@@ -102,8 +103,8 @@ Public Class cLinkLandings
         ''' <summary>
         ''' Convert group name to DBID
         ''' </summary>
-        Public Overrides Function ConvertFrom(context As ITypeDescriptorContext,
-                culture As System.Globalization.CultureInfo,
+        Public Overrides Function ConvertFrom(context As ITypeDescriptorContext, _
+                culture As System.Globalization.CultureInfo, _
                 value As Object) As Object
 
             If TypeOf value Is String Then
@@ -127,9 +128,9 @@ Public Class cLinkLandings
         ''' <summary>
         ''' Convert DBID to group name
         ''' </summary>
-        Public Overrides Function ConvertTo(context As ITypeDescriptorContext,
-                culture As System.Globalization.CultureInfo,
-                value As Object,
+        Public Overrides Function ConvertTo(context As ITypeDescriptorContext, _
+                culture As System.Globalization.CultureInfo, _
+                value As Object, _
                 destinationType As System.Type) As Object
 
             If TypeOf value Is Integer Then
@@ -154,6 +155,8 @@ Public Class cLinkLandings
 
 #Region " Private bits "
 
+    ''' <summary>Link species.</summary>
+    Private m_iEcopathGroupID As Integer = 0
     Private m_group As cEcoPathGroupInput = Nothing
 
 #End Region ' Private bits
@@ -176,26 +179,22 @@ Public Class cLinkLandings
         End Set
     End Property
 
-    <Browsable(False),
-        TypeConverter(GetType(cGroupConverter))>
+    <Browsable(False), _
+        TypeConverter(GetType(cGroupConverter))> _
     Public Property EcopathGroupID() As Integer
         Get
-            If (String.IsNullOrWhiteSpace(Me.SpeciesCode)) Then Return 0
-            Return CInt(Me.SpeciesCode)
+            Return Me.m_iEcopathGroupID
         End Get
         Set(id As Integer)
-            Me.SpeciesCode = CStr(id)
+            Me.m_iEcopathGroupID = id
         End Set
     End Property
 
-    <Browsable(False)>
-    Public Property SpeciesCode As String
-
-    <Browsable(True),
-     Category(cCATEGORY_TRANSFER),
-     DisplayName("Group"),
-     Description("Landed Ecopath group"),
-     cPropertySorter.PropertyOrder(5)>
+    <Browsable(True), _
+     Category(cCATEGORY_TRANSFER), _
+     DisplayName("Group"), _
+     Description("Landed Ecopath group"), _
+     cPropertySorter.PropertyOrder(5)> _
     Public ReadOnly Property EcopathGroupName() As String
         Get
             If (Me.m_group Is Nothing) Then Return "! No group"
@@ -208,7 +207,7 @@ Public Class cLinkLandings
 
 #Region " Overrides "
 
-    <Browsable(False)>
+    <Browsable(False)> _
     Public Overrides Property ValuePerTon() As Single
         Get
             Return 0
@@ -218,7 +217,7 @@ Public Class cLinkLandings
         End Set
     End Property
 
-    <Browsable(False)>
+    <Browsable(False)> _
     Public Overridable Property Group() As cEcoPathGroupInput
         Get
             Return Me.m_group
@@ -226,9 +225,9 @@ Public Class cLinkLandings
         Friend Set(value As cEcoPathGroupInput)
             Me.m_group = value
             If (Me.Group IsNot Nothing) Then
-                Me.EcopathGroupID = CInt(Me.Group.GetVariable(eVarNameFlags.DBID))
+                Me.m_iEcopathGroupID = CInt(Me.Group.GetVariable(eVarNameFlags.DBID))
             Else
-                Me.EcopathGroupID = 0
+                Me.m_iEcopathGroupID = 0
             End If
         End Set
     End Property

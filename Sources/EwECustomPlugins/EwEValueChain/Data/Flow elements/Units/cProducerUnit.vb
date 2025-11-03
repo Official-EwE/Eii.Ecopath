@@ -153,7 +153,10 @@ Public Class cProducerUnit
 
 #Region " Private vars "
 
-    Private m_gearCode As String = ""
+    ''' <summary>Ecopath group that this metier catches.</summary>
+    Private m_iEcopathGroupID As Integer = 0
+    ''' <summary>Ecopath fleet that this metier fishes with.</summary>
+    Private m_iEcopathFleetID As Integer = 0
 
     Private m_fleet As cEcopathFleetInput = Nothing
 
@@ -619,34 +622,22 @@ Public Class cProducerUnit
         End Set
     End Property
 
-    <Browsable(False),
-        TypeConverter(GetType(cFleetConverter))>
-    Public Property EcopathFleetID() As Integer
-        Get
-            If (String.IsNullOrWhiteSpace(Me.GearCode)) Then Return 0
-            Return CInt(Me.GearCode)
-        End Get
-        Set(value As Integer)
-            Me.GearCode = CStr(value)
-        End Set
-    End Property
-
     <Browsable(True),
         Category(cUnit.sPROPCAT_GENERAL),
         DisplayName("Ecopath fleet"),
         Description("Ecopath fleet for this producer"),
-        DefaultValue(""),
-        cPropertySorter.PropertyOrder(11)>
-    Public Overridable Property GearCode() As String
+        DefaultValue(0.0!),
+        cPropertySorter.PropertyOrder(11),
+        TypeConverter(GetType(cFleetConverter))>
+    Public Overridable Property EcopathFleetID() As Integer
         Get
-            Return Me.m_gearCode
+            Return Me.m_iEcopathFleetID
         End Get
-        Set(value As String)
-            Me.m_gearCode = value
+        Set(value As Integer)
+            Me.m_iEcopathFleetID = value
             Me.SetChanged()
         End Set
     End Property
-
 
     Public Overrides ReadOnly Property Category() As String
         Get

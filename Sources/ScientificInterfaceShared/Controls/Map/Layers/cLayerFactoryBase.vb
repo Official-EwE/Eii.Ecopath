@@ -158,6 +158,7 @@ Namespace Controls.Map
                     layer = New cDisplayLayerRaster(uic, src, renderer, editor, src, eVarNameFlags.Name)
 
                     lLayers.Add(layer)
+
                 Case eVarNameFlags.LayerMPA
 
                     avs = uic.StyleGuide.GetVisualStyles(core.nMPAs, cStyleGuide.eBrushType.HatchPattern)
