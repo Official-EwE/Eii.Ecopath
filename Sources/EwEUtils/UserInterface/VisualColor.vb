@@ -191,8 +191,8 @@ Namespace UserInterface
         '     Specifies hatch style System.Drawing.Drawing2D.HatchStyle.Horizontal.
         Min = 0
         '     Specifies hatch style System.Drawing.Drawing2D.HatchStyle.SolidDiamond.
-        Max = 4
-    End Enum
+        Max = 4    
+End Enum
 
     ''' <summary>
     ''' OS-independent colour container

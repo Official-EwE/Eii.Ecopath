@@ -459,9 +459,9 @@ Public Class cModel
 
 #Region " Helpers "
 
-    Private Function GetLandings(core As cCore,
-                                 iFleet As Integer, iGroup As Integer, iTimeStep As Integer,
-                                 ecosimresults As cEcoSimResults,
+    Private Function GetLandings(core As cCore, _
+                                 iFleet As Integer, iGroup As Integer, iTimeStep As Integer, _
+                                 ecosimresults As cEcoSimResults, _
                                  ecosimDS As cEcosimDatastructures) As Single
 
         Dim model As cEwEModel = core.EwEModel
@@ -484,9 +484,9 @@ Public Class cModel
 
     End Function
 
-    Private Function GetLandingValue(core As cCore,
-                                     iFleet As Integer, iGroup As Integer, iTimeStep As Integer,
-                                     ecosimresults As cEcoSimResults,
+    Private Function GetLandingValue(core As cCore, _
+                                     iFleet As Integer, iGroup As Integer, iTimeStep As Integer, _
+                                     ecosimresults As cEcoSimResults, _
                                      ecosimDS As cEcosimDatastructures) As Single
 
         Dim model As cEwEModel = core.EwEModel

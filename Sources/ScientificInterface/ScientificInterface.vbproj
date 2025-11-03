@@ -139,6 +139,10 @@
     <Reference Include="EPPlus">
       <HintPath>..\EwECore\Includes\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="EwELicense, Version=6.7.0.17768, Culture=neutral, PublicKeyToken=09f10a09f343821c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EwECore\Includes\EwELicense.dll</HintPath>
+    </Reference>
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
@@ -157,6 +161,10 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
+    <Reference Include="TreeksLicensingLibrary2, Version=2.1.7916.36068, Culture=neutral, PublicKeyToken=fd08324525b51374, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\EwECore\Includes\TreeksLicensingLibrary2.dll</HintPath>
+    </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
@@ -2195,6 +2203,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EcospaceMonteCarlo\EcospaceMonteCarlo.vbproj">
+      <Project>{df752fa0-b8c1-4de1-9b9b-d1adf678b64e}</Project>
+      <Name>EcospaceMonteCarlo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
+      <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
+      <Name>EwEEcospaceSpinupPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{cdece065-503a-4562-a955-06777b2f909e}</Project>
       <Name>EwECore</Name>
@@ -2307,9 +2327,13 @@
       <Project>{86d3251d-678f-4ab3-9c95-3d29d8fa7797}</Project>
       <Name>EwETransectExtractionPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEValueChainv2Plugin\EwEValueChainv2Plugin.vbproj">
-      <Project>{83e8548d-b23e-38df-a8f5-06a5ad7bd649}</Project>
-      <Name>EwEValueChainv2Plugin</Name>
+    <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj">
+      <Project>{e87e552b-c82f-4984-9249-631dac727633}</Project>
+      <Name>EwEValueChainPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj">
+      <Project>{1e820a5f-bd1a-4ece-9656-6824cf2d537e}</Project>
+      <Name>EwEValueChainPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEWindowsIntegrationPlugin\EwEWindowsIntegrationPlugin.vbproj">
       <Project>{1b798fde-56cf-427f-9889-9930d34318e9}</Project>
@@ -2345,14 +2369,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Other\Update\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.Licence">
-      <Version>1.0.2</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
