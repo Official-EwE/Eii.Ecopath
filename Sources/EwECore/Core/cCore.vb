@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.DirectoryServices.ActiveDirectory
 Imports System.IO
 Imports System.Text
 Imports System.Xml
@@ -936,10 +935,6 @@ Public Class cCore
         ' Last batch lock released?
         If (Not Me.IsBatchLocked()) Then
 
-            Dim iSim As Integer = Me.ActiveEcosimScenarioIndex
-            Dim iSpace As Integer = Me.ActiveEcospaceScenarioIndex
-            Dim iTracer As Integer = Me.ActiveEcotracerScenarioIndex
-
             Me.DataSource.EndTransaction(bCommit)
             Me.StateMonitor.SetIsBatchLocked(False)
 
@@ -951,9 +946,9 @@ Public Class cCore
                 '                   In other words, adding or removing groups (batch level Ecopath) will NOT
                 '                   cause batch level Ecosim and higher to automatically reload because Ecopath 
                 '                   will most likely not run. This addresses issue #512
-                Dim iEcosimScenarioToLoad As Integer = If(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecosim, iSim, cCore.NULL_VALUE)
-                Dim iEcospaceScenarioToLoad As Integer = If(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecospace, iSpace, cCore.NULL_VALUE)
-                Dim iEcotracerScenarioToLoad As Integer = If(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecotracer, iTracer, cCore.NULL_VALUE)
+                Dim iEcosimScenarioToLoad As Integer = If(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecosim, Me.m_EcopathData.ActiveEcosimScenario, cCore.NULL_VALUE)
+                Dim iEcospaceScenarioToLoad As Integer = If(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecospace, Me.ActiveEcospaceScenarioIndex, cCore.NULL_VALUE)
+                Dim iEcotracerScenarioToLoad As Integer = If(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecotracer, Me.m_EcopathData.ActiveEcotracerScenario, cCore.NULL_VALUE)
                 Dim iDatasetToReload As Integer = 0
 
                 If (Me.m_batchChangeLevel <= eBatchChangeLevelFlags.TimeSeries) Then
@@ -3216,33 +3211,89 @@ Public Class cCore
             Dim msg As cMessage = Nothing
             Dim ver As Single = db.GetVersion()
 
-            If dbUpd.HasDatabaseUpdates(db, ver) Then
+            If dbUpd.HasUpdates(db) Then
+                ' Create a copy of the database for select types
+                Dim bSucces As Boolean = True
+                Dim strSrc As String = db.Name
+                Dim strDest As String = ""
+                Try
+                    If File.Exists(strSrc) Then
 
-                Dim fmsg As New cFeedbackMessage("To continue, your model database will be updated to a newer version. This means that you will not be able to open the model in older versions of EwE. Do you want to continue?", eCoreComponentType.DataSource,
-                                           eMessageType.NotSet, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
-                fmsg.Reply = eMessageReply.YES
-                Me.m_publisher.SendMessage(msg)
-                If (fmsg.Reply <> eMessageReply.YES) Then Return False
+                        ' User wants to make a backup?
+                        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, db.Name, ver),
+                                                         eCoreComponentType.DataSource, eMessageType.Any,
+                                                         eMessageImportance.Information,
+                                                         eMessageReplyStyle.YES_NO_CANCEL)
+                        ' By default (if message is not handled) assume positive confirmation
+                        fmsg.Reply = eMessageReply.OK
+                        ' Send message
+                        Me.m_publisher.SendMessage(fmsg)
+                        ' Cancel if requested
+                        If (fmsg.Reply = eMessageReply.CANCEL) Then Return False
+
+                        If (fmsg.Reply = eMessageReply.OK) Then
+
+                            ' Try to resolve path
+                            cPathUtility.ResolvePath(Me.BackupFileMask, strSrc, db.GetVersion.ToString, strDest)
+
+                            ' Need to close the DS for now
+                            Dim name As String = ds.ToString
+                            ds.Close()
+                            ' Create backup
+                            bSucces = cFileUtils.CreateBackup(strSrc, strDest)
+                            ds.Open(name, Me)
+
+                            If bSucces Then
+                                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_SUCCESS, strDest),
+                                                        eMessageType.DataImport,
+                                                        eCoreComponentType.DataSource,
+                                                        eMessageImportance.Information)
+                            Else
+                                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest),
+                                                        eMessageType.DataImport,
+                                                        eCoreComponentType.DataSource,
+                                                        eMessageImportance.Warning)
+                            End If
+                            ' Send backup result message
+                            Me.m_publisher.SendMessage(msg)
+
+                            ' Abort when failed
+                            If bSucces = False Then Return False
+
+                        End If
+                    End If
+
+                Catch ex As Exception
+                    cLog.Write(ex, "cCore::UpdateDataSource")
+                    ' Whoah
+                    msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest),
+                                          eMessageType.DataImport,
+                                          eCoreComponentType.DataSource,
+                                          eMessageImportance.Warning)
+                    Me.m_publisher.SendMessage(msg)
+                    Return False
+                End Try
+
+                ' Run updates
+                If Not dbUpd.UpdateDatabase(db) Then
+                    ' Database update failed
+                    msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_FAILED, Version.ToString),
+                                       eMessageType.DataImport,
+                                       eCoreComponentType.DataSource,
+                                       eMessageImportance.Critical)
+
+                    Me.m_publisher.SendMessage(msg)
+                    Return False
+                Else
+                    ' Database update failed
+                    msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_SUCCESS, Version.ToString),
+                                       eMessageType.DataImport,
+                                       eCoreComponentType.DataSource,
+                                       eMessageImportance.Information)
+                    Me.m_publisher.SendMessage(msg)
+                End If
             End If
 
-            ' Run updates
-            If Not dbUpd.UpdateDatabase(db) Then
-                ' Database update failed
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_FAILED, Version.ToString),
-                                    eMessageType.DataImport,
-                                    eCoreComponentType.DataSource,
-                                    eMessageImportance.Critical)
-
-                Me.m_publisher.SendMessage(msg)
-                Return False
-            Else
-                ' Database update failed
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_SUCCESS, Version.ToString),
-                                    eMessageType.DataImport,
-                                    eCoreComponentType.DataSource,
-                                    eMessageImportance.Information)
-                Me.m_publisher.SendMessage(msg)
-            End If
         End If
         Return True
 
@@ -3433,50 +3484,45 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(strFile As String) As Boolean
 
-        Dim fnNow As String = ""
-        If (Me.DataSource IsNot Nothing) Then fnNow = Path.GetFullPath(Me.DataSource.ToString())
-        Dim fnNew As String = Path.GetFullPath(strFile)
-        Dim bNeedClosing As Boolean = (String.Compare(fnNow, fnNew, True) <> 0)
+        Dim bNeedClosing As Boolean = False
+
+        If Not Me.CloseModel() Then Return False
+
         Dim dsEcopath As IEcopathDataSource = Nothing
         Dim bsuccess As Boolean
 
-        If (bNeedClosing) Then
+        Me.m_Ecopath.RunState = Ecopath.eEcopathRunState.NotRun
+        Me.m_EcopathData.ActiveEcosimScenario = -1
+        Me.m_EcopathData.ActiveEcospaceScenario = -1
+        Me.m_EcopathData.ActiveEcotracerScenario = -1
 
-            If Not Me.CloseModel() Then Return False
+        If (Me.DataSource Is Nothing) Then
+            ' Remember the new data source
+            Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFile)
+            If (ds Is Nothing) Then Return False
 
-            Me.m_Ecopath.RunState = Ecopath.eEcopathRunState.NotRun
-            Me.m_EcopathData.ActiveEcosimScenario = -1
-            Me.m_EcopathData.ActiveEcospaceScenario = -1
-            Me.m_EcopathData.ActiveEcotracerScenario = -1
+            If ds.Open(strFile, Me) <> eDatasourceAccessType.Opened Then Return False
 
-            If (Me.DataSource Is Nothing) Then
-                ' Remember the new data source
-                Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFile)
-                If (ds Is Nothing) Then Return False
+            ' Sanity checks
+            Debug.Assert(ds IsNot Nothing, Me.ToString & "LoadModel() Datasource can not be NULL.")
+            Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid data source type specified")
 
-                If ds.Open(strFile, Me) <> eDatasourceAccessType.Opened Then Return False
-
-                ' Sanity checks
-                Debug.Assert(ds IsNot Nothing, Me.ToString & "LoadModel() Datasource can not be NULL.")
-                Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid data source type specified")
-
-                'm_bCoreIsInit was set in InitCore()
-                If Not m_bCoreIsInit Then
-                    'core has not been initialized this can not be run
-                    Debug.Assert(False, "The Core has not been initialized. Call InitCore() first.")
-                    ' Flag data as gone
-                    Me.m_StateMonitor.SetEcopathLoaded(False)
-                    SendEcopathLoadMessage(ds, "Core not initialized")
-                    Return False
-                End If
-
-                ' Run any available updates on the data source
-                If Not Me.UpdateDatasource(ds) Then
-                    Return False
-                End If
-
-                Me.DataSource = ds
+            'm_bCoreIsInit was set in InitCore()
+            If Not m_bCoreIsInit Then
+                'core has not been initialized this can not be run
+                Debug.Assert(False, "The Core has not been initialized. Call InitCore() first.")
+                ' Flag data as gone
+                Me.m_StateMonitor.SetEcopathLoaded(False)
+                SendEcopathLoadMessage(ds, "Core not initialized")
+                Return False
             End If
+
+            ' Run any available updates on the data source
+            If Not Me.UpdateDatasource(ds) Then
+                Return False
+            End If
+
+            Me.DataSource = ds
         End If
 
         Try

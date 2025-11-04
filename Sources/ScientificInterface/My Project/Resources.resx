@@ -2275,10 +2275,4 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="PROMPT_SPATIALTEMPORAL_IMPORT_REPLACE_EXISTING" xml:space="preserve">
     <value>One or more datasets are already present. Do you want to replace these with new data?</value>
   </data>
-  <data name="Ecopath_halloween" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Ecopath_halloween.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Ecopath_stjordi" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Ecopath_stjordi.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>

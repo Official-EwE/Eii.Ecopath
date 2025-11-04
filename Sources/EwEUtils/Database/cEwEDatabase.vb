@@ -741,7 +741,7 @@ Namespace Database
         ''' <seealso cref="CommitTransaction(Boolean)"/>
         ''' -------------------------------------------------------------------
         Public Function BeginTransaction() As Boolean
-            If (Me.m_transaction IsNot Nothing) Then Return False
+            If Not (Me.m_transaction Is Nothing) Then Return False
             Try
                 Me.m_transaction = Me.GetConnection.BeginTransaction()
                 Return True
@@ -787,8 +787,6 @@ Namespace Database
         ''' <seealso cref="CommitTransaction(Boolean)"/>
         ''' -------------------------------------------------------------------
         Public Function RollbackTransaction() As Boolean
-
-            If (Me.Transaction Is Nothing) Then Return False
             Try
                 'Me.ReleaseCachedWriters(False)
                 Me.m_transaction.Rollback()

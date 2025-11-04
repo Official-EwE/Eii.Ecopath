@@ -54,10 +54,10 @@ Public Class cProducerUnitDefault
     End Property
 
     <Browsable(False)>
-    Public Overrides Property EcopathFleetID() As Integer
+    Public Overrides Property GearCode() As String
         Get
         End Get
-        Set(value As Integer)
+        Set(value As String)
         End Set
     End Property
 
