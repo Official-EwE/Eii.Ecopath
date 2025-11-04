@@ -20,10 +20,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
 Imports EwEPlugin
-Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
 
 #End Region ' Imports
 
@@ -108,6 +111,7 @@ Namespace Ecopath
         Private NoBQB() As Integer
         Private AUL(,) As Single
         Private bDietsModified As Boolean
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcopathModel)()
 
         Friend m_stanza As cStanzaDatastructures
         Friend m_psd As cPSDDatastructures
@@ -182,7 +186,7 @@ Namespace Ecopath
                     Me.m_msgPub.SendMessage(msg)
                 End If
             Catch ex As Exception
-                cLog.Write("cEcoPathModel.NotifyCore(...) Failed to post message " & msg.ToString())
+                m_logger.LogError(ex, "cEcoPathModel.NotifyCore(...) Failed to post message {message}", ex.Message)
             End Try
 
         End Sub
@@ -232,14 +236,14 @@ Namespace Ecopath
             'Paraniod double checking for the release version
             'Is there a valid Ecopath data object. There is no messages for this as it should not happen in the release version. Just write to the log???????
             If Me.m_Data Is Nothing Then
-                cLog.Write(Me.ToString + ".Run() EcoPathModel.m_Data is Nothing, Ecopath has not been initialized correctly. Ecopath could not be run.")
+                m_logger.LogInformation("Run() EcoPathModel.m_Data is Nothing, Ecopath has not been initialized correctly. Ecopath could not be run.")
                 Debug.Assert(Not Me.m_Data Is Nothing, Me.ToString + ".Run() m_data in Nothing. Ecopath could not be run.")
                 Me.RunState = eEcopathRunState.InValidInitialization
                 Return False
             End If
             'have the parameters been initialized
             If Not Me.m_Data.bInitialized Then
-                cLog.Write(Me.ToString + ".Run() EcoPathModel.m_Data has been created but not Initialized. Ecopath could not be run.")
+                m_logger.LogInformation("EcoPathModel.m_Data has been created but not Initialized. Ecopath could not be run.")
                 Debug.Assert(Me.m_Data.bInitialized, Me.ToString + ".Run() EcoPathModel.m_Data has been created but not Initialized..")
                 Me.RunState = eEcopathRunState.InValidInitialization
                 Return False
@@ -336,7 +340,7 @@ Namespace Ecopath
                         msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR,
                                             eMessageType.ErrorEncountered, eCoreComponentType.Ecopath, eMessageImportance.Critical, eDataTypes.NotSet)
                         Me.NotifyCore(msg)
-                        cLog.Write("cEcopathModel.Run() failed to estimate parameters because of an error.")
+                        m_logger.LogInformation("cEcopathModel.Run() failed to estimate parameters because of an error.")
                         Return False
                     End If
 
@@ -352,7 +356,7 @@ Namespace Ecopath
                                     eMessageType.ErrorEncountered, eCoreComponentType.Ecopath, eMessageImportance.Critical, eDataTypes.NotSet)
                 Me.NotifyCore(msg)
 
-                cLog.Write(Me.ToString + ".Run() Error during parameter estimation: " & ex.Message)
+                m_logger.LogError(ex, ".Run() Error during parameter estimation: {message}", ex.Message)
                 Return False
 
             End Try
@@ -409,7 +413,7 @@ Namespace Ecopath
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "onModelUnitCurrencyChanged Exception {message}", ex.Message)
             End Try
 
         End Sub
@@ -1582,7 +1586,7 @@ LoopCalc:
                 If (Me.CountNoOfMissing(Me.m_Data.mis, noMissing, EstimateFor) = False) Then
                     Me.InParameterEstimation = 0
                     'jb 
-                    cLog.Write("Too many missing parameters. Parameter Estimation not completed successfully.")
+                    m_logger.LogInformation("Too many missing parameters. Parameter Estimation not completed successfully.")
                     Result = eStatusFlags.MissingParameter
                     Return False
                 End If
@@ -1727,7 +1731,7 @@ LoopCalc:
                 'If iterate > 1 Then Progress()
                 'NextSensL:
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "EstimateParameters Exception: {message}", ex.Message)
                 'Debug.Assert(False, "Error in EstimateParameters() " & ex.Message)
                 'Message will be handled by the calling routine
                 Result = eStatusFlags.ErrorEncountered
@@ -1740,8 +1744,8 @@ LoopCalc:
             'End If
 
             Result = eStatusFlags.OK
-                Debug.Assert(Result <> eStatusFlags.Null)
-                Return True
+            Debug.Assert(Result <> eStatusFlags.Null)
+            Return True
         End Function
 
 
@@ -1987,7 +1991,7 @@ NextPivot:
                 If iMissingForGroup >= 2 And From = eEstimateParameterFor.ParameterEstimation Then
                     Me.MsgManyMissingPar(i)
                     Me.Exit_Sub_Missing_Par = 0
-                    cLog.Write("'CountNoOfMissing(...)' Group " & i & " missing " & iMissingForGroup.ToString & " parameter(s).")
+                    m_logger.LogInformation("'CountNoOfMissing(...)' Group {i} missing {iMissingForGroup} parameter(s).", i, iMissingForGroup)
                     Return False
                 End If
 
@@ -2150,7 +2154,7 @@ nextJ:
                         ElseIf EstimateFor = eEstimateParameterFor.Sensitivity Then
                             'the calling model is the Sensitivity routine 
                             'this will cause it to exit the parameter estimation
-                            cLog.Write("Ecopath.EstimateB() parameter estimation error. There maybe to much cannibalism.")
+                            m_logger.LogInformation("Ecopath.EstimateB() parameter estimation error. There maybe to much cannibalism.")
                             SenExit = True
                         End If
                     End If
@@ -2611,7 +2615,7 @@ nextJ:
 
             Catch ex As Exception
                 Result = eStatusFlags.ErrorEncountered
-                cLog.Write(ex, "Ecpopath.GIM() Exception. ")
+                m_logger.LogError(ex, "Ecpopath.GIM() Exception. {message}", ex.Message)
             End Try
 
         End Sub
@@ -2914,7 +2918,7 @@ ONE:
                 Me.NotifyCore(msg)
 
             Catch ex As Exception
-                cLog.Write("Error in MsgManyMissingPar(). Error: " + ex.Message())
+                m_logger.LogError(ex, "Error in MsgManyMissingPar(). Error: {message}", ex.Message)
                 Debug.Assert(False)
             End Try
         End Sub

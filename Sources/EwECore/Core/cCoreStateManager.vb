@@ -19,6 +19,9 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' Manager class used to bring the core execution state up to date.
@@ -29,6 +32,7 @@ Public Class cCoreStateManager
 #Region " Private data "
 
     Private m_core As cCore
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cCoreStateManager)()
 
 #End Region ' Private data
 
@@ -78,7 +82,7 @@ Public Class cCoreStateManager
             End Select
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "LoadState({1}) Error: {2}", ExecutionState.ToString(), ex.Message)
             Debug.Assert(False, Me.ToString & ".LoadState(" & ExecutionState.ToString & ") Error: " & ex.Message)
         End Try
 
@@ -108,7 +112,7 @@ Public Class cCoreStateManager
             Me.m_core.m_Ecosim.RemoveImportFromEcosim()
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "updateDietComp() Exception. {1}", ex.Message)
             Debug.Assert(False, Me.ToString & ".DietComp() Failed to copy DietComp into Ecosim." & ex.Message)
             Return False
         End Try
