@@ -177,8 +177,6 @@ Namespace Utilities
             Xmas
             DagVanDeLiefde
             BlackFriday
-            Halloween
-            SantJordi
             EwE25
             EwE30
             EwE35
@@ -277,9 +275,6 @@ Namespace Utilities
             Dim dtEwE30 As DateTime = New Date(2014, 11, 14) ' 04/11-14/11 2014 Barcelona, Spain
             Dim dtEwE35 As DateTime = New Date(2019, 12, 11) ' 04/12-11/12 2019 St Petersburg, USA
             Dim dtEwE40 As DateTime = New Date(2024, 6, 8) '   03/06-08/06 2024 Ostend, Belgium
-            Dim dtSJ As New DateTime(dtNow.Year, 4, 23)
-            Dim dtHW As New DateTime(dtNow.Year, 10, 31)
-
             Dim dtBlackFriday As DateTime = cDateUtils.BlackFriday()
             Dim dtFunDay As DateTime = cDateUtils.Fools()
 
@@ -291,8 +286,6 @@ Namespace Utilities
             If (dtXMas >= dtNow) And (dtXMas.Subtract(dtNow).Days <= 14) Then Return eNextEvent.Xmas
             If (dtJoepie >= dtNow) And (dtJoepie.Subtract(dtNow).Days <= 7) Then Return eNextEvent.DagVanDeLiefde
             If (dtBlackFriday >= dtNow) And (dtBlackFriday.Subtract(dtNow).Days <= 4) Then Return eNextEvent.BlackFriday
-            If (dtHW >= dtNow) And (dtHW.Subtract(dtNow).Days <= 7) Then Return eNextEvent.Halloween
-            If (dtSJ >= dtNow) And (dtSJ.Subtract(dtNow).Days <= 4) Then Return eNextEvent.SantJordi
             If (dtFunDay = dtNow) Then Return eNextEvent.Fools
 
             Return eNextEvent.None

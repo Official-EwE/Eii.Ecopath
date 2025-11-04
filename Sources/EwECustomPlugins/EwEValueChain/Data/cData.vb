@@ -33,7 +33,6 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
-
 ''' ===========================================================================
 ''' <summary>
 ''' Value chain central data storage.
@@ -69,7 +68,7 @@ Public Class cData
     Private m_lItems As New List(Of cCoreInputOutputBase)
 
 #If DEBUG Then
-    'Private m_valueChainStorageService As ValueChainStorageService = Nothing
+    Private m_valueChainStorageService As IValueChainStorageService = Nothing
 #End If
 
 #End Region ' Private vars 
@@ -82,7 +81,7 @@ Public Class cData
         Me.m_coreComponent = eCoreComponentType.External
         Me.m_dataType = eDataTypes.External
 #If DEBUG Then
-        'm_valueChainStorageService = New ValueChainStorageService()
+        m_valueChainStorageService = New ValueChainStorageService()
 #End If
     End Sub
 
@@ -207,7 +206,10 @@ Public Class cData
         ' Start clean
         Me.IsChanged = False
 
-        ' m_valueChainStorageService.LoadValueChain(ValueChainStorageService.GetSQLiteFilePathFromAccessFilePath(Me.m_strDBName))
+#If DEBUG Then
+        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".sqlite")
+        m_valueChainStorageService.LoadValueChain(strSQL)
+#End If
         Return bSucces And Me.m_db.IsConnected
 
     End Function
@@ -227,9 +229,8 @@ Public Class cData
 
         bSucces = Me.m_db.SaveModel(Me)
 
-#If DEBUG Then
-        ' bSucces = bSucces And SaveValueChain(ValueChainStorageService.GetSQLiteFilePathFromAccessFilePath(Me.m_strDBName))
-#End If
+        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".sqlite")
+        bSucces = Me.m_db.SaveModel(Me) And SaveValueChain(strSQL)
 
         If bSucces Then Me.IsChanged = False
         Return bSucces
@@ -572,11 +573,11 @@ Public Class cData
                 bAdd = True
             End If
             ' Hide default units
-            If (TypeOf unit Is cProducerUnitDefault) Or _
-                (TypeOf unit Is cProcessingUnitDefault) Or _
-                (TypeOf unit Is cDistributionUnitDefault) Or _
-                (TypeOf unit Is cWholesalerUnitDefault) Or _
-                (TypeOf unit Is cRetailerUnitDefault) Or _
+            If (TypeOf unit Is cProducerUnitDefault) Or
+                (TypeOf unit Is cProcessingUnitDefault) Or
+                (TypeOf unit Is cDistributionUnitDefault) Or
+                (TypeOf unit Is cWholesalerUnitDefault) Or
+                (TypeOf unit Is cRetailerUnitDefault) Or
                 (TypeOf unit Is cConsumerUnitDefault) Then
                 bAdd = False
             End If
@@ -1262,9 +1263,9 @@ Public Class cData
         Next
     End Sub
 
-    Public Sub SendMessage(strMessage As String, _
-                            Optional msgtype As eMessageType = eMessageType.Any, _
-                            Optional corecomp As eCoreComponentType = eCoreComponentType.External, _
+    Public Sub SendMessage(strMessage As String,
+                            Optional msgtype As eMessageType = eMessageType.Any,
+                            Optional corecomp As eCoreComponentType = eCoreComponentType.External,
                             Optional importance As eMessageImportance = eMessageImportance.Warning)
         Dim msg As New cMessage(strMessage, msgtype, corecomp, importance)
         If (Me.m_core IsNot Nothing) Then
@@ -1276,10 +1277,9 @@ Public Class cData
         End If
     End Sub
 
-#If DEBUG Then
-
     Private Function SaveValueChain(accessDbFilePath As String) As Boolean
 
+#If DEBUG Then
         Dim parameter As Parameter = New Parameter With {
             .DBID = Me.m_parameters.DBID,
             .EquilibriumEffortIncrement = Me.m_parameters.EquilibriumEffortIncrement,
@@ -1293,68 +1293,81 @@ Public Class cData
         }
 
         Dim links As List(Of Link) = Me.m_lLinks _
-            .Where(Function(p) p IsNot Nothing) _
-            .Select(Function(p) New Link With {
-                .DBID = p.DBID,
-                .Name = p.Name,
-                .Source = p.Source.DBID,
-                .Target = p.Target.DBID
-            }) _
-            .ToList()
+        .OfType(Of cLink)() _
+        .Where(Function(p) Not TypeOf p Is cLinkLandings AndAlso p IsNot Nothing) _
+        .Select(Function(p) New Link With {
+            .DBID = p.DBID,
+            .Name = p.Name,
+            .Source = p.Source.DBID,
+            .Target = p.Target.DBID
+        }) _
+        .ToList()
+
+        Dim linkLandings As List(Of LinkLandings) = Me.m_lLinks _
+                .Where(Function(p) TypeOf p Is cLinkLandings) _
+                .Cast(Of cLinkLandings)() _
+                .Where(Function(p) p IsNot Nothing) _
+                .Select(Function(p As cLinkLandings) New LinkLandings With {
+                    .DBID = p.DBID,
+                    .SpeciesCode = p.EcopathGroupName,
+                    .Source = p.Source.DBID,
+                    .Target = p.Target.DBID
+                }) _
+                .ToList()
 
         Dim processingUnits As List(Of ProcessingUnit) = Me.m_lUnits _
-            .Where(Function(p) TypeOf p Is cProcessingUnit) _
-            .Cast(Of cProcessingUnit)() _
-            .Where(Function(p) p IsNot Nothing) _
-            .Select(Function(p As cProcessingUnit) New ProcessingUnit With {
-                .DBID = p.DBID,                         '
-                .Name = p.Name,                         ' derived from cUnit
-                .NameLocal = p.NameLocal,               ' derived from cUnit
-                .Sequence = p.Sequence,                 ' derived from cUnit
-                .Nationality = p.Nationality,           ' derived from cUnit
-                .Broker = p.Broker,                     ' derived from cEconomicUnit
-                .CapitalInput = p.CapitalInput,         '  derived from cEconomicUnit
-                .CertificationCost = p.CertificationCost,   ' derived from cEconomicUnit
-                .EnergyCost = p.EnergyCost,             ' derived from cEconomicUnit
-                .EnergyProducts = p.EnergyProducts,     ' derived from cEconomicUnit
-                .IndustrialCost = p.IndustrialCost,     ' derived from cEconomicUnit
-                .IndustrialProducts = p.IndustrialProducts, ' derived from cEconomicUnit
-                .ManagementCost = p.ManagementCost,     ' derived from cEconomicUnit
-                .LicenseTax = p.LicenseTax,             ' derived from cEconomicUnit
-                .SubsidyOther = p.SubsidyOther,         ' derived from cEconomicUnit
-                .SubsidyEnergy = p.SubsidyEnergy,       ' derived from cEconomicUnit
-                .ServiceProducts = p.ServiceProducts,   ' derived from cEconomicUnit
-                .ServiceCost = p.ServiceCost,           ' derived from cEconomicUnit
-                .RoyaltyCost = p.RoyaltyCost,           ' derived from cEconomicUnit
-                .OwnerFemale = p.OwnerFemale,           ' derived from cEconomicUnit
-                .OwnerMale = p.OwnerMale,               ' derived from cEconomicUnit
-                .OwnerFemalePay = p.OwnerFemalePay,     ' derived from cEconomicUnit
-                .OwnerFemaleshare = p.OwnerFemaleshare, ' derived from cEconomicUnit
-                .OwnerMalePay = p.OwnerMalePay,         ' derived from cEconomicUnit
-                .OwnerMaleshare = p.OwnerMaleshare,     ' derived from cEconomicUnit
-                .OwnerFemaleDependents = p.OwnerFemaleDependents,   ' derived from cEconomicUnit
-                .OwnerMaleDependents = p.OwnerMaleDependents,       ' derived from cEconomicUnit
-                .ProfitTax = p.ProfitTax,               ' derived from cEconomicUnit
-                .TaxImport = p.TaxImport,               ' derived from cEconomicUnit
-                .TaxExport = p.TaxExport,               ' derived from cEconomicUnit
-                .TaxVAT = p.TaxVAT,                     ' derived from cEconomicUnit
-                .TaxProduction = p.TaxProduction,       ' derived from cEconomicUnit
-                .TaxEnvironmental = p.TaxEnvironmental, ' derived from cEconomicUnit
-                .WorkerFemale = p.WorkerFemale,         ' derived from cEconomicUnit
-                .WorkerFemalePay = p.WorkerFemalePay,   ' derived from cEconomicUnit
-                .WorkerFemaleshare = p.WorkerFemaleshare,   ' derived from cEconomicUnit
-                .WorkerMale = p.WorkerMale,             ' derived from cEconomicUnit
-                .WorkerMalePay = p.WorkerMalePay,       ' derived from cEconomicUnit
-                .WorkerMaleshare = p.WorkerMaleshare,   ' derived from cEconomicUnit
-                .WorkerOther = p.WorkerOther,           ' derived from cEconomicUnit
-                .WorkerOtherPay = p.WorkerOtherPay,     ' derived from cEconomicUnit
-                .WorkerParttime = p.WorkerParttime,     ' derived from cEconomicUnit
-                .WorkerFemaleDependents = p.WorkerFemaleDependents,     ' derived from cEconomicUnit
-                .WorkerMaleDependents = p.WorkerMaleDependents,         ' derived from cEconomicUnit
-                .AgriculturalInput = p.AgriculturalInput,           '
-                .AgriculturalProducts = p.AgriculturalProducts      '
-            }) _
-            .ToList()
+                .Where(Function(p) TypeOf p Is cProcessingUnit) _
+                .Cast(Of cProcessingUnit)() _
+                .Where(Function(p) p IsNot Nothing) _
+                .Select(Function(p As cProcessingUnit) New ProcessingUnit With {
+                    .DBID = p.DBID,                         '
+                    .Name = p.Name,                         ' derived from cUnit
+                    .NameLocal = p.NameLocal,               ' derived from cUnit
+                    .Sequence = p.Sequence,                 ' derived from cUnit
+                    .Nationality = p.Nationality,           ' derived from cUnit
+                    .Broker = p.Broker,                     ' derived from cEconomicUnit
+                    .CapitalInput = p.CapitalInput,         '  derived from cEconomicUnit
+                    .CertificationCost = p.CertificationCost,   ' derived from cEconomicUnit
+                    .EnergyCost = p.EnergyCost,             ' derived from cEconomicUnit
+                    .EnergyProducts = p.EnergyProducts,     ' derived from cEconomicUnit
+                    .IndustrialCost = p.IndustrialCost,     ' derived from cEconomicUnit
+                    .IndustrialProducts = p.IndustrialProducts, ' derived from cEconomicUnit
+                    .ManagementCost = p.ManagementCost,     ' derived from cEconomicUnit
+                    .LicenseTax = p.LicenseTax,             ' derived from cEconomicUnit
+                    .SubsidyOther = p.SubsidyOther,         ' derived from cEconomicUnit
+                    .SubsidyEnergy = p.SubsidyEnergy,       ' derived from cEconomicUnit
+                    .ServiceProducts = p.ServiceProducts,   ' derived from cEconomicUnit
+                    .ServiceCost = p.ServiceCost,           ' derived from cEconomicUnit
+                    .RoyaltyCost = p.RoyaltyCost,           ' derived from cEconomicUnit
+                    .OwnerFemale = p.OwnerFemale,           ' derived from cEconomicUnit
+                    .OwnerMale = p.OwnerMale,               ' derived from cEconomicUnit
+                    .OwnerFemalePay = p.OwnerFemalePay,     ' derived from cEconomicUnit
+                    .OwnerFemaleshare = p.OwnerFemaleshare, ' derived from cEconomicUnit
+                    .OwnerMalePay = p.OwnerMalePay,         ' derived from cEconomicUnit
+                    .OwnerMaleshare = p.OwnerMaleshare,     ' derived from cEconomicUnit
+                    .OwnerFemaleDependents = p.OwnerFemaleDependents,   ' derived from cEconomicUnit
+                    .OwnerMaleDependents = p.OwnerMaleDependents,       ' derived from cEconomicUnit
+                    .ProfitTax = p.ProfitTax,               ' derived from cEconomicUnit
+                    .TaxImport = p.TaxImport,               ' derived from cEconomicUnit
+                    .TaxExport = p.TaxExport,               ' derived from cEconomicUnit
+                    .TaxVAT = p.TaxVAT,                     ' derived from cEconomicUnit
+                    .TaxProduction = p.TaxProduction,       ' derived from cEconomicUnit
+                    .TaxEnvironmental = p.TaxEnvironmental, ' derived from cEconomicUnit
+                    .WorkerFemale = p.WorkerFemale,         ' derived from cEconomicUnit
+                    .WorkerFemalePay = p.WorkerFemalePay,   ' derived from cEconomicUnit
+                    .WorkerFemaleshare = p.WorkerFemaleshare,   ' derived from cEconomicUnit
+                    .WorkerMale = p.WorkerMale,             ' derived from cEconomicUnit
+                    .WorkerMalePay = p.WorkerMalePay,       ' derived from cEconomicUnit
+                    .WorkerMaleshare = p.WorkerMaleshare,   ' derived from cEconomicUnit
+                    .WorkerOther = p.WorkerOther,           ' derived from cEconomicUnit
+                    .WorkerOtherPay = p.WorkerOtherPay,     ' derived from cEconomicUnit
+                    .WorkerParttime = p.WorkerParttime,     ' derived from cEconomicUnit
+                    .WorkerFemaleDependents = p.WorkerFemaleDependents,     ' derived from cEconomicUnit
+                    .WorkerMaleDependents = p.WorkerMaleDependents,         ' derived from cEconomicUnit
+                    .AgriculturalInput = p.AgriculturalInput,           '
+                    .AgriculturalProducts = p.AgriculturalProducts      '
+                }) _
+                .ToList()
 
         Dim wholesalerUnits As List(Of WholesalerUnit) = Me.m_lUnits _
             .Where(Function(p) TypeOf p Is cWholesalerUnit) _
@@ -1511,10 +1524,62 @@ Public Class cData
                 .WorkerMaleDependents = p.WorkerMaleDependents,         ' derived from cEconomicUnit
                 .ObserverCost = p.ObserverCost,                    ' specific to cProducerUnit
                 .ObserverRate = p.ObserverRate,                    ' specific to cProducerUnit
-                .TicketProducts = p.TicketProducts                 ' specific to cProducerUnit
+                .TicketProducts = p.TicketProducts,                 ' specific to cProducerUnit
+                .GearCode = p.GearCode                           ' specific to cProducerUnit
             }) _
             .ToList()
 
+        Dim distributionUnits As List(Of DistributionUnit) = Me.m_lUnits _
+            .Where(Function(p) TypeOf p Is cDistributionUnit) _
+            .Cast(Of cDistributionUnit)() _
+            .Where(Function(p) p IsNot Nothing) _
+            .Select(Function(p As cDistributionUnit) New DistributionUnit With {
+                .DBID = p.DBID,                         '
+                .Name = p.Name,                         ' derived from cUnit
+                .NameLocal = p.NameLocal,               ' derived from cUnit
+                .Sequence = p.Sequence,                 ' derived from cUnit
+                .Nationality = p.Nationality,           ' derived from cUnit
+                .Broker = p.Broker,                     ' derived from cEconomicUnit
+                .CapitalInput = p.CapitalInput,         '  derived from cEconomicUnit
+                .CertificationCost = p.CertificationCost,   ' derived from cEconomicUnit
+                .EnergyCost = p.EnergyCost,             ' derived from cEconomicUnit
+                .EnergyProducts = p.EnergyProducts,     ' derived from cEconomicUnit
+                .IndustrialCost = p.IndustrialCost,     ' derived from cEconomicUnit
+                .IndustrialProducts = p.IndustrialProducts, ' derived from cEconomicUnit
+                .ManagementCost = p.ManagementCost,     ' derived from cEconomicUnit
+                .LicenseTax = p.LicenseTax,             ' derived from cEconomicUnit
+                .SubsidyOther = p.SubsidyOther,         ' derived from cEconomicUnit
+                .SubsidyEnergy = p.SubsidyEnergy,       ' derived from cEconomicUnit
+                .ServiceProducts = p.ServiceProducts,   ' derived from cEconomicUnit
+                .ServiceCost = p.ServiceCost,           ' derived from cEconomicUnit
+                .RoyaltyCost = p.RoyaltyCost,           ' derived from cEconomicUnit
+                .OwnerFemale = p.OwnerFemale,           ' derived from cEconomicUnit
+                .OwnerMale = p.OwnerMale,               ' derived from cEconomicUnit
+                .OwnerFemalePay = p.OwnerFemalePay,     ' derived from cEconomicUnit
+                .OwnerFemaleshare = p.OwnerFemaleshare, ' derived from cEconomicUnit
+                .OwnerMalePay = p.OwnerMalePay,         ' derived from cEconomicUnit
+                .OwnerMaleshare = p.OwnerMaleshare,     ' derived from cEconomicUnit
+                .OwnerFemaleDependents = p.OwnerFemaleDependents,   ' derived from cEconomicUnit
+                .OwnerMaleDependents = p.OwnerMaleDependents,       ' derived from cEconomicUnit
+                .ProfitTax = p.ProfitTax,               ' derived from cEconomicUnit
+                .TaxImport = p.TaxImport,               ' derived from cEconomicUnit
+                .TaxExport = p.TaxExport,               ' derived from cEconomicUnit
+                .TaxVAT = p.TaxVAT,                     ' derived from cEconomicUnit
+                .TaxProduction = p.TaxProduction,       ' derived from cEconomicUnit
+                .TaxEnvironmental = p.TaxEnvironmental, ' derived from cEconomicUnit
+                .WorkerFemale = p.WorkerFemale,         ' derived from cEconomicUnit
+                .WorkerFemalePay = p.WorkerFemalePay,   ' derived from cEconomicUnit
+                .WorkerFemaleshare = p.WorkerFemaleshare,   ' derived from cEconomicUnit
+                .WorkerMale = p.WorkerMale,             ' derived from cEconomicUnit
+                .WorkerMalePay = p.WorkerMalePay,       ' derived from cEconomicUnit
+                .WorkerMaleshare = p.WorkerMaleshare,   ' derived from cEconomicUnit
+                .WorkerOther = p.WorkerOther,           ' derived from cEconomicUnit
+                .WorkerOtherPay = p.WorkerOtherPay,     ' derived from cEconomicUnit
+                .WorkerParttime = p.WorkerParttime,     ' derived from cEconomicUnit
+                .WorkerFemaleDependents = p.WorkerFemaleDependents,     ' derived from cEconomicUnit
+                .WorkerMaleDependents = p.WorkerMaleDependents         ' derived from cEconomicUnit
+            }) _
+            .ToList()
 
         Dim consumerUnits As List(Of ConsumerUnit) = Me.m_lUnits _
             .Where(Function(p) TypeOf p Is cConsumerUnit) _
@@ -1529,12 +1594,37 @@ Public Class cData
             }) _
             .ToList()
 
-        Return True ' m_valueChainStorageService.SaveValueChain(accessDbFilePath, parameter, links, consumerUnits, processingUnits, wholesalerUnits, retailerUnits, producerUnits)
-    End Function
+        Dim flowDiagrams As List(Of FlowDiagram) = Me.m_lFlowDiagrams _
+            .Where(Function(p) TypeOf p Is cFlowDiagram) _
+            .Cast(Of cFlowDiagram)() _
+            .Where(Function(p) p IsNot Nothing) _
+            .Select(Function(p As cFlowDiagram) New FlowDiagram With {
+                .DBID = p.DBID,                         '
+                .Name = p.Name
+            }) _
+            .ToList()
 
+        Dim flowPositions As List(Of FlowPosition) = Me.m_lFlowPositions _
+            .Where(Function(p) TypeOf p Is cFlowPosition) _
+            .Cast(Of cFlowPosition)() _
+            .Where(Function(p) p IsNot Nothing) _
+            .Select(Function(p As cFlowPosition) New FlowPosition With {
+                .DBID = p.DBID,                         '
+                .Xpos = p.Xpos,
+                .Ypos = p.Ypos,
+                .Width = p.Width,
+                .Height = p.Height,
+                .Unit = p.Unit.DBID,
+                .Diagram = p.Diagram.DBID
+            }) _
+            .ToList()
+
+        Return m_valueChainStorageService.SaveValueChain(accessDbFilePath, parameter, links, linkLandings, consumerUnits, processingUnits, wholesalerUnits, retailerUnits, producerUnits, distributionUnits, flowDiagrams, flowPositions)
+#Else
+        Return true
 #End If
+    End Function
 
 #End Region ' Internals
 
 End Class
-

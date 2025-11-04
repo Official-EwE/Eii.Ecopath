@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
-    <Platforms>x86;x64;AnyCPU;</Platforms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
+    <Platforms>x86;x64;AnyCPU</Platforms>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwEUtils.snk</AssemblyOriginatorKeyFile>
     <PublishUrl>publish\</PublishUrl>
@@ -21,23 +20,35 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <AssemblyName>EwEUtils</AssemblyName>
     <RootNamespace>EwEUtils</RootNamespace>
+    <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
     <DebugType>portable</DebugType>
   </PropertyGroup>
   <PropertyGroup>
-    <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
     <PackageId>Eii.Ecopath.EwEUtils</PackageId>
     <Title>Ecopath with Ecosim Utils</Title>
     <Description>A description of the EwEUtils package</Description>
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwEUtils</PackageProjectUrl>
-    <IncludeSymbols>True</IncludeSymbols>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.1</Version>
+    <Version>6.7.3</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>$(Project URL)</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    <IncludeReferencedProjects>True</IncludeReferencedProjects>
+    <Company>EII</Company>
+    <PackageIcon>EII_plain_128x128.png</PackageIcon>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="True" PackagePath="\" />
+    <None Include="..\..\EII_plain_128x128.png" Pack="True" PackagePath="\" />
+    <None Include="Includes\*.*" Pack="true" PackagePath="Includes\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	<PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>EwEUtils.xml</DocumentationFile>
@@ -81,6 +92,11 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <WarningLevel>0</WarningLevel>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Commands\**" />
+    <EmbeddedResource Remove="Commands\**" />
+    <None Remove="Commands\**" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Update="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -135,9 +151,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.9" />
   </ItemGroup>
 </Project>

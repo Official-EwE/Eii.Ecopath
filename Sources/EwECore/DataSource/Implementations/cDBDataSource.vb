@@ -185,8 +185,6 @@ Namespace DataSources
             Me.ClearChanged()
             ' Cleanup dead records, if any
             Me.Cleanup()
-            ' Just in case
-            Me.EndTransaction(True)
             ' Close current db
             Me.m_db.Close()
             ' Forget identity
@@ -11417,6 +11415,7 @@ Namespace DataSources
                 ' Taxa
                 bSuccess = bSuccess And DeleteNonreferencedRecords("EcopathGroupTaxon", "TaxonID", "EcopathTaxon")
                 bSuccess = bSuccess And DeleteNonreferencedRecords("EcopathStanzaTaxon", "TaxonID", "EcopathTaxon")
+                Me.EndTransaction(bSuccess)
 
             Catch ex As Exception
 

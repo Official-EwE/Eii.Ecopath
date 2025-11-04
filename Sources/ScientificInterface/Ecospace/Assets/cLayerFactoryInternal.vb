@@ -57,8 +57,8 @@ Namespace Ecospace.Basemap.Layers
         ''' Ecospace basemap.</param>
         ''' <returns>An array of layers</returns>
         ''' -------------------------------------------------------------------
-        Public Overloads Function GetLayers(uic As cUIContext,
-                                            varName As eVarNameFlags,
+        Public Overloads Function GetLayers(uic As cUIContext, _
+                                            varName As eVarNameFlags, _
                                             Optional layerData As cEcospaceLayer = Nothing) As cDisplayLayerRaster()
 
             Dim lLayers As New List(Of cDisplayLayerRaster)
