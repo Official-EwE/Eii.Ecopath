@@ -39,15 +39,18 @@ Imports EwELicense
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports EwEUtils.Logging
 Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
+
 
 #End Region ' Imports
-
 #Disable Warning IDE0017 ' Suppress "Object initialization can be simplified" 
 #Disable Warning IDE0009 ' Suppress "Add Me qualification" 
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class to handle all interactions between a user interface layer, a 
@@ -195,6 +198,8 @@ Public Class cCore
 
     Private m_SampleManager As Samples.cEcopathSampleManager = Nothing
     Private m_ArenaManager As cEcosimArenaManager = Nothing
+    Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cCore)()
+
 
 #If Not NET Then
     Private m_license As cLicense = Nothing
@@ -317,7 +322,7 @@ Public Class cCore
             End Select
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "GetCoreCounter {counterType}", counterType)
             Debug.Assert(False, Me.ToString & ".getCoreCounter() Error: " & ex.Message)
         End Try
 
@@ -339,7 +344,7 @@ Public Class cCore
                 Try
                     Return m_Stanza.Age2(iIndex, m_Stanza.Nstanza(iIndex))
                 Catch ex As Exception
-                    cLog.Write(ex)
+                    m_logger.LogError(ex, "GetCoreCounter nMaxStanzaAge for index {iIndex}", iIndex)
                     Return 0 '?
                 End Try
 
@@ -347,7 +352,7 @@ Public Class cCore
                 Try
                     Return m_Stanza.Nstanza(iIndex)
                 Catch ex As Exception
-                    cLog.Write(ex)
+                    m_logger.LogError(ex, "GetCoreCounter nStanzasForStanzaGroup for index {iIndex}", iIndex)
                     Return 0 '?
                 End Try
 
@@ -753,7 +758,7 @@ Public Class cCore
 
                 Return strVersion
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Version")
                 Return ""
             End Try
         End Get
@@ -1321,7 +1326,7 @@ Public Class cCore
             Me.m_ThreadedProcesses.Add(Me.SpatialDataConnectionManager.DatasetManager)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "InitThreadedProcesses")
             Debug.Assert(False, ex.Message)
         End Try
     End Sub
@@ -1387,7 +1392,7 @@ Public Class cCore
             Me.m_psdModel.m_psd = m_PSDData
             Return True
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "InitPSD")
             Return False
         End Try
     End Function
@@ -1400,7 +1405,7 @@ Public Class cCore
                 Me.m_PSDData.Clear()
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "ClosePSD")
         End Try
 
     End Sub
@@ -2738,7 +2743,7 @@ Public Class cCore
                     Me.Messages.SendMessage(New cMessage("Output path has changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "cCore::OutputPath(" & value & ")")
+                m_logger.LogError(ex, "cCore::OutputPath({value})", value)
             End Try
         End Set
     End Property
@@ -2756,7 +2761,7 @@ Public Class cCore
             Try
                 Return Me.m_settings.Autosave(savetype)
             Catch ex As Exception
-                cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
+                m_logger.LogError(ex, "cCore::Autosave({savetype})", savetype.ToString)
             End Try
             Return False
         End Get
@@ -2767,7 +2772,7 @@ Public Class cCore
                     Me.OnSettingsChanged()
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
+                m_logger.LogError(ex, "cCore::Autosave({savetype})", savetype.ToString)
             End Try
 
         End Set
@@ -2785,7 +2790,7 @@ Public Class cCore
             Try
                 Return Me.m_settings.AutosaveHeaders
             Catch ex As Exception
-                cLog.Write(ex, "cCore::SaveWithFileHeader")
+                m_logger.LogError(ex, "cCore::SaveWithFileHeader")
             End Try
             Return False
         End Get
@@ -2796,7 +2801,7 @@ Public Class cCore
                     Me.OnSettingsChanged()
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "cCore::SaveWithFileHeader")
+                m_logger.LogError(ex, "cCore::SaveWithFileHeader")
             End Try
         End Set
     End Property
@@ -2858,7 +2863,7 @@ Public Class cCore
                         Next
                     Next
                 Catch ex As Exception
-                    cLog.Write(ex, "cCore.HeaderInfo-spattemp")
+                    m_logger.LogError(ex, "cCore.HeaderInfo-spattemp")
                 End Try
             Case eAutosaveTypes.Ecotracer
                 fields("EcotracerScenario") = Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
@@ -3264,7 +3269,7 @@ Public Class cCore
                     End If
 
                 Catch ex As Exception
-                    cLog.Write(ex, "cCore::UpdateDataSource")
+                    m_logger.LogError(ex, "cCore::UpdateDataSource")
                     ' Whoah
                     msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest),
                                           eMessageType.DataImport,
@@ -3483,7 +3488,7 @@ Public Class cCore
     ''' <returns>True if the model was loaded successfully. False otherwise</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(strFile As String) As Boolean
-
+        m_logger.LogInformation("Loading Ecopath model from file: {0}", strFile)
         Dim bNeedClosing As Boolean = False
 
         If Not Me.CloseModel() Then Return False
@@ -3537,8 +3542,6 @@ Public Class cCore
 
                 'build model
                 bsuccess = InitEwEModel()
-
-                cLog.InitLog(DataSource.ToString)
 
                 'There needs to be a Maintenance message sent SendEcopathLoadMessage() does not really seem like it would work for this
                 m_publisher.AddMessage(New cMessage("Loaded model '" & m_EwEModel.Name & "'", eMessageType.DataModified,
@@ -3722,7 +3725,7 @@ Public Class cCore
             Return True
         Else
             Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_SAVE_FAILED, DataSource.ToString), eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Warning))
-            cLog.Write("cCore.SaveModel() Failed to save the current model") 'the current model name will be in the log file
+            m_logger.LogInformation("cCore.SaveModel() Failed to save the current model")
             Return False
         End If
 
@@ -3739,7 +3742,7 @@ Public Class cCore
         For Each tp As IThreadedProcess In Me.m_ThreadedProcesses
             'wait 10 seconds
             If Not tp.StopRun(10000) Then
-                cLog.Write(tp.ToString & " Failed to stop run when loading new model.")
+                m_logger.LogInformation("{0} Failed to stop run when loading new model.", tp.ToString)
                 'not really a lot of point in sending out an error message
                 'this is more of a developement error
                 'Debug.Assert(False, manager.ToString & " Failed to stop run when loading new model.")
@@ -3774,8 +3777,8 @@ Public Class cCore
             End If
 
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".CloseModel() Exception closing data source: " & ex.Message)
-            cLog.Write(ex)
+            'Debug.Assert(False, Me.ToString & ".CloseModel() Exception closing data source: " & ex.Message)
+            m_logger.LogError(ex, "CloseModel() Exception closing data source: {1}", ex.Message)
         End Try
 
         Try
@@ -3856,7 +3859,7 @@ Public Class cCore
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".CloseModel() Exception clearing memory: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "CloseModel() Exception clearing memory: {1}", ex.Message)
         End Try
 
         Try
@@ -3870,8 +3873,7 @@ Public Class cCore
         System.Console.WriteLine("CloseModel() memory after  " & GC.GetTotalMemory(True))
 #End If
 
-        cLog.Write("Model closed")
-        cLog.InitLog("")
+        m_logger.LogInformation("Model closed")
 
         Return True
 
@@ -4232,7 +4234,7 @@ Public Class cCore
 
                 'iGroup out of bounds
                 If (iGroup > nGroups Or iGroup < 0) And iGroup <> NULL_VALUE Then
-                    cLog.Write(Me.ToString & ".PopulateEcoPathOutput() iGroup out of bounds.")
+                    m_logger.LogInformation("PopulateEcoPathOutput() iGroup out of bounds.")
                     'ToDo LoadEcopathOutputs() failed to find iGroup do something better than exiting
                     Return False
                 End If
@@ -4457,7 +4459,7 @@ Public Class cCore
 
         Catch ex As Exception
 
-            cLog.Write(ex)
+            m_logger.LogError(ex, "LoadEcopathOutputs() Error: {1}", ex.Message)
             Return False
 
         End Try
@@ -4558,7 +4560,7 @@ Public Class cCore
 
         Catch ex As Exception
 
-            cLog.Write(Me.ToString() & ".LoadTaxon() Error: " & ex.Message)
+            m_logger.LogError(ex, "LoadTaxon() Error: {1}", ex.Message)
             Debug.Assert(False, Me.ToString & ".LoadTaxon() Error: " & ex.Message)
             Return False
 
@@ -4671,7 +4673,7 @@ Public Class cCore
         If (DirectCast(DataSource, IEcopathDataSource).AddTaxon(iTargetDBID, bIsStanza, data, sPropBiomass, sPropCatch, iDBID)) Then
             Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.Ecopath, eDataTypes.Taxon)
             bSucces = True
-            cLog.Write("Taxon " & data.Genus & " " & data.Species & " added", eVerboseLevel.Detailed)
+            m_logger.LogInformation("Taxon {0} {1} added", data.Genus, data.Species)
         End If
 
         ' Decrease batch count
@@ -4703,7 +4705,7 @@ Public Class cCore
         If ds.RemoveTaxon(Me.m_TaxonData.TaxonDBID(iTaxon)) Then
             Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.Ecopath, eDataTypes.Taxon)
             bSucces = True
-            cLog.Write("Taxon " & iTaxon & " deleted", eVerboseLevel.Detailed)
+            m_logger.LogInformation("Taxon {0} deleted", iTaxon)
         End If
 
         ' Decrease batch count
@@ -4790,7 +4792,7 @@ Public Class cCore
             Next iGroup
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".updateFleets() Error: " & ex.Message)
+            m_logger.LogError(ex, "updateFleets() Error: {1}", ex.Message)
             'ok figure out what happened!!!!!!!!!!!!!
             Debug.Assert(False, Me.ToString & ".updateFleets() Error: " & ex.Message)
             Return False
@@ -4843,7 +4845,7 @@ Public Class cCore
 
         Catch ex As Exception
 
-            cLog.Write(Me.ToString() & ".LoadFleets() Error: " & ex.Message)
+            m_logger.LogInformation(ex, "LoadFleets() Error: {1}", ex.Message)
             Debug.Assert(False, Me.ToString & ".LoadFleets() Error: " & ex.Message)
             Return False
 
@@ -4890,7 +4892,7 @@ Public Class cCore
 
         Catch ex As Exception
 
-            cLog.Write(Me.ToString() & ".LoadFleets() Error: " & ex.Message)
+            m_logger.LogError(ex, "LoadFleets() Error: {1}", ex.Message)
             Debug.Assert(False, Me.ToString & ".LoadFleets() Error: " & ex.Message)
             Return False
 
@@ -5167,7 +5169,7 @@ Public Class cCore
             Me.m_EcopathStats.ResetStatusFlags()
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "LoadEcopathStats() Error: {1}", ex.Message)
             Throw New ArgumentException(Me.ToString & ".LoadEcopathStats() Error: " & ex.Message, ex)
         End Try
     End Sub
@@ -5252,7 +5254,7 @@ Public Class cCore
                 msg = CreateMessage(My.Resources.CoreMessages.ECOPATH_ERROR_NOMODEL, eCoreComponentType.Ecopath, eMessageType.ErrorEncountered)
                 m_publisher.AddMessage(msg)
 
-                cLog.Write(Me.ToString & ".RunEcoPath() Failed EcoPath Model has not been initialized. InitEcoPath(filename) must be called before .RunEcoPath().")
+                m_logger.LogInformation("RunEcoPath() Failed EcoPath Model has not been initialized. InitEcoPath(filename) must be called before .RunEcoPath().")
                 Return False
             End If
 
@@ -5304,7 +5306,7 @@ Public Class cCore
             Else
                 'Assuming here that if EcoPath returned false it has already sent a message that explains the problem 
                 'No need to send another message
-                cLog.Write(Me.ToString & ".RunEcoPath() Failed to Estimate Parameters.")
+                m_logger.LogInformation("RunEcoPath() Failed to Estimate Parameters.")
 
                 bSuccessEcopath = True
                 bSuccessPSD = False
@@ -5322,7 +5324,7 @@ Public Class cCore
                     eCoreComponentType.Ecopath, eMessageType.ErrorEncountered)
             m_publisher.AddMessage(msg)
 
-            cLog.Write(Me.ToString & ".RunEcoPath() Error. " & ex.Message)
+            m_logger.LogError(ex, "RunEcoPath() Error: {1}", ex.Message)
             bSuccessEcopath = False
             bSuccessPSD = False
             'Set the run state to Error
@@ -5465,7 +5467,7 @@ Public Class cCore
                         'A message got sent by EcoPath that is not being handled here.
                         'This is probable wrong. 
                         'Any variable that had its status flag set by EcoPath should have its status flag set in the interface.
-                        cLog.Write("Message sent to Core from EcopPath that is not handled by ProcessMessageFromModel(cMessage). Message = " & msg.Message)
+                        m_logger.LogInformation("Message sent to Core from EcopPath that is not handled by ProcessMessageFromModel(cMessage). Message = {1}", msg.Message)
                         Debug.Assert(False, "Variable from EcoPath not handled by the Core.")
 
                 End Select
@@ -5522,7 +5524,7 @@ Public Class cCore
         Catch ex As Exception
             'OOPS
             'not much we can do at this point as there is no place to post the message too
-            cLog.Write(Me.ToString & ".EcoPathMessage_Handler(...) Error:" & ex.Message)
+            m_logger.LogError(ex, "EcopathMessage_Handler(...) Error: {1}", ex.Message)
             Debug.Assert(False)
         End Try
 
@@ -5541,7 +5543,7 @@ Public Class cCore
         Catch ex As Exception
             'OOPS
             'not much we can do at this point as there is no place to post the message too
-            cLog.Write(Me.ToString & ".EcoPathMessage_Handler(...) Error:" & ex.Message)
+            m_logger.LogError(ex, "PSDMessage_Handler(...) Error: {1}", ex.Message)
             Debug.Assert(False)
         End Try
 
@@ -6218,7 +6220,7 @@ Public Class cCore
             End If
 
         Catch ex As Exception
-            cLog.Write(ex, "cCore.Set_Taxon_Flags")
+            m_logger.LogError("Set_Taxon_Flags. Error setting taxon flags: {message}", ex.Message)
         End Try
 
         t.AllowValidation = True
@@ -6911,7 +6913,7 @@ Public Class cCore
             Return True
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".InitEcoSim(...) Error: " & ex.Message)
+            m_logger.LogError("InitEcoSim. Error initializing EcoSim: {message}", ex.Message)
             Debug.Assert(False, ex.Message)
             Return False
         End Try
@@ -7079,7 +7081,7 @@ Public Class cCore
                 'EcoPath will handle it's own messages if it fails
                 If Not RunEcopath() Then
                     'Debug.Assert(False, Me.ToString & ".RunEcoSim() Failed to Run EcoPath.")
-                    cLog.Write(Me.ToString & ".RunEcoSim() Failed to Run EcoPath.")
+                    m_logger.LogInformation("RunEcoSim(). Failed to run EcoPath scenario '{scenarioName}'", strScenarioName)
                     Me.SendEcosimLoadStateMessage(strScenarioName, My.Resources.CoreMessages.ECOPATH_RUN_ERROR)
                     Return False
                 End If
@@ -7174,7 +7176,7 @@ Public Class cCore
             Return True
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".LoadEcosimScenario(...) Error: " & ex.Message)
+            m_logger.LogError("LoadEcosimScenario. Error loading Ecosim scenario '{scenarioName}': {message}", strScenarioName, ex.Message)
             Me.SendEcosimLoadStateMessage(strScenarioName, ex.Message)
             Debug.Assert(False, ex.Message)
             Return False
@@ -7245,7 +7247,7 @@ Public Class cCore
 
         ' Set the state monitor can fire events that use the Ecosim and Ecospace data
         Me.m_StateMonitor.SetEcoSimLoaded(False)
-        cLog.Write("Ecosim scenario closed")
+        m_logger.LogInformation("Ecosim scenario closed")
 
         Me.m_EcosimEnviroResponseManager.Clear()
         Me.m_EcosimMortalityResponseManager.Clear()
@@ -7524,7 +7526,7 @@ Public Class cCore
             'test that EcoSim has been initialized
             If Not m_bEcoSimIsInit Then
                 Debug.Assert(False, "EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first")
-                cLog.Write("EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first")
+                m_logger.LogError("EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first")
                 Return Nothing
             End If
             ' JS 06Jul07: list will take care of scenario index/item index offset
@@ -7547,7 +7549,7 @@ Public Class cCore
                 End If
                 Return Nothing
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError("EcosimGroupOutputs. Error getting Ecosim Group Output for group index {groupIndex}: {message}", iGroup, ex.Message)
                 Return Nothing
             End Try
         End Get
@@ -7658,7 +7660,7 @@ Public Class cCore
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError("LoadEcosimFleetOutputs. Error loading Ecosim Fleet Summary data: {message}", ex.Message)
             m_publisher.AddMessage(New cMessage("Error loading Ecosim Summary data. " & ex.Message, eMessageType.ErrorEncountered,
                                     eCoreComponentType.Ecosim, eMessageImportance.Critical))
             Debug.Assert(False, ex.Message)
@@ -7674,7 +7676,7 @@ Public Class cCore
                 Me.m_EcosimStats.SSGroup(igrp) = m_EcoSimData.SSGroup(igrp)
             Next
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError("LoadEcosimStats. Error loading Ecosim Stats: {message}", ex.Message)
             Throw New ArgumentException(Me.ToString & ".LoadEcosimStats() Error: " & ex.Message, ex)
         End Try
     End Sub
@@ -7683,7 +7685,7 @@ Public Class cCore
         Try
             ' Hah, nothing to do here
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError("LoadEcosimOutputs. Error loading Ecosim Outputs: {message}", ex.Message)
             Throw New ArgumentException(Me.ToString & ".LoadEcosimOutputs() Error: " & ex.Message, ex)
         End Try
     End Sub
@@ -7772,7 +7774,7 @@ Public Class cCore
                 Return DirectCast(m_ShapeManagers.Item(eDataTypes.Forcing), cForcingFunctionShapeManager)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find Shape Manager")
-                cLog.Write(Me.ToString & ".ForcingShapeManager() Error: " & ex.Message)
+                m_logger.LogError("ForcingShapeManager. Failed to find Shape Manager: {message}", ex.Message)
                 Return Nothing
             End Try
 
@@ -7787,7 +7789,7 @@ Public Class cCore
                 Return DirectCast(m_ShapeManagers.Item(eDataTypes.EggProd), cEggProductionShapeManager)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find Shape Manager")
-                cLog.Write(Me.ToString & ".EggProdShapeManager() Error: " & ex.Message)
+                m_logger.LogError("EggProdShapeManager. Failed to find Shape Manager: {message}", ex.Message)
                 Return Nothing
             End Try
 
@@ -7802,7 +7804,7 @@ Public Class cCore
                 Return DirectCast(m_ShapeManagers.Item(eDataTypes.Mediation), cMediationShapeManager)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find Shape Manager")
-                cLog.Write(Me.ToString & ".MediationShapeManager() Error: " & ex.Message)
+                m_logger.LogError("MediationShapeManager. Failed to find Shape Manager: {message}", ex.Message)
                 Return Nothing
             End Try
 
@@ -7817,7 +7819,7 @@ Public Class cCore
                 Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishingEffort), cFishingEffortShapeManger)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find effort shape manager")
-                cLog.Write(Me.ToString & ".FishingEffortShapeManager() Error: " & ex.Message)
+                m_logger.LogError("FishingEffortShapeManager. Failed to find effort shape manager: {message}", ex.Message)
                 Return Nothing
             End Try
 
@@ -7832,7 +7834,7 @@ Public Class cCore
                 Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishMort), cFishingMortalityShapeManger)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find mortality shape manager")
-                cLog.Write(Me.ToString & ".FishMortShapeManager() Error: " & ex.Message)
+                m_logger.LogError("FishMortShapeManager. Failed to find mortality shape manager: {message}", ex.Message)
                 Return Nothing
             End Try
 
@@ -7847,7 +7849,7 @@ Public Class cCore
                 Return DirectCast(m_ShapeManagers.Item(eDataTypes.PriceMediation), cLandingsMediationShapeManager)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find price elasticity shape manager")
-                cLog.Write(Me.ToString & ".PriceElasticityShapeManager() Error: " & ex.Message)
+                m_logger.LogError("LandingsShapeManager. Failed to find price elasticity shape manager: {message}", ex.Message)
                 Return Nothing
             End Try
 
@@ -7895,7 +7897,7 @@ Public Class cCore
                 Return DirectCast(m_ShapeManagers.Item(eDataTypes.CapacityMediation), cEnviroResponseShapeManager)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find price elasticity shape manager")
-                cLog.Write(Me.ToString & ".PriceElasticityShapeManager() Error: " & ex.Message)
+                m_logger.LogError("EnviroResponseShapeManager. Failed to find price elasticity shape manager: {message}", ex.Message)
                 Return Nothing
             End Try
 
@@ -7939,7 +7941,7 @@ Public Class cCore
             'Me.m_EcoPathData.EcosimScenarioLastSaved(iScenario) = scn.LastSaved
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".UpdateEcoSimScenario() Error: " & ex.Message)
+            m_logger.LogError("UpdateEcoSimScenario. Error updating EcoSim scenario data: {message}", ex.Message)
             Return False
         End Try
 
@@ -7975,7 +7977,7 @@ Public Class cCore
             Next
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".updateEcoSimGroupInfo() Error: " & ex.Message)
+            m_logger.LogError("UpdateEcoSimGroup. Error updating EcoSim group data: {message}", ex.Message)
             Return False
         End Try
 
@@ -8019,7 +8021,7 @@ Public Class cCore
 
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".updateEcoSimGroupInfo() Error: " & ex.Message)
+            m_logger.LogError("UpdateEcoSimFleetInput. Error updating EcoSim fleet data: {message}", ex.Message)
             Return False
         End Try
 
@@ -8063,7 +8065,7 @@ Public Class cCore
 
         Catch ex As Exception
 
-            cLog.Write(Me.ToString() & ".LoadFleets() Error: " & ex.Message)
+            m_logger.LogError("LoadEcosimFleetInputs. Error loading Ecosim fleet data: {message}", ex.Message)
             Debug.Assert(False, Me.ToString & ".LoadFleets() Error: " & ex.Message)
             Return False
 
@@ -8083,7 +8085,7 @@ Public Class cCore
                 m_Ecosim.bStopRunning = True
             End If
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".StopEcoSim() Error: & " & ex.Message)
+            m_logger.LogError("StopEcoSim. Error stopping EcoSim model: {message}", ex.Message)
         End Try
     End Sub
 
@@ -8172,7 +8174,7 @@ Public Class cCore
                                                      eCoreComponentType.ShapesManager, eMessageImportance.Maintenance))
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError("setEcosimRunLength. Error changing number of Ecosim years: {message}", ex.Message)
             Throw New ApplicationException("Error changing number of Ecosim years.", ex)
         End Try
 
@@ -8369,7 +8371,7 @@ Public Class cCore
             'this could cause problem if Ecopath has a problem
             If Not RunEcopath() Then
 
-                cLog.Write(Me.ToString & ".RunEcoSim() Failed to Run EcoPath.")
+                m_logger.LogInformation("RunEcoSim. Failed to run EcoPath before running EcoSim.")
 
                 'EcoPath is supposed to have sent a message if it failed
                 msg = New cMessage("Ecosim could not be run because Ecopath failed to balance the model.", eMessageType.ErrorEncountered,
@@ -8515,7 +8517,7 @@ Public Class cCore
         Get
             Try
                 If iScenario < 0 Or iScenario >= Me.m_EcopathData.EcosimScenarioName.Length Then
-                    cLog.Write(Me.ToString + ".EcoSimScenario(nScenario) nScenario out of bounds.")
+                    m_logger.LogInformation("EcoSimScenario. nScenario out of bounds: {nScenario}", iScenario)
                     Return Nothing
                 End If
 
@@ -8538,7 +8540,7 @@ Public Class cCore
                 Return infoOut
 
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".cEcoSimScenario() Error: " & ex.Message)
+                m_logger.LogError("privateEcoSimScenario. Error getting EcoSim scenario info: {message}", ex.Message)
                 Debug.Assert(False, "Error Getting EcoSim Scenario Info: " & ex.Message)
                 Return Nothing
             End Try
@@ -8552,7 +8554,7 @@ Public Class cCore
             'Set the parameters in the underlying EcoSim data structures to user supplied values
             Try
                 If iScenario < 0 Or iScenario >= Me.m_EcopathData.EcosimScenarioName.Length Then
-                    cLog.Write(Me.ToString + ".EcoSimScenario(nScenario) nScenario out of bounds.")
+                    m_logger.LogInformation("privateEcoSimScenario. nScenario out of bounds: {nScenario}", iScenario)
                     Return
                 End If
 
@@ -8563,7 +8565,7 @@ Public Class cCore
                 ' Do not update last saved date; this is exclusively set by the core when saving
 
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".cEcoSimScenario() EcoSim Parameters will not be set Error: " & ex.Message)
+                m_logger.LogError("privateEcoSimScenario. Error setting EcoSim scenario info: {message}", ex.Message)
                 Debug.Assert(False, "EcoSim Scenario Info will not be set Error: " & ex.Message)
             End Try
 
@@ -8580,7 +8582,7 @@ Public Class cCore
             If Not m_bEcoSimIsInit Then
                 Debug.Assert(False, "EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first")
                 'MsgBox("EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first", MsgBoxStyle.Critical)
-                cLog.Write("EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first")
+                m_logger.LogInformation("EcoSim must be initialized before you can get or set its Parameters. Call InitEcoSim(...) first")
                 Return Nothing
             End If
 
@@ -8678,7 +8680,7 @@ Public Class cCore
             m_Ecosim.m_Data.SorWt = m_EcoSimRun.SORWt
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".EcoSimModelRunParameters() EcoSim Parameters will not be set Error: " & ex.Message)
+            m_logger.LogError("UpdateEcoSimModelParameters. EcoSim Parameters will not be set: {message}", ex.Message)
             Debug.Assert(False, "EcoSim Parameters will not be set Error: " & ex.Message)
             Return False
         End Try
@@ -8826,7 +8828,7 @@ Public Class cCore
             Return Me.SetVToDefault(sDefaultValue)
 
         Catch ex As Exception
-            cLog.Write(ex, "cCore.CheckResetDefaultVulnerabilities")
+            m_logger.LogError("CheckResetDefaultVulnerabilities. Exception: {message}", ex.Message)
             Debug.Assert(False, ex.Message)
             Return False
         End Try
@@ -8850,7 +8852,7 @@ Public Class cCore
                 Next iPred
             Next iPrey
         Catch ex As Exception
-            cLog.Write(ex, "cCore.SetVToDefault(" & sDefaultValue & ")")
+            m_logger.LogError("SetVToDefault. Exception: {message}", ex.Message)
             Debug.Assert(False, ex.Message)
             bSuccess = False
         End Try
@@ -8881,7 +8883,7 @@ Public Class cCore
                 Return True
             End If
         Catch ex As Exception
-            cLog.Write(ex, "cCore.ScaleVulnerabilitiesToTL(" & sVulLow & ", " & sVulHigh & ")")
+            m_logger.LogError("ScaleVulnerabilitiesToTL. Exception: {message}", ex.Message)
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -8933,7 +8935,7 @@ Public Class cCore
             Me.Messages.SendMessage(New cMessage("Vulnerabilites changed.", eMessageType.DataModified, eCoreComponentType.Ecosim, eMessageImportance.Maintenance))
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError("VulnerabilitiesChanged. Exception: {message}", ex.Message)
         End Try
 
     End Sub
@@ -9359,7 +9361,7 @@ Public Class cCore
                         If CheckExternalSpatialTemporalData() Then
 
                             ' Write detailed info
-                            cLog.Write("Started Ecospace run with " & Me.SpatialDataConnectionManager.NumConnectedAdapters & " configured connection(s), start year " & Me.EcosimFirstYear, eVerboseLevel.Detailed)
+                            m_logger.LogInformation("Started Ecospace run with {num} configured connection(s), start year {year}", Me.SpatialDataConnectionManager.NumConnectedAdapters, Me.EcosimFirstYear)
 
                             'Setup delegates for Ecospace to call 
                             Me.AddEcospaceTimeStepHandler(EcospaceTimeStepHandler)
@@ -9457,7 +9459,7 @@ Public Class cCore
                 Next
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".cEcospaceResultsWriter.EndWrite() Exception: " & ex.Message)
-                cLog.Write(ex, "cCore::onEcospaceRunCompleted SaveResults")
+                m_logger.LogError("onEcospaceRunCompleted SaveResults. Exception: {message}", ex.Message)
             End Try
 
             ' Did a spatial temporal error occur?
@@ -9778,7 +9780,7 @@ Public Class cCore
                 m_Ecospace.StopRun() ' = True
             End If
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".StopEcospace() Error: & " & ex.Message)
+            m_logger.LogError("StopEcospace() Error: {message}", ex.Message)
         End Try
     End Sub
 
@@ -9871,7 +9873,7 @@ Public Class cCore
             End If 'Me.m_EcoSpaceData.bENA
 
         Catch ex As Exception
-            cLog.Write(ex, "enaR Failed to save SCOR file.")
+            m_logger.LogError("enaR Failed to save SCOR file. Exception: {message}", ex.Message)
         End Try
     End Sub
 
@@ -9886,13 +9888,13 @@ Public Class cCore
                     If (writer.Enabled) Then writer.WriteResults(Me.m_spaceresults)
                 Catch ex As Exception
                     System.Console.WriteLine("Core.SaveEcospaceResults() m_EcospaceResultsWriter Exception: " & ex.Message)
-                    cLog.Write(ex, eVerboseLevel.Detailed, "cCore::SaveEcospaceResults #" & SpaceResults.iTimeStep)
+                    m_logger.LogError("SaveEcospaceResults() m_EcospaceResultsWriter Exception: {message}", ex.Message)
                 End Try
             Next
             Me.m_spaceSaveTime += Me.m_stpwSpaceTimer.Elapsed.TotalSeconds - st
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError("SaveEcospaceResults() Exception: {message}", ex.Message)
         End Try
 
     End Sub
@@ -9968,7 +9970,7 @@ Public Class cCore
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError("UpdateEcospaceForcingByEcosim() Exception: {message}", ex.Message)
         End Try
 
     End Sub
@@ -10191,7 +10193,7 @@ Public Class cCore
         Get
             Try
                 If iScenario < 0 Or iScenario >= Me.m_EcopathData.EcospaceScenarioDBID.Length Then
-                    cLog.Write(Me.ToString + ".privateEcospaceScenario(iScenario) index out of bounds.")
+                    m_logger.LogInformation("privateEcospaceScenario(iScenario) index out of bounds.")
                     Return Nothing
                 End If
 
@@ -10213,7 +10215,7 @@ Public Class cCore
                 Return ess
 
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".cEcospaceScenario() Error: " & ex.Message)
+                m_logger.LogError("cEcospaceScenario() Error: {message}", ex.Message)
                 Debug.Assert(False, "Error Getting cEcospaceScenario Info: " & ex.Message)
                 Return Nothing
             End Try
@@ -10227,14 +10229,14 @@ Public Class cCore
             'Set the parameters in the underlying EcoSim data structures to user supplied values
             Try
                 If iScenario < 0 Or iScenario >= Me.m_EcopathData.EcospaceScenarioDBID.Length Then
-                    cLog.Write(Me.ToString + ".cEcospaceScenario(nScenario) nScenario out of bounds.")
+                    m_logger.LogInformation("cEcospaceScenario(nScenario) nScenario out of bounds.")
                     Return
                 End If
 
                 m_EcopathData.EcospaceScenarioName(iScenario) = ess.Name
 
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".privateEcospaceScenario() EcoSim parameters will not be set Error: " & ex.Message)
+                m_logger.LogError("privateEcospaceScenario() EcoSim parameters will not be set Error: {message}", ex.Message)
                 Debug.Assert(False, "cEcospaceScenario Info will not be set Error: " & ex.Message)
             End Try
 
@@ -10489,7 +10491,7 @@ Public Class cCore
             Me.m_StateMonitor.SetEcospaceLoaded(bSuccess)
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".LoadEcospaceScenario(...) Error: " & ex.Message)
+            m_logger.LogError("LoadEcospaceScenario(...) Error: {message}", ex.Message)
             SendEcospaceLoadMessage(strScenarioName, ex.Message)
             Debug.Assert(False, ex.Message)
             bSuccess = False
@@ -10549,10 +10551,10 @@ Public Class cCore
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".CloseEcoSpaceScenario() Exception: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError("CloseEcoSpaceScenario() Exception: {message}", ex.Message)
         End Try
 
-        cLog.Write("Ecospace scenario closed")
+        m_logger.LogInformation("Ecospace scenario closed")
 
     End Sub
 
@@ -10751,7 +10753,7 @@ Public Class cCore
             Me.m_EcopathData.EcospaceScenarioContact(iScenario) = scn.Contact
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".UpdateEcoSpaceScenario() Error: " & ex.Message)
+            m_logger.LogError("UpdateEcoSpaceScenario() Error: {message}", ex.Message)
             Return False
         End Try
 
@@ -12314,7 +12316,7 @@ Public Class cCore
 
         Catch ex As Exception
             Debug.Assert(False)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "LoadStanza. Exception:{message}", ex.Message)
             Throw New ApplicationException("LoadStanza()", ex)
         End Try
 
@@ -12451,7 +12453,7 @@ Public Class cCore
             Return bSuccess
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "CalculateStanza. Exception:{message}", ex.Message)
             m_publisher.AddMessage(New cMessage("Error Calculating Stanza variables. " & ex.Message, eMessageType.ErrorEncountered,
                                     eCoreComponentType.Ecopath, eMessageImportance.Critical, eDataTypes.Stanza))
             m_publisher.sendAllMessages()
@@ -12857,7 +12859,7 @@ Public Class cCore
             Me.m_StateMonitor.SetEcotracerLoaded(bSuccess)
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".LoadEcotracerScenario(...) Error: " & ex.Message)
+            m_logger.LogError(ex, "LoadEcotracerScenario. Exception:{message}", ex.Message)
             SendEcotracerLoadMessage(strScenarioName, ex.Message)
             Debug.Assert(False, ex.Message)
             bSuccess = False
@@ -12871,7 +12873,7 @@ Public Class cCore
         Me.m_EcopathData.ActiveEcotracerScenario = -1
 
         Me.m_StateMonitor.SetEcotracerLoaded(False)
-        cLog.Write("Ecotracer scenario closed")
+        m_logger.LogInformation("Ecotracer scenario closed")
 
         ' Invoke plugin point
         If (Me.PluginManager IsNot Nothing) Then
@@ -13090,7 +13092,7 @@ Public Class cCore
             ets.AllowValidation = True
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".cEcotracerScenario() Error: " & ex.Message)
+            m_logger.LogError(ex, "InitEcotracerScenario. Exception:{message}", ex.Message)
             Debug.Assert(False, "Error Getting cEcotracerScenario Info: " & ex.Message)
             Return Nothing
         End Try
@@ -13111,7 +13113,7 @@ Public Class cCore
             ' Do not update last saved date; this is exclusively set by the core when saving
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".privateEcotracerScenario() EcoSim parameters will not be set Error: " & ex.Message)
+            m_logger.LogError(ex, "UpdateEcotracerScenario. Exception:{message}", ex.Message)
             Debug.Assert(False, "cEcotracerScenario Info will not be set Error: " & ex.Message)
             Return False
         End Try
@@ -13232,7 +13234,7 @@ Public Class cCore
 
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".EcoSimModelRunParameters() EcoSim Parameters will not be set Error: " & ex.Message)
+            m_logger.LogError(ex, "UpdateEcotracerModelParameters. Exception:{message}", ex.Message)
             Debug.Assert(False, "EcoSim Parameters will not be set Error: " & ex.Message)
             Return False
         End Try
@@ -13378,7 +13380,7 @@ Public Class cCore
             'This was left in place in case other data is added to the Tracer output objects.
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "loadEcotracerResults. Exception:{message}", ex.Message)
             'for now just assert this should send a message that the tracer results could not be loaded
             Debug.Assert(False, ex.StackTrace)
         End Try
@@ -14190,7 +14192,7 @@ Public Class cCore
                         Try
                             m_Ecosim.setvulratecell(obj.ValidationStatus.Index, obj.ValidationStatus.iArrayIndex, CSng(value.Value(obj.ValidationStatus.iArrayIndex)))
                         Catch ex As Exception
-                            cLog.Write(ex)
+                            m_logger.LogError("PostVariableValidation Exception:{message}", ex.Message)
                             Debug.Assert(False, "PostVariableValidation() setvulratecell error. " & ex.StackTrace)
                         End Try
 
@@ -15086,7 +15088,7 @@ Public Class cCore
 
         Catch ex As Exception
 
-            cLog.Write(ex)
+            m_logger.LogError(ex, "onChanged Exception:{message}", ex.Message)
             'maybe a better message than this
             Me.m_publisher.AddMessage(New cMessage("Error in " & Me.ToString & ".OnChanged(). " & ex.Message,
                                         eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
@@ -15284,7 +15286,7 @@ Public Class cCore
                 Return DirectCast(Me.m_SearchManagers(eDataTypes.SearchObjectiveManager), cSearchObjective)
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "SearchObjective() not available: {message}", ex.Message)
                 Debug.Assert(False, "SearchObjective() not avalible...... Oppssssss ")
                 Return Nothing
             End Try
@@ -15322,7 +15324,7 @@ Public Class cCore
                 Catch ex As Exception
                     'just for robustness 
                     'if one of the managers throws an exception the remaining managers will still be cleared
-                    cLog.Write(ex)
+                    m_logger.LogError(ex, "ClearSearchManagers Exception:{message}", ex.Message)
                 End Try
 
             Next
@@ -15360,7 +15362,7 @@ Public Class cCore
                 Return DirectCast(Me.m_SearchManagers(eDataTypes.FishingPolicyManager), cFishingPolicyManager)
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "FishingPolicyManager() not available: {message}", ex.Message)
                 Debug.Assert(False, "FishingPolicyManager() not avalible...... Oppssssss ")
                 Return Nothing
             End Try
@@ -15387,7 +15389,7 @@ Public Class cCore
                 Return DirectCast(Me.m_SearchManagers.Item(eDataTypes.MPAOptManager), cMPAOptManager)
             Catch ex As Exception
                 Debug.Assert(False, "Error getting EcoSeedManager(): " & ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, "MPAOptimizationManager() not available: {message}", ex.Message)
                 Return Nothing
             End Try
 
@@ -15404,7 +15406,7 @@ Public Class cCore
             Try
                 Return DirectCast(Me.m_SearchManagers.Item(eDataTypes.MSEManager), cMSEManager)
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "MSEManager() not available: {message}", ex.Message)
                 Return Nothing
             End Try
 
@@ -15416,7 +15418,7 @@ Public Class cCore
             Try
                 Return DirectCast(Me.m_SearchManagers.Item(eDataTypes.MSEManager), cMSEManager).MSEBatchManager
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "MSEBatchManager() not available: {message}", ex.Message)
                 Return Nothing
             End Try
         End Get
@@ -15431,7 +15433,7 @@ Public Class cCore
             Try
                 Return DirectCast(Me.m_SearchManagers.Item(eDataTypes.MSYManager), MSY.cMSYManager)
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "MSYManager() not available: {message}", ex.Message)
                 Return Nothing
             End Try
 
@@ -15577,7 +15579,7 @@ Public Class cCore
         Try
             Me.m_Functions.Init(Me)
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "initEcoFunctions Exception:{message}", ex.Message)
             Debug.Assert(False)
         End Try
     End Sub

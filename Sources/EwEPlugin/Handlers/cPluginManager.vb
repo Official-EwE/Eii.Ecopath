@@ -30,7 +30,9 @@ Imports System.Security.Policy
 Imports System.Threading
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 
 #End Region ' Imports
 
@@ -136,6 +138,8 @@ Public Class cPluginManager
     Private m_ThreadID As Integer = 0
     ''' <summary>Flag stating whether plug-ins have been loaded.</summary>
     Private m_bLoaded As Boolean = False
+    Private ReadOnly _logger As ILogger = LoggingContext.CreateLogger(Of cPluginManager)()
+
 
 #End Region ' Private variables
 
@@ -536,6 +540,7 @@ Public Class cPluginManager
                 ' Try to load assembly
                 clsAssembly = Assembly.LoadFrom(strFileName)
             Catch ex As Exception
+                _logger.LogError(ex, "cPluginManager.LoadPluginAssembly::LoadFrom({FileName})", strFileName)
                 cLog.Write(ex, "cPluginManager.LoadPluginAssembly::LoadFrom(" & strFileName & ")")
             End Try
 

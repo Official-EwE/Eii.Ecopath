@@ -413,6 +413,9 @@
     <PackageReference Include="Eii.ValueChain">
       <Version>1.0.25</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging">
+      <Version>9.0.10</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
