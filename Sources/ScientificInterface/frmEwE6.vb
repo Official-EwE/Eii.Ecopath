@@ -83,7 +83,6 @@ Public Class frmEwE6
 
     ''' <summary>Flag indicating that the EwE is fully initialized</summary>
     Private m_bIsInitialized As Boolean = False
-    Private m_bIsInitializedtest As Boolean = False
 
 
 #Region " Panels "
