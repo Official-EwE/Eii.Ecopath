@@ -34,9 +34,9 @@
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwEPlugin</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.5</Version>
+    <Version>6.7.6</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>$(Project URL)</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
@@ -159,7 +159,7 @@
     <Compile Remove="Web References\EwEAutoUpdateRef\Reference.vb" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.5" />
+    <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.6" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
   </ItemGroup>
 </Project>
