@@ -19,7 +19,9 @@
 
 Option Strict On
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Namespace Controls
 

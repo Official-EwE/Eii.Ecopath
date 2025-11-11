@@ -47,6 +47,9 @@ Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Integration
 Imports WeifenLuo.WinFormsUI.Docking
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

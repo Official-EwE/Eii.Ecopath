@@ -22,7 +22,9 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

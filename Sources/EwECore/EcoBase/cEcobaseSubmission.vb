@@ -23,12 +23,12 @@ Option Strict On
 Imports System.IO
 Imports System.Xml.Serialization
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports System.Text
 Imports System.Xml
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.NetUtilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
 
 #End Region ' Imports
 

@@ -21,6 +21,9 @@ Option Strict On
 
 Imports EwEUtils.Core
 Imports System.Math
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 
 ''' <summary>

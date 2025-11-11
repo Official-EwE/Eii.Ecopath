@@ -16,13 +16,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-Imports System.IO
-
 Imports EwECore.MSE
 Imports EwEUtils.Core
 Imports EwECore.MSECommandFile
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 
 Namespace MSEBatchManager

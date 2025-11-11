@@ -24,10 +24,12 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

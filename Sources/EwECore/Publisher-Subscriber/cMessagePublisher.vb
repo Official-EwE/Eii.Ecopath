@@ -20,6 +20,9 @@
 Option Strict On
 Imports EwEPlugin
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' This class provides a single interface for dealing with different types of messages.

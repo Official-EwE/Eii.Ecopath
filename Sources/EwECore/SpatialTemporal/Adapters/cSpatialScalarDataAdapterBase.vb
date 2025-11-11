@@ -22,7 +22,9 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports OfficeOpenXml.FormulaParsing.Excel.Functions.Text
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

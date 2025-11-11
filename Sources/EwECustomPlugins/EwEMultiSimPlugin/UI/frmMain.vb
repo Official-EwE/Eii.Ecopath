@@ -25,10 +25,11 @@ Imports EwECore.Ecosim
 Imports ScientificInterfaceShared.Style
 Imports EwECore
 Imports ScientificInterfaceShared.Commands
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.IO
-Imports System.Windows.Forms
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

@@ -29,12 +29,14 @@ Option Strict On
 
 Imports System.IO
 Imports System.Text
-Imports System.Web
 Imports EwECore
 Imports EwECore.Ecosim
 Imports EwECore.FitToTimeSeries
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

@@ -25,8 +25,10 @@ Option Explicit On
 Imports EwECore
 Imports EwECore.MSE
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
 Imports ZedGraph
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 

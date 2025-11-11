@@ -20,16 +20,17 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Reflection
 Imports System.Text
 Imports System.Threading
 Imports EwECore
 Imports EwEPlugin
-Imports EwEPlugin.Data
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

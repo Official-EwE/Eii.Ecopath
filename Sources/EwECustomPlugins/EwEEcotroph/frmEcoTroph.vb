@@ -30,9 +30,11 @@ Imports EwECore.WebServices
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports Ionic.Zip
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 'not relevent to uncomppress R_ET.zip folder
 'Imports Shell32

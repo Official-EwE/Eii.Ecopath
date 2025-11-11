@@ -30,6 +30,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Serilog
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

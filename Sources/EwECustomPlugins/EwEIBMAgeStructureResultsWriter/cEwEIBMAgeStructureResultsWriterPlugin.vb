@@ -24,7 +24,9 @@ Imports EwEUtils.Core
 Imports System.IO
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

@@ -25,8 +25,10 @@ Imports System.Text
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -61,6 +63,8 @@ Namespace Database
         Private m_core As cCore = Nothing
         ''' <summary>The baseline database version that this updater can update from</summary>
         Private m_sBaselineVersion As Single = 0.0
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDatabaseUpdater)()
+
 
 #End Region ' Private bits
 
@@ -325,9 +329,9 @@ Namespace Database
             Dim msg As cMessage = New cMessage(strStatus, eMessageType.DataImport, eCoreComponentType.DataSource, importance)
             Try
                 Me.m_core.Messages.SendMessage(msg)
-                cLog.Write("Database update failure: " & strStatus)
+                m_logger.LogInformation("Database update failure: {0}", strStatus)
             Catch ex As Exception
-                cLog.Write(ex, "cDatabaseUpdate.ReportUpdateError(" & strStatus & ")")
+                m_logger.LogError(ex, "cDatabaseUpdate.ReportUpdateError(" & strStatus & ")")
             End Try
 
         End Sub
@@ -348,7 +352,7 @@ Namespace Database
             Try
                 Me.m_core.Messages.SendMessage(msg)
             Catch ex As Exception
-                cLog.Write(ex, "cDatabaseUpdate.ReportUpdateProgress")
+                m_logger.LogError(ex, "cDatabaseUpdate.ReportUpdateProgress")
             End Try
 
         End Sub

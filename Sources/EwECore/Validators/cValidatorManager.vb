@@ -20,6 +20,9 @@
 Option Strict On
 
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' Manager for data validators. This provides access to data validator objects through its getValidator(eVarNameFlags) method

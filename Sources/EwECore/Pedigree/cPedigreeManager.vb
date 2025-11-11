@@ -23,7 +23,10 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
-Imports System.Collections.Generic
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
 
 #End Region ' Imports
 

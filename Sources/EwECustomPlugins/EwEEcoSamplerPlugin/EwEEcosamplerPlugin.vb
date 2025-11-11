@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Samples
 Imports EwEPlugin
@@ -28,6 +27,9 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

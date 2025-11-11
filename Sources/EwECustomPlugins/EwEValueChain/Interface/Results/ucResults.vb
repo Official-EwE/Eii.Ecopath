@@ -24,14 +24,15 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ZedGraph
 Imports EwECore.Style
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

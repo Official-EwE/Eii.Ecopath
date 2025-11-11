@@ -24,8 +24,10 @@ Option Explicit On
 
 Imports System.IO
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 

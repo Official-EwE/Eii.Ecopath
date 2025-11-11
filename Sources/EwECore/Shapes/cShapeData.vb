@@ -21,6 +21,9 @@ Option Strict On
 
 Imports EwEUtils.Core
 Imports EwEUtils
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' Class to handle the data that makes up the shape of a forcing or mediation shape

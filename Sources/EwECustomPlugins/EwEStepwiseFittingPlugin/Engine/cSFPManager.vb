@@ -29,16 +29,15 @@ Option Strict On
 Option Explicit On
 
 Imports System.IO
-Imports System.Text
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Database
 Imports EwECore.DataSources
-Imports EwECore.Ecosim
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

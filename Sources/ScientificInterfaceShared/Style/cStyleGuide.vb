@@ -22,7 +22,6 @@
 Option Strict On
 
 Imports System.Collections.Specialized
-Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
 Imports System.Globalization
 Imports System.IO
@@ -39,6 +38,9 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

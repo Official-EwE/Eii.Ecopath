@@ -26,6 +26,9 @@ Imports EwEUtils.Core
 Imports EwECore.SearchObjectives
 Imports System.IO
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Public Class cF2TSManager
     Inherits cCoreInputOutputBase

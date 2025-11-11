@@ -21,6 +21,9 @@ Option Strict On
 Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ' ToDo: significantly improve sampling performance:
 '   - Pre-build an array of water cells that can be sampled

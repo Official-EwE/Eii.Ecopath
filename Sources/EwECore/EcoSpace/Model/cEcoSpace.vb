@@ -23,6 +23,9 @@ Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 'TODO: Spatial Penalty Cost test the penalty cost branch against the trunk for same results
 'TODO: Spatial Penalty Cost  Check that AdjustTotalEffort  NoFishWeight is adjusting the total attractiveness correctly

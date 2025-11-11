@@ -19,11 +19,12 @@
 '
 
 Option Strict On
-Imports EwECore
-Imports EwECore.cEcoSpace
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports System.IO
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Namespace EcoSeed
 

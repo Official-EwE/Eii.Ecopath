@@ -24,12 +24,13 @@ Option Strict On
 Imports System.IO
 Imports System.Data.OleDb
 Imports System.Reflection
-Imports System.Text
 Imports EwECore.DataSources
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

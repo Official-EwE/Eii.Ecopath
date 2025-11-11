@@ -24,9 +24,11 @@ Imports System.Drawing
 Imports System.Xml
 Imports EwECore
 Imports EwECore.Core
-Imports EwECore.DataSources
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

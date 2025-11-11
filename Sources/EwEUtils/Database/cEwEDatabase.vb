@@ -21,12 +21,14 @@
 
 Option Strict On
 Imports System.ComponentModel
-Imports System.Data
 Imports System.Data.OleDb
 Imports System.Data.SqlClient
 Imports System.Reflection
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

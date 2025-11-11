@@ -22,6 +22,9 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

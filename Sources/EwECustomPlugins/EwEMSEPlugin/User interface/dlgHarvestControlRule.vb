@@ -29,6 +29,9 @@ Imports EwEMSEPlugin.HCR_GroupNS
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Public Class dlgHarvestControlRule
 

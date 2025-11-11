@@ -22,13 +22,11 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.SearchObjectives
-Imports ScientificInterface.Controls
 Imports EwEUtils.Core
-Imports ScientificInterface.Ecosim
-Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 

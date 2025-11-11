@@ -20,6 +20,9 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -28,6 +31,8 @@ Imports EwEUtils.Core
 ''' ---------------------------------------------------------------------------
 Public Class cEcotracerGroupInput
     Inherits cCoreGroupBase
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcotracerGroupInput)()
 
 #Region " Constructor "
 
@@ -77,7 +82,7 @@ Public Class cEcotracerGroupInput
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcotracerScenarioGroup.")
-            cLog.Write(Me.ToString & ".New Error creating new cEcotracerScenarioGroup. Error: " & ex.Message)
+            m_logger.LogError(ex, "Error creating new cEcotracerScenarioGroup.")
         End Try
 
     End Sub

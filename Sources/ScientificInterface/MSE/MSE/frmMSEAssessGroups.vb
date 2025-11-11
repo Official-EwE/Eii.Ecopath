@@ -20,9 +20,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterface.Ecosim
-Imports EwECore.MSE
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

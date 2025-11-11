@@ -24,6 +24,9 @@ Imports System.Reflection
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Database.cEwEDatabase
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

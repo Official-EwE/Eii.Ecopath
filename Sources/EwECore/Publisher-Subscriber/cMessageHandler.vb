@@ -20,6 +20,9 @@
 Option Strict On
 Imports System.ComponentModel
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' <para>This class is the message handler portion of the Message-Publisher/Message-Handler pattern use to pass messages from the core(publisher) to an interface(handler).</para>

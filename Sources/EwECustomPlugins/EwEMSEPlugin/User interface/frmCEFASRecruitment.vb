@@ -26,18 +26,17 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.MSE
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
-Imports SourceGrid2
-Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Definitions
-Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

@@ -21,11 +21,12 @@
 
 Option Strict On
 
-Imports System.Data
 Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
-Imports EwEUtils.Database
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

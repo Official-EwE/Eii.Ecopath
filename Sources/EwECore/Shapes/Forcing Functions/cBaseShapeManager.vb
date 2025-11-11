@@ -20,6 +20,9 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports System.ComponentModel
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' Base class for a Shape Manager. Provides implementation to make a derived Shape Manager behave like a List (For Each). 

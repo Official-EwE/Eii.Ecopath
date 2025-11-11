@@ -23,6 +23,9 @@ Imports EwEUtils
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports System.IO
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 
 Namespace EcospaceTimeSeries

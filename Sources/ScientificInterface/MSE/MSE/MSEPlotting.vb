@@ -30,6 +30,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
 Imports ZedGraph
 Imports EwECore.Style
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 

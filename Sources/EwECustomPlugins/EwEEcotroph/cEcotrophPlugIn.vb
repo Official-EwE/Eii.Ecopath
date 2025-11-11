@@ -21,12 +21,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 Imports EwECore
-Imports EwECore.WebServices
-Imports EwEPlugin
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

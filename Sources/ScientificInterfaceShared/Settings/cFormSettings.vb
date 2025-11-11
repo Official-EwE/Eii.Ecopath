@@ -21,12 +21,14 @@
 
 Option Strict On
 Imports System.Xml
-Imports EwECore
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Forms
 Imports WeifenLuo.WinFormsUI
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

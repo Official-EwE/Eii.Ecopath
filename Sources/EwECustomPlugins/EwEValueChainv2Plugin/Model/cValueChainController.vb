@@ -21,13 +21,15 @@
 
 Option Strict On
 Imports System.IO
-Imports System.Security.Policy
 Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 
 #End Region ' Imports

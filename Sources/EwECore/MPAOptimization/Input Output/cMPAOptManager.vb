@@ -20,10 +20,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Diagnostics.Contracts
 Imports EwECore.EcoSeed
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

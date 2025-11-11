@@ -19,14 +19,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports System
-Imports System.Collections
-Imports System.Collections.Generic
-Imports System.Diagnostics
 Imports System.IO
 Imports System.Reflection
-Imports System.Security
-Imports System.Security.Policy
 Imports System.Threading
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
@@ -34,6 +28,7 @@ Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
+Imports Debug = System.Diagnostics.Debug
 #End Region ' Imports
 
 ''' ---------------------------------------------------------------------------

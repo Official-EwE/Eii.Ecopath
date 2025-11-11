@@ -23,6 +23,10 @@ Option Strict On
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports System.Reflection
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
 #End Region ' Imports
 
 ''' ---------------------------------------------------------------------------

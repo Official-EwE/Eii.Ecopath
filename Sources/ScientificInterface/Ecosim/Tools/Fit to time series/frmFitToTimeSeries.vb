@@ -25,8 +25,10 @@ Imports EwECore
 Imports EwECore.FitToTimeSeries
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports Microsoft.VisualBasic.Devices
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 

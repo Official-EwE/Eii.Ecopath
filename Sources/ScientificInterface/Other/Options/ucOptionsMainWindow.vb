@@ -21,11 +21,10 @@
 
 Option Explicit On
 Option Strict On
-
-Imports System.IO
-Imports WeifenLuo.WinFormsUI
-Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 

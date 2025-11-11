@@ -26,6 +26,9 @@ Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 

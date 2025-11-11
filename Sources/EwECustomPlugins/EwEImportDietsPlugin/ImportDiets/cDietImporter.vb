@@ -23,11 +23,10 @@
 Option Strict On
 'Imports System.IO
 Imports EwECore
-Imports EwECore.Ecopath
-Imports EwECore.Ecosim
-Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 'Imports ScientificInterfaceShared.Controls
 
 #End Region

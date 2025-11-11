@@ -20,9 +20,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

@@ -22,15 +22,15 @@
 Option Strict On
 Option Explicit On
 
-Imports System.Drawing
-Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Utilities
 Imports EwECore
-Imports System.Reflection
 Imports System.IO
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

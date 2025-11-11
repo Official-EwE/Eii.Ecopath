@@ -28,6 +28,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SourceGrid2.Cells
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 

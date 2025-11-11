@@ -28,12 +28,13 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Properties
 Imports System.Reflection
 Imports System.Security.Permissions
-Imports EwEUtils.SystemUtilities
 Imports EwECore.Style
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

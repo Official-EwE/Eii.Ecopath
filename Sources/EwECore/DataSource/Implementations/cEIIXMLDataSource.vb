@@ -32,6 +32,9 @@ Imports EwEUtils.Utilities
 Imports EwECore.MSE
 Imports EwECore.SpatialData
 Imports EwECore.Auxiliary
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 '
 #End Region ' Imports

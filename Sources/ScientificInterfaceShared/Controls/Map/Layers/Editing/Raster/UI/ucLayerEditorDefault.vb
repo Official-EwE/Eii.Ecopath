@@ -26,7 +26,10 @@ Imports EwECore
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Definitions
-Imports EwECore.Style
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
 
 #End Region ' Imports
 

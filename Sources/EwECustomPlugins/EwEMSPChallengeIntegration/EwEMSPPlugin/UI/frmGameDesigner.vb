@@ -21,14 +21,11 @@
 Option Strict On
 Imports System.Drawing
 Imports System.IO
-Imports System.Security
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
-Imports System.Xml
 Imports EwECore
 Imports EwECore.DataSources
-Imports EwEMSPLink
 Imports EwEMSPPlugin.Emulator
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
@@ -40,6 +37,10 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports Scriban
 Imports Scriban.Runtime
 Imports SharedRecources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
 
 #End Region ' Imports
 

@@ -19,15 +19,16 @@
 
 #Region " Imports "
 
-Imports System.Reflection
 Imports EwECore
 Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEWoRMSPlugin.WoRMSWebService
 Imports System.Web.Services.Protocols
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

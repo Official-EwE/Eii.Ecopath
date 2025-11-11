@@ -26,6 +26,9 @@ Imports EwEUtils.Utilities
 Imports System.Collections.Specialized
 Imports System.Web
 Imports ScientificInterfaceShared.GeoCode
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

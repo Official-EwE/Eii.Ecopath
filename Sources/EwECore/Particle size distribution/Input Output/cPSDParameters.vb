@@ -21,6 +21,9 @@ Option Strict On
 
 Imports EwEUtils.Core
 Imports EwECore.ValueWrapper
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' This class wraps the underlying particle size distribution data structures
