@@ -4506,8 +4506,8 @@ exitline:
                         For j = 1 To Me.EcoSpaceData.InCol
                             'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
                             EcoSpaceData.EffortSpace(iFlt, i, j) = 0
-                            If Me.EcoSpaceData.IsFished(iFlt, i, j) Then
-
+                            'JS11Nov25: Negative prices (= catch penalties) can lead to Attract and TotAttractZone < 0. Do not fish in such cells
+                            If Me.EcoSpaceData.IsFished(iFlt, i, j) And Attract(i, j) > 0 Then
                                 'Effort distribution scaled by Effort Zone
                                 EffPred = Me.EcoSimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.EcoSpaceData.EffZones(i, j)) * Attract(i, j) / TotAttractZone(Me.EcoSpaceData.EffZones(i, j))
 
