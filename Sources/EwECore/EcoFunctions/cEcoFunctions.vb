@@ -34,6 +34,7 @@ Public Class cEcoFunctions
 
     Private m_core As cCore
     Private m_matrix As cMatrixCalc
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcoFunctions)()
 
     Public Sub New()
         Me.m_matrix = New cMatrixCalc()
@@ -79,7 +80,7 @@ Public Class cEcoFunctions
             Return System.Convert.ToSingle(Shannon)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in FunctionShannonDiversityIndex()")
             Debug.Assert(False, Me.ToString & ".FunctionShannonDiversityIndex() Error: " & ex.Message)
 
             If (Me.m_core IsNot Nothing) Then
@@ -175,7 +176,7 @@ Public Class cEcoFunctions
             Debug.Assert(Not Single.IsInfinity(returnValue))
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in FunctionKemptonsQ()")
             Debug.Assert(False, Me.ToString & ".FunctionKemptonsQ() Error: " & ex.Message)
 
             If (Me.m_core IsNot Nothing) Then
@@ -263,7 +264,7 @@ Public Class cEcoFunctions
             End If
 
         Catch ex As Exception
-            cLog.Write(ex, "cEcoFunctions::EstimateTrophicLevels")
+            m_logger.LogError(ex, "Error in EstimateTrophicLevels()")
             Debug.Assert(False, Me.ToString & ".EstimateTrophicLevels() Error: " & ex.Message)
             Return False
         End Try
@@ -341,6 +342,8 @@ End Class
 
 Public Class cMatrixCalc
 
+    Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMatrixCalc)()
+
     'MatSEqnS and matluS variables
     'array dimensions used by MatSEqnS and matluS
     Public Lo As Integer
@@ -390,7 +393,7 @@ Public Class cMatrixCalc
             ErrCode = Me.matluS(A, OkToContinue)                      'Get LU matrix
             'If Not OkToContinue Then Error ErrCode
             If Not OkToContinue Then
-                cLog.Write("Ecopath error matluS() returned False. Trophic Levels will not be computed for this run.")
+                m_logger.LogError("Ecopath error matluS() returned False. Trophic Levels will not be computed for this run.")
                 Return ErrCode
             End If
             'check dimensions of b

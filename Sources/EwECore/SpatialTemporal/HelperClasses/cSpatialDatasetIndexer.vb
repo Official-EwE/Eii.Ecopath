@@ -54,6 +54,7 @@ Namespace SpatialData
 
         ''' <summary>THe worker thread to perform the indexing.</summary>
         Private m_threadIndex As Threading.Thread = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSpatialDatasetIndexer)()
 
 #End Region ' Private vars
 
@@ -269,7 +270,7 @@ Namespace SpatialData
                         Catch ex As Threading.ThreadAbortException
                             ' NOP
                         Catch ex As Exception
-                            cLog.Write(ex, "cSpatialDatasetIndexer::IndexDatasetThread(" & ds.CustomName & ")")
+                            m_logger.LogError(ex, "cSpatialDatasetIndexer::IndexDatasetThread(" & ds.CustomName & ")")
                             'Console.WriteLine(ex.Message)
                         Finally
                             ' Cleanup: restore cache

@@ -70,6 +70,7 @@ Public Class cValueChainPlugin
 
     Private m_searchds As cSearchDatastructures = Nothing
     Private m_bInSearch As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cValueChainPlugin)()
 
 #End Region ' Privates
 
@@ -199,7 +200,7 @@ Public Class cValueChainPlugin
             End If
 
         Catch ex As Exception
-            cLog.Write(ex, "VC::cPluginPoint.Initialize")
+            m_logger.LogError(ex, "VC::cPluginPoint.Initialize")
             Debug.Assert(False, ex.Message)
             Return
 
@@ -741,7 +742,7 @@ Public Class cValueChainPlugin
         Try
             Me.m_linkman.OnEcopathMessage(msg)
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "VC::OnEcopathMessage")
         End Try
 
     End Sub

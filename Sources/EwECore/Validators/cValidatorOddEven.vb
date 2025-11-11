@@ -29,6 +29,7 @@ Public Class cValidatorOddEven
     Inherits cValidatorDefault
 
     Private m_bOdd As Boolean = True
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cValidatorOddEven)()
 
     Public Sub New(bOdd As Boolean)
         Me.m_bOdd = bOdd
@@ -48,11 +49,11 @@ Public Class cValidatorOddEven
 
         Try
             If Not (TypeOf (ValueObject.Value(iSecondaryIndex)) Is Integer) Then
-                cLog.Write("Validator cannot be used for this type of value")
+                m_logger.LogInformation("Validator cannot be used for this type of value")
                 Return False ' Unable to validate, report error
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Exception in odd/even validator")
             Return False
         End Try
 

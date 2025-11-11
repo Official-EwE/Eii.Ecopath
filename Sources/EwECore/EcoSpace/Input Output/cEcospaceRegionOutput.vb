@@ -20,6 +20,9 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Public Class cEcospaceRegionOutput
     Inherits cCoreInputOutputBase
@@ -27,6 +30,7 @@ Public Class cEcospaceRegionOutput
     Private m_spacedata As cEcospaceDataStructures
     Private m_CoreArrays As New Dictionary(Of eVarNameFlags, IResultsWrapper)
     Private m_CatchFleetGroup(,,) As Single
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceRegionOutput)()
 
 #Region "Constructor"
 
@@ -70,7 +74,7 @@ Public Class cEcospaceRegionOutput
             Me.m_CoreArrays.Add(eVarNameFlags.EcospaceRegionValue, New c4DResultsWrapperFirstFixed(Me.m_spacedata.ResultsValueRegionGearGroup, Me.Index))
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Init() Error: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcospaceRegionOutput.Init() Error")
         End Try
 
     End Sub

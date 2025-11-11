@@ -32,6 +32,7 @@ Public Class cTimeSeriesDataset
     Inherits cCoreInputOutputBase
 
     Private m_iNumTimeSeries As Integer = 0
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cTimeSeriesDataset)()
 
 #Region " Constructor "
 
@@ -71,7 +72,7 @@ Public Class cTimeSeriesDataset
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cTimeSeriesDataset.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cTimeSeriesDataset. Error: " & ex.Message)
+            m_logger.LogError(ex, ".New(nGroups) Error creating new cTimeSeriesDataset. Error: " & ex.Message)
         End Try
 
     End Sub

@@ -53,6 +53,7 @@ Namespace Ecosim
         ''' <remarks>When drawing, all grid cells on a line between the previous mouse position
         ''' and the current mouse position are considered.</remarks>
         Private m_ptPosPrevious As Point = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucVulnerabiltyBlocks)()
 
 #Region " Constructor "
 
@@ -396,7 +397,7 @@ Namespace Ecosim
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "ucVulnerabiltyBlocks.OnPaint Exception: {0}", ex.Message)
                 Debug.Assert(False, ex.StackTrace)
             End Try
 

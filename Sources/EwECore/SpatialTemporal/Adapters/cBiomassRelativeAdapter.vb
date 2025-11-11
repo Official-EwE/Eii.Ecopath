@@ -49,6 +49,7 @@ Namespace SpatialData
         Private m_IsBaseInitialized() As Boolean
 
         Private m_baseMeanBio() As Single
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cBiomassRelativeAdapter)()
 
 #End Region ' Private vars
 
@@ -181,7 +182,7 @@ Namespace SpatialData
 
             Catch ex As Exception
                 Me.m_IsBaseInitialized(iLayer) = False
-                cLog.Write(ex, Me.ToString + ".InitializeBaseLayer() Failed to save base map layer.")
+                m_logger.LogError(ex, Me.ToString + ".InitializeBaseLayer() Failed to save base map layer.")
             End Try
 
         End Sub

@@ -22,6 +22,7 @@
 Option Strict On
 Option Explicit On
 
+Imports EwEMergeSplitGroupsPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
@@ -39,6 +40,8 @@ Namespace Other
     Public Class ucOptionsPedigree
         Implements IOptionsPage
         Implements IUIElement
+
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucOptionsPedigree)()
 
 #Region " Constructors "
 
@@ -106,7 +109,7 @@ Namespace Other
                 sg.ShowPedigree = Me.m_cbShowPedigreeIndicators.Checked
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "ucOptionsPedigree::Apply")
+                m_logger.LogError(ex, "ucOptionsPedigree::Apply")
             End Try
 
             sg.ResumeEvents()

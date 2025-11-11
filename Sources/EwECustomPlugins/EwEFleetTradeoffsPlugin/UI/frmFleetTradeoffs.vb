@@ -35,6 +35,8 @@ Imports Debug = System.Diagnostics.Debug
 
 Public Class frmFleetTradeoffs
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmFleetTradeoffs)()
+
     Public Sub New(uic As cUIContext)
 
         Me.InitializeComponent()
@@ -93,7 +95,7 @@ Public Class frmFleetTradeoffs
             cmd.Invoke(eApplicationOptionTypes.FileLocations)
             Me.UpdateControls()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "frmFleetTradeoffs::OnChangeOutputLocation Error changing output location")
         End Try
     End Sub
 

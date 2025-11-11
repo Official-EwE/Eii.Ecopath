@@ -92,6 +92,7 @@ Namespace Ecosim
         Private m_fpMaxRelF As cEwEFormatProvider = Nothing
         Private m_fpNumSteps As cEwEFormatProvider = Nothing
         Private m_fpNumTrialYears As cEwEFormatProvider = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmMSY)()
 
 #End Region ' Privates
 
@@ -283,7 +284,7 @@ Namespace Ecosim
                 Me.m_parms.NumTrialYears = CInt(Me.m_fpNumTrialYears.Value)
                 Me.m_manager.RunMSYEcosimUnitTest()
             Catch ex As Exception
-                cLog.Write(ex, "frmMSY::OnRunUnitTest")
+                m_logger.LogError(ex, "frmMSY::OnRunUnitTest")
             End Try
         End Sub
 #End If
@@ -292,7 +293,7 @@ Namespace Ecosim
             Try
                 Me.RunFindFMSY()
             Catch ex As Exception
-                cLog.Write(ex, "frmMSY::OnRunFMSY")
+                m_logger.LogError(ex, "frmMSY::OnRunFMSY")
             End Try
         End Sub
 

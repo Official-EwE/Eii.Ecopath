@@ -35,6 +35,7 @@ Public Class cPSDModel
 
     Private m_bSuppressMsgs As Boolean
     Private m_msgPub As New cMessagePublisher
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cPSDModel)()
 
     Friend m_Data As cEcopathDataStructures
     Friend m_stanza As cStanzaDatastructures
@@ -140,7 +141,7 @@ Public Class cPSDModel
                 Me.m_msgPub.SendMessage(msg)
             End If
         Catch ex As Exception
-            cLog.Write(cStringUtils.Localize("cPSDModel.NotifyCore(...) Failed to post message {0}.", msg.ToString()))
+            m_logger.LogError(ex, cStringUtils.Localize("cPSDModel.NotifyCore(...) Failed to post message {0}.", msg.ToString()))
         End Try
 
     End Sub

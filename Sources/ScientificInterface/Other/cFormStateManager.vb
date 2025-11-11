@@ -45,6 +45,7 @@ Friend Class cEwEFormStateManager
     Private m_dp As DockPanel = Nothing
     ''' <summary>Core controller to work with.</summary>
     Private m_cc As cCoreController = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEFormStateManager)()
 
 #End Region ' Privates
 
@@ -182,7 +183,7 @@ Friend Class cEwEFormStateManager
                             ' #Yes: Close the form
                             f.Close()
                         Catch ex As Exception
-                            cLog.Write(ex, "cEwEFormStateHelper.UpdateFormState(" & f.Name & ")")
+                            m_logger.LogError(ex, "cEwEFormStateHelper.UpdateFormState(" & f.Name & ")")
                         End Try
                     End If
                 Else

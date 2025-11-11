@@ -44,6 +44,7 @@ Public Class frmImport
     Private m_uic As cUIContext = Nothing
     Private m_data As cImportData = Nothing
     Private m_bDragOver As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmImport)()
 
 #End Region ' Private vars 
 
@@ -188,7 +189,7 @@ Public Class frmImport
             Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             cmd.Invoke(strURL)
         Catch ex As Exception
-            cLog.Write(ex, "AquamapsImporter::VisitURL(" & strURL & ")")
+            m_logger.LogError(ex, "AquamapsImporter::VisitURL(" & strURL & ")")
         End Try
 
     End Sub

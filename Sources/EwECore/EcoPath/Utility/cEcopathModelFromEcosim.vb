@@ -180,6 +180,7 @@ Public Class cEcopathModelFromEcosim
     End Sub
 
 #End Region ' Public access
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcopathModelFromEcosim)()
 
 #Region " Internals "
 
@@ -299,7 +300,7 @@ Public Class cEcopathModelFromEcosim
 
         Catch ex As Exception
             atResult = eDatasourceAccessType.Failed_Unknown
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error saving Ecopath model from Ecosim")
         End Try
 
         Return atResult

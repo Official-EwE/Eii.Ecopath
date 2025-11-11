@@ -42,6 +42,7 @@ Namespace ExternalData
 #Region " Private vars "
 
         Private Shared s_core As cCore = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEconomicDataSource)()
 
 #End Region ' Private vars
 
@@ -163,7 +164,7 @@ Namespace ExternalData
                 End If
             Catch ex As Exception
                 'make sure all exceptions are handled here and not thrown back to the PluginManager
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cEconomicDataSource.ReceiveData() Error: {0}", ex.Message)
             End Try
 
         End Function

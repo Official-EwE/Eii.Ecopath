@@ -41,6 +41,7 @@ Namespace SpatialData
         Inherits cSpatialDataAdapter
 
         Friend iScaleLayerIndex As Integer
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSpatialScalarDataAdapterBase)()
 
 #Region " Constructor "
 
@@ -156,7 +157,7 @@ Namespace SpatialData
                 Next
             Catch ex As Exception
                 ' Log error
-                cLog.Write(ex, eVerboseLevel.Detailed, "Failed to calculate scaling factor for dataset " & ds.CustomName)
+                m_logger.LogError(ex, "Failed to calculate scaling factor for dataset " & ds.CustomName)
             End Try
             Me.m_core.Messages.SendMessage(New cProgressMessage(eProgressState.Finished, 1.0!, 1.0!, "", eMessageType.Progress))
 
@@ -194,7 +195,7 @@ Namespace SpatialData
                 'Biomass forcing overrides this to return the average
                 Return nMapCells / SumOverPeriod
             Catch ex As Exception
-                cLog.Write(ex, "Failed to calculate scale value.")
+                m_logger.LogError(ex, "Failed to calculate scale value.")
             End Try
             'Ohh... my...
             Return 1.0

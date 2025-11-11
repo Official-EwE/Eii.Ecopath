@@ -170,6 +170,7 @@ Public Class cTimeSeriesDataStructures
     Public PoolForceFixedCostAbs(,) As Single
     ''' <summary>Ecopath Fixed cost multiplier. By Fleet,Time</summary>
     Public PoolForceFixedCostRel(,) As Single
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cTimeSeriesDataStructures)()
 
     ''' <summary>
     ''' Index to the current year/datatype
@@ -458,7 +459,7 @@ Public Class cTimeSeriesDataStructures
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString + ".SetBiomassForcing() something went really wrong!")
-            cLog.Write(ex, "cTimeSeriesDataStructures.SetBiomassForcing()")
+            m_logger.LogError(ex, "cTimeSeriesDataStructures.SetBiomassForcing()")
         End Try
 
     End Sub
@@ -493,7 +494,7 @@ Public Class cTimeSeriesDataStructures
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString + ".SetBiomassForcing() something went really wrong!")
-            cLog.Write(ex, "cTimeSeriesDataStructures.SetBiomassForcing()")
+            m_logger.LogError(ex, "cTimeSeriesDataStructures.SetBiomassForcing()")
         End Try
 
     End Sub
@@ -777,7 +778,7 @@ Public Class cTimeSeriesDataStructures
             Me.DoDatValCalculations()
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cTimeSeriesDataStructures.LoadForcingData()")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -1055,7 +1056,7 @@ Public Class cTimeSeriesDataStructures
             If Me.Iobs = 0 Then Me.Iobs = HoldIobs
 
             If bDisFailedValidation Then
-                cLog.Write("Time series Discard Mortality Rate or Discard Proportion contained values > 1.0. These values cap a 1.0")
+                m_logger.LogInformation("Time series Discard Mortality Rate or Discard Proportion contained values > 1.0. These values cap a 1.0")
             End If
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1067,7 +1068,7 @@ Public Class cTimeSeriesDataStructures
             ' SetFFromGear()
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, ".DoDatValCalculations()")
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".DoDatValCalculations(). ", ex)
         End Try
@@ -1092,7 +1093,7 @@ Public Class cTimeSeriesDataStructures
             Next
             Return False
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cTimeSeriesDataStructures.DataLoadedForTypeGroup()")
         End Try
 
         Return False

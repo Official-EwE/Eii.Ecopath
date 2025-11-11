@@ -156,6 +156,7 @@ Namespace MSY
 
         Private m_RunStateDelegate As MSYRunStateDelegate
         Private m_MessageDelegate As cCore.CoreMessageDelegate = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSY)()
 
 #End Region
 
@@ -291,11 +292,11 @@ Namespace MSY
                                 'WTF
                                 'Failed to run the single species MSY search
                                 'Really... what now... just plough on
-                                cLog.Write(Me.ToString & ".RunFMSY() Failed to run MSY Search for group " & iGrp.ToString)
+                                m_logger.LogInformation(Me.ToString & ".RunFMSY() Failed to run MSY Search for group " & iGrp.ToString)
                             End If
                         Else
                             'message
-                            cLog.Write(Me.ToString & ".RunFMSY() Failed to initialize MSY Search for group " & iGrp.ToString)
+                            m_logger.LogError(Me.ToString & ".RunFMSY() Failed to initialize MSY Search for group " & iGrp.ToString)
                         End If
                     End If
 
@@ -323,7 +324,7 @@ Namespace MSY
 
             Catch ex As Exception
                 bRan = False
-                cLog.Write(ex)
+                m_logger.LogError(ex, "RunFMSY() Exception: " & ex.Message)
             End Try
             Me.EndProgress()
 
@@ -356,7 +357,7 @@ Namespace MSY
                 Return Me.InitForRun()
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "InitFMSY() Exception: " & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".InitFMSY() Exception: " & ex.Message)
             End Try
             Return False
@@ -386,7 +387,7 @@ Namespace MSY
                 Me.setFStepSize()
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "InitForRun() Exception: " & ex.Message)
                 Debug.Assert(False, ex.Message)
                 Return False
             End Try
@@ -639,14 +640,14 @@ Namespace MSY
                 Dim igrp As Integer = Me.m_msyData.iSelGroupFleet
 
                 For Each result As cMSYFResult In Me.m_msyData.lstResults
-                    System.Console.WriteLine(igrp.ToString + ", " + result.FCur.ToString + ",  " + result.TotalValue.ToString + _
+                    System.Console.WriteLine(igrp.ToString + ", " + result.FCur.ToString + ",  " + result.TotalValue.ToString +
                                              "," + result.B(igrp).ToString + ", " + result.[Catch](igrp).ToString)
                 Next
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "runSingleSpecies() Exception: " & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".runSingleSpecies() Exception: " & ex.Message)
                 bReturn = False
             End Try
@@ -750,14 +751,14 @@ Namespace MSY
                 Dim igrp As Integer = Me.m_msyData.iSelGroupFleet
 
                 For Each result As cMSYFResult In Me.m_msyData.lstResults
-                    System.Console.WriteLine(igrp.ToString & ", " & result.FCur.ToString & ",  " & result.TotalValue.ToString & _
+                    System.Console.WriteLine(igrp.ToString & ", " & result.FCur.ToString & ",  " & result.TotalValue.ToString &
                                              "," & result.B(igrp).ToString & ", " & result.[Catch](igrp).ToString)
                 Next
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "runSingleSpecies() Exception: " & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".runSingleSpecies() Exception: " & ex.Message)
                 Return False
             End Try
@@ -850,7 +851,7 @@ Namespace MSY
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "saveBaselineValues() Exception: " & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".saveBaselineValues() Exception: " & ex.Message)
             End Try
 
@@ -998,7 +999,7 @@ Namespace MSY
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "getEcosimRunResults() Exception: " & ex.Message)
                 Debug.Assert(False, "WTF!")
             End Try
 
@@ -1023,7 +1024,7 @@ Namespace MSY
                 Next
             Catch ex As Exception
                 Debug.Assert(False, "WFT MSY.getFMSYResults Exception: " & ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, "getFMSYResults() Exception: " & ex.Message)
             End Try
 
         End Sub

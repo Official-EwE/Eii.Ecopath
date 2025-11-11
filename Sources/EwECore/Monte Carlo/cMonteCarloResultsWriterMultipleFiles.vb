@@ -47,6 +47,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
     Private m_msgStatus As cMessage = Nothing
     Private m_bSaveError As Boolean = False
     Private m_bCalcExtrasOld As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMonteCarloResultsWriterMultipleFiles)()
 
 #End Region ' Private vars
 
@@ -145,7 +146,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
         Catch ex As Exception
             ' ToDo: log error
-            cLog.Write(ex, "cMonteCarloResultsWriterMultipleFiles.Save(" & iTrial & ")")
+            m_logger.LogError(ex, "cMonteCarloResultsWriterMultipleFiles.Save(" & iTrial & ")")
             Debug.Assert(False)
         End Try
 

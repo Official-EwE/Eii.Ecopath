@@ -59,6 +59,7 @@ Public Class frmCEFASRecruitment
     Private m_bInitialized As Boolean = False
 
     Private m_mse As cMSE
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmCEFASRecruitment)()
 
     Private Structure sGraphData
 
@@ -171,7 +172,7 @@ Public Class frmCEFASRecruitment
         Try
             Me.m_Assessment.Defaults()
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:frmCEFASRecruitment.tsbtDefaults_Click")
+            m_logger.LogError(ex, "CefasMSE:frmCEFASRecruitment.tsbtDefaults_Click")
         End Try
     End Sub
 
@@ -201,7 +202,7 @@ Public Class frmCEFASRecruitment
             If Not Me.m_bInitialized Then Return
             Me.RedrawGraph()
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE:frmCEFASRecruitment.onParameterChanged")
+            m_logger.LogError(ex, "CefasMSE:frmCEFASRecruitment.onParameterChanged")
         End Try
     End Sub
 

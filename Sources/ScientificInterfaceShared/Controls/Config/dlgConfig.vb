@@ -21,6 +21,7 @@ Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Properties
 Imports Debug = System.Diagnostics.Debug
 
 Namespace Controls
@@ -32,6 +33,7 @@ Namespace Controls
         Implements IUIElement
 
         Private m_ctrl As Control = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgConfig)()
 
         Public Sub New(uic As cUIContext)
             Me.InitializeComponent()
@@ -116,7 +118,7 @@ Namespace Controls
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Catch ex As Exception
-                cLog.Write(ex, "dlgConfig::OnOK")
+                m_logger.LogError(ex, "dlgConfig::OnOK")
             End Try
 
             ' Status
@@ -133,7 +135,7 @@ Namespace Controls
                 Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
                 Me.Close()
             Catch ex As Exception
-                cLog.Write(ex, "dlgConfig::OnOK")
+                m_logger.LogError(ex, "dlgConfig::OnOK")
             End Try
 
         End Sub
@@ -151,7 +153,7 @@ Namespace Controls
                     DirectCast(Me.m_ctrl, IOptionsPage).SetDefaults()
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "dlgConfig::OnSetDefaults")
+                m_logger.LogError(ex, "dlgConfig::OnSetDefaults")
             End Try
 
         End Sub

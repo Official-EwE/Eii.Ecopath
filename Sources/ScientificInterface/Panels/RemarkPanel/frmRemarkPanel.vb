@@ -23,14 +23,15 @@ Option Strict On
 Imports EwECore
 Imports EwECore.Style
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterface.Other
 Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
 
 #End Region ' Imports
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Panel that provides details for a selected core value. From here, remarks
@@ -50,6 +51,7 @@ Public Class frmRemarkPanel
 
     ''' <summary>Properties being listened to.</summary>
     Private m_lProps As New List(Of cProperty)
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmRemarkPanel)()
 
 #End Region ' Private vars
 
@@ -240,7 +242,7 @@ Public Class frmRemarkPanel
                 If Not p.IsDisposed Then p.SetRemark(strRemark)
             Next p
         Catch ex As Exception
-            cLog.Write(ex, "frmInformationPanel::Apply")
+            m_logger.LogError(ex, "frmInformationPanel::Apply")
         End Try
         Me.m_bInUpdate = False
 

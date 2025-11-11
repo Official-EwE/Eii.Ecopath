@@ -73,6 +73,7 @@ Namespace FitToTimeSeries
     Public Class cF2TSModel
 
 #Region "Private data"
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cF2TSModel)()
 
 #Region "run data"
 
@@ -498,7 +499,7 @@ Namespace FitToTimeSeries
                 End Select
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, ".setNBlocksFromSensitivity() Error: " & ex.Message)
 
             End Try
 
@@ -584,7 +585,7 @@ Namespace FitToTimeSeries
                     Me.m_runstepHandler()
                 End If
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "searchIterationStep")
                 Debug.Assert(False, Me.ToString & ".searchIterationStep() Error: " & ex.Message)
             End Try
 
@@ -594,7 +595,7 @@ Namespace FitToTimeSeries
             Try
                 Me.m_SendMessageHandler(msg)
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "SendMessage")
             End Try
         End Sub
 
@@ -602,7 +603,7 @@ Namespace FitToTimeSeries
             Try
                 Me.m_AddMessageHandler(msg)
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "AddMessage")
             End Try
         End Sub
 
@@ -692,7 +693,7 @@ Namespace FitToTimeSeries
                 DirectCast(Me.m_results, cF2TSResults).BaseSS = Me.m_esdata.SS
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "InitForRun")
                 Throw New ApplicationException("Initialization error: " & ex.Message, ex)
             End Try
 
@@ -975,7 +976,7 @@ Namespace FitToTimeSeries
 
             Catch ex As Exception
 
-                cLog.Write(ex)
+                m_logger.LogError(ex, "DoEstimation")
 
                 Failed = 1
                 Me.SetParsFromP(Me.Po)
@@ -1544,7 +1545,7 @@ Namespace FitToTimeSeries
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError("cEcosimSearch.SetParsFromP", ex)
                 Throw New ApplicationException("Fit to time series error.", ex)
             End Try
 
@@ -1614,7 +1615,7 @@ Namespace FitToTimeSeries
 
             Catch ex As Exception
                 'don't do anything if the interface exploded
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cEcosimSearch.modelCalled")
             End Try
         End Sub
 

@@ -40,6 +40,7 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
     Private m_iTime As Integer
 
     Private m_lstDataTypes As List(Of cInputDataTypes)
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEIBMAgeStructureResultsWriterPlugin)()
 
     Friend Enum eCalcType
         weight
@@ -95,7 +96,7 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "SaveAgeStructure. Error saving IBM Age Structure results")
         End Try
 
     End Sub
@@ -263,7 +264,7 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
                                                eMessageType.ErrorEncountered, eCoreComponentType.Ecospace,
                                                eMessageImportance.Warning)
             Me.m_core.Messages.AddMessage(msg)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "CreateBaseFiles. Error creating IBM Age Structure base files")
         End Try
 
 
@@ -306,7 +307,7 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
                 Next irgn
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "SaveRegionAgeStructureToFile. Error saving IBM Age Structure results for Stanza {0}", isp)
             End Try
 
         Next isp
@@ -351,7 +352,7 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
             m_iTime = DirectCast(SpaceTimeStepResults, cEcospaceTimestep).iTimeStep
             SaveAgeStructure()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "WriteResults. Error writing IBM Age Structure results for time step {0}", m_iTime)
         End Try
 
     End Sub

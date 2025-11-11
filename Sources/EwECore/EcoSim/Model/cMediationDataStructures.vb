@@ -83,6 +83,8 @@ Public Class cMediationDataStructures
     Public XAxisMax() As Single
     Public Units() As String
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMediationDataStructures)()
+
     Public Sub New()
         Me.NMedPoints = N_DEFAULT_MEDIATIONPOINTS
     End Sub
@@ -193,7 +195,7 @@ Public Class cMediationDataStructures
             ip = CInt(Math.Truncate(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01))
         Catch ex As Exception
             ' Log numerical overflow
-            cLog.Write(ex, "Calculating mediation value for shape " & iMedShapeIndex & ", value " & Xvalue)
+            m_logger.LogError(ex, "Calculating mediation value for shape " & iMedShapeIndex & ", value " & Xvalue)
         End Try
 
         ' Truncate to allowed range

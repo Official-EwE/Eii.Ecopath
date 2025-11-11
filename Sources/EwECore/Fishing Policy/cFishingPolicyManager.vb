@@ -51,6 +51,8 @@ Namespace FishingPolicy
         Private m_ProgressDelegate As ProgressDelegate
         Private m_StartRunDelegate As RunStartedDelegate
 
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cFishingPolicyManager)()
+
         'Private m_PluginManager As c
         Private Delegate Sub CallingThreadDelegate()
 
@@ -150,7 +152,7 @@ Namespace FishingPolicy
                 Return True
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Error initializing Fishing Policy Manager")
                 Return False
             End Try
 
@@ -222,7 +224,7 @@ Namespace FishingPolicy
                 Me.m_FPsearch = Nothing
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Error clearing Fishing Policy Manager")
             End Try
 
         End Sub
@@ -319,7 +321,7 @@ Namespace FishingPolicy
         '        coreData.BaseYear = Me.m_searchObjective.ObjectiveParameters.BaseYear
 
         '    Catch ex As Exception
-        '        cLog.Write(ex)
+        '        m_logger.LogError(ex, "Error updating Fishing Policy Manager base year")
         '    End Try
         'End Sub
 
@@ -440,7 +442,7 @@ Namespace FishingPolicy
                 Me.m_syncObject = Nothing
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Error in Fishing Policy Manager completion handler")
                 Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
                 Me.ReleaseWait()
             End Try
@@ -460,7 +462,7 @@ Namespace FishingPolicy
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "OnFPSProgressHandler. Error in Fishing Policy Manager progress handler")
             End Try
 
         End Sub
@@ -477,7 +479,7 @@ Namespace FishingPolicy
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "OnFPSRunCompletedHandler. Error in Fishing Policy Manager run completed handler")
             End Try
 
         End Sub
@@ -502,7 +504,7 @@ Namespace FishingPolicy
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "OnFPSRunStartedHandler. Error in Fishing Policy Manager run started handler")
             End Try
 
         End Sub
@@ -516,7 +518,7 @@ Namespace FishingPolicy
                 Me.m_lstMessages.Clear()
             Catch ex As Exception
                 'this should never happen!!!!! ehhhh
-                cLog.Write(ex)
+                m_logger.LogError(ex, "OnSendCoreMessages. Error sending core messages from Fishing Policy Manager")
             End Try
         End Sub
 
@@ -525,7 +527,7 @@ Namespace FishingPolicy
                 Me.m_core.onChanged(Me)
             Catch ex As Exception
                 'this should never happen!!!!! ehhhh
-                cLog.Write(ex)
+                m_logger.LogError(ex, "OnChanged. Error sending change notification from Fishing Policy Manager")
             End Try
         End Sub
 
@@ -554,7 +556,7 @@ Namespace FishingPolicy
                 FPSthread.Start()
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Run. Error starting Fishing Policy Search run")
                 'unblock the thread before doing anything incase something has called Wait()
 
                 search.SearchMode = eSearchModes.NotInSearch

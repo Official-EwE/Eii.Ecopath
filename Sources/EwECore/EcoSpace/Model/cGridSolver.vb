@@ -114,6 +114,7 @@ Public Class cGridSolver
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     Private m_stpwCopy As Stopwatch
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cGridSolver)()
 
 
 #End Region
@@ -225,8 +226,8 @@ Public Class cGridSolver
                     'If useExact And isMigratory(iGrp) Then
                     If Me.useExact Then
                         Me.solveExact(iGrp)
-                        Else
-                            If Me.bUseLocalMemory Then
+                    Else
+                        If Me.bUseLocalMemory Then
                             'Copies core memory to local arrays for running on Hungabee
                             'otherwise the same as SolveGrid_SharedMemory
                             Me.SolveGrid_LocalMemory(iGrp)
@@ -244,7 +245,7 @@ Public Class cGridSolver
             Next i
 
         Catch ex As Exception
-            cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
+            m_logger.LogError(ex, "cGridSolver.Solve() ThreadID={ThreadID}", Me.ThreadID)
             Debug.Assert(False, ex.Message)
         End Try
 

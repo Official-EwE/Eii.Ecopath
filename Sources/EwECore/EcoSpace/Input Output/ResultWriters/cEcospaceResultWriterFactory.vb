@@ -25,7 +25,6 @@ Imports EwEUtils.Core
 Imports System.Reflection
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -35,6 +34,8 @@ Imports Debug = System.Diagnostics.Debug
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cEcospaceResultWriterFactory
+
+    Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceResultWriterFactory)()
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -55,7 +56,7 @@ Public Class cEcospaceResultWriterFactory
                     Try
                         writers.Add(CType(Activator.CreateInstance(t), IEcospaceResultsWriter))
                     Catch ex As Exception
-                        cLog.Write(ex, "cEcospaceResultWriterFactory.GetWriters() Failed to create instance of IEcospaceResultsWriter")
+                        m_logger.LogError(ex, "cEcospaceResultWriterFactory.GetWriters() Failed to create instance of IEcospaceResultsWriter")
                     End Try
                 End If
             Next
@@ -68,12 +69,12 @@ Public Class cEcospaceResultWriterFactory
                         writers.Add(ip)
                     Next
                 Catch ex As Exception
-                    cLog.Write(ex, "cEcospaceResultWriterFactory.GetWriters() Failed to create instance of IEcospaceResultWriterPlugin")
+                    m_logger.LogError(ex, "cEcospaceResultWriterFactory.GetWriters() Failed to create instance of IEcospaceResultWriterPlugin")
                 End Try
             End If
 
         Catch ex As Exception
-            cLog.Write(ex, "cEcospaceResultWriterFactory.GetWriters()")
+            m_logger.LogError(ex, "cEcospaceResultWriterFactory.GetWriters()")
         End Try
 
         Return writers.ToArray()

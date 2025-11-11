@@ -185,6 +185,7 @@ Public Class cMSE
     Private m_bQSet As Boolean
 
     Private m_PassedChangeInFAtBeginProjTest As Boolean
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSE)()
 
 #Region "Threading variables"
     'Private m_WaitObject As System.Threading.ManualResetEvent
@@ -542,7 +543,7 @@ Public Class cMSE
         Catch ex As Exception
             ' Whoah!
             'This shouldn't happen, really....
-            cLog.Write(ex, "CefasMSE:LoadSampledParameters")
+            m_logger.LogError(ex, "CefasMSE:LoadSampledParameters")
         End Try
 
         cApplicationStatusNotifier.EndProgress(Me.Core)
@@ -1352,7 +1353,7 @@ Public Class cMSE
                     File.Delete(strFile)
                 Catch ex As Exception
                     ' Whoah!
-                    cLog.Write(ex, eVerboseLevel.Detailed, "CEFAS.cMSE::SafeDeleteResult(" & strFile & ")")
+                    m_logger.LogError(ex, "CEFAS.cMSE::SafeDeleteResult(" & strFile & ")")
                 End Try
             End If
         Next
@@ -1417,7 +1418,7 @@ Public Class cMSE
             'Me.Core.LoadEcosimScenario(iscenario)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "CEFAS.cMSE::RestoreOriginalState()")
         End Try
 
     End Sub
@@ -1540,7 +1541,7 @@ Public Class cMSE
             Next iflt
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "CEFAS.cMSE::ResetEffortToMax()")
         End Try
 
     End Sub
@@ -1939,7 +1940,7 @@ Public Class cMSE
             Me.Core.Messages.SendMessage(msgReport)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "CEFAS.cMSE::Run()")
             'Warn the user
             Me.Core.Messages.SendMessage(New cMessage("CEFAS MSE Failed to run MSE trials due to exception " + ex.Message,
                                                       eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
@@ -3108,7 +3109,7 @@ Public Class cMSE
                                 'End If 'RunEcosim
 
                                 'Me.InformUser(String.Format(My.Resources.STATUS_FOUND_MODEL, My.Resources.CAPTION, i), eMessageImportance.Information)
-                                cLog.Write(String.Format(My.Resources.STATUS_FOUND_MODEL, My.Resources.CAPTION, i, sw.Elapsed.ToString()))
+                                m_logger.LogInformation(String.Format(My.Resources.STATUS_FOUND_MODEL, My.Resources.CAPTION, i, sw.Elapsed.ToString()))
 
                                 iNumFound += 1
                                 bFound = True
@@ -3121,7 +3122,7 @@ Public Class cMSE
                         i += 1
 
                         If (sw.ElapsedMilliseconds > lTimeout) Then
-                            cLog.Write(String.Format("Cefas MSE time-out expired at iteration {0}, {1}", i, sw.Elapsed.ToString()))
+                            m_logger.LogInformation(String.Format("Cefas MSE time-out expired at iteration {0}, {1}", i, sw.Elapsed.ToString()))
                             bExpired = True
                         End If
 

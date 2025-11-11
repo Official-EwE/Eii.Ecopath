@@ -38,6 +38,7 @@ Public Class cEcospaceValidation
     ''' Calculated region x pred x prey overlap by timestep (timestep -> region x pred x prey)
     ''' </summary>
     Private m_meanBwPrey As New Dictionary(Of Integer, Double(,,))
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceValidation)()
 
 #End Region ' Internal vars
 
@@ -139,7 +140,7 @@ Public Class cEcospaceValidation
             Next iPred
         Catch ex As Exception
             Debug.Assert(False, "Ecospace validation failed to calculate MeanBwPrey")
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Ecospace validation failed to calculate MeanBwPrey")
             Return Nothing
         End Try
 

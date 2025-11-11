@@ -24,6 +24,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterface.Ecospace
 Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
@@ -43,6 +44,7 @@ Namespace Ecotracer
         Private m_fpContact As cEwEFormatProvider = Nothing
         Private m_propEcosimConTracing As cBooleanProperty = Nothing
         Private m_propEcospaceConTracing As cBooleanProperty = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmEcotracerParameters)()
 
 #End Region ' Private vars
 
@@ -257,7 +259,7 @@ Namespace Ecotracer
                     cmd.Invoke(strURL)
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "cEwEBioDivPlugin::NavigateTo(" & strURL & ")")
+                m_logger.LogError(ex, "cEwEBioDivPlugin::NavigateTo(" & strURL & ")")
             End Try
 
         End Sub

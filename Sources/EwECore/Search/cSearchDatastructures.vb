@@ -245,6 +245,8 @@ Public Class cSearchDatastructures
 
     Private Din As Single, Dgen As Single, Dratio As Single
     Private Dalpha As Single
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSearchDatastructures)()
+
 
 #End Region
 
@@ -456,7 +458,7 @@ Public Class cSearchDatastructures
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".RedimGroups() Exception: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in RedimGroups()")
             Return False
         End Try
         Return True
@@ -686,7 +688,7 @@ Public Class cSearchDatastructures
 
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error setting fishing rate to initial values.")
             Throw New ApplicationException("Error setting fishing rate to initial values.", ex)
         End Try
 
@@ -712,7 +714,7 @@ Public Class cSearchDatastructures
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error restoring saved fishing rates.")
             Throw New ApplicationException("restoreSavedFishingRates()", ex)
         End Try
 
@@ -903,7 +905,7 @@ Public Class cSearchDatastructures
             End If ' If bInSearch Then
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecospace.YearTimeStepEcoSpace()")
             Throw New ApplicationException("Ecospace.YearTimeStepEcoSpace() Error: " & ex.Message, ex)
         End Try
 

@@ -24,10 +24,13 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -41,6 +44,7 @@ Public Class dlgMergeGroups
     Private m_engine As cEcopathMergeGroups = Nothing
     Private m_bInUpdate As Boolean = True
     Private m_images As New ImageList()
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgMergeGroups)()
 
     Public Sub New(uic As cUIContext, engine As cEcopathMergeGroups)
 
@@ -291,7 +295,7 @@ Public Class dlgMergeGroups
                 cmd.Invoke(strURL)
             End If
         Catch ex As Exception
-            cLog.Write(ex, "dlgMergeGroups::OpenLink(" & strURL & ")")
+            m_logger.LogError(ex, "dlgMergeGroups::OpenLink(" & strURL & ")")
         End Try
 
     End Sub

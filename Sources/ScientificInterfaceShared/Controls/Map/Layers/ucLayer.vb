@@ -61,6 +61,7 @@ Namespace Controls.Map
         Protected Shared g_imgLock As Image = My.Resources.ProtectFormHS
         Protected Shared g_imgData As Image = My.Resources.Database
         Protected Shared g_imgDataDisabled As Image = My.Resources.database_NA
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucLayer)()
 
 #End Region ' Private vars
 
@@ -383,7 +384,7 @@ Namespace Controls.Map
                     Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
                     cmd.Invoke(rl, Nothing, edittype)
                 Catch ex As Exception
-                    cLog.Write(ex, eVerboseLevel.Detailed, "ucLayer::EditLayer " & Me.Layer.Name & "(" & edittype.ToString & ")")
+                    m_logger.LogError(ex, "ucLayer::EditLayer " & Me.Layer.Name & "(" & edittype.ToString & ")")
                 End Try
             End If
         End Sub
@@ -395,7 +396,7 @@ Namespace Controls.Map
                     Dim cmd As cEcospaceConfigureConnectionCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEcospaceConfigureConnectionCommand.cCOMMAND_NAME), cEcospaceConfigureConnectionCommand)
                     cmd.Invoke(rl.Data)
                 Catch ex As Exception
-                    cLog.Write(ex, eVerboseLevel.Detailed, "ucLayer::EditLayerConnection " & Me.Layer.Name)
+                    m_logger.LogError(ex, "ucLayer::EditLayerConnection " & Me.Layer.Name)
                 End Try
             End If
         End Sub

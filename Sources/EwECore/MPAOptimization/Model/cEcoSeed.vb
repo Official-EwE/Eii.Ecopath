@@ -59,6 +59,7 @@ Namespace EcoSeed
         Private SeedSumMax As Single
 
         Private SideStep As Integer
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcoSeed)()
 
 
 #End Region
@@ -116,7 +117,7 @@ Namespace EcoSeed
         '        ReDim m_data.MPASeed(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1)
 
         '    Catch ex As Exception
-        '        cLog.Write(ex)
+        '        m_logger.LogError(ex, "Init() Error: {1}", ex.Message)
         '        Return False
         '    End Try
 
@@ -138,7 +139,7 @@ Namespace EcoSeed
                 Me.m_lstObjectiveResults = New List(Of cObjectiveResult)
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "initForRun() Error: {1}", ex.Message)
                 Throw New ApplicationException(Me.ToString & ".initForRun() Error: " & ex.Message, ex)
             End Try
 
@@ -155,7 +156,7 @@ Namespace EcoSeed
                 Me.runSeed()
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Run() Error: {1}", ex.Message)
             End Try
 
             Me.m_bRunning = False
@@ -327,7 +328,7 @@ Namespace EcoSeed
                 Me.cleanUp()
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "runSeed() Error: {1}", ex.Message)
                 Me.m_bRunning = False
                 Debug.Assert(False, ex.StackTrace)
             End Try
@@ -783,7 +784,7 @@ Namespace EcoSeed
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "KeepOrReloadCellValues() Error: {1}", ex.Message)
                 Debug.Assert(False, ex.StackTrace)
                 Throw New ApplicationException("EcoSeed.KeepOrReloadCellValues() error: " & ex.Message, ex)
             End Try

@@ -129,6 +129,8 @@ Namespace FishingPolicy
         Private m_ecosim As cEcosimModel
         Private m_searchData As cSearchDatastructures
         Private m_pluginManager As cPluginManager
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cFishingPolicySearch)()
+
 
 #End Region
 
@@ -155,7 +157,7 @@ Namespace FishingPolicy
                 Me.m_searchData.SearchMethod = eSearchOptionTypes.Fletch
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "{0}.init(cCore) Failed to initialize.", Me.ToString)
                 Throw New ApplicationException(Me.ToString & ".init(cCore) Failed to initialize.", ex)
             End Try
 
@@ -293,7 +295,7 @@ Namespace FishingPolicy
                 Next Iter
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "{0}.runSearch() Error running Fishing Policy Search.", Me.ToString)
                 Throw New ApplicationException("Error running Fishing Policy Search.", ex)
             End Try
 
@@ -350,7 +352,7 @@ Namespace FishingPolicy
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "SearchStarted")
             End Try
 
         End Sub
@@ -367,7 +369,7 @@ Namespace FishingPolicy
                 Me.addMessage(New cMessage(strMessage, msgType, eCoreComponentType.Ecosim, msgImportance))
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "{0}.addMessage() Error adding message.", Me.ToString)
                 Debug.Assert(False, Me.ToString & ".addMessage() Error: " & ex.Message)
             End Try
 
@@ -383,7 +385,7 @@ Namespace FishingPolicy
                     Me.AddMessageCallBack(msg)
                 End If
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "{0}.addMessage() Error adding message.", Me.ToString)
                 Debug.Assert(False, Me.ToString & ".addMessage() Error: " & ex.Message)
             End Try
 
@@ -436,7 +438,7 @@ Namespace FishingPolicy
 
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "{0}.printstats() Error printing stats.", Me.ToString)
                 Debug.Assert(False, Me.ToString & ".printstats() Error: " & ex.Message)
             End Try
 
@@ -647,7 +649,7 @@ Namespace FishingPolicy
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Minimize() Error minimizing function.")
                 Debug.Assert(False, ex.Message)
                 Throw New ApplicationException("Minimize() Error: " & ex.Message, ex)
             End Try
@@ -1180,7 +1182,7 @@ endline:    ' '
                         If Double.IsNaN(Me.CritValue(icrt)) Or Double.IsInfinity(Me.CritValue(icrt)) Then
                             Dim enumname As String = [Enum].GetName(GetType(eSearchCriteriaResultTypes), icrt)
                             enumNames += enumname + " "
-                            cLog.Write("Fishing Policy Search criteria value " + enumname + " is invalid.")
+                            m_logger.LogError("Fishing Policy Search criteria value " + enumname + " is invalid.")
                         End If
                     Next
 
@@ -1199,8 +1201,7 @@ endline:    ' '
                 FUNC = 1.0E+20
                 Me.SearchFailed = True
 
-                cLog.Write("Fishing Policy Search Aborted due to Error.")
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Fishing Policy Search Aborted due to Error.")
                 Me.AddMessage("Fishing Policy Search Error: " & ex.Message, eMessageType.ErrorEncountered)
 
             End Try
@@ -1667,7 +1668,7 @@ endline:    ' '
                 Next iflt
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "updateBaseProfitabilityResults. Error updating Fishing Policy Search Base Profitability results.")
                 Debug.Assert(False)
             End Try
 

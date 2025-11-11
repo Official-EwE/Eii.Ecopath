@@ -60,6 +60,7 @@ Public Class ucDriverResponseView
     Private m_fpMean As cEwEFormatProvider = Nothing
 
     Private m_bInUpdate As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucDriverResponseView)()
 
 #End Region ' Private vars
 
@@ -466,7 +467,7 @@ Public Class ucDriverResponseView
             Me.m_zgh.YScaleMin = 0
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "ucDriverResponseView::PlotShape Error plotting shape")
         End Try
 
     End Sub
@@ -555,7 +556,7 @@ Public Class ucDriverResponseView
 
         Catch ex As Exception
             Debug.Assert(False, "PlotMap " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "ucDriverResponseView::PlotDriver Error plotting driver")
         End Try
 
     End Sub

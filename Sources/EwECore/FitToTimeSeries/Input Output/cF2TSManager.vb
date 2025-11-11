@@ -63,6 +63,7 @@ Public Class cF2TSManager
 
     Private m_nonBlockingWait As cNonBlockingWaitHandle
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cF2TSManager)()
 
     Friend Sub New(core As cCore)
         MyBase.New(core)
@@ -202,7 +203,7 @@ Public Class cF2TSManager
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during Clear()")
         End Try
 
     End Sub
@@ -222,7 +223,7 @@ Public Class cF2TSManager
             Me.m_runstoppedHandler = runStoppedCallback
             Me.m_runModelHandler = RunModelCallBack
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during Connect()")
             Throw New ApplicationException(Me.ToString & ".Connect() Error.", ex)
         End Try
 
@@ -636,7 +637,7 @@ Public Class cF2TSManager
 
         Catch ex As Exception
 
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during RunSensitivitySS2VByPredPrey()")
             Me.SendMessageCallback(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_SENS_PREDPREY_ERROR, ex.Message),
                                                 eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             'Finally
@@ -690,7 +691,7 @@ Public Class cF2TSManager
 
         Catch ex As Exception
 
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during RunSensitivitySS2VByPredator()")
             Me.SendMessageCallback(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_SENS_PRED_ERROR, ex.Message),
                                                 eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             'Finally
@@ -789,7 +790,7 @@ Public Class cF2TSManager
             Me.m_core.m_FitToTimeSeriesData.RunSilent = False
             Me.SendMessageCallback(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
                                                 eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during RunSearch()")
 
             Me.ReleaseWait()
         End Try
@@ -919,7 +920,7 @@ Public Class cF2TSManager
                 End If
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during RunStartedCallback()")
             Debug.Assert(False, ex.StackTrace)
         End Try
 
@@ -955,7 +956,7 @@ Public Class cF2TSManager
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during RunStepCallback()")
             Debug.Assert(False, "The interface has thrown an exception that was handled by " & Me.ToString)
         End Try
 
@@ -994,7 +995,7 @@ Public Class cF2TSManager
         Catch ex As Exception
 
             Me.ReleaseWait()
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during RunStoppedCallback()")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -1030,7 +1031,7 @@ Public Class cF2TSManager
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during ThreadSafeRunStopped()")
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
                                                      eMessageType.ErrorEncountered, eCoreComponentType.EcosimFitToTimeSeries, eMessageImportance.Warning))
         End Try
@@ -1056,7 +1057,7 @@ Public Class cF2TSManager
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during RunModelCallBack()")
 
         End Try
     End Sub
@@ -1071,7 +1072,7 @@ Public Class cF2TSManager
             ' Add the message to the list of messages
             Me.m_lstMessages.Add(msg)
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during AddMessageCallback()")
         End Try
 
     End Sub
@@ -1101,7 +1102,7 @@ Public Class cF2TSManager
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during SendMessageCallback()")
         End Try
 
     End Sub
@@ -1110,7 +1111,7 @@ Public Class cF2TSManager
         Try
             Me.m_core.Messages.SendMessage(msg)
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error during SendMessage()")
         End Try
 
     End Sub

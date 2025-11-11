@@ -48,6 +48,7 @@ Public Class cMPARandomSearch
     Private m_regionSize() As Integer
     ''' <summary>Number of cells set in a region</summary>
     Private m_regionSet() As Integer
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMPARandomSearch)()
 
 #End Region
 
@@ -127,7 +128,7 @@ Public Class cMPARandomSearch
             Me.CellCount = Me.m_watercells.Count
 
             If (Me.CellCount = 0) Then
-                cLog.Write("Cannot start MPA Opt without modelled cells")
+                m_logger.LogError("Cannot start MPA Opt without modelled cells")
                 Return False
             End If
 

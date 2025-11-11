@@ -42,7 +42,8 @@ Public Class cMessagePublisher
     Private m_handlers As New List(Of cMessageHandler)
     Private m_msglist As New List(Of cMessage)
     Private m_iMessageLockCount As Integer = 0
-    Private m_bSendPending As Boolean = False 
+    Private m_bSendPending As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMessagePublisher)()
 
     ''' <summary>
     ''' Add a Message Handler to list of message handlers
@@ -185,7 +186,7 @@ Public Class cMessagePublisher
                         If (bSuppress = True) Then Return True
                     End If
 
-                    cLog.Write(Message)
+                    m_logger.LogInformation("Message from {0}: {1}", Message.Source.ToString(), Message.ToString())
 
                 Case eMessageImportance.Progress, eMessageImportance.Maintenance
                     ' Do not log these
@@ -213,13 +214,13 @@ Public Class cMessagePublisher
 
             If Not bMessageHandled Then
                 'nobody is listening to a message. This is legitimate when the core is used without a UI
-                cLog.Write(Me.ToString & ".SendMessage(...) No default message handler defined for source = " & Message.Source.ToString)
+                m_logger.LogInformation(Me.ToString & ".SendMessage(...) No default message handler defined for source = " & Message.Source.ToString)
             End If
 
             Return bMessageHandled
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".SendMessage(...) Error: " & ex.Message)
+            m_logger.LogError(ex, ".SendMessage(...) Error: " & ex.Message)
             Return False
         End Try
 

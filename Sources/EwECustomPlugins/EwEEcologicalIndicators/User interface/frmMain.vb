@@ -54,6 +54,7 @@ Public Class frmMain
     Private m_bInUpdate As Boolean = False
 
     Private WithEvents m_checker As cCheckboxHierarchy = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmMain)()
 
 #End Region ' Variables
 
@@ -736,7 +737,7 @@ Public Class frmMain
                 cmd.Invoke(strURL)
             End If
         Catch ex As Exception
-            cLog.Write(ex, "cEwEBioDivPlugin::NavigateTo(" & strURL & ")")
+            m_logger.LogError(ex, "cEwEBioDivPlugin::NavigateTo(" & strURL & ")")
         End Try
 
     End Sub

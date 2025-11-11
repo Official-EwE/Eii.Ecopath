@@ -39,6 +39,8 @@ Imports Debug = System.Diagnostics.Debug
 Public MustInherit Class cEcospaceBaseResultsWriter
     Implements IEcospaceResultsWriter
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceBaseResultsWriter)()
+
 #Region " Protected data "
 
     ''' <summary>Zhe core.</summary>
@@ -151,7 +153,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
         If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
             Debug.Assert(False, Me.ToString & ".CreateOutputDir() cannot create directory")
-            cLog.Write("Ecospace output writer failed to create directory " & Me.OutputDirectory)
+            m_logger.LogError("Cannot create output directory: {0}", Me.OutputDirectory)
             Return False
         End If
 

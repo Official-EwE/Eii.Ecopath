@@ -35,6 +35,8 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cEcospaceLayerImportance
     Inherits cEcospaceLayerSingle
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceLayerImportance)()
+
 #Region " Constructor "
 
     Sub New(core As cCore, idBID As Integer, ByRef manager As cEcospaceBasemap, iIndex As Integer)
@@ -68,7 +70,7 @@ Public Class cEcospaceLayerImportance
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceBasemap.")
-            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceBasemap. Error: " & ex.Message)
+            m_logger.LogError(ex, "Error creating new cEcospaceBasemap. Error: " & ex.Message)
         End Try
 
     End Sub

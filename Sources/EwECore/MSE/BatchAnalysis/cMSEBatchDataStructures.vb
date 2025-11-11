@@ -158,6 +158,7 @@ Namespace MSEBatchManager
         Public IterCalcType As eMSEBatchIterCalcTypes = eMSEBatchIterCalcTypes.Percent
 
         Public GroupRunType() As eMSEBatchRunTypes
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEBatchDataStructures)()
 
 
         Public ReadOnly Property nGroups As Integer
@@ -354,7 +355,7 @@ Namespace MSEBatchManager
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSEBatchDataStructures::ReStoreMSEState() Error restoring MSE state")
                 Debug.Assert(False, ex.Message)
             End Try
 

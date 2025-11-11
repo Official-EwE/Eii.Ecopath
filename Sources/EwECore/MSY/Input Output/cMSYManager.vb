@@ -63,6 +63,7 @@ Namespace MSY
 
         Private m_RunStateDelegate As MSYRunStateDelegate
         Private m_thread As Thread = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSYManager)()
 
 #End Region
 
@@ -139,7 +140,7 @@ Namespace MSY
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex, "cMSYManager::IsAllowedToRun")
+                m_logger.LogError(ex, "cMSYManager::IsAllowedToRun")
                 System.Console.WriteLine(Me.ToString & ".IsAllowedToRun() Exception: " & ex.Message)
                 Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_RUN_ERROR, ex.Message), eMessageType.Any, eCoreComponentType.MSY, eMessageImportance.Critical)
                 Me.SendMessage(msg)
@@ -155,7 +156,7 @@ Namespace MSY
                 Me.m_thread = New Thread(AddressOf Me.FullMSYSearchThreaded)
                 Me.m_thread.Start()
             Catch ex As Exception
-                cLog.Write(ex, "cMSYManager.RunMSY")
+                m_logger.LogError(ex, "cMSYManager.RunMSY")
                 Return False
             End Try
             Return True
@@ -167,7 +168,7 @@ Namespace MSY
                 Me.m_thread = New Thread(AddressOf Me.RunFindFMSYThreaded)
                 Me.m_thread.Start()
             Catch ex As Exception
-                cLog.Write(ex, "cMSYManager.RunFindFMSY")
+                m_logger.LogError(ex, "cMSYManager.RunFindFMSY")
                 Return False
             End Try
             Return True
@@ -275,7 +276,7 @@ Namespace MSY
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex, "cMSYManager::RunFMSY")
+                m_logger.LogError(ex, "cMSYManager::RunFMSY")
                 Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_RUN_FMSY_ERROR, ex.Message), eMessageType.Any, eCoreComponentType.Ecosim, eMessageImportance.Critical)
                 Me.SendMessage(msg)
             End Try
@@ -335,24 +336,24 @@ Namespace MSY
                 Select Case Me.m_parameters.FSelectionMode
 
                     Case eMSYFSelectionModeType.Groups
-                        bSuccess = writer.WriteGroupResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
-                                                            Me.m_parameters.SelGroupFleetIndex, _
-                                                            Me.m_parameters.Assessment, _
-                                                            Me.BaseLineResults.FCur, _
-                                                            Me.MSYResults, _
+                        bSuccess = writer.WriteGroupResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY),
+                                                            Me.m_parameters.SelGroupFleetIndex,
+                                                            Me.m_parameters.Assessment,
+                                                            Me.BaseLineResults.FCur,
+                                                            Me.MSYResults,
                                                             Me.FMSY)
 
                     Case eMSYFSelectionModeType.Fleets
-                        bSuccess = writer.WriteFleetResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
-                                                            Me.m_parameters.SelGroupFleetIndex, _
-                                                            Me.m_parameters.Assessment, _
-                                                            Me.MSYResults, _
+                        bSuccess = writer.WriteFleetResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY),
+                                                            Me.m_parameters.SelGroupFleetIndex,
+                                                            Me.m_parameters.Assessment,
+                                                            Me.MSYResults,
                                                             Me.FMSY)
 
                 End Select
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSYManager.SaveMSYOutput")
                 Debug.Assert(False, ex.Message)
             End Try
 
@@ -362,12 +363,12 @@ Namespace MSY
 
             Try
                 Dim w As New cMSYResultWriterFMSY(Me.m_Core)
-                Return w.WriteCSV(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
-                                  Me.m_parameters.Assessment, _
+                Return w.WriteCSV(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY),
+                                  Me.m_parameters.Assessment,
                                   Me.m_fmsyresults)
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSYManager.SaveFMSYOutput")
                 Debug.Assert(False, ex.Message)
             End Try
             Return False
@@ -693,7 +694,7 @@ Namespace MSY
                 Me.m_Core.LoadTimeSeries(0)
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSYManager.RunMSYEcosimUnitTest")
                 System.Console.WriteLine(Me.ToString & ".RunMSYUnitTest() Exception: " & ex.Message)
             End Try
 

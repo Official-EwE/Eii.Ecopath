@@ -35,6 +35,7 @@ Imports Debug = System.Diagnostics.Debug
 Public Class frmMSEAssessFleets
 
     Private m_propStartYear As cProperty = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmMSEAssessFleets)()
 
     Public Sub New()
         MyBase.New()
@@ -103,7 +104,7 @@ Public Class frmMSEAssessFleets
                 Me.m_blocks.Refresh()
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, Me.ToString & ".OnLastYearChanged() Exception")
         End Try
     End Sub
 

@@ -26,6 +26,8 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cFishingEffortShapeManger
     Inherits cFishingBaseShapeManager
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cFishingEffortShapeManger)()
+
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
     End Sub
@@ -99,7 +101,7 @@ Public Class cFishingEffortShapeManger
                     'see EwEMultiSimPlugin.cEngine.CommitShape()
                     If shape.Index <= Me.m_SimData.nGear Then
                         If Not shape.Update() Then
-                            cLog.Write(Me.ToString & ".Update() Shape failed to update DBID=" & shape.DBID.ToString)
+                            m_logger.LogError(".Update() Shape failed to update DBID=" & shape.DBID.ToString)
                             Debug.Assert(False, Me.ToString & ".Update() Shape failed to update DBID=" & shape.DBID.ToString)
                             'this will keep trying to update the rest of the data
                             'even if there was a problem with one of the shapes

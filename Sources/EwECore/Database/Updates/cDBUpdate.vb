@@ -20,11 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -34,6 +32,8 @@ Imports Debug = System.Diagnostics.Debug
 ''' </summary>
 ''' --------------------------------------------------------------------------
 Friend MustInherit Class cDBUpdate
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDBUpdate)()
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -67,10 +67,10 @@ Friend MustInherit Class cDBUpdate
     ''' <param name="strProgress">Progress entry to write.</param>
     ''' -----------------------------------------------------------------------
     Protected Sub LogProgress(strProgress As String, bSucces As Boolean)
-        cLog.Write(String.Format("Update {0}: {1} {2}",
+        m_logger.LogInformation("Update {0}: {1} {2}",
                                  Me.UpdateVersion,
                                  strProgress,
-                                 If(bSucces, "Succes", "Failed")))
+                                 If(bSucces, "Succes", "Failed"))
     End Sub
 
     ''' -----------------------------------------------------------------------

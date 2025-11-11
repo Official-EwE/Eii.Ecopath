@@ -21,11 +21,12 @@
 
 Imports EwECore
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared.Definitions
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
@@ -123,6 +124,7 @@ Namespace Controls
         Private m_bTextFilterCaseSensitive As Boolean = False
         ''' <summary>Flag to prevent update / response loops.</summary>
         Protected m_bInUpdate As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cShapeGUIHandler)()
 
 #End Region ' Private variables
 
@@ -237,7 +239,7 @@ Namespace Controls
                     Me.Refresh()
                     RaiseEvent OnRefreshed(Me)
                 Catch ex As Exception
-                    cLog.Write(ex)
+                    m_logger.LogError(ex, "cShapeGUIHandler.OnCoreMessage() Error refreshing shape GUI handler")
                 End Try
             End If
         End Sub

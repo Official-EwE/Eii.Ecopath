@@ -68,6 +68,7 @@ Public MustInherit Class cEcospaceLayer
 
     Protected m_iSecundaryIndex As Integer = 1
     Protected m_ccSecundaryIndex As eCoreCounterTypes = eCoreCounterTypes.NotSet
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceLayer)()
 
 #End Region ' Private variables
 
@@ -162,7 +163,7 @@ Public MustInherit Class cEcospaceLayer
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceLayer.")
-            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceLayer. Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".New(..) Error creating new cEcospaceLayer. Error: " & ex.Message)
         End Try
 
     End Sub

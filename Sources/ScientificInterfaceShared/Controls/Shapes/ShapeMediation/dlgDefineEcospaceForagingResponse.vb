@@ -46,6 +46,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
     Private m_bInUpdate As Boolean = False
     Private m_managertype As eCoreComponentType
     Private m_bInInit As Boolean = True
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgDefineEcospaceForagingResponse)()
 
 #End Region ' Private variables
 
@@ -75,7 +76,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Try
             Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().ToString(shape))
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error localizing dialogue title")
         End Try
 
         Me.m_bInInit = False
@@ -95,7 +96,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
             Me.m_lbxGroups.VisibleGroups = Me.GetGroupList()
             Me.LoadDrivers()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error loading dialogue")
         End Try
 
         Me.m_bInUpdate = False
@@ -351,7 +352,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error loading drivers")
         End Try
 
     End Sub
@@ -377,7 +378,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error getting selected driver")
         End Try
 
         Return Nothing

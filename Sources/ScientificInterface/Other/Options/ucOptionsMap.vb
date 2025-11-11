@@ -52,6 +52,7 @@ Namespace Other
         Private m_layerBack As cDisplayLayerImage = Nothing
         Private m_layerPreview As cDisplayLayerImage = Nothing
         Private m_imgPreview As Image = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucOptionsMap)()
 
 #End Region ' Variables
 
@@ -237,7 +238,7 @@ Namespace Other
                 sg.MapReferenceLayerBR = New PointF(CSng(Me.m_fpEast.Value), CSng(Me.m_fpSouth.Value))
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "ucOptionsMap::Apply")
+                m_logger.LogError(ex, "ucOptionsMap::Apply")
             End Try
             sg.ShowMapsExcludedCells = Me.m_cbShowExcludedCells.Checked
 
@@ -309,7 +310,7 @@ Namespace Other
                     Try
                         Me.m_imgPreview = Image.FromFile(strFile)
                     Catch ex As Exception
-                        cLog.Write(ex, "ucOptionsMap::UpdatePreviewImage(" & strFile & ")")
+                        m_logger.LogError(ex, "ucOptionsMap::UpdatePreviewImage(" & strFile & ")")
                     End Try
                     cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
                 End If

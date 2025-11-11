@@ -87,6 +87,7 @@ Namespace SpatialData
         Private m_strContact As String = ""
 
         Private m_lConfigFiles As List(Of cSpatialDataConfigFile)
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSpatialDataSetManager)()
 
 #End Region ' Private vars
 
@@ -298,7 +299,7 @@ Namespace SpatialData
                     'Notify the world
                     RaiseEvent OnConfigurationChanged(Me)
                 Catch ex As Exception
-                    cLog.Write(ex, "cSpatialDatasetManager.Update")
+                    m_logger.LogError(ex, "cSpatialDatasetManager.Update")
                 End Try
                 Me.m_bValidationPending = False
             Else

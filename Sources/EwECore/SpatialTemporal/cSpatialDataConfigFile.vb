@@ -42,6 +42,7 @@ Namespace SpatialData
         Private m_strFileName As String = ""
         Private m_strDatasetName As String = ""
         Private m_nDatasets As Integer = 0
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSpatialDataConfigFile)()
 
 #End Region ' Internal vars
 
@@ -157,7 +158,7 @@ Namespace SpatialData
                 Return True
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cSpatialDataSetManager.Initialize({0})", strFile)
             End Try
             Return False
 
@@ -220,7 +221,7 @@ Namespace SpatialData
                                 Catch ex As Exception
                                     ds = Nothing
                                     bSuccess = False
-                                    cLog.Write(ex, "cSpatialDataSetManager.Load(" & strFile & ")")
+                                    m_logger.LogError(ex, "cSpatialDataSetManager.Load(" & strFile & ")")
                                 End Try
 
                                 datasets.Add(ds)

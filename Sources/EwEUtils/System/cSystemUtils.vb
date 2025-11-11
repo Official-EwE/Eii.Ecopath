@@ -42,6 +42,8 @@ Namespace SystemUtilities
     ''' </summary>
     Public Class cSystemUtils
 
+        Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSystemUtils)()
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get the name of the host machine.
@@ -525,7 +527,7 @@ Namespace SystemUtilities
             Try
                 dt = cAssemblyUtils.GetCompileDate(ass)
             Catch ex As Exception
-                cLog.Write(ex, eVerboseLevel.Standard, "cSystemUtils.BestBefore")
+                m_logger.LogError(ex, "cSystemUtils.BestBefore")
             End Try
 
             Select Case mode

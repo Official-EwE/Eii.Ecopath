@@ -31,6 +31,8 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cPSDParameters
     Inherits cCoreInputOutputBase
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cPSDParameters)()
+
 #Region "Constructor"
 
     Public Sub New(core As cCore)
@@ -92,7 +94,7 @@ Public Class cPSDParameters
         Catch ex As Exception
 
             Debug.Assert(False, ex.Message)
-            cLog.Write(Me.ToString & ".New() Error: " & ex.Message)
+            m_logger.LogError(".New() Error: " & ex.Message)
 
         End Try
 

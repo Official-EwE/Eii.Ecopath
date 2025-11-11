@@ -443,6 +443,7 @@ Namespace Controls
             Private m_sg As cStyleGuide = Nothing
 
             Private m_md As cVariableMetaData = Nothing
+            Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cNumericUpDownWrapper)()
 
 #End Region ' Private variables 
 
@@ -608,7 +609,7 @@ Namespace Controls
                         Me.Validate()
                     End If
                 Catch ex As Exception
-                    cLog.Write(ex, eVerboseLevel.Detailed, "NumericUpDownWrapper:OnKeyDown")
+                    m_logger.LogError(ex, "NumericUpDownWrapper:OnKeyDown")
                 End Try
             End Sub
 
@@ -622,7 +623,7 @@ Namespace Controls
                 Try
                     Me.Validate()
                 Catch ex As Exception
-                    cLog.Write(ex, eVerboseLevel.Detailed, "NumericUpDownWrapper:OnValidate")
+                    m_logger.LogError(ex, "NumericUpDownWrapper:OnValidate")
                 End Try
             End Sub
 

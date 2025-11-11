@@ -61,6 +61,7 @@ Namespace Samples
 
         ' -- Recording variables --
         Private m_strTempFileName As String = ""
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcopathSampleManager)()
 
 #End Region ' Private vars
 
@@ -1078,7 +1079,7 @@ Namespace Samples
 
                 Catch ex As Exception
                     Debug.Assert(False, ex.Message)
-                    cLog.Write(ex, "Ecosampler run error")
+                    m_logger.LogError(ex, "Ecosampler run error")
                 End Try
 
                 Me.LogEvent(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_COMPLETED, eMessageImportance.Information)

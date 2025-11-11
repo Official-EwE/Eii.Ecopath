@@ -36,6 +36,7 @@ Public Class frmEcopathDietTreeMaps
 #Region " Private vars "
 
     Private m_doodler As cDietTreeMapRenderer
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmEcopathDietTreeMaps)()
 
 #End Region ' Private vars
 
@@ -217,7 +218,7 @@ Public Class frmEcopathDietTreeMaps
                 Me.Core.Messages.SendMessage(msg)
 
             Catch ex As Exception
-                cLog.Write(ex, "frmFlowDiagram::SaveImage(" & cmdFS.FileName & ")")
+                m_logger.LogError(ex, "frmFlowDiagram::SaveImage(" & cmdFS.FileName & ")")
                 Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message),
                                 eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                 Me.Core.Messages.SendMessage(msg)

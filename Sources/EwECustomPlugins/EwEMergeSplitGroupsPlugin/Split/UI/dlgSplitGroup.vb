@@ -53,6 +53,7 @@ Public Class dlgSplitGroup
 
     Private m_biomass As Single = 0
     Private m_biomasssource As eBiomassSource = eBiomassSource.NotSet
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgSplitGroup)()
 
     Private Enum eBiomassSource As Integer
         NotSet = 0
@@ -508,7 +509,7 @@ Public Class dlgSplitGroup
                 cmd.Invoke(strURL)
             End If
         Catch ex As Exception
-            cLog.Write(ex, "dlgSplitGroup::OpenLink(" & strURL & ")")
+            m_logger.LogError(ex, "dlgSplitGroup::OpenLink(" & strURL & ")")
         End Try
 
     End Sub

@@ -29,6 +29,8 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cFishingMortShape
     Inherits cForcingFunction
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cFishingMortShape)()
+
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, _
                    ByRef Manager As cBaseShapeManager, _
                    DBID As Integer, _
@@ -88,7 +90,7 @@ Public Class cFishingMortShape
 
         'can not update if there is not an index to the underlying data structures
         If (Me.m_iEcoSimIndex = cCore.NULL_VALUE) Or (Me.m_iEcoSimIndex > Me.m_data.nGroups) Then
-            cLog.Write(Me.ToString & ".update(m_data) index out of bounds. Data not updated.")
+            m_logger.LogError(Me.ToString & ".update(m_data) index out of bounds. Data not updated.")
             Return False
         End If
 

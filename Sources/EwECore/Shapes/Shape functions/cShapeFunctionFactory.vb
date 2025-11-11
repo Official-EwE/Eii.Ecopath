@@ -39,6 +39,8 @@ Imports Debug = System.Diagnostics.Debug
 ''' ---------------------------------------------------------------------------
 Public Class cShapeFunctionFactory
 
+    Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cShapeFunctionFactory)()
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get a <see cref="IShapeFunction"/> for a given <paramref name="ft">Shape function type</paramref>
@@ -142,7 +144,7 @@ Public Class cShapeFunctionFactory
                     lfs.Add(fs)
                 Catch ex As Exception
                     Debug.Assert(False, ex.Message)
-                    cLog.Write(ex, "cShapeFunctionFactory.GetShapeFunctions(" & c.ToString & ")")
+                    m_logger.LogError(ex, "cShapeFunctionFactory.GetShapeFunctions(" & c.ToString & ")")
                 End Try
 
             End If

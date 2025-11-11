@@ -63,6 +63,7 @@ Public MustInherit Class cSFPGenericIteration
     Private m_parameters As cSFPParameters = Nothing
 
     Private m_report As New List(Of String)
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSFPGenericIteration)()
 
 #End Region ' Private variables
 
@@ -890,7 +891,7 @@ Public MustInherit Class cSFPGenericIteration
                     End If
                 Catch ex As Exception
                     ' This REALLY should not happen
-                    cLog.Write(ex, "cSFPManager.SaveIterationResults(Ecosim)")
+                    m_logger.LogError(ex, "cSFPManager.SaveIterationResults(Ecosim)")
                     Debug.Assert(False, ex.Message)
                 End Try
             End If

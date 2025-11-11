@@ -47,6 +47,7 @@ Namespace Controls
         Private m_ctrlTarget As Control = Nothing
         Private m_ctrlParent As Control = Nothing
         Private m_filter As cMouseHoverFilter = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucHoverMenu)()
 
 #End Region ' Private vars
 
@@ -409,7 +410,7 @@ Namespace Controls
             Try
                 RaiseEvent OnUserCommand(tag)
             Catch ex As Exception
-                cLog.Write(ex, "ucHoverMenu::InvokeCallback(" & Me.m_ctrlTarget.ToString & ")")
+                m_logger.LogError(ex, "ucHoverMenu::InvokeCallback(" & Me.m_ctrlTarget.ToString & ")")
             End Try
         End Sub
 

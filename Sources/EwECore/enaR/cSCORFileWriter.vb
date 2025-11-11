@@ -31,6 +31,7 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cSCORFileWriter
 
     Private m_EPData As cEcopathDataStructures
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSCORFileWriter)()
 
     Public Sub New(EcopathData As cEcopathDataStructures)
         Me.m_EPData = EcopathData
@@ -98,7 +99,7 @@ Public Class cSCORFileWriter
             strm.Close()
 
         Catch ex As Exception
-            cLog.Write(ex, "enaR SCOR file writer exception.")
+            m_logger.LogError(ex, "enaR SCOR file writer exception.")
             bReturn = False
         End Try
 
@@ -122,7 +123,7 @@ Public Class cSCORFileWriter
         Try
             sw = New StreamWriter(strFileName)
         Catch ex As Exception
-            cLog.Write(ex, "cSCORWriter '" & strFileName & "'")
+            m_logger.LogError(ex, "cSCORWriter '" & strFileName & "'")
             Return False
         End Try
 

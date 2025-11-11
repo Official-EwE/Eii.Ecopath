@@ -42,6 +42,7 @@ Public Class frmMSEPlots
     Private m_MSEEvents As cMSEEventSource
     Private m_curPlotType As ePlotTypes
     Private m_curPlotData As ePlotData
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmMSEPlots)()
 
     Public Sub New()
         Me.InitializeComponent()
@@ -225,7 +226,7 @@ Public Class frmMSEPlots
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".onPlotTypesSelectedIndexChanged() Exception: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "frmMSEPlots.onDataTypeCheckedChanged Exception")
         End Try
 
         Me.Cursor = Cursors.Default
@@ -246,7 +247,7 @@ Public Class frmMSEPlots
             End If
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".onPlotTypesSelectedIndexChanged() Exception: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "frmMSEPlots.onPlotTypeCheckedChanged Exception")
         End Try
         Me.Cursor = Cursors.Default
 

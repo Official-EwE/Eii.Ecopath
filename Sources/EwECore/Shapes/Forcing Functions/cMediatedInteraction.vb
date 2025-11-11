@@ -33,6 +33,7 @@ Public MustInherit Class cMediatedInteraction
     Implements ICoreInterface
 
 #Region "Private Data"
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMediatedInteraction)()
 
 #Region " Protected class "
 
@@ -72,7 +73,7 @@ Public MustInherit Class cMediatedInteraction
         Try
             Me.m_SFPairs.Clear()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, ".Clear() Error clearing shape/function type pairs.")
         End Try
     End Sub
 

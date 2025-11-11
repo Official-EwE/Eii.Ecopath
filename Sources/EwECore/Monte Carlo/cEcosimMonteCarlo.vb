@@ -246,6 +246,7 @@ Public Class cEcosimMonteCarlo
     ''' and make cMonteCarlo read this information to populate the user interface classes.
     ''' </remarks>
     Private m_isVariableItem(,) As Boolean
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcosimMonteCarlo)()
 
     Public Sub New(ByRef theCore As cCore)
 
@@ -376,13 +377,13 @@ Public Class cEcosimMonteCarlo
                     Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
                     Me.m_pluginmanager.MontCarloInitialized(Me)
                 Catch ex As Exception
-                    cLog.Write(ex, "cEcosimMonteCarlo::Init")
+                    m_logger.LogError(ex, "cEcosimMonteCarlo::Init")
                 End Try
             End If
 
             Return True
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcosimMonteCarlo::Init")
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".Run", ex)
         End Try
@@ -486,7 +487,7 @@ Public Class cEcosimMonteCarlo
                         End Select
 
                     Catch ex As Exception
-                        cLog.Write(ex, "cEcosimMonteCarlo::LoadFromPedigree(" & varname.ToString & ")")
+                        m_logger.LogError(ex, "cEcosimMonteCarlo::LoadFromPedigree(" & varname.ToString & ")")
                         Return False
                     End Try
                 End If
@@ -606,12 +607,12 @@ Public Class cEcosimMonteCarlo
                 Try
                     Me.m_pluginmanager.MonteCarloRunInitialized()
                 Catch ex As Exception
-                    cLog.Write(ex, "cEcosimMonteCarlo::InitForRun")
+                    m_logger.LogError(ex, "cEcosimMonteCarlo::InitForRun")
                 End Try
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcosimMonteCarlo::InitForRun")
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".initForRun()", ex)
         End Try
@@ -706,7 +707,7 @@ Public Class cEcosimMonteCarlo
                 Try
                     Me.m_pluginmanager.SearchIterationsStarting()
                 Catch ex As Exception
-                    cLog.Write(ex, "cEcosimMonteCarlo::Run(SearchIterationsStarting)")
+                    m_logger.LogError(ex, "cEcosimMonteCarlo::Run(SearchIterationsStarting)")
                 End Try
             End If
 
@@ -803,7 +804,7 @@ Public Class cEcosimMonteCarlo
                         Try
                             Me.m_pluginmanager.MonteCarloEcosimRunCompleted()
                         Catch ex As Exception
-                            cLog.Write(ex, "cEcosimMonteCarlo::Run(" & Me.m_iTrial & ")")
+                            m_logger.LogError(ex, "cEcosimMonteCarlo::Run(" & Me.m_iTrial & ")")
                         End Try
                     End If
 
@@ -822,7 +823,7 @@ Public Class cEcosimMonteCarlo
                     Try
                         Me.m_pluginmanager.PostRunSearchResults(Me.m_core.m_SearchData)
                     Catch ex As Exception
-                        cLog.Write(ex, "cEcosimMonteCarlo::Run(" & Me.m_iTrial & ")")
+                        m_logger.LogError(ex, "cEcosimMonteCarlo::Run(" & Me.m_iTrial & ")")
                     End Try
                 End If
                 If Me.RunsSinceLastWithLowerSS > 2000 Then Exit For
@@ -836,14 +837,14 @@ Public Class cEcosimMonteCarlo
                 Try
                     Me.m_pluginmanager.SearchCompleted(Me.m_core.m_SearchData)
                 Catch ex As Exception
-                    cLog.Write(ex, "cEcosimMonteCarlo::Run SearchCompleted")
+                    m_logger.LogError(ex, "cEcosimMonteCarlo::Run SearchCompleted")
                 End Try
             End If
 
             Me.m_ecopath.suppressMessages = False
 
         Catch ex As Exception
-            cLog.Write(ex, "cEcosimMonteCarlo::Run(" & Me.m_iTrial & ")")
+            m_logger.LogError(ex, "cEcosimMonteCarlo::Run(" & Me.m_iTrial & ")")
             Debug.Assert(False, ex.StackTrace)
             Me.m_ecopath.suppressMessages = False
         End Try
@@ -856,7 +857,7 @@ Public Class cEcosimMonteCarlo
             Try
                 Me.m_pluginmanager.MontCarloRunCompleted()
             Catch ex As Exception
-                cLog.Write(ex, "cEcosimMonteCarlo::Run MontCarloRunCompleted")
+                m_logger.LogError(ex, "cEcosimMonteCarlo::Run MontCarloRunCompleted")
             End Try
         End If
 
@@ -887,7 +888,7 @@ Public Class cEcosimMonteCarlo
                 WaitEvent.WaitOne()
 
             Catch ex As Exception
-                cLog.Write(ex, "cEcosimMonteCarlo::Run BalancedEcopathModel(" & iTrial & ", " & iter & ")")
+                m_logger.LogError(ex, "cEcosimMonteCarlo::Run BalancedEcopathModel(" & iTrial & ", " & iter & ")")
             End Try
         End If
     End Sub
@@ -1040,7 +1041,7 @@ Public Class cEcosimMonteCarlo
         Catch ex As Exception
             'Bogus Dude.....the interface has thrown an error 
             'just keep ploughing on
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcosimMonteCarlo::TrialProgress(" & iTrial & ", " & iEcopathIterations & ")")
         End Try
 
     End Sub
@@ -1053,7 +1054,7 @@ Public Class cEcosimMonteCarlo
                 Me.dlgEcopathIterationHandler.Invoke()
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcosimMonteCarlo::EcopathIterationsProgress(" & iEcopathIterations & ")")
         End Try
 
     End Sub
@@ -1065,7 +1066,7 @@ Public Class cEcosimMonteCarlo
             End If
         Catch ex As Exception
             Debug.Assert(False, "Monte Carlo CompletedCallback Exception: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcosimMonteCarlo::CompletedCallback()")
         End Try
 
     End Sub
@@ -1089,7 +1090,7 @@ Public Class cEcosimMonteCarlo
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcosimMonteCarlo::selectNewEcopathParameters()")
             Debug.Assert(False, Me.ToString & ".selectNewEcopathParameters() Exception: " & ex.Message)
         End Try
 
@@ -1294,7 +1295,7 @@ Public Class cEcosimMonteCarlo
 
         Catch ex As Exception
             Debug.Assert(False, ex.StackTrace)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcosimMonteCarlo::BalanceEcopathWithNewPars()")
             Throw New ApplicationException(Me.ToString & ".BalanceEcopathWithNewPars()", ex)
         End Try
 
@@ -1517,7 +1518,7 @@ Public Class cEcosimMonteCarlo
             Next iGroup
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcosimMonteCarlo::redimVariables()")
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".redimVariables()", ex)
         End Try
@@ -1622,7 +1623,7 @@ Public Class cEcosimMonteCarlo
             Next iGroup
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcosimMonteCarlo::CalculateUpperLowerLimits()")
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".Run", ex)
         End Try

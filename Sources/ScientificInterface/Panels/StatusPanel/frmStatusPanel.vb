@@ -47,6 +47,7 @@ Public Class frmStatusPanel
     Private m_il As New ImageList()
     Private m_uic As cUIContext = Nothing
     Private m_hist As cMessageHistory = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmStatusPanel)()
 
 #End Region ' Private vars
 
@@ -475,7 +476,7 @@ Public Class frmStatusPanel
             Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             cmd.Invoke(e.Node.Hyperlink)
         Catch ex As Exception
-            cLog.Write(ex, "frmStatusPanel:OnNavigate")
+            m_logger.LogError(ex, "frmStatusPanel:OnNavigate")
         End Try
     End Sub
 

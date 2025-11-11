@@ -61,6 +61,7 @@ Public Class ucFlowDiagram
     'Private Enum eFDCommands As Integer
     '    ExportPicture
     'End Enum
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucFlowDiagram)()
 
     Private Class cGraphDataItem
         Private m_gdt As cValueChainResults.eGraphDataType
@@ -321,7 +322,7 @@ Public Class ucFlowDiagram
                 Me.m_uic.Core.Messages.SendMessage(msg)
 
             Catch ex As Exception
-                cLog.Write(ex, "VC::ucFlowDiagram::OnSaveImage(" & cmdFS.FileName & ")")
+                m_logger.LogError(ex, "VC::ucFlowDiagram::OnSaveImage(" & cmdFS.FileName & ")")
                 Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                 Me.m_uic.Core.Messages.SendMessage(msg)

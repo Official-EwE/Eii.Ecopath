@@ -104,6 +104,7 @@ Namespace SpatialData
         Protected m_spaceData As cEcospaceDataStructures
 
         Protected m_ForcingMaps As cForcingMapIndexPair()
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cForcingAdapterBase)()
 
 #End Region
 
@@ -246,7 +247,7 @@ Namespace SpatialData
                                 'Debug.Assert(n = 0)
                             Catch ex As Exception
                                 Debug.Assert(False, "Oppss... " + ex.Message)
-                                cLog.Write(ex, "Failed to restore forced biomass for group " + i.ToString)
+                                m_logger.LogError(ex, "Failed to restore forced biomass for group " + i.ToString)
                             End Try
                         End If
 
@@ -258,7 +259,7 @@ Namespace SpatialData
                 Next pair
 
             Catch ex As Exception
-                cLog.Write(ex, "Failed to restore forced data.")
+                m_logger.LogError(ex, "Failed to restore forced data.")
             End Try
 
         End Function

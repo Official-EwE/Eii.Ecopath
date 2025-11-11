@@ -44,6 +44,8 @@ Namespace Utilities
     ''' ---------------------------------------------------------------------------
     Public Class cStringUtils
 
+        Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cStringUtils)()
+
         ''' <summary><para>If true, CSV formatting is more restrictive than usual.
         ''' <list type="bullet"><item>headers will 
         ''' only be allowed to contain characters, numbers and underscores. All 
@@ -2369,7 +2371,7 @@ Namespace Utilities
                 Return String.Format(strMask, vals)
             Catch ex As Exception
                 Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
+                m_logger.LogError(ex, "Localization error on " & strMask)
             End Try
             Return strMask
         End Function
@@ -2391,7 +2393,7 @@ Namespace Utilities
                 Return cStringUtils.ToSentenceCase(String.Format(strMask, vals))
             Catch ex As Exception
                 Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
+                m_logger.LogError(ex, "Localization error on " & strMask)
             End Try
             Return strMask
         End Function

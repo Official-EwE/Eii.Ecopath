@@ -41,6 +41,8 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cEcospaceXYZTResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceXYZTResultsWriter)()
+
 #Region " Overrides "
 
     ''' -----------------------------------------------------------------------
@@ -115,7 +117,8 @@ Public Class cEcospaceXYZTResultsWriter
                                 strm = Nothing
                             End If
                         Catch ex As IOException
-                            cLog.Write(ex)
+                            m_logger.LogError(ex, "Ecospace XYZT Export: Failed to write {varname} for group {igrp} to file {strFile}",
+                                                varname.ToString(), igrp, strFile)
                             Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message),
                                                    eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Warning)
                             Me.m_core.Messages.SendMessage(msg)
@@ -141,7 +144,7 @@ Public Class cEcospaceXYZTResultsWriter
                     strm = Nothing
                 End If
             Catch ex As IOException
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Ecospace XYZT Export: Failed to write effort for fleet {iFlt} to file {strFile}", iFlt, strFile)
                 Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message),
                                        eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Warning)
                 Me.m_core.Messages.SendMessage(msg)

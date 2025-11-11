@@ -38,6 +38,8 @@ Public Class cEcotrophPlugin
     Implements EwEPlugin.IHelpPlugin
     Implements EwEPlugin.IUIContextPlugin
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcotrophPlugin)()
+
     Public Sub New()
 
     End Sub
@@ -96,7 +98,7 @@ Public Class cEcotrophPlugin
         Try
             etCore = DirectCast(core, cCore)
         Catch ex As Exception
-            cLog.Write(ex, "cEcotrophPlugin.Initialize")
+            m_logger.LogError(ex, "cEcotrophPlugin.Initialize")
         End Try
     End Sub
 
@@ -142,7 +144,7 @@ Public Class cEcotrophPlugin
             frmPlugin = Me.frmET
 
         Catch ex As Exception
-            cLog.Write(ex, "cEcotrophPlugin.OnControlClick")
+            m_logger.LogError(ex, "cEcotrophPlugin.OnControlClick")
         End Try
     End Sub
 
@@ -219,7 +221,7 @@ Public Class cEcotrophPlugin
             Next
 
         Catch ex As Exception
-            cLog.Write(ex, "cEcotrophPlugin.EcopathRunCompleted")
+            m_logger.LogError(ex, "cEcotrophPlugin.EcopathRunCompleted")
         End Try
 
     End Sub
@@ -232,7 +234,7 @@ Public Class cEcotrophPlugin
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
         Catch ex As Exception
-            cLog.Write(ex, "cEcotrophPlugin.UIContext")
+            m_logger.LogError(ex, "cEcotrophPlugin.UIContext")
         End Try
     End Sub
 

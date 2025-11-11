@@ -40,6 +40,8 @@ Imports Debug = System.Diagnostics.Debug
 Friend Class cDBUpdate6_60_00_18
     Inherits cDBUpdate
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDBUpdate6_60_00_18)()
+
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cDBUpdate.UpdateVersion"/>
     ''' -----------------------------------------------------------------------
@@ -86,7 +88,7 @@ Friend Class cDBUpdate6_60_00_18
                 End If
             Next
         Catch ex As Exception
-            cLog.Write(ex, "DB update 65.60018")
+            m_logger.LogError(ex, "DB update 65.60018")
         End Try
 
         Return bSuccess

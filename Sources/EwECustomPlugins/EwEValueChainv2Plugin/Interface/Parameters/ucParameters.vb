@@ -53,6 +53,7 @@ Public Class ucParameters
     Private m_mhCore As cMessageHandler = Nothing
 
     Private m_bInUpdate As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucParameters)()
 
 #Region " Constructor "
 
@@ -310,7 +311,7 @@ Public Class ucParameters
             End Select
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "ucParameters.CoreMessageHandler() Exception")
         End Try
 
     End Sub

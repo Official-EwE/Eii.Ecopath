@@ -47,6 +47,7 @@ Public Class cTransectDatastructures
 
     Private m_transects As New List(Of cTransect)
     Private m_selection As cTransect = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cTransectDatastructures)()
 
 #End Region ' Private vars
 
@@ -211,7 +212,7 @@ Public Class cTransectDatastructures
                 Me.m_transects.Add(t)
             Next
         Catch ex As Exception
-            cLog.Write(ex, "cTransectDataStructures.Load(" & strFile & ")")
+            m_logger.LogError(ex, "cTransectDataStructures.Load(" & strFile & ")")
             Return False
         End Try
         Return True
@@ -257,7 +258,7 @@ Public Class cTransectDatastructures
             doc.Save(strFile)
 
         Catch ex As Exception
-            cLog.Write(ex, "cTransectDataStructures.Save(" & strFile & ")")
+            m_logger.LogError(ex, "cTransectDataStructures.Save(" & strFile & ")")
             Return False
         End Try
         Return True

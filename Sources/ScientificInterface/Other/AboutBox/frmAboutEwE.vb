@@ -41,6 +41,7 @@ Namespace Other
         Private m_uic As cUIContext = Nothing
         Private m_qehTech As cQuickEditHandler = Nothing
         Private m_bInUpdate As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmAboutEwE)()
 
         Public Sub New(uic As cUIContext)
             Me.InitializeComponent()
@@ -186,7 +187,7 @@ Namespace Other
                 Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
                 cmd.Invoke(e.LinkText)
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "OnLinkClicked. Error invoking browser for link {0}", e.LinkText)
             End Try
         End Sub
 

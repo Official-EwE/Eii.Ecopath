@@ -71,6 +71,7 @@ Public Class cIBMSolver
     Public threadTimeMove As Single
 
     Private m_rand As Random
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cIBMSolver)()
 
 
     Public Sub Init()
@@ -111,7 +112,7 @@ Public Class cIBMSolver
             Me.SignalState.Set()
 
         Catch ex As Exception
-            cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
+            m_logger.LogError(ex, "runMovePackets. Ecospace IBM Solver Thread {ThreadID} encountered an error", Me.ThreadID)
 
             'prevent this thread from blocking forever if it throws an error
             Me.SignalState.Set()
@@ -153,7 +154,7 @@ Public Class cIBMSolver
             Me.SignalState.Set()
 
         Catch ex As Exception
-            cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
+            m_logger.LogError(ex, "runGrowSurvivePackets. Ecospace IBM Solver Thread {ThreadID} encountered an error", Me.ThreadID)
 
             'prevent this thread from blocking forever if it throws an error
             Me.SignalState.Set()

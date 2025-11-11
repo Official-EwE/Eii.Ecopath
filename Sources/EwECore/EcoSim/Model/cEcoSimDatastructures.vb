@@ -37,6 +37,7 @@ Public Class cEcosimDatastructures
     Public Const DEFAULT_N_FORCINGPOINTS As Integer = 1200 'min number of forcing point 100 years * FORCING_POINTS_PER_YEAR
     Public Const FORCING_POINTS_PER_YEAR As Integer = 12
     Public Const VULNERABILITY_CAP As Integer = 100000000.0#
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcosimDatastructures)()
 
     ''' <summary>
     ''' Enumerated index to the type of Ecosim Data saved over time
@@ -1117,7 +1118,7 @@ Public Class cEcosimDatastructures
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".InitForcingShapes() Error: " & ex.Message)
-            cLog.Write(Me.ToString & ".InitForcingShapes() Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".InitForcingShapes() Error: " & ex.Message)
             Return False
         End Try
 
@@ -1209,7 +1210,7 @@ Public Class cEcosimDatastructures
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".redimForcingShapes() Error: " & ex.Message)
-            cLog.Write(Me.ToString & ".redimForcingShapes() Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".redimForcingShapes() Error: " & ex.Message)
             Return False
         End Try
 
@@ -1463,7 +1464,7 @@ Public Class cEcosimDatastructures
             Me.SumStart(0) = 0
             Me.SumStart(1) = Me.NumYears - Me.NumStep / Me.NumStepsPerYear
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "DefaultSummaryPeriods() Error: " & ex.Message)
             'the model can still run if the summary time periods are messed up
         End Try
 
@@ -1665,7 +1666,7 @@ Public Class cEcosimDatastructures
             Next
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".setEffortToDefault() Exception: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "setEffortToDefault() Exception: " & ex.Message)
         End Try
     End Sub
 
@@ -1910,7 +1911,7 @@ Public Class cEcosimDatastructures
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, ForcingTitles.ToString & ".getSummaryBioForGroup() Exception: " & ex.Message)
 
             'if there is an error startBio and endBio will be zero
             startBio = 0
@@ -1970,7 +1971,7 @@ Public Class cEcosimDatastructures
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, ForcingTitles.ToString & ".getSummarybyGroupFleet() Exception: " & ex.Message)
 
             'if there is an error startBio and endBio will be zero
             startVal = 0
@@ -2007,7 +2008,7 @@ Public Class cEcosimDatastructures
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, ForcingTitles.ToString & ".getSummaryByFleet() Exception: " & ex.Message)
 
             'if there is an error startVal and endVal will be zero
             startVal = 0

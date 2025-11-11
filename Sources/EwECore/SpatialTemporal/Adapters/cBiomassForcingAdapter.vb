@@ -47,6 +47,7 @@ Namespace SpatialData
         '12 grams of carbon per mol 
         '9x for conversion of C to wet weight
         Dim molesm2_to_kgkm2 As Single = 12 * 9
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cBiomassForcingAdapter)()
 
 
 #End Region ' Private vars
@@ -146,7 +147,7 @@ Namespace SpatialData
                 'The user can use this to create a scalar if they need.
                 Return SumOverPeriod / nMapCells
             Catch ex As Exception
-                cLog.Write(ex, "Failed to calculate map scale value")
+                m_logger.LogError(ex, "Failed to calculate map scale value")
             End Try
             Return 1.0
         End Function

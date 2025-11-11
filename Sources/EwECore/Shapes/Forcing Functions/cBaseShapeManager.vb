@@ -45,6 +45,7 @@ Public MustInherit Class cBaseShapeManager
     Protected m_core As cCore = Nothing
     ''' <summary><see cref="eDataTypes">Type of shape</see> this manager operates on.</summary>
     Protected m_DataType As eDataTypes = eDataTypes.NotSet
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cBaseShapeManager)()
 
 #End Region
 
@@ -125,7 +126,7 @@ Public MustInherit Class cBaseShapeManager
             Try
                 Return Me.m_shapes.Item(ItemIndex)
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".Item() Error: " & ex.Message)
+                m_logger.LogError(ex, ".Item() Error: " & ex.Message)
                 Return Nothing
             End Try
 
@@ -143,7 +144,7 @@ Public MustInherit Class cBaseShapeManager
                 'convert core one based index to zero base for list
                 Return Me.m_shapes.Item(CoreOneBasedIndex - 1)
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".CoreIndex() Error: " & ex.Message)
+                m_logger.LogError(ex, ".CoreIndex() Error: " & ex.Message)
                 Return Nothing
             End Try
 
@@ -263,7 +264,7 @@ Public MustInherit Class cBaseShapeManager
             'have each shape will update the underlying EcoSim data
             For Each shape As cForcingFunction In Me
                 If Not shape.Update() Then
-                    cLog.Write(Me.ToString & ".Update() Shape failed to update DBID=" & shape.DBID.ToString)
+                    m_logger.LogError(".Update() Shape failed to update DBID=" & shape.DBID.ToString)
                     Debug.Assert(False, Me.ToString & ".Update() Shape failed to update DBID=" & shape.DBID.ToString)
                     'this will keep trying to update the rest of the data
                     'even if there was a problem with one of the shapes
@@ -289,7 +290,7 @@ Public MustInherit Class cBaseShapeManager
             'the shapes were constructed with a database ID and the underlying ecosim data
             For Each shape As cForcingFunction In Me
                 If Not shape.Load() Then
-                    cLog.Write(Me.ToString & ".Load() Shape failed to load DBID=" & shape.DBID.ToString)
+                    m_logger.LogError("Load() Shape failed to load DBID=" & shape.DBID.ToString)
                     Debug.Assert(False, Me.ToString & ".Load() Shape failed to load DBID=" & shape.DBID.ToString)
                     'keep loading the other shapes??????
                     'Return False

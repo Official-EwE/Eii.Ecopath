@@ -53,6 +53,7 @@ Namespace Ecosim
         Private m_fpUseDefaultVs As cEwEFormatProvider = Nothing
         Private m_fpVulCap As cEwEFormatProvider = Nothing
         Private m_bIsRunOwner As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmFitToTimeSeries)()
 
 #End Region 'Private variables
 
@@ -62,7 +63,7 @@ Namespace Ecosim
             Try
                 Me.InitializeComponent()
             Catch ex As Exception
-                cLog.Write(ex, "frmFitToTimeSeries.Constructor")
+                m_logger.LogError(ex, "frmFitToTimeSeries.Constructor")
             End Try
         End Sub
 
@@ -127,7 +128,7 @@ Namespace Ecosim
                 Me.m_shapeToolBox.XAxisMaxValue = 0
 
             Catch ex As Exception
-                cLog.Write(ex, "frmFitToTimeSeries.OnLoad")
+                m_logger.LogError(ex, "frmFitToTimeSeries.OnLoad")
             End Try
 
         End Sub
@@ -170,7 +171,7 @@ Namespace Ecosim
                 Me.m_gridOutput.UIContext = Nothing
 
             Catch ex As Exception
-                cLog.Write(ex, "frmFitToTimeSeries.OnFormClosed")
+                m_logger.LogError(ex, "frmFitToTimeSeries.OnFormClosed")
             End Try
 
             MyBase.OnFormClosed(e)
@@ -193,7 +194,7 @@ Namespace Ecosim
                 Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
 
             Catch ex As Exception
-                cLog.Write(ex, "frmFitToTimeSeries.ReloadControls")
+                m_logger.LogError(ex, "frmFitToTimeSeries.ReloadControls")
             End Try
 
             Me.UpdateControls()
@@ -231,7 +232,7 @@ Namespace Ecosim
             Try
                 Me.UpdateControls()
             Catch ex As Exception
-                cLog.Write(ex, "frmFitToTimeSeries.OnCoreExecutionStateEvent")
+                m_logger.LogError(ex, "frmFitToTimeSeries.OnCoreExecutionStateEvent")
             End Try
         End Sub
 

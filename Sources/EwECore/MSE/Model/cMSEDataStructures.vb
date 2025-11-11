@@ -325,6 +325,7 @@ Namespace MSE
         Private m_curIter As Integer
         Private m_EPData As cEcopathDataStructures
         Private m_ESData As cEcosimDatastructures
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEDataStructures)()
 
 #End Region
 
@@ -413,7 +414,7 @@ Namespace MSE
                 '  Me.EffortSource = eMSEEffortSource.EcosimEffort
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSEDataStructures.Init() Exception")
                 Throw New ApplicationException("Init() " & ex.Message, ex)
             End Try
 
@@ -676,7 +677,7 @@ Namespace MSE
                     Me.BioBounds(igrp) = New cMSEBounds(igrp, Me.m_EPData.B(igrp) * 0.1F, Me.m_EPData.B(igrp) * 0.4F)
                 End If
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSEDataStructures.DefaultBioBounds() Exception")
                 Debug.Assert(False, Me.ToString & ".LoadBounds() Exception: " & ex.Message)
             End Try
 
@@ -698,7 +699,7 @@ Namespace MSE
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSEDataStructures.DefaultCatchBoundsGroup() Exception")
                 Debug.Assert(False, Me.ToString & ".LoadBounds() Exception: " & ex.Message)
             End Try
 
@@ -720,7 +721,7 @@ Namespace MSE
                 Me.EffortFleetBounds(iflt) = New cMSEBounds(iflt, 0.5, 2)
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSEDataStructures.DefaultCatchBoundsFleet() Exception")
                 Debug.Assert(False, Me.ToString & ".LoadBounds() Exception: " & ex.Message)
             End Try
 
@@ -953,7 +954,7 @@ Namespace MSE
                 Next igrp
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSEDataStructures.setDefaultQuotaShare() Exception")
                 System.Console.WriteLine(Me.ToString & ".setDefaultQuotaShare() Exception: " & ex.Message)
             End Try
 
@@ -1027,6 +1028,7 @@ Namespace MSE
         Private m_nStepsPerYear As Integer
         Private m_CounterDelegate As MSECounterDelegate
         Private m_CounterType As eCoreCounterTypes
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSESummaryStats)()
 
         Public Sub New(MSEData As cMSEDataStructures, Bounds() As cMSEBounds, NumberOfData As Integer, StepsPerYear As Integer, CounterType As eCoreCounterTypes, CounterDelegate As MSECounterDelegate)
 
@@ -1056,7 +1058,7 @@ Namespace MSE
                 Next
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSESummaryStats.AddIteration() Exception")
             End Try
 
         End Sub
@@ -1142,7 +1144,7 @@ Namespace MSE
 
             Catch ex As Exception
                 Debug.Assert(False, "MSE Failed to add a value to statistics data. " & ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSESummaryStats.AddValue() Exception")
             End Try
 
         End Sub
@@ -1162,7 +1164,7 @@ Namespace MSE
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".ComputeStats() in calculation of histogram!")
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSESummaryStats.ComputeStats() Exception in calculation of histogram")
             End Try
 
 
@@ -1192,7 +1194,7 @@ Namespace MSE
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".ComputeStats() in calculation of Means!")
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSESummaryStats.ComputeStats() Exception in calculation of Means")
             End Try
 
         End Sub
@@ -1241,7 +1243,7 @@ Namespace MSE
                     Return Vari
 
                 Catch ex As Exception
-                    cLog.Write(ex)
+                    m_logger.LogError(ex, "cMSESummaryStats.Variance() Exception")
                     System.Console.WriteLine(ex.ToString)
                 End Try
 

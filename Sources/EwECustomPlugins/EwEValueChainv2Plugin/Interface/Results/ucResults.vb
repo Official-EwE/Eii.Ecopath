@@ -171,7 +171,7 @@ Public Class ucResults
     Private m_cmdRunEcosim As cCommand = Nothing
     ''' <summary>Local command to for running Equilibrium.</summary>
     Private m_cmdRunEqulibrium As cCommand = Nothing
-
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucResults)()
 #End Region ' Private bits
 
 #Region " Constructor "
@@ -406,7 +406,7 @@ Public Class ucResults
             Me.m_uic.Core.RunEcopath()
 
         Catch ex As Exception
-            cLog.Write(ex, "ValueChain::OnInvokeRunEcopath")
+            m_logger.LogError(ex, "ValueChain::OnInvokeRunEcopath")
         End Try
 
         ' Switch back to auto run mode
@@ -448,7 +448,7 @@ Public Class ucResults
             Me.m_uic.Core.RunEcosim()
 
         Catch ex As Exception
-            cLog.Write(ex, "ValueChain::OnInvokeRunEcosim")
+            m_logger.LogError(ex, "ValueChain::OnInvokeRunEcosim")
         End Try
 
         ' Switch back to auto run mode
@@ -484,7 +484,7 @@ Public Class ucResults
             ' Run
             Me.m_model.RunEquilibrium(Me.m_data, Me.m_result)
         Catch ex As Exception
-            cLog.Write(ex, "ValueChain::OnInvokeRunEquilibrium")
+            m_logger.LogError(ex, "ValueChain::OnInvokeRunEquilibrium")
         End Try
 
         ' Switch back to auto run mode

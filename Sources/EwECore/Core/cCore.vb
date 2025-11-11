@@ -7868,7 +7868,7 @@ Public Class cCore
     '            Return DirectCast(m_ShapeManagers.Item(eDataTypes.EcosimEnviroResponseFunctionManager), cEcosimResponseShapeManager)
     '        Catch ex As Exception
     '            Debug.Assert(False, "Failed to find Ecosim Environmental Response shape manager")
-    '            cLog.Write(Me.ToString & ".EcosimEnviroResponseShapeManager() Error: " & ex.Message)
+    '            m_logger.LogError(ex, ".EcosimEnviroResponseShapeManager() Error: " & ex.Message)
     '            Return Nothing
     '        End Try
 
@@ -8178,7 +8178,7 @@ Public Class cCore
                 If m_EcoSimThread.IsAlive Then
                     'the thread is still running 
                     'for now don't let another thread start 
-                    cLog.Write(Me.ToString & ".RunEcoSimOnThread(SyncObject,Delegate) EcoSim model is already running. Please wait to start another model.")
+                    m_logger.LogError(".RunEcoSimOnThread(SyncObject,Delegate) EcoSim model is already running. Please wait to start another model.")
                     Return False
                 End If 'If mEcoSimThread.IsAlive Then
             End If 'If Not mEcoSimThread Is Nothing Then
@@ -8207,7 +8207,7 @@ Public Class cCore
             m_EcoSimThread.Start()
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".RunEcoSimOnThread(SyncObject,Delegate)Error: " & ex.Message)
+            m_logger.LogError(ex, ".RunEcoSimOnThread(SyncObject,Delegate)Error: " & ex.Message)
             Debug.Assert(False, "Error in RunEcoSimOnThread(...)")
             Return False
         End Try
@@ -8241,7 +8241,7 @@ Public Class cCore
 
         'Catch ex As Exception
 
-        '    cLog.Write(Me.ToString & ".RunEcoSim(...) Error: " & ex.Message)
+        '    m_logger.LogError(ex, ".RunEcoSim(...) Error: " & ex.Message)
         '    Debug.Assert(False, "Error trying to run EcoSim Model")
 
         '    'let EcoSim Start again
@@ -8283,7 +8283,7 @@ Public Class cCore
             mSynEcoSim.Invoke(m_InterfaceDelegate, args)
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".EcoSimProgress_handler() Delegate has thrown an Error: " & ex.Message)
+            m_logger.LogError(ex, ".EcoSimProgress_handler() Delegate has thrown an Error: " & ex.Message)
 
         End Try
 

@@ -37,6 +37,7 @@ Public Class cMediatedInteractionManager
     Private m_interactionGroup As New Dictionary(Of String, cPredPreyInteraction)
     Private m_EPData As cEcopathDataStructures
     Private m_ESData As cEcosimDatastructures
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMediatedInteractionManager)()
 
 #Region "Private functions"
 
@@ -137,7 +138,7 @@ Public Class cMediatedInteractionManager
             Me.m_interactionGroup.Clear()
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, ".Clear() Exception")
         End Try
 
     End Sub

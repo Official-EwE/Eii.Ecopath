@@ -32,6 +32,8 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cEcospaceMPA
     Inherits cCoreInputOutputBase
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceMPA)()
+
 #Region "Constructor"
 
     Sub New(core As cCore, iDBID As Integer)
@@ -55,7 +57,7 @@ Public Class cEcospaceMPA
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceMPA.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcospaceMPA. Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".New(nGroups) Error creating new cEcospaceMPA. Error: " & ex.Message)
         End Try
 
     End Sub

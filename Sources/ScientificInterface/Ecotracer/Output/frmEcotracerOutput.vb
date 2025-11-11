@@ -22,15 +22,16 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports ZedGraph
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterface.Ecospace
+Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
 
 #End Region ' Imports
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Form class, implementing the Ecotracer (contaminant tracing) output interface.
@@ -850,6 +851,7 @@ Public Class frmEcotracerOutput
         Implements IDisplayModeHelper
 
         Private m_zgh As cZedGraphHelper
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcoSimDisplayHelper)()
 
         Sub New(ByRef uic As cUIContext, ZedGraphHelper As cZedGraphHelper)
             ' Sanity check
@@ -951,7 +953,7 @@ Public Class frmEcotracerOutput
                 Return smax
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "GetGroupMax. Error computing group max for group index {0}", iGroup)
                 Debug.Assert(False, ex.StackTrace)
                 Return smax
             End Try

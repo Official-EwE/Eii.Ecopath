@@ -39,6 +39,8 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cEcoSimModelParameters
     Inherits cCoreInputOutputBase
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcoSimModelParameters)()
+
 #Region " Constructor "
 
     Public Sub New(core As cCore)
@@ -158,7 +160,7 @@ Public Class cEcoSimModelParameters
         Catch ex As Exception
 
             Debug.Assert(False, ex.Message)
-            cLog.Write(Me.ToString & ".New() Error: " & ex.Message)
+            m_logger.LogError(ex, "cEcoSimModelParameters.New() Exception")
 
         End Try
 

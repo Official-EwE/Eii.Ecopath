@@ -297,6 +297,9 @@ Public Class cEcoSpace
     Private _IBMGrowTimer As Stopwatch
     Private _IBMMoveTimer As Stopwatch
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcoSpace)()
+
+
 #End Region
 
 #Region "Construction Destruction"
@@ -723,7 +726,7 @@ Public Class cEcoSpace
             Me.e = Nothing '(,,) As Single
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcoSpace.Clear() Exception")
         End Try
 
     End Sub
@@ -1200,7 +1203,7 @@ Public Class cEcoSpace
             dumpEcospaceThreadLog(totRunTime, SpaceRunTime, GridRunTime, EffortRunTime, IBMMultiStanza, GrowthTot, MovementTot)
 
         Catch ex As Exception
-            cLog.Write(ex, "cEcospace::FindSpatialEquilibrium")
+            m_logger.LogError(ex, "cEcoSpace.FindSpatialEquilibrium() Exception")
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException("FindSpatialEquilibrium() Error: " & ex.Message, ex)
         End Try
@@ -1348,7 +1351,7 @@ Public Class cEcoSpace
 
         Catch ex As Exception
             Debug.Assert(False, ex.StackTrace)
-            cLog.Write(ex, "cEcospace::BeginTimeStep")
+            m_logger.LogError(ex, "cEcoSpace.BeginTimeStep() Exception")
             Throw New ApplicationException("EcoSpace.BeginTimeStep() error: " & ex.Message, ex)
         End Try
 
@@ -1374,7 +1377,7 @@ Public Class cEcoSpace
                 Debug.Assert(btimedout, "SPF timed out waiting for global Read Mutex")
 
                 If (btimedout) Then
-                    cLog.Write("WARNING!! cEcospace.SetSpatialTempData mutex timed out, model results may be funky past time step " & iTimeStepCounter)
+                    m_logger.LogWarning("WARNING!! cEcospace.SetSpatialTempData mutex timed out, model results may be funky past time step " & iTimeStepCounter)
                 End If
             End If
 
@@ -1390,7 +1393,7 @@ Public Class cEcoSpace
                         Try
                             src.Populate(iTimeStepCounter, cCore.NULL_VALUE)
                         Catch ex As Exception
-                            cLog.Write(ex, "cEcospace.SetSpatialTempData " & src.Name & "(" & src.Index & ")")
+                            m_logger.LogError(ex, "cEcospace.SetSpatialTempData " & src.Name & "(" & src.Index & ")")
                         End Try
                     End If
                 Next
@@ -1398,7 +1401,7 @@ Public Class cEcoSpace
 
         Catch ex As Exception
             '  Debug.Assert(False, ex.StackTrace)
-            cLog.Write(ex, "cEcospace.SetSpatialTempData()")
+            m_logger.LogError(ex, "cEcospace.SetSpatialTempData()")
             Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
 
         Finally
@@ -1422,7 +1425,7 @@ Public Class cEcoSpace
                         Try
                             src.RestoreForcing(Me.EcoSpaceData)
                         Catch ex As Exception
-                            cLog.Write(ex, "cEcospace.SetSpatialTempData " & src.Name & "(" & src.Index & ")")
+                            m_logger.LogError(ex, "cEcospace.SetSpatialTempData " & src.Name & "(" & src.Index & ")")
                         End Try
                     End If
                 Next
@@ -1430,7 +1433,7 @@ Public Class cEcoSpace
 
         Catch ex As Exception
             '  Debug.Assert(False, ex.StackTrace)
-            cLog.Write(ex, "cEcospace.SetSpatialTempData()")
+            m_logger.LogError(ex, "cEcospace.SetSpatialTempData()")
             Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
         End Try
 
@@ -1456,7 +1459,7 @@ Public Class cEcoSpace
 
         '                Catch ex As Exception
         '                    Debug.Assert(False, "Oppss... " + ex.Message)
-        '                    cLog.Write(ex, "Failed to restore forced biomass for group " + i.ToString)
+        '                    m_logger.LogError(ex, "Failed to restore forced biomass for group " + i.ToString)
         '                End Try
         '            End If
 
@@ -1759,7 +1762,7 @@ Public Class cEcoSpace
             Next solver
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcoSpace.runIBMSolverThreads() Exception")
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException("Error in runIBMSolverThreads()", ex)
         End Try
@@ -1807,7 +1810,7 @@ Public Class cEcoSpace
             'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
             If Not WaitOb.WaitOne() Then
                 Debug.Assert(False, "runGridSolverThreads() Timed out!")
-                cLog.Write(Me.ToString & ".runSpaceSolverThreads() Timed out.")
+                m_logger.LogError(".runSpaceSolverThreads() Timed out.")
             End If
 
             stpTotRun.Stop()
@@ -1815,7 +1818,7 @@ Public Class cEcoSpace
             'System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcoSpace.runGridSolverThreads() Exception")
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException("Error in runSolverThreads()", ex)
         End Try
@@ -1919,7 +1922,7 @@ Public Class cEcoSpace
             'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
             If Not WaitOb.WaitOne() Then
                 Debug.Assert(False, "Timed out!")
-                cLog.Write(Me.ToString & ".runSpaceSolverThreads() Timed out.")
+                m_logger.LogError(Me.ToString & ".runSpaceSolverThreads() Timed out.")
             End If
 
             etRunTime = stpTotRun.Elapsed.TotalSeconds
@@ -1937,7 +1940,7 @@ Public Class cEcoSpace
             WaitOb.Dispose()
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcoSpace.runSpaceSolverThreads() Exception")
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException("Error in runSpaceSolverThreads() " & ex.Message, ex)
         End Try
@@ -2016,7 +2019,7 @@ Public Class cEcoSpace
             'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
             If Not WaitOb.WaitOne() Then
                 Debug.Assert(False, "Timed out!")
-                cLog.Write(Me.ToString & ".runSpaceSolverThreads() Timed out.")
+                m_logger.LogError(".runSpaceSolverThreads() Timed out.")
             End If
 
             etRunTime = stpTotRun.Elapsed.TotalSeconds
@@ -2036,7 +2039,7 @@ Public Class cEcoSpace
             WaitOb.Dispose()
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEcoSpace.runSpaceSolverThreads() Exception")
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException("Error in runSpaceSolverThreads() " & ex.Message, ex)
         End Try
@@ -2366,7 +2369,7 @@ Public Class cEcoSpace
                 'redim MPred at the start of each run because we have no way of knowing when EcoSimDataStructures.inlinks has changed
                 'inlinks is the number of prey/pred linkages
                 Me.EcoSpaceData.allocate(Me.EcoSpaceData.MPred, Me.EcoSpaceData.InRow + 1, Me.EcoSpaceData.InCol + 1, Me.EcoSimData.inlinks)
-                cLog.Write("Ecospace allocated MPred data for model interoperability", eVerboseLevel.Detailed)
+                m_logger.LogInformation("Ecospace allocated MPred data for model interoperability")
             End If
 
             'ReDim Me.totalIterThread(Me.EcoSpaceData.nGridSolverThreads + 1)
@@ -2829,7 +2832,7 @@ Public Class cEcoSpace
                     'something went very wrong with the initialization
                     Me.ContaiminantTracerData.EcoSpaceConSimOn = False
                     Debug.Assert(False, ex.StackTrace)
-                    cLog.Write(ex)
+                    m_logger.LogError(ex, "Ecospace contaminant tracer initialization failed. Contaminant tracer simulation turned OFF. " & ex.Message)
                 End Try
 
             End If
@@ -3012,7 +3015,7 @@ Public Class cEcoSpace
                         Try
                             src.InitRun(Me.EcoSpaceData.PreserveLayerData)
                         Catch ex As Exception
-                            cLog.Write(ex, "cEcospace::Run.InitAdapters " & src.Name & "(" & src.Index & ")")
+                            m_logger.LogError(ex, "cEcospace::Run.InitAdapters " & src.Name & "(" & src.Index & ")")
                         End Try
                     End If
                 Next
@@ -3032,7 +3035,7 @@ Public Class cEcoSpace
                     Try
                         src.EndRun()
                     Catch ex As Exception
-                        cLog.Write(ex, "cEcospace::Run.CleanAdapters " & src.Name & "(" & src.Index & ")")
+                        m_logger.LogError(ex, "cEcospace::Run.CleanAdapters " & src.Name & "(" & src.Index & ")")
                     End Try
                 End If
             Next
@@ -4924,7 +4927,7 @@ exitline:
             System.Console.WriteLine("EffortDistribution PredictEffortDistributionThreaded() Timed Out WTF!")
             'Ok something has to happen here
             'Maybe pitch an error
-            cLog.Write(Me.ToString & ".runPredictEffortDistributionThreads() PredictEffortDistributionThreaded timed out.")
+            m_logger.LogError(Me.ToString & ".runPredictEffortDistributionThreads() PredictEffortDistributionThreaded timed out.")
         End If
 
         waitOb.Dispose()
@@ -4973,7 +4976,7 @@ exitline:
             System.Console.WriteLine("EffortDistribution setFishMortFromEffort() Timed Out WTF!")
             'Ok something has to happen here
             'Maybe pitch an error
-            cLog.Write(Me.ToString & ".runPredictEffortDistributionThreads() setFishMortFromEffort timed out.")
+            m_logger.LogError(Me.ToString & ".runPredictEffortDistributionThreads() setFishMortFromEffort timed out.")
         End If
         waitOb.Dispose()
         waitOb = Nothing
@@ -5039,7 +5042,7 @@ exitline:
             System.Console.WriteLine("EffortDistribution PredictEffortDistributionThreaded() Timed Out WTF!")
             'Ok something has to happen here
             'Maybe pitch an error
-            cLog.Write(Me.ToString & ".runPredictEffortDistributionThreads() PredictEffortDistributionThreaded timed out.")
+            m_logger.LogError(Me.ToString & ".runPredictEffortDistributionThreads() PredictEffortDistributionThreaded timed out.")
         End If
 
         distET = stpwTotRunTime.Elapsed.TotalSeconds
@@ -5090,7 +5093,7 @@ exitline:
             System.Console.WriteLine("EffortDistribution setFishMortFromEffort() Timed Out WTF!")
             'Ok something has to happen here
             'Maybe pitch an error
-            cLog.Write(Me.ToString & ".runPredictEffortDistributionThreads() setFishMortFromEffort timed out.")
+            m_logger.LogError(Me.ToString & ".runPredictEffortDistributionThreads() setFishMortFromEffort timed out.")
         End If
         waitOb.Dispose()
         waitOb = Nothing
@@ -5162,7 +5165,7 @@ exitline:
             Next icell
 
         Catch ex As Exception
-            cLog.Write(ex, " Error computing Fishing Mortality")
+            m_logger.LogError(ex, " Error computing Fishing Mortality")
             System.Console.WriteLine("Ecospace.setFishMortFromEffort() Exception: " & ex.Message)
         End Try
 
@@ -6463,7 +6466,7 @@ exitline:
 
 
     '    Catch ex As Exception
-    '        cLog.Write(ex)
+    '        m_logger.LogError(ex, "Ecospace: Error in accumCatchData")
     '    End Try
 
     '    Me.m_SpaceCatchSemaphor.Release()
@@ -6691,7 +6694,7 @@ exitline:
             Next iflt
 
         Catch ex As Exception
-            cLog.Write(ex, "EcoSpace.UpdateEcospaceResults()")
+            m_logger.LogError(ex, "EcoSpace.UpdateEcospaceResults()")
             Debug.Assert(False, "Exception in EcoSpace.UpdateEcospaceResults() " + ex.Message)
         End Try
 
@@ -6722,7 +6725,7 @@ exitline:
 
         Catch ex As Exception
             Debug.Assert(False)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "EcoSpace.updateBiomassResults()")
         End Try
 
     End Sub
@@ -6744,7 +6747,7 @@ exitline:
         Try
             Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnTimeStep), iTime)
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "marshallOnTimeStep")
         End Try
     End Sub
 
@@ -6890,7 +6893,7 @@ exitline:
 
         Catch ex As Exception
 
-            cLog.Write(ex)
+            m_logger.LogError(ex, "InitGridSolverThreads")
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException(Me.ToString & ".InitGridSolverThreads() Error:  " & ex.Message, ex)
 
@@ -6975,7 +6978,7 @@ exitline:
 
         Catch ex As Exception
 
-            cLog.Write(ex)
+            m_logger.LogError(ex, "InitSpaceSolverThreads")
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException(Me.ToString & ".InitSpaceSolverThreads() Error:  " & ex.Message, ex)
 
@@ -6992,7 +6995,7 @@ exitline:
                 'discount factor was computed in the main time loop
             Next
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "InitSolversForYear")
             Throw New ApplicationException(Me.ToString & ".InitForYear() Error:  " & ex.Message, ex)
         End Try
 
@@ -7012,7 +7015,7 @@ exitline:
                 'discount factor was computed in the main time loop
             Next
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "resetSpaceSolverSpinup")
             Throw New ApplicationException(Me.ToString & ".InitForYear() Error:  " & ex.Message, ex)
         End Try
     End Sub
@@ -7088,7 +7091,7 @@ exitline:
 
         Catch ex As Exception
 
-            cLog.Write(ex)
+            m_logger.LogError(ex, "InitIBMSolverThreads")
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException(Me.ToString & ".InitIBMSolverThreads() Error:  " & ex.Message, ex)
 
@@ -7129,7 +7132,7 @@ exitline:
 
         Catch ex As Exception
 
-            cLog.Write(ex)
+            m_logger.LogError(ex, "UpdateGridSolverThreads")
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException(Me.ToString & ".UpdateGridSolverThreads() Error:  " & ex.Message, ex)
 
@@ -7681,7 +7684,7 @@ exitline:
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Ecospace InitIBM Failed")
             Me.Messages.SendMessage(New cMessage(cStringUtils.Localize("IBM Failed to initialize and will not run correctly." + cStringUtils.vbCrLf + ex.Message, ex.Message),
                                                     eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
 
@@ -8374,7 +8377,7 @@ exitline:
 
         Debug.Assert(nCompleted = Me.EcoSpaceData.NGroups)
         If Not waitOb.WaitOne(THREAD_TIMEOUT) Then
-            cLog.Write(Me.ToString & ".runAjustLowHabCapsThreaded() AdjustLowHabCapsThreaded timed out.")
+            m_logger.LogError(Me.ToString & ".runAjustLowHabCapsThreaded() AdjustLowHabCapsThreaded timed out.")
             Debug.Assert(False, Me.ToString & ".runAjustLowHabCapsThreaded() AdjustLowHabCapsThreaded timed out.")
         End If
 
@@ -8820,7 +8823,7 @@ exitline:
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(Me.ToString & ".normalizePropHabType() Exception: " & ex.Message)
             Debug.Assert(False, ex.Message)
         End Try
 

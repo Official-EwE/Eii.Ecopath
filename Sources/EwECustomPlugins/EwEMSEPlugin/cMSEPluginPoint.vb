@@ -81,6 +81,7 @@ Public Class cMSEPluginPoint
     ''' but has not been activated by the user.
     ''' </remarks>
     Private m_bSessionActive As Boolean = True
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEPluginPoint)()
 
 #End Region ' Internal vars
 
@@ -253,7 +254,7 @@ Public Class cMSEPluginPoint
             Me.m_coreMSEData = DirectCast(MSEDataStructure, MSE.cMSEDataStructures)
             Me.m_MSE.CoreMSEData = Me.m_coreMSEData
         Catch ex As Exception
-            cLog.Write(ex, "MSEInitialized(...) Failed to cast MSEDataStructure to cMSEDataStructures.")
+            m_logger.LogError(ex, "MSEInitialized(...) Failed to cast MSEDataStructure to cMSEDataStructures.")
         End Try
 
     End Sub

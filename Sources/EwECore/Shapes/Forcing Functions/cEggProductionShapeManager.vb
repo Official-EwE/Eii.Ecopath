@@ -33,6 +33,7 @@ Public Class cEggProductionShapeManager
     Inherits cForcingFunctionShapeManager
 
     Private m_grplist As cGroupShapeList
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEggProductionShapeManager)()
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
@@ -74,7 +75,7 @@ Public Class cEggProductionShapeManager
             Return True
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".InitAppliesTo() Error:" & ex.Message)
+            m_logger.LogError(ex, ".InitAppliesTo() Error:" & ex.Message)
             Debug.Assert(False, Me.ToString & ".InitAppliesTo() Error:" & ex.Message)
         End Try
 
@@ -107,7 +108,7 @@ Public Class cEggProductionShapeManager
 
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, ".OnChanged() Error:" & ex.Message)
             Debug.Assert(False, ex.StackTrace)
         End Try
 

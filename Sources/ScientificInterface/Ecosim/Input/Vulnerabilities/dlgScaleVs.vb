@@ -42,6 +42,7 @@ Namespace Ecosim
 
         Private WithEvents m_fpLow As cEwEFormatProvider = Nothing
         Private WithEvents m_fpHigh As cEwEFormatProvider = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgScaleVs)()
 
 #End Region 'Private vars
 
@@ -124,7 +125,7 @@ Namespace Ecosim
             Try
                 Me.m_btnOK.Enabled = (CSng(Me.m_fpLow.Value) < CSng(Me.m_fpHigh.Value))
             Catch ex As Exception
-                cLog.Write(ex, "dlgScaleVs.UpdateControls")
+                m_logger.LogError(ex, "dlgScaleVs.UpdateControls")
             End Try
 
         End Sub

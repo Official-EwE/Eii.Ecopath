@@ -34,6 +34,7 @@ Public Class cValidatorCounter
 
     Private m_core As cCore
     Private m_counter As eCoreCounterTypes
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cValidatorCounter)()
 
     Public Sub New(ByRef theCore As cCore, counterType As eCoreCounterTypes)
         Me.m_core = theCore
@@ -65,7 +66,7 @@ Public Class cValidatorCounter
 
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cValidatorCounter.Validate() Exception")
             Return False
         End Try
 

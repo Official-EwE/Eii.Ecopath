@@ -72,6 +72,7 @@ Namespace Database
         Protected m_iNumSteps As Integer = 0
         ''' <summary>The current step processed by the import.</summary>
         Protected m_iStep As Integer = 0
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cModelImporter)()
 
 #End Region ' Private vars
 

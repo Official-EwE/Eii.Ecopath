@@ -38,6 +38,7 @@ Public Class cEcosimGroupOutput
     Private m_simData As cEcosimDatastructures
     'dictionary of vars and wrappers that directly access the core data
     Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcosimGroupOutput)()
 
 #End Region
 
@@ -483,7 +484,7 @@ Public Class cEcosimGroupOutput
             Try
                 Return CSng(Me.GetVariable(eVarNameFlags.EcosimPreyPercentageTime, iPreyGroup, iTime))
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, Me.ToString & ".PreyPercentage() " & ex.Message)
                 Debug.Assert(False, Me.ToString & ".PreyPercentage() " & ex.Message)
             End Try
         End Get
@@ -503,7 +504,7 @@ Public Class cEcosimGroupOutput
             Try
                 Return CSng(Me.GetVariable(eVarNameFlags.EcosimPredRateTime, iPredGroup, iTime))
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, Me.ToString & ".Predation() " & ex.Message)
                 Debug.Assert(False, Me.ToString & ".Predation() " & ex.Message)
             End Try
         End Get
@@ -516,7 +517,7 @@ Public Class cEcosimGroupOutput
             Try
                 Return CSng(Me.GetVariable(eVarNameFlags.EcosimPredConsumpTime, iPredGroup, iTime))
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, Me.ToString & ".Consumption() " & ex.Message)
                 Debug.Assert(False, Me.ToString & ".Consumption() " & ex.Message)
             End Try
         End Get
@@ -528,7 +529,7 @@ Public Class cEcosimGroupOutput
             Try
                 Return CSng(Me.GetVariable(eVarNameFlags.EcosimElectivityTime, iPredGroup, iTime))
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, Me.ToString & ".Electivity() " & ex.Message)
                 Debug.Assert(False, Me.ToString & ".Electivity() " & ex.Message)
             End Try
         End Get

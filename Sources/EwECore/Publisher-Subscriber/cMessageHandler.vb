@@ -59,6 +59,7 @@ Public Class cMessageHandler
     Private m_corecomponent As eCoreComponentType = eCoreComponentType.NotSet
     ''' <summary>Message type filter. Can be anything.</summary>
     Private m_msgtype As eMessageType = eMessageType.Any
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMessageHandler)()
 
 #End Region ' Private vars
 
@@ -144,13 +145,13 @@ Public Class cMessageHandler
                         End If
                     Catch ex As Threading.ThreadAbortException
                         ' A thread is dying, do not assert
-                        cLog.Write(ex)
+                        m_logger.LogError(ex, "cMessageHandler.SendMessage() ThreadAbortException")
                     Catch ex As InvalidAsynchronousStateException
                         ' Message target has evaporated. Ignore
                     Catch ex As Exception
                         'Error thrown in the handler by an interface that was not handled 
                         'we have no idea if this message got handled or not
-                        cLog.Write(ex)
+                        m_logger.LogError(ex, "cMessageHandler.SendMessage() Error thrown by an interface message handler.")
                         Debug.Assert(False, Me.ToString & ".SendMessage(cMessage) Error thrown by an interface message handler.")
                         Return False
                     End Try
@@ -163,13 +164,13 @@ Public Class cMessageHandler
 
                 'delegate = NULL
                 'can't really send a message now can we!!!
-                cLog.Write(Me.ToString & ".SendMessage(cMessage) Delegate has not been initialized.")
+                m_logger.LogError(".SendMessage(cMessage) Delegate has not been initialized.")
                 Return False
 
             End If 'If Not m_DelegateNotifier Is Nothing Then
 
         Catch ex As Exception
-            cLog.Write(ex, Me.ToString & ".SendMessage(cMessage)")
+            m_logger.LogError(ex, Me.ToString & ".SendMessage(cMessage)")
             Debug.Assert(False, "Error in cMessageHandler.SendMessage")
             Return False
         End Try
@@ -185,7 +186,7 @@ Public Class cMessageHandler
             Try
                 Me.m_DelegateNotifier.Invoke(DirectCast(Message, cMessage))
             Catch ex As Exception
-                cLog.Write(ex, "cMessageHandler.marshallSendMessage(" & Message.ToString & ")")
+                m_logger.LogError(ex, "cMessageHandler.marshallSendMessage(" & Message.ToString & ")")
             End Try
         End If
     End Sub

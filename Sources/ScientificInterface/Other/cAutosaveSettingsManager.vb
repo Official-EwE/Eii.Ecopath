@@ -43,6 +43,7 @@ Friend Class cAutosaveSettingsManager
 
     Private m_formats As New Dictionary(Of eAutosaveTypes, String)
     Private m_core As cCore = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cAutosaveSettingsManager)()
 
 #End Region ' Private vars
 
@@ -139,7 +140,7 @@ Friend Class cAutosaveSettingsManager
                         End If
                     End If
                 Catch ex As Exception
-                    cLog.Write(ex, "cAutosaveSettingsHelper.LoadFromSettings(" & t.ToString & ")")
+                    m_logger.LogError(ex, "cAutosaveSettingsHelper.LoadFromSettings(" & t.ToString & ")")
                 End Try
             Next
         End Set

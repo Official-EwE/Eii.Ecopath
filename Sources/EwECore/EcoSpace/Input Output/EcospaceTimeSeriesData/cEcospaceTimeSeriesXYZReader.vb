@@ -41,6 +41,8 @@ Namespace EcospaceTimeSeries
 
         Private m_dctFailedRecs As Dictionary(Of eTimeSeriesRecValidations, Integer)
 
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceTimeSeriesXYZReader)()
+
         Public Sub New(TimeSeriesFile As String, TSManager As cEcospaceTimeSeriesManager)
             Me.FileName = TimeSeriesFile
             Me.m_Manager = TSManager
@@ -82,7 +84,7 @@ Namespace EcospaceTimeSeries
 
             Catch ex As Exception
 
-                EwEUtils.Core.cLog.Write(ex, Me.ToString + ".Read() failed to read time series file '" + Me.FileName + "'")
+                m_logger.LogError(ex, Me.ToString + ".Read() failed to read time series file '" + Me.FileName + "'")
                 Throw New Exception(ex.Message)
 
             End Try

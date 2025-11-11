@@ -45,6 +45,7 @@ Namespace Controls.Map.Layers
         Protected m_fpName As cEwEFormatProvider = Nothing
         Protected m_fpUnits As cEwEFormatProvider = Nothing
         Protected m_bInUpdate As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucLayerEditorDefault)()
 
         Public Sub New()
             MyBase.New()
@@ -173,7 +174,7 @@ Namespace Controls.Map.Layers
                 Dim cmd As cEditLayerCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
                 cmd.Invoke(rl, Nothing, edittype)
             Catch ex As Exception
-                cLog.Write(ex, eVerboseLevel.Detailed, "ucLayerEditor::EditLayer " & Me.Layer.Name & "(" & edittype.ToString & ")")
+                m_logger.LogError(ex, "ucLayerEditor::EditLayer " & Me.Layer.Name & "(" & edittype.ToString & ")")
             End Try
 
         End Sub

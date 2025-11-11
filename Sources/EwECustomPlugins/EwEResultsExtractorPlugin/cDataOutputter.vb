@@ -38,6 +38,7 @@ Public Class cDataOutputer
     Private mNDataItems As Integer
     Private mMsg As cMessage = Nothing
     Private mExcelInteropEnabled As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDataOutputer)()
 
     Public Enum eOutputTypes As Integer
         CSV
@@ -377,7 +378,7 @@ Public Class cDataOutputer
             Dim wb As Excel.Workbook = ex.Workbooks.Add()
             Return (wb IsNot Nothing)
         Catch ex As Exception
-            cLog.Write(ex, "EwEResultExtractorPlugin::IsExcelAccessible")
+            m_logger.LogError(ex, "EwEResultExtractorPlugin::IsExcelAccessible")
         End Try
         Return False
     End Function

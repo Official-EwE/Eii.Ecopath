@@ -56,6 +56,7 @@ Namespace Other
         Private m_dtNodes As New Dictionary(Of String, Type)
 
         Private ReadOnly Property Verb As String
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgOptions)()
 
 #End Region ' Private variables
 
@@ -140,7 +141,7 @@ Namespace Other
             Try
                 Me.Apply()
             Catch ex As Exception
-                cLog.Write(ex, "dlgOptions::OnOK")
+                m_logger.LogError(ex, "dlgOptions::OnOK")
             End Try
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
@@ -153,7 +154,7 @@ Namespace Other
             Try
                 Me.SetDefaults()
             Catch ex As Exception
-                cLog.Write(ex, "dlgOptions::OnSetDefaults")
+                m_logger.LogError(ex, "dlgOptions::OnSetDefaults")
             End Try
 
         End Sub
@@ -164,7 +165,7 @@ Namespace Other
             Try
                 Me.Apply()
             Catch ex As Exception
-                cLog.Write(ex, "dlgOptions::OnApply")
+                m_logger.LogError(ex, "dlgOptions::OnApply")
             End Try
 
         End Sub
@@ -203,7 +204,7 @@ Namespace Other
                 Me.SelectPage(page)
 
             Catch ex As Exception
-                cLog.Write(ex, "dlgOptions::OnSelectedNode(" & e.Node.Name & ")")
+                m_logger.LogError(ex, "dlgOptions::OnSelectedNode(" & e.Node.Name & ")")
             End Try
 
         End Sub
@@ -270,7 +271,7 @@ Namespace Other
                 DirectCast(optionspage, Control).Dock = DockStyle.Fill
                 Me.m_lPages.Add(optionspage)
             Catch ex As Exception
-                cLog.Write(ex, "dlgOptions::CreatePage " & t.ToString())
+                m_logger.LogError(ex, "dlgOptions::CreatePage " & t.ToString())
             End Try
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
@@ -307,7 +308,7 @@ Namespace Other
                     Me.m_pageCurrent.SetDefaults()
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "dlgOptions.SetDefaults(" & Me.m_pageCurrent.GetType().ToString & ")")
+                m_logger.LogError(ex, "dlgOptions.SetDefaults(" & Me.m_pageCurrent.GetType().ToString & ")")
             End Try
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
@@ -327,7 +328,7 @@ Namespace Other
                 Next
             Catch ex As Exception
                 ' Whoah
-                cLog.Write(ex, "dlgOptions::Apply")
+                m_logger.LogError(ex, "dlgOptions::Apply")
             End Try
             msgs.RemoveMessageLock()
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)

@@ -35,6 +35,8 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cEcospaceLayerDriver
     Inherits cEcospaceLayerSingle
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceLayerDriver)()
+
 #Region " Constructor "
 
     Sub New(core As cCore, manager As cEcospaceBasemap, iIndex As Integer)
@@ -75,7 +77,7 @@ Public Class cEcospaceLayerDriver
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceLayerDriver.")
-            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceLayerDriver. Error: " & ex.Message)
+            m_logger.LogError(ex, ".New(..) Error creating new cEcospaceLayerDriver. Error: " & ex.Message)
         End Try
 
         ' Use local metadata for distributing per-layer units

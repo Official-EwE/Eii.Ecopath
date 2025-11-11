@@ -29,14 +29,16 @@ Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
+Imports ScientificInterface.Ecosim
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
 
 #End Region
 
@@ -59,6 +61,7 @@ Namespace Ecospace
         Private Const cColourBins As Integer = 200
 
         Private m_FishingMortMax As Single = 2.0
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmRunEcospace)()
 
         Public Enum eShowItemType
             ShowAll = 0
@@ -503,7 +506,7 @@ Namespace Ecospace
                 Next
                 Me.m_zgh.RescaleAndRedraw()
             Catch ex As Exception
-                cLog.Write(ex, Me.ToString + ".AppendPlotData()")
+                m_logger.LogError(ex, Me.ToString + ".AppendPlotData()")
             End Try
         End Sub
 
@@ -1524,7 +1527,7 @@ Namespace Ecospace
                 Next iRow
 
             Catch ex As Exception
-                cLog.Write(ex, "Ecospace Contaminant mapping is not initialized correctly.")
+                m_logger.LogError(ex, "Ecospace Contaminant mapping is not initialized correctly.")
             End Try
 
         End Sub
@@ -2071,7 +2074,7 @@ Namespace Ecospace
 
             If (msg IsNot Nothing) Then
                 Me.Core.Messages.SendMessage(msg)
-                cLog.Write(msg)
+                m_logger.LogInformation(msg.ToString())
             End If
 
         End Sub

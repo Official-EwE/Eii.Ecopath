@@ -222,6 +222,7 @@ Namespace Controls
         Private Shared g_minsize As Integer = 10
 
         Private m_bInUpdate As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cTreeFlowDiagramRenderer)()
 
 #End Region ' Privates
 
@@ -845,7 +846,7 @@ Namespace Controls
 
             Catch ex As Exception
                 ' ToDo: send an error message
-                cLog.Write(ex, "cTreeFlowDiagramRenderer.Save")
+                m_logger.LogError(ex, "cTreeFlowDiagramRenderer.Save")
                 Return False
             End Try
             Return True
@@ -881,7 +882,7 @@ Namespace Controls
 
             Catch ex As Exception
                 ' ToDo: send an error message
-                cLog.Write(ex, "cTreeFlowDiagramRenderer.Load")
+                m_logger.LogError(ex, "cTreeFlowDiagramRenderer.Load")
                 bSuccess = False
             End Try
 

@@ -35,6 +35,8 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cStanzaGroup
     Inherits cCoreInputOutputBase
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cStanzaGroup)()
+
 #Region "Constuction"
 
     ''' <summary>
@@ -183,7 +185,7 @@ Public Class cStanzaGroup
         Try
             Return Me.m_core.CalculateStanza(Me)
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error calculating stanza parameters for stanza group {StanzaGroupIndex}", Me.Index)
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_DATAERROR, ex.Message),
                     eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
@@ -208,7 +210,7 @@ Public Class cStanzaGroup
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error applying stanza parameters for stanza group {StanzaGroupIndex}", Me.Index)
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_APPLY_DATAERROR, ex.Message),
                     eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
@@ -225,7 +227,7 @@ Public Class cStanzaGroup
             Me.m_core.LoadStanza(Me)
             Return Me.CalculateParameters()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error cancelling stanza parameters for stanza group {StanzaGroupIndex}", Me.Index)
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CANCEL_DATAERROR, ex.Message),
                 eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False

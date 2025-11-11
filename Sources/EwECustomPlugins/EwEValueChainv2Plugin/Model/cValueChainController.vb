@@ -61,6 +61,7 @@ Public Class cValueChainController
     Private m_chain As cValueChain = Nothing
     Private m_results As cValueChainResults = Nothing
     Private m_core As cCore = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cValueChainController)()
 
 #End Region ' Private vars
 
@@ -290,7 +291,7 @@ Public Class cValueChainController
             Catch ex As Exception
                 ' Aargh
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "VC::cModel.RunTimeStep(" & iTimeStep & ")")
+                m_logger.LogError(ex, "VC::cModel.RunTimeStep(" & iTimeStep & ")")
             End Try
 
         End If
@@ -338,7 +339,7 @@ Public Class cValueChainController
                 prodUnit.Process(result, iTimeStep, 0)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "VC::cModel.RunFullModel(" & prodUnit.Name & ")")
+                m_logger.LogError(ex, "VC::cModel.RunFullModel(" & prodUnit.Name & ")")
             End Try
         Next unit
 

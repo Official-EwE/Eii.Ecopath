@@ -97,6 +97,7 @@ Namespace MSE
         ''' <summary>Messing with the setting of m_core somehow cripples Fit2Timeseries. Why? Dunno. 
         ''' Still need a solid check when running multiple cores in parallel</summary>
         Private m_debug As cCore = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEManager)()
 
 #End Region
 
@@ -401,7 +402,7 @@ Namespace MSE
                 Me.m_thrdRunMSE.Start()
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Exception running MSE")
                 Me.ReleaseWait()
                 Return False
             End Try
@@ -839,7 +840,7 @@ Namespace MSE
                 Me.m_parameters.AllowValidation = True
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Exception loading MSE inputs")
                 Throw New ApplicationException(Me.ToString & ".Load() Error: " & ex.Message, ex)
             End Try
 
@@ -902,7 +903,7 @@ Namespace MSE
 
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Exception clearing MSE manager")
             End Try
         End Sub
 
@@ -1018,7 +1019,7 @@ Namespace MSE
                 System.Console.WriteLine(Me.ToString & ".Update(" & DataType.ToString & ")")
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Exception updating MSE from interface")
             End Try
 
         End Function
@@ -1030,7 +1031,7 @@ Namespace MSE
                 bSuccess = Me.m_MSE.RunFleetTradeoffs(outDir)
                 Me.m_MSE.Disconnect()
             Catch ex As Exception
-                cLog.Write(ex, "cMSEManager.FleetTradeoffs")
+                m_logger.LogError(ex, "cMSEManager.FleetTradeoffs")
                 bSuccess = False
             End Try
             Return bSuccess
@@ -1139,7 +1140,7 @@ Namespace MSE
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSEManager.OnMSECallBack")
             End Try
 
         End Sub
@@ -1246,7 +1247,7 @@ Namespace MSE
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cMSEManager.OnMSYCallBack")
             End Try
 
         End Sub

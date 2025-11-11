@@ -29,6 +29,7 @@ Option Explicit On
 Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
 ''' ---------------------------------------------------------------------------
@@ -45,6 +46,7 @@ Public Class cMSEStateMonitor
     Private m_plugin As cMSEPluginPoint = Nothing
     ''' <summary>Cache of pre-determined states.</summary>
     Private m_statecache([Enum].GetValues(GetType(eState)).Length) As TriState
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEStateMonitor)()
 
 #End Region ' Private vars
 
@@ -177,7 +179,7 @@ Public Class cMSEStateMonitor
             Try
                 RaiseEvent OnInvalidated(Me)
             Catch ex As Exception
-                cLog.Write(ex, "cMSEStateMonitor::Invalidate")
+                m_logger.LogError(ex, "cMSEStateMonitor::Invalidate")
             End Try
         End If
 

@@ -629,7 +629,7 @@ Namespace Ecospace.Advection
             Try
                 Me.m_comp.Run()
             Catch ex As Exception
-                cLog.Write(ex, "cAdvectionManager.RunThreaded")
+                m_logger.LogError(ex, "cAdvectionManager.RunThreaded")
             End Try
 
             Me.m_core.SetStopRunDelegate(Nothing)
@@ -673,7 +673,7 @@ Namespace Ecospace.Advection
                 thrd.Start()
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.Run(..) Exception")
                 m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message), _
                                                          eMessageType.ErrorEncountered, _
                                                          eCoreComponentType.EcoSpace, _

@@ -42,6 +42,7 @@ Public Class cEcospaceBasemap
 
     ''' <summary>The layers maintained in a basemap.</summary>
     Private m_layers As New Dictionary(Of eVarNameFlags, cEcospaceLayer())
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceBasemap)()
 
 #Region " Constructor "
 
@@ -371,7 +372,7 @@ Public Class cEcospaceBasemap
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceBasemap.")
-            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceBasemap. Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".New(..) Error creating new cEcospaceBasemap. Error: " & ex.Message)
         End Try
 
     End Sub

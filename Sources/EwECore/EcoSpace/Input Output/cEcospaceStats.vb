@@ -31,6 +31,8 @@ Imports Debug = System.Diagnostics.Debug
 Public Class cEcospaceStats
     Inherits cCoreInputOutputBase
 
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceStats)()
+
     Sub New(core As cCore, DBID As Integer)
         MyBase.New(core)
 
@@ -65,7 +67,7 @@ Public Class cEcospaceStats
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceStats.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcospaceStats. Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".New(nGroups) Error creating new cEcospaceStats. Error: " & ex.Message)
         End Try
 
     End Sub

@@ -61,6 +61,7 @@ Namespace Database
 
         ''' <summary>Data buffer.</summary>
         Private m_data As cImportData
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEAccessDatabase)()
 
 #End Region ' Private vars
 
@@ -176,14 +177,14 @@ Namespace Database
             Dim eiiStrm As System.IO.StreamReader
 
             If Not File.Exists(Me.m_strSource) Then
-                cLog.Write(Me.ToString + ".LoadEcopath(...) No file name specified.")
+                m_logger.LogInformation("LoadEcopath(...) EII file {source} not found. '", Me.m_strSource)
                 Return False
             End If
 
             Try
                 eiiStrm = New System.IO.StreamReader(Me.m_strSource)
             Catch ex As Exception
-                cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. '" & Me.m_strSource & "' Error:" + ex.Message())
+                m_logger.LogError(ex, "LoadEcopath(...) Error opening EII file {source}. ", Me.m_strSource)
                 Return False
             End Try
 
@@ -206,7 +207,7 @@ Namespace Database
                 Integer.TryParse(recs(3), ecopathDS.ModelUnitCurrency)
 
                 If Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables() Then
-                    cLog.Write(Me.ToString + ".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
+                    m_logger.LogError("LoadEcopath(...) Failed to Re-Dimension group parameter arrays.")
                     Return False
                 End If
                 Dim iNextIndex As Integer
@@ -460,7 +461,7 @@ Namespace Database
             Catch ex As Exception 'catch any error during the reading of the data
                 'FileClose(fnum)
                 'some kind of a reading error better find out what happend
-                cLog.Write(Me.ToString + ".LoadEcopath() Error reading eii file. Error: " + ex.Message())
+                m_logger.LogError(ex, "LoadEcopath() Error reading eii file {source}. ", Me.m_strSource)
                 Debug.Assert(False)
                 Return False
             End Try

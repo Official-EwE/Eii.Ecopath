@@ -82,6 +82,7 @@ Public MustInherit Class cMPAOptBaseClass
 
     ''' <summary>MPA lookup</summary>
     Protected IsMPA(,) As Boolean
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMPAOptBaseClass)()
 
 #Region "Modeling data from EwE5"
 
@@ -129,7 +130,7 @@ Public MustInherit Class cMPAOptBaseClass
             ReDim Me.m_data.MPASeed(Me.m_SpaceData.InRow + 1, Me.m_SpaceData.InCol + 1)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "init")
             Return False
         End Try
 
@@ -346,7 +347,7 @@ Public MustInherit Class cMPAOptBaseClass
             Return CSng(curSum)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "EvaluateRun")
             Debug.Assert(False, Me.ToString & ".EvaluateRun() Error: " & ex.Message)
             Throw New ApplicationException(Me.ToString & ".EvaluateRun() Error:", ex)
         End Try
@@ -483,7 +484,7 @@ Public MustInherit Class cMPAOptBaseClass
                 Me.m_StateCallback.Invoke(RunState)
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "setRunState")
             Debug.Assert(False, Me.ToString & ".setRunState() " & ex.Message)
         End Try
 
@@ -602,7 +603,7 @@ Public MustInherit Class cMPAOptBaseClass
 
         Catch ex As Exception
             Debug.Assert(False, "Ecoseed Error in StoreObjectiveFunctionResults(). " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "StoreObjectiveFunctionResults")
             'Just Blunder On????????????????????
 
         End Try
@@ -682,7 +683,7 @@ Public MustInherit Class cMPAOptBaseClass
                    cStringUtils.FormatNumber(Me.m_data.objFuncAreaBorder)))
 
         Catch ex As Exception
-            cLog.Write(ex, "cMPARandomSearch::WriteOutputData")
+            m_logger.LogError(ex, "cMPARandomSearch::WriteOutputData")
         End Try
 
     End Sub
@@ -720,7 +721,7 @@ Public MustInherit Class cMPAOptBaseClass
 
     Protected Sub WriteError(ex As Exception)
         Try
-            cLog.Write(ex)
+            m_logger.LogError(ex, "WriteError MPA Optimization Error")
             System.Console.WriteLine(Me.ToString & " Error: " & ex.Message)
             System.Console.WriteLine("Stack trace " & ex.StackTrace)
         Catch newEx As Exception
@@ -730,7 +731,7 @@ Public MustInherit Class cMPAOptBaseClass
 
     Protected Sub WriteError(message As String, ex As Exception)
         Try
-            cLog.Write(message)
+            m_logger.LogError(ex, message)
             Me.WriteError(ex)
         Catch newEx As Exception
             Debug.Assert(False, newEx.Message)
@@ -746,7 +747,7 @@ Public MustInherit Class cMPAOptBaseClass
         Try
             If (Me.m_SendMessageDelegate IsNot Nothing) Then Me.m_SendMessageDelegate.Invoke(msg)
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "SendMessage")
             Debug.Assert(False, Me.ToString & ".setRunState() " & ex.Message)
         End Try
     End Sub

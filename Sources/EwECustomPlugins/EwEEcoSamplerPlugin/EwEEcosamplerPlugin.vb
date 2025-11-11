@@ -57,6 +57,7 @@ Public Class EwEEcosamplerPlugin
     Private m_strBaseHash As String = ""
 
     Private m_bValidateRespirationOrg As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of EwEEcosamplerPlugin)()
 
 #End Region ' Internal vars
 
@@ -246,7 +247,7 @@ Public Class EwEEcosamplerPlugin
                                 eMessageImportance.Warning)
             Me.m_uic.Core.Messages.AddMessage(msg)
             Me.IsRecording = False
-            cLog.Write(ex, "EwESampleRecorderPlugin.MonteCarloBalancedEcopathModel")
+            m_logger.LogError(ex, "EwESampleRecorderPlugin.MonteCarloBalancedEcopathModel")
         End Try
 
     End Sub
@@ -281,7 +282,7 @@ Public Class EwEEcosamplerPlugin
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
             Me.m_uic.Core.Messages.SendMessage(msg)
         Catch ex As Exception
-            cLog.Write(ex, "EwESampleRecorderPlugin.MonteCarloRunCompleted")
+            m_logger.LogError(ex, "EwESampleRecorderPlugin.MonteCarloRunCompleted")
         End Try
 
         Me.m_iNumRecordedSamples = 0

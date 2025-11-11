@@ -328,6 +328,7 @@ Namespace Controls
 
         ''' <summary>Flag stating whether styleguide item visibility should be tracked.</summary>
         Private m_bTrackVisibility As Boolean = True
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cZedGraphHelper)()
 
         ' == Context menu ==
         ' Menu items to add to the context menu. The menu items are member vars so eventhandlers 
@@ -829,7 +830,7 @@ Namespace Controls
                 If bRescale Then Me.RescaleAndRedraw(iPane) Else Me.Redraw()
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Error plotting lines")
             End Try
         End Sub
 
@@ -2615,7 +2616,7 @@ Namespace Controls
             Try
                 Me.ExtractDataToCSV()
             Catch ex As Exception
-                cLog.Write(ex, "ZedGraphHelper::OnExtractToCSV " & sender.ToString())
+                m_logger.LogError(ex, "ZedGraphHelper::OnExtractToCSV " & sender.ToString())
             End Try
         End Sub
 
@@ -2628,7 +2629,7 @@ Namespace Controls
             Try
                 Me.IsLegendVisible = Not Me.IsLegendVisible
             Catch ex As Exception
-                cLog.Write(ex, "ZedGraphHelper::OnShowHideLegend " & sender.ToString())
+                m_logger.LogError(ex, "ZedGraphHelper::OnShowHideLegend " & sender.ToString())
             End Try
         End Sub
 
@@ -2641,7 +2642,7 @@ Namespace Controls
             Try
                 Me.IsAxisLabelsVisible = Not Me.IsAxisLabelsVisible
             Catch ex As Exception
-                cLog.Write(ex, "ZedGraphHelper::OnShowHideAxisLabels " & sender.ToString())
+                m_logger.LogError(ex, "ZedGraphHelper::OnShowHideAxisLabels " & sender.ToString())
             End Try
         End Sub
 
@@ -2654,7 +2655,7 @@ Namespace Controls
             Try
                 Me.ExtractDataToClipboard()
             Catch ex As Exception
-                cLog.Write(ex, "ZedGraphHelper::OnExtractToClipboard " & sender.ToString())
+                m_logger.LogError(ex, "ZedGraphHelper::OnExtractToClipboard " & sender.ToString())
             End Try
         End Sub
 

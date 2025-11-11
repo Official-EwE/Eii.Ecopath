@@ -29,6 +29,7 @@ Namespace Controls.Map.Layers
     ''' Visual editor for <see cref="cLayerRendererExclusion"/>
     ''' </summary>
     Public Class ucLayerEditorExclusion
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucLayerEditorExclusion)()
 
 #Region " Construction / destruction "
 
@@ -80,7 +81,7 @@ Namespace Controls.Map.Layers
             Try
                 Me.UIContext.Core.ClearExcludedCells()
             Catch ex As Exception
-                cLog.Write(ex, "ucLayerEditorExclusion:OnClear()")
+                m_logger.LogError(ex, "ucLayerEditorExclusion:OnClear()")
             End Try
         End Sub
 
@@ -89,7 +90,7 @@ Namespace Controls.Map.Layers
             Try
                 Me.UIContext.Core.InvertExcludedCells()
             Catch ex As Exception
-                cLog.Write(ex, "ucLayerEditorExclusion:OnInvert()")
+                m_logger.LogError(ex, "ucLayerEditorExclusion:OnInvert()")
             End Try
         End Sub
 
@@ -98,7 +99,7 @@ Namespace Controls.Map.Layers
             Try
                 Me.UIContext.Core.SetExcludedDepth(CInt(Me.m_nudDepth.Value))
             Catch ex As Exception
-                cLog.Write(ex, "ucLayerEditorExclusion:OnExcludeDepths(" & Me.m_nudDepth.Value & ")")
+                m_logger.LogError(ex, "ucLayerEditorExclusion:OnExcludeDepths(" & Me.m_nudDepth.Value & ")")
             End Try
         End Sub
 
@@ -109,7 +110,7 @@ Namespace Controls.Map.Layers
                 Dim sg As cStyleGuide = Me.Editor.UIContext.StyleGuide
                 sg.ShowMapsExcludedCells = Me.m_cbAlwaysShowExcluded.Checked
             Catch ex As Exception
-                cLog.Write(ex, "ucLayerEditorExclusion:OnShowExcludedCellsToggled()")
+                m_logger.LogError(ex, "ucLayerEditorExclusion:OnShowExcludedCellsToggled()")
             End Try
 
         End Sub
