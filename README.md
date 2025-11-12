@@ -16,6 +16,6 @@ In AppData\Roaming\NuGet\NuGet.config, also add your GitHub access token as foll
     <packageSourceCredentials>
 	    <github>
 		    <add key="Username" value="your github username" />
-		    <add key="ClearTextPassword" value="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" />
+		    <add key="ClearTextPassword" value="your github access key" />
 	    </github>
     </packageSourceCredentials>
