@@ -56,7 +56,8 @@ Module EwE6ApplicationFramework
         Log.Logger = New LoggerConfiguration() _
             .MinimumLevel.Debug() _
             .Enrich.WithThreadId() _
-            .WriteTo.File("Logs\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Thread:{ThreadId}] {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
+            .Enrich.WithThreadName() _
+            .WriteTo.File("Logs\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
             .CreateLogger()
 
         ' Initialize LoggerFactory
