@@ -76,6 +76,7 @@ Namespace UI
         Private m_checkEcosimFishing As cRequirementChecker = Nothing
         Private m_checkEcosimForcing As cRequirementChecker = Nothing
         Private m_checkEcospaceTimeSeries As cRequirementChecker = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmGameDesigner)()
 
 #End Region ' Private vars 
 
@@ -642,8 +643,7 @@ Namespace UI
                     Me.MSPLink.OnChanged()
                 End If
             Catch ex As Exception
-                'TODO RIK
-                'cLog.Write(ex)
+                m_logger.LogError(ex, "Error updating game info/settings")
             End Try
             Me.UpdateControls()
         End Sub
@@ -661,8 +661,7 @@ Namespace UI
                 Dim cmd As cCommand = Me.CommandHandler.GetCommand("LoadTimeSeries")
                 If (cmd IsNot Nothing) Then cmd.Invoke()
             Catch ex As Exception
-                'TODO RIK
-                'cLog.Write(ex)
+                m_logger.LogError(ex, "Error invoking LoadTimeSeries command")
             End Try
         End Sub
 
