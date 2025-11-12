@@ -1,17 +1,37 @@
-# Configuring GitHub as a package source
+# Ecopath with Ecosim (EwE) - Source Code
+This repository contains the **source code** for Ecopath with Ecosim (EwE), an ecosystem modeling software suite developed by the Ecopath International Initiative (EII).
+
+The master branch contains the latest stable release of EwE. **You can not commit directly to the master branch!**
+
+[More information about working with Git](https://github.com/Official-EwE/Ecopath-project/wiki/Git-how-to)
+
+## Ecopath with Ecosim Project
+Other items related to the Ecopath with Ecosim project can be found in the [Project repo](https://github.com/Official-EwE/Ecopath-project)
+
+The project repo contais:
+- The [Scrum board](https://github.com/orgs/Official-EwE/projects/8) with all issues
+- The [EwE Wiki](https://github.com/Official-EwE/Ecopath-project/wiki) with developer documentation
+- Definately NO CODE!
+
+
+### Configuring GitHub as a package source
 
 The EwE source code obtains packages from GitHub. This requires some configuration.
 First, obtain a GitHub classic access token from https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens.
 Then, configure NuGet. As the configuration will contain your classic access token, we recommend making the following changes in a configuration file local to your machine which will not be stored with the code.
 
-In AppData\Roaming\NuGet\NuGet.config, add the EwE package source as follows:
+The way to do this is described in the [EwE Wiki, package source secrets](https://github.com/Official-EwE/Ecopath-project/wiki/NuGet-packages#package-source-secrets).
+
+This describes how you can run a CLI command to encrypt your access token and store it in your local NuGet.config file.
+
+In AppData\Roaming\NuGet\NuGet.config, the EwE package source is shown as follows:
 
     <packageSources>
       <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
       <add key="EwE github" value="https://nuget.pkg.github.com/Official-EwE/index.json" />
     </packageSources>
 
-In AppData\Roaming\NuGet\NuGet.config, also add your GitHub access token as follows:
+In AppData\Roaming\NuGet\NuGet.config, your GitHub access token is shown as an encrypted secret as follows:
 
     <packageSourceCredentials>
 	    <github>
