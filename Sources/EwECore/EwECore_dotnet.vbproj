@@ -34,7 +34,7 @@
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwECore</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.8</Version>
+    <Version>6.7.9</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
@@ -218,7 +218,7 @@
     <PackageReference Include="System.Text.Json" Version="9.0.9" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <PackageReference Include="Eii.Ecopath.Licence" Version="1.0.2" />
+    <PackageReference Include="Eii.Ecopath.Licence" Version="1.0.3" />
   </ItemGroup>    
   <ItemGroup>
     <Compile Remove="EcoSpace\Input Output\ResultWriters\Data sources\cRegionTLResultsDataSource.vb" />
