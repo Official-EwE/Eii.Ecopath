@@ -195,7 +195,7 @@ Friend Class cEwEFormStateManager
 
         Catch ex As Exception
             ' Whoah!
-            cLog.Write("cEwEFormStateHelper: " & ex.Message)
+            m_logger.LogError(ex, "cEwEFormStateHelper: " & ex.Message)
         End Try
 
         Me.m_cc.Enabled = True

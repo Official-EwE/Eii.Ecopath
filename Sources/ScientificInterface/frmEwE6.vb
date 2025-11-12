@@ -354,7 +354,9 @@ Public Class frmEwE6
 
         Debug.Assert(frmEwE6.__inst__ Is Nothing, "Only one instance of frmEwE6 allowed")
         frmEwE6.__inst__ = Me
-        cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
+
+        'TODO RIK: Connec LoggingLevel to Setting
+        'cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
 
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.m_presentationmode = New cPresentationMode(Me)
@@ -1988,7 +1990,7 @@ Public Class frmEwE6
         Catch ex As Exception
             m_logger.LogError(ex, "frmEwE6.LoadFormFromType(" & t.ToString & ", " & strNavLink & ")")
             ' Notify user
-            Me.SendMessage(My.Resources.UI_ERROR_LAUNCHFORM, eMessageImportance.Warning, strHyperlink:="command:" & cBrowserCommand.COMMAND_NAME & "?URL=" & cLog.LogFile)
+            Me.SendMessage(My.Resources.UI_ERROR_LAUNCHFORM, eMessageImportance.Warning, strHyperlink:="command:" & cBrowserCommand.COMMAND_NAME & "?URL=" & LoggingContext.LogFile)
         End Try
 
         Return frmNew
@@ -3662,7 +3664,7 @@ Public Class frmEwE6
     End Sub
 
     Private Sub m_tsmiViewLog_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiViewLog.Click
-        Me.m_cmdBrowseURI.Invoke(cLog.LogFile)
+        Me.m_cmdBrowseURI.Invoke(LoggingContext.LogFile)
     End Sub
 
 #End Region ' Main Menu - Help
@@ -5115,9 +5117,10 @@ Public Class frmEwE6
 
                 Case "LogVerboseLevel"
                     Try
-                        cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
+                        'TODO RIK: Connect LogginLevel To Settings
+                        'cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
                     Catch ex As Exception
-                        cLog.VerboseLevel = eVerboseLevel.Standard
+                        'cLog.VerboseLevel = eVerboseLevel.Standard
                     End Try
 
                 Case "Author"

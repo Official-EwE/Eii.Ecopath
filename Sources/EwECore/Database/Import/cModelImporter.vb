@@ -171,7 +171,7 @@ Namespace Database
             strLogfileName = Path.ChangeExtension(strLogfileName, "txt")
 
             ' Write log to text file with the same file name as the destination db name
-            cLog.WriteTextToFile(strLogfileName, Me.m_sbLog)
+            'cLog.WriteTextToFile(strLogfileName, Me.m_sbLog)
 
             Return bSucces
 

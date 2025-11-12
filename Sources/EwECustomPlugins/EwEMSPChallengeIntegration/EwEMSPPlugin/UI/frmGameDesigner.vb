@@ -642,7 +642,8 @@ Namespace UI
                     Me.MSPLink.OnChanged()
                 End If
             Catch ex As Exception
-                cLog.Write(ex)
+                'TODO RIK
+                'cLog.Write(ex)
             End Try
             Me.UpdateControls()
         End Sub
@@ -660,7 +661,8 @@ Namespace UI
                 Dim cmd As cCommand = Me.CommandHandler.GetCommand("LoadTimeSeries")
                 If (cmd IsNot Nothing) Then cmd.Invoke()
             Catch ex As Exception
-                cLog.Write(ex)
+                'TODO RIK
+                'cLog.Write(ex)
             End Try
         End Sub
 

@@ -266,7 +266,6 @@ Public Class cSFPManager
     Private Sub StartContainerRun()
 
         If (Me.IsRunning) Then Return
-        cLog.VerboseLevel = eVerboseLevel.Disabled
         Me.m_bIsRunning = True
 
 #If NO_PARALLEL Then

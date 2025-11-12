@@ -2274,7 +2274,7 @@ Public Class cEcoSpace
         'This is because we don't have access to the core in Ecospace, which has all the output and input directory info.
         'So just fake it here!
         'This will put the threading log in the same directory as the model and log files.
-        Dim logFileName As String = cLog.LogFile
+        Dim logFileName As String = LoggingContext.LogFile
         Dim timingLogFilename As String
 
         Dim md As String = IO.Path.GetFileNameWithoutExtension(logFileName)

@@ -39,6 +39,8 @@ Public Class cEwEMSPLink
 #Region " Private vars "
 
     Private m_game As cGame = Nothing
+    Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEMSPLink)()
+
 
 #End Region ' Private vars
 
@@ -460,7 +462,7 @@ Public Class cEwEMSPLink
     ''' </summary>
     Friend Shared Sub RaiseException(strError As String, bEwEDetails As Boolean)
         Try
-            cLog.Write("MEL exception thrown: " & strError)
+            m_logger.LogError("MEL exception thrown: " & strError)
             If (bEwEDetails) Then strError = strError & " See EwE error log for details"
 
             Console.WriteLine("EwEMSPLink Throwing exception '" & strError & "'")

@@ -61,6 +61,7 @@ Public Class cEcospaceController
     Private m_game As cGame = Nothing
     Private m_pressures As cPressure()
     Private m_outcomes As cGrid()
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceController)()
 
 #End Region ' Private vars
 
@@ -143,7 +144,7 @@ Public Class cEcospaceController
                 Me.m_thread.Start()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "cEcospaceController.Continue")
+            m_logger.LogError(ex, "cEcospaceController.Continue")
         End Try
 
         Me.m_core.EcospacePaused = False
@@ -172,7 +173,7 @@ Public Class cEcospaceController
             Me.m_core.StopEcospace()
             s_pausewait.WaitOne()
         Catch ex As Exception
-            cLog.Write(ex, "cEcospaceController.Stop")
+            m_logger.LogError(ex, "cEcospaceController.Stop")
         End Try
 
         Me.m_bStopping = False
@@ -410,7 +411,7 @@ Public Class cEcospaceController
                 End If
             Next
         Catch ex As Exception
-            cLog.Write(ex, "cEcospaceController.SaveOutcomesToDisk(" & iTime & ")")
+            m_logger.LogError(ex, "cEcospaceController.SaveOutcomesToDisk(" & iTime & ")")
             Debug.WriteLine("@@ Ecospace controller: Exception saving outcomes " & ex.Message & ". Outcome saving disabled")
             Me.IsSaveOutput = False
         End Try

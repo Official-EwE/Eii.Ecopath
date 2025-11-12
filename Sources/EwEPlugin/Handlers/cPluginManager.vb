@@ -487,6 +487,10 @@ Public Class cPluginManager
             afi = di.GetFiles("*.dll", If(bAllDirectories, SearchOption.AllDirectories, SearchOption.TopDirectoryOnly))
 
             For Each fi As FileInfo In afi
+                ' skip files that are definitely not plugins so there's less noise in the logs. Some dlls won't Assembly.LoadFrom(...) successfully
+                If fi.Name = "e_sqlite3.dll" Then
+                    Continue For
+                End If
                 key = fi.FullName.ToLower()
                 Try
                     If (disabledPlugins Is Nothing) Then
