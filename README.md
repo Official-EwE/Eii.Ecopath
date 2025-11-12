@@ -3,11 +3,7 @@ This repository contains the **source code** for Ecopath with Ecosim (EwE), an e
 
 The master branch contains the latest stable release of EwE. **You can not commit directly to the master branch!**
 
-To add code to the master branch, please fork the repository, create a new branch, and submit a pull request.
-
-For now, we follow a **'trunk based development'** strategy, meaning that all new features and bug fixes are directly merged into the master branch after code review and testing.
-
-Long lived feature branches are discouraged. If you need to work on a large feature, please create a feature branch from master, and regularly merge master into your feature branch to keep it up to date.
+[More information about working with Git](https://github.com/Official-EwE/Ecopath-project/wiki/Git-how-to)
 
 ## Ecopath with Ecosim Project
 Other items related to the Ecopath with Ecosim project can be found in the [Project repo](https://github.com/Official-EwE/Ecopath-project)
