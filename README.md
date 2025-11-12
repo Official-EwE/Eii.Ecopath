@@ -11,7 +11,7 @@ Other items related to the Ecopath with Ecosim project can be found in the [Proj
 The project repo contais:
 - The [Scrum board](https://github.com/orgs/Official-EwE/projects/8) with all issues
 - The [EwE Wiki](https://github.com/Official-EwE/Ecopath-project/wiki) with developer documentation
-- Definately NO CODE!
+- Definitely NO CODE!
 
 
 ### Configuring GitHub as a package source
