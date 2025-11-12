@@ -20,11 +20,15 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Threading
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Style
-Imports System.ComponentModel
-Imports System.Threading
+Imports Debug = System.Diagnostics.Debug
+
 
 #End Region ' Imports
 
@@ -60,6 +64,7 @@ Namespace Properties
         Private m_htEcotracer As New Dictionary(Of String, cProperty)
 
         Private m_lMessageHandlers As New List(Of cMessageHandler)
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cPropertyManager)()
 
 #End Region ' Private vars
 
@@ -539,7 +544,7 @@ Namespace Properties
                 End If
             Catch ex As Exception
                 ' Log entry
-                cLog.Write(msg, "cPropertyManager.AllMessagesHandler")
+                m_logger.LogError(ex, "cPropertyManager.AllMessagesHandler: {msg}", msg)
             End Try
 
         End Sub

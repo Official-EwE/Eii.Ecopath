@@ -19,15 +19,16 @@
 
 #Region " Imports "
 
-Imports System.Reflection
 Imports EwECore
 Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEWoRMSPlugin.WoRMSWebService
 Imports System.Web.Services.Protocols
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -54,6 +55,7 @@ Public Class cWoRMSPluginPoint
     Private m_bEnabled As Boolean = True
     ''' <summary>Flag stating whether a search is in progress.</summary>
     Private m_bSearching As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cWoRMSPluginPoint)()
 
 #End Region ' Private vars
 
@@ -78,7 +80,7 @@ Public Class cWoRMSPluginPoint
                 Return
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, Me.ToString & ".Initialize()")
             System.Console.WriteLine(Me.ToString & ".Initialize() Error: " & ex.Message)
             Debug.Assert(False, ex.Message)
             Return
@@ -370,7 +372,7 @@ Public Class cWoRMSPluginPoint
         Try
             c = Me.InitClient()
         Catch ex As Exception
-            cLog.Write(ex, "cWoRMSPluginPoint.SearchThreaded(InitClient)")
+            m_logger.LogError(ex, "cWoRMSPluginPoint.SearchThreaded(InitClient)")
             Return
         End Try
 
@@ -389,7 +391,7 @@ Public Class cWoRMSPluginPoint
             ' NOP
             c.Close()
         Catch exSoap As SoapException
-            cLog.Write(exSoap, "cWoRMSPluginPoint.SearchThreaded")
+            m_logger.LogError(exSoap, "cWoRMSPluginPoint.SearchThreaded")
             ' Send message cross-threaded
             Dim msg As New cMessage(String.Format("An error occurred communicating with the WoRMS web service: '{0}'", exSoap.Message), _
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
@@ -398,14 +400,14 @@ Public Class cWoRMSPluginPoint
         Catch exComm As ServiceModel.CommunicationException
             ' Too many results, or no end point (HRESULT -2146233087) ...
             c.Close()
-            cLog.Write(exComm, "cWoRMSPluginPoint.SearchThreaded")
+            m_logger.LogError(exComm, "cWoRMSPluginPoint.SearchThreaded")
         Catch exTime As TimeoutException
             ' Timeout
             c.Close()
-            cLog.Write(exTime, "cWoRMSPluginPoint.SearchThreaded")
+            m_logger.LogError(exTime, "cWoRMSPluginPoint.SearchThreaded")
         Catch exGeneral As Exception
             Debug.Assert(False, exGeneral.Message)
-            cLog.Write(exGeneral, "cWoRMSPluginPoint.SearchThreaded")
+            m_logger.LogError(exGeneral, "cWoRMSPluginPoint.SearchThreaded")
             c.Close()
         Finally
             Me.m_client = Nothing
@@ -465,7 +467,7 @@ Public Class cWoRMSPluginPoint
             End If
 
         Catch ex As Exception
-            cLog.Write(ex, "cWoRMSPluginPoint.ReadTaxon")
+            m_logger.LogError(ex, "cWoRMSPluginPoint.ReadTaxon")
         End Try
 
         Return taxon

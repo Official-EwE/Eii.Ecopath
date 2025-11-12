@@ -22,10 +22,11 @@
 Option Strict On
 Imports System.IO
 Imports System.Text
-Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -66,6 +67,7 @@ Namespace Ecosim
             DiscardSurvivalFleetGroup
             Landings
         End Enum
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcosimResultWriter)()
 
 #End Region ' Private vars
 
@@ -142,7 +144,7 @@ Namespace Ecosim
                 If (Not bQuiet) Then
                     Me.m_core.Messages.SendMessage(msg)
                 Else
-                    cLog.Write(msg)
+                    m_logger.LogError(msg.ToString())
                 End If
                 Return False
             End If
@@ -159,13 +161,13 @@ Namespace Ecosim
                             If (Not bQuiet) Then
                                 Me.m_core.Messages.SendMessage(msg)
                             Else
-                                cLog.Write(msg)
+                                m_logger.LogError(msg.ToString())
                             End If
                         End If
 
                     Catch ex As Exception
                         bSucces = False
-                        cLog.Write(ex, "cEcosimResultWriter::WriteResults " & outputtype.ToString())
+                        m_logger.LogError(ex, "cEcosimResultWriter::WriteResults " & outputtype.ToString())
                     End Try
                 End If
             Next
@@ -178,7 +180,7 @@ Namespace Ecosim
                 If (Not bQuiet) Then
                     Me.m_core.Messages.SendMessage(msg)
                 Else
-                    cLog.Write(msg)
+                    m_logger.LogError(msg.ToString())
                 End If
             End If
             Return bSucces

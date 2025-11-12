@@ -21,6 +21,9 @@ Option Strict On
 
 Imports EwEUtils.Core
 Imports EwEUtils
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' Class to handle the data that makes up the shape of a forcing or mediation shape
@@ -47,6 +50,7 @@ Public MustInherit Class cShapeData
     Private m_nPoints As Integer
     Private m_bSeasonal As Boolean = False
     Protected m_timeresolution As eTSDataSetInterval = eTSDataSetInterval.TimeStep
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cShapeData)()
 
     Public Event OnChanged(sd As cShapeData)
 
@@ -185,7 +189,7 @@ Public MustInherit Class cShapeData
                 If (iPoint < 0 Or iPoint > Me.m_nPoints) Then Return 0
                 Return Me.m_xdata(iPoint)
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".ShapeData(" & iPoint.ToString & ") Error: " & ex.Message)
+                m_logger.LogError(ex, ".ShapeData(" & iPoint.ToString & ") Error: " & ex.Message)
                 Debug.Assert(False, Me.ToString & ".ShapeData(" & iPoint.ToString & ") Error: " & ex.Message)
             End Try
         End Get
@@ -197,7 +201,7 @@ Public MustInherit Class cShapeData
 
                 If Not Me.IsLockedUpdates() Then Me.Update()
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".ShapeData(" & iPoint.ToString & ") Error: " & ex.Message)
+                m_logger.LogError(ex, ".ShapeData(" & iPoint.ToString & ") Error: " & ex.Message)
                 Debug.Assert(False, Me.ToString & ".ShapeData(" & iPoint.ToString & ") Error: " & ex.Message)
             End Try
         End Set
@@ -357,7 +361,7 @@ Public MustInherit Class cShapeData
             Return True
 
         Catch ex As Exception
-            cLog.Write(Me.ToString & ".ResizeData() Error: " & ex.Message)
+            m_logger.LogError(ex, ".ResizeData() Error: " & ex.Message)
             Return False
         End Try
 

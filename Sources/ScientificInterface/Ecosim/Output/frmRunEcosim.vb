@@ -27,9 +27,11 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Controls
-Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -75,6 +77,7 @@ Namespace Ecosim
         Private m_bIsCumulative As Boolean = False
         Private m_bIsExploring As Boolean = False
         Private m_bIsEffortSelected As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmRunEcosim)()
 
 #End Region ' Variables
 
@@ -220,7 +223,7 @@ Namespace Ecosim
                     Me.Core.RunEcosim(AddressOf Me.HandleEcosimTimeStep, True)
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "form frmRunEcosim.OnRun")
+                m_logger.LogError(ex, "form frmRunEcosim.OnRun")
             End Try
 
         End Sub
@@ -463,7 +466,7 @@ Namespace Ecosim
                 End Select
 
             Catch ex As Exception
-                cLog.Write(ex, "frmRunEcosim::HandleEcosimMessage")
+                m_logger.LogError(ex, "frmRunEcosim::HandleEcosimMessage")
             End Try
 
         End Sub
@@ -477,7 +480,7 @@ Namespace Ecosim
                     Me.m_shapeGUIHandler.Refresh()
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "frmRunEcosim::HandleShapeMessage")
+                m_logger.LogError(ex, "frmRunEcosim::HandleShapeMessage")
             End Try
         End Sub
 
@@ -488,7 +491,7 @@ Namespace Ecosim
                         Me.UpdateControls()
                 End Select
             Catch ex As Exception
-                cLog.Write(ex, "frmRunEcosim::HandleTimeseriesMessage")
+                m_logger.LogError(ex, "frmRunEcosim::HandleTimeseriesMessage")
             End Try
         End Sub
 
@@ -500,7 +503,7 @@ Namespace Ecosim
                     cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSIM_RUNNING, CSng(iTime / Me.m_iTimeSteps))
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "frmRunEcosim::HandleEcosimTimeStep")
+                m_logger.LogError(ex, "frmRunEcosim::HandleEcosimTimeStep")
             End Try
 
         End Sub

@@ -24,6 +24,9 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -41,6 +44,7 @@ Namespace Controls
         Private m_iHighlight As Integer = 0
         Private m_tree As IFlowDiagramRenderer = Nothing
         Private m_data As IFlowDiagramData = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cFlowDiagramManager)()
 
         Private Enum eDragMode As Integer
             None
@@ -120,7 +124,7 @@ Namespace Controls
             Catch ex As Exception
                 Dim msg As String = "Exception in " + Me.ToString + ".DrawFlowDiagram(): " + ex.Message
                 'Debug.Assert(False, msg)
-                cLog.Write(ex, msg)
+                m_logger.LogError(ex, msg)
             End Try
 
         End Sub
@@ -284,7 +288,7 @@ Namespace Controls
 
             Catch ex As Exception
                 ' ToDo: send an error message
-                cLog.Write(ex, "cFlowDiagramManager.Save")
+                m_logger.LogError(ex, "cFlowDiagramManager.Save")
                 Return False
             End Try
             Return True
@@ -318,7 +322,7 @@ Namespace Controls
 
             Catch ex As Exception
                 ' ToDo: send an error message
-                cLog.Write(ex, "cFlowDiagramManager.Load")
+                m_logger.LogError(ex, "cFlowDiagramManager.Load")
                 Return False
             End Try
             Return True

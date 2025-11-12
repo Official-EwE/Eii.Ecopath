@@ -21,7 +21,9 @@ Option Strict On
 Imports System.ComponentModel
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #Region " Definition of interfaces "
 
@@ -206,6 +208,8 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <summary>DEBUG ONLY: instance tracker</summary>
     Protected Shared s_iNextInstance As Integer = 1
 #End If
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cCoreInputOutputBase)()
+
 
 #End Region ' DEBUG ONLY
 
@@ -454,7 +458,7 @@ Public MustInherit Class cCoreInputOutputBase
             Me.m_values.Clear()
         Catch ex As Exception
             Debug.Assert(False, "Dispose() Exception: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Dispose() Exception")
         End Try
     End Sub
 

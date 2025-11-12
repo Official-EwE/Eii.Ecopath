@@ -20,6 +20,9 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' Inputs for EcoSim for a single group.
@@ -31,6 +34,7 @@ Public Class cEcosimGroupInput
     Inherits cCoreGroupBase
 
     Private m_nGroups As Integer
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcosimGroupInput)()
 
     ''' <summary>
     ''' Public access to set the status flags by calling each validator.
@@ -165,7 +169,7 @@ Public Class cEcosimGroupInput
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcoSimGroupInfo.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcoSimGroupInfo. Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".New(nGroups) Error creating new cEcoSimGroupInfo. Error: " & ex.Message)
         End Try
 
     End Sub

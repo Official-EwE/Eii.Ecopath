@@ -22,6 +22,9 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -35,6 +38,8 @@ Imports EwEUtils.Core
 ''' </remarks>
 Public Class cEcoSimModelParameters
     Inherits cCoreInputOutputBase
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcoSimModelParameters)()
 
 #Region " Constructor "
 
@@ -155,7 +160,7 @@ Public Class cEcoSimModelParameters
         Catch ex As Exception
 
             Debug.Assert(False, ex.Message)
-            cLog.Write(Me.ToString & ".New() Error: " & ex.Message)
+            m_logger.LogError(ex, "cEcoSimModelParameters.New() Exception")
 
         End Try
 

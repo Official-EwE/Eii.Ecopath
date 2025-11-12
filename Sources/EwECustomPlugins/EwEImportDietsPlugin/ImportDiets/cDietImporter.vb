@@ -23,11 +23,10 @@
 Option Strict On
 'Imports System.IO
 Imports EwECore
-Imports EwECore.Ecopath
-Imports EwECore.Ecosim
-Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 'Imports ScientificInterfaceShared.Controls
 
 #End Region
@@ -37,6 +36,7 @@ Imports EwEUtils.Utilities
 Public Class cDietImporter
     Private m_EcopathData As cEcopathDataStructures
     Private m_Core As cCore
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDietImporter)()
 
     Public Sub New(EwECore As cCore, EcopathData As cEcopathDataStructures)
         Me.m_Core = EwECore
@@ -66,7 +66,7 @@ Public Class cDietImporter
 
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Exception while importing diets")
             'Message that the model needs to balancing
             Me.m_Core.Messages.SendMessage(New EwECore.cMessage("Exception while importing diets: " + ex.Message,
                                                                 eMessageType.DataImport, eCoreComponentType.Plugin, eMessageImportance.Critical))

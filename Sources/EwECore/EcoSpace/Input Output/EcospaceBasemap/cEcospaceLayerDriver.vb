@@ -23,6 +23,9 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports 
 
@@ -31,6 +34,8 @@ Imports EwEUtils.Utilities
 ''' </summary>
 Public Class cEcospaceLayerDriver
     Inherits cEcospaceLayerSingle
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceLayerDriver)()
 
 #Region " Constructor "
 
@@ -72,7 +77,7 @@ Public Class cEcospaceLayerDriver
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceLayerDriver.")
-            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceLayerDriver. Error: " & ex.Message)
+            m_logger.LogError(ex, ".New(..) Error creating new cEcospaceLayerDriver. Error: " & ex.Message)
         End Try
 
         ' Use local metadata for distributing per-layer units

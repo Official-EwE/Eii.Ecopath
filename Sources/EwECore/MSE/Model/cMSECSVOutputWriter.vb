@@ -25,6 +25,9 @@ Imports System.Text
 Imports EwECore.MSE
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -36,6 +39,7 @@ Friend Class cMSECSVOutputWriter
 
     Private m_core As cCore
     Private m_MSEdata As cMSEDataStructures
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSECSVOutputWriter)()
 
     Public Sub New(theCore As cCore, MSEData As cMSEDataStructures)
         Me.m_core = theCore
@@ -83,7 +87,7 @@ Friend Class cMSECSVOutputWriter
                 Catch ex As Exception
                     ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, epdata.GroupName(igrp)))
                     System.Console.WriteLine(Me.ToString & " Failed to write data to file " & strFile & " Exception: " & ex.Message)
-                    cLog.Write(ex, "MSECSVOutputWriter::BIOMASS_DATA_" & igrp)
+                    m_logger.LogError(ex, "MSECSVOutputWriter::BIOMASS_DATA_" & igrp)
                 End Try
             Next
 
@@ -105,7 +109,7 @@ Friend Class cMSECSVOutputWriter
                 Catch ex As Exception
                     ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, epdata.GroupName(igrp)))
                     System.Console.WriteLine(Me.ToString & " Failed to write data to file " & strFile & " Exception: " & ex.Message)
-                    cLog.Write(ex, "MSECSVOutputWriter::CATCH_DATA_" & igrp)
+                    m_logger.LogError(ex, "MSECSVOutputWriter::CATCH_DATA_" & igrp)
                 End Try
             Next
 
@@ -128,7 +132,7 @@ Friend Class cMSECSVOutputWriter
                 Catch ex As Exception
                     ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, epdata.GroupName(igrp)))
                     System.Console.WriteLine(Me.ToString & " Failed to write data to file " & strFile & " Exception: " & ex.Message)
-                    cLog.Write(ex, "MSECSVOutputWriter::QUOTAGROUP_DATA_" & igrp)
+                    m_logger.LogError(ex, "MSECSVOutputWriter::QUOTAGROUP_DATA_" & igrp)
                 End Try
             Next
 
@@ -148,7 +152,7 @@ Friend Class cMSECSVOutputWriter
                 Catch ex As Exception
                     'Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(CATCH_DATA, epdata.FleetName(iflt)))
                     System.Console.WriteLine(Me.ToString & " Failed to write data to file " & Me.getOutputFileName(cMSE.FLEETCATCH_DATA, epData.FleetName(iflt)) & " Exception: " & ex.Message)
-                    cLog.Write(ex, "MSECSVOutputWriter::FLEETCATCH_DATA_" & iflt)
+                    m_logger.LogError(ex, "MSECSVOutputWriter::FLEETCATCH_DATA_" & iflt)
                 End Try
             Next
 
@@ -169,7 +173,7 @@ Friend Class cMSECSVOutputWriter
                 Catch ex As Exception
                     ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(EFFORT_DATA, epdata.GroupName(iflt)))
                     System.Console.WriteLine(Me.ToString & " Failed to write data to file " & strFile & " Exception: " & ex.Message)
-                    cLog.Write(ex, "MSECSVOutputWriter::EFFORT_DATA_" & iflt)
+                    m_logger.LogError(ex, "MSECSVOutputWriter::EFFORT_DATA_" & iflt)
                 End Try
             Next
 

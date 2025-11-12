@@ -28,6 +28,9 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -84,6 +87,7 @@ Public Class frmResults
     Private mTimeSeries As cTimeSeriesDataStructures
     Private mDataStructure As cEcosimDatastructures
     Private mEcosimModel As Ecosim.cEcosimModel
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmResults)()
 
 
 #End Region
@@ -179,7 +183,7 @@ Public Class frmResults
             Me.m_bInitOK = True
             System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Initialize")
             System.Console.WriteLine(Me.ToString & ".Initialize() Error: " & ex.Message)
             Debug.Assert(False, ex.Message)
             Return

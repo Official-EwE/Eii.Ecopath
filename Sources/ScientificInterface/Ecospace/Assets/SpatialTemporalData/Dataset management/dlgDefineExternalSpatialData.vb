@@ -27,6 +27,9 @@ Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -47,6 +50,7 @@ Namespace Ecospace.Controls
         Private m_man As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
         Private m_bHasDatasetTemplates As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgDefineExternalSpatialData)()
 
 #End Region ' Private vars
 
@@ -211,7 +215,7 @@ Namespace Ecospace.Controls
                     End If
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "dlgDefineExternalSpatialData::OnImport")
+                m_logger.LogError(ex, "dlgDefineExternalSpatialData::OnImport")
             End Try
         End Sub
 
@@ -221,7 +225,7 @@ Namespace Ecospace.Controls
                 Dim dlg As New dlgExportSpatialData(Me.UIContext)
                 dlg.ShowDialog(Me)
             Catch ex As Exception
-                cLog.Write(ex, "dlgDefineExternalSpatialData::OnExportSelected")
+                m_logger.LogError(ex, "dlgDefineExternalSpatialData::OnExportSelected")
             End Try
         End Sub
 
@@ -238,7 +242,7 @@ Namespace Ecospace.Controls
                 Me.m_manSets.IndexDataset = Me.SelectedDataset
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "dlgDefineExternalSpatialData::OnConfigureDS")
+                m_logger.LogError(ex, "dlgDefineExternalSpatialData::OnConfigureDS")
             End Try
             Me.Cursor = Cursors.Default
 
@@ -285,7 +289,7 @@ Namespace Ecospace.Controls
                 cmd.Invoke()
                 Me.Reload()
             Catch ex As Exception
-                cLog.Write(ex, "dlgDefineExternalSpatialData.OnSwitchConfig")
+                m_logger.LogError(ex, "dlgDefineExternalSpatialData.OnSwitchConfig")
             End Try
         End Sub
 
@@ -358,7 +362,7 @@ Namespace Ecospace.Controls
                     Me.m_manSets.IndexDataset = dsNew
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "dlgDefineExternalSpatialData::CreateDS")
+                m_logger.LogError(ex, "dlgDefineExternalSpatialData::CreateDS")
             End Try
 
         End Sub

@@ -22,13 +22,11 @@
 Option Strict On
 Imports System.IO
 Imports System.Xml.Serialization
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports System.Text
 Imports System.Xml
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.NetUtilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+
 
 #End Region ' Imports
 
@@ -50,6 +48,7 @@ Namespace WebServices.Ecobase
         ''' <summary>Ecobase ID.</summary>
         <XmlElement("model_number")> _
         Public Property ModelNumber As String
+        Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcobaseSubmission)()
 
         Public Enum eSubmisssionResultTypes As Integer
             Pending = 0
@@ -107,7 +106,7 @@ Namespace WebServices.Ecobase
                 selfie = CType(serializer.Deserialize(reader), cEcobaseSubmission)
             Catch ex As Exception
                 ' Hmm
-                cLog.Write(ex, "cEcobaseSubmission.FromXML")
+                m_logger.LogError(ex, "cEcobaseSubmission.FromXML")
             End Try
 
             Return selfie

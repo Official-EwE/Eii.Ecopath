@@ -22,10 +22,11 @@
 Option Strict On
 Imports System.IO
 Imports EwECore
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -47,6 +48,7 @@ Namespace Other
         Private m_cbh As cCheckboxHierarchy = Nothing
         Private m_options As New List(Of ucAutosaveOption)
         Private m_autosaveoptions As cAutoSaveItemEngine = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucOptionsFileManagement)()
 
 #End Region ' Private vars
 
@@ -152,7 +154,7 @@ Namespace Other
                     Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
                     cmd.Invoke(CStr(DirectCast(sender, Control).Tag))
                 Catch ex As Exception
-                    cLog.Write(ex, "ucOptionsFileManagement::OnVisitFolder")
+                    m_logger.LogError(ex, "ucOptionsFileManagement::OnVisitFolder")
                 End Try
             End If
         End Sub
@@ -260,7 +262,7 @@ Namespace Other
                 Me.m_autosaveoptions.Apply()
 
             Catch ex As Exception
-                cLog.Write(ex, "ucOptionsAutosave::Apply")
+                m_logger.LogError(ex, "ucOptionsAutosave::Apply")
                 Return IOptionsPage.eApplyResultType.Failed
             End Try
 
@@ -278,7 +280,7 @@ Namespace Other
                 Me.m_tbBackupMask.Text = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
                 Me.m_cbSaveWithHeader.Checked = CBool(My.Settings.GetDefaultValue("AutosaveHeaders"))
             Catch ex As Exception
-                cLog.Write(ex, "ucOptionsAutosave::SetDefaults")
+                m_logger.LogError(ex, "ucOptionsAutosave::SetDefaults")
             End Try
 
         End Sub

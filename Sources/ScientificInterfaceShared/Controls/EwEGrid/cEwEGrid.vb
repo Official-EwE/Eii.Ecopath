@@ -35,6 +35,9 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -356,6 +359,7 @@ Namespace Controls.EwEGrid
 
         ''' <summary>Helper flag, states whether a batch cell edit is active</summary>
         Private m_bInBatchEdit As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEGrid)()
 
 #End Region ' Variables
 
@@ -568,7 +572,7 @@ Namespace Controls.EwEGrid
                 Try
                     RaiseEvent OnSelectionChanged()
                 Catch ex As Exception
-                    cLog.Write(ex, "EwEGrid::RaiseSelectionChangeEvent(" & Me.ToString & ")")
+                    m_logger.LogError(ex, "EwEGrid::RaiseSelectionChangeEvent(" & Me.ToString & ")")
                 End Try
             End If
         End Sub
@@ -670,7 +674,7 @@ Namespace Controls.EwEGrid
             Try
                 Me.AutoSizeAll()
             Catch ex As Exception
-                cLog.Write(ex, "EwEGrid.FinishStyle(" & Me.Name & ")")
+                m_logger.LogError(ex, "EwEGrid.FinishStyle(" & Me.Name & ")")
             End Try
 
             'Add the selection of whole grid.
@@ -1280,7 +1284,7 @@ Namespace Controls.EwEGrid
 
             If (Me.Core IsNot Nothing) Then
                 Dim fmt As New cCharFormatter()
-                cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste using " & fmt.ToString(cSplit), eVerboseLevel.Detailed)
+                m_logger.LogInformation("Grid " & Me.ToString & "::OnClipboardPaste using " & fmt.ToString(cSplit))
             End If
 
             For Each strLine As String In lines
@@ -1353,7 +1357,7 @@ Namespace Controls.EwEGrid
                                                     End If
                                                 Catch ex As Exception
                                                     ' Whoah
-                                                    cLog.Write(ex, "Grid " & Me.Name & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString)
+                                                    m_logger.LogError(ex, "Grid " & Me.Name & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString)
                                                     nErrors += 1
                                                 End Try
                                                 If cell.DataModel.IsValidValue(objValue) Then
@@ -1383,7 +1387,7 @@ Namespace Controls.EwEGrid
                 Try
                     Me.Core.Messages.SendMessage(New cMessage(My.Resources.ERROR_GRID_PASTE, eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Warning))
                 Catch ex As Exception
-                    cLog.Write(ex, "Grid " & Me.Name & "::OnClipboardPaste can'True send message")
+                    m_logger.LogError(ex, "Grid " & Me.Name & "::OnClipboardPaste can'True send message")
                 End Try
             End If
 
@@ -1617,7 +1621,7 @@ Namespace Controls.EwEGrid
                     iRow += 1
                 End While
             Catch ex As Exception
-                cLog.Write(ex, "EwEGrid::ReadContent(" & Me.ToString & ")")
+                m_logger.LogError(ex, "EwEGrid::ReadContent(" & Me.ToString & ")")
                 Return False
             End Try
             Return True

@@ -21,15 +21,18 @@
 
 Option Strict On
 Imports System.Xml
-Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Forms
 Imports WeifenLuo.WinFormsUI
-Imports EwEUtils.Core
+Imports Debug = System.Diagnostics.Debug
+
 
 #End Region ' Imports
-
 ''' ===========================================================================
 ''' <summary>
 ''' <para>Handy-dandy class that maintains and applies form information such as 
@@ -62,6 +65,7 @@ Public Class cFormSettings
         Private m_dockWeifenLuo As Docking.DockState = Docking.DockState.Unknown
         Private m_formState As FormWindowState = FormWindowState.Normal
         Private m_strMisc As String = ""
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cFormSetting)()
 
 #End Region ' Private vars
 
@@ -115,7 +119,7 @@ Public Class cFormSettings
                 Try
                     fx.Settings = Me.m_strMisc
                 Catch ex As Exception
-                    cLog.Write(ex, "cFormSettings::Apply on " & frm.Text)
+                    m_logger.LogError(ex, "cFormSettings::Apply on " & frm.Text)
                 End Try
             Else
                 frm.Dock = Me.m_dockWin
@@ -152,7 +156,7 @@ Public Class cFormSettings
                 Try
                     Me.m_strMisc = DirectCast(frm, frmEwE).Settings
                 Catch ex As Exception
-                    cLog.Write(ex, "cFormSettings::store on EwE form " & frm.Text)
+                    m_logger.LogError(ex, "cFormSettings::store on EwE form " & frm.Text)
                 End Try
             Else
                 Me.m_dockWin = frm.Dock
@@ -200,7 +204,7 @@ Public Class cFormSettings
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex, "cFormSettings::Initialize")
+                m_logger.LogError(ex, "cFormSettings::Initialize")
                 Return False
             End Try
             Return True

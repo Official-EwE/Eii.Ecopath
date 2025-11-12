@@ -25,6 +25,9 @@ Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -52,6 +55,7 @@ Public Class cMessageHistory
     Private m_lHistory As New List(Of cHistoryItem)
     ''' <summary>Core message handlers.</summary>
     Private m_dtMessageHanders As New Dictionary(Of eCoreComponentType, cMessageHandler)
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMessageHistory)()
 
 #End Region ' Privates
 
@@ -606,7 +610,7 @@ Public Class cMessageHistory
 
                 dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, strCaption, mbb, mbi, customlabels)
             Catch ex As Exception
-                cLog.Write(ex, "cMessageHistory::HandleFeedbackMessage")
+                m_logger.LogError(ex, "cMessageHistory::HandleFeedbackMessage")
             End Try
         End If
 

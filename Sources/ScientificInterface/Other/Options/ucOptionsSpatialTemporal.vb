@@ -31,6 +31,9 @@ Imports EwECore.SpatialData
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -50,6 +53,7 @@ Namespace Other
 #Region " Private vars "
 
         Private m_bDragOver As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucOptionsSpatialTemporal)()
 
 #End Region ' Private vars
 
@@ -251,7 +255,7 @@ Namespace Other
                     Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
                     cmd.Invoke(cache.RootFolder)
                 Catch ex As Exception
-                    cLog.Write(ex, "ucOptionsSpatialTemporal::OnViewCache")
+                    m_logger.LogError(ex, "ucOptionsSpatialTemporal::OnViewCache")
                 End Try
             End If
 
@@ -293,7 +297,7 @@ Namespace Other
 
                     Me.UpdateControls()
                 Catch ex As Exception
-                    cLog.Write(ex, "ucOptionsSpatialTemporal::OnClearCache")
+                    m_logger.LogError(ex, "ucOptionsSpatialTemporal::OnClearCache")
                 End Try
             End If
 
@@ -352,7 +356,7 @@ Namespace Other
             'core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
             'Catch ex As Exception
             '    Debug.Assert(False, ex.Message)
-            '    cLog.Write(ex, "ucOptionsSpatialTemporal::Apply")
+            '    m_logger.LogError(ex, "ucOptionsSpatialTemporal::Apply")
             'End Try
 
             man.IsIndexingEnabled = Me.m_cbAllowIndexing.Checked
@@ -501,7 +505,7 @@ Namespace Other
                 core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "ucOptionsSpatialTemporal::Apply")
+                m_logger.LogError(ex, "ucOptionsSpatialTemporal::Apply")
                 bSuccess = False
             End Try
             Return bSuccess

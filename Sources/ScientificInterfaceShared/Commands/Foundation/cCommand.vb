@@ -20,13 +20,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System
-Imports System.Collections
-Imports System.Collections.Generic
-Imports System.Diagnostics
 Imports EwEUtils.Core
 Imports System.Text
 Imports System.Linq
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -62,6 +61,7 @@ Namespace Commands
         Private m_bAvailable As Boolean = True
 
         Private m_dicParms As New Dictionary(Of String, Object)
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cCommand)()
 
 #End Region ' Private vars
 
@@ -280,9 +280,7 @@ Namespace Commands
             ' Command enabled?
             If Me.Enabled Then
 
-                If (cLog.VerboseLevel >= eVerboseLevel.Detailed) Then
-                    cLog.Write(Me, eVerboseLevel.Detailed)
-                End If
+                m_logger.LogDebug("Invoking command: {0}", Me.Name)
 
                 ' Set invoking flag
                 Me.m_bInvoking = True
@@ -299,7 +297,7 @@ Namespace Commands
                         RaiseEvent OnPreInvoke(Me)
                     Catch ex As Exception
                         ' NOP
-                        cLog.Write(ex, eVerboseLevel.Standard, "PreInvoke " & Me.Name)
+                        m_logger.LogError(ex, "PreInvoke " & Me.Name)
                     End Try
 
                     Try
@@ -307,7 +305,7 @@ Namespace Commands
                         RaiseEvent OnInvoke(Me)
                     Catch ex As Exception
                         ' NOP
-                        cLog.Write(ex, eVerboseLevel.Standard, "Invoke " & Me.Name)
+                        m_logger.LogError(ex, "Invoke " & Me.Name)
                     End Try
 
                     Try
@@ -315,7 +313,7 @@ Namespace Commands
                         RaiseEvent OnPostInvoke(Me)
                     Catch ex As Exception
                         ' NOP
-                        cLog.Write(ex, eVerboseLevel.Standard, "PostInvoke " & Me.Name)
+                        m_logger.LogError(ex, "PostInvoke " & Me.Name)
                     End Try
 
                 End If

@@ -24,6 +24,9 @@ Imports EwEUtils.Database
 Imports EwEUtils.Core
 Imports System.Text
 Imports System.IO
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -69,6 +72,7 @@ Namespace Database
         Protected m_iNumSteps As Integer = 0
         ''' <summary>The current step processed by the import.</summary>
         Protected m_iStep As Integer = 0
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cModelImporter)()
 
 #End Region ' Private vars
 
@@ -167,7 +171,7 @@ Namespace Database
             strLogfileName = Path.ChangeExtension(strLogfileName, "txt")
 
             ' Write log to text file with the same file name as the destination db name
-            cLog.WriteTextToFile(strLogfileName, Me.m_sbLog)
+            'cLog.WriteTextToFile(strLogfileName, Me.m_sbLog)
 
             Return bSucces
 

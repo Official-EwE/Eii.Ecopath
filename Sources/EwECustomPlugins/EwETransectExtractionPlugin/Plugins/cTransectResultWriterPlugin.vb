@@ -26,6 +26,9 @@ Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -39,6 +42,7 @@ Public Class cTransectResultWriterPlugin
     Implements IEcospaceResultWriterPlugin
 
     Private m_data As cTransectDatastructures = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cTransectResultWriterPlugin)()
 
     Public Sub New()
         MyBase.New()
@@ -167,7 +171,7 @@ Public Class cTransectResultWriterPlugin
                     End Using
 
                 Catch ex As Exception
-                    cLog.Write(ex, "Failed to write Ecospace average biomass to file for data " + strDescriptor)
+                    m_logger.LogError(ex, "Failed to write Ecospace average biomass to file for data " + strDescriptor)
                 End Try
             End If
 

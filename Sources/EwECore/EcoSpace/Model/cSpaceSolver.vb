@@ -19,9 +19,11 @@
 
 Option Explicit On
 Option Strict On
-Imports System.Reflection
 Imports System.Threading
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 
 Public Class cSpaceSolver
@@ -110,6 +112,7 @@ Public Class cSpaceSolver
     Private TimeStepC As Single
 
     Private lossSpace()(,) As Single
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSpaceSolver)()
 
 
     'These are total sums for every cell, so must be summed for each thread seperately, then combined after they've all run
@@ -287,7 +290,7 @@ Public Class cSpaceSolver
             Me.m_ConTracer = Nothing
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, ".Clear() Exception")
         End Try
 
     End Sub
@@ -320,7 +323,7 @@ Public Class cSpaceSolver
 
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cSpaceSolver.YearTimeStep Exception")
         End Try
 
     End Sub
@@ -364,7 +367,7 @@ Public Class cSpaceSolver
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cSpaceSolver.InitForTimestep Exception")
         End Try
 
     End Sub
@@ -405,7 +408,7 @@ Public Class cSpaceSolver
             Next iCell
 
         Catch ex As Exception
-            cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
+            m_logger.LogError(ex, "cSpaceSolver.Solve Exception")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -450,7 +453,7 @@ Public Class cSpaceSolver
             Next iCell
 
         Catch ex As Exception
-            cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
+            m_logger.LogError(ex, "cSpaceSolver.SolveC Exception")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -754,7 +757,7 @@ Public Class cSpaceSolver
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, ".SolveCell() Exception")
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".SolveCell() Error: " & ex.Message)
         End Try
@@ -831,7 +834,7 @@ Public Class cSpaceSolver
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, ".SolveCellC() Exception")
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".SolveCellc() Error: " & ex.Message)
         End Try
@@ -1395,7 +1398,7 @@ Public Class cSpaceSolver
             Next iGrp
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(".accumCatchData() Error: " & ex.Message)
         End Try
 
         Me.CatchCPUTimeSec += Me.m_stpWatch.Elapsed.TotalSeconds - st
@@ -1496,7 +1499,7 @@ Public Class cSpaceSolver
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(".CalcTrophicLevel() Error: " & ex.Message)
             Debug.Assert(False, Me.ToString & ".CalcTrophicLevel() Error: " & ex.Message)
         End Try
 
@@ -1863,7 +1866,7 @@ Public Class cSpaceSolver_LocalMemory
                 Me.copyLocalToCore(Flin, F)
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString + ".UpdateCoreData() Exception: " + ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(Me.ToString + ".UpdateCoreData() Exception: " + ex.Message)
             End Try
 
             m_stpInit.Stop()
@@ -2071,7 +2074,7 @@ Public Class cSpaceSolver_LocalMemory
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(Me.ToString & ".InitForTimestep() Exception: " & ex.Message)
         End Try
 
     End Sub
@@ -2085,7 +2088,7 @@ Public Class cSpaceSolver_LocalMemory
             Me.m_ConTracer = Nothing
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(Me.ToString & ".Clear() Exception: " & ex.Message)
         End Try
 
     End Sub
@@ -2115,7 +2118,7 @@ Public Class cSpaceSolver_LocalMemory
 
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(Me.ToString & ".YearTimeStep() Exception: " & ex.Message)
         End Try
 
     End Sub
@@ -2163,7 +2166,7 @@ Public Class cSpaceSolver_LocalMemory
             Next iCell
 
         Catch ex As Exception
-            cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
+            m_logger.LogError(Me.ToString & ".Solve() Exception: " & ex.Message)
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -2451,7 +2454,7 @@ Public Class cSpaceSolver_LocalMemory
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(Me.ToString & ".SolveCell() Error: " & ex.Message)
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".SolveCell() Error: " & ex.Message)
         End Try
@@ -2714,7 +2717,7 @@ Public Class cSpaceSolver_LocalMemory
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(Me.ToString & ".SolveCell() Error: " & ex.Message)
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".SolveCell() Error: " & ex.Message)
         End Try
@@ -3164,7 +3167,7 @@ Public Class cSpaceSolver_LocalMemory
             Next iGrp
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(Me.ToString & ".accumCatchData() Error: " & ex.Message)
         End Try
         Me.CatchCPUTimeSec += Me.m_stpWatch.Elapsed.TotalSeconds - st
 

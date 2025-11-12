@@ -23,7 +23,10 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
-Imports System.Collections.Generic
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
 
 #End Region ' Imports
 
@@ -44,6 +47,7 @@ Public Class cPedigreeManager
     Private m_levels As New cCoreInputOutputList(Of cPedigreeLevel)(eDataTypes.PedigreeLevel, 1)
     ''' <summary>Mapping of Core level index to local level ID.</summary>
     Private m_dictID As New Dictionary(Of Integer, Integer)
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cPedigreeManager)()
 
 #End Region ' Private vars
 
@@ -186,7 +190,7 @@ Public Class cPedigreeManager
                     Me.m_core.onChanged(level, eMessageType.DataModified)
 
                 Catch ex As Exception
-                    cLog.Write(Me.ToString & ".Update() level failed to update DBID=" & level.DBID)
+                    m_logger.LogError(ex, ".Update() level failed to update DBID=" & level.DBID)
                     Debug.Assert(False, Me.ToString & ".Update() level failed to update DBID=" & level.DBID)
                 End Try
 
@@ -232,7 +236,7 @@ Public Class cPedigreeManager
                 ' Store
                 data.Pedigree(iGroup, iVariable) = iLevel
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".UpdatePedigree() group failed to update DBID=" & iGroup)
+                m_logger.LogError(ex, ".UpdatePedigree() group failed to update DBID=" & iGroup)
                 Debug.Assert(False, Me.ToString & ".UpdatePedigree() group failed to update DBID=" & iGroup)
             End Try
         Next

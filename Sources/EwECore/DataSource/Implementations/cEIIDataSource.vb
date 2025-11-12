@@ -23,9 +23,10 @@ Option Strict On
 
 Imports System.IO
 Imports EwECore.DataSources
-Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwEUtils.Database
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 '
 #End Region ' Imports
 
@@ -40,6 +41,7 @@ Public Class cEIIDataSource
 
     Private m_strFilename As String = ""
     Private m_core As cCore = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEIIDataSource)()
 
 #Region " Generic "
 
@@ -260,14 +262,14 @@ Public Class cEIIDataSource
         Dim eiiStrm As System.IO.StreamReader
 
         If Not File.Exists(Me.m_strFilename) Then
-            cLog.Write(Me.ToString + ".LoadEcopath(...) No file name specified.")
+            m_logger.LogError("LoadEcopath(...) No file name specified.")
             Return False
         End If
 
         Try
             eiiStrm = New System.IO.StreamReader(Me.m_strFilename)
         Catch ex As Exception
-            cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. '" & Me.m_strFilename & "' Error:" + ex.Message())
+            m_logger.LogError(ex, Me.ToString + ".LoadEcopath(...) Error opening eii file. '" & Me.m_strFilename & "' Error:" + ex.Message())
             Return False
         End Try
 
@@ -290,7 +292,7 @@ Public Class cEIIDataSource
             Integer.TryParse(recs(3), ecopathDS.ModelUnitCurrency)
 
             If Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables() Then
-                cLog.Write(Me.ToString + ".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
+                m_logger.LogError(Me.ToString + ".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
                 Return False
             End If
             Dim iNextIndex As Integer
@@ -541,7 +543,7 @@ Public Class cEIIDataSource
         Catch ex As Exception 'catch any error during the reading of the data
             'FileClose(fnum)
             'some kind of a reading error better find out what happend
-            cLog.Write(Me.ToString + ".LoadEcopath() Error reading eii file. Error: " + ex.Message())
+            m_logger.LogError(Me.ToString + ".LoadEcopath() Error reading eii file. Error: " + ex.Message())
             Debug.Assert(False)
             Return False
         End Try
@@ -888,14 +890,14 @@ Public Class cEIIDataSource
         fnum = FreeFile()
 
         If m_strFilename = "" Then
-            cLog.Write(Me.ToString + ".LoadEcopath(...) No file name specified.")
+            m_logger.LogError(Me.ToString + ".LoadEcopath(...) No file name specified.")
             Return False
         End If
 
         Try
             FileOpen(fnum, m_strFilename, OpenMode.Input)
         Catch ex As Exception
-            cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_strFilename + vbCrLf + "Error:" + ex.Message())
+            m_logger.LogError(Me.ToString + ".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_strFilename + vbCrLf + "Error:" + ex.Message())
             Return False
         End Try
 
@@ -913,7 +915,7 @@ Public Class cEIIDataSource
             Input(fnum, ecopathDS.currUnitIndex)
 
             If Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables() Then
-                cLog.Write(Me.ToString + ".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
+                m_logger.LogError(Me.ToString + ".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
                 Return False
             End If
 
@@ -1093,7 +1095,7 @@ Public Class cEIIDataSource
         Catch ex As Exception 'catch any error during the reading of the data
             FileClose(fnum)
             'some kind of a reading error better find out what happend
-            cLog.Write(Me.ToString + ".LoadEcopath() Error reading eii file. Error: " + ex.Message())
+            m_logger.LogError(Me.ToString + ".LoadEcopath() Error reading eii file. Error: " + ex.Message())
             Debug.Assert(False)
             Return False
         End Try

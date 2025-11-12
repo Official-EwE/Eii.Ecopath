@@ -21,14 +21,14 @@
 
 Option Strict On
 Imports System.IO
-Imports System.Text
 Imports System.Xml
 Imports System.Xml.Serialization
 Imports EwEUtils.Core
 Imports EwEUtils.NetUtilities
-Imports EwEUtils.SystemUtilities
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -1320,6 +1320,7 @@ Namespace WebServices.Ecobase
     ''' -----------------------------------------------------------------------
     <XmlRoot("EcoBaseModel")> _
     Public Class cEcobaseModelParameters
+        Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcobaseModelParameters)()
 
 #Region " Variables "
 
@@ -1427,7 +1428,7 @@ Namespace WebServices.Ecobase
                 selfie = CType(serializer.Deserialize(reader), cEcobaseModelParameters)
             Catch ex As Exception
                 ' Hmm
-                cLog.Write(ex, "cEcobaseModelParameters.FromXML")
+                m_logger.LogError(ex, "cEcobaseModelParameters.FromXML")
             End Try
 
             If (selfie.Model Is Nothing) Then Return Nothing
@@ -1516,6 +1517,7 @@ Namespace WebServices.Ecobase
     ''' -----------------------------------------------------------------------
     <XmlRoot("EcoBaseModels")> _
     Public Class cEcobaseModelList
+        Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcobaseModelList)()
 
 #Region " Variables "
 
@@ -1573,7 +1575,7 @@ Namespace WebServices.Ecobase
                 selfie = CType(serializer.Deserialize(reader), cEcobaseModelList)
             Catch ex As Exception
                 ' Hmm
-                cLog.Write(ex, "cEcobaseModelList.FromXML")
+                m_logger.LogError(ex, "cEcobaseModelList.FromXML")
             End Try
 
 #If DEBUG Then

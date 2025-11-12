@@ -32,6 +32,9 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -55,6 +58,7 @@ Public Class frmRun
 
     Private m_fpK As cEwEFormatProvider = Nothing
     Private m_fpVukCap As cEwEFormatProvider = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmRun)()
 
 #End Region ' Private vars
 
@@ -196,7 +200,7 @@ Public Class frmRun
                     Me.UpdateControls()
             End Select
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "OnCoreMessage. Error processing core message in SFP run form")
         End Try
 
     End Sub

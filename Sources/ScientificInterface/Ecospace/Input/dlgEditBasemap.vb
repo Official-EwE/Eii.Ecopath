@@ -22,12 +22,15 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
 Imports EwEUtils.SpatialData
+Imports Microsoft.Extensions.Logging
+Imports ScientificInterface.Ecospace.Controls
+Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
 
 #End Region ' Imports
-
 ''' =======================================================================
 ''' <summary>
 ''' Dialog, implementing the Ecospace Edit Basemap user interface.
@@ -55,6 +58,7 @@ Public Class dlgEditBasemap
 
     ''' <summary>Imported raster, if any</summary>
     Private m_rs As ISpatialRaster = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgEditBasemap)()
 
 #End Region ' Private variables
 
@@ -258,7 +262,7 @@ Public Class dlgEditBasemap
             Try
                 Me.m_uic.Core.ResizeEcospaceBasemap(iRowCount, iColCount)
             Catch ex As Exception
-                cLog.Write(ex, "dlgEditBasemap.Apply:resizing")
+                m_logger.LogError(ex, "dlgEditBasemap.Apply:resizing")
             End Try
             cApplicationStatusNotifier.EndProgress(core)
         End If
@@ -279,7 +283,7 @@ Public Class dlgEditBasemap
                 Me.m_uic.Core.onChanged(l)
             Catch ex As Exception
                 Debug.Assert(False)
-                cLog.Write(ex, "dlgEditBasemap.Apply:reading_depth")
+                m_logger.LogError(ex, "dlgEditBasemap.Apply:reading_depth")
             End Try
             cApplicationStatusNotifier.EndProgress(core)
         End If

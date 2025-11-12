@@ -20,6 +20,9 @@
 Option Strict On
 
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' Manager for data validators. This provides access to data validator objects through its getValidator(eVarNameFlags) method
@@ -28,6 +31,7 @@ Imports EwEUtils.Core
 Public Class cValidatorManager
 
     Private m_validators As Dictionary(Of eVarNameFlags, cValidatorDefault)
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cValidatorManager)()
 
     ''' <summary>
     ''' Create an instance of the ValidatorManger. 
@@ -153,7 +157,7 @@ Public Class cValidatorManager
 
         Catch ex As Exception
             'bummer
-            cLog.Write(Me.ToString & "getValidator() Error: " & ex.Message)
+            m_logger.LogError("getValidator() Error: " & ex.Message)
             Debug.Assert(False, ex.Message)
             Return Nothing
         End Try

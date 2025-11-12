@@ -26,13 +26,14 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -52,6 +53,7 @@ Public Class frmMSE
     Private m_fpMaxTime As cEwEFormatProvider = Nothing
 
     Private m_bInUpdate As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmMSE)()
 
 #End Region ' Private vars
 
@@ -307,7 +309,7 @@ Public Class frmMSE
             ' Run is threaded; result of call does not matter
             Me.MSE.CreateModels()
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE.frmMSE::OnRunCreateModels")
+            m_logger.LogError(ex, "CefasMSE.frmMSE::OnRunCreateModels")
         End Try
 
     End Sub
@@ -320,7 +322,7 @@ Public Class frmMSE
         Try
             Me.MSE.StopRun()
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE.frmMSE::OnStopCreateModels")
+            m_logger.LogError(ex, "CefasMSE.frmMSE::OnStopCreateModels")
         End Try
 
     End Sub
@@ -335,7 +337,7 @@ Public Class frmMSE
             Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             cmd.Invoke(Me.MSE.DataPath)
         Catch ex As Exception
-            cLog.Write(ex, "CefasMSE.frmMSE::OnPathClicked(" & Me.MSE.DataPath & ")")
+            m_logger.LogError(ex, "CefasMSE.frmMSE::OnPathClicked(" & Me.MSE.DataPath & ")")
         End Try
 
     End Sub
@@ -350,7 +352,7 @@ Public Class frmMSE
             Me.MSE.UseEwEPath = Me.m_rbEwEDefaultPath.Checked
             'Me.ResolveMSEPathConflicts()
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnPathPrefChanged")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnPathPrefChanged")
         End Try
         Me.UpdateControls()
 
@@ -363,7 +365,7 @@ Public Class frmMSE
             Me.MSE.WriteYearlyOnly = Me.m_chkYearly.Checked
             Me.MSE.LoadSampledParams()
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnRun")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnRun")
         End Try
     End Sub
 
@@ -377,7 +379,7 @@ Public Class frmMSE
                 Me.UpdateControls()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnSelectDataPath")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnSelectDataPath")
         End Try
         Me.m_bInUpdate = False
 
@@ -396,7 +398,7 @@ Public Class frmMSE
                 Me.UpdateControls()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnEditSurvivabilities")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnEditSurvivabilities")
         End Try
 
     End Sub
@@ -413,7 +415,7 @@ Public Class frmMSE
                 Me.UpdateControls()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnEditDiets")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnEditDiets")
         End Try
 
     End Sub
@@ -432,7 +434,7 @@ Public Class frmMSE
                 Me.UpdateControls()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnQuotaShares")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnQuotaShares")
         End Try
 
     End Sub
@@ -447,7 +449,7 @@ Public Class frmMSE
                 Me.UpdateControls()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnShowTFM")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnShowTFM")
         End Try
 
     End Sub
@@ -458,7 +460,7 @@ Public Class frmMSE
         Try
             Me.EditBasicInputs()
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnReviewDistParams")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnReviewDistParams")
         End Try
 
     End Sub
@@ -467,7 +469,7 @@ Public Class frmMSE
         Try
             Me.MSE.NModels2Run = CInt(Me.m_fpNModelsToRun.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnNModels2RunChanged")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnNModels2RunChanged")
         End Try
     End Sub
 
@@ -475,7 +477,7 @@ Public Class frmMSE
         Try
             Me.MSE.NModels = CInt(Me.m_fpNTrials.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnNTrialsChanged")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnNTrialsChanged")
         End Try
     End Sub
 
@@ -483,7 +485,7 @@ Public Class frmMSE
         Try
             Me.MSE.NYearsProject = CInt(Me.m_fpNYearsToProject.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnNYearsToProjectChanged")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnNYearsToProjectChanged")
         End Try
     End Sub
 
@@ -491,7 +493,7 @@ Public Class frmMSE
         Try
             Me.MSE.MassBalanceTol = CSng(Me.m_fpMassBalanceTol.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnMassBalanceTolChanged")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnMassBalanceTolChanged")
         End Try
     End Sub
 
@@ -499,7 +501,7 @@ Public Class frmMSE
         Try
             Me.MSE.NMaxAttempts = CInt(Me.m_fpMaxAttempts.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnMaxAttemptsChanged")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnMaxAttemptsChanged")
         End Try
     End Sub
 
@@ -507,7 +509,7 @@ Public Class frmMSE
         Try
             Me.MSE.NMaxTime = CSng(Me.m_fpMaxTime.Value)
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnMaxAttemptsChanged")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnMaxAttemptsChanged")
         End Try
     End Sub
 
@@ -524,7 +526,7 @@ Public Class frmMSE
                 Me.UpdateControls()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnDecreaseEffort")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnDecreaseEffort")
         End Try
 
     End Sub
@@ -535,7 +537,7 @@ Public Class frmMSE
         Try
             Me.MSE.GenerateSurvivabilities()
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnGenerateSampleSurvivabilities")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnGenerateSampleSurvivabilities")
         End Try
     End Sub
 
@@ -572,7 +574,7 @@ Public Class frmMSE
                 Me.UpdateControls()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::onStockAssessment")
+            m_logger.LogError(ex, "CEFAS.frmMSE::onStockAssessment")
         End Try
 
     End Sub
@@ -700,7 +702,7 @@ Public Class frmMSE
                 Me.UpdateControls()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnBiomassLimits")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnBiomassLimits")
         End Try
 
     End Sub
@@ -715,7 +717,7 @@ Public Class frmMSE
                 Me.UpdateControls()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "CEFAS.frmMSE::OnStrategiesOverview")
+            m_logger.LogError(ex, "CEFAS.frmMSE::OnStrategiesOverview")
         End Try
 
     End Sub

@@ -26,6 +26,9 @@ Imports EwEUtils.Utilities
 Imports System.Collections.Specialized
 Imports System.Web
 Imports ScientificInterfaceShared.GeoCode
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -61,6 +64,7 @@ Public Class frmModelParameters
     Private m_propUnitTime As cIntegerProperty = Nothing
     Private m_propUnitTimeText As cStringProperty = Nothing
     Private m_propUnitMonetary As cStringProperty = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmModelParameters)()
 
     Public Sub New()
         Me.InitializeComponent()
@@ -367,7 +371,7 @@ Public Class frmModelParameters
             cmd.Invoke("http://doi.org/" & HttpUtility.UrlEncode(strDOI))
 
         Catch ex As Exception
-            cLog.Write(ex, "frmModelParameters.OnViewDOIOnline(" & strDOI & ")")
+            m_logger.LogError(ex, "frmModelParameters.OnViewDOIOnline(" & strDOI & ")")
         End Try
 
     End Sub

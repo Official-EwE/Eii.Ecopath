@@ -22,9 +22,10 @@
 
 Option Strict On
 Imports EwECore
-Imports EwECore.Ecopath
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -34,6 +35,7 @@ Public Class cDatabaseReader
 
     Private m_EcopathData As cEcopathDataStructures
     Private m_Core As cCore
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDatabaseReader)()
 
     Public Sub New(EwECore As cCore, EcopathData As cEcopathDataStructures)
         Me.m_Core = EwECore
@@ -65,7 +67,7 @@ Public Class cDatabaseReader
             Return bReturn
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Exception while Importing Diets from database: {0}", ex.Message)
         End Try
 
         Return False
@@ -130,7 +132,7 @@ Public Class cDatabaseReader
             'some kind of a message????
             Me.m_Core.Messages.SendMessage(New EwECore.cMessage("Exception while Importing Diets: " + ex.Message,
                                                                 eMessageType.DataImport, eCoreComponentType.Plugin, eMessageImportance.Critical))
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Exception while validating imported diets: {0}", ex.Message)
 
             Return False
         End Try

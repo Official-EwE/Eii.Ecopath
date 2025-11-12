@@ -30,6 +30,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
 Imports ZedGraph
 Imports EwECore.Style
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -37,6 +40,7 @@ Friend Class cMSERefPoint
 
     Private m_low As Single
     Private m_upper As Single
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSERefPoint)()
 
     Public Sub New(LowerRef As Single, UpperRef As Single)
         Me.m_low = LowerRef
@@ -82,6 +86,7 @@ Friend Class cMSEPlotter
     Private m_nLines As Integer
     Private m_iIterMin As Integer = Integer.MinValue
     Private m_iIterMax As Integer = Integer.MaxValue
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEPlotter)()
 
 #End Region
 
@@ -204,7 +209,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Draw() Exception: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMSEPlotter.Draw() Exception")
         End Try
 
     End Sub
@@ -236,7 +241,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMSEPlotter.AddData() Exception")
         End Try
 
     End Sub
@@ -262,7 +267,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMSEPlotter.AddMean() Exception")
         End Try
 
 
@@ -305,7 +310,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "plotRefLines")
         End Try
 
     End Sub
@@ -340,7 +345,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "getRefPoint")
         End Try
 
 
@@ -595,7 +600,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".AddLineToGraph() Error: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMSEPlotter.PlotHistoGram() Exception")
         End Try
 
     End Sub
@@ -645,7 +650,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".AddLineToGraph() Error: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "PlotValues")
         End Try
 
     End Sub
@@ -684,7 +689,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".AddLineToGraph() Error: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Plotline")
         End Try
 
     End Sub
@@ -748,7 +753,7 @@ Friend Class cMSEPlotter
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".AddLineToGraph() Error: " & ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "PlotComparison")
         End Try
 
     End Sub

@@ -22,7 +22,6 @@
 Option Strict On
 
 Imports System.Collections.Specialized
-Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
 Imports System.Globalization
 Imports System.IO
@@ -39,6 +38,9 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -237,6 +239,7 @@ Namespace Style
         Private m_nEventLock As Integer = 0
         ''' <summary>States whether there are events withheld and pending while an event lock is active.</summary>
         Private m_pendingChangeEventTypes As eChangeType = eChangeType.None
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cStyleGuide)()
 
 #End Region ' Private bits
 
@@ -478,7 +481,7 @@ Namespace Style
                 ' Broadcast change event to listeners
                 RaiseEvent StyleGuideChanged(changeType)
             Catch ex As Exception
-                cLog.Write(ex, "cStyleGuide.FireChangeEvent(" & changeType & ")")
+                m_logger.LogError(ex, "cStyleGuide.FireChangeEvent(" & changeType & ")")
             End Try
 
             ' No more change events pending
@@ -2230,7 +2233,7 @@ Namespace Style
 
             Catch ex As Exception
                 ' ToDo: send an error message
-                cLog.Write(ex, "cStyleGuide.Load")
+                m_logger.LogError(ex, "cStyleGuide.Load")
                 Me.ResumeEvents()
                 Return False
             End Try
@@ -2273,7 +2276,7 @@ Namespace Style
 
             Catch ex As Exception
                 ' ToDo: send an error message
-                cLog.Write(ex, "cStyleGuide.Save")
+                m_logger.LogError(ex, "cStyleGuide.Save")
                 Return False
             End Try
             Return True

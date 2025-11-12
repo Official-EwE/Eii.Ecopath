@@ -27,6 +27,9 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -40,6 +43,7 @@ Public Class ucEditFlow
     Private m_uic As cUIContext = Nothing
     Private m_data As cValueChainData = Nothing
     Private m_diagram As cFlowDiagram = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucEditFlow)()
 
     Public Sub New(uic As cUIContext, _
                    data As cValueChainData, _
@@ -228,7 +232,7 @@ Public Class ucEditFlow
         Try
             Me.m_plFlow.ArrangeGLEE()
         Catch ex As Exception
-            cLog.Write(ex, "ValueChain::ArrangeGlee")
+            m_logger.LogError(ex, "ValueChain::ArrangeGlee")
         End Try
         Me.UpdateControls()
 
@@ -255,7 +259,7 @@ Public Class ucEditFlow
         Try
             Me.m_plFlow.ZoomFactor = CSng(DirectCast(sender, ToolStripMenuItem).Tag)
         Catch ex As Exception
-            cLog.Write(ex, "ValueChain.ucEditFlow::OnZoom")
+            m_logger.LogError(ex, "ValueChain.ucEditFlow::OnZoom")
         End Try
     End Sub
 
@@ -263,7 +267,7 @@ Public Class ucEditFlow
         Try
             Me.UpdateControls()
         Catch ex As Exception
-            cLog.Write(ex, "ValueChain.ucEditFlow::OnZoomChanged")
+            m_logger.LogError(ex, "ValueChain.ucEditFlow::OnZoomChanged")
         End Try
     End Sub
 
@@ -271,7 +275,7 @@ Public Class ucEditFlow
         Try
             Me.UpdateControls()
         Catch ex As Exception
-            cLog.Write(ex, "ValueChain.ucEditFlow::OnSelectionChanged")
+            m_logger.LogError(ex, "ValueChain.ucEditFlow::OnSelectionChanged")
         End Try
     End Sub
 

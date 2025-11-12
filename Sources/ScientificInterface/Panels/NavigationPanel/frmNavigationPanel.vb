@@ -25,18 +25,22 @@ Option Strict On
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterface.Ecopath.Controls
 Imports ScientificInterface.Ecopath.Input
 Imports ScientificInterface.Ecopath.Output
 Imports ScientificInterface.Ecopath.Tools
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
+Imports ScientificInterface.Other
 Imports ScientificInterfaceShared.Integration
+Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
 
+#End Region
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Navigation tree panel; contains the navigation structure that provides uniform
@@ -57,6 +61,7 @@ Public Class frmNavigationPanel
     Private m_pluginManager As cPluginManager = Nothing
     Private m_ntPluginHandler As cPluginNavTreeHandler = Nothing
     Private m_tnSelected As TreeNode = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmNavigationPanel)()
 
     Private Enum eNodeImages As Integer
         Input
@@ -499,7 +504,7 @@ Public Class frmNavigationPanel
         Dim tn As TreeNode = Me.FindNode(Me.m_tvNavigation.Nodes, strNode)
         If (tn IsNot Nothing) Then
             Me.m_tvNavigation.Nodes.Remove(tn)
-            cLog.Write(String.Format("NavPanel: Removed BETA node '{0}' from navigation tree", strNode))
+            m_logger.LogInformation(String.Format("NavPanel: Removed BETA node '{0}' from navigation tree", strNode))
         End If
     End Sub
 

@@ -29,6 +29,9 @@ Imports EwEMSEPlugin.HCR_GroupNS
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Public Class dlgHarvestControlRule
 
@@ -54,6 +57,7 @@ Public Class dlgHarvestControlRule
     Private m_HCR As HCR_Group = Nothing
     Private m_bIsValid As Boolean = True
     Private m_bInitialized As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgHarvestControlRule)()
 
     Private ReadOnly Property Core As EwECore.cCore
         Get
@@ -180,7 +184,7 @@ Public Class dlgHarvestControlRule
         Try
             Me.UpdateHCR()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error updating HCR")
         End Try
     End Sub
 
@@ -192,7 +196,7 @@ Public Class dlgHarvestControlRule
         Try
             Me.UpdateHCR()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error updating HCR")
         End Try
     End Sub
 

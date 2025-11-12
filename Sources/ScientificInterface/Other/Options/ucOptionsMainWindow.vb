@@ -21,11 +21,9 @@
 
 Option Explicit On
 Option Strict On
-
-Imports System.IO
-Imports WeifenLuo.WinFormsUI
-Imports EwECore
-Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -44,6 +42,7 @@ Namespace Other
         Private m_fpH As cEwEFormatProvider = Nothing
         Private m_szFrame As Size
         Private m_bInUpdate As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucOptionsPresentation)()
 
 #Region " Constructors "
 
@@ -141,7 +140,7 @@ Namespace Other
                 Me.m_cbCollapseNavPanel.Checked = CBool(My.Settings.GetDefaultValue("PresentationModeCollapseNavPanel"))
                 Me.m_rbIn.Checked = True
             Catch ex As Exception
-                cLog.Write(ex, "ucOptionsPresentation::SetDefaults")
+                m_logger.LogError(ex, "ucOptionsPresentation::SetDefaults")
             End Try
 
         End Sub

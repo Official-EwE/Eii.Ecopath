@@ -20,17 +20,17 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.ComponentModel
 Imports System.Globalization
 Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -75,6 +75,7 @@ Namespace Ecospace.Controls
         Private m_fpScale As cEwEFormatProvider = Nothing
         Private m_strDateMask As String = ""
         Private m_strMTBMask As String = ""
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgApplyConnection)()
 
 #End Region ' Private variables
 
@@ -381,7 +382,7 @@ Namespace Ecospace.Controls
                 'Me.m_manSets.IndexDataset = Me.SelectedDataset
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "ucConficAdapter::OnConfigureDS")
+                m_logger.LogError(ex, "ucConficAdapter::OnConfigureDS")
             End Try
             Me.Cursor = Cursors.Default
             Me.LayerChanged()

@@ -25,10 +25,11 @@ Imports EwECore.Ecosim
 Imports ScientificInterfaceShared.Style
 Imports EwECore
 Imports ScientificInterfaceShared.Commands
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.IO
-Imports System.Windows.Forms
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -43,6 +44,7 @@ Public Class frmMain
 
     ''' <summary>The engine that does all the work.</summary>
     Private m_engine As cEngine = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmMain)()
 
 #End Region ' Private vars
 
@@ -117,7 +119,7 @@ Public Class frmMain
             Me.BrowseToTextbox(Me.m_tbxSource, "Select source folder with CSV files")
         Catch ex As Exception
             ' Whoah
-            cLog.Write(ex, "OnBrowseIn")
+            m_logger.LogError(ex, "OnBrowseIn")
         End Try
 
     End Sub
@@ -142,7 +144,7 @@ Public Class frmMain
             Me.UpdateControls()
         Catch ex As Exception
             ' Whoah
-            cLog.Write(ex, "OnAllScr")
+            m_logger.LogError(ex, "OnAllScr")
         End Try
 
     End Sub
@@ -155,7 +157,7 @@ Public Class frmMain
             Me.UpdateControls()
         Catch ex As Exception
             ' Whoah
-            cLog.Write(ex, "OnAllVars")
+            m_logger.LogError(ex, "OnAllVars")
         End Try
 
     End Sub
@@ -222,7 +224,7 @@ Public Class frmMain
 
         Catch ex As Exception
             ' Whoah
-            cLog.Write(ex, "OnValidateFiles")
+            m_logger.LogError(ex, "OnValidateFiles")
         End Try
 
     End Sub
@@ -255,7 +257,7 @@ Public Class frmMain
 
         Catch ex As Exception
             ' Whoah
-            cLog.Write(ex, "OnRun")
+            m_logger.LogError(ex, "OnRun")
         End Try
 
     End Sub
@@ -271,7 +273,7 @@ Public Class frmMain
             My.Settings.FFtypes = Me.SelectedApplications
         Catch ex As Exception
             ' Whoah
-            cLog.Write(ex, "OnFFTypeChecked")
+            m_logger.LogError(ex, "OnFFTypeChecked")
         End Try
 
     End Sub
@@ -406,7 +408,7 @@ Public Class frmMain
             My.Settings.FFtypes = Me.SelectedApplications
             My.Settings.Save()
         Catch ex As Exception
-            cLog.Write(ex, "cMultiSim::frmMain.StoreSettings")
+            m_logger.LogError(ex, "cMultiSim::frmMain.StoreSettings")
         End Try
 
     End Sub
@@ -459,7 +461,7 @@ Public Class frmMain
             Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             cmd.Invoke(strURL)
         Catch ex As Exception
-            cLog.Write(ex, "MultiSim.frmMain::VisitSponsor")
+            m_logger.LogError(ex, "MultiSim.frmMain::VisitSponsor")
         End Try
     End Sub
 #End Region ' Internals

@@ -30,6 +30,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Serilog
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -45,6 +46,7 @@ Module EwE6ApplicationFramework
     Private m_lsa As New Dictionary(Of String, Assembly)
 
     Private m_bExpirationChecked As Boolean = False
+    Private m_logger As Microsoft.Extensions.Logging.ILogger = Nothing
 
 #End Region ' Private vars 
 
@@ -54,13 +56,17 @@ Module EwE6ApplicationFramework
         Log.Logger = New LoggerConfiguration() _
             .MinimumLevel.Debug() _
             .Enrich.WithThreadId() _
-            .WriteTo.File("Logs\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Thread:{ThreadId}] {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
+            .Enrich.WithThreadName() _
+            .WriteTo.File("Logs\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
             .CreateLogger()
 
         ' Initialize LoggerFactory
         LoggingContext.LoggerFactory = LoggerFactory.Create(Sub(builder)
                                                                 builder.AddSerilog()
                                                             End Sub)
+
+        ' Initialize logger after LoggerFactory is created
+        m_logger = LoggingContext.LoggerFactory.CreateLogger("EwE6ApplicationFramework")
 
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf OnResolveAssembly
 
@@ -86,7 +92,7 @@ Module EwE6ApplicationFramework
         Try
             Application.Run(m_main)
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "EwE6ApplicationFramework.Main()")
         End Try
         RemoveHandler m_main.OnLoadCompleted, AddressOf OnLoadCompleted
         RemoveHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf OnResolveAssembly
@@ -150,7 +156,7 @@ Module EwE6ApplicationFramework
             Try
                 ass = Assembly.LoadFile(fn)
             Catch ex As Exception
-                cLog.Write(ex, "OnResolveAssemlby(" & key & ")")
+                m_logger.LogError(ex, "OnResolveAssemlby(" & key & ")")
             End Try
         End If
         m_lsa(key) = ass

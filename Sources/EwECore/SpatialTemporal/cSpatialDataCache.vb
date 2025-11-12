@@ -26,6 +26,9 @@ Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -43,6 +46,7 @@ Namespace SpatialData
 
         ''' <summary>Root folder for the cache.</summary>
         Private m_strRootPath As String = ""
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSpatialDataCache)()
 
 #End Region ' Private vars
 
@@ -128,7 +132,7 @@ Namespace SpatialData
                 Try
                     bSucces = bSucces And cFileUtils.DeleteDirectory(strCachePath)
                 Catch ex As Exception
-                    cLog.Write(ex, cStringUtils.Localize("cSpatialDataCache::Clear {0}", strCachePath))
+                    m_logger.LogError(ex, cStringUtils.Localize("cSpatialDataCache::Clear {0}", strCachePath))
                     bSucces = False
                 End Try
             Next strCachePath
@@ -152,7 +156,7 @@ Namespace SpatialData
             Try
                 cFileUtils.DeleteDirectory(strCachePath)
             Catch ex As Exception
-                cLog.Write(ex, cStringUtils.Localize("cSpatialDataCache::Clear {0}", strCachePath))
+                m_logger.LogError(ex, cStringUtils.Localize("cSpatialDataCache::Clear {0}", strCachePath))
                 Return False
             End Try
             Return True

@@ -26,6 +26,9 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ValueChain
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -50,6 +53,7 @@ Public Class ucParameters
     Private m_mhCore As cMessageHandler = Nothing
 
     Private m_bInUpdate As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucParameters)()
 
 #Region " Constructor "
 
@@ -307,7 +311,7 @@ Public Class ucParameters
             End Select
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "ucParameters.CoreMessageHandler() Exception")
         End Try
 
     End Sub

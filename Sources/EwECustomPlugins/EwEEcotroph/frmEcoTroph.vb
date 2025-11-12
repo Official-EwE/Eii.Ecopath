@@ -30,9 +30,11 @@ Imports EwECore.WebServices
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports Ionic.Zip
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 'not relevent to uncomppress R_ET.zip folder
 'Imports Shell32
@@ -56,6 +58,7 @@ Public Class frmEcotroph
     Private aide As String = "https://ecobase.ecopath.org/index.php?action=examples&lang=uk"
     Private m_strRPath As String = ""
     Private m_strRRoot As String = ""
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmEcotroph)()
 
     Public Sub New()
         Me.InitializeComponent()
@@ -115,7 +118,7 @@ Public Class frmEcotroph
                     My.Computer.Network.DownloadFile("http://sirs.agrocampus-ouest.fr/EcoTroph/data/R_ET.zip", ETdownload, "", "", True, 500, True)
                 Catch ex As Exception
                     Me.NotifyUser(cStringUtils.Localize(My.Resources.PB_DOWNLOAD, ex.Message), eMessageImportance.Critical)
-                    cLog.Write(ex, "frmEcotroph.OnLoad(download_r)")
+                    m_logger.LogError(ex, "frmEcotroph.OnLoad(download_r)")
                 End Try
                 cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
 
@@ -134,7 +137,7 @@ Public Class frmEcotroph
                     End If
 
                 Catch ex As Exception
-                    cLog.Write(ex, "frmEcoTroph.OnLoad(install_r)")
+                    m_logger.LogError(ex, "frmEcoTroph.OnLoad(install_r)")
                 End Try
                 cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
 
@@ -163,7 +166,7 @@ Public Class frmEcotroph
                         test(4) = ""
                         Me.execute_r(test, result)
                     Catch ex As Exception
-                        cLog.Write(ex, "frmEcotroph.OnLoad(upgrade_r)")
+                        m_logger.LogError(ex, "frmEcotroph.OnLoad(upgrade_r)")
                     End Try
                     cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
                 End If
@@ -371,7 +374,7 @@ Public Class frmEcotroph
                 ' ToDo: globalize this
                 ' ToDo: use EwE messaging system please
                 Me.NotifyUser(cStringUtils.Localize("Problem in modifying data, do you respect decimal seperator? {0}", ex.Message), eMessageImportance.Warning)
-                cLog.Write(ex, "frmEcotroph.ETgridinput_CellValueChanged")
+                m_logger.LogError(ex, "frmEcotroph.ETgridinput_CellValueChanged")
             End Try
 
         End If
@@ -435,7 +438,7 @@ Public Class frmEcotroph
 
             Catch ex As Exception
                 Me.NotifyUser(My.Resources.PB_R, eMessageImportance.Critical)
-                cLog.Write(ex, "frmEcotroph.execute_r")
+                m_logger.LogError(ex, "frmEcotroph.execute_r")
                 bSucces = False
             End Try
         Else
@@ -473,7 +476,7 @@ Public Class frmEcotroph
             'Dim output2 As String = myProcess.StandardError.ReadToEnd()
             'myStreamWriter.Close()
         Catch ex As Exception
-            cLog.Write(ex, "frmEcotroph.execute_rplot")
+            m_logger.LogError(ex, "frmEcotroph.execute_rplot")
             Return vbCancel
         End Try
 
@@ -633,7 +636,7 @@ Public Class frmEcotroph
             ' If Len(output2) > 0 Then MsgBox(output2)
 
         Catch ex As Exception
-            cLog.Write(ex, "frmEcoTroph.Button2_Click(execute_r_1)")
+            m_logger.LogError(ex, "frmEcoTroph.Button2_Click(execute_r_1)")
         End Try
 
 
@@ -648,7 +651,7 @@ Public Class frmEcotroph
                 charge_grid(recup, Me.datasmooth)
             Catch ex As Exception
                 Me.NotifyUser(cStringUtils.Localize("Problem in reading R script output. {0}", ex.Message), eMessageImportance.Critical)
-                cLog.Write(ex, "frmEcoTroph.Button2_Click(read_pdf)")
+                m_logger.LogError(ex, "frmEcoTroph.Button2_Click(read_pdf)")
             End Try
         Else
             Me.NotifyUser(My.Resources.NO_OUTPUT_R, eMessageImportance.Critical)
@@ -752,7 +755,7 @@ Public Class frmEcotroph
 
         Catch ex As Exception
             'MessageBox.Show("Problem in R script: " & ex.Message)
-            cLog.Write(ex, "frmEcoTroph.Button3_Click")
+            m_logger.LogError(ex, "frmEcoTroph.Button3_Click")
         End Try
 
 
@@ -809,7 +812,7 @@ Public Class frmEcotroph
 
             Catch ex As Exception
                 Me.NotifyUser(cStringUtils.Localize("Problem in reading R script output. {0}", ex.Message), eMessageImportance.Critical)
-                cLog.Write(ex, "frmEcoTroph.Button3_Click(read_results)")
+                m_logger.LogError(ex, "frmEcoTroph.Button3_Click(read_results)")
             End Try
 
 
@@ -1041,7 +1044,7 @@ Public Class frmEcotroph
 
         Catch ex As Exception
             'MessageBox.Show("Problem in R script: " & ex.Message)
-            cLog.Write(ex, "frmEcoTroph.Button4_Click_2")
+            m_logger.LogError(ex, "frmEcoTroph.Button4_Click_2")
         End Try
 
 
@@ -1242,7 +1245,7 @@ Public Class frmEcotroph
                     Dim nodelist As XmlNodeList = myresult_xml.DocumentElement.ChildNodes
                 Catch ex As Exception
                     Me.NotifyUser(My.Resources.NO_DB_SERVICES, eMessageImportance.Critical)
-                    cLog.Write(ex, "Button7_Click")
+                    m_logger.LogError(ex, "Button7_Click")
                 End Try
 
 
@@ -1263,7 +1266,7 @@ Public Class frmEcotroph
             End If
             Cursor.Current = Cursors.Default
         Catch ex As Exception
-            cLog.Write(ex, "Ecotroph::Button7-Click")
+            m_logger.LogError(ex, "Ecotroph::Button7-Click")
             Me.NotifyUser(My.Resources.ERROR_NO_WS, eMessageImportance.Critical)
         End Try
 
@@ -1379,7 +1382,7 @@ Public Class frmEcotroph
             Me.Button4.Enabled = True
 
         Catch Ex As Exception
-            cLog.Write(Ex, "Ecotroph::models_list")
+            m_logger.LogError(Ex, "Ecotroph::models_list")
             Me.NotifyUser(cStringUtils.Localize(My.Resources.NO_MODEL_DATA, Ex.Message), eMessageImportance.Critical)
         Finally
             ' Check this again, since we need to make sure we didn't throw an exception on open.
@@ -1484,7 +1487,7 @@ Public Class frmEcotroph
         Try
             Me.Core.Messages.SendMessage(msg)
         Catch ex As Exception
-            cLog.Write(ex, "frmEcoTroph.NotifyUser(" & strMessage & ")")
+            m_logger.LogError(ex, "frmEcoTroph.NotifyUser(" & strMessage & ")")
         End Try
 
     End Sub
@@ -1495,7 +1498,7 @@ Public Class frmEcotroph
         Try
             Me.Core.Messages.SendMessage(msg)
         Catch ex As Exception
-            cLog.Write(ex, "frmEcoTroph.AskUser(" & strMessage & ")")
+            m_logger.LogError(ex, "frmEcoTroph.AskUser(" & strMessage & ")")
         End Try
         Return msg.Reply
 

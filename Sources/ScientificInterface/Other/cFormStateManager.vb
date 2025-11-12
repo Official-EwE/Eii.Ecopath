@@ -20,15 +20,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Xml
 Imports EwECore
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Forms
-Imports WeifenLuo.WinFormsUI
-Imports ScientificInterfaceShared
 Imports WeifenLuo.WinFormsUI.Docking
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -48,6 +45,7 @@ Friend Class cEwEFormStateManager
     Private m_dp As DockPanel = Nothing
     ''' <summary>Core controller to work with.</summary>
     Private m_cc As cCoreController = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEFormStateManager)()
 
 #End Region ' Privates
 
@@ -185,7 +183,7 @@ Friend Class cEwEFormStateManager
                             ' #Yes: Close the form
                             f.Close()
                         Catch ex As Exception
-                            cLog.Write(ex, "cEwEFormStateHelper.UpdateFormState(" & f.Name & ")")
+                            m_logger.LogError(ex, "cEwEFormStateHelper.UpdateFormState(" & f.Name & ")")
                         End Try
                     End If
                 Else
@@ -197,7 +195,7 @@ Friend Class cEwEFormStateManager
 
         Catch ex As Exception
             ' Whoah!
-            cLog.Write("cEwEFormStateHelper: " & ex.Message)
+            m_logger.LogError(ex, "cEwEFormStateHelper: " & ex.Message)
         End Try
 
         Me.m_cc.Enabled = True

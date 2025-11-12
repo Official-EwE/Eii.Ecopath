@@ -26,6 +26,9 @@ Imports EwECore.MSE
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -284,6 +287,8 @@ Namespace Ecosim
 
         'Private RiskRateAvg() As Single
         Private fCatch0() As Single
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcosimModel)()
+
 
 #End Region
 
@@ -619,7 +624,7 @@ Namespace Ecosim
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Ecosim contaminant tracer initialization error: {0}", ex.Message)
                 Me.m_TracerData.EcoSimConSimOn = False
             End Try
 
@@ -1622,7 +1627,7 @@ Namespace Ecosim
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError("cEcosimModel.setEffortFromPlugin() encountered an error: " & ex.Message)
             End Try
 
         End Sub
@@ -2195,7 +2200,7 @@ Namespace Ecosim
 
             Catch ex As Exception
 
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Ecosim Run() Error: " & ex.Message)
                 Me.m_publisher.AddMessage(New cMessage("Ecosim Run() Error: " & ex.Message, eMessageType.ErrorEncountered,
                                         eCoreComponentType.Ecosim, eMessageImportance.Critical, eDataTypes.NotSet))
                 bsuccess = False
@@ -2245,7 +2250,7 @@ Namespace Ecosim
 
                 Catch ex As Exception
                     'swallow any errors so ecosim can keep running
-                    cLog.Write(ex)
+                    m_logger.LogError(ex, "Ecosim Time Step Handler Error: " & ex.Message)
                     Debug.Assert(False, "Ecosim Error: the interface Ecosim Time Step handler threw an error that was not handled.")
                 End Try
 
@@ -2539,7 +2544,7 @@ Namespace Ecosim
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Ecosim PopulateResults() Error: " & ex.Message)
                 Debug.Assert(False)
             End Try
 
@@ -2807,7 +2812,7 @@ Namespace Ecosim
                 Next iDType
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Ecosim AccumulateDataInfo() Error: " & ex.Message)
                 Debug.Assert(False, ex.StackTrace)
                 Throw New ApplicationException(Me.ToString & ".AccumulateDataInfo() ", ex)
             End Try
@@ -3194,7 +3199,7 @@ Namespace Ecosim
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Ecosim Derivt() Error: " & ex.Message)
                 Debug.Assert(False, ex.StackTrace)
                 Throw New ApplicationException("Derivt() Error.", ex)
             End Try
@@ -4283,7 +4288,8 @@ Namespace Ecosim
 
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "InitStanza")
+
                 Throw New ApplicationException("InitStanza()", ex)
             End Try
 
@@ -4476,7 +4482,7 @@ Namespace Ecosim
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "CalculateStanzaParameters isp=" & isp)
                 Throw New ApplicationException("CalculateStanzaParameters() iStanza=" & isp & " Error: " & ex.Message, ex)
             End Try
 
@@ -5264,7 +5270,7 @@ Namespace Ecosim
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "EcosimModel.settval() Exception")
                 System.Console.WriteLine(Me.ToString & ".settval() Exception: " & ex.Message)
             End Try
 
@@ -5813,7 +5819,7 @@ Namespace Ecosim
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "EstimateTLofCatch")
                 Debug.Assert(False, ex.ToString)
                 Throw New ApplicationException(Me.ToString & ".EstimateTLofCatch() Error: " & ex.Message, ex)
             End Try
@@ -5879,7 +5885,7 @@ Namespace Ecosim
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "EstimateTLs")
                 Debug.Assert(False, Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message)
                 Throw New ApplicationException(Me.ToString & ".EstimateTLsInEcosim() Error: " & ex.Message, ex)
             End Try
@@ -6003,7 +6009,7 @@ Namespace Ecosim
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "calcFunctionalResponse")
                 Debug.Assert(False, Me.ToString & ".calcFunctionalResponse() Error: " & ex.Message)
             End Try
 

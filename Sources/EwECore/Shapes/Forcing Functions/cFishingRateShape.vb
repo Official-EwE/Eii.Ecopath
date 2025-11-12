@@ -19,6 +19,9 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' A fish s
@@ -27,7 +30,8 @@ Imports EwEUtils.Core
 Public Class cFishingRateShape
     Inherits cForcingFunction
 
-    'Private m_ntimesteps As Integer
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cFishingRateShape)()
+
 
     Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager, DBID As Integer, strFleetName As String)
 
@@ -93,7 +97,7 @@ Public Class cFishingRateShape
 
         'can not update if there is not an index to the underlying data structures
         If (Me.m_iEcoSimIndex = cCore.NULL_VALUE) Or (Me.m_iEcoSimIndex > Me.m_data.nGear + 1) Then
-            cLog.Write(Me.ToString & ".update(m_data) index out of bounds. Data not updated.")
+            m_logger.LogError(Me.ToString & ".update(m_data) index out of bounds. Data not updated.")
             Return False
         End If
 
@@ -186,7 +190,7 @@ Public Class cFishingRateShape
 
         'can not update if there is not an index to the underlying data structures
         If (Me.m_iEcoSimIndex = cCore.NULL_VALUE) Or (Me.m_iEcoSimIndex > Me.m_data.nGear + 1) Then
-            cLog.Write(Me.ToString & ".update(m_data) index out of bounds. Data not updated.")
+            m_logger.LogError(Me.ToString & ".update(m_data) index out of bounds. Data not updated.")
             Return False
         End If
 

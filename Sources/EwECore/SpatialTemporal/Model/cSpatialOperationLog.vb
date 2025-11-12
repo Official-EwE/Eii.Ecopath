@@ -24,6 +24,9 @@ Imports EwEUtils.Core
 Imports System.Text
 Imports System.IO
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -62,6 +65,7 @@ Namespace SpatialData
         Private m_strLogFileName As String = ""
 
         Private m_bRunOK As Boolean = True
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSpatialOperationLog)()
 
 #End Region ' Private vars
 
@@ -148,7 +152,7 @@ Namespace SpatialData
                 Me.m_msgCurrent = Nothing
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cSpatialOperationLog::EndLayerLog() Error ending layer log")
             End Try
 
         End Sub
@@ -239,10 +243,10 @@ Namespace SpatialData
                 Me.m_strLogFileName = Path.Combine(strPath, strFile & "_spatiallog.txt")
 
                 If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(Me.m_strLogFileName), True) Then
-                    cLog.Write("cSpatialOperationsLog: unable to create output directory " + Me.m_strLogFileName)
+                    m_logger.LogError("cSpatialOperationsLog: unable to create output directory " + Me.m_strLogFileName)
                     Return
                 Else
-                    cLog.Write("cSpatialOperationsLog: saving to " + Me.m_strLogFileName, eVerboseLevel.Detailed)
+                    m_logger.LogInformation("cSpatialOperationsLog: saving to " + Me.m_strLogFileName)
                 End If
 
                 If Me.m_core.SaveWithFileHeader Then
@@ -262,7 +266,7 @@ Namespace SpatialData
                 sb.AppendLine("Output" + sep + sep + Me.m_msgCurrent.Hyperlink)
             End If
 
-            cLog.WriteTextToFile(Me.m_strLogFileName, sb, Me.m_bLogStarted)
+            'cLog.WriteTextToFile(Me.m_strLogFileName, sb, Me.m_bLogStarted)
             Me.m_bLogStarted = True
 
         End Sub

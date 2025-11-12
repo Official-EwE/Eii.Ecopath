@@ -20,9 +20,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -50,6 +52,7 @@ Public Class cLPSolver
 
         Private Shared g_bInit As Boolean = False
         Private Shared g_bUsable As Boolean = False
+        Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of lpsolve55)()
 
         Public Shared Sub Init()
             If g_bInit Then Return
@@ -71,12 +74,12 @@ Public Class cLPSolver
                 Dim lpsolveDLL As String = System.IO.Path.Combine(dllPath, solveDir, "lpsolve55.dll")
                 If Not System.IO.File.Exists(lpsolveDLL) Then
                     System.Console.WriteLine("Failed to find lpsolve55.dll in " & lpsolveDLL)
-                    cLog.Write("Failed to find lpsolve55.dll in " & lpsolveDLL)
+                    m_logger.LogError("Failed to find lpsolve55.dll in " & lpsolveDLL)
                     g_bUsable = False
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex, "lpsolve55::Init")
+                m_logger.LogError(ex, "lpsolve55::Init")
                 System.Console.WriteLine("Exception in lpsolve55.Init() " & ex.Message)
                 g_bUsable = False
                 Return
@@ -525,6 +528,7 @@ Public Class cLPSolver
     Private m_lDefs As New List(Of cDef)
     Private m_iGoal As Integer = -1
     Private m_bMinimize As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cLPSolver)()
 
 #End Region ' Private vars
 
@@ -620,7 +624,7 @@ Public Class cLPSolver
         Try
             lp = lpsolve55.make_lp(0, vars.Length)
         Catch ex As Exception
-            cLog.Write(ex, "cLPSolver.Solve() Failed on make_lp(,)")
+            m_logger.LogError(ex, "cLPSolver.Solve() Failed on make_lp(,)")
             Return eSolverReturnValues.ERROR
         End Try
 

@@ -16,13 +16,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-Imports System.IO
-
 Imports EwECore.MSE
 Imports EwEUtils.Core
 Imports EwECore.MSECommandFile
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 
 Namespace MSEBatchManager
@@ -86,6 +86,8 @@ Namespace MSEBatchManager
         Private m_lstFixedFs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBatchFixedFInput, 1)
         Private m_lstTACs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBatchTACInput, 1)
         Private m_OnProgressDelegate As onMSEBatchProgress
+
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEBatchManager)()
 #End Region
 
 #Region "Construction, Initialization and Destruction"
@@ -959,7 +961,7 @@ Namespace MSEBatchManager
 
                 Me.m_MSE.Connect(AddressOf Me.OnMSEProgress, Nothing)
 
-                cLog.Write("MSE batch run started.")
+                m_logger.LogInformation("MSE batch run started.")
 
                 Me.BatchData.StoreMSEState(Me.MSEData)
 
@@ -1011,7 +1013,7 @@ Namespace MSEBatchManager
 
             Catch ex As Exception
 
-                cLog.Write(ex)
+                m_logger.LogError(ex, "RunThreaded. MSE Batch run Exception.")
                 Me.MarshallMessage("MSE Batch run Exception: " & ex.Message)
 
             End Try

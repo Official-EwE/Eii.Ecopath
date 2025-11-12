@@ -22,10 +22,12 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
+
 
 #End Region ' Imports 
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.60.0.25:</para>
@@ -38,6 +40,8 @@ Imports EwEUtils.Utilities
 ''' --------------------------------------------------------------------------
 Friend Class cDBUpdate6_60_00_25
     Inherits cDBUpdate
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDBUpdate6_60_00_25)()
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cDBUpdate.UpdateVersion"/>
@@ -83,7 +87,7 @@ Friend Class cDBUpdate6_60_00_25
                 bSucces = bSucces And db.Execute(String.Format("DELETE FROM EcosimShape WHERE ShapeID={0}", iShapeID))
             Next
 
-            cLog.Write("DBUpdate_" & CStr(Me.UpdateVersion), "Deleted " & CStr(ShapeIDs.Count) & " orphaned shapes")
+            m_logger.LogInformation("DBUpdate_{0}: Deleted {1} orphaned shapes", Me.UpdateVersion, ShapeIDs.Count)
 
         Catch ex As Exception
             ' Life is fantastic. Carry on.

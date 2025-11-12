@@ -22,9 +22,11 @@
 Option Strict On
 
 Imports System.IO
-Imports System.Text
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -42,6 +44,8 @@ Public Class cEcospaceRegionAvgResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
     Public Const cDATA_NAME As String = "regavg"
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceRegionAvgResultsWriter)()
+
 
 #Region " Private classes "
 
@@ -146,7 +150,7 @@ Public Class cEcospaceRegionAvgResultsWriter
 
         If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
             Debug.Assert(False, Me.ToString & ".CreateOutputDir() cannot create directory")
-            cLog.Write("cEcospaceRegionResultWriter failed to create directory " & Me.OutputDirectory)
+            m_logger.LogError("cEcospaceRegionResultWriter failed to create directory " & Me.OutputDirectory)
             Return False
         End If
 
@@ -246,7 +250,7 @@ Public Class cEcospaceRegionAvgResultsWriter
                     sw.Dispose()
 
                 Catch ex As Exception
-                    cLog.Write(ex, "Failed to write Ecospace average biomass to file for data " + strDescriptor)
+                    m_logger.LogError(ex, "Failed to write Ecospace average biomass to file for data " + strDescriptor)
                 End Try
 
             Next

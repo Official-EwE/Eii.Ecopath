@@ -23,6 +23,9 @@ Imports EwEUtils
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports System.IO
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 
 Namespace EcospaceTimeSeries
@@ -96,6 +99,8 @@ Namespace EcospaceTimeSeries
         Private m_OutputFilename As String
 
         Private m_dataSets As DataSet
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceTimeSeriesManager)()
+
 
 #End Region
 
@@ -221,7 +226,7 @@ Namespace EcospaceTimeSeries
             Try
                 Me.m_dataSets.Tables(TimeSeriesRec.VarType.ToString).Rows.Add(TimeSeriesRec.TimeStamp, TimeSeriesRec)
             Catch ex As Exception
-                EwEUtils.Core.cLog.Write(ex, "Failed to add Ecospace time series record.")
+                m_logger.LogError(ex, "Failed to add Ecospace time series record.")
                 Return False
             End Try
             Return True
@@ -348,7 +353,7 @@ Namespace EcospaceTimeSeries
                 'This shouldn't happen during normal execution!
                 'If it does it's some kind of a programming error...Really...
                 Debug.Assert(False, "Ecospace Time Series failed to calculate stats for timestep " + iTimeStep.ToString)
-                EwEUtils.Core.cLog.Write(ex)
+                m_logger.LogError(ex, "Ecospace Time Series failed to calculate stats for timestep {0}", iTimeStep)
                 Return False
             End Try
 
@@ -383,7 +388,7 @@ Namespace EcospaceTimeSeries
                 'This shouldn't happen during normal execution!
                 'If it does it's some kind of a programming error...Really...
                 Debug.Assert(False, "Ecospace Time Series failed to load contaminant concentration at timestep " + iTimeStep.ToString)
-                EwEUtils.Core.cLog.Write(ex)
+                m_logger.LogError(ex, "Ecospace Time Series failed to load contaminant concentration at timestep {0}", iTimeStep)
                 Return False
             End Try
 
@@ -584,7 +589,7 @@ Namespace EcospaceTimeSeries
                 Me.m_core.Messages.AddMessage(msg)
 
             Catch ex As Exception
-                EwEUtils.Core.cLog.Write(ex, Me.ToString + ".SaveResults() Exception")
+                m_logger.LogError(ex, "Failed to save Ecospace time series results to file {0}", Me.OutputFileName)
 
                 Dim ExMsg As New Text.StringBuilder
                 ExMsg.Append(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_SAVE_EXCEPTION, ex.Message))
@@ -675,7 +680,7 @@ Namespace EcospaceTimeSeries
                 'This shouldn't happen during normal execution!
                 'If it does it's some kind of a programming error...Really...
                 Debug.Assert(False, "Ecospace Time Series failed to calculate stats for timestep " + iTimeStep.ToString)
-                EwEUtils.Core.cLog.Write(ex)
+                m_logger.LogError(ex, "Ecospace Time Series failed to calculate stats for timestep {0}", iTimeStep)
                 Return False
             End Try
 

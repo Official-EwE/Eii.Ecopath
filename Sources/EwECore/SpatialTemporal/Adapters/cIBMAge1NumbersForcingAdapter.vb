@@ -21,8 +21,10 @@
 
 Option Strict On
 Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -38,7 +40,7 @@ Namespace SpatialData
 
 #Region " Private vars "
 
-
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cIBMAge1NumbersForcingAdapter)()
 
 
 #End Region ' Private vars
@@ -98,7 +100,7 @@ Namespace SpatialData
 
             Catch ex As Exception
                 Dim strMsg As String = "cSpatialDataAdapter::SetCell({0}) at ({1},{2})={3}: exception {4}"
-                cLog.Write(ex, cStringUtils.Localize(strMsg, layer.ToString, iCol, iRow, sValueAtT))
+                m_logger.LogError(ex, cStringUtils.Localize(strMsg, layer.ToString, iCol, iRow, sValueAtT))
 
                 Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_ADAPTERROR, iRow, iCol, sValueAtT, ex.Message),
                                                            eStatusFlags.MissingParameter)
@@ -123,7 +125,7 @@ Namespace SpatialData
                 'Return 1.0
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             Catch ex As Exception
-                cLog.Write(ex, "Failed to calculate map scale value")
+                m_logger.LogError(ex, "Failed to calculate map scale value")
             End Try
             Return 1.0
         End Function

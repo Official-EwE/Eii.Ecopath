@@ -28,6 +28,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SourceGrid2.Cells
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -49,6 +52,7 @@ Namespace Ecospace
         End Enum
 
         Private m_bInUpdate As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of gridEcospaceMPAEnforcement)()
 
         ' Predict effort OFF disables all MPAs!!
         Private WithEvents m_bpEffort As cBooleanProperty = Nothing
@@ -170,7 +174,7 @@ Namespace Ecospace
 
                 End Select
             Catch ex As Exception
-                cLog.Write(ex, "gridEcospaceMPAEnforcement::OnCellValueChanged col " & CStr(p.Column) & ", row " & CStr(p.Row))
+                m_logger.LogError(ex, "gridEcospaceMPAEnforcement::OnCellValueChanged col " & CStr(p.Column) & ", row " & CStr(p.Row))
             End Try
             Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
             Me.m_bInUpdate = False

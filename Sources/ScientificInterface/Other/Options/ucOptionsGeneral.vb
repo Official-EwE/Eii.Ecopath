@@ -25,6 +25,7 @@ Option Strict On
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
 
@@ -84,7 +85,8 @@ Namespace Other
             Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum, _
                                                 Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.StatusMaxMessages)))
             Me.m_fpVerboseLevel = New cEwEFormatProvider(Me.UIContext, Me.m_cmbLogLevel, New cVerboseLevelTypeFormatter(), Nothing)
-            Me.m_fpVerboseLevel.Value = cLog.VerboseLevel
+            'TODO RIK: Connect LogginLevel To Settings
+            'Me.m_fpVerboseLevel.Value = cLog.VerboseLevel
 
             Me.m_cbShowSplashScreen.Checked = My.Settings.ShowSplash
             Me.m_cbShowHost.Checked = My.Settings.ShowHostInfo
@@ -205,7 +207,7 @@ Namespace Other
 
             Try
                 ' Open directory with the log files
-                cmd.Invoke(Path.GetDirectoryName(cLog.LogFile))
+                cmd.Invoke(Path.GetDirectoryName(LoggingContext.LogFile))
             Catch ex As Exception
 
             End Try

@@ -27,10 +27,15 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Definitions
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
 Public Class frmFleetTradeoffs
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmFleetTradeoffs)()
 
     Public Sub New(uic As cUIContext)
 
@@ -90,7 +95,7 @@ Public Class frmFleetTradeoffs
             cmd.Invoke(eApplicationOptionTypes.FileLocations)
             Me.UpdateControls()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "frmFleetTradeoffs::OnChangeOutputLocation Error changing output location")
         End Try
     End Sub
 

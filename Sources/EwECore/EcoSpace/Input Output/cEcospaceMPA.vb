@@ -20,6 +20,9 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' The definition of a Marine Protected Area in Ecospace.
@@ -28,6 +31,8 @@ Imports EwEUtils.Core
 ''' <seealso cref="EwECore.cEcospaceBasemap.LayerMPA(Integer)"/>
 Public Class cEcospaceMPA
     Inherits cCoreInputOutputBase
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceMPA)()
 
 #Region "Constructor"
 
@@ -52,7 +57,7 @@ Public Class cEcospaceMPA
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceMPA.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcospaceMPA. Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".New(nGroups) Error creating new cEcospaceMPA. Error: " & ex.Message)
         End Try
 
     End Sub

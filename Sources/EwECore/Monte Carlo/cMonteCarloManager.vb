@@ -24,8 +24,10 @@ Imports System.Threading
 Imports EwECore.Ecosim
 Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -61,6 +63,8 @@ Public Class cMonteCarloManager
     Private m_lstMessages As New List(Of cMessage)
     ''' <summary>Available monte carlo result writers.</summary>
     Private m_ResultsWriters As New List(Of IMonteCarloResultsWriter)
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMonteCarloManager)()
+
 
 #End Region
 
@@ -100,7 +104,7 @@ Public Class cMonteCarloManager
             Me.LoadGroups()
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.init() Exception")
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".init()", ex)
         End Try
@@ -124,7 +128,7 @@ Public Class cMonteCarloManager
 
             Me.m_mc.Clear()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.Clear() Exception")
             Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
         End Try
 
@@ -219,7 +223,7 @@ Public Class cMonteCarloManager
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.Run() Exception")
             Me.ReleaseWait()
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_RUN_ERROR, ex.Message),
                                                      eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
@@ -289,7 +293,7 @@ Public Class cMonteCarloManager
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.MCCompletedHandler() Exception")
             Me.ReleaseWait()
         End Try
 
@@ -309,7 +313,7 @@ Public Class cMonteCarloManager
             Me.m_core.Messages.sendAllMessages()
             Me.m_lstMessages.Clear()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.sendmessages() Exception")
             Throw New ApplicationException(Me.ToString & ".sendmessage()", ex)
         End Try
 
@@ -364,7 +368,7 @@ Public Class cMonteCarloManager
         Try
             Me.m_lstMessages.Add(theMessage)
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.MCSendMessageHandler() Exception")
         End Try
 
     End Sub
@@ -403,7 +407,7 @@ Public Class cMonteCarloManager
 
         Catch ex As Exception
             Debug.Assert(False)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.ApplyBestFits() Exception")
             Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_APPLY_ERROR, ex.Message),
                                                      eMessageType.ErrorEncountered, eCoreComponentType.Ecosim, eMessageImportance.Critical))
         End Try
@@ -765,7 +769,7 @@ Public Class cMonteCarloManager
                 Me.m_core.onChanged(Me, eMessageType.DataModified)
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.LoadFromPedigree() Exception")
         End Try
     End Sub
 
@@ -856,7 +860,7 @@ Public Class cMonteCarloManager
             End If
 
         Catch ex As Exception
-            cLog.Write(ex.Message)
+            m_logger.LogError(ex, "cMonteCarloManager.selectNewEcopathParameters() Exception")
             Debug.Assert(False, Me.ToString & ".selectNewEcopathParameters(MaxIteration): Exception: " & ex.Message)
         End Try
 
@@ -904,7 +908,7 @@ Public Class cMonteCarloManager
             Me.m_mc.CalculateUpperLowerLimits(False)
             Me.LoadGroups()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.CalculateUpperLowerLimits() Exception")
         End Try
 
     End Sub
@@ -1068,7 +1072,7 @@ Public Class cMonteCarloManager
             Next 'For Each grp As cMonteCarloGroup
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.LoadGroups() Exception")
             Debug.Assert(False, ex.StackTrace)
         End Try
 
@@ -1149,7 +1153,7 @@ Public Class cMonteCarloManager
             Next
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.InitGroups() Exception")
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException("LoadGroupParameters", ex)
         End Try
@@ -1229,7 +1233,7 @@ Public Class cMonteCarloManager
             Next MCGroup
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cMonteCarloManager.Update() Exception")
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException("UpdateGroupsBestFit", ex)
         End Try

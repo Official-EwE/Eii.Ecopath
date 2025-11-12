@@ -21,6 +21,9 @@ Option Strict On
 Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ' ToDo: significantly improve sampling performance:
 '   - Pre-build an array of water cells that can be sampled
@@ -45,6 +48,7 @@ Public Class cMPARandomSearch
     Private m_regionSize() As Integer
     ''' <summary>Number of cells set in a region</summary>
     Private m_regionSet() As Integer
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMPARandomSearch)()
 
 #End Region
 
@@ -124,7 +128,7 @@ Public Class cMPARandomSearch
             Me.CellCount = Me.m_watercells.Count
 
             If (Me.CellCount = 0) Then
-                cLog.Write("Cannot start MPA Opt without modelled cells")
+                m_logger.LogError("Cannot start MPA Opt without modelled cells")
                 Return False
             End If
 

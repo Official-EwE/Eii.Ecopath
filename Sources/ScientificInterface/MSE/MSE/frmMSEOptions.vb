@@ -22,13 +22,12 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.SearchObjectives
-Imports ScientificInterface.Controls
 Imports EwEUtils.Core
-Imports ScientificInterface.Ecosim
-Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports ScientificInterface.Ecotracer
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -62,6 +61,7 @@ Public Class frmMSEOptions
         Quota
         NoReg
     End Enum
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmMSEOptions)()
 
 #End Region ' Private vars
 
@@ -233,7 +233,7 @@ Public Class frmMSEOptions
                 Me.UpdateControls()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "frmMSEOptions::OnControlTypeCheckChanged")
+            m_logger.LogError(ex, "frmMSEOptions::OnControlTypeCheckChanged")
         End Try
 
     End Sub

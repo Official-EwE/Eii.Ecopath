@@ -20,9 +20,14 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Public MustInherit Class cEwEScenario
     Inherits cCoreInputOutputBase
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEScenario)()
 
 #Region " Constructor "
 
@@ -65,7 +70,7 @@ Public MustInherit Class cEwEScenario
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEwEScenario.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEwEScenario. Error: " & ex.Message)
+            m_logger.LogError(ex, "Error creating new cEwEScenario.")
         End Try
 
     End Sub

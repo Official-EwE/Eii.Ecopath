@@ -21,7 +21,6 @@
 
 Option Strict On
 
-Imports System.Reflection
 Imports EwECore
 Imports EwEPlugin
 Imports EwEPlugin.Data
@@ -29,6 +28,9 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -63,6 +65,7 @@ Public Class cEwENetworkAnalysisPlugin
     Private m_frmNA As frmNetworkAnalysis = Nothing
     ''' <summary>Ooooh, that was long ago...</summary>
     Private m_ddx As cEwENetworkAnalysisData = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwENetworkAnalysisPlugin)()
 
 #End Region ' Private vars
 
@@ -162,7 +165,7 @@ Public Class cEwENetworkAnalysisPlugin
             Me.m_ddx = New cEwENetworkAnalysisData(cTypeUtils.TypeToString(Me.GetType()), Me.m_manager)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cEwENetworkAnalysisPlugin.Initialize")
             System.Console.WriteLine(Me.ToString & ".Initialize() Error: " & ex.Message)
             Debug.Assert(False, ex.Message)
             Return
@@ -244,7 +247,7 @@ Public Class cEwENetworkAnalysisPlugin
             End If
 
         Catch ex As Exception
-            cLog.Write(ex, "cEwENetworkAnalysisPlugin.EcopathRunCompleted")
+            m_logger.LogError(ex, "cEwENetworkAnalysisPlugin.EcopathRunCompleted")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -290,7 +293,7 @@ Public Class cEwENetworkAnalysisPlugin
             Me.m_manager.InitNetworkForEcosim()
 
         Catch ex As Exception
-            cLog.Write(ex, "cEwENetworkAnalysisPlugin.EcosimRunInitialized")
+            m_logger.LogError(ex, "cEwENetworkAnalysisPlugin.EcosimRunInitialized")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -324,7 +327,7 @@ Public Class cEwENetworkAnalysisPlugin
             End If
 
         Catch ex As Exception
-            cLog.Write(ex, "cEwENetworkAnalysisPlugin.EcosimEndTimeStep")
+            m_logger.LogError(ex, "cEwENetworkAnalysisPlugin.EcosimEndTimeStep")
             Debug.Assert(False, ex.StackTrace)
         End Try
 

@@ -24,6 +24,9 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -134,6 +137,7 @@ Public Class cEcoNetwork
 
     ''' <summary>Abort Timer timed out. Used to post a message at the end of a run.</summary>
     Private m_timedOut As Boolean
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcoNetwork)()
 
     ''' <summary>
     ''' Number of milliseconds to wait for the Network Analysis to complete before it times out.
@@ -523,7 +527,7 @@ Public Class cEcoNetwork
                 Me.stopAbortTimer()
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Network Analysis failed in {method} with error: {error}", strErr, ex.Message)
                 bSucces = False
             End Try
 
@@ -570,7 +574,7 @@ Public Class cEcoNetwork
             Console.WriteLine("NA screwed up at " & Date.Now.ToLongTimeString)
 #End If
             ' Debug.Assert(False, ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Network Analysis failed in RunNetworkAnalysis() with error: {error}", ex.Message)
             bSucces = False
         End Try
 #If DEBUG Then
@@ -643,7 +647,7 @@ Public Class cEcoNetwork
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Network Analysis failed in InitReqPP() with error: {error}", ex.Message)
             Throw New ApplicationException("InitReqPP()" & ex.Message, ex)
         End Try
 
@@ -739,7 +743,7 @@ Public Class cEcoNetwork
 
         Catch ex As Exception
             Debug.Assert(False)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Network Analysis failed in NetworkDimensioning() with error: {error}", ex.Message)
             Throw New ApplicationException("NetworkDimensioning() " & ex.Message)
         End Try
 
@@ -2023,7 +2027,7 @@ EndOfImp:
 
         Catch ex As Exception
             Debug.Assert(False)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath Impacts calculation")
             Throw New ApplicationException("Impacts() ", ex)
         End Try
 
@@ -2111,7 +2115,7 @@ EndOfImp:
             If MinCons = 1 Then MinCons = 0
             For Mini = 1 To m_epdata.NumLiving : Cons(Mini) = 0 : Next Mini
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath FindMinConsump calculation")
             Throw New ApplicationException("FindComsump() " & ex.Message, ex)
         End Try
 
@@ -2129,7 +2133,7 @@ EndOfImp:
                 ImpDet(i) = m_epdata.DtImp(i)
             Next i
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath ImportAmount calculation")
             Throw New ApplicationException("ImportAmount() " & ex.Message, ex)
         End Try
 
@@ -2311,7 +2315,7 @@ NextPivot:
 
             Next K
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath CheckPath calculation")
             Throw New ApplicationException("CheckPath() " & ex.Message, ex)
         End Try
 
@@ -2336,7 +2340,7 @@ NextPivot:
                 End If
             Next K
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath MinCycDC calculation")
             Throw New ApplicationException("MinCycDC() " & ex.Message, ex)
         End Try
 
@@ -2357,7 +2361,7 @@ NextPivot:
                 If m_epdata.PP(i) = 1 Then SumDC(i) = 0
             Next i
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath SumDiet calculation")
             Throw New ApplicationException("SumDiet() " & ex.Message, ex)
         End Try
 
@@ -2383,7 +2387,7 @@ NextPivot:
                 ThruPut = CSng(ThruPut + TrPut(i))
             Next i
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath ThruputByGroup calculation")
             Throw New ApplicationException("ThruputBYGroup() " & ex.Message, ex)
         End Try
 
@@ -2425,7 +2429,7 @@ NextPivot:
                 Next j
             Next i
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath CalcCycDC calculation")
             Throw New ApplicationException("CalcCycDC() " & ex.Message, ex)
         End Try
 
@@ -2460,7 +2464,7 @@ NextPivot:
                 End If
             Next i
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath CalcDCNoCyc calculation")
             Throw New ApplicationException("CalcDCNoCyc() " & ex.Message, ex)
         End Try
 
@@ -2492,7 +2496,7 @@ NextPivot:
                 Next j
             Next i
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath CalcSumCycDC calculation")
             Throw New ApplicationException("CalcSumCycDC() " & ex.Message, ex)
         End Try
 
@@ -2592,7 +2596,7 @@ NextPivot:
             FindPaths(numPaths, m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, m_epdata.fCatch)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath CalculateRequiredPP calculation")
             bSucces = False
         Finally
 
@@ -2719,7 +2723,7 @@ NextPivot:
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         Catch ex As Exception
-            'cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath FindPaths calculation")
             Throw New ApplicationException("FindPaths()", ex)
         End Try
 
@@ -2733,7 +2737,7 @@ NextPivot:
                 If prey = Path(K) Then prey = 0 : Exit For
             Next K
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath CheckPath2 calculation")
             Throw New ApplicationException("CheckPath2() " & ex.Message, ex)
         End Try
     End Sub
@@ -2746,7 +2750,7 @@ NextPivot:
                 If m_epdata.PP(i) > 0 Then totalPP = totalPP + m_epdata.B(i) * m_epdata.PB(i) * m_epdata.PP(i) '* EE(i%)
             Next i
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath CalcTotalPP calculation")
             Throw New ApplicationException("CalcTotalPP() " & ex.Message, ex)
         End Try
     End Sub
@@ -2775,7 +2779,7 @@ NextPivot:
                 If m_epdata.PP(i) > 0 Then DetFlow = DetFlow + m_epdata.B(i) * m_epdata.PB(i) * (1 - m_epdata.EE(i)) * m_epdata.PP(i)
             Next
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath CalcDetFlow calculation")
             Throw New ApplicationException("CalcDetFlow() " & ex.Message, ex)
         End Try
 
@@ -2797,7 +2801,7 @@ NextPivot:
             Next i             'Flow ij (formerly Aij) is amount eaten of
             'group i  by predator j 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath FlowInternal calculation")
             Throw New ApplicationException("FlowInternal() " & ex.Message, ex)
         End Try
 
@@ -2819,7 +2823,7 @@ NextPivot:
                 End If
             Next i
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath FlowExternal calculation")
             Throw New ApplicationException("FlowExternal() " & ex.Message, ex)
         End Try
 
@@ -2833,7 +2837,7 @@ NextPivot:
                 totalCatch = totalCatch + m_epdata.fCatch(i)
             Next i
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath EstimTotalCatch calculation")
             Throw New ApplicationException("EstimTotalCatch() " & ex.Message, ex)
         End Try
 
@@ -2891,7 +2895,7 @@ NextPivot:
             Next
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecopath CalcRequiredPP calculation")
             Throw New ApplicationException("CalcRequiredPP() " & ex.Message, ex)
         End Try
     End Sub
@@ -3405,7 +3409,7 @@ NextPivot:
             OrigDiversityIndex = Me.DiversityIndex(0)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecosim InitForEcosim calculation")
             Debug.Assert(False)
             Return False
         End Try
@@ -3469,7 +3473,7 @@ NextPivot:
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in Ecosim EcosimTimestep calculation")
             Debug.Assert(False, ex.StackTrace)
             Return False
         End Try
@@ -3732,7 +3736,7 @@ NextPivot:
             'End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in PrepareUlanowForCallFromEcosim calculation")
             Debug.Assert(False, Me.ToString & ".PrepareUlanowForCallFromEcosim() Error: " & ex.Message)
             Throw New ApplicationException(Me.ToString & ".PrepareUlanowForCallFromEcosim() Error: " & ex.Message, ex)
         End Try

@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Samples
 Imports EwEPlugin
@@ -28,6 +27,9 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -55,6 +57,7 @@ Public Class EwEEcosamplerPlugin
     Private m_strBaseHash As String = ""
 
     Private m_bValidateRespirationOrg As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of EwEEcosamplerPlugin)()
 
 #End Region ' Internal vars
 
@@ -244,7 +247,7 @@ Public Class EwEEcosamplerPlugin
                                 eMessageImportance.Warning)
             Me.m_uic.Core.Messages.AddMessage(msg)
             Me.IsRecording = False
-            cLog.Write(ex, "EwESampleRecorderPlugin.MonteCarloBalancedEcopathModel")
+            m_logger.LogError(ex, "EwESampleRecorderPlugin.MonteCarloBalancedEcopathModel")
         End Try
 
     End Sub
@@ -279,7 +282,7 @@ Public Class EwEEcosamplerPlugin
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
             Me.m_uic.Core.Messages.SendMessage(msg)
         Catch ex As Exception
-            cLog.Write(ex, "EwESampleRecorderPlugin.MonteCarloRunCompleted")
+            m_logger.LogError(ex, "EwESampleRecorderPlugin.MonteCarloRunCompleted")
         End Try
 
         Me.m_iNumRecordedSamples = 0

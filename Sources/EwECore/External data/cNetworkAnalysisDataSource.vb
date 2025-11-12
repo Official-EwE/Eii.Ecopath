@@ -21,11 +21,11 @@
 
 Option Strict On
 
-Imports System.Data
 Imports EwEPlugin
-Imports EwEPlugin.Data
 Imports EwEUtils.Core
-Imports EwEUtils.Database
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -41,6 +41,7 @@ Namespace ExternalData
 #Region " Private vars "
 
         Private Shared s_core As cCore = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cNetworkAnalysisDataSource)()
 
 #End Region ' Private vars
 
@@ -161,7 +162,7 @@ Namespace ExternalData
                 End If
             Catch ex As Exception
                 'make sure all exceptions are handled here and not thrown back to the PluginManager
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cNetworkAnalysisDataSource.ReceiveData() Error: {0}", ex.Message)
             End Try
 
         End Function

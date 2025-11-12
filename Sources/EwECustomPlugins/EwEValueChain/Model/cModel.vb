@@ -23,6 +23,9 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -51,6 +54,7 @@ Public Class cModel
     Private m_lPreservedEffort As New Dictionary(Of Integer, Single())
     ''' <summary>States whether running manual (from Value Chain UI) or automatically with core.</summary>
     Private m_bManualRunMode As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cModel)()
 
 #End Region ' Private vars
 
@@ -280,7 +284,7 @@ Public Class cModel
             Catch ex As Exception
                 ' Aargh
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "VC::cModel.RunTimeStep(" & iTimeStep & ")")
+                m_logger.LogError(ex, "VC::cModel.RunTimeStep(" & iTimeStep & ")")
             End Try
 
         End If
@@ -327,7 +331,7 @@ Public Class cModel
                 prodUnit.Process(result, iTimeStep, 0)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex, "VC::cModel.RunFullModel(" & prodUnit.Name & ")")
+                m_logger.LogError(ex, "VC::cModel.RunFullModel(" & prodUnit.Name & ")")
             End Try
         Next unit
 

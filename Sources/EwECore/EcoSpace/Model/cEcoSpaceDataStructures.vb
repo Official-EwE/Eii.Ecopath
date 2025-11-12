@@ -21,6 +21,9 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Extensions
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -889,6 +892,7 @@ Public Class cEcospaceDataStructures
     'not much
     Private m_ngroups As Integer
     Private m_publisher As cMessagePublisher
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceDataStructures)()
 
 #End Region
 
@@ -2633,7 +2637,7 @@ Public Class cEcospaceDataStructures
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "AverageSpatialResults")
         End Try
 
     End Sub

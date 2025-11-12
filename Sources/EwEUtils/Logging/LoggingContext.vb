@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Extensions.Logging
+﻿Imports System.IO
+Imports Microsoft.Extensions.Logging
 Namespace Logging
 
     Public Module LoggingContext
@@ -14,5 +15,7 @@ Namespace Logging
                 Return New NullLogger()
             End If
         End Function
+
+        Public Property LogFile As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", $"log-{DateTime.Now:yyyyMMdd}.txt")
     End Module
 End Namespace

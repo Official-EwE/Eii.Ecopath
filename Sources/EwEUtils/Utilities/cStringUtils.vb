@@ -20,10 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System
-Imports System.Collections.Generic
-Imports System.Diagnostics
-Imports System.Drawing
 Imports System.Globalization
 Imports System.IO
 Imports System.IO.Compression
@@ -31,10 +27,11 @@ Imports System.Security
 Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Text.RegularExpressions
-Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
-Imports Microsoft.VisualBasic
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -46,6 +43,8 @@ Namespace Utilities
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cStringUtils
+
+        Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cStringUtils)()
 
         ''' <summary><para>If true, CSV formatting is more restrictive than usual.
         ''' <list type="bullet"><item>headers will 
@@ -2372,7 +2371,7 @@ Namespace Utilities
                 Return String.Format(strMask, vals)
             Catch ex As Exception
                 Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
+                m_logger.LogError(ex, "Localization error on " & strMask)
             End Try
             Return strMask
         End Function
@@ -2394,7 +2393,7 @@ Namespace Utilities
                 Return cStringUtils.ToSentenceCase(String.Format(strMask, vals))
             Catch ex As Exception
                 Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
+                m_logger.LogError(ex, "Localization error on " & strMask)
             End Try
             Return strMask
         End Function

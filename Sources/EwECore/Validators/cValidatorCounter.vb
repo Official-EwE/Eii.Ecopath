@@ -21,6 +21,9 @@ Option Strict On
 
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' Validate the value via one of the core counters
@@ -31,6 +34,7 @@ Public Class cValidatorCounter
 
     Private m_core As cCore
     Private m_counter As eCoreCounterTypes
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cValidatorCounter)()
 
     Public Sub New(ByRef theCore As cCore, counterType As eCoreCounterTypes)
         Me.m_core = theCore
@@ -62,7 +66,7 @@ Public Class cValidatorCounter
 
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "cValidatorCounter.Validate() Exception")
             Return False
         End Try
 

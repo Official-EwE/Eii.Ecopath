@@ -23,6 +23,9 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports 
 
@@ -31,6 +34,8 @@ Imports EwEUtils.Utilities
 ''' </summary>
 Public Class cEcospaceLayerImportance
     Inherits cEcospaceLayerSingle
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceLayerImportance)()
 
 #Region " Constructor "
 
@@ -65,7 +70,7 @@ Public Class cEcospaceLayerImportance
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceBasemap.")
-            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceBasemap. Error: " & ex.Message)
+            m_logger.LogError(ex, "Error creating new cEcospaceBasemap. Error: " & ex.Message)
         End Try
 
     End Sub

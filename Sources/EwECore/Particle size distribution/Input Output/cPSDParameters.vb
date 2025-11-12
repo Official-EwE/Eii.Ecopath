@@ -21,12 +21,17 @@ Option Strict On
 
 Imports EwEUtils.Core
 Imports EwECore.ValueWrapper
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' This class wraps the underlying particle size distribution data structures
 ''' </summary>
 Public Class cPSDParameters
     Inherits cCoreInputOutputBase
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cPSDParameters)()
 
 #Region "Constructor"
 
@@ -89,7 +94,7 @@ Public Class cPSDParameters
         Catch ex As Exception
 
             Debug.Assert(False, ex.Message)
-            cLog.Write(Me.ToString & ".New() Error: " & ex.Message)
+            m_logger.LogError(".New() Error: " & ex.Message)
 
         End Try
 

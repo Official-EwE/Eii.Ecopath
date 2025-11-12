@@ -20,9 +20,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterface.Ecosim
-Imports EwECore.MSE
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -34,6 +35,7 @@ Imports EwEUtils.Core
 Public Class frmMSEAssessGroups
 
     Private m_propStartYear As cProperty = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmMSEAssessGroups)()
 
     Public Sub New()
         MyBase.New()
@@ -108,7 +110,7 @@ Public Class frmMSEAssessGroups
                 Me.m_blocks.Refresh()
             End If
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, ".OnLastYearChanged() Exception")
         End Try
 
     End Sub

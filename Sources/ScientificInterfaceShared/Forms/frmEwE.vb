@@ -29,6 +29,9 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -238,6 +241,7 @@ Namespace Forms
 
         Private m_printDoc As PrintDocument = Nothing
         Private m_iPrintPage As Integer = 0
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmEwE)()
 
 #End Region ' Private variables
 
@@ -288,7 +292,7 @@ Namespace Forms
                     Me.Icon = My.Resources.Ecopath0
             End Select
 
-            cLog.Write("Opening", Me.Text, "FormState", eVerboseLevel.Detailed)
+            m_logger.LogInformation("Opening", Me.Text, "FormState")
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -312,7 +316,7 @@ Namespace Forms
 
             Me.CoreComponents = Nothing
 
-            cLog.Write("Closed", Me.Text, "FormState", eVerboseLevel.Detailed)
+            m_logger.LogInformation("Closed", Me.Text, "FormState")
 
             MyBase.OnFormClosed(e)
 
@@ -561,7 +565,7 @@ Namespace Forms
                 args.HasMorePages = (Me.m_iPrintPage < iNumPages)
 
             Catch ex As Exception
-                cLog.Write(ex, "OnPrint")
+                m_logger.LogError(ex, "OnPrint")
                 args.HasMorePages = False
             End Try
 

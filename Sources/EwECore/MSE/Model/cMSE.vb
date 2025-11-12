@@ -24,6 +24,9 @@ Imports EwECore.ExternalData
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Namespace MSE
 
@@ -183,6 +186,8 @@ Namespace MSE
 
         Private m_FleetCode() As Integer, m_GroupCode() As Integer, m_GoalRowID As Integer
         Private m_QStar(,) As Single
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSE)()
+
 
 #End Region
 
@@ -270,7 +275,7 @@ Namespace MSE
                 Me.m_ProgressDelegate = MSECallBack
                 Me.m_MSYCallBack = MSYCallBack
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Connect")
             End Try
         End Sub
 
@@ -279,7 +284,7 @@ Namespace MSE
                 Me.m_ProgressDelegate = Nothing
                 Me.m_MSYCallBack = Nothing
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Disconnect")
             End Try
         End Sub
 
@@ -292,7 +297,7 @@ Namespace MSE
                 Me.m_EconomicData = Nothing
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "clear")
             End Try
         End Sub
 
@@ -308,7 +313,7 @@ Namespace MSE
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".InitAssessment() Exception: " & ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, "InitAssessment")
             End Try
 
         End Sub
@@ -420,7 +425,7 @@ Namespace MSE
 
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "InitForRun")
                 Throw New ApplicationException(Me.ToString & ".InitForRun() Error:" & ex.Message, ex)
             End Try
 
@@ -499,7 +504,7 @@ Namespace MSE
                                  Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.EcoValue / Me.EcoValueBase)
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "setBestTotalValue")
                 Throw New ApplicationException("MSE.setBestTotalValue() Error: " & ex.Message, ex)
             End Try
 
@@ -588,7 +593,7 @@ Namespace MSE
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "setEffortForRun")
             End Try
 
         End Sub
@@ -613,7 +618,7 @@ Namespace MSE
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "setEffortToBase")
                 Debug.Assert(False, ex.Message)
             End Try
 
@@ -643,7 +648,7 @@ Namespace MSE
             Dim bSuccess As Boolean = True
 
             Try
-                cLog.Write("MSE run started.")
+                m_logger.LogInformation("MSE run started.")
                 Me.PostMessage(eMSERunStates.Started)
 
                 'keep the original value of PredictEffort so we can set it back at the end of the run
@@ -716,7 +721,7 @@ Namespace MSE
 
             Catch ex As Exception
                 bSuccess = False
-                cLog.Write(ex)
+                m_logger.LogError(ex, "MSE Run")
                 Debug.Assert(False, "MSE Exception: " & ex.Message)
                 Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_RUN_ERROR, ex.Message),
                                                             eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
@@ -826,7 +831,7 @@ Namespace MSE
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".SetEffortToBaseValue() Exception: " & ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, "resetEffort")
             End Try
 
         End Sub
@@ -957,7 +962,7 @@ Namespace MSE
                     Me.m_ProgressDelegate.Invoke(CurrentState)
                 Catch ex As Exception
                     System.Console.WriteLine("MSE handled exception from progress delegate = " & ex.Message)
-                    cLog.Write(ex)
+                    m_logger.LogError(ex, "PostMessage")
                 End Try
 
                 Select Case CurrentState
@@ -977,7 +982,7 @@ Namespace MSE
                 'System.Console.WriteLine("MSE State = " & CurrentState.ToString)
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "PostMessage")
             End Try
 
         End Sub
@@ -1007,7 +1012,7 @@ Namespace MSE
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "AccessBioRisk")
                 Throw New ApplicationException(Me.ToString & ".AccessBioRisk() Error: " & ex.Message, ex)
             End Try
 
@@ -1063,7 +1068,7 @@ Namespace MSE
                 Next i
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "VaryEffortCatchability")
                 Throw New ApplicationException(Me.ToString & ".YearTimeStep() Error: " & ex.Message, ex)
             End Try
 
@@ -1153,7 +1158,7 @@ Namespace MSE
                 Next
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "AssessFs")
                 Throw New ApplicationException(Me.ToString & ".AssessFs() Error: " & ex.Message, ex)
             End Try
 
@@ -1248,7 +1253,7 @@ Namespace MSE
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".DoRegulations() Exception: " & ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, "DoRegulations")
                 System.Console.WriteLine(Me.ToString & ".DoRegulations() Exception: " & ex.Message)
             End Try
 
@@ -2194,7 +2199,7 @@ Namespace MSE
                 'MsgBox("MSY reference levels calculated")
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "RunMSYSearch")
                 Debug.Assert(False, Me.ToString & ".RunMSYSearch() Exception: " & ex.Message)
                 Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_RUN_CALC_MSY_ERROR, ex.Message),
                                                             eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
@@ -2397,7 +2402,7 @@ Namespace MSE
                 'MsgBox("MSY reference levels calculated")
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "RunMSYSearchUsingFishingMortalityInsteadOfEffort")
                 Debug.Assert(False, Me.ToString & ".RunMSYSearchUsingFishingMortalityInsteadOfEffort() Exception: " & ex.Message)
                 Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_RUN_CALC_FMSY_ERROR, ex.Message),
                                                             eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
@@ -2701,7 +2706,7 @@ Namespace MSE
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".setTime() Exception: " & ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, "setTime")
             End Try
 
         End Sub
@@ -2780,7 +2785,7 @@ Namespace MSE
             Catch ex As Exception
                 'make sure all exceptions are handled here and not back in the cEconomicDataSource object
                 System.Console.WriteLine(Me.ToString & ".onEconomicData() Error: " & ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, "onEconomicData")
             End Try
 
         End Sub
@@ -2969,7 +2974,7 @@ Namespace MSE
                             strm.Write(cStringUtils.FormatSingle(vSum))
                             strm.WriteLine()
                         Catch ex As Exception
-                            cLog.Write(ex, "cMSE.RunFleetTradeoffs")
+                            m_logger.LogError(ex, "cMSE.RunFleetTradeoffs")
                             bSuccess = False
                         End Try
                     Next
@@ -2977,7 +2982,7 @@ Namespace MSE
                     iStep += 1
 
                 Catch ex As Exception
-                    cLog.Write(ex, "cMSE.RunFleetTradeoffs")
+                    m_logger.LogError(ex, "cMSE.RunFleetTradeoffs")
                     bSuccess = False
                 End Try
 

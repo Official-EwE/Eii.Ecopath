@@ -20,10 +20,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Diagnostics.Contracts
 Imports EwECore.EcoSeed
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -101,6 +103,7 @@ Public Class cMPAOptManager
 
     ''' <summary>directory for the output data</summary>
     Private m_dataDir As String = ""
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMPAOptManager)()
 
 #End Region
 
@@ -139,7 +142,7 @@ Public Class cMPAOptManager
             Me.m_bConnected = True
         Else
             Me.m_bConnected = False
-            cLog.Write("EcoSeedManager is not connected to an interface.")
+            m_logger.LogError("EcoSeedManager is not connected to an interface.")
         End If
 
     End Sub
@@ -271,7 +274,7 @@ Public Class cMPAOptManager
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in OnRunStateChanged")
         End Try
 
     End Sub
@@ -332,7 +335,7 @@ Public Class cMPAOptManager
             Me.m_thrSeed.Start()
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error starting MPA optimization run")
             Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MPAOPT_ERROR, ex.Message),
                                                         eMessageType.ErrorEncountered, eCoreComponentType.Ecospace,
@@ -446,7 +449,7 @@ Public Class cMPAOptManager
             Return map
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error generating CellSelectedMap")
             Debug.Assert(False, ex.Message)
             Me.m_core.Messages.SendMessage(New cMessage("MPA Optimization Error: " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.SearchObjective, eMessageImportance.Critical))
             Return Nothing
@@ -616,7 +619,7 @@ Public Class cMPAOptManager
             Me.m_parameters.ResetStatusFlags()
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error loading MPA optimization parameters")
             Debug.Assert(False, ex.Message)
             Me.m_parameters.AllowValidation = True
             Return False
@@ -658,7 +661,7 @@ Public Class cMPAOptManager
             Me.setActiveSearch(Me.m_parameters.SearchType, False)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error updating MPA optimization parameters")
             Debug.Assert(False, ex.Message)
             Return False
         End Try
@@ -796,7 +799,7 @@ Public Class cObjectiveResult
     '        calcPercentageClosed(MPAData, SpaceData)
 
     '    Catch ex As Exception
-    '        cLog.Write(ex)
+    '        m_logger.LogError(ex, "Error initializing cObjectiveResult")
     '        Throw New ApplicationException(Me.ToString & ".Init() Error: " & ex.Message, ex)
     '    End Try
 

@@ -24,6 +24,9 @@ Imports System.Reflection
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Database.cEwEDatabase
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -35,6 +38,7 @@ Imports EwEUtils.Database.cEwEDatabase
 Public Class cDatabaseLink
 
     Private m_db As cEwEDatabase = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDatabaseLink)()
 
 #Region " Load "
 
@@ -76,7 +80,7 @@ Public Class cDatabaseLink
             aObjects = Me.m_db.ReadObjects(GetType(cParameters))
         Catch ex As Exception
             bSucces = False
-            cLog.Write(ex, "ValueChain::LoadModel - reading objects")
+            m_logger.LogError(ex, "ValueChain::LoadModel - reading objects")
         End Try
 
         If (aObjects.Length = 0) Then
@@ -184,7 +188,7 @@ Public Class cDatabaseLink
 
         Catch ex As Exception
             bSucces = False
-            cLog.Write(ex, "ValueChain::LoadModel - loading individual units")
+            m_logger.LogError(ex, "ValueChain::LoadModel - loading individual units")
         End Try
 
         Return bSucces

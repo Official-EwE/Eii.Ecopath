@@ -18,6 +18,9 @@
 '
 
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Namespace SearchObjectives
 
@@ -69,6 +72,7 @@ Namespace SearchObjectives
         Protected m_parameters As cSearchObjectiveParameters
         Private m_lstGroups As New cCoreInputOutputList(Of cSearchObjectiveGroupInput)(eDataTypes.SearchObjectiveGroupInput, 1)
         Private m_lstFleets As New cCoreInputOutputList(Of cSearchObjectiveFleetInput)(eDataTypes.SearchObjectiveFleetInput, 1)
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSearchObjective)()
 
         ''' <summary>
         ''' Build interface objects
@@ -89,7 +93,7 @@ Namespace SearchObjectives
                 'sets BGoalValue() as a function of PB from last ecopath run
                 search.SetDefaultBGoal(Me.m_core.m_EcopathData.PB)
                 'discount factor, FLimit, Default F rates
-                search.setDefaultOptimizationValues()
+                search.SetDefaultOptimizationValues()
 
                 'default weights
                 search.ValWeight(eValueWeightTypes.NetEcomValue) = 1
@@ -117,7 +121,7 @@ Namespace SearchObjectives
                 Return True
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cSearchObjective.Init() Exception")
                 Return False
             End Try
 

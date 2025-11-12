@@ -19,6 +19,9 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 ''' <summary>
 ''' This object represents the iStanza Group (index of stanza group) and Egg Production Forcing Shape index that is used by this Stanza group
@@ -31,6 +34,7 @@ Public Class cGroupShapePair
     Private m_iManager As Integer
     Private m_shape As cForcingFunction
     Private m_manager As cEggProductionShapeManager
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cGroupShapePair)()
 
 
     Public Function Clear() As Boolean
@@ -68,7 +72,7 @@ Public Class cGroupShapePair
                 Me.Update()
             Else
                 Debug.Assert(False)
-                cLog.Write("Index out of bounds on egg shapes")
+                m_logger.LogError("Index out of bounds on egg shapes")
             End If
         End Set
 
@@ -141,7 +145,7 @@ Public Class cGroupShapePair
             Return Me.m_manager.OnChanged(Me)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error updating GroupShapePair")
             Return False
         End Try
 

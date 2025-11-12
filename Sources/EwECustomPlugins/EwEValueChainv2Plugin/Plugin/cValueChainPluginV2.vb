@@ -70,7 +70,7 @@ Public Class cValueChainPluginV2
 
     Private m_searchds As cSearchDatastructures = Nothing
     Private m_bInSearch As Boolean = False
-    Private ReadOnly _logger As ILogger = LoggingContext.CreateLogger(Of cValueChainPluginV2)()
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cValueChainPluginV2)()
 
 #End Region ' Privates
 
@@ -188,7 +188,7 @@ Public Class cValueChainPluginV2
             End If
 
         Catch ex As Exception
-            cLog.Write(ex, "VC::cPluginPoint.Initialize")
+            m_logger.LogError(ex, "VC::cPluginPoint.Initialize")
             Debug.Assert(False, ex.Message)
             Return
 
@@ -292,7 +292,7 @@ Public Class cValueChainPluginV2
                 Return True
             End If
         Catch ex As Exception
-            _logger.LogError(ex, "VC::cValueChainPluginV2.LoadModel")
+            m_logger.LogError(ex, "VC::cValueChainPluginV2.LoadModel")
             Throw
         End Try
 

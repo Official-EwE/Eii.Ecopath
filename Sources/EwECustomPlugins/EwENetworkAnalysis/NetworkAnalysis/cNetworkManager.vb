@@ -21,11 +21,13 @@
 
 Option Strict On
 Option Explicit On
-Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -93,6 +95,7 @@ Public Class cNetworkManager
     ''' <summary><see cref="cMessagePublisher">Core message publisher</see> for
     ''' sending messages through the EwE core system.</summary>
     Private m_publisher As cMessagePublisher = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cNetworkManager)()
 
 #End Region ' Private data
 
@@ -242,7 +245,7 @@ Public Class cNetworkManager
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Network analysis RunMainNetwork() error")
                 Dim msg As String = cStringUtils.UnravelException(ex)
                 ' ToDo: globalize this
                 Me.m_publisher.SendMessage(New cMessage("Network analysis RunMainNetwork() error: " & msg, eMessageType.ErrorEncountered, Me.m_messagesource, eMessageImportance.Critical))
@@ -322,7 +325,7 @@ Public Class cNetworkManager
                 Me.IsRequiredPrimaryProdRun = True
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Network Analysis run PPR error")
                 Dim msg As String = cStringUtils.UnravelException(ex)
                 ' ToDo: globalize this
                 Me.Core.Messages.SendMessage(New cMessage("Network Analysis run PPR error: " & msg, eMessageType.ErrorEncountered, eCoreComponentType.Ecopath, eMessageImportance.Critical))
@@ -366,7 +369,7 @@ Public Class cNetworkManager
             Me.m_iPathwayToGroup = iToGroup
         Catch ex As Exception
             Me.m_pathwaystate = ePathways.NotRan
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Network Analysis FindPathwaysToConsumer error")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -404,7 +407,7 @@ Public Class cNetworkManager
             Me.m_iPathwayViaGroup = iViaGroup
         Catch ex As Exception
             Me.m_pathwaystate = ePathways.NotRan
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Network Analysis FindPathwaysToConsumerViaPrey error")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -435,7 +438,7 @@ Public Class cNetworkManager
             Me.m_iPathwayFromGroup = iFromGroup
         Catch ex As Exception
             Me.m_pathwaystate = ePathways.NotRan
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Network Analysis FindPathwaysFromPrey error")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -464,7 +467,7 @@ Public Class cNetworkManager
             Me.m_pathwaystate = ePathways.LinkedPathways
         Catch ex As Exception
             Me.m_pathwaystate = ePathways.NotRan
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Network Analysis FindPathwaysCycles error")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -492,7 +495,7 @@ Public Class cNetworkManager
             Me.m_pathwaystate = ePathways.All
         Catch ex As Exception
             Me.m_pathwaystate = ePathways.NotRan
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Network Analysis FindPathwaysCyclesAll error")
             Debug.Assert(False, ex.Message)
         End Try
 
@@ -529,7 +532,7 @@ Public Class cNetworkManager
             cApplicationStatusNotifier.EndProgress(Me.m_core)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Ecosim Network Analysis run error")
             Me.Core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_ECOSIM, ex.Message),
                                                    eMessageType.ErrorEncountered,
                                                    eCoreComponentType.Plugin, eMessageImportance.Critical))
@@ -580,7 +583,7 @@ Public Class cNetworkManager
 
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Ecosim Network Analysis initialization error")
             Debug.Assert(False, Me.ToString & ".InitNetworkForEcosim " & ex.Message)
             Return False
         End Try
@@ -617,7 +620,7 @@ Public Class cNetworkManager
             Me.UpdateProgress(My.Resources.STATUS_RUNNING_NETWORKANALYSIS, CSng(iTime / Me.m_esdata.NTimes))
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Ecosim Network Analysis time step error")
             Debug.Assert(False, ex.ToString)
             bSucces = False
         End Try

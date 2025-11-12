@@ -29,6 +29,9 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -67,6 +70,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Private WithEvents m_tsbnImport As ToolStripButton
         Private WithEvents m_tsbnExport As ToolStripButton
         Private WithEvents m_tsmiCenterLabels As ToolStripButton
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmEcopathFlowDiagram)()
 
 #End Region ' Private variables
 
@@ -390,7 +394,7 @@ Namespace Ecopath.Controls.FlowDiagram
                     Me.Core.Messages.SendMessage(msg)
 
                 Catch ex As Exception
-                    cLog.Write(ex, "frmFlowDiagram::SaveImage(" & cmdFS.FileName & ")")
+                    m_logger.LogError(ex, "frmFlowDiagram::SaveImage(" & cmdFS.FileName & ")")
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message),
                                 eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                     Me.Core.Messages.SendMessage(msg)

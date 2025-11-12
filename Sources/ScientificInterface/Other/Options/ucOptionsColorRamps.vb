@@ -24,6 +24,9 @@ Option Explicit On
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -45,6 +48,7 @@ Namespace Other
 
         Private m_rampEwEDefault As cColorRamp = Nothing
         Private m_rampFleetDefault As cColorRamp = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucOptionsColorRamps)()
 
 #End Region ' Private variables
 
@@ -307,7 +311,7 @@ Namespace Other
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex, "ucOptionsColorRamp.OnImportColorRamps")
+                m_logger.LogError(ex, "ucOptionsColorRamp.OnImportColorRamps")
             End Try
         End Sub
 
@@ -326,7 +330,7 @@ Namespace Other
                     Next
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "ucOptionsColorRamp.OnExportColorRamps")
+                m_logger.LogError(ex, "ucOptionsColorRamp.OnExportColorRamps")
             End Try
 
         End Sub

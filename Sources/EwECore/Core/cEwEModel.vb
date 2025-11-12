@@ -22,14 +22,18 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+
 
 #End Region ' Imports
-
 ''' <summary>
 ''' Class to encapsulate and expose ecopath model for a single model
 ''' </summary>
 Public Class cEwEModel
     Inherits cCoreInputOutputBase
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEModel)()
 
 #Region " Constructor "
 
@@ -193,8 +197,7 @@ Public Class cEwEModel
             Me.ResetStatusFlags()
 
         Catch ex As Exception
-            Debug.Assert(False, "Error creating new cModel.")
-            cLog.Write(ex, "cEwEModel.New()")
+            m_logger.LogError(ex, "Error creating new cModel.")
         End Try
 
     End Sub

@@ -47,6 +47,9 @@ Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Integration
 Imports WeifenLuo.WinFormsUI.Docking
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -83,6 +86,7 @@ Public Class frmEwE6
 
     ''' <summary>Flag indicating that the EwE is fully initialized</summary>
     Private m_bIsInitialized As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmEwE6)()
 
 
 #Region " Panels "
@@ -350,7 +354,9 @@ Public Class frmEwE6
 
         Debug.Assert(frmEwE6.__inst__ Is Nothing, "Only one instance of frmEwE6 allowed")
         frmEwE6.__inst__ = Me
-        cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
+
+        'TODO RIK: Connec LoggingLevel to Setting
+        'cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
 
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         Me.m_presentationmode = New cPresentationMode(Me)
@@ -361,7 +367,7 @@ Public Class frmEwE6
         Me.Icon = cEwEIcon.Current()
 
         ' Write diagnostics info
-        cLog.Write("RenderWithVisualStyles", CStr(Application.RenderWithVisualStyles))
+        m_logger.LogInformation("RenderWithVisualStyles", CStr(Application.RenderWithVisualStyles))
 
     End Sub
 
@@ -938,7 +944,7 @@ Public Class frmEwE6
 
     Private Sub OnObtainServerTime(sender As Object, args As DoWorkEventArgs) Handles m_bgw.DoWork
         If Not cDateUtils.GetNetworkTime() Then
-            cLog.Write("Unable to obtain server time")
+            m_logger.LogInformation("Unable to obtain server time")
         End If
     End Sub
 
@@ -1109,7 +1115,7 @@ Public Class frmEwE6
         Try
             RaiseEvent OnLoadCompleted(Me, New EventArgs())
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "frmEwE6.OnLoad")
         End Try
 
         Me.m_bIsInitialized = True
@@ -1147,7 +1153,7 @@ Public Class frmEwE6
             If e.Cancel Then Return
 
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6.OnFormClosing")
+            m_logger.LogError(ex, "frmEwE6.OnFormClosing")
         End Try
 
         ' Resume shutdown
@@ -1218,7 +1224,7 @@ Public Class frmEwE6
                 End Try
 
             Catch ex As Exception
-                cLog.Write(ex, "frmEwE6.OnFormClosed")
+                m_logger.LogError(ex, "frmEwE6.OnFormClosed")
             End Try
         End If
 
@@ -1982,9 +1988,9 @@ Public Class frmEwE6
             ' JS March 19: Form icons are now handled by frmEwE baseclass to ensure disposal
 
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6.LoadFormFromType(" & t.ToString & ", " & strNavLink & ")")
+            m_logger.LogError(ex, "frmEwE6.LoadFormFromType(" & t.ToString & ", " & strNavLink & ")")
             ' Notify user
-            Me.SendMessage(My.Resources.UI_ERROR_LAUNCHFORM, eMessageImportance.Warning, strHyperlink:="command:" & cBrowserCommand.COMMAND_NAME & "?URL=" & cLog.LogFile)
+            Me.SendMessage(My.Resources.UI_ERROR_LAUNCHFORM, eMessageImportance.Warning, strHyperlink:="command:" & cBrowserCommand.COMMAND_NAME & "?URL=" & LoggingContext.LogFile)
         End Try
 
         Return frmNew
@@ -2752,7 +2758,7 @@ Public Class frmEwE6
             End If
 
         Catch ex As Exception
-            cLog.Write(ex, "OnDirectoryOpen")
+            m_logger.LogError(ex, "OnDirectoryOpen")
         End Try
 
     End Sub
@@ -2848,11 +2854,11 @@ Public Class frmEwE6
                         ' Switch help
                         Me.Help.HelpTopic(frm) = strNavHelpURL
                     Else
-                        cLog.Write("Form cannot be resolved", "frmEwE6 cmdNavigate OnInvoke",)
+                        m_logger.LogError("frmEwE6 cmdNavigate OnInvoke")
                     End If
                 Catch ex As Exception
                     ' Whoah!
-                    cLog.Write(ex, "frmEwE6 cmdNavigate OnInvoke")
+                    m_logger.LogError(ex, "frmEwE6 cmdNavigate OnInvoke")
                 End Try
 
                 'cApplicationStatusNotifier.EndProgress(Me.Core)
@@ -3658,7 +3664,7 @@ Public Class frmEwE6
     End Sub
 
     Private Sub m_tsmiViewLog_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiViewLog.Click
-        Me.m_cmdBrowseURI.Invoke(cLog.LogFile)
+        Me.m_cmdBrowseURI.Invoke(LoggingContext.LogFile)
     End Sub
 
 #End Region ' Main Menu - Help
@@ -3750,7 +3756,7 @@ Public Class frmEwE6
             Dim dlg As New dlgEditPedigree(Me.UIContext, DirectCast(cmd, cEditPedigreeCommand).Variable)
             dlg.ShowDialog(Me)
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6::OnEditPedigreeLevels")
+            m_logger.LogError(ex, "frmEwE6::OnEditPedigreeLevels")
         End Try
     End Sub
 
@@ -3873,7 +3879,7 @@ Public Class frmEwE6
                     Try
                         Me.Core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                     Catch ex As Exception
-                        cLog.Write(ex, "frmEwE6::SaveEcosimScenarioAs")
+                        m_logger.LogError(ex, "frmEwE6::SaveEcosimScenarioAs")
                     End Try
                     cApplicationStatusNotifier.EndProgress(Me.Core)
 
@@ -4168,7 +4174,7 @@ Public Class frmEwE6
                         Try
                             Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                         Catch ex As Exception
-                            cLog.Write(ex, "frmEwE6::SaveEcopaceScenarioAs")
+                            m_logger.LogError(ex, "frmEwE6::SaveEcopaceScenarioAs")
                         End Try
                         cApplicationStatusNotifier.EndProgress(Me.Core)
 
@@ -4365,7 +4371,7 @@ Public Class frmEwE6
             ' Reroute
             Me.m_cmdShowOptions.Invoke(eApplicationOptionTypes.SpatialTemporal)
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6:OnEcospaceManageConfigs")
+            m_logger.LogError(ex, "frmEwE6:OnEcospaceManageConfigs")
         End Try
     End Sub
 
@@ -4378,7 +4384,7 @@ Public Class frmEwE6
             dlg.UIContext = Me.UIContext
             dlg.ShowDialog(Me)
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6:OnDefineEcospaceDatasets")
+            m_logger.LogError(ex, "frmEwE6:OnDefineEcospaceDatasets")
         End Try
     End Sub
 
@@ -4418,7 +4424,7 @@ Public Class frmEwE6
                 Me.Core.SpatialDataConnectionManager.Update(ds)
             End If
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6:OnDefineEcospaceDatasets")
+            m_logger.LogError(ex, "frmEwE6:OnDefineEcospaceDatasets")
         End Try
 
     End Sub
@@ -4446,7 +4452,7 @@ Public Class frmEwE6
             Dim dlg As New dlgApplyConnection(Me.UIContext, adt, Me.m_cmdEcospaceConfigureConnection.Layer, Me.m_cmdEcospaceConfigureConnection.Connection)
             dlg.ShowDialog()
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6:OnEcospaceConfigureConnection")
+            m_logger.LogError(ex, "frmEwE6:OnEcospaceConfigureConnection")
         End Try
     End Sub
 
@@ -4458,7 +4464,7 @@ Public Class frmEwE6
             Dim dlg As New Ecospace.Controls.dlgExportSpatialData(Me.UIContext)
             dlg.ShowDialog(Me)
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6:OnExportEcospaceDatasets")
+            m_logger.LogError(ex, "frmEwE6:OnExportEcospaceDatasets")
         End Try
     End Sub
 
@@ -4530,7 +4536,7 @@ Public Class frmEwE6
                     End If
             End Select
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6:OnImportLayerData")
+            m_logger.LogError(ex, "frmEwE6:OnImportLayerData")
         End Try
 
         If (msg IsNot Nothing) Then
@@ -4582,7 +4588,7 @@ Public Class frmEwE6
                     End If
             End Select
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6:OnExportLayerData")
+            m_logger.LogError(ex, "frmEwE6:OnExportLayerData")
         End Try
     End Sub
 
@@ -4744,7 +4750,7 @@ Public Class frmEwE6
                     Try
                         Me.Core.SaveEcotracerScenario(DirectCast(dlg.Scenario, cEcotracerScenario))
                     Catch ex As Exception
-                        cLog.Write(ex, "frmEwE6::SaveEcotracerScenarioAs")
+                        m_logger.LogError(ex, "frmEwE6::SaveEcotracerScenarioAs")
                     End Try
                     cApplicationStatusNotifier.EndProgress(Me.Core)
                 End If
@@ -5111,9 +5117,10 @@ Public Class frmEwE6
 
                 Case "LogVerboseLevel"
                     Try
-                        cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
+                        'TODO RIK: Connect LogginLevel To Settings
+                        'cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
                     Catch ex As Exception
-                        cLog.VerboseLevel = eVerboseLevel.Standard
+                        'cLog.VerboseLevel = eVerboseLevel.Standard
                     End Try
 
                 Case "Author"
@@ -5258,7 +5265,7 @@ Public Class frmEwE6
             Me.UpdateModelControls()
 
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6::OnCoreExecutionStateChanged(" & csm.CoreExecutionState.ToString() & ")")
+            m_logger.LogError(ex, "frmEwE6::OnCoreExecutionStateChanged(" & csm.CoreExecutionState.ToString() & ")")
         End Try
 
     End Sub
@@ -5280,7 +5287,7 @@ Public Class frmEwE6
                 End If
             End If
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6::OnCoreMessage(" & msg.Message & ")")
+            m_logger.LogError(ex, "frmEwE6::OnCoreMessage(" & msg.Message & ")")
         End Try
     End Sub
 
@@ -5291,7 +5298,7 @@ Public Class frmEwE6
             Dim pmsg As cProgressMessage = DirectCast(msg, cProgressMessage)
             Me.ShowProgress(pmsg.ProgressState, pmsg.Message, pmsg.Progress)
         Catch ex As Exception
-            cLog.Write(ex, "frmEwE6::OnProgressMessage(" & msg.Message & ")")
+            m_logger.LogError(ex, "frmEwE6::OnProgressMessage(" & msg.Message & ")")
         End Try
     End Sub
 

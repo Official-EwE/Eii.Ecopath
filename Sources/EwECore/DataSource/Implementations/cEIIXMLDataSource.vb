@@ -32,6 +32,9 @@ Imports EwEUtils.Utilities
 Imports EwECore.MSE
 Imports EwECore.SpatialData
 Imports EwECore.Auxiliary
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 '
 #End Region ' Imports
@@ -52,6 +55,7 @@ Public Class cEIIXMLDataSource
     Private m_strFilename As String = ""
     Private m_core As cCore = Nothing
     Private m_doc As XmlDocument = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEIIXMLDataSource)()
 
     Public Sub New()
 
@@ -482,7 +486,7 @@ Public Class cEIIXMLDataSource
                 ' The actual data fix is performed once during EwE5 import, and should not reoccur when running EwE6.
                 If ecopathDS.PP(iPred) = 1 And ecopathDS.QB(iPred) <= 0 Then
                     If (ecopathDS.DC(iPred, iPrey) <> 0) Then
-                        cLog.Write(cStringUtils.Localize("Database error on DC({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DC(iPred, iPrey)))
+                        m_logger.LogError(cStringUtils.Localize("Database error on DC({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DC(iPred, iPrey)))
                     End If
                 End If
 
@@ -3060,7 +3064,7 @@ Public Class cEIIXMLDataSource
 
             Catch ex As Exception
                 bSucces = False
-                cLog.Write(ex, "cEIIXMLDataSource::LoadDataAdapters")
+                m_logger.LogError(ex, "cEIIXMLDataSource::LoadDataAdapters")
             End Try
 
         Next
@@ -3093,7 +3097,7 @@ Public Class cEIIXMLDataSource
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex, "cEIIXMLDataSource::LoadDataAdapters")
+                m_logger.LogError(ex, "cEIIXMLDataSource::LoadDataAdapters")
                 bSucces = False
             End Try
         Next

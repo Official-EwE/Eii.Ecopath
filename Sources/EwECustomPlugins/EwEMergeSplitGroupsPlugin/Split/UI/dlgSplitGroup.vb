@@ -24,10 +24,12 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -51,6 +53,7 @@ Public Class dlgSplitGroup
 
     Private m_biomass As Single = 0
     Private m_biomasssource As eBiomassSource = eBiomassSource.NotSet
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgSplitGroup)()
 
     Private Enum eBiomassSource As Integer
         NotSet = 0
@@ -506,7 +509,7 @@ Public Class dlgSplitGroup
                 cmd.Invoke(strURL)
             End If
         Catch ex As Exception
-            cLog.Write(ex, "dlgSplitGroup::OpenLink(" & strURL & ")")
+            m_logger.LogError(ex, "dlgSplitGroup::OpenLink(" & strURL & ")")
         End Try
 
     End Sub

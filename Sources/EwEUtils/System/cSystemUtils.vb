@@ -20,9 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System
-Imports System.Collections.Generic
-Imports System.Diagnostics
 Imports System.Globalization
 Imports System.IO
 Imports System.Net
@@ -30,9 +27,11 @@ Imports System.Net.NetworkInformation
 Imports System.Reflection
 Imports System.Security.Principal
 Imports System.Threading
-Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -42,6 +41,8 @@ Namespace SystemUtilities
     ''' Utilities for obtaining system properties.
     ''' </summary>
     Public Class cSystemUtils
+
+        Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSystemUtils)()
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -526,7 +527,7 @@ Namespace SystemUtilities
             Try
                 dt = cAssemblyUtils.GetCompileDate(ass)
             Catch ex As Exception
-                cLog.Write(ex, eVerboseLevel.Standard, "cSystemUtils.BestBefore")
+                m_logger.LogError(ex, "cSystemUtils.BestBefore")
             End Try
 
             Select Case mode

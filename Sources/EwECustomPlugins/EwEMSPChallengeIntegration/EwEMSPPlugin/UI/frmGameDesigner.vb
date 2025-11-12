@@ -21,14 +21,11 @@
 Option Strict On
 Imports System.Drawing
 Imports System.IO
-Imports System.Security
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
-Imports System.Xml
 Imports EwECore
 Imports EwECore.DataSources
-Imports EwEMSPLink
 Imports EwEMSPPlugin.Emulator
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
@@ -40,6 +37,10 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports Scriban
 Imports Scriban.Runtime
 Imports SharedRecources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
 
 #End Region ' Imports
 
@@ -75,6 +76,7 @@ Namespace UI
         Private m_checkEcosimFishing As cRequirementChecker = Nothing
         Private m_checkEcosimForcing As cRequirementChecker = Nothing
         Private m_checkEcospaceTimeSeries As cRequirementChecker = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmGameDesigner)()
 
 #End Region ' Private vars 
 
@@ -641,7 +643,7 @@ Namespace UI
                     Me.MSPLink.OnChanged()
                 End If
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Error updating game info/settings")
             End Try
             Me.UpdateControls()
         End Sub
@@ -659,7 +661,7 @@ Namespace UI
                 Dim cmd As cCommand = Me.CommandHandler.GetCommand("LoadTimeSeries")
                 If (cmd IsNot Nothing) Then cmd.Invoke()
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Error invoking LoadTimeSeries command")
             End Try
         End Sub
 

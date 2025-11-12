@@ -26,13 +26,14 @@ Imports EwECore
 Imports EwECore.WebServices
 Imports EwECore.WebServices.Ecobase
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
-Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Web
 Imports System.IO
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -65,6 +66,7 @@ Public Class dlgEcobaseImport
     End Enum
 
     Private m_filter As eFilterTypes = eFilterTypes.None
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgEcobaseImport)()
 
 #End Region ' Private vars
 
@@ -356,7 +358,7 @@ Public Class dlgEcobaseImport
             cmd.Invoke("http://doi.org/" & HttpUtility.UrlEncode(strLink))
 
         Catch ex As Exception
-            cLog.Write(ex, "dlgEcobaseImport.OnViewDOI(" & strLink & ")")
+            m_logger.LogError(ex, "dlgEcobaseImport.OnViewDOI(" & strLink & ")")
         End Try
 
     End Sub
@@ -375,7 +377,7 @@ Public Class dlgEcobaseImport
             cmd.Invoke(strLink)
 
         Catch ex As Exception
-            cLog.Write(ex, "dlgEcobaseImport.OnViewLink(" & strLink & ")")
+            m_logger.LogError(ex, "dlgEcobaseImport.OnViewLink(" & strLink & ")")
         End Try
 
     End Sub

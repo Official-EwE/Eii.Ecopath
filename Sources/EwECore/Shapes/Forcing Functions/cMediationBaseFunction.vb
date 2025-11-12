@@ -19,6 +19,9 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 '''<summary>
 ''' Base Class for a mediation function. 
@@ -32,6 +35,7 @@ Public MustInherit Class cMediationBaseFunction
 
     Protected m_iMedXBase As Integer
     Protected m_medData As cMediationDataStructures
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMediationBaseFunction)()
 
 #Region " Constructors "
 
@@ -143,7 +147,7 @@ Public MustInherit Class cMediationBaseFunction
                 Return Me.m_medData.IMedBase(Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID))
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, ".XBaseIndex Get() Error: " & ex.Message)
             End Try
 
         End Get
@@ -153,7 +157,7 @@ Public MustInherit Class cMediationBaseFunction
                 Me.m_medData.IMedBase(Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID)) = value
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, ".XBaseIndex Set() Error: " & ex.Message)
             End Try
         End Set
     End Property
@@ -171,7 +175,7 @@ Public MustInherit Class cMediationBaseFunction
                 Return Me.m_medData.MedXbase(Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID))
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                cLog.Write(ex)
+                m_logger.LogError(ex, ".XBase Get() Error: " & ex.Message)
             End Try
 
         End Get
@@ -197,7 +201,7 @@ Public MustInherit Class cMediationBaseFunction
         Me.m_iEcoSimIndex = Array.IndexOf(Me.m_medData.MediationDBIDs, Me.m_iDBID)
         'can not update if there is not an index to the underlying data structures
         If (Me.m_iEcoSimIndex = cCore.NULL_VALUE) Or (Me.m_iEcoSimIndex > Me.m_medData.MediationShapes) Then
-            cLog.Write(Me.ToString & ".update(m_data) index out of bounds. Data not updated.")
+            m_logger.LogError(".update(m_data) index out of bounds. Data not updated.")
             Return False
         End If
 

@@ -27,6 +27,9 @@ Imports System.Data.SqlClient
 Imports System.Reflection
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -517,6 +520,7 @@ Namespace Database
         Private Const cDBVERSION_EWE5_MIN As Single = 1.6!
         ''' <summary>Newest EwE5 version number supported</summary>
         Private Const cDBVERSION_EWE5_MAX As Single = 1.73!
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEDatabase)()
 
 #End Region ' Private vars and constants
 
@@ -746,7 +750,7 @@ Namespace Database
                 Me.m_transaction = Me.GetConnection.BeginTransaction()
                 Return True
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cEwEDatabase.BeginTransaction()")
                 Return False
             End Try
         End Function
@@ -772,7 +776,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("cEwEDatabase: Transaction commit failed: {0}", ex.Message)
 #End If
-                cLog.Write(ex)
+                m_logger.LogError(ex, "CommitTransaction")
                 If (bRollbackOnError) Then Me.RollbackTransaction()
             End Try
             Return False
@@ -798,7 +802,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("cEwEDatabase: Transaction rollback failed: {0}", ex.Message)
 #End If
-                cLog.Write(ex)
+                m_logger.LogError(ex, "RollbackTransaction")
                 Return False
             End Try
         End Function
@@ -836,7 +840,7 @@ Namespace Database
                 End If
                 Return cmd
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cEwEDatabase.CreateDBCommand(" & strSQL & ")")
                 Return Nothing
             End Try
 
@@ -863,7 +867,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("GetReader error: {0}", ex.Message)
 #End If
-                cLog.Write(ex, eVerboseLevel.Detailed, "cEwEDatabase.GetReader(" & strSQL & ")")
+                m_logger.LogError(ex, "cEwEDatabase.GetReader(" & strSQL & ")")
                 reader = Nothing
             End Try
             Return reader
@@ -883,7 +887,7 @@ Namespace Database
             Try
                 reader.Close()
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cEwEDatabase.ReleaseReader()")
                 Debug.Assert(False, Me.ToString & ".ReleaseReader() Error: " & ex.Message)
                 Return False
             End Try
@@ -962,7 +966,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("** DB error '{0}' on query '{1}'", ex.Message, strSQL)
 #End If
-                cLog.Write(ex, eVerboseLevel.Detailed, "cEwEDatabase.GetValue(" & strSQL & ")")
+                m_logger.LogError(ex, "cEwEDatabase.GetValue(" & strSQL & ")")
             End Try
             Return value
         End Function
@@ -1027,7 +1031,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("* DB exception '{0}' on '{1}'", ex.Message, strSQL)
 #End If
-                cLog.Write(ex, eVerboseLevel.Detailed, "cEwEDatabase.Execute(" & strSQL & ")")
+                m_logger.LogError(ex, "cEwEDatabase.Execute(" & strSQL & ")")
                 bSucces = False
             End Try
             Return bSucces
@@ -1901,7 +1905,7 @@ Namespace Database
                     Me.ReleaseReader(reader)
 
                 Catch ex As Exception
-                    cLog.Write(ex, eVerboseLevel.Detailed, "cEwEDatabase.ReadObjectKeys(" & strSQL & ")")
+                    m_logger.LogError(ex, "cEwEDatabase.ReadObjectKeys(" & strSQL & ")")
                 End Try
             End If
 

@@ -136,7 +136,7 @@ Public Class cMonteCarloThread
 
         Catch ex As Exception
             Debug.Assert(False, ex.StackTrace)
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error in {0}.BalanceEcopathWithNewPars()", Me.ToString)
             Throw New ApplicationException(Me.ToString & ".BalanceEcopathWithNewPars()", ex)
         End Try
 

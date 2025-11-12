@@ -26,6 +26,9 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -43,6 +46,7 @@ Public Class cCConcSpatialRaster
     Private m_dMin As Double = 0
     Private m_dMean As Double = 0
     Private m_dStdDev As Double = 0.0#
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cCConcSpatialRaster)()
 
 #End Region ' Private vars
 
@@ -295,7 +299,7 @@ Public Class cCConcSpatialRaster
             writer.Dispose()
 
         Catch ex As Exception
-            cLog.Write(ex, "cSpatialRaster.SaveAsc(" & strFile & ")")
+            m_logger.LogError(ex, "cSpatialRaster.SaveAsc(" & strFile & ")")
             Return False
         End Try
         Return True

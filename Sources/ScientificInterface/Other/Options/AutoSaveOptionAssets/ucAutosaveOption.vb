@@ -25,9 +25,11 @@ Imports System.IO
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
-Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -53,6 +55,7 @@ Namespace Other
         Private m_writer As IResultsWriter = Nothing
 
         Private m_strPath As String = ""
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucAutosaveOption)()
 
 #Region " Construction / destruction "
 
@@ -197,7 +200,7 @@ Namespace Other
                 End If
             Catch ex As Exception
                 ' Whoah!
-                cLog.Write(ex, "ucAutoSaveOption.Apply(" & Me.m_autosavetype & ")")
+                m_logger.LogError(ex, "ucAutoSaveOption.Apply(" & Me.m_autosavetype & ")")
             End Try
 
         End Sub
@@ -250,7 +253,7 @@ Namespace Other
                     Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
                     cmd.Invoke(Me.m_strPath)
                 Catch ex As Exception
-                    cLog.Write(ex, "ucAutoSaveOption::OnVisitPath")
+                    m_logger.LogError(ex, "ucAutoSaveOption::OnVisitPath")
                 End Try
             End If
 

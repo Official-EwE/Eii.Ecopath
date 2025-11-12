@@ -32,10 +32,15 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports 
 
 Public Class cMSEUtils
+
+    Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEUtils)()
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -56,7 +61,7 @@ Public Class cMSEUtils
             reader = New StreamReader(strFile)
         Catch ex As Exception
             ' Report error
-            cLog.Write(ex, eVerboseLevel.Detailed, "MSEplugIn(" & strFile & ")")
+            m_logger.LogError(ex, "MSEplugIn(" & strFile & ")")
         End Try
 
         ' Done
@@ -97,7 +102,7 @@ Public Class cMSEUtils
             writer = New StreamWriter(strFile, bAppend)
             writer.AutoFlush = True
         Catch ex As Exception
-            cLog.Write(ex, eVerboseLevel.Detailed, "MSEplugIn(" & strFile & ")")
+            m_logger.LogError(ex, "MSEplugIn(" & strFile & ")")
         End Try
         Return writer
 
@@ -290,7 +295,7 @@ Public Class cMSEUtils
         If (msg IsNot Nothing) Then
             msg.AddVariable(New cVariableStatus(status, strMsg, eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0))
         End If
-        cLog.Write("CefasMSE: " & strMsg, eVerboseLevel.Standard)
+        m_logger.LogError("LogError. CefasMSE: " & strMsg, eVerboseLevel.Standard)
     End Sub
 
 End Class

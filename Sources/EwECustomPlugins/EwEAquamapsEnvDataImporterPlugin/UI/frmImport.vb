@@ -22,15 +22,15 @@
 Option Strict On
 Option Explicit On
 
-Imports System.Drawing
-Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Utilities
 Imports EwECore
-Imports System.Reflection
 Imports System.IO
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -44,6 +44,7 @@ Public Class frmImport
     Private m_uic As cUIContext = Nothing
     Private m_data As cImportData = Nothing
     Private m_bDragOver As Boolean = False
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmImport)()
 
 #End Region ' Private vars 
 
@@ -188,7 +189,7 @@ Public Class frmImport
             Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             cmd.Invoke(strURL)
         Catch ex As Exception
-            cLog.Write(ex, "AquamapsImporter::VisitURL(" & strURL & ")")
+            m_logger.LogError(ex, "AquamapsImporter::VisitURL(" & strURL & ")")
         End Try
 
     End Sub

@@ -27,6 +27,9 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -72,6 +75,7 @@ Namespace DataSources
         Private m_core As cCore = Nothing
         ''' <summary>Datasource name</summary>
         Private m_strName As String = ""
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDBDataSource)()
 
 #End Region ' Private vars
 
@@ -474,6 +478,7 @@ Namespace DataSources
 
             ''' <summary>Array of ID mappings, per datatype.</summary>
             Private m_dictMappings() As Dictionary(Of Integer, Integer)
+            Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cIDMappings)()
 
             Public Sub New()
                 Me.Initialize()
@@ -523,7 +528,7 @@ Namespace DataSources
                 Catch ex As Exception
                     ' Development-time panic event.
                     Debug.Assert(False, String.Format("cDBDataSource.Add: ID Mapping failed '{0}'", ex.Message))
-                    cLog.Write(ex, String.Format("cDBDataSource.Add: ID Mapping failed '{0}'. Dt {1}, IDfrom {2}, IDto {3}", ex.Message, dt.ToString, iIDOrg, iIDNew))
+                    m_logger.LogError(ex, "cDBDataSource.Add: ID Mapping failed '{0}'. Dt {1}, IDfrom {2}, IDto {3}", ex.Message, dt.ToString, iIDOrg, iIDNew)
                 End Try
             End Sub
 
@@ -545,7 +550,7 @@ Namespace DataSources
                     End If
                 Catch ex As Exception
                     ' Woops
-                    cLog.Write(ex, String.Format("cDBDataSource.GetID: ID retrieval failed '{0}'. Dt {1} ID {2}", ex.Message, dt.ToString, iIDOrg))
+                    m_logger.LogError(ex, "cDBDataSource.GetID: ID retrieval failed '{0}'. Dt {1} ID {2}", ex.Message, dt.ToString, iIDOrg)
                 End Try
                 Return iIDOrg
             End Function
@@ -10217,7 +10222,7 @@ Namespace DataSources
 
                 Catch ex As Exception
                     Me.LogError(String.Format("Error {0} occurred loading Ecospace ext data connections for scenario {1}", ex.Message, iScenarioID))
-                    cLog.Write(ex, "DBDataSource::LoadEcospaceDataConnections")
+                    m_logger.LogError(ex, "DBDataSource::LoadEcospaceDataConnections")
                     bSucces = False
                 End Try
             End While
@@ -10255,7 +10260,7 @@ Namespace DataSources
 
                 Catch ex As Exception
                     Me.LogError(String.Format("Error {0} occurred loading Ecospace ext data connections disabled state for scenario {1}", ex.Message, iScenarioID))
-                    cLog.Write(ex, "DBDataSource::LoadEcospaceDataConnectionsDisabled")
+                    m_logger.LogError(ex, "DBDataSource::LoadEcospaceDisabledDataConnections")
                     bSucces = False
                 End Try
             End While
@@ -10343,7 +10348,7 @@ Namespace DataSources
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred saving Ecospace ext data connections for scenario {1}", ex.Message, iScenarioID))
-                cLog.Write(ex, "DBDataSource::SaveEcospaceDataConnections")
+                m_logger.LogError(ex, "DBDataSource::SaveEcospaceDataConnections")
                 bSucces = False
             End Try
 
@@ -10396,7 +10401,7 @@ Namespace DataSources
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred saving Ecospace ext data connection disabled state for scenario {1}", ex.Message, iScenarioID))
-                cLog.Write(ex, "DBDataSource::SaveEcospaceDataConnectionsDisabled")
+                m_logger.LogError(ex, "DBDataSource::SaveEcospaceDataConnectionsDisabled")
                 bSucces = False
             End Try
 

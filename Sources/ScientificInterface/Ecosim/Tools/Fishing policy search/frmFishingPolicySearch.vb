@@ -27,6 +27,9 @@ Imports EwECore.FishingPolicy
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -55,6 +58,7 @@ Namespace Ecosim
         Private m_lptsResults() As ResultPoints
         Private m_zghResults As cZedGraphHelper
         Private m_bInUpdate As Boolean = False
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmFishingPolicySearch)()
 
         Public Sub New()
             Me.InitializeComponent()
@@ -436,11 +440,11 @@ Namespace Ecosim
 
                 cApplicationStatusNotifier.EndProgress(Me.Core)
 
-                Me.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED, _
+                Me.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_COMPLETED,
                         eMessageType.NotSet, eCoreComponentType.Ecosim, eMessageImportance.Information))
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "Error in Fishing Policy search.")
                 Me.SendErrorMessage("Error in Fishing Policy search. " & ex.Message)
             End Try
 
@@ -451,11 +455,11 @@ Namespace Ecosim
             Try
                 Me.m_gridSystemObjectives.RemoveDataRows()
 
-                Me.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_STARTED, _
+                Me.Core.Messages.SendMessage(New cMessage(My.Resources.SEARCH_STATUS_STARTED,
                         eMessageType.NotSet, eCoreComponentType.Ecosim, eMessageImportance.Information))
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "RunStartedHandler. Error in Fishing Policy search.")
                 Me.SendErrorMessage("Error in Fishing Policy search. " & ex.Message)
             End Try
 
@@ -473,7 +477,7 @@ Namespace Ecosim
                     Me.m_gridSystemObjectivesMulti.InsertOneIterResult(results, Me.m_manager.nSearchBlocks, DirectCast(Me.m_blocks.ParmBlockCodes, ucParmBlockCodes))
                 End If
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "RunCompletedHandler. Error in Fishing Policy search.")
                 Me.SendErrorMessage("Error in Fishing Policy search. " & ex.Message)
             End Try
 
@@ -500,7 +504,7 @@ Namespace Ecosim
 
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "SearchProgressHandler. Error in Fishing Policy search.")
                 Me.SendErrorMessage("Error in Fishing Policy search. " & ex.Message)
             End Try
 

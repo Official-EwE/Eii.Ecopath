@@ -21,11 +21,12 @@
 
 Option Strict On
 
-Imports System.Data
 Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
-Imports EwEUtils.Database
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -47,6 +48,7 @@ Namespace ExternalData
 
         Private Shared s_core As cCore = Nothing
         Private m_strProviderName As String = ""
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cTaxonDataSource)()
 
 #End Region ' Private vars
 
@@ -232,7 +234,7 @@ Namespace ExternalData
 
             Catch ex As Exception
                 'make sure all exceptions are handled here and not thrown back to the PluginManager
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cTaxonDataSource.ReceiveData() Error: {0}", ex.Message)
             End Try
 
         End Function

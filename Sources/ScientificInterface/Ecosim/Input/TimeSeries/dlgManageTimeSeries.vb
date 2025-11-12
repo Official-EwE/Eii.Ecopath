@@ -24,6 +24,9 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -76,6 +79,7 @@ Public Class dlgManageTimeSeries
 
     Private m_tr As cTimeSeriesTextReader = Nothing
     Private m_strImportFileName As String = ""
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgManageTimeSeries)()
 
     Public Sub New(uic As cUIContext, mode As eModeType)
 
@@ -312,7 +316,7 @@ Public Class dlgManageTimeSeries
                     Me.ReloadTimeSeries()
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "DropTS")
+                m_logger.LogError(ex, "DropTS")
             End Try
         End If
         MyBase.OnDragDrop(e)

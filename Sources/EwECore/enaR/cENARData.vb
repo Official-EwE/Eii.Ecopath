@@ -252,7 +252,7 @@ Public Class cENAData
         '    End If
 
         'Catch ex As Exception
-        '    cLog.Write(ex)
+        '    m_logger.LogError(ex, "Exception in cEcoNetwork.PrepareENARDataForTimeStep({0})", iTime)
         '    Debug.Assert(False, ex.StackTrace)
         '    Return False
         'End Try

@@ -23,10 +23,12 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -44,6 +46,7 @@ Friend Class frmUI
     Private m_fmtBAType As New cBACalcTypeFormatter()
     Private m_fmtDatasourceType As New cDatasourceTypeFormatter()
     Private m_qeh As cQuickEditHandler = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmUI)()
 
 #End Region ' Private vars
 
@@ -161,7 +164,7 @@ Friend Class frmUI
         Try
             Me.Apply()
         Catch ex As Exception
-            cLog.Write(ex, "frmUI::OnGenerateEnableChanged")
+            m_logger.LogError(ex, "frmUI::OnGenerateEnableChanged")
         End Try
 
     End Sub
@@ -178,7 +181,7 @@ Friend Class frmUI
     '            Me.Apply()
     '        End If
     '    Catch ex As Exception
-    '        cLog.Write(ex, "frmUI::OnBrowseOutputPath")
+    '        m_logger.LogError(ex, "frmUI::OnBrowseOutputPath")
     '    End Try
 
     'End Sub
@@ -190,7 +193,7 @@ Friend Class frmUI
         Try
             Me.Apply()
         Catch ex As Exception
-            cLog.Write(ex, "frmUI::OnOutputPathTextChanged")
+            m_logger.LogError(ex, "frmUI::OnOutputPathTextChanged")
         End Try
 
     End Sub
@@ -202,7 +205,7 @@ Friend Class frmUI
         Try
             Me.Apply()
         Catch ex As Exception
-            cLog.Write(ex, "frmUI::OnComboSelectionChanged")
+            m_logger.LogError(ex, "frmUI::OnComboSelectionChanged")
         End Try
 
     End Sub
@@ -215,7 +218,7 @@ Friend Class frmUI
         Try
             Me.Apply()
         Catch ex As Exception
-            cLog.Write(ex, "frmUI::OnWeightPowerChanged")
+            m_logger.LogError(ex, "frmUI::OnWeightPowerChanged")
         End Try
 
     End Sub
@@ -226,7 +229,7 @@ Friend Class frmUI
         Try
             e.Value = Me.m_fmtBAType.ToString(DirectCast(e.ListItem, cEcopathModelFromEcosim.eBACalcTypes))
         Catch ex As Exception
-            cLog.Write(ex, "frmUI::OnFormatBACalcType")
+            m_logger.LogError(ex, "frmUI::OnFormatBACalcType")
         End Try
 
     End Sub
@@ -237,7 +240,7 @@ Friend Class frmUI
         Try
             e.Value = Me.m_fmtDatasourceType.ToString(DirectCast(e.ListItem, eDataSourceTypes))
         Catch ex As Exception
-            cLog.Write(ex, "frmUI::OnFormatDatabaseType")
+            m_logger.LogError(ex, "frmUI::OnFormatDatabaseType")
         End Try
 
     End Sub
@@ -250,7 +253,7 @@ Friend Class frmUI
             Next
             Me.m_grid.RefreshContent()
         Catch ex As Exception
-            cLog.Write(ex, "EwEModelFromEcosim.frmUI:SelectAll")
+            m_logger.LogError(ex, "EwEModelFromEcosim.frmUI:SelectAll")
         End Try
     End Sub
 
@@ -262,7 +265,7 @@ Friend Class frmUI
             Next
             Me.m_grid.RefreshContent()
         Catch ex As Exception
-            cLog.Write(ex, "EwEModelFromEcosim.frmUI:SelectNone")
+            m_logger.LogError(ex, "EwEModelFromEcosim.frmUI:SelectNone")
         End Try
     End Sub
 

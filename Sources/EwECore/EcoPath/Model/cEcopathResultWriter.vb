@@ -25,10 +25,12 @@ Imports System.Net
 Imports EwECore.Style
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
+
 
 #End Region ' Imports
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Writer to save Ecopath estimates to a CSV file.
@@ -40,6 +42,7 @@ Public Class cEcopathResultWriter
 
     Private m_core As cCore = Nothing
     Private m_data As cEcopathDataStructures = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcopathResultWriter)()
 
 #End Region ' Private vars
 
@@ -76,7 +79,7 @@ Public Class cEcopathResultWriter
             If (Not bQuiet) Then
                 Me.m_core.Messages.SendMessage(msg)
             Else
-                cLog.Write(msg)
+                m_logger.LogInformation(msg.Message)
             End If
             Return False
         End If
@@ -89,7 +92,7 @@ Public Class cEcopathResultWriter
             If (Not bQuiet) Then
                 Me.m_core.Messages.SendMessage(msg)
             Else
-                cLog.Write(msg)
+                m_logger.LogInformation(msg.Message)
             End If
         Else
             msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_FAILED, strPath),
@@ -97,7 +100,7 @@ Public Class cEcopathResultWriter
             If (Not bQuiet) Then
                 Me.m_core.Messages.SendMessage(msg)
             Else
-                cLog.Write(msg)
+                m_logger.LogInformation(msg.Message)
             End If
         End If
         Return bSucces
@@ -165,7 +168,7 @@ Public Class cEcopathResultWriter
             sw.Close()
         Else
             bSuccess = False
-            cLog.Write(Me.ToString + ".WriteCSV() failed to open file.")
+            m_logger.LogError(Me.ToString + ".WriteCSV() failed to open file.")
         End If
         Return bSuccess
 
@@ -209,7 +212,7 @@ Public Class cEcopathResultWriter
             sw.Close()
         Else
             bSuccess = False
-            cLog.Write(Me.ToString + ".WriteCSV() failed to open file.")
+            m_logger.LogError(Me.ToString + ".WriteCSV() failed to open file.")
         End If
         Return bSuccess
 

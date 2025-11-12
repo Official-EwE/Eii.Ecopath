@@ -29,6 +29,9 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -110,6 +113,7 @@ Namespace Ecosim
         End Enum
 
         Private m_animationstate As eAnimationState = eAnimationState.Idle
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmEcosimFlowDiagram)()
 
 #End Region ' Private variables
 
@@ -717,7 +721,7 @@ Namespace Ecosim
                     Me.Core.Messages.SendMessage(msg)
 
                 Catch ex As Exception
-                    cLog.Write(ex, "frmEcosimFD::saveimage(" & cmdfs.FileName & ")")
+                    m_logger.LogError(ex, "frmEcosimFD::saveimage(" & cmdfs.FileName & ")")
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdfs.FileName, ex.Message),
                                 eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                     Me.Core.Messages.SendMessage(msg)
@@ -799,7 +803,7 @@ Namespace Ecosim
 
                     Catch ex As Exception
 
-                        cLog.Write(ex, "frmEcosimFD::SaveImage(" & Path.Combine(strPath, strDestFileName) & ")")
+                        m_logger.LogError(ex, "frmEcosimFD::SaveImage(" & Path.Combine(strPath, strDestFileName) & ")")
                         bSuccess = False
 
                         Dim strError As String = String.Format(My.Resources.ECOSIM_FD_SAVE_FAILURE_DETAIL, currTimeStep, ex.Message)
@@ -968,7 +972,7 @@ Namespace Ecosim
             Catch exDisp As ObjectDisposedException
                 ' Swallow this, just bad luck
             Catch ex As Exception
-                cLog.Write(ex, "frmEcosimFD.AppendTextBox")
+                m_logger.LogError(ex, "frmEcosimFD.AppendTextBox")
             End Try
 
         End Sub
@@ -985,7 +989,7 @@ Namespace Ecosim
             Catch exDisp As ObjectDisposedException
                 ' Swallow this, just bad luck
             Catch ex As Exception
-                cLog.Write(ex, "frmEcosimFD.AppendButton")
+                m_logger.LogError(ex, "frmEcosimFD.AppendButton")
             End Try
         End Sub
 
@@ -1002,7 +1006,7 @@ Namespace Ecosim
             Catch exDisp As ObjectDisposedException
                 ' Swallow this, just bad luck
             Catch ex As Exception
-                cLog.Write(ex, "frmEcosimFD.AppendSlider")
+                m_logger.LogError(ex, "frmEcosimFD.AppendSlider")
             End Try
 
         End Sub

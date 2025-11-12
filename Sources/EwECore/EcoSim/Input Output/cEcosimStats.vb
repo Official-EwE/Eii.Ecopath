@@ -20,9 +20,14 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Public Class cEcosimStats
     Inherits cCoreInputOutputBase
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcosimStats)()
 
     Sub New(core As cCore)
         MyBase.New(core)
@@ -50,7 +55,7 @@ Public Class cEcosimStats
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcosimStats.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcosimStats. Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".New(nGroups) Error creating new cEcosimStats. Error: " & ex.Message)
         End Try
 
     End Sub

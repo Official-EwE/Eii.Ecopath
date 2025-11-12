@@ -22,12 +22,17 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
 Namespace Controls.Map.Layers
 
     Public Class ucLayerEditorMigration
+
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucLayerEditorMigration)()
 
         Public Sub New()
             MyBase.New()
@@ -96,7 +101,7 @@ Namespace Controls.Map.Layers
             Try
                 Me.Editor.Month = Me.m_cmbMonth.SelectedIndex + 1
             Catch ex As Exception
-                cLog.Write(ex, "ucLayerMigration.OnMonthChanged()")
+                m_logger.LogError(ex, "ucLayerMigration.OnMonthChanged()")
             End Try
         End Sub
 
@@ -106,9 +111,9 @@ Namespace Controls.Map.Layers
                 Me.Editor.Next()
                 Me.UpdateContent(Me.Editor)
             Catch ex As Exception
-                cLog.Write(ex, "ucLayerMigration.OnNextMonth()")
+                m_logger.LogError(ex, "ucLayerMigration.OnNextMonth()")
             End Try
-         End Sub
+        End Sub
 
 #End Region ' Event handlers
 

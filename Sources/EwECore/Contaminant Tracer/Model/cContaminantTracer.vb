@@ -21,6 +21,9 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -72,6 +75,7 @@ Public Class cContaminantTracer
     Private m_ESData As cEcosimDatastructures
     Private m_Stanza As cStanzaDatastructures
     Private m_TracerData As cContaminantTracerDataStructures
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cContaminantTracer)()
 
 
     Public Sub Cupdate(Biom() As Single)
@@ -306,7 +310,7 @@ Public Class cContaminantTracer
             Me.m_TracerData.redimForEcosimRun(Me.m_ESData.nGroups, Me.m_ESData.NTimes)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Contaminant Tracer initialization error")
             Throw New ApplicationException("Contaminant Tracer initialization error: " & ex.Message, ex)
         End Try
 

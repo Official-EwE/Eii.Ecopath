@@ -20,12 +20,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
-Imports EwECore
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -41,6 +40,7 @@ Namespace Other
         Implements IUIElement
 
         Private m_qeh As cQuickEditHandler = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucOptionsAutoRun)()
 
 #Region " Constructors "
 
@@ -130,7 +130,7 @@ Namespace Other
                 Me.m_grid.Apply()
 
             Catch ex As Exception
-                cLog.Write(ex, "ucOptionsAutoRun::Apply")
+                m_logger.LogError(ex, "ucOptionsAutoRun::Apply")
                 Return IOptionsPage.eApplyResultType.Failed
             End Try
 
@@ -146,7 +146,7 @@ Namespace Other
             Try
                 Me.m_grid.ClearAll()
             Catch ex As Exception
-                cLog.Write(ex, "ucOptionsAutoRun::SetDefaults")
+                m_logger.LogError(ex, "ucOptionsAutoRun::SetDefaults")
             End Try
 
         End Sub

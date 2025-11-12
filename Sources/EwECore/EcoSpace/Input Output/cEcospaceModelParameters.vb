@@ -20,12 +20,16 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Public Class cEcospaceModelParameters
     Inherits cCoreInputOutputBase
 
     ''' <summary>Available Ecospace result writers.</summary>
     Private m_EcospaceResultsWriters As New List(Of EwEUtils.Core.IEcospaceResultsWriter)
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceModelParameters)()
 
 #Region " Constructor "
 
@@ -264,7 +268,7 @@ Public Class cEcospaceModelParameters
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceModelParameters.")
-            cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceModelParameters. Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".New(..) Error creating new cEcospaceModelParameters. Error: " & ex.Message)
         End Try
     End Sub
 

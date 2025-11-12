@@ -20,9 +20,14 @@
 Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 Public Class cEcospaceGroupInput
     Inherits cCoreGroupBase
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceGroupInput)()
 
 #Region " Constructor "
 
@@ -97,7 +102,7 @@ Public Class cEcospaceGroupInput
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceGroup.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cEcospaceGroup. Error: " & ex.Message)
+            m_logger.LogError(ex, Me.ToString & ".New(nGroups) Error creating new cEcospaceGroup. Error: " & ex.Message)
         End Try
 
     End Sub

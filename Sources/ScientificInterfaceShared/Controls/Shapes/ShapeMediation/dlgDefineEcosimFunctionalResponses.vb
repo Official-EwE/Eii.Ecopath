@@ -26,9 +26,10 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports ZedGraph
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -45,6 +46,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
     Private m_bInUpdate As Boolean = False
     Private m_managertype As eCoreComponentType
     Private m_bInInit As Boolean = True
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgDefineEcosimFunctionalResponses)()
 
 #End Region ' Private variables
 
@@ -74,7 +76,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
         Try
             Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().ToString(shape))
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error localizing dialogue title")
         End Try
         Me.m_bInInit = False
 
@@ -95,7 +97,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
             Me.LoadDrivers()
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Error loading dialogue")
         End Try
 
         Me.m_bInUpdate = False
@@ -122,7 +124,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
         Try
             Me.UpdateControls()
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "OnGroupSelectionChanged. Error updating controls on group selection changed")
         End Try
     End Sub
 
@@ -286,7 +288,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "loadMaps() Exception")
             Debug.Assert(False, Me.ToString & ".loadMaps() Exception: " & ex.Message)
         End Try
 
@@ -312,7 +314,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "GetSelectedDriver() Exception")
         End Try
 
         Return Nothing
@@ -334,7 +336,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
             End Select
 
         Catch ex As Exception
-            cLog.Write(ex)
+            m_logger.LogError(ex, "GetManager() Exception")
         End Try
 
         Return Nothing

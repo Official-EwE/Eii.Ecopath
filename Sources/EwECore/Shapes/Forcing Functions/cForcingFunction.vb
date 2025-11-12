@@ -19,6 +19,9 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #Region " Forcing Shape "
 
@@ -51,6 +54,7 @@ Public Class cForcingFunction
     Protected m_bInInit As Boolean
 
     Protected m_bLockUpdates As Boolean
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cForcingFunction)()
 
 #End Region ' Protected data
 
@@ -293,7 +297,7 @@ Public Class cForcingFunction
             Me.m_iEcoSimIndex = Array.IndexOf(Me.m_data.ForcingDBIDs, Me.m_iDBID)
             Debug.Assert(Me.m_iEcoSimIndex >= 0, Me.ToString & ".Update() Failed to find index for Database ID " & Me.m_iDBID)
             If (Me.m_iEcoSimIndex = cCore.NULL_VALUE) Or (Me.m_iEcoSimIndex > Me.m_data.NumForcingShapes) Then
-                cLog.Write(Me.ToString & ".Update() index out of bounds. Data not updated.")
+                m_logger.LogError(Me.ToString & ".Update() index out of bounds. Data not updated.")
                 Return False
             End If
 
@@ -321,7 +325,7 @@ Public Class cForcingFunction
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".update() Error: " & ex.Message)
-            cLog.Write(Me.ToString & ".update() Error: " & ex.Message)
+            m_logger.LogError(ex, ".update() Error: " & ex.Message)
             Return False
 
         End Try

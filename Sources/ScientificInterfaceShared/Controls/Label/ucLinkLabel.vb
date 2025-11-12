@@ -23,6 +23,9 @@ Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -47,6 +50,7 @@ Namespace Controls
 
         Private m_strHyperlink As String = ""
         Private m_strTextOrg As String = ""
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucLinkLabel)()
 
         Public Sub New()
             MyBase.New()
@@ -97,7 +101,7 @@ Namespace Controls
                     ' Go!
                     Process.Start(Me.m_strHyperlink)
                 Catch ex As Exception
-                    cLog.Write(ex, "cEwELinkLabel::OnLinkClicked(" & Me.Name & ", " & Me.m_strHyperlink & ")")
+                    m_logger.LogError(ex, "cEwELinkLabel::OnLinkClicked(" & Me.Name & ", " & Me.m_strHyperlink & ")")
                 End Try
             End If
 

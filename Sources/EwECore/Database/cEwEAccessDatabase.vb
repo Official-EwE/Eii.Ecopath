@@ -24,12 +24,13 @@ Option Strict On
 Imports System.IO
 Imports System.Data.OleDb
 Imports System.Reflection
-Imports System.Text
 Imports EwECore.DataSources
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -71,6 +72,8 @@ Namespace Database
 
         ''' <summary>File name to access database.</summary>
         Private m_strFileName As String = ""
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEAccessDatabase)()
+
 
 #End Region ' Private vars
 
@@ -105,13 +108,13 @@ Namespace Database
             Select Case format
                 Case eDataSourceTypes.Access2003
                     strSource = "EwE6.mdb"
-                    cLog.Write("Create DB: selected MDB format")
+                    m_logger.LogInformation("Create DB: selected MDB format")
                 Case eDataSourceTypes.Access2007
                     strSource = "EwE6.accdb"
-                    cLog.Write("Create DB: selected ACCDB format")
+                    m_logger.LogInformation("Create DB: selected ACCDB format")
                 Case Else
                     datResult = eDatasourceAccessType.Failed_UnknownType
-                    cLog.Write("Create DB: cannot determine format")
+                    m_logger.LogInformation("Create DB: cannot determine format")
             End Select
 
             If (datResult = eDatasourceAccessType.Success) Then
@@ -132,20 +135,20 @@ Namespace Database
                                 End If
                             Catch ex As Exception
                                 ' Do not let eggs make the pot explode
-                                cLog.Write("Create DB: found a rotten egg: " & ex.Message)
+                                m_logger.LogError(ex, "Create DB: found a rotten egg: " & ex.Message)
                             End Try
                             db.Close()
                         Else
-                            cLog.Write("Create DB: Unable to open DB using required drivers, check driver installation.")
+                            m_logger.LogError("Create DB: Unable to open DB using required drivers, check driver installation.")
                         End If
                         db = Nothing
                     Catch ex As Exception
-                        cLog.Write(ex)
+                        m_logger.LogError(ex, "Create DB: Exception when updating model name: " & ex.Message)
                         datResult = eDatasourceAccessType.Failed_Unknown
                     End Try
                 Else
                     'Unable to write to target location
-                    cLog.Write("Create DB: Unable to save to target location " & strDatabase)
+                    m_logger.LogError("Create DB: Unable to save to target location " & strDatabase)
                     datResult = eDatasourceAccessType.Failed_CannotSave
                 End If
             End If
@@ -285,15 +288,15 @@ Namespace Database
                             datResult = eDatasourceAccessType.Failed_Unknown
                         End If
                         ' OleDb got into trouble
-                        cLog.Write(cStringUtils.Localize("Open DB: OleDbException {0}, {1} when opening '{2}'", ex.Message, ex.ErrorCode, Me.m_conn.ConnectionString))
+                        m_logger.LogError(ex, cStringUtils.Localize("Open DB: OleDbException {0}, {1} when opening '{2}'", ex.Message, ex.ErrorCode, Me.m_conn.ConnectionString))
 
                     Catch ex As InvalidOperationException
                         datResult = eDatasourceAccessType.Failed_OSUnsupported
-                        cLog.Write(cStringUtils.Localize("Open DB: InvalidOperationException {0} when opening {1}", ex.Message, strDatabase))
+                        m_logger.LogError(ex, cStringUtils.Localize("Open DB: InvalidOperationException {0} when opening {1}", ex.Message, strDatabase))
 
                     Catch ex As Exception
                         datResult = eDatasourceAccessType.Failed_Unknown
-                        cLog.Write(cStringUtils.Localize("Open DB: Exception {0} when opening {1}", ex.Message, strDatabase))
+                        m_logger.LogError(ex, cStringUtils.Localize("Open DB: Exception {0} when opening {1}", ex.Message, strDatabase))
 
                     End Try
 
@@ -392,12 +395,12 @@ Namespace Database
                 adapter.DeleteCommand = cmdBuilder.GetDeleteCommand(True)
 
             Catch ex As InvalidOperationException
-                cLog.Write(cStringUtils.Localize("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
+                m_logger.LogError(ex, cStringUtils.Localize("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
                 Debug.Assert(False, cStringUtils.Localize("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
                 adapter = Nothing
 
             Catch ex As Exception
-                cLog.Write(cStringUtils.Localize("Error when opening adapter for query {0}: {1}", strSQL, ex.Message))
+                m_logger.LogError(ex, cStringUtils.Localize("Error when opening adapter for query {0}: {1}", strSQL, ex.Message))
                 Debug.Assert(False, cStringUtils.Localize("Error when opening adapter for query {0}: {1}", strSQL, ex.Message))
                 adapter = Nothing
             End Try

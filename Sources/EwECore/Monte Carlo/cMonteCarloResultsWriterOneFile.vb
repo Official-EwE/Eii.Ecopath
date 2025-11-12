@@ -24,6 +24,9 @@ Imports System.IO
 Imports System.Text
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -34,6 +37,7 @@ Public Class cMonteCarloResultsWriterOneFile
     Implements IMonteCarloResultsWriter
 
     Private m_msgStatus As cMessage = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMonteCarloResultsWriterOneFile)()
 
     Public Sub New(MonteCarlo As cEcosimMonteCarlo, theCore As cCore)
 
@@ -74,7 +78,7 @@ Public Class cMonteCarloResultsWriterOneFile
             Me.m_msgStatus = New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_RESULTS_SAVED_SUCCESS, strFile, ex.Message),
                                           eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo)
             Me.m_bSaveError = True
-            cLog.Write(ex)
+            m_logger.LogError(ex, "Init() Exception: " & ex.Message)
         End Try
     End Sub
 

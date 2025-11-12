@@ -34,10 +34,12 @@
 
 Option Strict On
 Imports System.IO
-Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -64,6 +66,7 @@ Namespace SpatialData
         Protected m_varName As eVarNameFlags = Nothing
         ''' <summary>Core counter that this adapter operates onto.</summary>
         Protected m_coreCounter As eCoreCounterTypes = eCoreCounterTypes.NotSet
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSpatialDataAdapter)()
 
 #End Region ' Private vars
 
@@ -259,7 +262,7 @@ Namespace SpatialData
 
                                 ' Internal log, no need to translate
                                 strMsg = "cSpatialDataAdapter::Populate({0}.{1}) dataset {2} trying to load {3} data for T{4}, ext({5},{6}) to ({7},{8})"
-                                cLog.Write(cStringUtils.Localize(strMsg, Me.ToString, layer.ToString(), ds.CustomName, dtVirt.ToShortDateString, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
+                                m_logger.LogInformation(cStringUtils.Localize(strMsg, Me.ToString, layer.ToString(), ds.CustomName, dtVirt.ToShortDateString, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
 
                                 ' #Yes: Can lock that data?
                                 If (ds.LockDataAtT(dtVirt, dCellSize, bm.PosTopLeft, bm.PosBottomRight, bm.ProjectionString)) Then
@@ -277,7 +280,7 @@ Namespace SpatialData
                                     Catch ex As Exception
                                         Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message),
                                                                                    eStatusFlags.MissingParameter)
-                                        cLog.Write(ex, "cSpatialDataAdapter::Populate(" & layer.ToString() & ")")
+                                        m_logger.LogError(ex, "cSpatialDataAdapter::Populate(" & layer.ToString() & ")")
                                         bSuccess = False
                                     End Try
 
@@ -313,7 +316,7 @@ Namespace SpatialData
                                     Else
                                         strMsg = cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOAD, layer.ToString(), ds.CustomName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize)
                                         Me.m_core.SpatialOperationLog.LogOperation(strMsg, eStatusFlags.MissingParameter)
-                                        cLog.Write(strMsg)
+                                        m_logger.LogInformation(strMsg)
                                         bSuccess = False
                                     End If
 
@@ -324,7 +327,7 @@ Namespace SpatialData
                                     Me.m_core.SpatialOperationLog.EndLayerLog()
                                 Else
                                     strMsg = cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOCK, layer.ToString(), ds.CustomName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize)
-                                    cLog.Write(strMsg)
+                                    m_logger.LogInformation(strMsg)
                                     bSuccess = False
                                 End If
 
@@ -426,7 +429,7 @@ Namespace SpatialData
             Catch ex As Exception
                 Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message),
                                                            eStatusFlags.FailedValidation)
-                cLog.Write(ex, "cSpatialDataAdapter::Adapt(" & layer.ToString() & ")")
+                m_logger.LogError(ex, "cSpatialDataAdapter::Adapt(" & layer.ToString() & ")")
                 bSuccess = False
             End Try
 
@@ -455,7 +458,7 @@ Namespace SpatialData
             Catch ex As Exception
 
                 Dim strMsg As String = "cSpatialDataAdapter::SetCell({0}) at ({1},{2})={3}: exception {4}"
-                cLog.Write(ex, cStringUtils.Localize(strMsg, layer.ToString, iCol, iRow, sCellValueAtT))
+                m_logger.LogError(ex, cStringUtils.Localize(strMsg, layer.ToString, iCol, iRow, sCellValueAtT))
 
                 Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_ADAPTERROR, iRow, iCol, sCellValueAtT, ex.Message),
                                                            eStatusFlags.MissingParameter)
@@ -530,11 +533,11 @@ Namespace SpatialData
 #If DEBUG Then
                         Console.WriteLine("Adapter " & Me.ToString & " saved content of layer " & layer.ToString & " to " & strFileName)
 #End If
-                        cLog.Write("cSpatialDataAdapter::SaveLayerData successful for " & layer.Name & " into " & strFileName, eVerboseLevel.Detailed)
+                        m_logger.LogInformation("cSpatialDataAdapter::SaveLayerData successful for " & layer.Name & " into " & strFileName, eVerboseLevel.Detailed)
 
                     Catch ex As Exception
                         ' Log failure, plod along
-                        cLog.Write(ex, "cSpatialDataAdapter::SaveLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
+                        m_logger.LogError(ex, "cSpatialDataAdapter::SaveLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
                     End Try
 
                 End If
@@ -583,10 +586,10 @@ Namespace SpatialData
                         Next iRow
                         sr.Close()
                         sr = Nothing
-                        cLog.Write("cSpatialDataAdapter::RestoreLayerData successful for " & layer.Name & " from " & strFileName, eVerboseLevel.Detailed)
+                        m_logger.LogInformation("cSpatialDataAdapter::RestoreLayerData successful for " & layer.Name & " from " & strFileName, eVerboseLevel.Detailed)
                     Catch ex As Exception
                         ' Whoah!
-                        cLog.Write(ex, "cSpatialDataAdapter::RestoreLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
+                        m_logger.LogError(ex, "cSpatialDataAdapter::RestoreLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
                     End Try
                     ' Remove this temp file
                     cFileUtils.PurgeTempFile(strFileName)

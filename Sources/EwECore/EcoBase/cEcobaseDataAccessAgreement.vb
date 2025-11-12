@@ -20,15 +20,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
-Imports System.Xml.Serialization
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports System.Text
 Imports System.Xml
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwEUtils.SystemUtilities
-Imports EwEUtils.NetUtilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
+
 
 #End Region ' Imports
 
@@ -43,6 +41,7 @@ Namespace WebServices.Ecobase
 
         Private m_strAuthorAgreement As String = ""
         Private m_strUserAgreement As String = ""
+        Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcobaseDataAccessAgreement)()
 
 #Region " Variables "
 
@@ -116,7 +115,7 @@ Namespace WebServices.Ecobase
                 Return selfie
             Catch ex As Exception
                 ' Hmm
-                cLog.Write(ex, "cEcobaseDataAccessAgreement.FromXML")
+                m_logger.LogError(ex, "cEcobaseDataAccessAgreement.FromXML")
             End Try
 
             Return Nothing

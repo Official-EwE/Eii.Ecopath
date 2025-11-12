@@ -30,13 +30,15 @@ Imports EwECore
 Imports EwECore.WebServices
 Imports EwECore.WebServices.Ecobase
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
+Imports EwEValueChainV2Plugin
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
 
+#End Region
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Dialog to allow users to submit a model to Ecobase
@@ -66,6 +68,7 @@ Public Class dlgEcobaseExport
     Private m_fpTmin As cEwEFormatProvider = Nothing
     Private m_fpTmean As cEwEFormatProvider = Nothing
     Private m_fpTmax As cEwEFormatProvider = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgEcobaseExport)()
 
 #End Region ' Private vars
 
@@ -198,7 +201,7 @@ Public Class dlgEcobaseExport
         Try
             Me.UpdateControls()
         Catch ex As Exception
-            cLog.Write(ex, "dlgEcobaseExport.OnContentChanged")
+            m_logger.LogError(ex, "dlgEcobaseExport.OnContentChanged")
         End Try
 
     End Sub
@@ -223,7 +226,7 @@ Public Class dlgEcobaseExport
             cmd.Invoke(strURL)
 
         Catch ex As Exception
-            cLog.Write(ex, "dlgEcobaseExport.OnViewDOIOnline(" & strDOI & ")")
+            m_logger.LogError(ex, "dlgEcobaseExport.OnViewDOIOnline(" & strDOI & ")")
         End Try
 
     End Sub
@@ -288,7 +291,7 @@ Public Class dlgEcobaseExport
         Catch ex As Exception
             ' JS 05Nov19: Show error message in any other case
             Me.m_rtfAuthorAgreement.Text = "<unable to obtain Ecobase author agreement text>"
-            cLog.Write(ex, "dlgEcobaseExport.UpdateControls")
+            m_logger.LogError(ex, "dlgEcobaseExport.UpdateControls")
         End Try
 
         Me.m_pbModelName.BackgroundImage = If(bAgreementOK, SharedResources.OK, SharedResources.Critical)

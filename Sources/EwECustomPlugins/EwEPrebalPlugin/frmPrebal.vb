@@ -24,6 +24,9 @@ Option Strict On
 
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -36,7 +39,7 @@ Namespace Ecopath
 
         Private m_eng As cPrebalModel = Nothing
         Private m_helper As cPrebalZedGraphHelper = Nothing
-        'Private m_cmdShowGroups As cCommand = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmPrebal)()
 
         Public Sub New(uic As cUIContext, eng As cPrebalModel)
             MyBase.New()
@@ -77,7 +80,7 @@ Namespace Ecopath
                 'End If
                 Me.m_helper.Detach()
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "frmPrebal.OnFormClosed() Error detaching graph helper")
             End Try
 
             MyBase.OnFormClosed(e)

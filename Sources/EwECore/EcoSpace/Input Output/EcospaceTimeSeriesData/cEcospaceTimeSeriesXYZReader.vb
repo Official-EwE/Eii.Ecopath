@@ -22,6 +22,9 @@ Option Strict On
 Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 'ToDo: complete intellisense XML code comments
 
@@ -37,6 +40,8 @@ Namespace EcospaceTimeSeries
         Private m_MaxCol As Integer
 
         Private m_dctFailedRecs As Dictionary(Of eTimeSeriesRecValidations, Integer)
+
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceTimeSeriesXYZReader)()
 
         Public Sub New(TimeSeriesFile As String, TSManager As cEcospaceTimeSeriesManager)
             Me.FileName = TimeSeriesFile
@@ -79,7 +84,7 @@ Namespace EcospaceTimeSeries
 
             Catch ex As Exception
 
-                EwEUtils.Core.cLog.Write(ex, Me.ToString + ".Read() failed to read time series file '" + Me.FileName + "'")
+                m_logger.LogError(ex, Me.ToString + ".Read() failed to read time series file '" + Me.FileName + "'")
                 Throw New Exception(ex.Message)
 
             End Try

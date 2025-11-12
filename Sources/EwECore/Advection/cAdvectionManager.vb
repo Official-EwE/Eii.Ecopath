@@ -100,7 +100,7 @@ Namespace Ecospace.Advection
 
         Private Delegate Sub CallingThreadDelegate()
 
-        Private ReadOnly _logger As ILogger = LoggingContext.CreateLogger(Of cAdvectionManager)()
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cAdvectionManager)()
 
 #End Region ' Private Variables
 
@@ -179,8 +179,7 @@ Namespace Ecospace.Advection
                 Return True
 
             Catch ex As Exception
-                _logger.LogError(ex, "cAdvectionManager.Init Exception")
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.Init Exception")
                 Return False
             End Try
 
@@ -308,8 +307,7 @@ Namespace Ecospace.Advection
             Try
                 bSuccess = Me.m_comp.RunPhysicsModel()
             Catch ex As Exception
-                _logger.LogError(ex, "cAdvectionManager.RunPhysicsModel Exception")
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.RunPhysicsModel Exception")
                 Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
                                                          eMessageType.ErrorEncountered,
                                                          eCoreComponentType.Ecospace,
@@ -354,8 +352,7 @@ Namespace Ecospace.Advection
                 thrd.Start()
 
             Catch ex As Exception
-                _logger.LogError(ex, "cAdvectionManager.RunPhysicsModel(..) Exception")
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.RunPhysicsModel(..) Exception")
                 Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
                                                          eMessageType.ErrorEncountered,
                                                          eCoreComponentType.Ecospace,
@@ -385,8 +382,7 @@ Namespace Ecospace.Advection
             Try
                 Me.m_comp.RunPhysicsModel()
             Catch ex As Exception
-                _logger.LogError(ex, "cAdvectionManager.RunThreaded Exception")
-                cLog.Write(ex, "cAdvectionManager.RunThreaded")
+                m_logger.LogError(ex, "cAdvectionManager.RunThreaded Exception")
             End Try
 
             Me.m_core.SetStopRunDelegate(Nothing)
@@ -423,8 +419,7 @@ Namespace Ecospace.Advection
                 Next
                 Return True
             Catch ex As Exception
-                _logger.LogError(ex, "cAdvectionManager.Revert Exception")
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.Revert Exception")
             End Try
             Return False
 
@@ -453,8 +448,7 @@ Namespace Ecospace.Advection
                 End If
 
             Catch ex As Exception
-                _logger.LogError(ex, "cAdvectionManager.OnAdvectionCalcsStartedHandler Exception")
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.OnAdvectionCalcsStartedHandler Exception")
             End Try
 
         End Sub
@@ -476,7 +470,7 @@ Namespace Ecospace.Advection
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.OnAdvectionCalcsProgressHandler Exception. iInteration:{iInteration}", iInteration)
             End Try
 
         End Sub
@@ -512,7 +506,7 @@ Namespace Ecospace.Advection
                 End If
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.OnAdvectionCalcsCompletedHandler Exception. iIteration:{iIteration}, bInterrupted:{bInterrupted}, bBadAdvection:{bBadAdvection}", iIteration, bInterrupted, bBadAdvection)
                 Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             End Try
 
@@ -534,7 +528,7 @@ Namespace Ecospace.Advection
                 Me.m_lstMessages.Clear()
             Catch ex As Exception
                 'this should never happen!!!!! ehhhh
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.OnSendCoreMessages Exception")
             End Try
         End Sub
 
@@ -543,7 +537,7 @@ Namespace Ecospace.Advection
                 Me.m_core.onChanged(Me)
             Catch ex As Exception
                 'this should never happen!!!!! ehhhh
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.OnChanged Exception")
             End Try
         End Sub
 
@@ -635,7 +629,7 @@ Namespace Ecospace.Advection
             Try
                 Me.m_comp.Run()
             Catch ex As Exception
-                cLog.Write(ex, "cAdvectionManager.RunThreaded")
+                m_logger.LogError(ex, "cAdvectionManager.RunThreaded")
             End Try
 
             Me.m_core.SetStopRunDelegate(Nothing)
@@ -679,7 +673,7 @@ Namespace Ecospace.Advection
                 thrd.Start()
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "cAdvectionManager.Run(..) Exception")
                 m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message), _
                                                          eMessageType.ErrorEncountered, _
                                                          eCoreComponentType.EcoSpace, _

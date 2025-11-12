@@ -24,10 +24,12 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region
 
@@ -155,6 +157,7 @@ Namespace Ecosim
         Private m_mhEcosim As cMessageHandler = Nothing
         Private m_SRResults As List(Of cSRLine)
         Private m_zgh As cZedGraphHelper = Nothing
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmStockRecruitmentPlot)()
 
 #End Region ' Private vars
 
@@ -292,7 +295,7 @@ Namespace Ecosim
                 End Select
 
             Catch ex As Exception
-                cLog.Write(ex)
+                m_logger.LogError(ex, "frmStockRecruitmentPlot:EcosimMessageHandler() Exception")
             End Try
 
         End Sub

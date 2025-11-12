@@ -20,17 +20,20 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.ExternalData
-Imports EwEUtils.Core
 Imports EwEPlugin
 Imports EwEPlugin.Data
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
+Imports ScientificInterface.Ecopath.Controls.FlowDiagram
+Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
 
 #End Region ' Imports
-
 ''' ===========================================================================
 ''' <summary>
 ''' Dialog class implementing the Edit Group Taxon interface.
@@ -61,6 +64,7 @@ Public Class dlgDefineTaxonomy
     Private m_bHasSearchEngines As Boolean = False
     ''' <summary>Start up group.</summary>
     Private m_groupStartup As cEcoPathGroupInput = Nothing
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgDefineTaxonomy)()
 
 #End Region ' Private vars
 
@@ -224,7 +228,7 @@ Public Class dlgDefineTaxonomy
                 Me.Close()
             End If
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::OnOK")
+            m_logger.LogError(ex, "dlgDefineTaxa::OnOK")
         End Try
     End Sub
 
@@ -240,7 +244,7 @@ Public Class dlgDefineTaxonomy
             Me.m_gridGroups.AddTaxon()
             Me.m_gridResults.OnUsedTaxaChanged()
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::OnDefineNew")
+            m_logger.LogError(ex, "dlgDefineTaxa::OnDefineNew")
         End Try
         Me.UpdateControls()
     End Sub
@@ -251,7 +255,7 @@ Public Class dlgDefineTaxonomy
             Me.m_gridGroups.DeleteRows(True)
             Me.m_gridResults.OnUsedTaxaChanged()
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::OnRemoveSelected")
+            m_logger.LogError(ex, "dlgDefineTaxa::OnRemoveSelected")
         End Try
         Me.UpdateControls()
     End Sub
@@ -261,7 +265,7 @@ Public Class dlgDefineTaxonomy
         Try
             Me.m_gridGroups.DeleteRows(False)
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::OnKeepSelected")
+            m_logger.LogError(ex, "dlgDefineTaxa::OnKeepSelected")
         End Try
         Me.UpdateControls()
     End Sub
@@ -274,7 +278,7 @@ Public Class dlgDefineTaxonomy
                 Me.m_gridGroups.Import(ofd.FileName)
             End If
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::OnImportTaxaCSV")
+            m_logger.LogError(ex, "dlgDefineTaxa::OnImportTaxaCSV")
 
         End Try
     End Sub
@@ -296,7 +300,7 @@ Public Class dlgDefineTaxonomy
         Try
             Me.RefreshSearch()
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::OnSearchTextChanged")
+            m_logger.LogError(ex, "dlgDefineTaxa::OnSearchTextChanged")
         End Try
     End Sub
 
@@ -305,7 +309,7 @@ Public Class dlgDefineTaxonomy
         Try
             Me.RefreshSearch()
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::m_cbIncludeExtent_CheckedChanged")
+            m_logger.LogError(ex, "dlgDefineTaxa::m_cbIncludeExtent_CheckedChanged")
         End Try
     End Sub
 
@@ -323,7 +327,7 @@ Public Class dlgDefineTaxonomy
         Try
             Me.ConfigureSelectedDataProducer()
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::OnConnect")
+            m_logger.LogError(ex, "dlgDefineTaxa::OnConnect")
         End Try
     End Sub
 
@@ -390,7 +394,7 @@ Public Class dlgDefineTaxonomy
         Try
             Me.RefreshSearch()
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::OnTaxonLevelSelected")
+            m_logger.LogError(ex, "dlgDefineTaxa::OnTaxonLevelSelected")
         End Try
     End Sub
 
@@ -405,7 +409,7 @@ Public Class dlgDefineTaxonomy
                 End If
             Next
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::m_btnAdd_Click")
+            m_logger.LogError(ex, "dlgDefineTaxa::m_btnAdd_Click")
         End Try
 
     End Sub

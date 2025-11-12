@@ -28,12 +28,13 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Properties
 Imports System.Reflection
 Imports System.Security.Permissions
-Imports EwEUtils.SystemUtilities
 Imports EwECore.Style
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -66,6 +67,8 @@ Namespace Controls.Map
         Private m_zoom As Single = 1
         Private m_maprect As Rectangle
         Private m_cellsize As Single = 0
+        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucMap)()
+
         Public Event OnMapScrolled(sender As Object, args As EventArgs)
         ' -- JS New map logic Dec 18
 
@@ -133,7 +136,7 @@ Namespace Controls.Map
                 msg.Hyperlink = Path.GetDirectoryName(strFileName)
                 Me.m_uic.Core.Messages.SendMessage(msg)
             Catch ex As Exception
-                cLog.Write(ex, "ucMap(" & Me.Name & ")::SaveToBitmap(" & strFileName & ")")
+                m_logger.LogError(ex, "ucMap(" & Me.Name & ")::SaveToBitmap(" & strFileName & ")")
             End Try
 
             Return True
@@ -670,7 +673,7 @@ Namespace Controls.Map
             Try
                 RaiseEvent LayerAdded(Me, layer)
             Catch ex As Exception
-                cLog.Write(ex, "ucMap " & Me.Name & "::AddLayer")
+                m_logger.LogError(ex, "ucMap " & Me.Name & "::AddLayer")
             End Try
 
         End Sub
@@ -698,7 +701,7 @@ Namespace Controls.Map
             Try
                 RaiseEvent LayerRemoved(Me, layer)
             Catch ex As Exception
-                cLog.Write(ex, "ucMap " & Me.Name & "::RemoveLayer")
+                m_logger.LogError(ex, "ucMap " & Me.Name & "::RemoveLayer")
             End Try
 
         End Sub

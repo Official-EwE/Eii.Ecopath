@@ -23,6 +23,9 @@ Option Strict On
 Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
+Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -36,6 +39,8 @@ Imports EwEUtils.Utilities
 ''' ---------------------------------------------------------------------------
 Public MustInherit Class cEcospaceASCBaseResultsWriter
     Inherits cEcospaceBaseResultsWriter
+
+    Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceASCBaseResultsWriter)()
 
 #Region " Base writer overrides "
 
@@ -99,7 +104,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
                                     strm = Nothing
                                 End If
                             Catch ex As IOException
-                                cLog.Write(ex)
+                                m_logger.LogError(ex, "Ecospace ASC export failed for file {FileName}", strFile)
                                 Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message),
                                                        eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Warning)
                                 Me.m_core.Messages.SendMessage(msg)
