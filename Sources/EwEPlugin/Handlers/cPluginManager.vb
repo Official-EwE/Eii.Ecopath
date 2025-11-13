@@ -477,18 +477,19 @@ Public Class cPluginManager
         End If
 
         If Not Directory.Exists(strPluginPath) Then
-            m_logger.LogError("Plugin directory does not exist: " & strPluginPath, eVerboseLevel.Detailed)
+            m_logger.LogInformation("Plugin directory {PluginPath} does not exist: " & strPluginPath)
             Return nLoaded
         End If
 
         Try
             di = New DirectoryInfo(strPluginPath)
             'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
-            afi = di.GetFiles("*.dll", If(bAllDirectories, SearchOption.AllDirectories, SearchOption.TopDirectoryOnly))
+            'rk added an even stricter filter to only get "*Plugin.dll" files (renamed all plugins accordingly). The reason is to avoid crashes to clutter the log files
+            afi = di.GetFiles("*Plugin.dll", If(bAllDirectories, SearchOption.AllDirectories, SearchOption.TopDirectoryOnly))
 
             For Each fi As FileInfo In afi
-                ' skip files that are definitely not plugins so there's less noise in the logs. Some dlls won't Assembly.LoadFrom(...) successfully
-                If fi.Name = "e_sqlite3.dll" Then
+                ' skip the EwEPlugin.dll itself. Of course.
+                If fi.Name = "EwEPlugin.dll" Then
                     Continue For
                 End If
                 key = fi.FullName.ToLower()
@@ -582,7 +583,7 @@ Public Class cPluginManager
 
                                 ' Sanity check
                                 If (ip Is Nothing) Then
-                                    m_logger.LogError("Unable to load plugin assembly" & strFileName, eVerboseLevel.Standard)
+                                    m_logger.LogError("Unable to load plugin assembly {FileName}" & strFileName)
                                     Return False
                                 End If
 
@@ -669,7 +670,7 @@ Public Class cPluginManager
                 RaiseEvent AssemblyAdded(plugAssem)
 
             Else
-                m_logger.LogError("LoadPlugin " & strFileName & " is not recognized as a valid plug-in", eVerboseLevel.Detailed)
+                m_logger.LogError("LoadPlugin {FileName} is not recognized as a valid plug-in", strFileName)
             End If
 
         Catch exRefl As ReflectionTypeLoadException
