@@ -3217,7 +3217,6 @@ Public Class cCore
         If (TypeOf ds.Connection Is cEwEDatabase) Then
             Dim db As cEwEDatabase = DirectCast(ds.Connection, cEwEDatabase)
             Dim dbUpd As New cDatabaseUpdater(Me, 6.0!)
-            Dim msg As cMessage = Nothing
             Dim ver As Single = db.GetVersion()
 
             If dbUpd.HasDatabaseUpdates(db, ver) Then
@@ -3225,14 +3224,14 @@ Public Class cCore
                 Dim fmsg As New cFeedbackMessage("To continue, your model database will be updated to a newer version. This means that you will not be able to open the model in older versions of EwE. Do you want to continue?", eCoreComponentType.DataSource,
                                            eMessageType.NotSet, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                 fmsg.Reply = eMessageReply.YES
-                Me.m_publisher.SendMessage(msg)
+                Me.m_publisher.SendMessage(fmsg)
                 If (fmsg.Reply <> eMessageReply.YES) Then Return False
             End If
 
             ' Run updates
             If Not dbUpd.UpdateDatabase(db) Then
                 ' Database update failed
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_FAILED, Version.ToString),
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_FAILED, Version.ToString),
                                     eMessageType.DataImport,
                                     eCoreComponentType.DataSource,
                                     eMessageImportance.Critical)
@@ -3241,7 +3240,7 @@ Public Class cCore
                 Return False
             Else
                 ' Database update failed
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_SUCCESS, Version.ToString),
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_SUCCESS, Version.ToString),
                                     eMessageType.DataImport,
                                     eCoreComponentType.DataSource,
                                     eMessageImportance.Information)
