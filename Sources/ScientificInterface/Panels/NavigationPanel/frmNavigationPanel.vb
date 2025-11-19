@@ -354,7 +354,7 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_INPUT_RECRUITMENT, "ndMSERecruitment", eCoreExecutionState.EcosimLoaded, GetType(frmMSERecruitment), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_INPUT_REFLEVELS, "ndRefLevels", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.Input, nodeInput)
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_INPUT_REFMSY, "ndRefMSY", eCoreExecutionState.EcosimLoaded, GetType(frmMSY), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_INPUT_REFMSY, "ndRefMSY", eCoreExecutionState.EcosimLoaded, GetType(frmMSEMSY), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_INPUT_GROUP, "ndRefBiomass", eCoreExecutionState.EcosimLoaded, GetType(frmGroupRefLevels), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_INPUT_FLEET, "ndRefCatch", eCoreExecutionState.EcosimLoaded, GetType(gridFleetRefLevels), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
