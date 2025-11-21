@@ -139,10 +139,13 @@ Namespace Other
                 My.Settings.StatusShowVariableValidations = Me.m_cbStatusShowVariableValidations.Checked
                 My.Settings.StatusAutoPopop = Me.m_cbStatusAutoPopup.Checked
                 My.Settings.ShowHostInfo = Me.m_cbShowHost.Checked
-                My.Settings.LogVerboseLevel = DirectCast(Me.m_fpVerboseLevel.Value, eVerboseLevel)
                 My.Settings.Author = Me.m_tbxAuthor.Text
                 My.Settings.Contact = Me.m_tbxContact.Text
                 My.Settings.AutoCompact = Me.m_cbCompactOnExit.Checked
+
+                If Me.m_fpVerboseLevel.Value IsNot Nothing Then
+                    My.Settings.LogVerboseLevel = DirectCast(Me.m_fpVerboseLevel.Value, eVerboseLevel)
+                End If
 
             Catch ex As Exception
                 result = IOptionsPage.eApplyResultType.Failed
