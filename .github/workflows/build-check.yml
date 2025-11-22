@@ -1,6 +1,6 @@
 name: Build Check
 on:
-  pull_request:
+  push:
     branches:
       - Upgrade_To_SDK_Style
 
