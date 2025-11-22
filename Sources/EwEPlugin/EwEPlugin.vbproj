@@ -22,6 +22,11 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <Company>Ecopath International Initiative Research Association</Company>
+    <Product>EwEPlugin</Product>
+    <Copyright>Copyright © 2006</Copyright>
+    <Description>Foundation library for implementing Ecopath with Ecosim plugins</Description>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	<PlatformTarget>AnyCPU</PlatformTarget>

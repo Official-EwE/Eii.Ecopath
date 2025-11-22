@@ -30,6 +30,7 @@
     <AssemblyVersion>6.7.0.19541</AssemblyVersion>
     <FileVersion>6.7.0.19541</FileVersion>
     <Description>Value Chain - an economic fisheries model for EwE6</Description>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DocumentationFile>EwEValueChainV2Plugin.xml</DocumentationFile>

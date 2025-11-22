@@ -1,145 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{289C6948-83E3-4C4C-BE02-04D713E9D3F3}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
-    <RootNamespace>EwEImportDietsPlugin</RootNamespace>
-    <AssemblyName>EwEImportDietsPlugin</AssemblyName>
-    <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <Company>Ecopath International Initiative</Company>
+    <Product>EwEImportDietsPlugin</Product>
+    <Copyright>Copyright ©  2017</Copyright>
+    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
+    <FileVersion>6.7.0.19540</FileVersion>
+    <Description></Description>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>EwEImportDietsPlugin.xml</DocumentationFile>
     <NoWarn>42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
-    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
     <DefineDebug>false</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>EwEImportDietsPlugin.xml</DocumentationFile>
     <NoWarn>42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
   </PropertyGroup>
-  <PropertyGroup>
-    <OptionExplicit>On</OptionExplicit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionCompare>Binary</OptionCompare>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionStrict>Off</OptionStrict>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionInfer>On</OptionInfer>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <NoWarn>42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
-    <DefineDebug>true</DefineDebug>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\x86\Release\</OutputPath>
     <NoWarn>42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DocumentationFile>EwEImportDietsPlugin.xml</DocumentationFile>
     <NoWarn>42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Release\</OutputPath>
     <DocumentationFile>EwEImportDietsPlugin.xml</DocumentationFile>
-    <Optimize>true</Optimize>
     <NoWarn>42017,42018,42019,42020,42021,42022,42032,42036</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
-    <Import Include="System" />
-    <Import Include="System.Collections" />
-    <Import Include="System.Collections.Generic" />
-    <Import Include="System.Data" />
-    <Import Include="System.Diagnostics" />
-    <Import Include="System.Linq" />
-    <Import Include="System.Xml.Linq" />
-    <Import Include="System.Threading.Tasks" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ImportDiets\cDatabaseReader.vb" />
-    <Compile Include="ImportDiets\cDietPreferences.vb" />
-    <Compile Include="ImportDiets\cDietCalculator.vb" />
-    <Compile Include="ImportDiets\cDietImporter.vb" />
-    <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="My Project\Application.Designer.vb">
+    <Compile Update="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="My Project\Resources.Designer.vb">
+    <Compile Update="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="My Project\Settings.Designer.vb">
+    <Compile Update="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Plugin\cImportDietsPlugin.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="My Project\Application.myapp">
+    <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
-    <None Include="My Project\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <CustomToolNamespace>My</CustomToolNamespace>
-      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
-    </None>
-    <None Include="Resources\Chesson 1983.pdf" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging">
@@ -147,33 +74,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Sources\EwECustomPlugins\EwEMSEPlugin\EwEMSEPlugin.vbproj">
-      <Project>{19b57860-d7c5-479a-8979-e4dfe9a46b50}</Project>
-      <Name>EwEMSEPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj">
-      <Project>{0b91f6e0-6127-4cf3-bf57-684092481454}</Project>
-      <Name>EwEPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Sources\EwEUtils\EwEUtils.vbproj">
-      <Project>{5c331318-c23e-4eeb-ad1e-2edef85e0205}</Project>
-      <Name>EwEUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
-      <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>
-      <Name>ScientificInterfaceShared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EwECore\EwECore.vbproj">
-      <Project>{cdece065-503a-4562-a955-06777b2f909e}</Project>
-      <Name>EwECore</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\..\Sources\EwECustomPlugins\EwEMSEPlugin\EwEMSEPlugin.vbproj" />
+    <ProjectReference Include="..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj" />
+    <ProjectReference Include="..\..\..\Sources\EwEUtils\EwEUtils.vbproj" />
+    <ProjectReference Include="..\..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
+    <ProjectReference Include="..\..\EwECore\EwECore.vbproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

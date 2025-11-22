@@ -1,99 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>EwEPrebalPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
     <DefineDebug>false</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>EwEPrebalPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionExplicit>On</OptionExplicit>
-    <ProjectGuid>{DFBA19D6-8E39-48F9-A503-CBC2519130B5}</ProjectGuid>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionCompare>Binary</OptionCompare>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionStrict>Off</OptionStrict>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DocumentationFile>EwEPrebalPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
     <DefineConstants>NO_PARALLEL=0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Release\</OutputPath>
     <DocumentationFile>EwEPrebalPlugin.xml</DocumentationFile>
-    <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DocumentationFile>EwEPrebalPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
     <DocumentationFile>EwEPrebalPlugin.xml</DocumentationFile>
-    <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>none</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
     <SignAssembly>true</SignAssembly>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <Company>Scottish Association of Marine Science</Company>
+    <Product>EwESFP</Product>
+    <Copyright>Copyright © 2015 Scottish Association of Marine Science</Copyright>
+    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
+    <FileVersion>6.7.0.19540</FileVersion>
+    <Description>Stepwise fitting procedure for the Ecopath with Ecosim food-web modeling approach</Description>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>EwESFPPlugin.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RootNamespace>EwEStepwiseFittingPlugin</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -104,9 +63,6 @@
   <PropertyGroup>
     <MyType>Windows</MyType>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyName>EwEStepwiseFittingPlugin</AssemblyName>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="SourceGrid2">
       <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
@@ -114,106 +70,45 @@
     <Reference Include="SourceLibrary">
       <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Import Include="System" />
-    <Import Include="System.Collections" />
-    <Import Include="System.Collections.Generic" />
-    <Import Include="System.Data" />
-    <Import Include="System.Diagnostics" />
+    <ProjectReference Include="..\..\EwECore\EwECore.vbproj" />
+    <ProjectReference Include="..\..\EwEPlugin\EwEPlugin.vbproj" />
+    <ProjectReference Include="..\..\EwEUtils\EwEUtils.vbproj" />
+    <ProjectReference Include="..\..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EwECore\EwECore.vbproj">
-      <Project>{cdece065-503a-4562-a955-06777b2f909e}</Project>
-      <Name>EwECore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EwEPlugin\EwEPlugin.vbproj">
-      <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
-      <Name>EwEPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EwEUtils\EwEUtils.vbproj">
-      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
-      <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>
-      <Name>ScientificInterfaceShared</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Engine\cSFPContainer.vb" />
-    <Compile Include="Iterations\cSFPAnomalySearch.vb" />
-    <Compile Include="Iterations\cSFPEcosimRun.vb" />
-    <Compile Include="Iterations\cSFPGenericIteration.vb" />
-    <Compile Include="Engine\cSFPManager.vb" />
-    <Compile Include="Engine\cSFPParameters.vb" />
-    <Compile Include="Iterations\cSFPGroupsWithTimeSeries.vb" />
-    <Compile Include="Iterations\cSFPVandASearch.vb" />
-    <Compile Include="Iterations\cSFPVulnerabilitySearch.vb" />
-    <Compile Include="Iterations\ISFPIteration.vb" />
-    <Compile Include="My Project\Application.Designer.vb">
+    <Compile Update="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="My Project\Resources.Designer.vb">
+    <Compile Update="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="My Project\Settings.Designer.vb">
+    <Compile Update="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="My Project\Settings.vb" />
-    <Compile Include="Plugin\cSFPPluginPoint.vb" />
-    <Compile Include="UI\frmRun.Designer.vb">
+    <Compile Update="UI\frmRun.Designer.vb">
       <DependentUpon>frmRun.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmRun.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\gridRun.vb">
+    <Compile Update="UI\gridRun.vb">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmRun.resx">
-      <DependentUpon>frmRun.vb</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="EwESFP.licenseheader" />
-    <None Include="EwESFPPlugin.snk" />
-    <None Include="Iterations\~ SFPIternations.cd" />
-    <None Include="My Project\Application.myapp">
+    <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
-    <None Include="My Project\Settings.settings">
-      <CustomToolNamespace>My</CustomToolNamespace>
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
-    </None>
-    <None Include="UserGuide\StepwiseFittingSoftwareX.docx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="~Design~\" />
@@ -223,12 +118,4 @@
       <Version>10.0.0</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

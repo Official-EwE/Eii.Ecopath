@@ -22,6 +22,11 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <Company>Ecopath International Initiative Research Association</Company>
+    <Product>EwEUtils</Product>
+    <Copyright>Copyright © 2005</Copyright>
+    <Description>Ecopath with Ecosim utilities</Description>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	<PlatformTarget>AnyCPU</PlatformTarget>

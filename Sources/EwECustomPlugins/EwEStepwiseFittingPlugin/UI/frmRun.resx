@@ -1557,18 +1557,6 @@
   <data name="Label1.Text" xml:space="preserve">
     <value>&amp;Vulnerability cap:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>m_plSettings</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_lblNoRuns.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>

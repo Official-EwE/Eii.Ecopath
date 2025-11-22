@@ -26,11 +26,15 @@
     <RootNamespace>EwECore</RootNamespace>
     <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
     <DebugType>portable</DebugType>
+    <Company>Ecopath International Initiative Research Association</Company>
+    <Product>EwECore</Product>
+    <Copyright>Copyright © 1991</Copyright>
+    <Description>Ecopath with Ecosim computational core</Description>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Eii.Ecopath.EwECore</PackageId>
     <Title>Ecopath with Ecosim Core</Title>
-    <Description>A description of the EwECore package</Description>
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwECore</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -41,7 +45,6 @@
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
     <IncludeReferencedProjects>True</IncludeReferencedProjects>
-    <Company>EII</Company>
     <PackageIcon>EII_plain_128x128.png</PackageIcon>
   </PropertyGroup>
   <ItemGroup>
