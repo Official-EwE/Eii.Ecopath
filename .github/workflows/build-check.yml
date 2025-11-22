@@ -11,3 +11,5 @@ jobs:
     steps:
       - name: Use custom NuGet build check action
         uses: Official-EwE/Eii.GithubActions/BuildCheckNet48Net80@master    # can also be BuildCheckNet48Net80@v.. etcc
+        with:
+          solution-file: ./Sources/EwE6.sln
