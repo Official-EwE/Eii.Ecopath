@@ -162,7 +162,7 @@
     <Compile Remove="Web References\EwEAutoUpdateRef\Reference.vb" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.7" />
+    <ProjectReference Include="..\EwEUtils\EwEUtils_dotnet.vbproj" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
   </ItemGroup>
 </Project>
