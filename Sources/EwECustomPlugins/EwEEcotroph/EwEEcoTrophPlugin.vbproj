@@ -10,8 +10,6 @@
     <Company>Agrocampus Ouest - Fisheries and Aquatic Sciences Center </Company>
     <Product>EwEEcotroph</Product>
     <Copyright>Copyright © 2013</Copyright>
-    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
-    <FileVersion>6.7.0.19540</FileVersion>
     <Description>Ecotroph plug-in for EwE</Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>

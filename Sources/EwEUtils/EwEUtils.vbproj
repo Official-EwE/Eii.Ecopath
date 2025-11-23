@@ -3,7 +3,6 @@
     <OutputType>Library</OutputType>
     <TargetFrameworks>net48</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU;</Platforms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwEUtils.snk</AssemblyOriginatorKeyFile>
     <PublishUrl>publish\</PublishUrl>

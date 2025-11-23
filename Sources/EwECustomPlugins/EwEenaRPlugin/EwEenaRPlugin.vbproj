@@ -12,8 +12,6 @@
     <Company>Ecopath International Initiative</Company>
     <Product>enaRPlugin</Product>
     <Copyright>Copyright © 2018</Copyright>
-    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
-    <FileVersion>6.7.0.19540</FileVersion>
     <Description>Plug-in for Ecopath with Ecosim 6 to extract SCOR dat files for enaR</Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>

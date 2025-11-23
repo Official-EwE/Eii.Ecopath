@@ -34,8 +34,6 @@
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>Ecopath with Ecosim</Product>
     <Copyright>Copyright © 1991</Copyright>
-    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
-    <FileVersion>6.7.0.19540</FileVersion>
     <Description>Ecopath with Ecosim (EwE) is a free ecological/ecosystem modeling software suite. EwE has three main components: Ecopath - a static, mass-balanced snapshot of the system; Ecosim - a time dynamic simulation module for policy exploration; and Ecospace - a spatial and temporal dynamic module primarily designed for exploring impact and placement of protected areas.</Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>

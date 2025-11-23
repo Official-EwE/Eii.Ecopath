@@ -8,8 +8,6 @@
     <Company>Geomar</Company>
     <Product>EwEMergeSplitGroupsPlugin</Product>
     <Copyright>Copyright © 2017 Geomar</Copyright>
-    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
-    <FileVersion>6.7.0.19540</FileVersion>
     <Description>Utility plug-in for EwE to merge and split functional groups</Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>

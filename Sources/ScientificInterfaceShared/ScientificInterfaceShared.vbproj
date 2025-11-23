@@ -27,8 +27,6 @@
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>ScientificInterfaceShared</Product>
     <Copyright>Copyright © 2008</Copyright>
-    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
-    <FileVersion>6.7.0.19540</FileVersion>
     <Description>Foundation library with Ecopath with Ecosim Scientific User Interface elements</Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>

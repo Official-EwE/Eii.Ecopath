@@ -46,8 +46,6 @@
     <Company>Scottish Association of Marine Science</Company>
     <Product>EwESFP</Product>
     <Copyright>Copyright © 2015 Scottish Association of Marine Science</Copyright>
-    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
-    <FileVersion>6.7.0.19540</FileVersion>
     <Description>Stepwise fitting procedure for the Ecopath with Ecosim food-web modeling approach</Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>

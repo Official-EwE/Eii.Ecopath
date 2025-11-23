@@ -26,8 +26,6 @@
     <Company>Ecopath International Initiative</Company>
     <Product>ValueChainPlugin</Product>
     <Copyright>Copyright © 2009</Copyright>
-    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
-    <FileVersion>6.7.0.19540</FileVersion>
     <Description>Value Chain - an economic fisheries model for EwE6</Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>

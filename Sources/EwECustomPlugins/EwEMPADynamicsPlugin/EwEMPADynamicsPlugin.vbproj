@@ -12,8 +12,6 @@
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>EwEMPADynamicsPlugin</Product>
     <Copyright>Copyright © 2017</Copyright>
-    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
-    <FileVersion>6.7.0.19540</FileVersion>
     <Description>A plug-in for Ecopath with Ecosim to control MPA open/closed dynamics over time</Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>

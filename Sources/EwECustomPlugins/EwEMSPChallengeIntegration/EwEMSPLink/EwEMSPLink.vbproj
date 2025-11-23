@@ -3,13 +3,10 @@
     <OutputType>Library</OutputType>
     <TargetFrameworks>net48</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU;</Platforms>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <Company>Ecopath International Initiative</Company>
     <Product>EwEMSPLink</Product>
     <Copyright>Copyright © 2016</Copyright>
-    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
-    <FileVersion>6.7.0.19540</FileVersion>
     <Description></Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>

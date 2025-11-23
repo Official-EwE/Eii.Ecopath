@@ -8,8 +8,6 @@
     <Company>Ecopath International Initiative</Company>
     <Product>EwEPrebalPlugin</Product>
     <Copyright>Copyright © 2014 -</Copyright>
-    <AssemblyVersion>6.7.0.19540</AssemblyVersion>
-    <FileVersion>6.7.0.19540</FileVersion>
     <Description>Pre-balance diagnostics plug-in for Ecopath with Ecosim</Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
