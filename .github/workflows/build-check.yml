@@ -7,10 +7,12 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: read
+      packages: read
 
     steps:
       - name: Use custom NuGet build check action
         uses: Official-EwE/Eii.GithubActions/BuildCheckNet48Net80@master    # can also be BuildCheckNet48Net80@v.. etcc
         with:
-          gh-packages-token: ${{ secrets.GH_PACKAGES_READ_TOKEN }}
           solution-file: ./Sources/EwE6.sln
