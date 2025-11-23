@@ -48,9 +48,6 @@ jobs:
             --store-password-in-clear-text
         shell: pwsh
   
-      - name: Restore
-        run: dotnet restore .\Sources\EwE6.sln
-
       - name: Build Release with version
         run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ env.SEMVER }} /p:FileVersion=${{ env.FILEVER }}
 
