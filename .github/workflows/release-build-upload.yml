@@ -5,17 +5,13 @@ on:
     types: [published]   # run after publishing a release
 
     
-permissions:
-  contents: write        # required to upload assets to the release
-
-
-
-
-
 jobs:
   build-and-upload:
     if: ${{ github.event.release.target_commitish == 'Upgrade_To_SDK_Style' }}
     runs-on: windows-latest
+    permissions:
+      contents: write        # required to upload assets to the release
+      packages: read
 
     steps:
       - name: Checkout the released tag
