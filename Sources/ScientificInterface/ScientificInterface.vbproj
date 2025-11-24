@@ -2217,10 +2217,6 @@
       <Project>{22ed1c02-0c01-460b-9305-0a6fef0032d9}</Project>
       <Name>EwEEcoSamplerPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
-      <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
-      <Name>EwEEcospaceSpinupPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotracerEnvDriverPlugin\EwEEcotracerEnvDriverPlugin.vbproj">
       <Project>{6536c62f-3ee0-48f6-83c7-fadb5f6ae6aa}</Project>
       <Name>EwEEcotracerEnvDriverPlugin</Name>
@@ -2296,10 +2292,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj">
       <Project>{5e7beac5-84d8-4bc5-9b53-8c7888fc9786}</Project>
       <Name>EwEShapeGridPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
-      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
-      <Name>EwESpatialAssetsPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEStepwiseFittingPlugin\EwEStepwiseFittingPlugin.vbproj">
       <Project>{dfba19d6-8e39-48f9-a503-cbc2519130b5}</Project>
