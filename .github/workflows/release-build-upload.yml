@@ -7,7 +7,6 @@ on:
     
 jobs:
   build-and-upload:
-    if: ${{ github.event.release.target_commitish == 'Upgrade_To_SDK_Style' }}
     runs-on: windows-latest
     permissions:
       contents: write        # required to upload assets to the release
@@ -48,6 +47,9 @@ jobs:
             --store-password-in-clear-text
         shell: pwsh
   
+      - name: Restore
+        run: dotnet restore .\Sources\EwE6.sln
+
       - name: Build Release with version
         run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ env.SEMVER }} /p:FileVersion=${{ env.FILEVER }}
 

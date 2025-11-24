@@ -1,18 +1,18 @@
-# name: Build Check
-# on:
-#   push:
-#     branches:
-#       - Upgrade_To_SDK_Style
+name: Build Check
+on:
+  push:
+    branches:
+      - master
 
-# jobs:
-#   build:
-#     runs-on: windows-latest
-#     permissions:
-#       contents: read
-#       packages: read
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      packages: read
 
-#     steps:
-#       - name: Use custom NuGet build check action
-#         uses: Official-EwE/Eii.GithubActions/BuildCheckNet48Net80@master    # can also be BuildCheckNet48Net80@v.. etcc
-#         with:
-#           solution-file: ./Sources/EwE6.sln
+    steps:
+      - name: Use custom NuGet build check action
+        uses: Official-EwE/Eii.GithubActions/BuildCheckNet48Net80@master    # can also be BuildCheckNet48Net80@v.. etcc
+        with:
+          solution-file: ./Sources/EwE6.sln
