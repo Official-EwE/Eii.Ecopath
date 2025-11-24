@@ -216,7 +216,6 @@ Public Class cIBMSolver
                                 If Me.m_Stanza.jPacket(isp, iaa, ip) > Me.m_Data.InCol + CELL_BOUNDS Then Me.m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + CELL_BOUNDS
 
                             End If
-
                         End If 'Math.Abs(ia - m_Stanza.Age1(isp, ist)) < 2
                     End If 'Me.m_Data.MovePacketsAtStanzaEntry
 
@@ -251,7 +250,6 @@ Public Class cIBMSolver
                         'this still needs to be modified to check DMove is not < 0.5
                         'if it is it needs to be set to the correct distance to move
                         'See InitPackets()
-
                     End If
 
                     If Me.m_Data.IsMigratory(ieco) Then
@@ -266,7 +264,6 @@ Public Class cIBMSolver
                             Nmoves *= Me.m_Data.IBMMigMovRatio(ieco) ' Me.m_Data.Mrate(ieco) / (Me.m_Data.Mvel(ieco) / (3.14159 * Me.m_Data.CellLength))
                         End If
                     End If
-
 
                     For imm = 1 To Nmoves
 
@@ -322,17 +319,22 @@ Public Class cIBMSolver
                                     'this will create a random walk to get out of the land cell
                                     aa = Mrat : bb = Mrat : cc = Mrat : dd = Mrat
                                 End If
-
-
                             End If
 
-                            Debug.Assert((aa + bb + cc + dd) > 0, "Opps!")
+                            'jb 19-Nov-2025 If it failed to set any directional preference
+                            'set it so it will move equally in any direction
+                            If (aa + bb + cc + dd) = 0.0 Then
+                                aa = 0.25F
+                                bb = 0.25F
+                                cc = 0.25F
+                                dd = 0.25F
+                            End If
+
                             Me.MoveThePacket(isp, ieco, iaa, ip, Dmove, aa, bb, cc, dd)
 
                         Catch ex As Exception
                             Debug.Assert(False, ex.Message)
                         End Try
-
 
                         ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         ''for debugging 
@@ -359,8 +361,14 @@ Public Class cIBMSolver
         cc = cc + bb '+ 0.0000000001
         dd = dd + cc '+ 0.0000000001
 
+        'jb this shouldn't happen because we tested the movement direction in MovePackets(...) before calling MoveThePacket(...)
+        If dd <= 0 Then
+            dd = 1.0
+        End If
+
         Do While bMove
-            Dim randMove As Single = Me.m_rand.NextDouble * dd
+            Dim rm As Single = Me.m_rand.NextDouble
+            Dim randMove As Single = rm * dd
             'Tns = aa + bb + 0.0000000001 : Tew = cc + dd + 0.0000000001
             If randMove < aa Then 'move south
                 Me.m_Stanza.iPacket(isp, ia, ip) = Me.m_Stanza.iPacket(isp, ia, ip) + Dmove
@@ -373,12 +381,10 @@ Public Class cIBMSolver
             End If
 
             'Bounds check the new position before it gets used
-            If Me.m_Stanza.iPacket(isp, ia, ip) < 1 Then Me.m_Stanza.iPacket(isp, ia, ip) = 1
+            If Me.m_Stanza.iPacket(isp, ia, ip) < 1 Then Me.m_Stanza.iPacket(isp, ia, ip) = 1 + rm
             If Me.m_Stanza.iPacket(isp, ia, ip) > Me.m_Data.InRow + CELL_BOUNDS Then Me.m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + CELL_BOUNDS
-            If Me.m_Stanza.jPacket(isp, ia, ip) < 1 Then Me.m_Stanza.jPacket(isp, ia, ip) = 1
+            If Me.m_Stanza.jPacket(isp, ia, ip) < 1 Then Me.m_Stanza.jPacket(isp, ia, ip) = 1 + rm
             If Me.m_Stanza.jPacket(isp, ia, ip) > Me.m_Data.InCol + CELL_BOUNDS Then Me.m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + CELL_BOUNDS
-
-            'Debug.Assert(Me.m_Data.Depth(Me.m_Stanza.iPacket(isp, ia, ip), Me.m_Stanza.jPacket(isp, ia, ip)) > 0.0, "opps I'm on land!")
 
             'did we land on a water cell
             If ((Me.m_Data.Depth(Math.Truncate(Me.m_Stanza.iPacket(isp, ia, ip)), Math.Truncate(Me.m_Stanza.jPacket(isp, ia, ip))) > 0.0)) Or (n > 10) Then
@@ -388,7 +394,8 @@ Public Class cIBMSolver
                 bMove = True
                 Dmove *= Me.m_Data.RelMoveBad(ieco)
                 n += 1
-                Debug.WriteLine(n.ToString + ", " + m_Stanza.iPacket(isp, ia, ip).ToString + ", " + m_Stanza.jPacket(isp, ia, ip).ToString + ", " + isp.ToString + ", " + ip.ToString)
+                'Dump the new position out for debugging
+                'Debug.WriteLine(n.ToString + ", " + m_Stanza.iPacket(isp, ia, ip).ToString + ", " + m_Stanza.jPacket(isp, ia, ip).ToString + ", " + isp.ToString + ", " + ip.ToString)
             End If
         Loop
 

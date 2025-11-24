@@ -7714,7 +7714,10 @@ exitline:
         'ReDim Cper(m_Data.Inrow, m_Data.InCol, m_Data.NGroups)
 
         'set number of packets per age **** to interface?****
-        Me.StanzaData.Npackets = Me.EcoSpaceData.InRow * Me.EcoSpaceData.InCol * Me.StanzaData.NPacketsMultiplier
+        'Me.StanzaData.Npackets = Me.EcoSpaceData.InRow * Me.EcoSpaceData.InCol * Me.StanzaData.NPacketsMultiplier
+        '3-Nov-2025 jb Set the number of packets using the number of water cells instead of the total number of cells
+        'this will keep the ratio of cells to packets the same across scenarios and models
+        Me.StanzaData.Npackets = Me.EcoSpaceData.nWaterCells * Me.StanzaData.NPacketsMultiplier
 
         ReDim Me.StanzaData.Npacket(Me.StanzaData.Nsplit, Me.StanzaData.MaxAgeSplit, Me.StanzaData.Npackets)
         ReDim Me.StanzaData.Wpacket(Me.StanzaData.Nsplit, Me.StanzaData.MaxAgeSplit, Me.StanzaData.Npackets)
@@ -7793,9 +7796,15 @@ exitline:
                         i1 = Me.m_rand.Next(1, Nused)
                         Me.StanzaData.iPacket(isp, ia, ip) = iList(i1) + Me.m_rand.NextDouble()
                         Me.StanzaData.jPacket(isp, ia, ip) = Jlist(i1) + Me.m_rand.NextDouble()
-                        'If StanzaData.jPacket(isp, ia, ip) >= 6.0 Then
-                        '    Debug.Assert(False)
-                        'End If
+                        'Bounds check the initial position
+                        If Math.Truncate(Me.StanzaData.iPacket(isp, ia, ip)) > Me.EcoSpaceData.InRow Then
+                            Me.StanzaData.iPacket(isp, ia, ip) = Me.EcoSpaceData.InRow + 0.5
+                        End If
+
+                        If Math.Truncate(Me.StanzaData.jPacket(isp, ia, ip)) > Me.EcoSpaceData.InCol Then
+                            Me.StanzaData.jPacket(isp, ia, ip) = Me.EcoSpaceData.InCol + 0.5
+                        End If
+
                         Me.EcoSpaceData.Bcell(iList(i1), Jlist(i1), ieco) = Me.EcoSpaceData.Bcell(iList(i1), Jlist(i1), ieco) + Me.StanzaData.Npacket(isp, ia, ip) * Me.StanzaData.Wpacket(isp, ia, ip)
                         Me.EcoSpaceData.PredCell(iList(i1), Jlist(i1), ieco) = Me.EcoSpaceData.PredCell(iList(i1), Jlist(i1), ieco) + Me.StanzaData.Npacket(isp, ia, ip) * Me.StanzaData.WWa(isp, ia)
                     Next
@@ -7951,6 +7960,26 @@ exitline:
         MaxIter = Math.Max(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
         'MaxIter = Inrow : If Incol > Inrow Then MaxIter = Incol
 
+        Dim OkToUse()(,) As Boolean = New Boolean(Me.EcoSpaceData.NGroups)(,) {}
+
+        'calculate if a cell is habitable once and store the values
+        'this way you don't have to make a bunch of function calls to Me.HabIsOk()
+        For igrp As Integer = 1 To Me.EcoSpaceData.NGroups
+            OkToUse(igrp) = New Boolean(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol) {}
+        Next
+        For isp = 1 To Me.StanzaData.Nsplit
+            For ist = 2 To Me.StanzaData.Nstanza(isp)
+                ieco = Me.StanzaData.EcopathCode(isp, ist)
+
+                For i = 1 To Me.EcoSpaceData.InRow
+                    For j = 1 To Me.EcoSpaceData.InCol
+                        OkToUse(ieco)(i, j) = Me.HabIsOk(ieco, i, j)
+                    Next j
+                Next i
+            Next ist
+        Next isp
+
+
         ReDim Me.EcoSpaceData.ItoUse(Me.StanzaData.Nsplit, Me.StanzaData.MaxStanza, Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
         ReDim Me.EcoSpaceData.JtoUse(Me.StanzaData.Nsplit, Me.StanzaData.MaxStanza, Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
 
@@ -7963,7 +7992,7 @@ exitline:
                         Me.EcoSpaceData.ItoUse(isp, ist, i, j) = 0
                         Me.EcoSpaceData.ItoUse(isp, ist, i, j) = 0
                         'Does the packet need to be moved, only reset itouse and jtouse if so
-                        If Me.HabIsOk(ieco, i, j) = False Then
+                        If OkToUse(ieco)(i, j) = False Then
                             'Yes move the packet
                             dmin = 10000
                             i1 = i
@@ -7978,7 +8007,7 @@ exitline:
                                 j1 = j1 - 1 : If j1 < 1 Then j1 = 1
                                 j2 = j2 + 1 : If j2 > Me.EcoSpaceData.InCol Then j2 = Me.EcoSpaceData.InCol
                                 For ii = i1 To i2
-                                    If Me.HabIsOk(ieco, ii, j1) Then 'check first column for row ii
+                                    If OkToUse(ieco)(ii, j1) Then 'check first column for row ii
                                         Dist = Abs(ii - i) + Abs(j1 - j)
                                         If Dist < dmin Then
                                             dmin = Dist
@@ -7986,7 +8015,7 @@ exitline:
                                             Me.EcoSpaceData.JtoUse(isp, ist, i, j) = j1
                                         End If
                                     End If
-                                    If Me.HabIsOk(ieco, ii, j2) Then 'check last column for row ii
+                                    If OkToUse(ieco)(ii, j2) Then 'check last column for row ii
                                         Dist = Abs(ii - i) + Abs(j2 - j)
                                         If Dist < dmin Then
                                             dmin = Dist
@@ -7997,7 +8026,7 @@ exitline:
                                     End If
                                 Next
                                 For jj = j1 + 1 To j2 - 1
-                                    If Me.HabIsOk(ieco, i1, jj) Then 'check first row for column jj
+                                    If OkToUse(ieco)(i1, jj) Then 'check first row for column jj
                                         Dist = Abs(i1 - i) + Abs(jj - j)
                                         If Dist < dmin Then
                                             dmin = Dist
@@ -8006,7 +8035,7 @@ exitline:
                                         End If
 
                                     End If
-                                    If Me.HabIsOk(ieco, i2, jj) Then 'check last row for column jj
+                                    If OkToUse(ieco)(i2, jj) Then 'check last row for column jj
                                         Dist = Abs(i2 - i) + Abs(jj - j)
                                         If Dist < dmin Then
                                             dmin = Dist
