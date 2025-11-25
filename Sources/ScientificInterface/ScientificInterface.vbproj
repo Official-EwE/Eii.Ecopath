@@ -2344,6 +2344,9 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Eii.Ecopath.EcospaceSpinup-net48-Plugin">
+      <Version>0.0.3</Version>
+    </PackageReference>
     <PackageReference Include="Eii.Ecopath.Licence">
       <Version>1.0.3</Version>
     </PackageReference>
