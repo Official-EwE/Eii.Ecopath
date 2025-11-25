@@ -1369,12 +1369,6 @@
     <None Include="Resources\splash_ewe40.png" />
     <None Include="Resources\FuMa_logo.png" />
     <None Include="Resources\ecopath_blackfriday.ico" />
-    <Content Include="Resources\InsertIcons.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\InsertIcons64.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\splash_01.png" />
     <Content Include="Resources\ExtraIcons.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1970,10 +1964,10 @@
     <Compile Include="MSE\MSE\frmMSEResults.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MSE\MSE\frmMSY.Designer.vb">
-      <DependentUpon>frmMSY.vb</DependentUpon>
+    <Compile Include="MSE\MSE\frmMSEMSY.Designer.vb">
+      <DependentUpon>frmMSEMSY.vb</DependentUpon>
     </Compile>
-    <Compile Include="MSE\MSE\frmMSY.vb">
+    <Compile Include="MSE\MSE\frmMSEMSY.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MSE\MSE\frmMSEOptions.Designer.vb">
@@ -2177,8 +2171,8 @@
       <DependentUpon>frmMSEResults.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="MSE\MSE\frmMSY.resx">
-      <DependentUpon>frmMSY.vb</DependentUpon>
+    <EmbeddedResource Include="MSE\MSE\frmMSEMSY.resx">
+      <DependentUpon>frmMSEMSY.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MSE\MSE\frmMSEOptions.resx">
@@ -2350,8 +2344,14 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Eii.Ecopath.EcospaceSpinup-net48-Plugin">
+      <Version>0.0.3</Version>
+    </PackageReference>
     <PackageReference Include="Eii.Ecopath.Licence">
       <Version>1.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Eii.Ecopath.SpatialTemporalFramework-net48-Plugin">
+      <Version>0.0.13</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging">
       <Version>10.0.0</Version>
@@ -2374,13 +2374,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release (
-   if $(PlatformName) == x86 (
-       $(TargetDir)Resources\InsertIcons.exe $(TargetDir)$(TargetFileName) $(TargetDir)Resources\ExtraIcons.txt $(ProjectDir)ScientificInterface.snk
-   ) ELSE (
-       REM ** 64 bit build insert icons does not work yet. Disabled for now
-       REM ** $(TargetDir)Resources\InsertIcons64.exe $(TargetDir)$(TargetFileName) $(TargetDir)Resources\ExtraIcons.txt $(ProjectDir)ScientificInterface.snk
-   )
-)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
