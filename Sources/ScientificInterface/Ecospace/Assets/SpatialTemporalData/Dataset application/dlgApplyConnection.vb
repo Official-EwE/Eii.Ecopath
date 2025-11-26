@@ -20,17 +20,18 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.ComponentModel
 Imports System.Globalization
+Imports EcoOceanUtils
 Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 
@@ -74,8 +75,6 @@ Namespace Ecospace.Controls
 
         Private m_fpScale As cEwEFormatProvider = Nothing
         Private m_strDateMask As String = ""
-        Private m_strMTBMask As String = ""
-        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgApplyConnection)()
 
 #End Region ' Private variables
 
@@ -111,8 +110,8 @@ Namespace Ecospace.Controls
             End If
 
             ' Hack - avoid alphanumerical entries
-            Me.m_strDateMask = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern.Replace("MMM", "MM")
-            Me.m_strMTBMask = m_strDateMask.Replace("y", "0").Replace("M", "0").Replace("d", "0")
+            Dim fmt As DateTimeFormatInfo = CultureInfo.CurrentUICulture.DateTimeFormat
+            Me.m_strDateMask = CultureInfo.CurrentUICulture.DateTimeFormat.YearMonthPattern
 
         End Sub
 
@@ -168,7 +167,6 @@ Namespace Ecospace.Controls
             Me.m_tslFilter.Image = SharedResources.FilterHS
             Me.m_tsbnCaseSensitive.Image = SharedResources.CaseSensitive
             Me.m_tsbnShowIncompatibleConnections.Image = SharedResources.Warning
-            Me.m_lblFormat.Text = Me.m_strDateMask
 
             ' Kick!
             Me.RefreshDatasetList()
@@ -382,7 +380,7 @@ Namespace Ecospace.Controls
                 'Me.m_manSets.IndexDataset = Me.SelectedDataset
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                m_logger.LogError(ex, "ucConficAdapter::OnConfigureDS")
+                cLog.Write(ex, "ucConficAdapter::OnConfigureDS")
             End Try
             Me.Cursor = Cursors.Default
             Me.LayerChanged()
@@ -599,8 +597,8 @@ Namespace Ecospace.Controls
                         Me.m_fpScale.Enabled = True
                     End If
 
-                    conn.CustomDateStart = Me.Parse(Me.m_mtbDateStart, Date.MaxValue)
-                    conn.CustomDateEnd = Me.Parse(Me.m_mtbDateEnd, Date.MinValue)
+                    conn.CustomDateStart = If(m_rbStartWithData.Checked, DateTime.MaxValue, Me.m_dtpStart.Value)
+                    conn.CustomDateEnd = If(m_rbEndWithData.Checked, DateTime.MaxValue, Me.m_dtpEnd.Value)
 
                     ' Sanity check
                     Debug.Assert(conn.UseDefaultDateStart = Me.m_rbStartWithData.Checked)
@@ -916,31 +914,26 @@ Namespace Ecospace.Controls
 
             Me.m_rbStartWithData.Checked = conn.UseDefaultDateStart
             Me.m_rbStartYear.Checked = Not conn.UseDefaultDateStart
-            Me.Populate(Me.m_mtbDateStart, conn.CustomDateStart)
+            Me.Populate(Me.m_dtpStart, conn.CustomDateStart)
 
             Me.m_rbEndWithData.Checked = conn.UseDefaultDateEnd
             Me.m_rbEndYear.Checked = Not conn.UseDefaultDateEnd
-            Me.Populate(Me.m_mtbDateEnd, conn.CustomDateEnd)
+            Me.Populate(Me.m_dtpEnd, conn.CustomDateEnd)
 
             Me.m_bInUpdate = bInUpdate
 
         End Sub
 
-        Private Sub Populate(mtb As MaskedTextBox, d As Date)
-            mtb.Mask = Me.m_strMTBMask
+        Private Sub Populate(dtp As DateTimePicker, d As Date)
             If (cDateUtils.DateEquals(d, Date.MaxValue) Or cDateUtils.DateEquals(d, Date.MinValue)) Then
-                mtb.Text = ""
+                dtp.Visible = False
             Else
-                mtb.Text = d.ToString(Me.m_strDateMask)
+                dtp.Visible = True
+                dtp.Value = d
+                dtp.Format = DateTimePickerFormat.Custom
+                dtp.CustomFormat = Me.m_strDateMask
             End If
         End Sub
-
-        Private Function Parse(mtb As MaskedTextBox, defdate As Date) As Date
-            Dim t As String = mtb.Text
-            Dim parsed As Date
-            If Date.TryParse(t, parsed) Then Return parsed
-            Return defdate
-        End Function
 
 #End Region ' Time range panel
 
