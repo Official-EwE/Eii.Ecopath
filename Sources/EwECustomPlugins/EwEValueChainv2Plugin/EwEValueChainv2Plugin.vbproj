@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
+    <Platforms>x86;x64;AnyCPU</Platforms>
     <OutputType>Library</OutputType>
     <RootNamespace>EwEValueChainV2Plugin</RootNamespace>
     <MyType>Windows</MyType>
@@ -238,7 +239,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Eii.ValueChain">
-      <Version>1.0.27</Version>
+      <Version>1.0.28</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging">
       <Version>10.0.0</Version>
