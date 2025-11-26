@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
+    <Platforms>x86;x64;AnyCPU</Platforms>
     <OutputType>Library</OutputType>
     <MyType>Windows</MyType>
     <OptionStrict>On</OptionStrict>
