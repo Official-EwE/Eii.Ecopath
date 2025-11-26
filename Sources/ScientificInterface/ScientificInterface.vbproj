@@ -1108,7 +1108,6 @@
     <EmbeddedResource Include="Resources\EwELogo_caption.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EwECore\EwECore.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEBiomassEmitterPlugin\EwEBiomassEmitterPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEDietMatrixToNetworkD3RPlugin\EwEDietMatrixToNetworkD3RPlugin.vbproj" />
@@ -1139,8 +1138,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChainv2Plugin\EwEValueChainv2Plugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEWindowsIntegrationPlugin\EwEWindowsIntegrationPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj" />
-    <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
-    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
     <ProjectReference Include="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
   </ItemGroup>
   <ItemGroup>
