@@ -146,7 +146,7 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="core"></param>
         ''' <param name="dt"></param>
-        ''' <returns></returns>
+        ''' <returns>Converts an incoming date to a date point within the applied date range</returns>
         ''' -------------------------------------------------------------------
         Public Function ToDataTime(core As cCore, dt As DateTime) As DateTime
 
@@ -155,7 +155,7 @@ Namespace SpatialData
             Dim dtStart As DateTime = Me.TimeStart
             Dim dtEnd As DateTime = Me.TimeEnd
 
-            If (dt < dtStart Or dt > dtEnd) Then Return dt
+            If (dt < dtStart Or dt > dtEnd) Then Return DateTime.MinValue
 
             Dim nStepsYear As Integer = core.m_EcospaceData.nTimeStepsPerYear
             Dim iTime As Integer = core.AbsoluteTimeToEcospaceTimestep(dt)
