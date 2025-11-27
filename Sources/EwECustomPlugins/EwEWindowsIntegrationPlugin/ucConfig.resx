@@ -138,18 +138,6 @@
   <data name="m_hdr.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdr.Name" xml:space="preserve">
-    <value>m_hdr</value>
-  </data>
-  <data name="&gt;&gt;m_hdr.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18652, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdr.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdr.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_cbKeepOSAwake.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -165,18 +153,6 @@
   <data name="m_cbKeepOSAwake.Text" xml:space="preserve">
     <value>Keep Windows &amp;awake</value>
   </data>
-  <data name="&gt;&gt;m_cbKeepOSAwake.Name" xml:space="preserve">
-    <value>m_cbKeepOSAwake</value>
-  </data>
-  <data name="&gt;&gt;m_cbKeepOSAwake.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbKeepOSAwake.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbKeepOSAwake.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <data name="m_lblPrompt.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -191,18 +167,6 @@
   </data>
   <data name="m_lblPrompt.Text" xml:space="preserve">
     <value>While EwE is executing a model:</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrompt.Name" xml:space="preserve">
-    <value>m_lblPrompt</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrompt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrompt.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrompt.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_cbKeepMonitorOn.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -222,18 +186,6 @@
   <data name="m_cbKeepMonitorOn.Text" xml:space="preserve">
     <value>Also, keep the monitor &amp;on</value>
   </data>
-  <data name="&gt;&gt;m_cbKeepMonitorOn.Name" xml:space="preserve">
-    <value>m_cbKeepMonitorOn</value>
-  </data>
-  <data name="&gt;&gt;m_cbKeepMonitorOn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbKeepMonitorOn.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbKeepMonitorOn.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_cbNoRestart.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -252,18 +204,6 @@
   <data name="m_cbNoRestart.Text" xml:space="preserve">
     <value>Prevent automatic restarts by modifying Active Hours</value>
   </data>
-  <data name="&gt;&gt;m_cbNoRestart.Name" xml:space="preserve">
-    <value>m_cbNoRestart</value>
-  </data>
-  <data name="&gt;&gt;m_cbNoRestart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbNoRestart.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbNoRestart.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_cbEnabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -278,18 +218,6 @@
   </data>
   <data name="m_cbEnabled.Text" xml:space="preserve">
     <value>&amp;Enable Windows control (may require admin rights)</value>
-  </data>
-  <data name="&gt;&gt;m_cbEnabled.Name" xml:space="preserve">
-    <value>m_cbEnabled</value>
-  </data>
-  <data name="&gt;&gt;m_cbEnabled.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbEnabled.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbEnabled.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblError.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -309,18 +237,6 @@
   <data name="m_lblError.Text" xml:space="preserve">
     <value>EwE is not allowed to modify the registry and cannot protect against automatic Windows restarts. Running EwE with administrator rights may help</value>
   </data>
-  <data name="&gt;&gt;m_lblError.Name" xml:space="preserve">
-    <value>m_lblError</value>
-  </data>
-  <data name="&gt;&gt;m_lblError.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblError.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblError.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -332,11 +248,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>318, 195</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucConfig</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

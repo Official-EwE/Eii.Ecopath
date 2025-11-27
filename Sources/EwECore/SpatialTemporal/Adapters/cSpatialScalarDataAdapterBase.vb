@@ -34,8 +34,7 @@ Namespace SpatialData
     ''' Derived spatial data adapter to insert scaled external spatial/temporal map data into
     ''' the Ecospace data structures at any given moment. This adapter maintains a scale
     ''' for every map layer attached to the adapter, and will translate map values
-    ''' to relative values when <see cref="cSpatialScalarDataAdapter.eScaleType"/> is set to
-    ''' <see cref="cSpatialScalarDataAdapter.eScaleType.Relative">relative</see>.
+    ''' to relative values when needed.
     ''' </summary>
     Public MustInherit Class cSpatialScalarDataAdapterBase
         Inherits cSpatialDataAdapter
