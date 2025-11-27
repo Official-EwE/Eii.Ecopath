@@ -103,9 +103,6 @@ Public Class cEcoSpace
 
     Public Const MIN_MIG_PROB As Single = 0.0000000001
 
-    ''' <summary>To call the plugins</summary>
-    Private m_pluginManager As cPluginManager
-
     Private m_gridSolvers As List(Of cGridSolver)
     Private m_spaceSolvers As List(Of cSpaceSolver)
     Private m_IBMGrowSolvers As List(Of cIBMSolver)
@@ -371,13 +368,6 @@ Public Class cEcoSpace
     Public ReadOnly Property Messages() As New cMessagePublisher
 
     Public Property PluginManager() As cPluginManager
-        Get
-            Return Me.m_pluginManager
-        End Get
-        Set(ByVal pm As cPluginManager)
-            Me.m_pluginManager = pm
-        End Set
-    End Property
 
     ''' <summary>
     ''' Ecopath data used for initial state
@@ -967,7 +957,7 @@ Public Class cEcoSpace
                 Array.Clear(Me.EcoSpaceData.DiscardSurviveGroupFleetMap, 0, Me.EcoSpaceData.DiscardSurviveGroupFleetMap.Length)
 
                 ' Call effort logic after clearing out results
-                If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.EcospacePostFishingEffortModTimestep(Me.EcoSpaceData, Me.itt)
+                If Me.PluginManager IsNot Nothing Then Me.PluginManager.EcospacePostFishingEffortModTimestep(Me.EcoSpaceData, Me.itt)
 
                 If Me.ContaiminantTracerData.EcoSpaceConSimOn Then
                     'drive contaminant concentration with external data
@@ -1147,7 +1137,7 @@ Public Class cEcoSpace
                 'post notification that a time step has been completed
                 Me.marshallOnTimeStep(Me.itt)
 
-                If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.EcospaceEndTimeStep(Me.EcoSpaceData, Me.itt)
+                If Me.PluginManager IsNot Nothing Then Me.PluginManager.EcospaceEndTimeStep(Me.EcoSpaceData, Me.itt)
 
                 'System.Console.WriteLine("FindSpatialEquilibrium() SpaceSolver run time(min.) = " & stpwchSolver.Elapsed.TotalMinutes.ToString)
                 'System.Console.WriteLine("FindSpatialEquilibrium() GridSolver run time(min.) = " & stpwchGrid.Elapsed.TotalMinutes.ToString)
@@ -1331,7 +1321,7 @@ Public Class cEcoSpace
             'Array.Clear(Me.m_Data.Landings, 0, Me.m_Data.Landings.Length)
             'Array.Clear(Me.m_Data.DiscardsMap, 0, Me.m_Data.DiscardsMap.Length)
 
-            If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.EcospaceBeginTimeStep(Me.EcoSpaceData, Me.itt)
+            If Me.PluginManager IsNot Nothing Then Me.PluginManager.EcospaceBeginTimeStep(Me.EcoSpaceData, Me.itt)
 
             If imonth = 1 Then
                 'if we are in the first month then this is a new year
@@ -3523,30 +3513,30 @@ Public Class cEcoSpace
         'Make the detritus calculations here:
         Me.EcoSim.SimDetritusMT(Me.its, Biomass, Me.EcoSimData.FishRateGear, Me.EcoSimData.Eatenby, Me.EcoSimData.Eatenof, ToDetritus, GrpDet)
 
-            For i = 1 To Me.EcoSpaceData.NGroups
+        For i = 1 To Me.EcoSpaceData.NGroups
 
-                Me.EcoSimData.Eatenby(i) = Me.EcoSimData.Eatenby(i) + Me.EcoSimData.QBoutside(i) * Biomass(i)
+            Me.EcoSimData.Eatenby(i) = Me.EcoSimData.Eatenby(i) + Me.EcoSimData.QBoutside(i) * Biomass(i)
 
-                If i <= Me.EcoSpaceData.nLiving Then      'Living group
-                    Pmult = 1.0#
-                    Me.EcoSim.ApplyAVmodifiers(Me.its, Pmult, Veff(1), Mo, i, i, False)
+            If i <= Me.EcoSpaceData.nLiving Then      'Living group
+                Pmult = 1.0#
+                Me.EcoSim.ApplyAVmodifiers(Me.its, Pmult, Veff(1), Mo, i, i, False)
 
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'Changed 3-Mar-2017
-                    'Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
-                    'There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
-                    '1)      There is a line that calculates pbb(i):
-                    'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
-                    'change the term m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) in this line to just
-                    '2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
-                    '(this allows primary production rate to as much as double as nutrient concentrations increase)
-                    '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Changed 3-Mar-2017
+                'Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
+                'There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
+                '1)      There is a line that calculates pbb(i):
+                'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                'change the term m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) in this line to just
+                '2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
+                '(this allows primary production rate to as much as double as nutrient concentrations increase)
+                '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
 
-                    'pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * m_SimData.NutFree / (m_SimData.NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
-                    'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
-                    Me.pbb(i) = 2 * EatEff(i) * Me.EcoSimData.NutFree / (Me.EcoSimData.NutFree + Me.EcoSimData.NutFreeBase(i)) * Pmult * Me.EcoSimData.pbm(i) / (1 + Biomass(i) * Me.PbSpace(i))
+                'pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * m_SimData.NutFree / (m_SimData.NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
+                'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
+                Me.pbb(i) = 2 * EatEff(i) * Me.EcoSimData.NutFree / (Me.EcoSimData.NutFree + Me.EcoSimData.NutFreeBase(i)) * Pmult * Me.EcoSimData.pbm(i) / (1 + Biomass(i) * Me.PbSpace(i))
 
-                    Me.loss(i) = Me.EcoSimData.Eatenof(i) + (Me.EcoSimData.mo(i) * (1 - Me.EcoSimData.MoPred(i) + Me.EcoSimData.MoPred(i) * Me.EcoSimData.Ftime(i)) + Me.EcoPathData.Emig(i) + Me.EcoSimData.FishTime(i)) * Biomass(i)
+                Me.loss(i) = Me.EcoSimData.Eatenof(i) + (Me.EcoSimData.mo(i) * (1 - Me.EcoSimData.MoPred(i) + Me.EcoSimData.MoPred(i) * Me.EcoSimData.Ftime(i)) + Me.EcoPathData.Emig(i) + Me.EcoSimData.FishTime(i)) * Biomass(i)
                 'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
                 'biomeq(i) = (Immig(i) + simGE(i) * Eatenby(i) + pbb(i) * Biomass(i)) / (loss(i) / Biomass(i))
 
@@ -3568,10 +3558,10 @@ Public Class cEcoSpace
 
                 Flowin(i) = Me.EcoPathData.Immig(i) + SimGEt * Me.EcoSimData.Eatenby(i) + Me.pbb(i) * Biomass(i)
 
-                    If Biomass(i) > 1.0E-20 Then
-                        FlowoutRate(i) = Me.loss(i) / Biomass(i)
-                    Else
-                        FlowoutRate(i) = 100
+                If Biomass(i) > 1.0E-20 Then
+                    FlowoutRate(i) = Me.loss(i) / Biomass(i)
+                Else
+                    FlowoutRate(i) = 100
                 End If
                 'If Abs(Flowin(i) - loss(i)) > 0.1 * loss(i) Then Stop
             Else                'Detritus group
@@ -8113,8 +8103,8 @@ exitline:
 
     Public Sub CalculateCostOfSailing()
 
-        If (Me.m_pluginManager IsNot Nothing) Then
-            If Me.m_pluginManager.EcospaceCalculateCostOfSailing(Me.EcoSpaceData, Me.EcoSpaceData.Depth, Me.EcoSpaceData.Port, Me.EcoSpaceData.Sail) Then
+        If (Me.PluginManager IsNot Nothing) Then
+            If Me.PluginManager.EcospaceCalculateCostOfSailing(Me.EcoSpaceData, Me.EcoSpaceData.Depth, Me.EcoSpaceData.Port, Me.EcoSpaceData.Sail) Then
                 ' Done, overruled
                 Return
             End If
