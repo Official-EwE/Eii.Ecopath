@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <Platforms>x86;x64;AnyCPU</Platforms>
@@ -39,7 +39,7 @@
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.ScientificInterfaceShared</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.1</Version>
+    <Version>6.7.5</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
     <PackageReleaseNotes>Initial version.</PackageReleaseNotes>
@@ -537,14 +537,19 @@
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.EwECore" Version="6.7.*" />
 
-<!-- When you want to build EwECore locally, uncomment these lines and remove the PackageReference above
+  <!-- Use a local project reference when UseProjectReferences is true -->
+  <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
     <ProjectReference Include="..\EwECore\EwECore.vbproj" />
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
-    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />-->
+    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
+
+  <!-- Otherwise use a package reference. (EwEUtils and EwEPlugin are referenced by EwEcore) -->
+  <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
+    <PackageReference Include="Eii.Ecopath.EwECore" Version="6.7.*" />
+  </ItemGroup>
+
   <ItemGroup>
     <Content Include="Includes\Ionic.Zip.dll" />
     <Content Include="Includes\Microsoft.GLEE.dll" />
@@ -627,15 +632,12 @@
     </PackageReference>
     <PackageReference Include="System.Resources.Extensions" Version="10.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EwECore\EwECore.vbproj" />
-  </ItemGroup>
   <Target Name="BeforeBuild"></Target>
   <Target Name="AfterBuild">
     <ItemGroup>
       <_FilesInclude Include="Includes\*.dll" />
     </ItemGroup>
-    <Copy SourceFiles="@(_FilesInclude)" DestinationFiles="@(_FilesInclude->'$(OutputPath)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
+    <Copy SourceFiles="@(_FilesInclude)" DestinationFiles="@(_FilesInclude-&gt;'$(OutputPath)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
     <Message Text="Copied ScIntShared includes" />
   </Target>
   <PropertyGroup>
