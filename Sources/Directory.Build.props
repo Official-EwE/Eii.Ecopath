@@ -1,0 +1,7 @@
+
+<Project>
+  <PropertyGroup>
+    <!-- Default for the repo; override in CI via /p -->
+    <UseProjectReferences>true</UseProjectReferences>
+  </PropertyGroup>
+</Project>

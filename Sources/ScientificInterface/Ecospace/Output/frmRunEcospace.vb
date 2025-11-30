@@ -33,7 +33,6 @@ Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports ScientificInterface.Ecosim
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports Debug = System.Diagnostics.Debug
@@ -956,6 +955,8 @@ Namespace Ecospace
 
 #Region " Events "
 
+
+
         Private Sub OnOutputTabSelected(sender As Object, e As System.EventArgs) _
             Handles m_tcOutputs.SelectedIndexChanged
 
@@ -991,6 +992,7 @@ Namespace Ecospace
 
             Me.Core.StopEcospace()
             Me.Core.SetStopRunDelegate(Nothing)
+            m_tracker = Nothing
 
             ' Controls wil be updated via Core state monitor events
             'Me.UpdateControls()
@@ -1323,7 +1325,7 @@ Namespace Ecospace
             Dim bContaminantsOn As Boolean = False
 
             If (TimeStepData.InSpinUp) Then
-                cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING_SPINUP, TimeStepData.RunProgress)
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, ETAStatusText(TimeStepData.iTimeStep, My.Resources.STATUS_ECOSPACE_RUNNING_SPINUP), TimeStepData.RunProgress)
                 Return
             End If
 
@@ -1355,7 +1357,9 @@ Namespace Ecospace
 
             'Update the running simulation years progress label
             Dim dt As Date = Me.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStepCur)
-            cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_RUNNING, dt.ToShortDateString()), TimeStepData.RunProgress)
+            cApplicationStatusNotifier.UpdateProgress(Me.Core,
+                                                      ETAStatusText(TimeStepData.iTimeStep, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_RUNNING, dt.ToShortDateString())),
+                                                      TimeStepData.RunProgress)
             Me.m_dataTimeStep = TimeStepData
 
             'Populate maps for f (catch/biomass) and contaminants/biomass for this timestep
@@ -2080,6 +2084,48 @@ Namespace Ecospace
         End Sub
 
 #End Region
+
+#Region " ETA estimation"
+
+        Private m_tracker As cCompletionEstimator = Nothing
+        Private m_iSpinupTimesteps As Integer = 0
+        Private m_iRunTimesteps As Integer = 0
+
+        Private Function EstimateETA(iTimestep As Integer) As DateTime
+
+            Dim ds As cEcospaceDataStructures = Me.Core.EcospaceDataStructures
+
+            If (iTimestep = 0) Then
+                m_tracker = Nothing
+                Return DateTime.MinValue
+            End If
+
+            If (Me.m_tracker Is Nothing) Then
+                m_iSpinupTimesteps = CInt(If(ds.UseSpinUp, ds.SpinUpYears * ds.nTimeStepsPerYear, 0))
+                m_iRunTimesteps = ds.nTimeSteps
+                m_tracker = New cCompletionEstimator(0, m_iSpinupTimesteps + m_iRunTimesteps)
+            End If
+
+            ' Translate timestep
+            If (Not ds.bInSpinUp) Then
+                iTimestep += m_iSpinupTimesteps
+            End If
+            Return m_tracker.ETA(iTimestep)
+        End Function
+
+        Private Function ETAStatusText(iTimestep As Integer, strStatusBase As String) As String
+            Dim dt As DateTime = Me.EstimateETA(iTimestep)
+            If (dt = DateTime.MinValue) Then Return strStatusBase
+
+            ' ToDo: globalize this
+            If (dt.DayOfYear <> DateTime.Now().DayOfYear) Then
+                Return String.Format("{0}, due by {1} {2}", strStatusBase, dt.ToShortDateString, dt.ToShortTimeString)
+            Else
+                Return String.Format("{0}, due by {1}", strStatusBase, dt.ToShortTimeString)
+            End If
+        End Function
+
+#End Region ' ETA estimation
 
     End Class
 

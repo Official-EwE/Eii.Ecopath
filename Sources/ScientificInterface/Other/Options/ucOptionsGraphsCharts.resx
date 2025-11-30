@@ -138,18 +138,6 @@
   <data name="m_hdr1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdr1.Name" xml:space="preserve">
-    <value>m_hdr1</value>
-  </data>
-  <data name="&gt;&gt;m_hdr1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.19025, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdr1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdr1.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="m_lblThumbnailSize.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -165,18 +153,6 @@
   <data name="m_lblThumbnailSize.Text" xml:space="preserve">
     <value>&amp;Size of thumbnails:</value>
   </data>
-  <data name="&gt;&gt;m_lblThumbnailSize.Name" xml:space="preserve">
-    <value>m_lblThumbnailSize</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailSize.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailSize.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="m_nudThumbnailSize.Location" type="System.Drawing.Point, System.Drawing">
     <value>126, 75</value>
   </data>
@@ -185,18 +161,6 @@
   </data>
   <data name="m_nudThumbnailSize.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_nudThumbnailSize.Name" xml:space="preserve">
-    <value>m_nudThumbnailSize</value>
-  </data>
-  <data name="&gt;&gt;m_nudThumbnailSize.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.7.0.19025, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudThumbnailSize.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudThumbnailSize.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="m_rbLegendAlways.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -213,18 +177,6 @@
   <data name="m_rbLegendAlways.Text" xml:space="preserve">
     <value>&amp;Always show legends on graphs</value>
   </data>
-  <data name="&gt;&gt;m_rbLegendAlways.Name" xml:space="preserve">
-    <value>m_rbLegendAlways</value>
-  </data>
-  <data name="&gt;&gt;m_rbLegendAlways.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbLegendAlways.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbLegendAlways.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_rbLegendSelective.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -239,18 +191,6 @@
   </data>
   <data name="m_rbLegendSelective.Text" xml:space="preserve">
     <value>Show legends on &amp;selected graphs</value>
-  </data>
-  <data name="&gt;&gt;m_rbLegendSelective.Name" xml:space="preserve">
-    <value>m_rbLegendSelective</value>
-  </data>
-  <data name="&gt;&gt;m_rbLegendSelective.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbLegendSelective.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_rbLegendSelective.ZOrder" xml:space="preserve">
-    <value>7</value>
   </data>
   <data name="m_lblThumbnailUnit.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -270,18 +210,6 @@
   <data name="m_lblThumbnailUnit.Text" xml:space="preserve">
     <value>pixels</value>
   </data>
-  <data name="&gt;&gt;m_lblThumbnailUnit.Name" xml:space="preserve">
-    <value>m_lblThumbnailUnit</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailUnit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailUnit.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailUnit.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -300,18 +228,6 @@
   <data name="Label1.Text" xml:space="preserve">
     <value>pixels</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
-  </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_nudChartSymbols.Location" type="System.Drawing.Point, System.Drawing">
     <value>126, 101</value>
   </data>
@@ -320,18 +236,6 @@
   </data>
   <data name="m_nudChartSymbols.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_nudChartSymbols.Name" xml:space="preserve">
-    <value>m_nudChartSymbols</value>
-  </data>
-  <data name="&gt;&gt;m_nudChartSymbols.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.7.0.19025, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudChartSymbols.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_nudChartSymbols.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_lblSizeOfSymbols.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -351,18 +255,6 @@
   <data name="m_lblSizeOfSymbols.Text" xml:space="preserve">
     <value>&amp;Size of chart symbols:</value>
   </data>
-  <data name="&gt;&gt;m_lblSizeOfSymbols.Name" xml:space="preserve">
-    <value>m_lblSizeOfSymbols</value>
-  </data>
-  <data name="&gt;&gt;m_lblSizeOfSymbols.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSizeOfSymbols.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblSizeOfSymbols.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -374,11 +266,5 @@
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>385, 342</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucOptionsGraphsCharts</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

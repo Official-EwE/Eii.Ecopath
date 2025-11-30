@@ -137,18 +137,6 @@
   <data name="m_scNetworkAnalysis.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 21</value>
   </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Panel1.Name" xml:space="preserve">
-    <value>m_scNetworkAnalysis.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Panel1.Parent" xml:space="preserve">
-    <value>m_scNetworkAnalysis</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -158,30 +146,6 @@
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tlpInfo.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_pbSponsors.Name" xml:space="preserve">
-    <value>m_pbSponsors</value>
-  </data>
-  <data name="&gt;&gt;m_pbSponsors.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbSponsors.Parent" xml:space="preserve">
-    <value>m_tlpInfo</value>
-  </data>
-  <data name="&gt;&gt;m_pbSponsors.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_lblSponsors.Name" xml:space="preserve">
-    <value>m_lblSponsors</value>
-  </data>
-  <data name="&gt;&gt;m_lblSponsors.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSponsors.Parent" xml:space="preserve">
-    <value>m_tlpInfo</value>
-  </data>
-  <data name="&gt;&gt;m_lblSponsors.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_tlpInfo.Location" type="System.Drawing.Point, System.Drawing">
     <value>302, 10</value>
@@ -197,18 +161,6 @@
   </data>
   <data name="m_tlpInfo.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInfo.Name" xml:space="preserve">
-    <value>m_tlpInfo</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInfo.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInfo.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_tlpInfo.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbSponsors" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblSponsors" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Absolute,205,Percent,50" /&gt;&lt;Rows Styles="Percent,50,AutoSize,0,Absolute,174,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -231,18 +183,6 @@
   <data name="m_plot.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_plot.Name" xml:space="preserve">
-    <value>m_plot</value>
-  </data>
-  <data name="&gt;&gt;m_plot.Type" xml:space="preserve">
-    <value>EwENetworkAnalysis.ucPlot, EwENetworkAnalysis, Version=6.7.0.18848, Culture=neutral, PublicKeyToken=43ed0cfa9d8c0f9a</value>
-  </data>
-  <data name="&gt;&gt;m_plot.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_plot.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
     <value>126, 10</value>
   </data>
@@ -255,18 +195,6 @@
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
-    <value>m_graph</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_datagrid.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 204</value>
   </data>
@@ -278,30 +206,6 @@
   </data>
   <data name="m_datagrid.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_datagrid.Name" xml:space="preserve">
-    <value>m_datagrid</value>
-  </data>
-  <data name="&gt;&gt;m_datagrid.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_datagrid.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_datagrid.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_tlpOptions.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -321,32 +225,8 @@
   <data name="m_tlpOptions.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_tlpOptions.Name" xml:space="preserve">
-    <value>m_tlpOptions</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpOptions.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlpOptions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls /&gt;&lt;Columns Styles="AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>1010, 506</value>
@@ -356,18 +236,6 @@
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Name" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
-    <value>m_scNetworkAnalysis.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="m_toolstrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
@@ -528,30 +396,6 @@
   <data name="m_toolstrip.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;m_toolstrip.Name" xml:space="preserve">
-    <value>m_toolstrip</value>
-  </data>
-  <data name="&gt;&gt;m_toolstrip.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.7.0.18848, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_toolstrip.Parent" xml:space="preserve">
-    <value>m_scNetworkAnalysis.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_toolstrip.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Panel2.Name" xml:space="preserve">
-    <value>m_scNetworkAnalysis.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Panel2.Parent" xml:space="preserve">
-    <value>m_scNetworkAnalysis</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_scNetworkAnalysis.Size" type="System.Drawing.Size, System.Drawing">
     <value>1010, 531</value>
   </data>
@@ -560,18 +404,6 @@
   </data>
   <data name="m_scNetworkAnalysis.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Name" xml:space="preserve">
-    <value>m_scNetworkAnalysis</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scNetworkAnalysis.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_pbSponsors.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1227,18 +1059,6 @@
   <data name="m_pbSponsors.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsors.Name" xml:space="preserve">
-    <value>m_pbSponsors</value>
-  </data>
-  <data name="&gt;&gt;m_pbSponsors.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbSponsors.Parent" xml:space="preserve">
-    <value>m_tlpInfo</value>
-  </data>
-  <data name="&gt;&gt;m_pbSponsors.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_lblSponsors.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1269,18 +1089,6 @@
   <data name="m_lblSponsors.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
   </data>
-  <data name="&gt;&gt;m_lblSponsors.Name" xml:space="preserve">
-    <value>m_lblSponsors</value>
-  </data>
-  <data name="&gt;&gt;m_lblSponsors.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSponsors.Parent" xml:space="preserve">
-    <value>m_tlpInfo</value>
-  </data>
-  <data name="&gt;&gt;m_lblSponsors.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_hdrPage.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -1304,18 +1112,6 @@
   </data>
   <data name="m_hdrPage.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrPage.Name" xml:space="preserve">
-    <value>m_hdrPage</value>
-  </data>
-  <data name="&gt;&gt;m_hdrPage.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18848, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrPage.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrPage.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -3698,77 +3494,5 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>&lt;title&gt;</value>
-  </data>
-  <data name="&gt;&gt;ts1.Name" xml:space="preserve">
-    <value>ts1</value>
-  </data>
-  <data name="&gt;&gt;ts1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ts2.Name" xml:space="preserve">
-    <value>ts2</value>
-  </data>
-  <data name="&gt;&gt;ts2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmiRun.Name" xml:space="preserve">
-    <value>tsmiRun</value>
-  </data>
-  <data name="&gt;&gt;tsmiRun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbtnOptions.Name" xml:space="preserve">
-    <value>tsbtnOptions</value>
-  </data>
-  <data name="&gt;&gt;tsbtnOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tslblSelection1.Name" xml:space="preserve">
-    <value>tslblSelection1</value>
-  </data>
-  <data name="&gt;&gt;tslblSelection1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tscmbSelection1.Name" xml:space="preserve">
-    <value>tscmbSelection1</value>
-  </data>
-  <data name="&gt;&gt;tscmbSelection1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tslblSelection2.Name" xml:space="preserve">
-    <value>tslblSelection2</value>
-  </data>
-  <data name="&gt;&gt;tslblSelection2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tscmbSelection2.Name" xml:space="preserve">
-    <value>tscmbSelection2</value>
-  </data>
-  <data name="&gt;&gt;tscmbSelection2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbtnOutputIndicesCSV.Name" xml:space="preserve">
-    <value>tsbtnOutputIndicesCSV</value>
-  </data>
-  <data name="&gt;&gt;tsbtnOutputIndicesCSV.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbtnOutputGraphEMF.Name" xml:space="preserve">
-    <value>tsbtnOutputGraphEMF</value>
-  </data>
-  <data name="&gt;&gt;tsbtnOutputGraphEMF.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsbnFonts.Name" xml:space="preserve">
-    <value>tsbnFonts</value>
-  </data>
-  <data name="&gt;&gt;tsbnFonts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmNetworkAnalysis</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.3.5072.22113, Culture=neutral, PublicKeyToken=dd4210ebb9723de9</value>
   </data>
 </root>

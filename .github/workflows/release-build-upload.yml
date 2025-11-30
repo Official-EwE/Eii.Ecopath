@@ -1,0 +1,86 @@
+name: Build & Upload assets on Release
+
+on:
+  release:
+    types: [published]   # run after publishing a release
+
+    
+jobs:
+  build-and-upload:
+    runs-on: windows-latest
+    permissions:
+      contents: write        # required to upload assets to the release
+      packages: read
+
+    steps:
+      - name: Checkout the released tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Derive Version/FileVersion from tag
+        shell: pwsh
+        run: |
+          $tag = "${{ github.event.release.tag_name }}"
+          $semver = $tag.TrimStart('v')         # e.g. v1.2.3 -> 1.2.3
+          $filever = ($semver -match '^\d+\.\d+\.\d+$') ? "$semver.0" : $semver
+          "SEMVER=$semver" | Out-File $env:GITHUB_ENV -Append
+          "FILEVER=$filever" | Out-File $env:GITHUB_ENV -Append
+
+      # Ensure that the github-Official-EwE NuGet source is configured. The standard GITHUB_TOKEN is used. It's automatically created by GitHub Actions and is available as 'github.toke'
+      # So you don't have to pass it to this action explicitly. (because 'secrets', and subsequently 'secrets.GITHUB_TOKEN' is not accessible in reusable workflows)
+      - name: Ensure github-Official-EwE NuGet source
+        run: |
+          if (dotnet nuget list source | Select-String "github-Official-EwE") {
+            dotnet nuget remove source github-Official-EwE
+          }
+          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+            --name "github-Official-EwE" `
+            --username ${{ github.repository_owner }} `
+            --password ${{ github.token }} `
+            --store-password-in-clear-text
+        shell: pwsh
+  
+      - name: Restore
+        run: dotnet restore .\Sources\EwE6.sln
+
+      - name: Build Release with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ env.SEMVER }} /p:FileVersion=${{ env.FILEVER }}
+
+      # If you publish apps, add publish steps per project here (optional)
+      # - name: Publish app
+      #   run: dotnet publish src/App/App.csproj -c Release -o out/win-x64 -r win-x64 --no-self-contained /p:Version=${{ env.SEMVER }} /p:FileVersion=${{ env.FILEVER }}
+
+      - name: Package build outputs
+        shell: pwsh
+        run: |
+          $zipName = "Eii.Ecopath-${{ env.SEMVER }}.zip"
+          New-Item -ItemType Directory -Force -Path artifacts | Out-Null
+          # Collect all bin\Release outputs across projects (adjust if needed)
+          $tmp = Join-Path $PWD "artifacts_tmp"
+          New-Item -ItemType Directory -Force -Path $tmp | Out-Null
+          Get-ChildItem -Recurse -Directory | Where-Object { $_.FullName -match '\\bin\\Release$' } |
+            ForEach-Object { Copy-Item "$($_.FullName)\*" -Destination $tmp -Recurse -Force }
+          Compress-Archive -Path "$tmp\*" -DestinationPath "artifacts\$zipName"
+          Remove-Item $tmp -Recurse -Force
+          "ZIP_PATH=artifacts/$zipName" | Out-File $env:GITHUB_ENV -Append
+
+      - name: Upload asset to the same release
+        run: gh release upload "${{ github.event.release.tag_name }}" "${{ env.ZIP_PATH }}" --clobber
+
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+
+
+
+
+
