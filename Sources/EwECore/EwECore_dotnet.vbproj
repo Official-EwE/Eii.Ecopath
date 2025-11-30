@@ -34,7 +34,7 @@
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwECore</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.10</Version>
+    <Version>6.7.11</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>

@@ -538,7 +538,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.EwECore" Version="6.7.10" />
+    <PackageReference Include="Eii.Ecopath.EwECore" Version="6.7.*" />
 
 <!-- When you want to build EwECore locally, uncomment these lines and remove the PackageReference above
     <ProjectReference Include="..\EwECore\EwECore.vbproj" />
@@ -626,6 +626,9 @@
       <Version>1.0.3</Version>
     </PackageReference>
     <PackageReference Include="System.Resources.Extensions" Version="10.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EwECore\EwECore.vbproj" />
   </ItemGroup>
   <Target Name="BeforeBuild"></Target>
   <Target Name="AfterBuild">
