@@ -1,7 +1,9 @@
 # Ecopath with Ecosim (EwE) - Source Code
 This repository contains the **source code** for Ecopath with Ecosim (EwE), an ecosystem modeling software suite developed by the Ecopath International Initiative (EII).
 
-The master branch contains the latest stable release of EwE. **You can not commit directly to the master branch!**
+The master branch contains the latest stable release of EwE. 
+- **You can not commit directly to the master branch!**
+- **A Build Check will be performed before you can merge a PR into master**
 
 [More information about working with Git](https://github.com/Official-EwE/Ecopath-project/wiki/Git-how-to)
 
@@ -39,3 +41,19 @@ In AppData\Roaming\NuGet\NuGet.config, your GitHub access token is shown as an e
 		    <add key="ClearTextPassword" value="your github access key" />
 	    </github>
     </packageSourceCredentials>
+
+## Creating and pushing NuGet packages to GitHub
+
+This solution contains 4 NuGet packages:
+- EwECore
+- EwEUtils
+- EwEPlugin
+- ScientificInterfaceShared
+
+These packages can be created and pushed to GitHub using the `CreateAndPushNugetPackage.ps1` Powershell file located in the `Sources` directory of the repository.
+To push those packages you will need to have a Personal Access Token (PAT) with `write:packages` scope. (Also known as an ApiKey)
+
+For example, to create and push the ScientificInterfaceShared package, follow these steps:
+- In Visual Studio, open the `Developer PowerShell` window
+- Navigate to the `Sources` directory of the repository
+- Type `.\CreateAndPushNugetPackage.ps1 -ProjectPath ScientificInterfaceShared\ScientificInterfaceShared.vbproj -ApiKey <ApiKey>`
