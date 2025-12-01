@@ -43,9 +43,8 @@ Namespace Utilities
             Dim timeNow = Date.Now
             iTimestepNow = Math.Max(TimestepStart, Math.Min(Timesteps, iTimestepNow))
 
-            Dim dFractionElapsed As Double = (iTimestepNow - TimestepStart) / Math.Max(1, (Timesteps - TimestepStart))
-            Dim lSecondsElapsed As Double = Math.Ceiling(Me.Timer.Elapsed.TotalSeconds)
-            Dim lSecondsRemaining As Long = CLng(lSecondsElapsed / dFractionElapsed)
+            Dim dTimeFractionElapsed As Double = Math.Ceiling(Me.Timer.Elapsed.TotalSeconds) / Math.Max(1, (iTimestepNow - Me.TimestepStart))
+            Dim lSecondsRemaining As Long = CLng(dTimeFractionElapsed * (Me.Timesteps - iTimestepNow))
 
             Return timeNow.AddSeconds(lSecondsRemaining)
 
