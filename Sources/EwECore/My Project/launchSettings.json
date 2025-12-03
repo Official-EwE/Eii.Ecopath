@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EwECore": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
