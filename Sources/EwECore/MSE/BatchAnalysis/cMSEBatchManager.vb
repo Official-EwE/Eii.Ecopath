@@ -119,7 +119,7 @@ Namespace MSEBatchManager
 
             Me.m_core = theCore
             Me.m_MSE = MSE
-            Me.m_MSEdata = MSE.Data
+            Me.m_MSEdata = MSE.MSEData
 
             Me.m_BatchData = New cMSEBatchDataStructures(Me.m_MSEdata)
             Me.m_fileReader = New cMSECommandFileReader(Me.Core, Me)
