@@ -542,35 +542,35 @@ Namespace MSE
 
         End Function
 
-        Public Sub RunMSYSearch(byFleet As Boolean)
+        'Public Sub RunMSYSearch(byFleet As Boolean)
 
-            Dim orgSearchMode As eSearchModes = Me.m_search.SearchMode
-            Me.m_search.SearchMode = eSearchModes.NotInSearch
+        '    Dim orgSearchMode As eSearchModes = Me.m_search.SearchMode
+        '    Me.m_search.SearchMode = eSearchModes.NotInSearch
 
-            If byFleet Then
-                Me.m_MSE.RunMSYSearch()
-                Me.m_MSE.RunBoEstimation()
-            Else 'F by group
-                Me.m_MSE.RunMSYSearchUsingFishingMortalityInsteadOfEffort()
-            End If
+        '    If byFleet Then
+        '        Me.m_MSE.RunMSYSearch()
+        '        Me.m_MSE.RunBoEstimation()
+        '    Else 'F by group
+        '        Me.m_MSE.RunMSYSearchUsingFishingMortalityInsteadOfEffort()
+        '    End If
 
-            'the MSY search set BBase, Blim and Fopt these are in the Ecosim group inputs 
-            'Load the core values into the interface objects
-            Me.m_core.LoadEcosimGroups()
-            Me.Load()
-            'tell the interface that data has changed
-            Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.Ecosim, eMessageImportance.Maintenance, eDataTypes.EcoSimGroupInput))
-            'reference levels where set to Blim and Bbase
-            Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEGroupInput))
-            Me.m_core.Messages.sendAllMessages()
+        '    'the MSY search set BBase, Blim and Fopt these are in the Ecosim group inputs 
+        '    'Load the core values into the interface objects
+        '    Me.m_core.LoadEcosimGroups()
+        '    Me.Load()
+        '    'tell the interface that data has changed
+        '    Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.Ecosim, eMessageImportance.Maintenance, eDataTypes.EcoSimGroupInput))
+        '    'reference levels where set to Blim and Bbase
+        '    Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEGroupInput))
+        '    Me.m_core.Messages.sendAllMessages()
 
-            Me.m_search.SearchMode = orgSearchMode
+        '    Me.m_search.SearchMode = orgSearchMode
 
-            If Me.m_core.PluginManager IsNot Nothing Then
-                Me.m_core.PluginManager.MSYRunCompleted()
-            End If
+        '    If Me.m_core.PluginManager IsNot Nothing Then
+        '        Me.m_core.PluginManager.MSYRunCompleted()
+        '    End If
 
-        End Sub
+        'End Sub
 
         Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
 

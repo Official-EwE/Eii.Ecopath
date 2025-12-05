@@ -20,9 +20,13 @@ Namespace MSE
         Sub Init(Ecosim As Ecosim.cEcosimModel)
         Sub Init(Ecospace As cEcoSpace)
 
-        Function InitForRun() As Boolean
+        Function InitForRun(ByVal bFullInitialization As Boolean) As Boolean
+
+        Function Run() As Boolean
 
         Function SetBaseFFromGear() As Boolean
+
+        Function SetFtimeFromGear(ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean
 
         WriteOnly Property onModelTimeStep As onModelTimeStepDelegate
 
@@ -57,28 +61,27 @@ Namespace MSE
 
         Private m_Ecosim As cEcosimModel
 
-        Private m_OnTimeStepDelegate As IMSEModelWrapper.onModelTimeStepDelegate = Nothing
+        Private m_OnModelTimeStepDelegate As IMSEModelWrapper.onModelTimeStepDelegate = Nothing
 
 
         Private WriteOnly Property IMSEModelWrapper_onModelTimeStep As IMSEModelWrapper.onModelTimeStepDelegate Implements IMSEModelWrapper.onModelTimeStep
             Set(value As IMSEModelWrapper.onModelTimeStepDelegate)
-                m_OnTimeStepDelegate = value
-                Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
+                m_OnModelTimeStepDelegate = value
+                'Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
             End Set
         End Property
 
         Public Sub Init(Ecosim As cEcosimModel) Implements IMSEModelWrapper.Init
             Me.m_Ecosim = Ecosim
-
-            Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
         End Sub
 
         Public Sub Init(Ecospace As cEcoSpace) Implements IMSEModelWrapper.Init
             Debug.Assert(False, "Invalid Model Type")
         End Sub
 
-        Public Function InitForRun() As Boolean Implements IMSEModelWrapper.InitForRun
-            Me.m_Ecosim.Init(False)
+        Public Function InitForRun(ByVal bFullInitialization As Boolean) As Boolean Implements IMSEModelWrapper.InitForRun
+            Me.m_Ecosim.Init(bFullInitialization)
+            Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
         End Function
 
         Public Function SetBaseFFromGear() As Boolean Implements IMSEModelWrapper.SetBaseFFromGear
@@ -89,11 +92,22 @@ Namespace MSE
 
         Private Sub onEcosimTimestep(iTime As Long, data As cEcoSimResults)
             Try
-                m_OnTimeStepDelegate(CInt(iTime))
+                If m_OnModelTimeStepDelegate <> Nothing Then
+                    m_OnModelTimeStepDelegate(CInt(iTime))
+                End If
             Catch ex As ArgumentException
 
             End Try
         End Sub
+
+        Public Function Run() As Boolean Implements IMSEModelWrapper.Run
+            Me.m_Ecosim.Run()
+            Me.m_Ecosim.TimeStepDelegate = Nothing
+        End Function
+
+        Public Function SetFtimeFromGear(t As Integer, QYear() As Single, PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean Implements IMSEModelWrapper.SetFtimeFromGear
+            Me.m_Ecosim.SetFtimeFromGear(t, QYear, PredEffort, ForcedDiscards)
+        End Function
     End Class
 
 
@@ -123,11 +137,19 @@ Namespace MSE
             Throw New NotImplementedException()
         End Sub
 
-        Public Function InitForRun() As Boolean Implements IMSEModelWrapper.InitForRun
+        Public Function InitForRun(ByVal bFullInitialization As Boolean) As Boolean Implements IMSEModelWrapper.InitForRun
             Throw New NotImplementedException()
         End Function
 
         Public Function SetBaseFFromGear() As Boolean Implements IMSEModelWrapper.SetBaseFFromGear
+            Throw New NotImplementedException()
+        End Function
+
+        Public Function Run() As Boolean Implements IMSEModelWrapper.Run
+            'Return Me.m_Ecosim.Run()
+        End Function
+
+        Public Function SetFtimeFromGear(t As Integer, QYear() As Single, PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean Implements IMSEModelWrapper.SetFtimeFromGear
             Throw New NotImplementedException()
         End Function
     End Class
