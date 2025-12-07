@@ -20,7 +20,7 @@ If present, the script will NOT remove whitespace-only lines in the final file.
 
 .NOTES
 - Compatible with Windows PowerShell 5.1 and PowerShell 7+.
-- Creates a .bak backup next to the project file.
+- No backup file is created by this version. Consider version control or manual backups.
 #>
 
 param(
@@ -40,7 +40,7 @@ param(
     [switch]$PreserveBlankLines
 )
 
-# ClickOnce / OneClick properties to remove
+# ClickOnce / OneClick and related legacy properties to remove
 $clickOnceProps = @(
     'PublishUrl',
     'Install',
@@ -122,22 +122,17 @@ foreach ($propName in $clickOnceProps) {
 }
 
 if ($plannedRemovals.Count -eq 0) {
-    Write-Host "No ClickOnce properties found. Nothing to remove." -ForegroundColor Yellow
+    Write-Host "No ClickOnce-related properties found. Nothing to remove." -ForegroundColor Yellow
     return
 }
 
-Write-Host "Found $($plannedRemovals.Count) ClickOnce property instance(s) to remove:" -ForegroundColor Green
+Write-Host "Found $($plannedRemovals.Count) property instance(s) to remove:" -ForegroundColor Green
 $plannedRemovals | Format-Table Property, Value, ParentCondition -AutoSize
 
 if ($WhatIf) {
     Write-Host "`nWhatIf specified: no changes will be made." -ForegroundColor Yellow
     return
 }
-
-# Backup original file
-$backupPath = "$ProjectPath.bak"
-Copy-Item -LiteralPath $ProjectPath -Destination $backupPath -Force
-Write-Host "Backup created: $backupPath" -ForegroundColor DarkGreen
 
 # Remove nodes
 foreach ($propName in $clickOnceProps) {
@@ -210,6 +205,5 @@ $bytes =
 
 [System.IO.File]::WriteAllBytes($ProjectPath, $bytes)
 
-Write-Host "ClickOnce properties removed." -ForegroundColor Green
+Write-Host "ClickOnce/legacy properties removed." -ForegroundColor Green
 Write-Host ("Saved as UTF-8 {0}, without XML declaration, and blank lines {1}." -f ($(if($Utf8NoBom){"(no BOM)"} else {"(with BOM)"}), $(if($PreserveBlankLines){"preserved"} else {"cleaned"}))) -ForegroundColor Green
-Write-Host "If needed, restore from: $backupPath" -ForegroundColor DarkYellow
