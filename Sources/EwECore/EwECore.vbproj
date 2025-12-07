@@ -3,10 +3,6 @@
     <OutputType>Library</OutputType>
     <TargetFrameworks>net48</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU</Platforms>
-    <SccProjectName></SccProjectName>
-    <SccLocalPath></SccLocalPath>
-    <SccAuxPath></SccAuxPath>
-    <SccProvider></SccProvider>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwECore.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>

@@ -6,7 +6,6 @@
     <MyType>Windows</MyType>
     <OptionStrict>On</OptionStrict>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>EwEEcologicalIndicatorsPlugin</Product>
     <Copyright>Copyright © 2016 ICM-CSIC</Copyright>

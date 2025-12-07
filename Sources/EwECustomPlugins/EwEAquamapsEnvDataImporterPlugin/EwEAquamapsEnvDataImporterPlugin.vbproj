@@ -5,7 +5,6 @@
     <OutputType>Library</OutputType>
     <MyType>Windows</MyType>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative</Company>
     <Product>EwEAquamapsEnvDataImporterPlugin</Product>
     <Copyright>Copyright © EII 2014</Copyright>

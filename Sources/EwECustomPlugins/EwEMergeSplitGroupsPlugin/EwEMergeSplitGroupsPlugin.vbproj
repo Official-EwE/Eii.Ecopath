@@ -5,7 +5,6 @@
     <OutputType>Library</OutputType>
     <MyType>Windows</MyType>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Geomar</Company>
     <Product>EwEMergeSplitGroupsPlugin</Product>
     <Copyright>Copyright © 2017 Geomar</Copyright>

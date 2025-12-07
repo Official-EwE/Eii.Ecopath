@@ -56,7 +56,15 @@ $clickOnceProps = @(
     'ApplicationVersion',
     'IsWebBootstrapper',
     'UseApplicationTrust',
-    'BootstrapperEnabled'
+    'BootstrapperEnabled',
+    'TargetZone',
+    'SccProjectName',
+    'SccLocalPath',
+    'SccAuxPath',
+    'SccProvider',
+    'RunFxCop',
+    'FxCopInputAssembly',
+    'ImportWindowsDesktopTargets'
 )
 
 function Save-Xml {

@@ -9,7 +9,6 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ValueChainPluginv2.snk</AssemblyOriginatorKeyFile>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>ValueChainPlugin</Product>
     <Copyright>Copyright © 2025</Copyright>

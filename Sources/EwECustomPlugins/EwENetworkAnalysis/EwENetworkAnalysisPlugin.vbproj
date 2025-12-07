@@ -9,7 +9,6 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>keys.snk</AssemblyOriginatorKeyFile>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>EwENetworkAnalysis plugin</Product>
     <Copyright>Copyright © EII 2007</Copyright>

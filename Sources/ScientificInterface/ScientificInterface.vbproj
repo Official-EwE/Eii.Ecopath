@@ -6,17 +6,11 @@
     <StartupObject>ScientificInterface.EwE6ApplicationFramework</StartupObject>
     <AssemblyName>EwE6</AssemblyName>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
-    <SccProjectName></SccProjectName>
-    <SccLocalPath></SccLocalPath>
-    <SccAuxPath></SccAuxPath>
-    <SccProvider></SccProvider>
     <OptionStrict>On</OptionStrict>
     <ApplicationIcon>Resources\Ecopath0.ico</ApplicationIcon>
-    <TargetZone>LocalIntranet</TargetZone>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ScientificInterface.snk</AssemblyOriginatorKeyFile>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>Ecopath with Ecosim</Product>
     <Copyright>Copyright © 1991</Copyright>
@@ -26,7 +20,6 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DocumentationFile>EwE6.xml</DocumentationFile>
-    <RunFxCop>false</RunFxCop>
     <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <NoWarn>42353,42354,42355</NoWarn>
@@ -34,8 +27,6 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DefineDebug>false</DefineDebug>
     <DocumentationFile>EwE6.xml</DocumentationFile>
-    <RunFxCop>false</RunFxCop>
-    <FxCopInputAssembly>bin\Debug\ScientificInterface.exe</FxCopInputAssembly>
     <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <NoWarn>42353,42354,42355</NoWarn>
