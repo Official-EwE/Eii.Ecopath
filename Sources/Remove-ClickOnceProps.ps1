@@ -1,9 +1,8 @@
 
 <#
 .SYNOPSIS
-Removes ClickOnce (OneClick) properties from an SDK-style .vbproj/.csproj file,
-cleans up empty lines, saves as UTF-8 WITH BOM by default, and strips the XML declaration
-so the file starts with <Project ...>.
+Removes ClickOnce/legacy properties and selected BootstrapperPackage items from an SDK-style .vbproj/.csproj file,
+cleans up empty lines, saves as UTF-8 (with BOM by default), and strips the XML declaration so the file starts with <Project ...>.
 
 .PARAMETER ProjectPath
 Path to the project file (.vbproj or .csproj).
@@ -20,7 +19,7 @@ If present, the script will NOT remove whitespace-only lines in the final file.
 
 .NOTES
 - Compatible with Windows PowerShell 5.1 and PowerShell 7+.
-- No backup file is created by this version. Consider version control or manual backups.
+- This version does NOT create a .bak backup; use version control for safety.
 #>
 
 param(
@@ -40,7 +39,7 @@ param(
     [switch]$PreserveBlankLines
 )
 
-# ClickOnce / OneClick and related legacy properties to remove
+# ClickOnce / OneClick and related legacy properties to remove from PropertyGroup
 $clickOnceProps = @(
     'PublishUrl',
     'Install',
@@ -67,28 +66,27 @@ $clickOnceProps = @(
     'ImportWindowsDesktopTargets'
 )
 
+# BootstrapperPackage entries to remove from ItemGroup by Include attribute
+$bootstrapperIncludesToRemove = @(
+    'Microsoft.Net.Client.3.5',
+    'Microsoft.Net.Framework.2.0',
+    'Microsoft.Net.Framework.3.5.SP1',
+    'Microsoft.Windows.Installer.3.1'
+)
+
 function Save-Xml {
     param(
         [Parameter(Mandatory=$true)][System.Xml.XmlDocument]$XmlDoc,
         [Parameter(Mandatory=$true)][string]$Path,
         [switch]$WithBom
     )
-
     # Use a StreamWriter with explicit UTF-8 and BOM choice
     $utf8 = New-Object System.Text.UTF8Encoding($WithBom.IsPresent)
     $fs = [System.IO.File]::Open($Path, [System.IO.FileMode]::Create, [System.IO.FileAccess]::Write, [System.IO.FileShare]::None)
     try {
         $sw = New-Object System.IO.StreamWriter($fs, $utf8)
-        try {
-            $XmlDoc.Save($sw)
-        }
-        finally {
-            $sw.Dispose()
-        }
-    }
-    finally {
-        $fs.Dispose()
-    }
+        try { $XmlDoc.Save($sw) } finally { $sw.Dispose() }
+    } finally { $fs.Dispose() }
 }
 
 Write-Host "Loading project: $ProjectPath" -ForegroundColor Cyan
@@ -99,19 +97,18 @@ $xml = New-Object System.Xml.XmlDocument
 $xml.PreserveWhitespace = $true
 $xml.LoadXml($xmlContent)
 
-# Collect planned removals for preview
+# Collect planned removals for preview (PropertyGroup nodes)
 $plannedRemovals = @()
 foreach ($propName in $clickOnceProps) {
     $nodes = $xml.SelectNodes("//PropertyGroup/$propName")
     if ($nodes -and $nodes.Count -gt 0) {
         foreach ($node in $nodes) {
-            # PS 5.1-safe parent Condition access
+            # PowerShell 5.1-safe parent Condition access
             $parentCondition = $null
             if ($node.ParentNode -and $node.ParentNode.Attributes) {
                 $condAttr = $node.ParentNode.Attributes.GetNamedItem('Condition')
                 if ($condAttr) { $parentCondition = $condAttr.Value }
             }
-
             $plannedRemovals += [PSCustomObject]@{
                 Property        = $propName
                 Value           = $node.InnerText
@@ -121,12 +118,32 @@ foreach ($propName in $clickOnceProps) {
     }
 }
 
+# Collect planned removals for preview (BootstrapperPackage nodes)
+foreach ($incl in $bootstrapperIncludesToRemove) {
+    $bpNodes = $xml.SelectNodes("//ItemGroup/BootstrapperPackage[@Include='$incl']")
+    if ($bpNodes -and $bpNodes.Count -gt 0) {
+        foreach ($bp in $bpNodes) {
+            # PS 5.1-safe access to Condition on the parent ItemGroup
+            $bpParentCond = $null
+            if ($bp.ParentNode -and $bp.ParentNode.Attributes) {
+                $condAttr2 = $bp.ParentNode.Attributes.GetNamedItem('Condition')
+                if ($condAttr2) { $bpParentCond = $condAttr2.Value }
+            }
+            $plannedRemovals += [PSCustomObject]@{
+                Property        = 'BootstrapperPackage'
+                Value           = $incl
+                ParentCondition = $bpParentCond
+            }
+        }
+    }
+}
+
 if ($plannedRemovals.Count -eq 0) {
-    Write-Host "No ClickOnce-related properties found. Nothing to remove." -ForegroundColor Yellow
+    Write-Host "No targeted properties or BootstrapperPackage items found. Nothing to remove." -ForegroundColor Yellow
     return
 }
 
-Write-Host "Found $($plannedRemovals.Count) property instance(s) to remove:" -ForegroundColor Green
+Write-Host "Found $($plannedRemovals.Count) instance(s) to remove:" -ForegroundColor Green
 $plannedRemovals | Format-Table Property, Value, ParentCondition -AutoSize
 
 if ($WhatIf) {
@@ -134,7 +151,7 @@ if ($WhatIf) {
     return
 }
 
-# Remove nodes
+# Remove PropertyGroup nodes
 foreach ($propName in $clickOnceProps) {
     $nodes = $xml.SelectNodes("//PropertyGroup/$propName")
     if ($nodes) {
@@ -144,22 +161,37 @@ foreach ($propName in $clickOnceProps) {
     }
 }
 
+# Remove BootstrapperPackage nodes by Include
+foreach ($incl in $bootstrapperIncludesToRemove) {
+    $bpNodes = $xml.SelectNodes("//ItemGroup/BootstrapperPackage[@Include='$incl']")
+    if ($bpNodes) {
+        foreach ($bp in @($bpNodes)) {
+            $null = $bp.ParentNode.RemoveChild($bp)
+        }
+    }
+}
+
 # Remove now-empty PropertyGroup elements
 $propertyGroups = $xml.SelectNodes("//PropertyGroup")
 foreach ($pg in @($propertyGroups)) {
     $hasElementChildren = $false
     foreach ($child in $pg.ChildNodes) {
-        if ($child.NodeType -eq [System.Xml.XmlNodeType]::Element) {
-            $hasElementChildren = $true
-            break
-        }
+        if ($child.NodeType -eq [System.Xml.XmlNodeType]::Element) { $hasElementChildren = $true; break }
     }
-    if (-not $hasElementChildren) {
-        $null = $pg.ParentNode.RemoveChild($pg)
-    }
+    if (-not $hasElementChildren) { $null = $pg.ParentNode.RemoveChild($pg) }
 }
 
-# First save (UTF-8, choose BOM as requested)
+# Remove now-empty ItemGroup elements
+$itemGroups = $xml.SelectNodes("//ItemGroup")
+foreach ($ig in @($itemGroups)) {
+    $hasElementChildren = $false
+    foreach ($child in $ig.ChildNodes) {
+        if ($child.NodeType -eq [System.Xml.XmlNodeType]::Element) { $hasElementChildren = $true; break }
+    }
+    if (-not $hasElementChildren) { $null = $ig.ParentNode.RemoveChild($ig) }
+}
+
+# Save (UTF-8, BOM optional)
 Save-Xml -XmlDoc $xml -Path $ProjectPath -WithBom:(!$Utf8NoBom)
 
 # Strip XML declaration so the file begins with <Project ...>
@@ -178,8 +210,7 @@ if (-not $PreserveBlankLines) {
         '',
         [System.Text.RegularExpressions.RegexOptions]::Multiline
     )
-
-    # Optional: collapse 3+ consecutive blank lines down to a single blank line
+    # Collapse 3+ consecutive blank lines to a single blank line
     $fileContent = [System.Text.RegularExpressions.Regex]::Replace(
         $fileContent,
         '(\r?\n){3,}',
@@ -205,5 +236,5 @@ $bytes =
 
 [System.IO.File]::WriteAllBytes($ProjectPath, $bytes)
 
-Write-Host "ClickOnce/legacy properties removed." -ForegroundColor Green
+Write-Host "Selected properties and BootstrapperPackage items removed." -ForegroundColor Green
 Write-Host ("Saved as UTF-8 {0}, without XML declaration, and blank lines {1}." -f ($(if($Utf8NoBom){"(no BOM)"} else {"(with BOM)"}), $(if($PreserveBlankLines){"preserved"} else {"cleaned"}))) -ForegroundColor Green
