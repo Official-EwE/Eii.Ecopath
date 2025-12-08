@@ -700,6 +700,7 @@ Namespace MSE
                 For itr = 1 To Me.m_MSEData.NTrials
 
                     Me.InitForTrial()
+                    Me.m_Model.InitForTrial()
 
                     Me.m_MSEData.CurrentIteration = itr
                     Me.AddIteration()

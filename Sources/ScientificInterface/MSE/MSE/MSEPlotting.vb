@@ -81,7 +81,7 @@ Friend Class cMSEPlotter
     Private m_nvis As Integer
     Private m_type As ePlotTypes
     Private m_dataType As ePlotData
-    Private m_Data As List(Of cCoreGroupBase)
+    Private m_lstData As List(Of cCoreGroupBase)
     Private m_RefPoints As List(Of cMSERefPoint)
     Private m_nLines As Integer
     Private m_iIterMin As Integer = Integer.MinValue
@@ -111,15 +111,15 @@ Friend Class cMSEPlotter
 
     Public Sub Detach()
         Try
-            If Me.m_Data IsNot Nothing Then
-                For Each ob As cCoreGroupBase In Me.m_Data
+            If Me.m_lstData IsNot Nothing Then
+                For Each ob As cCoreGroupBase In Me.m_lstData
                     ob.Clear()
                 Next
-                Me.m_Data.Clear()
+                Me.m_lstData.Clear()
             End If
 
             If Me.m_RefPoints IsNot Nothing Then Me.m_RefPoints.Clear()
-            Me.m_Data = Nothing
+            Me.m_lstData = Nothing
             Me.m_RefPoints = Nothing
             Me.m_zgh.Detach()
         Catch ex As Exception
@@ -155,7 +155,7 @@ Friend Class cMSEPlotter
         Me.m_iIterMin = iIterMin
         Me.m_iIterMax = iIterMax
         ' Redraw if need be
-        If Me.m_Data IsNot Nothing Then
+        If Me.m_lstData IsNot Nothing Then
             Me.Draw()
         End If
     End Sub
@@ -183,7 +183,7 @@ Friend Class cMSEPlotter
     Public Sub Draw()
         Try
 
-            If Me.m_Data IsNot Nothing Then
+            If Me.m_lstData IsNot Nothing Then
 
                 If Me.m_type <> ePlotTypes.Line Then
                     Me.m_zgh.NumPanes = Me.NumVisPanes
@@ -222,13 +222,13 @@ Friend Class cMSEPlotter
 
         Try
 
-            If Me.m_Data IsNot Nothing Then
-                Me.m_Data.Clear()
+            If Me.m_lstData IsNot Nothing Then
+                Me.m_lstData.Clear()
             End If
-            Me.m_Data = ListOfData
+            Me.m_lstData = ListOfData
 
-            If Me.m_Data IsNot Nothing Then
-                Me.m_zgh.IsAxisLabelsVisible = (Me.m_Data.Count < 10)
+            If Me.m_lstData IsNot Nothing Then
+                Me.m_zgh.IsAxisLabelsVisible = (Me.m_lstData.Count < 10)
             End If
 
             'if we are adding one line at a time
@@ -258,7 +258,7 @@ Friend Class cMSEPlotter
             'Only data added one line at a time should be plotted this way
             If Me.m_type <> ePlotTypes.Line Then Exit Sub
 
-            For Each data As cCoreGroupBase In Me.m_Data
+            For Each data As cCoreGroupBase In Me.m_lstData
                 ipane += 1
                 stats = Me.m_manager.BiomassStats(data.Index)
                 '   Me.m_zgh.AutoScaleYOption(ipane) = cZedGraphHelper.eScaleOptionTypes.None
@@ -290,7 +290,7 @@ Friend Class cMSEPlotter
 
             'Reference lines are retrieved from MSEManager based on the type of data that is being plotted
             'this should mean the reference lines are always in sync with the current data
-            For Each statobj As cCoreGroupBase In Me.m_Data
+            For Each statobj As cCoreGroupBase In Me.m_lstData
                 ipane += 1
                 'get the reference data from the core for this datatype
                 Dim RefPoint As cMSERefPoint = Me.getRefPoint(statobj.Index)
@@ -370,7 +370,7 @@ Friend Class cMSEPlotter
         Me.m_zgh.YScaleGrace = 1.1
         Dim ipane As Integer
         Dim min As Single, max As Single
-        For Each data As cMSEStats In Me.m_Data
+        For Each data As cMSEStats In Me.m_lstData
             ipane += 1
             min = data.Min
             max = data.Max
@@ -540,8 +540,8 @@ Friend Class cMSEPlotter
 
     Private Sub ClearData()
 
-        If Me.m_Data IsNot Nothing Then
-            Me.m_Data.Clear()
+        If Me.m_lstData IsNot Nothing Then
+            Me.m_lstData.Clear()
         End If
 
         If Me.m_RefPoints IsNot Nothing Then
@@ -565,7 +565,7 @@ Friend Class cMSEPlotter
             Dim binWidth As Single
             Dim min As Single
 
-            For Each data As cMSEStats In Me.m_Data '
+            For Each data As cMSEStats In Me.m_lstData '
                 ipane += 1
                 binWidth = data.BinWidths
                 min = data.Min
@@ -616,7 +616,7 @@ Friend Class cMSEPlotter
             Dim values() As Single
             Dim lstLines As New List(Of ZedGraph.LineItem)
 
-            For Each data As cMSEStats In Me.m_Data '
+            For Each data As cMSEStats In Me.m_lstData '
                 ipane += 1
                 dx = 1 / data.nStepsPerYear
                 lstLines.Clear()
@@ -667,7 +667,7 @@ Friend Class cMSEPlotter
             Dim x As Double
             Dim lstLines As New List(Of ZedGraph.LineItem)
 
-            For Each data As cMSEGroupOutput In Me.m_Data '
+            For Each data As cMSEGroupOutput In Me.m_lstData '
                 ipane += 1
                 lstLines.Clear()
 
@@ -706,10 +706,10 @@ Friend Class cMSEPlotter
             Dim values() As Single
             Dim lstLines As New List(Of ZedGraph.LineItem)
 
-            Debug.Assert(Me.m_Data.Count = 2)
+            Debug.Assert(Me.m_lstData.Count = 2)
 
             For iData As Integer = 0 To 1
-                Dim data As cMSEStats = DirectCast(Me.m_Data(iData), cMSEStats)
+                Dim data As cMSEStats = DirectCast(Me.m_lstData(iData), cMSEStats)
                 Dim strLabel As String = ""
                 Dim clr As Color = Color.Gray
 

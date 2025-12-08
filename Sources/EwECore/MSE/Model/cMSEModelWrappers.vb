@@ -22,6 +22,8 @@ Namespace MSE
 
         Function InitForRun(ByVal bFullInitialization As Boolean) As Boolean
 
+        Sub InitForTrial()
+
         Function Run() As Boolean
 
         Function SetBaseFFromGear() As Boolean
@@ -101,13 +103,19 @@ Namespace MSE
         End Sub
 
         Public Function Run() As Boolean Implements IMSEModelWrapper.Run
-            Me.m_Ecosim.Run()
+            Dim bRetval As Boolean
+            bRetval = Me.m_Ecosim.Run()
             Me.m_Ecosim.TimeStepDelegate = Nothing
+            Return bRetval
         End Function
 
         Public Function SetFtimeFromGear(t As Integer, QYear() As Single, PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean Implements IMSEModelWrapper.SetFtimeFromGear
             Me.m_Ecosim.SetFtimeFromGear(t, QYear, PredEffort, ForcedDiscards)
         End Function
+
+        Public Sub InitForTrial() Implements IMSEModelWrapper.InitForTrial
+            Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
+        End Sub
     End Class
 
 
@@ -134,6 +142,10 @@ Namespace MSE
         End Sub
 
         Public Sub Init(Ecospace As cEcoSpace) Implements IMSEModelWrapper.Init
+            Throw New NotImplementedException()
+        End Sub
+
+        Public Sub InitForTrial() Implements IMSEModelWrapper.InitForTrial
             Throw New NotImplementedException()
         End Sub
 
