@@ -165,7 +165,6 @@
     <EmbeddedResource Include="Resources\EwE6.mdb"></EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Includes\EPPlus.dll" />
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Includes\ProjNet.dll" />
