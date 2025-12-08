@@ -5,7 +5,6 @@
     <OutputType>Library</OutputType>
     <MyType>Windows</MyType>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>EwEWindowsIntegrationPlugin</Product>
     <Copyright>Copyright © 2023</Copyright>

@@ -7,7 +7,6 @@
     <AssemblyName>EwEEcoEngineersPlugin</AssemblyName>
     <MyType>Windows</MyType>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>EcoEngineersPlugin</Product>
     <Copyright>Copyright © 2015</Copyright>

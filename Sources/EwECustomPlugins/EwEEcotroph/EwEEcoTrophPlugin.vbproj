@@ -7,7 +7,6 @@
     <MyType>Windows</MyType>
     <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Agrocampus Ouest - Fisheries and Aquatic Sciences Center </Company>
     <Product>EwEEcotroph</Product>
     <Copyright>Copyright © 2013</Copyright>

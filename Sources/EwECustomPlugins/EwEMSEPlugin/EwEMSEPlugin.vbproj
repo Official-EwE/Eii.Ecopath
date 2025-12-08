@@ -5,12 +5,7 @@
     <OutputType>Library</OutputType>
     <StartupObject></StartupObject>
     <MyType>Windows</MyType>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>EwEMSEPlugin</Product>
     <Copyright>Copyright © EII 2012</Copyright>
