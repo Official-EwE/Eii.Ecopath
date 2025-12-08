@@ -29,6 +29,7 @@ Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports System.Windows.Forms
 Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports

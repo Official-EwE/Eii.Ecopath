@@ -78,10 +78,6 @@ Public Class cENARPlugin
 
 #End Region
 
-#Region "Public Methods"
-
-#End Region
-
 #Region "Ecopath, Ecosim and Ecospace events"
 
     ''' <summary>

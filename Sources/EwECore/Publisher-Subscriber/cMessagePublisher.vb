@@ -212,10 +212,10 @@ Public Class cMessagePublisher
                 End If
             Next handler
 
-            If Not bMessageHandled Then
-                'nobody is listening to a message. This is legitimate when the core is used without a UI
-                m_logger.LogInformation(Me.ToString & ".SendMessage(...) No default message handler defined for source = " & Message.Source.ToString)
-            End If
+            'If Not bMessageHandled Then
+            '    'nobody is listening to a message. This is legitimate when the core is used without a UI
+            '    m_logger.LogInformation(Me.ToString & ".SendMessage(...) No default message handler defined for source = " & Message.Source.ToString)
+            'End If
 
             Return bMessageHandled
 
