@@ -98,12 +98,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
-		Directory.Build.props = Directory.Build.props
 		CreateAndPushNugetPackage.ps1 = CreateAndPushNugetPackage.ps1
+		Directory.Build.props = Directory.Build.props
 		..\EII_plain_128x128.png = ..\EII_plain_128x128.png
 		ScientificInterface\EwE.licenseheader = ScientificInterface\EwE.licenseheader
 		..\NuGet.config = ..\NuGet.config
 		..\README.md = ..\README.md
+		Remove-ClickOnceProps.ps1 = Remove-ClickOnceProps.ps1
 	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEValueChainv2Plugin", "EwECustomPlugins\EwEValueChainv2Plugin\EwEValueChainv2Plugin.vbproj", "{83E8548D-B23E-38DF-A8F5-06A5AD7BD649}"
