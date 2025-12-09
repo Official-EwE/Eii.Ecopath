@@ -4,12 +4,7 @@
     <Platforms>x86;x64;AnyCPU</Platforms>
     <OutputType>Library</OutputType>
     <MyType>Windows</MyType>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative</Company>
     <Product>EwEImportExportLayersPlugin</Product>
     <Copyright>Copyright © 2017-</Copyright>

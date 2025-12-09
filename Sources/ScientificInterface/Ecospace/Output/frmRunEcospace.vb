@@ -2117,11 +2117,16 @@ Namespace Ecospace
             Dim dt As DateTime = Me.EstimateETA(iTimestep)
             If (dt = DateTime.MinValue) Then Return strStatusBase
 
+            Dim now As DateTime = Date.Now()
+
+            ' Do not change status text if completing in under 5 minutes
+            If (dt.Subtract(now).Minutes < 5) Then Return strStatusBase
+
             ' ToDo: globalize this
             If (dt.DayOfYear <> DateTime.Now().DayOfYear) Then
-                Return String.Format("{0}, due by {1} {2}", strStatusBase, dt.ToShortDateString, dt.ToShortTimeString)
+                Return String.Format("{0} (eta {1} {2})", strStatusBase, dt.ToShortDateString, dt.ToShortTimeString)
             Else
-                Return String.Format("{0}, due by {1}", strStatusBase, dt.ToShortTimeString)
+                Return String.Format("{0} (eta {1})", strStatusBase, dt.ToShortTimeString)
             End If
         End Function
 

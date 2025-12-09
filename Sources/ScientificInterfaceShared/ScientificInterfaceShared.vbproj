@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <Platforms>x86;x64;AnyCPU</Platforms>
@@ -7,24 +7,8 @@
     <OptionStrict>On</OptionStrict>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ScientificInterfaceShared.snk</AssemblyOriginatorKeyFile>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>ScientificInterfaceShared</Product>
     <Copyright>Copyright © 2008</Copyright>
@@ -534,19 +518,16 @@
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-
   <!-- Use a local project reference when UseProjectReferences is true -->
   <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
     <ProjectReference Include="..\EwECore\EwECore.vbproj" />
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
-
   <!-- Otherwise use a package reference. (EwEUtils and EwEPlugin are referenced by EwEcore) -->
   <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
     <PackageReference Include="Eii.Ecopath.EwECore" Version="6.7.*" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="Includes\Ionic.Zip.dll" />
     <Content Include="Includes\Microsoft.GLEE.dll" />
@@ -605,23 +586,6 @@
   <ItemGroup>
     <Folder Include="Controls\Map\Core wrapper\" />
     <Folder Include="Controls\Map\Layers\Rendering\Vector\" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Eii.Ecopath.Licence">

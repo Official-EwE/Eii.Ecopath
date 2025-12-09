@@ -5,7 +5,6 @@
     <OutputType>Library</OutputType>
     <MyType>Windows</MyType>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative</Company>
     <Product>EwEMSPPlugin</Product>
     <Copyright>Copyright © 2016 Ecopath International Initiative Research Association, Barcelona, Spain</Copyright>

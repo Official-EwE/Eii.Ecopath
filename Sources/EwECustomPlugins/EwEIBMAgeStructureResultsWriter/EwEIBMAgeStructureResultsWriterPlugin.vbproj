@@ -4,10 +4,6 @@
     <Platforms>x86;x64;AnyCPU</Platforms>
     <OutputType>Library</OutputType>
     <MyType>Windows</MyType>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>EwEIBMAgeStructureResultsWriterPlugin</Product>
     <Copyright>Copyright © 2022</Copyright>
