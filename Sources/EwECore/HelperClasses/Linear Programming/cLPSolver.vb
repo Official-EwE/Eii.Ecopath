@@ -101,232 +101,232 @@ Public Class cLPSolver
         '-----------------------------------------------------------------------------------------------------------------------------
         Public Declare Function SetDllDirectoryA Lib "kernel32" (lpPathName As String) As Long
 
-        Public Declare Function add_column Lib "lpsolve55.dll" Alias "add_column" (lp As Integer, column() As Double) As Boolean
-        Public Declare Function add_columnex Lib "lpsolve55.dll" Alias "add_columnex" (lp As Integer, count As Integer, column() As Double, rowno() As Integer) As Boolean
-        Public Declare Function add_constraint Lib "lpsolve55.dll" Alias "add_constraint" (lp As Integer, row() As Double, constr_type As lpsolve_constr_types, rh As Double) As Boolean
-        Public Declare Function add_constraintex Lib "lpsolve55.dll" Alias "add_constraintex" (lp As Integer, count As Integer, row() As Double, colno() As Integer, constr_type As lpsolve_constr_types, rh As Double) As Boolean
-        Public Declare Function add_lag_con Lib "lpsolve55.dll" Alias "add_lag_con" (lp As Integer, row() As Double, con_type As lpsolve_constr_types, rhs As Double) As Boolean
-        Public Declare Function add_SOS Lib "lpsolve55.dll" Alias "add_SOS" (lp As Integer, name As String, sostype As Integer, priority As Integer, count As Integer, sosvars() As Integer, weights() As Double) As Integer
-        Public Declare Function column_in_lp Lib "lpsolve55.dll" Alias "column_in_lp" (lp As Integer, column() As Double) As Integer
-        Public Declare Function copy_lp Lib "lpsolve55.dll" Alias "copy_lp" (lp As Integer) As Integer
-        Public Declare Sub default_basis Lib "lpsolve55.dll" Alias "default_basis" (lp As Integer)
-        Public Declare Function del_column Lib "lpsolve55.dll" Alias "del_column" (lp As Integer, column As Integer) As Boolean
-        Public Declare Function del_constraint Lib "lpsolve55.dll" Alias "del_constraint" (lp As Integer, del_row As Integer) As Boolean
-        Public Declare Sub delete_lp Lib "lpsolve55.dll" Alias "delete_lp" (lp As Integer)
-        Public Declare Function dualize_lp Lib "lpsolve55.dll" Alias "dualize_lp" (lp As Integer) As Boolean
-        Public Declare Function get_anti_degen Lib "lpsolve55.dll" Alias "get_anti_degen" (lp As Integer) As lpsolve_anti_degen
-        Public Declare Function get_basis Lib "lpsolve55.dll" Alias "get_basis" (lp As Integer, bascolumn() As Integer, nonbasic As Boolean) As Boolean
-        Public Declare Function get_basiscrash Lib "lpsolve55.dll" Alias "get_basiscrash" (lp As Integer) As lpsolve_basiscrash
-        Public Declare Function get_bb_depthlimit Lib "lpsolve55.dll" Alias "get_bb_depthlimit" (lp As Integer) As Integer
-        Public Declare Function get_bb_floorfirst Lib "lpsolve55.dll" Alias "get_bb_floorfirst" (lp As Integer) As lpsolve_branch
-        Public Declare Function get_bb_rule Lib "lpsolve55.dll" Alias "get_bb_rule" (lp As Integer) As lpsolve_BBstrategies
-        Public Declare Function get_bounds_tighter Lib "lpsolve55.dll" Alias "get_bounds_tighter" (lp As Integer) As Boolean
-        Public Declare Function get_break_at_value Lib "lpsolve55.dll" Alias "get_break_at_value" (lp As Integer) As Double
-        Public Declare Function get_col_name Lib "lpsolve55.dll" Alias "get_col_name" (lp As Integer, column As Integer) As String
-        Public Declare Function get_column Lib "lpsolve55.dll" Alias "get_column" (lp As Integer, col_nr As Integer, column() As Double) As Boolean
-        Public Declare Function get_columnex Lib "lpsolve55.dll" Alias "get_columnex" (lp As Integer, col_nr As Integer, column() As Double, nzrow() As Integer) As Integer
-        Public Declare Function get_constr_type Lib "lpsolve55.dll" Alias "get_constr_type" (lp As Integer, row As Integer) As lpsolve_constr_types
-        Public Declare Function get_constr_value Lib "lpsolve55.dll" Alias "get_constr_value" (lp As Integer, row As Integer, count As Integer, primsolution() As Double, nzindex() As Integer) As Double
-        Public Declare Function get_constraints Lib "lpsolve55.dll" Alias "get_constraints" (lp As Integer, constr() As Double) As Boolean
-        Public Declare Function get_dual_solution Lib "lpsolve55.dll" Alias "get_dual_solution" (lp As Integer, rc() As Double) As Boolean
-        Public Declare Function get_epsb Lib "lpsolve55.dll" Alias "get_epsb" (lp As Integer) As Double
-        Public Declare Function get_epsd Lib "lpsolve55.dll" Alias "get_epsd" (lp As Integer) As Double
-        Public Declare Function get_epsel Lib "lpsolve55.dll" Alias "get_epsel" (lp As Integer) As Double
-        Public Declare Function get_epsint Lib "lpsolve55.dll" Alias "get_epsint" (lp As Integer) As Double
-        Public Declare Function get_epsperturb Lib "lpsolve55.dll" Alias "get_epsperturb" (lp As Integer) As Double
-        Public Declare Function get_epspivot Lib "lpsolve55.dll" Alias "get_epspivot" (lp As Integer) As Double
-        Public Declare Function get_improve Lib "lpsolve55.dll" Alias "get_improve" (lp As Integer) As lpsolve_improves
-        Public Declare Function get_infinite Lib "lpsolve55.dll" Alias "get_infinite" (lp As Integer) As Double
-        Public Declare Function get_lambda Lib "lpsolve55.dll" Alias "get_lambda" (lp As Integer, lambda() As Double) As Boolean
-        Public Declare Function get_lowbo Lib "lpsolve55.dll" Alias "get_lowbo" (lp As Integer, column As Integer) As Double
-        Public Declare Function get_lp_index Lib "lpsolve55.dll" Alias "get_lp_index" (lp As Integer, orig_index As Integer) As Integer
-        Public Declare Function get_lp_name Lib "lpsolve55.dll" Alias "get_lp_name" (lp As Integer) As String
-        Public Declare Function get_Lrows Lib "lpsolve55.dll" Alias "get_Lrows" (lp As Integer) As Integer
-        Public Declare Function get_mat Lib "lpsolve55.dll" Alias "get_mat" (lp As Integer, row As Integer, column As Integer) As Double
-        Public Declare Function get_max_level Lib "lpsolve55.dll" Alias "get_max_level" (lp As Integer) As Integer
-        Public Declare Function get_maxpivot Lib "lpsolve55.dll" Alias "get_maxpivot" (lp As Integer) As Integer
-        Public Declare Function get_mip_gap Lib "lpsolve55.dll" Alias "get_mip_gap" (lp As Integer, absolute As Boolean) As Double
-        Public Declare Function get_Ncolumns Lib "lpsolve55.dll" Alias "get_Ncolumns" (lp As Integer) As Integer
-        Public Declare Function get_negrange Lib "lpsolve55.dll" Alias "get_negrange" (lp As Integer) As Double
-        Public Declare Function get_nameindex Lib "lpsolve55.dll" Alias "get_nameindex" (lp As Integer, name As String, isrow As Boolean) As Integer
-        Public Declare Function get_nonzeros Lib "lpsolve55.dll" Alias "get_nonzeros" (lp As Integer) As Integer
-        Public Declare Function get_Norig_columns Lib "lpsolve55.dll" Alias "get_Norig_columns" (lp As Integer) As Integer
-        Public Declare Function get_Norig_rows Lib "lpsolve55.dll" Alias "get_Norig_rows" (lp As Integer) As Integer
-        Public Declare Function get_Nrows Lib "lpsolve55.dll" Alias "get_Nrows" (lp As Integer) As Integer
-        Public Declare Function get_obj_bound Lib "lpsolve55.dll" Alias "get_obj_bound" (lp As Integer) As Double
-        Public Declare Function get_objective Lib "lpsolve55.dll" Alias "get_objective" (lp As Integer) As Double
-        Public Declare Function get_orig_index Lib "lpsolve55.dll" Alias "get_orig_index" (lp As Integer, lp_index As Integer) As Integer
-        Public Declare Function get_origcol_name Lib "lpsolve55.dll" Alias "get_origcol_name" (lp As Integer, column As Integer) As String
-        Public Declare Function get_origrow_name Lib "lpsolve55.dll" Alias "get_origrow_name" (lp As Integer, row As Integer) As String
-        Public Declare Function get_pivoting Lib "lpsolve55.dll" Alias "get_pivoting" (lp As Integer) As lpsolve_piv_rules
-        Public Declare Function get_presolve Lib "lpsolve55.dll" Alias "get_presolve" (lp As Integer) As lpsolve_presolve
-        Public Declare Function get_presolveloops Lib "lpsolve55.dll" Alias "get_presolveloops" (lp As Integer) As Integer
-        Public Declare Function get_primal_solution Lib "lpsolve55.dll" Alias "get_primal_solution" (lp As Integer, pv_Renamed() As Double) As Boolean
-        Public Declare Function get_print_sol Lib "lpsolve55.dll" Alias "get_print_sol" (lp As Integer) As Integer
-        Public Declare Function get_PseudoCosts Lib "lpsolve55.dll" Alias "get_PseudoCosts" (lp As Integer, clower() As Double, cupper() As Double, updatelimit() As Integer) As Boolean
-        Public Declare Function get_rh Lib "lpsolve55.dll" Alias "get_rh" (lp As Integer, row As Integer) As Double
-        Public Declare Function get_rh_range Lib "lpsolve55.dll" Alias "get_rh_range" (lp As Integer, row As Integer) As Double
-        Public Declare Function get_row Lib "lpsolve55.dll" Alias "get_row" (lp As Integer, row_nr As Integer, row() As Double) As Boolean
-        Public Declare Function get_rowex Lib "lpsolve55.dll" Alias "get_rowex" (lp As Integer, row_nr As Integer, row() As Double, colno() As Integer) As Integer
-        Public Declare Function get_row_name Lib "lpsolve55.dll" Alias "get_row_name" (lp As Integer, row As Integer) As String
-        Public Declare Function get_scalelimit Lib "lpsolve55.dll" Alias "get_scalelimit" (lp As Integer) As Double
-        Public Declare Function get_scaling Lib "lpsolve55.dll" Alias "get_scaling" (lp As Integer) As lpsolve_scales
-        Public Declare Function get_sensitivity_obj Lib "lpsolve55.dll" Alias "get_sensitivity_obj" (lp As Integer, objfrom() As Double, objtill() As Double) As Boolean
-        Public Declare Function get_sensitivity_objex Lib "lpsolve55.dll" Alias "get_sensitivity_objex" (lp As Integer, objfrom() As Double, objtill() As Double, objfromvalue() As Double, objtillvalue() As Double) As Boolean
-        Public Declare Function get_sensitivity_rhs Lib "lpsolve55.dll" Alias "get_sensitivity_rhs" (lp As Integer, duals() As Double, dualsfrom() As Double, dualstill() As Double) As Boolean
-        Public Declare Function get_simplextype Lib "lpsolve55.dll" Alias "get_simplextype" (lp As Integer) As lpsolve_simplextypes
-        Public Declare Function get_solutioncount Lib "lpsolve55.dll" Alias "get_solutioncount" (lp As Integer) As Integer
-        Public Declare Function get_solutionlimit Lib "lpsolve55.dll" Alias "get_solutionlimit" (lp As Integer) As Integer
-        Public Declare Function get_status Lib "lpsolve55.dll" Alias "get_status" (lp As Integer) As Integer
-        Public Declare Function get_statustext Lib "lpsolve55.dll" Alias "get_statustext" (lp As Integer, statuscode As Integer) As String
-        Public Declare Function get_timeout Lib "lpsolve55.dll" Alias "get_timeout" (lp As Integer) As Integer
-        Public Declare Function get_total_iter Lib "lpsolve55.dll" Alias "get_total_iter" (lp As Integer) As Long
-        Public Declare Function get_total_nodes Lib "lpsolve55.dll" Alias "get_total_nodes" (lp As Integer) As Long
-        Public Declare Function get_upbo Lib "lpsolve55.dll" Alias "get_upbo" (lp As Integer, column As Integer) As Double
-        Public Declare Function get_var_branch Lib "lpsolve55.dll" Alias "get_var_branch" (lp As Integer, column As Integer) As lpsolve_branch
-        Public Declare Function get_var_dualresult Lib "lpsolve55.dll" Alias "get_var_dualresult" (lp As Integer, index As Integer) As Double
-        Public Declare Function get_var_primalresult Lib "lpsolve55.dll" Alias "get_var_primalresult" (lp As Integer, index As Integer) As Double
-        Public Declare Function get_var_priority Lib "lpsolve55.dll" Alias "get_var_priority" (lp As Integer, column As Integer) As Integer
-        Public Declare Function get_variables Lib "lpsolve55.dll" Alias "get_variables" (lp As Integer, var() As Double) As Boolean
-        Public Declare Function get_verbose Lib "lpsolve55.dll" Alias "get_verbose" (lp As Integer) As Integer
-        Public Declare Function get_working_objective Lib "lpsolve55.dll" Alias "get_working_objective" (lp As Integer) As Double
-        Public Declare Function guess_basis Lib "lpsolve55.dll" Alias "guess_basis" (lp As Integer, guessvector() As Double, basisvector() As Integer) As Boolean
-        Public Declare Function has_BFP Lib "lpsolve55.dll" Alias "has_BFP" (lp As Integer) As Boolean
-        Public Declare Function has_XLI Lib "lpsolve55.dll" Alias "has_XLI" (lp As Integer) As Boolean
-        Public Declare Function is_add_rowmode Lib "lpsolve55.dll" Alias "is_add_rowmode" (lp As Integer) As Boolean
-        Public Declare Function is_anti_degen Lib "lpsolve55.dll" Alias "is_anti_degen" (lp As Integer, testmask As lpsolve_anti_degen) As Boolean
-        Public Declare Function is_binary Lib "lpsolve55.dll" Alias "is_binary" (lp As Integer, column As Integer) As Boolean
-        Public Declare Function is_break_at_first Lib "lpsolve55.dll" Alias "is_break_at_first" (lp As Integer) As Boolean
-        Public Declare Function is_constr_type Lib "lpsolve55.dll" Alias "is_constr_type" (lp As Integer, row As Integer, mask As Integer) As Boolean
-        Public Declare Function is_debug Lib "lpsolve55.dll" Alias "is_debug" (lp As Integer) As Boolean
-        Public Declare Function is_feasible Lib "lpsolve55.dll" Alias "is_feasible" (lp As Integer, values() As Double, threshold As Double) As Boolean
-        Public Declare Function is_infinite Lib "lpsolve55.dll" Alias "is_infinite" (lp As Integer, value As Double) As Boolean
-        Public Declare Function is_int Lib "lpsolve55.dll" Alias "is_int" (lp As Integer, column As Integer) As Boolean
-        Public Declare Function is_integerscaling Lib "lpsolve55.dll" Alias "is_integerscaling" (lp As Integer) As Boolean
-        Public Declare Function is_lag_trace Lib "lpsolve55.dll" Alias "is_lag_trace" (lp As Integer) As Boolean
-        Public Declare Function is_maxim Lib "lpsolve55.dll" Alias "is_maxim" (lp As Integer) As Boolean
-        Public Declare Function is_nativeBFP Lib "lpsolve55.dll" Alias "is_nativeBFP" (lp As Integer) As Boolean
-        Public Declare Function is_nativeXLI Lib "lpsolve55.dll" Alias "is_nativeXLI" (lp As Integer) As Boolean
-        Public Declare Function is_negative Lib "lpsolve55.dll" Alias "is_negative" (lp As Integer, column As Integer) As Boolean
-        Public Declare Function is_piv_mode Lib "lpsolve55.dll" Alias "is_piv_mode" (lp As Integer, testmask As lpsolve_piv_rules) As Boolean
-        Public Declare Function is_piv_rule Lib "lpsolve55.dll" Alias "is_piv_rule" (lp As Integer, rule As lpsolve_piv_rules) As Boolean
-        Public Declare Function is_presolve Lib "lpsolve55.dll" Alias "is_presolve" (lp As Integer, testmask As lpsolve_presolve) As Boolean
-        Public Declare Function is_scalemode Lib "lpsolve55.dll" Alias "is_scalemode" (lp As Integer, testmask As lpsolve_scales) As Boolean
-        Public Declare Function is_scaletype Lib "lpsolve55.dll" Alias "is_scaletype" (lp As Integer, scaletype As lpsolve_scales) As Boolean
-        Public Declare Function is_semicont Lib "lpsolve55.dll" Alias "is_semicont" (lp As Integer, column As Integer) As Boolean
-        Public Declare Function is_SOS_var Lib "lpsolve55.dll" Alias "is_SOS_var" (lp As Integer, column As Integer) As Boolean
-        Public Declare Function is_trace Lib "lpsolve55.dll" Alias "is_trace" (lp As Integer) As Boolean
-        Public Declare Function is_unbounded Lib "lpsolve55.dll" Alias "is_unbounded" (lp As Integer, column As Integer) As Boolean
-        Public Declare Function is_use_names Lib "lpsolve55.dll" Alias "is_use_names" (lp As Integer, isrow As Boolean) As Boolean
+        Public Declare Function add_column Lib "lpsolve55.dll" Alias "add_column" (lp As IntPtr, column() As Double) As Boolean
+        Public Declare Function add_columnex Lib "lpsolve55.dll" Alias "add_columnex" (lp As IntPtr, count As Integer, column() As Double, rowno() As Integer) As Boolean
+        Public Declare Function add_constraint Lib "lpsolve55.dll" Alias "add_constraint" (lp As IntPtr, row() As Double, constr_type As lpsolve_constr_types, rh As Double) As Boolean
+        Public Declare Function add_constraintex Lib "lpsolve55.dll" Alias "add_constraintex" (lp As IntPtr, count As Integer, row() As Double, colno() As Integer, constr_type As lpsolve_constr_types, rh As Double) As Boolean
+        Public Declare Function add_lag_con Lib "lpsolve55.dll" Alias "add_lag_con" (lp As IntPtr, row() As Double, con_type As lpsolve_constr_types, rhs As Double) As Boolean
+        Public Declare Function add_SOS Lib "lpsolve55.dll" Alias "add_SOS" (lp As IntPtr, name As String, sostype As Integer, priority As Integer, count As Integer, sosvars() As Integer, weights() As Double) As Integer
+        Public Declare Function column_in_lp Lib "lpsolve55.dll" Alias "column_in_lp" (lp As IntPtr, column() As Double) As Integer
+        Public Declare Function copy_lp Lib "lpsolve55.dll" Alias "copy_lp" (lp As IntPtr) As Integer
+        Public Declare Sub default_basis Lib "lpsolve55.dll" Alias "default_basis" (lp As IntPtr)
+        Public Declare Function del_column Lib "lpsolve55.dll" Alias "del_column" (lp As IntPtr, column As Integer) As Boolean
+        Public Declare Function del_constraint Lib "lpsolve55.dll" Alias "del_constraint" (lp As IntPtr, del_row As Integer) As Boolean
+        Public Declare Sub delete_lp Lib "lpsolve55.dll" Alias "delete_lp" (lp As IntPtr)
+        Public Declare Function dualize_lp Lib "lpsolve55.dll" Alias "dualize_lp" (lp As IntPtr) As Boolean
+        Public Declare Function get_anti_degen Lib "lpsolve55.dll" Alias "get_anti_degen" (lp As IntPtr) As lpsolve_anti_degen
+        Public Declare Function get_basis Lib "lpsolve55.dll" Alias "get_basis" (lp As IntPtr, bascolumn() As Integer, nonbasic As Boolean) As Boolean
+        Public Declare Function get_basiscrash Lib "lpsolve55.dll" Alias "get_basiscrash" (lp As IntPtr) As lpsolve_basiscrash
+        Public Declare Function get_bb_depthlimit Lib "lpsolve55.dll" Alias "get_bb_depthlimit" (lp As IntPtr) As Integer
+        Public Declare Function get_bb_floorfirst Lib "lpsolve55.dll" Alias "get_bb_floorfirst" (lp As IntPtr) As lpsolve_branch
+        Public Declare Function get_bb_rule Lib "lpsolve55.dll" Alias "get_bb_rule" (lp As IntPtr) As lpsolve_BBstrategies
+        Public Declare Function get_bounds_tighter Lib "lpsolve55.dll" Alias "get_bounds_tighter" (lp As IntPtr) As Boolean
+        Public Declare Function get_break_at_value Lib "lpsolve55.dll" Alias "get_break_at_value" (lp As IntPtr) As Double
+        Public Declare Function get_col_name Lib "lpsolve55.dll" Alias "get_col_name" (lp As IntPtr, column As Integer) As String
+        Public Declare Function get_column Lib "lpsolve55.dll" Alias "get_column" (lp As IntPtr, col_nr As Integer, column() As Double) As Boolean
+        Public Declare Function get_columnex Lib "lpsolve55.dll" Alias "get_columnex" (lp As IntPtr, col_nr As Integer, column() As Double, nzrow() As Integer) As Integer
+        Public Declare Function get_constr_type Lib "lpsolve55.dll" Alias "get_constr_type" (lp As IntPtr, row As Integer) As lpsolve_constr_types
+        Public Declare Function get_constr_value Lib "lpsolve55.dll" Alias "get_constr_value" (lp As IntPtr, row As Integer, count As Integer, primsolution() As Double, nzindex() As Integer) As Double
+        Public Declare Function get_constraints Lib "lpsolve55.dll" Alias "get_constraints" (lp As IntPtr, constr() As Double) As Boolean
+        Public Declare Function get_dual_solution Lib "lpsolve55.dll" Alias "get_dual_solution" (lp As IntPtr, rc() As Double) As Boolean
+        Public Declare Function get_epsb Lib "lpsolve55.dll" Alias "get_epsb" (lp As IntPtr) As Double
+        Public Declare Function get_epsd Lib "lpsolve55.dll" Alias "get_epsd" (lp As IntPtr) As Double
+        Public Declare Function get_epsel Lib "lpsolve55.dll" Alias "get_epsel" (lp As IntPtr) As Double
+        Public Declare Function get_epsint Lib "lpsolve55.dll" Alias "get_epsint" (lp As IntPtr) As Double
+        Public Declare Function get_epsperturb Lib "lpsolve55.dll" Alias "get_epsperturb" (lp As IntPtr) As Double
+        Public Declare Function get_epspivot Lib "lpsolve55.dll" Alias "get_epspivot" (lp As IntPtr) As Double
+        Public Declare Function get_improve Lib "lpsolve55.dll" Alias "get_improve" (lp As IntPtr) As lpsolve_improves
+        Public Declare Function get_infinite Lib "lpsolve55.dll" Alias "get_infinite" (lp As IntPtr) As Double
+        Public Declare Function get_lambda Lib "lpsolve55.dll" Alias "get_lambda" (lp As IntPtr, lambda() As Double) As Boolean
+        Public Declare Function get_lowbo Lib "lpsolve55.dll" Alias "get_lowbo" (lp As IntPtr, column As Integer) As Double
+        Public Declare Function get_lp_index Lib "lpsolve55.dll" Alias "get_lp_index" (lp As IntPtr, orig_index As Integer) As Integer
+        Public Declare Function get_lp_name Lib "lpsolve55.dll" Alias "get_lp_name" (lp As IntPtr) As String
+        Public Declare Function get_Lrows Lib "lpsolve55.dll" Alias "get_Lrows" (lp As IntPtr) As Integer
+        Public Declare Function get_mat Lib "lpsolve55.dll" Alias "get_mat" (lp As IntPtr, row As Integer, column As Integer) As Double
+        Public Declare Function get_max_level Lib "lpsolve55.dll" Alias "get_max_level" (lp As IntPtr) As Integer
+        Public Declare Function get_maxpivot Lib "lpsolve55.dll" Alias "get_maxpivot" (lp As IntPtr) As Integer
+        Public Declare Function get_mip_gap Lib "lpsolve55.dll" Alias "get_mip_gap" (lp As IntPtr, absolute As Boolean) As Double
+        Public Declare Function get_Ncolumns Lib "lpsolve55.dll" Alias "get_Ncolumns" (lp As IntPtr) As Integer
+        Public Declare Function get_negrange Lib "lpsolve55.dll" Alias "get_negrange" (lp As IntPtr) As Double
+        Public Declare Function get_nameindex Lib "lpsolve55.dll" Alias "get_nameindex" (lp As IntPtr, name As String, isrow As Boolean) As Integer
+        Public Declare Function get_nonzeros Lib "lpsolve55.dll" Alias "get_nonzeros" (lp As IntPtr) As Integer
+        Public Declare Function get_Norig_columns Lib "lpsolve55.dll" Alias "get_Norig_columns" (lp As IntPtr) As Integer
+        Public Declare Function get_Norig_rows Lib "lpsolve55.dll" Alias "get_Norig_rows" (lp As IntPtr) As Integer
+        Public Declare Function get_Nrows Lib "lpsolve55.dll" Alias "get_Nrows" (lp As IntPtr) As Integer
+        Public Declare Function get_obj_bound Lib "lpsolve55.dll" Alias "get_obj_bound" (lp As IntPtr) As Double
+        Public Declare Function get_objective Lib "lpsolve55.dll" Alias "get_objective" (lp As IntPtr) As Double
+        Public Declare Function get_orig_index Lib "lpsolve55.dll" Alias "get_orig_index" (lp As IntPtr, lp_index As Integer) As Integer
+        Public Declare Function get_origcol_name Lib "lpsolve55.dll" Alias "get_origcol_name" (lp As IntPtr, column As Integer) As String
+        Public Declare Function get_origrow_name Lib "lpsolve55.dll" Alias "get_origrow_name" (lp As IntPtr, row As Integer) As String
+        Public Declare Function get_pivoting Lib "lpsolve55.dll" Alias "get_pivoting" (lp As IntPtr) As lpsolve_piv_rules
+        Public Declare Function get_presolve Lib "lpsolve55.dll" Alias "get_presolve" (lp As IntPtr) As lpsolve_presolve
+        Public Declare Function get_presolveloops Lib "lpsolve55.dll" Alias "get_presolveloops" (lp As IntPtr) As Integer
+        Public Declare Function get_primal_solution Lib "lpsolve55.dll" Alias "get_primal_solution" (lp As IntPtr, pv_Renamed() As Double) As Boolean
+        Public Declare Function get_print_sol Lib "lpsolve55.dll" Alias "get_print_sol" (lp As IntPtr) As Integer
+        Public Declare Function get_PseudoCosts Lib "lpsolve55.dll" Alias "get_PseudoCosts" (lp As IntPtr, clower() As Double, cupper() As Double, updatelimit() As Integer) As Boolean
+        Public Declare Function get_rh Lib "lpsolve55.dll" Alias "get_rh" (lp As IntPtr, row As Integer) As Double
+        Public Declare Function get_rh_range Lib "lpsolve55.dll" Alias "get_rh_range" (lp As IntPtr, row As Integer) As Double
+        Public Declare Function get_row Lib "lpsolve55.dll" Alias "get_row" (lp As IntPtr, row_nr As Integer, row() As Double) As Boolean
+        Public Declare Function get_rowex Lib "lpsolve55.dll" Alias "get_rowex" (lp As IntPtr, row_nr As Integer, row() As Double, colno() As Integer) As Integer
+        Public Declare Function get_row_name Lib "lpsolve55.dll" Alias "get_row_name" (lp As IntPtr, row As Integer) As String
+        Public Declare Function get_scalelimit Lib "lpsolve55.dll" Alias "get_scalelimit" (lp As IntPtr) As Double
+        Public Declare Function get_scaling Lib "lpsolve55.dll" Alias "get_scaling" (lp As IntPtr) As lpsolve_scales
+        Public Declare Function get_sensitivity_obj Lib "lpsolve55.dll" Alias "get_sensitivity_obj" (lp As IntPtr, objfrom() As Double, objtill() As Double) As Boolean
+        Public Declare Function get_sensitivity_objex Lib "lpsolve55.dll" Alias "get_sensitivity_objex" (lp As IntPtr, objfrom() As Double, objtill() As Double, objfromvalue() As Double, objtillvalue() As Double) As Boolean
+        Public Declare Function get_sensitivity_rhs Lib "lpsolve55.dll" Alias "get_sensitivity_rhs" (lp As IntPtr, duals() As Double, dualsfrom() As Double, dualstill() As Double) As Boolean
+        Public Declare Function get_simplextype Lib "lpsolve55.dll" Alias "get_simplextype" (lp As IntPtr) As lpsolve_simplextypes
+        Public Declare Function get_solutioncount Lib "lpsolve55.dll" Alias "get_solutioncount" (lp As IntPtr) As Integer
+        Public Declare Function get_solutionlimit Lib "lpsolve55.dll" Alias "get_solutionlimit" (lp As IntPtr) As Integer
+        Public Declare Function get_status Lib "lpsolve55.dll" Alias "get_status" (lp As IntPtr) As Integer
+        Public Declare Function get_statustext Lib "lpsolve55.dll" Alias "get_statustext" (lp As IntPtr, statuscode As Integer) As String
+        Public Declare Function get_timeout Lib "lpsolve55.dll" Alias "get_timeout" (lp As IntPtr) As Integer
+        Public Declare Function get_total_iter Lib "lpsolve55.dll" Alias "get_total_iter" (lp As IntPtr) As Long
+        Public Declare Function get_total_nodes Lib "lpsolve55.dll" Alias "get_total_nodes" (lp As IntPtr) As Long
+        Public Declare Function get_upbo Lib "lpsolve55.dll" Alias "get_upbo" (lp As IntPtr, column As Integer) As Double
+        Public Declare Function get_var_branch Lib "lpsolve55.dll" Alias "get_var_branch" (lp As IntPtr, column As Integer) As lpsolve_branch
+        Public Declare Function get_var_dualresult Lib "lpsolve55.dll" Alias "get_var_dualresult" (lp As IntPtr, index As Integer) As Double
+        Public Declare Function get_var_primalresult Lib "lpsolve55.dll" Alias "get_var_primalresult" (lp As IntPtr, index As Integer) As Double
+        Public Declare Function get_var_priority Lib "lpsolve55.dll" Alias "get_var_priority" (lp As IntPtr, column As Integer) As Integer
+        Public Declare Function get_variables Lib "lpsolve55.dll" Alias "get_variables" (lp As IntPtr, var() As Double) As Boolean
+        Public Declare Function get_verbose Lib "lpsolve55.dll" Alias "get_verbose" (lp As IntPtr) As Integer
+        Public Declare Function get_working_objective Lib "lpsolve55.dll" Alias "get_working_objective" (lp As IntPtr) As Double
+        Public Declare Function guess_basis Lib "lpsolve55.dll" Alias "guess_basis" (lp As IntPtr, guessvector() As Double, basisvector() As Integer) As Boolean
+        Public Declare Function has_BFP Lib "lpsolve55.dll" Alias "has_BFP" (lp As IntPtr) As Boolean
+        Public Declare Function has_XLI Lib "lpsolve55.dll" Alias "has_XLI" (lp As IntPtr) As Boolean
+        Public Declare Function is_add_rowmode Lib "lpsolve55.dll" Alias "is_add_rowmode" (lp As IntPtr) As Boolean
+        Public Declare Function is_anti_degen Lib "lpsolve55.dll" Alias "is_anti_degen" (lp As IntPtr, testmask As lpsolve_anti_degen) As Boolean
+        Public Declare Function is_binary Lib "lpsolve55.dll" Alias "is_binary" (lp As IntPtr, column As Integer) As Boolean
+        Public Declare Function is_break_at_first Lib "lpsolve55.dll" Alias "is_break_at_first" (lp As IntPtr) As Boolean
+        Public Declare Function is_constr_type Lib "lpsolve55.dll" Alias "is_constr_type" (lp As IntPtr, row As Integer, mask As Integer) As Boolean
+        Public Declare Function is_debug Lib "lpsolve55.dll" Alias "is_debug" (lp As IntPtr) As Boolean
+        Public Declare Function is_feasible Lib "lpsolve55.dll" Alias "is_feasible" (lp As IntPtr, values() As Double, threshold As Double) As Boolean
+        Public Declare Function is_infinite Lib "lpsolve55.dll" Alias "is_infinite" (lp As IntPtr, value As Double) As Boolean
+        Public Declare Function is_int Lib "lpsolve55.dll" Alias "is_int" (lp As IntPtr, column As Integer) As Boolean
+        Public Declare Function is_integerscaling Lib "lpsolve55.dll" Alias "is_integerscaling" (lp As IntPtr) As Boolean
+        Public Declare Function is_lag_trace Lib "lpsolve55.dll" Alias "is_lag_trace" (lp As IntPtr) As Boolean
+        Public Declare Function is_maxim Lib "lpsolve55.dll" Alias "is_maxim" (lp As IntPtr) As Boolean
+        Public Declare Function is_nativeBFP Lib "lpsolve55.dll" Alias "is_nativeBFP" (lp As IntPtr) As Boolean
+        Public Declare Function is_nativeXLI Lib "lpsolve55.dll" Alias "is_nativeXLI" (lp As IntPtr) As Boolean
+        Public Declare Function is_negative Lib "lpsolve55.dll" Alias "is_negative" (lp As IntPtr, column As Integer) As Boolean
+        Public Declare Function is_piv_mode Lib "lpsolve55.dll" Alias "is_piv_mode" (lp As IntPtr, testmask As lpsolve_piv_rules) As Boolean
+        Public Declare Function is_piv_rule Lib "lpsolve55.dll" Alias "is_piv_rule" (lp As IntPtr, rule As lpsolve_piv_rules) As Boolean
+        Public Declare Function is_presolve Lib "lpsolve55.dll" Alias "is_presolve" (lp As IntPtr, testmask As lpsolve_presolve) As Boolean
+        Public Declare Function is_scalemode Lib "lpsolve55.dll" Alias "is_scalemode" (lp As IntPtr, testmask As lpsolve_scales) As Boolean
+        Public Declare Function is_scaletype Lib "lpsolve55.dll" Alias "is_scaletype" (lp As IntPtr, scaletype As lpsolve_scales) As Boolean
+        Public Declare Function is_semicont Lib "lpsolve55.dll" Alias "is_semicont" (lp As IntPtr, column As Integer) As Boolean
+        Public Declare Function is_SOS_var Lib "lpsolve55.dll" Alias "is_SOS_var" (lp As IntPtr, column As Integer) As Boolean
+        Public Declare Function is_trace Lib "lpsolve55.dll" Alias "is_trace" (lp As IntPtr) As Boolean
+        Public Declare Function is_unbounded Lib "lpsolve55.dll" Alias "is_unbounded" (lp As IntPtr, column As Integer) As Boolean
+        Public Declare Function is_use_names Lib "lpsolve55.dll" Alias "is_use_names" (lp As IntPtr, isrow As Boolean) As Boolean
         Public Declare Sub version Lib "lpsolve55.dll" Alias "lp_solve_version" (ByRef majorversion As Integer, ByRef minorversion As Integer, ByRef release As Integer, ByRef build As Integer)
-        Public Declare Function make_lp Lib "lpsolve55.dll" Alias "make_lp" (rows As Integer, columns As Integer) As Integer
-        Public Declare Function resize_lp Lib "lpsolve55.dll" Alias "resize_lp" (lp As Integer, rows As Integer, columns As Integer) As Boolean
-        Public Declare Sub print_constraints Lib "lpsolve55.dll" Alias "print_constraints" (lp As Integer, columns As Integer)
-        Public Declare Function print_debugdump Lib "lpsolve55.dll" Alias "print_debugdump" (lp As Integer, filename As String) As Boolean
-        Public Declare Sub print_duals Lib "lpsolve55.dll" Alias "print_duals" (lp As Integer)
-        Public Declare Sub print_lp Lib "lpsolve55.dll" Alias "print_lp" (lp As Integer)
-        Public Declare Sub print_objective Lib "lpsolve55.dll" Alias "print_objective" (lp As Integer)
-        Public Declare Sub print_scales Lib "lpsolve55.dll" Alias "print_scales" (lp As Integer)
-        Public Declare Sub print_solution Lib "lpsolve55.dll" Alias "print_solution" (lp As Integer, columns As Integer)
-        Public Declare Sub print_str Lib "lpsolve55.dll" Alias "print_str" (lp As Integer, str_Renamed As String)
-        Public Declare Sub print_tableau Lib "lpsolve55.dll" Alias "print_tableau" (lp As Integer)
-        Public Delegate Function abortfunc(lp As Integer, userhandle As Integer) As Integer
-        Public Declare Sub put_abortfunc Lib "lpsolve55.dll" Alias "put_abortfunc" (lp As Integer, newctrlc As abortfunc, ctrlchandle As Integer)
-        Public Delegate Sub logfunc(lp As Integer, userhandle As Integer, buf As String)
-        Public Declare Sub put_logfunc Lib "lpsolve55.dll" Alias "put_logfunc" (lp As Integer, newlog As logfunc, loghandle As Integer)
-        Public Delegate Sub msgfunc(lp As Integer, userhandle As Integer, message As lpsolve_msgmask)
-        Public Declare Sub put_msgfunc Lib "lpsolve55.dll" Alias "put_msgfunc" (lp As Integer, newmsg As msgfunc, msghandle As Integer, mask As lpsolve_msgmask)
-        Public Declare Function read_basis Lib "lpsolve55.dll" Alias "read_basis" (lp As Integer, filename As String, info As String) As Boolean
+        Public Declare Function make_lp Lib "lpsolve55.dll" Alias "make_lp" (rows As Integer, columns As Integer) As IntPtr
+        Public Declare Function resize_lp Lib "lpsolve55.dll" Alias "resize_lp" (lp As IntPtr, rows As Integer, columns As Integer) As Boolean
+        Public Declare Sub print_constraints Lib "lpsolve55.dll" Alias "print_constraints" (lp As IntPtr, columns As Integer)
+        Public Declare Function print_debugdump Lib "lpsolve55.dll" Alias "print_debugdump" (lp As IntPtr, filename As String) As Boolean
+        Public Declare Sub print_duals Lib "lpsolve55.dll" Alias "print_duals" (lp As IntPtr)
+        Public Declare Sub print_lp Lib "lpsolve55.dll" Alias "print_lp" (lp As IntPtr)
+        Public Declare Sub print_objective Lib "lpsolve55.dll" Alias "print_objective" (lp As IntPtr)
+        Public Declare Sub print_scales Lib "lpsolve55.dll" Alias "print_scales" (lp As IntPtr)
+        Public Declare Sub print_solution Lib "lpsolve55.dll" Alias "print_solution" (lp As IntPtr, columns As Integer)
+        Public Declare Sub print_str Lib "lpsolve55.dll" Alias "print_str" (lp As IntPtr, str_Renamed As String)
+        Public Declare Sub print_tableau Lib "lpsolve55.dll" Alias "print_tableau" (lp As IntPtr)
+        Public Delegate Function abortfunc(lp As IntPtr, userhandle As Integer) As Integer
+        Public Declare Sub put_abortfunc Lib "lpsolve55.dll" Alias "put_abortfunc" (lp As IntPtr, newctrlc As abortfunc, ctrlchandle As Integer)
+        Public Delegate Sub logfunc(lp As IntPtr, userhandle As Integer, buf As String)
+        Public Declare Sub put_logfunc Lib "lpsolve55.dll" Alias "put_logfunc" (lp As IntPtr, newlog As logfunc, loghandle As Integer)
+        Public Delegate Sub msgfunc(lp As IntPtr, userhandle As Integer, message As lpsolve_msgmask)
+        Public Declare Sub put_msgfunc Lib "lpsolve55.dll" Alias "put_msgfunc" (lp As IntPtr, newmsg As msgfunc, msghandle As Integer, mask As lpsolve_msgmask)
+        Public Declare Function read_basis Lib "lpsolve55.dll" Alias "read_basis" (lp As IntPtr, filename As String, info As String) As Boolean
         Public Declare Function read_freeMPS Lib "lpsolve55.dll" Alias "read_freeMPS" (filename As String, options As Integer) As Integer
         Public Declare Function read_LP Lib "lpsolve55.dll" Alias "read_LP" (filename As String, verbose As Integer, lp_name As String) As Integer
         Public Declare Function read_MPS Lib "lpsolve55.dll" Alias "read_MPS" (filename As String, options As Integer) As Integer
         Public Declare Function read_XLI Lib "lpsolve55.dll" Alias "read_XLI" (xliname As String, modelname As String, dataname As String, options As String, verbose As Integer) As Integer
-        Public Declare Function read_params Lib "lpsolve55.dll" Alias "read_params" (lp As Integer, filename As String, options As String) As Boolean
-        Public Declare Sub reset_basis Lib "lpsolve55.dll" Alias "reset_basis" (lp As Integer)
-        Public Declare Sub reset_params Lib "lpsolve55.dll" Alias "reset_params" (lp As Integer)
-        Public Declare Function set_add_rowmode Lib "lpsolve55.dll" Alias "set_add_rowmode" (lp As Integer, turnon As Boolean) As Boolean
-        Public Declare Sub set_anti_degen Lib "lpsolve55.dll" Alias "set_anti_degen" (lp As Integer, anti_degen As lpsolve_anti_degen)
-        Public Declare Function set_basis Lib "lpsolve55.dll" Alias "set_basis" (lp As Integer, bascolumn() As Integer, nonbasic As Boolean) As Boolean
-        Public Declare Sub set_basiscrash Lib "lpsolve55.dll" Alias "set_basiscrash" (lp As Integer, mode As lpsolve_basiscrash)
-        Public Declare Sub set_basisvar Lib "lpsolve55.dll" Alias "set_basisvar" (lp As Integer, basisPos As Integer, enteringCol As Integer)
-        Public Declare Sub set_bb_depthlimit Lib "lpsolve55.dll" Alias "set_bb_depthlimit" (lp As Integer, bb_maxlevel As Integer)
-        Public Declare Sub set_bb_floorfirst Lib "lpsolve55.dll" Alias "set_bb_floorfirst" (lp As Integer, bb_floorfirst As lpsolve_branch)
-        Public Declare Sub set_bb_rule Lib "lpsolve55.dll" Alias "set_bb_rule" (lp As Integer, bb_rule As lpsolve_BBstrategies)
-        Public Declare Function set_BFP Lib "lpsolve55.dll" Alias "set_BFP" (lp As Integer, filename As String) As Boolean
-        Public Declare Function set_binary Lib "lpsolve55.dll" Alias "set_binary" (lp As Integer, column As Integer, must_be_bin As Boolean) As Boolean
-        Public Declare Function set_bounds Lib "lpsolve55.dll" Alias "set_bounds" (lp As Integer, column As Integer, lower As Double, upper As Double) As Boolean
-        Public Declare Sub set_bounds_tighter Lib "lpsolve55.dll" Alias "set_bounds_tighter" (lp As Integer, tighten As Boolean)
-        Public Declare Sub set_break_at_first Lib "lpsolve55.dll" Alias "set_break_at_first" (lp As Integer, break_at_first As Boolean)
-        Public Declare Sub set_break_at_value Lib "lpsolve55.dll" Alias "set_break_at_value" (lp As Integer, break_at_value As Double)
-        Public Declare Function set_col_name Lib "lpsolve55.dll" Alias "set_col_name" (lp As Integer, column As Integer, new_name As String) As Boolean
-        Public Declare Function set_column Lib "lpsolve55.dll" Alias "set_column" (lp As Integer, col_no As Integer, column() As Double) As Boolean
-        Public Declare Function set_columnex Lib "lpsolve55.dll" Alias "set_columnex" (lp As Integer, col_no As Integer, count As Integer, column() As Double, rowno() As Integer) As Boolean
-        Public Declare Function set_constr_type Lib "lpsolve55.dll" Alias "set_constr_type" (lp As Integer, row As Integer, con_type As lpsolve_constr_types) As Boolean
-        Public Declare Sub set_debug Lib "lpsolve55.dll" Alias "set_debug" (lp As Integer, debug_ As Boolean)
-        Public Declare Sub set_epsb Lib "lpsolve55.dll" Alias "set_epsb" (lp As Integer, epsb As Double)
-        Public Declare Sub set_epsd Lib "lpsolve55.dll" Alias "set_epsd" (lp As Integer, epsd As Double)
-        Public Declare Sub set_epsel Lib "lpsolve55.dll" Alias "set_epsel" (lp As Integer, epsel As Double)
-        Public Declare Sub set_epsint Lib "lpsolve55.dll" Alias "set_epsint" (lp As Integer, epsint As Double)
-        Public Declare Function set_epslevel Lib "lpsolve55.dll" Alias "set_epslevel" (lp As Integer, epslevel As Integer) As Boolean
-        Public Declare Sub set_epsperturb Lib "lpsolve55.dll" Alias "set_epsperturb" (lp As Integer, epsperturb As Double)
-        Public Declare Sub set_epspivot Lib "lpsolve55.dll" Alias "set_epspivot" (lp As Integer, epspivot As Double)
-        Public Declare Sub set_improve Lib "lpsolve55.dll" Alias "set_improve" (lp As Integer, improve As lpsolve_improves)
-        Public Declare Sub set_infinite Lib "lpsolve55.dll" Alias "set_infinite" (lp As Integer, infinite As Double)
-        Public Declare Function set_int Lib "lpsolve55.dll" Alias "set_int" (lp As Integer, column As Integer, must_be_int As Boolean) As Boolean
-        Public Declare Sub set_lag_trace Lib "lpsolve55.dll" Alias "set_lag_trace" (lp As Integer, lag_trace As Boolean)
-        Public Declare Function set_lowbo Lib "lpsolve55.dll" Alias "set_lowbo" (lp As Integer, column As Integer, value As Double) As Boolean
-        Public Declare Function set_lp_name Lib "lpsolve55.dll" Alias "set_lp_name" (lp As Integer, lpname As String) As Boolean
-        Public Declare Function set_mat Lib "lpsolve55.dll" Alias "set_mat" (lp As Integer, row As Integer, column As Integer, value As Double) As Boolean
-        Public Declare Sub set_maxim Lib "lpsolve55.dll" Alias "set_maxim" (lp As Integer)
-        Public Declare Sub set_maxpivot Lib "lpsolve55.dll" Alias "set_maxpivot" (lp As Integer, max_num_inv As Integer)
-        Public Declare Sub set_minim Lib "lpsolve55.dll" Alias "set_minim" (lp As Integer)
-        Public Declare Sub set_mip_gap Lib "lpsolve55.dll" Alias "set_mip_gap" (lp As Integer, absolute As Boolean, mip_gap As Double)
-        Public Declare Sub set_negrange Lib "lpsolve55.dll" Alias "set_negrange" (lp As Integer, negrange As Double)
-        Public Declare Function set_obj Lib "lpsolve55.dll" Alias "set_obj" (lp As Integer, column As Integer, value As Double) As Boolean
-        Public Declare Sub set_obj_bound Lib "lpsolve55.dll" Alias "set_obj_bound" (lp As Integer, obj_bound As Double)
-        Public Declare Function set_obj_fn Lib "lpsolve55.dll" Alias "set_obj_fn" (lp As Integer, row() As Double) As Boolean
-        Public Declare Function set_obj_fnex Lib "lpsolve55.dll" Alias "set_obj_fnex" (lp As Integer, count As Integer, row() As Double, colno() As Integer) As Boolean
-        Public Declare Function set_outputfile Lib "lpsolve55.dll" Alias "set_outputfile" (lp As Integer, filename As String) As Boolean
-        Public Declare Sub set_pivoting Lib "lpsolve55.dll" Alias "set_pivoting" (lp As Integer, piv_rule As lpsolve_piv_rules)
-        Public Declare Sub set_preferdual Lib "lpsolve55.dll" Alias "set_preferdual" (lp As Integer, dodual As Boolean)
-        Public Declare Sub set_presolve Lib "lpsolve55.dll" Alias "set_presolve" (lp As Integer, do_presolve As lpsolve_presolve, maxloops As Integer)
-        Public Declare Sub set_print_sol Lib "lpsolve55.dll" Alias "set_print_sol" (lp As Integer, print_sol As Integer)
-        Public Declare Function set_PseudoCosts Lib "lpsolve55.dll" Alias "set_PseudoCosts" (lp As Integer, clower() As Double, cupper() As Double, updatelimit() As Integer) As Boolean
-        Public Declare Function set_rh Lib "lpsolve55.dll" Alias "set_rh" (lp As Integer, row As Integer, value As Double) As Boolean
-        Public Declare Function set_rh_range Lib "lpsolve55.dll" Alias "set_rh_range" (lp As Integer, row As Integer, deltavalue As Double) As Boolean
-        Public Declare Sub set_rh_vec Lib "lpsolve55.dll" Alias "set_rh_vec" (lp As Integer, rh() As Double)
-        Public Declare Function set_row Lib "lpsolve55.dll" Alias "set_row" (lp As Integer, row_no As Integer, row() As Double) As Boolean
-        Public Declare Function set_row_name Lib "lpsolve55.dll" Alias "set_row_name" (lp As Integer, row As Integer, new_name As String) As Boolean
-        Public Declare Function set_rowex Lib "lpsolve55.dll" Alias "set_rowex" (lp As Integer, row_no As Integer, count As Integer, row() As Double, colno() As Integer) As Boolean
-        Public Declare Sub set_scalelimit Lib "lpsolve55.dll" Alias "set_scalelimit" (lp As Integer, scalelimit As Double)
-        Public Declare Sub set_scaling Lib "lpsolve55.dll" Alias "set_scaling" (lp As Integer, scalemode As lpsolve_scales)
-        Public Declare Function set_semicont Lib "lpsolve55.dll" Alias "set_semicont" (lp As Integer, column As Integer, must_be_sc As Boolean) As Boolean
-        Public Declare Sub set_sense Lib "lpsolve55.dll" Alias "set_sense" (lp As Integer, maximize As Boolean)
-        Public Declare Sub set_simplextype Lib "lpsolve55.dll" Alias "set_simplextype" (lp As Integer, simplextype As lpsolve_simplextypes)
-        Public Declare Sub set_solutionlimit Lib "lpsolve55.dll" Alias "set_solutionlimit" (lp As Integer, limit As Integer)
-        Public Declare Sub set_timeout Lib "lpsolve55.dll" Alias "set_timeout" (lp As Integer, sectimeout As Integer)
-        Public Declare Sub set_trace Lib "lpsolve55.dll" Alias "set_trace" (lp As Integer, trace As Boolean)
-        Public Declare Function set_unbounded Lib "lpsolve55.dll" Alias "set_unbounded" (lp As Integer, column As Integer) As Boolean
-        Public Declare Function set_upbo Lib "lpsolve55.dll" Alias "set_upbo" (lp As Integer, column As Integer, value As Double) As Boolean
-        Public Declare Sub set_use_names Lib "lpsolve55.dll" Alias "set_use_names" (lp As Integer, isrow As Boolean, use_names As Boolean)
-        Public Declare Function set_var_branch Lib "lpsolve55.dll" Alias "set_var_branch" (lp As Integer, column As Integer, branch_mode As lpsolve_branch) As Boolean
-        Public Declare Function set_var_weights Lib "lpsolve55.dll" Alias "set_var_weights" (lp As Integer, weights() As Double) As Boolean
-        Public Declare Sub set_verbose Lib "lpsolve55.dll" Alias "set_verbose" (lp As Integer, verbose As Integer)
-        Public Declare Function set_XLI Lib "lpsolve55.dll" Alias "set_XLI" (lp As Integer, filename As String) As Boolean
-        Public Declare Function solve Lib "lpsolve55.dll" Alias "solve" (lp As Integer) As lpsolve_return
-        Public Declare Function str_add_column Lib "lpsolve55.dll" Alias "str_add_column" (lp As Integer, col_string As String) As Boolean
-        Public Declare Function str_add_constraint Lib "lpsolve55.dll" Alias "str_add_constraint" (lp As Integer, row_string As String, constr_type As lpsolve_constr_types, rh As Double) As Boolean
-        Public Declare Function str_add_lag_con Lib "lpsolve55.dll" Alias "str_add_lag_con" (lp As Integer, row_string As String, con_type As lpsolve_constr_types, rhs As Double) As Boolean
-        Public Declare Function str_set_obj_fn Lib "lpsolve55.dll" Alias "str_set_obj_fn" (lp As Integer, row_string As String) As Boolean
-        Public Declare Function str_set_rh_vec Lib "lpsolve55.dll" Alias "str_set_rh_vec" (lp As Integer, rh_string As String) As Boolean
-        Public Declare Function time_elapsed Lib "lpsolve55.dll" Alias "time_elapsed" (lp As Integer) As Double
-        Public Declare Sub unscale Lib "lpsolve55.dll" Alias "unscale" (lp As Integer)
-        Public Declare Function write_basis Lib "lpsolve55.dll" Alias "write_basis" (lp As Integer, filename As String) As Boolean
-        Public Declare Function write_freemps Lib "lpsolve55.dll" Alias "write_freemps" (lp As Integer, filename As String) As Boolean
-        Public Declare Function write_lp Lib "lpsolve55.dll" Alias "write_lp" (lp As Integer, filename As String) As Boolean
-        Public Declare Function write_mps Lib "lpsolve55.dll" Alias "write_mps" (lp As Integer, filename As String) As Boolean
-        Public Declare Function write_XLI Lib "lpsolve55.dll" Alias "write_XLI" (lp As Integer, filename As String, options As String, results As Boolean) As Boolean
-        Public Declare Function write_params Lib "lpsolve55.dll" Alias "write_params" (lp As Integer, filename As String, options As String) As Boolean
+        Public Declare Function read_params Lib "lpsolve55.dll" Alias "read_params" (lp As IntPtr, filename As String, options As String) As Boolean
+        Public Declare Sub reset_basis Lib "lpsolve55.dll" Alias "reset_basis" (lp As IntPtr)
+        Public Declare Sub reset_params Lib "lpsolve55.dll" Alias "reset_params" (lp As IntPtr)
+        Public Declare Function set_add_rowmode Lib "lpsolve55.dll" Alias "set_add_rowmode" (lp As IntPtr, turnon As Boolean) As Boolean
+        Public Declare Sub set_anti_degen Lib "lpsolve55.dll" Alias "set_anti_degen" (lp As IntPtr, anti_degen As lpsolve_anti_degen)
+        Public Declare Function set_basis Lib "lpsolve55.dll" Alias "set_basis" (lp As IntPtr, bascolumn() As Integer, nonbasic As Boolean) As Boolean
+        Public Declare Sub set_basiscrash Lib "lpsolve55.dll" Alias "set_basiscrash" (lp As IntPtr, mode As lpsolve_basiscrash)
+        Public Declare Sub set_basisvar Lib "lpsolve55.dll" Alias "set_basisvar" (lp As IntPtr, basisPos As Integer, enteringCol As Integer)
+        Public Declare Sub set_bb_depthlimit Lib "lpsolve55.dll" Alias "set_bb_depthlimit" (lp As IntPtr, bb_maxlevel As Integer)
+        Public Declare Sub set_bb_floorfirst Lib "lpsolve55.dll" Alias "set_bb_floorfirst" (lp As IntPtr, bb_floorfirst As lpsolve_branch)
+        Public Declare Sub set_bb_rule Lib "lpsolve55.dll" Alias "set_bb_rule" (lp As IntPtr, bb_rule As lpsolve_BBstrategies)
+        Public Declare Function set_BFP Lib "lpsolve55.dll" Alias "set_BFP" (lp As IntPtr, filename As String) As Boolean
+        Public Declare Function set_binary Lib "lpsolve55.dll" Alias "set_binary" (lp As IntPtr, column As Integer, must_be_bin As Boolean) As Boolean
+        Public Declare Function set_bounds Lib "lpsolve55.dll" Alias "set_bounds" (lp As IntPtr, column As Integer, lower As Double, upper As Double) As Boolean
+        Public Declare Sub set_bounds_tighter Lib "lpsolve55.dll" Alias "set_bounds_tighter" (lp As IntPtr, tighten As Boolean)
+        Public Declare Sub set_break_at_first Lib "lpsolve55.dll" Alias "set_break_at_first" (lp As IntPtr, break_at_first As Boolean)
+        Public Declare Sub set_break_at_value Lib "lpsolve55.dll" Alias "set_break_at_value" (lp As IntPtr, break_at_value As Double)
+        Public Declare Function set_col_name Lib "lpsolve55.dll" Alias "set_col_name" (lp As IntPtr, column As Integer, new_name As String) As Boolean
+        Public Declare Function set_column Lib "lpsolve55.dll" Alias "set_column" (lp As IntPtr, col_no As Integer, column() As Double) As Boolean
+        Public Declare Function set_columnex Lib "lpsolve55.dll" Alias "set_columnex" (lp As IntPtr, col_no As Integer, count As Integer, column() As Double, rowno() As Integer) As Boolean
+        Public Declare Function set_constr_type Lib "lpsolve55.dll" Alias "set_constr_type" (lp As IntPtr, row As Integer, con_type As lpsolve_constr_types) As Boolean
+        Public Declare Sub set_debug Lib "lpsolve55.dll" Alias "set_debug" (lp As IntPtr, debug_ As Boolean)
+        Public Declare Sub set_epsb Lib "lpsolve55.dll" Alias "set_epsb" (lp As IntPtr, epsb As Double)
+        Public Declare Sub set_epsd Lib "lpsolve55.dll" Alias "set_epsd" (lp As IntPtr, epsd As Double)
+        Public Declare Sub set_epsel Lib "lpsolve55.dll" Alias "set_epsel" (lp As IntPtr, epsel As Double)
+        Public Declare Sub set_epsint Lib "lpsolve55.dll" Alias "set_epsint" (lp As IntPtr, epsint As Double)
+        Public Declare Function set_epslevel Lib "lpsolve55.dll" Alias "set_epslevel" (lp As IntPtr, epslevel As Integer) As Boolean
+        Public Declare Sub set_epsperturb Lib "lpsolve55.dll" Alias "set_epsperturb" (lp As IntPtr, epsperturb As Double)
+        Public Declare Sub set_epspivot Lib "lpsolve55.dll" Alias "set_epspivot" (lp As IntPtr, epspivot As Double)
+        Public Declare Sub set_improve Lib "lpsolve55.dll" Alias "set_improve" (lp As IntPtr, improve As lpsolve_improves)
+        Public Declare Sub set_infinite Lib "lpsolve55.dll" Alias "set_infinite" (lp As IntPtr, infinite As Double)
+        Public Declare Function set_int Lib "lpsolve55.dll" Alias "set_int" (lp As IntPtr, column As Integer, must_be_int As Boolean) As Boolean
+        Public Declare Sub set_lag_trace Lib "lpsolve55.dll" Alias "set_lag_trace" (lp As IntPtr, lag_trace As Boolean)
+        Public Declare Function set_lowbo Lib "lpsolve55.dll" Alias "set_lowbo" (lp As IntPtr, column As Integer, value As Double) As Boolean
+        Public Declare Function set_lp_name Lib "lpsolve55.dll" Alias "set_lp_name" (lp As IntPtr, lpname As String) As Boolean
+        Public Declare Function set_mat Lib "lpsolve55.dll" Alias "set_mat" (lp As IntPtr, row As Integer, column As Integer, value As Double) As Boolean
+        Public Declare Sub set_maxim Lib "lpsolve55.dll" Alias "set_maxim" (lp As IntPtr)
+        Public Declare Sub set_maxpivot Lib "lpsolve55.dll" Alias "set_maxpivot" (lp As IntPtr, max_num_inv As Integer)
+        Public Declare Sub set_minim Lib "lpsolve55.dll" Alias "set_minim" (lp As IntPtr)
+        Public Declare Sub set_mip_gap Lib "lpsolve55.dll" Alias "set_mip_gap" (lp As IntPtr, absolute As Boolean, mip_gap As Double)
+        Public Declare Sub set_negrange Lib "lpsolve55.dll" Alias "set_negrange" (lp As IntPtr, negrange As Double)
+        Public Declare Function set_obj Lib "lpsolve55.dll" Alias "set_obj" (lp As IntPtr, column As Integer, value As Double) As Boolean
+        Public Declare Sub set_obj_bound Lib "lpsolve55.dll" Alias "set_obj_bound" (lp As IntPtr, obj_bound As Double)
+        Public Declare Function set_obj_fn Lib "lpsolve55.dll" Alias "set_obj_fn" (lp As IntPtr, row() As Double) As Boolean
+        Public Declare Function set_obj_fnex Lib "lpsolve55.dll" Alias "set_obj_fnex" (lp As IntPtr, count As Integer, row() As Double, colno() As Integer) As Boolean
+        Public Declare Function set_outputfile Lib "lpsolve55.dll" Alias "set_outputfile" (lp As IntPtr, filename As String) As Boolean
+        Public Declare Sub set_pivoting Lib "lpsolve55.dll" Alias "set_pivoting" (lp As IntPtr, piv_rule As lpsolve_piv_rules)
+        Public Declare Sub set_preferdual Lib "lpsolve55.dll" Alias "set_preferdual" (lp As IntPtr, dodual As Boolean)
+        Public Declare Sub set_presolve Lib "lpsolve55.dll" Alias "set_presolve" (lp As IntPtr, do_presolve As lpsolve_presolve, maxloops As Integer)
+        Public Declare Sub set_print_sol Lib "lpsolve55.dll" Alias "set_print_sol" (lp As IntPtr, print_sol As Integer)
+        Public Declare Function set_PseudoCosts Lib "lpsolve55.dll" Alias "set_PseudoCosts" (lp As IntPtr, clower() As Double, cupper() As Double, updatelimit() As Integer) As Boolean
+        Public Declare Function set_rh Lib "lpsolve55.dll" Alias "set_rh" (lp As IntPtr, row As Integer, value As Double) As Boolean
+        Public Declare Function set_rh_range Lib "lpsolve55.dll" Alias "set_rh_range" (lp As IntPtr, row As Integer, deltavalue As Double) As Boolean
+        Public Declare Sub set_rh_vec Lib "lpsolve55.dll" Alias "set_rh_vec" (lp As IntPtr, rh() As Double)
+        Public Declare Function set_row Lib "lpsolve55.dll" Alias "set_row" (lp As IntPtr, row_no As Integer, row() As Double) As Boolean
+        Public Declare Function set_row_name Lib "lpsolve55.dll" Alias "set_row_name" (lp As IntPtr, row As Integer, new_name As String) As Boolean
+        Public Declare Function set_rowex Lib "lpsolve55.dll" Alias "set_rowex" (lp As IntPtr, row_no As Integer, count As Integer, row() As Double, colno() As Integer) As Boolean
+        Public Declare Sub set_scalelimit Lib "lpsolve55.dll" Alias "set_scalelimit" (lp As IntPtr, scalelimit As Double)
+        Public Declare Sub set_scaling Lib "lpsolve55.dll" Alias "set_scaling" (lp As IntPtr, scalemode As lpsolve_scales)
+        Public Declare Function set_semicont Lib "lpsolve55.dll" Alias "set_semicont" (lp As IntPtr, column As Integer, must_be_sc As Boolean) As Boolean
+        Public Declare Sub set_sense Lib "lpsolve55.dll" Alias "set_sense" (lp As IntPtr, maximize As Boolean)
+        Public Declare Sub set_simplextype Lib "lpsolve55.dll" Alias "set_simplextype" (lp As IntPtr, simplextype As lpsolve_simplextypes)
+        Public Declare Sub set_solutionlimit Lib "lpsolve55.dll" Alias "set_solutionlimit" (lp As IntPtr, limit As Integer)
+        Public Declare Sub set_timeout Lib "lpsolve55.dll" Alias "set_timeout" (lp As IntPtr, sectimeout As Integer)
+        Public Declare Sub set_trace Lib "lpsolve55.dll" Alias "set_trace" (lp As IntPtr, trace As Boolean)
+        Public Declare Function set_unbounded Lib "lpsolve55.dll" Alias "set_unbounded" (lp As IntPtr, column As Integer) As Boolean
+        Public Declare Function set_upbo Lib "lpsolve55.dll" Alias "set_upbo" (lp As IntPtr, column As Integer, value As Double) As Boolean
+        Public Declare Sub set_use_names Lib "lpsolve55.dll" Alias "set_use_names" (lp As IntPtr, isrow As Boolean, use_names As Boolean)
+        Public Declare Function set_var_branch Lib "lpsolve55.dll" Alias "set_var_branch" (lp As IntPtr, column As Integer, branch_mode As lpsolve_branch) As Boolean
+        Public Declare Function set_var_weights Lib "lpsolve55.dll" Alias "set_var_weights" (lp As IntPtr, weights() As Double) As Boolean
+        Public Declare Sub set_verbose Lib "lpsolve55.dll" Alias "set_verbose" (lp As IntPtr, verbose As Integer)
+        Public Declare Function set_XLI Lib "lpsolve55.dll" Alias "set_XLI" (lp As IntPtr, filename As String) As Boolean
+        Public Declare Function solve Lib "lpsolve55.dll" Alias "solve" (lp As IntPtr) As lpsolve_return
+        Public Declare Function str_add_column Lib "lpsolve55.dll" Alias "str_add_column" (lp As IntPtr, col_string As String) As Boolean
+        Public Declare Function str_add_constraint Lib "lpsolve55.dll" Alias "str_add_constraint" (lp As IntPtr, row_string As String, constr_type As lpsolve_constr_types, rh As Double) As Boolean
+        Public Declare Function str_add_lag_con Lib "lpsolve55.dll" Alias "str_add_lag_con" (lp As IntPtr, row_string As String, con_type As lpsolve_constr_types, rhs As Double) As Boolean
+        Public Declare Function str_set_obj_fn Lib "lpsolve55.dll" Alias "str_set_obj_fn" (lp As IntPtr, row_string As String) As Boolean
+        Public Declare Function str_set_rh_vec Lib "lpsolve55.dll" Alias "str_set_rh_vec" (lp As IntPtr, rh_string As String) As Boolean
+        Public Declare Function time_elapsed Lib "lpsolve55.dll" Alias "time_elapsed" (lp As IntPtr) As Double
+        Public Declare Sub unscale Lib "lpsolve55.dll" Alias "unscale" (lp As IntPtr)
+        Public Declare Function write_basis Lib "lpsolve55.dll" Alias "write_basis" (lp As IntPtr, filename As String) As Boolean
+        Public Declare Function write_freemps Lib "lpsolve55.dll" Alias "write_freemps" (lp As IntPtr, filename As String) As Boolean
+        Public Declare Function write_lp Lib "lpsolve55.dll" Alias "write_lp" (lp As IntPtr, filename As String) As Boolean
+        Public Declare Function write_mps Lib "lpsolve55.dll" Alias "write_mps" (lp As IntPtr, filename As String) As Boolean
+        Public Declare Function write_XLI Lib "lpsolve55.dll" Alias "write_XLI" (lp As IntPtr, filename As String, options As String, results As Boolean) As Boolean
+        Public Declare Function write_params Lib "lpsolve55.dll" Alias "write_params" (lp As IntPtr, filename As String, options As String) As Boolean
 
         '-----------------------------------------------------------------------------------------------------------------------------
 
@@ -619,7 +619,7 @@ Public Class cLPSolver
 
         Dim vars() As cVarDef = Me.Vars
         Dim rows() As cRowDef = Me.Rows
-        Dim lp As Integer = 0
+        Dim lp As IntPtr
 
         Try
             lp = lpsolve55.make_lp(0, vars.Length)
@@ -738,7 +738,7 @@ Public Class cLPSolver
     Public Sub SolveLPSolve()
 
         'SimplexSolver solver = new SimplexSolver();
-        Dim lp As Integer = lpsolve55.make_lp(0, 2)
+        Dim lp As IntPtr = lpsolve55.make_lp(0, 2)
 
         ' - Vars already defined in constructor
         'int savid, vzvid;

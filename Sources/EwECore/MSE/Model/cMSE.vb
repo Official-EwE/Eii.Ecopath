@@ -1593,7 +1593,7 @@ Namespace MSE
                 cLPSolver.lpsolve55.Init()
                 ReDim VPerEffort(Me.m_MSEData.nFleets)
 
-                Dim ptrLp As Integer = cLPSolver.lpsolve55.make_lp(0, Me.m_MSEData.nFleets)
+                Dim ptrLp As IntPtr = cLPSolver.lpsolve55.make_lp(0, Me.m_MSEData.nFleets)
                 Dim badded As Boolean
                 'Add the Fleets as Variables and get the Variable ID's into m_FleetCode
                 For iFlt = 1 To Me.m_MSEData.nFleets
