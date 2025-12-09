@@ -18,9 +18,7 @@
 '
 
 Option Strict Off ' OUCH
-Imports EwEUtils.Extensions
 Imports EwEUtils.Core
-Imports OfficeOpenXml.FormulaParsing.Excel.Functions.Logical
 
 ''' <summary>
 ''' Wrapper for the underlying data structures of the EcoPath model. 
