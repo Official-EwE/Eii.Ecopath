@@ -247,7 +247,7 @@ Namespace MSE
             Me.m_core = theCore
         End Sub
 
-        Public Sub Init(MSEData As cMSEDataStructures, Ecosim As Ecosim.cEcosimModel, SearchData As cSearchDatastructures, EcopathData As cEcopathDataStructures, RefData As cTimeSeriesDataStructures, PluginManager As cPluginManager)
+        Public Sub Init(Ecosim As Ecosim.cEcosimModel, Ecospace As cEcoSpace, MSEData As cMSEDataStructures, SearchData As cSearchDatastructures, EcopathData As cEcopathDataStructures, RefData As cTimeSeriesDataStructures, PluginManager As cPluginManager)
 
             Me.m_MSEData = MSEData
             'Me.m_Ecosim = Ecosim
@@ -258,8 +258,9 @@ Namespace MSE
             Me.m_refData = RefData
 
 
-            Me.m_Model = MSEModelFactory.ModelFactory(eModelTypes.Ecosim)
-            Me.m_Model.Init(Ecosim)
+            Me.m_Model = MSEModelFactory.ModelFactory(eModelTypes.EcoSpace)
+            Me.m_Model.Init(Ecosim, Ecospace)
+
             Me.m_Model.onModelTimeStep = AddressOf Me.onModelTimestep
 
             Me.m_EconomicData = cEconomicDataSource.getInstance()

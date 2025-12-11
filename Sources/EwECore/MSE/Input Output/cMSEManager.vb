@@ -591,7 +591,7 @@ Namespace MSE
             'this may have to change when the input/output object are created
             Me.m_MSEdata.Init(theCore)
 
-            Me.m_MSE.Init(Me.m_MSEdata, Me.m_core.m_Ecosim, Me.m_core.m_SearchData, Me.m_core.m_EcopathData, Me.m_core.m_TSData, Me.m_core.PluginManager)
+            Me.m_MSE.Init(Me.m_core.m_Ecosim, Me.m_core.m_Ecospace, Me.m_MSEdata, Me.m_core.m_SearchData, Me.m_core.m_EcopathData, Me.m_core.m_TSData, Me.m_core.PluginManager)
 
             'Initialize the Batch manager
             Me.m_Batch.Init(Me.m_core, Me.m_MSE)
@@ -607,6 +607,7 @@ Namespace MSE
             'set the MSE model in Ecosim
             'Ecosim calls MSE.AssessFs() if the Search is turned On
             Me.m_core.m_Ecosim.InitMSE(Me.m_MSE)
+            Me.m_core.m_Ecospace.InitMSE(Me.m_MSE)
 
             Me.m_TotFleetValue = New cMSEStats(Me.m_core, Me.m_MSEdata.ValueFleetStats, eDataTypes.MSEValueTotalStats, Me.m_VarToStat, -9999, 1)
 

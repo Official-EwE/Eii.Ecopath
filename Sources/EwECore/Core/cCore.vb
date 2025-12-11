@@ -8962,6 +8962,7 @@ Public Class cCore
     Private m_stpwSpaceTimer As Stopwatch
     Private m_spaceSaveTime As Double
 
+
 #End Region ' Variables
 
 #Region " Ecospace Public Methods "
