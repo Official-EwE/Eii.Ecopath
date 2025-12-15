@@ -78,10 +78,12 @@ jobs:
 
       - name: Upload asset to the same release
         run: gh release upload "${{ github.event.release.tag_name }}" "${{ env.ZIP_PATH }}" --clobber
-
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Build the x64 version as well
+      - name: Build Release with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ env.SEMVER }} /p:FileVersion=${{ env.FILEVER }} -p:Platform=x64
 
 
 
