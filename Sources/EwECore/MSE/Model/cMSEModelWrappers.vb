@@ -17,7 +17,7 @@ Namespace MSE
 
     Public Interface IMSEModelWrapper
 
-        Sub Init(Ecosim As Ecosim.cEcosimModel, Ecospace As cEcoSpace)
+        Sub Init(Core As cCore, Ecosim As cEcosimModel, EcoSpace As cEcoSpace)
         'Sub Init(Ecospace As cEcoSpace)
 
         Function InitForRun(ByVal bFullInitialization As Boolean) As Boolean
@@ -72,7 +72,7 @@ Namespace MSE
             End Set
         End Property
 
-        Public Sub Init(Ecosim As cEcosimModel, Ecospace As cEcoSpace) Implements IMSEModelWrapper.Init
+        Public Sub Init(Core As cCore, Ecosim As cEcosimModel, EcoSpace As cEcoSpace) Implements IMSEModelWrapper.Init
             Me.m_Ecosim = Ecosim
         End Sub
 
@@ -120,6 +120,7 @@ Namespace MSE
 
 
         Private m_Ecospace As cEcoSpace
+        Private m_Core As cCore
 
         Private m_OnModelTimeStepDelegate As IMSEModelWrapper.onModelTimeStepDelegate = Nothing
 
@@ -129,8 +130,9 @@ Namespace MSE
             End Set
         End Property
 
-        Public Sub Init(Ecosim As cEcosimModel, Ecospace As cEcoSpace) Implements IMSEModelWrapper.Init
-            m_Ecospace = Ecospace
+        Public Sub Init(Core As cCore, Ecosim As cEcosimModel, EcoSpace As cEcoSpace) Implements IMSEModelWrapper.Init
+            m_Core = Core
+            m_Ecospace = EcoSpace
         End Sub
 
         Public Sub InitForTrial() Implements IMSEModelWrapper.InitForTrial
@@ -147,7 +149,7 @@ Namespace MSE
         End Function
 
         Public Function Run() As Boolean Implements IMSEModelWrapper.Run
-            Return Me.m_Ecospace.Run()
+            Return Me.m_Core.RunEcospace()
         End Function
 
         Public Function SetFtimeFromGear(t As Integer, QYear() As Single, PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean Implements IMSEModelWrapper.SetFtimeFromGear

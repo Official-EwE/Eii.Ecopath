@@ -259,7 +259,7 @@ Namespace MSE
 
 
             Me.m_Model = MSEModelFactory.ModelFactory(eModelTypes.EcoSpace)
-            Me.m_Model.Init(Ecosim, Ecospace)
+            Me.m_Model.Init(Me.m_core, Ecosim, Ecospace)
 
             Me.m_Model.onModelTimeStep = AddressOf Me.onModelTimestep
 
