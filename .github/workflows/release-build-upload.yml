@@ -24,6 +24,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      # --- Installeer Inno Setup CLI ---
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+        shell: pwsh
+
       - name: Derive Version/FileVersion from tag
         shell: pwsh
         run: |

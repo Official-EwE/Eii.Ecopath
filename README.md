@@ -57,3 +57,26 @@ For example, to create and push the ScientificInterfaceShared package, follow th
 - In Visual Studio, open the `Developer PowerShell` window
 - Navigate to the `Sources` directory of the repository
 - Type `.\CreateAndPushNugetPackage.ps1 -ProjectPath ScientificInterfaceShared\ScientificInterfaceShared.vbproj -ApiKey <ApiKey>`
+
+# Creating an EwE6 installer
+The installer is created using Inno Setup. The script is located in the `Deployment` folder of the repository.
+
+To be able to use the Inno Setup compiler, you have to install it. It is recommended to install Inno Setup as a CLI tool.
+This is the way the tool is used in the build check and CI/CD pipelines.
+
+## Install Chocolatey and Inno Setup
+And to do that, you probably have to install `chocolatey` first.
+- Open a PowerShell window as Administrator
+- Execute the following command to install chocolatey:
+  ```powershell
+  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  ```
+
+  When Chocolatey is installed, you can install Inno Setup:
+  ```powershell
+  choco install innosetup -y
+  ```
+
+## Compile the installer
+To compile the installer, you can use the `iscc` command from Inno Setup.
+
