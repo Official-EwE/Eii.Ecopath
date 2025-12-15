@@ -75,7 +75,7 @@ jobs:
         run: |
           $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
           $outputDir = Join-Path $PWD "artifacts"
-          & $isccPath /DFileVersion="${{ env.FILEVER }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+          & $isccPath /DSemVersion="${{ env.SEMVER }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
           
       # --- Build Installer x64 ---
       - name: Build Inno Setup Installer (x64)
@@ -83,7 +83,7 @@ jobs:
         run: |
           $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
           $outputDir = Join-Path $PWD "artifacts"
-          & $isccPath /DFileVersion="${{ env.FILEVER }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+          & $isccPath /DSemVersion="${{ env.SEMVER }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
 
       # --- Set installer paths ---
       - name: Set installer paths

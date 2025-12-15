@@ -16,17 +16,17 @@
 #define ExcludeDeadCells 0
 
 ; Automated build will provide file version as a command line parameter
-; /DFileVersion=6.6.{minor release no}.{build no}
-#ifndef FileVersion
-  #define FileVersion "6.7.0.19540"
+; /DSemVersion=6.6.{minor release no}
+#ifndef SemVersion
+  #define SemVersion "6.7.0"
 #endif
-; VersionInfoVersion={#FileVersion}
+; VersionInfoVersion={#SemVersion}
 
 #if Compile64Bit == "0"
-  #define MyAppVersion FileVersion + "_32-bit"
+  #define MyAppVersion SemVersion + "_32-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release\net48"
 #else
-  #define MyAppVersion FileVersion + "_64-bit"
+  #define MyAppVersion SemVersion + "_64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release\net48"
 #endif
 
