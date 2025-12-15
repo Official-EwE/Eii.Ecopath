@@ -158,9 +158,7 @@
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Includes\Troschuetz.Random.dll" />
-    <Content Include="Resources\gpl-2.0.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
