@@ -63,15 +63,6 @@
 	<Reference Include="System.Web" />
 	<Reference Include="System.Web.Services" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Platform)' == 'x86'">
- 	<Reference Include="Includes\LPSolve\win32\lpsolve55.dll" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)'=='ARM64'">
-    <Reference Include="Includes\LPSolve\win32\lpsolve55.dll" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)' == 'x64'">
- 	<Reference Include="Includes\LPSolve\win64\lpsolve55.dll" />
-  </ItemGroup>
   <ItemGroup>
     <Import Include="System.Data" />
   </ItemGroup>

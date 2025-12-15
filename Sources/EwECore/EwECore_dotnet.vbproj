@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48;net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net48;net8.0</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU</Platforms>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwECore.snk</AssemblyOriginatorKeyFile>
@@ -82,15 +82,6 @@
     <Reference Update="System">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)' == 'x86'">
- 	<Reference Include="Includes\LPSolve\win32\lpsolve55.dll" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)'=='ARM64'">
-    <Reference Include="Includes\LPSolve\win32\lpsolve55.dll" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(Platform)' == 'x64'">
- 	<Reference Include="Includes\LPSolve\win64\lpsolve55.dll" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="System.Data" />
@@ -192,6 +183,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin_dotnet.vbproj" />
-    <ProjectReference Include="..\EwEUtils\EwEUtils_dotnet.vbproj" />
   </ItemGroup>
 </Project>
