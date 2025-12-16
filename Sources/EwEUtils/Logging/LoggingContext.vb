@@ -16,6 +16,6 @@ Namespace Logging
             End If
         End Function
 
-        Public Property LogFile As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", $"log-{DateTime.Now:yyyyMMdd}.txt")
+        Public Property LogFile As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Ecopath with Ecosim", "Logs", $"log-{DateTime.Now:yyyyMMdd}.txt")
     End Module
 End Namespace

@@ -100,7 +100,7 @@ Name: "{app}\Includes\LPSolve\win64\"
 Name: "{app}\Resources\"
 Name: "{app}\Tools\"
 Name: "{app}\UserGuide\"
-Name: "{app}\Plugins\"
+; Name: "{app}\Plugins\"
 Name: "{app}\Includes\GDAL\"
 Name: "{app}\Includes\GDAL\win32\"
 Name: "{app}\Includes\GDAL\win32\gdalplugins\"
@@ -112,22 +112,9 @@ Name: "{app}\Includes\LPSolve\win64\"
 
 [Files]
 Source: "..\LICENSE.txt"; DestDir: "{app}\Resources\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EwEUtils.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EwEPlugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EwECore.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\ZedGraph.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EPPlus.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\SourceLibrary.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\SourceGrid2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\ScientificInterfaceShared.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EwE6.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\EwE6.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\EwELicense.dll"; DestDir: "{app}"; Flags: ignoreversion
-; Source: "{#DefRoot}{#DefSrc}\Interop.JRO.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\Ionic.Zip.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\Microsoft.GLEE.dll"; DestDir: "{app}"; Flags: ignoreversion
-; Source: "{#DefRoot}{#DefSrc}\Microsoft.Office.Interop.Access.Dao.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win32\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win32\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win64\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win64\"; Flags: ignoreversion
 
@@ -142,85 +129,85 @@ Source: "{#DefRoot}{#DefSrc}\Tools\code_for_plotting_dirichlets.R"; DestDir: "{a
 
 ; - Plugins --
 ; Analysis
-Source: "{#DefRoot}{#DefSrc}\EwENetworkAnalysisPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\na
-Source: "{#DefRoot}{#DefSrc}\EwEPrebalPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\prebal
+; Source: "{#DefRoot}{#DefSrc}\EwENetworkAnalysisPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\na
+; Source: "{#DefRoot}{#DefSrc}\EwEPrebalPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\prebal
 Source: "{#DefRoot}{#DefSrc}\UserGuide\Link - 2010 - Adding rigor to ecological network models by evalu.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\prebal
-Source: "{#DefRoot}{#DefSrc}\EwEValueChainv2Plugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\valuechain
-Source: "{#DefRoot}{#DefSrc}\UserGuide\ChristensenValueChainMS.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\valuechain
-Source: "{#DefRoot}{#DefSrc}\EwEEcologicalIndicatorsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecolind
-Source: "{#DefRoot}{#DefSrc}\EwEEcoTrophPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecotroph
-Source: "{#DefRoot}{#DefSrc}\EwEFleetTradeoffsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\fleetTO
+; Source: "{#DefRoot}{#DefSrc}\EwEValueChainv2Plugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\valuechain
+; Source: "{#DefRoot}{#DefSrc}\UserGuide\ChristensenValueChainMS.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\valuechain
+; Source: "{#DefRoot}{#DefSrc}\EwEEcologicalIndicatorsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecolind
+; Source: "{#DefRoot}{#DefSrc}\EwEEcoTrophPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecotroph
+; Source: "{#DefRoot}{#DefSrc}\EwEFleetTradeoffsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\fleetTO
 
 ; Input
-Source: "{#DefRoot}{#DefSrc}\EwEWoRMSPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\worms
-Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mergegroups
-Source: "{#DefRoot}{#DefSrc}\EwEAquamapsEnvDataImporterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\aquamaps
-Source: "{#DefRoot}{#DefSrc}\EwEImportExportLayerDefinitionsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\layerimportexport
-Source: "{#DefRoot}{#DefSrc}\EwEEcoengineersPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecoengineers
-Source: "{#DefRoot}{#DefSrc}\UserGuide\Ecoengineer user guide.pdf"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecoengineers
-Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
-Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\biomassemitter
+; Source: "{#DefRoot}{#DefSrc}\EwEWoRMSPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\worms
+; Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mergegroups
+; Source: "{#DefRoot}{#DefSrc}\EwEAquamapsEnvDataImporterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\input\aquamaps
+; Source: "{#DefRoot}{#DefSrc}\EwEImportExportLayerDefinitionsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\layerimportexport
+; Source: "{#DefRoot}{#DefSrc}\EwEEcoengineersPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecoengineers
+; Source: "{#DefRoot}{#DefSrc}\UserGuide\Ecoengineer user guide.pdf"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecoengineers
+; Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
+; Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\biomassemitter
 Source: "{#DefRoot}{#DefSrc}\UserGuide\Biomass-emitter-guide.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\input\biomassemitter
-Source: "{#DefRoot}{#DefSrc}\EwEImportDietsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\szumadiets
-Source: "{#DefRoot}{#DefSrc}\EwEEcotracerEnvDriverPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecotracer
+; Source: "{#DefRoot}{#DefSrc}\EwEImportDietsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\szumadiets
+; Source: "{#DefRoot}{#DefSrc}\EwEEcotracerEnvDriverPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecotracer
 #if RandomizeMPAs == 1
-Source: "{#DefRoot}{#DefSrc}\EwERandomizeMPAPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\randomizeMPAs
+; Source: "{#DefRoot}{#DefSrc}\EwERandomizeMPAPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\randomizeMPAs
 #endif
 #if ExcludeDeadCells == 1
-Source: "{#DefRoot}{#DefSrc}\EwEEcospaceExcludeIsolatedCellsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\excldeadcells
+; Source: "{#DefRoot}{#DefSrc}\EwEEcospaceExcludeIsolatedCellsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\excldeadcells
 #endif
 
 ; Output
-Source: "{#DefRoot}{#DefSrc}\EwEResultsExtractorPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\resultextractor
+; Source: "{#DefRoot}{#DefSrc}\EwEResultsExtractorPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\resultextractor
 Source: "{#DefRoot}{#DefSrc}\UserGuide\ResultsExtractorPlug.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\output\resultextractor
-Source: "{#DefRoot}{#DefSrc}\EwEModelFromEcosimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\modelfromsim
+; Source: "{#DefRoot}{#DefSrc}\EwEModelFromEcosimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\modelfromsim
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE model from time step.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\output\modelfromsim
-Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
-Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3RPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
-Source: "{#DefRoot}{#DefSrc}\EwEIBMAgeStructureResultsWriterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\IBMwriter
-Source: "{#DefRoot}{#DefSrc}\EwEenaRPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\enaR
+; Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
+; Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3RPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
+; Source: "{#DefRoot}{#DefSrc}\EwEIBMAgeStructureResultsWriterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\IBMwriter
+; Source: "{#DefRoot}{#DefSrc}\EwEenaRPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\enaR
 
 ; Automation
-Source: "{#DefRoot}{#DefSrc}\EwEMultiSimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\multisim
+; Source: "{#DefRoot}{#DefSrc}\EwEMultiSimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\multisim
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EwEMultiSimPlugin.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\multisim
-Source: "{#DefRoot}{#DefSrc}\EwEStepwiseFittingPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\stepwisef
-Source: "{#DefRoot}{#DefSrc}\EwEMSEPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\mse
+; Source: "{#DefRoot}{#DefSrc}\EwEStepwiseFittingPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\stepwisef
+; Source: "{#DefRoot}{#DefSrc}\EwEMSEPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\mse
 Source: "{#DefRoot}{#DefSrc}\LumenWorks.Framework.IO.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: plugin\automation\mse
 Source: "{#DefRoot}{#DefSrc}\Troschuetz.Random.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: plugin\automation\mse
-Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
+; Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler-user-manual.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
 
 ; UI
-Source: "{#DefRoot}{#DefSrc}\EwERemarksPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\ui\remarks
-Source: "{#DefRoot}{#DefSrc}\EwEShapeGridPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\ui\shapegrid
-Source: "{#DefRoot}{#DefSrc}\EwEWindowsIntegrationPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\winintegration
+; Source: "{#DefRoot}{#DefSrc}\EwERemarksPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\ui\remarks
+; Source: "{#DefRoot}{#DefSrc}\EwEShapeGridPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\ui\shapegrid
+; Source: "{#DefRoot}{#DefSrc}\EwEWindowsIntegrationPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\winintegration
 
 ; Pro
-Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spinup
-Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spinup
+; Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\pro\spattemp
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Analysis.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Extensions.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Modeling.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Extensions.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Modeling.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Positioning.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Projections.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Serialization.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Projections.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Serialization.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Tools.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Topology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-Source: "{#DefRoot}{#DefSrc}\EwEMSPLinkPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\projects\msptools
-Source: "{#DefRoot}{#DefSrc}\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\projects\msptools
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Topology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\EwEMSPLinkPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\projects\msptools
+; Source: "{#DefRoot}{#DefSrc}\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\projects\msptools
 
 
 
 ; -- RBT --
 #if RobertsBank == 1
-Source: "{#DefRoot}{#DefSrc}\EwEDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
-Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
+; Source: "{#DefRoot}{#DefSrc}\EwEDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
+; Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
 #endif
 
 ; -- SAMPLE DATABASES --

@@ -52,12 +52,14 @@ Module EwE6ApplicationFramework
 
     Public Sub Main()
 
+        Dim logPath = Path.GetDirectoryName(LoggingContext.LogFile)
+
         ' Configure Serilog
         Log.Logger = New LoggerConfiguration() _
             .MinimumLevel.Debug() _
             .Enrich.WithThreadId() _
             .Enrich.WithThreadName() _
-            .WriteTo.File("Logs\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
+            .WriteTo.File($"{logPath}\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
             .CreateLogger()
 
         ' Initialize LoggerFactory
