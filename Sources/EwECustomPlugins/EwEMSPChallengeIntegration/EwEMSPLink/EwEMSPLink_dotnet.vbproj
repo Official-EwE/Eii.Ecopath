@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFrameworks>net8.0</TargetFrameworks>
@@ -49,6 +49,6 @@
     <RootNamespace>EwEMSPLink</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EwECore\EwECore_dotnet.vbproj" />
+    <ProjectReference Include="..\..\..\EwECore\EwECore.vbproj" />
   </ItemGroup>
 </Project>
