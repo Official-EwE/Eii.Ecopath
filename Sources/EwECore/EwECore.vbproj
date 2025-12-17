@@ -1,11 +1,39 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48</TargetFrameworks>
+    <TargetFrameworks>net48;net8.0</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU</Platforms>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwECore.snk</AssemblyOriginatorKeyFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <AssemblyName>EwECore</AssemblyName>
+    <RootNamespace>EwECore</RootNamespace>
+    <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>Eii.Ecopath.EwECore</PackageId>
+    <Title>Ecopath with Ecosim Core</Title>
+    <Description>A description of the EwECore package</Description>
+    <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwECore</PackageProjectUrl>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <Version>6.7.11</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
+    <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
+    <IncludeReferencedProjects>True</IncludeReferencedProjects>
+    <Company>EII</Company>
+    <PackageIcon>EII_plain_128x128.png</PackageIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="True" PackagePath="\" />
+    <None Include="..\..\EII_plain_128x128.png" Pack="True" PackagePath="\" />
+    <None Include="Includes\*.*" Pack="true" PackagePath="Includes\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	<PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>EwECore.xml</DocumentationFile>
@@ -48,9 +76,6 @@
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
     <DebugType>none</DebugType>
   </PropertyGroup>
-  <PropertyGroup>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.JRO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=1d875393b3ebcad0, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.interop.access.dao, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
@@ -59,12 +84,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Data.Linq" />
-	<Reference Include="System.Web" />
-	<Reference Include="System.Web.Services" />
-  </ItemGroup>
-  <ItemGroup>
     <Import Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="My Project\Application.Designer.vb">
@@ -123,10 +146,6 @@
     <EmbeddedResource Include="Resources\EwE6.accdb" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
-    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Update="Resources\CoreDefaults.resx">
       <SubType>Designer</SubType>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -142,14 +161,31 @@
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.Licence" Version="1.0.3" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Eii.Ecopath.Licence" Version="1.0.3" />
+  </ItemGroup>    
   <ItemGroup>
     <Compile Remove="EcoSpace\Input Output\ResultWriters\Data sources\cRegionTLResultsDataSource.vb" />
     <Compile Remove="Shapes\TimeSeries\Readers\cTimeSeriesClipboardReader.vb" />
     <Compile Remove="Validators\cValidatorOutput.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ServiceModel.Primitives">
+      <Version>8.1.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <!-- Use a local project reference when UseProjectReferences is true -->
+  <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
+    <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
+    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
+      </ItemGroup>
+  <!-- Otherwise use a package reference.  -->
+  <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
+    <PackageReference Include="Eii.Ecopath.EwEPlugin" Version="6.7.*" />
   </ItemGroup>
 </Project>
