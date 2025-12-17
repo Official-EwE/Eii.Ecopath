@@ -202,7 +202,11 @@ Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler-user-manual.pdf"; DestDir: "{a
 ; Source: "{#DefRoot}{#DefSrc}\EwEMSPLinkPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\projects\msptools
 ; Source: "{#DefRoot}{#DefSrc}\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\projects\msptools
 
-
+#if Compile64Bit == "0"
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\*.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+#else
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\*.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+#endif
 
 ; -- RBT --
 #if RobertsBank == 1
