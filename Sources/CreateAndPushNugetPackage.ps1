@@ -51,8 +51,8 @@ Write-Host "🔄 Running dotnet restore..."
 dotnet restore $ProjectPath
 
 # Pack
-Write-Host "📦 Creating NuGet package...  Build with UseLocalProject=false !!!"
-dotnet pack $ProjectPath -c Debug -p:UseLocalProject=false
+Write-Host "📦 Creating NuGet package...  Build with UseProjectReferences=false !!!"
+dotnet pack $ProjectPath -c Debug -p:UseProjectReferences=false
 
 # Find the generated .nupkg file
 $projectDir = Split-Path -Parent $ProjectPath
