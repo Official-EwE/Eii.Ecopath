@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFrameworks>net48;net8.0</TargetFrameworks>
@@ -19,7 +19,7 @@
         <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwEUtils</PackageProjectUrl>
         <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-        <Version>6.7.8</Version>
+        <Version>6.7.9</Version>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
         <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
