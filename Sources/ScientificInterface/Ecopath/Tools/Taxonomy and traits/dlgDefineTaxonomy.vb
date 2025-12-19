@@ -169,10 +169,13 @@ Public Class dlgDefineTaxonomy
 
         ' Connect to group grid selection changes
         AddHandler Me.m_gridGroups.OnSelectionChanged, AddressOf OnRowSelectionChanged
-        ' Connect to search result changes
-        AddHandler Me.m_tds.OnTaxonSearchResults, AddressOf OnProcessResults
         ' Connect to result selection changes
         AddHandler Me.m_gridResults.OnResultSelected, AddressOf OnResultSelected
+
+        If (Me.m_tds IsNot Nothing) Then
+            ' Connect to search result changes
+            AddHandler Me.m_tds.OnTaxonSearchResults, AddressOf OnProcessResults
+        End If
 
         If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
 
@@ -186,8 +189,12 @@ Public Class dlgDefineTaxonomy
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         RemoveHandler Me.m_gridGroups.OnSelectionChanged, AddressOf OnRowSelectionChanged
-        RemoveHandler Me.m_tds.OnTaxonSearchResults, AddressOf OnProcessResults
         RemoveHandler Me.m_gridResults.OnResultSelected, AddressOf OnResultSelected
+
+        If (Me.m_tds IsNot Nothing) Then
+            ' Disconnect from search result changes
+            RemoveHandler Me.m_tds.OnTaxonSearchResults, AddressOf OnProcessResults
+        End If
 
         MyBase.OnFormClosed(e)
     End Sub
