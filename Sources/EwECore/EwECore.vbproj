@@ -161,8 +161,8 @@
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
@@ -176,7 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.ServiceModel.Primitives">
-      <Version>8.1.2</Version>
+      <Version>10.0.652802</Version>
     </PackageReference>
   </ItemGroup>
   <!-- Use a local project reference when UseProjectReferences is true -->
@@ -184,8 +184,8 @@
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
       </ItemGroup>
-  <!-- Otherwise use a package reference.  -->
-  <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
-    <PackageReference Include="Eii.Ecopath.EwEPlugin" Version="6.7.*" />
+  <ItemGroup>
+    <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
   </ItemGroup>
+  <!-- Otherwise use a package reference.  -->
 </Project>
