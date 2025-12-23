@@ -142,9 +142,6 @@ Public Class cCore
     ''' <remarks>performs actions to bring core state up-to-date</remarks>
     Private m_StateManager As cCoreStateManager = Nothing
 
-    ''' <summary>Manager to access interface specific to the "Game" interface </summary>
-    Private m_gameManager As cGameServerInterface = Nothing
-
     Private m_ShapeManagers As New Dictionary(Of eDataTypes, cBaseShapeManager)
     Private m_PedigreeManagers As New Dictionary(Of eVarNameFlags, cPedigreeManager)
     Private m_MonteCarlo As cMonteCarloManager = Nothing
@@ -1297,7 +1294,6 @@ Public Class cCore
         m_SampleManager = New cEcopathSampleManager(Me)
         m_MonteCarlo = New cMonteCarloManager()
         m_ConTracer = New cContaminantTracer()
-        m_gameManager = New cGameServerInterface(Me)
         m_ArenaManager = New cEcosimArenaManager(Me)
 
         InitThreadedProcesses()
@@ -3545,8 +3541,6 @@ Public Class cCore
 
                 Me.m_EcopathStats = New cEcopathStats(Me, cCore.NULL_VALUE)
 
-                Me.m_gameManager.Init()
-
                 Me.initEcoFunctions()
 
                 If Not bsuccess Then
@@ -3742,7 +3736,6 @@ Public Class cCore
             Me.m_StateMonitor.UpdateDataState(Nothing)
 
             ' Clear (not destroy) managers 
-            Me.m_gameManager.Clear()
             For Each pdMng As cPedigreeManager In Me.m_PedigreeManagers.Values
                 pdMng.Clear()
             Next
@@ -14659,7 +14652,7 @@ Public Class cCore
                 'update all the variables
                 Me.MSEManager.UpdateAssesmentVars()
 
-                'jb if the game client has edited the fisheries quotas make sure the status flags are reset 
+                'jb if the fisheries quotas are changed, make sure the status flags are reset 
                 'the client may have edited values that are not editable
                 obj.ResetStatusFlags()
 
@@ -15518,16 +15511,6 @@ Public Class cCore
     End Function
 
 #End Region ' Samples
-
-#Region " Game manager/interface "
-
-    Public ReadOnly Property GameManager() As cGameServerInterface
-        Get
-            Return m_gameManager
-        End Get
-    End Property
-#End Region
-
 
 #Region " Eco Functions "
     Private Sub initEcoFunctions()

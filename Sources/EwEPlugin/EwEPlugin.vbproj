@@ -117,14 +117,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
   </ItemGroup>
   <!-- Use a local project reference when UseProjectReferences is true -->
   <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
-  <!-- Otherwise use a package reference. -->
-  <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
-    <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.*" />
+  <ItemGroup>
+    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
+  <!-- Otherwise use a package reference. -->
 </Project>
