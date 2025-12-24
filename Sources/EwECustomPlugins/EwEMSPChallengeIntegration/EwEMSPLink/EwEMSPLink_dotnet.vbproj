@@ -45,7 +45,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>EwEMSPLink.snk</AssemblyOriginatorKeyFile>
-    <AssemblyName>EwEMSPLink</AssemblyName>
+    <AssemblyName>EwEMSPLinkPlugin</AssemblyName>
     <RootNamespace>EwEMSPLink</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
