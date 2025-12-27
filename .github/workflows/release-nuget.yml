@@ -1,4 +1,4 @@
-name: Release NuGet Package
+name: Release NuGet Package EwEUtils, EwEPlugin, EwECore, and create EwE6 installer
 on:
   push:
     branches:
@@ -9,5 +9,126 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Use custom NuGet release action
-        uses: Official-EwE/Eii.GithubActions/ReleaseNuGetPackageNet48Net80@master
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install .NET Framework targeting pack
+        run: choco install netfx-4.8-devpack -y
+        shell: pwsh
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4.1.0
+        with:
+          versionSpec: '6.4.0'
+
+      - name: Cache NuGet packages        # Try to find if a build cached packages. Maybe the build_check. This saves time
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.vbproj') }}
+          restore-keys: |
+              nuget-${{ runner.os }}-
+
+      - name: Cache build output      # Try to find if a build cached comiled files. Maybe the build_check. This saves time
+        uses: actions/cache@v4
+        with:
+          path: |
+              **/bin
+              **/obj
+          key: build-${{ runner.os }}-${{ hashFiles('**/*.vbproj') }}
+          restore-keys: |
+              build-${{ runner.os }}-
+
+      - name: Run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v4.1.0
+        with:
+          overrideConfig: |
+              workflow=TrunkBased/preview1
+              commit-message-incrementing=Enabled
+              tag-prefix=v
+              increment=Patch
+
+      - name: Show extracted version
+        run: echo "Version is ${{ steps.gitversion.outputs.SemVer }}"
+        shell: pwsh
+
+
+      # Ensure that the github-Official-EwE NuGet source is configured. The standard GITHUB_TOKEN is used. It's automatically created by GitHub Actions and is available as 'github.toke'
+      # So you don't have to pass it to this action explicitly. (because 'secrets', and subsequently 'secrets.GITHUB_TOKEN' is not accessible in reusable workflows)
+      - name: Ensure github-Official-EwE NuGet source
+        run: |
+          if (dotnet nuget list source | Select-String "github-Official-EwE") {
+              dotnet nuget remove source github-Official-EwE
+          }
+          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+              --name "github-Official-EwE" `
+              --username ${{ github.repository_owner }} `
+              --password ${{ github.token }} `
+              --store-password-in-clear-text
+          shell: pwsh
+
+      - name: List NuGet data sources
+        run: dotnet nuget list source --format detailed
+        shell: pwsh
+
+      - name: Restore dependencies
+        run: dotnet restore
+        shell: pwsh
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+        shell: pwsh
+
+      # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore
+      - name: Pack EwEUtils NuGet package
+        run: |
+          dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            --no-build `
+            /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      - name: Pack EwEPlugin NuGet package
+        run: |
+          dotnet pack Sources/EwEPlugin/EwEPlugin.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            --no-build `
+            /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      - name: Pack EwECore NuGet package
+        run: |
+          dotnet pack Sources/EwECore/EwECore.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            --no-build `
+            /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      - name: List NuGet output files
+        run: dir ./nuget
+        shell: pwsh
+
+      - name: Publish to GitHub Packages
+        run: |
+          Get-ChildItem -Path ./nuget -Filter *.nupkg | Where-Object { $_.Name -notlike '*symbols*' } | ForEach-Object {
+              Write-Host "Publishing $($_.FullName)"
+              dotnet nuget push $_.FullName `
+                --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+                --api-key ${{ github.token }} `
+                --skip-duplicate
+          }
+        shell: pwsh
