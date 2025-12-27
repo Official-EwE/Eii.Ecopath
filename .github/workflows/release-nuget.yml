@@ -73,7 +73,7 @@ jobs:
               --username ${{ github.repository_owner }} `
               --password ${{ github.token }} `
               --store-password-in-clear-text
-          shell: pwsh
+        shell: pwsh
 
       - name: List NuGet data sources
         run: dotnet nuget list source --format detailed
