@@ -74,7 +74,7 @@ jobs:
           }
           dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
               --name "github-Official-EwE" `
-              --username ${{ github.repository_owner }} `
+              --username ${{ github.actor }} `
               --password ${{ github.token }} `
               --store-password-in-clear-text
         shell: pwsh
@@ -134,18 +134,19 @@ jobs:
         run: dir ./nuget
         shell: pwsh
 
-      - name: Debug token permissions
+      - name: Debug token permissions (repo-scoped)
         run: |
-          Write-Host "Checking token permissions..."
+          Write-Host "Checking repo access with GITHUB_TOKEN..."
           $headers = @{
             "Authorization" = "Bearer ${{ github.token }}"
             "Accept" = "application/vnd.github.v3+json"
           }
+          $repo = "${{ github.repository }}"
           try {
-            $response = Invoke-RestMethod -Uri "https://api.github.com/user" -Headers $headers
-            Write-Host "Authenticated as: $($response.login)"
+            $response = Invoke-RestMethod -Uri "https://api.github.com/repos/$repo" -Headers $headers
+            Write-Host "Repo visible. Default branch: $($response.default_branch)"
           } catch {
-            Write-Warning "Token validation failed: $_"
+            Write-Warning "Repo access failed: $_"
           }
         shell: pwsh
 
