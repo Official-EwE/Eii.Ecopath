@@ -132,11 +132,7 @@ jobs:
 
       - name: Publish to GitHub Packages
         run: |
-          Get-ChildItem -Path ./nuget -Filter *.nupkg | Where-Object { $_.Name -notlike '*symbols*' } | ForEach-Object {
-              Write-Host "Publishing $($_.FullName)"
-              dotnet nuget push $_.FullName `
-                --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
-                --api-key ${{ github.token }} `
-                --skip-duplicate
+          Get-ChildItem -Path ./nuget -Filter *symbols.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ github.token }} --skip-duplicate
           }
         shell: pwsh
