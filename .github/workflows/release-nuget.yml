@@ -134,9 +134,25 @@ jobs:
         run: dir ./nuget
         shell: pwsh
 
-      - name: Publish to GitHub Packages
+      - name: Debug token permissions
         run: |
-          Get-ChildItem -Path ./nuget -Filter *symbols.nupkg | ForEach-Object {
-            dotnet nuget push $_.FullName --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --api-key ${{ github.token }} --skip-duplicate
+          Write-Host "Checking token permissions..."
+          $headers = @{
+            "Authorization" = "Bearer ${{ github.token }}"
+            "Accept" = "application/vnd.github.v3+json"
+          }
+          try {
+            $response = Invoke-RestMethod -Uri "https://api.github.com/user" -Headers $headers
+            Write-Host "Authenticated as: $($response.login)"
+          } catch {
+            Write-Warning "Token validation failed: $_"
           }
         shell: pwsh
+
+      - name: Publish to GitHub Packages
+        run: |
+          Get-ChildItem -Path ./nuget -Filter *.symbols.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ github.token }} --skip-duplicate
+          }
+        shell: pwsh
+
