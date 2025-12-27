@@ -80,12 +80,16 @@ jobs:
         shell: pwsh
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore .\Sources\EwE6.sln
         shell: pwsh
 
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-        shell: pwsh
+      # --- Build x86 (32-bit) ---
+      - name: Build Release x86 with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ env.FILEVER }} /p:Platform=x86
+
+      # --- Build x64 (64-bit) ---
+      - name: Build Release x64 with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ env.FILEVER }} /p:Platform=x64
 
       # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore
       - name: Pack EwEUtils NuGet package
