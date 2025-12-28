@@ -175,9 +175,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EwECore\EwECore.vbproj" />
-    <ProjectReference Include="..\..\EwEPlugin\EwEPlugin.vbproj" />
-    <ProjectReference Include="..\..\EwEUtils\EwEUtils.vbproj" />
     <ProjectReference Include="..\..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
   </ItemGroup>
   <ItemGroup>
