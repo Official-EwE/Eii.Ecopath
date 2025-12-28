@@ -128,11 +128,11 @@ jobs:
         
       # --- Build x86 (32-bit) ---
       - name: Build Release x86 with version
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x86
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x86 /p:UseProjectReferences=true
 
       # --- Build x64 (64-bit) ---
       - name: Build Release x64 with version
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x64
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x64 /p:UseProjectReferences=true
 
       # --- Create artifacts directory ---
       - name: Create artifacts directory
