@@ -99,9 +99,9 @@ jobs:
       # - name: Build Release AnyCPU for NuGet
       #   run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform="Any CPU"
 
-      - name: Build
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }}
-        shell: pwsh
+      # - name: Build
+      #   run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }}
+      #   shell: pwsh
 
       # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore
       - name: Pack EwEUtils NuGet package
@@ -109,7 +109,6 @@ jobs:
           dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
             --configuration Release `
             --output ./nuget `
-            # --no-build `
             /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -119,7 +118,6 @@ jobs:
           dotnet pack Sources/EwEPlugin/EwEPlugin.vbproj `
             --configuration Release `
             --output ./nuget `
-            # --no-build `
             /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -129,7 +127,6 @@ jobs:
           dotnet pack Sources/EwECore/EwECore.vbproj `
             --configuration Release `
             --output ./nuget `
-            # --no-build `
             /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
             /p:UseProjectReferences=false
         shell: pwsh
