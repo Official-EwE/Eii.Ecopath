@@ -87,7 +87,7 @@ jobs:
         run: dotnet restore .\Sources\EwE6.sln
         shell: pwsh
 
-      # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore
+      # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore -> ScientificInterfaceShared
       - name: Pack EwEUtils NuGet package
         run: |
           dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
@@ -109,6 +109,15 @@ jobs:
       - name: Pack EwECore NuGet package
         run: |
           dotnet pack Sources/EwECore/EwECore.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      - name: Pack ScientificInterfaceShared NuGet package
+        run: |
+          dotnet pack Sources/ScientificInterfaceShared/ScientificInterfaceShared.vbproj `
             --configuration Release `
             --output ./nuget `
             /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
@@ -169,6 +178,11 @@ jobs:
           if ($installer64) {
             "INSTALLER_X64_PATH=$($installer64.FullName)" | Out-File $env:GITHUB_ENV -Append
           }
+
+      # Check what's in the artifacts directory
+      - name: List artifacts files
+        run: dir .\artifacts
+        shell: pwsh
 
       # --- Upload assets to release ---
       - name: Upload x86 installer to release
