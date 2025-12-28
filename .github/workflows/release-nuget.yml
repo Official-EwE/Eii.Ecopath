@@ -99,6 +99,10 @@ jobs:
       # - name: Build Release AnyCPU for NuGet
       #   run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform="Any CPU"
 
+      - name: Build
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }}
+        shell: pwsh
+
       # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore
       - name: Pack EwEUtils NuGet package
         run: |
