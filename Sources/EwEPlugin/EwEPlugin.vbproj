@@ -118,8 +118,8 @@
   <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
-  </ItemGroup>
   <!-- Otherwise use a package reference. -->
+  <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
+    <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.*" />
+  </ItemGroup>
 </Project>
