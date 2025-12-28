@@ -87,25 +87,12 @@ jobs:
         run: dotnet restore .\Sources\EwE6.sln
         shell: pwsh
 
-      # --- Build x86 (32-bit) ---
-      - name: Build Release x86 with version
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x86
-
-      # --- Build x64 (64-bit) ---
-      - name: Build Release x64 with version
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x64
-
-      # --- Build AnyCPU for NuGet packaging ---
-      - name: Build Release AnyCPU for NuGet
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform="Any CPU"
-
       # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore
       - name: Pack EwEUtils NuGet package
         run: |
           dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
             --configuration Release `
             --output ./nuget `
-            --no-build `
             /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -115,7 +102,6 @@ jobs:
           dotnet pack Sources/EwEPlugin/EwEPlugin.vbproj `
             --configuration Release `
             --output ./nuget `
-            --no-build `
             /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -125,7 +111,6 @@ jobs:
           dotnet pack Sources/EwECore/EwECore.vbproj `
             --configuration Release `
             --output ./nuget `
-            --no-build `
             /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -140,6 +125,14 @@ jobs:
             dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ github.token }} --skip-duplicate
           }
         shell: pwsh
+        
+      # --- Build x86 (32-bit) ---
+      - name: Build Release x86 with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x86
+
+      # --- Build x64 (64-bit) ---
+      - name: Build Release x64 with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x64
 
       # --- Create artifacts directory ---
       - name: Create artifacts directory
