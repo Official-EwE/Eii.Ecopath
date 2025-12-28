@@ -153,7 +153,7 @@ jobs:
       - name: Publish to GitHub Packages
         run: |
           Get-ChildItem -Path ./nuget -Filter *.symbols.nupkg | ForEach-Object {
-            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ github.token }} --skip-duplicate
+            dotnet nuget push $_.FullName --source "github-Official-EwE" --skip-duplicate
           }
         shell: pwsh
 
