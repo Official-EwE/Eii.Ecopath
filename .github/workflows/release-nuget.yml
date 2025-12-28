@@ -88,20 +88,16 @@ jobs:
         shell: pwsh
 
       # --- Build x86 (32-bit) ---
-      # - name: Build Release x86 with version
-      #   run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x86
+      - name: Build Release x86 with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x86
 
       # --- Build x64 (64-bit) ---
-      # - name: Build Release x64 with version
-      #   run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x64
+      - name: Build Release x64 with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x64
 
       # --- Build AnyCPU for NuGet packaging ---
-      # - name: Build Release AnyCPU for NuGet
-      #   run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform="Any CPU"
-
-      # - name: Build
-      #   run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }}
-      #   shell: pwsh
+      - name: Build Release AnyCPU for NuGet
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform="Any CPU"
 
       # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore
       - name: Pack EwEUtils NuGet package
@@ -109,6 +105,7 @@ jobs:
           dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
             --configuration Release `
             --output ./nuget `
+            --no-build `
             /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -118,6 +115,7 @@ jobs:
           dotnet pack Sources/EwEPlugin/EwEPlugin.vbproj `
             --configuration Release `
             --output ./nuget `
+            --no-build `
             /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -127,28 +125,13 @@ jobs:
           dotnet pack Sources/EwECore/EwECore.vbproj `
             --configuration Release `
             --output ./nuget `
+            --no-build `
             /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
             /p:UseProjectReferences=false
         shell: pwsh
 
       - name: List NuGet output files
         run: dir ./nuget
-        shell: pwsh
-
-      - name: Debug token permissions (repo-scoped)
-        run: |
-          Write-Host "Checking repo access with GITHUB_TOKEN..."
-          $headers = @{
-            "Authorization" = "Bearer ${{ github.token }}"
-            "Accept" = "application/vnd.github.v3+json"
-          }
-          $repo = "${{ github.repository }}"
-          try {
-            $response = Invoke-RestMethod -Uri "https://api.github.com/repos/$repo" -Headers $headers
-            Write-Host "Repo visible. Default branch: $($response.default_branch)"
-          } catch {
-            Write-Warning "Repo access failed: $_"
-          }
         shell: pwsh
 
       - name: Publish to GitHub Packages
@@ -158,3 +141,51 @@ jobs:
           }
         shell: pwsh
 
+      # --- Create artifacts directory ---
+      - name: Create artifacts directory
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path artifacts | Out-Null
+
+      # --- Build Installer x86 ---
+      - name: Build Inno Setup Installer (x86)
+        shell: pwsh
+        run: |
+          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          $outputDir = Join-Path $PWD "artifacts"
+          & $isccPath /DSemVersion="${{ steps.gitversion.outputs.SemVer }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+          
+      # --- Build Installer x64 ---
+      - name: Build Inno Setup Installer (x64)
+        shell: pwsh
+        run: |
+          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          $outputDir = Join-Path $PWD "artifacts"
+          & $isccPath /DSemVersion="${{ steps.gitversion.outputs.SemVer }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+
+      # --- Set installer paths ---
+      - name: Set installer paths
+        shell: pwsh
+        run: |
+          $installer32 = Get-ChildItem "artifacts\*_32-bit_setup.exe" | Select-Object -First 1
+          $installer64 = Get-ChildItem "artifacts\*_64-bit_setup.exe" | Select-Object -First 1
+          
+          if ($installer32) {
+            "INSTALLER_X86_PATH=$($installer32.FullName)" | Out-File $env:GITHUB_ENV -Append
+          }
+          if ($installer64) {
+            "INSTALLER_X64_PATH=$($installer64.FullName)" | Out-File $env:GITHUB_ENV -Append
+          }
+
+      # --- Upload assets to release ---
+      - name: Upload x86 installer to release
+        if: env.INSTALLER_X86_PATH != ''
+        run: gh release upload "${{ steps.gitversion.outputs.SemVer }}" "${{ env.INSTALLER_X86_PATH }}" --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Upload x64 installer to release
+        if: env.INSTALLER_X64_PATH != ''
+        run: gh release upload "${{ steps.gitversion.outputs.SemVer }}" "${{ env.INSTALLER_X64_PATH }}" --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
