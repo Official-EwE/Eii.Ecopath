@@ -1,4 +1,6 @@
+
 name: Release NuGet Package EwEUtils, EwEPlugin, EwECore, and create EwE6 installer
+
 on:
   push:
     branches:
@@ -9,9 +11,52 @@ permissions:
   packages: write
 
 jobs:
-  build-and-publish:
+  # 1) VERSIONING
+  version:
+    name: Determine version with GitVersion
     runs-on: windows-latest
+    outputs:
+      semver: ${{ steps.out.outputs.semver }}
+      prerelease: ${{ steps.out.outputs.prerelease }}
+      tag: ${{ steps.out.outputs.tag }}
+    steps:
+      - name: Checkout code (full history for tags)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4.1.0
+        with:
+          versionSpec: '6.4.0'
+
+      - name: Run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v4.1.0
+        with:
+          overrideConfig: |
+            workflow=TrunkBased/preview1
+            commit-message-incrementing=Enabled
+            tag-prefix=v
+            increment=Patch
+
+      - name: Expose version outputs
+        id: out
+        shell: pwsh
+        run: |
+          "semver=${{ steps.gitversion.outputs.SemVer }}"        >> $env:GITHUB_OUTPUT
+          "prerelease=${{ steps.gitversion.outputs.PreReleaseLabel }}" >> $env:GITHUB_OUTPUT
+          "tag=v${{ steps.gitversion.outputs.SemVer }}"          >> $env:GITHUB_OUTPUT
+
+      - name: Show extracted version
+        run: echo "Version is ${{ steps.gitversion.outputs.SemVer }}"
+        shell: pwsh
+
+  # 2) BUILD AND PACK NUGET
+  build-pack-nuget:
+    name: Build and Pack NuGet packages (EwEUtils -> EwEPlugin -> EwECore -> ScientificInterfaceShared)
+    runs-on: windows-latest
+    needs: [version]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,104 +68,65 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Install .NET Framework targeting pack
+      - name: Install .NET Framework targeting pack (4.8)
         run: choco install netfx-4.8-devpack -y
         shell: pwsh
 
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v4.1.0
-        with:
-          versionSpec: '6.4.0'
-
-      - name: Cache NuGet packages        # Try to find if a build cached packages. Maybe the build_check. This saves time
+      - name: Cache NuGet packages
         uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: nuget-${{ runner.os }}-${{ hashFiles('**/*.vbproj') }}
           restore-keys: |
-              nuget-${{ runner.os }}-
+            nuget-${{ runner.os }}-
 
-      - name: Cache build output      # Try to find if a build cached comiled files. Maybe the build_check. This saves time
+      - name: Cache build output
         uses: actions/cache@v4
         with:
           path: |
-              **/bin
-              **/obj
+            **/bin
+            **/obj
           key: build-${{ runner.os }}-${{ hashFiles('**/*.vbproj') }}
           restore-keys: |
-              build-${{ runner.os }}-
-
-      - name: Run GitVersion
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v4.1.0
-        with:
-          overrideConfig: |
-              workflow=TrunkBased/preview1
-              commit-message-incrementing=Enabled
-              tag-prefix=v
-              increment=Patch
-
-      - name: Show extracted version
-        run: echo "Version is ${{ steps.gitversion.outputs.SemVer }}"
-        shell: pwsh
-
-
-      # Ensure that the github-Official-EwE NuGet source is configured. The standard GITHUB_TOKEN is used. It's automatically created by GitHub Actions and is available as 'github.toke'
-      # So you don't have to pass it to this action explicitly. (because 'secrets', and subsequently 'secrets.GITHUB_TOKEN' is not accessible in reusable workflows)
-      - name: Ensure github-Official-EwE NuGet source
-        run: |
-          if (dotnet nuget list source | Select-String "github-Official-EwE") {
-              dotnet nuget remove source github-Official-EwE
-          }
-          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
-              --name "github-Official-EwE" `
-              --username ${{ github.actor }} `
-              --password ${{ github.token }} `
-              --store-password-in-clear-text
-        shell: pwsh
-
-      - name: List NuGet data sources
-        run: dotnet nuget list source --format detailed
-        shell: pwsh
+            build-${{ runner.os }}-
 
       - name: Restore dependencies
         run: dotnet restore .\Sources\EwE6.sln
         shell: pwsh
 
-      # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore -> ScientificInterfaceShared
-      - name: Pack EwEUtils NuGet package
+      - name: Pack EwEUtils
         run: |
           dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
             --configuration Release `
             --output ./nuget `
-            /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
 
-      - name: Pack EwEPlugin NuGet package
+      - name: Pack EwEPlugin
         run: |
           dotnet pack Sources/EwEPlugin/EwEPlugin.vbproj `
             --configuration Release `
             --output ./nuget `
-            /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
 
-      - name: Pack EwECore NuGet package
+      - name: Pack EwECore
         run: |
           dotnet pack Sources/EwECore/EwECore.vbproj `
             --configuration Release `
             --output ./nuget `
-            /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
 
-      - name: Pack ScientificInterfaceShared NuGet package
+      - name: Pack ScientificInterfaceShared
         run: |
           dotnet pack Sources/ScientificInterfaceShared/ScientificInterfaceShared.vbproj `
             --configuration Release `
             --output ./nuget `
-            /p:PackageVersion=${{ steps.gitversion.outputs.SemVer }} `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
 
@@ -128,72 +134,130 @@ jobs:
         run: dir ./nuget
         shell: pwsh
 
-      - name: Publish to GitHub Packages
+      - name: Upload NuGet packages artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ./nuget/*.nupkg
+
+  # 3) PUBLISH NUGET
+  publish-nuget:
+    name: Publish NuGet packages to GitHub Packages
+    runs-on: windows-latest
+    needs: [build-pack-nuget]
+    steps:
+      - name: Download NuGet packages artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: nuget
+
+      - name: Ensure github-Official-EwE NuGet source
         run: |
-          Get-ChildItem -Path ./nuget -Filter *.symbols.nupkg | ForEach-Object {
-            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ github.token }} --skip-duplicate
+          if (dotnet nuget list source | Select-String "github-Official-EwE") {
+            dotnet nuget remove source github-Official-EwE
+          }
+          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+            --name "github-Official-EwE" `
+            --username ${{ github.actor }} `
+            --password ${{ secrets.GITHUB_TOKEN }} `
+            --store-password-in-clear-text
+        shell: pwsh
+
+      - name: List NuGet data sources
+        run: dotnet nuget list source --format detailed
+        shell: pwsh
+
+      - name: Publish packages (skip duplicates)
+        run: |
+          Get-ChildItem -Path ./nuget -Filter *.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
           }
         shell: pwsh
-        
-      # --- Build x86 (32-bit) ---
+
+  # 4) BUILD INSTALLERS
+  build-installers:
+    name: Build EwE6 (x86 and x64) and Inno Setup installers
+    runs-on: windows-latest
+    needs: [version]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install .NET Framework targeting pack (4.8)
+        run: choco install netfx-4.8-devpack -y
+        shell: pwsh
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+        shell: pwsh
+
       - name: Build Release x86 with version
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x86 /p:UseProjectReferences=true
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x86 /p:UseProjectReferences=true
+        shell: pwsh
 
-      # --- Build x64 (64-bit) ---
       - name: Build Release x64 with version
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ steps.gitversion.outputs.SemVer }} /p:FileVersion=${{ steps.gitversion.outputs.SemVer }} /p:Platform=x64 /p:UseProjectReferences=true
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x64 /p:UseProjectReferences=true
+        shell: pwsh
 
-      # --- Create artifacts directory ---
       - name: Create artifacts directory
+        run: New-Item -ItemType Directory -Force -Path artifacts | Out-Null
         shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Force -Path artifacts | Out-Null
 
-      # --- Build Installer x86 ---
       - name: Build Inno Setup Installer (x86)
-        shell: pwsh
         run: |
           $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
           $outputDir = Join-Path $PWD "artifacts"
-          & $isccPath /DSemVersion="${{ steps.gitversion.outputs.SemVer }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
-          
-      # --- Build Installer x64 ---
+          & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+        shell: pwsh
+
       - name: Build Inno Setup Installer (x64)
-        shell: pwsh
         run: |
           $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
           $outputDir = Join-Path $PWD "artifacts"
-          & $isccPath /DSemVersion="${{ steps.gitversion.outputs.SemVer }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
-
-      # --- Set installer paths ---
-      - name: Set installer paths
+          & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
         shell: pwsh
-        run: |
-          $installer32 = Get-ChildItem "artifacts\*_32-bit_setup.exe" | Select-Object -First 1
-          $installer64 = Get-ChildItem "artifacts\*_64-bit_setup.exe" | Select-Object -First 1
-          
-          if ($installer32) {
-            "INSTALLER_X86_PATH=$($installer32.FullName)" | Out-File $env:GITHUB_ENV -Append
-          }
-          if ($installer64) {
-            "INSTALLER_X64_PATH=$($installer64.FullName)" | Out-File $env:GITHUB_ENV -Append
-          }
 
-      # Check what's in the artifacts directory
       - name: List artifacts files
         run: dir .\artifacts
         shell: pwsh
 
-      # --- Upload assets to release ---
-      - name: Create/Update GitHub Release
+      - name: Upload installers artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installers
+          path: |
+            artifacts/*_32-bit_setup.exe
+            artifacts/*_64-bit_setup.exe
+
+  # 5) CREATE RELEASE
+  release:
+    name: Create or Update GitHub Release with auto notes
+    runs-on: windows-latest
+    needs: [version, build-installers]
+    steps:
+      - name: Download installers artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: installers
+          path: installers
+
+      - name: Create GitHub Release with auto notes
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.gitversion.outputs.SemVer }} # e.g. v6.7.30
-          name: v${{ steps.gitversion.outputs.SemVer }}     # display name
-          generate_release_notes: true                      # <-- This triggers “What’s Changed”
+          tag_name: ${{ needs.version.outputs.tag }}
+          name: ${{ needs.version.outputs.tag }}
+          generate_release_notes: true
           files: |
-            ${{ env.INSTALLER_X86_PATH }}
-            ${{ env.INSTALLER_X64_PATH }}
-          prerelease: ${{ env.GitVersion_PreReleaseLabel != '' }}
+            installers/*_32-bit_setup.exe
+            installers/*_64-bit_setup.exe
+          prerelease: ${{ needs.version.outputs.prerelease != '' }}
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
