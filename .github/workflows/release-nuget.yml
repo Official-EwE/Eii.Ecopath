@@ -188,9 +188,9 @@ jobs:
       - name: Create/Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.gitversion.outputs.SemVer }} 
-          name: ${{ steps.gitversion.outputs.SemVer }}
-          body: "Automated release for ${{ steps.gitversion.outputs.SemVer }}"
+          tag_name: v${{ steps.gitversion.outputs.SemVer }} # e.g. v6.7.30
+          name: v${{ steps.gitversion.outputs.SemVer }}     # display name
+          generate_release_notes: true                      # <-- This triggers “What’s Changed”
           files: |
             ${{ env.INSTALLER_X86_PATH }}
             ${{ env.INSTALLER_X64_PATH }}
