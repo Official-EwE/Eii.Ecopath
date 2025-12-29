@@ -5,7 +5,7 @@ on:
       - master
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -185,14 +185,15 @@ jobs:
         shell: pwsh
 
       # --- Upload assets to release ---
-      - name: Upload x86 installer to release
-        if: env.INSTALLER_X86_PATH != ''
-        run: gh release upload "${{ steps.gitversion.outputs.SemVer }}" "${{ env.INSTALLER_X86_PATH }}" --clobber
+      - name: Create/Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.gitversion.outputs.SemVer }} 
+          name: ${{ steps.gitversion.outputs.SemVer }}
+          body: "Automated release for ${{ steps.gitversion.outputs.SemVer }}"
+          files: |
+            ${{ env.INSTALLER_X86_PATH }}
+            ${{ env.INSTALLER_X64_PATH }}
+          prerelease: ${{ env.GitVersion_PreReleaseLabel != '' }}
         env:
-          GH_TOKEN: ${{ github.token }}
-
-      - name: Upload x64 installer to release
-        if: env.INSTALLER_X64_PATH != ''
-        run: gh release upload "${{ steps.gitversion.outputs.SemVer }}" "${{ env.INSTALLER_X64_PATH }}" --clobber
-        env:
-          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
