@@ -90,6 +90,23 @@ jobs:
           restore-keys: |
             build-${{ runner.os }}-
 
+      # Moved here: ensure source BEFORE restore
+      - name: Ensure github-Official-EwE NuGet source
+        run: |
+          if (dotnet nuget list source | Select-String "github-Official-EwE") {
+            dotnet nuget remove source github-Official-EwE
+          }
+          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+            --name "github-Official-EwE" `
+            --username ${{ github.actor }} `
+            --password ${{ secrets.GITHUB_TOKEN }} `
+            --store-password-in-clear-text
+        shell: pwsh
+
+      - name: List NuGet data sources
+        run: dotnet nuget list source --format detailed
+        shell: pwsh
+
       - name: Restore dependencies
         run: dotnet restore .\Sources\EwE6.sln
         shell: pwsh
