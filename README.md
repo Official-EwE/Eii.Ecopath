@@ -50,6 +50,10 @@ This solution contains 4 NuGet packages:
 - EwEPlugin
 - ScientificInterfaceShared
 
+### Created automatically after merging to master
+The easy way is to let the CI/CD pipeline create and push those packages automatically after merging a PR into master.
+
+### Creating and pushing manually
 These packages can be created and pushed to GitHub using the `CreateAndPushNugetPackage.ps1` Powershell file located in the `Sources` directory of the repository.
 To push those packages you will need to have a Personal Access Token (PAT) with `write:packages` scope. (Also known as an ApiKey)
 
@@ -58,13 +62,18 @@ For example, to create and push the ScientificInterfaceShared package, follow th
 - Navigate to the `Sources` directory of the repository
 - Type `.\CreateAndPushNugetPackage.ps1 -ProjectPath ScientificInterfaceShared\ScientificInterfaceShared.vbproj -ApiKey <ApiKey>`
 
-# Creating an EwE6 installer
+## Creating an EwE6 installer
 The installer is created using Inno Setup. The script is located in the `Deployment` folder of the repository.
 
+### Creating the installer automatically after merging to master
+The easy way is to let the CI/CD pipeline create the installer automatically after merging a PR into master.
+
+### Creating the installer manually
 To be able to use the Inno Setup compiler, you have to install it. It is recommended to install Inno Setup as a CLI tool.
 This is the way the tool is used in the build check and CI/CD pipelines.
 
-## Install Chocolatey and Inno Setup
+
+### Install Chocolatey and Inno Setup
 And to do that, you probably have to install `chocolatey` first.
 - Open a PowerShell window as Administrator
 - Execute the following command to install chocolatey:
@@ -77,7 +86,7 @@ And to do that, you probably have to install `chocolatey` first.
   choco install innosetup -y
   ```
 
-## Compile the installer
+### Compile the installer
 To compile the installer, you can use the `iscc` command from Inno Setup.
 First, decide on the version number you want to use for the installer, e.g. `1.0.9`.
 
