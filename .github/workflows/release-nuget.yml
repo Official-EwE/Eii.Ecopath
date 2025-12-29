@@ -90,22 +90,9 @@ jobs:
           restore-keys: |
             build-${{ runner.os }}-
 
-      # Moved here: ensure source BEFORE restore
-      - name: Ensure github-Official-EwE NuGet source
-        run: |
-          if (dotnet nuget list source | Select-String "github-Official-EwE") {
-            dotnet nuget remove source github-Official-EwE
-          }
-          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
-            --name "github-Official-EwE" `
-            --username ${{ github.actor }} `
-            --password ${{ secrets.GITHUB_TOKEN }} `
-            --store-password-in-clear-text
-        shell: pwsh
-
-      - name: List NuGet data sources
-        run: dotnet nuget list source --format detailed
-        shell: pwsh
+      # Shared step: ensure NuGet source before restore
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
 
       - name: Restore dependencies
         run: dotnet restore .\Sources\EwE6.sln
@@ -169,21 +156,9 @@ jobs:
           name: nuget-packages
           path: nuget
 
-      - name: Ensure github-Official-EwE NuGet source
-        run: |
-          if (dotnet nuget list source | Select-String "github-Official-EwE") {
-            dotnet nuget remove source github-Official-EwE
-          }
-          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
-            --name "github-Official-EwE" `
-            --username ${{ github.actor }} `
-            --password ${{ secrets.GITHUB_TOKEN }} `
-            --store-password-in-clear-text
-        shell: pwsh
-
-      - name: List NuGet data sources
-        run: dotnet nuget list source --format detailed
-        shell: pwsh
+      # This job also needs the source configured in its own runner
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
 
       - name: Publish packages (skip duplicates)
         run: |
@@ -215,6 +190,10 @@ jobs:
       - name: Install Inno Setup
         run: choco install innosetup -y
         shell: pwsh
+
+      # Shared step: ensure NuGet source before build
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
 
       - name: Build Release x86 with version
         run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x86 /p:UseProjectReferences=true
