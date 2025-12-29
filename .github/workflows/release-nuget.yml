@@ -1,0 +1,306 @@
+# Workflow name shown in the Actions tab
+name: Release NuGet Package EwEUtils, EwEPlugin, EwECore, and create EwE6 installer
+
+# Trigger: run this workflow on pushes to the master branch
+on:
+  push:
+    branches:
+      - master
+
+# Required permissions for this workflow
+# contents: write   -> create releases and upload artifacts
+# packages: write   -> push NuGet packages to GitHub Packages
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  # 1) VERSIONING
+  # This job determines the semantic version using GitVersion and exposes it as outputs.
+  version:
+    name: Determine version with GitVersion
+    runs-on: windows-latest
+    outputs:
+      semver: ${{ steps.out.outputs.semver }}         # example: 6.7.30
+      prerelease: ${{ steps.out.outputs.prerelease }} # example: alpha, beta, empty for stable
+      tag: ${{ steps.out.outputs.tag }}               # example: v6.7.30
+    steps:
+      # Checkout with full history so GitVersion can find tags
+      - name: Checkout code (full history for tags)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install GitVersion tool
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4.1.0
+        with:
+          versionSpec: '6.4.0'
+
+      # Execute GitVersion using trunk-based configuration and v tag prefix
+      - name: Run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v4.1.0
+        with:
+          overrideConfig: |
+            workflow=TrunkBased/preview1
+            commit-message-incrementing=Enabled
+            tag-prefix=v
+            increment=Patch
+
+      # Expose values from GitVersion to downstream jobs via job outputs
+      - name: Expose version outputs
+        id: out
+        shell: pwsh
+        run: |
+          "semver=${{ steps.gitversion.outputs.SemVer }}"        >> $env:GITHUB_OUTPUT
+          "prerelease=${{ steps.gitversion.outputs.PreReleaseLabel }}" >> $env:GITHUB_OUTPUT
+          "tag=v${{ steps.gitversion.outputs.SemVer }}"          >> $env:GITHUB_OUTPUT
+
+      # Log the resolved version for visibility
+      - name: Show extracted version
+        run: echo "Version is ${{ steps.gitversion.outputs.SemVer }}"
+        shell: pwsh
+
+  # 2) BUILD AND PACK NUGET
+  # This job restores dependencies and packs NuGet packages in dependency order.
+  build-pack-nuget:
+    name: Build and Pack NuGet packages (EwEUtils -> EwEPlugin -> EwECore -> ScientificInterfaceShared)
+    runs-on: windows-latest
+    needs: [version]  # requires version outputs from the version job
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install .NET SDK 8
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # Install .NET Framework 4.8 dev pack (for building older projects that need targeting packs)
+      - name: Install .NET Framework targeting pack (4.8)
+        run: choco install netfx-4.8-devpack -y
+        shell: pwsh
+
+      # Cache NuGet packages to speed up repeated restores
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.vbproj') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      # Cache build output (bin and obj) to speed up builds if inputs have not changed
+      - name: Cache build output
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/bin
+            **/obj
+          key: build-${{ runner.os }}-${{ hashFiles('**/*.vbproj') }}
+          restore-keys: |
+            build-${{ runner.os }}-
+
+      # Ensure GitHub Packages NuGet source is configured for this job before restore
+      # Note: this composite action must set up the source in the current runner environment
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
+
+      # Restore solution dependencies
+      - name: Restore dependencies
+        run: dotnet restore .\Sources\EwE6.sln
+        shell: pwsh
+
+      # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore -> ScientificInterfaceShared
+      - name: Pack EwEUtils
+        run: |
+          dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      - name: Pack EwEPlugin
+        run: |
+          dotnet pack Sources/EwEPlugin/EwEPlugin.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      - name: Pack EwECore
+        run: |
+          dotnet pack Sources/EwECore/EwECore.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      - name: Pack ScientificInterfaceShared
+        run: |
+          dotnet pack Sources/ScientificInterfaceShared/ScientificInterfaceShared.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      # List the built NuGet packages in the local folder
+      - name: List NuGet output files
+        run: dir ./nuget
+        shell: pwsh
+
+      # Upload NuGet packages as a workflow artifact to share with publish job
+      - name: Upload NuGet packages artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: ./nuget/*.nupkg
+
+  # 3) PUBLISH NUGET
+  # This job downloads the packaged NuGet artifacts and pushes them to GitHub Packages.
+  publish-nuget:
+    name: Publish NuGet packages to GitHub Packages
+    runs-on: windows-latest
+    needs: [build-pack-nuget]  # depends on the packages being built and uploaded
+    steps:
+      # Checkout can help if any metadata or repo info is needed; safe to include
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Download the NuGet packages artifact produced by the build-pack-nuget job
+      - name: Download NuGet packages artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: nuget
+
+      # Configure the GitHub Packages source again in this job (each job runs on a clean VM)
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
+
+      # Push all .nupkg files to GitHub Packages
+      # secrets.GITHUB_TOKEN is used as the API key and skip-duplicate avoids failing if the same version exists
+      - name: Publish packages (skip duplicates)
+        run: |
+          Get-ChildItem -Path ./nuget -Filter *.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+          }
+        shell: pwsh
+
+  # 4) BUILD INSTALLERS
+  # This job builds the solution for x86 and x64, compiles the Inno Setup installers, and uploads them.
+  build-installers:
+    name: Build EwE6 (x86 and x64) and Inno Setup installers
+    runs-on: windows-latest
+    needs: [version]  # requires version outputs for stamping binaries and installers
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install .NET SDK 8
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # Install .NET Framework 4.8 targeting pack
+      - name: Install .NET Framework targeting pack (4.8)
+        run: choco install netfx-4.8-devpack -y
+        shell: pwsh
+
+      # Install Inno Setup to get ISCC.exe
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+        shell: pwsh
+
+      # Configure NuGet source in this job before building
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
+
+      # Build x86 with version stamping
+      - name: Build Release x86 with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x86 /p:UseProjectReferences=true
+        shell: pwsh
+
+      # Build x64 with version stamping
+      - name: Build Release x64 with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x64 /p:UseProjectReferences=true
+        shell: pwsh
+
+      # Create a local artifacts folder for installers
+      - name: Create artifacts directory
+        run: New-Item -ItemType Directory -Force -Path artifacts | Out-Null
+        shell: pwsh
+
+      # Compile the x86 installer with Inno Setup (Compile64Bit=0)
+      - name: Build Inno Setup Installer (x86)
+        run: |
+          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          $outputDir = Join-Path $PWD "artifacts"
+          & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+        shell: pwsh
+
+      # Compile the x64 installer with Inno Setup (Compile64Bit=1)
+      - name: Build Inno Setup Installer (x64)
+        run: |
+          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          $outputDir = Join-Path $PWD "artifacts"
+          & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+        shell: pwsh
+
+      # List installer files for debugging
+      - name: List artifacts files
+        run: dir .\artifacts
+        shell: pwsh
+
+      # Upload installers so the release job can use them
+      - name: Upload installers artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installers
+          path: |
+            artifacts/*_32-bit_setup.exe
+            artifacts/*_64-bit_setup.exe
+
+  # 5) CREATE RELEASE
+  # This job creates or updates a GitHub Release with auto-generated notes and uploads installers.
+  release:
+    name: Create or Update GitHub Release with auto notes
+    runs-on: windows-latest
+    needs: [version, build-installers]  # requires version info and built installers
+    steps:
+      # Download the installer artifacts produced by build-installers
+      - name: Download installers artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: installers
+          path: installers
+
+      # Create a release with v-prefixed tag and GitHub auto notes
+      # generate_release_notes: true will add "What's Changed" and "Full Changelog" sections
+      - name: Create GitHub Release with auto notes
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.version.outputs.tag }}   # example: v6.7.30
+          name: ${{ needs.version.outputs.tag }}       # example: v6.7.30
+          generate_release_notes: true
+          files: |
+            installers/*_32-bit_setup.exe
+            installers/*_64-bit_setup.exe
+          prerelease: ${{ needs.version.outputs.prerelease != '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

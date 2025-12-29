@@ -1,0 +1,20 @@
+name: Setup Official-EwE NuGet source
+description: Configures the github-Official-EwE NuGet source for the current job
+runs:
+  using: composite
+  steps:
+    - name: Ensure github-Official-EwE NuGet source
+      shell: pwsh
+      run: |
+        if (dotnet nuget list source | Select-String "github-Official-EwE") {
+          dotnet nuget remove source github-Official-EwE
+        }
+        dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+          --name "github-Official-EwE" `
+          --username ${{ github.actor }} `
+          --password ${{ github.token }} `
+          --store-password-in-clear-text
+
+    - name: List NuGet data sources
+      shell: pwsh
+      run: dotnet nuget list source --format detailed

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFrameworks>net48;net8.0</TargetFrameworks>
@@ -6,7 +6,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwECore.snk</AssemblyOriginatorKeyFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
     <AssemblyName>EwECore</AssemblyName>
     <RootNamespace>EwECore</RootNamespace>
     <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
@@ -19,7 +19,6 @@
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwECore</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.12</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
@@ -51,27 +50,23 @@
     <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DocumentationFile>EwECore.xml</DocumentationFile>
+   <DocumentationFile>EwECore.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
     <DefineConstants>DISCARDS=1</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>bin\x86\Release\</OutputPath>
     <DocumentationFile>EwECore.xml</DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
     <DebugType>None</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <OutputPath>bin\x64\Debug\</OutputPath>
     <DocumentationFile>EwECore.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
     <DefineConstants></DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
     <DocumentationFile>EwECore.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
     <DebugType>none</DebugType>
@@ -183,9 +178,9 @@
   <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
-      </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
   </ItemGroup>
   <!-- Otherwise use a package reference.  -->
+  <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
+    <PackageReference Include="Eii.Ecopath.EwEPlugin" Version="6.7.*" />
+  </ItemGroup>
 </Project>
