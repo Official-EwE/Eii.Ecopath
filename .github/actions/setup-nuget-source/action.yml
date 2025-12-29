@@ -1,4 +1,3 @@
-
 name: Setup Official-EwE NuGet source
 description: Configures the github-Official-EwE NuGet source for the current job
 runs:
@@ -13,7 +12,7 @@ runs:
         dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
           --name "github-Official-EwE" `
           --username ${{ github.actor }} `
-          --password ${{ secrets.GITHUB_TOKEN }} `
+          --password ${{ github.token }} `
           --store-password-in-clear-text
 
     - name: List NuGet data sources
