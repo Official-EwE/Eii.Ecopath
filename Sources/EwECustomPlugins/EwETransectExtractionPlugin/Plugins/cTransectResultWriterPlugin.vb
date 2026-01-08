@@ -17,20 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing
 Imports System.IO
 Imports EwECore
-Imports EwEPlugin
-Imports EwECore.Common
-Imports EwEUtils.Utilities
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

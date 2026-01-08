@@ -21,12 +21,9 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
-Imports EwECore.SearchObjectives
-Imports EwECore.Common
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.ComponentModel
+Imports EwECore.SearchObjectives
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 

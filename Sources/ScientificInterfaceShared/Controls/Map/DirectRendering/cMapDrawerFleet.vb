@@ -21,9 +21,6 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
-Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports

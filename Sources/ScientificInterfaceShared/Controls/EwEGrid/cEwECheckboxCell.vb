@@ -19,10 +19,9 @@
 #Region " Imports "
 
 Option Strict On
+Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
-Imports EwECore
-Imports ScientificInterfaceShared.Properties
 
 #End Region ' Imports
 

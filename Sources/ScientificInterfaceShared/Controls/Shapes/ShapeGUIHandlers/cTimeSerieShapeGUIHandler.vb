@@ -20,13 +20,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Commands
-Imports EwECore.Common
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
-Imports System.Windows.Media
 
 #End Region ' Imports
 

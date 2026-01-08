@@ -17,17 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports EwECore
-Imports EwEPlugin
-Imports EwECore.Common
-Imports System.Text
-Imports EwEUtils.SystemUtilities
-Imports System.Reflection
-
-#End Region ' Imports
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 
 Public MustInherit Class cNavTreeControlPlugin
     Implements INavigationTreeItemPlugin
@@ -38,10 +30,10 @@ Public MustInherit Class cNavTreeControlPlugin
     Public MustOverride ReadOnly Property Name() As String Implements IPlugin.Name
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.IGUIPlugin.ControlImage"/>
+    ''' <inheritdoc cref="IGUIPlugin.ControlImage"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property ControlImage() As Object _
-        Implements EwECore.IGUIPlugin.ControlImage
+        Implements IGUIPlugin.ControlImage
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="IPlugin.DisplayName"/>
@@ -50,38 +42,38 @@ Public MustInherit Class cNavTreeControlPlugin
         Implements IPlugin.DisplayName
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.IGUIPlugin.ControlTooltipText"/>
+    ''' <inheritdoc cref="IGUIPlugin.ControlTooltipText"/>
     ''' -----------------------------------------------------------------------
     Public Overridable ReadOnly Property ControlTooltipText() As String _
-        Implements EwECore.IGUIPlugin.ControlTooltipText
+        Implements IGUIPlugin.ControlTooltipText
         Get
             Return My.Resources.GENERIC_TOOLTIP
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.IGUIPlugin.EnabledState"/>
+    ''' <inheritdoc cref="IGUIPlugin.EnabledState"/>
     ''' -----------------------------------------------------------------------
     Public Overridable ReadOnly Property EnabledState() As eCoreExecutionState _
-        Implements EwECore.IGUIPlugin.EnabledState
+        Implements IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.EcopathCompleted
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.IGUIPlugin.OnControlClick"/>
+    ''' <inheritdoc cref="IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwECore.IGUIPlugin.OnControlClick
+        Implements IGUIPlugin.OnControlClick
         frmPlugin = cEwENetworkAnalysisPlugin.SwitchForm(Me.FormPage)
     End Sub
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation"/>
+    ''' <inheritdoc cref="INavigationTreeItemPlugin.NavigationTreeItemLocation"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property NavigationTreeItemLocation() As String _
-        Implements EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation
+        Implements INavigationTreeItemPlugin.NavigationTreeItemLocation
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="IPlugin.Author"/>

@@ -20,10 +20,6 @@
 Option Explicit On
 Option Strict On
 
-Imports EwECore
-Imports EwECore.Common
-Imports EwECore.MSEBatchManager
-
 Public Class frmMSEBatchTFM
 
     ' ToDo: Add XML comments

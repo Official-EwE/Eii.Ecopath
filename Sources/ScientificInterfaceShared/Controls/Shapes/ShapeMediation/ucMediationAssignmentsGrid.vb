@@ -20,11 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports EwECore
-Imports EwECore.Common
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2

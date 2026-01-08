@@ -21,14 +21,11 @@
 
 Option Explicit On
 Option Strict On
-
-Imports EwECore
-Imports EwECore.Common
+Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports

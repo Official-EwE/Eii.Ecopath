@@ -20,7 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEPlugin
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 
@@ -31,7 +32,7 @@ Namespace Integration
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' GUI utility class, handles the placement of
-    ''' <see cref="EwECore.INavigationTreeItemPlugin">INavigationTreeItemPlugin</see>-
+    ''' <see cref="INavigationTreeItemPlugin">INavigationTreeItemPlugin</see>-
     ''' derived plugins in a <see cref="TreeView">TreeView</see>. Plug-ins are sorted
     ''' in the menu by <see cref="IPlugin.Name"/>, in ascending order.
     ''' </summary>

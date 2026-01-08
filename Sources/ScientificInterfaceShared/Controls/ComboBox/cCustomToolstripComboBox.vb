@@ -21,10 +21,6 @@
 
 Option Strict On
 
-Imports System.Drawing
-Imports System.Windows.Forms
-Imports EwECore
-
 #End Region
 
 Namespace Controls

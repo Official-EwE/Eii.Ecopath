@@ -26,9 +26,6 @@ Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
 Imports System.IO
-Imports EwECore
-Imports EwECore.Common
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 

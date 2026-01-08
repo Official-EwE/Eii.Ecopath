@@ -23,16 +23,12 @@
 ' Alliance (SICSA) Postgraduate Industry Internship Programme.
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
-Imports EwEPlugin
-Imports ScientificInterfaceShared.Controls
-Imports EwECore.Common
 Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
-
-#End Region ' Imports
+Imports ScientificInterfaceShared.Controls
 
 Public Class cSFPPluginPoint
     Implements IUIContextPlugin
@@ -96,7 +92,7 @@ Public Class cSFPPluginPoint
 #Region " UIContext "
 
     Public Sub UIContext(uic As Object) _
-        Implements EwECore.IUIContextPlugin.UIContext
+        Implements IUIContextPlugin.UIContext
 
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
@@ -122,28 +118,28 @@ Public Class cSFPPluginPoint
 #Region " Menu item "
 
     Public ReadOnly Property ControlImage As Object _
-        Implements EwECore.IGUIPlugin.ControlImage
+        Implements IGUIPlugin.ControlImage
         Get
             Return ScientificInterfaceShared.My.Resources.Ecosim_32x32
         End Get
     End Property
 
     Public ReadOnly Property ControlTooltipText As String _
-        Implements EwECore.IGUIPlugin.ControlTooltipText
+        Implements IGUIPlugin.ControlTooltipText
         Get
             Return My.Resources.DESCRIPTION
         End Get
     End Property
 
     Public ReadOnly Property EnabledState As eCoreExecutionState _
-        Implements EwECore.IGUIPlugin.EnabledState
+        Implements IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwECore.IGUIPlugin.OnControlClick
+        Implements IGUIPlugin.OnControlClick
 
         Try
             frmPlugin = Me.GetUI()
@@ -154,7 +150,7 @@ Public Class cSFPPluginPoint
     End Sub
 
     Public ReadOnly Property MenuItemLocation As String _
-        Implements EwECore.IMenuItemPlugin.MenuItemLocation
+        Implements IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
@@ -165,7 +161,7 @@ Public Class cSFPPluginPoint
 #Region " Ecosim flow "
 
     Public Sub TimeSeriesClosed() _
-        Implements EwECore.IEcosimTimeSeriesPlugin.TimeSeriesClosed
+        Implements IEcosimTimeSeriesPlugin.TimeSeriesClosed
 
         If (Me.HasUI) Then
             Me.m_frm.OnTimeSeriesLoaded(Nothing)
@@ -174,7 +170,7 @@ Public Class cSFPPluginPoint
     End Sub
 
     Public Sub TimeSeriesLoaded() _
-        Implements EwECore.IEcosimTimeSeriesPlugin.TimeSeriesLoaded
+        Implements IEcosimTimeSeriesPlugin.TimeSeriesLoaded
 
         If (Me.HasUI) Then
             Dim core As cCore = Me.m_uic.Core
@@ -192,7 +188,7 @@ Public Class cSFPPluginPoint
 #Region " Disposal "
 
     Public Sub Dispose() _
-        Implements EwECore.IDisposedPlugin.Dispose
+        Implements IDisposedPlugin.Dispose
 
         If (Me.HasUI) Then
             Me.m_frm.Close()
@@ -209,7 +205,7 @@ Public Class cSFPPluginPoint
 #Region " Autosave "
 
     Public Property AutoSave As Boolean _
-        Implements EwECore.IAutoSavePlugin.AutoSave
+        Implements IAutoSavePlugin.AutoSave
         Get
             Return (My.Settings.AutoSaveMode > 0)
         End Get
@@ -230,13 +226,13 @@ Public Class cSFPPluginPoint
     End Property
 
     Public Function AutoSaveOutputPath() As String _
-        Implements EwECore.IAutoSavePlugin.AutoSaveOutputPath
+        Implements IAutoSavePlugin.AutoSaveOutputPath
         Return System.IO.Path.Combine(Me.m_uic.Core.DefaultOutputPath(Me.AutoSaveType),
                                       cFileUtils.ToValidFileName(Me.DisplayName, False))
     End Function
 
     Public Function AutoSaveType() As eAutosaveTypes _
-        Implements EwECore.IAutoSavePlugin.AutoSaveType
+        Implements IAutoSavePlugin.AutoSaveType
         ' Show underneath Ecosim autosave settings
         Return eAutosaveTypes.Ecosim
     End Function

@@ -20,10 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
-Imports EwECore.Common
 Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers

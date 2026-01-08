@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+Imports EwECore
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 

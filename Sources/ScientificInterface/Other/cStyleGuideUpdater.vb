@@ -22,9 +22,7 @@
 Option Strict On
 Option Explicit On
 Imports System.Text
-Imports EwECore
 Imports EwECore.Auxiliary
-Imports EwECore.Common
 Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 

@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Text
 Imports ScientificInterfaceShared.Extensions.modExtensions
 
 #End Region ' Imports

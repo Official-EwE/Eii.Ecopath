@@ -20,13 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports System.IO
-Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -436,7 +431,7 @@ Namespace Ecospace.Basemap
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
-            
+
             Me.m_grid.Layers = Nothing
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _

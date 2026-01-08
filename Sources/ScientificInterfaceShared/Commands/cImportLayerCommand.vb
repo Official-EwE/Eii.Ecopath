@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports System.IO
-Imports EwECore
 
 #End Region ' Imports
 

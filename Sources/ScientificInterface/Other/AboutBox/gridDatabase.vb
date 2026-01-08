@@ -20,13 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.Reflection
-Imports SourceGrid2
 Imports EwECore.Database
 Imports EwECore.DataSources
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

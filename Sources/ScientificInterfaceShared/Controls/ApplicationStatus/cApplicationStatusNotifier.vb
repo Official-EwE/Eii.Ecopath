@@ -17,8 +17,6 @@
 ' ===============================================================================
 '
 
-Imports EwECore
-Imports EwECore.Common
 
 #Region " Imports "
 

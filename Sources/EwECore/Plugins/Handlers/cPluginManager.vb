@@ -2052,7 +2052,7 @@ Public Class cPluginManager
                                    MSEDataStructure As Object,
                                    EcosimDatastructures As Object) As Boolean
 
-        Return Me.TryInvokeMethod(GetType(IMSEInitialized), "MSEInitialized", New Object() {MSEModel, MSEDataStructure, EcosimDatastructures})
+        Return Me.TryInvokeMethod(GetType(IMSEInitializedPlugin), "MSEInitialized", New Object() {MSEModel, MSEDataStructure, EcosimDatastructures})
 
     End Function
 

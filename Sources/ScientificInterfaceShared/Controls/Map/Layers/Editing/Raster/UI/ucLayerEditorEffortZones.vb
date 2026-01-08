@@ -18,7 +18,6 @@
 '
 
 Option Strict On
-Imports EwECore
 
 Namespace Controls.Map.Layers
 

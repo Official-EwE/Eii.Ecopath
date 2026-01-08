@@ -21,11 +21,7 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwEPlugin
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

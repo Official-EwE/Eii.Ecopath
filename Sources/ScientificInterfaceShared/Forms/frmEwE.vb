@@ -23,14 +23,12 @@ Option Strict On
 
 Imports System.ComponentModel
 Imports System.Drawing.Printing
-Imports EwECore
-Imports EwECore.Common
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports

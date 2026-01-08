@@ -21,9 +21,6 @@
 
 Option Explicit On
 Option Strict On
-
-Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SourceGrid2.Cells

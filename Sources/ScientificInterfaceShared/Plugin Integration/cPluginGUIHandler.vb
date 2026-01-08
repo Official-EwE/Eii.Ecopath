@@ -20,8 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEPlugin
-Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
@@ -53,8 +53,7 @@ Namespace Integration
         ''' <param name="pm"></param>
         ''' <param name="cmdh"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(pm As cPluginManager, _
-                       cmdh As cCommandHandler)
+        Public Sub New(pm As cPluginManager, cmdh As cCommandHandler)
             Me.PluginManager = pm
             Me.CommandHandler = cmdh
         End Sub

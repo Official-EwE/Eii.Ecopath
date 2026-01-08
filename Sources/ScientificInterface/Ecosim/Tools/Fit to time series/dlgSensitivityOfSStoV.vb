@@ -21,10 +21,7 @@
 
 Option Strict On
 Imports System.IO
-Imports EwECore
 Imports EwECore.FitToTimeSeries
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports

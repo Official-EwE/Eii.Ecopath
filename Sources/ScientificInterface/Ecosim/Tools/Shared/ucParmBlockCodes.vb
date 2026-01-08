@@ -22,9 +22,6 @@
 Option Explicit On
 Option Strict On
 
-Imports ScientificInterface.Other
-Imports EwECore
-
 #End Region ' Imports
 
 Namespace Ecosim

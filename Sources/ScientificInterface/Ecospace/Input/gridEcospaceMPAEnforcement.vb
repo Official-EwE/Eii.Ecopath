@@ -21,16 +21,12 @@
 
 Option Explicit On
 Option Strict On
-
-Imports EwECore
-Imports EwECore.Common
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
-Imports ScientificInterfaceShared.Style.cStyleGuide
-Imports SourceGrid2.Cells
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
+Imports ScientificInterfaceShared.Style.cStyleGuide
+Imports SourceGrid2
+Imports SourceGrid2.Cells
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 

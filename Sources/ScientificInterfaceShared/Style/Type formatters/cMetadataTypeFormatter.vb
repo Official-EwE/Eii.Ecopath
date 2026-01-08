@@ -20,12 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore.Common
-Imports EwEUtils.Utilities
-Imports EwECore
-Imports EwEUtils.SystemUtilities
 Imports System.Text
 Imports EwECore.Style
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

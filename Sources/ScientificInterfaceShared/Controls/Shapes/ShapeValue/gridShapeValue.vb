@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style

@@ -21,13 +21,10 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.Common
-Imports ZedGraph
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
 
 #End Region

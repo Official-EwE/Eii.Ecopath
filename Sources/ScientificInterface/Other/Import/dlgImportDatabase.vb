@@ -17,15 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwECore
-Imports EwECore.Database
-Imports EwECore.Database
-
-#End Region ' Imports
-
 Namespace Import
 
     ''' ===========================================================================

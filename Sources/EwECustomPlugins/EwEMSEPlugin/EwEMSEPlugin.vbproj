@@ -71,7 +71,8 @@
   <ItemGroup>
     <Import Include="System.Configuration" />
     <Import Include="System.Drawing" />
-    <Import Include="System.Windows.Forms" />
+	  <Import Include="System.Windows.Forms" />
+	  <Import Include="EwECore" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="My Project\Application.Designer.vb">

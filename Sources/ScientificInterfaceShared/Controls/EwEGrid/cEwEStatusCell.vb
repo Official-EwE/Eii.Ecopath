@@ -20,9 +20,9 @@
 #Region " Imports "
 
 Option Strict On
+Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
-Imports ScientificInterfaceShared.Definitions
 Imports SourceGrid2.VisualModels
 
 #End Region ' Imports

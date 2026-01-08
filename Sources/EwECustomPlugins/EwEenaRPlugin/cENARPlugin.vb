@@ -24,8 +24,12 @@ Imports System.IO
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
-Imports EwEPlugin
-Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Core
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.Ecospace
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 
 #End Region
@@ -52,15 +56,15 @@ Imports ScientificInterfaceShared.Controls
 ''' 
 Public Class cENARPlugin
     Implements IPlugin
-    Implements EwECore.ICorePlugin
-    Implements EwECore.IEcopathPlugin
-    Implements EwECore.IEcopathRunInitializedPlugin
-    Implements EwECore.IEcosimInitializedPlugin
-    Implements EwECore.IEcospaceInitializedPlugin
-    Implements EwECore.IUIContextPlugin
-    Implements EwECore.IMenuItemTogglePlugin
-    Implements EwECore.IAutoSavePlugin
-    Implements EwECore.IEcospacePlugin
+    Implements ICorePlugin
+    Implements IEcopathPlugin
+    Implements IEcopathRunInitializedPlugin
+    Implements IEcosimInitializedPlugin
+    Implements IEcospaceInitializedPlugin
+    Implements IUIContextPlugin
+    Implements IMenuItemTogglePlugin
+    Implements IAutoSavePlugin
+    Implements IEcospacePlugin
 
 #Region " Local variables"
 
@@ -102,7 +106,7 @@ Public Class cENARPlugin
     ''' <param name="EcopathAsObject"></param>
     ''' <param name="EcoSimAsObject"></param>
     ''' <param name="EcoSpaceAsObject"></param>
-    Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwECore.ICorePlugin.CoreInitialized
+    Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements ICorePlugin.CoreInitialized
         Try
 
             Me.m_EcoPath = TryCast(EcopathAsObject, cEcopathModel)
@@ -123,7 +127,7 @@ Public Class cENARPlugin
     ''' </summary>
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function LoadModel(dataSource As Object) As Boolean Implements EwECore.IEcopathPlugin.LoadModel
+    Public Function LoadModel(dataSource As Object) As Boolean Implements IEcopathPlugin.LoadModel
         Return True
     End Function
 
@@ -132,7 +136,7 @@ Public Class cENARPlugin
     ''' </summary>
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function SaveModel(dataSource As Object) As Boolean Implements EwECore.IEcopathPlugin.SaveModel
+    Public Function SaveModel(dataSource As Object) As Boolean Implements IEcopathPlugin.SaveModel
         Return True
     End Function
 
@@ -140,7 +144,7 @@ Public Class cENARPlugin
     ''' An Ecopath model has been closed.
     ''' </summary>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function CloseModel() As Boolean Implements EwECore.IEcopathPlugin.CloseModel
+    Public Function CloseModel() As Boolean Implements IEcopathPlugin.CloseModel
         Try
             'A user has closed the database
             'Clear out the old data so that we are 
@@ -165,15 +169,15 @@ Public Class cENARPlugin
     ''' <param name="EcopathDataAsObject"></param>
     ''' <param name="TaxonDataAsObject"></param>
     ''' <param name="StanzaDataAsObject"></param>
-    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements EwECore.IEcopathRunInitializedPlugin.EcopathRunInitialized
+    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements IEcopathRunInitializedPlugin.EcopathRunInitialized
         Me.m_EcoPathData = TryCast(EcopathDataAsObject, cEcopathDataStructures)
     End Sub
 
-    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwECore.IEcosimInitializedPlugin.EcosimInitialized
+    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements IEcosimInitializedPlugin.EcosimInitialized
         Me.m_EcoSimData = TryCast(EcosimDatastructures, cEcosimDatastructures)
     End Sub
 
-    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements EwECore.IEcospaceInitializedPlugin.EcospaceInitialized
+    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements IEcospaceInitializedPlugin.EcospaceInitialized
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
         Me.DisableEnaR()
     End Sub
@@ -222,7 +226,7 @@ Public Class cENARPlugin
     ''' </summary>
     ''' <param name="uic">The <see cref="cUIContext"/> to connect to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub UIContext(uic As Object) Implements EwECore.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
 
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
@@ -249,7 +253,7 @@ Public Class cENARPlugin
     ''' Tell EwE6 what image to show for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlImage() As Object Implements EwECore.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage() As Object Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
@@ -261,7 +265,7 @@ Public Class cENARPlugin
     ''' over a user interface element for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlTooltipText() As String Implements EwECore.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText() As String Implements IGUIPlugin.ControlTooltipText
         Get
             ' Show the description as a tooltip text
             Return Me.Description
@@ -274,7 +278,7 @@ Public Class cENARPlugin
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As Object) Implements EwECore.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As Object) Implements IGUIPlugin.OnControlClick
 
         Try
             If (Me.m_EcoSpaceData IsNot Nothing) Then
@@ -319,7 +323,7 @@ Public Class cENARPlugin
     ''' Tell EwE6 where to place an item in its main menu.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property MenuItemLocation() As String Implements EwECore.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation() As String Implements IMenuItemPlugin.MenuItemLocation
         Get
             ' For example, a plug-in menu item should be placed in the main the 'Tools' menu. 
             Return "MenuEcospace"
@@ -332,7 +336,7 @@ Public Class cENARPlugin
     ''' to users.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EnabledState() As eCoreExecutionState Implements EwECore.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState() As eCoreExecutionState Implements IGUIPlugin.EnabledState
         Get
             ' This plug-in is available at any time during EwE execution
             Return eCoreExecutionState.EcospaceLoaded

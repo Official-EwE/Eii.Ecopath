@@ -20,8 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Reflection
 Imports System.ComponentModel
+Imports System.Reflection
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

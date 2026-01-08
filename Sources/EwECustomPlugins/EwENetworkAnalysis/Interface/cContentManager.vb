@@ -22,7 +22,6 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph

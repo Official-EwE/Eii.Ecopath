@@ -21,10 +21,6 @@
 
 Option Explicit On
 Option Strict On
-
-Imports EwECore
-Imports EwEPlugin
-Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports Microsoft.Extensions.Logging
@@ -34,7 +30,6 @@ Imports ScientificInterface.Ecopath.Output
 Imports ScientificInterface.Ecopath.Tools
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
-Imports ScientificInterface.Other
 Imports ScientificInterfaceShared.Integration
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources

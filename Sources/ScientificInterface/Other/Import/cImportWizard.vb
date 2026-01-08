@@ -22,11 +22,9 @@
 Option Strict On
 
 Imports System.IO
-Imports EwECore
-Imports EwECore.DataSources
-Imports EwEPlugin
 Imports EwECore.Common
 Imports EwECore.Database
+Imports EwECore.DataSources
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
 
@@ -215,7 +213,7 @@ Namespace Import
             Else
                 Me.AddPage(GetType(ucImportPageError))
             End If
- 
+
         End Sub
 
 #End Region ' Constructor

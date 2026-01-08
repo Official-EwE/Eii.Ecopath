@@ -20,9 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore.Common
 Imports System.Text
-Imports System.Linq
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug

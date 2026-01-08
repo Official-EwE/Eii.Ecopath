@@ -23,7 +23,6 @@ Option Explicit On
 Option Strict On
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
 #End Region
 

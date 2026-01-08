@@ -21,14 +21,6 @@
 
 Option Strict On
 
-Imports EwECore
-Imports ScientificInterfaceShared
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Utilities
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Style
-
 #End Region ' Imports
 
 Namespace Controls

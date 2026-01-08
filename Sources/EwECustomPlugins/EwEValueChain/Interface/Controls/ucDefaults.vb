@@ -20,9 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
-Imports cEwEDatabase
-Imports ScientificInterfaceShared.Style
+Imports EwECore.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports

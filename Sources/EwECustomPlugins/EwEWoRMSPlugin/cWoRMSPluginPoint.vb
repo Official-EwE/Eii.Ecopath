@@ -17,20 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Imports EwECore
-Imports EwEPlugin
-Imports EwECore.Data
-Imports EwECore.Common
-Imports EwEWoRMSPlugin.WoRMSWebService
 Imports System.Web.Services.Protocols
-Imports EwEUtils.Utilities
+Imports EwECore
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Data
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
+Imports EwEWoRMSPlugin.WoRMSWebService
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 Public Class cWoRMSPluginPoint
     Implements IDataSearchProducerPlugin
@@ -187,7 +184,7 @@ Public Class cWoRMSPluginPoint
     End Function
 
     ''' <inheritdocs cref="IDataProducerPlugin.IsDataAvailable"/>
-    Friend Function IsDataAvailable(typeData As System.Type, _
+    Friend Function IsDataAvailable(typeData As System.Type,
                                     Optional runType As IRunType = Nothing) As Boolean _
         Implements IDataProducerPlugin.IsDataAvailable
         Return (GetType(ITaxonSearchData).IsAssignableFrom(typeData))
@@ -214,8 +211,8 @@ Public Class cWoRMSPluginPoint
     End Function
 
     ''' <inheritdocs cref="IDataProducerPlugin.SetEnabled"/>
-    Friend Sub SetEnabled(typeData As System.Type, _
-                          runType As IRunType, _
+    Friend Sub SetEnabled(typeData As System.Type,
+                          runType As IRunType,
                           bEnable As Boolean) _
         Implements IDataProducerPlugin.SetEnabled
         ' NOP
@@ -288,13 +285,13 @@ Public Class cWoRMSPluginPoint
 
     ''' <inheritdocs cref="IConfigurablePlugin.GetConfigUI"/>
     Public Function GetConfigUI() As Object _
-        Implements EwECore.IConfigurablePlugin.GetConfigUI
+        Implements IConfigurablePlugin.GetConfigUI
         Return New ucConfig(Me)
     End Function
 
     ''' <inheritdocs cref="IConfigurablePlugin.IsConfigured"/>
     Public Function IsConfigured() As Boolean _
-        Implements EwECore.IConfigurablePlugin.IsConfigured
+        Implements IConfigurablePlugin.IsConfigured
         Return True
     End Function
 
@@ -393,7 +390,7 @@ Public Class cWoRMSPluginPoint
         Catch exSoap As SoapException
             m_logger.LogError(exSoap, "cWoRMSPluginPoint.SearchThreaded")
             ' Send message cross-threaded
-            Dim msg As New cMessage(String.Format("An error occurred communicating with the WoRMS web service: '{0}'", exSoap.Message), _
+            Dim msg As New cMessage(String.Format("An error occurred communicating with the WoRMS web service: '{0}'", exSoap.Message),
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
             Me.m_core.Messages.SendMessage(msg)
             c.Close()

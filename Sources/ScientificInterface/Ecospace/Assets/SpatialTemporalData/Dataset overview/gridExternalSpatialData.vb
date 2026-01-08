@@ -17,19 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwECore
+Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports EwECore.Common
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region ' Imports
 
 Namespace Ecospace
 

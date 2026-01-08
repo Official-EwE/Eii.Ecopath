@@ -17,17 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.IO
-Imports System.Text
-Imports EwECore
-Imports EwEPlugin
-Imports EwECore.Common
+Imports EwECore.Plugins
 Imports EwEUtils.Utilities
-
-#End Region ' Imports
 
 Public Class ucOptionsPluginDetails
     Implements IUIElement

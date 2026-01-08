@@ -20,10 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore.Common
-Imports EwEUtils.Utilities
-Imports EwECore
 Imports EwECore.SpatialData.cDatasetCompatilibity
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

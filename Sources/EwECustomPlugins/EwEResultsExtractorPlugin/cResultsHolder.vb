@@ -17,24 +17,27 @@
 ' ===============================================================================
 '
 
-Option Strict Off
 Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Core
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 
 
 Public Class cResultsHolder
 
-    Implements EwECore.IMenuItemPlugin
+    Implements IMenuItemPlugin
 
-    Implements EwECore.IEcosimModifyTimeseriesPlugin
-    Implements EwECore.IEcosimEndTimestepPlugin
-    Implements EwECore.IEcosimRunCompletedPlugin
-    Implements EwECore.IEcosimRunInitializedPlugin
-    Implements EwECore.ICorePlugin
+    Implements IEcosimModifyTimeseriesPlugin
+    Implements IEcosimEndTimestepPlugin
+    Implements IEcosimRunCompletedPlugin
+    Implements IEcosimRunInitializedPlugin
+    Implements ICorePlugin
 
-    Implements EwECore.IUIContextPlugin
+    Implements IUIContextPlugin
 
-    Implements EwECore.IHelpPlugin
+    Implements IHelpPlugin
 
     Private ResultsForm As frmResults = Nothing
     Private m_core As cCore = Nothing
@@ -49,7 +52,7 @@ Public Class cResultsHolder
     Private sumSS() As Single
     Private mEcosimModel As Ecosim.cEcosimModel = Nothing
 
-    Public ReadOnly Property ControlImage() As Object Implements EwECore.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage() As Object Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
@@ -61,20 +64,20 @@ Public Class cResultsHolder
         End Get
     End Property
 
-    Public ReadOnly Property ControlTooltipText() As String Implements EwECore.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText() As String Implements IGUIPlugin.ControlTooltipText
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState() As eCoreExecutionState Implements EwECore.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState() As eCoreExecutionState Implements IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.EcosimCompleted
         End Get
     End Property
 
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwECore.IGUIPlugin.OnControlClick
+        Implements IGUIPlugin.OnControlClick
 
         Dim bHasForm As Boolean = False
 
@@ -95,7 +98,7 @@ Public Class cResultsHolder
 
     End Sub
 
-    Public ReadOnly Property MenuItemLocation() As String Implements EwECore.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation() As String Implements IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
@@ -129,11 +132,11 @@ Public Class cResultsHolder
         End Get
     End Property
 
-    Public Sub EcosimModifyTimeseries(TimeSeriesDataStructures As Object) Implements EwECore.IEcosimModifyTimeseriesPlugin.EcosimModifyTimeseries
+    Public Sub EcosimModifyTimeseries(TimeSeriesDataStructures As Object) Implements IEcosimModifyTimeseriesPlugin.EcosimModifyTimeseries
         Me.mTimeSeries = TimeSeriesDataStructures
     End Sub
 
-    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) Implements EwECore.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) Implements IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Dim iDyear As Integer
         Dim DataStructure As cEcosimDatastructures = EcosimDatastructures
@@ -153,13 +156,13 @@ Public Class cResultsHolder
 
             For j = 1 To Me.mTimeSeries.AppliedNdatType
 
-                If Me.mTimeSeries.AppliedDatVal(iDyear, j) > 0 And _
-                                (Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.BiomassRel Or _
-                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.BiomassAbs Or _
-                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.TotalMortality Or _
-                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.AverageWeight Or _
-                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.Catches Or _
-                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.CatchesRel Or _
+                If Me.mTimeSeries.AppliedDatVal(iDyear, j) > 0 And
+                                (Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.BiomassRel Or
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.BiomassAbs Or
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.TotalMortality Or
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.AverageWeight Or
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.Catches Or
+                                 Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.CatchesRel Or
                                  Me.mTimeSeries.AppliedDatType(j) = eTimeSeriesType.CatchesForcing) Then
 
                     Select Case Me.mTimeSeries.AppliedDatType(j)
@@ -200,7 +203,7 @@ Public Class cResultsHolder
 
     End Sub
 
-    Public Sub EcosimRunCompleted(EcosimDatastructures As Object) Implements EwECore.IEcosimRunCompletedPlugin.EcosimRunCompleted
+    Public Sub EcosimRunCompleted(EcosimDatastructures As Object) Implements IEcosimRunCompletedPlugin.EcosimRunCompleted
         Dim iYear As Integer
 
         Me.mDataStructure = EcosimDatastructures
@@ -220,27 +223,27 @@ Public Class cResultsHolder
 
 
 
-    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements EwECore.IEcosimRunInitializedPlugin.EcosimRunInitialized
+    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements IEcosimRunInitializedPlugin.EcosimRunInitialized
         ReDim Me.ZStat(Me.mTimeSeries.AppliedNdatType, Me.mTimeSeries.AppliedDatPoints)
         ReDim Me.logdiff(Me.mTimeSeries.AppliedNdatType, Me.mTimeSeries.AppliedDatPoints)
         ReDim Me.sumSS(Me.mTimeSeries.AppliedNdatType)
     End Sub
 
-    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwECore.ICorePlugin.CoreInitialized
+    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements ICorePlugin.CoreInitialized
         Me.mEcosimModel = objEcoSim
     End Sub
 
-    Public Sub UIContext(uic As Object) Implements EwECore.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
-    Public ReadOnly Property HelpTopic As String Implements EwECore.IHelpPlugin.HelpTopic
+    Public ReadOnly Property HelpTopic As String Implements IHelpPlugin.HelpTopic
         Get
             Return ".\UserGuide\ResultsExtractorPlug.pdf"
         End Get
     End Property
 
-    Public ReadOnly Property HelpURL As String Implements EwECore.IHelpPlugin.HelpURL
+    Public ReadOnly Property HelpURL As String Implements IHelpPlugin.HelpURL
         Get
             Return Me.HelpTopic
         End Get

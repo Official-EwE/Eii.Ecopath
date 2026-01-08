@@ -20,13 +20,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore.Common
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Definitions
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -198,7 +196,7 @@ Namespace Controls
                         hl = IFlowDiagramRenderer.eFDHighlightType.LinkOut
                     ElseIf (Me.HighlightNode = j) Then
                         hl = IFlowDiagramRenderer.eFDHighlightType.Selected
-                     End If
+                    End If
                 End If
 
                 Select Case focus

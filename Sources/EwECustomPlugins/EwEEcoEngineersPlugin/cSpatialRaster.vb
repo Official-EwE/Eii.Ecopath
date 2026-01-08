@@ -15,20 +15,13 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing
 Imports System.IO
 Imports EwECore
 Imports EwECore.Common
-Imports EwECore.Common
-Imports EwEUtils.Utilities
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 Public Class cSpatialRaster
     Implements ISpatialRaster
@@ -78,8 +71,8 @@ Public Class cSpatialRaster
     ''' <returns>A value, or <paramref name="dNoDataValue"/> if either row or 
     ''' column are invalid, or if the cell does not hold any data.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Cell(ByVal iRow As Integer, _
-                         ByVal iCol As Integer, _
+    Public Function Cell(ByVal iRow As Integer,
+                         ByVal iCol As Integer,
                          Optional ByVal dNoDataValue As Double = -9999) As Double _
         Implements ISpatialRaster.Cell
         Return Me.m_data(iRow, iCol)

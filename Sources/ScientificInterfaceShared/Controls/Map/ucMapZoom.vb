@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports System.ComponentModel
-Imports EwECore
 
 #End Region ' Imports
 

@@ -21,9 +21,6 @@
 
 Option Explicit On
 Option Strict On
-
-Imports EwECore
-Imports ZedGraph
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 

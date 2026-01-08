@@ -20,10 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwECore.Common
-Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 

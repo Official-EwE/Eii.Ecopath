@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
 

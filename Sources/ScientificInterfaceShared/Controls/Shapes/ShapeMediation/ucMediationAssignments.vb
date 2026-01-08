@@ -23,8 +23,6 @@ Option Explicit On
 Option Strict On
 
 Imports System.ComponentModel
-Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph

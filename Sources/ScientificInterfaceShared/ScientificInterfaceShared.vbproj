@@ -37,6 +37,7 @@
     <None Include="README.md" Pack="True" PackagePath="\" />
     <None Include="..\..\EII_plain_128x128.png" Pack="True" PackagePath="\" />
     <None Include="Includes\*.*" Pack="true" PackagePath="Includes\" />
+	<Import Include="EwECore" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DocumentationFile>ScientificInterfaceShared.xml</DocumentationFile>

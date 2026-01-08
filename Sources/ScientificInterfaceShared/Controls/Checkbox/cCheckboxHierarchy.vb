@@ -22,7 +22,6 @@
 Option Strict On
 
 Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports System.Windows.Forms
 
 #End Region ' Imports
 

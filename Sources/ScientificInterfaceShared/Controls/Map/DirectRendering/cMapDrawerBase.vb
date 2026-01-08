@@ -23,7 +23,6 @@ Option Strict On
 Option Explicit On
 
 Imports System.Threading
-Imports EwECore
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports

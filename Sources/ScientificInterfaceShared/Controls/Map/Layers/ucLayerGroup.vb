@@ -20,14 +20,10 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports EwECore.Common
+Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.SystemUtilities
-Imports System.IO
-Imports EwECore
 
 #End Region ' Imports
 

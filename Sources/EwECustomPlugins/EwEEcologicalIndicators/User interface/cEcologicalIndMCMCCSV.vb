@@ -19,8 +19,9 @@
 
 #Region " Imports "
 
-Imports EwEPlugin
-Imports EwECore.Common
+Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

@@ -20,13 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterface.Ecospace
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports SourceGrid2
-Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports ScientificInterfaceShared
+Imports SourceGrid2
 
 #End Region ' Imports
 

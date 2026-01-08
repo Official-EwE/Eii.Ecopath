@@ -22,7 +22,6 @@
 Option Strict On
 
 Imports System.Globalization
-Imports EwECore.Common
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports

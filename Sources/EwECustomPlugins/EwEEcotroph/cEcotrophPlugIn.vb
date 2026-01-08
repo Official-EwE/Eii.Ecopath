@@ -18,25 +18,22 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports EwECore
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Controls
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Core
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
+Imports ScientificInterfaceShared.Controls
 
 Public Class cEcotrophPlugin
-    Implements EwECore.IGUIPlugin
-    Implements EwECore.IMenuItemPlugin
-    Implements EwECore.ICorePlugin
-    Implements EwECore.IEcopathRunCompletedPlugin
-    Implements EwECore.IHelpPlugin
-    Implements EwECore.IUIContextPlugin
+    Implements IGUIPlugin
+    Implements IMenuItemPlugin
+    Implements ICorePlugin
+    Implements IEcopathRunCompletedPlugin
+    Implements IHelpPlugin
+    Implements IUIContextPlugin
 
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcotrophPlugin)()
 
@@ -48,13 +45,13 @@ Public Class cEcotrophPlugin
         MyBase.Finalize()
     End Sub
 
-    Public ReadOnly Property HelpTopic As String Implements EwECore.IHelpPlugin.HelpTopic
+    Public ReadOnly Property HelpTopic As String Implements IHelpPlugin.HelpTopic
         Get
             Return "http://sirs.agrocampus-ouest.fr//EcoTroph/index.php?action=examples"
         End Get
     End Property
 
-    Public ReadOnly Property HelpURL As String Implements EwECore.IHelpPlugin.HelpURL
+    Public ReadOnly Property HelpURL As String Implements IHelpPlugin.HelpURL
         Get
             Return Me.HelpTopic
         End Get
@@ -71,7 +68,7 @@ Public Class cEcotrophPlugin
 
     Private frmET As frmEcotroph
 
-    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwECore.ICorePlugin.CoreInitialized
+    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements ICorePlugin.CoreInitialized
         ETinputdata = New ETinputtot()
         ETinputdatafromEP = New ETinputtot()
     End Sub
@@ -108,7 +105,7 @@ Public Class cEcotrophPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlImage As Object Implements EwECore.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage As Object Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
@@ -120,19 +117,19 @@ Public Class cEcotrophPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlTooltipText As String Implements EwECore.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
         Get
             Return "EcoTroph"
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState As eCoreExecutionState Implements EwECore.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.Idle
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) Implements EwECore.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
 
         Try
             If Not Me.HasInterface(Me.frmET) Then
@@ -155,13 +152,13 @@ Public Class cEcotrophPlugin
         Return True
     End Function
 
-    Public ReadOnly Property MenuItemLocation As String Implements EwECore.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation As String Implements IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
     End Property
 
-    Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object) Implements EwECore.IEcopathRunCompletedPlugin.EcopathRunCompleted
+    Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object) Implements IEcopathRunCompletedPlugin.EcopathRunCompleted
 
         Try
             Dim epdata As EwECore.cEcopathDataStructures
@@ -230,7 +227,7 @@ Public Class cEcotrophPlugin
     '    Throw New NotImplementedException
     'End Function
 
-    Public Sub UIContext(uic As Object) Implements EwECore.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
         Catch ex As Exception

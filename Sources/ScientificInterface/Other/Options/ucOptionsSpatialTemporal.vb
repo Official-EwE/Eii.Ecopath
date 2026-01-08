@@ -21,19 +21,13 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports System.IO
-Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 

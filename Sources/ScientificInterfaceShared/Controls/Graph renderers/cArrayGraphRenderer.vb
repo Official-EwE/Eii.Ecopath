@@ -21,10 +21,6 @@
 
 Option Strict On
 Option Explicit On
-Imports System.ComponentModel
-Imports System.Drawing
-Imports System.Drawing.Drawing2D
-Imports System.Drawing.Text
 Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Style
 

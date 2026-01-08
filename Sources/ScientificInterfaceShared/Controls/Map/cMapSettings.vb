@@ -20,8 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports System.Text
+Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 

@@ -18,10 +18,6 @@
 '
 
 Option Strict On
-
-Imports System
-imports System.Drawing
-imports System.Drawing.Imaging
 imports System.Security.Cryptography
 
 Namespace Controls

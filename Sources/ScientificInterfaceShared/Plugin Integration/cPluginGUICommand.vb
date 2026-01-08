@@ -20,10 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEPlugin
-Imports EwECore.Common
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Commands
-Imports System.Windows.Forms
 
 #End Region ' Imports
 

@@ -22,11 +22,6 @@
 Option Explicit On
 Option Strict On
 
-Imports EwECore
-Imports ScientificInterfaceShared.Commands
-Imports EwECore.Common
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-
 #End Region
 
 Namespace Ecosim

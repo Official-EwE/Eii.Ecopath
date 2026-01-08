@@ -16,17 +16,12 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing
 Imports System.Xml
 Imports EwECore
-Imports EwEPlugin
 Imports EwECore.Common
-Imports EwECore.Common
-
-#End Region ' Imports
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
 
 Public Class cEcotracerConcentrationDataset
     Implements ISpatialDataSetPlugin

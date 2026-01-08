@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports System.Drawing.Drawing2D
-Imports EwECore
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
 

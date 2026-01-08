@@ -19,10 +19,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEPlugin
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources

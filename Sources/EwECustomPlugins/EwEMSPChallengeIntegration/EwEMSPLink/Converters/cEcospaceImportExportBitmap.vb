@@ -17,15 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing
 Imports EwECore
 Imports EwECore.Common
-Imports EwECore.Common
-
-#End Region ' Imports
 
 Namespace IO
 

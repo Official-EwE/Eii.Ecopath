@@ -23,17 +23,15 @@ Option Strict On
 
 Imports System.IO
 Imports System.Text
-Imports EwECore
 Imports EwECore.Style
-Imports EwECore.Common
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
 Imports ZedGraph
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports

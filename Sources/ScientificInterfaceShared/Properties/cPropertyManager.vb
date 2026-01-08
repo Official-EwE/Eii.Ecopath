@@ -21,11 +21,8 @@
 
 Option Strict On
 Imports System.Threading
-Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 

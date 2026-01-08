@@ -21,12 +21,9 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
 Imports EwECore.FishingPolicy
-Imports EwECore.Common
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2.Cells.Real
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -38,7 +35,7 @@ Namespace Ecosim
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
-     Public Class gridFPSResultFleetValue
+    Public Class gridFPSResultFleetValue
         : Inherits cEwEGrid
 
         Private m_FPManager As cFishingPolicyManager

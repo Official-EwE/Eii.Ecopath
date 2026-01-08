@@ -22,8 +22,6 @@
 Option Explicit On
 Option Strict On
 
-Imports EwECore
-
 #End Region
 
 Namespace Ecospace

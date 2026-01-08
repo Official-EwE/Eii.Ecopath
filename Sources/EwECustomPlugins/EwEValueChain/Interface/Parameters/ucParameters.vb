@@ -17,20 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports EwECore
-Imports EwECore.Common
+Imports EwECore.Database.cEwEDatabase
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports cEwEDatabase
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>

@@ -20,9 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEPlugin
 Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -255,8 +255,8 @@ Namespace Other
                     ctrl = New ucAutosaveOption(Me.UIContext, t, iIndent)
                     Me.Add(ctrl, cbParent)
 
-                    If (Core.ActiveEcospaceScenarioIndex > 0) Then
-                        Dim parms As cEcospaceModelParameters = Core.EcospaceModelParameters
+                    If (core.ActiveEcospaceScenarioIndex > 0) Then
+                        Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
                         For n As Integer = 1 To parms.nResultWriters
                             Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
                             Me.Add(New ucAutosaveOption(Me.UIContext, writer, t, iIndent + 1), ctrl.Checkbox)

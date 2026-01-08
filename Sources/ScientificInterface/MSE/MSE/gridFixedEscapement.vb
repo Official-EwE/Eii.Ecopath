@@ -20,11 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.Common
 Imports SourceGrid2.Cells
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports

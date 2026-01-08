@@ -20,7 +20,6 @@
 
 Option Strict On
 Imports System.ComponentModel
-Imports System.Linq
 Imports System.Reflection
 
 #End Region ' Imports

@@ -17,19 +17,15 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEPlugin
 Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
-
-#End Region ' Imports
 
 ' ToDo: globalize this class
 

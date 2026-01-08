@@ -21,8 +21,6 @@
 
 Option Strict On
 Imports System.Threading
-Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
 

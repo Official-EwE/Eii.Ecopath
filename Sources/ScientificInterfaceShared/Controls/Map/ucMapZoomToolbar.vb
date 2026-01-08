@@ -22,7 +22,6 @@
 Option Strict On
 
 Imports System.Drawing.Imaging
-Imports EwECore
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers

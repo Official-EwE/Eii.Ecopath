@@ -17,18 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwEPlugin
-Imports EwECore.Data
-Imports EwECore.Common
 Imports EwECore
-
-#End Region
+Imports EwECore.Common
+Imports EwECore.Plugins.Data
 
 Friend Class cEwENetworkAnalysisData
-    Implements EwECore.Data.IPluginData
+    Implements IPluginData
     Implements INetworkAnalysisData
 
     Private m_man As cNetworkManager = Nothing
@@ -36,7 +30,7 @@ Friend Class cEwENetworkAnalysisData
     Private m_Ascendancy(6, 5) As Single
     Private m_OI As Single()
 
-    Public Sub New(strPluginName As String, _
+    Public Sub New(strPluginName As String,
                    man As cNetworkManager)
         Me.m_strPluginName = strPluginName
         Me.m_man = man

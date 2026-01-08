@@ -20,10 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports ZedGraph
-Imports ScientificInterfaceShared.Style
-Imports EwECore.Common
 
 #End Region ' Imports
 

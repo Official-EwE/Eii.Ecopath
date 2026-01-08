@@ -21,13 +21,8 @@
 
 Option Explicit On
 Option Strict On
-
-Imports EwECore
-Imports ScientificInterface.Ecopath.Input
-Imports ScientificInterface.Ecopath.Output
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
-Imports EwECore.Common
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

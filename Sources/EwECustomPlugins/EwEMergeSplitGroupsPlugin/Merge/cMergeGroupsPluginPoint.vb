@@ -17,16 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Ecopath
-Imports EwEPlugin
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
-
-#End Region ' Imports
 
 Public Class cMergeGroupsPluginPoint
     Implements IMenuItemPlugin
@@ -41,7 +36,7 @@ Public Class cMergeGroupsPluginPoint
 #Region " UI "
 
     Public ReadOnly Property ControlImage As Object _
-        Implements EwECore.IGUIPlugin.ControlImage
+        Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
@@ -55,21 +50,21 @@ Public Class cMergeGroupsPluginPoint
     End Property
 
     Public ReadOnly Property ControlTooltipText As String _
-        Implements EwECore.IGUIPlugin.ControlTooltipText
+        Implements IGUIPlugin.ControlTooltipText
         Get
             Return ""
         End Get
     End Property
 
     Public ReadOnly Property EnabledState As eCoreExecutionState _
-        Implements EwECore.IGUIPlugin.EnabledState
+        Implements IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.EcopathLoaded
         End Get
     End Property
 
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwECore.IGUIPlugin.OnControlClick
+        Implements IGUIPlugin.OnControlClick
 
         If (Me.m_uic Is Nothing) Then Return
 
@@ -90,7 +85,7 @@ Public Class cMergeGroupsPluginPoint
 #Region " UIContext "
 
     Public Sub UIContext(uic As Object) _
-        Implements EwECore.IUIContextPlugin.UIContext
+        Implements IUIContextPlugin.UIContext
 
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
@@ -104,7 +99,7 @@ Public Class cMergeGroupsPluginPoint
 
 #Region " Menu item "
 
-    Public ReadOnly Property MenuItemLocation As String Implements EwECore.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation As String Implements IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuEcopath"
         End Get

@@ -23,11 +23,7 @@ Option Explicit On
 Option Strict On
 
 Imports System.IO
-Imports EwECore
-Imports EwECore.Common
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports

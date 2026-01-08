@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore
 
 #End Region ' Imports
 

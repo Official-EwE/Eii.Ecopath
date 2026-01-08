@@ -17,11 +17,9 @@
 ' ===============================================================================
 '
 
-Imports ScientificInterfaceShared.Style
-Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
+Imports ScientificInterfaceShared.Style
 
 Namespace Controls.Map.Layers
 

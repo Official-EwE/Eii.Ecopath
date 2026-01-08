@@ -21,15 +21,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwEUtils.Utilities
-Imports EwECore.Common
-Imports ScientificInterface.Other
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
 Imports SourceGrid2.Cells
-Imports System.Runtime.CompilerServices
-Imports ScientificInterfaceShared.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

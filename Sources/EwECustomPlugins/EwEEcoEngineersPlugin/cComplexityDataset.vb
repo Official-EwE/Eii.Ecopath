@@ -22,9 +22,9 @@ Imports System.Drawing
 Imports System.Web
 Imports System.Xml
 Imports EwECore
-Imports EwEPlugin
 Imports EwECore.Common
-Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

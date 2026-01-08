@@ -23,7 +23,7 @@
 ' ===============================================================================
 '
 
-Imports EwECore.Common
+Imports EwECore
 
 Public Class cResultsCollector_Landings
     Inherits cResultsCollector_Catch

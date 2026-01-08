@@ -23,10 +23,8 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore.MSE
-Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports ScientificInterface.Ecotracer
 Imports Debug = System.Diagnostics.Debug
 
 #End Region

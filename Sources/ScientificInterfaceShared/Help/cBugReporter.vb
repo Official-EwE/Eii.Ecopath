@@ -20,13 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Text
 Imports System.Reflection
-Imports EwEPlugin
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
-Imports System.IO
-Imports System.Net.Mail
 
 #End Region ' Imports
 

@@ -23,15 +23,14 @@ Option Strict On
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 Imports System.Text
-Imports EwECore.Common
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports

@@ -21,12 +21,9 @@
 
 Option Strict On
 Imports System.IO
+Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports EwECore.Common
-Imports EwECore.Common
 Imports EwEUtils.Utilities
-Imports EwECore
-Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

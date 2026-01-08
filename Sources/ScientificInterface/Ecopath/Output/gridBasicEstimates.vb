@@ -21,9 +21,6 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources

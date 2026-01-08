@@ -21,18 +21,14 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.Common
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-Imports EwEUtils.Utilities
-Imports ZedGraph
 Imports EwECore.Style
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 

@@ -18,11 +18,8 @@
 '
 
 Option Strict On
-Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports ScientificInterfaceShared.Properties
-Imports Debug = System.Diagnostics.Debug
 
 Namespace Controls
 

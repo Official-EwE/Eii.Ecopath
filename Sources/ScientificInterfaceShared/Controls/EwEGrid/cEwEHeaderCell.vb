@@ -23,7 +23,6 @@ Option Strict On
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
 
 #End Region ' Imports
 

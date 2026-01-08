@@ -20,14 +20,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwECore.Common
-Imports EwEUtils.Utilities
 Imports System.Collections.Specialized
 Imports System.Web
-Imports ScientificInterfaceShared.GeoCode
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.GeoCode
 Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports

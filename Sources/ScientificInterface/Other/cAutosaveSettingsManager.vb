@@ -21,12 +21,10 @@
 
 Option Strict On
 Imports System.Xml
-Imports EwECore
 Imports EwECore.Common
-Imports EwEUtils.Utilities
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

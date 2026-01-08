@@ -17,15 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports System.ComponentModel
-Imports EwEUtils.Utilities
-Imports cEwEDatabase
-Imports System.Reflection
-
-#End Region ' Imports
+Imports EwECore.Database.cEwEDatabase
 
 ''' ===========================================================================
 ''' <summary>

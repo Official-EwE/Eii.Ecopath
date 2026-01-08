@@ -22,8 +22,9 @@
 
 Option Strict On
 Imports System.Windows.Forms
-Imports EwEPlugin
-Imports EwECore.Common
+Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources

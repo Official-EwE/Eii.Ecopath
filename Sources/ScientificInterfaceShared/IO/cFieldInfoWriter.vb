@@ -20,10 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEUtils.Utilities
 Imports System.IO
 Imports System.Reflection
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

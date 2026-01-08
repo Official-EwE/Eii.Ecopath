@@ -22,7 +22,7 @@
 Option Explicit On
 Option Strict On
 
-Imports EwECore.Common
+Imports EwECore
 
 #End Region
 

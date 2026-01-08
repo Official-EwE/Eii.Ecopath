@@ -146,7 +146,7 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Result() As DialogResult
-            
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the file filters that the dialog was invoked with.

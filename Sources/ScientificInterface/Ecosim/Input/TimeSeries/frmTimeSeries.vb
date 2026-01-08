@@ -21,7 +21,6 @@
 
 Option Explicit On
 Option Strict On
-Imports EwECore.Common
 
 #End Region ' Imports
 

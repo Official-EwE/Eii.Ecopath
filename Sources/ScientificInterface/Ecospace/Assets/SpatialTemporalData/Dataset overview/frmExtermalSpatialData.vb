@@ -20,10 +20,8 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports EwECore.Common
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports

@@ -17,21 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports System.Drawing
 Imports System.IO
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
-Imports EwEPlugin
-Imports EwECore.Data
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region ' Imports
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

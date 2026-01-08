@@ -23,7 +23,7 @@ Namespace Plugins.MSE
     ''' Interface for MSE initialization plugin points that are invoked once the MSE model has been loaded
     ''' </summary>
     ''' <remarks></remarks>
-    Public Interface IMSEInitialized
+    Public Interface IMSEInitializedPlugin
         Inherits IPlugin
 
         ''' <summary>

@@ -21,12 +21,8 @@
 
 Option Explicit On
 Option Strict On
-
-Imports EwECore
-Imports ZedGraph
-Imports System.ComponentModel
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
+Imports ZedGraph
 
 #End Region
 

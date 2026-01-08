@@ -20,7 +20,6 @@
 
 Option Strict On
 Imports System.Reflection
-Imports System.Windows.Forms
 
 #End Region ' Imports
 

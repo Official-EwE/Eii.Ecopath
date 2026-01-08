@@ -21,11 +21,7 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Commands
 Imports ZedGraph
 
 #End Region

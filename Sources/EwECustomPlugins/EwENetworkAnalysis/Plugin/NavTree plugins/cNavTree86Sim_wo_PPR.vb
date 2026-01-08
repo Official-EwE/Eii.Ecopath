@@ -17,12 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
+Imports EwECore
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region ' Imports
 
 Public Class cNavTree86Sim_wo_PPR
     Inherits cNavTree84Sim

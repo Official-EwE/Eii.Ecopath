@@ -17,14 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Imports EwEPlugin
-Imports EwECore.Common
+Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region ' Imports
 
 ''' <summary>
 ''' This class just serves as an UI anchor point to toggle the correct

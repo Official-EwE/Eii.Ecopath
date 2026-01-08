@@ -22,14 +22,6 @@
 Option Explicit On
 Option Strict On
 
-Imports System.Drawing.Drawing2D
-Imports System.Drawing
-Imports System.Text.RegularExpressions
-Imports ScientificInterface.Other
-Imports EwECore
-Imports EwECore.Common
-Imports ScientificInterfaceShared
-
 #End Region
 
 Namespace Ecosim

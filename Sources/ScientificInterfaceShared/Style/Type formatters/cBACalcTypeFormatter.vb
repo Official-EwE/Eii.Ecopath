@@ -20,9 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwECore.cEcopathModelFromEcosim
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

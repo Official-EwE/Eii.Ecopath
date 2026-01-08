@@ -23,11 +23,7 @@ Option Explicit On
 Option Strict On
 
 Imports System.IO
-Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Logging
-Imports EwEUtils.SystemUtilities
-Imports ScientificInterfaceShared.Commands
 
 #End Region
 

@@ -20,9 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System
-Imports System.Windows.Forms
-Imports System.Diagnostics
 Imports System.Reflection
 
 #End Region ' Imports

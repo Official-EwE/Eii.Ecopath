@@ -21,12 +21,8 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -45,7 +41,7 @@ Public Class gridBioCV
         Me(0, 0) = New cEwEColumnHeaderCell("")
         Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
         Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_CV)
-'
+        '
         Me.FixedColumns = 1
 
     End Sub

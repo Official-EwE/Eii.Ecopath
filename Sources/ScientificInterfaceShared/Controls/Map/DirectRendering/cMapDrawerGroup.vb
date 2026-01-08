@@ -21,8 +21,6 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 

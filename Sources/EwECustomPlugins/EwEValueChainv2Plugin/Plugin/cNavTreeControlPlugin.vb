@@ -20,12 +20,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEPlugin
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Controls
-Imports System.Linq
 Imports System.Text
+Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -50,36 +49,36 @@ Public MustInherit Class cNavTreeControlPlugin
         Implements IPlugin.DisplayName
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.IGUIPlugin.ControlImage"/>
+    ''' <inheritdoc cref="IGUIPlugin.ControlImage"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property ControlImage() As Object _
-        Implements EwECore.IGUIPlugin.ControlImage
+        Implements IGUIPlugin.ControlImage
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.IGUIPlugin.ControlTooltipText"/>
+    ''' <inheritdoc cref="IGUIPlugin.ControlTooltipText"/>
     ''' -----------------------------------------------------------------------
     Public Overridable ReadOnly Property ControlTooltipText() As String _
-        Implements EwECore.IGUIPlugin.ControlTooltipText
+        Implements IGUIPlugin.ControlTooltipText
         Get
             Return ""
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.IGUIPlugin.EnabledState"/>
+    ''' <inheritdoc cref="IGUIPlugin.EnabledState"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property EnabledState() As eCoreExecutionState _
-        Implements EwECore.IGUIPlugin.EnabledState
+        Implements IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.EcopathCompleted
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.IGUIPlugin.OnControlClick"/>
+    ''' <inheritdoc cref="IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwECore.IGUIPlugin.OnControlClick
+        Implements IGUIPlugin.OnControlClick
         Try
             ' Resolve master plug-in on first use
             If (Me.m_uic IsNot Nothing And Me.m_piMain Is Nothing) Then
@@ -99,10 +98,10 @@ Public MustInherit Class cNavTreeControlPlugin
     End Sub
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation"/>
+    ''' <inheritdoc cref="INavigationTreeItemPlugin.NavigationTreeItemLocation"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property NavigationTreeItemLocation() As String _
-        Implements EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation
+        Implements INavigationTreeItemPlugin.NavigationTreeItemLocation
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="IPlugin.Author"/>
@@ -168,18 +167,18 @@ Public MustInherit Class cNavTreeControlPlugin
     End Sub
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.IHelpPlugin.HelpTopic"/>
+    ''' <inheritdoc cref="IHelpPlugin.HelpTopic"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property HelpTopic As String Implements EwECore.IHelpPlugin.HelpTopic
+    Public ReadOnly Property HelpTopic As String Implements IHelpPlugin.HelpTopic
         Get
             Return Me.HelpURL
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwECore.IHelpPlugin.HelpURL"/>
+    ''' <inheritdoc cref="IHelpPlugin.HelpURL"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property HelpURL As String Implements EwECore.IHelpPlugin.HelpURL
+    Public ReadOnly Property HelpURL As String Implements IHelpPlugin.HelpURL
         Get
             Return ".\UserGuide\ChristensenValueChainMS.pdf"
         End Get

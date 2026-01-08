@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

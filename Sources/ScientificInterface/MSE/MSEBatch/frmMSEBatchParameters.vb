@@ -21,10 +21,6 @@
 
 Option Strict On
 
-Imports EwECore
-Imports ScientificInterfaceShared.Commands
-Imports EwECore.Common
-
 #End Region ' Imports
 
 
@@ -49,7 +45,7 @@ Public Class frmMSEBatchParameters
 
     Private Sub EcospaceParameters_Load(sender As Object, e As System.EventArgs) _
           Handles Me.Load
-     
+
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE}
 

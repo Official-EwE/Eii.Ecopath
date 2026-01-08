@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

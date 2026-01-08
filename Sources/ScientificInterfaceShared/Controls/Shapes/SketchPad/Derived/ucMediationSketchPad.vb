@@ -24,7 +24,6 @@ Option Strict On
 
 Imports System.ComponentModel
 Imports System.Text
-Imports EwECore
 Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions

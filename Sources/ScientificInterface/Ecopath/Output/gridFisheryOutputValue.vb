@@ -21,14 +21,8 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports ScientificInterfaceShared.Properties
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2.Cells.Real
 Imports EwECore.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 

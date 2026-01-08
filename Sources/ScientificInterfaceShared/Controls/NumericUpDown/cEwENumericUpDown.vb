@@ -195,8 +195,8 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Category("Behavior")>
-         <DefaultValue(GetType(eInterceptMouseWheelType), "Always")>
-         <Description("Enables MouseWheel only under certain conditions.")>
+        <DefaultValue(GetType(eInterceptMouseWheelType), "Always")>
+        <Description("Enables MouseWheel only under certain conditions.")>
         Public Property InterceptMouseWheel() As eInterceptMouseWheelType = eInterceptMouseWheelType.WhenMouseOver
 
         ''' -------------------------------------------------------------------

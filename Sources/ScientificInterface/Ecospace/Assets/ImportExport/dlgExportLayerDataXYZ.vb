@@ -22,11 +22,8 @@
 Option Strict On
 
 Imports System.IO
-Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports

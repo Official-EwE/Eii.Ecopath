@@ -20,12 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwECore.Ecospace.Advection
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
-Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports

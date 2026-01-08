@@ -17,24 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.ComponentModel
+Imports EwECore.Database.cEwEDatabase
 Imports EwEUtils.Utilities
-Imports cEwEDatabase
-Imports System.Reflection
-
-#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>
 ''' One single flow diagram.
 ''' </summary>
 ''' ===========================================================================
-<TypeConverter(GetType(cPropertySorter)), _
-    DefaultProperty("Name"), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
 Public Class cFlowDiagram
     : Inherits cOOPStorable
 

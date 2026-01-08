@@ -17,23 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports System.ComponentModel
 Imports System.IO
 Imports System.Threading
-Imports EwECore
-Imports EwECore.Database
-Imports EwECore.DataSources
-Imports EwECore.SpatialData
-Imports EwEPlugin
 Imports EwECore.Common
 Imports EwECore.Database
+Imports EwECore.DataSources
+Imports EwECore.Plugins.UI
+Imports EwECore.SpatialData
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterface.Ecopath
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
@@ -46,12 +41,8 @@ Imports ScientificInterface.Wizard
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Integration
 Imports WeifenLuo.WinFormsUI.Docking
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

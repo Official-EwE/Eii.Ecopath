@@ -21,11 +21,6 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
-Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region

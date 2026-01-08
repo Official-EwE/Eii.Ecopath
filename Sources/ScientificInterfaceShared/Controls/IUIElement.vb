@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports 
 

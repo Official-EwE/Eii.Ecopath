@@ -21,13 +21,12 @@
 
 Option Strict On
 Imports System.IO
-Imports EwECore.Shapes.Utility
 Imports EwECore.Common
+Imports EwECore.Shapes.Utility
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore
 
 #End Region ' Imports
 

@@ -20,13 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
-Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.Common
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
-Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

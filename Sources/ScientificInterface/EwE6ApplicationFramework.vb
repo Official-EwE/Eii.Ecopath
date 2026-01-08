@@ -22,15 +22,12 @@
 Option Strict On
 Imports System.IO
 Imports System.Reflection
-Imports EwECore
 Imports EwELicense
-Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Serilog
-Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 

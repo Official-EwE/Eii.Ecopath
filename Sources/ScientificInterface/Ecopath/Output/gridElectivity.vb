@@ -21,10 +21,6 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region

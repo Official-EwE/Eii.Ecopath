@@ -20,8 +20,6 @@
 
 Option Strict On
 Imports System.ComponentModel
-Imports EwECore
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

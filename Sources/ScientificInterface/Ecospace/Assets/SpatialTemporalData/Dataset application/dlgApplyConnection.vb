@@ -21,12 +21,10 @@
 
 Option Strict On
 Imports System.Globalization
-Imports EwECore
+Imports EwECore.Common
+Imports EwECore.Plugins
 Imports EwECore.SpatialData
-Imports EwEPlugin
-Imports EwECore.Common
 Imports EwEUtils.Logging
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug

@@ -20,9 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing.Drawing2D
-Imports EwECore
-Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports
 

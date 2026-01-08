@@ -17,14 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.ComponentModel
-Imports System.Reflection
-Imports System.Drawing
-
-#End Region ' Imports
+Imports EwECore.Database
 
 ''' ===========================================================================
 ''' <summary>

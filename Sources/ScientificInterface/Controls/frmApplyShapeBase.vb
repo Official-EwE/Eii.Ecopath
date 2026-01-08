@@ -22,10 +22,6 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
-Imports EwECore.Common
-Imports ScientificInterfaceShared.Forms
-
 #End Region
 
 ''' =======================================================================

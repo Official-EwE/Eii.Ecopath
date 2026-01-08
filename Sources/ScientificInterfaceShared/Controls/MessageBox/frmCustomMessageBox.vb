@@ -20,13 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing
-Imports System
-Imports System.Windows.Forms
-Imports System.ComponentModel
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
-Imports EwECore.Common
 
 #End Region ' Imports
 

@@ -19,12 +19,9 @@
 
 #Region " Imports "
 
-Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug

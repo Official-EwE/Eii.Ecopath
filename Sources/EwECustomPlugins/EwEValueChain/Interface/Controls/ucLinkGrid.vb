@@ -20,12 +20,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports SourceGrid2
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports System.Reflection
-Imports ScientificInterfaceShared.Controls
-Imports cEwEDatabase
 Imports EwECore
+Imports EwECore.Database.cEwEDatabase
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports SourceGrid2
 
 #End Region ' Imports
 

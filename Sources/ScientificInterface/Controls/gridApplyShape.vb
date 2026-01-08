@@ -21,14 +21,8 @@
 
 Option Explicit On
 Option Strict On
-
-Imports System.Text
-Imports EwECore
-Imports EwECore.Common
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
-Imports SourceLibrary
 Imports System.ComponentModel
+Imports SourceGrid2
 
 #End Region
 

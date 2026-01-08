@@ -17,18 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwECore.Common
 Imports System.IO
 Imports EwECore
-Imports EwEPlugin
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Core
+Imports EwECore.Plugins.Ecospace
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 Public Class cEwEIBMAgeStructureResultsWriterPlugin
     Inherits cEcospaceBaseResultsWriter
@@ -71,7 +66,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
         MyBase.New()
         Me.vars = New eVarNameFlags() {eVarNameFlags.MultiStanzaAgeStructure}
     End Sub
-
 
 #Region "Implementation"
 
@@ -343,7 +337,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
 #End Region
 
-
 #Region "Plugin stuff"
 
     Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
@@ -370,11 +363,8 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
     Public Overrides Sub StartWrite()
         MyBase.CreateOutputDir()
-
         Me.m_bInitialized = False
         Me.InitOutputTypes()
-
-
     End Sub
 
     Public Overrides Sub EndWrite()
@@ -387,14 +377,10 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
     End Sub
 
     Public Sub CoreDataInitialized(objEcopathData As Object, objStanzaData As Object, objTaxonData As Object, objEcosamplerData As Object, objPDSdata As Object, objEcosimData As Object, objEcosimTimeSeriesData As Object, objSearchData As Object, objEcoSpaceData As Object) Implements ICoreDataPlugin.CoreDataInitialized
-
-
         m_StanzaData = TryCast(objStanzaData, cStanzaDatastructures)
         If m_StanzaData IsNot Nothing Then
             m_bInitialized = True
         End If
-
-
     End Sub
 
 

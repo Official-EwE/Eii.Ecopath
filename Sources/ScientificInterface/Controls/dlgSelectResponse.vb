@@ -21,16 +21,8 @@
 
 Option Strict On
 Option Explicit On
-
-Imports System.Windows.Forms
-Imports System.Drawing
-Imports System.Drawing.Drawing2D
-Imports EwECore
-Imports ScientificInterface.Other
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore.Common
-Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

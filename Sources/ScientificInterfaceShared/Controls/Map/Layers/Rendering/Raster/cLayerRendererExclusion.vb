@@ -20,11 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Utilities
-Imports System.Drawing.Drawing2D
 
 #End Region 'Imports
 

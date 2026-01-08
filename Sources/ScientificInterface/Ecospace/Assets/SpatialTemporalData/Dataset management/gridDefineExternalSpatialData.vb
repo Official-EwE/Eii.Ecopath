@@ -20,11 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
+Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports EwECore.Style
-Imports EwECore.Common
-Imports EwECore.Common
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

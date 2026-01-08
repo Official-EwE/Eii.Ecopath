@@ -17,18 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwECore
+Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports EwECore.Common
-Imports EwECore.Common
-Imports EwEUtils.SystemUtilities
-Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region ' Imports
 
 Namespace Ecospace.Controls
 

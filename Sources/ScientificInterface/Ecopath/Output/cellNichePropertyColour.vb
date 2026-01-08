@@ -19,12 +19,6 @@
 
 Option Strict On
 
-Imports EwECore
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports ScientificInterfaceShared.Properties
-Imports ScientificInterfaceShared.Style
-Imports EwECore.Common
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' A <see cref="cProperty">cProperty</see>-driven cell that reflects the 

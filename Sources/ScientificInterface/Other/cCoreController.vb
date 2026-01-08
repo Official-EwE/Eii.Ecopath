@@ -22,11 +22,6 @@
 Option Explicit On
 Option Strict On
 
-Imports EwECore
-Imports EwECore.Common
-Imports ScientificInterface.Ecosim
-Imports ScientificInterface.Ecospace
-
 #End Region ' Imports
 
 ''' ---------------------------------------------------------------------------

@@ -22,16 +22,14 @@
 Option Strict On
 Imports System.Drawing.Imaging
 Imports System.IO
-Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
-Imports EwECore.Common
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

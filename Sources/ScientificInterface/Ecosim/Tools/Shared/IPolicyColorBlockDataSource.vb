@@ -22,13 +22,6 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
-Imports EwECore.FishingPolicy
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore.Common
-Imports System.ComponentModel
-Imports EwEUtils.Utilities
-
 #End Region
 
 Namespace Ecosim

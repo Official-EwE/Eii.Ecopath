@@ -28,7 +28,7 @@ Namespace Controls.EwEGrid
     ''' </summary>
     ''' -------------------------------------------------------------------
     <CLSCompliant(False)> _
-     Public Class cVisualizerEwECollapseExpandRowHeader
+    Public Class cVisualizerEwECollapseExpandRowHeader
         : Inherits cEwEGridRowHeaderVisualizer
 
         Public Enum eCollapsedState As Integer
@@ -62,7 +62,7 @@ Namespace Controls.EwEGrid
     ''' </summary>
     ''' -------------------------------------------------------------------
     <CLSCompliant(False)> _
-     Public Class cVisualizerEwEParentRowHeader
+    Public Class cVisualizerEwEParentRowHeader
         : Inherits cEwEGridRowHeaderVisualizer
 
         Public Sub New()
@@ -78,7 +78,7 @@ Namespace Controls.EwEGrid
     ''' </summary>
     ''' -------------------------------------------------------------------
     <CLSCompliant(False)> _
-     Public Class cVisualizerEwEChildRowHeader
+    Public Class cVisualizerEwEChildRowHeader
         : Inherits cEwEGridRowHeaderVisualizer
 
         ''' <summary>Size of label indentation</summary>

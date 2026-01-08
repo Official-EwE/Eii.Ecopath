@@ -22,11 +22,9 @@
 Option Strict On
 
 Imports System.ComponentModel
-Imports EwECore
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Style
 
 
 #End Region ' Imports

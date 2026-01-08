@@ -22,9 +22,8 @@
 Option Strict On
 Option Explicit On
 
+Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports EwECore.Common
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

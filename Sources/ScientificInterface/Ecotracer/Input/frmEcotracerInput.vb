@@ -20,10 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterface.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore.Common
 
 #End Region ' Imports
 

@@ -21,9 +21,6 @@
 
 Option Strict On
 
-Imports EwECore
-Imports EwECore.Common
-
 #End Region ' Imports
 
 Namespace Other

@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Linq
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
 

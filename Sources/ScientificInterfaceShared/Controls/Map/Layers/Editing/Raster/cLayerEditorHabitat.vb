@@ -21,8 +21,6 @@
 
 Option Strict On
 
-Imports EwECore
-
 #End Region ' Imports 
 
 Namespace Controls.Map.Layers

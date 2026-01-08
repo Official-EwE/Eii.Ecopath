@@ -17,19 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwEPlugin
-Imports ScientificInterfaceShared.Controls
 Imports EwECore
-Imports EwECore.Common
-Imports System.Windows.Forms
-Imports System.Drawing
-
-#End Region
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.UI
+Imports ScientificInterfaceShared.Controls
 
 Public Class cPluginPoint
     Implements IEcopathRunCompleted2Plugin
@@ -42,8 +34,8 @@ Public Class cPluginPoint
 
 #Region " Running "
 
-    Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object, _
-                                   ByRef TaxonDataStructures As Object, _
+    Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object,
+                                   ByRef TaxonDataStructures As Object,
                                    ByRef StanzaDataStructures As Object) _
         Implements IEcopathRunCompleted2Plugin.EcopathRunCompleted
 

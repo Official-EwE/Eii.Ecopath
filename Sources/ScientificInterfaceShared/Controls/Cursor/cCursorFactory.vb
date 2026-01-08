@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Globalization
-Imports System.Threading
 Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports

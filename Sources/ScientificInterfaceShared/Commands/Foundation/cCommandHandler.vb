@@ -20,11 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System
-Imports System.Collections.Generic
-Imports System.Diagnostics
-Imports EwECore
-Imports EwEPlugin
 
 #End Region ' Imports
 

@@ -22,12 +22,9 @@
 Option Strict On
 
 Imports System.ComponentModel
-Imports EwECore
 Imports ScientificInterfaceShared.Commands
-Imports EwECore.Common
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
-Imports System.Linq
 
 #End Region ' Imports
 

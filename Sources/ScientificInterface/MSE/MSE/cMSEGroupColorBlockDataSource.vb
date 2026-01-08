@@ -23,7 +23,6 @@ Option Strict On
 Imports EwECore.MSE
 Imports ScientificInterface.Ecosim
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore
 
 #End Region ' Imports
 

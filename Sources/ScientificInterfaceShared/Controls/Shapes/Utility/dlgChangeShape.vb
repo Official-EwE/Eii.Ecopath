@@ -23,9 +23,7 @@ Option Explicit On
 Option Strict On
 
 Imports System.Drawing.Drawing2D
-Imports EwECore
 Imports EwECore.Common
-Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -52,7 +50,7 @@ Namespace Controls
         Private m_shape As cForcingFunction = Nothing
         ''' <summary></summary>
         Private m_handler As cShapeGUIHandler = Nothing
- 
+
 #End Region ' Private vars
 
 #Region " Constructor "

@@ -20,9 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports 
 
@@ -41,7 +38,7 @@ Namespace Controls.Map.Layers
 
         Public Sub New()
             MyBase.New(GetType(ucLayerEditorMigration))
-         End Sub
+        End Sub
 
 #End Region ' Construction
 

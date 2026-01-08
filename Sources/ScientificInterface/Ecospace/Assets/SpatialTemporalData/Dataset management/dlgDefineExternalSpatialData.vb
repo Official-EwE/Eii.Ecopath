@@ -20,16 +20,14 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
+Imports EwECore.Common
+Imports EwECore.Plugins
 Imports EwECore.SpatialData
-Imports EwEPlugin
-Imports EwECore.Common
-Imports EwECore.Common
-Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

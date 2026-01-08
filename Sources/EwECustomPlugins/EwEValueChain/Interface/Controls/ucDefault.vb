@@ -17,9 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
 Imports System.Windows.Forms
-Imports cEwEDatabase
+Imports EwECore.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 

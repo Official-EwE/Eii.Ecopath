@@ -20,7 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Controls
+Imports EwECore
 
 #End Region ' Imports
 

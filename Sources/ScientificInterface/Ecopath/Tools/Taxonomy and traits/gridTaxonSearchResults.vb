@@ -17,17 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-
-Imports EwECore.Data
 Imports EwECore.Common
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwECore.Plugins.Data
 Imports SourceGrid2
-
-#End Region ' Imports
 
 <CLSCompliant(False)> _
 Public Class gridTaxonSearchResults

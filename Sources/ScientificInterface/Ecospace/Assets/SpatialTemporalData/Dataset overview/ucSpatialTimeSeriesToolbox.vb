@@ -21,10 +21,8 @@
 
 Option Strict On
 Imports System.Drawing.Drawing2D
-Imports EwECore
+Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports EwECore.Common
-Imports EwECore.Common
 Imports ScientificInterfaceShared.Utilities
 
 #End Region ' Imports

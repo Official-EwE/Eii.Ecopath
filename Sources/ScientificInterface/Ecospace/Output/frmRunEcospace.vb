@@ -25,10 +25,8 @@ Option Explicit On
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Threading
-Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
-Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities

@@ -20,14 +20,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwECore.Style
-Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports ScientificInterface.Other
-Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 

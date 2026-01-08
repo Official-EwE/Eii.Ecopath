@@ -21,13 +21,8 @@
 
 Option Explicit On
 Option Strict On
-
-Imports EwECore
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Commands
 Imports ZedGraph
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

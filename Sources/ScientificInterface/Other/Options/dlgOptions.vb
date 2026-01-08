@@ -21,14 +21,12 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
-Imports EwEPlugin
-Imports EwECore.Common
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 

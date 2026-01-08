@@ -20,9 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports System.Collections
-Imports System.Windows.Forms
 
 #End Region ' Imports
 

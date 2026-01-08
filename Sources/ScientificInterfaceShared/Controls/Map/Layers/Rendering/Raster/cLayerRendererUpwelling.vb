@@ -20,11 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwECore.Auxiliary
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
 
 #End Region 'Imports
 

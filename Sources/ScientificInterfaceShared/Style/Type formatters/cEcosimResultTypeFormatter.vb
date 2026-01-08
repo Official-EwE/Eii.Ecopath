@@ -22,7 +22,6 @@
 Option Strict On
 Imports EwECore.Ecosim
 Imports EwECore.Style
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

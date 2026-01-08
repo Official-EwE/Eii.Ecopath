@@ -17,17 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports System.Windows.Forms
 Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
+Imports EwECore.Plugins.UI
 Imports EwEMSPPlugin.UI
-Imports EwEPlugin
-Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
-
-#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -40,12 +35,12 @@ Imports ScientificInterfaceShared.Controls
 ''' <item>The EwE6 help system.</item>
 ''' </list>
 ''' </summary>
-''' <seealso cref="EwECore.IMenuItemPlugin" />
-''' <seealso cref="EwECore.IUIContextPlugin" />
-''' <seealso cref="EwECore.IEcospacePlugin" />
-''' <seealso cref="EwECore.IEcospaceInitializedPlugin" />
-''' <seealso cref="EwECore.IEcospaceInitRunCompletedPlugin" />
-''' <seealso cref="EwECore.IHelpPlugin" />
+''' <seealso cref="IMenuItemPlugin" />
+''' <seealso cref="IUIContextPlugin" />
+''' <seealso cref="IEcospacePlugin" />
+''' <seealso cref="IEcospaceInitializedPlugin" />
+''' <seealso cref="IEcospaceInitRunCompletedPlugin" />
+''' <seealso cref="IHelpPlugin" />
 ''' ---------------------------------------------------------------------------
 Public Class cMSPEwEPluginPoint
     Implements IMenuItemPlugin
