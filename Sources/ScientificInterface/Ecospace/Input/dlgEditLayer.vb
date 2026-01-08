@@ -23,7 +23,7 @@ Option Explicit On
 Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources

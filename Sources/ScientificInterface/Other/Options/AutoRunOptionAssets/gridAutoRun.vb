@@ -21,7 +21,7 @@
 Option Strict On
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SourceGrid2
 Imports SourceGrid2.Cells

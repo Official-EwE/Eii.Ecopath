@@ -23,7 +23,7 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 #End Region
 
@@ -100,8 +100,8 @@ Namespace Ecospace
             If (nZones < iMaxReg) Then
                 ' ToDo: globalize this
                 Dim fmsg As New cFeedbackMessage("There are cells that will no longer be assigned to effort distribution zones if you continue.",
-                                                 EwEUtils.Core.eCoreComponentType.Ecospace, eMessageType.Any, eMessageImportance.Question,
-                                                 eMessageReplyStyle.OK_CANCEL, EwEUtils.Core.eDataTypes.NotSet, eMessageReply.CANCEL)
+                                                 eCoreComponentType.Ecospace, eMessageType.Any, eMessageImportance.Question,
+                                                 eMessageReplyStyle.OK_CANCEL, eDataTypes.NotSet, eMessageReply.CANCEL)
                 fmsg.Suppressable = True
                 Me.m_uic.Core.Messages.SendMessage(fmsg)
                 If (fmsg.Reply <> eMessageReply.OK) Then Return

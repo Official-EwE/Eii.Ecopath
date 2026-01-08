@@ -19,7 +19,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
 Imports System.IO
 
 #End Region ' Imports

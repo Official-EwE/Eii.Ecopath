@@ -23,7 +23,7 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph

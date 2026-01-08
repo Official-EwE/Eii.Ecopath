@@ -24,7 +24,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging

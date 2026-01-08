@@ -22,7 +22,7 @@
 Option Strict On
 Option Explicit On
 
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging

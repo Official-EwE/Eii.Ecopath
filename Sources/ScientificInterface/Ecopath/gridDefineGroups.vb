@@ -22,7 +22,7 @@
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Drawing
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities

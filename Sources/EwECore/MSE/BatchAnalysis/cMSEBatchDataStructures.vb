@@ -18,9 +18,6 @@
 '
 
 Option Strict On
-
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -90,7 +87,7 @@ Namespace MSEBatchManager
         ''' number of Control type
         ''' </summary>
         ''' <remarks>dimensioned NControlTypes, nFleets</remarks>
-        Public ControlType(,) As EwEUtils.Core.eQuotaTypes
+        Public ControlType(,) As eQuotaTypes
 
         Public OuputType() As eMSEBatchOuputTypes
         Public isOuputSaved() As Boolean

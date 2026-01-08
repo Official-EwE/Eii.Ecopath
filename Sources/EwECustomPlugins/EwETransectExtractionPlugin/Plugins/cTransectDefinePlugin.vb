@@ -24,7 +24,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

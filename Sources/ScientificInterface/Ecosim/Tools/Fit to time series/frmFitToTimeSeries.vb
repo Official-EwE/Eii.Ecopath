@@ -23,7 +23,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwECore.FitToTimeSeries
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging

@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports System.Windows.Forms
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports

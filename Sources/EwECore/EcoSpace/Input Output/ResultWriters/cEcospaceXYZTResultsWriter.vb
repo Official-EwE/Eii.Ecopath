@@ -22,9 +22,8 @@
 Option Strict On
 Imports System.IO
 Imports System.Text
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -295,8 +294,8 @@ Public Class cEcospaceXYZTResultsWriter
                 Me.WriteHeader(strm, varname, "Contaminant Concentrations", grp)
                 'End If
                 strm.Close()
-                    strm = Nothing
-                End If
+                strm = Nothing
+            End If
         Next
 
     End Sub

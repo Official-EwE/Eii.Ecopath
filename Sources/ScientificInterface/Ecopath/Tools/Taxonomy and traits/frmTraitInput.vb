@@ -22,8 +22,8 @@
 Option Strict On
 Imports EwECore
 Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
+Imports EwECore.Data
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 

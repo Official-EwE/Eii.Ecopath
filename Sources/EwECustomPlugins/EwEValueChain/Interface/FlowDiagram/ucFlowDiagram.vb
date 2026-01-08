@@ -25,7 +25,7 @@ Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands

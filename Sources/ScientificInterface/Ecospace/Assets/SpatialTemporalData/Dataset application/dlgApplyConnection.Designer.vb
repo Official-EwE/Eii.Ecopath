@@ -377,7 +377,7 @@ Namespace Ecospace.Controls
             Me.m_lbSourceDatasets.Sorted = True
             Me.m_lbSourceDatasets.TextFilter = ""
             Me.m_lbSourceDatasets.UIContext = Nothing
-            Me.m_lbSourceDatasets.VariableFilter = EwEUtils.Core.eVarNameFlags.NotSet
+            Me.m_lbSourceDatasets.VariableFilter = eVarNameFlags.NotSet
             '
             'm_btnRemove
             '

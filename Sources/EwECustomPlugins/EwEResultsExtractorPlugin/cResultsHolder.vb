@@ -24,17 +24,17 @@ Imports ScientificInterfaceShared.Controls
 
 Public Class cResultsHolder
 
-    Implements EwEPlugin.IMenuItemPlugin
+    Implements EwECore.IMenuItemPlugin
 
-    Implements EwEPlugin.IEcosimModifyTimeseriesPlugin
-    Implements EwEPlugin.IEcosimEndTimestepPlugin
-    Implements EwEPlugin.IEcosimRunCompletedPlugin
-    Implements EwEPlugin.IEcosimRunInitializedPlugin
-    Implements EwEPlugin.ICorePlugin
+    Implements EwECore.IEcosimModifyTimeseriesPlugin
+    Implements EwECore.IEcosimEndTimestepPlugin
+    Implements EwECore.IEcosimRunCompletedPlugin
+    Implements EwECore.IEcosimRunInitializedPlugin
+    Implements EwECore.ICorePlugin
 
-    Implements EwEPlugin.IUIContextPlugin
+    Implements EwECore.IUIContextPlugin
 
-    Implements EwEPlugin.IHelpPlugin
+    Implements EwECore.IHelpPlugin
 
     Private ResultsForm As frmResults = Nothing
     Private m_core As cCore = Nothing
@@ -49,32 +49,32 @@ Public Class cResultsHolder
     Private sumSS() As Single
     Private mEcosimModel As Ecosim.cEcosimModel = Nothing
 
-    Public ReadOnly Property ControlImage() As Object Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage() As Object Implements EwECore.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
     End Property
 
-    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property DisplayName() As String Implements IPlugin.DisplayName
         Get
             Return My.Resources.PLUGIN_NAME
         End Get
     End Property
 
-    Public ReadOnly Property ControlTooltipText() As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText() As String Implements EwECore.IGUIPlugin.ControlTooltipText
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState() As eCoreExecutionState Implements EwECore.IGUIPlugin.EnabledState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcosimCompleted
+            Return eCoreExecutionState.EcosimCompleted
         End Get
     End Property
 
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
+        Implements EwECore.IGUIPlugin.OnControlClick
 
         Dim bHasForm As Boolean = False
 
@@ -95,45 +95,45 @@ Public Class cResultsHolder
 
     End Sub
 
-    Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation() As String Implements EwECore.IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
     End Property
 
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author() As String Implements IPlugin.Author
         Get
             Return "Mark Platts CEFAS"
         End Get
     End Property
 
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact() As String Implements IPlugin.Contact
         Get
             Return "ewedevlowestoft@gmail.com"
         End Get
     End Property
 
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description() As String Implements IPlugin.Description
         Get
             Return My.Resources.PLUGIN_DESCRIPTION
         End Get
     End Property
 
-    Public Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(core As Object) Implements IPlugin.Initialize
         Me.m_core = core
     End Sub
 
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name() As String Implements IPlugin.Name
         Get
             Return "EwEResultExtractorResultHolderPlugin"
         End Get
     End Property
 
-    Public Sub EcosimModifyTimeseries(TimeSeriesDataStructures As Object) Implements EwEPlugin.IEcosimModifyTimeseriesPlugin.EcosimModifyTimeseries
+    Public Sub EcosimModifyTimeseries(TimeSeriesDataStructures As Object) Implements EwECore.IEcosimModifyTimeseriesPlugin.EcosimModifyTimeseries
         Me.mTimeSeries = TimeSeriesDataStructures
     End Sub
 
-    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) Implements EwECore.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Dim iDyear As Integer
         Dim DataStructure As cEcosimDatastructures = EcosimDatastructures
@@ -200,7 +200,7 @@ Public Class cResultsHolder
 
     End Sub
 
-    Public Sub EcosimRunCompleted(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
+    Public Sub EcosimRunCompleted(EcosimDatastructures As Object) Implements EwECore.IEcosimRunCompletedPlugin.EcosimRunCompleted
         Dim iYear As Integer
 
         Me.mDataStructure = EcosimDatastructures
@@ -220,27 +220,27 @@ Public Class cResultsHolder
 
 
 
-    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements EwECore.IEcosimRunInitializedPlugin.EcosimRunInitialized
         ReDim Me.ZStat(Me.mTimeSeries.AppliedNdatType, Me.mTimeSeries.AppliedDatPoints)
         ReDim Me.logdiff(Me.mTimeSeries.AppliedNdatType, Me.mTimeSeries.AppliedDatPoints)
         ReDim Me.sumSS(Me.mTimeSeries.AppliedNdatType)
     End Sub
 
-    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
+    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwECore.ICorePlugin.CoreInitialized
         Me.mEcosimModel = objEcoSim
     End Sub
 
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements EwECore.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
-    Public ReadOnly Property HelpTopic As String Implements EwEPlugin.IHelpPlugin.HelpTopic
+    Public ReadOnly Property HelpTopic As String Implements EwECore.IHelpPlugin.HelpTopic
         Get
             Return ".\UserGuide\ResultsExtractorPlug.pdf"
         End Get
     End Property
 
-    Public ReadOnly Property HelpURL As String Implements EwEPlugin.IHelpPlugin.HelpURL
+    Public ReadOnly Property HelpURL As String Implements EwECore.IHelpPlugin.HelpURL
         Get
             Return Me.HelpTopic
         End Get

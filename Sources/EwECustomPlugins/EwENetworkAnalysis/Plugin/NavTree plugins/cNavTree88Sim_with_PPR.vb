@@ -55,9 +55,9 @@ Public Class cNavTree88Sim_with_PPR
         End Get
     End Property
 
-    Public Overrides ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState
+    Public Overrides ReadOnly Property EnabledState() As eCoreExecutionState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+            Return eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 

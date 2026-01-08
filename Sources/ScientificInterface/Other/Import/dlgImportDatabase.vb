@@ -22,7 +22,7 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.Database
-Imports EwEUtils.Database
+Imports EwECore.Database
 
 #End Region ' Imports
 

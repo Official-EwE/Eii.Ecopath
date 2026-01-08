@@ -23,7 +23,7 @@ Option Strict On
 
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Controls.Map.Layers
@@ -198,7 +198,7 @@ Namespace Ecospace.Basemap
 
             If Not Me.m_data.ReadXYFile(Me.m_tbInput.Text, Me.RowField, Me.ColField) Then
                 Dim msg As New cMessage(cStringUtils.Localize(SharedResources.FILE_LOAD_ERROR_READ, Me.m_tbInput.Text),
-                                        eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
+                                        eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
                 Me.m_uic.Core.Messages.SendMessage(msg)
                 bSuccess = False
             End If

@@ -21,18 +21,17 @@
 
 Option Strict On
 
-Imports System.IO
-Imports EwECore.DataSources
-Imports EwEUtils.Core
-Imports EwEUtils.Database
-Imports System.Xml
-Imports System.Text
 Imports System.Data.OleDb
-Imports EwEUtils.Utilities
+Imports System.IO
+Imports System.Text
+Imports System.Xml
+Imports EwECore.Auxiliary
+Imports EwECore.Common
+Imports EwECore.Database
+Imports EwECore.DataSources
 Imports EwECore.MSE
 Imports EwECore.SpatialData
-Imports EwECore.Auxiliary
-Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -3807,7 +3806,7 @@ Public Class cEIIXMLDataSource
         Return False
     End Function
 
-    Public Function IsOSSupported(dst As EwEUtils.Core.eDataSourceTypes) As Boolean _
+    Public Function IsOSSupported(dst As eDataSourceTypes) As Boolean _
         Implements IEwEDataSource.IsOSSupported
         Return True ' We can do this!
     End Function

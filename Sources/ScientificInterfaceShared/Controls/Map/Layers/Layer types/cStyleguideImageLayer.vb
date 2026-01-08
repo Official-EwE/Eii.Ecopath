@@ -22,7 +22,7 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Properties

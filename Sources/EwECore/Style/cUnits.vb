@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports System.Text
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -73,7 +72,7 @@ Namespace Style
                 End If
                 n += 1
             End While
-            If (n  > iStart) Then sb.Append(strUnits.Substring(iStart, n - iStart))
+            If (n > iStart) Then sb.Append(strUnits.Substring(iStart, n - iStart))
 
             Return sb.ToString()
 

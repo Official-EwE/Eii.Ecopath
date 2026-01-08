@@ -77,7 +77,7 @@ Friend Class cMultiSimLog
             Me.m_strLogFile = Path.Combine(Me.m_eng.OutputPath, cMultiSimLog.g_sLogFile)
             Me.m_sw = New StreamWriter(Me.m_strLogFile)
             If (Me.m_core.SaveWithFileHeader) Then
-                Me.m_sw.WriteLine(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecosim))
+                Me.m_sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
             End If
         Catch ex As Exception
             ' Plok

@@ -62,9 +62,9 @@ Public Class cShapeGridEcosimEnvResponsesPlugin
         Return GetType(gridFunctionalResponses)
     End Function
 
-    Public Overrides ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState
+    Public Overrides ReadOnly Property EnabledState As eCoreExecutionState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+            Return eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 

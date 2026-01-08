@@ -18,7 +18,6 @@
 '
 
 Option Strict On
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' This class wraps the underlying particle size distribution data structures

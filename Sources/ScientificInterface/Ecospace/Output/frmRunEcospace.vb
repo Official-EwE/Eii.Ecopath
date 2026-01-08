@@ -28,7 +28,7 @@ Imports System.Threading
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities

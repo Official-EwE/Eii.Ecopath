@@ -21,14 +21,14 @@
 
 Option Strict On
 Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
+Imports EwECore.Data
+Imports EwECore.Common
 Imports EwECore
 
 #End Region
 
 Friend Class cEwENetworkAnalysisData
-    Implements EwEPlugin.Data.IPluginData
+    Implements EwECore.Data.IPluginData
     Implements INetworkAnalysisData
 
     Private m_man As cNetworkManager = Nothing
@@ -70,7 +70,7 @@ Friend Class cEwENetworkAnalysisData
     End Property
 
     Public ReadOnly Property LIndex As Single() _
-        Implements EwEUtils.Core.INetworkAnalysisData.LIndex
+        Implements INetworkAnalysisData.LIndex
         Get
             Me.m_man.RunRequiredPrimaryProd()
             Dim data(Me.m_man.nGroups) As Single

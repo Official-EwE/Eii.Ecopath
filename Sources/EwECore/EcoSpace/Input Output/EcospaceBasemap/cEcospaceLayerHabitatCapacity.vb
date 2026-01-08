@@ -20,11 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
-Imports DefaultRes = EwECore.My.Resources.CoreDefaults
-
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwEUtils.Utilities
 
 
 #End Region ' Imports

@@ -18,10 +18,7 @@
 '
 
 Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Database
-Imports System.Data
-Imports EwEUtils.Core
+Imports EwECore.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -44,7 +41,7 @@ Friend Class cDBUpdate6_00_04_0004
     ''' <param name="db">Database to modify.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
+    Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
 
         Return Me.FixRelPP(db) And Me.FixUnits(db)
@@ -81,7 +78,7 @@ Friend Class cDBUpdate6_00_04_0004
         End Get
     End Property
 
-    Private Function FixRelPP(db As EwEUtils.Database.cEwEDatabase) As Boolean
+    Private Function FixRelPP(db As cEwEDatabase) As Boolean
 
         ' Query to count # of non-zero cells in the basemap
         Dim strQueryCheck As String = "SELECT COUNT(*) FROM EcospaceScenarioBasemap WHERE RelPP<>0 AND ScenarioID={0}"
@@ -125,7 +122,7 @@ Friend Class cDBUpdate6_00_04_0004
 
     End Structure
 
-    Private Function FixUnits(db As EwEUtils.Database.cEwEDatabase) As Boolean
+    Private Function FixUnits(db As cEwEDatabase) As Boolean
 
         Dim strSQL As String = ""
         Dim lMappings As New List(Of cUnitMapping)

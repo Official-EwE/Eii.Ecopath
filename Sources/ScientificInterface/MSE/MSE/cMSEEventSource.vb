@@ -23,7 +23,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 #End Region
 

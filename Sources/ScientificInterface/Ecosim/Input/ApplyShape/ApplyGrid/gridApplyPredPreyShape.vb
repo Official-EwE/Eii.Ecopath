@@ -24,7 +24,7 @@ Option Strict On
 
 Imports System.Text
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceLibrary

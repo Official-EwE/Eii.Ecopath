@@ -25,7 +25,7 @@ Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Reflection
 Imports SourceGrid2
-Imports EwEUtils.Database
+Imports EwECore.Database
 Imports EwECore.DataSources
 
 #End Region ' Imports

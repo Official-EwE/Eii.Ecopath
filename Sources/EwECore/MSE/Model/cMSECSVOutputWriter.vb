@@ -23,9 +23,7 @@ Option Strict On
 Imports System.IO
 Imports System.Text
 Imports EwECore.MSE
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -169,7 +167,7 @@ Friend Class cMSECSVOutputWriter
                     strm = New StreamWriter(strFile, True)
                     strm.WriteLine(buff)
                     strm.Close()
-  
+
                 Catch ex As Exception
                     ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(EFFORT_DATA, epdata.GroupName(iflt)))
                     System.Console.WriteLine(Me.ToString & " Failed to write data to file " & strFile & " Exception: " & ex.Message)

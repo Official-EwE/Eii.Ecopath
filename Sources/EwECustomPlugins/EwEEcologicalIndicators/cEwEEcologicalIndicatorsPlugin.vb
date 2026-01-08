@@ -26,7 +26,7 @@ Imports System.Text
 Imports System.Threading
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls
@@ -42,27 +42,27 @@ Imports System.Threading.Tasks
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cEwEEcologicalIndicatorsPlugin
-    Implements EwEPlugin.ICorePlugin
-    Implements EwEPlugin.IDisposedPlugin
-    Implements EwEPlugin.IEcopathPlugin
-    Implements EwEPlugin.IEcopathRunCompleted2Plugin
-    Implements EwEPlugin.IEcopathRunInvalidatedPlugin
-    Implements EwEPlugin.IEcosimPlugin
-    Implements EwEPlugin.IEcosimInitializedPlugin
-    Implements EwEPlugin.IEcosimRunCompletedPostPlugin
-    Implements EwEPlugin.IEcosimRunInvalidatedPlugin
-    Implements EwEPlugin.IEcosimRunInitializedPlugin
-    Implements EwEPlugin.IEcospacePlugin
-    Implements EwEPlugin.IEcospaceBeginTimestepPlugin
-    Implements EwEPlugin.IEcospaceEndTimestepPlugin
-    Implements EwEPlugin.IEcospaceRunInvalidatedPlugin
-    Implements EwEPlugin.IEcospaceInitRunCompletedPlugin
-    Implements EwEPlugin.IEcospaceRunCompletedPlugin
-    Implements EwEPlugin.IMenuItemPlugin
-    Implements EwEPlugin.INavigationTreeItemPlugin
-    Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.IMonteCarloPlugin
-    Implements EwEPlugin.IAutoRunPlugin
+    Implements EwECore.ICorePlugin
+    Implements EwECore.IDisposedPlugin
+    Implements EwECore.IEcopathPlugin
+    Implements EwECore.IEcopathRunCompleted2Plugin
+    Implements EwECore.IEcopathRunInvalidatedPlugin
+    Implements EwECore.IEcosimPlugin
+    Implements EwECore.IEcosimInitializedPlugin
+    Implements EwECore.IEcosimRunCompletedPostPlugin
+    Implements EwECore.IEcosimRunInvalidatedPlugin
+    Implements EwECore.IEcosimRunInitializedPlugin
+    Implements EwECore.IEcospacePlugin
+    Implements EwECore.IEcospaceBeginTimestepPlugin
+    Implements EwECore.IEcospaceEndTimestepPlugin
+    Implements EwECore.IEcospaceRunInvalidatedPlugin
+    Implements EwECore.IEcospaceInitRunCompletedPlugin
+    Implements EwECore.IEcospaceRunCompletedPlugin
+    Implements EwECore.IMenuItemPlugin
+    Implements EwECore.INavigationTreeItemPlugin
+    Implements EwECore.IUIContextPlugin
+    Implements EwECore.IMonteCarloPlugin
+    Implements EwECore.IAutoRunPlugin
 
 #Region " Variables "
 
@@ -135,7 +135,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' Return the author(s) of this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author() As String Implements IPlugin.Author
         Get
             Return "Marta Coll Montón, Jeroen Steenbeek"
         End Get
@@ -146,34 +146,34 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' Return the contact information for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact() As String Implements IPlugin.Contact
         Get
             Return "mailto:martacoll@yahoo.com"
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IPlugin.Description"/>
+    ''' <inheritdocs cref="IPlugin.Description"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description() As String Implements IPlugin.Description
         Get
             Return Me.DisplayName
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IPlugin.DisplayName"/>
+    ''' <inheritdocs cref="IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
             Return My.Resources.DISPLAYNAME
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IPlugin.Name"/>
+    ''' <inheritdocs cref="IPlugin.Name"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name() As String Implements IPlugin.Name
         Get
             Return PluginName
         End Get
@@ -191,7 +191,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' <param name="core">The <see cref="cCore">core</see> that this plug-in
     ''' can connect to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(core As Object) Implements IPlugin.Initialize
 
         ' Grab and remember core when it is provided via the plug-in mechanism
         Me.m_core = DirectCast(core, cCore)
@@ -216,15 +216,15 @@ Public Class cEwEEcologicalIndicatorsPlugin
     Public Sub CoreInitialized(ByRef objEcoPath As Object,
                                ByRef objEcoSim As Object,
                                ByRef objEcoSpace As Object) _
-                           Implements EwEPlugin.ICorePlugin.CoreInitialized
+                           Implements EwECore.ICorePlugin.CoreInitialized
         ' Not needed at this moment
     End Sub
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IDisposedPlugin.Dispose"/>
+    ''' <inheritdocs cref="EwECore.IDisposedPlugin.Dispose"/>
     ''' -----------------------------------------------------------------------
     Public Sub Dispose() _
-        Implements EwEPlugin.IDisposedPlugin.Dispose
+        Implements EwECore.IDisposedPlugin.Dispose
 
         If Me.HasUI Then Me.m_frm.Close()
         If Me.m_frm IsNot Nothing Then Me.m_frm.Dispose()
@@ -248,7 +248,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(dataSource As Object) As Boolean _
-        Implements EwEPlugin.IEcopathPlugin.LoadModel
+        Implements EwECore.IEcopathPlugin.LoadModel
 
     End Function
 
@@ -258,7 +258,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function SaveModel(dataSource As Object) As Boolean _
-        Implements EwEPlugin.IEcopathPlugin.SaveModel
+        Implements EwECore.IEcopathPlugin.SaveModel
 
     End Function
 
@@ -268,7 +268,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function Closemodel() As Boolean _
-         Implements EwEPlugin.IEcopathPlugin.CloseModel
+         Implements EwECore.IEcopathPlugin.CloseModel
 
         ' Clear previous results
         Me.m_indEcopath = Nothing
@@ -294,7 +294,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' -----------------------------------------------------------------------
     Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object,
                                    ByRef TaxonDataStructures As Object,
-                                   ByRef StanzaDataStructures As Object) Implements EwEPlugin.IEcopathRunCompleted2Plugin.EcopathRunCompleted
+                                   ByRef StanzaDataStructures As Object) Implements EwECore.IEcopathRunCompleted2Plugin.EcopathRunCompleted
 
         ' Grab and remember ecopath data structures when provided via the plug-in mechanism
         Me.m_ecopathDS = DirectCast(EcopathDataStructures, cEcopathDataStructures)
@@ -327,7 +327,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
     End Sub
 
-    Public Sub EcopathRunInvalidated() Implements EwEPlugin.IEcopathRunInvalidatedPlugin.EcopathRunInvalidated
+    Public Sub EcopathRunInvalidated() Implements EwECore.IEcopathRunInvalidatedPlugin.EcopathRunInvalidated
 
         ' Do not calculate if not supposed to run with Ecospath
         If (Not Me.m_settings.RunWithEcopath) Then Return
@@ -346,12 +346,12 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub LoadEcosimScenario(dataSource As Object) _
-        Implements EwEPlugin.IEcosimPlugin.LoadEcosimScenario
+        Implements EwECore.IEcosimPlugin.LoadEcosimScenario
         Me.ClearEcosimIndicators()
     End Sub
 
     Public Sub EcosimInitialized(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
+        Implements EwECore.IEcosimInitializedPlugin.EcosimInitialized
 
         ' Grab and remember ecosim data structures when provided via the plug-in mechanism
         Me.m_ecosimDS = DirectCast(EcosimDatastructures, cEcosimDatastructures)
@@ -365,7 +365,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' <param name="EcosimDatastructures"></param>
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+        Implements EwECore.IEcosimRunInitializedPlugin.EcosimRunInitialized
 
         If (Me.m_core.StateMonitor.IsSearching()) Then
             Me.m_bRunWithEcosim = False
@@ -387,7 +387,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' <param name="EcosimDatastructures">The <see cref="cEcosimDatastructures">Ecosim data</see> with results.</param>
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunCompletedPost(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimRunCompletedPostPlugin.EcosimRunCompletedPost
+        Implements EwECore.IEcosimRunCompletedPostPlugin.EcosimRunCompletedPost
 
         If (Not Me.m_bRunWithEcosim) Then Return
 
@@ -429,7 +429,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunInvalidated() _
-        Implements EwEPlugin.IEcosimRunInvalidatedPlugin.EcosimRunInvalidated
+        Implements EwECore.IEcosimRunInvalidatedPlugin.EcosimRunInvalidated
         Me.ClearEcosimIndicators()
     End Sub
 
@@ -438,7 +438,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' Ecosim is closing. Forget Sim and MC indicators.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub CloseEcosimScenario() Implements EwEPlugin.IEcosimPlugin.CloseEcosimScenario
+    Public Sub CloseEcosimScenario() Implements EwECore.IEcosimPlugin.CloseEcosimScenario
         Me.ClearEcosimIndicators()
         Me.ClearMCIndicators()
     End Sub
@@ -450,7 +450,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' <param name="dataSource"></param>
     ''' -----------------------------------------------------------------------
     Public Sub SaveEcosimScenario(dataSource As Object) _
-        Implements EwEPlugin.IEcosimPlugin.SaveEcosimScenario
+        Implements EwECore.IEcosimPlugin.SaveEcosimScenario
         ' NOP
     End Sub
 
@@ -459,14 +459,14 @@ Public Class cEwEEcologicalIndicatorsPlugin
 #Region " Monte Carlo "
 
     Public Sub MontCarloInitialized(MonteCarloAsObject As Object) _
-        Implements EwEPlugin.IMonteCarloPlugin.MontCarloInitialized
+        Implements EwECore.IMonteCarloPlugin.MontCarloInitialized
         ' NOP
     End Sub
 
     Private m_bInitialized As Boolean = False
 
     Public Sub MonteCarloRunInitialized() _
-        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunInitialized
+        Implements EwECore.IMonteCarloPlugin.MonteCarloRunInitialized
 
         ' Sanity checks
         Debug.Assert(Me.m_ecopathDS IsNot Nothing)
@@ -486,7 +486,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     End Sub
 
     Public Sub MonteCarloBalancedEcopathModel(TrialNumber As Integer, nIterations As Integer) _
-        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
+        Implements EwECore.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
 
         ' Calculate only if supposed to run with MC
         If (Not Me.m_bRunWithMonteCarlo) Then Return
@@ -499,7 +499,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     End Sub
 
     Public Sub MonteCarloEcosimRunCompleted() _
-        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloEcosimRunCompleted
+        Implements EwECore.IMonteCarloPlugin.MonteCarloEcosimRunCompleted
 
         Dim man As cMonteCarloManager = Me.m_core.EcosimMonteCarlo
         Dim lIter As New List(Of cMCIndicators)
@@ -530,7 +530,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub MonteCarloCompleted() _
-        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunCompleted
+        Implements EwECore.IMonteCarloPlugin.MonteCarloRunCompleted
 
         If (Me.m_bRunWithEcosim Or Me.m_bRunWithMonteCarlo) Then
             Me.m_ecosimDS.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
@@ -559,24 +559,24 @@ Public Class cEwEEcologicalIndicatorsPlugin
 #Region " Ecospace "
 
     Public Sub LoadEcospaceScenario(dataSource As Object) _
-        Implements EwEPlugin.IEcospacePlugin.LoadEcospaceScenario
+        Implements EwECore.IEcospacePlugin.LoadEcospaceScenario
         Me.ClearEcospaceIndicators()
     End Sub
 
     Public Sub SaveEcospaceScenario(dataSource As Object) _
-        Implements EwEPlugin.IEcospacePlugin.SaveEcospaceScenario
+        Implements EwECore.IEcospacePlugin.SaveEcospaceScenario
         ' NOP
     End Sub
 
     Public Sub CloseEcospaceScenario() _
-        Implements EwEPlugin.IEcospacePlugin.CloseEcospaceScenario
+        Implements EwECore.IEcospacePlugin.CloseEcospaceScenario
         Me.ClearEcospaceIndicators()
     End Sub
 
     Private m_bSavingEcospace As Boolean = False
 
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) _
-        Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
+        Implements EwECore.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
         Me.m_bRunWithEcospace = Me.m_settings.RunWithEcospace
 
@@ -688,7 +688,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     End Sub
 
     Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) _
-        Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
+        Implements EwECore.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
 
         ' Calculate only if supposed to run with Ecospace
         If (Me.m_bRunWithEcospace = False) Then Return
@@ -712,7 +712,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     End Sub
 
     Public Sub EcospaceRunInvalidated() _
-        Implements EwEPlugin.IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated
+        Implements EwECore.IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated
         ' Clear
         Me.ClearEcospaceIndicators()
         Me.m_bRunWithEcospace = False
@@ -723,30 +723,30 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
 #Region " UI "
 
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements EwECore.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
-    Public ReadOnly Property ControlImage As Object Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage As Object Implements EwECore.IGUIPlugin.ControlImage
         Get
             Return My.Resources.indicator16x16
         End Get
     End Property
 
-    Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText As String Implements EwECore.IGUIPlugin.ControlTooltipText
         Get
             Return My.Resources.DISPLAYNAME_INFO
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState As eCoreExecutionState Implements EwECore.IGUIPlugin.EnabledState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcopathLoaded
+            Return eCoreExecutionState.EcopathLoaded
         End Get
     End Property
 
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
+        Implements EwECore.IGUIPlugin.OnControlClick
 
         If (Not Me.HasUI) Then
             Me.m_frm = New frmMain(Me.m_uic, Me)
@@ -756,14 +756,14 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
     End Sub
 
-    Public ReadOnly Property MenuItemLocation As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation As String Implements EwECore.IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
     End Property
 
     Public ReadOnly Property NavigationTreeItemLocation As String _
-        Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+        Implements EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             Return "ndTimeDynamic\ndEcosimTools"
         End Get

@@ -23,7 +23,7 @@ Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwETransectExtractionPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map

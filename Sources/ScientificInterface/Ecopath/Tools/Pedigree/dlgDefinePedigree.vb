@@ -24,7 +24,7 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 
 #End Region

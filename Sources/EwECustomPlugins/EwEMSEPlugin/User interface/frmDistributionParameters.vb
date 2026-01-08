@@ -27,7 +27,7 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

@@ -26,7 +26,7 @@ Imports EwECore
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports System.IO
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
@@ -292,7 +292,7 @@ Namespace Other
                     End If
 
                     Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_CACHECLEARED, sg.FormatMemory(lSizeBefore - cache.GetSize())),
-                         eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+                         eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
                     core.Messages.SendMessage(msg)
 
                     Me.UpdateControls()

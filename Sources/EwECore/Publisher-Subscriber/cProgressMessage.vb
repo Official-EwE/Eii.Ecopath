@@ -18,7 +18,6 @@
 '
 
 Option Strict On
-Imports EwEUtils.Core
 
 Public Class cProgressMessage
     Inherits cMessage

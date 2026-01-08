@@ -24,7 +24,7 @@ Option Explicit On
 
 Imports EwECore
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SourceGrid2.Cells.Real
 
 #End Region

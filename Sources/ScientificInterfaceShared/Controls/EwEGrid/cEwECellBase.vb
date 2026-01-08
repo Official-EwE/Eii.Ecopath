@@ -20,7 +20,7 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style

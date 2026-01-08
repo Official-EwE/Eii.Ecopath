@@ -25,7 +25,7 @@ Imports System.Text
 Imports EwECore
 Imports EwECore.WebServices
 Imports EwECore.WebServices.Ecobase
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports SharedResources = ScientificInterfaceShared.My.Resources

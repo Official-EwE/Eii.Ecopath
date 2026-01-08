@@ -25,7 +25,7 @@ Option Strict On
 Imports System.ComponentModel
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 Imports System.Reflection

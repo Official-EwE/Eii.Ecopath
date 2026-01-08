@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports System.Windows.Forms
 
@@ -37,7 +37,7 @@ Public Class cPluginPoint
     Private m_uic As cUIContext = Nothing
 
     Public Sub UIContext(uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Implements EwECore.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 

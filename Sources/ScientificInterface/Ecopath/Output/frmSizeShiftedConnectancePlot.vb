@@ -22,7 +22,7 @@
 Option Strict On
 Option Explicit On
 
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Commands
 Imports ZedGraph
 

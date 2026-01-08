@@ -18,7 +18,6 @@
 '
 
 Option Strict On
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' Implemenation of the Base class for Mediation shapes

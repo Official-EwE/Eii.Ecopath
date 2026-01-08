@@ -23,8 +23,8 @@ Option Strict On
 Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging

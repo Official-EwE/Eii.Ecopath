@@ -121,7 +121,7 @@ Namespace IO
             Using sw As New StreamWriter(fn)
 
                 If (Me.m_core.SaveWithFileHeader) Then
-                    sw.WriteLine(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.NotSet))
+                    sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.NotSet))
                 End If
 
                 For Each pi As PropertyInfo In info

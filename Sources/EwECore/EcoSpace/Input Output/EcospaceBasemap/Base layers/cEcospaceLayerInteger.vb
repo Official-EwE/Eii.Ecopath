@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports EwECore.Core
-Imports EwEUtils.Core
 
 #End Region ' Imports
 

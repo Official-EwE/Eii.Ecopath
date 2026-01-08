@@ -25,7 +25,7 @@ Option Explicit On
 Imports System.IO
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 #End Region ' Imports
 

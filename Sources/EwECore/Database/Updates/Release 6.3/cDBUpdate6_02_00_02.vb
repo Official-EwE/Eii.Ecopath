@@ -18,8 +18,7 @@
 '
 
 Option Strict On
-Imports EwEUtils.Database
-Imports EwEUtils.Core
+Imports EwECore.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

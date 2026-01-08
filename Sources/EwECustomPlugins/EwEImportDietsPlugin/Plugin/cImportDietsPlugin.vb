@@ -32,24 +32,24 @@ Imports ScientificInterfaceShared.Controls
 ''' <summary>
 ''' 
 ''' </summary>
-''' <seealso cref="EwEPlugin.IPlugin" />
-''' <seealso cref="EwEPlugin.ICorePlugin" />
-''' <seealso cref="EwEPlugin.IEcopathPlugin" />
-''' <seealso cref="EwEPlugin.IEcopathRunInitializedPlugin" />
-''' <seealso cref="EwEPlugin.IEcosimInitializedPlugin" />
-''' <seealso cref="EwEPlugin.IEcospaceInitializedPlugin" />
-''' <seealso cref="EwEPlugin.IUIContextPlugin" />
-''' <seealso cref="EwEPlugin.IMenuItemPlugin" />
-''' <seealso cref="EwEPlugin.INavigationTreeItemPlugin" />
+''' <seealso cref="IPlugin" />
+''' <seealso cref="EwECore.ICorePlugin" />
+''' <seealso cref="EwECore.IEcopathPlugin" />
+''' <seealso cref="EwECore.IEcopathRunInitializedPlugin" />
+''' <seealso cref="EwECore.IEcosimInitializedPlugin" />
+''' <seealso cref="EwECore.IEcospaceInitializedPlugin" />
+''' <seealso cref="EwECore.IUIContextPlugin" />
+''' <seealso cref="EwECore.IMenuItemPlugin" />
+''' <seealso cref="EwECore.INavigationTreeItemPlugin" />
 Public Class cImportDietsPlugin
-    Implements EwEPlugin.IPlugin
-    Implements EwEPlugin.ICorePlugin
-    Implements EwEPlugin.IEcopathPlugin
-    Implements EwEPlugin.IEcopathRunInitializedPlugin
-    Implements EwEPlugin.IEcosimInitializedPlugin
-    Implements EwEPlugin.IEcospaceInitializedPlugin
-    Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.INavigationTreeItemPlugin
+    Implements IPlugin
+    Implements EwECore.ICorePlugin
+    Implements EwECore.IEcopathPlugin
+    Implements EwECore.IEcopathRunInitializedPlugin
+    Implements EwECore.IEcosimInitializedPlugin
+    Implements EwECore.IEcospaceInitializedPlugin
+    Implements EwECore.IUIContextPlugin
+    Implements EwECore.INavigationTreeItemPlugin
 
 #Region " Local variables"
 
@@ -90,7 +90,7 @@ Public Class cImportDietsPlugin
     ''' </summary>
     ''' <param name="CoreAsObject">The core, casted to a generic object</param>
     ''' -----------------------------------------------------------------------------
-    Public Sub Initialize(CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(CoreAsObject As Object) Implements IPlugin.Initialize
         Try
             Me.m_core = DirectCast(CoreAsObject, cCore)
         Catch ex As Exception
@@ -108,7 +108,7 @@ Public Class cImportDietsPlugin
     ''' <param name="EcoSimAsObject"></param>
     ''' <param name="EcoSpaceAsObject"></param>
     ''' -----------------------------------------------------------------------------
-    Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
+    Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwECore.ICorePlugin.CoreInitialized
         Try
 
             Me.m_EcoPath = TryCast(EcopathAsObject, cEcopathModel)
@@ -131,7 +131,7 @@ Public Class cImportDietsPlugin
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
     ''' -----------------------------------------------------------------------------
-    Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
+    Public Function LoadModel(dataSource As Object) As Boolean Implements EwECore.IEcopathPlugin.LoadModel
         Return True
     End Function
 
@@ -142,7 +142,7 @@ Public Class cImportDietsPlugin
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
     ''' -----------------------------------------------------------------------------
-    Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
+    Public Function SaveModel(dataSource As Object) As Boolean Implements EwECore.IEcopathPlugin.SaveModel
         Return True
     End Function
 
@@ -152,7 +152,7 @@ Public Class cImportDietsPlugin
     ''' </summary>
     ''' <returns>True if the plug-in point executed successfully.</returns>
     ''' -----------------------------------------------------------------------------
-    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
+    Public Function CloseModel() As Boolean Implements EwECore.IEcopathPlugin.CloseModel
         Try
             'A user has closed the database
             'Clear out the old data so that we are 
@@ -178,17 +178,17 @@ Public Class cImportDietsPlugin
     ''' <param name="TaxonDataAsObject"></param>
     ''' <param name="StanzaDataAsObject"></param>
     ''' -----------------------------------------------------------------------------
-    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
+    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements EwECore.IEcopathRunInitializedPlugin.EcopathRunInitialized
         Me.m_EcoPathData = TryCast(EcopathDataAsObject, cEcopathDataStructures)
         Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathRunInitialized() Failed to get EcopathDataStructures.")
     End Sub
 
-    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
+    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwECore.IEcosimInitializedPlugin.EcosimInitialized
         Me.m_EcoSimData = TryCast(EcosimDatastructures, cEcosimDatastructures)
         Debug.Assert(Me.m_EcoSimData IsNot Nothing, Me.ToString + ".EcosimInitialized() Failed to get EcosimDataStructures.")
     End Sub
 
-    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
+    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements EwECore.IEcospaceInitializedPlugin.EcospaceInitialized
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
         Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
     End Sub
@@ -237,7 +237,7 @@ Public Class cImportDietsPlugin
     ''' </summary>
     ''' <param name="uic">The <see cref="cUIContext"/> to connect to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements EwECore.IUIContextPlugin.UIContext
 
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
@@ -253,7 +253,7 @@ Public Class cImportDietsPlugin
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IGUIPlugin.DisplayName
+    Public ReadOnly Property DisplayName() As String Implements EwECore.IGUIPlugin.DisplayName
         Get
             Return My.Resources.CONTROL_TEXT
         End Get
@@ -264,7 +264,7 @@ Public Class cImportDietsPlugin
     ''' Tell EwE6 what image to show for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlImage() As Object Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage() As Object Implements EwECore.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
@@ -276,7 +276,7 @@ Public Class cImportDietsPlugin
     ''' over a user interface element for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlTooltipText() As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText() As String Implements EwECore.IGUIPlugin.ControlTooltipText
         Get
             ' Show the description as a tooltip text
             Return Me.Description
@@ -289,7 +289,7 @@ Public Class cImportDietsPlugin
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As Object) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef form As Object) Implements EwECore.IGUIPlugin.OnControlClick
         Dim ofd As New OpenFileDialog()
 
         ofd.Filter = ScientificInterfaceShared.My.Resources.FILEFILTER_MODEL_SAVE
@@ -312,10 +312,10 @@ Public Class cImportDietsPlugin
     ''' to users.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState() As eCoreExecutionState Implements EwECore.IGUIPlugin.EnabledState
         Get
             ' This plug-in is available at any time during EwE execution
-            Return EwEUtils.Core.eCoreExecutionState.EcopathInitialized
+            Return eCoreExecutionState.EcopathInitialized
         End Get
     End Property
 
@@ -324,7 +324,7 @@ Public Class cImportDietsPlugin
     ''' Tell EwE6 where to place an item in its navigation tree.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+    Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             Return "ndParameterization\ndEcopathInput\ndEcopathInputTools"
         End Get
@@ -334,26 +334,26 @@ Public Class cImportDietsPlugin
 
 #Region " IPlugin implementation "
 
-    Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
             Return "Szymon Surma"
         End Get
     End Property
 
-    Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
             Return My.Resources.CONTROL_DESCRIPTION
         End Get
     End Property
 
 
-    Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "EwEImportDietsPlugin"
         End Get

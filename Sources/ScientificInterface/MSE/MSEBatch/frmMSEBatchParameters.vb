@@ -23,7 +23,7 @@ Option Strict On
 
 Imports EwECore
 Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 #End Region ' Imports
 

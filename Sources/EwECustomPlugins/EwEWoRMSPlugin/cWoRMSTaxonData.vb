@@ -20,8 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
-Imports EwEPlugin.Data
+Imports EwECore.Common
+Imports EwECore.Data
 Imports EwEUtils.Utilities
 Imports EwECore
 
@@ -55,7 +55,7 @@ Public Class cWoRMSTaxonData
 
     ''' <inheritdocs cref="IPluginData.PluginName"/>
     Public ReadOnly Property PluginName() As String _
-        Implements EwEPlugin.Data.IPluginData.PluginName
+        Implements EwECore.Data.IPluginData.PluginName
         Get
             Return Me.m_strPluginName
         End Get
@@ -63,7 +63,7 @@ Public Class cWoRMSTaxonData
 
     ''' <inheritdocs cref="IPluginData.RunType"/>
     Public ReadOnly Property RunType() As IRunType _
-        Implements EwEPlugin.Data.IPluginData.RunType
+        Implements EwECore.Data.IPluginData.RunType
         Get
             Return Nothing
         End Get

@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging

@@ -2947,4 +2947,29 @@
   <data name="VARIABLE_ENERGY" xml:space="preserve">
     <value>Energy|||Energy content multiplier</value>
   </data>
+  <data name="GENERIC_VALUE_UNKNOWN" xml:space="preserve">
+    <value>(Unknown)</value>
+  </data>
+  <data name="PLUGIN_ERROR_GENERIC" xml:space="preserve">
+    <value>Plug-in {0} encoutered an error. {1}</value>
+    <comment>{0}: assembly name, {1}: error text</comment>
+  </data>
+  <data name="PLUGIN_ERROR_POINT" xml:space="preserve">
+    <value>Plug-in {0} encountered an error in {1}. {2}. {3}</value>
+    <comment>{0}: assembly name, {1}: plug-in name, {2}: method name, {3}: error text</comment>
+  </data>
+  <data name="PLUGIN_EXCEPTION_DUPLICATE" xml:space="preserve">
+    <value>Duplicate plug-in {1} encountered in {0}. This plug-in cannot not be used.</value>
+    <comment>{0}: assembly name, {1}: plug-in name</comment>
+  </data>
+  <data name="GENERIC_VERSION_ANCIENT" xml:space="preserve">
+    <value>Ecopath 5 or older</value>
+  </data>
+  <data name="GENERIC_VERSION" xml:space="preserve">
+    <value>EwE version {0}</value>
+    <comment>{0} = version number</comment>
+  </data>
+  <data name="GENERIC_VERSION_PREVIOUS" xml:space="preserve">
+    <value>a previous version of EwE 6</value>
+  </data>
 </root>

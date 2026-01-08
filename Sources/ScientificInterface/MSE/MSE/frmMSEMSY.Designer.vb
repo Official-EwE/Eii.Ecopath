@@ -197,7 +197,7 @@ Partial Class frmMSEMSY
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.m_btnStop
         Me.Controls.Add(Me.m_scMain)
-        Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+        Me.CoreExecutionState = eCoreExecutionState.EcosimLoaded
         Me.Name = "frmMSY"
         Me.TabText = ""
         Me.m_scMain.Panel1.ResumeLayout(False)

@@ -42,7 +42,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' <inheritdocs cref="IPlugin.Initialize"/>
     ''' -----------------------------------------------------------------------
     Public Sub Initialize(core As Object) _
-        Implements EwEPlugin.IPlugin.Initialize
+        Implements IPlugin.Initialize
         Me.m_core = DirectCast(core, cCore)
     End Sub
 
@@ -50,7 +50,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' <inheritdocs cref="IUIContextPlugin.UIContext"/>
     ''' -----------------------------------------------------------------------
     Public Sub UIContext(uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Implements EwECore.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
@@ -58,7 +58,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' <inheritdocs cref="IDisposedPlugin.Dispose"/>
     ''' -----------------------------------------------------------------------
     Public Sub Dispose() _
-        Implements EwEPlugin.IDisposedPlugin.Dispose
+        Implements EwECore.IDisposedPlugin.Dispose
         If (Me.HasForm) Then
             Me.m_ui.Close()
             Me.m_ui.Dispose()
@@ -71,7 +71,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' <inheritdocs cref="IGUIPlugin.ControlImage"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlImage As Object _
-        Implements EwEPlugin.IGUIPlugin.ControlImage
+        Implements EwECore.IGUIPlugin.ControlImage
         Get
             Return SharedResources.nav_input
         End Get
@@ -80,10 +80,10 @@ Public MustInherit Class cShapeGridPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IGUIPlugin.EnabledState"/>
     ''' -----------------------------------------------------------------------
-    Public Overridable ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public Overridable ReadOnly Property EnabledState As eCoreExecutionState _
+        Implements EwECore.IGUIPlugin.EnabledState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+            Return eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 
@@ -91,7 +91,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' <inheritdocs cref="IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
+        Implements EwECore.IGUIPlugin.OnControlClick
         If Not Me.HasForm Then
             Me.m_ui = New frmShapes(Me.GridType)
             Me.m_ui.UIContext = Me.m_uic
@@ -105,7 +105,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' <inheritdocs cref="IPlugin.Author"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Author As String _
-        Implements EwEPlugin.IPlugin.Author
+        Implements IPlugin.Author
         Get
             Return "Jeroen Steenbeek, Ecopath International Initiative"
         End Get
@@ -115,7 +115,7 @@ Public MustInherit Class cShapeGridPlugin
     ''' <inheritdocs cref="IPlugin.Contact"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Contact As String _
-        Implements EwEPlugin.IPlugin.Contact
+        Implements IPlugin.Contact
         Get
             Return "mailto:ewedevteam@gmail.com"
         End Get
@@ -125,13 +125,13 @@ Public MustInherit Class cShapeGridPlugin
     ''' <inheritdocs cref="IPlugin.Description"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property Description As String _
-        Implements EwEPlugin.IPlugin.Description
+        Implements IPlugin.Description
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IPlugin.Name"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property Name As String _
-        Implements EwEPlugin.IPlugin.Name
+        Implements IPlugin.Name
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IPlugin.DisplayName"/>
@@ -143,13 +143,13 @@ Public MustInherit Class cShapeGridPlugin
     ''' <inheritdocs cref="IGUIPlugin.ControlTooltipText"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property ControlTooltipText As String _
-            Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+            Implements EwECore.IGUIPlugin.ControlTooltipText
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="INavigationTreeItemPlugin.NavigationTreeItemLocation"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property NavigationTreeItemLocation As String _
-            Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+            Implements EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation
 
     Friend MustOverride Function GridType() As Type
 

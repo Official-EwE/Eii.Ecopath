@@ -18,7 +18,7 @@
 '
 
 Option Strict On
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 ''' <summary>
 ''' This class encapsulates a message that is passed from the Core to an Interface via the cMessagePublisher-cMessageHandler system

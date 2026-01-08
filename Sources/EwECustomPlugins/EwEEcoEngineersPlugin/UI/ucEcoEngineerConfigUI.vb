@@ -24,7 +24,7 @@ Imports System.Collections.Specialized
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls

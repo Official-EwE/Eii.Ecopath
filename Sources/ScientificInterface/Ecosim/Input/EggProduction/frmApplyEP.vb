@@ -24,7 +24,7 @@ Option Explicit On
 
 Imports System.Drawing.Drawing2D
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region

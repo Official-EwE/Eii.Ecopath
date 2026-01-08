@@ -20,7 +20,7 @@
 #Region " Imports "
 
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands

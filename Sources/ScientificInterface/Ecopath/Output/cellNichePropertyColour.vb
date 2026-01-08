@@ -23,7 +23,7 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

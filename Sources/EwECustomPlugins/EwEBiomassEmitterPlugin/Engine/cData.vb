@@ -26,7 +26,7 @@ Option Strict On
 Imports System.Text
 Imports EwECore
 Imports EwECore.Auxiliary
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

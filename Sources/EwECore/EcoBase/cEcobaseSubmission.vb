@@ -21,10 +21,9 @@
 
 Option Strict On
 Imports System.IO
-Imports System.Xml.Serialization
 Imports System.Xml
+Imports System.Xml.Serialization
 Imports EwEUtils.NetUtilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 
 

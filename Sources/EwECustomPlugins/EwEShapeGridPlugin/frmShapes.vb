@@ -36,7 +36,7 @@ Friend Class frmShapes
         Me.m_plGrid.Controls.Add(Me.m_grid)
         Me.Grid = Me.m_grid
 
-        Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+        Me.CoreExecutionState = eCoreExecutionState.EcosimLoaded
 
     End Sub
 

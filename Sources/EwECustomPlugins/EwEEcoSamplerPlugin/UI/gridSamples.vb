@@ -22,7 +22,7 @@
 Option Strict On
 Imports EwECore.Samples
 Imports EwECore.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources

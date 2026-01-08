@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -75,33 +75,6 @@ Namespace My.Resources
         Friend ReadOnly Property SEP_OR() As String
             Get
                 Return ResourceManager.GetString("SEP_OR", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Ecopath 5 or older.
-        '''</summary>
-        Friend ReadOnly Property VERSION_ANCIENT() As String
-            Get
-                Return ResourceManager.GetString("VERSION_ANCIENT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to EwE version {0}.
-        '''</summary>
-        Friend ReadOnly Property VERSION_NO() As String
-            Get
-                Return ResourceManager.GetString("VERSION_NO", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to a previous version of EwE 6.
-        '''</summary>
-        Friend ReadOnly Property VERSION_PREVIOUS() As String
-            Get
-                Return ResourceManager.GetString("VERSION_PREVIOUS", resourceCulture)
             End Get
         End Property
     End Module

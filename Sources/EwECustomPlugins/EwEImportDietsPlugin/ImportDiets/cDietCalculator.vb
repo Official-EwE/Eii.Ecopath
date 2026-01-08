@@ -39,7 +39,7 @@
 '
 
 
-Imports EwEUtils.Core
+Imports EwECore.Common
 ''' <summary>
 ''' Calculate new diet matrix from preferences
 ''' </summary>

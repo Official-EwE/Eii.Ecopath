@@ -19,7 +19,7 @@
 #Region " Imports "
 
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 

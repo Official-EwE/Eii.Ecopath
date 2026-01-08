@@ -23,7 +23,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore.MSE
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterface.Ecotracer

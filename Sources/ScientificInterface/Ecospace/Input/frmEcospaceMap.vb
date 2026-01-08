@@ -23,7 +23,7 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map

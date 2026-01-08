@@ -23,7 +23,7 @@
 Option Strict On
 Imports System.IO
 Imports System.Xml.Serialization
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 #End Region ' Imports
 

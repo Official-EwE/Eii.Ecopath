@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Commands
 Imports System.Windows.Forms
 

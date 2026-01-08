@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Controls
 
@@ -36,7 +36,7 @@ Namespace Ecospace.Advection
         Inherits ucAdvectionMap
 
         ''' <inheritdoc cref="DataLayer"/>
-        Protected Overrides Function DataLayerVariable() As EwEUtils.Core.eVarNameFlags
+        Protected Overrides Function DataLayerVariable() As eVarNameFlags
             Return eVarNameFlags.LayerAdvection
         End Function
 

@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -34,7 +32,7 @@ Public Class cEcospaceLayerBiomassForcing
     Inherits cEcospaceLayerSingle
 
     Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerBiomassForcing, iIndex)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerBiomassForcing, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerBiomassForcing
     End Sub
 

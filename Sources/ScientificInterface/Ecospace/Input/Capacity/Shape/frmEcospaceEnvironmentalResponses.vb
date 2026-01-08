@@ -27,7 +27,7 @@ Imports System.Drawing
 Imports System.Text.RegularExpressions
 Imports ScientificInterface.Other
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared
 
 #End Region ' Imports

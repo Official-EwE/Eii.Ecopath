@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -35,7 +33,7 @@ Public Class cEcospaceLayerContaminantForcingAbsolute
 
     Public Sub New(theCore As cCore, manager As cEcospaceBasemap)
         ' Nassssty! We canot use zero-indexed layers in EwE
-        MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerContaminantForcingAbsolute, 1)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerContaminantForcingAbsolute, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerContaminantForcingAbs
     End Sub
 

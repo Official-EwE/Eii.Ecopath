@@ -20,9 +20,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Database
+Imports EwECore.Database
 Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -209,7 +208,7 @@ Friend Class cDBUpdate6_50_00_27
 
         Try
             drow("ShapeID") = iShapeID
-            drow("ShapeType") = EwEUtils.Core.eDataTypes.CapacityMediation
+            drow("ShapeType") = eDataTypes.CapacityMediation
             drow("IsSeasonal") = False
             writerID.AddRow(drow)
             writerID.Commit()
@@ -235,7 +234,7 @@ Friend Class cDBUpdate6_50_00_27
             For ipr As Integer = 1 To sfn.nParameters
                 parms(ipr - 1) = sfn.ParamValue(ipr)
             Next
-            drow("FunctionType") = EwEUtils.Core.eShapeFunctionType.Normal
+            drow("FunctionType") = eShapeFunctionType.Normal
             drow("FunctionParams") = cStringUtils.ParamArrayToString(parms, sfn.nParameters)
             drow("IMedBase") = cMediationDataStructures.N_DEFAULT_MEDIATIONPOINTS / 3
             drow("XAxisMin") = sfn.Mean - sfn.DataWidth / 2
@@ -306,7 +305,7 @@ Friend Class cDBUpdate6_50_00_27
         Dim parms(NormDist.nParameters) As Single
         Dim sbZScale As New Text.StringBuilder()
 
-        Dim rows() As DataRow = dt.Select("FunctionType = " + CLng(EwEUtils.Core.eShapeFunctionType.Normal).ToString)
+        Dim rows() As DataRow = dt.Select("FunctionType = " + CLng(eShapeFunctionType.Normal).ToString)
         For Each row As DataRow In rows
 
             Debug.Print(row("Title").ToString)

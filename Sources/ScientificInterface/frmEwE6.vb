@@ -30,8 +30,8 @@ Imports EwECore.Database
 Imports EwECore.DataSources
 Imports EwECore.SpatialData
 Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Database
+Imports EwECore.Common
+Imports EwECore.Database
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecopath
@@ -4406,7 +4406,7 @@ Public Class frmEwE6
     Private Sub OnEditEcospaceDataset(cmd As cCommand) Handles m_cmdEditSpatialDataset.OnInvoke
 
         Try
-            Dim ds As EwEUtils.SpatialData.ISpatialDataSet = Me.m_cmdEditSpatialDataset.Dataset
+            Dim ds As EwECore.Common.ISpatialDataSet = Me.m_cmdEditSpatialDataset.Dataset
             If (ds Is Nothing) Then Return
             If (Not TypeOf ds Is IConfigurable) Then Return
 
@@ -4519,7 +4519,7 @@ Public Class frmEwE6
                     If (Not String.IsNullOrWhiteSpace(file)) Then
                         Dim imp As New cEcospaceImportExportASCIIData(Me.Core)
                         If imp.Read(file) Then
-                            Dim rs As EwEUtils.SpatialData.ISpatialRaster = imp.ToRaster
+                            Dim rs As EwECore.Common.ISpatialRaster = imp.ToRaster
                             For ir As Integer = 1 To rs.NumRows
                                 For ic As Integer = 1 To rs.NumCols
                                     Dim dVal As Double = rs.Cell(ir, ic)

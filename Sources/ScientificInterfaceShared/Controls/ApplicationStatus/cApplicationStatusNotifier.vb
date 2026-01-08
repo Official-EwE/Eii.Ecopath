@@ -18,7 +18,7 @@
 '
 
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 #Region " Imports "
 

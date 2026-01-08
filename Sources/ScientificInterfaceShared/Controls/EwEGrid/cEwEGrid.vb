@@ -28,7 +28,7 @@ Imports System.IO
 Imports System.Text
 Imports System.Threading
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Properties

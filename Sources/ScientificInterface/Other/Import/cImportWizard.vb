@@ -25,8 +25,8 @@ Imports System.IO
 Imports EwECore
 Imports EwECore.DataSources
 Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Database
+Imports EwECore.Common
+Imports EwECore.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
 

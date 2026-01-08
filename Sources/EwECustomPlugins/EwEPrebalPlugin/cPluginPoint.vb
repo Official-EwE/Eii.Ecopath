@@ -25,7 +25,7 @@ Option Strict On
 Imports EwEPlugin
 Imports ScientificInterfaceShared.Controls
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports System.Windows.Forms
 Imports System.Drawing
 
@@ -92,7 +92,7 @@ Public Class cPluginPoint
     ''' <inheritdocs cref="IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
         Get
             Return My.Resources.DISPLAYNAME
         End Get

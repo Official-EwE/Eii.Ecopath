@@ -18,8 +18,7 @@
 '
 
 Option Strict On
-Imports EwEUtils.Database
-Imports EwEUtils.Utilities
+Imports EwECore.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -61,5 +60,5 @@ Friend Class cDBUpdate6_12_00012
 
     End Function
 
-    
+
 End Class

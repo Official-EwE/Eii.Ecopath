@@ -24,7 +24,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -63,7 +63,7 @@ Public Class cEwEMPADynamicsPlugin
         End Get
     End Property
 
-    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
             Return My.Resources.DISPLAYNAME
         End Get

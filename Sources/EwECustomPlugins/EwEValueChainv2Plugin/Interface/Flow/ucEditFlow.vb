@@ -23,7 +23,7 @@ Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
@@ -225,7 +225,7 @@ Public Class ucEditFlow
     Private Sub OnArrangeLayout(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbArrange.Click
 
-        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_AUTOLAYOUT, EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_AUTOLAYOUT, eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
         Me.m_uic.Core.Messages.SendMessage(fmsg)
         If (fmsg.Reply <> eMessageReply.YES) Then Return
 

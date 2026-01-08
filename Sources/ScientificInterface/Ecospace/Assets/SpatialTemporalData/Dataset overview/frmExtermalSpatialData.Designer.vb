@@ -111,7 +111,7 @@ Namespace Ecospace
             Me.m_gridApply.CustomSort = False
             Me.m_gridApply.DataName = "grid content"
             resources.ApplyResources(Me.m_gridApply, "m_gridApply")
-            Me.m_gridApply.Filter = EwEUtils.Core.eVarNameFlags.NotSet
+            Me.m_gridApply.Filter = eVarNameFlags.NotSet
             Me.m_gridApply.FixedColumnWidths = True
             Me.m_gridApply.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridApply.GridToolTipActive = True
@@ -165,7 +165,7 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_toolbox, "m_toolbox")
             Me.m_toolbox.BackColor = System.Drawing.SystemColors.Window
-            Me.m_toolbox.Filter = EwEUtils.Core.eVarNameFlags.NotSet
+            Me.m_toolbox.Filter = eVarNameFlags.NotSet
             Me.m_toolbox.Name = "m_toolbox"
             Me.m_toolbox.SelectedDatasetIndex = -1
             Me.m_toolbox.UIContext = Nothing

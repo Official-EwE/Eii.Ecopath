@@ -20,10 +20,7 @@
 Option Strict On
 
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
 Public Class cValidatorOddEven
     Inherits cValidatorDefault

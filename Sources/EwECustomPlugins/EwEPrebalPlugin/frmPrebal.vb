@@ -22,7 +22,7 @@
 Option Explicit On
 Option Strict On
 
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging

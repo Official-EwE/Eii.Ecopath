@@ -26,7 +26,7 @@ Imports System.Text
 Imports EwECore
 Imports EwECore.Ecosim
 Imports EwECore.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources

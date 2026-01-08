@@ -26,7 +26,7 @@ Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports

@@ -20,7 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging

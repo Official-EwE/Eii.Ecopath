@@ -23,8 +23,8 @@ Option Strict On
 Imports EwECore
 Imports EwECore.ExternalData
 Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
+Imports EwECore.Data
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging

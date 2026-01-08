@@ -32,7 +32,7 @@ Imports System.IO
 Imports EwECore
 Imports EwECore.Database
 Imports EwECore.DataSources
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Logging

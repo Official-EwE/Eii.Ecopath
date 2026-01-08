@@ -30,7 +30,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports System.Drawing
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 #End Region ' Imports
 

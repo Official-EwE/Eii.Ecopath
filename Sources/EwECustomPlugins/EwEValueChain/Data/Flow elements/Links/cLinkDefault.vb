@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports System.ComponentModel
-Imports EwEUtils.Database
+Imports EwECore.Database
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

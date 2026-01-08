@@ -23,7 +23,6 @@ Imports System.IO
 
 Imports EwECore.MSE
 Imports EwECore.MSEBatchManager
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 Namespace MSECommandFile

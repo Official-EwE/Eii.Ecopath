@@ -24,7 +24,7 @@ Option Strict On
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources

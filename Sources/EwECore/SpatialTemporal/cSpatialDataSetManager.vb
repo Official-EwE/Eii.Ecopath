@@ -17,21 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.IO
 Imports System.Xml
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
+Imports EwECore.Plugins
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 ' ToDo: change this class to solely work with cSpatialDataConfigFile instances
 

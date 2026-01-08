@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 Namespace Controls
 

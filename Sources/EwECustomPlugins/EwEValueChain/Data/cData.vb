@@ -26,8 +26,8 @@ Imports Eii.ValueChain.Storage
 Imports Eii.ValueChain.Storage.Models
 Imports EwECore
 Imports EwECore.Database
-Imports EwEUtils.Core
-Imports EwEUtils.Database
+Imports EwECore.Common
+Imports EwECore.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 

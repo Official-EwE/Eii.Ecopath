@@ -17,13 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-
-#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -190,10 +185,10 @@ Public Class cTaxonSearchData
     Public Property VulnerabilityIndex() As Integer = cCore.NULL_VALUE Implements ITaxonDetailsData.VulnerabilityIndex
 
     ''' <inheritdocs cref="ITaxonDetailsData.vbgfK"/>
-    Public Property vbgfK As Single = cCore.NULL_VALUE Implements EwEUtils.Core.ITaxonDetailsData.vbgfK
+    Public Property vbgfK As Single = cCore.NULL_VALUE Implements ITaxonDetailsData.vbgfK
 
     ''' <inheritdocs cref="ITaxonDetailsData.Winf"/>
-    Public Property Winf As Single = cCore.NULL_VALUE Implements EwEUtils.Core.ITaxonDetailsData.Winf
+    Public Property Winf As Single = cCore.NULL_VALUE Implements ITaxonDetailsData.Winf
 
 #End Region ' Properties
 

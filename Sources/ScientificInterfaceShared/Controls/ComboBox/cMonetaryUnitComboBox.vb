@@ -21,7 +21,7 @@
 
 Option Strict On
 
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Style
 Imports System.Globalization
 Imports EwEUtils.Utilities

@@ -24,7 +24,7 @@ Imports System.IO
 Imports System.Reflection
 Imports EwECore
 Imports EwELicense
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities

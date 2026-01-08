@@ -22,11 +22,8 @@
 Option Strict On
 Imports System.IO
 Imports System.Text
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
 #End Region ' Imports
 

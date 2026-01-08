@@ -22,7 +22,7 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
@@ -164,7 +164,7 @@ Public MustInherit Class cContentManager
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Overridable Function Filename(strComponent As String) As String
-        Return IO.Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath), strComponent)
+        Return IO.Path.Combine(Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecopath), strComponent)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -418,7 +418,7 @@ Public MustInherit Class cContentManager
 
     Protected Sub SendMessage(strMessage As String, _
                               Optional importance As eMessageImportance = eMessageImportance.Critical)
-        Dim msg As New cMessage(strMessage, eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, importance)
+        Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, importance)
         Me.NetworkManager.Core.Messages.SendMessage(msg)
     End Sub
 

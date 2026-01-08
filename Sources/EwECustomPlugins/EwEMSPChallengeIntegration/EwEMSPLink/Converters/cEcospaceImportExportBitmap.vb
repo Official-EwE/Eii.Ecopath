@@ -22,8 +22,8 @@
 Option Strict On
 Imports System.Drawing
 Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
+Imports EwECore.Common
 
 #End Region ' Imports
 
@@ -34,7 +34,7 @@ Namespace IO
     ''' Ecospace import/export class for accessing bitmap files. MEL uses TIF files
     ''' for caching computed pressure layers, which can be read via this class.
     ''' </summary>
-    ''' <seealso cref="EwEUtils.Core.IEcospaceImportExport" />
+    ''' <seealso cref="IEcospaceImportExport" />
     ''' -----------------------------------------------------------------------
     Public Class cEcospaceImportExportBitmap
         Implements IEcospaceImportExport

@@ -18,7 +18,6 @@
 '
 
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' Results, over all the time steps, at the end of an ecospace model run
@@ -126,7 +125,7 @@ Public Class cEcospaceGroupOutput
 
     End Function
 
-    Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
         If Not Me.m_CoreData.ContainsKey(VarName) Then
             'NOT in list of sim vars so get the value from the base class GetVariable(...)
@@ -139,7 +138,7 @@ Public Class cEcospaceGroupOutput
     End Function
 
 
-    Public Overrides Function GetStatus(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As eStatusFlags
+    Public Overrides Function GetStatus(VarName As eVarNameFlags, Optional iIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As eStatusFlags
 
         If Not Me.m_CoreData.ContainsKey(VarName) Then
             'NOT in list of sim vars so get the value from the base class GetStatus(...)

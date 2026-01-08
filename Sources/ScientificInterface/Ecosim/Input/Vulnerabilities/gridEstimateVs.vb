@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Style.cStyleGuide

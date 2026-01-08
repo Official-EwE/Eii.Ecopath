@@ -30,7 +30,7 @@ Option Explicit On
 
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

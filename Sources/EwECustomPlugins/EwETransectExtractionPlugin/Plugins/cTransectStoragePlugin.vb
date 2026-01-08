@@ -26,8 +26,8 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
 Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
+Imports EwECore.Data
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -111,7 +111,7 @@ Public Class cTransectStoragePlugin
     ''' <inheritdocs cref="IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
         Get
             Return My.Resources.CAPTION_STORAGE
         End Get

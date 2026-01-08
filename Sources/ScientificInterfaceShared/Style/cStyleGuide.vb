@@ -32,7 +32,7 @@ Imports System.Windows.Forms.VisualStyles
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Drawing
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.UserInterface

@@ -22,9 +22,8 @@
 Option Strict On
 
 Imports System.IO
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 

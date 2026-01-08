@@ -24,7 +24,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports Microsoft.Extensions.Logging
@@ -84,7 +84,7 @@ Public Class frmNavigationPanel
     ''' extensions for.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(uic As cUIContext,
-                   pluginManager As EwEPlugin.cPluginManager)
+                   pluginManager As EwECore.cPluginManager)
 
         ' Sanity check
         Debug.Assert(uic IsNot Nothing)

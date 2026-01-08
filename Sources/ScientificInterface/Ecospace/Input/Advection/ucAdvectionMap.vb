@@ -20,7 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers

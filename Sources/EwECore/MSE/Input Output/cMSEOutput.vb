@@ -19,7 +19,6 @@
 
 Option Strict On
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 
 Namespace MSE
 
@@ -96,7 +95,7 @@ Namespace MSE
 #Region "Overridden base class methods"
 
 
-        Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
             If Not Me.m_coreData.ContainsKey(VarName) Then
                 'NOT in list of sim vars so get the value from the base class GetVariable(...)
@@ -271,7 +270,7 @@ Namespace MSE
 #Region "Overridden base class methods"
 
 
-        Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
             If Not Me.m_coreData.ContainsKey(VarName) Then
                 'NOT in list of sim vars so get the value from the base class GetVariable(...)
@@ -361,11 +360,11 @@ Namespace MSE
         End Sub
 
 
-        Public Function Contains(VarName As EwEUtils.Core.eVarNameFlags) As Boolean
+        Public Function Contains(VarName As eVarNameFlags) As Boolean
             Return Me.m_VarToStat.ContainsKey(VarName)
         End Function
 
-        Public ReadOnly Property GetVariable(VarName As EwEUtils.Core.eVarNameFlags,
+        Public ReadOnly Property GetVariable(VarName As eVarNameFlags,
                                              Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
             Get
                 Try
@@ -601,7 +600,7 @@ Namespace MSE
 #Region "Overridden base class methods"
 
 
-        Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
             If Me.m_Stats.Contains(VarName) Then
                 Return Me.m_Stats.GetVariable(VarName, iIndex1, iIndex2, iIndex3)
@@ -959,7 +958,7 @@ Namespace MSE
 
 #End Region
 
-End Class
+    End Class
 
 #End Region
 

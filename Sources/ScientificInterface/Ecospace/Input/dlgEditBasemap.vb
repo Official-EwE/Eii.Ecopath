@@ -21,9 +21,9 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterface.Ecospace.Controls
 Imports Debug = System.Diagnostics.Debug

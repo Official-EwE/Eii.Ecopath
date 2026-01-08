@@ -18,10 +18,7 @@
 '
 
 Option Strict On
-
-Imports EwEUtils.Core
 Imports System.Math
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -84,7 +81,7 @@ Public Class cEcoFunctions
             Debug.Assert(False, Me.ToString & ".FunctionShannonDiversityIndex() Error: " & ex.Message)
 
             If (Me.m_core IsNot Nothing) Then
-                Dim msg As New cMessage("Error in FunctionShannonDiversityIndex() " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical, EwEUtils.Core.eDataTypes.NotSet)
+                Dim msg As New cMessage("Error in FunctionShannonDiversityIndex() " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical, eDataTypes.NotSet)
                 Me.m_core.Messages.SendMessage(msg)
             End If
             Return 0.0
@@ -180,7 +177,7 @@ Public Class cEcoFunctions
             Debug.Assert(False, Me.ToString & ".FunctionKemptonsQ() Error: " & ex.Message)
 
             If (Me.m_core IsNot Nothing) Then
-                Dim msg As New cMessage("Error in FunctionKemptonsQ() " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical, EwEUtils.Core.eDataTypes.NotSet)
+                Dim msg As New cMessage("Error in FunctionKemptonsQ() " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical, eDataTypes.NotSet)
                 Me.m_core.Messages.SendMessage(msg)
             End If
             Return 0.0

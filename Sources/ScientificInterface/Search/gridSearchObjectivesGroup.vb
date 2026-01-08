@@ -24,7 +24,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.SearchObjectives
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.ComponentModel
 

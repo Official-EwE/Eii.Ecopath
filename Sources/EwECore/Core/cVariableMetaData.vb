@@ -25,7 +25,6 @@ Option Strict On
 
 Imports EwECore.Style
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 #If DUMP_TO_FILE Then
 Imports System.IO
 #End If

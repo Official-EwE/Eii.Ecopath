@@ -24,7 +24,7 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Database.cEwEDatabase
+Imports cEwEDatabase
 
 #End Region ' Imports
 

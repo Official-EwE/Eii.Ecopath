@@ -23,7 +23,7 @@ Option Strict On
 Imports EwECore
 
 Imports EwECore.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports

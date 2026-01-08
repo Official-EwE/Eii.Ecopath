@@ -18,7 +18,7 @@
 '
 
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 Namespace Controls.Map.Layers
 

@@ -24,7 +24,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.MSE
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ZedGraph
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging

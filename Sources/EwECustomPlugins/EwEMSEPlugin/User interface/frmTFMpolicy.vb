@@ -28,7 +28,7 @@
 Option Strict On
 Imports System.IO
 Imports EwEMSEPlugin.HCR_GroupNS
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid

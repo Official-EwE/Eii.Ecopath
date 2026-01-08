@@ -21,7 +21,6 @@
 
 Option Strict On
 Imports System.Text
-Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports

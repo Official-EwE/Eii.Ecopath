@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports EwECore.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style

@@ -22,7 +22,7 @@
 Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Definitions
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 #End Region ' Imports
 
@@ -92,7 +92,7 @@ Namespace Controls
             Return 0
         End Function
 
-        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Protected Overrides Function Datatypes() As eDataTypes()
             Return {eDataTypes.FishMort, eDataTypes.FishingEffort}
         End Function
 

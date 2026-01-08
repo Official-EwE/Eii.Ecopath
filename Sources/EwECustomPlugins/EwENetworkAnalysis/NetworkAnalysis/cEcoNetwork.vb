@@ -22,7 +22,7 @@
 Option Explicit On
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
@@ -449,7 +449,7 @@ Public Class cEcoNetwork
 
             If Me.m_timedOut Then
                 Me.SendMessage(New cMessage("Sorry Network Analysis timed out after " + (TimeOutMilSecs / 60 / 1000).ToString + " minutes. Results will not be displayed.",
-                                            eMessageType.ErrorEncountered, EwEUtils.Core.eCoreComponentType.Ecopath, eMessageImportance.Warning))
+                                            eMessageType.ErrorEncountered, eCoreComponentType.Ecopath, eMessageImportance.Warning))
             End If
 
             Me.m_AbortTimer.Close()
@@ -627,7 +627,7 @@ Public Class cEcoNetwork
 
             'validates data.
             If totalPP = 0 Then
-                Me.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_PP, eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning))
+                Me.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_PP, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning))
                 Return False
             End If
 
@@ -1763,7 +1763,7 @@ EmergyRun:
         If chk = 0 Then                  'Only print cycling in first run
             If ErrC = 0 Then
             Else
-                If ToldYou = False Then Me.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_CYCLING, eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning))
+                If ToldYou = False Then Me.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_CYCLING, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning))
                 ToldYou = True
             End If
         Else                              'if Chk > 0

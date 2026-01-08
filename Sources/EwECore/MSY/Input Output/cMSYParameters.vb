@@ -17,26 +17,8 @@
 ' ===============================================================================
 '
 
-#Region "Imports Complier directives"
-
 Option Strict On
-
-Imports System.IO
-Imports System.Text
-Imports System.Threading
-
-Imports EwECore
-Imports EwECore.Ecosim
-Imports EwECore.ExternalData
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwECore.SearchObjectives
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwECore.ValueWrapper
-
-#End Region
 
 Namespace MSY
 

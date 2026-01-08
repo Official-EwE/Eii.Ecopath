@@ -23,7 +23,7 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Ecopath
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports Microsoft.Extensions.Logging

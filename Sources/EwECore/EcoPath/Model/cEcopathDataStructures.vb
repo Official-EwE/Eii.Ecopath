@@ -18,7 +18,6 @@
 '
 
 Option Strict Off ' OUCH
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' Wrapper for the underlying data structures of the EcoPath model. 
@@ -785,7 +784,7 @@ Public Class cEcopathDataStructures
 
     End Sub
 
-	''' -----------------------------------------------------------------------
+    ''' -----------------------------------------------------------------------
     '''<summary>
     '''Computes the following:
     '''M2(): Predator mortality for group i.
@@ -797,8 +796,8 @@ Public Class cEcopathDataStructures
     ''' </summary>
     ''' <remarks>
     ''' Was Public Sub ParamEstimate2() in original EwE5 code. 
-	''' Sept 2023: this method no longer checks for negative Respiration; this check is
-	''' now better integrated in the Ecopath parameter checks
+    ''' Sept 2023: this method no longer checks for negative Respiration; this check is
+    ''' now better integrated in the Ecopath parameter checks
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Friend Sub Compute_M2_Resp_and_Stats(Functions As cEcoFunctions)

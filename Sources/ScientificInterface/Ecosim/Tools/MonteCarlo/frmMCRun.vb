@@ -26,7 +26,7 @@ Imports System.Windows.Forms.Label
 
 Imports EwECore
 Imports EwECore.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Controls
 Imports ZedGraph

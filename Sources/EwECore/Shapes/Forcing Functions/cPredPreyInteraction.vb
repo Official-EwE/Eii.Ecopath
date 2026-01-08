@@ -18,7 +18,6 @@
 '
 
 Option Explicit On
-Imports EwEUtils.Core
 Imports System.ComponentModel
 
 ''' <summary>

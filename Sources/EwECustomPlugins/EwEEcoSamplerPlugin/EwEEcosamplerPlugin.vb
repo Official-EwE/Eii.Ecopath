@@ -23,7 +23,7 @@ Option Strict On
 Imports EwECore
 Imports EwECore.Samples
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
@@ -63,35 +63,35 @@ Public Class EwEEcosamplerPlugin
 
 #Region " Generic plugin "
 
-    Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
             Return "EwE development team"
         End Get
     End Property
 
-    Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
             Return "ewedevteam@gmail.com"
         End Get
     End Property
 
-    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
             Return My.Resources.DISPLAYNAME
         End Get
     End Property
 
-    Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
             Return ""
         End Get
     End Property
 
-    Public Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(core As Object) Implements IPlugin.Initialize
         ' NOP
     End Sub
 
-    Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "MCRecorder"
         End Get
@@ -102,7 +102,7 @@ Public Class EwEEcosamplerPlugin
 #Region " UI plugin "
 
     Public Sub UIContext(uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Implements EwECore.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
         If (uic IsNot Nothing) Then
             Me.m_sampleman = Me.m_uic.Core.SampleManager()
@@ -116,7 +116,7 @@ Public Class EwEEcosamplerPlugin
 #Region " Dockstate plugin "
 
     Public Function DockState() As Integer _
-        Implements EwEPlugin.IDockStatePlugin.DockState
+        Implements EwECore.IDockStatePlugin.DockState
         Return If(cSystemUtils.IsRightToLeft,
                                 WeifenLuo.WinFormsUI.Docking.DockState.DockLeft,
                                 WeifenLuo.WinFormsUI.Docking.DockState.DockRight)
@@ -127,18 +127,18 @@ Public Class EwEEcosamplerPlugin
 #Region " Save filter plugin "
 
     Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) _
-        Implements EwEPlugin.ICorePlugin.CoreInitialized
+        Implements EwECore.ICorePlugin.CoreInitialized
         ' NOP
     End Sub
 
     Public Function DiscardChanges(ByRef bCancel As Boolean) As Boolean _
-        Implements EwEPlugin.ISaveFilterPlugin.DiscardChanges
+        Implements EwECore.ISaveFilterPlugin.DiscardChanges
         ' NOP
         Return True
     End Function
 
     Public Function SaveChanges(ByRef bCancel As Boolean) As Boolean _
-        Implements EwEPlugin.ISaveFilterPlugin.SaveChanges
+        Implements EwECore.ISaveFilterPlugin.SaveChanges
 
         ' Restore original model. Should the user be asked?
         If (Me.m_sampleman.IsLoaded) Then
@@ -157,35 +157,35 @@ Public Class EwEEcosamplerPlugin
 #Region " Menu plugin "
 
     Public ReadOnly Property ControlImage As Object _
-        Implements EwEPlugin.IGUIPlugin.ControlImage
+        Implements EwECore.IGUIPlugin.ControlImage
         Get
             Return My.Resources.DeltaHS
         End Get
     End Property
 
     Public ReadOnly Property ControlTooltipText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+        Implements EwECore.IGUIPlugin.ControlTooltipText
         Get
             Return ""
         End Get
     End Property
 
     Public ReadOnly Property EnabledState As eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
+        Implements EwECore.IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.EcopathLoaded
         End Get
     End Property
 
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
+        Implements EwECore.IGUIPlugin.OnControlClick
 
         frmPlugin = Me.GetUI()
 
     End Sub
 
     Public ReadOnly Property NavigationTreeItemLocation As String _
-        Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+        Implements EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             Return "ndTools"
         End Get
@@ -207,14 +207,14 @@ Public Class EwEEcosamplerPlugin
 #Region " Monte Carlo plugin "
 
     Public Sub MontCarloInitialized(MonteCarloAsObject As Object) _
-        Implements EwEPlugin.IMonteCarloPlugin.MontCarloInitialized
+        Implements EwECore.IMonteCarloPlugin.MontCarloInitialized
 
         Me.m_montecarlo = DirectCast(MonteCarloAsObject, cEcosimMonteCarlo)
 
     End Sub
 
     Public Sub MonteCarloRunInitialized() _
-        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunInitialized
+        Implements EwECore.IMonteCarloPlugin.MonteCarloRunInitialized
 
         If (Not Me.IsRecording) Then Return
 
@@ -229,7 +229,7 @@ Public Class EwEEcosamplerPlugin
     Private m_sampleCurrent As cEcopathSample = Nothing
 
     Public Sub MonteCarloBalancedEcopathModel(TrialNumber As Integer, nIterations As Integer) _
-        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
+        Implements EwECore.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
 
         If (Not Me.IsRecording) Then Return
 
@@ -253,7 +253,7 @@ Public Class EwEEcosamplerPlugin
     End Sub
 
     Public Sub MonteCarloEcosimRunCompleted() _
-        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloEcosimRunCompleted
+        Implements EwECore.IMonteCarloPlugin.MonteCarloEcosimRunCompleted
 
         If (Not Me.IsRecording) Then Return
 
@@ -267,7 +267,7 @@ Public Class EwEEcosamplerPlugin
     End Sub
 
     Public Sub MonteCarloRunCompleted() _
-        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunCompleted
+        Implements EwECore.IMonteCarloPlugin.MonteCarloRunCompleted
 
         If (Not Me.IsRecording) Then Return
 
@@ -295,12 +295,12 @@ Public Class EwEEcosamplerPlugin
 #Region " Search plugin "
 
     Public Sub SearchInitialized(SearchDatastructures As Object) _
-        Implements EwEPlugin.ISearchPlugin.SearchInitialized
+        Implements EwECore.ISearchPlugin.SearchInitialized
         ' NOP
     End Sub
 
     Public Sub SearchIterationsStarting() _
-        Implements EwEPlugin.ISearchPlugin.SearchIterationsStarting
+        Implements EwECore.ISearchPlugin.SearchIterationsStarting
 
         ' Make sure to unload any loaded sample
         Me.m_sampleman.Load(Nothing, False)
@@ -316,11 +316,11 @@ Public Class EwEEcosamplerPlugin
     End Sub
 
     Public Sub PostRunSearchResults(SearchDatastructures As Object) _
-        Implements EwEPlugin.ISearchPlugin.PostRunSearchResults
+        Implements EwECore.ISearchPlugin.PostRunSearchResults
         ' NOP
     End Sub
 
-    Public Sub SearchCompleted(SearchDatastructures As Object) Implements EwEPlugin.ISearchPlugin.SearchCompleted
+    Public Sub SearchCompleted(SearchDatastructures As Object) Implements EwECore.ISearchPlugin.SearchCompleted
 
         If (Not Me.IsRecording) Then Return
 
@@ -340,7 +340,7 @@ Public Class EwEEcosamplerPlugin
     ''' <inheritdocs cref="IHelpPlugin.HelpTopic"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property HelpTopic As String _
-        Implements EwEPlugin.IHelpPlugin.HelpTopic
+        Implements EwECore.IHelpPlugin.HelpTopic
         Get
             Return ".\UserGuide\EcoSampler.pdf"
         End Get
@@ -350,7 +350,7 @@ Public Class EwEEcosamplerPlugin
     ''' <inheritdocs cref="IHelpPlugin.HelpURL"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property HelpURL As String _
-        Implements EwEPlugin.IHelpPlugin.HelpURL
+        Implements EwECore.IHelpPlugin.HelpURL
         Get
             Return Me.HelpTopic
         End Get

@@ -23,7 +23,7 @@
 ' ===============================================================================
 '
 
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 Public Class cResultsCollector_Landings_Yearly
     Inherits cResultsCollector_Catch

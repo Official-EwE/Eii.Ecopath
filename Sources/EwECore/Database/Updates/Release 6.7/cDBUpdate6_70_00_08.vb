@@ -20,7 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Database
+Imports EwECore.Database
 
 #End Region ' Imports 
 

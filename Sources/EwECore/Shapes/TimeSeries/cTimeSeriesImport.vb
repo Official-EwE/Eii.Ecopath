@@ -21,9 +21,6 @@
 
 Option Strict On
 
-Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
-
 #End Region ' Imports
 
 ''' ---------------------------------------------------------------------------

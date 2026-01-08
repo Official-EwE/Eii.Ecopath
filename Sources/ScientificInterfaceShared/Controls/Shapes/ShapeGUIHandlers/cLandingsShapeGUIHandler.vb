@@ -23,7 +23,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -75,7 +75,7 @@ Namespace Controls
             Return My.Resources.ECOSIM_DEFAULT_NEWLANDINGSSHAPE
         End Function
 
-        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Protected Overrides Function Datatypes() As eDataTypes()
             Return New eDataTypes() {eDataTypes.PriceMediation}
         End Function
 

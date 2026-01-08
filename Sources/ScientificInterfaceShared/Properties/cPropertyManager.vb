@@ -22,7 +22,7 @@
 Option Strict On
 Imports System.Threading
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Forms

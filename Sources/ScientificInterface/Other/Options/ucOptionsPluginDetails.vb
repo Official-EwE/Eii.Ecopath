@@ -24,7 +24,7 @@ Imports System.IO
 Imports System.Text
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

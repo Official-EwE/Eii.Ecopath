@@ -22,7 +22,7 @@ Option Strict On
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging

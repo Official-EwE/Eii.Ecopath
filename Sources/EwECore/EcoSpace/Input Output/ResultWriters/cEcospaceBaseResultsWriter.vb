@@ -21,10 +21,8 @@
 
 Option Strict On
 Imports System.IO
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -212,17 +210,17 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
             If (String.IsNullOrWhiteSpace(grpName)) Then Return ""
 
-                ' Is there a time step in the file name?
-                If (iModelTimeStep > 0) Then
-                    ' #Yes: include it in the file name
-                    strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
-                End If
-
-                fn = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
-                                                                        cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
+            ' Is there a time step in the file name?
+            If (iModelTimeStep > 0) Then
+                ' #Yes: include it in the file name
+                strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
             End If
 
-            Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
+            fn = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
+                                                                    cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
+        End If
+
+        Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
 
     End Function
 

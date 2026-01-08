@@ -18,7 +18,7 @@
 '
 Option Strict On
 Imports System.Windows.Forms
-Imports EwEUtils.Database
+Imports EwECore.Database
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 

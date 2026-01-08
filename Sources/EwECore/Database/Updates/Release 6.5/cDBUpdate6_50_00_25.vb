@@ -20,9 +20,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Database
-Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities
+Imports EwECore.Database
 
 #End Region ' Imports
 
@@ -60,7 +58,7 @@ Friend Class cDBUpdate6_50_00_25
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
         Return Me.AddMigField(db) And
-               Me.AddEcosimDriverTable(db) 
+               Me.AddEcosimDriverTable(db)
 
     End Function
 

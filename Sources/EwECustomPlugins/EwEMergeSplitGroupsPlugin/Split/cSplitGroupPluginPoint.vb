@@ -41,35 +41,35 @@ Public Class cSplitGroupPluginPoint
 #Region " UI "
 
     Public ReadOnly Property ControlImage As Object _
-        Implements EwEPlugin.IGUIPlugin.ControlImage
+        Implements EwECore.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
     End Property
 
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
         Get
             Return My.Resources.MENUITEM_SPLIT_TEXT
         End Get
     End Property
 
     Public ReadOnly Property ControlTooltipText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+        Implements EwECore.IGUIPlugin.ControlTooltipText
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState As eCoreExecutionState _
+        Implements EwECore.IGUIPlugin.EnabledState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcopathLoaded
+            Return eCoreExecutionState.EcopathLoaded
         End Get
     End Property
 
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
+        Implements EwECore.IGUIPlugin.OnControlClick
 
         If (Me.m_uic Is Nothing) Then Return
 
@@ -91,7 +91,7 @@ Public Class cSplitGroupPluginPoint
 #Region " UIContext "
 
     Public Sub UIContext(uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Implements EwECore.IUIContextPlugin.UIContext
 
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
@@ -105,7 +105,7 @@ Public Class cSplitGroupPluginPoint
 
 #Region " Menu item "
 
-    Public ReadOnly Property MenuItemLocation As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation As String Implements EwECore.IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuEcopath"
         End Get
@@ -115,29 +115,29 @@ Public Class cSplitGroupPluginPoint
 
 #Region " Generic "
 
-    Public Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(core As Object) Implements IPlugin.Initialize
         ' NOP
     End Sub
 
-    Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
             Return "EwE development team"
         End Get
     End Property
 
-    Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
             Return "ewedevteam@gmail.com"
         End Get
     End Property
 
-    Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
             Return "Lightweight plug-in to split an Ecopath group"
         End Get
     End Property
 
-    Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "Z08SplitGroup"
         End Get

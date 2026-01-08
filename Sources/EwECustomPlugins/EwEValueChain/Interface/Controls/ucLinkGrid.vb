@@ -24,7 +24,7 @@ Imports SourceGrid2
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports System.Reflection
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Database.cEwEDatabase
+Imports cEwEDatabase
 Imports EwECore
 
 #End Region ' Imports

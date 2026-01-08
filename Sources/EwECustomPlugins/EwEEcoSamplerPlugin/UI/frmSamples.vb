@@ -24,7 +24,7 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Samples
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms

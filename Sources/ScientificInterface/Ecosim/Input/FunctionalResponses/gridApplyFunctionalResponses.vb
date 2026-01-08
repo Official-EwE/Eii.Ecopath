@@ -25,7 +25,7 @@ Option Strict On
 Imports System.Text
 Imports System.Globalization
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceLibrary
@@ -75,7 +75,7 @@ Namespace Ecosim
             End Set
         End Property
 
-        Public Overrides ReadOnly Property CoreComponents As EwEUtils.Core.eCoreComponentType()
+        Public Overrides ReadOnly Property CoreComponents As eCoreComponentType()
             Get
                 Return New eCoreComponentType() {eCoreComponentType.EcosimCapacityResponseInteractionManager, eCoreComponentType.ShapesManager}
             End Get

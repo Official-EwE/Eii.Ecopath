@@ -32,7 +32,7 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer renderer that draws cells for the <see cref="EwEUtils.Core.eVarNameFlags.LayerExclusion">exclusion layer</see>.
+    ''' Layer renderer that draws cells for the <see cref="eVarNameFlags.LayerExclusion">exclusion layer</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerRendererExclusion

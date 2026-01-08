@@ -62,9 +62,9 @@ Public Class cShapeGridEcospaceEnvResponsesPlugin
         Return GetType(gridFunctionalResponses)
     End Function
 
-    Public Overrides ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState
+    Public Overrides ReadOnly Property EnabledState As eCoreExecutionState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcospaceLoaded
+            Return eCoreExecutionState.EcospaceLoaded
         End Get
     End Property
 

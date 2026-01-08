@@ -27,7 +27,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
 Imports EwEMSPPlugin.Emulator
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq

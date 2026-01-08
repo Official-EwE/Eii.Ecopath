@@ -24,7 +24,7 @@ Option Strict On
 
 Imports System.Drawing.Drawing2D
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -213,7 +213,7 @@ Namespace Controls
 
         Private Function nDataPoints() As Integer
             If Me.m_shape.IsSeasonal Then Return cCore.N_MONTHS
-            If Me.m_shape.DataType = EwEUtils.Core.eDataTypes.Forcing Then
+            If Me.m_shape.DataType = eDataTypes.Forcing Then
                 Return Me.m_uic.Core.nEcosimYears * cCore.N_MONTHS
             End If
             Return Me.m_shape.nPoints

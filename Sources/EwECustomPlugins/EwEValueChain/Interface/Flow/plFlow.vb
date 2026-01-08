@@ -26,8 +26,8 @@ Imports System.Drawing.Drawing2D
 Imports System.Reflection
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.Database
+Imports EwECore.Common
+Imports EwECore.Database
 Imports Microsoft.Glee
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
@@ -1060,7 +1060,7 @@ Public Class plFlow
 
         If Me.m_data.Parameters.DeletePrompt Then
 
-            Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_DELETELINK, link.Name), EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_DELETELINK, link.Name), eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.m_uic.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply <> eMessageReply.YES) Then Return False
 

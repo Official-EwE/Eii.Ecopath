@@ -31,7 +31,7 @@ Namespace Integration
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' GUI utility class, handles the placement of
-    ''' <see cref="EwEPlugin.INavigationTreeItemPlugin">INavigationTreeItemPlugin</see>-
+    ''' <see cref="EwECore.INavigationTreeItemPlugin">INavigationTreeItemPlugin</see>-
     ''' derived plugins in a <see cref="TreeView">TreeView</see>. Plug-ins are sorted
     ''' in the menu by <see cref="IPlugin.Name"/>, in ascending order.
     ''' </summary>

@@ -20,9 +20,7 @@
 Option Strict On
 Imports System.Threading
 Imports EwECore.SearchObjectives
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 

@@ -18,7 +18,6 @@
 '
 
 Option Strict On
-Imports EwEUtils.Core
 
 Public MustInherit Class cFishingBaseShapeManager
     Inherits cBaseShapeManager

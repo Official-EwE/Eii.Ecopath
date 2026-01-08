@@ -21,7 +21,7 @@
 
 Option Strict On
 Option Explicit On
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging

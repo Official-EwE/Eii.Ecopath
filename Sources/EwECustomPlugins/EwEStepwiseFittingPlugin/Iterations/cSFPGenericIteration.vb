@@ -32,7 +32,7 @@ Imports System.Text
 Imports EwECore
 Imports EwECore.Ecosim
 Imports EwECore.FitToTimeSeries
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging

@@ -361,7 +361,7 @@ Partial Class ucEditFlow
         Me.m_selector.Location = New System.Drawing.Point(0, 0)
         Me.m_selector.Margin = New System.Windows.Forms.Padding(0)
         Me.m_selector.Name = "m_selector"
-        Me.m_selector.Selection = New EwEUtils.Database.cEwEDatabase.cOOPStorable(-1) {}
+        Me.m_selector.Selection = New cEwEDatabase.cOOPStorable(-1) {}
         Me.m_selector.Size = New System.Drawing.Size(181, 120)
         Me.m_selector.TabIndex = 1
         '

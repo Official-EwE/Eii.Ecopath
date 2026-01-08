@@ -24,7 +24,7 @@ Option Explicit On
 Imports System.Text
 Imports EwECore
 Imports EwECore.Auxiliary
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 

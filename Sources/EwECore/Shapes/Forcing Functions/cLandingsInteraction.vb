@@ -19,7 +19,6 @@
 
 Option Explicit On
 Imports System.ComponentModel
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' Class to wrap the shape and function type modifiers for a price elasticity interaction

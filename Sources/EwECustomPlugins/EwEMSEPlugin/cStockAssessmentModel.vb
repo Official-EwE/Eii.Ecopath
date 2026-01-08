@@ -684,7 +684,7 @@ Public Class cStockAssessmentModel
             System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
             'I don't think I've used this correctly, this message is not posted to the core.
             'Anyway the user will be informed below just not that it was an error
-            cMSEUtils.LogError(New cMessage("Stock Assessment could not load from file " & strFilename & ". " & ex.Message, EwEUtils.Core.eMessageType.ErrorEncountered, EwEUtils.Core.eCoreComponentType.Plugin, EwEUtils.Core.eMessageImportance.Warning), ex.Message)
+            cMSEUtils.LogError(New cMessage("Stock Assessment could not load from file " & strFilename & ". " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning), ex.Message)
             breturn = False
         End Try
         cMSEUtils.ReleaseReader(reader)
@@ -696,7 +696,7 @@ Public Class cStockAssessmentModel
             'Failed to read the file 
             'set some defaults and tell the user
             Me.Defaults()
-            Me.MSE.InformUser("CEFAS MSE Stock Assessment model failed to load parameters from file. Defaults will be used.", EwEUtils.Core.eMessageImportance.Information)
+            Me.MSE.InformUser("CEFAS MSE Stock Assessment model failed to load parameters from file. Defaults will be used.", eMessageImportance.Information)
         End If
 
         Me.InitStockAssessment()

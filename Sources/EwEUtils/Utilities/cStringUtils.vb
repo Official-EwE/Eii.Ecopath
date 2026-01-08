@@ -27,7 +27,7 @@ Imports System.Security
 Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Text.RegularExpressions
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging

@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Controls
 
@@ -34,7 +34,7 @@ Namespace Ecospace.Advection
     ''' </summary>
     Public Class ucUpwelling
 
-        Protected Overrides Function DataLayerVariable() As EwEUtils.Core.eVarNameFlags
+        Protected Overrides Function DataLayerVariable() As eVarNameFlags
             Return eVarNameFlags.LayerUpwelling
         End Function
 

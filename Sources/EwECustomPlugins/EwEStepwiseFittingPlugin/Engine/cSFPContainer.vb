@@ -140,7 +140,7 @@ Public Class cSFPContainer
         Try
 
             ' No need to load plug-ins. Rather not, actually.
-            'core.PluginManager = New EwEPlugin.cPluginManager()
+            'core.PluginManager = New EwECore.cPluginManager()
             'core.PluginManager.Core = core ' Let's get to know each other, shall we?
             'core.PluginManager.LoadPlugins()
 

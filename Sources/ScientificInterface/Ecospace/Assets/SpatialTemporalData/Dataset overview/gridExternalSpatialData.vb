@@ -22,8 +22,8 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.SpatialData
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SourceGrid2

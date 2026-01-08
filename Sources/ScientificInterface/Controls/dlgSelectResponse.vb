@@ -28,7 +28,7 @@ Imports System.Drawing.Drawing2D
 Imports EwECore
 Imports ScientificInterface.Other
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared
 

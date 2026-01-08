@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Utilities
 Imports System.Text
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 #End Region ' Imports
 

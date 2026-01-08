@@ -21,8 +21,6 @@
 
 Option Strict On
 Imports EwECore.Auxiliary
-Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

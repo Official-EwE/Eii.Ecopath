@@ -18,10 +18,7 @@
 '
 
 Option Strict On
-
-Imports EwEPlugin
-Imports EwEUtils.Database
-Imports System.Data
+Imports EwECore.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -44,7 +41,7 @@ Friend Class cDBUpdate6_00_04_0001
     ''' <param name="db">Database to modify.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
+    Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
         Dim bSucces As Boolean = True

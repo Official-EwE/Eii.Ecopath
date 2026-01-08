@@ -22,8 +22,8 @@
 Option Strict On
 
 Imports EwECore
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
+Imports EwECore.Data
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports EwECore.Style

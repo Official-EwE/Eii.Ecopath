@@ -25,7 +25,7 @@ Imports System.Windows.Forms
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Database.cEwEDatabase
+Imports cEwEDatabase
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
 Imports ValueChain

@@ -29,7 +29,7 @@ Imports System.Web
 Imports EwECore
 Imports EwECore.WebServices
 Imports EwECore.WebServices.Ecobase
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports EwEValueChainV2Plugin

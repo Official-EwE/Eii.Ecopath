@@ -28,7 +28,7 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.MSE
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls

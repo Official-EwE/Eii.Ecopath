@@ -20,7 +20,6 @@
 #Region " Imports Compiler directives "
 
 Option Strict On
-Imports EwEUtils.Core
 
 #End Region ' Imports
 

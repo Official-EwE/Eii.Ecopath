@@ -24,7 +24,7 @@ Imports System.Drawing
 Imports System.Xml
 Imports EwECore
 Imports EwECore.Core
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging

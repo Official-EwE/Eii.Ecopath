@@ -190,7 +190,7 @@ Namespace Ecopath
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
-            Me.m_grid.VarName = EwEUtils.Core.eVarNameFlags.NotSet
+            Me.m_grid.VarName = eVarNameFlags.NotSet
             '
             'm_tcPlop
             '

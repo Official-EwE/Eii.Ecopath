@@ -23,8 +23,8 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore.SpatialData
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -93,9 +93,9 @@ Public Class cConverterPicker
     Private Class cConverterSorter
         Implements IComparer(Of ISpatialDataConverter)
 
-        Public Function Compare(x As EwEUtils.SpatialData.ISpatialDataConverter, _
-                                y As EwEUtils.SpatialData.ISpatialDataConverter) As Integer _
-                            Implements System.Collections.Generic.IComparer(Of EwEUtils.SpatialData.ISpatialDataConverter).Compare
+        Public Function Compare(x As EwECore.Common.ISpatialDataConverter, _
+                                y As EwECore.Common.ISpatialDataConverter) As Integer _
+                            Implements System.Collections.Generic.IComparer(Of EwECore.Common.ISpatialDataConverter).Compare
             Return String.Compare(x.DisplayName, y.DisplayName)
         End Function
     End Class

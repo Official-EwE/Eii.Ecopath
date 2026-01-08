@@ -21,8 +21,8 @@
 
 Imports EwECore
 Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
+Imports EwECore.Data
+Imports EwECore.Common
 Imports EwEWoRMSPlugin.WoRMSWebService
 Imports System.Web.Services.Protocols
 Imports EwEUtils.Utilities
@@ -155,7 +155,7 @@ Public Class cWoRMSPluginPoint
     End Property
 
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
         Get
             Return My.Resources.DISPLAYNAME
         End Get
@@ -188,7 +188,7 @@ Public Class cWoRMSPluginPoint
 
     ''' <inheritdocs cref="IDataProducerPlugin.IsDataAvailable"/>
     Friend Function IsDataAvailable(typeData As System.Type, _
-                                    Optional runType As EwEUtils.Core.IRunType = Nothing) As Boolean _
+                                    Optional runType As IRunType = Nothing) As Boolean _
         Implements IDataProducerPlugin.IsDataAvailable
         Return (GetType(ITaxonSearchData).IsAssignableFrom(typeData))
     End Function
@@ -201,7 +201,7 @@ Public Class cWoRMSPluginPoint
 
     ''' <inheritdocs cref="IDataProducerPlugin.IsEnabled"/>
     Friend Function IsEnabled(typeData As System.Type,
-                              runType As EwEUtils.Core.IRunType) As Boolean _
+                              runType As IRunType) As Boolean _
         Implements IDataProducerPlugin.IsEnabled
         Return Me.m_bEnabled
     End Function
@@ -215,7 +215,7 @@ Public Class cWoRMSPluginPoint
 
     ''' <inheritdocs cref="IDataProducerPlugin.SetEnabled"/>
     Friend Sub SetEnabled(typeData As System.Type, _
-                          runType As EwEUtils.Core.IRunType, _
+                          runType As IRunType, _
                           bEnable As Boolean) _
         Implements IDataProducerPlugin.SetEnabled
         ' NOP
@@ -288,13 +288,13 @@ Public Class cWoRMSPluginPoint
 
     ''' <inheritdocs cref="IConfigurablePlugin.GetConfigUI"/>
     Public Function GetConfigUI() As Object _
-        Implements EwEPlugin.IConfigurablePlugin.GetConfigUI
+        Implements EwECore.IConfigurablePlugin.GetConfigUI
         Return New ucConfig(Me)
     End Function
 
     ''' <inheritdocs cref="IConfigurablePlugin.IsConfigured"/>
     Public Function IsConfigured() As Boolean _
-        Implements EwEPlugin.IConfigurablePlugin.IsConfigured
+        Implements EwECore.IConfigurablePlugin.IsConfigured
         Return True
     End Function
 

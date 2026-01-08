@@ -24,7 +24,7 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
@@ -64,7 +64,7 @@ Public Class cNetworkD3RWriterPlugin
         End Get
     End Property
 
-    Public ReadOnly Property Name As String Implements IPlugin.Name, EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property Name As String Implements IPlugin.Name, IPlugin.DisplayName
         Get
             Return "Export Dietmatrix to NetworkD3"
         End Get

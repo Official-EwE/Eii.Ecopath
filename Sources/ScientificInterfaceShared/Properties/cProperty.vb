@@ -24,7 +24,7 @@ Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports

@@ -27,9 +27,8 @@ Imports System.Net.NetworkInformation
 Imports System.Reflection
 Imports System.Security.Principal
 Imports System.Threading
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -513,38 +512,38 @@ Namespace SystemUtilities
             Return 0
         End Function
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the expiry date of an assembly, given the run mode and an optional 
-        ''' max run length (in months).
-        ''' </summary>
-        ''' <param name="ass"></param>
-        ''' <param name="mode"></param>
-        ''' <param name="iMonths"></param>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function BestBefore(mode As eReleaseMode, Optional ass As System.Reflection.Assembly = Nothing, Optional iMonths As Integer = -9999) As DateTime
-            Dim dt As DateTime = DateTime.Now()
-            Try
-                dt = cAssemblyUtils.GetCompileDate(ass)
-            Catch ex As Exception
-                m_logger.LogError(ex, "cSystemUtils.BestBefore")
-            End Try
+        '''' -----------------------------------------------------------------------
+        '''' <summary>
+        '''' Get the expiry date of an assembly, given the run mode and an optional 
+        '''' max run length (in months).
+        '''' </summary>
+        '''' <param name="ass"></param>
+        '''' <param name="mode"></param>
+        '''' <param name="iMonths"></param>
+        '''' -----------------------------------------------------------------------
+        'Public Shared Function BestBefore(mode As eReleaseMode, Optional ass As System.Reflection.Assembly = Nothing, Optional iMonths As Integer = -9999) As DateTime
+        '    Dim dt As DateTime = DateTime.Now()
+        '    Try
+        '        dt = cAssemblyUtils.GetCompileDate(ass)
+        '    Catch ex As Exception
+        '        m_logger.LogError(ex, "cSystemUtils.BestBefore")
+        '    End Try
 
-            Select Case mode
-                Case eReleaseMode.Dev
-                    iMonths = 1
-                Case eReleaseMode.Beta
-                    If (iMonths = -9999) Then iMonths = 6
-                Case eReleaseMode.Release
-                    ' Release licenses are handled in another way
-                    Return DateTime.Now.AddDays(1)
-                Case Else
-                    Debug.Assert(False)
-            End Select
+        '    Select Case mode
+        '        Case eReleaseMode.Dev
+        '            iMonths = 1
+        '        Case eReleaseMode.Beta
+        '            If (iMonths = -9999) Then iMonths = 6
+        '        Case eReleaseMode.Release
+        '            ' Release licenses are handled in another way
+        '            Return DateTime.Now.AddDays(1)
+        '        Case Else
+        '            Debug.Assert(False)
+        '    End Select
 
-            Return dt.AddMonths(iMonths)
+        '    Return dt.AddMonths(iMonths)
 
-        End Function
+        'End Function
 
     End Class
 

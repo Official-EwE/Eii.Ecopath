@@ -33,7 +33,7 @@ Imports System.Drawing
 ''' ===========================================================================
 <Serializable()> _
 Public Class cParameters
-    Inherits EwEUtils.Database.cEwEDatabase.cOOPStorable
+    Inherits cEwEDatabase.cOOPStorable
 
 #Region " Private vars "
 

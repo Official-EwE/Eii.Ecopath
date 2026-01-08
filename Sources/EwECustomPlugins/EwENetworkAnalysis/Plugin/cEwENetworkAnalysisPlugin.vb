@@ -23,8 +23,8 @@ Option Strict On
 
 Imports EwECore
 Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
+Imports EwECore.Data
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
@@ -141,7 +141,7 @@ Public Class cEwENetworkAnalysisPlugin
 
 #Region " UIContext "
 
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements EwECore.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
@@ -174,7 +174,7 @@ Public Class cEwENetworkAnalysisPlugin
     End Sub
 
     Public Sub Dispose() _
-        Implements EwEPlugin.IDisposedPlugin.Dispose
+        Implements EwECore.IDisposedPlugin.Dispose
 
         If Me.HasUI() Then
             Me.m_frmNA.Close()
@@ -222,7 +222,7 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <param name="EcopathDataStructures"></param>
     ''' <remarks></remarks>
     Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object) _
-        Implements EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted
+        Implements EwECore.IEcopathRunCompletedPlugin.EcopathRunCompleted
 
         Debug.Assert(TypeOf EcopathDataStructures Is EwECore.cEcopathDataStructures, Me.ToString &
                             ".EcopathRan() argument EcopathDataStructure is not a cEcopathDataStructures object.")
@@ -264,7 +264,7 @@ Public Class cEwENetworkAnalysisPlugin
     ''' </summary>
     ''' <param name="EcosimDatastructures"></param>
     ''' <remarks></remarks>
-    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements EwECore.IEcosimRunInitializedPlugin.EcosimRunInitialized
 
         Debug.Assert(TypeOf EcosimDatastructures Is EwECore.cEcosimDatastructures, Me.ToString &
                             ".EcosimRunInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object.")
@@ -309,7 +309,7 @@ Public Class cEwENetworkAnalysisPlugin
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single,
                                  EcosimDatastructures As Object,
                                  iTime As Integer, Ecosimresults As Object) _
-        Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+        Implements EwECore.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Try
             'Only run the Ecosim Network Analysis if it is turned on
@@ -334,7 +334,7 @@ Public Class cEwENetworkAnalysisPlugin
     End Sub
 
     Public Sub EcosimRunCompleted(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
+        Implements EwECore.IEcosimRunCompletedPlugin.EcosimRunCompleted
 
         Try
             ' JS 170911: Sim broadcasting was never used, and the code below might tigger a new Sim run. Idea abadoned
@@ -374,16 +374,16 @@ Public Class cEwENetworkAnalysisPlugin
         Return (typeData Is GetType(INetworkAnalysisData))
     End Function
 
-    Public Function IsEnabled1() As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
+    Public Function IsEnabled1() As Boolean Implements EwECore.Data.IDataProducerPlugin.IsEnabled
         Return Me.m_bDataEnabled
     End Function
 
-    Public Function SetEnabled(bEnable As Boolean) As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+    Public Function SetEnabled(bEnable As Boolean) As Boolean Implements EwECore.Data.IDataProducerPlugin.SetEnabled
         Me.m_bDataEnabled = bEnable
     End Function
 
     Public Sub SetEnabled(typeData As System.Type, runType As IRunType, bEnabled As Boolean) _
-        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+        Implements EwECore.Data.IDataProducerPlugin.SetEnabled
 
         If Not (typeData Is GetType(INetworkAnalysisData)) Then Return
 
@@ -398,7 +398,7 @@ Public Class cEwENetworkAnalysisPlugin
     End Sub
 
     Public Function IsEnabled(typeData As System.Type, runType As IRunType) As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
+        Implements EwECore.Data.IDataProducerPlugin.IsEnabled
 
         If Not (typeData Is GetType(INetworkAnalysisData)) Then Return False
 

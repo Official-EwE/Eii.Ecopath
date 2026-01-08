@@ -20,8 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore.Ecosim
-Imports EwEUtils.Core
 Imports EwECore.Ecospace.Advection.cAdvectionManager
 
 #End Region ' Imports

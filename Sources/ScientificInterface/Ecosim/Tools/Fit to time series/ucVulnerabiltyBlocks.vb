@@ -23,7 +23,7 @@ Option Strict On
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports System.Xml
 Imports SharedResources = ScientificInterfaceShared.My.Resources

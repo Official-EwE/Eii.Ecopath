@@ -22,7 +22,7 @@
 Option Strict On
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports System.Text
 Imports EwEUtils.SystemUtilities
 Imports System.Reflection
@@ -33,78 +33,78 @@ Public MustInherit Class cNavTreeControlPlugin
     Implements INavigationTreeItemPlugin
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IPlugin.Name"/>
+    ''' <inheritdoc cref="IPlugin.Name"/>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+    Public MustOverride ReadOnly Property Name() As String Implements IPlugin.Name
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IGUIPlugin.ControlImage"/>
+    ''' <inheritdoc cref="EwECore.IGUIPlugin.ControlImage"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property ControlImage() As Object _
-        Implements EwEPlugin.IGUIPlugin.ControlImage
+        Implements EwECore.IGUIPlugin.ControlImage
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IPlugin.DisplayName"/>
+    ''' <inheritdoc cref="IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property DisplayName() As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IGUIPlugin.ControlTooltipText"/>
+    ''' <inheritdoc cref="EwECore.IGUIPlugin.ControlTooltipText"/>
     ''' -----------------------------------------------------------------------
     Public Overridable ReadOnly Property ControlTooltipText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+        Implements EwECore.IGUIPlugin.ControlTooltipText
         Get
             Return My.Resources.GENERIC_TOOLTIP
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IGUIPlugin.EnabledState"/>
+    ''' <inheritdoc cref="EwECore.IGUIPlugin.EnabledState"/>
     ''' -----------------------------------------------------------------------
-    Public Overridable ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public Overridable ReadOnly Property EnabledState() As eCoreExecutionState _
+        Implements EwECore.IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.EcopathCompleted
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IGUIPlugin.OnControlClick"/>
+    ''' <inheritdoc cref="EwECore.IGUIPlugin.OnControlClick"/>
     ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
+        Implements EwECore.IGUIPlugin.OnControlClick
         frmPlugin = cEwENetworkAnalysisPlugin.SwitchForm(Me.FormPage)
     End Sub
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation"/>
+    ''' <inheritdoc cref="EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property NavigationTreeItemLocation() As String _
-        Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+        Implements EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IPlugin.Author"/>
+    ''' <inheritdoc cref="IPlugin.Author"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author() As String Implements IPlugin.Author
         Get
             Return "UBC Institute for the Oceans and Fisheries"
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IPlugin.Contact"/>
+    ''' <inheritdoc cref="IPlugin.Contact"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact() As String Implements IPlugin.Contact
         Get
             Return "mailto:ewedevteam@gmail.com"
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IPlugin.Description"/>
+    ''' <inheritdoc cref="IPlugin.Description"/>
     ''' -----------------------------------------------------------------------
-    Public Overridable ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public Overridable ReadOnly Property Description() As String Implements IPlugin.Description
         Get
             ' ToDo: globalize this
             Return "Network Analysis plug-in for Ecopath with Ecosim"
@@ -112,9 +112,9 @@ Public MustInherit Class cNavTreeControlPlugin
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IPlugin.Initialize"/>
+    ''' <inheritdoc cref="IPlugin.Initialize"/>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Overridable Sub Initialize(core As Object) Implements IPlugin.Initialize
         ' NOP
     End Sub
 

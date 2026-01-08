@@ -21,9 +21,9 @@
 
 Option Strict On
 Imports System.Reflection
-Imports EwEUtils.Core
-Imports EwEUtils.Database
-Imports EwEUtils.Database.cEwEDatabase
+Imports EwECore.Common
+Imports EwECore.Database
+Imports cEwEDatabase
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug

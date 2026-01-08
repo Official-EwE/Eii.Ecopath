@@ -27,7 +27,7 @@ Imports System.Xml.Serialization
 Imports EcoTroph.cEcotrophPlugin
 Imports EwECore
 Imports EwECore.WebServices
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands

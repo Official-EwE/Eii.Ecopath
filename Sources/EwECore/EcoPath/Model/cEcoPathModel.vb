@@ -20,9 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug

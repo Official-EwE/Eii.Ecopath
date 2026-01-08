@@ -17,14 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
-
-#End Region ' Imports
-
 Namespace SpatialData
 
     ' ToDo: change storage from VarName to DataType

@@ -24,9 +24,9 @@ Imports EwECore.Database
 Imports ScientificInterfaceShared.Controls.Wizard
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore.DataSources
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Database
+Imports EwECore.Database
 
 #End Region ' Imports
 

@@ -22,7 +22,7 @@
 Option Strict On
 Imports System.ComponentModel
 Imports EwEUtils.Utilities
-Imports EwEUtils.Database.cEwEDatabase
+Imports cEwEDatabase
 Imports System.Reflection
 
 #End Region ' Imports

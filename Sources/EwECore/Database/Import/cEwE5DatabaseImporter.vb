@@ -22,10 +22,8 @@
 Option Strict On
 Imports System.Drawing
 Imports System.Text
-Imports EwEUtils.Core
-Imports EwEUtils.Database
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-Imports System.Data
 
 #End Region ' EwECore
 

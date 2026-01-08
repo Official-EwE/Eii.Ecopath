@@ -23,7 +23,7 @@ Imports System.IO
 Imports System.Threading
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging

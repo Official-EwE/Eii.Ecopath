@@ -18,12 +18,8 @@
 '
 
 Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Database
-Imports EwEUtils.Core
+Imports EwECore.Database
 Imports EwEUtils.Utilities
-
-Imports EwEUtils.SystemUtilities.cSystemUtils
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

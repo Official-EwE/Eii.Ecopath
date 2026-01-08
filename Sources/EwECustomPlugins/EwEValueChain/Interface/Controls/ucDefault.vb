@@ -19,7 +19,7 @@
 
 Option Strict On
 Imports System.Windows.Forms
-Imports EwEUtils.Database.cEwEDatabase
+Imports cEwEDatabase
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 

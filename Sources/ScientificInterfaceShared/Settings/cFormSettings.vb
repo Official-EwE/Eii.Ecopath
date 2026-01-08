@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports System.Xml
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities

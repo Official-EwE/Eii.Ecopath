@@ -24,7 +24,7 @@ Option Strict On
 Imports EwEUtils.Utilities
 Imports EwECore
 Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging

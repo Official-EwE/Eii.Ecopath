@@ -18,7 +18,6 @@
 '
 
 Option Strict On
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' Status or Message that applies to a variable (VarType) for a Group (iGroup)

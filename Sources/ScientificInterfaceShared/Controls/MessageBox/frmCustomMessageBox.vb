@@ -26,7 +26,7 @@ Imports System.Windows.Forms
 Imports System.ComponentModel
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 #End Region ' Imports
 

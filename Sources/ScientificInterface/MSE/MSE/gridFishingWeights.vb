@@ -24,7 +24,7 @@ Option Explicit On
 
 Imports EwECore
 Imports SourceGrid2.Cells.Real
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwECore.MSE
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore.Style

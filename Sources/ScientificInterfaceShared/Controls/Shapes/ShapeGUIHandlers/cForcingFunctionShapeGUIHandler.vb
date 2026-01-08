@@ -21,7 +21,7 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
@@ -184,7 +184,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.Datatypes"/>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Protected Overrides Function Datatypes() As eDataTypes()
             Return New eDataTypes() {eDataTypes.Forcing, eDataTypes.EggProd}
         End Function
 

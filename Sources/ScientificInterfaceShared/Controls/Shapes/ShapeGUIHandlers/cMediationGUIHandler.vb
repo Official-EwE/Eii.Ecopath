@@ -26,7 +26,7 @@ Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -342,7 +342,7 @@ Namespace Controls
         ''' <inheritdocs cref="cShapeGUIHandler.Datatypes"/>
         ''' <remarks>Overridden to enable handler for mediation shapes.</remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Protected Overrides Function Datatypes() As eDataTypes()
             Return New eDataTypes() {eDataTypes.Mediation}
         End Function
 

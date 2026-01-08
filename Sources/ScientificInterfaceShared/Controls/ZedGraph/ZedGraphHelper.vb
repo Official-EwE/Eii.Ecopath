@@ -25,7 +25,7 @@ Imports System.IO
 Imports System.Text
 Imports EwECore
 Imports EwECore.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions

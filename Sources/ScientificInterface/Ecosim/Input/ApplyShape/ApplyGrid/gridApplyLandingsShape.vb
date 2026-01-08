@@ -25,7 +25,7 @@ Option Strict On
 Imports System.Globalization
 Imports System.Text
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2

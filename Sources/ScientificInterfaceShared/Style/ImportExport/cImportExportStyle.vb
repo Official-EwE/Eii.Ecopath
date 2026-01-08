@@ -25,7 +25,7 @@ Imports System.Xml
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Core
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map

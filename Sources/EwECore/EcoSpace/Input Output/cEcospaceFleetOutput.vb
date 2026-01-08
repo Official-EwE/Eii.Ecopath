@@ -19,7 +19,6 @@
 
 Option Strict On
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 
 Public Class cEcospaceFleetOutput
     Inherits cCoreInputOutputBase
@@ -76,7 +75,7 @@ Public Class cEcospaceFleetOutput
     End Sub
 
 
-    Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
         Try
             If Not Me.m_CoreArrays.ContainsKey(VarName) Then

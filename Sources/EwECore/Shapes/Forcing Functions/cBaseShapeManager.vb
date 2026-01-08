@@ -18,9 +18,7 @@
 '
 
 Option Strict On
-Imports EwEUtils.Core
 Imports System.ComponentModel
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 

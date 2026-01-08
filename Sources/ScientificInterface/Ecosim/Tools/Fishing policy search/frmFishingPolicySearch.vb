@@ -24,7 +24,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.FishingPolicy
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging

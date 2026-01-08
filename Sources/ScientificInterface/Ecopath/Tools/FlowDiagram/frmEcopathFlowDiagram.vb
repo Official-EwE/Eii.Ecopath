@@ -25,7 +25,7 @@ Imports System.IO
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources

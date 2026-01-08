@@ -24,7 +24,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -74,7 +74,7 @@ Public Class cTransectSummaryPlugin
     ''' <inheritdocs cref="IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
         Get
             Return My.Resources.CAPTION_OUT
         End Get

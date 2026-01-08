@@ -23,7 +23,7 @@ Option Strict On
 Imports EwEPlugin
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
@@ -37,10 +37,10 @@ Imports EwEUtils.SystemUtilities
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cMultiSimPlugin
-    Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.IMenuItemPlugin
-    Implements EwEPlugin.INavigationTreeItemPlugin
-    Implements EwEPlugin.IHelpPlugin
+    Implements EwECore.IUIContextPlugin
+    Implements EwECore.IMenuItemPlugin
+    Implements EwECore.INavigationTreeItemPlugin
+    Implements EwECore.IHelpPlugin
 
 #Region " Private vars "
 
@@ -54,42 +54,42 @@ Public Class cMultiSimPlugin
 #Region " IPlugin "
 
     Public Sub Initialize(core As Object) _
-        Implements EwEPlugin.IPlugin.Initialize
+        Implements IPlugin.Initialize
         ' Ignore
     End Sub
 
     Public ReadOnly Property Name As String _
-        Implements EwEPlugin.IPlugin.Name
+        Implements IPlugin.Name
         Get
             Return "ndDFO_MultiSim"
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IPlugin.DisplayName"/>
+    ''' <inheritdocs cref="IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
             Return My.Resources.GENERIC_DISPLAYNAME
         End Get
     End Property
 
     Public ReadOnly Property Author As String _
-        Implements EwEPlugin.IPlugin.Author
+        Implements IPlugin.Author
         Get
             Return "Fisheries and Oceans Canada"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String _
-        Implements EwEPlugin.IPlugin.Contact
+        Implements IPlugin.Contact
         Get
             Return "Sylvie Guenette, Carie Hoover, Dave Preikshot"
         End Get
     End Property
 
     Public ReadOnly Property Description As String _
-        Implements EwEPlugin.IPlugin.Description
+        Implements IPlugin.Description
         Get
             Return My.Resources.GENERIC_DESCRIPTION
         End Get
@@ -100,7 +100,7 @@ Public Class cMultiSimPlugin
 #Region " UI Context "
 
     Public Sub UIContext(uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Implements EwECore.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
@@ -109,28 +109,28 @@ Public Class cMultiSimPlugin
 #Region " GUI integration "
 
     Public ReadOnly Property ControlImage As Object _
-        Implements EwEPlugin.IGUIPlugin.ControlImage
+        Implements EwECore.IGUIPlugin.ControlImage
         Get
             Return Nothing ' My.Resources.logo_canada
         End Get
     End Property
 
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
+        Implements EwECore.IGUIPlugin.OnControlClick
         frmPlugin = Me.UI
     End Sub
 
     Public ReadOnly Property ControlTooltipText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+        Implements EwECore.IGUIPlugin.ControlTooltipText
         Get
             Return Me.Description
         End Get
     End Property
 
     Public ReadOnly Property EnabledState As eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
+        Implements EwECore.IGUIPlugin.EnabledState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+            Return eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 
@@ -139,7 +139,7 @@ Public Class cMultiSimPlugin
 #Region " Menu item "
 
     Public ReadOnly Property MenuItemLocation As String _
-        Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+        Implements EwECore.IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
@@ -150,7 +150,7 @@ Public Class cMultiSimPlugin
 #Region " Navigation tree "
 
     Public ReadOnly Property NavigationTreeItemLocation As String _
-        Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+        Implements EwECore.INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             Return "ndTimeDynamic\ndEcosimTools"
         End Get
@@ -164,7 +164,7 @@ Public Class cMultiSimPlugin
     ''' <inheritdocs cref="IHelpPlugin.HelpTopic"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property HelpTopic As String _
-        Implements EwEPlugin.IHelpPlugin.HelpTopic
+        Implements EwECore.IHelpPlugin.HelpTopic
         Get
             Return ".\UserGuide\EwEMultiSimPlugin.pdf"
         End Get
@@ -174,7 +174,7 @@ Public Class cMultiSimPlugin
     ''' <inheritdocs cref="IHelpPlugin.HelpURL"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property HelpURL As String _
-        Implements EwEPlugin.IHelpPlugin.HelpURL
+        Implements EwECore.IHelpPlugin.HelpURL
         Get
             Return Me.HelpTopic
         End Get

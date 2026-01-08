@@ -22,9 +22,8 @@
 Option Strict On
 
 Imports System.IO
+Imports EwECore.Common
 Imports EwECore.DataSources
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 '
@@ -827,7 +826,7 @@ Public Class cEIIDataSource
         Return False
     End Function
 
-    Public Function IsOSSupported(dst As EwEUtils.Core.eDataSourceTypes) As Boolean _
+    Public Function IsOSSupported(dst As eDataSourceTypes) As Boolean _
         Implements IEwEDataSource.IsOSSupported
         Return True ' We can do this!
     End Function

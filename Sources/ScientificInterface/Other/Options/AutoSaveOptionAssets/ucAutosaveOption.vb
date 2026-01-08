@@ -23,7 +23,7 @@ Option Strict On
 
 Imports System.IO
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities

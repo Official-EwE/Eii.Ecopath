@@ -23,7 +23,7 @@ Option Strict On
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 Imports System.Text
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map

@@ -24,9 +24,9 @@ Imports System.Globalization
 Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
@@ -532,14 +532,14 @@ Namespace Ecospace.Controls
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
                         msg = New cMessage(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOINDEX,
-                                           eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Information)
+                                           eMessageType.Any, eCoreComponentType.Ecotracer, eMessageImportance.Information)
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors,
                          cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
                         msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, dtStartDate.ToShortDateString()),
-                                           eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+                                           eMessageType.Any, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
                         msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, dtStartDate.ToShortDateString()),
-                                           eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+                                           eMessageType.Any, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                     Case Else
                         ' Only when ok
                         Me.m_fpScale.Value = CSng(dScale)
@@ -996,7 +996,7 @@ Namespace Ecospace.Controls
             sw.Close()
 
             Try
-                Dim msg As New cMessage("External data statistics saved to " & strFile, eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+                Dim msg As New cMessage("External data statistics saved to " & strFile, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFile)
                 core.Messages.SendMessage(msg)
             Catch ex As Exception

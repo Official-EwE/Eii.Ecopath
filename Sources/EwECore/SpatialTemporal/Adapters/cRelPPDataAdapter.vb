@@ -17,14 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
-Imports EwEUtils.Utilities
-
-#End Region ' Imports
+Imports EwECore.Common
 
 Namespace SpatialData
 

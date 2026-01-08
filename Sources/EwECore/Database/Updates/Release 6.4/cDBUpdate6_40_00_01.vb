@@ -18,12 +18,7 @@
 '
 
 Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Database
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-
-Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwECore.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -57,7 +52,7 @@ Friend Class cDBUpdate6_40_00_01
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-        Return Me.UpdateEcospaceTables(db) 
+        Return Me.UpdateEcospaceTables(db)
     End Function
 
     Private Function UpdateEcospaceTables(db As cEwEDatabase) As Boolean
