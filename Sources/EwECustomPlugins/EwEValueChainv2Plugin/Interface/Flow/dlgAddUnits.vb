@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Windows.Forms
 Imports ValueChain
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>

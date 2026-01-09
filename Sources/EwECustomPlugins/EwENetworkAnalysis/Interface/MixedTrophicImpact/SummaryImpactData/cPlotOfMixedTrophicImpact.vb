@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.Drawing
@@ -27,21 +27,21 @@ Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
 ''' MTI graph with circles
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class cPlotOfMixedTrophicImpact
     Inherits cContentManager
 

@@ -17,10 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Database
-Imports EwEUtils.Core
+
+Imports EwECore.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

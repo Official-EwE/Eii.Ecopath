@@ -28,7 +28,7 @@ Option Strict Off
 Imports System.IO
 Imports EwEUtils.Utilities
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 Public Class cResultsWriter_2DArray
     Inherits cResultsWriter_Base

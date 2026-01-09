@@ -17,18 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
 
-Imports EwECore
-Imports System.Drawing.Drawing2D
-Imports System.Drawing
-Imports System.ComponentModel
-Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Controls
 

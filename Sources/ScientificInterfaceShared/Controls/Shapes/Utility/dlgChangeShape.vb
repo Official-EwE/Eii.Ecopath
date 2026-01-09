@@ -17,17 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 
 Imports System.Drawing.Drawing2D
-Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Style
+Imports EwECore.Common
 
-#End Region ' Imports
+
 
 ' To consider (after VC comment 21 May 18): 
 '   Draw shapes With axis information. This logic Is now stored In SketchPad, And can perhaps be moved To the shape handlers
@@ -52,7 +50,7 @@ Namespace Controls
         Private m_shape As cForcingFunction = Nothing
         ''' <summary></summary>
         Private m_handler As cShapeGUIHandler = Nothing
- 
+
 #End Region ' Private vars
 
 #Region " Constructor "
@@ -213,7 +211,7 @@ Namespace Controls
 
         Private Function nDataPoints() As Integer
             If Me.m_shape.IsSeasonal Then Return cCore.N_MONTHS
-            If Me.m_shape.DataType = EwEUtils.Core.eDataTypes.Forcing Then
+            If Me.m_shape.DataType = eDataTypes.Forcing Then
                 Return Me.m_uic.Core.nEcosimYears * cCore.N_MONTHS
             End If
             Return Me.m_shape.nPoints

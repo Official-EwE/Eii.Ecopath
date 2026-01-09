@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 Imports System.Collections.Generic
 Imports System.Diagnostics
@@ -27,7 +27,7 @@ Imports System.IO
 Imports EwEUtils.Utilities
 Imports Microsoft.Win32
 
-#End Region ' Imports
+
 
 Namespace Interop
 

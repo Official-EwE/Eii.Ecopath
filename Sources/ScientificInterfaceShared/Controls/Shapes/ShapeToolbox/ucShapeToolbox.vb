@@ -17,19 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.ComponentModel
-Imports EwECore
 Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
-Imports System.Linq
 
-#End Region ' Imports
+
 
 Namespace Controls
 
@@ -647,7 +644,7 @@ Namespace Controls
                     If ts.ValidationStatus <> eStatusFlags.OK Then
                         e.Item.Checked = False
                         Me.m_uic.Core.Messages.SendMessage(New cMessage(String.Format(My.Resources.PROMPT_TIMESERIES_NOTUSABLE, ts.Name, ts.ValidationMessage),
-                                                                        eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.TimeSeries, eMessageImportance.Warning))
+                                                                        eMessageType.DataValidation, eCoreComponentType.TimeSeries, eMessageImportance.Warning))
                         Return
                     End If
 

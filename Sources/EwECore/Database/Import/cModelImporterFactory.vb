@@ -17,16 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
+Imports EwECore.Common
 Imports EwECore.Database
 Imports EwECore.DataSources
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Database
-
-#End Region ' Imports 
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Database
 
 ''' ===========================================================================
 ''' <summary>
@@ -65,8 +60,8 @@ Public Class cModelImporterFactory
 
         ' Explore if a plug-in is provided that can do this too
         If (pm IsNot Nothing) Then
-            For Each pi As IPlugin In pm.GetPlugins(GetType(EwEPlugin.Data.IModelImportPlugin))
-                Dim imp As EwEPlugin.Data.IModelImportPlugin = DirectCast(pi, EwEPlugin.Data.IModelImportPlugin)
+            For Each pi As IPlugin In pm.GetPlugins(GetType(IModelImportPlugin))
+                Dim imp As IModelImportPlugin = DirectCast(pi, IModelImportPlugin)
                 If imp.CanImportFrom(strSource) Then
                     Return imp
                 End If

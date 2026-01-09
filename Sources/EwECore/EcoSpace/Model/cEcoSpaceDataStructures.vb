@@ -16,16 +16,14 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
+
+
 Imports EwEUtils.Extensions
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Public Class cEcospaceDataStructures
 
@@ -666,7 +664,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Capacity calculation type per group
     ''' </summary>
-    Public CapCalType() As EwEUtils.Core.eEcospaceCapacityCalType
+    Public CapCalType() As eEcospaceCapacityCalType
 
     ''' <summary>
     ''' Nearest suitable map row (iPacket) for an IBM Packet by nStanzaGroups(nSplit), MaxStanzas, row, col
@@ -2296,10 +2294,10 @@ Public Class cEcospaceDataStructures
         Catch exmem As OutOfMemoryException
             System.Console.WriteLine(Me.ToString & ".redimTimeStepResults() Out of memory: " & exmem.Message)
             message = New cMessage(My.Resources.CoreMessages.ECOSPACE_OUT_OF_MEMORY,
-                                   eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecospace, eMessageImportance.Critical)
+                                   eMessageType.Any, eCoreComponentType.Ecospace, eMessageImportance.Critical)
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".redimTimeStepResults(): " & ex.Message)
-            message = New cMessage(ex.Message, eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecospace, eMessageImportance.Critical)
+            message = New cMessage(ex.Message, eMessageType.Any, eCoreComponentType.Ecospace, eMessageImportance.Critical)
         End Try
 
         If message IsNot Nothing Then

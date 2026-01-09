@@ -16,14 +16,7 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-#Region " Imports "
-
-Option Strict On
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
-
-#End Region
 
 Namespace MSE
 
@@ -268,7 +261,7 @@ Namespace MSE
             'End Set
         End Property
 
-        'Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = -9999) As Object
+        'Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = -9999) As Object
 
         '    Select Case VarName
         '        Case eVarNameFlags.MSETFMBLimValues
@@ -284,7 +277,7 @@ Namespace MSE
         'End Function
 
 
-        'Public Overrides Function SetVariable(VarName As EwEUtils.Core.eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999) As Boolean
+        'Public Overrides Function SetVariable(VarName As eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999) As Boolean
         '    Dim bdone As Boolean
         '    Select Case VarName
         '        Case eVarNameFlags.MSETFMBLimValues

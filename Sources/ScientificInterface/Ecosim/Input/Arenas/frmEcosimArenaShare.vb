@@ -16,15 +16,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
+
+
 Imports EwEUtils.Utilities
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 

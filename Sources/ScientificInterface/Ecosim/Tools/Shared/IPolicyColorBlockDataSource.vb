@@ -17,23 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports EwECore.FishingPolicy
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Core
-Imports System.ComponentModel
-Imports EwEUtils.Utilities
-
-#End Region
-
 Namespace Ecosim
-
-#Region "Interface for Datasource (IPolicyColorBlockDataSource)"
 
     ''' <summary>
     ''' Interface for the core data that is used to populate a ucPolicyColorBlocks control
@@ -118,7 +102,5 @@ Namespace Ecosim
         Function BlockToValue(iBlock As Integer) As Single
 
     End Interface
-
-#End Region
 
 End Namespace

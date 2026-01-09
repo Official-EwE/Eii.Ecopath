@@ -17,13 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Style
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Layer providing access to Ecospace Primarey Production data.

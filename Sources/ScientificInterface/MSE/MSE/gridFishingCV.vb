@@ -17,20 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports EwECore.MSE
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2.Cells.Real
 
-#End Region
 
-<CLSCompliant(False)> _
 Public Class gridFishingCV
     : Inherits cEwEGrid
 

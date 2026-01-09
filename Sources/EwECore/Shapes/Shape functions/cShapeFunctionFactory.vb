@@ -17,23 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Reflection
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecosim
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Factory for delivering <see cref="IShapeFunction">shape functions</see> that
 ''' can be used to reshape a particular <see cref="cForcingFunction"/>. This class
-''' also takes <see cref="EwEPlugin.IEcosimShapeFunctionPlugin">shape functions 
+''' also takes <see cref="IEcosimShapeFunctionPlugin">shape functions 
 ''' delivered by plug-ins</see> into account.
 ''' </summary>
 ''' ---------------------------------------------------------------------------

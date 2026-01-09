@@ -17,18 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
 Imports ScientificInterfaceShared.Style.cStyleGuide
-
-#End Region
+Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace
 
@@ -37,7 +28,7 @@ Namespace Ecospace
     ''' Grid to configure Ecospace habitat fishing limitations.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class gridEcospaceHabitatFishery
         Inherits cEwEGrid
 

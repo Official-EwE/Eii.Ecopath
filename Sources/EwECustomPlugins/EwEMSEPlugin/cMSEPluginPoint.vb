@@ -23,34 +23,34 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Option Explicit On
-
-#Region " Imports "
-
 Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Core
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.MSE
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Controls
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
 
 Public Class cMSEPluginPoint
-    Implements EwEPlugin.IMenuItemPlugin
-    Implements EwEPlugin.ICorePlugin
-    Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.IEcosimInitializedPlugin
-    Implements EwEPlugin.IEcosimBeginTimestepPlugin
-    Implements EwEPlugin.IEcosimEndTimestepPlugin
-    Implements EwEPlugin.IMessageFilterPlugin
-    Implements EwEPlugin.IEcopathPlugin
-    Implements EwEPlugin.IEcosimPlugin
-    Implements EwEPlugin.IEcopathRunInitializedPlugin
-    Implements EwEPlugin.IMSEInitialized
-    Implements EwEPlugin.IEcosimDataInitializedPlugin
-    Implements EwEPlugin.IDisposedPlugin
+    Implements IMenuItemPlugin
+    Implements ICorePlugin
+    Implements IUIContextPlugin
+    Implements IEcosimInitializedPlugin
+    Implements IEcosimBeginTimestepPlugin
+    Implements IEcosimEndTimestepPlugin
+    Implements IMessageFilterPlugin
+    Implements IEcopathPlugin
+    Implements IEcosimPlugin
+    Implements IEcopathRunInitializedPlugin
+    Implements IMSEInitializedPlugin
+    Implements IEcosimDataInitializedPlugin
+    Implements IDisposedPlugin
 
 #Region " Internal vars "
 
@@ -59,13 +59,13 @@ Public Class cMSEPluginPoint
     Private m_frm As frmMSE = Nothing
     Private m_core As cCore = Nothing
     Private m_uic As cUIContext = Nothing
-    Private m_ecosim As EwECore.Ecosim.cEcosimModel = Nothing
+    Private m_ecosim As Ecosim.cEcosimModel = Nothing
     Private m_ecopath As Ecopath.cEcopathModel
     Private m_simdata As cEcosimDatastructures
     Private m_pathdata As cEcopathDataStructures
-    Private m_coreMSEData As EwECore.MSE.cMSEDataStructures
+    Private m_coreMSEData As MSE.cMSEDataStructures
 
-    Private m_EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
+    Private m_EcosimTimeStepDelegate As Ecosim.EcoSimTimeStepDelegate
 
     Private m_monitor As New cMSEStateMonitor(Me)
 
@@ -104,7 +104,7 @@ Public Class cMSEPluginPoint
         End Get
     End Property
 
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
@@ -137,12 +137,12 @@ Public Class cMSEPluginPoint
 
 #Region " EwE app flow plugins "
 
-    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
+    Public Function CloseModel() As Boolean Implements IEcopathPlugin.CloseModel
         ' NOP
         Return True
     End Function
 
-    Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
+    Public Function LoadModel(dataSource As Object) As Boolean Implements IEcopathPlugin.LoadModel
 
         If (Not Me.HasUI) Then Return True
         Me.InvalidateConfiguration()
@@ -150,32 +150,32 @@ Public Class cMSEPluginPoint
 
     End Function
 
-    Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
+    Public Function SaveModel(dataSource As Object) As Boolean Implements IEcopathPlugin.SaveModel
         Return True
     End Function
 
-    Public Sub CloseEcosimScenario() Implements EwEPlugin.IEcosimPlugin.CloseEcosimScenario
+    Public Sub CloseEcosimScenario() Implements IEcosimPlugin.CloseEcosimScenario
         ' NOP
     End Sub
 
-    Public Sub LoadEcosimScenario(dataSource As Object) Implements EwEPlugin.IEcosimPlugin.LoadEcosimScenario
+    Public Sub LoadEcosimScenario(dataSource As Object) Implements IEcosimPlugin.LoadEcosimScenario
 
         If (Not Me.HasUI) Then Return
         Me.InvalidateConfiguration()
 
     End Sub
 
-    Public Sub SaveEcosimScenario(dataSource As Object) Implements EwEPlugin.IEcosimPlugin.SaveEcosimScenario
+    Public Sub SaveEcosimScenario(dataSource As Object) Implements IEcosimPlugin.SaveEcosimScenario
         ' NOP
     End Sub
 
-    Public Sub onInitialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub onInitialize(core As Object) Implements IPlugin.Initialize
         Me.m_core = CType(core, cCore)
         Units.Init(Me.m_core)
     End Sub
 
     Public Sub onCoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) _
-        Implements EwEPlugin.ICorePlugin.CoreInitialized
+        Implements ICorePlugin.CoreInitialized
 
         ' UIC required
         If Not Me.CanRun Then Return
@@ -205,7 +205,7 @@ Public Class cMSEPluginPoint
     End Sub
 
     Public Sub Dispose() _
-        Implements EwEPlugin.IDisposedPlugin.Dispose
+        Implements IDisposedPlugin.Dispose
 
         If Not Me.CanRun Then Return
 
@@ -222,7 +222,7 @@ Public Class cMSEPluginPoint
     End Sub
 
     Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) _
-                Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
+                Implements IEcopathRunInitializedPlugin.EcopathRunInitialized
 
         If Not Me.CanRun Then Return
 
@@ -231,7 +231,7 @@ Public Class cMSEPluginPoint
 
     End Sub
 
-    Public Sub onEcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
+    Public Sub onEcosimInitialized(EcosimDatastructures As Object) Implements IEcosimInitializedPlugin.EcosimInitialized
         Debug.Assert(TypeOf EcosimDatastructures Is cEcosimDatastructures, "EcosimInitialized() failed to pass in valid Ecosim Data!")
 
         If Not Me.CanRun Then Return
@@ -246,7 +246,7 @@ Public Class cMSEPluginPoint
     End Sub
 
     Public Sub MSEInitialized(MSEModel As Object, MSEDataStructure As Object, EcosimDatastructures As Object) _
-        Implements EwEPlugin.IMSEInitialized.MSEInitialized
+        Implements IMSEInitializedPlugin.MSEInitialized
 
         If Not Me.CanRun Then Return
 
@@ -260,12 +260,12 @@ Public Class cMSEPluginPoint
     End Sub
 
     Public Sub EcosimPreDataInitialized(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreDataInitialized
+        Implements IEcosimDataInitializedPlugin.EcosimPreDataInitialized
 
     End Sub
 
     Public Sub EcosimPreRunInitialized(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimDataInitializedPlugin.EcosimPreRunInitialized
+        Implements IEcosimDataInitializedPlugin.EcosimPreRunInitialized
 
         If Not Me.CanRun Then Return
 
@@ -282,7 +282,7 @@ Public Class cMSEPluginPoint
     End Sub
 
     Public Sub onEcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer) _
-        Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
+        Implements IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
 
         If (Not Me.CanRun) Then Return
         If (Not Me.m_bSessionActive) Then Return
@@ -299,7 +299,7 @@ Public Class cMSEPluginPoint
 
 
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) _
-        Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+        Implements IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         If (Not Me.CanRun) Then Return
         If (Not Me.m_bSessionActive) Then Return
@@ -311,7 +311,7 @@ Public Class cMSEPluginPoint
         End Try
     End Sub
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
 
         If Not Me.HasUI And Me.CanRun Then
             Me.InvalidateConfiguration()
@@ -328,63 +328,63 @@ Public Class cMSEPluginPoint
 #Region " UI integration "
 
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
         Get
             Return My.Resources.CAPTION
         End Get
     End Property
 
     Public ReadOnly Property ControlTooltipText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+        Implements IGUIPlugin.ControlTooltipText
         Get
             Return My.Resources.CAPTION_TOOLTIP
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState As eCoreExecutionState _
+        Implements IGUIPlugin.EnabledState
         Get
-            'Return EwEUtils.Core.eCoreExecutionState.EcosimCompleted
-            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+            'Return eCoreExecutionState.EcosimCompleted
+            Return eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 
     Public ReadOnly Property MenuItemLocation() As String _
-        Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+        Implements IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
     End Property
 
     Public ReadOnly Property Author() As String _
-        Implements EwEPlugin.IPlugin.Author
+        Implements IPlugin.Author
         Get
             Return "Mark Platts CEFAS"
         End Get
     End Property
 
     Public ReadOnly Property Contact() As String _
-        Implements EwEPlugin.IPlugin.Contact
+        Implements IPlugin.Contact
         Get
             Return "ewedevlowestoft@gmail.com"
         End Get
     End Property
 
     Public ReadOnly Property Description() As String _
-        Implements EwEPlugin.IPlugin.Description
+        Implements IPlugin.Description
         Get
             Return "Plug-in to run CEFAS MSE"
         End Get
     End Property
 
-    Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "EwECEfasMSEPlugin"
         End Get
     End Property
 
     Public ReadOnly Property ControlImage As Object _
-        Implements EwEPlugin.IGUIPlugin.ControlImage
+        Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
@@ -515,8 +515,8 @@ Public Class cMSEPluginPoint
 
     End Sub
 
-    Private Sub onPreProcessMessage(msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) _
-        Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
+    Private Sub onPreProcessMessage(msg As IMessage, ByRef bCancelMessage As Boolean) _
+        Implements IMessageFilterPlugin.PreProcessMessage
 
         ' JS 03Oct13: ONLY SUPPRESS MESSAGES WHEN MSE IS RUNNING! 
         If (Me.MSE.RunState = cMSE.eRunStates.Idle) Then Return
@@ -524,8 +524,8 @@ Public Class cMSEPluginPoint
         'Plugin Point called to cancel a message
         Select Case msg.Type
 
-            Case eMessageType.Estimate_BA, _
-                 eMessageType.Estimate_Net_Migration, _
+            Case eMessageType.Estimate_BA,
+                 eMessageType.Estimate_Net_Migration,
                  eMessageType.EE
                 Console.WriteLine("! MSE suppressed message " & msg.Message)
                 bCancelMessage = True

@@ -17,22 +17,22 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 Imports ZedGraph
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
 ''' 
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class ucEcosimGraph
     Inherits ZedGraphControl
     Implements IResultView

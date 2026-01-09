@@ -17,17 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Commands
-
-#End Region
-
 Namespace Ecopath
 
     ''' -----------------------------------------------------------------------

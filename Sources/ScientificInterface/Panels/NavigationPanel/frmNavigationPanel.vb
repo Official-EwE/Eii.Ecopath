@@ -17,14 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports Microsoft.Extensions.Logging
@@ -34,13 +26,10 @@ Imports ScientificInterface.Ecopath.Output
 Imports ScientificInterface.Ecopath.Tools
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
-Imports ScientificInterface.Other
 Imports ScientificInterfaceShared.Integration
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-#End Region
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Navigation tree panel; contains the navigation structure that provides uniform
@@ -84,7 +73,7 @@ Public Class frmNavigationPanel
     ''' extensions for.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(uic As cUIContext,
-                   pluginManager As EwEPlugin.cPluginManager)
+                   pluginManager As EwECore.cPluginManager)
 
         ' Sanity check
         Debug.Assert(uic IsNot Nothing)

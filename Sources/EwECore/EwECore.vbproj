@@ -33,6 +33,14 @@
     <None Include="..\..\EII_plain_128x128.png" Pack="True" PackagePath="\" />
     <None Include="Includes\*.*" Pack="true" PackagePath="Includes\" />
   </ItemGroup>
+	<ItemGroup>
+		<Import Include="System.Data" />
+		<Import Include="EwEUtils" />
+		<Import Include="EwEUtils.Logging" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp'">
+		<PackageReference Include="System.Data.Common" Version="4.3.0" />
+	</ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	<PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>EwECore.xml</DocumentationFile>
@@ -176,11 +184,10 @@
   </ItemGroup>
   <!-- Use a local project reference when UseProjectReferences is true -->
   <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
-    <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
+    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
   <!-- Otherwise use a package reference.  -->
-  <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
-    <PackageReference Include="Eii.Ecopath.EwEPlugin" Version="6.7.*" />
-  </ItemGroup>
 </Project>

@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.Drawing
@@ -29,9 +29,9 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
 
-#End Region ' Imports
 
-<CLSCompliant(False)>
+
+
 Public Class cIndicesWithoutPPREst
     Inherits cContentManager
 

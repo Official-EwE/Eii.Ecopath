@@ -19,7 +19,6 @@
 
 #Region "Imports"
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 #End Region
 
 Namespace MSE

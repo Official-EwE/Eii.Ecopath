@@ -17,18 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2.Cells
+
+
 Imports EwEUtils.Utilities
+Imports SourceGrid2.Cells
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
 
-<CLSCompliant(False)>
+
+
 Public Class gridWeightTS
     Inherits cEwEGrid
 

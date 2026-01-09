@@ -17,24 +17,21 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Reflection
-Imports EwECore
 Imports EwELicense
-Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Serilog
-Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 
-#End Region ' Imports
+
 
 Module EwE6ApplicationFramework
 

@@ -16,14 +16,12 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
-Imports EwECore
-Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Public Class cDietTreeMapRenderer
 

@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports ZedGraph
@@ -31,9 +31,9 @@ Imports EwEUtils
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
 
-<CLSCompliant(False)> _
+
+
 Public Class cIndicesWithPPREst
     Inherits cContentManager
 

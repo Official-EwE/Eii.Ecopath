@@ -17,20 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports System.Drawing.Drawing2D
-Imports System.Drawing
-Imports System.Text.RegularExpressions
-Imports ScientificInterface.Other
-Imports EwECore
-Imports EwEUtils.Core
-
-#End Region
-
 Namespace Ecosim
 
     ''' =======================================================================
@@ -87,7 +73,7 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Me.m_handler = New cFishingMortalityShapeGUIHandler(Me.UIContext)
-            Me.m_handler.Attach(Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
+            Me.m_handler.Attach(Me.m_shapeToolBox, Me.m_shapeToolboxToolbar,
                                 Me.m_sketchPad, Me.m_sketchPadToolbar)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub

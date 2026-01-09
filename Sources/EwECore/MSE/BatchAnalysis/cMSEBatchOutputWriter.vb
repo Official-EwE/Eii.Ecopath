@@ -17,14 +17,12 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 Imports System.IO
 Imports System.Text
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports EwECore.MSE
-Imports EwECore.MSEBatchManager
+Imports EwEUtils.Utilities
 
 Namespace MSEBatchManager
 

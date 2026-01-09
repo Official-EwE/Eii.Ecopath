@@ -17,14 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Database
-Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities
 
-#End Region ' Imports
+
+Imports EwECore.Database
+
+
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

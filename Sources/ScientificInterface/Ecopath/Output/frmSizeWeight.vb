@@ -17,17 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
-
-#End Region 'Imports
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 

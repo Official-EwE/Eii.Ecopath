@@ -18,19 +18,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
+
+
+Imports System.Drawing
+Imports System.Windows.Forms
+Imports EwECore
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports System.Drawing
-Imports System.Windows.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Public Class dlgImportLayerStyles
 

@@ -17,17 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
+
+
 Imports EwECore.MSE
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
-Imports SourceGrid2.Cells
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
@@ -36,7 +33,7 @@ Namespace Ecosim
     ''' 
     ''' </summary>
     ''' ===========================================================================
-    <CLSCompliant(False)> _
+    
     Public Class gridRegulatoryOptions
         Inherits cEwEGrid
 

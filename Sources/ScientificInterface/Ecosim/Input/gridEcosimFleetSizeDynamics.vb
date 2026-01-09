@@ -17,25 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class gridEcosimFleetSizeDynamics
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
@@ -64,8 +55,8 @@ Namespace Ecosim
 
             Dim source As cCoreInputOutputBase = Nothing
 
-            For iRow As Integer = 1 To Me.core.nFleets
-                source = Me.core.EcosimFleetInputs(iRow)
+            For iRow As Integer = 1 To Me.Core.nFleets
+                source = Me.Core.EcosimFleetInputs(iRow)
                 Me.Rows.Insert(iRow)
                 Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
                 Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)

@@ -17,13 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 

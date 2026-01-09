@@ -17,20 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing
 Imports System.IO
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -54,7 +48,7 @@ Public Class cTransectResultWriterPlugin
         Me.m_data = cTransectDatastructures.Instance(Me.m_core)
     End Sub
 
-    Public Overrides ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+    Public Overrides ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
             Return "Transect CSV summary"
         End Get

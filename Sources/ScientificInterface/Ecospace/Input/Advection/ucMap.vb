@@ -17,15 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
+
+
 
 Namespace Ecospace.Advection
 
@@ -36,7 +32,7 @@ Namespace Ecospace.Advection
         Inherits ucAdvectionMap
 
         ''' <inheritdoc cref="DataLayer"/>
-        Protected Overrides Function DataLayerVariable() As EwEUtils.Core.eVarNameFlags
+        Protected Overrides Function DataLayerVariable() As eVarNameFlags
             Return eVarNameFlags.LayerAdvection
         End Function
 

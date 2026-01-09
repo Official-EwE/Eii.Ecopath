@@ -17,21 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.IO
-Imports System.Linq
 Imports Eii.ValueChain.Storage
 Imports Eii.ValueChain.Storage.Models
 Imports EwECore
 Imports EwECore.Database
-Imports EwEUtils.Core
-Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
-
-#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>

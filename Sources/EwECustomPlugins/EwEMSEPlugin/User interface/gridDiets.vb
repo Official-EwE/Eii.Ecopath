@@ -23,26 +23,26 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports EwECore.MSE
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to change diet multipliers.
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class gridDiets
     Inherits cEwEGrid
 

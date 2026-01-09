@@ -16,12 +16,11 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
-Imports System.Data
 
-#End Region ' Imports
+
+
+
 
 Public Class cDataTableEnumerable(Of T)
     Implements IEnumerable(Of T)

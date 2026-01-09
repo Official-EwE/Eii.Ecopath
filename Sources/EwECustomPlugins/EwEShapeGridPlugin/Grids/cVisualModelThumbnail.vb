@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports SourceGrid2
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
@@ -28,7 +28,7 @@ Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

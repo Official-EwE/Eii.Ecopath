@@ -17,21 +17,20 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.IO
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Utilities
+Imports EwECore.Common
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Logging
+Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Other
 
@@ -277,9 +276,9 @@ Namespace Other
                 End If
 
                 If (String.IsNullOrWhiteSpace(strPath)) Then
-                        strPath = Me.UIContext.Core.DefaultOutputPath(Me.m_autosavetype, Me.m_strOutputMask)
-                    End If
-                    Me.m_strPath = strPath
+                    strPath = Me.UIContext.Core.DefaultOutputPath(Me.m_autosavetype, Me.m_strOutputMask)
+                End If
+                Me.m_strPath = strPath
 
                 Me.m_lblPath.Text = strPath.CompactString(Me.m_lblPath.ClientSize.Width, Me.Font)
                 Me.m_lblPath.Visible = True

@@ -23,11 +23,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
@@ -36,14 +36,14 @@ Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports EwEMSEPlugin.HCR_GroupNS
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class gridRegulations
     Inherits cEwEGrid
 

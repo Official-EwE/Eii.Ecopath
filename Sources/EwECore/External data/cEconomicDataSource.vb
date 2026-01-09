@@ -17,17 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
+
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Data
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace ExternalData
 
@@ -78,7 +77,7 @@ Namespace ExternalData
 
             Try
 
-                Dim plugins As ICollection(Of EwEPlugin.IPlugin)
+                Dim plugins As ICollection(Of IPlugin)
 
                 plugins = s_core.PluginManager.GetPlugins(cEconomicDataSource.InternalName)
                 For Each plugin As IPlugin In plugins
@@ -127,7 +126,7 @@ Namespace ExternalData
         ''' <param name="runtype">The core run type to check availability for.</param>
         ''' <returns>True if available.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function IsDataAvailable(runtype As EwEUtils.Core.IRunType) As Boolean _
+        Public Function IsDataAvailable(runtype As IRunType) As Boolean _
               Implements IExternalDataSource.IsDataAvailable
             Return s_core.PluginManager.IsDataAvailable(GetType(IEconomicData), runtype)
         End Function
@@ -154,8 +153,8 @@ Namespace ExternalData
 
 #Region " IDataConsumerPlugin implementation "
 
-        Public Function ReceiveData(strDataName As String, data As EwEPlugin.Data.IPluginData) As Boolean _
-            Implements EwEPlugin.Data.IDataConsumerPlugin.ReceiveData
+        Public Function ReceiveData(strDataName As String, data As IPluginData) As Boolean _
+            Implements IDataConsumerPlugin.ReceiveData
 
             Try
                 If TypeOf data Is IEconomicData Then
@@ -170,33 +169,33 @@ Namespace ExternalData
         End Function
 
         Public ReadOnly Property Author() As String _
-            Implements EwEPlugin.IPlugin.Author
+            Implements IPlugin.Author
             Get
                 Return "UBC Institute for the Oceans and Fisheries"
             End Get
         End Property
 
         Public ReadOnly Property Contact() As String _
-            Implements EwEPlugin.IPlugin.Contact
+            Implements IPlugin.Contact
             Get
                 Return "mailto:ewedevteam@gmail.com"
             End Get
         End Property
 
         Public ReadOnly Property Description() As String _
-            Implements EwEPlugin.IPlugin.Description
+            Implements IPlugin.Description
             Get
                 Return "Core plugin to provide economic data from an external source."
             End Get
         End Property
 
         Public Sub Initialize(core As Object) _
-            Implements EwEPlugin.IPlugin.Initialize
+            Implements IPlugin.Initialize
             s_core = DirectCast(core, cCore)
         End Sub
 
         Public ReadOnly Property Name() As String _
-            Implements EwEPlugin.IPlugin.Name, EwEPlugin.IPlugin.DisplayName
+            Implements IPlugin.Name, IPlugin.DisplayName
             Get
                 Return cEconomicDataSource.InternalName
             End Get

@@ -17,13 +17,10 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Option Explicit On
-Imports EwEUtils
-Imports EwEUtils.Utilities
-Imports EwEUtils.Core
 Imports System.IO
-Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -117,8 +114,8 @@ Namespace EcospaceTimeSeries
                 If (String.Compare(Me.m_BiomassFileName, value, True) <> 0) Then
                     Me.m_BiomassFileName = value
                     Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_OUTPUT_SET,
-                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.Ecospace,
-                                                       EwEUtils.Core.eMessageImportance.Information))
+                                                       eMessageType.DataModified, eCoreComponentType.Ecospace,
+                                                       eMessageImportance.Information))
                 End If
             End Set
         End Property
@@ -140,8 +137,8 @@ Namespace EcospaceTimeSeries
                 If (String.Compare(Me.OutputFileName, value, True) <> 0) Then
                     Me.m_OutputFilename = value
                     Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_OUTPUT_SET,
-                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.Ecospace,
-                                                       EwEUtils.Core.eMessageImportance.Information))
+                                                       eMessageType.DataModified, eCoreComponentType.Ecospace,
+                                                       eMessageImportance.Information))
                 End If
             End Set
         End Property
@@ -276,8 +273,8 @@ Namespace EcospaceTimeSeries
             Catch ex As Exception
                 'cEcospaceTimeSeriesXYZReader.Read() will throw the exception back here is there if there is an internal exception
                 Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_LOAD_EXCEPTION, ex.Message),
-                                                            EwEUtils.Core.eMessageType.ErrorEncountered,
-                                                            EwEUtils.Core.eCoreComponentType.Ecospace, EwEUtils.Core.eMessageImportance.Warning))
+                                                            eMessageType.ErrorEncountered,
+                                                            eCoreComponentType.Ecospace, eMessageImportance.Warning))
                 'Clear out any data that may been read
                 Me.Clear()
                 bReturn = False
@@ -287,13 +284,13 @@ Namespace EcospaceTimeSeries
 
 
                 Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_NRECORDS_LOADED, Me.nRecords(VarName)),
-                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.Ecospace,
-                                                       EwEUtils.Core.eMessageImportance.Information))
+                                                       eMessageType.DataModified, eCoreComponentType.Ecospace,
+                                                       eMessageImportance.Information))
             Else
                 'No data read from file
                 Me.m_core.Messages.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_LOAD_FAILED,
-                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.Ecospace,
-                                                       EwEUtils.Core.eMessageImportance.Warning))
+                                                       eMessageType.DataModified, eCoreComponentType.Ecospace,
+                                                       eMessageImportance.Warning))
                 Me.Clear()
                 bReturn = False
 
@@ -526,7 +523,7 @@ Namespace EcospaceTimeSeries
             End If
 
             If msg.Length > 0 Then
-                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.Ecospace, EwEUtils.Core.eMessageImportance.Information))
+                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, eMessageType.DataValidation, eCoreComponentType.Ecospace, eMessageImportance.Information))
             End If
 
             Return bReturn
@@ -546,7 +543,7 @@ Namespace EcospaceTimeSeries
                 'Debug.Assert(False, "Oppss Time Series map exceeds the Ecospace map extent.")
                 Dim msg As New System.Text.StringBuilder
                 msg.Append(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_LOAD_MAP_EXTENTS)
-                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.Ecospace, EwEUtils.Core.eMessageImportance.Information))
+                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, eMessageType.DataValidation, eCoreComponentType.Ecospace, eMessageImportance.Information))
                 Return False
             End If
 
@@ -568,7 +565,7 @@ Namespace EcospaceTimeSeries
             Try
                 Dim header As String = "Row,Col,GroupID,Date(yyyy-MM-dd),ObservedValue,PredictedValue,PredictionError(LogN(ObservedValue/PredictedValue)"
                 Dim strm As New IO.StreamWriter(Me.OutputFileName)
-                strm.WriteLine(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecospace))
+                strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
                 strm.WriteLine(header)
 
                 Dim table As DataTable = Me.m_dataSets.Tables(eVarNameFlags.EcospaceMapBiomass.ToString)
@@ -582,9 +579,9 @@ Namespace EcospaceTimeSeries
                 strm.Close()
 
                 Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_RESULTS_SAVED, Me.OutputFileName),
-                                                           EwEUtils.Core.eMessageType.DataExport,
-                                                           EwEUtils.Core.eCoreComponentType.Ecospace,
-                                                           EwEUtils.Core.eMessageImportance.Information)
+                                                           eMessageType.DataExport,
+                                                           eCoreComponentType.Ecospace,
+                                                           eMessageImportance.Information)
                 msg.Hyperlink = Me.OutputFileName
                 Me.m_core.Messages.AddMessage(msg)
 
@@ -594,8 +591,8 @@ Namespace EcospaceTimeSeries
                 Dim ExMsg As New Text.StringBuilder
                 ExMsg.Append(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_SAVE_EXCEPTION, ex.Message))
 
-                Me.m_core.Messages.AddMessage(New cMessage(ExMsg.ToString, EwEUtils.Core.eMessageType.ErrorEncountered,
-                   EwEUtils.Core.eCoreComponentType.Ecospace, EwEUtils.Core.eMessageImportance.Warning))
+                Me.m_core.Messages.AddMessage(New cMessage(ExMsg.ToString, eMessageType.ErrorEncountered,
+                   eCoreComponentType.Ecospace, eMessageImportance.Warning))
             End Try
 
         End Sub
@@ -604,7 +601,7 @@ Namespace EcospaceTimeSeries
         Public Function getDefaultOutputFileName(InputFileName As String) As String
             If (String.IsNullOrWhiteSpace(InputFileName)) Then Return ""
             Dim tempFileName As String = IO.Path.GetFileNameWithoutExtension(InputFileName) + "_Residuals.csv"
-            Return Path.Combine(Me.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), tempFileName)
+            Return Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.Ecospace), tempFileName)
         End Function
 
 

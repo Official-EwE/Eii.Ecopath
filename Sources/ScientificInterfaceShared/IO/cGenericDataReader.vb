@@ -16,19 +16,17 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
-Imports System.Data
+
+
 Imports System.Data.OleDb
 Imports System.Globalization
 Imports System.IO
-Imports System.Linq
 Imports System.Text
 Imports EwEUtils.Utilities
 Imports OfficeOpenXml
 
-#End Region ' Imports
+
 
 Public Class cGenericDataReader
 
@@ -403,7 +401,7 @@ Public Class cGenericDataReader
 
 #Region " Utilities "
 
-    <CLSCompliant(False)>
+    
     Public Shared Function Value(Of T As IConvertible)(val As Object, valDefault As T) As T
         If Convert.IsDBNull(val) Then Return valDefault
         Return CType(Convert.ChangeType(val, GetType(T)), T)

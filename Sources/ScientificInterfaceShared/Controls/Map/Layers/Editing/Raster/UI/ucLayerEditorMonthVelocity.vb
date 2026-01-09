@@ -17,7 +17,6 @@
 ' ===============================================================================
 '
 
-Imports EwECore
 Imports EwEUtils.Utilities
 
 Namespace Controls.Map.Layers

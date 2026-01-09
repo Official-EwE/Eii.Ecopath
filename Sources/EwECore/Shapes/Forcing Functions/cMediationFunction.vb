@@ -17,8 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEUtils.Core
+
 
 ''' <summary>
 ''' Mediation functions inherit their base functionality from cMediationBaseFunction 

@@ -17,13 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
 
-Imports EwECore
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports ScientificInterfaceShared.Properties
-Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Core
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -33,7 +27,7 @@ Imports EwEUtils.Core
 ''' <remarks>This is a Hack'n'slash solution; no value range testing is 
 ''' performed when calculating the background colour.</remarks>
 ''' ---------------------------------------------------------------------------
-<CLSCompliant(False)> _
+
 Public Class cellNichePropertyColour
     : Inherits cPropertyCell
 
@@ -44,7 +38,7 @@ Public Class cellNichePropertyColour
     ''' 
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Private Class NicePropertyColourCellVisualizer
         : Inherits cEwEGridVisualizerBase
 

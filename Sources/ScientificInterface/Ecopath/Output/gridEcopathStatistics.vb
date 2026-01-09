@@ -18,20 +18,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
 Imports EwECore.Style
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
@@ -40,7 +28,7 @@ Namespace Ecopath.Output
     ''' Grid clas, showing Ecopath statistics values.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)>
+    
     Public Class gridEcopathStatistics
         Inherits cEwEGrid
 

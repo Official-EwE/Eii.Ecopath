@@ -23,13 +23,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
 Imports ScientificInterfaceShared.Controls
@@ -39,7 +39,7 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Public Class cMSE
 
@@ -928,7 +928,7 @@ Public Class cMSE
     Public ReadOnly Property DataPath As String
         Get
             If Me.UseEwEPath Then
-                Return Path.Combine(Me.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim), "CefasMSE")
+                Return Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), "CefasMSE")
             End If
             Return Me.CustomPath
         End Get

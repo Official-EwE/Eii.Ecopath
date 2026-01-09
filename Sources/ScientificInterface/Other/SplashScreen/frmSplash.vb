@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Text
 Imports EwELicense
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Friend Class frmSplash
 

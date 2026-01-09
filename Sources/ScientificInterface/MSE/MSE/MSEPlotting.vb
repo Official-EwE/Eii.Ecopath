@@ -17,24 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports EwECore.MSE
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-Imports EwEUtils.Utilities
-Imports ZedGraph
 Imports EwECore.Style
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Friend Class cMSERefPoint
 

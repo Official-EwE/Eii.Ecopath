@@ -17,10 +17,6 @@
 ' ===============================================================================
 '
 
-Imports EwECore.Ecopath
-Imports EwECore.EcoSim
-Imports System
-Imports System.Threading
 
 #Region "xxx DEAD CODE xxx"
 

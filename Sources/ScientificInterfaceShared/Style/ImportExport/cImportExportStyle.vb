@@ -17,20 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.Xml
-Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Core
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map
 
-#End Region ' Imports
+
 
 Namespace Style
 

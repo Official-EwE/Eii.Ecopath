@@ -17,15 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
+
+
 Imports System.Windows.Forms
+Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
+Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 Public Class cPluginPoint
     Implements IMenuItemPlugin
@@ -37,7 +38,7 @@ Public Class cPluginPoint
     Private m_uic As cUIContext = Nothing
 
     Public Sub UIContext(uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Implements IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 

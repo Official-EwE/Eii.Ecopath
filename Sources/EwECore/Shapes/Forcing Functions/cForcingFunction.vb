@@ -17,13 +17,9 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
+Imports EwECore.Common
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#Region " Forcing Shape "
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
@@ -350,5 +346,4 @@ Public Class cForcingFunction
 
 End Class ' cForcingFunction
 
-#End Region
 

@@ -23,9 +23,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.IO
@@ -36,7 +36,7 @@ Imports EwEMSEPlugin.HCR_GroupNS
 Imports EwEMSEPlugin.HCR_GroupNS.HCR_Group
 
 
-#End Region ' Imports 
+ 
 
 ''' <summary>
 ''' Class to group a list of Harvest Control Rules into an object

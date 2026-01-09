@@ -17,24 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports ScientificInterfaceShared.Properties
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2.Cells.Real
 Imports EwECore.Style
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)>
+    
     Public Class gridFisheryOutputValue
         Inherits cEwEGrid
 

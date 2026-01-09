@@ -21,7 +21,7 @@ Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
 
-<CLSCompliant(False)>
+
 Public Class cCredits
     Inherits cContentManager
 

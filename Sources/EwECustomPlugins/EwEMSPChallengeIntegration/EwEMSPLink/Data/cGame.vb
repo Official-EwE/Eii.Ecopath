@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.Net
 Imports System.Text
@@ -27,7 +27,7 @@ Imports System.Xml
 Imports EwECore
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

@@ -17,23 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwECore
+Imports EwECore.Common
 Imports EwECore.ExternalData
-Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Data
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports ScientificInterface.Ecopath.Controls.FlowDiagram
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-#End Region ' Imports
 ''' ===========================================================================
 ''' <summary>
 ''' Dialog class implementing the Edit Group Taxon interface.
@@ -177,7 +171,7 @@ Public Class dlgDefineTaxonomy
             AddHandler Me.m_tds.OnTaxonSearchResults, AddressOf OnProcessResults
         End If
 
-        If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
+        If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcopathGroupInputs(1)
 
         Me.m_pbSearching.Image = SharedResources.ani_loader
 
@@ -295,7 +289,7 @@ Public Class dlgDefineTaxonomy
         Dim ofd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog(SharedResources.CAPTION_SELECT_FILE, Me.m_gridGroups.DataName, SharedResources.FILEFILTER_CSV)
         If (ofd.ShowDialog() = DialogResult.OK) Then
             If Me.m_gridGroups.Export(ofd.FileName) Then
-                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, ofd.FileName), eMessageType.DataExport, eCoreComponentType.EcoPath, eMessageImportance.Information)
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, ofd.FileName), eMessageType.DataExport, eCoreComponentType.Ecopath, eMessageImportance.Information)
                 msg.Hyperlink = System.IO.Path.GetDirectoryName(ofd.FileName)
                 Me.m_uic.Core.Messages.SendMessage(msg)
             End If

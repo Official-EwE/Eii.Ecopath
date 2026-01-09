@@ -17,13 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
-Imports EwECore.ValueWrapper
 
-#End Region ' Imports
+
+
+
 
 Public Class cEcosimEnviroInputData
     Implements IEnviroInputData

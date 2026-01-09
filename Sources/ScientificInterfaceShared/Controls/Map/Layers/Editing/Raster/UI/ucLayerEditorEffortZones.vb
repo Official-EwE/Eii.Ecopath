@@ -17,8 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwECore
+
 
 Namespace Controls.Map.Layers
 
@@ -40,7 +39,7 @@ Namespace Controls.Map.Layers
 
             Me.UpdateContent(Me.Editor)
 
-            Me.m_mhSpace = New cMessageHandler(AddressOf Me.OnCoreMessage, EwEUtils.Core.eCoreComponentType.Ecospace, EwEUtils.Core.eMessageType.DataValidation, Me.UIContext.SyncObject)
+            Me.m_mhSpace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.Ecospace, eMessageType.DataValidation, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhSpace)
 #If DEBUG Then
             Me.m_mhSpace.Name = "ucLayerEditorRegions"
@@ -102,7 +101,7 @@ Namespace Controls.Map.Layers
 
         Private Sub OnCoreMessage(ByRef msg As cMessage)
             Try
-                If (msg.DataType = EwEUtils.Core.eDataTypes.EcospaceModelParameter) And (msg.Type = EwEUtils.Core.eMessageType.DataValidation) Then
+                If (msg.DataType = eDataTypes.EcospaceModelParameter) And (msg.Type = eMessageType.DataValidation) Then
                     Me.UpdateContent(Me.Editor)
                 End If
             Catch ex As Exception

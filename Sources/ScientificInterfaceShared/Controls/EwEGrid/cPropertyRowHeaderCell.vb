@@ -17,17 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
+
+
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -45,7 +43,7 @@ Namespace Controls.EwEGrid
     ''' that are updated whenever the system display units change.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cPropertyRowHeaderCell
         Inherits cPropertyHeaderCell
 

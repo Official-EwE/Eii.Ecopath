@@ -17,23 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports ScientificInterface.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ZedGraph
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterface.Controls
+Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 

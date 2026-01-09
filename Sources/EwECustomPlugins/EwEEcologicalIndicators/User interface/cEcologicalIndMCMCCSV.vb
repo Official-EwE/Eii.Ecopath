@@ -17,14 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Imports EwEPlugin
-Imports EwEUtils.Core
+
+Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

@@ -17,13 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-
-#End Region ' Imports
 
 Namespace Shapes.Utility
 

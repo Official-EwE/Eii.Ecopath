@@ -17,13 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwEUtils.Core
 
 
-#End Region ' Imports
+
+
+
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Data for one time series contained in an Ecosim scenario.

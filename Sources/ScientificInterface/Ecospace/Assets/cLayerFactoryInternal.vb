@@ -17,16 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
+
+
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Basemap.Layers
 
@@ -217,17 +215,17 @@ Namespace Ecospace.Basemap.Layers
 
             Dim lLayers As New List(Of cDisplayLayerRaster)
 
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerMPA))
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerHabitat))
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerHabitatCapacityInput))
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerContaminantRelativeDistribution))
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerSail))
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerPort))
+            lLayers.AddRange(Me.GetLayers(uic, eVarNameFlags.LayerDepth))
+            lLayers.AddRange(Me.GetLayers(uic, eVarNameFlags.LayerMPA))
+            lLayers.AddRange(Me.GetLayers(uic, eVarNameFlags.LayerHabitat))
+            lLayers.AddRange(Me.GetLayers(uic, eVarNameFlags.LayerHabitatCapacityInput))
+            lLayers.AddRange(Me.GetLayers(uic, eVarNameFlags.LayerRelPP))
+            lLayers.AddRange(Me.GetLayers(uic, eVarNameFlags.LayerContaminantRelativeDistribution))
+            lLayers.AddRange(Me.GetLayers(uic, eVarNameFlags.LayerImportance))
+            lLayers.AddRange(Me.GetLayers(uic, eVarNameFlags.LayerSail))
+            lLayers.AddRange(Me.GetLayers(uic, eVarNameFlags.LayerPort))
             ' Add driver layers to the base list
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerDriver))
+            lLayers.AddRange(Me.GetLayers(uic, eVarNameFlags.LayerDriver))
 
             Return lLayers.ToArray()
 

@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 Imports System.Collections.Generic
 Imports System.Drawing.Imaging
@@ -29,7 +29,7 @@ Imports System.Security.AccessControl
 Imports System.Text
 Imports EwEUtils.SystemUtilities
 
-#End Region ' Imports
+
 
 Namespace Utilities
 

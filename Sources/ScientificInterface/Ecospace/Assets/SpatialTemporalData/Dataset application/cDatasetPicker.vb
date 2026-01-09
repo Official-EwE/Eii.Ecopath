@@ -17,16 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
+Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
@@ -87,9 +86,9 @@ Public Class cDatasetPicker
     Private Class cDatasetSorter
         Implements IComparer(Of ISpatialDataSet)
 
-        Public Function Compare(x As EwEUtils.SpatialData.ISpatialDataSet, _
-                                y As EwEUtils.SpatialData.ISpatialDataSet) As Integer _
-                            Implements System.Collections.Generic.IComparer(Of EwEUtils.SpatialData.ISpatialDataSet).Compare
+        Public Function Compare(x As EwECore.Common.ISpatialDataSet, _
+                                y As EwECore.Common.ISpatialDataSet) As Integer _
+                            Implements System.Collections.Generic.IComparer(Of EwECore.Common.ISpatialDataSet).Compare
             Return String.Compare(x.CustomName, y.CustomName)
         End Function
 

@@ -17,16 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 

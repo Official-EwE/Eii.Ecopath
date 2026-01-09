@@ -17,19 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports ScientificInterfaceShared.Controls
+
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-#End Region ' Imports
+
 
 Namespace Controls
 
@@ -38,7 +33,7 @@ Namespace Controls
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class ucMediationAssignmentsGrid
         Inherits EwEGrid.cEwEGrid
 
@@ -100,7 +95,7 @@ Namespace Controls
                 Dim t As Type = obj.GetType
                 For i As Integer = 1 To Me.RowsCount - 1
                     If Not t.Equals(Me.RowItemPrim(i).GetType) Then
-                        Dim msg As New cMessage(My.Resources.PROMPT_MEDIATION_CANNOTMIX, eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecosim, eMessageImportance.Warning)
+                        Dim msg As New cMessage(My.Resources.PROMPT_MEDIATION_CANNOTMIX, eMessageType.Any, eCoreComponentType.Ecosim, eMessageImportance.Warning)
                         Me.Core.Messages.SendMessage(msg)
                         Return False
                     End If

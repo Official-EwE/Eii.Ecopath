@@ -17,13 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
+
 
 Namespace Ecosim
 

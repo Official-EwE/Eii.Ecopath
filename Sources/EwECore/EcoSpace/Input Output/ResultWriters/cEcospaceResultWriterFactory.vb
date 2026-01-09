@@ -17,16 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Core
+
+
 Imports System.Reflection
-Imports EwEUtils.Logging
+Imports EwECore.Common
+Imports EwECore.Plugins.Ecospace
 Imports Microsoft.Extensions.Logging
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

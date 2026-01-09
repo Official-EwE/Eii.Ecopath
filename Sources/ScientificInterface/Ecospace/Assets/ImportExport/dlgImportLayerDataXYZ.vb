@@ -17,19 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports System.IO
-Imports EwECore
-Imports EwEUtils.Core
+
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Basemap
 
@@ -198,7 +193,7 @@ Namespace Ecospace.Basemap
 
             If Not Me.m_data.ReadXYFile(Me.m_tbInput.Text, Me.RowField, Me.ColField) Then
                 Dim msg As New cMessage(cStringUtils.Localize(SharedResources.FILE_LOAD_ERROR_READ, Me.m_tbInput.Text),
-                                        eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
+                                        eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
                 Me.m_uic.Core.Messages.SendMessage(msg)
                 bSuccess = False
             End If
@@ -436,7 +431,7 @@ Namespace Ecospace.Basemap
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
-            
+
             Me.m_grid.Layers = Nothing
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _

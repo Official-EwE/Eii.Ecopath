@@ -17,23 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports EwECore.Style
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)> _
+    
     Public Class gridMortalityCoefficients
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Private Enum eColumnTypes As Integer
             Index = 0

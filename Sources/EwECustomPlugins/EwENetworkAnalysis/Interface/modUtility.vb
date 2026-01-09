@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports ZedGraph
@@ -32,7 +32,7 @@ Imports System.Globalization
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Public Module modUtility
 
@@ -53,7 +53,7 @@ Public Module modUtility
         Next
     End Sub
 
-    <CLSCompliant(False)> _
+    
     Public Sub AddCurve(strName As String, CurveVar() As Single, Pane As GraphPane, _
       MyColor As Color, Optional Symbol As SymbolType = SymbolType.None)
         Dim List As PointPairList

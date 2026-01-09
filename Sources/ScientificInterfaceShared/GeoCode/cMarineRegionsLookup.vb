@@ -17,14 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Globalization
-Imports System.Web
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace GeoCode
 

@@ -17,22 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwECore
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Utilities
-Imports System.Drawing.Drawing2D
-
-#End Region 'Imports
 
 Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer renderer that draws cells for the <see cref="EwEUtils.Core.eVarNameFlags.LayerExclusion">exclusion layer</see>.
+    ''' Layer renderer that draws cells for the <see cref="eVarNameFlags.LayerExclusion">exclusion layer</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerRendererExclusion

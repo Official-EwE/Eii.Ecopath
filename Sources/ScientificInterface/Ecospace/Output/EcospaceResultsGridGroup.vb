@@ -17,16 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports ScientificInterface.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecospace
 
@@ -35,9 +27,9 @@ Namespace Ecospace
     ''' Grid, reflects Ecospace results per group.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Public Class cGridEcospaceResultsGroup
-        : Inherits gridResultsBase
+        Inherits gridResultsBase
 
         Private m_iFleetSelected As Integer
         Private m_iNumVisibleGroups As Integer

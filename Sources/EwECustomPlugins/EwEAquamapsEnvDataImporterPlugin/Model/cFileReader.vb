@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports System.Text
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Aquamaps file reader.
@@ -149,7 +149,7 @@ Public Class cFileReader
 
     Private Sub SendMessage(strMessage As String, importance As eMessageImportance,
                             Optional strDetails As String = "")
-        Dim msg As New cMessage(strMessage, EwEUtils.Core.eMessageType.DataImport, EwEUtils.Core.eCoreComponentType.External, importance)
+        Dim msg As New cMessage(strMessage, eMessageType.DataImport, eCoreComponentType.External, importance)
 
         If (Not String.IsNullOrWhiteSpace(strDetails)) Then
             Dim vs As New cVariableStatus(eStatusFlags.OK, strDetails, eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)

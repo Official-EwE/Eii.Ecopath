@@ -17,18 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Threading
-Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
-Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
@@ -37,9 +30,6 @@ Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
-#End Region
 
 Namespace Ecospace
 

@@ -17,22 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports ScientificInterface.Other
-
-#End Region
-
 Namespace Ecosim
 
     ''' <summary>
     ''' Main form for the 'Apply Price Elasticity' interface.
     ''' </summary>
-    <CLSCompliant(False)> _
+    
     Public Class frmApplyPriceElasticy
         Inherits frmApplyShapeBase
 
@@ -62,7 +52,7 @@ Namespace Ecosim
         Private components As System.ComponentModel.IContainer
         Private WithEvents m_grid As ScientificInterface.Ecosim.gridApplyLandingsShape
 
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyPriceElasticy))
             Me.m_grid = New ScientificInterface.Ecosim.gridApplyLandingsShape()
@@ -87,7 +77,7 @@ Namespace Ecosim
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
-            
+
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _

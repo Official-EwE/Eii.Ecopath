@@ -17,20 +17,20 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports 
+ 
 
 Namespace PreyToPredator
 
-    <CLSCompliant(False)> _
+    
     Public Class cCyclesPathways
         Inherits cContentManager
 

@@ -23,11 +23,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
@@ -35,7 +35,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 
-#End Region ' Imports
+
 
 ' ToDo: Change col labels to lower, upper and midpoint
 ' ToDo: Midpoint should be enabled when distr = Triangular 
@@ -45,7 +45,7 @@ Imports SourceGrid2.Cells
 ''' Grid to allow species quota interaction.
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class gridDistributionParameters
     Inherits cEwEGrid
 

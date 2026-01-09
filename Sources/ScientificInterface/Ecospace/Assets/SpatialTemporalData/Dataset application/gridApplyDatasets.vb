@@ -17,19 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
+
+
+Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports EwECore.Style
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Controls
 
@@ -38,7 +36,7 @@ Namespace Ecospace.Controls
     ''' EwE grid for displaying datasets
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class gridApplyDatasets
         Inherits cEwEGrid
 
@@ -107,7 +105,7 @@ Namespace Ecospace.Controls
                     Me.m_man = Me.UIContext.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
 
-                    Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
+                    Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
                     Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
 #If DEBUG Then
                     Me.m_mhEcospace.Name = "gridDatasets"
@@ -217,7 +215,7 @@ Namespace Ecospace.Controls
 
             Try
                 ' May have been disposed already
-                If (msg.DataType = EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection) Then
+                If (msg.DataType = eDataTypes.EcospaceSpatialDataConnection) Then
                     For iRow As Integer = 1 To Me.RowsCount - 1
                         Dim conn As cSpatialDataConnection = Me.ConnectionAtRow(iRow)
                         Debug.Assert(conn IsNot Nothing)

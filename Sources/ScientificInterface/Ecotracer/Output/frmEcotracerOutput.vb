@@ -17,21 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
+
+
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports ScientificInterface.Ecospace
 Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 
-#End Region ' Imports
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Form class, implementing the Ecotracer (contaminant tracing) output interface.
@@ -171,23 +168,23 @@ Public Class frmEcotracerOutput
             ' If Me.IsActivated Then
             If cms.IsEcospaceRunning <> Me.IsRunning Then
 
-                    Me.m_CurTimeStep = Me.Core.nEcospaceTimeSteps
+                Me.m_CurTimeStep = Me.Core.nEcospaceTimeSteps
 
-                    '' Update state flag
-                    'Me.IsRunning = cms.IsEcospaceRunning
+                '' Update state flag
+                'Me.IsRunning = cms.IsEcospaceRunning
 
-                    '' Update status feedback
-                    'If Me.IsRunning Then
-                    '    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING)
-                    'Else
-                    '    cApplicationStatusNotifier.EndProgress(Me.Core)
-                    'End If
+                '' Update status feedback
+                'If Me.IsRunning Then
+                '    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING)
+                'Else
+                '    cApplicationStatusNotifier.EndProgress(Me.Core)
+                'End If
 
-                    '' Update controls
-                    ''    Me.m_lblProgress.Text = ""
-                    'Me.UpdateControls()
+                '' Update controls
+                ''    Me.m_lblProgress.Text = ""
+                'Me.UpdateControls()
 
-                End If
+            End If
             '   End If
         Catch ex As Exception
             'Just swallow it for now???

@@ -18,16 +18,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports EwECore.Style
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-
-#End Region
 
 Namespace Ecopath
 

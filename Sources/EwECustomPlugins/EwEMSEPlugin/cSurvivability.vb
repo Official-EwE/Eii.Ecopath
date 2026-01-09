@@ -23,18 +23,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
 Imports System.IO
-Imports EwECore
 Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
 Imports Troschuetz.Random
-
-#End Region
 
 Public Class cSurvivability
     Implements IMSEData

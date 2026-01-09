@@ -17,17 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports EwECore.SearchObjectives
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecosim
 
@@ -36,8 +27,8 @@ Namespace Ecosim
     ''' Grid allowing setting of Fleet search objectives.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
-      Public Class gridSearchObjectivesFleet
+
+    Public Class gridSearchObjectivesFleet
         : Inherits cEwEGrid
 
         Private m_Manager As ISearchObjective

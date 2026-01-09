@@ -17,18 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.IO
-Imports EwEUtils
 Imports EwEUtils.UserInterface
 Imports Newtonsoft.Json
 
-#End Region ' Imports 
+ 
 
 Namespace Auxiliary
 

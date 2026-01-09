@@ -17,22 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports System.Text
-Imports EwECore
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
-Imports SourceLibrary
 Imports System.ComponentModel
+Imports SourceGrid2
 
-#End Region
 
-<CLSCompliant(False)> _
 Public MustInherit Class gridApplyShapeBase
     Inherits cEwEGrid
 

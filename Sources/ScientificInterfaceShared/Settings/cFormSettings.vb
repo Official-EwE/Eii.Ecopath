@@ -17,22 +17,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Xml
-Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Forms
 Imports WeifenLuo.WinFormsUI
-Imports Debug = System.Diagnostics.Debug
 
 
-#End Region ' Imports
+
 ''' ===========================================================================
 ''' <summary>
 ''' <para>Handy-dandy class that maintains and applies form information such as 

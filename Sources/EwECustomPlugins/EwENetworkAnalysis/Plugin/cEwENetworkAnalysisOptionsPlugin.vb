@@ -17,15 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports System.Windows.Forms
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
-
-#End Region
 
 Public Class cEwENetworkAnalysisOptionsPlugin
     Implements IEwEOptionsPlugin

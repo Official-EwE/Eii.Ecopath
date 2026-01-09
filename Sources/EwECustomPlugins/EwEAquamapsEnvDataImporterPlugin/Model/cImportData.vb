@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Data for the Aquamaps distribution envelope import process.

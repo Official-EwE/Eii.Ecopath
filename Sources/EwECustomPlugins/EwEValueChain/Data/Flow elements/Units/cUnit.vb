@@ -17,23 +17,23 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports System.Reflection
 Imports EwEUtils.Utilities
-Imports EwEUtils.Database
+Imports EwECore.Database
 Imports EwECore
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 <TypeConverter(GetType(cPropertySorter)), _
     DefaultProperty("Name"), _
     Serializable()> _
 Public MustInherit Class cUnit
-    Inherits EwEUtils.Database.cEwEDatabase.cOOPStorable
+    Inherits cEwEDatabase.cOOPStorable
 
     Protected Const sPROPCAT_GENERAL As String = "01. General"
     Protected Const sPROPCAT_VALIDATION As String = "02. Validation"

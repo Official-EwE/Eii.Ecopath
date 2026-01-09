@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Web
 Imports System.Xml
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Emulator
 

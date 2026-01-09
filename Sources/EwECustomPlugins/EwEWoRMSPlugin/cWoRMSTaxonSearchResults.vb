@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
+Imports EwECore.Common
+Imports EwECore.Plugins.Data
+
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -46,8 +46,8 @@ Public Class cWoRMSTaxonSearchResults
 
 #End Region ' Private bits
 
-    Public Sub New(term As ITaxonSearchData, _
-                   results As ITaxonSearchData(), _
+    Public Sub New(term As ITaxonSearchData,
+                   results As ITaxonSearchData(),
                    strPluginName As String)
         Me.m_term = term
         Me.m_taxa = results
@@ -56,7 +56,7 @@ Public Class cWoRMSTaxonSearchResults
 
     ''' <inheritdoc cref="IDataSearchResults.SearchResults"/>
     Public ReadOnly Property SearchResults() As Object() _
-        Implements EwEPlugin.Data.IDataSearchResults.SearchResults
+        Implements IDataSearchResults.SearchResults
         Get
             Return Me.m_taxa
         End Get
@@ -64,7 +64,7 @@ Public Class cWoRMSTaxonSearchResults
 
     ''' <inheritdoc cref="IDataSearchResults.SearchScores"/>
     Public ReadOnly Property SearchScores() As Single() _
-        Implements EwEPlugin.Data.IDataSearchResults.SearchScores
+        Implements IDataSearchResults.SearchScores
         Get
             Dim asScores(Me.m_taxa.Length) As Single
             Return asScores
@@ -73,7 +73,7 @@ Public Class cWoRMSTaxonSearchResults
 
     ''' <inheritdoc cref="IDataSearchResults.SearchTerm"/>
     Public ReadOnly Property SearchTerm() As Object _
-        Implements EwEPlugin.Data.IDataSearchResults.SearchTerm
+        Implements IDataSearchResults.SearchTerm
         Get
             Return Me.m_term
         End Get
@@ -81,15 +81,15 @@ Public Class cWoRMSTaxonSearchResults
 
     ''' <inheritdoc cref="IDataSearchResults.PluginName"/>
     Public ReadOnly Property PluginName() As String _
-        Implements EwEPlugin.Data.IPluginData.PluginName
+        Implements IPluginData.PluginName
         Get
             Return Me.m_strPluginName
         End Get
     End Property
 
     ''' <inheritdoc cref="IDataSearchResults.RunType"/>
-    Public ReadOnly Property RunType() As EwEUtils.Core.IRunType _
-        Implements EwEPlugin.Data.IPluginData.RunType
+    Public ReadOnly Property RunType() As IRunType _
+        Implements IPluginData.RunType
         Get
             Return Nothing
         End Get

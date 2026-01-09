@@ -16,22 +16,22 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.Collections.Specialized
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Public Class ucConfigureCConcDriver
     Implements IOptionsPage

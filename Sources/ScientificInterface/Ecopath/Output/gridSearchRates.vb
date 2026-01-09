@@ -17,20 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)> _
+    
     Public Class gridSearchRates
         Inherits cEwEGrid
 

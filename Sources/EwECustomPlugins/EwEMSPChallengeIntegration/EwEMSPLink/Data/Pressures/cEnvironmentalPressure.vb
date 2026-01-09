@@ -16,11 +16,11 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 Public Class cEnvironmentalPressure
     Inherits cPressure

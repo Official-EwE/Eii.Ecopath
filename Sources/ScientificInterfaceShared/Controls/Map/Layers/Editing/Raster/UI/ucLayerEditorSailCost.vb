@@ -17,12 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Imports EwECore
+
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Controls.Map.Layers
 

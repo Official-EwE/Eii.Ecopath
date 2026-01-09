@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Imports System.ComponentModel
 Imports System.IO
 
-#End Region ' Imports
+
 
 Namespace Controls
 

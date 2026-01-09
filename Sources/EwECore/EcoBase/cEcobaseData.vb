@@ -17,20 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
-Imports EwEUtils.Core
 Imports EwEUtils.NetUtilities
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace WebServices.Ecobase
 

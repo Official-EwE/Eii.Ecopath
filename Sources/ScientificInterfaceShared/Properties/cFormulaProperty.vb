@@ -17,15 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.Globalization
-Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Properties
 

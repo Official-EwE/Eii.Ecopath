@@ -16,12 +16,12 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing.Drawing2D
 
-#End Region ' Imports
+
 
 Namespace Controls
 

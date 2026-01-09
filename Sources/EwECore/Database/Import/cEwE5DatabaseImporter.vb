@@ -17,17 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing
 Imports System.Text
-Imports EwEUtils.Core
-Imports EwEUtils.Database
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-Imports System.Data
-
-#End Region ' EwECore
 
 Namespace Database
 
@@ -182,7 +175,7 @@ Namespace Database
             If r Is Nothing Then Return Nothing
 
             While r.Read()
-                mi = New cExternalModelInfo(CStr(r(0)), CStr(r(1)), _
+                mi = New cExternalModelInfo(CStr(r(0)), CStr(r(1)),
                     CStr(Me.FixValue(r, "remarks", My.Resources.CoreMessages.IMPORT_NO_DESCRIPTION)), CInt(r(3)))
                 l.Add(mi)
             End While
@@ -204,7 +197,7 @@ Namespace Database
 
 #Region " Generic "
 
-        Private Function SplitNumberListString(strMemo As String, Optional cSplitChar As Char = CChar(" "), _
+        Private Function SplitNumberListString(strMemo As String, Optional cSplitChar As Char = CChar(" "),
                 Optional nDefaultNumberLen As Integer = 7) As String()
 
             Dim astrMemoBits() As String = {""}
@@ -293,9 +286,9 @@ Namespace Database
         ''' times a value for the source string should be repeated.</param>
         ''' <returns>A smaller string representing the same numbers.</returns>
         ''' -------------------------------------------------------------------
-        Private Function RebuildNumberListString(strMemo As String, _
-                Optional cSplitChar As Char = CChar(" "), _
-                Optional nDefaultNumberLen As Integer = 7, _
+        Private Function RebuildNumberListString(strMemo As String,
+                Optional cSplitChar As Char = CChar(" "),
+                Optional nDefaultNumberLen As Integer = 7,
                 Optional nRepetition As Integer = 1) As String
 
             Dim astrMemoBits() As String
@@ -404,7 +397,7 @@ Namespace Database
         ''' process.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Property HashKey(dt As eDataTypes, strKey As String, _
+        Private Property HashKey(dt As eDataTypes, strKey As String,
                 Optional dtScenario As eDataTypes = eDataTypes.NotSet, Optional iScenarioID As Integer = 0) As Integer
             Get
                 ' Get proper dictionary
@@ -492,7 +485,7 @@ Namespace Database
         ''' <param name="valDefault">Optional default value to return if the value found in the reader is a DBNull value.</param>
         ''' <returns>The groomed and pruned value.</returns>
         ''' -------------------------------------------------------------------
-        Private Function FixValue(ByRef r As IDataReader, strField As String, _
+        Private Function FixValue(ByRef r As IDataReader, strField As String,
                 Optional valDefault As Object = Nothing) As Object
 
             Dim value As Object = Nothing
@@ -826,7 +819,7 @@ Namespace Database
             'drow("EcosimVulMultAll") = Me.FixValue(reader, "Ecosim vulMultAll")
             writer.AddRow(drow)
             If Not writer.Commit() Then
-                Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_ERROR_COMMIT, "model"), _
+                Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_ERROR_COMMIT, "model"),
                               eMessageType.DataImport, eMessageImportance.Critical, True)
             End If
 
@@ -914,7 +907,7 @@ Namespace Database
                         Me.AddRemark(readerStanza("remarks"), eDataTypes.Stanza, iStanzaID, eVarNameFlags.Name)
                     Else
                         ' Import error: stanza config missing essential first stage
-                        Me.LogMessage(cStringUtils.Localize("Multi-stanza configuration {0} missing essential first life stage. This stanza configuration cannot be imported.", strStanzaName), _
+                        Me.LogMessage(cStringUtils.Localize("Multi-stanza configuration {0} missing essential first life stage. This stanza configuration cannot be imported.", strStanzaName),
                                 eMessageType.DataImport, eMessageImportance.Information, True)
                     End If
                 End If
@@ -1024,9 +1017,9 @@ Namespace Database
                 sTemp = CSng(Me.FixValue(reader, "Area"))
                 If (sTemp <= 0 Or sTemp > 1) Then
                     sTemp = 1.0
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_GROUPAREA, _
-                            CStr(reader("groupName")), _
-                            sTemp), _
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_GROUPAREA,
+                            CStr(reader("groupName")),
+                            sTemp),
                             eMessageType.DataImport, eMessageImportance.Information, True)
                 End If
                 drow("Area") = sTemp
@@ -1043,9 +1036,9 @@ Namespace Database
                 If CInt(reader("Type")) = 1 Then
                     ' For producers set the GS to 0
                     sTemp = 0.0
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_GROUPUNASSIM, _
-                            CStr(reader("groupName")), _
-                            sTemp), _
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_GROUPUNASSIM,
+                            CStr(reader("groupName")),
+                            sTemp),
                             eMessageType.DataImport, eMessageImportance.Information, True)
                 End If
                 ' drow("Unassim") = CSng(if(sTemp > 1, sTemp / 100.0, sTemp))
@@ -1716,7 +1709,7 @@ Namespace Database
                     ' .. create a new ecosim group
 
                     ' Check if an ecosim group exists for this ecopath group, ecosim scenario combination
-                    reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
+                    reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'",
                             Me.m_strModelName, strScenario, strGroup))
 
                     bHasGroup = reader.Read()
@@ -1869,10 +1862,10 @@ Namespace Database
                     strJuvinile = CStr(readerTmp("groupName"))
                     Me.m_dbEwE5.ReleaseReader(readerTmp)
 
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_PAIRDETAILS, _
-                            CStr(reader("npairs")), _
-                            strJuvinile, _
-                            strAdult), _
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_PAIRDETAILS,
+                            CStr(reader("npairs")),
+                            strJuvinile,
+                            strAdult),
                             eMessageType.DataImport, eMessageImportance.Information, True)
 
                 Catch ex As Exception
@@ -1915,7 +1908,7 @@ Namespace Database
                     ' Grab foreign keys
                     iEcopathFleetID = Me.HashKey(eDataTypes.FleetInput, strFleet)
 
-                    reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim FishGear] where modelName='{0}' and gearName='{1}' and Scenario='{2}'", _
+                    reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim FishGear] where modelName='{0}' and gearName='{1}' and Scenario='{2}'",
                                                               Me.m_strModelName, strFleet, strScenario))
                     ' Assume no shape is read
                     iShapeID = 0
@@ -2035,9 +2028,9 @@ Namespace Database
                         ' Found dual assignment?
                         If (bIsEggShape And bIsTimeShape) Then
                             ' VERIFY_JS: Check with VC how to import dual assigned Forcing shapes (egg and time)
-                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS, _
-                                    iShapeNumber, _
-                                    shapeDataType.ToString()), _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS,
+                                    iShapeNumber,
+                                    shapeDataType.ToString()),
                                     eMessageType.DataImport, eMessageImportance.Information, True)
                         End If
 
@@ -2061,7 +2054,7 @@ Namespace Database
                         ' Import failed?
                         If (iAssignedShapeID = cCore.NULL_VALUE) Then
                             ' #Yes: report failure
-                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGNOTIMPORTED, iShapeNumber, shapeDataType.ToString), _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGNOTIMPORTED, iShapeNumber, shapeDataType.ToString),
                                     eMessageType.DataImport, eMessageImportance.Information, True)
                         Else
                             ' #No: remember how shape was imported
@@ -2076,16 +2069,16 @@ Namespace Database
                     Else
                         ' This indicates a programming error
                         Debug.Assert(False, "Shape type " & shapeDataType & " unknown")
-                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGDUPLICATE, _
-                                iShapeNumber, _
-                                shapeDataType.ToString()), _
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGDUPLICATE,
+                                iShapeNumber,
+                                shapeDataType.ToString()),
                                 eMessageType.DataImport, eMessageImportance.Information, True)
 
                     End If ' Valid ShapeType is set
                 Else
                     ' Invalid shape number
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGTYPEMISSING, _
-                            iShapeNumber), _
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_FORCINGTYPEMISSING,
+                            iShapeNumber),
                             eMessageType.DataImport, eMessageImportance.Information, True)
                 End If ' Not imported yet
             End While
@@ -2146,7 +2139,7 @@ Namespace Database
 
 #End Region ' Shape duplicates management
 
-        Private Function ImportShape(iShapeID As Integer, shapeDataType As eDataTypes, _
+        Private Function ImportShape(iShapeID As Integer, shapeDataType As eDataTypes,
                 reader As IDataReader, Optional bIsSeasonal As Boolean = False) As Integer
 
             ' import shape specific data in subtable
@@ -2179,9 +2172,9 @@ Namespace Database
         ''' <returns>The ID for the imported shape. Note that this ID may indicate
         ''' an earlier imported shape in case of duplicates.</returns>
         ''' -------------------------------------------------------------------
-        Private Function ImportForcingShape(iShapeID As Integer, _
-                                            shapeDataType As eDataTypes, _
-                                            reader As IDataReader, _
+        Private Function ImportForcingShape(iShapeID As Integer,
+                                            shapeDataType As eDataTypes,
+                                            reader As IDataReader,
                                             Optional bIsSeasonal As Boolean = False) As Integer
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -2219,7 +2212,7 @@ Namespace Database
             fsdDuplicate = Me.GetDuplicate(fsd)
             If (fsdDuplicate IsNot Nothing) Then
                 ' #Yes: return original DBID
-                Console.WriteLine("Shape {0} '{1}' already exists as ID {2}", _
+                Console.WriteLine("Shape {0} '{1}' already exists as ID {2}",
                                   fsdDuplicate.ShapeDataType, fsdDuplicate.Title, fsdDuplicate.DBID)
                 Return fsdDuplicate.DBID
             End If
@@ -2243,7 +2236,7 @@ Namespace Database
 
             Catch ex As Exception
                 ' No need to localize, send to log only
-                Me.LogMessage(cStringUtils.Localize("Forcing data failed to import as type {1}: {2}", shapeDataType.ToString(), ex.Message), _
+                Me.LogMessage(cStringUtils.Localize("Forcing data failed to import as type {1}: {2}", shapeDataType.ToString(), ex.Message),
                         eMessageType.DataImport, eMessageImportance.Information)
                 Return cCore.NULL_VALUE
             End Try
@@ -2301,9 +2294,9 @@ Namespace Database
             Return fsd.DBID
         End Function
 
-        Private Function ImportFishingShape(iShapeID As Integer, _
-                                            shapeDataType As eDataTypes, _
-                                            reader As IDataReader, _
+        Private Function ImportFishingShape(iShapeID As Integer,
+                                            shapeDataType As eDataTypes,
+                                            reader As IDataReader,
                                             Optional bIsSeasonal As Boolean = False) As Integer
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -2324,7 +2317,7 @@ Namespace Database
 
             Catch ex As Exception
                 ' No need to localize, send to log only
-                Me.LogMessage(cStringUtils.Localize("Effort or Mort shape data failed to import as type {1}: {2}", shapeDataType.ToString(), ex.Message), _
+                Me.LogMessage(cStringUtils.Localize("Effort or Mort shape data failed to import as type {1}: {2}", shapeDataType.ToString(), ex.Message),
                         eMessageType.DataImport, eMessageImportance.Information)
                 Return cCore.NULL_VALUE
             End Try
@@ -2362,7 +2355,7 @@ Namespace Database
             Return iShapeID
         End Function
 
-        Private Function CreateDummyShape(iShapeID As Integer, shapeDataType As eDataTypes, _
+        Private Function CreateDummyShape(iShapeID As Integer, shapeDataType As eDataTypes,
                 Optional bIsSeasonal As Boolean = False) As Boolean
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
@@ -2389,7 +2382,7 @@ Namespace Database
 
             Catch ex As Exception
                 ' No need to localize, send to log only
-                Me.LogMessage(cStringUtils.Localize("Failed to create dummy shape {0}: {1}", iShapeID, ex.Message), _
+                Me.LogMessage(cStringUtils.Localize("Failed to create dummy shape {0}: {1}", iShapeID, ex.Message),
                         eMessageType.DataImport, eMessageImportance.Information)
                 Return False
             End Try
@@ -2569,7 +2562,7 @@ Namespace Database
                             End If
                         Else
                             ' Multiple ecosim scenarios: do not import, throw a warning
-                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_MULTISTANZASHAPE, CStr(reader("stanzaName"))), _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_MULTISTANZASHAPE, CStr(reader("stanzaName"))),
                                         eMessageType.DataImport, eMessageImportance.Information, True)
                         End If
                     End If
@@ -3003,10 +2996,10 @@ Namespace Database
 
                         ' Is this fleet missing?
                         If (iFleetID = 0) Then
-                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESFLEET, _
-                                Me.FixValue(reader, "DatName", ""), _
-                                Me.FixValue(reader, "Dataset", ""), _
-                                CInt(reader("Pool"))), _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESFLEET,
+                                Me.FixValue(reader, "DatName", ""),
+                                Me.FixValue(reader, "Dataset", ""),
+                                CInt(reader("Pool"))),
                                 eMessageType.DataImport, eMessageImportance.Information, True)
                         Else
                             iTimeSeriesID += 1
@@ -3047,10 +3040,10 @@ Namespace Database
 
                         ' Is this group missing?
                         If (iGroupID = 0) Then
-                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_TIMESIERIESGROUP, _
-                                    Me.FixValue(reader, "DatName", ""), _
-                                    Me.FixValue(reader, "Dataset", ""), _
-                                    CInt(reader("Pool"))), _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_TIMESIERIESGROUP,
+                                    Me.FixValue(reader, "DatName", ""),
+                                    Me.FixValue(reader, "Dataset", ""),
+                                    CInt(reader("Pool"))),
                                     eMessageType.DataImport, eMessageImportance.Information, True)
                         Else
                             iTimeSeriesID += 1
@@ -3083,10 +3076,10 @@ Namespace Database
 
                     Case eTimeSeriesCategoryType.NotSet
                         'Trying to import unkown time series type - ignore this TS
-                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESTYPE, _
-                                Me.FixValue(reader, "DatName", ""), _
-                                Me.FixValue(reader, "Dataset", ""), _
-                                eType.ToString()), _
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESTYPE,
+                                Me.FixValue(reader, "DatName", ""),
+                                Me.FixValue(reader, "Dataset", ""),
+                                eType.ToString()),
                                 eMessageType.DataImport, eMessageImportance.Information, True)
 
                 End Select
@@ -3344,7 +3337,7 @@ Namespace Database
                     iEcopathGroupID = Me.HashKey(eDataTypes.EcoPathGroupInput, strEcopathGroup)
 
                     ' Check if an ecospace group exists for this ecopath group, ecosim scenario combination
-                    reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [EcoSpace N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'", _
+                    reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [EcoSpace N] where modelName='{0}' AND Scenario='{1}' AND groupName='{2}'",
                             Me.m_strModelName, strEcospaceScenario, strEcopathGroup))
 
                     bHasGroup = reader.Read()
@@ -3388,10 +3381,10 @@ Namespace Database
                         drow("CapacityCalType") = eEcospaceCapacityCalType.Habitat
                     Else
                         ' #No: the new group will get all default values
-                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSPACEGROUP, _
-                                iGroupID, _
-                                strEcopathGroup, _
-                                strEcospaceScenario), _
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSPACEGROUP,
+                                iGroupID,
+                                strEcopathGroup,
+                                strEcospaceScenario),
                                 eMessageType.DataImport, eMessageImportance.Information)
                     End If
 
@@ -3496,7 +3489,7 @@ Namespace Database
                         Me.LogProgress("Importing maps for scenario " & strEcospaceScenario & ", fleet " & strEcopathFleet)
 
                         ' Generate an Ecospace fleet entry
-                        reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace Gear] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
+                        reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace Gear] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'",
                                                                   Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
                         bHasFleet = reader.Read()
 
@@ -3523,7 +3516,7 @@ Namespace Database
                             ReDim astrPort(nRows * nCols)
                             For iRow As Integer = 0 To nRows : For iCol As Integer = 0 To nCols : astrPort(iRow * nCols + iCol) = "" : Next : Next
                             Try
-                                readerSub = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
+                                readerSub = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'",
                                                                              Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
 
                                 If readerSub IsNot Nothing Then
@@ -3609,10 +3602,10 @@ Namespace Database
                         If bHasFleet Then
                             Me.AddRemark(reader("remark"), eDataTypes.EcospaceFleet, iFleetID, eVarNameFlags.Name)
                         Else
-                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSPACEFLEET, _
-                                    iFleetID, _
-                                    strEcopathFleet, _
-                                    strEcospaceScenario), _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSPACEFLEET,
+                                    iFleetID,
+                                    strEcopathFleet,
+                                    strEcospaceScenario),
                                     eMessageType.DataImport, eMessageImportance.Information)
                         End If
 
@@ -3935,9 +3928,9 @@ Namespace Database
         ''' core object instance, variable type an optional subgroup.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddRemark(objRemark As Object, _
-                dataType As eDataTypes, nID As Integer, _
-                varName As eVarNameFlags, _
+        Private Sub AddRemark(objRemark As Object,
+                dataType As eDataTypes, nID As Integer,
+                varName As eVarNameFlags,
                 Optional dataTypeSec As eDataTypes = eDataTypes.NotSet, Optional nIDSec As Integer = -1)
 
             Dim strRemark As String = ""
@@ -3964,9 +3957,9 @@ Namespace Database
         ''' <param name="varName">The <see cref="eVarNameFlags">Core variable name</see>
         ''' to store pedigree for.</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddPedigree(writer As cEwEDatabase.cEwEDbWriter, _
-                                iPedigree As Integer, _
-                                iGroupID As Integer, _
+        Private Sub AddPedigree(writer As cEwEDatabase.cEwEDbWriter,
+                                iPedigree As Integer,
+                                iGroupID As Integer,
                                 varName As eVarNameFlags)
 
             ' Find pedigree levels for a variable
@@ -4007,10 +4000,10 @@ Namespace Database
         ''' core object instance, variable type an optional subgroup.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddAuxillaryData(strRemark As String, _
-                                     dataType As eDataTypes, nID As Integer, _
-                                     varName As eVarNameFlags, _
-                                     dataTypeSec As eDataTypes, _
+        Private Sub AddAuxillaryData(strRemark As String,
+                                     dataType As eDataTypes, nID As Integer,
+                                     varName As eVarNameFlags,
+                                     dataTypeSec As eDataTypes,
                                      nIDSec As Integer)
 
             Dim writer As cEwEDatabase.cEwEDbWriter = Me.m_dbTarget.GetWriter("Auxillary")

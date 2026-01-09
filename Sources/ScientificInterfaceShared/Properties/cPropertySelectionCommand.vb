@@ -17,16 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
+
 Imports ScientificInterfaceShared.Commands
 Imports SourceGrid2
 
-#End Region ' Imports
+
 
 Namespace Properties
 
@@ -35,7 +32,7 @@ Namespace Properties
     ''' This class implements a selection change <see cref="cCommand">Command</see>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cPropertySelectionCommand
         Inherits cCommand
 

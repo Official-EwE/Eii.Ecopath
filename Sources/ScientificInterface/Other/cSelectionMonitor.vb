@@ -17,14 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
+
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

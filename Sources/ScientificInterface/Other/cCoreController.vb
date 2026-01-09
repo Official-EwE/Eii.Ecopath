@@ -17,17 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterface.Ecosim
-Imports ScientificInterface.Ecospace
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

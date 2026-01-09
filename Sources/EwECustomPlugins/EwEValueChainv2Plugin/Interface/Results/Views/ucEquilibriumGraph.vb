@@ -17,21 +17,21 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 Imports ZedGraph
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
 ''' 
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)>
+
 Public Class ucEquilibriumGraph
     Inherits ZedGraphControl
     Implements IResultView

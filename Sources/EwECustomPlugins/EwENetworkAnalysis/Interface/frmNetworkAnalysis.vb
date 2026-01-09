@@ -19,9 +19,9 @@
 
 ' JS 25Apr2024: Man, the internal design of this UI is still gawddamn horrendous
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.IO
@@ -31,7 +31,7 @@ Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
 
-#End Region ' Imports
+
 
 Public Class frmNetworkAnalysis
 
@@ -185,7 +185,7 @@ Public Class frmNetworkAnalysis
             If (Me.m_contentmanager Is Nothing) Then Return
             If (cmdDOC Is Nothing) Then Return
 
-            cmdDOC.Invoke(Me.m_networkmanager.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.EcosimResults), My.Resources.PROMPT_SAVE_DESTINATION)
+            cmdDOC.Invoke(Me.m_networkmanager.Core.DefaultOutputPath(eAutosaveTypes.EcosimResults), My.Resources.PROMPT_SAVE_DESTINATION)
 
             If (cmdDOC.Result = DialogResult.OK) Then
                 Try

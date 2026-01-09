@@ -17,18 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwECore
+Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
-Imports EwEUtils.SystemUtilities
-Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region ' Imports
 
 Namespace Ecospace.Controls
 
@@ -72,7 +63,7 @@ Namespace Ecospace.Controls
                 If (Me.m_uic IsNot Nothing) Then
                     Me.m_manConn = Me.m_uic.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_manConn.DatasetManager
-                    Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
+                    Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
                     Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
 #If DEBUG Then
                     Me.m_mhEcospace.Name = "cSpatialDatasetListbox"
@@ -194,7 +185,7 @@ Namespace Ecospace.Controls
 
             Try
                 ' May have been disposed already
-                If (msg.DataType = EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection) Then
+                If (msg.DataType = eDataTypes.EcospaceSpatialDataConnection) Then
                     Select Case msg.Type
 
                         Case eMessageType.DataModified

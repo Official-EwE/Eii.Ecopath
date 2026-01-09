@@ -17,20 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
-Imports EwEUtils.Utilities
+Imports EwECore.Common
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Public Class cCConcSpatialRaster
     Implements ISpatialRaster
@@ -120,7 +118,7 @@ Public Class cCConcSpatialRaster
     ''' <inheritdocs cref="ISpatialRaster.StandardDeviation"/>
     ''' -------------------------------------------------------------------
     Public Function StandardDeviation() As Double _
-        Implements EwEUtils.SpatialData.ISpatialRaster.StandardDeviation
+        Implements EwECore.Common.ISpatialRaster.StandardDeviation
         Me.CalculateStats()
         Return Me.m_dStdDev
     End Function
@@ -308,7 +306,7 @@ Public Class cCConcSpatialRaster
 
 #End Region ' Internals
 
-    Public Function IsValid() As Boolean Implements EwEUtils.SpatialData.ISpatialRaster.IsValid
+    Public Function IsValid() As Boolean Implements EwECore.Common.ISpatialRaster.IsValid
         Return True
     End Function
 

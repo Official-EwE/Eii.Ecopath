@@ -16,11 +16,9 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
+
+
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
@@ -28,7 +26,7 @@ Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SourceGrid2.Cells.Real
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -38,7 +36,7 @@ Namespace Controls.EwEGrid
     ''' feedback.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public MustInherit Class cEwECellBase
         Inherits Cell
         Implements IEwECell

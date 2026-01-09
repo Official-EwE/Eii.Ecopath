@@ -17,19 +17,15 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
-
-#End Region ' Imports
 
 ' ToDo: globalize this class
 
@@ -64,7 +60,7 @@ Public Class cNetworkD3RWriterPlugin
         End Get
     End Property
 
-    Public ReadOnly Property Name As String Implements IPlugin.Name, EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property Name As String Implements IPlugin.Name, IPlugin.DisplayName
         Get
             Return "Export Dietmatrix to NetworkD3"
         End Get

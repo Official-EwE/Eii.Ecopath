@@ -17,17 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports EwECore.SearchObjectives
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecosim
 
@@ -36,8 +27,8 @@ Namespace Ecosim
     ''' Grid allowing setting of search objective weights.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
-   Public Class gridSearchObjectivesWeight
+
+    Public Class gridSearchObjectivesWeight
         : Inherits cEwEGrid
 
 #Region " Private vars "

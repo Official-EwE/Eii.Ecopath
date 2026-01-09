@@ -17,18 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
-Imports SourceGrid2.BehaviorModels
-
-#End Region
 
 Namespace Ecospace
 
@@ -37,7 +26,7 @@ Namespace Ecospace
     ''' Grid control, implements the Ecospace interface to set dispersal rates.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)>
+    
     Public Class gridEcospaceFTarget
         Inherits cEwEGrid
 

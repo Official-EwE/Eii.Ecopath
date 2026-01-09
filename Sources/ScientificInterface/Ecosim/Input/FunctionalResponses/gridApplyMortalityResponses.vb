@@ -17,20 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports System.Text
-Imports System.Globalization
-Imports EwECore
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
-Imports SourceLibrary
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
@@ -39,7 +27,7 @@ Namespace Ecosim
     ''' Grid to apply environmental response functions to Ecosim forcing functions.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class gridApplyEcosimMortalityResponses
         Inherits gridApplyShapeBase
 
@@ -75,7 +63,7 @@ Namespace Ecosim
             End Set
         End Property
 
-        Public Overrides ReadOnly Property CoreComponents As EwEUtils.Core.eCoreComponentType()
+        Public Overrides ReadOnly Property CoreComponents As eCoreComponentType()
             Get
                 Return New eCoreComponentType() {eCoreComponentType.EcosimMortalityResponseInteractionManager, eCoreComponentType.ShapesManager}
             End Get

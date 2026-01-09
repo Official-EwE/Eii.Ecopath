@@ -24,7 +24,7 @@
 ' Partially converted to VB.NET via http://www.developerfusion.com/tools/convert/csharp-to-vb/?batchId=907793bb-a406-4afc-9004-4e8071ad335d
 ' Converted VB file contained errors in the event firing logic, which were fixed by hand
 ' ===============================================================================
-Option Strict On
+
 
 Namespace WebServices
 

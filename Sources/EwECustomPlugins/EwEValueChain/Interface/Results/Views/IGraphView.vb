@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Collections.Generic
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Core
+Imports EwECore.Common
 
-#End Region ' Imports
+
 
 Public Interface IGraphView
 

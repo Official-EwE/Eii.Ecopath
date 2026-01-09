@@ -17,21 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
 Imports System.IO
-Imports System.Text
-Imports System.Collections.Specialized
-Imports EwECore
-Imports EwEPlugin
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Reflection
+Imports EwECore.Plugins
 Imports EwEUtils.Utilities
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Other
 

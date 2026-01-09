@@ -17,20 +17,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
     ''' <summary>
     ''' Grid for displaying Fit to time series run results
     ''' </summary>
-    <CLSCompliant(False)> _
+    
     Public Class gridFitToTimeSeriesOutput
         Inherits cEwEGrid
 
@@ -114,7 +113,7 @@ Namespace Ecosim
 
                 If (Me.UIContext IsNot Nothing) Then
                     Me.m_man = Me.UIContext.Core.EcosimFitToTimeSeries
-                    Me.m_propAIC = Me.UIContext.PropertyManager.GetProperty(Me.m_man, EwEUtils.Core.eVarNameFlags.F2TSNAICData)
+                    Me.m_propAIC = Me.UIContext.PropertyManager.GetProperty(Me.m_man, eVarNameFlags.F2TSNAICData)
                     AddHandler Me.m_propAIC.PropertyChanged, AddressOf Me.OnAICNumPointsChanged
                     ' Kick
                     Me.OnAICNumPointsChanged(Me.m_propAIC, cProperty.eChangeFlags.Value)

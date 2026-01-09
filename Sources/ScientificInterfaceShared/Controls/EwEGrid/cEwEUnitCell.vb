@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -32,7 +32,7 @@ Namespace Controls.EwEGrid
     ''' UnitCell implements a cell that shows a dynamic unit string.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cEwEUnitCell
         Inherits cEwECell
 

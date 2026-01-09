@@ -17,19 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
+Imports EwECore
 Imports EwECore.Style
-Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
 
-<CLSCompliant(False)> _
 Friend Class cRemarksGrid
     Inherits cEwEGrid
 

@@ -17,20 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports EwECore.MSE
-Imports EwEUtils.Core
-Imports ZedGraph
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
-
-#End Region
 
 Public Class frmMSEPlots
 

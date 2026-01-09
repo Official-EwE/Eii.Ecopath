@@ -17,19 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
 
-Imports EwECore
-Imports ScientificInterface.Ecopath.Input
-Imports ScientificInterface.Ecopath.Output
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
-Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Wizard
 

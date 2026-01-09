@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict on
+
+
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Public Class cFlowDiagramData
     Implements IFlowDiagramData

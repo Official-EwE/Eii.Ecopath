@@ -17,18 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports SourceGrid2
-Imports EwECore
+
+
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports System.Drawing
-Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
+Imports SourceGrid2
 
-#End Region ' Imports
+
 
 ''' -------------------------------------------------------------------
 ''' <summary>
@@ -36,7 +34,7 @@ Imports ScientificInterfaceShared.Definitions
 ''' into the cell.
 ''' </summary>
 ''' -------------------------------------------------------------------
-<CLSCompliant(False)> _
+
 Public Class cEwEGridShapeThumbnailVisualizer
     Inherits VisualModels.Common
 

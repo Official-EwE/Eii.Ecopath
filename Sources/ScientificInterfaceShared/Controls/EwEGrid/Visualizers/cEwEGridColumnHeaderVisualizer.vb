@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -32,7 +32,7 @@ Namespace Controls.EwEGrid
     ''' A visualizer for rendering EwE column header cells.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cEwEGridColumnHeaderVisualizer
         : Inherits SourceGrid2.VisualModels.Header
 

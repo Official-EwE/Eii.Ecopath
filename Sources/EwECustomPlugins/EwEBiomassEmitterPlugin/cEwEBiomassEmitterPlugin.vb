@@ -20,16 +20,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.Ecospace
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region ' Imports
 
 Public Class cEwEBiomassEmitterPlugin
     Implements IEcopathRunInitializedPlugin

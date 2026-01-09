@@ -23,8 +23,6 @@
 ' ===============================================================================
 '
 
-Imports EwEUtils.Core
-
 Public Class cResultsCollector_TotalCatch_Yearly
     Inherits cResultsCollector_Catch
 

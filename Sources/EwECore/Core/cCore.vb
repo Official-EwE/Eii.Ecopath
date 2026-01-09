@@ -17,13 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports System.Xml
 Imports EwECore.Auxiliary
+Imports EwECore.Common
 Imports EwECore.Database
 Imports EwECore.DataSources
 Imports EwECore.Ecosim
@@ -36,11 +37,6 @@ Imports EwECore.SearchObjectives
 Imports EwECore.SpatialData
 Imports EwECore.ValueWrapper
 Imports EwELicense
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Database
-Imports EwEUtils.Logging
-Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
@@ -48,7 +44,7 @@ Imports Debug = System.Diagnostics.Debug
 
 
 
-#End Region ' Imports
+
 
 #Disable Warning IDE0017 ' Suppress "Object initialization can be simplified" 
 #Disable Warning IDE0009 ' Suppress "Add Me qualification" 
@@ -6079,7 +6075,7 @@ Public Class cCore
         Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
 
         If (ds IsNot Nothing) Then
-            bAvailable = ds.IsDataAvailable(New EwEPlugin.cEcosimRunType)
+            bAvailable = ds.IsDataAvailable(New EwECore.cEcosimRunType)
         End If
 
         parms.AllowValidation = False
@@ -15087,7 +15083,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="paAdded">A loaded <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub m_pluginManager_AssemblyAdded(paAdded As EwEPlugin.cPluginAssembly) _
+    Private Sub m_pluginManager_AssemblyAdded(paAdded As EwECore.cPluginAssembly) _
         Handles m_pluginManager.AssemblyAdded
 
         Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_SANDBOXED, Path.GetFileNameWithoutExtension(paAdded.Filename)),
@@ -15101,7 +15097,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="paRemoved">A removed <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub m_pluginManager_AssemblyRemoved(paRemoved As EwEPlugin.cPluginAssembly) _
+    Private Sub m_pluginManager_AssemblyRemoved(paRemoved As EwECore.cPluginAssembly) _
         Handles m_pluginManager.AssemblyRemoved
 
         m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_UNLOADED, Path.GetFileNameWithoutExtension(paRemoved.Filename)),
@@ -15161,10 +15157,10 @@ Public Class cCore
     ''' <summary>
     ''' Callback for <see cref="cPluginManager.CanExecutePlugin">Plug-in manager CanExecutePlugin delegate</see>,
     ''' which the plug-in manager must invoke to test if a plug-in can be enabled by testing a given 
-    ''' <see cref="EwEUtils.Core.eCoreExecutionState">Core execution state</see> against the
+    ''' <see cref="eCoreExecutionState">Core execution state</see> against the
     ''' <see cref="cCoreStateMonitor.CoreExecutionState">current core execution state</see>.
     ''' </summary>
-    ''' <param name="coreExecutionState">The <see cref="EwEUtils.Core.eCoreExecutionState">Core execution state</see> to test.</param>
+    ''' <param name="coreExecutionState">The <see cref="eCoreExecutionState">Core execution state</see> to test.</param>
     ''' <returns>True if the current core state enables to tested core execution state.</returns>
     ''' -----------------------------------------------------------------------
     Private Function CanExecutePlugin(coreExecutionState As eCoreExecutionState) As Boolean
@@ -15536,7 +15532,7 @@ Public Class cCore
 #If Not NET Then
 #Region " License "
 
-    <CLSCompliant(False)>
+    
     Public ReadOnly Property License As cLicense
         Get
             If (Me.m_license Is Nothing) Then

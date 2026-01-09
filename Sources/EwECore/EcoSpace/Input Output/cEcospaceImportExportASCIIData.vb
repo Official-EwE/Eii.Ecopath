@@ -17,18 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-
-Imports System.IO
-Imports System.Text
-Imports EwEUtils.Utilities
-Imports EwEUtils.SpatialData
-Imports EwEUtils.Core
 Imports System.Drawing
-
-#End Region ' Imports
+Imports System.IO
+Imports EwECore.Common
+Imports EwEUtils.Utilities
 
 ' ToDo: bring in ASCII reader and writer logic from SpatialAssets Plugin
 

@@ -17,17 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
-Imports EwECore
 Imports EwECore.FitToTimeSeries
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -189,7 +186,7 @@ Public Class dlgSensitivityOfSStoV
         Handles m_btnSaveToCSV.Click
 
         Dim cmdFS As cFileSaveCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-        Dim strPath As String = Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim)
+        Dim strPath As String = Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecosim)
 
         cmdFS.Invoke(Path.Combine(strPath, "SensitivityToV.csv"), SharedResources.FILEFILTER_CSV, 0)
 

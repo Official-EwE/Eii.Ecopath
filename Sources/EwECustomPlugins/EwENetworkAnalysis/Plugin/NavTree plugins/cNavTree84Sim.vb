@@ -17,12 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
+Imports EwECore
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Public Class cNavTree84Sim
     Inherits cNavTreeControlPlugin
@@ -55,9 +56,9 @@ Public Class cNavTree84Sim
         End Get
     End Property
 
-    Public Overrides ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState
+    Public Overrides ReadOnly Property EnabledState() As eCoreExecutionState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+            Return eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 

@@ -17,17 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports System.IO
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
-
-#End Region ' Imports
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

@@ -17,18 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
+
+
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
-Imports System.Windows.Media
 
-#End Region ' Imports
+
 
 Namespace Controls
 
@@ -785,7 +782,7 @@ Namespace Controls
             Return Nothing
         End Function
 
-        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Protected Overrides Function Datatypes() As eDataTypes()
             Return New eDataTypes() {eDataTypes.GroupTimeSeries, eDataTypes.FleetTimeSeries}
         End Function
 

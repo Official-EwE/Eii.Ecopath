@@ -17,19 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports System.ComponentModel
-Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
-
-#End Region
 
 Namespace Controls
 

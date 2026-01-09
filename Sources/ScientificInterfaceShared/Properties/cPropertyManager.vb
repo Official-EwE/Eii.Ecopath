@@ -17,20 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Threading
-Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
 
-#End Region ' Imports
+
 
 Namespace Properties
 

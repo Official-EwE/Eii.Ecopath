@@ -17,17 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports System.Windows.Forms
-Imports System.Drawing
-Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
 
-#End Region ' Imports
+
+
+
 
 Namespace Controls.EwEGrid
 
@@ -36,7 +30,7 @@ Namespace Controls.EwEGrid
     ''' A visualizer that renders cell values [0, 1] as a progress bar.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cEwEGridProportionVisualizer
         Inherits cEwEGridVisualizerBase
 

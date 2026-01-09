@@ -17,9 +17,6 @@
 ' ===============================================================================
 '
 
-Imports System.Resources
-
-Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -29,12 +26,12 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("EwECore")> 
+<Assembly: AssemblyTitle("EwECore")>
 <Assembly: AssemblyDescription("Ecopath with Ecosim computational core")>
 <Assembly: AssemblyCompany("Ecopath International Initiative Research Association")>
-<Assembly: AssemblyProduct("EwECore")> 
-<Assembly: AssemblyCopyright("Copyright © 1991")> 
-<Assembly: CLSCompliant(True)> 
+<Assembly: AssemblyProduct("EwECore")>
+<Assembly: AssemblyCopyright("Copyright © 1991")>
+<Assembly: CLSCompliant(True)>
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM

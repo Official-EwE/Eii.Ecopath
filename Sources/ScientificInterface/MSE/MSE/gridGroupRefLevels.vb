@@ -17,20 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports EwECore.MSE
-Imports SourceGrid2.Cells.Real
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
-<CLSCompliant(False)> _
 Public Class gridGroupRefLevels
     : Inherits cEwEGrid
 

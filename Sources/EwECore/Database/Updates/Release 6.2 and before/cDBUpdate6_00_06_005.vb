@@ -17,11 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Database
-Imports System.Data
-Imports EwEUtils.Core
+
+Imports EwECore.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -67,7 +64,7 @@ Friend Class cDBUpdate6_00_06_005
         End Get
     End Property
 
-    Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
+    Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
         Return Me.AddEcopathYear(db) And _
                Me.MoveFleetSizeDynamics(db) And _
                Me.AddEcosimQuotaFields(db)

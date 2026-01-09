@@ -17,17 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-
 Imports System.IO
-Imports System.Text
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-Imports EwEUtils.SpatialData
-Imports EwEUtils.Core
-
-#End Region ' Imports
 
 ' ToDo_JS: merge with EcospaceCSVResultWriter
 
@@ -441,42 +433,42 @@ Public Class cEcospaceImportExportXYData
 #End Region ' Properties
 
     Public ReadOnly Property CellSize As Double _
-        Implements EwEUtils.Core.IEcospaceImportExport.CellSize
+        Implements IEcospaceImportExport.CellSize
         Get
             Return Me.m_bm.CellSize
         End Get
     End Property
 
     Public ReadOnly Property InCol As Integer _
-        Implements EwEUtils.Core.IEcospaceImportExport.InCol
+        Implements IEcospaceImportExport.InCol
         Get
             Return Me.m_bm.InCol
         End Get
     End Property
 
     Public ReadOnly Property InRow As Integer _
-        Implements EwEUtils.Core.IEcospaceImportExport.InRow
+        Implements IEcospaceImportExport.InRow
         Get
             Return Me.m_bm.InRow
         End Get
     End Property
 
     Public ReadOnly Property NoDataValue As Double _
-        Implements EwEUtils.Core.IEcospaceImportExport.NoDataValue
+        Implements IEcospaceImportExport.NoDataValue
         Get
             Return cCore.NULL_VALUE
         End Get
     End Property
 
     Public ReadOnly Property ProjectionString As String _
-        Implements EwEUtils.Core.IEcospaceImportExport.ProjectionString
+        Implements IEcospaceImportExport.ProjectionString
         Get
             Return Me.m_bm.ProjectionString
         End Get
     End Property
 
     Public ReadOnly Property TopLeft As System.Drawing.PointF _
-        Implements EwEUtils.Core.IEcospaceImportExport.PosTopLeft
+        Implements IEcospaceImportExport.PosTopLeft
         Get
             Return Me.m_bm.PosTopLeft
         End Get

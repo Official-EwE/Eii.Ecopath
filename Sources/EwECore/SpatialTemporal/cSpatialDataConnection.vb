@@ -16,14 +16,8 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
-Imports EwECore.SpatialData.cSpatialScalarDataAdapterBase
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-
-#End Region ' Imports
 
 Namespace SpatialData
 

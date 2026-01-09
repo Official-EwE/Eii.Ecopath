@@ -850,7 +850,7 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_rbRandom)
             Me.Controls.Add(Me.m_lblSearchType)
             Me.Controls.Add(Me.m_rbEcoseed)
-            Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcospaceLoaded
+            Me.CoreExecutionState = eCoreExecutionState.EcospaceLoaded
             Me.DoubleBuffered = True
             Me.Name = "frmMPAOptimizations"
             Me.ShowIcon = False

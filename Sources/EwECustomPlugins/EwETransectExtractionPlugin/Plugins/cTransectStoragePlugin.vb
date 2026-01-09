@@ -17,21 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports System.Drawing
 Imports System.IO
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
-Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region ' Imports
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -111,7 +101,7 @@ Public Class cTransectStoragePlugin
     ''' <inheritdocs cref="IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
         Get
             Return My.Resources.CAPTION_STORAGE
         End Get

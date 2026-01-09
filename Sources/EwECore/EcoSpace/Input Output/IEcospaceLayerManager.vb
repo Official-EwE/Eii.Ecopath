@@ -17,8 +17,6 @@
 ' ===============================================================================
 '
 
-Imports EwEUtils.Core
-
 Namespace Core
 
     Public Interface IEcospaceLayerManager

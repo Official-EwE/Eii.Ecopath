@@ -17,19 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.IO
-Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Basemap
 
@@ -110,7 +107,7 @@ Namespace Ecospace.Basemap
             End If
 
             ' Set default file name (user can override)
-            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), strFile)
+            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecospace), strFile)
 
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
             Me.m_grid.UIContext = Me.m_uic
@@ -215,11 +212,11 @@ Namespace Ecospace.Basemap
 
             If (bSuccess) Then
                 msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, strFile),
-                                   eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecospace, eMessageImportance.Information)
+                                   eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFile)
             Else
                 msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strFile),
-                                   eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecospace, eMessageImportance.Critical)
+                                   eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Critical)
             End If
 
             Me.m_uic.Core.Messages.SendMessage(msg)

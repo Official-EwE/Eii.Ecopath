@@ -17,19 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports System
-Imports System.Collections.Generic
-Imports System.Text
+
+
+Imports System.Globalization
 Imports System.IO
 Imports System.Xml
-Imports System.Globalization
-Imports EwECore
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Controls
 

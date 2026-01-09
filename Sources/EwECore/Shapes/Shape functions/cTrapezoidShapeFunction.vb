@@ -17,14 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
+
 
 Public Class cTrapezoidShapeFunction
     Inherits cShapeFunction

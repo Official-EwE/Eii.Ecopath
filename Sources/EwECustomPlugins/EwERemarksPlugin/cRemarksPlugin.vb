@@ -17,15 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
-
-#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -64,7 +59,7 @@ Public Class cRemarksPlugin
     End Sub
 
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
         Get
             Return My.Resources.DISPLAYNAME
         End Get
@@ -91,7 +86,7 @@ Public Class cRemarksPlugin
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState _
+    Public ReadOnly Property EnabledState() As eCoreExecutionState _
         Implements IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.Idle

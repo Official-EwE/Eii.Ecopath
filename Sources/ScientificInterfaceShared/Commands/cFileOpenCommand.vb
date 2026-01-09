@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 
-#End Region ' Imports
+
 
 Namespace Commands
 
@@ -134,7 +134,7 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property FileNames() As String()
-           
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the directory that the command was invoked with.

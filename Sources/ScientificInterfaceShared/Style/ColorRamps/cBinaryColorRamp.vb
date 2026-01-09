@@ -16,13 +16,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 Imports EwEUtils.UserInterface
 
-#End Region ' Imports
+
 
 Namespace Style
 

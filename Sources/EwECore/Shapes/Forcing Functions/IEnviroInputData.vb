@@ -17,7 +17,6 @@
 ' ===============================================================================
 '
 
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' Interface for defining Ecospace Environmental Input maps

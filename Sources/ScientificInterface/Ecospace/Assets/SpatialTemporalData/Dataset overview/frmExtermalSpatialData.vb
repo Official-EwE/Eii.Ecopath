@@ -17,16 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
+Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
-Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace
 
@@ -158,7 +156,7 @@ Namespace Ecospace
 
 #Region " Control events "
 
-        Private Sub OnSelectedDatasetChanged(owner As Object, ds As EwEUtils.SpatialData.ISpatialDataSet) _
+        Private Sub OnSelectedDatasetChanged(owner As Object, ds As EwECore.Common.ISpatialDataSet) _
             Handles m_toolbox.OnSelectedDatasetChanged
 
             If (ReferenceEquals(ds, Me.m_ds)) Then Return

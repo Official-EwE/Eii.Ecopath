@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Utilities
 

@@ -15,19 +15,19 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.Web
 Imports System.Xml
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Public Class cComplexityDataset
     Implements ISpatialDataSetPlugin

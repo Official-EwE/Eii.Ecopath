@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 Imports System.Diagnostics
 Imports System.Globalization
 Imports System.Net
 
-#End Region ' Imports
+
 
 Namespace Utilities
 

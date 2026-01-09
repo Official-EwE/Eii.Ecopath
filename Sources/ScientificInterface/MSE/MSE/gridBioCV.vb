@@ -17,20 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports EwECore.MSE
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2.Cells.Real
 
-#End Region
 
-<CLSCompliant(False)> _
 Public Class gridBioCV
     : Inherits cEwEGrid
 
@@ -45,7 +35,7 @@ Public Class gridBioCV
         Me(0, 0) = New cEwEColumnHeaderCell("")
         Me(0, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
         Me(0, 2) = New cEwEColumnHeaderCell(SharedResources.HEADER_CV)
-'
+        '
         Me.FixedColumns = 1
 
     End Sub

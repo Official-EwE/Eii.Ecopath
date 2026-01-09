@@ -17,13 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Imports System.Windows.Forms
-Imports System.Drawing
-Imports Microsoft.Win32
 
-#End Region ' Imports
+
+
 
 Namespace Controls
 

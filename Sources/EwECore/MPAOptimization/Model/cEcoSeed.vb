@@ -18,11 +18,9 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
+
 Imports System.IO
-Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 

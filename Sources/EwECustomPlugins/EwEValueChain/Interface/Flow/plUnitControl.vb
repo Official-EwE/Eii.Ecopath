@@ -17,19 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.Windows.Forms
+Imports EwECore.Database.cEwEDatabase
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Database.cEwEDatabase
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>

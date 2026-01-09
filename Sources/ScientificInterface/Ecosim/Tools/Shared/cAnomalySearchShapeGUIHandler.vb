@@ -17,9 +17,6 @@
 ' ===============================================================================
 '
 
-Imports EwECore
-Imports EwEUtils.Core
-
 Public Class cAnomalySearchShapeGUIHandler
     Inherits cForcingShapeGUIHandler
 

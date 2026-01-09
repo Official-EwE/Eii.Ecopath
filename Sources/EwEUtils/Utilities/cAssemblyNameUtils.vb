@@ -17,17 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 Imports System
 Imports System.Collections.Generic
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports System.Security.Policy
 Imports System.Security.Permissions
 
-#End Region ' Imports
+
 
 Namespace Utilities
 

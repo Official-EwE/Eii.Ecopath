@@ -17,8 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEUtils.Core
+
 
 Public Class cFishingMortalityShapeManger
     Inherits cFishingBaseShapeManager

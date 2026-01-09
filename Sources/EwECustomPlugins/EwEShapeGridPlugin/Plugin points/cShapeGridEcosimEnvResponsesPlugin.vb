@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
+Imports EwECore
+
+
 
 Public Class cShapeGridEcosimEnvResponsesPlugin
     Inherits cShapeGridPlugin
@@ -62,9 +62,9 @@ Public Class cShapeGridEcosimEnvResponsesPlugin
         Return GetType(gridFunctionalResponses)
     End Function
 
-    Public Overrides ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState
+    Public Overrides ReadOnly Property EnabledState As eCoreExecutionState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+            Return eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 

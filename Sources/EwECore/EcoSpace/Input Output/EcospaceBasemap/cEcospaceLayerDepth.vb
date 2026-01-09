@@ -17,13 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Layer providing access to Ecospace depth data.

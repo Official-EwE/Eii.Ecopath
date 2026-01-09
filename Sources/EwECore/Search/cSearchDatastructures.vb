@@ -17,16 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
+
+
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Enumerated type, indicating the different search and optimization modes.
@@ -1254,12 +1252,12 @@ Public Class cSearchDatastructures
         'Present Value = [Value at t] / (1 + [Interest rate]) ^ t
         'this returns the multiplier
         df = CSng(1.0F / (1 + Me.DiscountFactor) ^ iYear)
-            ' Villy's discount factor always returns 1
-            'df = CSng(1 ^ -(iYear - 1))
-            'End If
+        ' Villy's discount factor always returns 1
+        'df = CSng(1 ^ -(iYear - 1))
+        'End If
 
-            'System.Console.WriteLine("Discount rate = " & df.ToString & " at " & iYear.ToString)
-            Return df
+        'System.Console.WriteLine("Discount rate = " & df.ToString & " at " & iYear.ToString)
+        Return df
 
     End Function
 

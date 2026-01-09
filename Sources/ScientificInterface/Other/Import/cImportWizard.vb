@@ -17,20 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.IO
-Imports EwECore
+Imports EwECore.Common
+Imports EwECore.Database
 Imports EwECore.DataSources
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
 
-#End Region ' Imports
+
 
 Namespace Import
 
@@ -215,7 +213,7 @@ Namespace Import
             Else
                 Me.AddPage(GetType(ucImportPageError))
             End If
- 
+
         End Sub
 
 #End Region ' Constructor

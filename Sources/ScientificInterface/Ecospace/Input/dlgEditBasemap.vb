@@ -17,20 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
+
+
+Imports EwECore.Common
 Imports EwEUtils.Logging
-Imports EwEUtils.SpatialData
 Imports Microsoft.Extensions.Logging
-Imports ScientificInterface.Ecospace.Controls
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 
-#End Region ' Imports
+
 ''' =======================================================================
 ''' <summary>
 ''' Dialog, implementing the Ecospace Edit Basemap user interface.

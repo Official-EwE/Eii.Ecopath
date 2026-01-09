@@ -17,20 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
-Imports System.Net
 Imports EwECore.Style
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
 
-#End Region ' Imports
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Writer to save Ecopath estimates to a CSV file.
@@ -128,7 +125,7 @@ Public Class cEcopathResultWriter
         If (sw IsNot Nothing) Then
 
             If Me.m_core.SaveWithFileHeader Then
-                sw.Write(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecopath))
+                sw.Write(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecopath))
                 sw.WriteLine()
             End If
 
@@ -188,7 +185,7 @@ Public Class cEcopathResultWriter
         If (sw IsNot Nothing) Then
 
             If Me.m_core.SaveWithFileHeader Then
-                sw.Write(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecopath))
+                sw.Write(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecopath))
                 sw.WriteLine()
             End If
 

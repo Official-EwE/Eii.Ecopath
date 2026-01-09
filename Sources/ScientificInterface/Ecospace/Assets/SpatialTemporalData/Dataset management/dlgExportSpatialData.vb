@@ -17,18 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
+Imports EwECore.Common
 Imports EwECore.SpatialData
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports EwECore
-Imports ScientificInterfaceShared.Commands
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Controls
 

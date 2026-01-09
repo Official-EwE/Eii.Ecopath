@@ -17,18 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports EwECore.FishingPolicy
 Imports ZedGraph
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class cFPSKiteDiagramHelper
         Inherits cZedGraphKiteHelper
 

@@ -17,16 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
-
-Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 
-#End Region ' Imports
+
 
 Namespace Forms
 
@@ -64,7 +62,7 @@ Namespace Forms
         ''' </summary>
         ''' <param name="grid">Grid to attach to this form.</param>
         ''' -----------------------------------------------------------------------
-        <CLSCompliant(False)>
+        
         Public Sub New(grid As cEwEGrid)
 
             MyBase.New()
@@ -97,7 +95,7 @@ Namespace Forms
         ''' Get a reference to the Grid.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <CLSCompliant(False)>
+        
         Public Property Grid() As cEwEGrid
             Get
                 Return Me.m_grid
@@ -220,7 +218,7 @@ Namespace Forms
         ''' Get a reference to the on-board <see cref="cQuickEditHandler">Quick edit handler</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <CLSCompliant(False)>
+        
         Protected ReadOnly Property QuickEditHandler() As cQuickEditHandler
             Get
                 Return Me.m_qeHandler

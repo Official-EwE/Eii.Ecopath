@@ -17,13 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
+
+
 
 ''' <summary>
 ''' HACK WARNING: This is a place holder ONLY used for the IBM Age 1 forcing
@@ -37,7 +35,7 @@ Public Class cEcospaceLayerIBMAge1Forcing
 
 
     Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerIBMAge1Forcing, iIndex)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerIBMAge1Forcing, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerIBMAge1Forcing
     End Sub
 

@@ -17,15 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports EwEUtils.Utilities
-
-#End Region
 
 Namespace Ecosim
 

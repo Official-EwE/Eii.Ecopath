@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Windows.Forms
-Imports EwEUtils.Database.cEwEDatabase
+Imports cEwEDatabase
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 
-#End Region ' Imports
+
 
 Public Class ucDefaults
 

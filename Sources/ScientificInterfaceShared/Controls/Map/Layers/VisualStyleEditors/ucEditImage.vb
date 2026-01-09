@@ -17,17 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
+
+
 Imports EwECore.Auxiliary
-Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Controls
 
@@ -95,7 +93,7 @@ Namespace Controls
                         Me.m_glyphSelect.SelectedImage = img
                     Else
                         ' Warn user
-                        Dim msg As New cMessage(My.Resources.PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH, eMessageType.DataImport, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
+                        Dim msg As New cMessage(My.Resources.PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH, eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Warning)
                         Me.UIContext.Core.Messages.SendMessage(msg)
                     End If
                 Catch ex As Exception

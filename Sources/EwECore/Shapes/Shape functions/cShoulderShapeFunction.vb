@@ -17,12 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
+
+
 
 Public MustInherit Class cShoulderShapeFunction
     Inherits cShapeFunction

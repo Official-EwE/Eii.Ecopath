@@ -17,21 +17,20 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Text
 Imports EwECore.Auxiliary
+Imports EwECore.Common
+Imports EwECore.Database
 Imports EwECore.MSE
 Imports EwECore.SpatialData
-Imports EwEUtils.Core
-Imports EwEUtils.Database
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace DataSources
 
@@ -41,7 +40,7 @@ Namespace DataSources
     ''' and writing Ecopath, Ecosim and Ecospace data from a database.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cDBDataSource
         Implements IEwEDataSource
         Implements IEcopathDataSource
@@ -11022,7 +11021,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IEwEDatasourceMetadata.GetDescription"/>
         ''' -------------------------------------------------------------------
-        Public Function GetDescription(dt As EwEUtils.Core.eDataTypes, iDBID As Integer) As String _
+        Public Function GetDescription(dt As eDataTypes, iDBID As Integer) As String _
             Implements IEwEDatasourceMetadata.GetDescription
 
             Dim strTable As String = ""

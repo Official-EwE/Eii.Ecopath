@@ -17,13 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
+
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -34,7 +32,7 @@ Public Class cEcospaceLayerBiomassRelativeForcing
     Inherits cEcospaceLayerSingle
 
     Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerBiomassRelativeForcing, iIndex)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerBiomassRelativeForcing, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerBiomassRelativeForcing
     End Sub
 

@@ -17,18 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared
 Imports Debug = System.Diagnostics.Debug
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Other
 

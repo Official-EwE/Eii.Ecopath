@@ -17,15 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Utilities
+
+
 Imports System.Text
+Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>

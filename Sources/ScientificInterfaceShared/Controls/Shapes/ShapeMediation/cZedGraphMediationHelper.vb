@@ -17,18 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports ZedGraph
-Imports System.ComponentModel
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
-
-#End Region
+Imports ZedGraph
 
 Namespace Controls
 
@@ -36,7 +27,7 @@ Namespace Controls
     ''' Derived Zedgraph helper class that just overrides the ToolTip formating for the EnvironmentalResponse graphs
     ''' </summary>
     ''' <remarks></remarks>
-    <CLSCompliant(False)>
+    
     Public Class cZedGraphMediationHelper
         Inherits cZedGraphHelper
 

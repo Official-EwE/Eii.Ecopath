@@ -16,25 +16,15 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports System.Globalization
 Imports System.Text
-Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class gridApplyLandingsShape
         Inherits gridApplyShapeBase
 

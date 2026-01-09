@@ -17,15 +17,12 @@
 ' ===============================================================================
 '
 
-Option Strict On
 
-Imports System.IO
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
+
 Imports System.Globalization
-Imports EwEUtils.Logging
+Imports System.IO
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
 
 Public Class cSCORFileWriter

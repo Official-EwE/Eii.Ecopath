@@ -17,20 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-Option Explicit On
-Option Strict On
-
-Imports EwECore
 Imports EwECore.FitToTimeSeries
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 

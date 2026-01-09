@@ -17,12 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports System.Drawing
 
-#End Region ' Imports
+
+
+
 
 Namespace Controls
 

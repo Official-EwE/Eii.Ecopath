@@ -17,8 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEUtils.Core
+
 
 ''' <summary>
 ''' Implemenation of the Base class for capacity shapes
