@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports 
+ 
 
 Namespace Ecopath.Input
 
@@ -32,7 +32,7 @@ Namespace Ecopath.Input
     ''' Grid displaying Ecopath Basic Input information.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)>
+    
     Public Class gridBasicInput
         Inherits cEwEGrid
 

@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwEUtils.SystemUtilities
 
 #Disable Warning CA1063 ' Implement IDisposable Correctly

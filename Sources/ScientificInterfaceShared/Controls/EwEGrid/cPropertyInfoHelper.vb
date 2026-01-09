@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports System.Reflection
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 

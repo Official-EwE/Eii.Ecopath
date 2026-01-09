@@ -17,13 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-#End Region
-
 Namespace Ecospace
 
     ''' =======================================================================
@@ -31,9 +24,9 @@ Namespace Ecospace
     ''' Grid control, implements the Ecospace interface to assign species to habitats.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Public Class gridHabitatPreference
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
 #Region " Construction / destruction "
 

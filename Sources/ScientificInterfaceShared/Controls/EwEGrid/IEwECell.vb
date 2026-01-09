@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 

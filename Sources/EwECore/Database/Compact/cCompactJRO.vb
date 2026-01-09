@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports Microsoft.Win32
 
-#End Region ' Imports
+
 
 Namespace Database
 

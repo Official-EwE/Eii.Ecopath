@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Common
 Imports EwECore.Plugins
 Imports EwECore.Plugins.Data
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace ExternalData
 

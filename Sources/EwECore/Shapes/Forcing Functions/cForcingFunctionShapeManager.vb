@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 ''' <summary>
 ''' Extents the base class to manage the Forcing Shapes

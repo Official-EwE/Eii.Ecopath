@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 ''' <summary>
 ''' This class wraps the underlying particle size distribution data structures

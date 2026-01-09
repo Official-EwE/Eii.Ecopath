@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 ''' <summary>
 ''' Implemenation of the Base class for capacity shapes

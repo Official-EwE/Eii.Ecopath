@@ -17,13 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Option Explicit On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecopath.Input
 
@@ -32,7 +27,7 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Non-Market price user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)>
+    
     Public Class gridFisheryInputNonMarketPrice
         Inherits cEwEGrid
 
@@ -99,8 +94,8 @@ Namespace Ecopath.Input
 
         End Sub
 
-        Private Sub FillInRows(iRow As Integer, _
-                               group As cCoreGroupBase, _
+        Private Sub FillInRows(iRow As Integer,
+                               group As cCoreGroupBase,
                                Optional isIndented As Boolean = False)
 
             ' Get the group name from EcopathInput

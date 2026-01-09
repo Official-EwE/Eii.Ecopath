@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Extensions
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Samples
 

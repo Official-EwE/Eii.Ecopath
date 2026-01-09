@@ -17,14 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecospace
 
@@ -33,7 +27,7 @@ Namespace Ecospace
     ''' Grid to configure the open/closed states of MPAs
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class gridMPAs
         : Inherits cEwEGrid
 

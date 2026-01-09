@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Properties
 

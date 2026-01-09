@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports System.Math
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug

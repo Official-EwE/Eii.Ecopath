@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.Utilities
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace
 
@@ -34,7 +34,7 @@ Namespace Ecospace
     ''' make Ecospace plots look a lot more pretty.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Public Class cEcospaceZedGraphHelper
         Inherits cZedGraphHelper
 

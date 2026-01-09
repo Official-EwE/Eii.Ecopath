@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.IO
@@ -37,7 +37,7 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Public Class ucFlowDiagram
     Inherits UserControl

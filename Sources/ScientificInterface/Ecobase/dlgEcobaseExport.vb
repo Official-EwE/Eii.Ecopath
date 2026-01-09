@@ -16,12 +16,6 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports System.Collections.Specialized
 Imports System.IO
 Imports System.Net
@@ -34,8 +28,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-#End Region
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Dialog to allow users to submit a model to Ecobase

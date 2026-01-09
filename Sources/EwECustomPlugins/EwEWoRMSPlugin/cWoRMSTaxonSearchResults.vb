@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Common
 Imports EwECore.Plugins.Data
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports EwECore.Auxiliary
 Imports EwEUtils.UserInterface
@@ -28,7 +28,7 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Public Class cTransectRasterDisplay
     Inherits cDisplayLayerRaster

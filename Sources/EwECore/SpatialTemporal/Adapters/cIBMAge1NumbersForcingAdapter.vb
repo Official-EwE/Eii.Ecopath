@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-#End Region ' Imports
+
 
 Namespace SpatialData
 

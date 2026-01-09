@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.ComponentModel
 Imports EwECore.DataSources
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

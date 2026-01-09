@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 Public MustInherit Class cFishingBaseShapeManager
     Inherits cBaseShapeManager

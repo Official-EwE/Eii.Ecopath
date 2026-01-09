@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports EwECore
@@ -27,7 +27,7 @@ Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

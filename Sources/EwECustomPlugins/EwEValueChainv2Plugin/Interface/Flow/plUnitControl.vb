@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwEUtils.SystemUtilities
@@ -30,7 +30,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
 Imports ValueChain
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>

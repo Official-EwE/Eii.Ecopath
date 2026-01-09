@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwECore.Common
 Imports EwECore.ValueWrapper
 Imports Microsoft.Extensions.Logging

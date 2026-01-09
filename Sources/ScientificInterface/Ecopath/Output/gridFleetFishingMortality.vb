@@ -17,18 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports EwECore.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)>
+    
     Public Class gridFleetFishingMortality
         Inherits cEwEGrid
 

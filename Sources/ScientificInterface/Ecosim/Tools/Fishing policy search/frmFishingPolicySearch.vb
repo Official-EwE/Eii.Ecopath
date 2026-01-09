@@ -17,18 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports EwECore.FishingPolicy
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecosim
 

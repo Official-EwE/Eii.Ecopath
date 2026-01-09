@@ -17,21 +17,21 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Database
 Imports EwECore.DataSources
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid showing EwE database details.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-<CLSCompliant(False)> _
+
 Public Class gridDatabase
     Inherits cEwEGrid
 

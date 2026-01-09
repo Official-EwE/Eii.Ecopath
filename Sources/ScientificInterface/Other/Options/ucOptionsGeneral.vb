@@ -17,15 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports System.IO
 Imports EwEUtils.Logging
-
-#End Region
 
 Namespace Other
 

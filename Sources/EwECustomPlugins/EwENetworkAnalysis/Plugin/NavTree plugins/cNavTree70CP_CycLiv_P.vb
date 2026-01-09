@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Public Class cNavTree70CP_CycLiv_P
     Inherits cNavTree68CP_CycLiv

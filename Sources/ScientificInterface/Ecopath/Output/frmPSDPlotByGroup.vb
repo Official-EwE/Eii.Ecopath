@@ -17,16 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Explicit On
-Option Strict On
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region 'Imports
 
 Namespace Ecopath.Output
 
@@ -80,7 +75,7 @@ Namespace Ecopath.Output
             Me.CreatePane(ePaneTypes.Weight, SharedResources.HEADER_WEIGHT, strAge, "[g]")
             Me.CreatePane(ePaneTypes.Number, SharedResources.HEADER_SURVIVAL, strAge, "")
             Me.CreatePane(ePaneTypes.Biomass, SharedResources.HEADER_BIOMASS, strAge, "[g]")
-            Me.CreatePane(ePaneTypes.PSD, SharedResources.HEADER_CONTRIBUTION_TO_PSD, _
+            Me.CreatePane(ePaneTypes.PSD, SharedResources.HEADER_CONTRIBUTION_TO_PSD,
                           SharedResources.HEADER_BODYWEIGHT_LOGg, SharedResources.HEADER_BIOMASS_LOGg)
 
             If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then

@@ -17,17 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecosim
 

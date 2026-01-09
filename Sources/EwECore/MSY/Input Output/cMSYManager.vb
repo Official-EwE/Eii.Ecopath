@@ -17,17 +17,11 @@
 ' ===============================================================================
 '
 
-#Region "Imports "
-
-Option Strict On
-
 Imports System.Threading
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 Namespace MSY
 

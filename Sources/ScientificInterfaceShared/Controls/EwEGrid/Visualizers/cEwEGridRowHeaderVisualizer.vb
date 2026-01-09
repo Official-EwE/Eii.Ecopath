@@ -17,11 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 Namespace Controls.EwEGrid
 
@@ -30,7 +30,7 @@ Namespace Controls.EwEGrid
     ''' A visualizer for rendering EwE row header cells.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cEwEGridRowHeaderVisualizer
         : Inherits cEwEGridVisualizerBase
 

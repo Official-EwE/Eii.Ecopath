@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports EwECore
 Imports EwEMSPLink.IO
 Imports EwECore.Common
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

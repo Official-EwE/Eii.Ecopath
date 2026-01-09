@@ -16,18 +16,18 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
-    <CLSCompliant(False)>
+    
     Public Class cEwECheckboxCell
         Inherits SourceGrid2.Cells.Real.CheckBox
         Implements IEwECell

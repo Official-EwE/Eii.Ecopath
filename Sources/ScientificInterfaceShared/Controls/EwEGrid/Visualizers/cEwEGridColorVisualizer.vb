@@ -17,11 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 Namespace Controls.EwEGrid
 
@@ -30,7 +30,7 @@ Namespace Controls.EwEGrid
     ''' A cell visualizer that reflects a cell value as a color.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cEwEGridColorVisualizer
         Inherits SourceGrid2.VisualModels.Common
 

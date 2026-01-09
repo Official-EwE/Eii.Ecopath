@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 #Region " cLandingsMediationFunction "
 
 ''' <summary>

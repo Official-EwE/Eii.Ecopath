@@ -17,18 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports EwECore.Common
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Controls
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 ' JS 17Mar19: MCMC is fragile as the run state depends on the user interface. This is bad design.
 ' Quick fix:

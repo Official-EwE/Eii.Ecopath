@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwECore.Style
@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Grid class that shows how basic input parameters will be merged.

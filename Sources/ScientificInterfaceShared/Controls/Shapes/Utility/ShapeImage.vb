@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing.Drawing2D
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Controls
 

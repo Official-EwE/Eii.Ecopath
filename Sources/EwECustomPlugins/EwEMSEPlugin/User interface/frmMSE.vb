@@ -23,9 +23,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports EwECore.Common
 Imports ScientificInterfaceShared.Commands
@@ -35,7 +35,7 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Public Class frmMSE
 

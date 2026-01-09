@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.Collections.Specialized
 Imports System.Drawing.Imaging
@@ -39,7 +39,7 @@ Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Utilities
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Style
 

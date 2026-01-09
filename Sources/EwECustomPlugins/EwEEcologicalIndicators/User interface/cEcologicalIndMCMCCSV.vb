@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Imports EwECore
 Imports EwECore.Plugins
@@ -25,7 +25,7 @@ Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

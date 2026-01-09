@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.Drawing.Drawing2D
 Imports ZedGraph
 
-#End Region ' Imports
+
 
 Namespace Controls
 
@@ -33,7 +33,7 @@ Namespace Controls
     ''' Exploratory kite diagram in a ZedGraph.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cZedGraphKiteHelper
         Inherits cZedGraphHelper
 

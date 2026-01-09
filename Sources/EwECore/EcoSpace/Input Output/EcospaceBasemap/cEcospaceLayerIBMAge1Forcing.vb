@@ -17,11 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 ''' <summary>
 ''' HACK WARNING: This is a place holder ONLY used for the IBM Age 1 forcing

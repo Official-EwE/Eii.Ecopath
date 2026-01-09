@@ -16,13 +16,7 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-#Region " Imports "
-
-Option Strict On
 Imports EwECore.ValueWrapper
-
-#End Region
 
 Namespace MSE
 

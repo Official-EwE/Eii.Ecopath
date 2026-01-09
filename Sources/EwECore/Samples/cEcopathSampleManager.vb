@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Globalization
 Imports System.Text
 Imports EwECore.Database
@@ -30,7 +30,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Samples
 

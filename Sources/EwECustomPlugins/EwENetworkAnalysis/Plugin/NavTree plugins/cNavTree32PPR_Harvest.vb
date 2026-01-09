@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Public Class cNavTree32PPR_Harvest
     Inherits cNavTree30PPR

@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
 Imports System.Text
@@ -33,7 +33,7 @@ Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Controls
 

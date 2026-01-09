@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
@@ -27,7 +27,7 @@ Imports EwEUtils.NetUtilities
 Imports Microsoft.Extensions.Logging
 
 
-#End Region ' Imports
+
 
 Namespace WebServices.Ecobase
 

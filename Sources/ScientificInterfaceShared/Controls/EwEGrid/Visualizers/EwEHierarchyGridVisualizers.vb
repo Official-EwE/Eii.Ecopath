@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 Namespace Controls.EwEGrid
 
@@ -27,7 +27,7 @@ Namespace Controls.EwEGrid
     ''' for rendering EwE hierarchical parent row header cells
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cVisualizerEwECollapseExpandRowHeader
         : Inherits cEwEGridRowHeaderVisualizer
 
@@ -61,7 +61,7 @@ Namespace Controls.EwEGrid
     ''' for rendering EwE hierarchical parent row header cells
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cVisualizerEwEParentRowHeader
         : Inherits cEwEGridRowHeaderVisualizer
 
@@ -77,7 +77,7 @@ Namespace Controls.EwEGrid
     ''' for rendering EwE hierarchical child row header cells
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cVisualizerEwEChildRowHeader
         : Inherits cEwEGridRowHeaderVisualizer
 

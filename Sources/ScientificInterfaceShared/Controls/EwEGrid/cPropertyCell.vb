@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -32,7 +32,7 @@ Namespace Controls.EwEGrid
     ''' A standard EwE grid cell for <see cref="cProperty">cProperty</see>-driven values.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cPropertyCell
         Inherits cEwECellBase
         Implements IPropertyCell

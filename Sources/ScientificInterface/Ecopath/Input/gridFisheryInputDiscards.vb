@@ -17,13 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Option Explicit On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecopath.Input
 
@@ -32,7 +27,7 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Discards user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)>
+    
     Public Class gridFisheryInputDiscards
         Inherits cEwEGrid
 

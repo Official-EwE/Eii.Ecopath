@@ -17,19 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports System.Text
 Imports EwECore.Ecosim
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecosim
 

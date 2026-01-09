@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Text
 Imports EwEUtils.SystemUtilities
 
-#End Region ' Imports
+
 
 Namespace Auxiliary
 

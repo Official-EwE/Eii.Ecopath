@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports EwECore
 Imports EwECore.Common
@@ -32,7 +32,7 @@ Imports System.Threading
 Imports EwEUtils.Utilities
 Imports System.IO
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

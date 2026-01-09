@@ -15,15 +15,15 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.Drawing
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Special sketch pad for the complexity preview.

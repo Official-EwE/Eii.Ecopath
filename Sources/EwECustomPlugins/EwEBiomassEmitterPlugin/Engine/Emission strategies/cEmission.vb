@@ -20,11 +20,11 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 ''' <summary>
 ''' Time series for a specific MPA. A time series can hold relative B data points

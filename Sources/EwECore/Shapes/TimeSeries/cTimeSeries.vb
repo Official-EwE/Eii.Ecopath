@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 
 
-#End Region ' Imports
+
+
+
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Data for one time series contained in an Ecosim scenario.

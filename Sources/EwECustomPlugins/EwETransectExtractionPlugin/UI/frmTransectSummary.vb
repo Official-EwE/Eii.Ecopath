@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
@@ -32,7 +32,7 @@ Imports ScientificInterfaceShared.Style
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ' ToDo: show transect cell coordinates in value tooltip. This requires overriding zedgraph 
 

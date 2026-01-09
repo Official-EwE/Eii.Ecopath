@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports EwECore.Style
 Imports EwECore.ValueWrapper
@@ -27,7 +27,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
 
-#End Region ' Imports
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Writer to save Ecopath estimates to a CSV file.

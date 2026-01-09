@@ -17,13 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecopath.Input
 
@@ -32,7 +26,7 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Landings user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Public Class gridFisheryInputLandings
         Inherits cEwEGrid
 
@@ -177,7 +171,7 @@ Namespace Ecopath.Input
 
         End Sub
 
-        Private Sub FillInRows(iRow As Integer, source As cCoreInputOutputBase, _
+        Private Sub FillInRows(iRow As Integer, source As cCoreInputOutputBase,
             ByRef alSumRow As ArrayList, ByRef alSumAll As ArrayList, Optional isIndented As Boolean = False)
 
             Dim sourceSec As cCoreInputOutputBase = Nothing

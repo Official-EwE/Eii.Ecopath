@@ -17,24 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Style
-Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

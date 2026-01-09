@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Ecospace.Advection
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Advection
 

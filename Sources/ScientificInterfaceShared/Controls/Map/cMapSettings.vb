@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Text
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
-#End Region ' Imports
+
 
 Namespace Controls.Map
 

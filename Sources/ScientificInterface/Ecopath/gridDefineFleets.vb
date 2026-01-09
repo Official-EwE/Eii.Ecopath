@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
@@ -27,14 +27,14 @@ Imports SourceGrid2.Cells
 Imports SourceGrid2.VisualModels
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Grid class for the Edit Fleets interface.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-<CLSCompliant(False)>
+
 Public Class gridDefineFleets
     Inherits cEwEGrid
 

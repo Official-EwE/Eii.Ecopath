@@ -18,19 +18,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
 ''' Grid class for showing MPA optimizations progress information.
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class gridMPAOptimizations
     : Inherits cEwEGrid
 

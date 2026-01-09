@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 Imports System.Collections.Generic
 Imports EwEUtils.SystemUtilities.cSystemUtils
 
-#End Region ' Imports
+
 
 Namespace Utilities
 

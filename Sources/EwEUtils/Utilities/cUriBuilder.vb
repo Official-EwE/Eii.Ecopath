@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System
 Imports System.Collections.Specialized
 
-#End Region ' Imports
+
 
 Namespace Utilities
 

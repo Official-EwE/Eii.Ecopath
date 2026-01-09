@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace
 

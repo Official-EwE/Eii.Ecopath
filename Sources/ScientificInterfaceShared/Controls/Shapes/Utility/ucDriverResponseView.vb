@@ -17,10 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
@@ -32,7 +32,7 @@ Imports ScientificInterfaceShared.Utilities
 Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' User control that allows users to align a response function to environmental 

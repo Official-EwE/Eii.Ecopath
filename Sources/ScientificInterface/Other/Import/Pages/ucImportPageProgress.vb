@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Threading
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
 
-#End Region ' Imports
+
 
 Namespace Import
 

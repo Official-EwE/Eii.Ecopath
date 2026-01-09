@@ -17,19 +17,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Shapes.Utility
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Controls
 
-    <CLSCompliant(False)> _
+    
     Public Class gridImportShapes
         Inherits EwEGrid.cEwEGrid
 

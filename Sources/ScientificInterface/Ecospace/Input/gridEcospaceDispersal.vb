@@ -16,14 +16,7 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecospace
 
@@ -32,9 +25,9 @@ Namespace Ecospace
     ''' Grid control, implements the Ecospace interface to set dispersal rates.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Public Class gridEcospaceDispersal
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Private Enum eColumnTypes As Integer
             Index = 0

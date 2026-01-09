@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Utilities

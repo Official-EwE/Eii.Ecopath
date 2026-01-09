@@ -17,20 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports EwECore.SearchObjectives
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class gridFitToTimeSeriesGroup
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Private m_manager As ISearchObjective
 

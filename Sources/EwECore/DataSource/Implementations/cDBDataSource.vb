@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Text
 Imports EwECore.Auxiliary
 Imports EwECore.Common
@@ -30,7 +30,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace DataSources
 
@@ -40,7 +40,7 @@ Namespace DataSources
     ''' and writing Ecopath, Ecosim and Ecospace data from a database.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cDBDataSource
         Implements IEwEDataSource
         Implements IEcopathDataSource

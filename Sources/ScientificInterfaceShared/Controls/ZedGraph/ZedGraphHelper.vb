@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.IO
 Imports System.Text
@@ -34,7 +34,7 @@ Imports ScientificInterfaceShared.Utilities
 Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Controls
 
@@ -46,7 +46,7 @@ Namespace Controls
     ''' export.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cZedGraphHelper
 
 #Region " Helper classes "

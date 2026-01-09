@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -33,7 +33,7 @@ Namespace Controls.EwEGrid
     ''' Cell that manages a single value in an object via a PropertyInfo instance.
     ''' </summary>
     ''' ===========================================================================
-    <CLSCompliant(False)> _
+    
     Public Class cPropertyInfoCell
         : Inherits cEwECell
 

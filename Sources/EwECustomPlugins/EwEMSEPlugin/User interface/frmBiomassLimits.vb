@@ -23,7 +23,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwECore
 Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls

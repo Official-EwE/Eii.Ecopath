@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style
 
 
-#End Region ' Imports
+
 
 Namespace Controls
 

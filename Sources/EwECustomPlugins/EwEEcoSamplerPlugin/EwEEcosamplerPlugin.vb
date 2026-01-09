@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports EwECore.Plugins
 Imports EwECore.Plugins.Core
@@ -34,7 +34,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 Public Class EwEEcosamplerPlugin
     Implements IMonteCarloPlugin

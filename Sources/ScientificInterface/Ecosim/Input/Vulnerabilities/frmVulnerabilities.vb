@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
 
-#End Region ' Imports
+
+
 
 Namespace Ecosim
 

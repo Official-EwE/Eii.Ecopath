@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Commands
 
-#End Region ' Imports
+
 
 Namespace Integration
 

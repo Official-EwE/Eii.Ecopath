@@ -17,12 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-
-#End Region
-
 Namespace Controls.Map.Layers
 
     Public Class cLayerEditorDepth

@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Threading
 Imports EwECore.Common
 Imports EwECore.Ecosim
@@ -28,7 +28,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Manager to run the Ecosim Monte Carlo.

@@ -16,23 +16,16 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecospace
 
     ''' <summary>
     ''' Grid catered to defining <see cref="cEcospaceHabitat">habitats</see>.
     ''' </summary>
-    <CLSCompliant(False)>
+    
     Public Class gridEditHabitats
         Inherits cEwEGrid
 

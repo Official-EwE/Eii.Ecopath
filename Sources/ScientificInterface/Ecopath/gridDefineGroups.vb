@@ -17,23 +17,23 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.Drawing
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Grid class implementing the Edit Groups interface grid bit.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-<CLSCompliant(False)> _
+
 Public Class gridDefineGroups
     Inherits cEwEGrid
 

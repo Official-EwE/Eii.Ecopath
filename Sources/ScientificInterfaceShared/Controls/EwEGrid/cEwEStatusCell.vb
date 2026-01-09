@@ -17,19 +17,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.VisualModels
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
-    <CLSCompliant(False)>
+    
     Public Class cEwEStatusCell
         Inherits cEwECellBase
 

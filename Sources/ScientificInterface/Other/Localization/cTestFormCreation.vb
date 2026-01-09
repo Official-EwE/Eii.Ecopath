@@ -16,12 +16,12 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 
-#End Region ' Imports
+
 
 #If DEBUG Then
 

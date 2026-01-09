@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Collections.Generic
 Imports ScientificInterfaceShared.Style
 Imports EwECore.Common
 Imports ValueChain
 
-#End Region ' Imports
+
 
 Public Interface IGraphView
 

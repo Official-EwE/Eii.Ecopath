@@ -23,12 +23,12 @@
 ' Alliance (SICSA) Postgraduate Industry Internship Programme.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 
-#End Region ' Imports
+
 
 ' ToDo:
 ' - Remove scenario storage to parameters, remove from container

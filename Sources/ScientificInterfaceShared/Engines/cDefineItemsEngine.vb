@@ -17,13 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
-
-#End Region ' 
 
 Namespace Controls
 

@@ -16,15 +16,15 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports EwEUtils.Utilities
 Imports OfficeOpenXml
 
-#End Region ' Imports
+
 
 Public Class cGenericDataWriter
 

@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 
-#End Region ' Imports
+
 
 ' ToDo_JS: Make menu items toggle automatically
 

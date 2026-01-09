@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.SystemUtilities
 
-#End Region ' Imports
+
 
 Namespace Controls
 

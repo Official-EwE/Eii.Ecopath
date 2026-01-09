@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 Imports EwECore.Auxiliary
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Basemap.Layers
 

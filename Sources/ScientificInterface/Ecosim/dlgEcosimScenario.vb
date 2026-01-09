@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Wizard
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 

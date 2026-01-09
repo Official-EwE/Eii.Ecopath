@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -35,7 +35,7 @@ Namespace Controls.EwEGrid
     ''' header cells in <see cref="cEwEGrid">EwE grids</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public MustInherit Class cPropertyHeaderCell
         Inherits cPropertyCell
 

@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
@@ -31,7 +31,7 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 
-#End Region ' Imports
+
 
 Namespace UI
 

@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Extensions.modExtensions
 
-#End Region ' Imports
+
 
 Namespace Controls
 

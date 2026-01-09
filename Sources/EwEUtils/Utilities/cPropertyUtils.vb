@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 Imports System.Diagnostics
 Imports System.Collections
@@ -27,7 +27,7 @@ Imports System.Collections.Generic
 Imports System.Reflection
 Imports System.ComponentModel
 
-#End Region ' Imports
+
 
 Namespace Utilities
 

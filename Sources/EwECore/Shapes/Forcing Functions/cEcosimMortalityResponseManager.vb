@@ -17,11 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 ''' <summary>
 ''' Manager class to handle Ecosim Mortality Response functions

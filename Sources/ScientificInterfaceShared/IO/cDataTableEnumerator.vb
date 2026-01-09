@@ -16,13 +16,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 <CodeAnalysis.SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification:="We know what we're doing! Really!")>
 Public Class cDataTableEnumerator(Of T)

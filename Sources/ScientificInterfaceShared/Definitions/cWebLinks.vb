@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' All web links

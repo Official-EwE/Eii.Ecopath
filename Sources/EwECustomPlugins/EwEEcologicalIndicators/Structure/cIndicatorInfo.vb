@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 Imports EwECore
 Imports EwECore.Common
 Imports EwECore.Style
 
-#End Region ' Imports
+
 
 ''' -----------------------------------------------------------------------
 ''' <summary>

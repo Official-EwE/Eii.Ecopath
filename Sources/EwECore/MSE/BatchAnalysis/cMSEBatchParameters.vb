@@ -17,12 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports EwECore.ValueWrapper
-
-#End Region
 
 Public Class cMSEBatchParameters
     Inherits cCoreGroupBase

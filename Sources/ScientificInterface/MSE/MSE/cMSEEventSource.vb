@@ -17,14 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-#End Region
-
-
 ''' <summary>
 ''' Private worker class for the MSE forms to handle complex core messages and fire an event in response
 ''' </summary>

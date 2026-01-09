@@ -19,7 +19,7 @@
 
 #Region "Imports"
 
-Option Strict On
+
 Option Explicit On
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging

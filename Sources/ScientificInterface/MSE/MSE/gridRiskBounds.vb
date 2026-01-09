@@ -17,18 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports EwECore.MSE
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
 
-<CLSCompliant(False)> _
 Public Class gridRiskBounds
-    : Inherits cEwEGrid
+    Inherits cEwEGrid
 
     Public Sub New()
     End Sub

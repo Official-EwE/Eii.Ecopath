@@ -17,9 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 Imports System.IO
 Imports EwECore
 Imports EwECore.Ecopath
@@ -31,8 +29,6 @@ Imports EwECore.Plugins.Ecosim
 Imports EwECore.Plugins.Ecospace
 Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
-
-#End Region
 
 ''' <summary>
 ''' Base code that can be used as a template to create a new plug-in.

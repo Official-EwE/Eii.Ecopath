@@ -17,13 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecospace
 
@@ -32,7 +26,7 @@ Namespace Ecospace
     ''' Grid control, implements the Ecospace interface to set dispersal rates.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)>
+    
     Public Class gridEcospaceFTarget
         Inherits cEwEGrid
 

@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Windows.Forms
 Imports EwECore.Style
 Imports EwECore.Common
@@ -30,9 +30,9 @@ Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
 
-<CLSCompliant(False)>
+
+
 Public Class gridEcopathResult
     Inherits cEwEGrid
     Implements IResultView

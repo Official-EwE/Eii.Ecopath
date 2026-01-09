@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Extensions
 Imports ScientificInterfaceShared.Style
 Imports WeifenLuo.WinFormsUI.Docking
 
-#End Region ' Imports
+
 
 Namespace Forms
 

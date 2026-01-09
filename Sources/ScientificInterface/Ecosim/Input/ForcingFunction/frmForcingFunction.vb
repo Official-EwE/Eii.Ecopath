@@ -17,13 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-#End Region
-
 Namespace Ecosim
 
     ''' -----------------------------------------------------------------------
@@ -60,7 +53,7 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Me.m_shapeguihandler = New cForcingShapeGUIHandler(Me.UIContext)
-            Me.m_shapeguihandler.Attach(Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
+            Me.m_shapeguihandler.Attach(Me.m_shapeToolbox, Me.m_shapeToolboxToolbar,
                                         Me.m_sketchPad, Me.m_sketchPadToolbar)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
@@ -83,7 +76,7 @@ Namespace Ecosim
         Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
 
             If msg.Source = eCoreComponentType.ShapesManager Then
-                If (((msg.Type = eMessageType.DataAddedOrRemoved) Or (msg.Type = eMessageType.DataModified)) And _
+                If (((msg.Type = eMessageType.DataAddedOrRemoved) Or (msg.Type = eMessageType.DataModified)) And
                      (msg.DataType = eDataTypes.Forcing)) Then
                     Me.m_shapeguihandler.Refresh()
                 End If

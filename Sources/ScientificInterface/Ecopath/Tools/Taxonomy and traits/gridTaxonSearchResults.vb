@@ -21,7 +21,7 @@ Imports EwECore.Common
 Imports EwECore.Plugins.Data
 Imports SourceGrid2
 
-<CLSCompliant(False)> _
+
 Public Class gridTaxonSearchResults
     Inherits cEwEGrid
 

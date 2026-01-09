@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports System.Data.OleDb
 Imports System.Data.SqlClient
@@ -28,7 +28,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 #If VERBOSE Then
 #Const VERBOSE_LEVEL = 4

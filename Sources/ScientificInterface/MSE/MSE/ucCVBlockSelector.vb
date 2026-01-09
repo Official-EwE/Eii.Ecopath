@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports ScientificInterface.Ecosim
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Implementation of IBlockSelector for the MSE forms

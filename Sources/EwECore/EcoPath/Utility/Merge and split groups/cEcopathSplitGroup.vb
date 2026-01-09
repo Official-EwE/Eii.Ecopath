@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Ecopath
 

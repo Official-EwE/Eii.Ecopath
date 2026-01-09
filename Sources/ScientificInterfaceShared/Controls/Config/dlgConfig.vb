@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 

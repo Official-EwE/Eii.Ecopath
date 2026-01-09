@@ -17,23 +17,23 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Windows.Forms
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class for populating NA view controls.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-<CLSCompliant(False)> _
+
 Public MustInherit Class cContentManager
 
 #Region " Private variables "

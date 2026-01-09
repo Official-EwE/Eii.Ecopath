@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports EwECore
 Imports EwECore.Common
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' CSV writer for Value Chain results.

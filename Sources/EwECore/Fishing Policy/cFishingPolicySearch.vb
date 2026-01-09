@@ -18,7 +18,7 @@
 '
 
 'Option Explicit On
-Option Strict On
+
 
 Imports EwECore.Ecosim
 Imports Microsoft.Extensions.Logging

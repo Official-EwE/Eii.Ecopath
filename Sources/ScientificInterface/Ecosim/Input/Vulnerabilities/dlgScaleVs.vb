@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 

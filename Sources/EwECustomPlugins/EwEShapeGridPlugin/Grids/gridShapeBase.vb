@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
@@ -27,7 +27,7 @@ Imports SourceGrid2.Cells.Real
 Imports SourceGrid2.DataModels
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

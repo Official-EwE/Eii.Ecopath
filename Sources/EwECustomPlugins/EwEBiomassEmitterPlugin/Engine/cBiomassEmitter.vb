@@ -20,16 +20,9 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
 Imports EwECore
-Imports EwECore.Auxiliary
-Imports EwECore.Common
 Imports EwEUtils.Utilities
-Imports System.IO
-
-#End Region ' 
 
 Public Class cBiomassEmitter
 

@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Ecosim
 
-#End Region ' Imports
+
 
 Namespace Commands
 

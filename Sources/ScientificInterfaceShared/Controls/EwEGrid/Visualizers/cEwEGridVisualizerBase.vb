@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -35,7 +35,7 @@ Namespace Controls.EwEGrid
     ''' <see cref="cStyleGuide.eStyleFlags">status</see> colour feedback.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public MustInherit Class cEwEGridVisualizerBase
         Inherits SourceGrid2.VisualModels.Common
 

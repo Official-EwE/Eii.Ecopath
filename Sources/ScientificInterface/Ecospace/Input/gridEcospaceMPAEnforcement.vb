@@ -17,18 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecospace
 
@@ -37,7 +31,7 @@ Namespace Ecospace
     ''' Grid to configure Ecospace habitat fishing limitations.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+
     Public Class gridEcospaceMPAEnforcement
         Inherits cEwEGrid
 

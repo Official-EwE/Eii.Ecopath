@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Text
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 ' ToDo: add Distance unit (km, mi, etc), to be used by Area and Mapping
 

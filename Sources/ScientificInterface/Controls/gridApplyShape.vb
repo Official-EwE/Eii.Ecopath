@@ -17,16 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports System.ComponentModel
 Imports SourceGrid2
 
-#End Region
 
-<CLSCompliant(False)> _
 Public MustInherit Class gridApplyShapeBase
     Inherits cEwEGrid
 

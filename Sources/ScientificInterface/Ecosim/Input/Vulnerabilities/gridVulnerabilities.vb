@@ -17,18 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class gridVulnerabilities
         Inherits cEwEGrid
 

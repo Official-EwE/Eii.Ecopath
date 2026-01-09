@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Database
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-#End Region ' Imports 
+ 
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

@@ -1,4 +1,4 @@
-﻿Option Strict On
+﻿
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -17,12 +17,12 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
+
 
 Imports EwECore
 Imports EwEMSPLink
 
-#End Region ' Imports
+
 
 Namespace Emulator
 

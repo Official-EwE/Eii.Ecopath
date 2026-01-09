@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports EwECore
@@ -32,7 +32,7 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 
-#End Region ' Imports
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Interface between Ecopath and the Ecost flow.

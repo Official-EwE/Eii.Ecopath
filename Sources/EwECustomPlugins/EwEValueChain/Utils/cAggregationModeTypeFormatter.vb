@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' 

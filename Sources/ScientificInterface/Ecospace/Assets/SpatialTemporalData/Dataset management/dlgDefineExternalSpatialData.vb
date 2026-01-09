@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Common
 Imports EwECore.Plugins
 Imports EwECore.SpatialData
@@ -29,7 +29,7 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ' ToDo: add check on delete if dataset is applied in this model. Could also be applied to other models, have no idea
 ' ToDo: add indexing overview

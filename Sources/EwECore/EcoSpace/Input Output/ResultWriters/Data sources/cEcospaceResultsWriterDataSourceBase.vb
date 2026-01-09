@@ -1,4 +1,4 @@
-﻿Option Strict On
+﻿
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -18,10 +18,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
 
-#End Region ' Imports
+
+
 
 ''' <summary>
 ''' Base class for data source objects used by the <see cref="cEcospaceRegionAvgResultsWriter">cEcospaceAvgModelAreaResultsWriter</see>

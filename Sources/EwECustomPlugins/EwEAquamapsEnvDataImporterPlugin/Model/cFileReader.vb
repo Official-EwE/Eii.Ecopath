@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports EwECore
 Imports EwECore.Common
 Imports System.Text
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Aquamaps file reader.

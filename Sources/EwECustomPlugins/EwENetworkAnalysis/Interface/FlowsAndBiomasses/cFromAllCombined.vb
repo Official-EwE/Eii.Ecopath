@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.Windows.Forms
@@ -27,9 +27,9 @@ Imports ZedGraph
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
 
-<CLSCompliant(False)> _
+
+
 Public Class cFromAllCombined
     Inherits cContentManager
 

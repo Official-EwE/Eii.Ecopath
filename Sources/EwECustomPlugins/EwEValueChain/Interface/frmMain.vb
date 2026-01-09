@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports EwECore.Database
 Imports System.Drawing
@@ -27,7 +27,7 @@ Imports System.Windows.Forms
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 Public Class frmMain
 

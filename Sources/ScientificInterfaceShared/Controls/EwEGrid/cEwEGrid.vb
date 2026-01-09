@@ -17,10 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 
 Imports System.ComponentModel
 Imports System.Globalization
@@ -36,8 +32,6 @@ Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports Debug = System.Diagnostics.Debug
-
-#End Region
 
 Namespace Controls.EwEGrid
 
@@ -92,7 +86,7 @@ Namespace Controls.EwEGrid
     ''' </code>
     ''' </example>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public MustInherit Class cEwEGrid
         Inherits SourceGrid2.Grid
         Implements IUIElement

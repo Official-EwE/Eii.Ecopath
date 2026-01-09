@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Threading
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
@@ -27,7 +27,7 @@ Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
 
-#End Region ' Imports
+
 
 Namespace Properties
 

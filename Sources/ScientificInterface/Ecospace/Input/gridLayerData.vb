@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SourceGrid2
 
-#End Region ' Imports
 
-<CLSCompliant(False)>
+
+
 Public Class gridLayerData
     Inherits cEwEGrid
 

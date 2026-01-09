@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Utilities
@@ -27,7 +27,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ValueChain
 
-#End Region ' Imports
+
 
 Public Class cFlowDiagramData
     Implements IFlowDiagramData

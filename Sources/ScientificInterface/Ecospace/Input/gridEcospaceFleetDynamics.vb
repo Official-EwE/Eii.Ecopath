@@ -17,14 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecospace
 
@@ -33,7 +27,7 @@ Namespace Ecospace
     ''' Grid to configure Ecospace habitat fishing limitations.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class gridEcospaceHabitatDyncamis
         Inherits cEwEGrid
 

@@ -17,15 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports System.ComponentModel
 Imports EwECore.SearchObjectives
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecosim
 
@@ -34,7 +28,7 @@ Namespace Ecosim
     ''' Grid allowing setting of Group search objectives.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+
     Public Class gridSearchObjectivesGroup
         Inherits cEwEGrid
 

@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports EwEUtils.SystemUtilities
@@ -28,7 +28,7 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -38,7 +38,7 @@ Namespace Controls.EwEGrid
     ''' all currently selected EwE variables can be modified. Conditions apply.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cQuickEditHandler
 
 #Region " Private variables "

@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Xml
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
 
-#End Region ' Imports
+
 
 Namespace WebServices.Ecobase
 

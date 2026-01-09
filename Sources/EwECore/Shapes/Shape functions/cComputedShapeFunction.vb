@@ -17,11 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 ''' <summary>
 ''' A <see cref="cShapeFunction"/> which points descrbibe a distribution determined

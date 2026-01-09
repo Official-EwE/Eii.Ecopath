@@ -23,9 +23,9 @@
 ' Alliance (SICSA) Postgraduate Industry Internship Programme.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.IO
 Imports System.Text
@@ -38,7 +38,7 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Public MustInherit Class cSFPGenericIteration
     Implements ISFPIteration

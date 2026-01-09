@@ -17,10 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports System.IO
 Imports EwECore.SpatialData
 Imports EwEUtils.Logging
@@ -28,8 +24,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 ' ToDo: make interface work like proper options page (Cancel on Cancel, etc)
 

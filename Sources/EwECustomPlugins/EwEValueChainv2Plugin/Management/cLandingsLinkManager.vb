@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 Imports EwECore
 Imports EwECore.Common
 Imports ValueChain
 
-#End Region ' Imports
+
 
 Public Class cLandingsLinkManager
 

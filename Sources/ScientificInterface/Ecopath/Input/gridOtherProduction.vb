@@ -17,13 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports EwEUtils.Utilities
-
-#End Region
 
 Namespace Ecopath.Input
 
@@ -32,7 +26,7 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Other Production user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)>
+    
     Public Class gridOtherProduction
         Inherits cEwEGrid
 

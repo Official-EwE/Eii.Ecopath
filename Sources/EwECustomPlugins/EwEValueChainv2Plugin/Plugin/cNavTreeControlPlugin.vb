@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Text
 Imports EwECore
 Imports EwECore.Plugins
 Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 Public MustInherit Class cNavTreeControlPlugin
     Implements INavigationTreeItemPlugin

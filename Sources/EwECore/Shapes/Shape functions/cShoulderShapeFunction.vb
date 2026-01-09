@@ -17,11 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 Public MustInherit Class cShoulderShapeFunction
     Inherits cShapeFunction

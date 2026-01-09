@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>

@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing.Drawing2D
 Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports ScientificInterfaceShared.Utilities
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Controls
 

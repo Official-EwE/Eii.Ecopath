@@ -23,15 +23,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports ScientificInterfaceShared.Controls
 Imports LumenWorks.Framework.IO.Csv
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Public Class frmEditDecreaseEffort
 

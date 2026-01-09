@@ -17,18 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
 
-<CLSCompliant(False)> _
+
+
 Public Class cTotal
     Inherits cContentManager
 

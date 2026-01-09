@@ -16,22 +16,22 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Plugins
 Imports EwECore.Plugins.UI
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Grid to control which <see cref="IAutoRunPlugin">Auto-executing plug-ins</see>
 ''' are allowed to auto-run.
 ''' </summary>
-<CLSCompliant(False)>
+
 Public Class gridAutoRun
     Inherits cEwEGrid
 

@@ -17,11 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 Namespace Controls.EwEGrid
 
@@ -30,7 +30,7 @@ Namespace Controls.EwEGrid
     ''' A EwE Grid base visualizer that aligns its content.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cEwECellVisualizer
         : Inherits cEwEGridVisualizerBase
 

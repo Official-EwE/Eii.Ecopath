@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.ValueWrapper
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Advection
 

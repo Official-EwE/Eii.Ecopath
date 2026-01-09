@@ -17,10 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 Imports EwECore
 Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
@@ -28,7 +28,7 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Public Class cEcoNetwork
 

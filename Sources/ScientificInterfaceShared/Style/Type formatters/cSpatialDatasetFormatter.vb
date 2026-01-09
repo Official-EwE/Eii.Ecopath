@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Common
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Style
 

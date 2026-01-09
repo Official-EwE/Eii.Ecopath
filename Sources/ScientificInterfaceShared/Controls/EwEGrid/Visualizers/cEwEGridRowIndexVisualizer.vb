@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 Namespace Controls.EwEGrid
 
-    <CLSCompliant(False)> _
+    
     Public Class cEwEGridRowIndexVisualizer
         : Inherits cEwEGridVisualizerBase
 

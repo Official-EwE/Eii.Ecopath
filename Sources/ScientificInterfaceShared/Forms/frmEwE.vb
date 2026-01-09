@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.ComponentModel
 Imports System.Drawing.Printing
@@ -31,7 +31,7 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Forms
 

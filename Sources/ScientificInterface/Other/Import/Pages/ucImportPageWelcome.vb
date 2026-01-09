@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Controls.Wizard
 
-#End Region ' Imports
+
 
 Namespace Import
 

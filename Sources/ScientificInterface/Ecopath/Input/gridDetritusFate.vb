@@ -17,13 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecopath.Input
 
@@ -32,7 +26,7 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Detritus Fate user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Public Class gridDetritusFate
         : Inherits cEwEGrid
 

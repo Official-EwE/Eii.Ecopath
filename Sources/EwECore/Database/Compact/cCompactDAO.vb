@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Threading
 Imports EwEUtils.Utilities
 Imports Microsoft.Office.Interop.Access
 
-#End Region ' Imports
+
 
 Namespace Database
 

@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ' JS 12/12/17: This dialog has gotten way too cluttered. Needs to be rethought and rebuilt from scratch
 ' JS 27/02/19: Perhaps merge the functionality here with the increasingly powerful "Change Shape" UI?

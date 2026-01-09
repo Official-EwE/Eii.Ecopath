@@ -17,12 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-#End Region
 
 ''' =======================================================================
 ''' <summary>
@@ -68,7 +62,7 @@ Public Class frmApplyShapeBase
 
 #Region " Mandatory overrides "
 
-    <CLSCompliant(False)> _
+    
     Protected Overridable ReadOnly Property Grid() As gridApplyShapeBase
         Get
             Return Nothing

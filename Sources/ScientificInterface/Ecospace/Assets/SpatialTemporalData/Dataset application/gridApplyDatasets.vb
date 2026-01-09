@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports EwECore.Style
@@ -27,7 +27,7 @@ Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Controls
 
@@ -36,7 +36,7 @@ Namespace Ecospace.Controls
     ''' EwE grid for displaying datasets
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class gridApplyDatasets
         Inherits cEwEGrid
 

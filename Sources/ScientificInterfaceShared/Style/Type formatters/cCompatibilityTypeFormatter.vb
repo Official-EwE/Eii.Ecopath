@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.SpatialData.cDatasetCompatilibity
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Style
 

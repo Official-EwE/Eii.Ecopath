@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Reflection
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace IO
 

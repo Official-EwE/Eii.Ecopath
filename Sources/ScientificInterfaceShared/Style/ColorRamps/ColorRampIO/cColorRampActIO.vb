@@ -16,9 +16,9 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Security.Cryptography
 Imports System.Text
@@ -26,7 +26,7 @@ Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ' ToDo: also support Adobe GRD(M) file format?
 

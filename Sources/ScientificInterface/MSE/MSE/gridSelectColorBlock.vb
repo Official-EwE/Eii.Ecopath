@@ -17,21 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 ''' <summary>
 ''' EwEGrid that handles selection of color blocks for a ucCVBlockSelector
 ''' </summary>
 ''' <remarks>Color and values for the cells come from the ucCVBlockSelector(parent control)</remarks>
-<CLSCompliant(False)> _
+
 Public Class gridSelectColorBlock
     Inherits cEwEGrid
 

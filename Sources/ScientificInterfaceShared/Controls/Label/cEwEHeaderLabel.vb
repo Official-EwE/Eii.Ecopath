@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports System.Threading
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
 
-#End Region ' Imports
+
 
 Namespace Controls
 

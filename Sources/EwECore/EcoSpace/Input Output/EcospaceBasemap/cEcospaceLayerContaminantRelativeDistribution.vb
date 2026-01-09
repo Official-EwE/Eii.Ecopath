@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Style
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Layer providing access to Ecospace relative contaminants data.

@@ -17,10 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
@@ -29,7 +29,7 @@ Imports System.IO
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Controls
 

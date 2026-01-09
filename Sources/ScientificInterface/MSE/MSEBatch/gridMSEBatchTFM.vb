@@ -17,16 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
 
-<CLSCompliant(False)> _
 Public Class gridMSEBatchTFM
     Inherits cEwEGrid
 

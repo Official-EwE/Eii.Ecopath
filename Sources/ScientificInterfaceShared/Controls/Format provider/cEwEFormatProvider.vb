@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports 
+ 
 
 Namespace Controls
 

@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Ecosim
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Style
 

@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.Data.OleDb
 Imports System.IO
@@ -36,7 +36,7 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 '
-#End Region ' Imports
+
 
 #Disable Warning CA1063 ' Implement IDisposable Correctly
 ''' ===========================================================================

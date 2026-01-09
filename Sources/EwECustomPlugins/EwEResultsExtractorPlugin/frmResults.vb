@@ -19,7 +19,7 @@
 
 #Region "Imports"
 
-Option Strict On
+
 Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms

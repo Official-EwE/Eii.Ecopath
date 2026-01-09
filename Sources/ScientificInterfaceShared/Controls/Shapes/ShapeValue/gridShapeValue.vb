@@ -17,21 +17,21 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid disaplying individual values of a <see cref="cShapeData">shape</see>
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-<CLSCompliant(False)> _
+
 Public Class gridShapeValue
     Inherits cEwEGrid
 

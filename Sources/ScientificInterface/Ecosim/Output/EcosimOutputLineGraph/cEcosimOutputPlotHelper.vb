@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ZedGraph
 
-#End Region ' Imports
+
 
 Namespace Controls
 
-    <CLSCompliant(False)> _
+    
     Public Class cEcosimOutputPlotHelper
         Inherits cZedGraphHelper
 

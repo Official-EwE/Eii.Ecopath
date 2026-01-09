@@ -17,18 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Basemap
 
-    <CLSCompliant(False)> _
+    
     Public Class gridImportLayerMappings
         Inherits cEwEGrid
 

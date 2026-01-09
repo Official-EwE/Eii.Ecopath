@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 Imports EwECore.Ecosim
 Imports EwEUtils.Utilities

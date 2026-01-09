@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 imports System.Security.Cryptography
 
 Namespace Controls

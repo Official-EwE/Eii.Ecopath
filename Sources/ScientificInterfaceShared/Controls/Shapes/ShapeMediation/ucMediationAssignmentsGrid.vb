@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-#End Region ' Imports
+
 
 Namespace Controls
 
@@ -33,7 +33,7 @@ Namespace Controls
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class ucMediationAssignmentsGrid
         Inherits EwEGrid.cEwEGrid
 

@@ -17,17 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class gridEcosimGroupInput
         Inherits cEwEGrid
 

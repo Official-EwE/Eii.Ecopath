@@ -17,15 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports EwECore.FishingPolicy
 Imports SourceGrid2.Cells.Real
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecosim
 
@@ -34,7 +28,7 @@ Namespace Ecosim
     ''' Helper grid for Fishing Policy Search interface, displaying ...
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class gridFPSResultFleetValue
         : Inherits cEwEGrid
 

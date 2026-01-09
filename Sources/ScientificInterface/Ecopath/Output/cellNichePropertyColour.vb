@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -27,7 +27,7 @@ Option Strict On
 ''' <remarks>This is a Hack'n'slash solution; no value range testing is 
 ''' performed when calculating the background colour.</remarks>
 ''' ---------------------------------------------------------------------------
-<CLSCompliant(False)> _
+
 Public Class cellNichePropertyColour
     : Inherits cPropertyCell
 
@@ -38,7 +38,7 @@ Public Class cellNichePropertyColour
     ''' 
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Private Class NicePropertyColourCellVisualizer
         : Inherits cEwEGridVisualizerBase
 

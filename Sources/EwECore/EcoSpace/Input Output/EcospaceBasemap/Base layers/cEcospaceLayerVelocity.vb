@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Core
 
 
-#End Region ' Imports
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base layer providing access to Ecospace data as cells, each representing a

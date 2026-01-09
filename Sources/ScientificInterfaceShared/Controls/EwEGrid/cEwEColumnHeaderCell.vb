@@ -16,16 +16,16 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.VisualModels
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -34,7 +34,7 @@ Namespace Controls.EwEGrid
     ''' EwEColumnHeader implements a column header with EwE style
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cEwEColumnHeaderCell
         Inherits cEwEHeaderCell
 

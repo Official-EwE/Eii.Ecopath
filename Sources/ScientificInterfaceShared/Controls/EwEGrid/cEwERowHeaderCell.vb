@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -34,7 +34,7 @@ Namespace Controls.EwEGrid
     ''' EwERowHeaderCell implements a EwERowHeaderCell to implement row headers. 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cEwERowHeaderCell
         Inherits cEwEHeaderCell
 

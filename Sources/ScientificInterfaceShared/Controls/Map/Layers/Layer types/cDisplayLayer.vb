@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
 
-#End Region ' Imports
+
 
 Namespace Controls.Map.Layers
 

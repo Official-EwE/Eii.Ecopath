@@ -1,4 +1,4 @@
-Option Strict On
+
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '

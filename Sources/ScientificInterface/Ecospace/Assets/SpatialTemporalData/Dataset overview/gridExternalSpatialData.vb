@@ -26,7 +26,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace
 
-    <CLSCompliant(False)>
+    
     Public Class gridExternalSpatialData
         Inherits cEwEGrid
 

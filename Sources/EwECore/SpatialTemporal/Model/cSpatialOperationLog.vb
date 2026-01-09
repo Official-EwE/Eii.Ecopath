@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-#End Region ' Imports
+
 
 Namespace SpatialData
 

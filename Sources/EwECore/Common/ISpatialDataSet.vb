@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.Xml
 
-#End Region ' Imports
+
 
 Namespace Common
 

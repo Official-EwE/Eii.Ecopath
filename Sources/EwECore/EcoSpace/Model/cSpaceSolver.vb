@@ -18,7 +18,7 @@
 '
 
 Option Explicit On
-Option Strict On
+
 Imports System.Threading
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug

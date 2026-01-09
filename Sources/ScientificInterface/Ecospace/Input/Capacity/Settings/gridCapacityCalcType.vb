@@ -17,16 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecospace
 
@@ -36,7 +30,7 @@ Namespace Ecospace
     ''' from traditional habitats, or from environmental drivers / capacity input.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class gridCapacityCalcType
         Inherits cEwEGrid
 

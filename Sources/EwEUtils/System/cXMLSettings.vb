@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 Imports System.Diagnostics
 Imports System.IO
 Imports System.Xml
 
-#End Region ' Imports
+
 
 Namespace SystemUtilities
 

@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Controls.EwEGrid
 
-#End Region ' Imports
+
 
 Namespace UI
 

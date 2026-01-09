@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 ''' <summary>
 ''' Class to encapsulate scenario parameters for a single scenario in the cEcoSim Model

@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 Public Class cEcotracerGroupOutput
     Inherits cCoreGroupBase

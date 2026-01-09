@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.MSY
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
@@ -28,7 +28,7 @@ Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 

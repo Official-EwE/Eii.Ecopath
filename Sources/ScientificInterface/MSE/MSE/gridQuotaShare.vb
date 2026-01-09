@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.MSE
 Imports EwECore.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
@@ -33,7 +33,7 @@ Namespace Ecosim
     ''' 
     ''' </summary>
     ''' ===========================================================================
-    <CLSCompliant(False)>
+    
     Public Class gridQuotaShare
         Inherits cEwEGrid
 

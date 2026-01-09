@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecopath.Input
 
@@ -31,7 +31,7 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Discard Mortality user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Public Class gridFisheryInputDiscardMort
         Inherits cEwEGrid
 

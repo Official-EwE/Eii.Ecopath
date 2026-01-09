@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Xml
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities.cSystemUtils
@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Forms
 Imports WeifenLuo.WinFormsUI
 
 
-#End Region ' Imports
+
 ''' ===========================================================================
 ''' <summary>
 ''' <para>Handy-dandy class that maintains and applies form information such as 

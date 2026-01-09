@@ -17,10 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
@@ -28,7 +28,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Main interface to define the functional responses of groups to environmental drivers.

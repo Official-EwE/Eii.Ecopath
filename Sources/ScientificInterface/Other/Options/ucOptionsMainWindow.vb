@@ -17,14 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-
-#End Region
 
 Namespace Other
 

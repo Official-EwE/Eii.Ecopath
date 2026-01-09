@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports System.Runtime.Remoting
 Imports EwECore.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>

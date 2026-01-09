@@ -17,16 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports System.Text
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
-
-#End Region
 
 Namespace Controls
 

@@ -23,7 +23,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwECore
 Imports EwEMSEPlugin.HCR_GroupNS
 Imports EwECore.Common

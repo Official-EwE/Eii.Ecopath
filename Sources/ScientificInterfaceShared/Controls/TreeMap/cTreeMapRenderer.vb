@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
 
-#End Region ' Imports
+
 
 Namespace Controls
 

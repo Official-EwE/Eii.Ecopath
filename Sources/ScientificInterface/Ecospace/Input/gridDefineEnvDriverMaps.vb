@@ -17,20 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
 Namespace Ecospace
 
-    <CLSCompliant(False)> _
+    
     Public Class gridDefineEnvDriverMaps
         Inherits cEwEGrid
 

@@ -17,10 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports Microsoft.Extensions.Logging
@@ -34,8 +30,6 @@ Imports ScientificInterfaceShared.Integration
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-#End Region
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Navigation tree panel; contains the navigation structure that provides uniform

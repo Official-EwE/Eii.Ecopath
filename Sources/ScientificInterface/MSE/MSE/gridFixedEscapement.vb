@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.MSE
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
 
-<CLSCompliant(False)> _
+
+
 Public Class gridFixedEscapement
     Inherits cEwEGrid
 

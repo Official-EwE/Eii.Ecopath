@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 Imports EwECore.Common
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ' ToDo: Document this class
 

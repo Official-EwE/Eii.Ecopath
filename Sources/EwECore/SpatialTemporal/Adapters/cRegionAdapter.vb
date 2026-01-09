@@ -16,7 +16,7 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 
-Option Strict On
+
 Imports EwECore.SpatialData
 
 Public Class cRegionAdapter

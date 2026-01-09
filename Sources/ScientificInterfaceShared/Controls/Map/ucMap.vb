@@ -17,10 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 
 Imports System.ComponentModel
 Imports System.IO
@@ -34,7 +34,7 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 
 #Const DRAW_THREADED = 0

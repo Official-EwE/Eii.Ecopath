@@ -16,24 +16,17 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecospace
 
     ''' <summary>
     ''' Grid to create, rename and delete MPAs
     ''' </summary>
-    <CLSCompliant(False)> _
+    
     Public Class gridEditMPA
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>

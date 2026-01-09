@@ -17,11 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 Namespace Controls.EwEGrid
 
@@ -30,7 +30,7 @@ Namespace Controls.EwEGrid
     ''' A visualizer that renders cell values [0, 1] as a progress bar.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cEwEGridProportionVisualizer
         Inherits cEwEGridVisualizerBase
 

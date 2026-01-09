@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Option Explicit On
 
 Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
-<CLSCompliant(False)> _
+
 Public Class cByGroup
     Inherits cContentManager
 

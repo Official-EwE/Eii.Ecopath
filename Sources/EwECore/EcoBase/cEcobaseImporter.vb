@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Net
 Imports EwECore.Common
 Imports EwECore.WebServices
 Imports EwEUtils.Utilities
 
-#End Region ' Imports 
+ 
 
 Namespace Database
 

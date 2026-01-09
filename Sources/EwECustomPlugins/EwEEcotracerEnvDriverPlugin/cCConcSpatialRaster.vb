@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.IO
 Imports EwECore
@@ -28,7 +28,7 @@ Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-#End Region ' Imports
+
 
 Public Class cCConcSpatialRaster
     Implements ISpatialRaster

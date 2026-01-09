@@ -19,9 +19,9 @@
 
 #Const DUMP_TO_FILE = 0
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports EwECore.Style
 Imports EwECore.ValueWrapper
@@ -29,7 +29,7 @@ Imports EwECore.ValueWrapper
 Imports System.IO
 #End If
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

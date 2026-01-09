@@ -17,13 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecopath.Input
 
@@ -32,7 +26,7 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Discard Fate user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Public Class gridFisheryInputDiscardFate
         Inherits cEwEGrid
 
@@ -94,15 +88,15 @@ Namespace Ecopath.Input
             Dim propExport As cFormulaProperty = Nothing
 
             ' For each fleet
-            For iRow As Integer = 1 To Me.core.nFleets
+            For iRow As Integer = 1 To Me.Core.nFleets
                 'Get the fleet info
-                source = Me.core.EcopathFleetInputs(iRow)
+                source = Me.Core.EcopathFleetInputs(iRow)
                 ' Clear the arrayList for the sum of new row
                 alSumAll.Clear()
                 ' Fleet name As row header
                 Me(iRow, 0) = New cEwERowHeaderCell(CStr(iRow))
                 Me(iRow, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                For columnIndex As Integer = 2 To Me.core.nDetritusGroups + 1
+                For columnIndex As Integer = 2 To Me.Core.nDetritusGroups + 1
                     ' Get the ecopath input
                     sourceSec = Me.Core.EcopathGroupInputs(columnIndex - 1)
                     ' Dynamic indexed Discard fate property 

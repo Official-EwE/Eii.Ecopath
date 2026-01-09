@@ -16,14 +16,14 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 Imports EwEUtils
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Public Class cDataTableConverter
 

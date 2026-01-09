@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 
-#End Region ' Imports 
+ 
 
 Namespace Utilities
 

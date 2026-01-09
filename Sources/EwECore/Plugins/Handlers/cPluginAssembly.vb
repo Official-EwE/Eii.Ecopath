@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports System.Reflection
 Imports EwECore.Plugins
 Imports EwECore.Plugins.Core

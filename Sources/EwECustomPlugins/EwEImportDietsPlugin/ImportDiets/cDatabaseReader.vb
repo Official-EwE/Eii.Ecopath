@@ -18,16 +18,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region
 
 Public Class cDatabaseReader
 

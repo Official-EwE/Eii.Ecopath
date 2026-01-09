@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 Imports System.Text
 
-#End Region ' Imports
+
 
 Namespace Controls
 

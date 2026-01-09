@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Windows.Forms
 Imports EwECore
 Imports ScientificInterfaceShared.Commands
@@ -27,7 +27,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
-#End Region ' Imports
+
 
 Public Class frmDefineTransects
 

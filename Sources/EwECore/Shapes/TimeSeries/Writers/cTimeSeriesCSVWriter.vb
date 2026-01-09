@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.IO
 Imports EwEUtils.Utilities
 
 
-#End Region ' Imports
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Write a time series dataset to a text output source.

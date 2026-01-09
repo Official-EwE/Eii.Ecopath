@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.DataSources
 
-#End Region ' Imports
+
 
 Namespace Database
 

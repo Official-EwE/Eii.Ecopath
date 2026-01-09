@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.MSE
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
@@ -33,7 +33,7 @@ Namespace Ecosim
     ''' Grid to allow species quota interaction.
     ''' </summary>
     ''' ===========================================================================
-    <CLSCompliant(False)> _
+    
     Public Class gridTargetFishingMortalityPolicy
         Inherits cEwEGrid
 

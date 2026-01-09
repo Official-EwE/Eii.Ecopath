@@ -17,13 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-#End Region
-
 Namespace Ecosim
 
     ''' =======================================================================
@@ -42,7 +35,7 @@ Namespace Ecosim
             Me.InitializeComponent()
         End Sub
 
-        <CLSCompliant(False)> _
+        
         Protected Overrides ReadOnly Property Grid() As gridApplyShapeBase
             Get
                 Return Me.m_grid

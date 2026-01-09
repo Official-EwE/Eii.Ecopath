@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 Imports System.Text
 Imports EwECore.Auxiliary
 Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 ''' -----------------------------------------------------------------------
 ''' <summary>

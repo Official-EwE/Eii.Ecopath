@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports EwECore.Common
 Imports EwEUtils.Utilities
@@ -28,14 +28,14 @@ Imports ScientificInterfaceShared.IO
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Grid class implementing the Edit Group Taxon interface grid bit.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-<CLSCompliant(False)>
+
 Public Class gridDefineTaxonomy
     Inherits cEwEGrid
 

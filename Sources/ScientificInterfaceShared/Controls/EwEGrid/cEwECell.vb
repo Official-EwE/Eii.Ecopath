@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -32,7 +32,7 @@ Namespace Controls.EwEGrid
     ''' A standard EwE grid cell for static values.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cEwECell
         Inherits cEwECellBase
 

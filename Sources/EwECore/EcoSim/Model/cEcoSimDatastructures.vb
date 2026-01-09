@@ -17,8 +17,8 @@
 ' ===============================================================================
 '
 
-'ToDo: Enable Option Strict On
-'Option Strict On
+'ToDo: Enable 
+'
 
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug

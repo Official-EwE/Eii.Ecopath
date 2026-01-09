@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Text
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Style
 

@@ -17,11 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Threading
@@ -35,9 +30,6 @@ Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
-#End Region
 
 Namespace Ecospace
 

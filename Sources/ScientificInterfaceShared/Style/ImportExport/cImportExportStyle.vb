@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.Xml
 Imports EwECore.Auxiliary
@@ -28,7 +28,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map
 
-#End Region ' Imports
+
 
 Namespace Style
 

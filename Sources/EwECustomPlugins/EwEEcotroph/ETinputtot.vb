@@ -18,14 +18,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Xml.Serialization
 Imports EwECore.Common
 
-#End Region ' Imports
+
 
 Public Class ETinputtot
 

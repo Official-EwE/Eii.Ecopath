@@ -17,19 +17,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
     ''' <summary>
     ''' Grid for displaying Fit to time series run results
     ''' </summary>
-    <CLSCompliant(False)> _
+    
     Public Class gridFitToTimeSeriesOutput
         Inherits cEwEGrid
 

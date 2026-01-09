@@ -17,11 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports  "
 
-Option Strict On
 
-#End Region ' Imports 
+
+
 
 ''' <summary>
 ''' Layer providing access to Ecospace migration data.

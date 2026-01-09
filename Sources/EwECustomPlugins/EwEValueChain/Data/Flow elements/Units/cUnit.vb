@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports System.Reflection
 Imports EwEUtils.Utilities
@@ -27,7 +27,7 @@ Imports EwECore.Database
 Imports EwECore
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 <TypeConverter(GetType(cPropertySorter)), _
     DefaultProperty("Name"), _

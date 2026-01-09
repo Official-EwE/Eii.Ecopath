@@ -16,9 +16,9 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Reflection
 Imports System.Resources
@@ -28,7 +28,7 @@ Imports System.Xml
 Imports EwECore
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

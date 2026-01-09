@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.Drawing
@@ -34,14 +34,14 @@ Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
 ''' MTI graph with circles
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class cPlotOfMixedTrophicImpact
     Inherits cContentManager
 

@@ -19,7 +19,7 @@
 
 #Region " Options "
 
-Option Strict On
+
 Imports System.Drawing
 
 #End Region ' Options

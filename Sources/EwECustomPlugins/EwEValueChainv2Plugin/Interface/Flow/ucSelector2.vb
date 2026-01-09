@@ -16,7 +16,7 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-Option Strict On
+
 Imports System.Windows.Forms
 Imports EwECore.Database
 Imports ScientificInterfaceShared.Controls

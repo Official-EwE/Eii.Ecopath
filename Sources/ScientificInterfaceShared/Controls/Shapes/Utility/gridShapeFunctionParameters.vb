@@ -17,21 +17,21 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid to edit the varying number of parameters of a <see cref="IShapeFunction">shape function</see>.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-<CLSCompliant(False)> _
+
 Public Class gridShapeFunctionParameters
     Inherits cEwEGrid
 

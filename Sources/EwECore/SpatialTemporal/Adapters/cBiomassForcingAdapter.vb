@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports Microsoft.Extensions.Logging
 
 
-#End Region ' Imports
+
 
 Namespace SpatialData
 

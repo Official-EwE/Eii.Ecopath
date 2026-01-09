@@ -17,10 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports EwECore.MSE
 Imports EwECore.Style
 Imports EwEUtils.Logging
@@ -29,8 +25,6 @@ Imports Microsoft.Extensions.Logging
 Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Friend Class cMSERefPoint
 

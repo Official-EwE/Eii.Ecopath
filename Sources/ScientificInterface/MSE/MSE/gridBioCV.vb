@@ -17,16 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports EwECore.MSE
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
 
-<CLSCompliant(False)> _
 Public Class gridBioCV
     : Inherits cEwEGrid
 

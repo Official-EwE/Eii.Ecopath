@@ -18,7 +18,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports System.IO
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging

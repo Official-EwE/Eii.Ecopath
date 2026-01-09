@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 ''' <summary>
 ''' Mediation functions inherit their base functionality from cMediationBaseFunction 

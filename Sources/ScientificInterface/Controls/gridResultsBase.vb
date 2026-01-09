@@ -17,13 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Controls
 
@@ -31,16 +25,16 @@ Namespace Controls
     ''' Grid base class for presenting model outputs. The grid offers built-in
     ''' support for totalling columns.
     ''' </summary>
-    <CLSCompliant(False)> _
+    
     Public MustInherit Class gridResultsBase
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
         End Sub
 
         Protected Overrides Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
-            If ((ct And cStyleGuide.eChangeType.GroupVisibility) > 0) Or _
+            If ((ct And cStyleGuide.eChangeType.GroupVisibility) > 0) Or
                ((ct And cStyleGuide.eChangeType.FleetVisibility) > 0) Then
                 Me.RefreshContent()
             Else
@@ -107,8 +101,8 @@ Namespace Controls
 
         End Sub
 
-        Protected Sub SetCellValue(iRow As Integer, iCol As Integer, _
-                                   sValue As Single, asValueTotal() As Single, _
+        Protected Sub SetCellValue(iRow As Integer, iCol As Integer,
+                                   sValue As Single, asValueTotal() As Single,
                                    Optional styleExtra As cStyleGuide.eStyleFlags = 0)
 
             Dim cell As cEwECell = DirectCast(Me(iRow, iCol), cEwECell)

@@ -17,18 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
 Imports System.IO
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports Debug = System.Diagnostics.Debug
-
-#End Region
 
 Namespace Other
 

@@ -17,13 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-#End Region
-
 Namespace Ecospace
 
     Public Class dlgDefineEffortZones

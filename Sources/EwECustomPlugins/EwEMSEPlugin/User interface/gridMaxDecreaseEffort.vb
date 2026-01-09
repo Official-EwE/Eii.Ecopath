@@ -23,9 +23,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports EwECore.MSE
 Imports EwECore.Common
@@ -35,14 +35,14 @@ Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class gridMaxDecreaseEffort
     Inherits cEwEGrid
 

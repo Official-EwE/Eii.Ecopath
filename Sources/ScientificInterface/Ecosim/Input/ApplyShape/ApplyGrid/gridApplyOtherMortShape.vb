@@ -17,17 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports System.Text
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecosim
 
@@ -35,7 +28,7 @@ Namespace Ecosim
     ''' Grid to apply other mortality forcing
     ''' </summary>
     ''' <seealso cref="ScientificInterface.gridApplyShapeBase" />
-    <CLSCompliant(False)>
+    
     Public Class gridApplyOtherMortShape
         Inherits gridApplyShapeBase
 

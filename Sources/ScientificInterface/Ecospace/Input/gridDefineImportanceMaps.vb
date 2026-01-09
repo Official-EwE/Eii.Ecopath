@@ -17,19 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
 Namespace Ecospace
 
-    <CLSCompliant(False)> _
+    
     Public Class gridDefineImportanceMaps
         Inherits cEwEGrid
 
@@ -204,8 +198,8 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Function IsChanged() As Boolean
                 If (Me.IsNew()) Then Return False
-                Return (Me.m_Layer.Name <> Me.m_strName) Or _
-                       (Me.Layer.Description <> Me.m_strDescription) Or _
+                Return (Me.m_Layer.Name <> Me.m_strName) Or
+                       (Me.Layer.Description <> Me.m_strDescription) Or
                        (Me.Layer.Weight <> Me.m_sWeight)
             End Function
 
@@ -812,7 +806,7 @@ Namespace Ecospace
                             ' Get core layer instance
                             Dim layTest As cEcospaceLayerImportance = Me.Core.EcospaceBasemap.LayerImportance(iLayTest)
                             ' Has matching ID?
-                            If (layTest.getID = li.Layer.getID) Then
+                            If (layTest.GetID = li.Layer.GetID) Then
                                 ' #Yes: Update
                                 layTest.Name = li.Name
                                 layTest.Description = li.Description
@@ -824,7 +818,7 @@ Namespace Ecospace
                         ' All went well?
                         If Not bFound Then
                             ' #No?! Uh oh...
-                            Debug.Assert(False, ">> Internal panic: Unable to apply changes to layer id " & li.Layer.getID)
+                            Debug.Assert(False, ">> Internal panic: Unable to apply changes to layer id " & li.Layer.GetID)
                         End If
                     End If
                 Next

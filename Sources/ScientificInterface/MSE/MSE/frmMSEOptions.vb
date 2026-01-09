@@ -16,19 +16,10 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
 Imports EwECore.MSE
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region
-
 
 Public Class frmMSEOptions
 

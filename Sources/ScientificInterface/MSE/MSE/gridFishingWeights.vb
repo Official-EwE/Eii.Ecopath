@@ -17,19 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports EwECore.MSE
 Imports EwECore.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
-<CLSCompliant(False)> _
 Public Class gridFishingWeights
-    : Inherits cEwEGrid
+    Inherits cEwEGrid
 
     Public Sub New()
     End Sub

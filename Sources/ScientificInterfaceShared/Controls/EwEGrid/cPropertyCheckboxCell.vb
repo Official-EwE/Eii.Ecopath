@@ -16,16 +16,16 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
+
 
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports 
+ 
 
 Namespace Controls.EwEGrid
 
-    <CLSCompliant(False)>
+    
     Public Class cPropertyCheckboxCell
         Inherits cEwECheckboxCell
         Implements IPropertyCell

@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 
 Public Class cLogisticFourParamsShapeFunction

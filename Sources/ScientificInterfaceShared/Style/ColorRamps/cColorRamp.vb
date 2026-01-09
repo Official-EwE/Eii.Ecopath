@@ -1,4 +1,4 @@
-Option Strict On
+
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -18,13 +18,13 @@ Option Strict On
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Imports EwEUtils.UserInterface
 
 
 
-#End Region ' Imports
+
 
 Namespace Style
 

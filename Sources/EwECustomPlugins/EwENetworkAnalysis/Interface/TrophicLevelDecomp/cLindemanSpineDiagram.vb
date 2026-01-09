@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.Utilities
 Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 Imports System.Drawing.Drawing2D
 
-#End Region ' Imports
+
 
 Public Class cLindemanSpineDiagram
 

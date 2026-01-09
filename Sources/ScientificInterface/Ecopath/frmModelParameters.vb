@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Collections.Specialized
 Imports System.Web
 Imports EwEUtils.Logging
@@ -28,7 +28,7 @@ Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.GeoCode
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Public Class frmModelParameters
 

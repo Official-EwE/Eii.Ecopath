@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Auxiliary
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports 
+ 
 
 Namespace Controls.Map.Layers
 

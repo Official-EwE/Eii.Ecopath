@@ -17,12 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports Compiler directives "
-
-Option Strict On
-
-#End Region ' Imports
-
 Namespace MSY
 
     Public Class cMSYDataStructures

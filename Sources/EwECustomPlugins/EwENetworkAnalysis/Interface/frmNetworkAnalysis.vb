@@ -19,9 +19,9 @@
 
 ' JS 25Apr2024: Man, the internal design of this UI is still gawddamn horrendous
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.IO
@@ -31,7 +31,7 @@ Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
 
-#End Region ' Imports
+
 
 Public Class frmNetworkAnalysis
 

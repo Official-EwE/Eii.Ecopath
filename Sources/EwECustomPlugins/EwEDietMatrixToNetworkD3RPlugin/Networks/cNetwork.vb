@@ -18,13 +18,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Text
 Imports EwECore
 
-#End Region ' Imports
+
 
 Public MustInherit Class cNetwork
 

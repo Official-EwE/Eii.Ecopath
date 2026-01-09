@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Option Explicit On
 Imports System.IO
 Imports EwEUtils.Utilities

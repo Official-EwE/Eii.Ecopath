@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Namespace Controls.Map.Layers
 

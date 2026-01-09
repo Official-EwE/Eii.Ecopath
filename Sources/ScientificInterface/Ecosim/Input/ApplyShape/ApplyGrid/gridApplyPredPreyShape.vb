@@ -17,21 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports System.Text
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class gridApplyPredPreyShape
         Inherits gridApplyShapeBase
 

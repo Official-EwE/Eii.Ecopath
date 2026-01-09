@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
@@ -26,7 +26,7 @@ Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 ' ToDo_JS: remove commands from handlers, and move to central handling across the UI
 

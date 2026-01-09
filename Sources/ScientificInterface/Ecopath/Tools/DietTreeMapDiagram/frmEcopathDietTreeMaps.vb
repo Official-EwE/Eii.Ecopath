@@ -16,9 +16,9 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports EwEUtils.Logging
@@ -26,7 +26,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Public Class frmEcopathDietTreeMaps
 

@@ -17,15 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
-
-#End Region 'Imports
 
 Namespace Controls.Map.Layers
 

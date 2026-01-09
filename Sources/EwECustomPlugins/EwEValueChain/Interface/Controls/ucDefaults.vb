@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 Public Class ucDefaults
 

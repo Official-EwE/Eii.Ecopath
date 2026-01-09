@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 Public Class cShapeGridFishingEffortPlugin
     Inherits cShapeGridPlugin

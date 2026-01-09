@@ -17,16 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
-<CLSCompliant(False)> _
 Public Class gridMSEBatchTFMIter
     Inherits cEwEGrid
 
@@ -48,7 +41,7 @@ Public Class gridMSEBatchTFMIter
 #End Region ' Internal defs
 
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
         Me.m_iSelGroup = 1
     End Sub
 

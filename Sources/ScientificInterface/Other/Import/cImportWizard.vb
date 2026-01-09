@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.IO
 Imports EwECore.Common
@@ -28,7 +28,7 @@ Imports EwECore.DataSources
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
 
-#End Region ' Imports
+
 
 Namespace Import
 

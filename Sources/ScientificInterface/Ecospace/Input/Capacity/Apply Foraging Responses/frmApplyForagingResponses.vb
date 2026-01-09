@@ -17,13 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-#End Region
-
 Namespace Ecospace
 
     ''' =======================================================================
@@ -63,7 +56,7 @@ Namespace Ecospace
             MyBase.OnFormClosed(e)
         End Sub
 
-        <CLSCompliant(False)>
+        
         Protected Overrides ReadOnly Property Grid() As gridApplyShapeBase
             Get
                 Return Me.m_grid

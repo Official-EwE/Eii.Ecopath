@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 
 Imports ScientificInterfaceShared.Definitions
 
-#End Region ' Imports
+
 
 Namespace Controls
 

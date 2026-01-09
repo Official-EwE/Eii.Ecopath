@@ -17,19 +17,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class gridEstimateVs
         Inherits cEwEGrid
 

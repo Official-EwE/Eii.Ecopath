@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Globalization
 Imports EwECore.Common
 Imports EwECore.Plugins
@@ -30,7 +30,7 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ' ToDo: Populate dataset details panel
 ' ToDo: Respond to configuration / name changes

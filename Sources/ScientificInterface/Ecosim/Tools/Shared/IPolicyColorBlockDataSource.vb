@@ -17,16 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-#End Region
-
 Namespace Ecosim
-
-#Region "Interface for Datasource (IPolicyColorBlockDataSource)"
 
     ''' <summary>
     ''' Interface for the core data that is used to populate a ucPolicyColorBlocks control
@@ -111,7 +102,5 @@ Namespace Ecosim
         Function BlockToValue(iBlock As Integer) As Single
 
     End Interface
-
-#End Region
 
 End Namespace

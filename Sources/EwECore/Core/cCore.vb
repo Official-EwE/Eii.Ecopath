@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports System.Xml
@@ -44,7 +44,7 @@ Imports Debug = System.Diagnostics.Debug
 
 
 
-#End Region ' Imports
+
 
 #Disable Warning IDE0017 ' Suppress "Object initialization can be simplified" 
 #Disable Warning IDE0009 ' Suppress "Add Me qualification" 
@@ -15532,7 +15532,7 @@ Public Class cCore
 #If Not NET Then
 #Region " License "
 
-    <CLSCompliant(False)>
+    
     Public ReadOnly Property License As cLicense
         Get
             If (Me.m_license Is Nothing) Then

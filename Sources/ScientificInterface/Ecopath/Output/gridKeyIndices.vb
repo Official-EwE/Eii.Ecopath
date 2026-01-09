@@ -17,16 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-#End Region
-
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)>
+    
     Public Class gridKeyIndices
         Inherits cEwEGrid
 

@@ -25,7 +25,7 @@
 
 #Region "Imports"
 
-Option Strict On
+
 Option Explicit On
 
 Imports System.IO

@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.Globalization
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Properties
 

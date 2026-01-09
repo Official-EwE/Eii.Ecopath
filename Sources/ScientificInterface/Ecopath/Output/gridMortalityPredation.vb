@@ -17,19 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)> _
+    
     Public Class gridMortalityPredation
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
 #Region " Helper classes "
 
@@ -41,9 +35,9 @@ Namespace Ecopath.Output
         ''' <remarks>This is a Hack'n'slash solution; no value range testing is 
         ''' performed when calculating the background colour.</remarks>
         ''' ---------------------------------------------------------------------------
-        <CLSCompliant(False)> _
+        
         Public Class MortalityGridCell
-            : Inherits cPropertyCell
+            Inherits cPropertyCell
 
             ''' <summary>PB value to monitor.</summary>
             Private m_propPB As cSingleProperty = Nothing
@@ -57,9 +51,9 @@ Namespace Ecopath.Output
             ''' <param name="varname">Source variable name.</param>
             ''' <param name="sourceSec">Secundary index.</param>
             ''' -----------------------------------------------------------------------
-            Public Sub New(pm As cPropertyManager, _
-                            source As cCoreInputOutputBase, _
-                            varname As eVarNameFlags, _
+            Public Sub New(pm As cPropertyManager,
+                            source As cCoreInputOutputBase,
+                            varname As eVarNameFlags,
                             Optional sourceSec As cCoreInputOutputBase = Nothing)
                 MyBase.New(pm, source, varname, sourceSec)
 
@@ -126,7 +120,7 @@ Namespace Ecopath.Output
 #End Region ' Helper classes
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
@@ -178,16 +172,16 @@ Namespace Ecopath.Output
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim cell As cPropertyCell = Nothing
 
-            For rowIndex As Integer = 1 To Me.core.nLivingGroups
-                source = Me.core.EcopathGroupOutputs(rowIndex)
+            For rowIndex As Integer = 1 To Me.Core.nLivingGroups
+                source = Me.Core.EcopathGroupOutputs(rowIndex)
                 Dim columnIndex As Integer = 2
-                For groupIndex As Integer = 1 To Me.core.nLivingGroups
-                    sourceSec = Me.core.EcopathGroupOutputs(groupIndex)
+                For groupIndex As Integer = 1 To Me.Core.nLivingGroups
+                    sourceSec = Me.Core.EcopathGroupOutputs(groupIndex)
                     If sourceSec.PP < 1 Then
                         ' Create cell
                         cell = New MortalityGridCell(Me.PropertyManager, source, eVarNameFlags.PredMort, sourceSec)
                         ' Value cells suppress zeroes to increase legibility of the grid
-                        Cell.SuppressZero(-1) = True
+                        cell.SuppressZero(-1) = True
                         ' Activate the cell
                         Me(rowIndex, columnIndex) = cell
                         ' Next

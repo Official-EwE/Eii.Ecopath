@@ -17,16 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecotracer
 
-    <CLSCompliant(False)>
+    
     Public Class gridEcotracerInput
         Inherits cEwEGrid
 

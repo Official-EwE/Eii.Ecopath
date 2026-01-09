@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
 Imports System.Text
 
@@ -27,7 +27,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Database
 
@@ -36,7 +36,7 @@ Namespace Database
     ''' Utility class to update a database across minor versions within one major version.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Friend Class cDatabaseUpdater
 
 #Region " Private bits "

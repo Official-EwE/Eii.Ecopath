@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports EwECore.Ecosim
 Imports ScientificInterfaceShared.Style
@@ -32,7 +32,7 @@ Imports Microsoft.Extensions.Logging
 Imports System.Windows.Forms
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

@@ -18,23 +18,23 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Grid class for the Edit Pedigree Levels interface.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-<CLSCompliant(False)>
+
 Public Class gridDefinePedigree
     Inherits cEwEGrid
 

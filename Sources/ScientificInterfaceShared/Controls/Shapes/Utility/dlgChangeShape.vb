@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 
 Imports System.Drawing.Drawing2D
 Imports EwECore.Common
 
-#End Region ' Imports
+
 
 ' To consider (after VC comment 21 May 18): 
 '   Draw shapes With axis information. This logic Is now stored In SketchPad, And can perhaps be moved To the shape handlers
