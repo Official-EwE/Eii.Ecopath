@@ -1,5 +1,5 @@
 # Workflow name shown in the Actions tab
-name: Release NuGet Package EwEUtils, EwEPlugin, EwECore, and create EwE6 installer
+name: Release NuGet Packages for EwEUtils and EwECore, and create the EwE6 installer
 
 # Trigger: run this workflow on pushes to the master branch
 on:
