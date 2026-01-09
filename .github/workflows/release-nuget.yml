@@ -126,14 +126,14 @@ jobs:
             /p:UseProjectReferences=false
         shell: pwsh
 
-      - name: Pack EwEPlugin
-        run: |
-          dotnet pack Sources/EwEPlugin/EwEPlugin.vbproj `
-            --configuration Release `
-            --output ./nuget `
-            /p:PackageVersion=${{ needs.version.outputs.semver }} `
-            /p:UseProjectReferences=false
-        shell: pwsh
+      #- name: Pack EwEPlugin
+      #  run: |
+      #    dotnet pack Sources/EwEPlugin/EwEPlugin.vbproj `
+      #      --configuration Release `
+      #      --output ./nuget `
+      #      /p:PackageVersion=${{ needs.version.outputs.semver }} `
+      #      /p:UseProjectReferences=false
+      #  shell: pwsh
 
       - name: Pack EwECore
         run: |
