@@ -16,16 +16,11 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
-
-#End Region ' Imports
 
 Public Class cEcospaceExcludeDeadCellsPlugin
     Implements IMenuItemPlugin
@@ -38,7 +33,7 @@ Public Class cEcospaceExcludeDeadCellsPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image Implements IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage As Object Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
@@ -86,7 +81,7 @@ Public Class cEcospaceExcludeDeadCellsPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim nrows As Integer = bm.InRow
@@ -126,7 +121,7 @@ Public Class cEcospaceExcludeDeadCellsPlugin
 
         ' Ask user for permission to modify model input data
         Dim msg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_UPDATE, isolatedcells.Count),
-                                        eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                                        eCoreComponentType.Ecospace, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
         msg.Reply = eMessageReply.NO
         Me.m_core.Messages.SendMessage(msg)
 
