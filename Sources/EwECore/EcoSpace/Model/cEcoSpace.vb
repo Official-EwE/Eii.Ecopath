@@ -26,6 +26,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 Imports Debug = System.Diagnostics.Debug
 
 'TODO: Spatial Penalty Cost test the penalty cost branch against the trunk for same results
@@ -787,8 +788,7 @@ Public Class cEcoSpace
             Me.InitIBM()
 
             If Me.SearchData.bInSearch Then
-                Me.SearchData.initForRun(Me.EcoPathData, Me.EcoSimData)
-                Me.SearchData.setBaseYearEffort(Me.EcoSimData)
+                Me.InitSearch()
             End If
 
             Dim StartTime As Single = 0
@@ -871,6 +871,7 @@ Public Class cEcoSpace
                 If Me.SearchData.bInSearch Then
 
                     If Me.SearchData.SearchMode = eSearchModes.MSE Then
+
 
                         MSERegulateEffort()
 
@@ -1343,6 +1344,10 @@ Public Class cEcoSpace
             If Me.PluginManager IsNot Nothing Then Me.PluginManager.EcospaceBeginTimeStep(Me.EcoSpaceData, Me.itt)
 
             If imonth = 1 Then
+
+                'tell all the space solver threads that a new year has started
+                Me.InitSolversForYear(iYear)
+
                 'if we are in the first month then this is a new year
                 If Me.SearchData.bInSearch Then
                     'YearTimeStepEcoSpace() will compute DF, Fgear(), NetCost(), and FishYear() for this year step
@@ -1353,8 +1358,6 @@ Public Class cEcoSpace
 
                 End If
 
-                'tell all the space solver threads that a new year has started
-                Me.InitSolversForYear(iYear)
 
             End If
 
@@ -6570,17 +6573,17 @@ exitline:
                     If Me.SearchData.bInSearch Then
                         'Search CatchYear() is the sum of monthly catch over one year 
                         'Landings(igrp, iFlt) is the yearly Ecopath landings so convert it to monthly for Search CatchYear()
+
                         Me.SearchData.CatchYear(iflt, igrp) += Me.EcoSpaceData.Landings(igrp, iflt) * Me.EcoSpaceData.TimeStep
+                        Me.SearchData.CatchYearGroup(igrp) += Me.EcoSpaceData.Landings(igrp, iflt) * Me.EcoSpaceData.TimeStep
                         If iYear > Me.SearchData.BaseYear Then
                             'Search value = Landings * [market value] * [price elasticity multiplier] * [discount factor] * [monthly conversion]
                             Me.SearchData.ValCatch(iflt, igrp) += ValLandings * Me.SearchData.DF * Me.EcoSpaceData.TimeStep
                         End If
-                    End If
-
-                End If '  If Landings(igrp, iFlt) > 0.0 Then
-
-            Next
-        Next
+                    End If 'Me.SearchData.bInSearch
+                End If 'Me.EcoSpaceData.Landings(igrp, iflt) > 0.0
+            Next iflt
+        Next igrp
 
     End Sub
 
@@ -7709,6 +7712,15 @@ exitline:
 
         End Try
 
+
+    End Sub
+
+    Private Sub InitSearch()
+
+        Me.SearchData.RedimForRun()
+        Me.SearchData.bBaseYearSet = False
+        Me.SearchData.initForRun(Me.EcoPathData, Me.EcoSimData)
+        Me.SearchData.setBaseYearEffort(Me.EcoSimData)
 
     End Sub
 
@@ -9203,7 +9215,8 @@ exitline:
         'RegulateEffort(Biomass() As Single, QMult() As Single, QYear() As Single, t As Integer, imonth As Integer)
 
         If Me.SearchData.SearchMode = eSearchModes.MSE Then
-            Me.m_MSE.RegulateEffort(Btime, Me.QMult, Me.QYear, Me.EcoSpaceData.TimeNow, Me.EcoSpaceData.MonthNow)
+            Me.m_MSE.DoRegulations(Btime, Nothing, Me.QMult, QYear, Me.EcoSpaceData.TimeNow, Me.EcoSpaceData.MonthNow, Me.EcoSpaceData.YearNow)
+            'Me.m_MSE.RegulateEffort(Btime, Me.QMult, Me.QYear, Me.EcoSpaceData.TimeNow, Me.EcoSpaceData.MonthNow)
         End If
     End Sub
 

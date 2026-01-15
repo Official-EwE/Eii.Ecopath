@@ -30,6 +30,8 @@ Namespace MSE
 
         Function SetFtimeFromGear(ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean
 
+        Function CatchbyGroupFleetTimeStep(igrp As Integer, iFleet As Integer, iyear As Integer) As Single
+
         WriteOnly Property onModelTimeStep As onModelTimeStepDelegate
 
         Delegate Sub onModelTimeStepDelegate(ByVal iTime As Integer)
@@ -49,7 +51,7 @@ Namespace MSE
                 Case eModelTypes.Ecosim
                     Return New cMSEEcoSimWrapper()
                 Case eModelTypes.EcoSpace
-                    Return New cMSEEcoSpaceSimWrapper()
+                    Return New cMSEEcoSpaceWrapper()
             End Select
 
             Return Nothing
@@ -112,10 +114,14 @@ Namespace MSE
         Public Sub InitForTrial() Implements IMSEModelWrapper.InitForTrial
             Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
         End Sub
+
+        Public Function CatchbyGroupFleetTimeStep(igrp As Integer, iFlt As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.CatchbyGroupFleetTimeStep
+            Return Me.m_Ecosim.EcosimData.ResultsSumCatchByGroupGear(igrp, iFlt, iTime)
+        End Function
     End Class
 
 
-    Public Class cMSEEcoSpaceSimWrapper
+    Public Class cMSEEcoSpaceWrapper
         Implements IMSEModelWrapper
 
 
@@ -137,11 +143,13 @@ Namespace MSE
 
         Public Sub InitForTrial() Implements IMSEModelWrapper.InitForTrial
             'Throw New NotImplementedException()
+            'Me.m_Ecospace.SearchData.initForRun(Me.m_Ecospace.EcoPathData, Me.m_Ecospace.EcoSimData)
         End Sub
 
         Public Function InitForRun(ByVal bFullInitialization As Boolean) As Boolean Implements IMSEModelWrapper.InitForRun
             'Throw New NotImplementedException()
-            m_Ecospace.TimeStepDelegate = AddressOf EcoSpaceTimeStepDelegate
+            'm_Ecospace.TimeStepDelegate = AddressOf EcoSpaceTimeStepDelegate
+
         End Function
 
         Public Function SetBaseFFromGear() As Boolean Implements IMSEModelWrapper.SetBaseFFromGear
@@ -149,23 +157,37 @@ Namespace MSE
         End Function
 
         Public Function Run() As Boolean Implements IMSEModelWrapper.Run
-            Return Me.m_Core.RunEcospace()
+            m_Ecospace.SearchData.SearchMode = eSearchModes.MSE
+            Return Me.m_Core.RunEcospace(AddressOf EcoSpaceCoreTimeStepDelegate, RunOnThread:=False)
         End Function
 
         Public Function SetFtimeFromGear(t As Integer, QYear() As Single, PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean Implements IMSEModelWrapper.SetFtimeFromGear
             'Throw New NotImplementedException()
         End Function
 
-
-        Private Sub EcoSpaceTimeStepDelegate(ByVal iTime As Integer)
+        Private Sub EcoSpaceCoreTimeStepDelegate(ByRef EcospaceResults As cEcospaceTimestep)
             Try
                 If m_OnModelTimeStepDelegate <> Nothing Then
-                    m_OnModelTimeStepDelegate(iTime)
+                    m_OnModelTimeStepDelegate(EcospaceResults.iTimeStep)
                 End If
             Catch ex As ArgumentException
 
             End Try
         End Sub
+
+        Public Function CatchbyGroupFleetTimeStep(igrp As Integer, iFlt As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.CatchbyGroupFleetTimeStep
+            Return Me.m_Ecospace.EcoSpaceData.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp, iTime)
+        End Function
+
+        'Private Sub EcoSpaceTimeStepDelegate(ByVal iTime As Integer)
+        '    Try
+        '        If m_OnModelTimeStepDelegate <> Nothing Then
+        '            m_OnModelTimeStepDelegate(iTime)
+        '        End If
+        '    Catch ex As ArgumentException
+
+        '    End Try
+        'End Sub
     End Class
 
 End Namespace

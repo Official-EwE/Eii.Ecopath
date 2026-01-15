@@ -500,8 +500,8 @@ Namespace MSE
             Try
                 'Run Ecosim
                 'Me.m_Ecosim.Run()
-                Me.m_Model.Run()
-
+                'Me.m_Model.Run()
+                'Debug.Assert(False, "Need to sort out how to get base values from Ecospace")
                 'get the base values from the search data
                 Me.m_MSEData.BaseTotalVal = Me.m_SearchData.TotVal
                 Me.m_MSEData.BaseEmployVal = Me.m_SearchData.Employ
@@ -2118,7 +2118,8 @@ Namespace MSE
                 For iflt = 1 To Me.m_MSEData.nFleets
                     ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
                     For igrp = 1 To Me.m_MSEData.NGroups
-                        Me.m_MSEData.CatchYear(iflt, igrp) += Me.m_SimData.ResultsSumCatchByGroupGear(igrp, iflt, CInt(iTime))
+                        'Me.m_MSEData.CatchYear(iflt, igrp) += Me.m_SimData.ResultsSumCatchByGroupGear(igrp, iflt, iTime)
+                        Me.m_MSEData.CatchYear(iflt, igrp) += Me.m_Model.CatchbyGroupFleetTimeStep(igrp, iflt, iTime)
                     Next
                 Next
                 ' System.Console.WriteLine()
