@@ -18,16 +18,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.IO
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
 Imports EwEUtils.Utilities
-
-#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -49,28 +45,28 @@ Public Class EwEEcospaceSaveSummaryPlugin
     Private m_bWriting As Boolean = False
 
     Public ReadOnly Property Author As String _
-        Implements EwEPlugin.IPlugin.Author
+        Implements IPlugin.Author
         Get
             Return "Jeroen Steenbeek"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String _
-        Implements EwEPlugin.IPlugin.Contact
+        Implements IPlugin.Contact
         Get
             Return "mailto:ewedevteam@gmail.com"
         End Get
     End Property
 
     Public ReadOnly Property Description As String _
-        Implements EwEPlugin.IPlugin.Description
+        Implements IPlugin.Description
         Get
             Return "Example plug-in that writes Ecospace summaries across a run to CSV files."
         End Get
     End Property
 
     Public Sub Initialize(core As Object) _
-        Implements EwEPlugin.IPlugin.Initialize
+        Implements IPlugin.Initialize
         Me.m_core = CType(core, cCore)
     End Sub
 
@@ -89,12 +85,12 @@ Public Class EwEEcospaceSaveSummaryPlugin
     End Property
 
     Public Sub Init(theCore As Object) _
-        Implements EwEUtils.Core.IEcospaceResultsWriter.Init
+        Implements IEcospaceResultsWriter.Init
         ' NOP
     End Sub
 
     Public Sub EcospaceInitialized(EcospaceDatastructures As Object) _
-        Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
+        Implements IEcospaceInitializedPlugin.EcospaceInitialized
         Try
             Me.m_data = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
         Catch ex As Exception
@@ -104,7 +100,7 @@ Public Class EwEEcospaceSaveSummaryPlugin
     End Sub
 
     Public Sub StartWrite() _
-        Implements EwEUtils.Core.IEcospaceResultsWriter.StartWrite
+        Implements IEcospaceResultsWriter.StartWrite
 
         Me.m_bWriting = False
 
@@ -115,12 +111,12 @@ Public Class EwEEcospaceSaveSummaryPlugin
     End Sub
 
     Public Sub WriteResults(SpaceTimeStepResults As Object) _
-        Implements EwEUtils.Core.IEcospaceResultsWriter.WriteResults
+        Implements IEcospaceResultsWriter.WriteResults
         ' NOP
     End Sub
 
     Public Sub EndWrite() _
-        Implements EwEUtils.Core.IEcospaceResultsWriter.EndWrite
+        Implements IEcospaceResultsWriter.EndWrite
 
         If (Not Me.m_bWriting) Then Return
 
@@ -136,11 +132,11 @@ Public Class EwEEcospaceSaveSummaryPlugin
            Me.SaveFile(Path.Combine(strPath, "ts_fishing_mortality.csv"), eSpaceResultsGroups.FishingMort) Then
 
             msg = New cMessage(cStringUtils.Localize("Ecospace map averates have been saved to {0}", strPath),
-                               eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                               eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Information)
             msg.Hyperlink = strPath
         Else
             msg = New cMessage(cStringUtils.Localize("Ecospace map averates failed to save to {0}", strPath),
-                               eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+                               eMessageType.DataExport, eCoreComponentType.Ecospace, eMessageImportance.Critical)
         End If
 
         Me.m_core.Messages.SendMessage(msg)
@@ -161,7 +157,7 @@ Public Class EwEEcospaceSaveSummaryPlugin
             ' Header lines
             writer.Write("group")
             For iGroup As Integer = 1 To Me.m_core.nGroups
-                Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
+                Dim grp As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(iGroup)
                 writer.Write(",")
                 writer.Write(cStringUtils.ToCSVField(grp.Name))
             Next
@@ -189,7 +185,7 @@ Public Class EwEEcospaceSaveSummaryPlugin
             Return True
 
         Catch ex As Exception
-            cLog.Write(ex, "EwESaveSummaryPlugin.SaveFile(" & strFile & ")")
+            'cLog.Write(ex, "EwESaveSummaryPlugin.SaveFile(" & strFile & ")")
         End Try
 
         Return False
@@ -200,11 +196,12 @@ Public Class EwEEcospaceSaveSummaryPlugin
         Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), "summary")
     End Function
 
-    Public Property Enabled As Boolean Implements EwEUtils.Core.IEcospaceResultsWriter.Enabled
+    Public Property Enabled As Boolean Implements IEcospaceResultsWriter.Enabled
 
     Public ReadOnly Property OutputPath As String Implements IResultsWriter.OutputPath
         Get
             Return Me.DataPath()
         End Get
     End Property
+
 End Class

@@ -45,7 +45,7 @@ Module PerturbPathRunSimMainModule
         'Init the objects needed Core and .NET Random
         Core = New cCore() ' new instance of cCore
         Core.OutputPath = "D:\temp"
-        Core.Autosave(EwEUtils.Core.eAutosaveTypes.Ecosim) = True
+        Core.Autosave(eAutosaveTypes.Ecosim) = True
 
         RandNumGenerator = New Random(Environment.TickCount) 'New instance of .NET random number generator
 

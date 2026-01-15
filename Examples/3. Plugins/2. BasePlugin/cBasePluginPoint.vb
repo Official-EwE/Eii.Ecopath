@@ -18,18 +18,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports System.IO
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-
-#End Region
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Core
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.Ecospace
 
 ''' <summary>
 ''' Base code that can be used as a template to create a new plug-in.
@@ -52,12 +48,12 @@ Imports EwEUtils.Utilities
 ''' </remarks>
 ''' 
 Public Class cBasePluginPoint
-    Implements EwEPlugin.IPlugin
-    Implements EwEPlugin.ICorePlugin
-    Implements EwEPlugin.IEcopathPlugin
-    Implements EwEPlugin.IEcopathRunInitializedPlugin
-    Implements EwEPlugin.IEcosimInitializedPlugin
-    Implements EwEPlugin.IEcospaceInitializedPlugin
+    Implements IPlugin
+    Implements ICorePlugin
+    Implements IEcopathPlugin
+    Implements IEcopathRunInitializedPlugin
+    Implements IEcosimInitializedPlugin
+    Implements IEcospaceInitializedPlugin
 
     ' ToDo Add your own EwEPlugin interface implementations here
     ' With the cursor at the end of the new Implements line press the enter key
@@ -68,8 +64,8 @@ Public Class cBasePluginPoint
     ''' <summary>The core that this plug-in can use</summary>
     Private m_core As cCore
 
-    Private m_EcoPath As cEcoPathModel
-    Private m_EcoSim As cEcoSimModel
+    Private m_EcoPath As cEcopathModel
+    Private m_EcoSim As cEcosimModel
     Private m_EcoSpace As cEcoSpace
     Private m_EcoPathData As cEcopathDataStructures
     Private m_EcoSimData As cEcosimDatastructures
@@ -85,7 +81,7 @@ Public Class cBasePluginPoint
     ''' for later use.
     ''' </summary>
     ''' <param name="CoreAsObject">The core, casted to a generic object</param>
-    Public Sub Initialize(CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(CoreAsObject As Object) Implements IPlugin.Initialize
         Try
             m_core = DirectCast(CoreAsObject, cCore)
         Catch ex As Exception
@@ -101,14 +97,14 @@ Public Class cBasePluginPoint
     ''' <param name="EcopathAsObject"></param>
     ''' <param name="EcoSimAsObject"></param>
     ''' <param name="EcoSpaceAsObject"></param>
-    Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
+    Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements ICorePlugin.CoreInitialized
         Try
 
-            m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
-            m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
+            m_EcoPath = TryCast(EcopathAsObject, cEcopathModel)
+            m_EcoSim = TryCast(EcoSimAsObject, cEcosimModel)
             m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing), _
+            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing),
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
         Catch ex As Exception
@@ -122,7 +118,7 @@ Public Class cBasePluginPoint
     ''' </summary>
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
+    Public Function LoadModel(dataSource As Object) As Boolean Implements IEcopathPlugin.LoadModel
         Try
 
             'Cast the datasource 
@@ -144,7 +140,7 @@ Public Class cBasePluginPoint
     ''' </summary>
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
+    Public Function SaveModel(dataSource As Object) As Boolean Implements IEcopathPlugin.SaveModel
         System.Console.WriteLine(Me.ToString + ".SaveModel()")
 
         Return True
@@ -154,7 +150,7 @@ Public Class cBasePluginPoint
     ''' An Ecopath model has been closed.
     ''' </summary>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
+    Public Function CloseModel() As Boolean Implements IEcopathPlugin.CloseModel
         System.Console.WriteLine(Me.ToString + ".CloseModel()")
 
         Try
@@ -181,14 +177,14 @@ Public Class cBasePluginPoint
     ''' <param name="EcopathDataAsObject"></param>
     ''' <param name="TaxonDataAsObject"></param>
     ''' <param name="StanzaDataAsObject"></param>
-    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
+    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements IEcopathRunInitializedPlugin.EcopathRunInitialized
 
         Me.m_EcoPathData = TryCast(EcopathDataAsObject, cEcopathDataStructures)
         Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathRunInitialized() Failed to get EcopathDataStructures.")
 
     End Sub
 
-    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
+    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements IEcosimInitializedPlugin.EcosimInitialized
         System.Console.WriteLine(Me.ToString + ".EcosimInitialized()")
 
         Me.m_EcoSimData = TryCast(EcosimDatastructures, cEcosimDatastructures)
@@ -196,7 +192,7 @@ Public Class cBasePluginPoint
 
     End Sub
 
-    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
+    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements IEcospaceInitializedPlugin.EcospaceInitialized
         System.Console.WriteLine(Me.ToString + ".EcospaceInitialized()")
 
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
@@ -239,31 +235,31 @@ Public Class cBasePluginPoint
 
 #Region "IPlugin implementation"
 
-    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
             Return "Me"
         End Get
     End Property
 
-    Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
             Return "Me"
         End Get
     End Property
 
-    Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
             Return "you@someplace.com"
         End Get
     End Property
 
-    Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
             Return "Provides a base for building a plugin"
         End Get
     End Property
 
-    Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "Base Plugin"
         End Get
