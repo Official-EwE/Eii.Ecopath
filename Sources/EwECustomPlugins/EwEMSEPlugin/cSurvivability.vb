@@ -27,6 +27,7 @@ Imports System.IO
 Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
 Imports Troschuetz.Random
+Imports Troschuetz.Random.Distributions.Continuous
 
 Public Class cSurvivability
     Implements IMSEData
