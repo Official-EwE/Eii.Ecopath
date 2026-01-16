@@ -15533,7 +15533,7 @@ Public Class cCore
 #If Not NET Then
 #Region " License "
 
-    
+
     Public ReadOnly Property License As cLicense
         Get
             If (Me.m_license Is Nothing) Then

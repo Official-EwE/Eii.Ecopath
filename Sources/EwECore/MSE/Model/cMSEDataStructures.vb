@@ -342,7 +342,7 @@ Namespace MSE
             Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
             Me.MSEMaxEffort = MSE_DEFAULT_MAXEFFORT
-            Me.UseLPSolution = True
+            Me.UseLPSolution = False
 
         End Sub
 
