@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 

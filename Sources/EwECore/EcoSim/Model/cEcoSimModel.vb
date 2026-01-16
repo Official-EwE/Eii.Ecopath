@@ -17,20 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 Imports System.Threading
 Imports EwECore.MSE
-Imports EwEPlugin
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
@@ -564,7 +561,7 @@ Namespace Ecosim
         End Property
 
 
-        <CLSCompliant(False)>
+        
         Public Property PluginManager() As cPluginManager
             Get
                 Return Me.m_pluginManager

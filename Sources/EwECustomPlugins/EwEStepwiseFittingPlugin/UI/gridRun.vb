@@ -23,16 +23,16 @@
 ' Alliance (SICSA) Postgraduate Industry Internship Programme.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Linq
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Public Class gridRun
     Inherits cEwEGrid

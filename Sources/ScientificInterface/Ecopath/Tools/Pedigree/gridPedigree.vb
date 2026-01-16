@@ -18,18 +18,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-
-Imports EwECore
 Imports EwECore.Style
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region 'Imports
 
 Namespace Ecopath.Tools
 
@@ -38,7 +30,7 @@ Namespace Ecopath.Tools
     ''' Grid for displaying Pedigree assignments.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Friend Class gridPedigree
         Inherits cEwEGrid
 

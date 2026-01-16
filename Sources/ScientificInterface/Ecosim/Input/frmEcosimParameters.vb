@@ -17,18 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
-
 Namespace Ecosim
 
     ''' =======================================================================

@@ -17,17 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -74,7 +74,7 @@ Public MustInherit Class cNetworkAnalysisResultWriter
     End Function
 
     Protected Sub SendMessage(strMessage As String, Optional bError As Boolean = False, Optional strURL As String = "")
-        Dim msg As New cMessage(strMessage, eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External,
+        Dim msg As New cMessage(strMessage, eMessageType.DataExport, eCoreComponentType.External,
                                 If(bError, eMessageImportance.Warning, eMessageImportance.Information))
         msg.Hyperlink = strURL
         Me.Manager.Core.Messages.SendMessage(msg)

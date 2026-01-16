@@ -17,15 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 
-#End Region
 Public Class cEwEFleetTradeoffsPlugin
     Implements INavigationTreeItemPlugin
     Implements IUIContextPlugin

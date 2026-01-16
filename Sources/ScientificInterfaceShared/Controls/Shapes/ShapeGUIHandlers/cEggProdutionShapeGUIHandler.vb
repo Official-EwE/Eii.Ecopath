@@ -17,15 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Definitions
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
+
+
 
 Namespace Controls
 

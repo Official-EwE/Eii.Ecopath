@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 Partial Class frmRemarkUI
     Inherits frmEwEGrid

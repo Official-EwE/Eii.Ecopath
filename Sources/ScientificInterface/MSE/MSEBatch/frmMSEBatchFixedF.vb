@@ -18,11 +18,7 @@
 '
 
 Option Explicit On
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwECore.MSEBatchManager
 
 Public Class frmMSEBatchFixedF
 
@@ -115,7 +111,7 @@ Public Class frmMSEBatchFixedF
             If rb.Tag IsNot Nothing Then
 
                 If rb.Checked Then
-                    ' Me.m_BatchManager.Parameters.IterCalcType = DirectCast(rb.Tag, EwEUtils.Core.eMSEBatchIterCalcTypes)
+                    ' Me.m_BatchManager.Parameters.IterCalcType = DirectCast(rb.Tag, eMSEBatchIterCalcTypes)
                     Me.m_BatchManager.Parameters.IterCalcType = DirectCast(rb.Tag, Integer)
 
                     Me.grdGroups.RefreshContent()

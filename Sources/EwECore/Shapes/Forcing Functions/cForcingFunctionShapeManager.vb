@@ -17,8 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEUtils.Core
+
 
 ''' <summary>
 ''' Extents the base class to manage the Forcing Shapes

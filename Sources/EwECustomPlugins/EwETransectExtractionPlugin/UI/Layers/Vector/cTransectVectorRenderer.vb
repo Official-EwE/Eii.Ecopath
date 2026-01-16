@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports EwECore.Auxiliary
@@ -28,7 +28,7 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Style.cStyleGuide
 
-#End Region ' Imports
+
 
 Public Class cTransectVectorRenderer
     Inherits cVectorLayerRenderer

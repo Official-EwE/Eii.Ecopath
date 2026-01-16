@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports EwEUtils.SystemUtilities
 
-#End Region ' Imports
+
 
 Namespace Controls
 

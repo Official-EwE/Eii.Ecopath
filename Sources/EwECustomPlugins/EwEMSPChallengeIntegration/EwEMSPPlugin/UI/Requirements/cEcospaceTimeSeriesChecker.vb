@@ -17,13 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
-
-#End Region
 
 Namespace UI
 
@@ -56,7 +50,7 @@ Namespace UI
         ''' <param name="msg">The message to respond to.</param>
         ''' ---------------------------------------------------------------------------
         Public Overrides Sub OnCoreMessage(msg As cMessage)
-            If (msg.Source = eCoreComponentType.EcoSpace) Then Me.CheckRequirements()
+            If (msg.Source = eCoreComponentType.Ecospace) Then Me.CheckRequirements()
         End Sub
 
         ''' ---------------------------------------------------------------------------

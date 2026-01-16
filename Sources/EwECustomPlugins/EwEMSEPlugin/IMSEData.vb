@@ -23,12 +23,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Foundation interface for user-supplied data in the MSE plug-in.

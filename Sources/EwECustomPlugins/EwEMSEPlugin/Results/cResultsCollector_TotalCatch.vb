@@ -23,7 +23,7 @@
 ' ===============================================================================
 '
 
-Imports EwEUtils.Core
+Imports EwECore.Common
 
 Public Class cResultsCollector_TotalCatch
     Inherits cResultsCollector_Catch

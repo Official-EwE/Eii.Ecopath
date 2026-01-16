@@ -18,17 +18,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Windows.Forms
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region ' Imports
 
 Public Class EwEExportLayersPlugin
     Implements IMenuItemPlugin

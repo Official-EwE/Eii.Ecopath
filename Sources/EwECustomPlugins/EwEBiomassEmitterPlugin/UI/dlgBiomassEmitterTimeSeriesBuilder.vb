@@ -20,9 +20,9 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
@@ -30,9 +30,9 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports System.Drawing
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Core
+Imports EwECore.Common
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Utility to create biomass emitter time series files from before + after region

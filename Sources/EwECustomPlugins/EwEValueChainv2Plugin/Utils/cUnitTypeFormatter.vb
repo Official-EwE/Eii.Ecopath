@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
 Imports ValueChain
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' 

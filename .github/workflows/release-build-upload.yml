@@ -24,6 +24,11 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      # --- Installeer Inno Setup CLI ---
+      - name: Install Inno Setup
+        run: choco install innosetup -y
+        shell: pwsh
+
       - name: Derive Version/FileVersion from tag
         shell: pwsh
         run: |
@@ -50,37 +55,59 @@ jobs:
       - name: Restore
         run: dotnet restore .\Sources\EwE6.sln
 
-      - name: Build Release with version
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ env.SEMVER }} /p:FileVersion=${{ env.FILEVER }}
+      # --- Build x86 (32-bit) ---
+      - name: Build Release x86 with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ env.SEMVER }} /p:FileVersion=${{ env.FILEVER }} /p:Platform=x86
 
-      # If you publish apps, add publish steps per project here (optional)
-      # - name: Publish app
-      #   run: dotnet publish src/App/App.csproj -c Release -o out/win-x64 -r win-x64 --no-self-contained /p:Version=${{ env.SEMVER }} /p:FileVersion=${{ env.FILEVER }}
+      # --- Build x64 (64-bit) ---
+      - name: Build Release x64 with version
+        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ env.SEMVER }} /p:FileVersion=${{ env.FILEVER }} /p:Platform=x64
 
-      - name: Package build outputs
+      # --- Create artifacts directory ---
+      - name: Create artifacts directory
         shell: pwsh
         run: |
-          $zipName = "Eii.Ecopath-${{ env.SEMVER }}.zip"
           New-Item -ItemType Directory -Force -Path artifacts | Out-Null
-          # Collect all bin\Release outputs across projects (adjust if needed)
-          $tmp = Join-Path $PWD "artifacts_tmp"
-          New-Item -ItemType Directory -Force -Path $tmp | Out-Null
-          Get-ChildItem -Recurse -Directory | Where-Object { $_.FullName -match '\\bin\\Release$' } |
-            ForEach-Object { Copy-Item "$($_.FullName)\*" -Destination $tmp -Recurse -Force }
-          Compress-Archive -Path "$tmp\*" -DestinationPath "artifacts\$zipName"
-          Remove-Item $tmp -Recurse -Force
-          "ZIP_PATH=artifacts/$zipName" | Out-File $env:GITHUB_ENV -Append
 
-      - name: Upload asset to the same release
-        run: gh release upload "${{ github.event.release.tag_name }}" "${{ env.ZIP_PATH }}" --clobber
+      # --- Build Installer x86 ---
+      - name: Build Inno Setup Installer (x86)
+        shell: pwsh
+        run: |
+          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          $outputDir = Join-Path $PWD "artifacts"
+          & $isccPath /DSemVersion="${{ env.SEMVER }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+          
+      # --- Build Installer x64 ---
+      - name: Build Inno Setup Installer (x64)
+        shell: pwsh
+        run: |
+          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          $outputDir = Join-Path $PWD "artifacts"
+          & $isccPath /DSemVersion="${{ env.SEMVER }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
 
+      # --- Set installer paths ---
+      - name: Set installer paths
+        shell: pwsh
+        run: |
+          $installer32 = Get-ChildItem "artifacts\*_32-bit_setup.exe" | Select-Object -First 1
+          $installer64 = Get-ChildItem "artifacts\*_64-bit_setup.exe" | Select-Object -First 1
+          
+          if ($installer32) {
+            "INSTALLER_X86_PATH=$($installer32.FullName)" | Out-File $env:GITHUB_ENV -Append
+          }
+          if ($installer64) {
+            "INSTALLER_X64_PATH=$($installer64.FullName)" | Out-File $env:GITHUB_ENV -Append
+          }
+
+      # --- Upload assets to release ---
+      - name: Upload x86 installer to release
+        if: env.INSTALLER_X86_PATH != ''
+        run: gh release upload "${{ github.event.release.tag_name }}" "${{ env.INSTALLER_X86_PATH }}" --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
-
-
-
-
-
-
+      - name: Upload x64 installer to release
+        if: env.INSTALLER_X64_PATH != ''
+        run: gh release upload "${{ github.event.release.tag_name }}" "${{ env.INSTALLER_X64_PATH }}" --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

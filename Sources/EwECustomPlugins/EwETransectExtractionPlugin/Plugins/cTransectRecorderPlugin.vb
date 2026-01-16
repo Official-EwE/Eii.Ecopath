@@ -17,13 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports EwECore
-Imports EwEPlugin
-
-#End Region ' Imports
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

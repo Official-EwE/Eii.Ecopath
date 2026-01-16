@@ -17,32 +17,29 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.Collections.Specialized
 Imports System.Drawing.Imaging
 Imports System.Globalization
 Imports System.IO
-Imports System.Linq
 Imports System.Text
 Imports System.Threading
 Imports System.Windows.Forms.VisualStyles
-Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
-Imports EwEUtils.Core
 Imports EwEUtils.Drawing
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Utilities
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Style
 

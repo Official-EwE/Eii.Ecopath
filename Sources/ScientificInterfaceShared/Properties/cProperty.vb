@@ -18,16 +18,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwECore.Auxiliary
+
+
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 Namespace Properties
 

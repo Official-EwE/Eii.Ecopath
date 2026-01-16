@@ -17,14 +17,12 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 
 Imports System.IO
+Imports EwECore.Common
 Imports EwECore.ExternalData
-Imports EwEPlugin
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -1525,7 +1523,7 @@ Namespace MSE
                 Me.m_LPSolver.SetBounds(Me.m_GoalRowID, 0, Double.PositiveInfinity)
             Next
 
-            Dim lpSolveReturnValue As EwEUtils.Core.eSolverReturnValues
+            Dim lpSolveReturnValue As eSolverReturnValues
             lpSolveReturnValue = Me.m_LPSolver.Solve(t)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

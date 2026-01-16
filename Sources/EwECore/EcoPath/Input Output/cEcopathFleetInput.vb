@@ -17,9 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' Class to encapsulate a variables for a single Fishing Fleet Input

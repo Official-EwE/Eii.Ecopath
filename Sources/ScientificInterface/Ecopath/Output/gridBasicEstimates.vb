@@ -17,22 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)>
+    
     Public Class gridBasicEstimates
         Inherits cEwEGrid
 

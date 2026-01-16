@@ -17,15 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -34,7 +33,7 @@ Namespace Controls.EwEGrid
     ''' A visualizer for rendering EwE column header cells.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class cEwECheckBoxVisualizer
         : Inherits SourceGrid2.VisualModels.CheckBox
 

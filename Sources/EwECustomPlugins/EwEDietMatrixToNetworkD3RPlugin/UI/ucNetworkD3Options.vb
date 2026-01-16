@@ -17,13 +17,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " imports "
 
-Option Strict On
+
+
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' imports
+
 
 Public Class ucNetworkD3Options
     Implements IOptionsPage

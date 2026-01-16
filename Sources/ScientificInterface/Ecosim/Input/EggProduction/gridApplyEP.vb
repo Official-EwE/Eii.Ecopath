@@ -17,24 +17,21 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
     ''' <summary>
     ''' Grid for applying egg production shapes to multi-stanza configurations.
     ''' </summary>
-    <CLSCompliant(False)>
+    
     Public Class gridApplyEP
         Inherits cEwEGrid
 

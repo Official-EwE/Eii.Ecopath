@@ -18,7 +18,6 @@
 '
 
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' Blocks for Fishing Policy Search

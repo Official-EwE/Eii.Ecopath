@@ -18,20 +18,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-'Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-'Imports ScientificInterfaceShared.Controls
-
-#End Region
-
-
 
 Public Class cDietImporter
     Private m_EcopathData As cEcopathDataStructures

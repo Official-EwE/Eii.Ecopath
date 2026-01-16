@@ -17,15 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports EwECore
-Imports EwEUtils.SystemUtilities
-
-#End Region
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

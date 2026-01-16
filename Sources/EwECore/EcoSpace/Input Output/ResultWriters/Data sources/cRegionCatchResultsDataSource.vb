@@ -16,13 +16,9 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
 Imports EwECore.Style
 Imports EwEUtils.Utilities
-
-#End Region ' Biomass by region
 
 ''' <summary>
 ''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for averaged catch by region.

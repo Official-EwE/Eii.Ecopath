@@ -17,18 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Reflection
-Imports EwEUtils.Core
-Imports EwEUtils.Database
-Imports EwEUtils.Database.cEwEDatabase
+Imports EwECore
+Imports EwECore.Database
+Imports EwECore.Database.cEwEDatabase
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>

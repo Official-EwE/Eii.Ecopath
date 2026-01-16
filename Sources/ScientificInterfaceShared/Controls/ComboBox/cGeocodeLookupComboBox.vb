@@ -18,14 +18,14 @@
 '
 
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports System.Threading
 Imports ScientificInterfaceShared.GeoCode
 
-#End Region ' Imports
+
 
 Namespace Controls
 

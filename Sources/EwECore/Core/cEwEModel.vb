@@ -17,16 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 
 
-#End Region ' Imports
+
 ''' <summary>
 ''' Class to encapsulate and expose ecopath model for a single model
 ''' </summary>

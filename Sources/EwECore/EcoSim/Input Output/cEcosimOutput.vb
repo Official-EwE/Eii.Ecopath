@@ -17,9 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
+
 
 Public Class cEcosimOutput
     Inherits cCoreInputOutputBase
@@ -127,7 +125,7 @@ Public Class cEcosimOutput
     End Property
 
 
-    Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags,
+    Public Overrides Function GetVariable(VarName As eVarNameFlags,
                                           Optional iIndex As Integer = -9999,
                                           Optional iIndex2 As Integer = -9999,
                                           Optional iIndex3 As Integer = -9999) As Object
@@ -156,7 +154,7 @@ Public Class cEcosimOutput
 
     End Function
 
-    Public Overrides Function GetStatus(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As eStatusFlags
+    Public Overrides Function GetStatus(VarName As eVarNameFlags, Optional iIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As eStatusFlags
         Return eStatusFlags.NotEditable And eStatusFlags.ValueComputed
     End Function
 

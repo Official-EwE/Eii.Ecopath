@@ -17,18 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
+
+
+Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports EwECore.Style
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace.Controls
 
@@ -37,7 +35,7 @@ Namespace Ecospace.Controls
     ''' EwE grid for displaying datasets
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class gridDefineExternalSpatialData
         Inherits cEwEGrid
 
@@ -52,7 +50,7 @@ Namespace Ecospace.Controls
             Private m_fmt As New EwECore.Style.cVarnameTypeFormatter()
 
             Public Function Compare(x As ISpatialDataSet, y As ISpatialDataSet) As Integer _
-                Implements System.Collections.Generic.IComparer(Of EwEUtils.SpatialData.ISpatialDataSet).Compare
+                Implements System.Collections.Generic.IComparer(Of EwECore.Common.ISpatialDataSet).Compare
                 Dim iOrder As Integer = String.Compare(Me.m_fmt.ToString(x.VarName), Me.m_fmt.ToString(y.VarName))
                 If (iOrder = 0) Then
                     iOrder = String.Compare(x.CustomName, y.CustomName)
@@ -125,7 +123,7 @@ Namespace Ecospace.Controls
                 If (value IsNot Nothing) Then
                     Me.m_man = Me.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
-                    Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
+                    Me.m_mhEcospace = New cMessageHandler(AddressOf Me.OnCoreMessage, eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
                     Me.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
 #If DEBUG Then
                     Me.m_mhEcospace.Name = "gridDefineExternalSpatialData"

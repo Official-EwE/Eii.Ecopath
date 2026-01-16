@@ -17,14 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
+
 
 Namespace Other
 
@@ -247,7 +244,7 @@ Namespace Other
             If Not Me.CanApply Then Return IOptionsPage.eApplyResultType.Failed
 
             Dim fti As cFontTypeItem = Nothing
-  
+
             Me.UIContext.StyleGuide.SuspendEvents()
 
             ' Update fonts

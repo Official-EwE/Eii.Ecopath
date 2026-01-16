@@ -17,18 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
-Imports System.ComponentModel
-Imports System.Drawing
-Imports System.Drawing.Drawing2D
-Imports System.Drawing.Text
 Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ' ToDo: FIX scaling; the legend renders on top of graph when groups are rendered as indexes only
 

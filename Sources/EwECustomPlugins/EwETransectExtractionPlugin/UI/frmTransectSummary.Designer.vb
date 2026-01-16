@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
-#End Region ' Imports
+
 
 Partial Class frmTransectSummary
     Inherits frmEwE

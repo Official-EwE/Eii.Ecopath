@@ -21,7 +21,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwECore
 
 Public Class cEmissionTimeSeries

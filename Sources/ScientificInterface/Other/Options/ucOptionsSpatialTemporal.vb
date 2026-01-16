@@ -17,25 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports System.IO
-Imports EwEUtils.Core
 Imports EwECore.SpatialData
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 ' ToDo: make interface work like proper options page (Cancel on Cancel, etc)
 
@@ -292,7 +280,7 @@ Namespace Other
                     End If
 
                     Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_CACHECLEARED, sg.FormatMemory(lSizeBefore - cache.GetSize())),
-                         eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+                         eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
                     core.Messages.SendMessage(msg)
 
                     Me.UpdateControls()

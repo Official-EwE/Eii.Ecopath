@@ -17,9 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 
 Namespace MSE
 
@@ -331,10 +330,10 @@ Namespace MSE
 #Region "Status Properties"
 
 
-    Public Property RegulatoryMode() As eMSERegulationMode
-        Get
-            Return DirectCast(Me.GetVariable(eVarNameFlags.MSERegulatoryMode), eMSERegulationMode)
-        End Get
+        Public Property RegulatoryMode() As eMSERegulationMode
+            Get
+                Return DirectCast(Me.GetVariable(eVarNameFlags.MSERegulatoryMode), eMSERegulationMode)
+            End Get
             Set(value As eMSERegulationMode)
                 Me.SetVariable(eVarNameFlags.MSERegulatoryMode, value)
             End Set
@@ -342,15 +341,15 @@ Namespace MSE
 
 
 
-    Public Property EffortSource() As eMSEEffortSource
-        Get
-            Return DirectCast(Me.GetVariable(eVarNameFlags.MSEEffortSource), eMSEEffortSource)
-        End Get
+        Public Property EffortSource() As eMSEEffortSource
+            Get
+                Return DirectCast(Me.GetVariable(eVarNameFlags.MSEEffortSource), eMSEEffortSource)
+            End Get
 
-        Set(value As eMSEEffortSource)
+            Set(value As eMSEEffortSource)
                 Me.SetVariable(eVarNameFlags.MSEEffortSource, value)
-        End Set
-    End Property
+            End Set
+        End Property
 
 
         Public Property StopRunStatus() As eStatusFlags

@@ -17,18 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.IO
-Imports EwEUtils
 Imports EwEUtils.UserInterface
 Imports Newtonsoft.Json
 
-#End Region ' Imports 
+ 
 
 Namespace Auxiliary
 
@@ -155,6 +154,10 @@ Namespace Auxiliary
 
         Public Shared Function DeserializeStyle(s As String) As cVisualStyle
             If String.IsNullOrEmpty(s) Then Return Nothing
+
+            If s.StartsWith("v2:", StringComparison.Ordinal) Then
+                Return New cVisualStyle() ' v2 was a dysfunctional mistake
+            End If
 
             If s.StartsWith("v3:", StringComparison.Ordinal) Then
                 Dim blob = Convert.FromBase64String(s.Substring(3))

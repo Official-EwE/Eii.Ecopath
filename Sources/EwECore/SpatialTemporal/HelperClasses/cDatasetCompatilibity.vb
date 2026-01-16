@@ -17,15 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-
-#End Region ' Imports
 
 Namespace SpatialData
 

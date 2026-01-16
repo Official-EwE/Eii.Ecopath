@@ -17,21 +17,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 
 Imports System.Drawing.Imaging
+Imports EwEUtils.SystemUtilities
+Imports EwEUtils.UserInterface
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
-Imports EwECore
-Imports System.IO
-Imports EwEUtils.SystemUtilities
-Imports EwEUtils.Utilities
-Imports EwEUtils.UserInterface
 
-#End Region ' Imports
+
 
 Namespace Controls.Map
 

@@ -17,16 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -605,7 +599,7 @@ Public Class cLPSolver
     ''' <see cref="IsSupported">is supported by the operating system</see>.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function Solve(iTimeStepIndex As Integer) As EwEUtils.Core.eSolverReturnValues _
+    Public Function Solve(iTimeStepIndex As Integer) As eSolverReturnValues _
           Implements ILPSolver.Solve
         Dim rv As eSolverReturnValues
 
@@ -809,14 +803,14 @@ Public Class cLPSolver
     End Function
 
 
-    Public Function GetDualValue(iData As Integer) As Double Implements EwEUtils.Core.ILPSolver.GetDualValue
+    Public Function GetDualValue(iData As Integer) As Double Implements ILPSolver.GetDualValue
         Return Me.m_lDefs(iData).m_DualValue
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="ILPSolver.IsSupported"/>
     ''' -----------------------------------------------------------------------
-    Public Function IsSupported() As Boolean Implements EwEUtils.Core.ILPSolver.IsSupported
+    Public Function IsSupported() As Boolean Implements ILPSolver.IsSupported
         lpsolve55.Init()
         Return lpsolve55.IsUsable()
     End Function
@@ -861,5 +855,5 @@ Public Class cLPSolver
 
 #End Region ' Internals
 
-    
+
 End Class

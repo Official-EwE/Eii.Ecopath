@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 Imports System.Collections
 Imports System.Collections.Generic
@@ -31,7 +31,7 @@ Imports System.Reflection
 Imports System.Resources
 Imports System.Windows.Forms
 
-#End Region ' Imports
+
 
 Namespace Utilities
 

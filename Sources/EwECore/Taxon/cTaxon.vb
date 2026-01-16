@@ -17,9 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
+Imports EwECore.Common
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' Taxonomy definition that contributes to a functional group or stanza configuration.

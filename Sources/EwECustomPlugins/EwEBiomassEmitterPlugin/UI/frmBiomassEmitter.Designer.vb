@@ -20,13 +20,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
-#End Region ' Imports
+
 
 Partial Class frmBiomassEmitter
     Inherits frmEwE

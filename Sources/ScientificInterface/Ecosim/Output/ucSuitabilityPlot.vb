@@ -17,16 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
 
-Imports EwECore
 Imports EwEUtils.Utilities
 Imports ZedGraph
 
-#End Region ' Imports
+
 
 Public Class ucSuitabilityPlot
     Implements IUIElement

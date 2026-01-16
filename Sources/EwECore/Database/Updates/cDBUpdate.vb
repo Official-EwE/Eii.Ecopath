@@ -17,14 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwEUtils.Database
-Imports EwEUtils.Logging
+Imports EwECore.Database
 Imports Microsoft.Extensions.Logging
-
-#End Region ' Imports
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -33,7 +27,6 @@ Imports Microsoft.Extensions.Logging
 ''' --------------------------------------------------------------------------
 Friend MustInherit Class cDBUpdate
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDBUpdate)()
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

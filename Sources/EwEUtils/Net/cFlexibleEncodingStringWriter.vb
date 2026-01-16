@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.IO
 Imports System.Text
 
-#End Region ' Imports
+
 
 Namespace NetUtilities
 

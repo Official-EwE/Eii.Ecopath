@@ -17,37 +17,38 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Text
 Imports System.Threading
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Utilities
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Data
+Imports EwECore.Plugins.Database
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.Search
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Controls
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Public Class cValueChainPlugin
     Inherits cNavTreeControlPlugin
-    Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.IEcopathPlugin
-    Implements EwEPlugin.IEcopathRunCompletedPlugin
-    Implements EwEPlugin.IEcosimRunInitializedPlugin
-    Implements EwEPlugin.IEcosimEndTimestepPlugin
-    Implements EwEPlugin.IEcosimRunCompletedPlugin
-    Implements EwEPlugin.Data.IDatabasePlugin
-    Implements EwEPlugin.Data.IDataProducerPlugin
-    Implements EwEPlugin.ISearchPlugin
-    Implements EwEPlugin.IDisposedPlugin
-    Implements EwEPlugin.IAutoSavePlugin
-    Implements EwEPlugin.IAutoRunPlugin
+    Implements IUIContextPlugin
+    Implements IEcopathPlugin
+    Implements IEcopathRunCompletedPlugin
+    Implements IEcosimRunInitializedPlugin
+    Implements IEcosimEndTimestepPlugin
+    Implements IEcosimRunCompletedPlugin
+    Implements IDatabasePlugin
+    Implements IDataProducerPlugin
+    Implements ISearchPlugin
+    Implements IDisposedPlugin
+    Implements IAutoSavePlugin
+    Implements IAutoRunPlugin
 
 #Region " Privates "
 
@@ -64,7 +65,7 @@ Public Class cValueChainPlugin
     Private m_syncobj As SynchronizationContext = Nothing
 
     ' Data exchange
-    Private m_dataBroadcaster As EwEPlugin.Data.IDataBroadcaster = Nothing
+    Private m_dataBroadcaster As IDataBroadcaster = Nothing
     ''' <summary>Ooooh, that was long ago...</summary>
     Private m_ddx As cPluginData = Nothing
 
@@ -209,7 +210,7 @@ Public Class cValueChainPlugin
     End Sub
 
     Public Sub Dispose() _
-        Implements EwEPlugin.IDisposedPlugin.Dispose
+        Implements IDisposedPlugin.Dispose
         ' Clean up message handler
         If (Me.m_mhEcopath IsNot Nothing) Then
             Me.m_core.Messages.RemoveMessageHandler(Me.m_mhEcopath)
@@ -221,7 +222,7 @@ Public Class cValueChainPlugin
 #Region " GUI "
 
     Public Sub UIContext(uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Implements IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
@@ -237,7 +238,7 @@ Public Class cValueChainPlugin
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function Open(strName As String) As Boolean _
-        Implements EwEPlugin.Data.IDatabasePlugin.Open
+        Implements IDatabasePlugin.Open
         ' NOP
     End Function
 
@@ -248,7 +249,7 @@ Public Class cValueChainPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub Close() _
-        Implements EwEPlugin.Data.IDatabasePlugin.Close
+        Implements IDatabasePlugin.Close
         If Me.HasInterface Then
             Me.m_form.Close()
             Me.m_form.Dispose()
@@ -265,7 +266,7 @@ Public Class cValueChainPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function IsModified() As Boolean _
-        Implements EwEPlugin.Data.IDatabasePlugin.IsModified
+        Implements IDatabasePlugin.IsModified
         Return Me.m_data.IsChanged()
     End Function
 
@@ -278,7 +279,7 @@ Public Class cValueChainPlugin
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(dataSource As Object) As Boolean _
-        Implements EwEPlugin.IEcopathPlugin.LoadModel
+        Implements IEcopathPlugin.LoadModel
 
 
         ' Sanity checks
@@ -303,7 +304,7 @@ Public Class cValueChainPlugin
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function SaveModel(dataSource As Object) As Boolean _
-        Implements EwEPlugin.IEcopathPlugin.SaveModel
+        Implements IEcopathPlugin.SaveModel
 
         ' ToDo: also save via Entity Framework
 
@@ -326,7 +327,7 @@ Public Class cValueChainPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object) _
-        Implements EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted
+        Implements IEcopathRunCompletedPlugin.EcopathRunCompleted
 
         Dim parms As cParameters = Me.m_data.Parameters
 
@@ -369,7 +370,7 @@ Public Class cValueChainPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+        Implements IEcosimRunInitializedPlugin.EcosimRunInitialized
 
         Dim parms As cParameters = Me.m_data.Parameters
 
@@ -501,15 +502,15 @@ Public Class cValueChainPlugin
     End Function
 
 
-    Public Sub Broadcaster(broadcaster As EwEPlugin.Data.IDataBroadcaster) _
-        Implements EwEPlugin.Data.IDataProducerPlugin.Broadcaster
+    Public Sub Broadcaster(broadcaster As IDataBroadcaster) _
+        Implements IDataProducerPlugin.Broadcaster
 
         Me.m_dataBroadcaster = broadcaster
 
     End Sub
 
     Public Function IsDataAvailable(typeData As System.Type, Optional runType As IRunType = Nothing) As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.IsDataAvailable
+        Implements IDataProducerPlugin.IsDataAvailable
 
         Dim bIsAvailable As Boolean = False
 
@@ -536,8 +537,8 @@ Public Class cValueChainPlugin
     End Function
 
     Public Function GetDataByType(typeData As System.Type,
-                                  ByRef data As EwEPlugin.Data.IPluginData) As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.GetDataByType
+                                  ByRef data As IPluginData) As Boolean _
+        Implements IDataProducerPlugin.GetDataByType
 
         data = Nothing
         If (typeData Is GetType(IEconomicData)) Then
@@ -549,7 +550,7 @@ Public Class cValueChainPlugin
     End Function
 
     Public Function IsEnabled(typeData As System.Type, runtype As IRunType) As Boolean _
-         Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
+         Implements IDataProducerPlugin.IsEnabled
 
         If Not (typeData Is GetType(IEconomicData)) Then Return False
 
@@ -573,7 +574,7 @@ Public Class cValueChainPlugin
     End Function
 
     Public Sub SetEnabled(typeData As System.Type, runType As IRunType, bEnabled As Boolean) _
-        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+        Implements IDataProducerPlugin.SetEnabled
 
         Dim parms As cParameters = Me.Data.Parameters
         If (parms Is Nothing) Then Return
@@ -594,12 +595,12 @@ Public Class cValueChainPlugin
     End Sub
 
     Public Function IsEnabled1() As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
+        Implements IDataProducerPlugin.IsEnabled
         Return Me.m_bIsEnabled
     End Function
 
     Public Function SetEnabled1(bEnable As Boolean) As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+        Implements IDataProducerPlugin.SetEnabled
         Me.m_bIsEnabled = bEnable
     End Function
 
@@ -613,7 +614,7 @@ Public Class cValueChainPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub SearchInitialized(SearchDatastructures As Object) _
-        Implements EwEPlugin.ISearchPlugin.SearchInitialized
+        Implements ISearchPlugin.SearchInitialized
 
         ' Grab a reference to the search data structures
         Me.m_searchds = DirectCast(SearchDatastructures, cSearchDatastructures)
@@ -626,7 +627,7 @@ Public Class cValueChainPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub SearchIterationsStarting() Implements _
-        EwEPlugin.ISearchPlugin.SearchIterationsStarting
+        ISearchPlugin.SearchIterationsStarting
 
         ' Assume the worst
         Me.m_bInSearch = False
@@ -662,7 +663,7 @@ Public Class cValueChainPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub PostRunSearchResults(SearchDatastructures As Object) _
-        Implements EwEPlugin.ISearchPlugin.PostRunSearchResults
+        Implements ISearchPlugin.PostRunSearchResults
 
         ' Working with a search?
         If Me.m_bInSearch Then
@@ -690,7 +691,7 @@ Public Class cValueChainPlugin
     ''' </summary>
     ''' <param name="SearchDatastructures"></param>
     Public Sub SearchCompleted(SearchDatastructures As Object) _
-        Implements EwEPlugin.ISearchPlugin.SearchCompleted
+        Implements ISearchPlugin.SearchCompleted
 
         Me.m_bInSearch = False
 
@@ -761,7 +762,7 @@ Public Class cValueChainPlugin
     ''' <inheritdocs cref="IAutoSavePlugin.AutoSave"/>
     ''' -----------------------------------------------------------------------
     Public Property AutoSave As Boolean _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSave
+        Implements IAutoSavePlugin.AutoSave
         Get
             Return My.Settings.AutosaveResults
         End Get
@@ -775,15 +776,15 @@ Public Class cValueChainPlugin
     ''' <inheritdocs cref="IAutoSavePlugin.AutoSaveOutputPath"/>
     ''' -----------------------------------------------------------------------
     Public Function AutoSaveSubPath() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
+        Implements IAutoSavePlugin.AutoSaveOutputPath
         Return ""
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IAutoSavePlugin.AutoSaveType"/>
     ''' -----------------------------------------------------------------------
-    Public Function AutoSaveType() As EwEUtils.Core.eAutosaveTypes _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveType
+    Public Function AutoSaveType() As eAutosaveTypes _
+        Implements IAutoSavePlugin.AutoSaveType
         Return eAutosaveTypes.NotSet
     End Function
 

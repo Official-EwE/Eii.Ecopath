@@ -17,20 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
 
-Imports System.Drawing.Drawing2D
-Imports System.Drawing
-Imports System.Text.RegularExpressions
-Imports ScientificInterface.Other
-Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 

@@ -17,17 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Core
-Imports SourceGrid2.Cells.Real
-
-#End Region
 
 Namespace Ecopath.Input
 
@@ -36,7 +26,7 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Diet user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Public Class gridDietComposition
         : Inherits cEwEGrid
 

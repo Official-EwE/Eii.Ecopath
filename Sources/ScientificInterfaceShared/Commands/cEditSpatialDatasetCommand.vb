@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.SpatialData
 
-#End Region ' Imports
+
+Imports EwECore.Common
+
+
 
 Namespace Commands
 
@@ -38,7 +38,7 @@ Namespace Commands
 
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
-          ''' -----------------------------------------------------------------------
+        ''' -----------------------------------------------------------------------
         Public Shared COMMAND_NAME As String = "~editspatialdataset"
 
         ''' -----------------------------------------------------------------------

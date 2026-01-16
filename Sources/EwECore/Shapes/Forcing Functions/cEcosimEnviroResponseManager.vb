@@ -17,13 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
+
 
 ''' <summary>
 ''' Manager class to handle Ecosim Environmental Response functions

@@ -17,17 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
+
+
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Data
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
 
-#End Region ' Imports 
+ 
 
 Namespace Ecopath.Input
 

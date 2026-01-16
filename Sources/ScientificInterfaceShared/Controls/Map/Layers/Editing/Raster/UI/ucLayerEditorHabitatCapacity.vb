@@ -17,7 +17,6 @@
 ' ===============================================================================
 '
 
-Imports EwECore
 Imports ScientificInterfaceShared.Style
 
 Namespace Controls.Map.Layers

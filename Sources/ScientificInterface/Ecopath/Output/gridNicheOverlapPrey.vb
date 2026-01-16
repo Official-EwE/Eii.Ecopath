@@ -17,27 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports ScientificInterfaceShared.Properties
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Core
-
-#End Region
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)> _
+    
     Public Class gridNicheOverlapPrey
         Inherits cEwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
@@ -87,11 +76,11 @@ Namespace Ecopath.Output
             Dim sourceSec As cCoreGroupBase = Nothing
             Dim prop As cProperty = Nothing
 
-            For columnIndex As Integer = 2 To Me.core.nLivingGroups + 1
-                source = Me.core.EcopathGroupOutputs(columnIndex - 1)
-                For rowIndex As Integer = 1 To Me.core.nLivingGroups
+            For columnIndex As Integer = 2 To Me.Core.nLivingGroups + 1
+                source = Me.Core.EcopathGroupOutputs(columnIndex - 1)
+                For rowIndex As Integer = 1 To Me.Core.nLivingGroups
                     ' Get the group output
-                    sourceSec = Me.core.EcopathGroupOutputs(rowIndex)
+                    sourceSec = Me.Core.EcopathGroupOutputs(rowIndex)
 
                     If columnIndex <= rowIndex + 1 Then
                         If source.PP() <= 1 Then

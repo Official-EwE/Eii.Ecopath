@@ -20,16 +20,9 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
-Imports System.Drawing
-Imports System.Windows.Forms
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
-
-#End Region ' Imports
 
 Public Class cEwEBiomassEmitterTimeseriesBuilderPlugin
     Implements IUIContextPlugin

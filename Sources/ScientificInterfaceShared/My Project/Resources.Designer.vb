@@ -8,7 +8,7 @@
 ' </auto-generated>
 '------------------------------------------------------------------------------
 
-Option Strict On
+
 Option Explicit On
 
 Imports System
@@ -428,7 +428,25 @@ Namespace My.Resources
                 Return ResourceManager.GetString("BIODIVERSITY_SHANNON", resourceCulture)
             End Get
         End Property
-        
+
+        '''<summary>
+        '''  Looks up a localized string similar to 32 bit.
+        '''</summary>
+        Public ReadOnly Property BITNESS_32() As String
+            Get
+                Return ResourceManager.GetString("BITNESS_32", resourceCulture)
+            End Get
+        End Property
+
+        '''<summary>
+        '''  Looks up a localized string similar to 64 bit.
+        '''</summary>
+        Public ReadOnly Property BITNESS_64() As String
+            Get
+                Return ResourceManager.GetString("BITNESS_64", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
@@ -9236,7 +9254,16 @@ Namespace My.Resources
                 Return ResourceManager.GetString("VERBOSE_STANDARD", resourceCulture)
             End Get
         End Property
-        
+
+        '''<summary>
+        '''  Looks up a localized string similar to {0} (compiled {1}).
+        '''</summary>
+        Public ReadOnly Property VERSION_EXT_COMPILED() As String
+            Get
+                Return ResourceManager.GetString("VERSION_EXT_COMPILED", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>

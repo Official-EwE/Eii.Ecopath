@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>

@@ -8,7 +8,7 @@
 ' </auto-generated>
 '------------------------------------------------------------------------------
 
-Option Strict On
+
 Option Explicit On
 
 Imports System
@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class CoreDefaults
@@ -542,6 +542,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (Unknown).
+        '''</summary>
+        Public Shared ReadOnly Property GENERIC_VALUE_UNKNOWN() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_UNKNOWN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE version {0}.
+        '''</summary>
+        Public Shared ReadOnly Property GENERIC_VERSION() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VERSION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecopath 5 or older.
+        '''</summary>
+        Public Shared ReadOnly Property GENERIC_VERSION_ANCIENT() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VERSION_ANCIENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to a previous version of EwE 6.
+        '''</summary>
+        Public Shared ReadOnly Property GENERIC_VERSION_PREVIOUS() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VERSION_PREVIOUS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Separate files per trial.
         '''</summary>
         Public Shared ReadOnly Property MONTECARLO_WRITER_MULTIPLE() As String
@@ -1042,6 +1078,33 @@ Namespace My.Resources
         Public Shared ReadOnly Property PEDIGREE_DEFAULT_SIM_SIM() As String
             Get
                 Return ResourceManager.GetString("PEDIGREE_DEFAULT_SIM_SIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plug-in {0} encoutered an error. {1}.
+        '''</summary>
+        Public Shared ReadOnly Property PLUGIN_ERROR_GENERIC() As String
+            Get
+                Return ResourceManager.GetString("PLUGIN_ERROR_GENERIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plug-in {0} encountered an error in {1}. {2}. {3}.
+        '''</summary>
+        Public Shared ReadOnly Property PLUGIN_ERROR_POINT() As String
+            Get
+                Return ResourceManager.GetString("PLUGIN_ERROR_POINT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Duplicate plug-in {1} encountered in {0}. This plug-in cannot not be used..
+        '''</summary>
+        Public Shared ReadOnly Property PLUGIN_EXCEPTION_DUPLICATE() As String
+            Get
+                Return ResourceManager.GetString("PLUGIN_EXCEPTION_DUPLICATE", resourceCulture)
             End Get
         End Property
         

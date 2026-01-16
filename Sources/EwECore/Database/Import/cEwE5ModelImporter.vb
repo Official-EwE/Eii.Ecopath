@@ -17,15 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Database
-Imports EwEUtils.Core
-Imports System.Text
-Imports System.IO
 
-#End Region ' Imports
+
+
+
 
 Namespace Database
 

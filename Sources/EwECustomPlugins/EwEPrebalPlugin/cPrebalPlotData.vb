@@ -17,14 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwEUtils.Core
-
-#End Region
+Imports EwECore
 
 Public Class cPrebalPlotData
 

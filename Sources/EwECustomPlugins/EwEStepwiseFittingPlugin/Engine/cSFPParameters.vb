@@ -23,14 +23,14 @@
 ' Alliance (SICSA) Postgraduate Industry Internship Programme.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports EwECore
 Imports EwEUtils.SystemUtilities
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' SFPParameters is the one instance that holds all settings to define the fitting bounds, 

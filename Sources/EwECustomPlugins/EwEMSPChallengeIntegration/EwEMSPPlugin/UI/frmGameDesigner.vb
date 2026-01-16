@@ -16,9 +16,9 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.IO
 Imports System.Text
@@ -27,7 +27,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
 Imports EwEMSPPlugin.Emulator
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
@@ -42,7 +42,7 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 
-#End Region ' Imports
+
 
 ' TODO: Crashes happen when opening MSP tools UI during an Ecospace run, when outcomes have not been calibrated
 ' Change: move time step control from form to MSP Tools plug-in, and handle pausing there.

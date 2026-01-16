@@ -17,20 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports ScientificInterface.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
 Namespace Ecospace
 
-    <CLSCompliant(False)> _
+    
     Public Class cGridEcospaceResultsGear
         : Inherits gridResultsBase
 

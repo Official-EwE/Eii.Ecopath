@@ -17,13 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports System
-Imports System.Data
-Imports System.Text
-Imports EwEPlugin
-Imports EwEUtils.Database
-Imports EwEUtils.Core
+
+Imports EwECore.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>

@@ -17,17 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
-Imports ScientificInterfaceShared.Commands
+
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecospace
 

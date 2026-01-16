@@ -17,14 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.ComponentModel
-Imports System.Reflection
-Imports System.Drawing
-
-#End Region ' Imports
+Imports EwECore.Database
 
 ''' ===========================================================================
 ''' <summary>
@@ -33,7 +27,7 @@ Imports System.Drawing
 ''' ===========================================================================
 <Serializable()> _
 Public Class cParameters
-    Inherits EwEUtils.Database.cEwEDatabase.cOOPStorable
+    Inherits cEwEDatabase.cOOPStorable
 
 #Region " Private vars "
 

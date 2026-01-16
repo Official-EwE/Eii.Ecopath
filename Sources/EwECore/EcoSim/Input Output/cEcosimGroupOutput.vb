@@ -17,10 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -153,7 +151,7 @@ Public Class cEcosimGroupOutput
 #Region "Overridden base class methods"
 
 
-    Public Overrides Function GetVariable(VarName As EwEUtils.Core.eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
+    Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
         If Not Me.m_coreData.ContainsKey(VarName) Then
             'NOT in list of sim vars so get the value from the base class GetVariable(...)

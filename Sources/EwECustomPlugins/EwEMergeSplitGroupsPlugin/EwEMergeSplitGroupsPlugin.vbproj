@@ -5,7 +5,6 @@
     <OutputType>Library</OutputType>
     <MyType>Windows</MyType>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Geomar</Company>
     <Product>EwEMergeSplitGroupsPlugin</Product>
     <Copyright>Copyright © 2017 Geomar</Copyright>
@@ -120,7 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging">
-      <Version>10.0.0</Version>
+      <Version>10.0.1</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

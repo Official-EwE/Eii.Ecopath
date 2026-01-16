@@ -7,24 +7,8 @@
     <OptionStrict>On</OptionStrict>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ScientificInterfaceShared.snk</AssemblyOriginatorKeyFile>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>ScientificInterfaceShared</Product>
     <Copyright>Copyright © 2008</Copyright>
@@ -39,7 +23,7 @@
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.ScientificInterfaceShared</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <Version>6.7.5</Version>
+    <Version>6.7.8</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
     <PackageReleaseNotes>Initial version.</PackageReleaseNotes>
@@ -53,6 +37,7 @@
     <None Include="README.md" Pack="True" PackagePath="\" />
     <None Include="..\..\EII_plain_128x128.png" Pack="True" PackagePath="\" />
     <None Include="Includes\*.*" Pack="true" PackagePath="Includes\" />
+	<Import Include="EwECore" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DocumentationFile>ScientificInterfaceShared.xml</DocumentationFile>
@@ -85,9 +70,6 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EPPlus">
-      <HintPath>..\EwECore\Includes\EPPlus.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.GLEE, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f84f738e1fc245c, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -537,19 +519,15 @@
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-
   <!-- Use a local project reference when UseProjectReferences is true -->
   <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
     <ProjectReference Include="..\EwECore\EwECore.vbproj" />
-    <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj" />
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
-
   <!-- Otherwise use a package reference. (EwEUtils and EwEPlugin are referenced by EwEcore) -->
   <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
     <PackageReference Include="Eii.Ecopath.EwECore" Version="6.7.*" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="Includes\Ionic.Zip.dll" />
     <Content Include="Includes\Microsoft.GLEE.dll" />
@@ -610,34 +588,18 @@
     <Folder Include="Controls\Map\Layers\Rendering\Vector\" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Eii.Ecopath.Licence">
       <Version>1.0.3</Version>
     </PackageReference>
-    <PackageReference Include="System.Resources.Extensions" Version="10.0.0" />
+    <PackageReference Include="EPPlus" Version="8.4.0" />
+    <PackageReference Include="System.Resources.Extensions" Version="10.0.1" />
   </ItemGroup>
   <Target Name="BeforeBuild"></Target>
   <Target Name="AfterBuild">
     <ItemGroup>
       <_FilesInclude Include="Includes\*.dll" />
     </ItemGroup>
-    <Copy SourceFiles="@(_FilesInclude)" DestinationFiles="@(_FilesInclude-&gt;'$(OutputPath)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
+    <Copy SourceFiles="@(_FilesInclude)" DestinationFiles="@(_FilesInclude->'$(OutputPath)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
     <Message Text="Copied ScIntShared includes" />
   </Target>
   <PropertyGroup>

@@ -17,18 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
+
+
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Data
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace ExternalData
 
@@ -92,9 +91,7 @@ Namespace ExternalData
 
             Try
 
-                Dim plugins As ICollection(Of EwEPlugin.IPlugin)
-
-                plugins = s_core.PluginManager.GetPlugins(cTaxonDataSource.InternalName)
+                Dim plugins As ICollection(Of IPlugin) = s_core.PluginManager.GetPlugins(cTaxonDataSource.InternalName)
                 For Each plugin As IPlugin In plugins
                     If TypeOf plugin Is cTaxonDataSource Then
                         dataSource = DirectCast(plugin, cTaxonDataSource)
@@ -141,7 +138,7 @@ Namespace ExternalData
         ''' <param name="runtype">The core run type to check availability for.</param>
         ''' <returns>True if available.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function IsDataAvailable(runtype As EwEUtils.Core.IRunType) As Boolean _
+        Public Function IsDataAvailable(runtype As IRunType) As Boolean _
               Implements IExternalDataSource.IsDataAvailable
             Return s_core.PluginManager.IsDataAvailable(GetType(ITaxonSearchData), runtype)
         End Function
@@ -217,8 +214,8 @@ Namespace ExternalData
         ''' <param name="data">Actual incoming data.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function ReceiveData(strDataName As String, data As EwEPlugin.Data.IPluginData) As Boolean _
-            Implements EwEPlugin.Data.IDataConsumerPlugin.ReceiveData
+        Public Function ReceiveData(strDataName As String, data As IPluginData) As Boolean _
+            Implements IDataConsumerPlugin.ReceiveData
 
             Try
 
@@ -240,33 +237,33 @@ Namespace ExternalData
         End Function
 
         Public ReadOnly Property Author() As String _
-            Implements EwEPlugin.IPlugin.Author
+            Implements IPlugin.Author
             Get
                 Return "Ecopath International Initiative Research Association, Barcelona, Spain"
             End Get
         End Property
 
         Public ReadOnly Property Contact() As String _
-            Implements EwEPlugin.IPlugin.Contact
+            Implements IPlugin.Contact
             Get
                 Return "mailto:ewedevteam@gmail.com"
             End Get
         End Property
 
         Public ReadOnly Property Description() As String _
-            Implements EwEPlugin.IPlugin.Description
+            Implements IPlugin.Description
             Get
                 Return "Core plugin to receive taxon data from an external source."
             End Get
         End Property
 
         Public Sub Initialize(core As Object) _
-            Implements EwEPlugin.IPlugin.Initialize
+            Implements IPlugin.Initialize
             s_core = DirectCast(core, cCore)
         End Sub
 
         Public ReadOnly Property Name() As String _
-            Implements EwEPlugin.IPlugin.Name, EwEPlugin.IPlugin.DisplayName
+            Implements IPlugin.Name, IPlugin.DisplayName
             Get
                 Return cTaxonDataSource.InternalName
             End Get

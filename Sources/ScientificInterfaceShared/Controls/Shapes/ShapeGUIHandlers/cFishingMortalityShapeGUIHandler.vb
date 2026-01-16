@@ -17,14 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
+
+
 Imports ScientificInterfaceShared.Definitions
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
 
 Namespace Controls
 
@@ -92,7 +90,7 @@ Namespace Controls
             Return 0
         End Function
 
-        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Protected Overrides Function Datatypes() As eDataTypes()
             Return {eDataTypes.FishMort, eDataTypes.FishingEffort}
         End Function
 

@@ -17,22 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-
-Imports System.IO
 Imports System.Data.OleDb
+Imports System.IO
 Imports System.Reflection
 Imports EwECore.DataSources
-Imports EwEUtils.Database
 Imports EwEUtils.Utilities
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 Namespace Database
 
@@ -425,7 +416,7 @@ Namespace Database
         ''' <param name="dst">The data source type to test.</param>
         ''' <returns>True if the OS can connect to a given data source type.</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function CanConnect(dst As EwEUtils.Core.eDataSourceTypes) As Boolean
+        Public Overrides Function CanConnect(dst As eDataSourceTypes) As Boolean
 
             Dim conn As OleDbConnection = New OleDbConnection()
             Dim strDatabase As String = "~doesnotexist~"

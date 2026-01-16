@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.ComponentModel
 Imports System.Reflection
 Imports ScientificInterfaceShared.Controls
@@ -27,14 +27,14 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SourceGrid2
 Imports ValueChain
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
 ''' 
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class ucUnitGrid
     : Inherits cEwEGrid
 

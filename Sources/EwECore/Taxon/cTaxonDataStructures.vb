@@ -17,8 +17,6 @@
 ' ===============================================================================
 '
 
-Imports EwEUtils.Core
-
 Public Class cTaxonDataStructures
 
     Private m_ecopathDS As cEcopathDataStructures = Nothing

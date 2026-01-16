@@ -17,18 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwECore
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+
 Imports SourceGrid2
-Imports EwECore.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports 
+ 
 
 Namespace Ecopath.Input
 
@@ -37,7 +32,7 @@ Namespace Ecopath.Input
     ''' Grid displaying Ecopath Basic Input information.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)>
+    
     Public Class gridTaxonInput
         Inherits cEwEGrid
 

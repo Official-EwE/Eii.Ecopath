@@ -17,17 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Database
-Imports EwEUtils.Logging
-Imports EwEUtils.Utilities
+
+
+Imports EwECore.Database
 Imports Microsoft.Extensions.Logging
 
 
-#End Region ' Imports 
+ 
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.60.0.25:</para>

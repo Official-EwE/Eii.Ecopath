@@ -17,21 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
 
-Imports EwECore
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class gridEcosimGroupInput
         Inherits cEwEGrid
 

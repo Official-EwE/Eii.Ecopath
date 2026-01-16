@@ -17,8 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwECore
+
 Imports EwEUtils.UserInterface
 
 Namespace Style

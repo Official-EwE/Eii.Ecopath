@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmNetworkAnalysis

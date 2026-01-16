@@ -17,18 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-
-Imports System.IO
-Imports EwECore.Database
-Imports EwEPlugin
-Imports EwEUtils.Database
-Imports EwEUtils.Core
-
-#End Region ' Imports
-
 Namespace DataSources
 
     ''' =======================================================================
@@ -82,8 +70,8 @@ Namespace DataSources
         ''' opened as read-only.</param>
         ''' <returns>True if opened successfully.</returns>
         ''' -------------------------------------------------------------------
-        Function Open(strName As String, core As cCore, _
-                      Optional datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+        Function Open(strName As String, core As cCore,
+                      Optional datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet,
                       Optional bReadOnly As Boolean = False) As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------

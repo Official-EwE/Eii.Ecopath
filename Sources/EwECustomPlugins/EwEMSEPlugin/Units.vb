@@ -23,14 +23,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports EwECore
 
-#End Region ' Imports 
+ 
 
 Public Enum eConvertTypes As Integer
     ''' <summary>Do not convert values</summary>

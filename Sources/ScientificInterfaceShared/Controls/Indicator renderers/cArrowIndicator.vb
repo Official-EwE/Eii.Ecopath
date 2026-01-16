@@ -17,9 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports System.Drawing.Drawing2D
-Imports EwEUtils.Utilities
 
 Namespace Controls
 

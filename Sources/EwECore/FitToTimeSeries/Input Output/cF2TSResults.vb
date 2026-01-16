@@ -17,9 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
 
-Imports EwECore
 
 Namespace FitToTimeSeries
 
@@ -36,7 +34,7 @@ Namespace FitToTimeSeries
 
                 Case eRunType.SensitivitySS2VByPredPrey, eRunType.SensitivitySS2VByPredator
                     data = New cSensitivityToVulResults(runType)
-                
+
                 Case eRunType.Search
                     data = New cSearchResults(runType)
 

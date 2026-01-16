@@ -17,19 +17,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 Imports ScientificInterfaceShared.Controls
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Manager for the Network Analysis
@@ -2329,12 +2329,12 @@ Public Class cNetworkManager
 
         'If ecopath has loaded or it has just run 
         'then the network analysis needs to be run or re-run
-        If csm.IsExecutionStateSuperceded(EwEUtils.Core.eCoreExecutionState.EcopathCompleted) Then
+        If csm.IsExecutionStateSuperceded(eCoreExecutionState.EcopathCompleted) Then
             Me.m_runstate = eRunState.NetworkNeedsToRun
         End If
 
         'An ecosim scenario has loaded 
-        If csm.IsExecutionStateSuperceded(EwEUtils.Core.eCoreExecutionState.EcosimLoaded) Then
+        If csm.IsExecutionStateSuperceded(eCoreExecutionState.EcosimLoaded) Then
             Me.m_runstate = eRunState.EcosimIsLoaded
         End If
 

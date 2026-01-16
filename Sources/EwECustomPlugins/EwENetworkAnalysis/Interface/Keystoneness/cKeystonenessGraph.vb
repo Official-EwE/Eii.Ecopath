@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.Windows.Forms
@@ -29,14 +29,14 @@ Imports EwECore
 Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Content manager-derived class, able to plot keystoneness-related values.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-<CLSCompliant(False)> _
+
 Public Class cKeystonenessGraph
     Inherits cContentManager
 

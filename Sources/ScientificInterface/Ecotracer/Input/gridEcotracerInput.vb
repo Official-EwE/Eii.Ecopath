@@ -17,19 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwECore
-Imports EwECore.Style
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecotracer
 
-    <CLSCompliant(False)>
+    
     Public Class gridEcotracerInput
         Inherits cEwEGrid
 

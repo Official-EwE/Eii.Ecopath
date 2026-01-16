@@ -17,16 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-
-Imports System.Drawing
-Imports System.Windows.Forms
-Imports EwECore
-
-#End Region
-
 Namespace Controls
 
     ''' ---------------------------------------------------------------------------
@@ -36,7 +26,7 @@ Namespace Controls
     ''' http://blogs.msdn.com/jaredpar/archive/2006/10/13/custom-combobox.aspx</para>
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(True)> _
+    <CLSCompliant(True)>
     Public Class cCustomToolstripComboBox
 
         ''' <summary>Form to display the control.</summary>

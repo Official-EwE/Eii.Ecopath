@@ -17,17 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils.Utilities
 Imports SourceGrid2.DataModels
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
-    <CLSCompliant(False)>
+    
     Public Class EwEComboBoxCellEditor
         Inherits EditorComboBox
 

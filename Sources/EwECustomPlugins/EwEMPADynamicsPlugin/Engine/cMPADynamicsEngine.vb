@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports System.Globalization
 Imports System.IO
@@ -28,11 +28,11 @@ Imports System.Web
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip
 Imports EwECore
 Imports EwECore.Auxiliary
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 ' ToDo: add leniency to date parsing (yy vs yyyy, M vs MM)
 

@@ -17,15 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.ComponentModel
 Imports EwECore.DataSources
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -354,7 +353,7 @@ Public Class cCoreStateMonitor
 #Region " Data "
 
     Friend Sub UpdateDataState(ds As IEwEDataSource,
-                               Optional tsSendUpdate As EwEUtils.Core.TriState = TriState.UseDefault)
+                               Optional tsSendUpdate As TriState = TriState.UseDefault)
 
         Dim bDatasourceModified As Boolean = False
         Dim bEcopathModified As Boolean = False
@@ -397,7 +396,7 @@ Public Class cCoreStateMonitor
         If Not Me.m_ccPending.Contains(cc) Then Me.m_ccPending.Add(cc)
         If Me.IsBusy Then Return
 
-        Dim pm As EwEPlugin.cPluginManager = Me.m_core.PluginManager
+        Dim pm As EwECore.cPluginManager = Me.m_core.PluginManager
         Dim bHasEcopathRan As Boolean = Me.HasEcopathRan
         Dim bHasEcosimRan As Boolean = Me.HasEcosimRan
         Dim bHasEcospaceRan As Boolean = Me.HasEcospaceRan

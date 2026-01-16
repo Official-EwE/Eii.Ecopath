@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-Option Strict On
-#End Region ' Imports
+
+
+
 
 ''' <summary>
 ''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for biomass averaged over the total modeled area.

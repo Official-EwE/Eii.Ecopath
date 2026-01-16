@@ -17,10 +17,8 @@
 ' ===============================================================================
 '
 Imports EwECore.MSE
-Imports EwEUtils.Core
 Imports EwECore.MSECommandFile
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -1194,13 +1192,13 @@ Namespace MSEBatchManager
 #Region "ICoreInterface implementation"
 
 
-        Public ReadOnly Property CoreComponent As EwEUtils.Core.eCoreComponentType Implements ICoreInterface.CoreComponent
+        Public ReadOnly Property CoreComponent As eCoreComponentType Implements ICoreInterface.CoreComponent
             Get
                 Return eCoreComponentType.MSE '??? maybe needs its own component type
             End Get
         End Property
 
-        Public ReadOnly Property DataType As EwEUtils.Core.eDataTypes Implements ICoreInterface.DataType
+        Public ReadOnly Property DataType As eDataTypes Implements ICoreInterface.DataType
             Get
                 Return eDataTypes.MSEBatchManager
             End Get

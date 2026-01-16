@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports EwECore.Database
 Imports System.Drawing
@@ -28,7 +28,7 @@ Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' The pages supported by the value chain.

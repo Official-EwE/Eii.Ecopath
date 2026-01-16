@@ -17,22 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports System.Drawing
-Imports System.Drawing.Drawing2D
-Imports ScientificInterfaceShared
-Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Definitions
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Utilities
 Imports System.Text
-
-#End Region
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 
 Namespace Controls
 

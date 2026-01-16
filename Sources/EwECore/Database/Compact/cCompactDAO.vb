@@ -17,15 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Threading
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports Microsoft.Office.Interop.Access
 
-#End Region ' Imports
+
 
 Namespace Database
 
@@ -73,7 +72,7 @@ Namespace Database
         Public Function Compact(strFileFrom As String,
                                 strConnectionFrom As String,
                                 strFileTo As String,
-                                strConnectionTo As String) As EwEUtils.Core.eDatasourceAccessType _
+                                strConnectionTo As String) As eDatasourceAccessType _
             Implements IDatabaseCompact.Compact
 
             ' Safety check: can compact at all?

@@ -23,17 +23,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Public Class cBiomassLimits
     Implements IMSEData

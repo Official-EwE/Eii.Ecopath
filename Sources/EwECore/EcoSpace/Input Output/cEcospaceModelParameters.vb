@@ -17,10 +17,9 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
+Imports EwECore.Common
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -28,7 +27,7 @@ Public Class cEcospaceModelParameters
     Inherits cCoreInputOutputBase
 
     ''' <summary>Available Ecospace result writers.</summary>
-    Private m_EcospaceResultsWriters As New List(Of EwEUtils.Core.IEcospaceResultsWriter)
+    Private m_EcospaceResultsWriters As New List(Of IEcospaceResultsWriter)
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceModelParameters)()
 
 #Region " Constructor "

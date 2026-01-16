@@ -17,18 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region
+Imports ScientificInterfaceShared.Controls
 
 Namespace Ecopath
 

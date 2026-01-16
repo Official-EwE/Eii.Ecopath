@@ -17,13 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
+
+
 
 ''' <summary>
 ''' Layer providing access to Ecospace habitat data.

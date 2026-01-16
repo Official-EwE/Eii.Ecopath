@@ -17,19 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Imports EwECore
-Imports EwEUtils.Core
+
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 ' ToDo_JS: remove commands from handlers, and move to central handling across the UI
 

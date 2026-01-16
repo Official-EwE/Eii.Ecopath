@@ -17,16 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports System.Drawing
 
-#End Region ' Imports
+
+
+
 
 Namespace Controls.EwEGrid
 
-    <CLSCompliant(False)> _
+    
     Public Class cEwEGridRowIndexVisualizer
         : Inherits cEwEGridVisualizerBase
 

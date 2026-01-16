@@ -17,26 +17,24 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
+
 
 Option Explicit On
-Option Strict On
+
 
 Imports System.ComponentModel
 Imports System.IO
-Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports ScientificInterfaceShared.Style
 Imports System.Reflection
 Imports System.Security.Permissions
 Imports EwECore.Style
-Imports EwEUtils.Utilities
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 
 #Const DRAW_THREADED = 0

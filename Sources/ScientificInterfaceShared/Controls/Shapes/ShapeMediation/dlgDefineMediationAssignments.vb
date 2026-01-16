@@ -17,17 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports ZedGraph
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
-
-#End Region
 
 Namespace Controls
 

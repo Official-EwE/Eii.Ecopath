@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwEUtils
 Imports System.Drawing
 Imports System.Windows.Forms
@@ -30,14 +30,14 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' 
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-<CLSCompliant(False)> _
+
 Public Class cLindemanSpine
     Inherits cContentManager
 

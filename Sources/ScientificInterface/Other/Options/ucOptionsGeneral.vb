@@ -17,19 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports System.IO
-Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Logging
-Imports EwEUtils.SystemUtilities
-Imports ScientificInterfaceShared.Commands
-
-#End Region
 
 Namespace Other
 
@@ -225,7 +214,7 @@ Namespace Other
 
             If (fileList Is Nothing) Then Return
 
-            Dim fmsg As New cFeedbackMessage(My.Resources.GENERIC_PROMPT_CLEAR_MRU, EwEUtils.Core.eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage(My.Resources.GENERIC_PROMPT_CLEAR_MRU, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.UIContext.Core.Messages.SendMessage(fmsg)
 
             If (fmsg.Reply = eMessageReply.YES) Then

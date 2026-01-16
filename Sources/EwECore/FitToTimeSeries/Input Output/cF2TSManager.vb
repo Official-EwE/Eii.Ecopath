@@ -17,16 +17,14 @@
 ' ===============================================================================
 '
 
-Option Strict On
 
-Imports EwECore.ValueWrapper
+
+Imports System.IO
 Imports System.Threading
 Imports EwECore.FitToTimeSeries
-Imports EwEUtils.Core
 Imports EwECore.SearchObjectives
-Imports System.IO
+Imports EwECore.ValueWrapper
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -239,7 +237,7 @@ Public Class cF2TSManager
     ''' Stores the values in the manager back to the underlying data structures.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function Update(DataType As EwEUtils.Core.eDataTypes) As Boolean Implements SearchObjectives.ISearchObjective.Update
+    Public Function Update(DataType As eDataTypes) As Boolean Implements SearchObjectives.ISearchObjective.Update
 
         Dim f2tsDS As cF2TSDataStructures = Me.m_core.m_FitToTimeSeriesData
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData

@@ -17,8 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEUtils.Core
+
 Imports EwEUtils.Utilities
 
 Namespace EcospaceTimeSeries

@@ -23,13 +23,13 @@
 ' Alliance (SICSA) Postgraduate Industry Internship Programme.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Public Class cSFPGroupsWithTimeSeries
     Inherits cSFPGenericIteration

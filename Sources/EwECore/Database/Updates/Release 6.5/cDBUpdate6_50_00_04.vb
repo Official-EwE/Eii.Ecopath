@@ -17,8 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEUtils.Database
+
+Imports EwECore.Database
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -64,9 +64,9 @@ Friend Class cDBUpdate6_50_00_04
 
         ' First: unindexed layers
         reader = db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDataConnection WHERE (Varname='{0}') OR (VarName='{1}') OR (VarName='{2}')", _
-                                            cin.GetVarName(EwEUtils.Core.eVarNameFlags.LayerDepth), _
-                                            cin.GetVarName(EwEUtils.Core.eVarNameFlags.LayerRelPP), _
-                                            cin.GetVarName(EwEUtils.Core.eVarNameFlags.LayerContaminantRelativeDistribution)))
+                                            cin.GetVarName(eVarNameFlags.LayerDepth), _
+                                            cin.GetVarName(eVarNameFlags.LayerRelPP), _
+                                            cin.GetVarName(eVarNameFlags.LayerContaminantRelativeDistribution)))
         If (reader IsNot Nothing) Then
             writer = db.GetWriter("EcospaceScenarioDataConnection")
             While reader.Read()

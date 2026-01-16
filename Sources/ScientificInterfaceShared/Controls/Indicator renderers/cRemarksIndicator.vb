@@ -17,11 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 Namespace Controls
 
@@ -36,7 +36,7 @@ Namespace Controls
         ''' <summary>
         ''' Renders a remarks indicator onto a given canvas
         ''' </summary>
-         ''' <param name="rcClip">Clip boundary to fit the remarks indicator in</param>
+        ''' <param name="rcClip">Clip boundary to fit the remarks indicator in</param>
         ''' <param name="g">The canvas to render onto</param>
         ''' <param name="bHasRemarks">States whether the indicator is rendered as having remarks (true) or
         ''' as ready for receiving remarks (false)</param>
@@ -50,7 +50,7 @@ Namespace Controls
             If (bHasRemarks) Then
 
                 Dim pt() As Point = GetPoints(bRightToLeft, rcClip)
-  
+
                 Using br As New SolidBrush(clrFill)
                     g.FillPolygon(br, pt)
                 End Using

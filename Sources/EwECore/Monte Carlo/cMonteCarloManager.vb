@@ -17,19 +17,18 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Threading
+Imports EwECore.Common
 Imports EwECore.Ecosim
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Plugins.MonteCarlo
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Manager to run the Ecosim Monte Carlo.
@@ -873,7 +872,7 @@ Public Class cMonteCarloManager
 
     Public Function RestoreOriginalValues() As Boolean
         Debug.Assert(Me.m_mc IsNot Nothing)
-        Me.m_mc.restoreOriginalState()
+        Me.m_mc.RestoreOriginalState()
         Return True
     End Function
 

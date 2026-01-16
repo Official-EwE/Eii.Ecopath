@@ -17,8 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
-Imports EwEUtils.Core
+
+Imports EwECore.Common
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -78,7 +78,7 @@ Public Class cFeedbackMessage
 
 #Region " Property access "
 
-    Public Overrides Property Importance As EwEUtils.Core.eMessageImportance
+    Public Overrides Property Importance As eMessageImportance
         Get
             If MyBase.Importance <> eMessageImportance.Critical And MyBase.Importance <> eMessageImportance.Warning Then
                 ' JS 21Oct13: Revised importance feedback in case it is unknown. 
@@ -92,7 +92,7 @@ Public Class cFeedbackMessage
             End If
             Return MyBase.Importance
         End Get
-        Set(value As EwEUtils.Core.eMessageImportance)
+        Set(value As eMessageImportance)
             MyBase.Importance = value
         End Set
     End Property
@@ -100,12 +100,12 @@ Public Class cFeedbackMessage
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IFeedbackMessage.Reply"/>
     ''' -----------------------------------------------------------------------
-    Public Property Reply() As EwEUtils.Core.eMessageReply Implements IFeedbackMessage.Reply
+    Public Property Reply() As eMessageReply Implements IFeedbackMessage.Reply
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IFeedbackMessage.ReplyStyle"/>
     ''' -----------------------------------------------------------------------
-    Public Property ReplyStyle() As EwEUtils.Core.eMessageReplyStyle Implements IFeedbackMessage.ReplyStyle
+    Public Property ReplyStyle() As eMessageReplyStyle Implements IFeedbackMessage.ReplyStyle
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -119,7 +119,7 @@ Public Class cFeedbackMessage
     ''' Get or set a custom reply label to use when this message is shown in a user interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property CustomReplyLabel(reply As EwEUtils.Core.eMessageReply) As String
+    Public Property CustomReplyLabel(reply As eMessageReply) As String
         Get
             Return Me.m_customlabels(reply)
         End Get

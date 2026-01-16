@@ -17,22 +17,19 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-
 Imports EwECore
-Imports EwEPlugin
-Imports EwEPlugin.Data
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Utilities
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Data
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Controls
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Public Class cEwENetworkAnalysisPlugin
     Inherits cNavTreeControlPlugin
@@ -141,7 +138,7 @@ Public Class cEwENetworkAnalysisPlugin
 
 #Region " UIContext "
 
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
@@ -157,7 +154,7 @@ Public Class cEwENetworkAnalysisPlugin
 
         Me.m_bInitOK = False
         Try
-            Me.m_core = DirectCast(core, EwECore.cCore)
+            Me.m_core = DirectCast(core, cCore)
 
             Me.m_manager = New cNetworkManager(Me.m_core)
 
@@ -174,7 +171,7 @@ Public Class cEwENetworkAnalysisPlugin
     End Sub
 
     Public Sub Dispose() _
-        Implements EwEPlugin.IDisposedPlugin.Dispose
+        Implements IDisposedPlugin.Dispose
 
         If Me.HasUI() Then
             Me.m_frmNA.Close()
@@ -209,7 +206,7 @@ Public Class cEwENetworkAnalysisPlugin
     Private m_bRunWithPathOld As Boolean = False
 
     Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements IEcopathRunInitializedPlugin.EcopathRunInitialized
-        Me.m_manager.EcopathData = DirectCast(EcopathDataAsObject, EwECore.cEcopathDataStructures)
+        Me.m_manager.EcopathData = DirectCast(EcopathDataAsObject, cEcopathDataStructures)
         If (Me.Autosave(eAutosaveType.Ecopath)) Then
             Me.m_bRunWithPathOld = Me.Manager.RunWithEcopath
             Me.Manager.RunWithEcopath = True
@@ -222,12 +219,12 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <param name="EcopathDataStructures"></param>
     ''' <remarks></remarks>
     Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object) _
-        Implements EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted
+        Implements IEcopathRunCompletedPlugin.EcopathRunCompleted
 
         Debug.Assert(TypeOf EcopathDataStructures Is EwECore.cEcopathDataStructures, Me.ToString &
                             ".EcopathRan() argument EcopathDataStructure is not a cEcopathDataStructures object.")
         Try
-            Me.m_manager.EcopathData = DirectCast(EcopathDataStructures, EwECore.cEcopathDataStructures)
+            Me.m_manager.EcopathData = DirectCast(EcopathDataStructures, cEcopathDataStructures)
             'Bug 252 fix by joeh
             Me.m_manager.IsMainNetworkRun = False
             Me.m_manager.IsRequiredPrimaryProdRun = False
@@ -264,9 +261,9 @@ Public Class cEwENetworkAnalysisPlugin
     ''' </summary>
     ''' <param name="EcosimDatastructures"></param>
     ''' <remarks></remarks>
-    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements IEcosimRunInitializedPlugin.EcosimRunInitialized
 
-        Debug.Assert(TypeOf EcosimDatastructures Is EwECore.cEcosimDatastructures, Me.ToString &
+        Debug.Assert(TypeOf EcosimDatastructures Is cEcosimDatastructures, Me.ToString &
                             ".EcosimRunInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object.")
 
         ' Need to turn on Ecosim Network Analysis?
@@ -288,7 +285,7 @@ Public Class cEwENetworkAnalysisPlugin
 
             'set the EcosimData data in the network manager object
             'this is the data the Network analysis will be run on
-            Me.m_manager.EcosimData = DirectCast(EcosimDatastructures, EwECore.cEcosimDatastructures)
+            Me.m_manager.EcosimData = DirectCast(EcosimDatastructures, cEcosimDatastructures)
             'Initialize the Network Analysis for Ecosim
             Me.m_manager.InitNetworkForEcosim()
 
@@ -309,7 +306,7 @@ Public Class cEwENetworkAnalysisPlugin
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single,
                                  EcosimDatastructures As Object,
                                  iTime As Integer, Ecosimresults As Object) _
-        Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+        Implements IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Try
             'Only run the Ecosim Network Analysis if it is turned on
@@ -317,10 +314,10 @@ Public Class cEwENetworkAnalysisPlugin
                 Return
             End If
 
-            If TypeOf EcosimDatastructures Is EwECore.cEcosimDatastructures Then
+            If TypeOf EcosimDatastructures Is cEcosimDatastructures Then
                 'set the EcosimData data in the network manager object
                 'this is the data the Network analysis will be run on
-                Dim esData As cEcosimDatastructures = DirectCast(EcosimDatastructures, EwECore.cEcosimDatastructures)
+                Dim esData As cEcosimDatastructures = DirectCast(EcosimDatastructures, cEcosimDatastructures)
                 Me.m_manager.EcosimTimeStep(BiomassAtTimestep, esData, iTime)
             Else
                 Debug.Assert(False, Me.ToString & ".EcosimEndTimeStep() ")
@@ -334,7 +331,7 @@ Public Class cEwENetworkAnalysisPlugin
     End Sub
 
     Public Sub EcosimRunCompleted(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
+        Implements IEcosimRunCompletedPlugin.EcosimRunCompleted
 
         Try
             ' JS 170911: Sim broadcasting was never used, and the code below might tigger a new Sim run. Idea abadoned
@@ -374,16 +371,16 @@ Public Class cEwENetworkAnalysisPlugin
         Return (typeData Is GetType(INetworkAnalysisData))
     End Function
 
-    Public Function IsEnabled1() As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
+    Public Function IsEnabled1() As Boolean Implements IDataProducerPlugin.IsEnabled
         Return Me.m_bDataEnabled
     End Function
 
-    Public Function SetEnabled(bEnable As Boolean) As Boolean Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+    Public Function SetEnabled(bEnable As Boolean) As Boolean Implements IDataProducerPlugin.SetEnabled
         Me.m_bDataEnabled = bEnable
     End Function
 
     Public Sub SetEnabled(typeData As System.Type, runType As IRunType, bEnabled As Boolean) _
-        Implements EwEPlugin.Data.IDataProducerPlugin.SetEnabled
+        Implements IDataProducerPlugin.SetEnabled
 
         If Not (typeData Is GetType(INetworkAnalysisData)) Then Return
 
@@ -398,7 +395,7 @@ Public Class cEwENetworkAnalysisPlugin
     End Sub
 
     Public Function IsEnabled(typeData As System.Type, runType As IRunType) As Boolean _
-        Implements EwEPlugin.Data.IDataProducerPlugin.IsEnabled
+        Implements IDataProducerPlugin.IsEnabled
 
         If Not (typeData Is GetType(INetworkAnalysisData)) Then Return False
 

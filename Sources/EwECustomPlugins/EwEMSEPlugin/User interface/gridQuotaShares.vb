@@ -23,12 +23,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 Imports EwECore.MSE
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
@@ -37,7 +37,7 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
 
-#End Region ' Imports
+
 
 
 
@@ -46,7 +46,7 @@ Imports ScientificInterfaceShared.Style
 ''' Grid to allow species quota interaction.
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class gridQuotaShares
     Inherits cEwEGrid
 

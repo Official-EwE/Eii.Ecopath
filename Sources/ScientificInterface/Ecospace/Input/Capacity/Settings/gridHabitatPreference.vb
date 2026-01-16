@@ -17,19 +17,6 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
-Imports SourceGrid2.BehaviorModels
-
-#End Region
-
 Namespace Ecospace
 
     ''' =======================================================================
@@ -37,9 +24,9 @@ Namespace Ecospace
     ''' Grid control, implements the Ecospace interface to assign species to habitats.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    
     Public Class gridHabitatPreference
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
 #Region " Construction / destruction "
 

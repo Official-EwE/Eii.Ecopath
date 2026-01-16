@@ -17,21 +17,22 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports EwECore.Ecosim
 Imports ScientificInterfaceShared.Style
 Imports EwECore
 Imports ScientificInterfaceShared.Commands
 Imports System.IO
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
+Imports System.Windows.Forms
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

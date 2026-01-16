@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Xml
 
-#End Region ' Imports
+
 
 Public Interface IXMLDocSettings
 

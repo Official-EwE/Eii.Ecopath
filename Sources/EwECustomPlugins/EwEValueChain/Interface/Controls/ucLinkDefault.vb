@@ -17,16 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
-Imports System.Drawing.Drawing2D
-Imports ScientificInterfaceShared.Style
+Imports EwECore.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Database.cEwEDatabase
+Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
@@ -65,7 +64,7 @@ Public Class ucLinkDefault
 
     End Sub
 
-    Protected Overrides Sub OnStyleguideChanged(changeFlags As cStyleGuide.eChangeType) 
+    Protected Overrides Sub OnStyleguideChanged(changeFlags As cStyleGuide.eChangeType)
         If ((changeFlags And cStyleGuide.eChangeType.Colours) > 0) Then
             Me.Invalidate(True)
         End If

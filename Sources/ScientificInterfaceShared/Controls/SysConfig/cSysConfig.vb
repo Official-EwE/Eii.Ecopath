@@ -17,17 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Reflection
-Imports EwEUtils.SystemUtilities
-Imports EwEPlugin
-Imports EwEUtils.Utilities
 Imports System.Text
+Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports CoreResoures = EwECore.My.Resources.CoreDefaults
 
-#End Region ' Imports
+
 
 Namespace Controls
 

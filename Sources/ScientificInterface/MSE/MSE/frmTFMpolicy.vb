@@ -17,17 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
+
+
 Imports EwECore.MSE
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.Windows.Forms
 Imports ZedGraph
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region ' Imports
+
 
 Namespace Ecosim
 
@@ -197,17 +194,17 @@ Namespace Ecosim
 
                 End If
 
-                End If
+            End If
 
-                If lLines.Count > 0 Then
-                    ' Plot graph, but rescale ONLY when not dragging
-                    Me.m_zgh.PlotLines(lLines.ToArray, 1, (Me.m_dragtype = eDragType.None))
-                    Me.m_graph.Cursor = Cursors.Default
-                Else
-                    ' Clear graph
-                    Me.m_zgh.PlotLines(Nothing)
-                    Me.m_graph.Cursor = Cursors.No
-                End If
+            If lLines.Count > 0 Then
+                ' Plot graph, but rescale ONLY when not dragging
+                Me.m_zgh.PlotLines(lLines.ToArray, 1, (Me.m_dragtype = eDragType.None))
+                Me.m_graph.Cursor = Cursors.Default
+            Else
+                ' Clear graph
+                Me.m_zgh.PlotLines(Nothing)
+                Me.m_graph.Cursor = Cursors.No
+            End If
 
         End Sub
 
@@ -248,7 +245,7 @@ Namespace Ecosim
 
             ' Find the point that was clicked, and make sure the point list is editable
             If (pane.FindNearestPoint(pt, curve, iIndex)) Then
-                bIsNear = (curve IsNot Nothing) 
+                bIsNear = (curve IsNot Nothing)
             End If
 
             If bIsNear Then

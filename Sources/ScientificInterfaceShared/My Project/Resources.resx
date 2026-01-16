@@ -3248,4 +3248,13 @@
     <value>Landing</value>
     <comment>Time series type</comment>
   </data>
+  <data name="VERSION_EXT_COMPILED" xml:space="preserve">
+    <value>{0} (compiled {1})</value>
+  </data>
+  <data name="BITNESS_32" xml:space="preserve">
+    <value>32 bit</value>
+  </data>
+  <data name="BITNESS_64" xml:space="preserve">
+    <value>64 bit</value>
+  </data>
 </root>

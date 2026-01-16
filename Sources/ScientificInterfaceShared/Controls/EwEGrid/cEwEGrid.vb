@@ -17,29 +17,21 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
 
 Imports System.ComponentModel
 Imports System.Globalization
 Imports System.IO
 Imports System.Text
 Imports System.Threading
-Imports EwECore
-Imports EwEUtils.Core
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region
 
 Namespace Controls.EwEGrid
 
@@ -94,7 +86,7 @@ Namespace Controls.EwEGrid
     ''' </code>
     ''' </example>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public MustInherit Class cEwEGrid
         Inherits SourceGrid2.Grid
         Implements IUIElement

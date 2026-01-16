@@ -17,18 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 Namespace SpatialData
 
@@ -289,8 +282,8 @@ Namespace SpatialData
 
         End Sub
 
-        Private Sub OnSpatialIndexUpdated(strMessage As String, _
-                                          state As eProgressState, _
+        Private Sub OnSpatialIndexUpdated(strMessage As String,
+                                          state As eProgressState,
                                           sProgress As Single)
 
             If (Me.m_core IsNot Nothing) Then

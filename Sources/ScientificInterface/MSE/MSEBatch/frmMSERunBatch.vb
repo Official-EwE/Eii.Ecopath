@@ -17,9 +17,6 @@
 ' ===============================================================================
 '
 
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Forms
-
 Imports EwECore.MSE
 Imports ZedGraph
 

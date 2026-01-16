@@ -18,14 +18,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Text
 Imports EwECore
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 Public Class cSimpleNetwork
     Inherits cNetwork

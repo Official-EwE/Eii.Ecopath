@@ -15,20 +15,13 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
 Imports System.Drawing
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
-Imports EwEUtils.Utilities
+Imports EwECore.Common
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 Public Class cSpatialRaster
     Implements ISpatialRaster
@@ -78,8 +71,8 @@ Public Class cSpatialRaster
     ''' <returns>A value, or <paramref name="dNoDataValue"/> if either row or 
     ''' column are invalid, or if the cell does not hold any data.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Cell(ByVal iRow As Integer, _
-                         ByVal iCol As Integer, _
+    Public Function Cell(ByVal iRow As Integer,
+                         ByVal iCol As Integer,
                          Optional ByVal dNoDataValue As Double = -9999) As Double _
         Implements ISpatialRaster.Cell
         Return Me.m_data(iRow, iCol)
@@ -113,7 +106,7 @@ Public Class cSpatialRaster
     ''' <inheritdocs cref="ISpatialRaster.StandardDeviation"/>
     ''' -------------------------------------------------------------------
     Public Function StandardDeviation() As Double _
-        Implements EwEUtils.SpatialData.ISpatialRaster.StandardDeviation
+        Implements EwECore.Common.ISpatialRaster.StandardDeviation
         Me.CalculateStats()
         Return Me.m_dStdDev
     End Function
@@ -301,7 +294,7 @@ Public Class cSpatialRaster
 
 #End Region ' Internals
 
-    Public Function IsValid() As Boolean Implements EwEUtils.SpatialData.ISpatialRaster.IsValid
+    Public Function IsValid() As Boolean Implements EwECore.Common.ISpatialRaster.IsValid
         Return True
     End Function
 

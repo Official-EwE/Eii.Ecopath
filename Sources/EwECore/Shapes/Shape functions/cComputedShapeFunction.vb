@@ -17,14 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
+
 
 ''' <summary>
 ''' A <see cref="cShapeFunction"/> which points descrbibe a distribution determined

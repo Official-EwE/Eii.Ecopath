@@ -16,12 +16,11 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
+
+
 
 Namespace SpatialData
 

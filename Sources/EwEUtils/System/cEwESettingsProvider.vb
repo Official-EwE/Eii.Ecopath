@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 Imports System.Collections.Specialized
 Imports System.Configuration
@@ -29,7 +29,7 @@ Imports System.Windows.Forms
 Imports System.Xml
 Imports EwEUtils.SystemUtilities
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

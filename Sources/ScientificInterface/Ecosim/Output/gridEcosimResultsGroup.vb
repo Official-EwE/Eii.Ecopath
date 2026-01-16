@@ -17,21 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-Imports EwECore
 Imports ScientificInterface.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-#End Region
-
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class gridEcosimResultsGroup
-        : Inherits gridResultsBase
+        Inherits gridResultsBase
 
         Private m_iFleetSelected As Integer
         Private m_iNumVisibleGroups As Integer
@@ -98,7 +91,7 @@ Namespace Ecosim
             Dim aCalc() As Integer = {4, 7, 10}
 
             Me.m_iNumVisibleGroups = 0
-            For iGroup As Integer = 1 To Me.core.nGroups
+            For iGroup As Integer = 1 To Me.Core.nGroups
                 If Me.StyleGuide.GroupVisible(iGroup) Then
                     lName.Add(Me.Core.EcosimGroupOutputs(iGroup).Name)
                     Me.m_iNumVisibleGroups += 1

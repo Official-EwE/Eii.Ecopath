@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Collections.Generic
 Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+
 
 Public Interface IResultView
 

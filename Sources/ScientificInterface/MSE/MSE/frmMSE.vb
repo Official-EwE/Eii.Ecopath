@@ -17,18 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
 Imports EwECore.MSE
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
 Imports ZedGraph
-
-#End Region
 
 Public Class frmMSE
 

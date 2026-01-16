@@ -17,16 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
-Imports EwEUtils.Logging
+Imports EwECore.Common
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 Namespace SpatialData
 

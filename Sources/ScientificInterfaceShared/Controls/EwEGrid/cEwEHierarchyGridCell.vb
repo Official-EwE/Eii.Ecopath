@@ -16,13 +16,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-#End Region ' Imports
+
 
 Namespace Controls.EwEGrid
 
@@ -36,7 +36,7 @@ Namespace Controls.EwEGrid
     ''' Add child rows via <see cref="cEwEHierarchyGridCell.AddChildRow">AddChildRow</see>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cEwEHierarchyGridCell
         Inherits cEwECellBase
 

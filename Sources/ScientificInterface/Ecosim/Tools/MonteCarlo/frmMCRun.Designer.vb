@@ -1041,7 +1041,7 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_btnApply)
             Me.Controls.Add(Me.m_btnStop)
             Me.Controls.Add(Me.m_btnRunTrials)
-            Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+            Me.CoreExecutionState = eCoreExecutionState.EcosimLoaded
             Me.Name = "frmMCRun"
             Me.TabText = "Monte Carlo simulations"
             Me.m_tcMain.ResumeLayout(False)

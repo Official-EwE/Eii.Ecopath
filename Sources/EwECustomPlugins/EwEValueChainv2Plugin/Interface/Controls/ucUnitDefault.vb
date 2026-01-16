@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 Imports ValueChain

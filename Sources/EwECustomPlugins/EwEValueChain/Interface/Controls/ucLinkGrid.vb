@@ -17,24 +17,24 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports SourceGrid2
-Imports ScientificInterfaceShared.Controls.EwEGrid
+
+
 Imports System.Reflection
-Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Database.cEwEDatabase
 Imports EwECore
+Imports EwECore.Database.cEwEDatabase
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports SourceGrid2
 
-#End Region ' Imports
+
 
 ''' ===========================================================================
 ''' <summary>
 ''' Grid for showing a whack of links.
 ''' </summary>
 ''' ===========================================================================
-<CLSCompliant(False)> _
+
 Public Class ucLinkGrid
     : Inherits cEwEGrid
 

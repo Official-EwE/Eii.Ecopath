@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls.EwEGrid
@@ -30,7 +30,7 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -141,12 +141,12 @@ Friend Class frmUI
     Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
         MyBase.OnCoreMessage(msg)
 
-        If (msg.Source = EwEUtils.Core.eCoreComponentType.Ecosim) And
+        If (msg.Source = eCoreComponentType.Ecosim) And
            (msg.Type = eMessageType.EcosimNYearsChanged Or msg.Type = eMessageType.DataAddedOrRemoved) Then
             Me.UpdateEcosimRunTime()
         End If
 
-        'If (msg.Source = EwEUtils.Core.eCoreComponentType.TimeSeries) And _
+        'If (msg.Source = eCoreComponentType.TimeSeries) And _
         '   (msg.Type = eMessageType.DataAddedOrRemoved) Then
         '    Me.UpdateEcosimRunTime()
         'End If

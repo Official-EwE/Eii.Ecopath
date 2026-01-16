@@ -30,18 +30,11 @@
 '    * make populate call wait if thread for desired map isn't finished yet
 '    * datasets need an interface to disable caching and preloading that adapters must honour
 
-#Region " Imports "
-
-Option Strict On
 Imports System.IO
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
+Imports EwECore.Common
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 Namespace SpatialData
 

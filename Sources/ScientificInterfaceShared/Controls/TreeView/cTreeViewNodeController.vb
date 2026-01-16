@@ -17,14 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports System.Windows.Forms
-Imports EwEUtils.Core
+
+
 Imports ScientificInterfaceShared.Commands
 
-#End Region ' Imports
+
 
 Namespace Controls
 

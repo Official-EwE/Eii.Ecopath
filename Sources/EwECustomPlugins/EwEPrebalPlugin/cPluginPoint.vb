@@ -17,19 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwEPlugin
-Imports ScientificInterfaceShared.Controls
 Imports EwECore
-Imports EwEUtils.Core
-Imports System.Windows.Forms
-Imports System.Drawing
-
-#End Region
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.UI
+Imports ScientificInterfaceShared.Controls
 
 Public Class cPluginPoint
     Implements IEcopathRunCompleted2Plugin
@@ -42,8 +34,8 @@ Public Class cPluginPoint
 
 #Region " Running "
 
-    Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object, _
-                                   ByRef TaxonDataStructures As Object, _
+    Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object,
+                                   ByRef TaxonDataStructures As Object,
                                    ByRef StanzaDataStructures As Object) _
         Implements IEcopathRunCompleted2Plugin.EcopathRunCompleted
 
@@ -92,7 +84,7 @@ Public Class cPluginPoint
     ''' <inheritdocs cref="IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
         Get
             Return My.Resources.DISPLAYNAME
         End Get

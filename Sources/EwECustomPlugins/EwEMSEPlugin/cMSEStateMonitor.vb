@@ -23,10 +23,10 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Option Explicit On
 
-Imports EwEUtils.Core
+Imports EwECore.Common
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Style

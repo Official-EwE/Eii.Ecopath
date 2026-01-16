@@ -17,13 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Text
 Imports System.Xml
 Imports EwECore.Auxiliary
+Imports EwECore.Common
 Imports EwECore.Database
 Imports EwECore.DataSources
 Imports EwECore.Ecosim
@@ -36,11 +37,6 @@ Imports EwECore.SearchObjectives
 Imports EwECore.SpatialData
 Imports EwECore.ValueWrapper
 Imports EwELicense
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Database
-Imports EwEUtils.Logging
-Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
@@ -48,7 +44,7 @@ Imports Debug = System.Diagnostics.Debug
 
 
 
-#End Region ' Imports
+
 
 #Disable Warning IDE0017 ' Suppress "Object initialization can be simplified" 
 #Disable Warning IDE0009 ' Suppress "Add Me qualification" 
@@ -141,9 +137,6 @@ Public Class cCore
     ''' <summary>Core state manager</summary>
     ''' <remarks>performs actions to bring core state up-to-date</remarks>
     Private m_StateManager As cCoreStateManager = Nothing
-
-    ''' <summary>Manager to access interface specific to the "Game" interface </summary>
-    Private m_gameManager As cGameServerInterface = Nothing
 
     Private m_ShapeManagers As New Dictionary(Of eDataTypes, cBaseShapeManager)
     Private m_PedigreeManagers As New Dictionary(Of eVarNameFlags, cPedigreeManager)
@@ -1297,7 +1290,6 @@ Public Class cCore
         m_SampleManager = New cEcopathSampleManager(Me)
         m_MonteCarlo = New cMonteCarloManager()
         m_ConTracer = New cContaminantTracer()
-        m_gameManager = New cGameServerInterface(Me)
         m_ArenaManager = New cEcosimArenaManager(Me)
 
         InitThreadedProcesses()
@@ -3545,8 +3537,6 @@ Public Class cCore
 
                 Me.m_EcopathStats = New cEcopathStats(Me, cCore.NULL_VALUE)
 
-                Me.m_gameManager.Init()
-
                 Me.initEcoFunctions()
 
                 If Not bsuccess Then
@@ -3742,7 +3732,6 @@ Public Class cCore
             Me.m_StateMonitor.UpdateDataState(Nothing)
 
             ' Clear (not destroy) managers 
-            Me.m_gameManager.Clear()
             For Each pdMng As cPedigreeManager In Me.m_PedigreeManagers.Values
                 pdMng.Clear()
             Next
@@ -6086,7 +6075,7 @@ Public Class cCore
         Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
 
         If (ds IsNot Nothing) Then
-            bAvailable = ds.IsDataAvailable(New EwEPlugin.cEcosimRunType)
+            bAvailable = ds.IsDataAvailable(New EwECore.cEcosimRunType)
         End If
 
         parms.AllowValidation = False
@@ -14660,7 +14649,7 @@ Public Class cCore
                 'update all the variables
                 Me.MSEManager.UpdateAssesmentVars()
 
-                'jb if the game client has edited the fisheries quotas make sure the status flags are reset 
+                'jb if the fisheries quotas are changed, make sure the status flags are reset 
                 'the client may have edited values that are not editable
                 obj.ResetStatusFlags()
 
@@ -15095,7 +15084,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="paAdded">A loaded <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub m_pluginManager_AssemblyAdded(paAdded As EwEPlugin.cPluginAssembly) _
+    Private Sub m_pluginManager_AssemblyAdded(paAdded As EwECore.cPluginAssembly) _
         Handles m_pluginManager.AssemblyAdded
 
         Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_SANDBOXED, Path.GetFileNameWithoutExtension(paAdded.Filename)),
@@ -15109,7 +15098,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="paRemoved">A removed <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub m_pluginManager_AssemblyRemoved(paRemoved As EwEPlugin.cPluginAssembly) _
+    Private Sub m_pluginManager_AssemblyRemoved(paRemoved As EwECore.cPluginAssembly) _
         Handles m_pluginManager.AssemblyRemoved
 
         m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_UNLOADED, Path.GetFileNameWithoutExtension(paRemoved.Filename)),
@@ -15169,10 +15158,10 @@ Public Class cCore
     ''' <summary>
     ''' Callback for <see cref="cPluginManager.CanExecutePlugin">Plug-in manager CanExecutePlugin delegate</see>,
     ''' which the plug-in manager must invoke to test if a plug-in can be enabled by testing a given 
-    ''' <see cref="EwEUtils.Core.eCoreExecutionState">Core execution state</see> against the
+    ''' <see cref="eCoreExecutionState">Core execution state</see> against the
     ''' <see cref="cCoreStateMonitor.CoreExecutionState">current core execution state</see>.
     ''' </summary>
-    ''' <param name="coreExecutionState">The <see cref="EwEUtils.Core.eCoreExecutionState">Core execution state</see> to test.</param>
+    ''' <param name="coreExecutionState">The <see cref="eCoreExecutionState">Core execution state</see> to test.</param>
     ''' <returns>True if the current core state enables to tested core execution state.</returns>
     ''' -----------------------------------------------------------------------
     Private Function CanExecutePlugin(coreExecutionState As eCoreExecutionState) As Boolean
@@ -15520,16 +15509,6 @@ Public Class cCore
 
 #End Region ' Samples
 
-#Region " Game manager/interface "
-
-    Public ReadOnly Property GameManager() As cGameServerInterface
-        Get
-            Return m_gameManager
-        End Get
-    End Property
-#End Region
-
-
 #Region " Eco Functions "
     Private Sub initEcoFunctions()
         Try
@@ -15554,7 +15533,7 @@ Public Class cCore
 #If Not NET Then
 #Region " License "
 
-    <CLSCompliant(False)>
+    
     Public ReadOnly Property License As cLicense
         Get
             If (Me.m_license Is Nothing) Then

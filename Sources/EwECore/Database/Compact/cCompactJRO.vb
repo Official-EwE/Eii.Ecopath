@@ -17,16 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
-Imports JRO
-Imports Microsoft.Win32
+
+
 Imports System.IO
 Imports System.Text
+Imports Microsoft.Win32
 
-#End Region ' Imports
+
 
 Namespace Database
 
@@ -82,7 +80,7 @@ Namespace Database
         Public Function Compact(strFileFrom As String, _
                                 strConnectionFrom As String, _
                                 strFileTo As String, _
-                                strConnectionTo As String) As EwEUtils.Core.eDatasourceAccessType _
+                                strConnectionTo As String) As eDatasourceAccessType _
             Implements IDatabaseCompact.Compact
 
             Dim engine As JRO.JetEngine = Nothing

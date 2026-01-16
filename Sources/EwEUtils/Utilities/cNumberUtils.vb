@@ -17,16 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 Imports System.Collections.Generic
 Imports System.Drawing
 Imports System.IO
 Imports System.Security.AccessControl
 
-#End Region ' Imports
+
 
 Namespace Utilities
 

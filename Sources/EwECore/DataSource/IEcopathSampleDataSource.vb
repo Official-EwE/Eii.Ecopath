@@ -17,12 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore.Samples
 
-#End Region ' Imports
+
 
 Namespace DataSources
 

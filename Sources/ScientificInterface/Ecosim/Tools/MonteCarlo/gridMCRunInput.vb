@@ -17,23 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.SystemUtilities
-
-#End Region
 
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
+    
     Public Class gridMCRunInput
         : Inherits cEwEGrid
 

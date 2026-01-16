@@ -17,19 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.IO
 Imports EwECore.Database
 Imports EwECore.DataSources
-Imports EwEUtils.Core
-Imports EwEUtils.Database
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-#End Region ' Imports
 
 ''' <summary>
 ''' Class to export an Ecosim time step to a new Ecopath model.

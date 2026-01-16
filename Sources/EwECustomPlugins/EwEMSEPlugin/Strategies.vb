@@ -22,16 +22,16 @@
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 
-#End Region ' Imports 
+ 
 
 ''' <summary>
 ''' Class to wrap a list of Strategies into an object

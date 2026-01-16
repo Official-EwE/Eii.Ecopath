@@ -1,5 +1,5 @@
-﻿Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Commands
+﻿Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Style
 
 Namespace Controls
 

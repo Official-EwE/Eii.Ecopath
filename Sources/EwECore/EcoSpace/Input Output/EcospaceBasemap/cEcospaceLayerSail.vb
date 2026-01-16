@@ -17,12 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
+
+
 
 ''' <summary>
 ''' Layer providing access to Ecospace sailing cost data.
@@ -67,7 +66,7 @@ Public Class cEcospaceLayerSail
 
 #Region " Overrides "
 
-     Protected Overrides Function DefaultName() As String
+    Protected Overrides Function DefaultName() As String
         If (Me.Index = 0) Then Return My.Resources.CoreDefaults.CORE_ALL_FLEETS
         Return Me.m_core.EcopathFleetInputs(Me.Index).Name
     End Function

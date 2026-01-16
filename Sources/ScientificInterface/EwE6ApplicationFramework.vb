@@ -17,22 +17,21 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.IO
 Imports System.Reflection
-Imports EwECore
 Imports EwELicense
-Imports EwEUtils.Core
 Imports EwEUtils.Logging
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Serilog
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
+
 
 Module EwE6ApplicationFramework
 
@@ -52,12 +51,14 @@ Module EwE6ApplicationFramework
 
     Public Sub Main()
 
+        Dim logPath = Path.GetDirectoryName(LoggingContext.LogFile)
+
         ' Configure Serilog
         Log.Logger = New LoggerConfiguration() _
             .MinimumLevel.Debug() _
             .Enrich.WithThreadId() _
             .Enrich.WithThreadName() _
-            .WriteTo.File("Logs\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
+            .WriteTo.File($"{logPath}\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
             .CreateLogger()
 
         ' Initialize LoggerFactory
@@ -214,7 +215,7 @@ Module EwE6ApplicationFramework
 
     Public Function EwEVersion(bIncludeCompileDate As Boolean, bIncludeBitness As Boolean, bIncludeRelease As Boolean) As String
 
-        Dim strCaption As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, cCore.Version(bIncludeCompileDate, bIncludeBitness))
+        Dim strCaption As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, Version(bIncludeCompileDate, bIncludeBitness))
         If bIncludeRelease Then
             Dim strRelease As String = EwERelease()
             If (Not String.IsNullOrEmpty(strRelease)) Then
@@ -224,6 +225,42 @@ Module EwE6ApplicationFramework
         Return strCaption
 
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the EwE6.exe assembly version, formatted as a string.
+    ''' </summary>
+    ''' <param name="bIncludeBitness">Inlcude 32 or 64 bitness in version string.</param>
+    ''' <param name="bIncludeCompilationDate">Inlcude compilation date in version string.</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Version(Optional bIncludeCompilationDate As Boolean = False, Optional bIncludeBitness As Boolean = False) As String
+        Get
+            Try
+                Dim ass As Assembly = Assembly.GetAssembly(GetType(EwE6ApplicationFramework))
+                Dim an As AssemblyName = ass.GetName()
+                Dim strVersion As String = cAssemblyUtils.GetVersion(an).ToString
+
+                ' Remove the last period and everything after it, to get the Semantic version (3 digits; major, minor, patch)
+                Dim lastDotIndex As Integer = strVersion.LastIndexOf("."c)
+                If lastDotIndex > 0 Then
+                    strVersion = strVersion.Substring(0, lastDotIndex)
+                End If
+
+                If bIncludeCompilationDate Then
+                    strVersion = cStringUtils.Localize(SharedResources.VERSION_EXT_COMPILED, strVersion, cAssemblyUtils.GetCompileDate(ass).ToShortDateString)
+                End If
+
+                If bIncludeBitness Then
+                    strVersion = cStringUtils.Localize("{0} - {1}", strVersion, If(cSystemUtils.Is64BitProcess, SharedResources.BITNESS_64, SharedResources.BITNESS_32))
+                End If
+
+                Return strVersion
+            Catch ex As Exception
+                m_logger.LogError(ex, "Version")
+                Return ""
+            End Try
+        End Get
+    End Property
 
     ''' <summary>
     ''' Returns the release mode of EwE: beta, debug, official release

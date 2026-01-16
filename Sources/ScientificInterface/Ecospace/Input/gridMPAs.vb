@@ -17,18 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports EwECore
-Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Core
-
-#End Region
 
 Namespace Ecospace
 
@@ -37,7 +27,7 @@ Namespace Ecospace
     ''' Grid to configure the open/closed states of MPAs
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    
     Public Class gridMPAs
         : Inherits cEwEGrid
 
@@ -102,7 +92,7 @@ Namespace Ecospace
 
                 MyBase.UIContext = value
 
-             End Set
+            End Set
         End Property
 
         ''' -----------------------------------------------------------------------

@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Core data layer wrapper for transect raster data.

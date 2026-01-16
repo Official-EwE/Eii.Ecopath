@@ -17,9 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Data.SqlClient
 Imports System.Collections.Generic
 Imports System.Text
@@ -27,7 +27,7 @@ Imports System
 Imports System.Data
 Imports System.Diagnostics
 
-#End Region ' Imports
+
 
 Namespace Database
 

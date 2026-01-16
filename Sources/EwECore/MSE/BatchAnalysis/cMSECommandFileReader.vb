@@ -20,7 +20,6 @@
 Imports System.IO
 
 Imports EwECore.MSE
-Imports EwEUtils.Core
 Imports EwECore.MSEBatchManager
 Imports EwEUtils.Utilities
 
@@ -66,7 +65,7 @@ Namespace MSECommandFile
         Private m_dicControls As Dictionary(Of String, List(Of IMSEParameter)) = New Dictionary(Of String, List(Of IMSEParameter))
         Private m_MSEdata As cMSEDataStructures
 
-        Private m_ConTypeLookup As Dictionary(Of Integer, EwEUtils.Core.eQuotaTypes)
+        Private m_ConTypeLookup As Dictionary(Of Integer, eQuotaTypes)
         Private m_RunTypeLookup As Dictionary(Of Integer, eMSEBatchRunTypes)
         Private m_OuputTagToEnumLookup As Dictionary(Of String, eMSEBatchOuputTypes)
         'Private m_RunTypeToTagLookup As Dictionary(Of eMSEBatchRunTypes, String)
@@ -84,11 +83,11 @@ Namespace MSECommandFile
             Me.m_BatchData = BatchManager.BatchData
             Me.m_Manager = BatchManager
 
-            Me.m_ConTypeLookup = New Dictionary(Of Integer, EwEUtils.Core.eQuotaTypes)
-            Me.m_ConTypeLookup.Add(0, EwEUtils.Core.eQuotaTypes.NoControls)
-            Me.m_ConTypeLookup.Add(1, EwEUtils.Core.eQuotaTypes.Weakest)
-            Me.m_ConTypeLookup.Add(2, EwEUtils.Core.eQuotaTypes.HighestValue)
-            Me.m_ConTypeLookup.Add(3, EwEUtils.Core.eQuotaTypes.Selective)
+            Me.m_ConTypeLookup = New Dictionary(Of Integer, eQuotaTypes)
+            Me.m_ConTypeLookup.Add(0, eQuotaTypes.NoControls)
+            Me.m_ConTypeLookup.Add(1, eQuotaTypes.Weakest)
+            Me.m_ConTypeLookup.Add(2, eQuotaTypes.HighestValue)
+            Me.m_ConTypeLookup.Add(3, eQuotaTypes.Selective)
 
             Me.m_RunTypeLookup = New Dictionary(Of Integer, eMSEBatchRunTypes)
             Me.m_RunTypeLookup.Add(0, eMSEBatchRunTypes.Any)
@@ -597,18 +596,18 @@ Namespace MSECommandFile
         End Property
 
         ''' <summary>
-        ''' Convert the Control Index from the command file into an EwEUtils.Core.eQuotaTypes
+        ''' Convert the Control Index from the command file into an eQuotaTypes
         ''' </summary>
         ''' <param name="iControlIndex"></param>
-        ''' <returns>A valid EwEUtils.Core.eQuotaTypes</returns>
+        ''' <returns>A valid eQuotaTypes</returns>
         ''' <remarks></remarks>
-        Friend Function ControlToQuotaType(iControlIndex As Integer) As EwEUtils.Core.eQuotaTypes
+        Friend Function ControlToQuotaType(iControlIndex As Integer) As eQuotaTypes
             Try
                 Return Me.m_ConTypeLookup.Item(iControlIndex)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".getQuotaType() Exception: " & ex.Message)
             End Try
-            Return EwEUtils.Core.eQuotaTypes.NoControls
+            Return eQuotaTypes.NoControls
         End Function
 
 

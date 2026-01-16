@@ -17,18 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Database
-Imports EwEUtils.Core
-Imports System.Text
+
+
 Imports System.IO
-Imports EwEUtils.Logging
+Imports System.Text
+Imports EwECore.Common
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Database
 

@@ -17,19 +17,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
+
+
 Imports ZedGraph
-Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Core
 
-#End Region ' Imports
+
 
 Namespace Controls
 
-    <CLSCompliant(False)> _
+    
     Public Class cEcosimOutputPlotHelper
         Inherits cZedGraphHelper
 

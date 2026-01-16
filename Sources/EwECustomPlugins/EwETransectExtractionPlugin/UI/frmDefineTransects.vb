@@ -17,20 +17,17 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports System.Drawing
+
+
 Imports System.Windows.Forms
-Imports EwETransectExtractionPlugin
-Imports EwEUtils.Core
+Imports EwECore
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports ScientificInterfaceShared.Style.cStyleGuide
 
-#End Region ' Imports
+
 
 Public Class frmDefineTransects
 

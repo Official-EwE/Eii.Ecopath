@@ -17,14 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports System.Windows.Forms
+
+
 Imports System.Reflection
 Imports System.Text
 
-#End Region ' Imports
+
 
 Namespace Controls
 

@@ -17,20 +17,8 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
-Imports System.Text
-Imports System.Globalization
-Imports EwECore
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
-Imports SourceLibrary
-
-#End Region
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace
 
@@ -39,7 +27,7 @@ Namespace Ecospace
     ''' Grid to apply environmental response functions to capacity maps.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class gridApplyMortalityResponses
         Inherits gridApplyShapeBase
 

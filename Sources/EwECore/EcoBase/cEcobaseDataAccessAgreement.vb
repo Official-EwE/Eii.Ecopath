@@ -17,18 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
+
+
 Imports System.Xml
-Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
 
-#End Region ' Imports
+
 
 Namespace WebServices.Ecobase
 
@@ -109,7 +106,7 @@ Namespace WebServices.Ecobase
                 Next
 
                 For Each node As XmlNode In doc.GetElementsByTagName("agreement")
-                   selfie.UserAgreement = node.InnerText
+                    selfie.UserAgreement = node.InnerText
                 Next
 
                 Return selfie

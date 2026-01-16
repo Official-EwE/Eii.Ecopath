@@ -23,16 +23,16 @@
 ' Alliance (SICSA) Postgraduate Industry Internship Programme.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports EwECore
 Imports EwECore.FitToTimeSeries
 Imports System.Windows.Forms
 
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

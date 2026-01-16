@@ -17,16 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.IO
 Imports EwECore.Database
-Imports EwEUtils.Core
-Imports EwEUtils.Database
 Imports EwEUtils.SystemUtilities
-
-#End Region ' Imports
 
 Namespace DataSources
 
@@ -202,7 +195,7 @@ Namespace DataSources
                 Case eDataSourceTypes.EIIXML
                     Return New cEIIXMLDataSource()
 
-                Case eDataSourceTypes.Access2003, _
+                Case eDataSourceTypes.Access2003,
                      eDataSourceTypes.Access2007
                     ' Create a DB datasource on a MS Access database
                     Return New cDBDataSource(New cEwEAccessDatabase())

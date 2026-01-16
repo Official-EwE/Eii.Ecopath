@@ -19,7 +19,7 @@
 
 Imports System.Windows.Forms
 
-<CLSCompliant(False)> _
+
 Public Class ucPlotOfMTIOptions
     Inherits usercontrol
 

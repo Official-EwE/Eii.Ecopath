@@ -17,14 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 Imports EwECore
-Imports EwEUtils.Core
+Imports EwECore.Common
 
-#End Region ' Imports
+
 
 Public Class cLandingsLinkManager
 
@@ -38,8 +38,8 @@ Public Class cLandingsLinkManager
 
     Public Sub OnEcopathMessage(msg As cMessage)
 
-        If (msg.Source <> EwEUtils.Core.eCoreComponentType.Ecopath) Then Return
-        If (msg.DataType <> EwEUtils.Core.eDataTypes.FleetInput) Then Return
+        If (msg.Source <> eCoreComponentType.Ecopath) Then Return
+        If (msg.DataType <> eDataTypes.FleetInput) Then Return
         If (Not msg.HasVariable(eVarNameFlags.Landings)) Then Return
 
         Me.ManageLinks()

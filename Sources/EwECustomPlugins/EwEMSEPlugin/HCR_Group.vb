@@ -22,9 +22,9 @@
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 
 Imports System.Text
@@ -32,7 +32,7 @@ Imports EwECore
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 '
 Namespace HCR_GroupNS
 

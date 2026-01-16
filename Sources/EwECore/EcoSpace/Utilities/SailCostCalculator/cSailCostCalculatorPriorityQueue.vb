@@ -16,11 +16,11 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
 
-#End Region ' Imports
+
+
+
 
 ''' <summary>
 ''' Helper class for sorting a number of <see cref="cCostPoint">cost-at-location</see>

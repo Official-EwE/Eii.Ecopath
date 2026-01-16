@@ -17,7 +17,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style

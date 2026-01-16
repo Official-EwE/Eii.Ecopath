@@ -17,15 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Core
+
+
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Commands
-Imports System.Windows.Forms
 
-#End Region ' Imports
+
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

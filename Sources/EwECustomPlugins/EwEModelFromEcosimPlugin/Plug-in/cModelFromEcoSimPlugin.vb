@@ -17,18 +17,14 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.IO
 Imports EwECore
 Imports EwECore.DataSources
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
-
-#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -62,31 +58,31 @@ Public Class cModelFromEcosimPluginPoint
 
 #Region " Basic plug-in bits "
 
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author() As String Implements IPlugin.Author
         Get
             Return "Ecopath International Initiative"
         End Get
     End Property
 
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact() As String Implements IPlugin.Contact
         Get
             Return "mailto:ewedevteam@gmail.com"
         End Get
     End Property
 
-    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property DisplayName() As String Implements IPlugin.DisplayName
         Get
             Return My.Resources.DISPLAYNAME
         End Get
     End Property
 
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description() As String Implements IPlugin.Description
         Get
             Return ""
         End Get
     End Property
 
-    Public Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(core As Object) Implements IPlugin.Initialize
 
         Debug.Assert(Me.m_core Is Nothing)
         Debug.Assert(Me.m_data Is Nothing)
@@ -97,7 +93,7 @@ Public Class cModelFromEcosimPluginPoint
 
     End Sub
 
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name() As String Implements IPlugin.Name
         Get
             Return "EwESaveEcopathModelFromEcosimPlugin"
         End Get
@@ -108,19 +104,19 @@ Public Class cModelFromEcosimPluginPoint
 #Region " UI integration "
 
     Public Sub UIContext(uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Implements IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
     Public ReadOnly Property ControlImage() As Object _
-        Implements EwEPlugin.IGUIPlugin.ControlImage
+        Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
     End Property
 
     Public ReadOnly Property ControlTooltipText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+        Implements IGUIPlugin.ControlTooltipText
         Get
             Return My.Resources.DISPLAY_TOOLTIP
         End Get
@@ -129,28 +125,28 @@ Public Class cModelFromEcosimPluginPoint
     Public Sub OnControlClick(sender As Object,
                               e As System.EventArgs,
                               ByRef frmPlugin As Object) _
-                              Implements EwEPlugin.IGUIPlugin.OnControlClick
+                              Implements IGUIPlugin.OnControlClick
         If (Me.m_uic IsNot Nothing) Then
             frmPlugin = DirectCast(Me.UI, System.Windows.Forms.Form)
         End If
     End Sub
 
     Public ReadOnly Property NavigationTreeItemLocation() As String _
-        Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+        Implements INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             Return "ndTimeDynamic|ndEcosimTools"
         End Get
     End Property
 
     Public ReadOnly Property MenuItemLocation As String _
-        Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+        Implements IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuFile\ExportModel"
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState() As eCoreExecutionState _
+        Implements IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.EcosimLoaded
         End Get
@@ -160,7 +156,7 @@ Public Class cModelFromEcosimPluginPoint
 
 #Region " Autosaving "
 
-    Public Property AutoSave As Boolean Implements EwEPlugin.IAutoSavePlugin.AutoSave
+    Public Property AutoSave As Boolean Implements IAutoSavePlugin.AutoSave
         Get
             Return Me.m_data.Enabled
         End Get
@@ -170,12 +166,12 @@ Public Class cModelFromEcosimPluginPoint
     End Property
 
     Public Function AutoSaveSubPath() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
+        Implements IAutoSavePlugin.AutoSaveOutputPath
         Return Me.m_data.OutputPath
     End Function
 
     Public Function AutoSaveType() As eAutosaveTypes _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveType
+        Implements IAutoSavePlugin.AutoSaveType
         Return Me.m_data.AutosaveType
     End Function
 
@@ -201,7 +197,7 @@ Public Class cModelFromEcosimPluginPoint
 #Region " Ecosim integration "
 
     Public Sub LoadEcosimScenario(dataSource As Object) _
-        Implements EwEPlugin.IEcosimPlugin.LoadEcosimScenario
+        Implements IEcosimPlugin.LoadEcosimScenario
 
         Me.m_data.Clear()
 
@@ -219,7 +215,7 @@ Public Class cModelFromEcosimPluginPoint
     End Sub
 
     Public Sub SaveEcosimScenario(dataSource As Object) _
-        Implements EwEPlugin.IEcosimPlugin.SaveEcosimScenario
+        Implements IEcosimPlugin.SaveEcosimScenario
 
         ' Save settings
         My.Settings.BACalcMode = Me.m_data.BACalcMode
@@ -235,7 +231,7 @@ Public Class cModelFromEcosimPluginPoint
     End Sub
 
     Public Sub CloseEcosimScenario() _
-        Implements EwEPlugin.IEcosimPlugin.CloseEcosimScenario
+        Implements IEcosimPlugin.CloseEcosimScenario
 
         Me.m_data.Clear()
 
@@ -248,7 +244,7 @@ Public Class cModelFromEcosimPluginPoint
     ''' <param name="EcosimDatastructures"></param>
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+        Implements IEcosimRunInitializedPlugin.EcosimRunInitialized
 
         ' Use a static version of the enabled flag for the duration of an Ecosim run 
         Me.m_bAutosaving = Me.AutoSave
@@ -267,7 +263,7 @@ Public Class cModelFromEcosimPluginPoint
     ''' <param name="EcosimDatastructures"></param>
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunCompleted(EcosimDatastructures As Object) _
-        Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
+        Implements IEcosimRunCompletedPlugin.EcosimRunCompleted
 
         If Me.m_bAutosaving Then
             Me.m_generator.EndRun()
@@ -279,7 +275,7 @@ Public Class cModelFromEcosimPluginPoint
                                      EcosimDatastructures As Object,
                                      iTime As Integer,
                                      Ecosimresults As Object) _
-                                     Implements EwEPlugin.IEcosimEndTimestepPostPlugin.EcosimEndTimeStepPost
+                                     Implements IEcosimEndTimestepPostPlugin.EcosimEndTimeStepPost
 
         If (Not Me.m_bAutosaving) Then Return
 

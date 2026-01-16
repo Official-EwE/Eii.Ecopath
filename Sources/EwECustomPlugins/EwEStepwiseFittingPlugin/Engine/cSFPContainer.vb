@@ -23,12 +23,12 @@
 ' Alliance (SICSA) Postgraduate Industry Internship Programme.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Imports EwECore
 
-#End Region ' Imports
+
 
 ' ToDo:
 ' - Remove scenario storage to parameters, remove from container
@@ -140,7 +140,7 @@ Public Class cSFPContainer
         Try
 
             ' No need to load plug-ins. Rather not, actually.
-            'core.PluginManager = New EwEPlugin.cPluginManager()
+            'core.PluginManager = New EwECore.cPluginManager()
             'core.PluginManager.Core = core ' Let's get to know each other, shall we?
             'core.PluginManager.LoadPlugins()
 

@@ -17,15 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports System.Reflection
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
-
-#End Region ' Imports
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
 
 Namespace SpatialData
 
@@ -513,13 +508,13 @@ Namespace SpatialData
 
 #Region " ICoreInterface implementation "
 
-        Public ReadOnly Property CoreComponent As EwEUtils.Core.eCoreComponentType Implements ICoreInterface.CoreComponent
+        Public ReadOnly Property CoreComponent As eCoreComponentType Implements ICoreInterface.CoreComponent
             Get
                 Return eCoreComponentType.Ecospace
             End Get
         End Property
 
-        Public ReadOnly Property DataType As EwEUtils.Core.eDataTypes Implements ICoreInterface.DataType
+        Public ReadOnly Property DataType As eDataTypes Implements ICoreInterface.DataType
             Get
                 Return eDataTypes.EcospaceSpatialDataConnection
             End Get

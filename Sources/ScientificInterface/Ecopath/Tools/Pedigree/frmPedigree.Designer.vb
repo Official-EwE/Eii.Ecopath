@@ -212,7 +212,7 @@ Namespace Ecopath.Tools
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"
             Me.m_grid.PedigreeStyleGuide = Nothing
-            Me.m_grid.SelectedVariable = EwEUtils.Core.eVarNameFlags.NotSet
+            Me.m_grid.SelectedVariable = eVarNameFlags.NotSet
             Me.m_grid.Size = New System.Drawing.Size(547, 401)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _

@@ -17,14 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-
-Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
-
-#End Region ' Imports
+Imports EwECore.Common
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -63,7 +56,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.Cell"/>
     ''' -----------------------------------------------------------------------
     Public Function Cell(iRow As Integer, iCol As Integer, Optional dNoDataValue As Double = -9999.0) As Double _
-        Implements EwEUtils.SpatialData.ISpatialRaster.Cell
+        Implements EwECore.Common.ISpatialRaster.Cell
         Return Convert.ToDouble(Me.m_parent.Value(iRow, iCol, Me.m_strField))
     End Function
 
@@ -71,7 +64,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.CellSize"/>
     ''' -----------------------------------------------------------------------
     Public Function CellSize() As Double _
-         Implements EwEUtils.SpatialData.ISpatialRaster.CellSize
+         Implements EwECore.Common.ISpatialRaster.CellSize
         Return Me.m_parent.CellSize
     End Function
 
@@ -79,7 +72,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.Max"/>
     ''' -----------------------------------------------------------------------
     Public Function Max() As Double _
-        Implements EwEUtils.SpatialData.ISpatialRaster.Max
+        Implements EwECore.Common.ISpatialRaster.Max
         Me.CalculateStats()
         Return Me.m_dMax
     End Function
@@ -88,7 +81,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.Mean"/>
     ''' -----------------------------------------------------------------------
     Public Function Mean() As Double _
-        Implements EwEUtils.SpatialData.ISpatialRaster.Mean
+        Implements EwECore.Common.ISpatialRaster.Mean
         Me.CalculateStats()
         Return Me.m_dMean
     End Function
@@ -97,7 +90,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.Min"/>
     ''' -----------------------------------------------------------------------
     Public Function Min() As Double _
-            Implements EwEUtils.SpatialData.ISpatialRaster.Min
+            Implements EwECore.Common.ISpatialRaster.Min
         Me.CalculateStats()
         Return Me.m_dMin
     End Function
@@ -106,7 +99,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.NoData"/>
     ''' -----------------------------------------------------------------------
     Public Function NoData() As Single _
-        Implements EwEUtils.SpatialData.ISpatialRaster.NoData
+        Implements EwECore.Common.ISpatialRaster.NoData
         Return cCore.NULL_VALUE
     End Function
 
@@ -114,7 +107,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.NumCols"/>
     ''' -----------------------------------------------------------------------
     Public Function NumCols() As Integer _
-        Implements EwEUtils.SpatialData.ISpatialRaster.NumCols
+        Implements EwECore.Common.ISpatialRaster.NumCols
         Return Me.m_parent.InCol
     End Function
 
@@ -122,7 +115,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.NumRows"/>
     ''' -----------------------------------------------------------------------
     Public Function NumRows() As Integer _
-        Implements EwEUtils.SpatialData.ISpatialRaster.NumRows
+        Implements EwECore.Common.ISpatialRaster.NumRows
         Return Me.m_parent.InRow
     End Function
 
@@ -130,7 +123,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.NumValueCells"/>
     ''' -----------------------------------------------------------------------
     Public Function NumValueCells() As Long _
-        Implements EwEUtils.SpatialData.ISpatialRaster.NumValueCells
+        Implements EwECore.Common.ISpatialRaster.NumValueCells
         Me.CalculateStats()
         Return Me.m_lNumValueCells
     End Function
@@ -139,7 +132,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.Save"/>
     ''' -----------------------------------------------------------------------
     Public Function Save(strFile As String) As Boolean _
-        Implements EwEUtils.SpatialData.ISpatialRaster.Save
+        Implements EwECore.Common.ISpatialRaster.Save
         ' ToDo: execute this via the parent
         Return False
     End Function
@@ -148,7 +141,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.StandardDeviation"/>
     ''' -----------------------------------------------------------------------
     Public Function StandardDeviation() As Double _
-        Implements EwEUtils.SpatialData.ISpatialRaster.StandardDeviation
+        Implements EwECore.Common.ISpatialRaster.StandardDeviation
         Return Me.m_dStdDev
     End Function
 
@@ -156,7 +149,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.TopLeft"/>
     ''' -----------------------------------------------------------------------
     Public Function TopLeft() As System.Drawing.PointF _
-        Implements EwEUtils.SpatialData.ISpatialRaster.TopLeft
+        Implements EwECore.Common.ISpatialRaster.TopLeft
         Return Me.m_parent.PosTopLeft
     End Function
 
@@ -171,7 +164,7 @@ Public Class cEcospaceImportExportRaster
     ''' <inheritdocs cref="ISpatialRaster.IsValid"/>
     ''' -----------------------------------------------------------------------
     Public Function IsValid() As Boolean _
-            Implements EwEUtils.SpatialData.ISpatialRaster.IsValid
+            Implements EwECore.Common.ISpatialRaster.IsValid
         Return True
     End Function
 

@@ -17,13 +17,13 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System
 Imports System.Drawing
 
-#End Region ' Imports
+
 
 Namespace Utilities
 

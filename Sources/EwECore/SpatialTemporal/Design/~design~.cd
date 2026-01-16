@@ -61,12 +61,12 @@
   </Class>
   <Class Name="EwECore.SpatialData.cSpatialDataAdapter" Collapsed="true">
     <Position X="6.25" Y="1.25" Width="3.75" />
-    <AssociationLine Name="m_converters" Type="EwEUtils.SpatialData.ISpatialDataConverter">
+    <AssociationLine Name="m_converters" Type="EwECore.Common.ISpatialDataConverter">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-0.565" Y="0.662" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="m_datasets" Type="EwEUtils.SpatialData.ISpatialDataSet">
+    <AssociationLine Name="m_datasets" Type="EwECore.Common.ISpatialDataSet">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-0.336" Y="0.631" />
       </MemberNameLabel>
@@ -80,11 +80,11 @@
       <Field Name="m_datasets" />
     </ShowAsAssociation>
   </Class>
-  <Interface Name="EwEUtils.SpatialData.ISpatialDataConverter" Collapsed="true">
+  <Interface Name="EwECore.Common.ISpatialDataConverter" Collapsed="true">
     <Position X="8.25" Y="3" Width="1.75" />
     <TypeIdentifier />
   </Interface>
-  <Interface Name="EwEUtils.SpatialData.ISpatialDataSet" Collapsed="true">
+  <Interface Name="EwECore.Common.ISpatialDataSet" Collapsed="true">
     <Position X="6.25" Y="3" Width="1.5" />
     <TypeIdentifier />
   </Interface>

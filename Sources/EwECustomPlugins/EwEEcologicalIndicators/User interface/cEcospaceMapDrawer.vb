@@ -17,15 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Drawing
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports
+
 
 ''' <summary>
 ''' Renderer for Ecospace-derived indicators

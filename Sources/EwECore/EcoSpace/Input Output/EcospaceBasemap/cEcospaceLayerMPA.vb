@@ -17,13 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
+
+
 
 ''' <summary>
 ''' Layer providing access to Ecospace migration data.
@@ -32,7 +30,7 @@ Public Class cEcospaceLayerMPA
     Inherits cEcospaceLayerInteger
 
     Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerMPA, iIndex)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerMPA, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerMPA
     End Sub
 

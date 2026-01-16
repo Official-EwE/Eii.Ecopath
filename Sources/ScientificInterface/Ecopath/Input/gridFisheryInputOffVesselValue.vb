@@ -17,17 +17,7 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Option Explicit On
-
-Imports EwECore
-Imports EwECore.Style
-Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region
 
 Namespace Ecopath.Input
 
@@ -36,7 +26,7 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Off-vessel price user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)>
+    
     Public Class gridFisheryOffVesselValue
         Inherits cEwEGrid
 

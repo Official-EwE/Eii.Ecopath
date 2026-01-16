@@ -17,17 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Explicit On
-Option Strict On
-
 Imports ScientificInterfaceShared.Forms
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
-
-#End Region
 
 Namespace Ecopath
 

@@ -17,17 +17,15 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 
 Imports System.IO
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports OfficeOpenXml.FormulaParsing.Excel.Functions.Text
 
 
-#End Region ' Imports
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Write a time series dataset to a text output source.

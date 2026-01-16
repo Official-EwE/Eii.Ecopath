@@ -18,16 +18,11 @@
 '
 
 'Option Explicit On
-Option Strict On
+
 
 Imports EwECore.Ecosim
-Imports EwEUtils.Core
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
-Imports EwEPlugin
 
 
 Namespace FishingPolicy

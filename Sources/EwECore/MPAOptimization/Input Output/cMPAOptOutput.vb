@@ -17,9 +17,8 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 
 ''' <summary>
 ''' Results of the current search iteration

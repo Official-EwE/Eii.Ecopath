@@ -17,12 +17,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports  "
 
-Option Strict On
-Imports EwEUtils.Core
 
-#End Region ' Imports 
+
+
 
 ''' <summary>
 ''' Layer providing access to Ecospace migration data.

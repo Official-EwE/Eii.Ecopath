@@ -22,15 +22,15 @@
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
-#Region " Imports "
 
-Option Strict On
+
+
 Option Explicit On
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Utilities
 
-#End Region ' Imports
+
 
 ' TO MARK:
 ' JS 05May14: Sorry, hijacked this file and simplified things a bit:

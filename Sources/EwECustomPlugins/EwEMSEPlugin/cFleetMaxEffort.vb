@@ -23,7 +23,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+
 Option Explicit On
 
 ' The cFleetMaxEffort object holds all the data and methods for decaying maximum efforts

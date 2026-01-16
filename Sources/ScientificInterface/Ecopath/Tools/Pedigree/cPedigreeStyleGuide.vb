@@ -17,12 +17,11 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
 
-#End Region ' Imports
+
+
+
 
 Namespace Ecopath.Tools
 

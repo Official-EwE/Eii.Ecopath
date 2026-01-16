@@ -17,24 +17,21 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
+
+
+Imports System.IO
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
-Imports System.IO
-Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Controls.Map
 

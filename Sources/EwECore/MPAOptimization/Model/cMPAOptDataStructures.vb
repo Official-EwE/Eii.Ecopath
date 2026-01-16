@@ -26,7 +26,7 @@ End Enum
 Public Class cMPAOptDataStructures
 
     Const MIN_RUN_LENGTH As Integer = 3
- 
+
     Public CurRow As Integer
     Public CurCol As Integer
     Public bestrow As Integer

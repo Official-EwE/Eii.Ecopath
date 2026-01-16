@@ -17,15 +17,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
+
 Imports ScientificInterfaceShared.Properties
 
-#End Region ' Imports 
+ 
 
 Namespace Controls.EwEGrid
 
@@ -35,7 +32,7 @@ Namespace Controls.EwEGrid
     ''' as a child cell in a hierarchy.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)>
+    
     Public Class cPropertyRowHeaderChildCell
         Inherits cPropertyRowHeaderCell
 

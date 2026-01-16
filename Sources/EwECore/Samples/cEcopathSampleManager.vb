@@ -17,22 +17,20 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
 
-Option Strict On
+
+
 Imports System.Globalization
 Imports System.Text
 Imports EwECore.Database
 Imports EwECore.DataSources
 Imports EwECore.Ecopath
-Imports EwEUtils.Core
 Imports EwEUtils.Extensions
 Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-#End Region ' Imports
+
 
 Namespace Samples
 

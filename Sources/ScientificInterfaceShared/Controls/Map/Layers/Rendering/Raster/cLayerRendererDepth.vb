@@ -17,15 +17,9 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports EwECore
 Imports EwECore.Auxiliary
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
-
-#End Region 'Imports
+Imports ScientificInterfaceShared.Style
 
 Namespace Controls.Map.Layers
 

@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <Platforms>x86;x64;AnyCPU</Platforms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
@@ -45,10 +45,10 @@
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>EwEMSPLink.snk</AssemblyOriginatorKeyFile>
-    <AssemblyName>EwEMSPLink</AssemblyName>
+    <AssemblyName>EwEMSPLinkPlugin</AssemblyName>
     <RootNamespace>EwEMSPLink</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EwECore\EwECore_dotnet.vbproj" />
+    <ProjectReference Include="..\..\..\EwECore\EwECore.vbproj" />
   </ItemGroup>
 </Project>
