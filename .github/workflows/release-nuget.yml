@@ -65,7 +65,7 @@ jobs:
   # 2) BUILD AND PACK NUGET
   # This job restores dependencies and packs NuGet packages in dependency order.
   build-pack-nuget:
-    name: Build and Pack NuGet packages (EwEUtils -> EwEPlugin -> EwECore -> ScientificInterfaceShared)
+    name: Build and Pack NuGet packages (EwEUtils -> EwECore -> ScientificInterfaceShared)
     runs-on: windows-latest
     needs: [version]  # requires version outputs from the version job
     steps:
@@ -116,7 +116,7 @@ jobs:
         run: dotnet restore .\Sources\EwE6.sln
         shell: pwsh
 
-      # Pack in dependency order: EwEUtils -> EwEPlugin -> EwECore -> ScientificInterfaceShared
+      # Pack in dependency order: EwEUtils -> EwECore -> ScientificInterfaceShared
       - name: Pack EwEUtils
         run: |
           dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
@@ -125,15 +125,6 @@ jobs:
             /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
-
-      #- name: Pack EwEPlugin
-      #  run: |
-      #    dotnet pack Sources/EwEPlugin/EwEPlugin.vbproj `
-      #      --configuration Release `
-      #      --output ./nuget `
-      #      /p:PackageVersion=${{ needs.version.outputs.semver }} `
-      #      /p:UseProjectReferences=false
-      #  shell: pwsh
 
       - name: Pack EwECore
         run: |

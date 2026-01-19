@@ -160,7 +160,6 @@
   <ItemGroup>
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
-    <Content Include="Includes\Troschuetz.Random.dll" />
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>

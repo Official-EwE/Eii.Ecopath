@@ -18,7 +18,6 @@
 ' ===============================================================================
 '
 
-Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
 
@@ -117,7 +116,7 @@ Module EcospaceInputs
 
         'Populate the Capacity map base on Capacity maps
         For i As Integer = 1 To core.nGroups
-            core.EcospaceGroupInputs(i).CapacityCalculationType = EwEUtils.Core.eEcospaceCapacityCalType.EnvResponses
+            core.EcospaceGroupInputs(i).CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses
         Next
 
     End Sub
@@ -288,7 +287,7 @@ Module EcospaceInputs
 
     Private Sub onCoreExecutionStateEvent(statemonitor As EwECore.cCoreStateMonitor) Handles statemonitor.CoreExecutionStateEvent
 
-        If statemonitor.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcospaceCompleted Then
+        If statemonitor.CoreExecutionState = eCoreExecutionState.EcospaceCompleted Then
             'Ecospace has completed a run 
             System.Console.WriteLine("Ecospace run completed")
 

@@ -17,10 +17,10 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-Option Strict On
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports System.IO
 Imports System.Reflection
@@ -91,9 +91,6 @@ Public Class cAutoSavePlugin
             ' Send the message
             Me.m_core.Messages.SendMessage(msg)
 
-            ' Write exception to the EwE log file, explaining where it occurred
-            cLog.Write(ex, "cAutoSavePlugin.EcosimRunCompleted")
-
         End Try
     End Sub
 
@@ -119,21 +116,21 @@ Public Class cAutoSavePlugin
     End Sub
 
     Public ReadOnly Property Author() As String _
-        Implements EwEPlugin.IPlugin.Author
+        Implements IPlugin.Author
         Get
             Return "your name"
         End Get
     End Property
 
     Public ReadOnly Property Contact() As String _
-        Implements EwEPlugin.IPlugin.Contact
+        Implements IPlugin.Contact
         Get
             Return "your email"
         End Get
     End Property
 
     Public ReadOnly Property Description() As String _
-        Implements EwEPlugin.IPlugin.Description
+        Implements IPlugin.Description
         Get
             Dim assembly As Assembly = Assembly.GetAssembly(GetType(cAutoSavePlugin))
             Dim descr As AssemblyDescriptionAttribute = CType(assembly.GetCustomAttribute(GetType(AssemblyDescriptionAttribute)), AssemblyDescriptionAttribute)

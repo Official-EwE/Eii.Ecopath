@@ -18,40 +18,40 @@
 ' ===============================================================================
 '
 
-Imports EwEPlugin
+Imports EwECore.Plugins
 
 Public Class cSkeletonPlugin
     Implements IPlugin
 
-    Public Sub Initialize(core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(core As Object) Implements IPlugin.Initialize
         Console.WriteLine("SkeletonPlugin has loaded")
     End Sub
 
-    Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
             Return "A developer"
         End Get
     End Property
 
-    Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "SkeletonPlugin"
         End Get
     End Property
 
-    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
             Return "Skeleton Plugin"
         End Get

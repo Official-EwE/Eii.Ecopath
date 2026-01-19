@@ -18,9 +18,11 @@
 ' ===============================================================================
 '
 
-Imports EwEPlugin
 Imports EwECore
-Imports EwECore.Ecosim
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Core
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.UI
 
 
 Public Class cMonteCarloPlugin
@@ -29,9 +31,9 @@ Public Class cMonteCarloPlugin
     Implements IMenuItemPlugin
 
     Private m_core As cCore
-    Private m_ecosim As EwECore.Ecosim.cEcoSimModel
+    Private m_ecosim As EwECore.Ecosim.cEcosimModel
     Private m_simdata As cEcosimDatastructures
-    Private m_ecopath As Ecopath.cEcoPathModel
+    Private m_ecopath As Ecopath.cEcopathModel
 
     Private m_EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
 
@@ -122,7 +124,7 @@ Public Class cMonteCarloPlugin
                     Me.SampleDietMatrix()
 
                     'Set the Ecopath parameters using the Monte Carlo input parameters set above
-                    If MonteCarlo.selectNewEcopathParameters() Then
+                    If MonteCarlo.SelectNewEcopathParameters() Then
 
                         'write some of the new Ecopath parameters to the console window
                         'Again for debugging
@@ -336,7 +338,7 @@ Public Class cMonteCarloPlugin
 
 #Region "Interface Menu Events"
 
-    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
         Try
 
             'testMultipleEcosimRuns()
@@ -353,7 +355,7 @@ Public Class cMonteCarloPlugin
 #Region "Initialization"
 
     Public Sub Initialize(ByVal core As Object) _
-        Implements EwEPlugin.IPlugin.Initialize
+        Implements IPlugin.Initialize
 
         Try
             Debug.Assert(TypeOf core Is cCore, "Oh My IPlugin.Initialize() failed to pass in a valid core!")
@@ -367,21 +369,21 @@ Public Class cMonteCarloPlugin
 
     End Sub
 
-    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
+    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements ICorePlugin.CoreInitialized
 
-        Debug.Assert(TypeOf objEcoSim Is EwECore.Ecosim.cEcoSimModel, "CoreInitialized() failed to pass in a valid EcosimModel!")
-        If TypeOf objEcoSim Is EwECore.Ecosim.cEcoSimModel Then
-            m_ecosim = DirectCast(objEcoSim, EwECore.Ecosim.cEcoSimModel)
+        Debug.Assert(TypeOf objEcoSim Is EwECore.Ecosim.cEcosimModel, "CoreInitialized() failed to pass in a valid EcosimModel!")
+        If TypeOf objEcoSim Is EwECore.Ecosim.cEcosimModel Then
+            m_ecosim = DirectCast(objEcoSim, EwECore.Ecosim.cEcosimModel)
         End If
 
-        Debug.Assert(TypeOf objEcoPath Is EwECore.Ecopath.cEcoPathModel, "CoreInitialized() failed to pass in a valid EcopathModel!")
-        If TypeOf objEcoPath Is EwECore.Ecopath.cEcoPathModel Then
-            m_ecopath = DirectCast(objEcoPath, EwECore.Ecopath.cEcoPathModel)
+        Debug.Assert(TypeOf objEcoPath Is EwECore.Ecopath.cEcopathModel, "CoreInitialized() failed to pass in a valid EcopathModel!")
+        If TypeOf objEcoPath Is EwECore.Ecopath.cEcopathModel Then
+            m_ecopath = DirectCast(objEcoPath, EwECore.Ecopath.cEcopathModel)
         End If
 
     End Sub
 
-    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
+    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements IEcosimInitializedPlugin.EcosimInitialized
         Debug.Assert(TypeOf EcosimDatastructures Is cEcosimDatastructures, "EcosimInitialized() failed to pass in valid Ecosim Data!")
         If TypeOf EcosimDatastructures Is cEcosimDatastructures Then
             m_simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
@@ -393,58 +395,58 @@ Public Class cMonteCarloPlugin
 #Region "Core Plugin Stuff that needs to be here"
 
     Public ReadOnly Property Author() As String _
-        Implements EwEPlugin.IPlugin.Author
+        Implements IPlugin.Author
         Get
             Return "EwEDevTeam"
         End Get
     End Property
 
     Public ReadOnly Property Contact() As String _
-        Implements EwEPlugin.IPlugin.Contact
+        Implements IPlugin.Contact
         Get
             Return "not me"
         End Get
     End Property
 
     Public ReadOnly Property Description() As String _
-        Implements EwEPlugin.IPlugin.Description
+        Implements IPlugin.Description
         Get
             Return Me.Name
         End Get
     End Property
 
     Public ReadOnly Property Name() As String _
-        Implements EwEPlugin.IPlugin.Name
+        Implements IPlugin.Name
         Get
             Return "EwEMonteCarloSamplePlugin"
         End Get
     End Property
 
-    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IGUIPlugin.DisplayName
+    Public ReadOnly Property DisplayName As String Implements IGUIPlugin.DisplayName
         Get
             Return "Monte Carlo Sample"
         End Get
     End Property
 
-    Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
         Get
             Return ""
         End Get
     End Property
 
-    Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+            Return eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 
-    Public ReadOnly Property MenuItemLocation As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation As String Implements IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
     End Property
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage As Object Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
