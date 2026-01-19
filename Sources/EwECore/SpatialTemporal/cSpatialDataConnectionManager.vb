@@ -314,7 +314,7 @@ Namespace SpatialData
             Dim lDatasets As New List(Of ISpatialDataSet)
 
             For Each t As Type In Assembly.GetAssembly(GetType(cCore)).GetTypes()
-                If t.IsAssignableFrom(GetType(ISpatialDataSet)) And t.IsPublic Then
+                If t.IsAssignableFrom(GetType(ISpatialDataSet)) And t.IsPublic And t.IsClass Then
                     Dim ds As ISpatialDataSet = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
                     If (ds.VarName = vn Or ds.VarName = eVarNameFlags.NotSet Or vn = eVarNameFlags.NotSet) Then
                         lDatasets.Add(ds)
