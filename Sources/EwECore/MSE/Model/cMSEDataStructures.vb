@@ -805,9 +805,6 @@ Namespace MSE
                 ReDim Me.QStar(Me.NGroups, Me.nFleets)
                 ReDim Me.Qest(Me.NGroups, Me.nFleets)
 
-                ReDim Me.CatchYearGroup(Me.NGroups)
-                ReDim Me.CatchYear(Me.nFleets, Me.NGroups)
-
                 Me.lstNonOptSolutions = New List(Of Integer)
 
             Catch ex As Exception

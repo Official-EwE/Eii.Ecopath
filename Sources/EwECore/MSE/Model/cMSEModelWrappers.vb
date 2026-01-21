@@ -6,7 +6,6 @@ Imports System.IO
 Imports EwECore
 Imports EwECore.Ecosim
 Imports EwECore.ExternalData
-Imports EwECore.Plugins
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Logging
@@ -32,8 +31,6 @@ Namespace MSE
         Function SetFtimeFromGear(ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean
 
         Function CatchbyGroupFleetTimeStep(igrp As Integer, iFleet As Integer, iyear As Integer) As Single
-
-        Property SearchMode As eSearchModes
 
         WriteOnly Property onModelTimeStep As onModelTimeStepDelegate
 
@@ -74,15 +71,6 @@ Namespace MSE
         Private WriteOnly Property IMSEModelWrapper_onModelTimeStep As IMSEModelWrapper.onModelTimeStepDelegate Implements IMSEModelWrapper.onModelTimeStep
             Set(value As IMSEModelWrapper.onModelTimeStepDelegate)
                 m_OnModelTimeStepDelegate = value
-            End Set
-        End Property
-
-        Public Property SearchMode As eSearchModes Implements IMSEModelWrapper.SearchMode
-            Get
-                Return m_Ecosim.SearchData.SearchMode
-            End Get
-            Set(value As eSearchModes)
-                m_Ecosim.SearchData.SearchMode = value
             End Set
         End Property
 
@@ -148,15 +136,6 @@ Namespace MSE
             End Set
         End Property
 
-        Public Property SearchMode As eSearchModes Implements IMSEModelWrapper.SearchMode
-            Get
-                Return m_Ecospace.SearchData.SearchMode
-            End Get
-            Set(value As eSearchModes)
-                m_Ecospace.SearchData.SearchMode = value
-            End Set
-        End Property
-
         Public Sub Init(Core As cCore, Ecosim As cEcosimModel, EcoSpace As cEcoSpace) Implements IMSEModelWrapper.Init
             m_Core = Core
             m_Ecospace = EcoSpace
@@ -178,6 +157,7 @@ Namespace MSE
         End Function
 
         Public Function Run() As Boolean Implements IMSEModelWrapper.Run
+            m_Ecospace.SearchData.SearchMode = eSearchModes.MSE
             Return Me.m_Core.RunEcospace(AddressOf EcoSpaceCoreTimeStepDelegate, RunOnThread:=False)
         End Function
 
