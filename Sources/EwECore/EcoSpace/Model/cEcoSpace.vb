@@ -4486,6 +4486,7 @@ exitline:
                                 'fishing in each cell i,j in the loop that calculates Attract(ig,i,j), as:
                                 Pencost = 0
                                 For isp = 1 To EcoSpaceData.NGroups
+                                    Debug.Assert(Not Single.IsNaN(EcoSpaceData.Bcell(i, j, isp)), "Why!")
                                     Pencost = Pencost + Me.EcoSpaceData.Pencon(isp) * EcoSpaceData.Bcell(i, j, isp) * EcoSimData.relQ(iFlt, isp)
                                 Next
                                 'If Pencost > 1 Then

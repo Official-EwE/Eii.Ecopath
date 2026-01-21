@@ -256,7 +256,8 @@ Namespace MSE
             Me.m_refData = RefData
 
 
-            Me.m_Model = MSEModelFactory.ModelFactory(eModelTypes.EcoSpace)
+            Me.m_Model = MSEModelFactory.ModelFactory(eModelTypes.Ecosim)
+            'Me.m_Model = MSEModelFactory.ModelFactory(eModelTypes.EcoSpace)
             Me.m_Model.Init(Me.m_core, Ecosim, Ecospace)
 
             Me.m_Model.onModelTimeStep = AddressOf Me.onModelTimestep
@@ -498,7 +499,8 @@ Namespace MSE
             Try
                 'Run Ecosim
                 'Me.m_Ecosim.Run()
-                'Me.m_Model.Run()
+                Me.m_Model.SearchMode = eSearchModes.InitializingSearch
+                Me.m_Model.Run()
                 'Debug.Assert(False, "Need to sort out how to get base values from Ecospace")
                 'get the base values from the search data
                 Me.m_MSEData.BaseTotalVal = Me.m_SearchData.TotVal
@@ -696,6 +698,8 @@ Namespace MSE
                     Me.m_SimData.PredictSimEffort = True
                 End If
 
+                Me.m_Model.SearchMode = eSearchModes.MSE
+
                 For itr = 1 To Me.m_MSEData.NTrials
 
                     Me.InitForTrial()
@@ -816,6 +820,7 @@ Namespace MSE
             Me.m_MSEData.CostSum.AddIteration()
 
             Me.m_MSEData.ValueFleetStats.AddIteration()
+
 
         End Sub
 
