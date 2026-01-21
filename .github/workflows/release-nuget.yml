@@ -255,8 +255,28 @@ jobs:
 
       # List installer files for debugging
       - name: List artifacts files
-        run: dir .\artifacts
+        run: dir $outputDir
         shell: pwsh
+
+
+      # required for the artifact to be available on the GitHub server
+      - name: upload-unsigned-artifact
+        id: upload-unsigned-artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          path: './artifacts/*_32-bit_setup.exe'
+
+      - id: optional_step_id
+        uses: signpath/github-action-submit-signing-request@v2
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: '6f2e61d1-dbf8-41da-9d92-80fb7fcf05a2'
+          project-slug: 'Ecopath'
+          signing-policy-slug: 'EwE_Test'
+          github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
+          wait-for-completion: true
+          output-artifact-directory: './artifacts-signed'
+
 
       # Upload installers so the release job can use them
       - name: Upload installers artifact
@@ -264,7 +284,7 @@ jobs:
         with:
           name: installers
           path: |
-            artifacts/*_32-bit_setup.exe
+            artifacts-signed/*_32-bit_setup.exe
             artifacts/*_64-bit_setup.exe
 
   # 5) CREATE RELEASE
