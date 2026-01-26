@@ -278,7 +278,7 @@ jobs:
           output-artifact-directory: './artifacts-signed'
 
 
-      # Upload installers so the release job can use them
+      # Upload installers so the release job can use them.
       - name: Upload installers artifact
         uses: actions/upload-artifact@v4
         with:
