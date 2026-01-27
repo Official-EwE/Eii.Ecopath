@@ -254,10 +254,14 @@ jobs:
         shell: pwsh
 
       # List installer files for debugging
-      - name: List artifacts files
+      - name: List output dir
         run: dir $outputDir
         shell: pwsh
 
+      # List installer files for debugging
+      - name: List artifacts files
+        run: dir (Join-Path $PWD "artifacts")
+        shell: pwsh
 
       # required for the artifact to be available on the GitHub server
       - name: upload-unsigned-artifact
