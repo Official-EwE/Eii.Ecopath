@@ -27,7 +27,7 @@ Imports System.IO
 Imports EwEUtils.UserInterface
 Imports Newtonsoft.Json
 
- 
+
 
 Namespace Auxiliary
 
@@ -108,6 +108,7 @@ Namespace Auxiliary
         End Function
 
         Public Shared Function ToDto(vs As cVisualStyle) As VisualStyleDto
+            If (vs Is Nothing) Then vs = New cVisualStyle()
             Dim dto As New VisualStyleDto With {
                 .foreColor = vs.ForeColour.ToHex(),
                 .backColor = vs.BackColour.ToHex(),
@@ -125,8 +126,12 @@ Namespace Auxiliary
             Return dto
         End Function
 
-        ' Apply DTO back to runtime object
-        Public Shared Sub ApplyDto(vs As cVisualStyle, dto As VisualStyleDto)
+        ''' <summary>
+        ''' Apply DTO back to a visual style
+        ''' </summary>
+        ''' <param name="vs"></param>
+        ''' <param name="dto"></param>
+        Public Shared Sub FromDto(vs As cVisualStyle, dto As VisualStyleDto)
             If dto Is Nothing Then Return
             vs.ForeColour = HexToColor(dto.foreColor)
             vs.BackColour = HexToColor(dto.backColor)
@@ -169,7 +174,7 @@ Namespace Auxiliary
         Dim dto = System.Text.Json.JsonSerializer.Deserialize(Of VisualStyleDto)(json)
 #End If
                 Dim vs As New cVisualStyle()
-                ApplyDto(vs, dto)
+                FromDto(vs, dto)
                 Return vs
             End If
 

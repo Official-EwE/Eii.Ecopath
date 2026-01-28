@@ -9778,12 +9778,12 @@ Public Class cCore
 
                 Next igrp
 
-                Me.SaveEcospaceENA(m_spaceresults)
 
                 'Save to the current writer always (saveannual = false) or once per year (saveannual=true) for the first time step
                 'Default is to save every time step
                 If (iTime >= EcospaceModelParameters.FirstOutputTimeStep) Then
                     If ((iTime - EcospaceModelParameters.FirstOutputTimeStep) Mod CInt(EcospaceModelParameters.NumberOfTimeStepsPerYear) = 0) Or (Me.m_EcospaceData.SaveAnnual = False) Then
+                        Me.SaveEcospaceENA(m_spaceresults)
                         Me.SaveEcospaceResults(Me.m_spaceresults)
                     End If
                 End If
@@ -15532,7 +15532,7 @@ Public Class cCore
 #If Not NET Then
 #Region " License "
 
-    
+
     Public ReadOnly Property License As cLicense
         Get
             If (Me.m_license Is Nothing) Then
