@@ -17,21 +17,15 @@
 ' ===============================================================================
 '
 
-
-
-
 Imports System.IO
 Imports System.Text
 Imports EwECore
-Imports EwECore.Common
+Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -329,9 +323,10 @@ Public Class cValueChainController
                 iFleet = flt.Index
                 For iGroupSrc = 1 To m_core.nGroups
                     Dim strGroup As String = Me.m_core.EcopathGroupInputs(iGroupSrc).Name
-                    prodUnit.SetLandings(strGroup,
+                    prodUnit.AddLandings(strGroup,
                                          Me.GetLandings(m_core, iFleet, iGroupSrc, iTimeStep, ecosimResults, ecosimDS),
-                                         Me.GetLandingValue(m_core, iFleet, iGroupSrc, iTimeStep, ecosimResults, ecosimDS))
+                                         Me.GetLandingValue(m_core, iFleet, iGroupSrc, iTimeStep, ecosimResults, ecosimDS),
+                                        Me.m_data.Parameters)
                 Next iGroupSrc
             End If
 
@@ -346,7 +341,6 @@ Public Class cValueChainController
         Return True
 
     End Function
-
 
     ''' <summary>
     ''' Run a time step, aggregated values by fleet.
@@ -386,12 +380,13 @@ Public Class cValueChainController
                         ' Gathering results for a fleet that does not serve the current producer?
                         If (iFleet <> fltSrc.Index) Then
                             ' #Yes: run this fleet without landings and value
-                            prodUnit.SetLandings(grpName, 0, 0)
+                            prodUnit.AddLandings(grpName, 0, 0, Me.m_data.Parameters)
                         Else
                             ' #No: Run this fleet using standard landings and value
-                            prodUnit.SetLandings(grpName,
+                            prodUnit.AddLandings(grpName,
                                                  Me.GetLandings(m_core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS),
-                                                 Me.GetLandingValue(m_core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS))
+                                                 Me.GetLandingValue(m_core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS),
+                                                 Me.m_data.Parameters)
                         End If
 
                     Next iGroupSrc
@@ -452,12 +447,12 @@ Public Class cValueChainController
                     ' Is group being caught?
                     If (sCatch = 0) Then
                         ' #No: Assign no landings and value
-                        prodUnit.SetLandings(grpName, 0, 0)
+                        prodUnit.AddLandings(grpName, 0, 0, Me.m_data.Parameters)
                     Else
                         ' #Yes: Assign standard landings and value
                         Dim sB As Single = Me.GetLandings(m_core, iFleet, iGroup, iTimeStep, ecosimResults, ecosimDS)
                         Dim sV As Single = Me.GetLandingValue(m_core, iFleet, iGroup, iTimeStep, ecosimResults, ecosimDS)
-                        prodUnit.SetLandings(grpName, sB, sV)
+                        prodUnit.AddLandings(grpName, sB, sV, Me.m_data.Parameters)
                     End If
                 End If
 
@@ -524,12 +519,6 @@ Public Class cValueChainController
         End If
 
     End Function
-
-    Public Shared Function ToSafeName(strName As String) As String
-        Return strName.Trim().ToLowerInvariant()
-
-    End Function
-
 
     Public Function FindFleet(strName As String) As cEcopathFleetInput
         If (Not String.IsNullOrWhiteSpace(strName)) Then

@@ -1,61 +1,66 @@
 extensions: designer.cs
 extensions: .cs
 // ===============================================================================
-// This file is part of Ecopath with Ecosim (EwE)
+// This file is part of Ecopath with Ecosim (EwE).
 //
-// EwE is free software: you can redistribute it and/or modify it under the terms
-// of the GNU General Public License version 3 as published by the Free Software 
-// Foundation.
+// EwE is free software licensed under the European Union Public Licence (EUPL),
+// Version 1.2 or – as soon they will be approved by the European Commission –
+// subsequent versions of the EUPL (the "Licence").
 //
-// EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-// without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-// PURPOSE. See the GNU General Public License for more details.
+// You may not use this work except in compliance with the Licence.
+// You may obtain a copy of the Licence at:
 //
-// You should have received a copy of the GNU General Public License along with EwE.
-// If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
+// https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 //
+// EwE is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 //
-// Copyright 1991- 
-//    Ecopath International Initiative, Barcelona, Spain
+// Copyright © 1991–
+//   Ecopath International Initiative (EII), Barcelona, Spain
 // ===============================================================================
 
 extensions: .vb
 ' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
+' This file is part of Ecopath with Ecosim (EwE).
 '
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
+' EwE is free software licensed under the European Union Public Licence (EUPL),
+' Version 1.2 or – as soon they will be approved by the European Commission –
+' subsequent versions of the EUPL (the "Licence").
 '
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
+' You may not use this work except in compliance with the Licence.
+' You may obtain a copy of the Licence at:
 '
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
+' https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 '
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
+' EwE is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+'
+' Copyright © 1991–
+'   Ecopath International Initiative (EII), Barcelona, Spain
 ' ===============================================================================
 '
 
 extensions: .xaml
 <!-- 
 ===============================================================================
-This file is part of Ecopath with Ecosim (EwE)
+This file is part of Ecopath with Ecosim (EwE).
 
-EwE is free software: you can redistribute it and/or modify it under the terms
-of the GNU General Public License version 3 as published by the Free Software 
-Foundation.
+EwE is free software licensed under the European Union Public Licence (EUPL),
+Version 1.2 or – as soon they will be approved by the European Commission –
+subsequent versions of the EUPL (the "Licence").
 
-EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-PURPOSE. See the GNU General Public License for more details.
+You may not use this work except in compliance with the Licence.
+You may obtain a copy of the Licence at:
 
-You should have received a copy of the GNU General Public License along with EwE.
-If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
+https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 
-Copyright 1991- 
-   Ecopath International Initiative, Barcelona, Spain
+EwE is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Copyright © 1991–
+  Ecopath International Initiative (EII), Barcelona, Spain
 ===============================================================================
 -->

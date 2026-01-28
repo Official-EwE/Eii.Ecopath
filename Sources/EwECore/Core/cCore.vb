@@ -9147,7 +9147,7 @@ Public Class cCore
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Convert an Ecospace time step to absolute time.
+    ''' Convert an Ecosim time step to absolute time.
     ''' </summary>
     ''' <param name="iTime">The Ecospace time step to convert.</param>
     ''' <returns>The absolute time represented by a time step.</returns>
@@ -9165,7 +9165,7 @@ Public Class cCore
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Convert an absolute time to an Ecospace time step.
+    ''' Convert an absolute time to an Ecosim time step.
     ''' </summary>
     ''' <param name="dt">The date to convert to a time step.</param>
     ''' <returns></returns>

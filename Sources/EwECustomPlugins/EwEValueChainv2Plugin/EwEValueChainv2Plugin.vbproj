@@ -165,9 +165,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Sources\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
     <None Include="~Design~\Units.cd" />
     <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -204,10 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Eii.ValueChain">
-      <Version>1.0.28</Version>
+      <Version>1.0.30</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging">
-      <Version>10.0.1</Version>
-    </PackageReference>
+    <PackageReference Include="Eii.ValueChain.Storage.Models" Version="1.0.42" />
   </ItemGroup>
 </Project>
