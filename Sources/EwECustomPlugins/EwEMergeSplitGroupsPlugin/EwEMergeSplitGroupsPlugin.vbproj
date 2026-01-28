@@ -117,9 +117,4 @@
   <ItemGroup>
     <Content Include="Resources\geomar_logo_en_print.png" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging">
-      <Version>10.0.1</Version>
-    </PackageReference>
-  </ItemGroup>
 </Project>

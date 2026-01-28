@@ -109,9 +109,4 @@
     <Content Include="Resources\eii.png" />
     <Content Include="Resources\indicator2.png" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging">
-      <Version>10.0.1</Version>
-    </PackageReference>
-  </ItemGroup>
 </Project>
