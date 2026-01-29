@@ -24,6 +24,8 @@ Imports EwECore
 Imports EwECore.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
+Imports Eii.ControlledVocabularies
+Imports Eii.ControlledVocabularies.Vocabularies.Species
 
 ''' ===========================================================================
 ''' <summary>
@@ -199,7 +201,7 @@ Public Class cData
         Me.IsChanged = False
 
 #If DEBUG Then
-        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".sqlite")
+        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".vc.sqlite")
         m_valueChainStorageService.LoadValueChain(strSQL)
 #End If
         Return bSucces And Me.m_db.IsConnected
@@ -221,7 +223,7 @@ Public Class cData
 
         bSucces = Me.m_db.SaveModel(Me)
 
-        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".sqlite")
+        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".vc.sqlite")
         bSucces = Me.m_db.SaveModel(Me) And SaveValueChain(strSQL)
 
         If bSucces Then Me.IsChanged = False
@@ -1272,6 +1274,7 @@ Public Class cData
     Private Function SaveValueChain(accessDbFilePath As String) As Boolean
 
 #If DEBUG Then
+
         Dim parameter As Parameter = New Parameter With {
             .DBID = Me.m_parameters.DBID,
             .EquilibriumEffortIncrement = Me.m_parameters.EquilibriumEffortIncrement,
@@ -1281,8 +1284,38 @@ Public Class cData
             .RunWithEcosim = Me.m_parameters.RunWithEcosim,
             .RunWithSearches = Me.m_parameters.RunWithSearches,
             .ZoomFactor = Me.m_parameters.ZoomFactor,
-            .DeletePrompt = Me.m_parameters.DeletePrompt
+            .DeletePrompt = Me.m_parameters.DeletePrompt,
+            .Aliases = New Dictionary(Of String, String)()
         }
+
+        ' Populate aliases
+        Dim asfis As New ASFISSpeciesCodeVocabulary(Nothing, Nothing, Nothing)
+        If asfis.Load() Then
+            For i As Integer = 1 To Me.Core.nGroups
+                Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(i)
+                For j As Integer = 1 To grp.NTaxon
+                    Dim tax As cTaxon = Me.Core.Taxon(grp.iTaxon(j))
+                    If (tax IsNot Nothing) Then
+
+                        ' Retrieve scientific name
+                        Dim scname As String = tax.Common
+                        ' If missing, construct from genus + species
+                        If (String.IsNullOrWhiteSpace(scname)) Then scname = tax.Genus + " " + tax.Species
+                        ' Add alias if defined
+                        If (Not String.IsNullOrWhiteSpace(scname)) Then parameter.Aliases(scname) = grp.Name
+
+                        ' Retrieve code
+                        Dim code As String = tax.CodeFAO
+                        ' If missing, find in ASFIS
+                        If String.IsNullOrWhiteSpace(code) Then code = asfis.FindCode(scname, 80)
+                        ' Add alias if defined
+                        If (Not String.IsNullOrWhiteSpace(code)) Then parameter.Aliases(code) = grp.Name
+
+                    End If
+                Next
+            Next
+        End If
+
 
         Dim links As List(Of Link) = Me.m_lLinks _
         .OfType(Of cLink)() _
