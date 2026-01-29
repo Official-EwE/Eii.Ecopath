@@ -11,6 +11,7 @@ on:
 # contents: write   -> create releases and upload artifacts
 # packages: write   -> push NuGet packages to GitHub Packages
 permissions:
+  actions: read
   contents: write
   packages: write
 
