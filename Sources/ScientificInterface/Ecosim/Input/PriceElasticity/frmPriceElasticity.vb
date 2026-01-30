@@ -1,23 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
@@ -72,8 +55,8 @@ Namespace Ecosim
             MyBase.OnLoad(e)
             If (Me.UIContext Is Nothing) Then Return
             Me.m_shapeguihandler = New cLandingsShapeGUIHandler(Me.UIContext)
-            Me.m_shapeguihandler.Attach(Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
-                                        Me.m_sketchPad, Me.m_sketchPadToolbar, _
+            Me.m_shapeguihandler.Attach(Me.m_shapeToolBox, Me.m_shapeToolboxToolbar,
+                                        Me.m_sketchPad, Me.m_sketchPadToolbar,
                                         Me.m_assignments, Me.m_assignmentsToolbar)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub
@@ -93,7 +76,7 @@ Namespace Ecosim
         Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
 
             If msg.Source = eCoreComponentType.ShapesManager Then
-                If (((msg.Type = eMessageType.DataAddedOrRemoved) Or (msg.Type = eMessageType.DataModified)) And _
+                If (((msg.Type = eMessageType.DataAddedOrRemoved) Or (msg.Type = eMessageType.DataModified)) And
                      (msg.DataType = eDataTypes.Mediation)) Then
                     Me.m_shapeguihandler.Refresh()
                 End If

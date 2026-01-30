@@ -1,22 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Database
 
@@ -60,18 +44,18 @@ Friend Class cDBUpdate6_00_04_022
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added Ecopath discards mortality." & Environment.NewLine & _
-                   "Added Ecosim fisheries regulation." & Environment.NewLine & _
+            Return "Added Ecopath discards mortality." & Environment.NewLine &
+                   "Added Ecosim fisheries regulation." & Environment.NewLine &
                    "Updated group x group indexes."
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return Me.AddDiscardMortality(db) And _
-               Me.UpdateEcosimFleets(db) And _
-               Me.AddQuotaTable(db) And _
-               Me.FlipVulMult(db) And _
+        Return Me.AddDiscardMortality(db) And
+               Me.UpdateEcosimFleets(db) And
+               Me.AddQuotaTable(db) And
+               Me.FlipVulMult(db) And
                Me.FlipPredPreyShapes(db)
 
     End Function

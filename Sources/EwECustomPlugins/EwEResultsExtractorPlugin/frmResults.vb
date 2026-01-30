@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 #Region "Imports"
 
@@ -1285,7 +1270,7 @@ Public Class frmResults
                 If EwEIndexFleet > Me.Core.nGroups Then Exit Sub
 
                 'Calculate initial partialF
-                InitialPartialF = (Me.Core.EcopathFleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) + _
+                InitialPartialF = (Me.Core.EcopathFleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) +
                                     Me.Core.EcopathFleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)) _
                                     / Me.Core.EcopathGroupOutputs(EwEIndexPrey).Biomass
 
@@ -2242,7 +2227,7 @@ Public Class frmResults
             Next
 
             'Calculate the sum for all fleets of the Non-market value
-            NonMarketValueSum = Me.Core.EcopathGroupInputs(Row).NonMarketValue * _
+            NonMarketValueSum = Me.Core.EcopathGroupInputs(Row).NonMarketValue *
                 Me.Core.EcopathGroupOutputs(Me.Core.EcopathGroupInputs(Row).Index).Biomass
             'Calculate the value total value for all fleets
             TotalValueSum = MarketValueSum + NonMarketValueSum
@@ -2397,8 +2382,8 @@ Public Class frmResults
 
         If Me.ParentOnlySelection.CountSelected > 0 Then
 
-            If Me.chkBiomass.Checked Or Me.chkBiomassInteg.Checked Or _
-            Me.chkPredationMortality.Checked Or Me.chkFishingMortality.Checked Or _
+            If Me.chkBiomass.Checked Or Me.chkBiomassInteg.Checked Or
+            Me.chkPredationMortality.Checked Or Me.chkFishingMortality.Checked Or
             Me.chkCatch.Checked Then
                 Me.btnSaveResults.Enabled = True
             End If
@@ -2427,12 +2412,12 @@ Public Class frmResults
                 Me.btnSaveResults.Enabled = True
             End If
 
-        ElseIf Me.chkBasicEstimates.Checked Or Me.chkKeyIndices.Checked Or _
-        Me.chkMortalityCoefficients.Checked Or Me.chkInitPredMort.Checked Or Me.chkInitFishMort.Checked Or _
-        Me.chkInitConsumption.Checked Or Me.chkRespiration.Checked Or _
-        Me.chkPreyOverlap.Checked Or Me.chkPredOverlap.Checked Or _
-        Me.chkElectivity.Checked Or Me.chkSearchRates.Checked Or _
-        Me.chkInitFishingQuantities.Checked Or Me.chkInitFishingValues.Checked Or Me.chkresiduals.Checked Or _
+        ElseIf Me.chkBasicEstimates.Checked Or Me.chkKeyIndices.Checked Or
+        Me.chkMortalityCoefficients.Checked Or Me.chkInitPredMort.Checked Or Me.chkInitFishMort.Checked Or
+        Me.chkInitConsumption.Checked Or Me.chkRespiration.Checked Or
+        Me.chkPreyOverlap.Checked Or Me.chkPredOverlap.Checked Or
+        Me.chkElectivity.Checked Or Me.chkSearchRates.Checked Or
+        Me.chkInitFishingQuantities.Checked Or Me.chkInitFishingValues.Checked Or Me.chkresiduals.Checked Or
         Me.chkSS.Checked Then
 
             Me.btnSaveResults.Enabled = True
@@ -2523,8 +2508,8 @@ Public Class frmResults
 
     Public Sub DeleteObjects()
 
-        If Me.chkBiomass.Checked = False And Me.chkBiomassInteg.Checked = False And _
-            Me.chkFishingMortality.Checked = False And Me.chkPredationMortality.Checked = False And _
+        If Me.chkBiomass.Checked = False And Me.chkBiomassInteg.Checked = False And
+            Me.chkFishingMortality.Checked = False And Me.chkPredationMortality.Checked = False And
             Me.chkCatch.Checked = False Then
             Me.ParentOnlySelection.RemoveAll()
             Me.btnSetParentOnly.Enabled = False

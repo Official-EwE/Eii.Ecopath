@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
@@ -92,7 +74,7 @@ Public Class cConverterPicker
     Private Class cConverterSorter
         Implements IComparer(Of ISpatialDataConverter)
 
-        Public Function Compare(x As EwECore.Common.ISpatialDataConverter, _
+        Public Function Compare(x As EwECore.Common.ISpatialDataConverter,
                                 y As EwECore.Common.ISpatialDataConverter) As Integer _
                             Implements System.Collections.Generic.IComparer(Of EwECore.Common.ISpatialDataConverter).Compare
             Return String.Compare(x.DisplayName, y.DisplayName)
@@ -139,9 +121,9 @@ Public Class cConverterPicker
     ''' <param name="dataset">The <see cref="ISpatialDataSet"/> to pick a <see cref="ISpatialDataConverter"/> for.</param>
     ''' <param name="converterCurrent">The currently selected <see cref="ISpatialDataConverter"/>.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Pick(control As Control, _
-                    dataset As ISpatialDataSet, _
-                    converterCurrent As ISpatialDataConverter, _
+    Public Sub Pick(control As Control,
+                    dataset As ISpatialDataSet,
+                    converterCurrent As ISpatialDataConverter,
                     Optional tag As Object = Nothing)
 
         Me.BuildMenu(dataset, converterCurrent)
@@ -158,9 +140,9 @@ Public Class cConverterPicker
     ''' <param name="dataset">The <see cref="ISpatialDataSet"/> to pick a <see cref="ISpatialDataConverter"/> for.</param>
     ''' <param name="converterCurrent">The currently selected <see cref="ISpatialDataConverter"/>.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Pick(pt As Point, _
-                    dataset As ISpatialDataSet, _
-                    converterCurrent As ISpatialDataConverter, _
+    Public Sub Pick(pt As Point,
+                    dataset As ISpatialDataSet,
+                    converterCurrent As ISpatialDataConverter,
                     Optional tag As Object = Nothing)
 
         Me.BuildMenu(dataset, converterCurrent)
@@ -171,7 +153,7 @@ Public Class cConverterPicker
 
 #Region " Internals "
 
-    Private Sub BuildMenu(dataset As ISpatialDataSet, _
+    Private Sub BuildMenu(dataset As ISpatialDataSet,
                           converterCurrent As ISpatialDataConverter)
 
         Dim tsi As ToolStripMenuItem = Nothing

@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Windows.Forms
 Imports EwECore
@@ -364,9 +346,9 @@ Public MustInherit Class cContentManager
 
     End Sub
 
-    Protected Sub ToolstripShowGroupSelections(Optional strLabel1 As String = "", _
-                                               Optional groupfilter1 As eGroupFilterTypes = eGroupFilterTypes.Living, _
-                                               Optional strLabel2 As String = "", _
+    Protected Sub ToolstripShowGroupSelections(Optional strLabel1 As String = "",
+                                               Optional groupfilter1 As eGroupFilterTypes = eGroupFilterTypes.Living,
+                                               Optional strLabel2 As String = "",
                                                Optional groupfilter2 As eGroupFilterTypes = eGroupFilterTypes.Living)
 
         Dim tslbl1 As ToolStripItem = Me.Toolstrip.Items("tslblSelection1")
@@ -415,7 +397,7 @@ Public MustInherit Class cContentManager
         End If
     End Sub
 
-    Protected Sub SendMessage(strMessage As String, _
+    Protected Sub SendMessage(strMessage As String,
                               Optional importance As eMessageImportance = eMessageImportance.Critical)
         Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, importance)
         Me.NetworkManager.Core.Messages.SendMessage(msg)

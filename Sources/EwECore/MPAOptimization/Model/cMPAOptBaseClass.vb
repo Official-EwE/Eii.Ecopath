@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwEUtils.Utilities
@@ -153,8 +137,8 @@ Public MustInherit Class cMPAOptBaseClass
         Next
     End Sub
 
-    Public Overridable Sub Connect(OnSearchInteration As cMPAOptManager.SearchIterationDelegate, _
-                       OnRunStateChanged As cMPAOptManager.SearchRunStateDelegate, _
+    Public Overridable Sub Connect(OnSearchInteration As cMPAOptManager.SearchIterationDelegate,
+                       OnRunStateChanged As cMPAOptManager.SearchRunStateDelegate,
                        OnSendMessage As cMPAOptManager.SendMessageDelegate) Implements IMPASearchModel.Connect
         Me.m_cellComputedCallback = OnSearchInteration
         Me.m_StateCallback = OnRunStateChanged
@@ -672,12 +656,12 @@ Public MustInherit Class cMPAOptBaseClass
                 writer.WriteLine("{0},{1},{2}", cell.Row, cell.Col, cell.iMPA)
             Next
             writer.WriteLine("Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
-            writer.WriteLine(String.Format("{0},{1},{2},{3},{4}", _
-                   cStringUtils.FormatNumber(Me.m_data.objFuncEconomicValue), _
-                   cStringUtils.FormatNumber(Me.m_data.objFuncSocialValue), _
-                   cStringUtils.FormatNumber(Me.m_data.objFuncMandatedValue), _
-                   cStringUtils.FormatNumber(Me.m_data.objFuncEcologicalValue), _
-                   cStringUtils.FormatNumber(Me.m_data.objFuncBiodiversity), _
+            writer.WriteLine(String.Format("{0},{1},{2},{3},{4}",
+                   cStringUtils.FormatNumber(Me.m_data.objFuncEconomicValue),
+                   cStringUtils.FormatNumber(Me.m_data.objFuncSocialValue),
+                   cStringUtils.FormatNumber(Me.m_data.objFuncMandatedValue),
+                   cStringUtils.FormatNumber(Me.m_data.objFuncEcologicalValue),
+                   cStringUtils.FormatNumber(Me.m_data.objFuncBiodiversity),
                    cStringUtils.FormatNumber(Me.m_data.objFuncAreaBorder)))
 
         Catch ex As Exception

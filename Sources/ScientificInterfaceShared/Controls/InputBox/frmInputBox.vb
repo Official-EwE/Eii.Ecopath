@@ -1,27 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Controls
 
@@ -43,22 +22,22 @@ Namespace Controls
             Me.InitializeComponent()
         End Sub
 
-        Public Shadows Function Show(owner As IWin32Window, _
-                                     strPrompt As String, _
-                                     Optional strCaption As String = "", _
+        Public Shadows Function Show(owner As IWin32Window,
+                                     strPrompt As String,
+                                     Optional strCaption As String = "",
                                      Optional strInitialValue As String = "") As DialogResult
             Return Me.ShowDialog(owner, strPrompt, strCaption, strInitialValue)
         End Function
 
-        Public Shadows Function Show(strPrompt As String, _
-                                     Optional strCaption As String = "", _
+        Public Shadows Function Show(strPrompt As String,
+                                     Optional strCaption As String = "",
                                      Optional strInitialValue As String = "") As DialogResult
             Return Me.ShowDialog(Nothing, strPrompt, strCaption, strInitialValue)
         End Function
 
-        Public Shadows Function ShowDialog(owner As IWin32Window, _
-                              strPrompt As String, _
-                              Optional strCaption As String = "", _
+        Public Shadows Function ShowDialog(owner As IWin32Window,
+                              strPrompt As String,
+                              Optional strCaption As String = "",
                               Optional strInitialValue As String = "") As DialogResult
             Me.Text = strCaption
             Me.m_lblPrompt.Text = strPrompt

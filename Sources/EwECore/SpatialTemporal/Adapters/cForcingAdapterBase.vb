@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 Imports Microsoft.Extensions.Logging
@@ -226,8 +211,8 @@ Namespace SpatialData
                                         'this acts as a mask for cells that were not forced.
                                         'The external data only sets modeled cells that are <> cCore.NULL_VALUE to forcing values. 
                                         'In cForcingMapIndexPair.data() cCore.NULL_VALUE = not modeled,  cForcingMapIndexPair.NULL_CELL = modeled but not forced
-                                        If SpaceData.Depth(ir, ic) > 0 And _
-                                            pair.data(ir, ic) <> cCore.NULL_VALUE And _
+                                        If SpaceData.Depth(ir, ic) > 0 And
+                                            pair.data(ir, ic) <> cCore.NULL_VALUE And
                                             pair.data(ir, ic) <> cForcingMapIndexPair.NULL_CELL Then
 
                                             SpaceData.Bcell(ir, ic, pair.iLayerIndex) = pair.data(ir, ic)

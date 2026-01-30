@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports ZedGraph
 
@@ -26,7 +8,7 @@ Imports ZedGraph
 
 Namespace Controls
 
-    
+
     Public Class cEcosimOutputPlotHelper
         Inherits cZedGraphHelper
 
@@ -87,8 +69,8 @@ Namespace Controls
 
 #Region " Public interfaces "
 
-        Public Overrides Sub Attach(uic As cUIContext, _
-                                    zgc As ZedGraph.ZedGraphControl, _
+        Public Overrides Sub Attach(uic As cUIContext,
+                                    zgc As ZedGraph.ZedGraphControl,
                                     Optional iNumPanes As Integer = 1)
 
             Debug.Assert(iNumPanes = 1)
@@ -174,8 +156,8 @@ Namespace Controls
         ''' Note that this does NOT add the line to ZedGraph.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function CreateLine(src As ICoreInterface, _
-                                   list As PointPairList, _
+        Public Function CreateLine(src As ICoreInterface,
+                                   list As PointPairList,
                                    Optional strLabel As String = "") As LineItem
 
             Dim crv As LineItem = Me.CreateLineItem(src, list, strLabel)
@@ -202,8 +184,8 @@ Namespace Controls
         ''' <param name="iTimeStep"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function GetValueAt(iGroup As Integer, _
-                                   iRun As Integer, _
+        Public Function GetValueAt(iGroup As Integer,
+                                   iRun As Integer,
                                    iTimeStep As Integer) As Double
 
             Dim run As cRun = Nothing
@@ -242,7 +224,7 @@ Namespace Controls
         ''' <param name="iGroup">Group index to select</param>
         ''' <param name="iRun">The run to highlight.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Highlight(iGroup As Integer, _
+        Public Sub Highlight(iGroup As Integer,
                              iRun As Integer)
 
             Dim run As cRun = Nothing
@@ -398,8 +380,8 @@ Namespace Controls
         ''' <param name="bUseColor">Flag stating whether the curve should be coloured.</param>
         ''' <param name="bUseHighlight">Flag stating whether curve should be higlighted.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SetCurveAppearance(crv As CurveItem, _
-                                       Optional bUseColor As Boolean = True, _
+        Private Sub SetCurveAppearance(crv As CurveItem,
+                                       Optional bUseColor As Boolean = True,
                                        Optional bUseHighlight As Boolean = False)
 
             ' Safety first

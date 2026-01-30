@@ -1,27 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
 Imports EwECore.Common
@@ -450,8 +429,8 @@ Public Class cMSEPluginPoint
     ''' <param name="importance"></param>
     ''' <param name="strHyperlink"></param>
     ''' -----------------------------------------------------------------------
-    Friend Sub InformUser(strMessage As String, importance As eMessageImportance, _
-                          Optional strHyperlink As String = "", _
+    Friend Sub InformUser(strMessage As String, importance As eMessageImportance,
+                          Optional strHyperlink As String = "",
                           Optional astrSubMessages As String() = Nothing)
 
         If (Me.Core Is Nothing) Then Return
@@ -477,9 +456,9 @@ Public Class cMSEPluginPoint
     ''' <param name="replyDefault"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Friend Function AskUser(strMessage As String, _
-                            style As eMessageReplyStyle, _
-                            Optional importance As eMessageImportance = eMessageImportance.Question, _
+    Friend Function AskUser(strMessage As String,
+                            style As eMessageReplyStyle,
+                            Optional importance As eMessageImportance = eMessageImportance.Question,
                             Optional replyDefault As eMessageReply = eMessageReply.OK) As eMessageReply
 
         If (Me.Core Is Nothing) Then Return replyDefault

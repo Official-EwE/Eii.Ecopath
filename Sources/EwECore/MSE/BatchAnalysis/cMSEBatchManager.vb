@@ -1,21 +1,7 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
+
 Imports EwECore.MSE
 Imports EwECore.MSECommandFile
 Imports EwEUtils.Utilities
@@ -350,7 +336,7 @@ Namespace MSEBatchManager
                     Me.Load()
 
                     'maybe this will update the interface???? bitch....
-                    Me.m_core.Messages.AddMessage(New cMessage("Update MSEBatch TFM.", eMessageType.DataModified, _
+                    Me.m_core.Messages.AddMessage(New cMessage("Update MSEBatch TFM.", eMessageType.DataModified,
                                                                eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
                 End If
 
@@ -561,20 +547,20 @@ Namespace MSEBatchManager
             Try
 
                 For igrp As Integer = 1 To Me.m_BatchData.nGroups
-                    Me.calcIterationValues(igrp, Me.m_MSEdata.Fopt(igrp), Me.m_BatchData.FOptLower(igrp), Me.m_BatchData.FOptUpper(igrp), _
+                    Me.calcIterationValues(igrp, Me.m_MSEdata.Fopt(igrp), Me.m_BatchData.FOptLower(igrp), Me.m_BatchData.FOptUpper(igrp),
                                         Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmFmax)
 
-                    Me.calcIterationValues(igrp, Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp), _
+                    Me.calcIterationValues(igrp, Me.m_MSEdata.Blim(igrp), Me.m_BatchData.BlimLower(igrp), Me.m_BatchData.BlimUpper(igrp),
                                         Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmBlim)
 
-                    Me.calcIterationValues(igrp, Me.m_MSEdata.Bbase(igrp), Me.m_BatchData.BBaseLower(igrp), Me.m_BatchData.BBaseUpper(igrp), _
+                    Me.calcIterationValues(igrp, Me.m_MSEdata.Bbase(igrp), Me.m_BatchData.BBaseLower(igrp), Me.m_BatchData.BBaseUpper(igrp),
                                         Me.m_BatchData.nTFM, Me.m_BatchData.IterCalcType, Me.m_BatchData.tfmBbase)
 
                 Next
 
                 Me.Load()
 
-                Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
+                Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE,
                                                             eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
 
 
@@ -587,14 +573,14 @@ Namespace MSEBatchManager
         Public Sub CalculateFIterationValues()
 
             For igrp As Integer = 1 To Me.m_BatchData.nGroups
-                Me.calcIterationValues(igrp, Me.m_MSEdata.FixedF(igrp), Me.m_BatchData.FixedFLower(igrp), Me.m_BatchData.FixedFUpper(igrp), _
+                Me.calcIterationValues(igrp, Me.m_MSEdata.FixedF(igrp), Me.m_BatchData.FixedFLower(igrp), Me.m_BatchData.FixedFUpper(igrp),
                                     Me.m_BatchData.nFixedF, Me.m_BatchData.IterCalcType, Me.m_BatchData.FixedF)
 
             Next
 
             Me.Load()
 
-            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
+            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE,
                                                         eMessageImportance.Maintenance, eDataTypes.MSEBatchFixedFInput))
 
         End Sub
@@ -604,14 +590,14 @@ Namespace MSEBatchManager
 
 
             For igrp As Integer = 1 To Me.m_BatchData.nGroups
-                Me.calcIterationValues(igrp, Me.m_MSEdata.TAC(igrp), Me.m_BatchData.TACLower(igrp), Me.m_BatchData.TACUpper(igrp), _
+                Me.calcIterationValues(igrp, Me.m_MSEdata.TAC(igrp), Me.m_BatchData.TACLower(igrp), Me.m_BatchData.TACUpper(igrp),
                                     Me.m_BatchData.nTAC, Me.m_BatchData.IterCalcType, Me.m_BatchData.TAC)
 
             Next
 
             Me.Load()
 
-            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE, _
+            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE,
                                                         eMessageImportance.Maintenance, eDataTypes.MSEBatchTACInput))
 
         End Sub
@@ -671,7 +657,7 @@ Namespace MSEBatchManager
 
             Next
 
-            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE, _
+            Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.DataModified, eCoreComponentType.MSE,
                                                        eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
 
         End Sub

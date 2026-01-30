@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 #Region "Imports"
 
@@ -184,7 +169,7 @@ Public Class cPSDModel
             'Determine if group is fished
             bIsFished = False
             For iFleet As Integer = 1 To Me.m_Data.NumFleet
-                If (Me.m_Data.Landing(iFleet, i) + _
+                If (Me.m_Data.Landing(iFleet, i) +
                     Me.m_Data.Discard(iFleet, i)) > 0 Then
                     bIsFished = True
                     Exit For
@@ -322,7 +307,7 @@ Public Class cPSDModel
                 't= ln(1-(Wt/Woo)^(1/b)) / (-K) + t0
                 For iWtClass As Integer = 1 To Me.m_psd.NWeightClasses
                     If WeightClass(iWtClass) < Me.m_psd.Winf(iGroup) Then
-                        Time(iWtClass) = CSng(Math.Log(1 - (WeightClass(iWtClass) / Me.m_psd.Winf(iGroup)) ^ _
+                        Time(iWtClass) = CSng(Math.Log(1 - (WeightClass(iWtClass) / Me.m_psd.Winf(iGroup)) ^
                                          (1 / Me.m_psd.BinLW(iGroup))) / (-Me.m_Data.vbK(iGroup)) + Me.m_psd.t0(iGroup))
                         If Time(iWtClass) < 0 Then Time(iWtClass) = 0
                         DeltaTime(iWtClass) = Time(iWtClass) - Time(iWtClass - 1)
@@ -578,7 +563,7 @@ Public Class cPSDModel
 
     Private Function CalcWeight(iGroup As Integer, sTime As Single) As Single
         'Wt = Woo (1-exp(-K(t-to))^b    where b is the exp of LW
-        Return CSng(Me.m_psd.Winf(iGroup) * (1 - Math.Exp(-Me.m_Data.vbK(iGroup) * _
+        Return CSng(Me.m_psd.Winf(iGroup) * (1 - Math.Exp(-Me.m_Data.vbK(iGroup) *
                     (sTime - Me.m_psd.t0(iGroup))) ^ Me.m_psd.BinLW(iGroup)))
     End Function
 
@@ -680,7 +665,7 @@ Public Class cPSDModel
 
         If Recr(iGroup) <= 0 Then Recr(iGroup) = 1
         P1 = CSng(1 - Math.Exp(-(Me.m_Data.PB(iGroup) - Me.m_Data.fCatch(iGroup) / Me.m_Data.B(iGroup)) * (Me.m_psd.Tcatch(iGroup) - Trec(iGroup))))
-        P2 = CSng(Math.Exp(-(Me.m_Data.PB(iGroup) - Me.m_Data.fCatch(iGroup) / Me.m_Data.B(iGroup)) * (Me.m_psd.Tcatch(iGroup) - Trec(iGroup)) * _
+        P2 = CSng(Math.Exp(-(Me.m_Data.PB(iGroup) - Me.m_Data.fCatch(iGroup) / Me.m_Data.B(iGroup)) * (Me.m_psd.Tcatch(iGroup) - Trec(iGroup)) *
                            (1 - Math.Exp(-Me.m_Data.PB(iGroup) * (Me.m_psd.Tmax(iGroup) - Me.m_psd.Tcatch(iGroup))))))
         P3 = Me.m_Data.PB(iGroup)
         Return Recr(iGroup) * (P1 / (Me.m_Data.PB(iGroup) - Me.m_Data.fCatch(iGroup) / Me.m_Data.B(iGroup)) + P2 / P3)

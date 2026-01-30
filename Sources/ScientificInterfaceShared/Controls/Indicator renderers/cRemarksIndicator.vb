@@ -1,27 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Controls
 
@@ -41,10 +20,10 @@ Namespace Controls
         ''' <param name="bHasRemarks">States whether the indicator is rendered as having remarks (true) or
         ''' as ready for receiving remarks (false)</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Paint(clrFill As Color, _
-                                rcClip As Rectangle, _
-                                g As Graphics, _
-                                bHasRemarks As Boolean, _
+        Public Shared Sub Paint(clrFill As Color,
+                                rcClip As Rectangle,
+                                g As Graphics,
+                                bHasRemarks As Boolean,
                                 bRightToLeft As Boolean)
 
             If (bHasRemarks) Then
@@ -80,7 +59,7 @@ Namespace Controls
         ''' <param name="rcClip">Clip boundary to calculate the remarks indicator for</param>
         ''' <returns>A series of <see cref="Point">points</see></returns>
         ''' -----------------------------------------------------------------------
-        Private Shared Function GetPoints(bRightToLeft As Boolean, _
+        Private Shared Function GetPoints(bRightToLeft As Boolean,
                                           rcClip As Rectangle) As Point()
             Dim nSize As Integer = CInt(Math.Floor(rcClip.Height / 2.5))
             Dim pt(2) As Point

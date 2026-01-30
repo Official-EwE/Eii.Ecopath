@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 Imports System.ComponentModel
@@ -126,8 +111,8 @@ Public MustInherit Class cMediatedInteraction
     ''' <param name="FunctionType"><see cref="eForcingFunctionApplication">Type of variable</see>
     ''' that this modifier applies to.</param>
     ''' <returns>True if there is a shape modifier defined at this index.</returns>
-    Public Function getShape(iItem As Integer, _
-                             ByRef shape As cForcingFunction, _
+    Public Function getShape(iItem As Integer,
+                             ByRef shape As cForcingFunction,
                              ByRef functiontype As eForcingFunctionApplication) As Boolean
 
         Dim esdata As cEcosimDatastructures = Me.m_manager.getEcoSimData
@@ -179,8 +164,8 @@ Public MustInherit Class cMediatedInteraction
     ''' to apply this modifier to.</param>
     ''' <returns>True is the index was in bounds and the shape was set</returns>
     ''' <remarks>To clear an index set the shape to Nothing</remarks>
-    Public Function setShape(ItemIndex As Integer, _
-                             shape As cForcingFunction, _
+    Public Function setShape(ItemIndex As Integer,
+                             shape As cForcingFunction,
                              Optional FunctionType As eForcingFunctionApplication = eForcingFunctionApplication.SearchRate) As Boolean
 
         Dim esdata As cEcosimDatastructures = Me.m_manager.getEcoSimData
@@ -261,15 +246,15 @@ Public MustInherit Class cMediatedInteraction
 #Region "ICoreInterface implementation"
 
     ''' <inheritdocs cref="ICoreInterface.DataType"/>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public MustOverride ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
 
     ''' <inheritdocs cref="ICoreInterface.GetID"/>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public MustOverride Function GetID() As String Implements ICoreInterface.GetID
 
     ''' <inheritdocs cref="ICoreInterface.CoreComponent"/>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
         Get
             Return eCoreComponentType.Ecosim
@@ -277,7 +262,7 @@ Public MustInherit Class cMediatedInteraction
     End Property
 
     ''' <inheritdocs cref="ICoreInterface.DBID"/>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public Property DBID() As Integer Implements ICoreInterface.DBID
         Get
             Return Me.m_dbid

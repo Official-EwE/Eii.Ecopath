@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 
@@ -97,7 +79,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IUIElement.UIContext"/>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -136,8 +118,8 @@ Namespace Controls
         ''' Get/set the text to display at the high end of the bar.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("The text to display at the high end of the bar")> _
+        <Browsable(True),
+         Description("The text to display at the high end of the bar")>
         Public Property LabelHigh As String
             Get
                 Return Me.m_strLabelHigh
@@ -153,8 +135,8 @@ Namespace Controls
         ''' Get/set the text colour for the high label.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("Color for rendering the high label text")> _
+        <Browsable(True),
+         Description("Color for rendering the high label text")>
         Public Property ColorHigh As Color
             Get
                 Return Me.m_clrHigh
@@ -170,8 +152,8 @@ Namespace Controls
         ''' Get/set the text to display at the low end of the bar.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-          Description("The text to display at the low end of the bar")> _
+        <Browsable(True),
+          Description("The text to display at the low end of the bar")>
         Public Property LabelLow As String
             Get
                 Return Me.m_strLabelLow
@@ -186,8 +168,8 @@ Namespace Controls
         ''' Get/set the text colour for the low label.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-           Description("Color for rendering the low label text")> _
+        <Browsable(True),
+           Description("Color for rendering the low label text")>
         Public Property ColorLow As Color
             Get
                 Return Me.m_clrLow
@@ -203,9 +185,9 @@ Namespace Controls
         ''' Get/set the percentage that the bar occupies of the width of the control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-          DefaultValue(75), _
-          Description("Percentage that the bar occupies of the width of the control")> _
+        <Browsable(True),
+          DefaultValue(75),
+          Description("Percentage that the bar occupies of the width of the control")>
         Public Property BarWidthPercentage As Integer
             Get
                 Return Me.m_iBarWidthPerc

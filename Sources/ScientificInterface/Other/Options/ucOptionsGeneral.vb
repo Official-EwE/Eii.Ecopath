@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwEUtils.Logging
@@ -68,10 +53,10 @@ Namespace Other
             ' Enable button if there is something to clear
             Me.m_btnClearMRU.Enabled = bHasMRU
 
-            Me.m_nudMRU.Value = CInt(Math.Min(Me.m_nudMRU.Maximum, _
+            Me.m_nudMRU.Value = CInt(Math.Min(Me.m_nudMRU.Maximum,
                                      Math.Max(Me.m_nudMRU.Minimum, My.Settings.MdbRecentlyUsedCount)))
 
-            Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum, _
+            Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum,
                                                 Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.StatusMaxMessages)))
             Me.m_fpVerboseLevel = New cEwEFormatProvider(Me.UIContext, Me.m_cmbLogLevel, New cVerboseLevelTypeFormatter(), Nothing)
             'TODO RIK: Connect LogginLevel To Settings

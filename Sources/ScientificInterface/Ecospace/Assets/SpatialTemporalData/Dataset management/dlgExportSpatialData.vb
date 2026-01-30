@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwECore.Common
@@ -161,9 +143,9 @@ Namespace Ecospace.Controls
 
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, "Exporting data...", -1)
             Try
-                bSuccess = Me.m_manSets.Save(Me.OutputLocation(), _
-                                             Me.SelectedDatasets(), Me.m_tbxDescription.Text, _
-                                             Me.m_tbxAuthor.Text, Me.m_tbxContact.Text, _
+                bSuccess = Me.m_manSets.Save(Me.OutputLocation(),
+                                             Me.SelectedDatasets(), Me.m_tbxDescription.Text,
+                                             Me.m_tbxAuthor.Text, Me.m_tbxContact.Text,
                                              Me.m_cbIncludeData.Checked)
             Catch ex As Exception
 
@@ -175,7 +157,7 @@ Namespace Ecospace.Controls
                 Me.Close()
 
                 ' ToDo: globalize this
-                Dim msg As New cMessage("Spatial data configuration has been exported to " & Me.OutputLocation, _
+                Dim msg As New cMessage("Spatial data configuration has been exported to " & Me.OutputLocation,
                                         eMessageType.DataExport, eCoreComponentType.DataSource, eMessageImportance.Information)
                 Me.m_uic.Core.Messages.SendMessage(msg)
             End If

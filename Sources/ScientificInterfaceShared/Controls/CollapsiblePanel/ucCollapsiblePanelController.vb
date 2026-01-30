@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 
@@ -32,7 +14,7 @@ Namespace Controls
     ''' opeing or closing.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <DefaultProperty("Caption")> _
+    <DefaultProperty("Caption")>
     Public Class ucCollapsiblePanelController
 
 #Region " Private vars "
@@ -99,7 +81,7 @@ Namespace Controls
 
 #Region " Properties "
 
-        <Category("Collapsible")> _
+        <Category("Collapsible")>
         Public Property Caption() As String
             Get
                 If String.IsNullOrEmpty(Me.Text) Then Return Me.Name
@@ -114,7 +96,7 @@ Namespace Controls
         ''' <summary>
         ''' Get/set animation rate
         ''' </summary>
-        <Category("Collapsible")> _
+        <Category("Collapsible")>
         Public Property AnimationRate() As Integer
             Get
                 Return Me.m_iAnimationRate
@@ -124,7 +106,7 @@ Namespace Controls
             End Set
         End Property
 
-        <Category("Collapsible")> _
+        <Category("Collapsible")>
         Public Property Collapsed() As Boolean
             Get
                 Return Me.m_bCollapsed

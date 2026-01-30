@@ -1,25 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 
@@ -82,9 +63,9 @@ Public Class cHelp
     ''' <param name="strDefaultHelpURL">Default help page URL.</param>
     ''' <param name="strHelpRoot">In-help subdirectory for help content pages.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ctlOwner As Control, _
-                   strHelpFile As String, _
-                   Optional strDefaultHelpURL As String = "", _
+    Public Sub New(ctlOwner As Control,
+                   strHelpFile As String,
+                   Optional strDefaultHelpURL As String = "",
                    Optional strHelpRoot As String = "")
 
         ' Remember owner
@@ -109,7 +90,7 @@ Public Class cHelp
     ''' <param name="strAltURL">Alternate master help file URL, if any.</param>
     ''' <remarks>Note that this method does NOT capture the help focus.</remarks>
     ''' -----------------------------------------------------------------------
-    Public WriteOnly Property HelpTopic(ctl As Control, _
+    Public WriteOnly Property HelpTopic(ctl As Control,
                                         Optional strAltURL As String = "") As String
         Set(strURL As String)
             ' Safety check

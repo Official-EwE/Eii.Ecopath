@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
@@ -67,11 +49,11 @@ Namespace Controls
         ''' <param name="varName"></param>
         ''' <param name="sourceSec"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(uic As cUIContext, _
-                       ctrl As Control, _
-                       source As cCoreInputOutputBase, _
-                       varName As eVarNameFlags, _
-                       sourceSec As cCoreInputOutputBase, _
+        Public Sub New(uic As cUIContext,
+                       ctrl As Control,
+                       source As cCoreInputOutputBase,
+                       varName As eVarNameFlags,
+                       sourceSec As cCoreInputOutputBase,
                        formatter As ITypeFormatter)
             Me.New(uic, ctrl, uic.PropertyManager.GetProperty(source, varName, sourceSec), formatter)
         End Sub
@@ -84,9 +66,9 @@ Namespace Controls
         ''' <param name="prop"></param>
         ''' <param name="formatter">Formatter to obtain values from</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(uic As cUIContext, _
-                       ctrl As Control, _
-                       prop As cProperty, _
+        Public Sub New(uic As cUIContext,
+                       ctrl As Control,
+                       prop As cProperty,
                        formatter As ITypeFormatter)
             Me.New(uic, ctrl, prop, DirectCast(ExtractEnumValues(formatter), Object()), formatter)
         End Sub

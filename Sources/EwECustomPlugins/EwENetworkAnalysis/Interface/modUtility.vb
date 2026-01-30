@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
@@ -53,8 +35,8 @@ Public Module modUtility
         Next
     End Sub
 
-    
-    Public Sub AddCurve(strName As String, CurveVar() As Single, Pane As GraphPane, _
+
+    Public Sub AddCurve(strName As String, CurveVar() As Single, Pane As GraphPane,
       MyColor As Color, Optional Symbol As SymbolType = SymbolType.None)
         Dim List As PointPairList
         Dim iNumPoints As Integer = CurveVar.GetUpperBound(0)
@@ -93,8 +75,8 @@ Public Module modUtility
     ''' <param name="strExtension">The file extension to use.</param>
     ''' <returns>A valid file name in the local temp directory.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function PyramidTempFile(strModel As String, _
-                                    pyramidtype As ePyramidTypes, _
+    Public Function PyramidTempFile(strModel As String,
+                                    pyramidtype As ePyramidTypes,
                                     strExtension As String) As String
 
         Dim sbFileName As New StringBuilder()
@@ -123,12 +105,12 @@ Public Module modUtility
     ''' <param name="asValue"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function WritePyramidFile(strModel As String, _
-                                     pyramidtype As ePyramidTypes, _
-                                     strUnits As String, _
-                                     iNumTL As Integer, _
-                                     sTotalB As Single, _
-                                     asBiomass() As Single, _
+    Public Function WritePyramidFile(strModel As String,
+                                     pyramidtype As ePyramidTypes,
+                                     strUnits As String,
+                                     iNumTL As Integer,
+                                     sTotalB As Single,
+                                     asBiomass() As Single,
                                      asValue() As Single) As String
 
         Dim doc As XmlDocument = New XmlDocument()

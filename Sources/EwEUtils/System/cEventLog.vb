@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System
 Imports System.Diagnostics
@@ -42,7 +24,7 @@ Public Class cEventLog
     ''' <param name="strLogName">Name of Log (System, Application, Security is 
     ''' read-only) If you specify a non-existent log, the log will be created</param>
     ''' <remarks></remarks>
-    Public Sub New(strAppName As String, _
+    Public Sub New(strAppName As String,
                    Optional strLogName As String = "Application")
 
         Me.m_strAppName = strAppName
@@ -62,7 +44,7 @@ Public Class cEventLog
     ''' <param name="eventlogentry"><see cref="EventLogEntryType">Entry Type</see>.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteToEventLog(strEntry As String, _
+    Public Function WriteToEventLog(strEntry As String,
                                     Optional eventlogentry As EventLogEntryType = EventLogEntryType.Information) As Boolean
 
         Dim objEventLog As New EventLog()

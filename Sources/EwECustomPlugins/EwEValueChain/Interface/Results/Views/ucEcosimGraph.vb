@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
@@ -55,7 +37,7 @@ Public Class ucEcosimGraph
         MyBase.Finalize()
     End Sub
 
-    Public Sub ShowResults(iFleet As Integer, lUnits As cUnit(), result As cResults, _
+    Public Sub ShowResults(iFleet As Integer, lUnits As cUnit(), result As cResults,
                            iTimeStep As Integer) _
              Implements IResultView.ShowResults
 
@@ -73,7 +55,7 @@ Public Class ucEcosimGraph
             line.Symbol = New ZedGraph.Symbol(SymbolType.None, line.Color)
 
             For iTimeStep = 1 To result.NumTimeSteps
-                line.AddPoint(CDbl(iBaseYear + ((iTimeStep - 1) / cCore.N_MONTHS)), _
+                line.AddPoint(CDbl(iBaseYear + ((iTimeStep - 1) / cCore.N_MONTHS)),
                               result.GetTimeStepTotal(vn, iTimeStep, lUnits, iFleet, cResults.GetVariableContributionType(vn)))
             Next iTimeStep
 
