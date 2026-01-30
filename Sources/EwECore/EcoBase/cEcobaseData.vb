@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports System.Xml
@@ -538,13 +520,13 @@ Namespace WebServices.Ecobase
 
 #Region " Variables "
 
-        <XmlElement("prey_seq")> _
+        <XmlElement("prey_seq")>
         Public Property PreyIndex As Integer
 
-        <XmlElement("proportion")> _
+        <XmlElement("proportion")>
         Public Property Amount As Single
 
-        <XmlElement("detritus_fate")> _
+        <XmlElement("detritus_fate")>
         Public Property DetritusFate As Single
 
 #End Region ' Variables
@@ -580,7 +562,7 @@ Namespace WebServices.Ecobase
 #Region " Variables "
 
         ''' <summary>Sequential, one-based index of a fleet.</summary>
-        <XmlElement("fleet_seq")> _
+        <XmlElement("fleet_seq")>
         Public Property Index As Integer = 0
 
         ''' <summary>Name of a fleet.</summary>
@@ -591,24 +573,24 @@ Namespace WebServices.Ecobase
         <XmlElement("fleet_nominal_effort")>
         Public Property NominalEffort() As Single
 
-        <XmlElement("fleet_color")> _
+        <XmlElement("fleet_color")>
         Public Property Color() As Integer
 
-        <XmlElement("fixed_cost")> _
+        <XmlElement("fixed_cost")>
         Public Property FixedCost As Single
 
-        <XmlElement("sailing_cost")> _
+        <XmlElement("sailing_cost")>
         Public Property SailCost As Single
 
-        <XmlElement("variable_cost")> _
+        <XmlElement("variable_cost")>
         Public Property VarCost As Single
 
-        <XmlArray("catch_descr")> _
-        <XmlArrayItem("catch")> _
+        <XmlArray("catch_descr")>
+        <XmlArrayItem("catch")>
         Public Property Catches As New List(Of cCatchData)
 
-        <XmlArray("discard_fate_descr")> _
-        <XmlArrayItem("discard_fate")> _
+        <XmlArray("discard_fate_descr")>
+        <XmlArrayItem("discard_fate")>
         Public Property DiscardFates As New List(Of cDiscardFateData)
 
 #End Region ' Variables
@@ -699,18 +681,18 @@ Namespace WebServices.Ecobase
 #Region " Variables "
 
         ''' <summary>Name of the fleet the catch belongs to.</summary>
-        <XmlElement("group_seq")> _
+        <XmlElement("group_seq")>
         Public Property GroupIndex As Integer
 
         ''' <summary>Catch value.</summary>
-        <XmlElement("catch_value")> _
+        <XmlElement("catch_value")>
         Public Property Amount As Single
 
-        <XmlElement("catch_type")> _
+        <XmlElement("catch_type")>
         Public Property Type As String
 
         ''' <summary>Interpreted <see cref="eCatchType">value</see>.</summary>
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property CatchType As eCatchType
             Get
                 Select Case Me.Type.ToLower()
@@ -767,9 +749,9 @@ Namespace WebServices.Ecobase
 #Region " Variables "
 
         ''' <summary>Name of the fleet the catch belongs to.</summary>
-        <XmlElement("group_seq")> _
+        <XmlElement("group_seq")>
         Public Property GroupIndex As Integer
-        <XmlElement("amount")> _
+        <XmlElement("amount")>
         Public Property Amount As Single
 
 #End Region ' Variables
@@ -803,35 +785,35 @@ Namespace WebServices.Ecobase
 #Region " Variables "
 
         ''' <summary>Sequential, one-based index of a stanza.</summary>
-        <XmlElement("stanza_seq")> _
+        <XmlElement("stanza_seq")>
         Public Property Index As Integer = 0
 
         ''' <summary>Name of a stanza.</summary>
-        <XmlElement("stanza_name")> _
+        <XmlElement("stanza_name")>
         Public Property Name() As String
 
-        <XmlArray("lifestage_descr")> _
-        <XmlArrayItem("lifestage")> _
+        <XmlArray("lifestage_descr")>
+        <XmlArrayItem("lifestage")>
         Public Property LifeStages As New List(Of cStanzaLifeStageData)
 
-        <XmlElement("leading_b")> _
+        <XmlElement("leading_b")>
         Public Property LeadingB As Integer
-        <XmlElement("leading_qb")> _
+        <XmlElement("leading_qb")>
         Public Property LeadingQB As Integer
-        <XmlElement("rec_power")> _
+        <XmlElement("rec_power")>
         Public Property RecPower As Single
-        <XmlElement("bab_split")> _
+        <XmlElement("bab_split")>
         Public Property BaBSplit As Single
-        <XmlElement("w_mat_w_inf")> _
+        <XmlElement("w_mat_w_inf")>
         Public Property WmatWinf As Single
-        <XmlElement("fixed_fecundity")> _
+        <XmlElement("fixed_fecundity")>
         Public Property FixedFecundity As Boolean
-        <XmlElement("egg_at_spawn")> _
+        <XmlElement("egg_at_spawn")>
         Public Property EggAtSpawn As Boolean
 
         ' Taxon
-        <XmlArray("taxon_descr")> _
-        <XmlArrayItem("taxon")> _
+        <XmlArray("taxon_descr")>
+        <XmlArrayItem("taxon")>
         Public Property Taxonomy As New List(Of cTaxonData)
 
 #End Region ' Variables
@@ -902,13 +884,13 @@ Namespace WebServices.Ecobase
 #Region " Variables "
 
         ''' <summary>Sequential, one-based index of a stanza.</summary>
-        <XmlElement("stage_seq")> _
+        <XmlElement("stage_seq")>
         Public Property Index As Integer = 0
-        <XmlElement("group_seq")> _
+        <XmlElement("group_seq")>
         Public Property GroupIndex As Integer = 0
-        <XmlElement("z")> _
+        <XmlElement("z")>
         Public Property Z As Single
-        <XmlElement("start_age")> _
+        <XmlElement("start_age")>
         Public Property Age As Integer
 
 #End Region ' Variables
@@ -948,19 +930,19 @@ Namespace WebServices.Ecobase
 #Region " Variables "
 
         ''' <summary>Index of the pedigree level.</summary>
-        <XmlElement("pedigree_seq")> _
+        <XmlElement("pedigree_seq")>
         Public Property Index As Integer
-        <XmlElement("pedigree_name")> _
+        <XmlElement("pedigree_name")>
         Public Property Name As String
-        <XmlElement("description")> _
+        <XmlElement("description")>
         Public Property Description As String
-        <XmlElement("pedigree_color")> _
+        <XmlElement("pedigree_color")>
         Public Property Color As Integer
 
-        <XmlElement("variable")> _
+        <XmlElement("variable")>
         Public Property Variable As String
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property VarName As eVarNameFlags
             Get
                 Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
@@ -972,11 +954,11 @@ Namespace WebServices.Ecobase
             End Set
         End Property
 
-        <XmlElement("index_value")> _
+        <XmlElement("index_value")>
         Public Property IndexValue As Single
-        <XmlElement("conf_interv")> _
+        <XmlElement("conf_interv")>
         Public Property ConfidenceValue As Integer
-        <XmlElement("estimated")> _
+        <XmlElement("estimated")>
         Public Property IsEstimated As Boolean
 
 #End Region ' Variables
@@ -1020,13 +1002,13 @@ Namespace WebServices.Ecobase
 #Region " Variables "
 
         ''' <summary>Index of the pedigree level.</summary>
-        <XmlElement("pedigree_seq")> _
+        <XmlElement("pedigree_seq")>
         Public Property LevelIndex As Integer
 
-        <XmlElement("variable")> _
+        <XmlElement("variable")>
         Public Property Variable As String
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property VarName As eVarNameFlags
             Get
                 Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
@@ -1071,63 +1053,63 @@ Namespace WebServices.Ecobase
 #Region " Variables "
 
         ''' <summary>Index of the taxon.</summary>
-        <XmlElement("taxon_seq")> _
+        <XmlElement("taxon_seq")>
         Public Property TaxonIndex As Integer
-        <XmlElement("taxon_name")> _
+        <XmlElement("taxon_name")>
         Public Property CommonName As String
         ''' <summary>Reserved for future use.</summary>
-        <XmlElement("taxon_kingdom")> _
+        <XmlElement("taxon_kingdom")>
         Public Property Kingdom As String
         ''' <summary>Reserved for future use.</summary>
-        <XmlElement("taxon_phylum")> _
+        <XmlElement("taxon_phylum")>
         Public Property Phylum As String
-        <XmlElement("taxon_class")> _
+        <XmlElement("taxon_class")>
         Public Property [Class] As String
-        <XmlElement("taxon_order")> _
+        <XmlElement("taxon_order")>
         Public Property Order As String
-        <XmlElement("taxon_family")> _
+        <XmlElement("taxon_family")>
         Public Property Family As String
-        <XmlElement("taxon_genus")> _
+        <XmlElement("taxon_genus")>
         Public Property Genus As String
-        <XmlElement("taxon_species")> _
+        <XmlElement("taxon_species")>
         Public Property Species As String
 
         ''' <summary>See <see cref="eVarNameFlags.CodeSAUP"></see></summary>
-        <XmlElement("code_saup")> _
+        <XmlElement("code_saup")>
         Public Property CodeSAUP As Long
         ''' <summary>See <see cref="eVarNameFlags.CodeFB"></see></summary>
-        <XmlElement("code_fishbase")> _
+        <XmlElement("code_fishbase")>
         Public Property CodeFB As Long
         ''' <summary>See <see cref="eVarNameFlags.CodeSLB"></see></summary>
-        <XmlElement("code_sealifebase")> _
+        <XmlElement("code_sealifebase")>
         Public Property CodeSLB As Long
         ''' <summary>See <see cref="eVarNameFlags.CodeFAO"></see></summary>
-        <XmlElement("code_fao")> _
+        <XmlElement("code_fao")>
         Public Property CodeFAO As String
         ''' <summary>See <see cref="eVarNameFlags.CodeLSID"></see></summary>
-        <XmlElement("code_lsid")> _
+        <XmlElement("code_lsid")>
         Public Property CodeLSID As String
 
-        <XmlElement("source")> _
+        <XmlElement("source")>
         Public Property Source As String
-        <XmlElement("source_key")> _
+        <XmlElement("source_key")>
         Public Property SourceKey As String
 
         ''' <summary>Northern limit of the <see cref="Extent"/>.</summary>
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property North As Single
         ''' <summary>Eastern limit of the <see cref="Extent"/>.</summary>
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property East As Single
         ''' <summary>Western limit of the <see cref="Extent"/>.</summary>
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property West As Single
         ''' <summary>Southern limit of the <see cref="Extent"/>.</summary>
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property South As Single
 
         ''' <summary>Spatial bounding box.</summary>
-        <XmlElement("geographic_extent")> _
+        <XmlElement("geographic_extent")>
         Public Property Extent As String
             Get
                 Return "BOX(" & cStringUtils.FormatSingle(Me.West) & " " & cStringUtils.FormatSingle(Me.North) & "," & cStringUtils.FormatSingle(Me.East) & " " & cStringUtils.FormatSingle(Me.South) & ")"
@@ -1141,18 +1123,18 @@ Namespace WebServices.Ecobase
             End Set
         End Property
 
-        <XmlElement("prop_biomass")> _
+        <XmlElement("prop_biomass")>
         Public Property PropBiomass As Single
 
-        <XmlElement("prop_catch")> _
+        <XmlElement("prop_catch")>
         Public Property PropCatch As Single
 
         ' -- Ecology type --
 
-        <XmlElement("type_ecology")> _
+        <XmlElement("type_ecology")>
         Public Property Ecology As String
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property EcologyType As eEcologyTypes
             Get
                 Dim t As eEcologyTypes = eEcologyTypes.NotSet
@@ -1166,10 +1148,10 @@ Namespace WebServices.Ecobase
 
         ' -- Organism type --
 
-        <XmlElement("type_organism")> _
+        <XmlElement("type_organism")>
         Public Property Organism As String
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property OrganismType As eOrganismTypes
             Get
                 Dim t As eOrganismTypes = eOrganismTypes.NotSet
@@ -1183,10 +1165,10 @@ Namespace WebServices.Ecobase
 
         ' -- IUCN status --
 
-        <XmlElement("iucn_status")> _
+        <XmlElement("iucn_status")>
         Public Property IUCNConservationStatus As String
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property IUCNConservationStatusType As eIUCNConservationStatusTypes
             Get
                 Dim t As eIUCNConservationStatusTypes = eIUCNConservationStatusTypes.NotSet
@@ -1200,10 +1182,10 @@ Namespace WebServices.Ecobase
 
         ' -- Exploitation type --
 
-        <XmlElement("type_exploitation")> _
+        <XmlElement("type_exploitation")>
         Public Property ExploitationStatus As String
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property ExploitationStatusType As eExploitationTypes
             Get
                 Dim t As eExploitationTypes = eExploitationTypes.NotSet
@@ -1217,10 +1199,10 @@ Namespace WebServices.Ecobase
 
         ' -- Occurrence --
 
-        <XmlElement("type_occurrence")> _
+        <XmlElement("type_occurrence")>
         Public Property OccurrenceStatus As String
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property OccurrenceStatusType As eOccurrenceStatusTypes
             Get
                 Dim t As eOccurrenceStatusTypes = eOccurrenceStatusTypes.NotSet
@@ -1232,19 +1214,19 @@ Namespace WebServices.Ecobase
             End Set
         End Property
 
-        <XmlElement("vulnerability_index")> _
+        <XmlElement("vulnerability_index")>
         Public Property VulnerabilityIndex As Integer
-        <XmlElement("weight_mean")> _
+        <XmlElement("weight_mean")>
         Public Property MeanWeight As Single
-        <XmlElement("length_mean")> _
+        <XmlElement("length_mean")>
         Public Property MeanLength As Single
-        <XmlElement("length_max")> _
+        <XmlElement("length_max")>
         Public Property MaxLength As Single
-        <XmlElement("lifespan_mean")> _
+        <XmlElement("lifespan_mean")>
         Public Property MeanLifeSpan As Single
-        <XmlElement("weight_at_inf")> _
+        <XmlElement("weight_at_inf")>
         Public Property Winf As Single
-        <XmlElement("vbk")> _
+        <XmlElement("vbk")>
         Public Property vbk As Single
 
 #End Region ' Variables
@@ -1316,34 +1298,34 @@ Namespace WebServices.Ecobase
     ''' EcoBase
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <XmlRoot("EcoBaseModel")> _
+    <XmlRoot("EcoBaseModel")>
     Public Class cEcobaseModelParameters
         Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcobaseModelParameters)()
 
 #Region " Variables "
 
         ''' <summary>The <see cref="cModelData"/>.</summary>
-        <XmlElement("model_descr")> _
+        <XmlElement("model_descr")>
         Public Property Model As cModelData
 
         ''' <summary>The list of <see cref="cGroupData">groups</see>.</summary>
-        <XmlArray("group_descr")> _
-        <XmlArrayItem("group")> _
+        <XmlArray("group_descr")>
+        <XmlArrayItem("group")>
         Public Groups As New List(Of cGroupData)
 
         ''' <summary>The list of <see cref="cFleetData">fleets</see>.</summary>
-        <XmlArray("fleet_descr")> _
-        <XmlArrayItem("fleet")> _
+        <XmlArray("fleet_descr")>
+        <XmlArrayItem("fleet")>
         Public Fleets As New List(Of cFleetData)
 
         ''' <summary>The list of <see cref="cStanzaData">multi-stanza groups</see>.</summary>
-        <XmlArray("stanza_descr")> _
-        <XmlArrayItem("stanza")> _
+        <XmlArray("stanza_descr")>
+        <XmlArrayItem("stanza")>
         Public Stanzas As New List(Of cStanzaData)
 
         ''' <summary>The list of <see cref="cPedigreeData">pedigree levels</see>.</summary>
-        <XmlArray("pedigree_descr")> _
-        <XmlArrayItem("pedigree")> _
+        <XmlArray("pedigree_descr")>
+        <XmlArrayItem("pedigree")>
         Public PedigreeLevels As New List(Of cPedigreeData)
 
 #End Region ' Variables
@@ -1513,15 +1495,15 @@ Namespace WebServices.Ecobase
     ''' Base class for containing a list of models received from EcoBase.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <XmlRoot("EcoBaseModels")> _
+    <XmlRoot("EcoBaseModels")>
     Public Class cEcobaseModelList
         Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcobaseModelList)()
 
 #Region " Variables "
 
         ''' <summary>The list of <see cref="cModelData"/> for all models in EcoBase.</summary>
-        <XmlArray("model_descr")> _
-        <XmlArrayItem("model")> _
+        <XmlArray("model_descr")>
+        <XmlArrayItem("model")>
         Public Property Models As New List(Of cModelData)
 
 #End Region ' Variables

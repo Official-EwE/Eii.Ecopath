@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Ecospace.Basemap
 
@@ -113,7 +98,7 @@ Namespace Ecospace.Basemap
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
-            
+
             Me.m_grid.Layers = Nothing
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _

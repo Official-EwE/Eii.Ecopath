@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System
 Imports System.Collections
@@ -48,10 +30,10 @@ Namespace Utilities
         ''' <param name="strNamespace">The namespace to obtain the resource from.</param>
         ''' <returns>True if successful</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function SaveResourceToFile(strResourceName As String, _
-                                                  strFileName As String, _
-                                                  Optional bOverwrite As Boolean = False, _
-                                                  Optional ass As Assembly = Nothing, _
+        Public Shared Function SaveResourceToFile(strResourceName As String,
+                                                  strFileName As String,
+                                                  Optional bOverwrite As Boolean = False,
+                                                  Optional ass As Assembly = Nothing,
                                                   Optional strNamespace As String = "") As Boolean
 
             Dim sResource As Stream = Nothing
@@ -121,9 +103,9 @@ Namespace Utilities
         ''' <param name="culture">The culture info, if any.</param>
         ''' <returns>A string, or <paramref name="strName"/> if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Shared Function LoadString(strName As String, _
-                                   typeAssembly As Type, _
-                                   Optional strNamespace As String = "", _
+        Shared Function LoadString(strName As String,
+                                   typeAssembly As Type,
+                                   Optional strNamespace As String = "",
                                    Optional culture As CultureInfo = Nothing) As String
 
             Dim ass As Assembly = Assembly.GetAssembly(typeAssembly)
@@ -202,8 +184,8 @@ Namespace Utilities
         ''' current loaded culture is used.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetResources(Optional ass As Assembly = Nothing, _
-                                            Optional strNamespace As String = "", _
+        Public Shared Function GetResources(Optional ass As Assembly = Nothing,
+                                            Optional strNamespace As String = "",
                                             Optional culture As CultureInfo = Nothing) As Dictionary(Of String, Object)
 
             Dim dic As New Dictionary(Of String, Object)

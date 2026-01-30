@@ -95,6 +95,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", 
 	ProjectSection(SolutionItems) = preProject
 		..\Deployment\Ecopath_install.ico = ..\Deployment\Ecopath_install.ico
 		..\Deployment\EwE5Logo.bmp = ..\Deployment\EwE5Logo.bmp
+		EwE6.sln.licenseheader = EwE6.sln.licenseheader
 		..\Deployment\EwE6Header.bmp = ..\Deployment\EwE6Header.bmp
 		..\Deployment\EwE6_relpath.iss = ..\Deployment\EwE6_relpath.iss
 	EndProjectSection

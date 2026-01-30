@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Text
 Imports EwEUtils.Utilities
@@ -24,7 +9,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
-    
+
     Public Class gridApplyPredPreyShape
         Inherits gridApplyShapeBase
 
@@ -93,12 +78,12 @@ Namespace Ecosim
                             interaction.getShape(i, ff, application)
 
                             ' Only delete pairs of current type
-                            If (TypeOf ff Is cMediationBaseFunction) And _
+                            If (TypeOf ff Is cMediationBaseFunction) And
                                (Me.m_applyShapeMode = eShapeCategoryTypes.Mediation) Then
                                 interaction.setShape(i, Nothing)
                             End If
 
-                            If (TypeOf ff Is cForcingFunction) And _
+                            If (TypeOf ff Is cForcingFunction) And
                                (Me.m_applyShapeMode = eShapeCategoryTypes.Forcing) Then
                                 interaction.setShape(i, Nothing)
                             End If
@@ -160,8 +145,8 @@ Namespace Ecosim
                 Me(i, 1) = New cPropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 Me(i, 1).Behaviors.Add(Me.m_bmRowCol)
 
-                If ((Me.m_groupfilter = eGroupFilter.Consumer) And (source.IsConsumer)) Or _
-                   ((Me.m_groupfilter = eGroupFilter.Producer) And (source.IsProducer)) Or _
+                If ((Me.m_groupfilter = eGroupFilter.Consumer) And (source.IsConsumer)) Or
+                   ((Me.m_groupfilter = eGroupFilter.Producer) And (source.IsProducer)) Or
                    ((Me.m_groupfilter = eGroupFilter.Detritus) And (source.IsDetritus)) Then
                     Me.AddColumn(iCol, source)
                     iCol += 1

@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Reflection
 Imports System.Text
@@ -36,7 +18,7 @@ Namespace Database
     ''' Utility class to update a database across minor versions within one major version.
     ''' </summary>
     ''' =======================================================================
-    
+
     Friend Class cDatabaseUpdater
 
 #Region " Private bits "
@@ -51,7 +33,7 @@ Namespace Database
 
             Public Function Compare(x As cDBUpdate, y As cDBUpdate) As Integer _
                     Implements IComparer(Of cDBUpdate).Compare
-                Return CInt(if(x.UpdateVersion < y.UpdateVersion, -1, 1))
+                Return CInt(If(x.UpdateVersion < y.UpdateVersion, -1, 1))
             End Function
 
         End Class
@@ -227,7 +209,7 @@ Namespace Database
                 ' Able to start transaction?
                 If db.BeginTransaction() Then
                     ' Do not publicly report updates that always run
-                    Me.ReportUpdateError(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion, update.UpdateDescription), _
+                    Me.ReportUpdateError(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion, update.UpdateDescription),
                                           eMessageImportance.Maintenance)
 
                     Try

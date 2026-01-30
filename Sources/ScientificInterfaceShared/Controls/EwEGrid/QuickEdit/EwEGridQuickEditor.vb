@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports System.Text
@@ -38,7 +20,7 @@ Namespace Controls.EwEGrid
     ''' all currently selected EwE variables can be modified. Conditions apply.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    
+
     Public Class cQuickEditHandler
 
 #Region " Private variables "
@@ -630,12 +612,12 @@ Namespace Controls.EwEGrid
             If (cmdOF.Result <> System.Windows.Forms.DialogResult.OK) Then Return bSuccess
 
             Try
-                fs = New FileStream(cmdOF.FileName, _
-                                    FileMode.Open, _
-                                    FileAccess.Read, _
+                fs = New FileStream(cmdOF.FileName,
+                                    FileMode.Open,
+                                    FileAccess.Read,
                                     FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable)
             Catch ex As Exception
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, ex.Message), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, ex.Message),
                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
                 bSuccess = False
             End Try
@@ -656,7 +638,7 @@ Namespace Controls.EwEGrid
                 sr.Close()
                 fs.Close()
 
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_SUCCES, Me.m_grid.DataName, cmdOF.FileName), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_SUCCES, Me.m_grid.DataName, cmdOF.FileName),
                     eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdOF.FileName)
 
@@ -686,7 +668,7 @@ Namespace Controls.EwEGrid
                 fs = New FileStream(cmdSF.FileName, FileMode.Create, FileAccess.Write, FileShare.None)
             Catch ex As Exception
                 ' Woops!
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, cmdSF.FileName, ex.Message), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, cmdSF.FileName, ex.Message),
                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
             End Try
 
@@ -696,7 +678,7 @@ Namespace Controls.EwEGrid
                 sw.Close()
                 fs.Close()
 
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.m_grid.DataName, cmdSF.FileName), _
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.m_grid.DataName, cmdSF.FileName),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdSF.FileName)
             End If

@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.SpatialData
 Imports EwEUtils.Utilities
@@ -108,21 +90,21 @@ Namespace Style
 
             Select Case comp.Compatibility
 
-                Case cDatasetCompatilibity.eCompatibilityTypes.NotSet, _
-                     cDatasetCompatilibity.eCompatibilityTypes.Errors, _
-                     cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
+                Case cDatasetCompatilibity.eCompatibilityTypes.NotSet,
+                     cDatasetCompatilibity.eCompatibilityTypes.Errors,
+                     cDatasetCompatilibity.eCompatibilityTypes.NoTemporal,
                      cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
                     Return Me.ToString(comp, eDescriptorTypes.Description)
 
                 Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
-                    Return cStringUtils.Localize(My.Resources.COMPATIBILITY_SUMMARY_NOINDEX, _
+                    Return cStringUtils.Localize(My.Resources.COMPATIBILITY_SUMMARY_NOINDEX,
                                                  CInt(Math.Ceiling(100 * iNumOverlap / Math.Max(1, iNumTS))))
 
             End Select
 
-            Return cStringUtils.Localize(My.Resources.COMPATIBILITY_SUMMARY, _
-                                         CInt(Math.Ceiling(100 * iNumOverlap / Math.Max(1, iNumTS))), _
-                                         CInt(Math.Ceiling(100 * iNumPartial / Math.Max(1, iNumOverlap))), _
+            Return cStringUtils.Localize(My.Resources.COMPATIBILITY_SUMMARY,
+                                         CInt(Math.Ceiling(100 * iNumOverlap / Math.Max(1, iNumTS))),
+                                         CInt(Math.Ceiling(100 * iNumPartial / Math.Max(1, iNumOverlap))),
                                          CInt(Math.Ceiling(100 * iNumFull / Math.Max(1, iNumOverlap))))
         End Function
 

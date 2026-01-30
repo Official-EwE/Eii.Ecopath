@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports System.Reflection
@@ -29,9 +11,9 @@ Imports ScientificInterfaceShared.Style
 
 
 
-<TypeConverter(GetType(cPropertySorter)), _
-    DefaultProperty("Name"), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
 Public MustInherit Class cUnit
     Inherits cEwEDatabase.cOOPStorable
 
@@ -277,9 +259,9 @@ Public MustInherit Class cUnit
     ''' Make all calculations.
     ''' </summary>
     ''' <param name="results">The results object to store calculation results in.</param>
-    Protected Overridable Function Calculate(results As cResults, _
-            sInputBiomass As Single, sInputValue As Single, _
-            sOutputBiomass As Single, sOutputValue As Single, _
+    Protected Overridable Function Calculate(results As cResults,
+            sInputBiomass As Single, sInputValue As Single,
+            sOutputBiomass As Single, sOutputValue As Single,
             iTimeStep As Integer) As Boolean
 
         ' All good
@@ -331,7 +313,7 @@ Public MustInherit Class cUnit
         Return Me.Name
     End Function
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Property Sequence() As Integer
         Get
             Return Me.m_iSequence
@@ -341,7 +323,7 @@ Public MustInherit Class cUnit
         End Set
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Property Core() As cCore
         Get
             Return Me.m_core
@@ -351,31 +333,31 @@ Public MustInherit Class cUnit
         End Set
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public MustOverride ReadOnly Property UnitType() As cUnitFactory.eUnitType
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overridable ReadOnly Property HasError() As Boolean
         Get
             Return False
         End Get
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overridable ReadOnly Property Style() As cStyleGuide.eStyleFlags
         Get
             Return cStyleGuide.eStyleFlags.OK
         End Get
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overridable ReadOnly Property CanCompute() As Boolean
         Get
             Return Me.m_bCanCompute
         End Get
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Overridable ReadOnly Property IsRunError() As Boolean
         Get
             ' Return if all results received OR when not ready to run yet
@@ -385,11 +367,11 @@ Public MustInherit Class cUnit
 
 #Region " General "
 
-    <Browsable(True), _
-        Category(sPROPCAT_GENERAL), _
-        DisplayName("Name"), _
-        Description("Name of this unit"), _
-        cPropertySorter.PropertyOrder(1)> _
+    <Browsable(True),
+        Category(sPROPCAT_GENERAL),
+        DisplayName("Name"),
+        Description("Name of this unit"),
+        cPropertySorter.PropertyOrder(1)>
     Public Overridable Property Name() As String
         Get
             Return Me.m_strName
@@ -400,18 +382,18 @@ Public MustInherit Class cUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_GENERAL), _
-        DisplayName("Category"), _
-        Description("Category to which this unit belongs"), _
-        cPropertySorter.PropertyOrder(2)> _
+    <Browsable(True),
+        Category(sPROPCAT_GENERAL),
+        DisplayName("Category"),
+        Description("Category to which this unit belongs"),
+        cPropertySorter.PropertyOrder(2)>
     Public MustOverride ReadOnly Property Category() As String
 
-    <Browsable(True), _
-        Category(sPROPCAT_VALIDATION), _
-        DisplayName("Biomass ratio"), _
-        Description("Total biomass ratio passed out of this unit"), _
-        cPropertySorter.PropertyOrder(8)> _
+    <Browsable(True),
+        Category(sPROPCAT_VALIDATION),
+        DisplayName("Biomass ratio"),
+        Description("Total biomass ratio passed out of this unit"),
+        cPropertySorter.PropertyOrder(8)>
     Public Overridable ReadOnly Property BiomassRatio() As String
         Get
             Dim sTot As Single = 0
@@ -422,11 +404,11 @@ Public MustInherit Class cUnit
         End Get
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_GENERAL), _
-        DisplayName("Nationality"), _
-        Description("Nationality of this unit"), _
-        cPropertySorter.PropertyOrder(4)> _
+    <Browsable(True),
+        Category(sPROPCAT_GENERAL),
+        DisplayName("Nationality"),
+        Description("Nationality of this unit"),
+        cPropertySorter.PropertyOrder(4)>
     Public Overridable Property Nationality() As Integer
         Get
             Return Me.m_iNationality
@@ -437,11 +419,11 @@ Public MustInherit Class cUnit
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(sPROPCAT_GENERAL), _
-        DisplayName("Name (local)"), _
-        Description("Local name of this unit"), _
-        cPropertySorter.PropertyOrder(5)> _
+    <Browsable(True),
+        Category(sPROPCAT_GENERAL),
+        DisplayName("Name (local)"),
+        Description("Local name of this unit"),
+        cPropertySorter.PropertyOrder(5)>
     Public Overridable Property NameLocal() As String
         Get
             Return Me.m_strNameLocal

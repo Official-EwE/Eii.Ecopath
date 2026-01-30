@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwEUtils.Utilities
@@ -54,11 +36,11 @@ Namespace MSY
         ''' <param name="results">MSY results.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function WriteGroupResults(strPath As String, _
-                                          iGroup As Integer, _
-                                          ass As eMSYAssessmentTypes, _
-                                          FBase As Single, _
-                                          results As cMSYFResult(), _
+        Public Function WriteGroupResults(strPath As String,
+                                          iGroup As Integer,
+                                          ass As eMSYAssessmentTypes,
+                                          FBase As Single,
+                                          results As cMSYFResult(),
                                           optimum As cMSYOptimum) As Boolean
 
             Dim target As cEcoPathGroupInput = Me.m_core.EcopathGroupInputs(iGroup)
@@ -303,8 +285,8 @@ Namespace MSY
             MyBase.WriteHeader(sw, ass, "MSY")
         End Sub
 
-        Protected Function CSVFileName(target As cCoreInputOutputBase, _
-                                       strVar As String, _
+        Protected Function CSVFileName(target As cCoreInputOutputBase,
+                                       strVar As String,
                                        assessment As eMSYAssessmentTypes) As String
             Return cFileUtils.ToValidFileName(target.Name & "_" & strVar & "_" & assessment.ToString() & ".csv", False)
 
@@ -314,7 +296,7 @@ Namespace MSY
         ''' <inheritdocs cref="cMSYResultWriterBase.ErrorMessage"/>
         ''' -------------------------------------------------------------------
         Protected Overrides Function ErrorMessage(strPath As String, strReason As String) As cMessage
-            Return New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_RESULTS_SAVE_FAILED, strPath, strReason), _
+            Return New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_RESULTS_SAVE_FAILED, strPath, strReason),
                                 eMessageType.DataExport, eCoreComponentType.MSY, eMessageImportance.Information)
         End Function
 
@@ -322,7 +304,7 @@ Namespace MSY
         ''' <inheritdocs cref="cMSYResultWriterBase.SuccessMessage"/>
         ''' -------------------------------------------------------------------
         Protected Overrides Function SuccessMessage(strPath As String) As cMessage
-            Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_RESULTS_SAVE_SUCCESS, strPath), _
+            Dim msg As cMessage = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSY_RESULTS_SAVE_SUCCESS, strPath),
                                                eMessageType.DataExport, eCoreComponentType.MSY, eMessageImportance.Information)
             msg.Hyperlink = Path.GetDirectoryName(strPath)
             Return msg

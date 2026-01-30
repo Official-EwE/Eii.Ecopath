@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
@@ -65,7 +47,7 @@ Namespace Controls
         ''' <param name="tree">The <see cref="IFlowDiagramRenderer"/> tree to do 
         ''' the actual rendering and UI interactions.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(data As IFlowDiagramData, _
+        Public Sub New(data As IFlowDiagramData,
                        tree As IFlowDiagramRenderer)
 
             Me.m_data = data
@@ -97,7 +79,7 @@ Namespace Controls
 
 #Region " Public access "
 
-        Private Shared s_draworder As IFlowDiagramRenderer.eFDHighlightType() = _
+        Private Shared s_draworder As IFlowDiagramRenderer.eFDHighlightType() =
             New IFlowDiagramRenderer.eFDHighlightType() {IFlowDiagramRenderer.eFDHighlightType.GrayedOut, IFlowDiagramRenderer.eFDHighlightType.None, IFlowDiagramRenderer.eFDHighlightType.Selected}
 
         ''' -------------------------------------------------------------------
@@ -206,8 +188,8 @@ Namespace Controls
                         ' JS 06Apr18: draw nodes on top of lines, even when grayed-out
                         bDraw = bDraw And ((hl = IFlowDiagramRenderer.eFDHighlightType.None) Or (hl = IFlowDiagramRenderer.eFDHighlightType.GrayedOut))
                     Case IFlowDiagramRenderer.eFDHighlightType.Selected
-                        bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.LinkIn) Or _
-                                          (hl = IFlowDiagramRenderer.eFDHighlightType.LinkOut) Or _
+                        bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.LinkIn) Or
+                                          (hl = IFlowDiagramRenderer.eFDHighlightType.LinkOut) Or
                                           (hl = IFlowDiagramRenderer.eFDHighlightType.Selected)
                 End Select
 

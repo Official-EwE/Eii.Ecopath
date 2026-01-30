@@ -1,27 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwEUtils.Utilities
@@ -105,7 +84,7 @@ Public Class cSurvivability
 
         End Sub
 
-        Public Sub New(Index As Integer, FleetNumber As Integer, GroupNumber As Integer, _
+        Public Sub New(Index As Integer, FleetNumber As Integer, GroupNumber As Integer,
                        Alpha As Double, Beta As Double)
             Me.Index = Index
             Me.FleetNo = FleetNumber
@@ -115,7 +94,7 @@ Public Class cSurvivability
 
         End Sub
 
-        Public Sub New(FleetNumber As Integer, GroupNumber As Integer, _
+        Public Sub New(FleetNumber As Integer, GroupNumber As Integer,
                        Alpha As Double, Beta As Double)
             Me.FleetNo = FleetNumber
             Me.GroupNo = GroupNumber
@@ -322,8 +301,8 @@ Public Class cSurvivability
                     BetaGenerator.Alpha = TempSurvDistParam.Alpha
                     BetaGenerator.Beta = TempSurvDistParam.Beta
                     TempSampledParam = Convert.ToSingle(BetaGenerator.NextDouble())
-                    Me.m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(iParameter, TempSurvDistParam.FleetNo, _
-                                                                        TempSurvDistParam.GroupNo, _
+                    Me.m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(iParameter, TempSurvDistParam.FleetNo,
+                                                                        TempSurvDistParam.GroupNo,
                                                                         TempSampledParam))
                 Next
             Next
@@ -358,7 +337,7 @@ Public Class cSurvivability
                         param = Me.ExtractSampledParam(csv)
 
                         If (param IsNot Nothing) Then
-                            Me.m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(param.Iteration, param.FleetNo, param.GroupNo, _
+                            Me.m_ListOfSampledSurvivabilities.Add(New cSampledSurvivability(param.Iteration, param.FleetNo, param.GroupNo,
                                                           param.Survivability))
                         End If
                     End While
@@ -539,7 +518,7 @@ Public Class cSurvivability
         Return False
     End Function
 
-    Public Function Load(Optional msg As cMessage = Nothing, _
+    Public Function Load(Optional msg As cMessage = Nothing,
                          Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
@@ -653,8 +632,8 @@ Public Class cSurvivability
     ''' <param name="csv">The CSV object linking to the survivability distribution parameter file</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function ExtractSurvivabilityDist(msg As cMessage, _
-                                              csv As CsvReader, _
+    Private Function ExtractSurvivabilityDist(msg As cMessage,
+                                              csv As CsvReader,
                                               ByRef param As cSurvivabilityDistributonParam) As Boolean
 
         ' Sanity checks

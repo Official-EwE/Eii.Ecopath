@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
@@ -33,7 +15,7 @@ Namespace Controls
     ''' descriptive strings for otherwise illegible characters.
     ''' </summary>
     ''' ===========================================================================
-    <DefaultProperty("Character")> _
+    <DefaultProperty("Character")>
     Public Class ucCharacterTextBox
         Inherits TextBox
 
@@ -66,7 +48,7 @@ Namespace Controls
 
 #Region " Public interfaces "
 
-        <Browsable(False), Bindable(False)> _
+        <Browsable(False), Bindable(False)>
         Public Overrides Property Text() As String
             Get
                 Return MyBase.Text
@@ -81,7 +63,7 @@ Namespace Controls
         ''' Get/set the character value to display in the box
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(True), Category("Appearance")> _
+        <Browsable(True), Category("Appearance")>
         Public Property Character() As Char
             Get
                 Return Convert.ToChar(Me.CharCode)
@@ -96,7 +78,7 @@ Namespace Controls
         ''' Get/set the numerical code for the character to display in the box.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property CharCode() As Int32
             Get
                 Return Me.m_iChar
@@ -144,7 +126,7 @@ Namespace Controls
         ''' Get/set a mask to allow only specific characters to be used in the box
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property CharacterMask() As String
             Get
                 Return Me.m_strCharMask
@@ -164,7 +146,7 @@ Namespace Controls
         ''' </list>
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property MaskInclusive() As Boolean
             Get
                 Return Me.m_bMaskInclusive

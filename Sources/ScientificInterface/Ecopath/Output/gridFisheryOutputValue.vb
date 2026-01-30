@@ -1,29 +1,13 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
-    
+
     Public Class gridFisheryOutputValue
         Inherits cEwEGrid
 
@@ -159,8 +143,8 @@ Namespace Ecopath.Output
 
             ' Non-market value
             ' .. multiply group non-market value by calculated broup biomass
-            opNonMarketValue = New cBinaryOperation(cBinaryOperation.eOperatorType.Multiply, _
-                Me.PropertyManager.GetProperty(source, eVarNameFlags.NonMarketValue), _
+            opNonMarketValue = New cBinaryOperation(cBinaryOperation.eOperatorType.Multiply,
+                Me.PropertyManager.GetProperty(source, eVarNameFlags.NonMarketValue),
                 Me.PropertyManager.GetProperty(Me.Core.EcopathGroupOutputs(source.Index), eVarNameFlags.Biomass))
             propProdNonMarketValue = Me.Formula(opNonMarketValue)
             propCell = New cPropertyCell(CType(propProdNonMarketValue, cProperty))
@@ -317,8 +301,8 @@ Namespace Ecopath.Output
             alSumProfit.Clear()
             For fleetIndex As Integer = 1 To Me.Core.nFleets
 
-                opMinusValueCost = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, _
-                                                CType(Me(Me.RowsCount - 3, fleetIndex + 1), Object), _
+                opMinusValueCost = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract,
+                                                CType(Me(Me.RowsCount - 3, fleetIndex + 1), Object),
                                                 CType(Me(Me.RowsCount - 2, fleetIndex + 1), Object))  'total value - total cost
                 propMinusValueCost = Me.Formula(opMinusValueCost)
                 alSumProfit.Add(propMinusValueCost)

@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 Imports ScientificInterfaceShared.Controls
@@ -938,7 +920,7 @@ Public Class cNetworkManager
                 Next
             Else
                 If Me.PPToDetritus(iTrophicLevel) > 0 Then
-                    sMass = (Me.BiomassByTrophicLevel(iTrophicLevel) * Me.DetToDetritus(iTrophicLevel)) / _
+                    sMass = (Me.BiomassByTrophicLevel(iTrophicLevel) * Me.DetToDetritus(iTrophicLevel)) /
                             (Me.PPToDetritus(iTrophicLevel) + Me.DetToDetritus(iTrophicLevel))
                 End If
             End If
@@ -1008,9 +990,9 @@ Public Class cNetworkManager
         Get
             Dim sTotThroughput As Single = (Me.DetThroughtput(iTrophicLevel) + Me.PPThroughtput(iTrophicLevel))
             If sTotThroughput > 0 Then
-                Return (Me.CatchDetritus(iTrophicLevel) + _
-                        Me.CA(iTrophicLevel) + _
-                        Me.DetConsByPred(iTrophicLevel) + _
+                Return (Me.CatchDetritus(iTrophicLevel) +
+                        Me.CA(iTrophicLevel) +
+                        Me.DetConsByPred(iTrophicLevel) +
                         Me.PPConsByPred(iTrophicLevel)) / sTotThroughput
             End If
             Return 0
@@ -2360,9 +2342,9 @@ Public Class cNetworkManager
 
     Friend Function AskUserConfirmation(strMsg As String) As Boolean
 
-        Dim fmsg As New cFeedbackMessage(strMsg, _
-                                         eCoreComponentType.External, _
-                                         eMessageType.Any, _
+        Dim fmsg As New cFeedbackMessage(strMsg,
+                                         eCoreComponentType.External,
+                                         eMessageType.Any,
                                          eMessageImportance.Question, eMessageReplyStyle.YES_NO)
         fmsg.Suppressable = True
         fmsg.Reply = eMessageReply.YES

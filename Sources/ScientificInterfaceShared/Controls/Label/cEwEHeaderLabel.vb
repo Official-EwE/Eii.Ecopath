@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports System.Threading
@@ -77,7 +59,7 @@ Namespace Controls
         ''' cEwEGroupLabel control.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overrides Property BackColor() As System.Drawing.Color
             Get
                 Return MyBase.BackColor
@@ -93,7 +75,7 @@ Namespace Controls
         ''' cEwEGroupLabel control.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overrides Property ForeColor() As System.Drawing.Color
             Get
                 Dim clr As Color = MyBase.ForeColor
@@ -112,7 +94,7 @@ Namespace Controls
         ''' Get the fixed <see cref="Label.Font">font</see> of a cEwEGroupLabel control.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overrides Property Font() As System.Drawing.Font
             Get
                 Return MyBase.Font
@@ -128,7 +110,7 @@ Namespace Controls
         ''' cEwEGroupLabel control.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overrides Property AutoSize() As Boolean
             Get
                 Return False
@@ -148,7 +130,7 @@ Namespace Controls
         ''' consideration.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overrides Property TextAlign() As System.Drawing.ContentAlignment
             Get
                 If Me.RightToLeft = RightToLeft.Yes Then
@@ -168,7 +150,7 @@ Namespace Controls
         ''' cEwEGroupLabel control.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overrides Property BorderStyle() As System.Windows.Forms.BorderStyle
             Get
                 Return BorderStyle.None
@@ -190,8 +172,8 @@ Namespace Controls
             End Get
         End Property
 
-        <Browsable(True), _
-         Category("Expand/collapse")> _
+        <Browsable(True),
+         Category("Expand/collapse")>
         Public Property CanCollapseParent() As Boolean
             Get
                 Return Me.m_bCanCollapseParent
@@ -202,8 +184,8 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-         Category("Expand/collapse")> _
+        <Browsable(True),
+         Category("Expand/collapse")>
         Public Property CollapsedParentHeight() As Integer
             Get
                 Return Me.m_iCollapsedParentHeight
@@ -237,8 +219,8 @@ Namespace Controls
 
         Public Event OnCollapsed(sender As Object, args As cCollapsedEventArgs)
 
-        <Browsable(True), _
-         Category("Expand/collapse")> _
+        <Browsable(True),
+         Category("Expand/collapse")>
         Public Property IsCollapsed() As Boolean
             Get
                 If Not Me.CanCollapseParent Then Return False

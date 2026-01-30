@@ -1,37 +1,16 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmDistributionParameters
     Inherits frmEwEGrid
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(disposing As Boolean)
 
         Try
@@ -50,7 +29,7 @@ Partial Class frmDistributionParameters
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDistributionParameters))
         Me.m_btnCancel = New System.Windows.Forms.Button()
@@ -101,7 +80,7 @@ Partial Class frmDistributionParameters
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
-        
+
         Me.m_grid.Mode = EwEMSEPlugin.frmDistributionParameters.eParameterSet.Ecopath
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _

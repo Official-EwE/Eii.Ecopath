@@ -88,9 +88,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Sources\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
     <None Update="UserGuide\EwE model from time step.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

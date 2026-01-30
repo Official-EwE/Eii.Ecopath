@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports ScientificInterfaceShared.Forms
 
@@ -26,7 +10,7 @@ Namespace Ecopath.Tools
         Inherits frmEwEGrid
 
         'Form overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then
@@ -43,7 +27,7 @@ Namespace Ecopath.Tools
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmPedigree))
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
@@ -207,7 +191,7 @@ Namespace Ecopath.Tools
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
-            
+
             Me.m_grid.Location = New System.Drawing.Point(0, 18)
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"

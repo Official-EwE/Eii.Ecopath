@@ -103,9 +103,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Deployment\License\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
     <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
@@ -33,9 +15,9 @@ Namespace Controls.EwEGrid
     ''' A visualizer for rendering EwE column header cells.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    
+
     Public Class cEwECheckBoxVisualizer
-        : Inherits SourceGrid2.VisualModels.CheckBox
+        Inherits SourceGrid2.VisualModels.CheckBox
 
         ''' <summary>Border width for Highlighted cells</summary>
         Private m_nHighlightBorderWidth As Integer = 4
@@ -51,11 +33,11 @@ Namespace Controls.EwEGrid
         ''' Overidden to draw background using EwE color styles
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_Background( _
-                cell As SourceGrid2.Cells.ICellVirtual, _
-                pos As SourceGrid2.Position, _
-                e As System.Windows.Forms.PaintEventArgs, _
-                rc As System.Drawing.Rectangle, _
+        Protected Overrides Sub DrawCell_Background(
+                cell As SourceGrid2.Cells.ICellVirtual,
+                pos As SourceGrid2.Position,
+                e As System.Windows.Forms.PaintEventArgs,
+                rc As System.Drawing.Rectangle,
                 status As SourceGrid2.DrawCellStatus)
 
             If cell Is Nothing Then Return
@@ -105,10 +87,10 @@ Namespace Controls.EwEGrid
         ''' Overidden to draw cell border using EwE color styles
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_Border(cell As SourceGrid2.Cells.ICellVirtual, _
-                                                pos As SourceGrid2.Position, _
-                                                e As System.Windows.Forms.PaintEventArgs, _
-                                                rc As System.Drawing.Rectangle, _
+        Protected Overrides Sub DrawCell_Border(cell As SourceGrid2.Cells.ICellVirtual,
+                                                pos As SourceGrid2.Position,
+                                                e As System.Windows.Forms.PaintEventArgs,
+                                                rc As System.Drawing.Rectangle,
                                                 status As SourceGrid2.DrawCellStatus)
 
             If (cell Is Nothing) Then Return
@@ -133,23 +115,23 @@ Namespace Controls.EwEGrid
             ' Need to render highlightboder?
             If ((style And cStyleGuide.eStyleFlags.Highlight) > 0) And (sg IsNot Nothing) Then
                 ' #Yes: render highlight border
-                rcBorder = New RectangleBorder( _
+                rcBorder = New RectangleBorder(
                     New Border(sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), Me.m_nHighlightBorderWidth))
             End If
 
             ' Draw the border
-            ControlPaint.DrawBorder(e.Graphics, rc, _
-                rcBorder.Left.Color, _
-                rcBorder.Left.Width, _
-                ButtonBorderStyle.Solid, _
-                rcBorder.Top.Color, _
-                rcBorder.Top.Width, _
-                ButtonBorderStyle.Solid, _
-                rcBorder.Right.Color, _
-                rcBorder.Right.Width, _
-                ButtonBorderStyle.Solid, _
-                rcBorder.Bottom.Color, _
-                rcBorder.Bottom.Width, _
+            ControlPaint.DrawBorder(e.Graphics, rc,
+                rcBorder.Left.Color,
+                rcBorder.Left.Width,
+                ButtonBorderStyle.Solid,
+                rcBorder.Top.Color,
+                rcBorder.Top.Width,
+                ButtonBorderStyle.Solid,
+                rcBorder.Right.Color,
+                rcBorder.Right.Width,
+                ButtonBorderStyle.Solid,
+                rcBorder.Bottom.Color,
+                rcBorder.Bottom.Width,
                 ButtonBorderStyle.Solid)
         End Sub
 

@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports System.Text
@@ -124,8 +106,8 @@ Namespace Database
         ''' </summary>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Import(info As cExternalModelInfo, _
-                               db As cEwEDatabase, _
+        Public Function Import(info As cExternalModelInfo,
+                               db As cEwEDatabase,
                                ByRef strLogfileName As String) As Boolean _
             Implements IModelImporter.Import
 
@@ -134,8 +116,8 @@ Namespace Database
             Me.m_sbLog.Length = 0
             Me.m_strModelName = info.ID
 
-            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_STARTED, _
-                              Me.m_strModelName, Date.Now.ToString()), _
+            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_STARTED,
+                              Me.m_strModelName, Date.Now.ToString()),
                               eMessageType.DataImport, eMessageImportance.Information, True)
 
             ' Set DB
@@ -153,12 +135,12 @@ Namespace Database
             Me.m_dbTarget = Nothing
 
             If bSucces Then
-                Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_SUCCES, _
-                                            Me.m_strModelName, Date.Now.ToString()), _
+                Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_SUCCES,
+                                            Me.m_strModelName, Date.Now.ToString()),
                                             eMessageType.NotSet, eMessageImportance.Information, True)
             Else
-                Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_FAILED, _
-                                            Me.m_strModelName, Date.Now.ToString()), _
+                Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_FAILED,
+                                            Me.m_strModelName, Date.Now.ToString()),
                                             eMessageType.DataImport, eMessageImportance.Information, True)
             End If
 
@@ -250,9 +232,9 @@ Namespace Database
         ''' Logs a message
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Sub LogMessage(strMessage As String, _
-                                 Optional msgType As eMessageType = eMessageType.DataImport, _
-                                 Optional msgImportance As eMessageImportance = eMessageImportance.Information, _
+        Protected Sub LogMessage(strMessage As String,
+                                 Optional msgType As eMessageType = eMessageType.DataImport,
+                                 Optional msgImportance As eMessageImportance = eMessageImportance.Information,
                                  Optional bPublishToInterface As Boolean = False)
 
             ' Add message to log

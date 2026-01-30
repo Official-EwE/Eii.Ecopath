@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Globalization
 Imports System.IO
@@ -111,9 +93,9 @@ Namespace Controls
         ''' <param name="asValue"></param>
         ''' <remarks></remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub New(strModel As String, _
-                       pyramidtype As cPyramid.ePyramidTypes, _
-                       strUnit As String, iNumTL As Integer, _
+        Public Sub New(strModel As String,
+                       pyramidtype As cPyramid.ePyramidTypes,
+                       strUnit As String, iNumTL As Integer,
                        sTotalB As Single, asBiomass() As Single, asValue() As Single)
 
             Me.m_strModel = strModel
@@ -368,7 +350,7 @@ Namespace Controls
         ''' defined by the language settings in Windows (False).</param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Public Function FromXML(strFilename As String, _
+        Public Function FromXML(strFilename As String,
                                 Optional bFixedFormatting As Boolean = True) As Boolean
 
             Dim doc As XmlDocument = New XmlDocument()
@@ -470,7 +452,7 @@ Namespace Controls
         ''' defined by the language settings in Windows (False).</param>
         ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function FromEwE5TextFile(strFileName As String, _
+        Public Function FromEwE5TextFile(strFileName As String,
                                          Optional bFixedFormatting As Boolean = True) As Boolean
 
             Dim tr As TextReader = Nothing

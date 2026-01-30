@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.MSE
 Imports ScientificInterface.Ecosim
@@ -166,8 +148,8 @@ Public Class cMSEFishingColorBlockDataSource
     Public ReadOnly Property RowLabel(iRow As Integer) As String Implements IPolicyColorBlockDataSource.RowLabel
         Get
             Try
-                Return String.Format(SharedResources.GENERIC_LABEL_INDEXED, _
-                                     iRow, _
+                Return String.Format(SharedResources.GENERIC_LABEL_INDEXED,
+                                     iRow,
                                      Me.m_uic.Core.MSEManager.EcopathFleetInputs(iRow).Name)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".RowLabel() Exception: " & ex.Message)

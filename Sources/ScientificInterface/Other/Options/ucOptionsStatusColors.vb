@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.SystemUtilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -242,7 +227,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub AddColorTypeItem(strName As String, ctFore As cStyleGuide.eApplicationColorType, _
+        Private Sub AddColorTypeItem(strName As String, ctFore As cStyleGuide.eApplicationColorType,
                 Optional ctBack As cStyleGuide.eApplicationColorType = cStyleGuide.eApplicationColorType.NotSet)
             Dim ci As New cColorItem(strName, ctFore, ctBack, Me.UIContext.StyleGuide)
             Dim lvi As New ListViewItem(ci.Name)
@@ -408,9 +393,9 @@ Namespace Other
         ''' <param name="txt">The text beside the colorbox</param>
         ''' <remarks>This method is called by both Listbox and Combobox drawItem event handlers</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub DrawCustomItem(e As System.Windows.Forms.DrawItemEventArgs, _
-                                   clr As Color, _
-                                   txt As String, _
+        Private Sub DrawCustomItem(e As System.Windows.Forms.DrawItemEventArgs,
+                                   clr As Color,
+                                   txt As String,
                                    rect As Rectangle)
 
 
@@ -428,7 +413,7 @@ Namespace Other
             g.FillRectangle(New SolidBrush(clr), rect)
             g.DrawRectangle(Pens.Black, rect)
             'Draw text 
-            g.DrawString(txt, e.Font, New SolidBrush(e.ForeColor), _
+            g.DrawString(txt, e.Font, New SolidBrush(e.ForeColor),
                             New RectangleF(e.Bounds.X + rect.Width + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height))
 
 
@@ -442,8 +427,8 @@ Namespace Other
         ''' <param name="txt">The text beside the colorbox</param>
         ''' <remarks>This method is called by both Listbox drawItem event handlers</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub DrawCustomText(e As System.Windows.Forms.DrawItemEventArgs, _
-                                   txt As String, _
+        Private Sub DrawCustomText(e As System.Windows.Forms.DrawItemEventArgs,
+                                   txt As String,
                                    rect As Rectangle)
             ' Do nothing if there is no data
             If e.Index = -1 Then Return

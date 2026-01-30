@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Database
 
@@ -39,11 +23,11 @@ Friend Class cDBUpdate6_01_01_004
         Private m_sMinLon As Single
         Private m_sCellSize As Single
 
-        Public Sub New(iScenarioID As Integer, _
-                       lUDH_UL As Long, _
-                       sLat As Single, _
-                       sLon As Single, _
-                       sIDH_SS As Single, _
+        Public Sub New(iScenarioID As Integer,
+                       lUDH_UL As Long,
+                       sLat As Single,
+                       sLon As Single,
+                       sIDH_SS As Single,
                        sCellSize As Single)
 
             Me.m_iScenarioID = iScenarioID
@@ -142,11 +126,11 @@ Friend Class cDBUpdate6_01_01_004
         reader = db.GetReader("SELECT * FROM EcospaceScenario")
         Try
             While reader.Read
-                loc = New cModelLocation(CInt(reader("ScenarioID")), _
-                                         CLng(reader("IDH_UL")), _
-                                         sLatDefault, _
-                                         sLonDefault, _
-                                         CSng(reader("IDH_SS")), _
+                loc = New cModelLocation(CInt(reader("ScenarioID")),
+                                         CLng(reader("IDH_UL")),
+                                         sLatDefault,
+                                         sLonDefault,
+                                         CSng(reader("IDH_SS")),
                                          CSng(reader("CellLength")))
                 lModels.Add(loc)
             End While
