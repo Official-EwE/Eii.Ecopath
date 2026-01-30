@@ -185,7 +185,6 @@ Public Class cMediationDataStructures
 
     End Function
 
-
     ''' <summary>
     ''' Set Mediation function multiplier in <see cref="cMediationDataStructures.MedVal"> cMediationDataStructures.MedVal()</see> for the current Biomass and/or Effort
     ''' </summary>

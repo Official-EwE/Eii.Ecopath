@@ -4,7 +4,6 @@
 
 #Region " Options "
 
-
 Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 Imports ValueChain

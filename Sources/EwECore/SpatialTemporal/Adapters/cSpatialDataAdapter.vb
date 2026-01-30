@@ -275,7 +275,6 @@ Namespace SpatialData
                                             Me.m_core.PluginManager.EcospaceBeginLayerChange(iTime, dt, layer)
                                         End If
 
-
                                         ' Integrate data
                                         Me.Adapt(bm, layer, conn, iTime, dtVirt, dataExternal, dNoData)
 
@@ -343,7 +342,6 @@ Namespace SpatialData
         Public Overridable Sub EndRun()
             If (Me.PreserveLayerData) Then Me.RestoreLayerData()
         End Sub
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -577,7 +575,6 @@ Namespace SpatialData
 
         End Sub
 
-
         Public Overridable Function RestoreForcing(SpaceData As cEcospaceDataStructures) As Boolean
             'Only forcing adapters have data to restore
             Return True
@@ -687,7 +684,6 @@ Namespace SpatialData
             Return lConn.ToArray
 
         End Function
-
 
         Public Function AddConnection(iLayer As Integer, conn As cSpatialDataConnection) As cSpatialDataConnection
 

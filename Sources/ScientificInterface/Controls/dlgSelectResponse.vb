@@ -6,8 +6,6 @@ Option Explicit On
 Imports ScientificInterfaceShared
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 <Obsolete("Use dlgSelectCapacityResponse instead")>
 Public Class dlgSelectResponse
 
@@ -418,7 +416,6 @@ Public Class dlgSelectResponse
                 Next
 
             End If
-
 
         Catch ex As Exception
 

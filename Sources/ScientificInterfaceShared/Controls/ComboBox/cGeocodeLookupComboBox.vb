@@ -6,8 +6,6 @@ Imports System.ComponentModel
 Imports System.Threading
 Imports ScientificInterfaceShared.GeoCode
 
-
-
 Namespace Controls
 
     ''' ===========================================================================

@@ -8,8 +8,6 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports CoreResoures = EwECore.My.Resources.CoreDefaults
 
-
-
 Namespace Controls
 
     Public Class cSysConfig

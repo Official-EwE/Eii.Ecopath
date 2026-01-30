@@ -6,7 +6,6 @@ Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
 Public Class gridEditMultiStanza
     Inherits cEwEGrid
 

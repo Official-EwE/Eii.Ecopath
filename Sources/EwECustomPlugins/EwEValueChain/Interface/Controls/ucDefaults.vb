@@ -5,8 +5,6 @@
 Imports EwECore.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
 
-
-
 Public Class ucDefaults
 
 #Region " Helper class "

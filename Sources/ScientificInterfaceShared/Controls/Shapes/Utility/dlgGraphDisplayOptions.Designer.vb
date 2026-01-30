@@ -4,7 +4,6 @@
 
 Namespace Controls
 
-
     Partial Class dlgGraphDisplayOptions
         Inherits System.Windows.Forms.Form
 

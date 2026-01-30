@@ -5,8 +5,6 @@
 Imports EwECore.cEcopathModelFromEcosim
 Imports EwEUtils.Utilities
 
-
-
 Namespace Style
 
     ''' ---------------------------------------------------------------------------

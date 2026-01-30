@@ -5,8 +5,6 @@
 Imports System
 Imports System.Drawing
 
-
-
 Namespace Utilities
 
     ''' -----------------------------------------------------------------------

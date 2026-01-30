@@ -7,8 +7,6 @@ Imports EwECore.SearchObjectives
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 #Region "Optimization Manager"
 
 Public Class cMPAOptManager
@@ -88,7 +86,6 @@ Public Class cMPAOptManager
 #End Region
 
 #Region "Construction and Initialization"
-
 
     Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
 
@@ -675,7 +672,6 @@ Public Interface IMPASearchModel
     Sub Run()
     ReadOnly Property OKtoRun() As Boolean
 
-
     Function Init(ByRef EcoSpaceModel As cEcoSpace, ByRef MPAOptData As cMPAOptDataStructures) As Boolean
 
     Sub Connect(OnSearchInteration As cMPAOptManager.SearchIterationDelegate,
@@ -741,7 +737,6 @@ Public Class cObjectiveResult
 
     'Public Sub Init(ByRef MPAData As cMPAOptDataStructures, ByRef SpaceData As cEcospaceDataStructures)
 
-
     '    Try
     '        objFuncEconomicValue = MPAData.objFuncEconomicValue
     '        objFuncMandatedValue = MPAData.objFuncMandatedValue
@@ -801,7 +796,6 @@ Public Class cObjectiveResult
     Public ReadOnly Property Cells As cMPACell()
     Public Property PercentageClosed As Integer
 
-
     Private Sub calcPercentageClosed(ByRef MPAData As cMPAOptDataStructures, ByRef SpaceData As cEcospaceDataStructures)
         'what percentage of the area is closed
         Dim nTotCells As Integer = SpaceData.nWaterCells
@@ -837,7 +831,5 @@ Public Class cObjectiveResult
 
 End Class
 
-
 #End Region
-
 

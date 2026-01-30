@@ -9,8 +9,6 @@ Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-
-
 ' ToDo: also support Adobe GRD(M) file format?
 
 ''' <summary>

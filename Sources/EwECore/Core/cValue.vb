@@ -332,8 +332,6 @@ Namespace ValueWrapper
             MyBase.Finalize()
         End Sub
 
-
-
         ''' <summary>
         ''' Convert from some kind of NULL/Empty into a value of some sort
         ''' </summary>

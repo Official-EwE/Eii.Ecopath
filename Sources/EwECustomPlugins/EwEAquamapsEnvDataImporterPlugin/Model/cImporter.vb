@@ -9,8 +9,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' <summary>
 ''' Performs the actual import from <see cref="cImportData"/> to <see cref="cEnviroResponseFunction"/>.
 ''' </summary>

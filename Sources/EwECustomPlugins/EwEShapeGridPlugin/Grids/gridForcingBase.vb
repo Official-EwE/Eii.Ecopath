@@ -11,8 +11,6 @@ Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.SystemUtilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base grid class for showing <see cref="cForcingFunction">forcing function</see>-derived

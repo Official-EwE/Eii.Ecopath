@@ -4,7 +4,6 @@
 
 #Region "Imports"
 
-
 Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms
@@ -73,7 +72,6 @@ Public Class frmResults
     Private mDataStructure As cEcosimDatastructures
     Private mEcosimModel As Ecosim.cEcosimModel
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmResults)()
-
 
 #End Region
 
@@ -558,11 +556,9 @@ Public Class frmResults
 
     End Function
 
-
 #End Region
 
 #Region "Subroutines"
-
 
     Private Sub SaveResults()
 
@@ -823,7 +819,6 @@ Public Class frmResults
 
         Me.DataOutputter.AddFunctionalGroup(Biomass)
 
-
     End Sub
 
     Private Sub CreateBiomassIntegratedCSV()
@@ -930,7 +925,6 @@ Public Class frmResults
                                 * Me.Core.EcosimGroupOutputs(PredatorIndexEcosim).Biomass((Year - 1) * cCore.N_MONTHS + Month) _
                                 * Me.Core.EcosimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass((Year - 1) * cCore.N_MONTHS + Month)
 
-
                         Next
                         AConsPerPrey(PreyIndex, Year + 1) = ConsumpCumul / cCore.N_MONTHS
                     Next
@@ -971,7 +965,6 @@ Public Class frmResults
         For x = 1 To Me.ParentOnlySelection.CountSelected
             AFishingMortality(x - 1, 0) = Me.ParentOnlySelection.SelectedNames(x - 1)
         Next
-
 
         For ParentIndex As Integer = 0 To Me.ParentOnlySelection.CountSelected - 1
             'Get Index of Parent in EwE
@@ -1088,7 +1081,6 @@ Public Class frmResults
         Dim Consumption As Single
         Dim CurrentPrey As cCreatedObjects
         Dim FileHeader As String = Nothing
-
 
         'Create Titles
         For Each prey In Me.PreyPredatorSelection.GetSelected
@@ -1386,7 +1378,6 @@ Public Class frmResults
         Next
         ColPointer = 0
 
-
         'Loops for each group in selected
         For FleetIndex = 0 To SelectedObjects.Count - 1
 
@@ -1425,7 +1416,6 @@ Public Class frmResults
         'SendToFileTabbed(ACatchByFleet, SelectedObjects, _
         '        FileName:=FishFleetsFileName, sheet:=sheet, _
         '        TabName:="CatchPerFleetPerPrey", wb:=FisheriesWB)
-
 
     End Sub
 
@@ -1658,7 +1648,6 @@ Public Class frmResults
             '    FileName:=FuncGroupsFileName, Sheet:=sheet, wb:=FunctGroupWB)
 
         End If
-
 
     End Sub
 
@@ -2177,7 +2166,6 @@ Public Class frmResults
         InitFishQuant.Data = AInitFishQuant
         Me.DataOutputter.AddIndicators(InitFishQuant)
 
-
     End Sub
 
     Private Sub CreateInitFishingValuesCSV()
@@ -2348,7 +2336,6 @@ Public Class frmResults
         Residuals.Name = My.Resources.RESIDUALS
         Residuals.Data = AResiduals
         Me.DataOutputter.AddDiagnostics(Residuals)
-
 
     End Sub
 
@@ -2588,7 +2575,6 @@ Public Class frmResults
         a.Show()
         AddHandler a.FormExited, AddressOf Me.ValidateObjectCreated
 
-
     End Sub
 
     Private Sub FleetPreyStage()
@@ -2611,7 +2597,6 @@ Public Class frmResults
         Dim a As New frmSelectFleetPrey(Me.FleetPreySelection, Me.Core)
         a.Show()
         AddHandler a.FormExited, AddressOf Me.ValidateObjectCreated
-
 
     End Sub
 

@@ -194,7 +194,6 @@ Public Class cForcingFunction
 
     End Sub
 
-
     ''' <summary>
     ''' Initialize the propeties from the underlying EcoSim data structures for this shapes Database ID 
     ''' </summary>
@@ -330,5 +329,4 @@ Public Class cForcingFunction
     End Function
 
 End Class ' cForcingFunction
-
 

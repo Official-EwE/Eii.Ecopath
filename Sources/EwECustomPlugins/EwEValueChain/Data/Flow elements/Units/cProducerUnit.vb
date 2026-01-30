@@ -9,8 +9,6 @@ Imports EwECore.Common
 Imports ScientificInterfaceShared.Style
 Imports System.Text
 
-
-
 ''' <summary>
 ''' 
 ''' </summary>
@@ -298,7 +296,6 @@ Public Class cProducerUnit
              sInputBiomass As Single, sInputValue As Single,
              sOutputBiomass As Single, sOutputValue As Single,
              iTimeStep As Integer) As Boolean
-
 
         'Now add to this the revenue from paying customers
         Dim sSum As Single = Me.m_sEffort * Me.m_sTicketProducts
@@ -628,7 +625,6 @@ Public Class cProducerUnit
             Me.SetChanged()
         End Set
     End Property
-
 
     Public Overrides ReadOnly Property Category() As String
         Get

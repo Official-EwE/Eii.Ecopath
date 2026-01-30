@@ -7,7 +7,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
-
     Public Class gridVulnerabilities
         Inherits cEwEGrid
 

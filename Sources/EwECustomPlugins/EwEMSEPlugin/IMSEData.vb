@@ -4,8 +4,6 @@
 
 Imports EwECore
 
-
-
 ''' <summary>
 ''' Foundation interface for user-supplied data in the MSE plug-in.
 ''' </summary>

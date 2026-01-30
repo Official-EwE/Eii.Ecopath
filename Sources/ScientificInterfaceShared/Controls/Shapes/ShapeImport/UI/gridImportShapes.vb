@@ -7,10 +7,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
-
 
     Public Class gridImportShapes
         Inherits EwEGrid.cEwEGrid

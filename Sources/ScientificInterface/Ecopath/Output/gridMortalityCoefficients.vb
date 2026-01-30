@@ -7,7 +7,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
-
     Public Class gridMortalityCoefficients
         Inherits cEwEGrid
 

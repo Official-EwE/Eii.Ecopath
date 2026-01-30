@@ -112,7 +112,6 @@ Public Class dlgHarvestControlRule
 
 #Region " Control event handlers "
 
-
     Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles OK_Button.Click
 

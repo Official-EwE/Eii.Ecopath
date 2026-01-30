@@ -4,7 +4,6 @@
 
 Imports ScientificInterfaceShared.Forms
 
-
 Partial Class frmShapeValue
     Inherits frmEwE
 

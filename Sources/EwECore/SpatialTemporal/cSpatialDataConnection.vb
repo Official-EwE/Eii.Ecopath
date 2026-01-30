@@ -170,7 +170,6 @@ Namespace SpatialData
 
         End Function
 
-
 #End Region ' Helper methods
 
     End Class

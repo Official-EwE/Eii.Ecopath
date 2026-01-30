@@ -8,8 +8,6 @@ Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
 Imports ValueChain
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Diagram element to wrap and reflect all existing links between two units in

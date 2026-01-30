@@ -5,8 +5,6 @@
 Imports System.Windows.Forms
 Imports ValueChain
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Dialog for adding existing units to a flow diagram.

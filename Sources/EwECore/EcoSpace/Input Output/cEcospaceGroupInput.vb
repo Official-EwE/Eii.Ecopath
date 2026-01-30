@@ -66,11 +66,9 @@ Public Class cEcospaceGroupInput
             val = New cValue(core, New Single, eVarNameFlags.KMoveFitness, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
-
             'FTarget
             val = New cValue(core, New Single, eVarNameFlags.EcospaceFTarget, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
-
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Array variables
@@ -197,7 +195,6 @@ Public Class cEcospaceGroupInput
             Me.SetVariable(eVarNameFlags.BarrierAvoidanceWeight, value)
         End Set
     End Property
-
 
     Public Property InMigrationAreaMovement() As Single
         Get

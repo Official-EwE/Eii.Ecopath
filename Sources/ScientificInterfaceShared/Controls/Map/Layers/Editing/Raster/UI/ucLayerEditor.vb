@@ -5,8 +5,6 @@
 Imports EwECore.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------

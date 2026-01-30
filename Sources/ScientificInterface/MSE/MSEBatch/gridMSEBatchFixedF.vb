@@ -5,7 +5,6 @@
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
 Public Class gridMSEBatchFixedF
     Inherits cEwEGrid
 
@@ -64,7 +63,6 @@ Public Class gridMSEBatchFixedF
         Me(0, eColumnTypes.FixedFLow) = New cEwEColumnHeaderCell("Lower " & limitStr) 'B lim(-)
         Me(0, eColumnTypes.FixedFUp) = New cEwEColumnHeaderCell("Upper " & limitStr) 'B Lim(+)
 
-
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
 
@@ -99,7 +97,6 @@ Public Class gridMSEBatchFixedF
             Me(iGroup, eColumnTypes.FixedFLow) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFLower)
             Me(iGroup, eColumnTypes.FixedFUp) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFUpper)
 
-
         Next iGroup
 
     End Sub
@@ -114,7 +111,6 @@ Public Class gridMSEBatchFixedF
             Return eCoreComponentType.MSE
         End Get
     End Property
-
 
     Public Property iCurIter As Integer
         Get
@@ -132,7 +128,6 @@ Public Class gridMSEBatchFixedF
         End Set
 
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -172,7 +167,6 @@ Public Class gridMSEBatchFixedF
     End Function
 
     Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
-
 
     End Function
 

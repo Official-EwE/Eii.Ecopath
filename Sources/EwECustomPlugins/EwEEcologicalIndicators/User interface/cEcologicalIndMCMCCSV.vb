@@ -8,8 +8,6 @@ Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' This class just serves as an UI anchor point to toggle the correct

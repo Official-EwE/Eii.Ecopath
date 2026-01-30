@@ -4,9 +4,7 @@
 
 #Region "xxx DEAD CODE xxx"
 
-
 #If 0 Then
-
 
 Public Class cMonteCarloThread
     Public ES As New cEcoSimModel

@@ -12,8 +12,6 @@ Imports EwEMSEPlugin.HCR_GroupNS
 Imports EwEMSEPlugin.HCR_GroupNS.HCR_Group
 
 
-
-
 ''' <summary>
 ''' Class to group a list of Harvest Control Rules into an object
 ''' </summary>

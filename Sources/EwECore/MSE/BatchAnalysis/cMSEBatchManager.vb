@@ -8,7 +8,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
 Namespace MSEBatchManager
     Public Enum eMSEBatchProgress
         MSEIteration
@@ -48,7 +47,6 @@ Namespace MSEBatchManager
             Running
             Idle
         End Enum
-
 
         Private m_core As cCore
         Private m_fileReader As cMSECommandFileReader
@@ -123,7 +121,6 @@ Namespace MSEBatchManager
             End Try
 
         End Sub
-
 
         Public Sub Clear()
             Try
@@ -204,7 +201,6 @@ Namespace MSEBatchManager
                 Me.CalculateTFMIterationValues()
                 Me.CalculateFIterationValues()
                 Me.CalculateTACIterationValues()
-
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".LoadScenario() Exception: " & ex.Message)
@@ -366,8 +362,6 @@ Namespace MSEBatchManager
             End Try
         End Sub
 
-
-
         Private Sub update()
             Dim igrp As Integer
             Dim irep As Integer
@@ -440,7 +434,6 @@ Namespace MSEBatchManager
                 Me.m_BatchData.FixedFLower(igrp) = FixedF.FLower
                 Me.m_BatchData.FixedFUpper(igrp) = FixedF.FUpper
 
-
                 'isManaged The concept is to set this flag for the type of Quota TMF, F, TAC... for a group
                 'However the MSE does not work this way
                 'It sets the Quota for a group base on > zero values in F, TAC see cMMSEUpdateQuotas
@@ -467,7 +460,6 @@ Namespace MSEBatchManager
                 Me.m_MSEdata.TAC(igrp) = tac.TAC
                 Me.m_BatchData.TACLower(igrp) = tac.TACLower
                 Me.m_BatchData.TACUpper(igrp) = tac.TACUpper
-
 
                 'isManaged The concept is to set this flag for the type of Quota TMF, F, TAC... for a group
                 'However the MSE does not work this way
@@ -512,7 +504,6 @@ Namespace MSEBatchManager
 
         End Sub
 
-
         Private Sub calcIterationValues(iGroup As Integer, Value As Single, LowPercent As Single, UPPercent As Single, n As Integer, CalcType As eMSEBatchIterCalcTypes, ByRef values(,) As Single)
 
             Try
@@ -541,7 +532,6 @@ Namespace MSEBatchManager
 
         End Sub
 
-
         Public Sub CalculateTFMIterationValues()
 
             Try
@@ -562,7 +552,6 @@ Namespace MSEBatchManager
 
                 Me.m_core.Messages.SendMessage(New cMessage("Values update.", eMessageType.MSEBatch_IterationDataUpdated, eCoreComponentType.MSE,
                                                             eMessageImportance.Maintenance, eDataTypes.MSEBatchTFMInput))
-
 
             Catch ex As Exception
 
@@ -585,9 +574,7 @@ Namespace MSEBatchManager
 
         End Sub
 
-
         Public Sub CalculateTACIterationValues()
-
 
             For igrp As Integer = 1 To Me.m_BatchData.nGroups
                 Me.calcIterationValues(igrp, Me.m_MSEdata.TAC(igrp), Me.m_BatchData.TACLower(igrp), Me.m_BatchData.TACUpper(igrp),
@@ -626,7 +613,6 @@ Namespace MSEBatchManager
             Me.m_BatchData.OuputDir = Me.m_core.OutputPath
 
         End Sub
-
 
         ''' <summary>
         ''' Update the Input/Ouput objects to the number of Iteration set by the interface
@@ -667,12 +653,10 @@ Namespace MSEBatchManager
             Upper = mean + mean * Upper
         End Sub
 
-
         Private Sub ToPercent(mean As Single, ByRef Lower As Single, ByRef Upper As Single)
             Lower = (mean - Lower) / mean
             Upper = (Upper - mean) / mean
         End Sub
-
 
         ''' <summary>
         ''' Vary the Primary Production forcing function value of the current time step
@@ -707,7 +691,6 @@ Namespace MSEBatchManager
             Next ifn
 
         End Sub
-
 
         Public Function ReadCommandFile(CommandFileName As String) As Boolean
 
@@ -759,9 +742,7 @@ Namespace MSEBatchManager
 
             Return bSuccess
 
-
         End Function
-
 
         Private Sub setForcing(iForcing As Integer)
             If Me.BatchData.bForcingLoaded Then
@@ -845,7 +826,6 @@ Namespace MSEBatchManager
 
             Next
 
-
         End Sub
 
         Private Sub postValidationMessage()
@@ -915,7 +895,6 @@ Namespace MSEBatchManager
 
             End Select
 
-
             If bFixedEsc Or bFixedF Or bTAC Then
                 Me.MarshallMessage("WARNING: values for")
 
@@ -934,9 +913,7 @@ Namespace MSEBatchManager
 
             End If
 
-
         End Sub
-
 
         Private Sub RunThreaded()
             Dim bSuccess As Boolean
@@ -1054,13 +1031,11 @@ Namespace MSEBatchManager
             End Get
         End Property
 
-
         Public ReadOnly Property TACGroups(GroupIndex As Integer) As cMSEBatchTACGroup
             Get
                 Return Me.m_lstTACs.Item(GroupIndex)
             End Get
         End Property
-
 
         ''' <summary>
         ''' 
@@ -1073,13 +1048,11 @@ Namespace MSEBatchManager
             End Get
         End Property
 
-
         Friend ReadOnly Property Core() As cCore
             Get
                 Return Me.m_core
             End Get
         End Property
-
 
         Friend ReadOnly Property MSEData() As cMSEDataStructures
             Get
@@ -1087,13 +1060,11 @@ Namespace MSEBatchManager
             End Get
         End Property
 
-
         Friend ReadOnly Property nGroups() As Integer
             Get
                 Return Me.m_MSEdata.NGroups
             End Get
         End Property
-
 
         Friend ReadOnly Property nFleets() As Integer
             Get
@@ -1135,7 +1106,6 @@ Namespace MSEBatchManager
             'Updates the underlying Ecosim data
             ppi.LockUpdates = False
 
-
         End Sub
 
         Public WriteOnly Property onMessageDelegate() As MSEBatchMessage
@@ -1143,7 +1113,6 @@ Namespace MSEBatchManager
                 Me.m_msgDelegate = value
             End Set
         End Property
-
 
         Public Sub MarshallMessage(message As String)
             Try
@@ -1166,7 +1135,6 @@ Namespace MSEBatchManager
             End Try
         End Sub
 
-
         Public ReadOnly Property TFMInputs(iGroup As Integer) As cMSEBatchTFMGroup
             Get
                 Return DirectCast(Me.m_lstTFMs(iGroup), cMSEBatchTFMGroup)
@@ -1176,7 +1144,6 @@ Namespace MSEBatchManager
 #End Region
 
 #Region "ICoreInterface implementation"
-
 
         Public ReadOnly Property CoreComponent As eCoreComponentType Implements ICoreInterface.CoreComponent
             Get
@@ -1242,6 +1209,5 @@ Namespace MSEBatchManager
         End Function
 
     End Class
-
 
 End Namespace

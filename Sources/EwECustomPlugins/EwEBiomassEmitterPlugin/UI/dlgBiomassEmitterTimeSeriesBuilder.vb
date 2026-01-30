@@ -11,8 +11,6 @@ Imports System.Drawing
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore.Common
 
-
-
 ''' <summary>
 ''' Utility to create biomass emitter time series files from before + after region
 ''' average CSV files.
@@ -728,7 +726,6 @@ Public Class dlgBiomassEmitterTimeSeriesBuilder
         'Me.UpdateControls()
 
     End Sub
-
 
 #End Region ' Internals
 

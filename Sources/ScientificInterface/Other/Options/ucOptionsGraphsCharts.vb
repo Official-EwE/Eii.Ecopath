@@ -44,7 +44,6 @@ Namespace Other
 
         End Sub
 
-
 #End Region ' Event handlers
 
 #Region " Public methods "
@@ -155,5 +154,4 @@ Namespace Other
     End Class
 
 End Namespace
-
 

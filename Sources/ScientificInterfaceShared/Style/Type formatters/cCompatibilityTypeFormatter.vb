@@ -5,8 +5,6 @@
 Imports EwECore.SpatialData.cDatasetCompatilibity
 Imports EwEUtils.Utilities
 
-
-
 Namespace Style
 
     ''' ---------------------------------------------------------------------------

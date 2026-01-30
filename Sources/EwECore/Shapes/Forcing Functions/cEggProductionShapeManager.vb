@@ -61,7 +61,6 @@ Public Class cEggProductionShapeManager
             Debug.Assert(False, Me.ToString & ".InitAppliesTo() Error:" & ex.Message)
         End Try
 
-
     End Function
 
     Public ReadOnly Property GroupShapeList() As cGroupShapeList
@@ -88,7 +87,6 @@ Public Class cEggProductionShapeManager
             Me.m_core.onChanged(Me, eMessageType.DataModified)
             Return True
 
-
         Catch ex As Exception
             m_logger.LogError(ex, ".OnChanged() Error:" & ex.Message)
             Debug.Assert(False, ex.StackTrace)
@@ -112,7 +110,6 @@ End Class
 '        Me.Init()
 
 '    End Sub
-
 
 '    Public Overrides ReadOnly Property NPoints() As Integer
 '        Get

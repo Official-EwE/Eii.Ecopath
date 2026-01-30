@@ -6,15 +6,12 @@ Option Explicit On
 
 Imports ScientificInterface.Ecosim
 
-
-
 ''' <summary>
 ''' Implementation of IBlockSelector for the MSE forms
 ''' </summary>
 Public Class ucCVBlockSelector
     Implements IUIElement
     Implements IBlockSelector
-
 
 #Region " Private vars "
 
@@ -245,7 +242,6 @@ Public Class ucCVBlockSelector
             Debug.Assert(False, Me.ToString & ".OnSelectionChanged() Exception: " & ex.Message)
         End Try
     End Sub
-
 
 #End Region ' Events
 

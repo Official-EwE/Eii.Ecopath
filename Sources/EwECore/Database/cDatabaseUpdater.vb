@@ -9,8 +9,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Database
 
     ''' =======================================================================
@@ -43,7 +41,6 @@ Namespace Database
         ''' <summary>The baseline database version that this updater can update from</summary>
         Private m_sBaselineVersion As Single = 0.0
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cDatabaseUpdater)()
-
 
 #End Region ' Private bits
 

@@ -34,7 +34,6 @@ Public Class frmEditAssessmentError
 
 #End Region
 
-
 #Region "Private Variables"
 
     Private m_mse As cMSE = Nothing
@@ -42,7 +41,6 @@ Public Class frmEditAssessmentError
     Private m_StockAssess As cStockAssessmentModel
 
 #End Region
-
 
 #Region "Construction, Initialization and Destruction"
 
@@ -52,7 +50,6 @@ Public Class frmEditAssessmentError
         Me.InitializeComponent()
         Me.Grid = Me.m_grdError
     End Sub
-
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
@@ -105,7 +102,6 @@ Public Class frmEditAssessmentError
     End Sub
 
 #End Region
-
 
 #Region "Events"
 

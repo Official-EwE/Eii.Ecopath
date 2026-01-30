@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared.Definitions
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Helper class to to update the graph that reflects Ecospace biodiversity indicators.
@@ -102,7 +100,6 @@ Public Class cEcosimGraphWrapper
             ' Set master pane title
             Me.Configure("")
         End If
-
 
         If (lInfo.Count > 0) Then
             ' Create and configure panes

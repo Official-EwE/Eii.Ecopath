@@ -23,7 +23,6 @@ Namespace MSE
             'see comment setVariable(...)
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-
             'MSEBioCV
             val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.MSEBioCV, eStatusFlags.Null, eCoreCounterTypes.nEcosimYears)
             Me.m_values.Add(val.varName, val)
@@ -57,7 +56,6 @@ Namespace MSE
             'Ref levels
             val = New cValue(core, New Single, eVarNameFlags.MSERefBioEstUpper, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
-
 
             'Fleets ref levels
             val = New cValue(core, New Single, eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.Null, eValueTypes.Sng)
@@ -125,7 +123,6 @@ Namespace MSE
 
         End Property
 
-
         Public Property BiomassCV(TimeIndex As Integer) As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.MSEBioCV, TimeIndex))
@@ -145,7 +142,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSELowerRisk, value)
             End Set
         End Property
-
 
         Public Property UpperRisk() As Single
             Get
@@ -186,7 +182,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSERefBioEstUpper, value)
             End Set
         End Property
-
 
         Public Property BiomassEstRefLower() As Single
             Get
@@ -238,7 +233,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property RHalfB0Ratio() As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.RHalfB0Ratio))
@@ -259,7 +253,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property RecruitmentCV() As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.MSERecruitmentCV))
@@ -269,7 +262,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSERecruitmentCV, value)
             End Set
         End Property
-
 
         Public Property BLim() As Single
             Get

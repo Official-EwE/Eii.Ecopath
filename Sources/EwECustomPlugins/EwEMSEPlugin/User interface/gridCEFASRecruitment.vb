@@ -14,9 +14,6 @@ Imports ScientificInterfaceShared.Style
 
 
 
-
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.
@@ -217,5 +214,4 @@ Public Class gridCEFASRecruitment
 #End Region ' Overrides
 
 End Class
-
 

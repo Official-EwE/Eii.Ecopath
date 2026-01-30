@@ -4,8 +4,6 @@
 
 Imports EwEUtils.Utilities
 
-
-
 Namespace Ecopath
 
     Public Class cEcopathSplitGroup

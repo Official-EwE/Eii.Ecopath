@@ -6,8 +6,6 @@ Imports EwEUtils.Utilities
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecospace
 
     ''' =======================================================================
@@ -105,7 +103,6 @@ Namespace Ecospace
             '    Me.m_agpLines(igroup).StartFigure()
             'Next
         End Sub
-
 
         Public Sub AddValue(iGroup As Integer, iTimeStep As Integer, sValue As Single)
 

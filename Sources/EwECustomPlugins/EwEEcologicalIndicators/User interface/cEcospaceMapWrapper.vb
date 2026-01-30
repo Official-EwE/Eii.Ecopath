@@ -14,8 +14,6 @@ Imports System.Threading
 Imports EwEUtils.Utilities
 Imports System.IO
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Helper class to update the map that reflects Ecospace biodiversity indicators.
@@ -138,7 +136,6 @@ Public Class cEcospaceMapWrapper
         Me.RefreshMapImage()
 
     End Sub
-
 
     Private Sub OnResizePanel(sender As Object, args As EventArgs)
 

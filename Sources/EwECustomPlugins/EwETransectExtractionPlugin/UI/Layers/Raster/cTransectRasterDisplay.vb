@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 
-
-
 Public Class cTransectRasterDisplay
     Inherits cDisplayLayerRaster
 

@@ -7,8 +7,6 @@ Option Explicit On
 Imports System.Drawing
 Imports ScientificInterfaceShared.Controls
 
-
-
 ''' <summary>
 ''' Special sketch pad for the complexity preview.
 ''' </summary>

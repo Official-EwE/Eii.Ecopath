@@ -9,8 +9,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Interface between Ecopath and the Ecost flow.
@@ -321,7 +319,6 @@ Public Class cModel
 
     End Function
 
-
     ''' <summary>
     ''' Run a time step, aggregated values by fleet.
     ''' </summary>
@@ -539,7 +536,6 @@ Public Class cModel
 #End Region ' Running
 
 #Region " Equations "
-
 
     Public Sub Equations(TH As Integer)
         '*----------------------------------

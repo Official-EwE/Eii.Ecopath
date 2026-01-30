@@ -5,8 +5,6 @@
 Imports System.Text
 Imports EwECore
 
-
-
 Public MustInherit Class cNetwork
 
     Public Sub New(core As cCore)

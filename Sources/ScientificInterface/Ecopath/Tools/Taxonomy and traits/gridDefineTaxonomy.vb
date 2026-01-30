@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared.IO
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Grid class implementing the Edit Group Taxon interface grid bit.
@@ -1356,7 +1354,6 @@ Public Class gridDefineTaxonomy
             cApplicationStatusNotifier.EndProgress(Me.Core)
 
         End If
-
 
         ' Update any changed taxa
         Dim dtTaxa As New Dictionary(Of Integer, cTaxon)

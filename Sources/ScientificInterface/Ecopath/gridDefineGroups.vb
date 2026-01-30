@@ -8,8 +8,6 @@ Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Grid class implementing the Edit Groups interface grid bit.

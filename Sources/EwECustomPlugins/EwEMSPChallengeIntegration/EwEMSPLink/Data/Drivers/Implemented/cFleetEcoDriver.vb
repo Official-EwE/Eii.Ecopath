@@ -5,8 +5,6 @@
 Imports EwECore
 Imports EwEUtils.Utilities
 
-
-
 ' For convenience reasons, effort intensity and ecological fishing is handled in the same class
 ' This poses problems for the emulator, where only one value can be passed in. Bugger.
 

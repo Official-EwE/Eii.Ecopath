@@ -4,8 +4,6 @@
 
 Imports EwEUtils.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Helper class to pick the current Icon for EwE6.

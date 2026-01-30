@@ -8,8 +8,6 @@ Imports EwECore.ValueWrapper
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' The heart of the Ecospace map interfaces. The basemap manages all foundation
@@ -593,7 +591,6 @@ Public Class cEcospaceBasemap
         If (iCol > Me.InCol) Then Return False
         Return True
     End Function
-
 
     Public Property nCells() As Single
 

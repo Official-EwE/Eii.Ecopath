@@ -661,7 +661,6 @@ Public Class dlgDefineTaxonomy
 
 #Region " Public bits "
 
-
 #End Region ' Public bits
 
 End Class

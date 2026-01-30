@@ -5,8 +5,6 @@
 Imports System.IO
 Imports System.Text
 
-
-
 Namespace NetUtilities
 
     ''' -------------------------------------------------------------------

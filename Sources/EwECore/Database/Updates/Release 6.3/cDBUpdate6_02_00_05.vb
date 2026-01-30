@@ -40,5 +40,4 @@ Friend Class cDBUpdate6_02_00_05
         Return bOkidoki And db.Execute("ALTER TABLE EcospaceScenarioCapacitDrivers ADD PRIMARY KEY (ScenarioID, GroupID, VarName, VarDBID, ShapeID)")
     End Function
 
-
 End Class

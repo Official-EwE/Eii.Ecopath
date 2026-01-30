@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Forms
 
-
-
 Partial Class frmStatusPanel
     Inherits frmEwEDockContent
 
@@ -58,5 +56,4 @@ Partial Class frmStatusPanel
     Private WithEvents m_tvStatus As ScientificInterfaceShared.Controls.cNavigateTreeview
 
 End Class
-
 

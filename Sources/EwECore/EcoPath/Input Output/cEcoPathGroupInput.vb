@@ -4,8 +4,6 @@
 
 Imports EwECore.ValueWrapper
 
-
-
 ''' <summary>
 ''' Inputs for EcoPath for a single group.
 ''' </summary>
@@ -978,7 +976,6 @@ Public Class cEcoPathGroupInput
             Me.SetStatus(eVarNameFlags.Energy, value)
         End Set
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

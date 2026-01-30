@@ -5,7 +5,6 @@
 Imports EwECore.MSE
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
 Public Class gridRiskBounds
     Inherits cEwEGrid
 

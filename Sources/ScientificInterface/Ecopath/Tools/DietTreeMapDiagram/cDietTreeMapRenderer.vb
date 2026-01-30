@@ -4,8 +4,6 @@
 
 Imports System.ComponentModel
 
-
-
 Public Class cDietTreeMapRenderer
 
     Private Class cElementListSorter

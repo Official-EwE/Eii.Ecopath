@@ -92,7 +92,6 @@ Namespace EcospaceTimeSeries
                 Me.m_StartDate = rec.TimeStamp
             End If
 
-
             If Date.Compare(Me.m_EndDate, rec.TimeStamp) < 0 Then
                 Me.m_EndDate = rec.TimeStamp
             End If
@@ -124,12 +123,10 @@ Namespace EcospaceTimeSeries
             End If
         End Sub
 
-
         Private Sub getExtent(rec As cEcospaceTimeSeriesRec)
             Me.m_MaxRow = Math.Max(rec.Row, Me.m_MaxRow)
             Me.m_MaxCol = Math.Max(rec.Col, Me.m_MaxCol)
         End Sub
-
 
         Public Property FileName As String
 
@@ -152,7 +149,6 @@ Namespace EcospaceTimeSeries
                 Return Me.m_MaxRow
             End Get
         End Property
-
 
         Public ReadOnly Property MaxCol As Integer
             Get

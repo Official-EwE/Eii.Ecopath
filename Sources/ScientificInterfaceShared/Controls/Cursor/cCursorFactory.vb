@@ -4,8 +4,6 @@
 
 Imports EwEUtils.SystemUtilities
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

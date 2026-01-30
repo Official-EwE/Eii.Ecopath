@@ -6,8 +6,6 @@ Imports System.Drawing
 Imports EwECore
 Imports EwECore.Common
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Cell summaryt for a single transect.

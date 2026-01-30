@@ -74,8 +74,6 @@ Namespace Controls.Map.Layers
                     End Using
                 End If
 
-
-
             End If
 
         End Sub

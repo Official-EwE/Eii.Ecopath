@@ -68,7 +68,6 @@ Public Class cFishingEffortShapeManger
         Return 1
     End Function
 
-
     Public Overrides Function Update(Optional bUpdateAll As Boolean = True) As Boolean
 
         If bUpdateAll Then

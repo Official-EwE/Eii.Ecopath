@@ -6,7 +6,6 @@ Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
 
-
 Public Class cCredits
     Inherits cContentManager
 

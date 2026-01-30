@@ -40,7 +40,6 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
-
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
             Me(0, eColumnTypes.Index) = New cEwEColumnHeaderCell()
             Me(0, eColumnTypes.Name) = New cEwEColumnHeaderCell(eVarNameFlags.Name)

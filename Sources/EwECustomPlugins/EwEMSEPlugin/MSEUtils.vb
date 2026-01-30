@@ -12,8 +12,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Public Class cMSEUtils
 
     Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEUtils)()
@@ -237,7 +235,6 @@ Public Class cMSEUtils
         End Select
         Return ""
     End Function
-
 
     Public Shared Function readToTag(strm As StreamReader, Tag As String) As Boolean
         Dim buff As String

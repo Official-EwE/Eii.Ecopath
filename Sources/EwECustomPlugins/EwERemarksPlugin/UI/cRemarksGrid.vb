@@ -9,7 +9,6 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
 Friend Class cRemarksGrid
     Inherits cEwEGrid
 

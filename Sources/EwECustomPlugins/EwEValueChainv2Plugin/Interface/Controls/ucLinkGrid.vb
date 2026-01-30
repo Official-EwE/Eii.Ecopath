@@ -10,8 +10,6 @@ Imports cEwEDatabase
 Imports EwECore
 Imports ValueChain
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid for showing a whack of links.

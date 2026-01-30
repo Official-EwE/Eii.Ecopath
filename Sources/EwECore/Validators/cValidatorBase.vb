@@ -67,7 +67,6 @@ Public Class cValidatorDefault
                     End If
                 End If
 
-
             Case eValueTypes.Str
                 'strings
 

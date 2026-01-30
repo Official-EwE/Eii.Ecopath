@@ -10,8 +10,6 @@ Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.GeoCode
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Public Class frmModelParameters
 
     Private m_fpName As cEwEFormatProvider = Nothing

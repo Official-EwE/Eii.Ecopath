@@ -11,8 +11,6 @@ Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow biomass limits to be specified for credible results.
@@ -186,5 +184,4 @@ Public Class gridBiomassLimits
 #End Region ' Overrides
 
 End Class
-
 

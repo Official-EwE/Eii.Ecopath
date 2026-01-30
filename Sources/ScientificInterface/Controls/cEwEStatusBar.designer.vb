@@ -7,7 +7,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Partial Class cEwEStatusBar
     Inherits StatusStrip
 
-
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cEwEStatusBar))
         Me.m_tslStop = New System.Windows.Forms.ToolStripStatusLabel()

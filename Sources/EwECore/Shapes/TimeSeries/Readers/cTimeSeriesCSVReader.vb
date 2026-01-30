@@ -4,8 +4,6 @@
 
 Imports System.IO
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Reads one or more time series from a CSV file.

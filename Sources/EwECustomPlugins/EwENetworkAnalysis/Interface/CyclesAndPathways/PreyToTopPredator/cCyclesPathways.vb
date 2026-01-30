@@ -8,10 +8,7 @@ Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
-
-
 Namespace PreyToPredator
-
 
     Public Class cCyclesPathways
         Inherits cContentManager
@@ -23,7 +20,6 @@ Namespace PreyToPredator
             ' ToDo: globalize this
             Return "Cycles and pathways prey to predator"
         End Function
-
 
         Public Overrides Function Attach(manager As cNetworkManager,
                                          datagrid As DataGridView,

@@ -5,8 +5,6 @@
 Option Explicit On
 
 
-
-
 Namespace Ecosim
 
     ''' -----------------------------------------------------------------------
@@ -89,5 +87,4 @@ Namespace Ecosim
     End Class
 
 End Namespace
-
 

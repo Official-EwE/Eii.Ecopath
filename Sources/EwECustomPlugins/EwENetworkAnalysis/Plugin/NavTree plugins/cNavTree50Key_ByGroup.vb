@@ -4,8 +4,6 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cNavTree50Key_ByGroup
     Inherits cNavTree48Asc
 

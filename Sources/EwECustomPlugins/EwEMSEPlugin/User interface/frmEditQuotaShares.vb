@@ -172,7 +172,6 @@ Public Class frmEditQuotaShares
         Dim iStart As Integer = 0
         Dim SumQuotaShare As Single = 0
 
-
         SumQuotaShare = Me.m_quotashares.ReadRowDist(0).mShare
 
         For i = 2 To Me.m_quotashares.CountDist

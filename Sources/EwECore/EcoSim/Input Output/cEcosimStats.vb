@@ -73,7 +73,6 @@ Public Class cEcosimStats
 
     End Function
 
-
     Public Property SS() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.EcosimSS))
@@ -82,7 +81,6 @@ Public Class cEcosimStats
             Me.SetVariable(eVarNameFlags.EcosimSS, value)
         End Set
     End Property
-
 
     Public Property SSGroup(iGroup As Integer) As Single
         Get

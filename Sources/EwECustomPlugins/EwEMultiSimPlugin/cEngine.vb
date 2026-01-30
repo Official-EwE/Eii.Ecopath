@@ -12,8 +12,6 @@ Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' The perturb engine that does all the work: modifies forcing functions, runs 
@@ -229,7 +227,6 @@ Friend Class cEngine
 
         If (Me.IsRunning) Then Return
         If (Not Me.m_core.SaveChanges(False, cCore.eBatchChangeLevelFlags.Ecosim)) Then Return
-
 
         Me.m_bReadMonthly = bReadMonthly
         Me.m_CSVFiles = astrFiles
@@ -632,7 +629,6 @@ Friend Class cEngine
 
     End Sub
 
-
 #End Region ' Running
 
 #Region " File validation "
@@ -655,7 +651,6 @@ Friend Class cEngine
         Me.m_bStopRun = False
         Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
         Me.m_core.SetStopRunDelegate(AddressOf StopRun)
-
 
         Try
             For Each strFileName As String In Me.m_CSVFiles
@@ -946,7 +941,6 @@ Friend Class cEngine
         Me.m_valStatus = eStatusFlags.OK
 
     End Sub
-
 
 #End Region ' Internals
 

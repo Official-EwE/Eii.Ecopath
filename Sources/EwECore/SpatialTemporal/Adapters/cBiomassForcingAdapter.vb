@@ -5,8 +5,6 @@
 Imports Microsoft.Extensions.Logging
 
 
-
-
 Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
@@ -27,7 +25,6 @@ Namespace SpatialData
         '9x for conversion of C to wet weight
         Dim molesm2_to_kgkm2 As Single = 12 * 9
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cBiomassForcingAdapter)()
-
 
 #End Region ' Private vars
 
@@ -61,14 +58,11 @@ Namespace SpatialData
                 End If
             End If
 
-
             Me.saveForcedCell(layer.Index, iRow, iCol, sValueAtT)
 
             Return MyBase.SetCell(layer, conn, iRow, iCol, sValueAtT)
 
         End Function
-
-
 
         Protected Overrides Function NewConnection() As cSpatialDataConnection
             Dim conn As New cSpatialDataConnection()
@@ -89,7 +83,6 @@ Namespace SpatialData
         '    Me.InitForcingMaps()
 
         'End Sub
-
 
         'Private Sub InitForcingMaps()
 
@@ -112,8 +105,6 @@ Namespace SpatialData
         '    End Try
 
         'End Sub
-
-
 
         Public Overrides Function CalculateScalar(SumOverPeriod As Double, nMapCells As Double) As Double
             Try

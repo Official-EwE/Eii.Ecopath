@@ -6,8 +6,6 @@ Imports System.Drawing
 Imports EwECore
 Imports EwECore.Common
 
-
-
 ''' <summary>
 ''' Core data layer wrapper for transect raster data.
 ''' </summary>

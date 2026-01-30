@@ -6,8 +6,6 @@ Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
 Imports ValueChain
 
-
-
 ''' <summary>
 ''' 
 ''' </summary>

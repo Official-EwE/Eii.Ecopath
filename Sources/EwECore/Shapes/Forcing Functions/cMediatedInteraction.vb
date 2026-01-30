@@ -150,7 +150,6 @@ Public MustInherit Class cMediatedInteraction
 
     End Function
 
-
     ''' <summary>
     ''' Set a shape modifier, consisting of a <see cref="cForcingFunction">forcing function</see> and 
     ''' <see cref="eForcingFunctionApplication">function type</see>, for a given index.

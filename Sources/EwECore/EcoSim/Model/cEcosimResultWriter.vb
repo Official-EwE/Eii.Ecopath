@@ -7,8 +7,6 @@ Imports System.Text
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-
-
 Namespace Ecosim
 
     ''' ---------------------------------------------------------------------------
@@ -83,7 +81,6 @@ Namespace Ecosim
             Return Me.WriteResultsDirect(strPath, results, tsMonthly, bQuiet)
 
         End Function
-
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -388,7 +385,6 @@ Namespace Ecosim
 
             Dim strFileName As String = ""
             Dim strExt As String = ".csv"
-
 
             Select Case outputtype
                 Case eResultTypes.ConsumptionBiomass

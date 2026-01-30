@@ -13,8 +13,6 @@ Imports System.Reflection
 Imports System.Resources
 Imports System.Windows.Forms
 
-
-
 Namespace Utilities
 
     Public Class cResourceUtils

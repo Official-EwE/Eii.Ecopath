@@ -50,9 +50,7 @@ Namespace MSY
         ''' <remarks></remarks>
         Public MSYRunType As eMSYRunTypes
 
-
         Public bStopRun As Boolean
-
 
 #End Region
 
@@ -94,7 +92,6 @@ Namespace MSY
 #End Region
 
 #Region "Public Properties"
-
 
         Public ReadOnly Property nGroups() As Integer
             Get

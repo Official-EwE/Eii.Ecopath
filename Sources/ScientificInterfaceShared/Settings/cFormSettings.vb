@@ -10,8 +10,6 @@ Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Forms
 Imports WeifenLuo.WinFormsUI
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' <para>Handy-dandy class that maintains and applies form information such as 

@@ -20,7 +20,6 @@ Public MustInherit Class cResultsCollector_RealisedFs
         End Get
     End Property
 
-
     Public Overrides ReadOnly Property Dim_Name As String
         Get
             Return "Group"

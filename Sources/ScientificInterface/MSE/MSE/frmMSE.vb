@@ -257,7 +257,6 @@ Public Class frmMSE
 
     End Sub
 
-
     Private Sub onRunClick(sender As Object, e As System.EventArgs) Handles m_btRun.Click
 
         Try
@@ -267,7 +266,6 @@ Public Class frmMSE
         End Try
 
     End Sub
-
 
     ''' <summary>
     ''' Change the biomass assessment method based on the selected radio button
@@ -342,8 +340,6 @@ Public Class frmMSE
             System.Console.WriteLine(Me.ToString & ".AddMeanLineToGraph() Error: " & ex.Message)
         End Try
     End Sub
-
-
 
     Private Function nVisGroups() As Integer
         Dim n As Integer

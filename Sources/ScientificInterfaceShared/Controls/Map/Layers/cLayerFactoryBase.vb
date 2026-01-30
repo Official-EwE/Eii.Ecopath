@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.Map
 
     ''' =======================================================================

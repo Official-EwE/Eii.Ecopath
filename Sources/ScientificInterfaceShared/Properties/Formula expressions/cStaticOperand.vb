@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Properties
 
     ''' -------------------------------------------------------------------

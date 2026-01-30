@@ -6,8 +6,6 @@ Option Explicit On
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 
-
-
 Namespace Forms
 
     ''' ---------------------------------------------------------------------------

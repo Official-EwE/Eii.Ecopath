@@ -4,8 +4,6 @@
 
 Imports EwECore.Database
 
-
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.60.0.13:</para>
@@ -40,6 +38,5 @@ Friend Class cDBUpdate6_60_00_13
         Return db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN OtherMortMap LONGTEXT")
 
     End Function
-
 
 End Class

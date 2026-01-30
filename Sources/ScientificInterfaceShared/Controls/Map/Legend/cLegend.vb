@@ -4,15 +4,12 @@
 
 Option Explicit On
 
-
 Imports System.Drawing.Imaging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
-
-
 
 Namespace Controls.Map
 

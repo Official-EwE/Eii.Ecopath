@@ -9,8 +9,6 @@ Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Form class, implementing the Ecotracer (contaminant tracing) output interface.
@@ -76,7 +74,6 @@ Public Class frmEcotracerOutput
     Private m_propConcSimOn As cProperty = Nothing
     ''' <summary>Value tracker for Conc Space.</summary>
     Private m_propConcSpaceOn As cProperty = Nothing
-
 
     Private m_CurTimeStep As Integer
 
@@ -936,7 +933,6 @@ Public Class frmEcotracerOutput
                 Debug.Assert(False, ex.StackTrace)
                 Return smax
             End Try
-
 
         End Function
 

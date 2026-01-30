@@ -9,8 +9,6 @@ Imports System
 Imports System.Data
 Imports System.Diagnostics
 
-
-
 Namespace Database
 
     ''' -----------------------------------------------------------------------

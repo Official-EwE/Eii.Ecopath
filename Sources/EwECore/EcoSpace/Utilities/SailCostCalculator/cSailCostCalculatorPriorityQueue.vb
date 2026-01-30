@@ -91,4 +91,3 @@ Friend Class cSailCostCalculatorPriorityQueue
 
 End Class
 
-

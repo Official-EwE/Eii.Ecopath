@@ -7,8 +7,6 @@ Imports EwECore
 Imports EwEMSPLink.IO
 Imports EwECore.Common
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Data for a single map in MSP. Data is accessed by col, row (x,y)

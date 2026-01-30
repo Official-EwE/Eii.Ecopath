@@ -4,8 +4,6 @@
 
 Imports EwECore.ValueWrapper
 
-
-
 Namespace Ecospace.Advection
 
     ''' -----------------------------------------------------------------------
@@ -65,7 +63,6 @@ Namespace Ecospace.Advection
 
         End Sub
 
-
         Public Property UpwellingThreshold() As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.AdvectionUpwellingThreshold))
@@ -75,7 +72,6 @@ Namespace Ecospace.Advection
                 Me.SetVariable(eVarNameFlags.AdvectionUpwellingThreshold, value)
             End Set
         End Property
-
 
         'UpwellingPPMultiplier
         Public Property UpwellingPPMultiplier() As Single

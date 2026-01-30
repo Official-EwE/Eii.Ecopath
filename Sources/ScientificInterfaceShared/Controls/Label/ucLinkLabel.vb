@@ -7,8 +7,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

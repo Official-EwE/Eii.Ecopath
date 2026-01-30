@@ -41,7 +41,6 @@ Public Class cResultsWriter_2DArray_Group_Group
             Me.Start_index_for_iPrey = 1
         End If
 
-
         ReDim Me.m_StreamWriters(Me.m_ResultsArray.nPrey, Me.m_ResultsArray.nPred)
 
         For iPred As Integer = Me.Start_index_for_iPred To Me.m_Core.nGroups

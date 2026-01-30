@@ -383,7 +383,6 @@ Namespace Other
 
         End Sub
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Helper methods to draw a custom listcontrol item 
@@ -397,7 +396,6 @@ Namespace Other
                                    clr As Color,
                                    txt As String,
                                    rect As Rectangle)
-
 
             ' Do nothing if there is no data
             If e.Index = -1 Then Return
@@ -415,7 +413,6 @@ Namespace Other
             'Draw text 
             g.DrawString(txt, e.Font, New SolidBrush(e.ForeColor),
                             New RectangleF(e.Bounds.X + rect.Width + 4, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height))
-
 
         End Sub
 
@@ -727,5 +724,4 @@ Namespace Other
     End Class
 
 End Namespace
-
 

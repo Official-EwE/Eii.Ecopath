@@ -387,7 +387,6 @@ Private Sub chkHost_Click()
     DimGraph
 End Sub
 
-
 Private Sub chkBold_Click()
     DimGraph
 End Sub

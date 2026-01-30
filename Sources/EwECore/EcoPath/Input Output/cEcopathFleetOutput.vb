@@ -10,9 +10,7 @@ Imports EwECore.ValueWrapper
 Public Class cEcopathFleetOutput
     Inherits cCoreInputOutputBase
 
-
     'ToDo: Added comments to varname enums
-
 
     Public Sub New(core As cCore, DBID As Integer, iIndex As Integer)
         MyBase.New(core)
@@ -41,7 +39,6 @@ Public Class cEcopathFleetOutput
         Me.m_values.Add(val.varName, val)
 
     End Sub
-
 
     ''' <summary>
     ''' Total Catch Landings + discards. Includes discards that survived
@@ -75,7 +72,6 @@ Public Class cEcopathFleetOutput
         End Set
 
     End Property
-
 
     ''' <summary>
     ''' Landings only
@@ -151,6 +147,5 @@ Public Class cEcopathFleetOutput
         End Set
 
     End Property
-
 
 End Class

@@ -5,8 +5,6 @@
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
 
     ''' ===========================================================================
@@ -202,7 +200,6 @@ Namespace Controls
             End If
             Return bSupported
         End Function
-
 
 #End Region ' Internals
 

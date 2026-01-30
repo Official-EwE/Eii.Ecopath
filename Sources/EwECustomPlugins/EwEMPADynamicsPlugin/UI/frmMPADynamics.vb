@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class frmMPADynamics
 
 #Region " Private vars "

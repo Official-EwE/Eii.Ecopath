@@ -7,7 +7,6 @@ Imports EwECore.ValueWrapper
 Public Class cMSEBatchParameters
     Inherits cCoreGroupBase
 
-
     Public Sub New(core As cCore, ByRef MSEBatchData As MSEBatchManager.cMSEBatchDataStructures, DBID As Integer)
         MyBase.New(core)
 
@@ -96,7 +95,6 @@ Public Class cMSEBatchParameters
         End Set
     End Property
 
-
     Public Property IterCalcType As Integer
         Get
             Return CType(Me.GetVariable(eVarNameFlags.MSEBatchIterCalcType), eMSEBatchIterCalcTypes)
@@ -106,7 +104,6 @@ Public Class cMSEBatchParameters
             Me.SetVariable(eVarNameFlags.MSEBatchIterCalcType, value)
         End Set
     End Property
-
 
     Public Property bSaveBiomass As Boolean
         Get
@@ -176,7 +173,6 @@ Public Class cMSEBatchParameters
         End Set
     End Property
 
-
     Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
         MyBase.ResetStatusFlags(bForceReset)
         Me.AllowValidation = False
@@ -199,7 +195,5 @@ Public Class cMSEBatchParameters
         Return True
 
     End Function
-
-
 
 End Class

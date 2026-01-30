@@ -13,8 +13,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Dialog form class to guide users in the Ecopath group splitting process.
 ''' </summary>

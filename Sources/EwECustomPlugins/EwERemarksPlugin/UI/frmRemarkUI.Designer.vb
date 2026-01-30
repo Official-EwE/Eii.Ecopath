@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
-
-
 Partial Class frmRemarkUI
     Inherits frmEwEGrid
 

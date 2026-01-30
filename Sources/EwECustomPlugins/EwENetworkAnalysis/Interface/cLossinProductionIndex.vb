@@ -10,8 +10,6 @@ Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
 
-
-
 Public Class cLossinProductionIndex
     Inherits cContentManager
 
@@ -88,7 +86,6 @@ Public Class cLossinProductionIndex
                 Me.Grid.Rows(i).Visible = False
             End If
         Next
-
 
         Me.Grid.ClearSelection()
 

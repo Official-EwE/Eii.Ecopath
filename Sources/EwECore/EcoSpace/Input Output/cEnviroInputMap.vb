@@ -33,7 +33,6 @@ Public Class cEnviroInputMap
         Me.New(theManager, source, cCore.NULL_VALUE)
     End Sub
 
-
     Friend Sub New(theManager As IEnvironmentalResponseManager, source As cEcospaceLayer, iLayerIndex As Integer)
 
         Me.m_source = source
@@ -293,7 +292,6 @@ Public Class cEnviroInputMap
         Me.m_bInvalid = False
 
     End Sub
-
 
     Public ReadOnly Property Name As String Implements IEnviroInputData.Name
         Get

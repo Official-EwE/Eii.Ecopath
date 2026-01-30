@@ -132,7 +132,6 @@ Public MustInherit Class cTimeSeries
         End Set
     End Property
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Weighted Sum of squares for the fit of a data set to the predicted value SSPredErr

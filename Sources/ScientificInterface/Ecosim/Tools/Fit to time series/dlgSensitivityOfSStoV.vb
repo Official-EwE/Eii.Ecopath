@@ -6,8 +6,6 @@ Imports System.IO
 Imports EwECore.FitToTimeSeries
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Dialog, implementing the Ecosim - Fit to Time Series - Sensitivity of SS

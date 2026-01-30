@@ -8,8 +8,6 @@ Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' <summary>
 ''' Grid to control which <see cref="IAutoRunPlugin">Auto-executing plug-ins</see>
 ''' are allowed to auto-run.

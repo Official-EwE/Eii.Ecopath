@@ -5,8 +5,6 @@
 Option Explicit On
 
 
-
-
 Namespace Ecosim
 
     ''' -----------------------------------------------------------------------
@@ -85,9 +83,7 @@ Namespace Ecosim
 
 #End Region ' Overrides
 
-
     End Class
 
 End Namespace
-
 

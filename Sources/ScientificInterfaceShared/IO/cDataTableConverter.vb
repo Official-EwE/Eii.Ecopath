@@ -6,8 +6,6 @@ Imports System.Reflection
 Imports EwEUtils
 Imports EwEUtils.Utilities
 
-
-
 Public Class cDataTableConverter
 
     Public Shared Function ToList(Of T)(dt As DataTable, data As List(Of T), bAppend As Boolean) As Boolean

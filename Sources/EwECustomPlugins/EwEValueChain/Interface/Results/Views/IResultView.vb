@@ -5,8 +5,6 @@
 Imports System.Collections.Generic
 Imports ScientificInterfaceShared.Controls
 
-
-
 Public Interface IResultView
 
     ''' -----------------------------------------------------------------------

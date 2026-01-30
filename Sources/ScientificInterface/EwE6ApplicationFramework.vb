@@ -13,8 +13,6 @@ Imports Serilog
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 
-
-
 Module EwE6ApplicationFramework
 
 #Region " Private vars "

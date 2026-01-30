@@ -7,7 +7,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace
 
-
     Public Class cGridEcospaceResultsRegion
         Inherits gridResultsBase
 
@@ -155,7 +154,6 @@ Namespace Ecospace
             Catch ex As Exception
                 Debug.Assert(False, "Error in " & Me.ToString & ".UpdateData() " & ex.Message)
             End Try
-
 
         End Sub
 

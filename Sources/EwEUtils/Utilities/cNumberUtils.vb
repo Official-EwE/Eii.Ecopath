@@ -8,8 +8,6 @@ Imports System.Drawing
 Imports System.IO
 Imports System.Security.AccessControl
 
-
-
 Namespace Utilities
 
     ''' -----------------------------------------------------------------------
@@ -155,7 +153,6 @@ Namespace Utilities
             Return 0
 
         End Function
-
 
     End Class
 

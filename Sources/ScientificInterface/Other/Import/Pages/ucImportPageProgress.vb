@@ -6,8 +6,6 @@ Imports System.Threading
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
 
-
-
 Namespace Import
 
     ''' =======================================================================

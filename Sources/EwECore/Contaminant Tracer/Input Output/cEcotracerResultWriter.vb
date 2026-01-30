@@ -5,8 +5,6 @@
 Imports System.IO
 Imports EwEUtils.Utilities
 
-
-
 ''' <summary>
 ''' Ecostracer result writer.
 ''' </summary>

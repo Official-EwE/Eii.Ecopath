@@ -13,8 +13,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Public MustInherit Class cSFPGenericIteration
     Implements ISFPIteration
 
@@ -1237,7 +1235,6 @@ Public MustInherit Class cSFPGenericIteration
                         Next
                     Next
                 End Using
-
 
             Catch ex As Exception
                 ' Let this code blunder into array bounds etc. No neat error trapping for now, we can always improve this checking later

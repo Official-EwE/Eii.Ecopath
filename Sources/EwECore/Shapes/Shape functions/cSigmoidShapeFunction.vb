@@ -49,7 +49,6 @@ Public Class cSigmoidShapeFunction
             'End If
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
             Dim dx As Single = (xMax - xZero) / nPoints
             For i As Integer = 1 To nPoints
                 Dim x As Single = xZero + (i - 1) * dx
@@ -66,7 +65,6 @@ Public Class cSigmoidShapeFunction
         Return MyBase.Shape(nPoints)
 
     End Function
-
 
     Private Function calSlope() As Single
         Dim xMid As Single = Me.ParamValue(3)
@@ -161,6 +159,5 @@ Public Class cSigmoidShapeFunction
         Return True
 
     End Function
-
 
 End Class

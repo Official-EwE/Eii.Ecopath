@@ -5,8 +5,6 @@
 Imports System.Drawing
 Imports System.Xml
 
-
-
 Namespace Common
 
     ''' -----------------------------------------------------------------------

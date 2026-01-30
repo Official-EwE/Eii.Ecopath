@@ -6,8 +6,6 @@ Option Explicit On
 
 Imports EwECore
 
-
-
 Public Enum eConvertTypes As Integer
     ''' <summary>Do not convert values</summary>
     None = 0

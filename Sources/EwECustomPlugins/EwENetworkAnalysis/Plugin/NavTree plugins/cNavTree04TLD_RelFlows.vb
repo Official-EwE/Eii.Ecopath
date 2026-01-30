@@ -4,8 +4,6 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cNavTree04TLD_RelFlows
     Inherits cNavTree01TLD
 

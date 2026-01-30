@@ -7,8 +7,6 @@ Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 Imports System.Drawing.Drawing2D
 
-
-
 Public Class cLindemanSpineDiagram
 
 #Region " Private vars "
@@ -430,7 +428,6 @@ Public Class cLindemanSpineDiagram
                               brText As Brush,
                               iRowFrom As Integer, iColFrom As Integer,
                               strPredation As String, strTE As String)
-
 
         If (iColFrom < 1) Or (iColFrom >= Me.NumTrophicLevels) Then Return
         If (Me.m_bCollapseDetritus And iRowFrom <> 1) Then Return

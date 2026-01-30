@@ -8,8 +8,6 @@ Imports EwECore.Plugins
 Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 
-
-
 Public MustInherit Class cNavTreeControlPlugin
     Implements INavigationTreeItemPlugin
     Implements IHelpPlugin

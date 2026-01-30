@@ -51,7 +51,6 @@ Namespace MSEBatchManager
         ''' <remarks>If RunType = eMSEBatchRunTypes.TFM then nParIters = nTFMs</remarks>
         Public nParIters As Integer
 
-
         ''' <summary>
         ''' Names of the loaded forcing functions
         ''' </summary>
@@ -85,7 +84,6 @@ Namespace MSEBatchManager
         Public tfmFmax(,) As Single
         Public tfmFmin(,) As Single
 
-
         Public FixedF(,) As Single
         Public TAC(,) As Single
         Public STDevForcing As Single
@@ -99,7 +97,6 @@ Namespace MSEBatchManager
 
         Public m_nGroups As Integer
         Public m_nFleets As Integer
-
 
         Public m_orgBlim() As Single
         Public m_orgBbase() As Single
@@ -141,7 +138,6 @@ Namespace MSEBatchManager
         Public GroupRunType() As eMSEBatchRunTypes
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEBatchDataStructures)()
 
-
         Public ReadOnly Property nGroups As Integer
             Get
                 Return Me.m_nGroups
@@ -163,7 +159,6 @@ Namespace MSEBatchManager
             ReDim Me.ForcingNames(Me.nForcing)
 
         End Sub
-
 
         Public ReadOnly Property nOuputTypes() As Integer
             Get
@@ -264,7 +259,6 @@ Namespace MSEBatchManager
         '    Me.bForcingLoaded = False
         'End Sub
 
-
         Public Sub New(MSEdata As MSE.cMSEDataStructures)
             Try
                 Me.redimToMSE(MSEdata)
@@ -289,7 +283,6 @@ Namespace MSEBatchManager
             Me.redimFixedF(1, MSEdata.NGroups)
 
         End Sub
-
 
         ''' <summary>
         ''' Store the initial state of the MSE data so it can be restored later
@@ -342,9 +335,6 @@ Namespace MSEBatchManager
 
         End Sub
 
-
-
     End Class
-
 
 End Namespace

@@ -41,7 +41,6 @@ Namespace Plugins.MSE
         ''' <remarks></remarks>
         Sub MSYRunCompleted()
 
-
     End Interface
 
 End Namespace

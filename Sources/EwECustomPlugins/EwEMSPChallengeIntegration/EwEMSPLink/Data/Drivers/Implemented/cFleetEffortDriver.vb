@@ -5,8 +5,6 @@
 Imports EwECore
 Imports EwEUtils.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Driver for inserting MSP fishing pressure data into the running EwE model for 

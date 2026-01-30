@@ -260,7 +260,6 @@ Public MustInherit Class cBaseShapeManager
 
     End Function
 
-
     ''' <summary>
     ''' Load the existing shape with the underlying Ecosim data
     ''' </summary>

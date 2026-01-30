@@ -54,7 +54,6 @@ End Class
 
 #Region "Operator Base Class"
 
-
 ''' <summary>
 ''' Base class for equality comparison of values
 ''' </summary>

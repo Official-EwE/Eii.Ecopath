@@ -7,8 +7,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Other
 
     ''' -----------------------------------------------------------------------

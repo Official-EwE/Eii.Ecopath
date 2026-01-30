@@ -9,8 +9,6 @@ Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
 
-
-
 Public Class cImpactData
     Inherits cContentManager
 

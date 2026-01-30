@@ -14,9 +14,6 @@ Imports ScientificInterfaceShared.Style
 
 
 
-
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.
@@ -25,7 +22,6 @@ Imports ScientificInterfaceShared.Style
 
 Public Class gridQuotaShares
     Inherits cEwEGrid
-
 
 #Region " Internal defs "
 
@@ -206,5 +202,4 @@ Public Class gridQuotaShares
 #End Region ' Overrides
 
 End Class
-
 

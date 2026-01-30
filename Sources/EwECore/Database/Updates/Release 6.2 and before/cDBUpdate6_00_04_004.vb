@@ -27,7 +27,6 @@ Friend Class cDBUpdate6_00_04_0004
     ''' -----------------------------------------------------------------------
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-
         Return Me.FixRelPP(db) And Me.FixUnits(db)
 
     End Function

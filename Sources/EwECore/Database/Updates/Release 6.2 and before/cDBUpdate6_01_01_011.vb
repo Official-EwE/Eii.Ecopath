@@ -81,5 +81,4 @@ Friend Class cDBUpdate6_01_01_011
 
     End Function
 
-
 End Class

@@ -4,7 +4,6 @@
 
 Namespace Controls.Wizard
 
-
     Partial Class ucWizardNavigation
         Inherits System.Windows.Forms.UserControl
 

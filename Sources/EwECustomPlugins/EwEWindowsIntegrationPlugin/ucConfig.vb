@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Controls
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Minimalistic configuration UI for this plug-in. The UI is flagged as an 

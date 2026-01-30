@@ -5,8 +5,6 @@
 Imports EwECore.ValueWrapper
 Imports Microsoft.Extensions.Logging
 
-
-
 ''' <summary>
 ''' Class to encapsulate and expose ecopath model for a single model
 ''' </summary>

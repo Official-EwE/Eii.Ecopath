@@ -7,8 +7,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
 
     ''' =======================================================================

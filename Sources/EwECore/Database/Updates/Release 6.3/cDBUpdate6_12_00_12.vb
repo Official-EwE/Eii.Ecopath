@@ -44,5 +44,4 @@ Friend Class cDBUpdate6_12_00012
 
     End Function
 
-
 End Class

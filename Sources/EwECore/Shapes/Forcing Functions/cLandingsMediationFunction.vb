@@ -16,7 +16,6 @@ Public Class cLandingsMediationFunction
 
 #Region " Constructors "
 
-
     Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager,
                    data As cMediationDataStructures, DBID As Integer, DataType As eDataTypes)
         'mediation data arrays from EcoSim
@@ -54,7 +53,6 @@ Public Class cLandingsMediationFunction
         End Try
 
     End Sub
-
 
 #End Region ' Constructors
 

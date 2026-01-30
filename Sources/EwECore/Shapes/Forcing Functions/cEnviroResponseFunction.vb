@@ -11,7 +11,6 @@ Public Class cEnviroResponseFunction
 
     End Sub
 
-
     Public Overrides Function Update() As Boolean
         MyBase.Update()
 
@@ -138,5 +137,4 @@ Public Class cEnviroResponseFunction
 #End Region
 
 End Class ' Response Function
-
 

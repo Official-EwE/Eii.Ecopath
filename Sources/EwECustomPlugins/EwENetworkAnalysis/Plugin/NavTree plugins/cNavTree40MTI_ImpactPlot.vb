@@ -4,8 +4,6 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cNavTree40MTI_ImpactPlot
     Inherits cNavTree36MTI
 

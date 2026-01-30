@@ -140,7 +140,6 @@ Namespace SpatialData
 
         End Function
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Load the spatial datasets from a config file.

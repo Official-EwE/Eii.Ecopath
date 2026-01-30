@@ -89,7 +89,6 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>Number of datum points across all applied time series.</summary>
     Public AppliedDatPoints As Integer
 
-
     Public AppliedAICTimeSeries As Integer
 
     ''' <summary><see cref="eTimeSeriesType">Type</see> of each applied time series.</summary>
@@ -220,7 +219,6 @@ Public Class cTimeSeriesDataStructures
         Return its
 
     End Function
-
 
     Public Function isTimeStepValid(iModelTimeStep As Integer) As Boolean
         ' System.Console.WriteLine(iModelTimeStep.ToString)
@@ -745,7 +743,6 @@ Public Class cTimeSeriesDataStructures
 
     End Sub
 
-
     Public Sub LoadForcingData()
         'Forcing data is loaded from the database into the same data structures as the other time series data DatVal(ipoint,itype)
         'This allocates arrays for each forcing type PoolForceBB(group,point),PoolForceZ(group,point) and PoolForceCatch(group,point)
@@ -1110,7 +1107,6 @@ End Class
 
 #If 0 Then
 
-
 'jb 12-July-2016 Removed the cEcospaceTimeSeriesDataStructures with the implementation of Ecosim biomass forcing time series in Ecospace
 'Just use the Cores cTimeSeriesDataStructures object until we need something more advanced  
 ''' <summary>
@@ -1130,14 +1126,12 @@ Public Class cEcospaceTimeSeriesDataStructures
     ' ------------------------------------------------
     Public SPRegion() As Integer
 
-
     Friend Overloads Sub RedimTimeSeries()
         MyBase.RedimTimeSeries()
 
         ReDim iSPRegion(nTimeSeries)
 
     End Sub
-
 
     Friend Overloads Sub RedimAppliedTimeSeries()
         MyBase.RedimEnabledTimeSeries()

@@ -26,7 +26,6 @@ Namespace Plugins.Ecosim
         ''' <remarks>Call prior to initialization of run data.</remarks>
         Sub EcosimPreRunInitialized(EcosimDatastructures As Object)
 
-
     End Interface
 
 End Namespace

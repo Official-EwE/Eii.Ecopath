@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
 
-
-
 Namespace Controls
 
     ''' <summary>

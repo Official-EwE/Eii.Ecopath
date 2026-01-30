@@ -635,7 +635,6 @@ Public Class cValueChainController
 
 #Region " Equations "
 
-
     Public Sub Equations(TH As Integer)
         '*----------------------------------
         '*Equations

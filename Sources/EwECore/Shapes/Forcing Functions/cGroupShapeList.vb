@@ -26,7 +26,6 @@ Public Class cGroupShapeList
 
     End Sub
 
-
     Default Public Property Item(Index As Integer) As cGroupShapePair
         Get
             Try
@@ -44,7 +43,6 @@ Public Class cGroupShapeList
         End Set
     End Property
 
-
     Public Function Count() As Integer
         Return Me.m_list.Count
     End Function
@@ -52,6 +50,5 @@ Public Class cGroupShapeList
     Public Function GetEnumerator() As System.Collections.IEnumerator Implements System.Collections.IEnumerable.GetEnumerator
         Return Me.m_list.GetEnumerator
     End Function
-
 
 End Class

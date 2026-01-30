@@ -8,8 +8,6 @@ Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
-
-
 Namespace Ecospace.Basemap
 
     ''' -------------------------------------------------------------------

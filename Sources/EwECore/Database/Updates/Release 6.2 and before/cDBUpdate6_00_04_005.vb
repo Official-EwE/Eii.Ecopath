@@ -59,7 +59,6 @@ Friend Class cDBUpdate6_00_04_0005
 
     End Function
 
-
     Private Function AddEcospaceWeightTables(db As cEwEDatabase) As Boolean
 
         Dim bSucces As Boolean = True

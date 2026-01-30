@@ -272,7 +272,6 @@ Public Class cModelFromEcosimPluginPoint
 
     End Sub
 
-
     Private Sub SaveAnnualModel(iTime As Integer)
 
         Dim strModelName As String = ""

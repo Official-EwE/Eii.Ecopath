@@ -4,8 +4,6 @@
 
 Imports System.Reflection
 
-
-
 #If DEBUG Then
 
 Namespace Other

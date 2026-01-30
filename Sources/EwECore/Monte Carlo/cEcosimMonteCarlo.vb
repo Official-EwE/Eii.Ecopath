@@ -9,8 +9,6 @@ Imports EwECore.Ecosim
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ' *******************************************************************************
 ' Monte Carlo should become multi-threaded, but the full-on approach tried earlier
 ' was too ambitious. Rather than running Ecosim on a thread too, it might be smarter
@@ -876,7 +874,6 @@ Public Class cEcosimMonteCarlo
         Me.EcopathEETol = EE_TOL
     End Sub
 
-
     Private Function isTimeSeriesLoaded() As Boolean
         'Number of applied time series
         Return Me.m_tsdata.AppliedNdatType > 0
@@ -1007,7 +1004,6 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-
     Private Sub TrialProgress(iTrial As Integer, iEcopathIterations As Integer)
 
         Try
@@ -1079,7 +1075,6 @@ Public Class cEcosimMonteCarlo
         Return False
 
     End Function
-
 
     Private Sub dumpEstimatedParameters()
 
@@ -1440,7 +1435,6 @@ Public Class cEcosimMonteCarlo
             '    m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
             'Next
 
-
             'ToDo_jb cEcosimMonteCarlo.Run something is wrong here
             'I don't have a BAinput BA will contain the best fit parameters
             ' m_epdata.BAinput(i) = m_epdata.BA(i)
@@ -1503,7 +1497,6 @@ Public Class cEcosimMonteCarlo
         End Try
 
     End Sub
-
 
     ''' <summary>
     ''' Calculate the Upper and Lower Parameter limits from CV values
@@ -1607,7 +1600,6 @@ Public Class cEcosimMonteCarlo
             Throw New ApplicationException(Me.ToString & ".Run", ex)
         End Try
 
-
     End Sub
 
     Private Function ChooseFeasiblePar(par As eMCParams, xbar As Single, CV As Single, ParMin As Single, ParMax As Single) As Single
@@ -1669,7 +1661,6 @@ Public Class cEcosimMonteCarlo
         Dim SumInteractions As Integer = 0
         Dim TempDirichlet() As Single
         Dim iPointer As Integer = 0
-
 
         'SumInteractions(iPred - 1) += If(m_core.EcoPathGroupInputs(iPred).ImpDiet > 0, 1, 0)
         For iPrey As Integer = 0 To Me.m_core.nGroups
@@ -1796,7 +1787,6 @@ Public Class cEcosimMonteCarlo
         '    Console.WriteLine(sStr)
         'End If
     End Sub
-
 
 #Region "xxx DEAD CODE (Multi threaded Monte Carlo) xxx"
 

@@ -266,7 +266,6 @@ Public Class cEcopathDataStructures
     ''' <summary>Fate of discards (by fleet, #detritus)</summary>
     Public DiscardFate(,) As Single
 
-
     ''' <summary>Landinged biomass (by fleet,group)</summary>
     Public Landing(,) As Single
     ''' <summary>Market value of landings (by fleet,group)</summary>
@@ -276,7 +275,6 @@ Public Class cEcopathDataStructures
     Public PropDiscard(,) As Single
     ''' <summary>Proportion of regulated discards that die (by fleet, group)</summary>
     Public PropDiscardMort(,) As Single ' gear group 0-1
-
 
     Public RTZ As Single 'sum of respiration
     Public Consum As Single
@@ -406,7 +404,6 @@ Public Class cEcopathDataStructures
             Debug.Assert(False, Me.ToString & ".redimGroups Error: " & ex.Message)
         End Try
 
-
     End Function
 
     ''' <summary>
@@ -526,7 +523,6 @@ Public Class cEcopathDataStructures
 
         Return True
     End Function
-
 
     ''' <summary>
     ''' Redimension all fishing variables
@@ -670,7 +666,6 @@ Public Class cEcopathDataStructures
         End Try
 
     End Function
-
 
     ''' <summary>
     '''     Computes 

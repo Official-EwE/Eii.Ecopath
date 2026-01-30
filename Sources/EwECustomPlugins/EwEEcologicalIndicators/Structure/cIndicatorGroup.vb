@@ -5,8 +5,6 @@
 Imports EwECore
 Imports EwECore.Common
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Class providing name, description, and indicator info for a group of indicators.

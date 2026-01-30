@@ -14,8 +14,6 @@ Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Dialog form to assist users in the merge process.
 ''' </summary>

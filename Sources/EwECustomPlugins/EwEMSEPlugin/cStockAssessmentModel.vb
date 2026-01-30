@@ -4,7 +4,6 @@
 
 #Region "Imports"
 
-
 Option Explicit On
 
 Imports System.IO
@@ -28,7 +27,6 @@ Public Class cStockAssessmentModel
     'Todo Debug initialization of Stock Assessment model and Ecosim, figure out how this works with the strategies
 
     'ToDo use of CVbiomEst() in the Kalman Gain filter. Should this be it's own variable?
-
 
 #Region "Private data"
 
@@ -158,7 +156,6 @@ Public Class cStockAssessmentModel
 
     End Sub
 
-
     Private Sub InitInterfaceParameters()
         Try
 
@@ -180,7 +177,6 @@ Public Class cStockAssessmentModel
         End Try
 
     End Sub
-
 
     Private Sub InitBiomass()
         'Init Bestimate() and BestimateLast() to the start biomass with some error
@@ -276,11 +272,9 @@ Public Class cStockAssessmentModel
 
     End Sub
 
-
 #End Region
 
 #Region "Public Methods"
-
 
     Public Function DoAnnualStockAssessment(Strategy As Strategy, iTimestep As Integer, Biomass() As Single) As Single()
         Try
@@ -328,7 +322,6 @@ Public Class cStockAssessmentModel
 
     End Function
 
-
     Public Sub RunEnded()
 
         cMSEUtils.ReleaseWriter(Me.m_strmBobsB)
@@ -363,7 +356,6 @@ Public Class cStockAssessmentModel
             Return Nothing
         End Get
     End Property
-
 
     Public Sub OnParameterChanged(iGroupIndex As Integer)
         'InitStockAssessment()
@@ -461,7 +453,6 @@ Public Class cStockAssessmentModel
 
     End Function
 
-
     Private Sub dumpBioEstOverB(Strategy As Strategy, iTimestep As Integer, BioEst() As Single, B() As Single)
         Try
             Me.m_strmBobsB.Write(Me.m_iTrial.ToString & "," & Strategy.Name & "," & iTimestep.ToString)
@@ -558,13 +549,11 @@ Public Class cStockAssessmentModel
 
     End Function
 
-
     Friend ReadOnly Property Core As cCore
         Get
             Return Me.m_core
         End Get
     End Property
-
 
     Private ReadOnly Property MSE As cMSE
         Get
@@ -575,7 +564,6 @@ Public Class cStockAssessmentModel
     Private Function DefaultFileName() As String
         Return cMSEUtils.MSEFile(Me.m_MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "StockAssessment.csv")
     End Function
-
 
     Private Sub InitOutputFiles()
         Try
@@ -683,7 +671,6 @@ Public Class cStockAssessmentModel
         Return breturn
     End Function
 
-
     Private Function ReadGroupData(strm As StreamReader) As Boolean
         Dim buff As String
         Dim breturn As Boolean = True
@@ -779,7 +766,6 @@ Public Class cStockAssessmentModel
 
         Try
 
-
             If (strm IsNot Nothing) Then
 
                 strm.WriteLine(cStockAssessmentParameters.toCSVHeader)
@@ -822,6 +808,5 @@ Public Class cStockAssessmentModel
     End Function
 
 #End Region
-
 
 End Class

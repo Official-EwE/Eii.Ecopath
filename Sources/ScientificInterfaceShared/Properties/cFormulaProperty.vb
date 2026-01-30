@@ -5,8 +5,6 @@
 Imports System.Globalization
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Properties
 
     ''' -----------------------------------------------------------------------

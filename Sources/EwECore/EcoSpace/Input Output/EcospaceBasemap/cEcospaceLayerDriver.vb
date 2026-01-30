@@ -7,8 +7,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Layer providing access to Ecospace external driving data.
 ''' </summary>

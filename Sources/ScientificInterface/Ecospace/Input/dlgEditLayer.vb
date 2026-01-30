@@ -9,8 +9,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecospace.Basemap.Layers
 
     ''' =======================================================================

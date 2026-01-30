@@ -6,8 +6,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

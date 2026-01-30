@@ -677,7 +677,6 @@ Namespace Ecosim
             Return DirectCast(cci.Source, cCoreGroupBase)
         End Function
 
-
 #End Region ' Internals
 
     End Class

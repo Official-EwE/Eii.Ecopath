@@ -5,8 +5,6 @@
 Imports EwECore
 Imports EwEUtils.Utilities
 
-
-
 Public Class cSFPGroupsWithTimeSeries
     Inherits cSFPGenericIteration
 

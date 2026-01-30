@@ -28,4 +28,3 @@ Public Interface IEcosimModifyEffort
 
 End Interface
 
-

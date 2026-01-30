@@ -5,7 +5,6 @@
 Imports EwECore.MSE
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
 Public Class gridBioCV
     Inherits cEwEGrid
 
@@ -57,6 +56,5 @@ Public Class gridBioCV
             Return eCoreComponentType.MSE
         End Get
     End Property
-
 
 End Class

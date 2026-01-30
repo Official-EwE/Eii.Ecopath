@@ -87,7 +87,6 @@ Public Class cEcoSimResults
         End Set
     End Property
 
-
     ''' <summary>
     ''' Is there stock recruitment data for this time step
     ''' </summary>
@@ -118,7 +117,6 @@ Public Class cEcoSimResults
         ReDim Me.Effort(nFleets)
 
     End Sub
-
 
     Public Sub clear()
 

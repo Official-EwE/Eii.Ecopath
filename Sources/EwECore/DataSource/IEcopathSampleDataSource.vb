@@ -4,8 +4,6 @@
 
 Imports EwECore.Samples
 
-
-
 Namespace DataSources
 
     ''' =======================================================================

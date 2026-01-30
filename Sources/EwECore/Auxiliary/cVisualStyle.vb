@@ -8,10 +8,7 @@ Imports System.IO
 Imports EwEUtils.UserInterface
 Imports Newtonsoft.Json
 
-
-
 Namespace Auxiliary
-
 
     Public Class VisualStyleDto
         Public Property foreColor As String          ' "#RRGGBBAA"
@@ -343,7 +340,6 @@ Namespace Auxiliary
                 End Using
             End Set
         End Property
-
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

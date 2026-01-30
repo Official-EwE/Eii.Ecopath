@@ -30,7 +30,6 @@ Namespace ValueWrapper
             Me.m_iArrayIndex = iFixedIndex1
             Me.Index = iFixedIndex1
 
-
             If Me.SetSize() Then 'this will redim the arrays and set m_nObjects
 
                 Dim n1 As Integer = Me.m_core.GetCoreCounter(Me.m_Countertype)
@@ -107,7 +106,6 @@ Namespace ValueWrapper
                     'It's the Me.Index property of this group or fleet the object was created for
                     Return DirectCast(Me.m_values, Array).GetValue(iIndex2, iIndex3)
                 End If
-
 
             End Get
             Set(value As Object)

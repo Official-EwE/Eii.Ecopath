@@ -21,7 +21,6 @@ Public Class cValidatorCounter
         Me.m_counter = counterType
     End Sub
 
-
     Public Overrides Function Validate(ValueObject As cValue, MetaData As cVariableMetaData,
                                          Optional iSecondaryIndex As Integer = cCore.NULL_VALUE,
                                          Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
@@ -44,12 +43,10 @@ Public Class cValidatorCounter
             ValueObject.ValidationStatus = eStatusFlags.FailedValidation
             Return True
 
-
         Catch ex As Exception
             m_logger.LogError(ex, "cValidatorCounter.Validate() Exception")
             Return False
         End Try
-
 
     End Function
 

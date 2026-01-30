@@ -11,8 +11,6 @@ Imports EwECore
 Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Content manager-derived class, able to plot keystoneness-related values.

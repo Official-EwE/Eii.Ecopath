@@ -11,8 +11,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
 
-
-
 Public Class cTransferEfficiency
     Inherits cContentManager
 

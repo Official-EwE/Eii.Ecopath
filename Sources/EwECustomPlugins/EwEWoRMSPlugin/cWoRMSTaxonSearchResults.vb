@@ -5,8 +5,6 @@
 Imports EwECore.Common
 Imports EwECore.Plugins.Data
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Implementation of the SAUP Taxon search results class.

@@ -17,8 +17,6 @@ Public Class cDietImporter
 
     End Sub
 
-
-
     Public Sub Run(ExternalModelFileName As String)
         Dim DietPrefs As cDietPreferences
         Dim DBReader As New cDatabaseReader(Me.m_Core, Me.m_EcopathData)
@@ -36,7 +34,6 @@ Public Class cDietImporter
 
                 End If
             End If ' If Me.CheckEcopathState() Then
-
 
         Catch ex As Exception
             m_logger.LogError(ex, "Exception while importing diets")
@@ -62,7 +59,5 @@ Public Class cDietImporter
         Return False
 
     End Function
-
-
 
 End Class

@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Properties
 
-
-
 Namespace Controls.EwEGrid
 
     ''' -----------------------------------------------------------------------

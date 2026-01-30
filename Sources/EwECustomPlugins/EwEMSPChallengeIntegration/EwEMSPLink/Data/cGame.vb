@@ -9,8 +9,6 @@ Imports System.Xml
 Imports EwECore
 Imports EwEUtils.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Container for a single game (model + its configuration) in the MSP software.

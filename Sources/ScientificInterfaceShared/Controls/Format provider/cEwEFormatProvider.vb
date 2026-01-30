@@ -11,8 +11,6 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------
@@ -307,7 +305,6 @@ Namespace Controls
                     Me.m_tb.Text = strText
 
                 End If
-
 
             End Sub
 

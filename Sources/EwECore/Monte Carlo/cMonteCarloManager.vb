@@ -10,8 +10,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Manager to run the Ecosim Monte Carlo.
 ''' </summary>
@@ -45,7 +43,6 @@ Public Class cMonteCarloManager
     ''' <summary>Available monte carlo result writers.</summary>
     Private m_ResultsWriters As New List(Of IMonteCarloResultsWriter)
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMonteCarloManager)()
-
 
 #End Region
 
@@ -89,7 +86,6 @@ Public Class cMonteCarloManager
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".init()", ex)
         End Try
-
 
     End Sub
 
@@ -300,7 +296,6 @@ Public Class cMonteCarloManager
 
     End Sub
 
-
     Private Sub MCEcopathInterationHandler()
 
         Try
@@ -320,11 +315,9 @@ Public Class cMonteCarloManager
 
     End Sub
 
-
     Private Sub MCTrialProgressHandler()
 
         Try
-
 
             'tell the interface
             If Me.m_SyncObject IsNot Nothing And Me.m_dlgMCTrialStepHandler IsNot Nothing Then
@@ -334,7 +327,6 @@ Public Class cMonteCarloManager
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".MCTrialProgressHandler() " & ex.Message)
         End Try
-
 
     End Sub
 
@@ -354,11 +346,9 @@ Public Class cMonteCarloManager
 
     End Sub
 
-
 #End Region
 
 #Region " Saving "
-
 
     ''' <summary>
     ''' Apply the Monte Carlo results (best fitting parameters) to the Ecopath inputs (B,PB....)

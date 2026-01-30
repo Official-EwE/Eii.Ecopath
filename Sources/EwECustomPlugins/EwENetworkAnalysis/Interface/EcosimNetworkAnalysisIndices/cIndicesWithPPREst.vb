@@ -14,8 +14,6 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls
 
 
-
-
 Public Class cIndicesWithPPREst
     Inherits cContentManager
 
@@ -141,5 +139,4 @@ Public Class cIndicesWithPPREst
     End Sub
 
 End Class
-
 

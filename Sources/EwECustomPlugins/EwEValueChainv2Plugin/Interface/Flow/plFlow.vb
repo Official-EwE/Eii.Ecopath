@@ -17,8 +17,6 @@ Imports ScientificInterfaceShared.Style
 Imports ValueChain
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Flow editor control, including flow area, relevant toolbar(s) and 

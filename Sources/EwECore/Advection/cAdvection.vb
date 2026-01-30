@@ -4,8 +4,6 @@
 
 Imports EwECore.Ecospace.Advection.cAdvectionManager
 
-
-
 Namespace Ecospace.Advection
 
     ''' -----------------------------------------------------------------------
@@ -14,7 +12,6 @@ Namespace Ecospace.Advection
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Friend Class cAdvection
-
 
         'ToDo 14-Jun-2015
         'Database storage of Montly advection and upwelling arrays MonthlyXvel()(,)...
@@ -153,7 +150,6 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Revert XVel and YVel to their initial state.
@@ -220,8 +216,6 @@ Namespace Ecospace.Advection
                 Next
             Next
         End Sub
-
-
 
         Public Function RunPhysicsModel() As Boolean
             Dim bReturn As Boolean = True
@@ -313,7 +307,6 @@ Namespace Ecospace.Advection
 
         End Sub
 
-
         Private Sub Physicsmodel(WindXbase(,) As Single, WindYbase(,) As Single)
             'simple model to predict wind-driven velocity patterns using Hunter equations, from Flem/Flabay model
             'basic input is open sea velocity field (cm/sec) at each model grid point in arrays WindXbase(i,j), WindYbase(i,j)
@@ -366,7 +359,6 @@ Namespace Ecospace.Advection
             ReDim WindYw(inrowp + 1, incolp + 1)
             ReDim jord(incolp)
             'Erase upwell: ReDim upwell(nftype, inrowp, incolp) As Single
-
 
             'set ocean boundary heights (nw,ne,sw,se corners of grid) to zero, i.e. assume pressure field effects are in input vel field
             honw = 0 'honwa
@@ -555,9 +547,7 @@ Namespace Ecospace.Advection
             'Erase h
             Erase A, b, c, d, e, f, jord
 
-
         End Sub
-
 
         Sub FastSolveGrid(x(,) As Single, A(,) As Single, b(,) As Single, C(,) As Single, d(,) As Single, e(,) As Single, F(,) As Single, M As Integer, n As Integer, Tol As Single, jord() As Integer, W As Single)
 
@@ -642,7 +632,6 @@ iterate:
                     If Math.Abs(Xold(i, j)) < 1.0E-20 Then Xold(i, j) = 0
                 Next : Next
 
-
             '*********************************************************************
             iter = iter + 1
             If ic > 0 And iter < 100 Then GoTo iterate
@@ -651,7 +640,6 @@ exitline:
             Erase alfa, gam, rhs, g, Xold
 
         End Sub
-
 
         Private Sub getdepthleft(i As Integer, j As Integer, hsurface As Single, ByRef dtotal As Single, ByRef hsurf As Single, ByRef depth As Single)
             Dim ii As Integer, d1 As Single
@@ -674,7 +662,6 @@ exitline:
             If depth < 0 Then depth = 0 : hsurf = dtotal
         End Sub
 
-
         Private Sub GetDepthUp(i As Integer, j As Integer, hsurface As Single, ByRef dtotal As Single, ByRef hsurf As Single, ByRef depth As Single)
             Dim jj As Integer, d1 As Single
             'returns depths across top boundary of cell i,j
@@ -694,7 +681,6 @@ exitline:
             If depth < 0 Then depth = 0 : hsurf = dtotal
 
         End Sub
-
 
         Private Sub storeOrgValues()
             Try
@@ -717,9 +703,7 @@ exitline:
                 Debug.Assert(False, ex.Message)
             End Try
 
-
         End Sub
-
 
         Private Sub fireRunStarted()
             Try
@@ -740,7 +724,6 @@ exitline:
 
             End Try
         End Sub
-
 
         Private Sub fireProgress()
             Try
@@ -919,7 +902,6 @@ exitline:
             'If m_bBadAdvection = True Then MsgBox("Inflows and outflows do not balance at cells shown in red; recommend not using this velocity field for simulations if ecospace shows strange behavior for these cells")
         End Function
 
-
         
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -953,7 +935,6 @@ exitline:
 
                 
 #End If
-
 
 #End Region
 

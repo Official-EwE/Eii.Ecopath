@@ -231,7 +231,6 @@ Public Class frmEcotroph
         ' frmET.ETgridinput.Show()
     End Sub
 
-
     Private Sub Save_ETdata_Click(sender As System.Object, e As System.EventArgs) Handles Save_ETdata.Click
         Dim saveFileDialog1 As New SaveFileDialog()
 
@@ -294,7 +293,6 @@ Public Class frmEcotroph
         End If
 
         If (openFileDialog1.FileName <> "") Then
-
 
             Dim DataGrid As DataGridView = Me.ETgridinput
             'List faut une procédure pour afficher cela
@@ -433,14 +431,12 @@ Public Class frmEcotroph
         result = output2
         Return bSucces
 
-
     End Function
 
     Public Function execute_rplot(code As String()) As String
         'Cette fonction execute un code R et renvoie le nom d'un fichier resultat
         Dim myProcess As New Process()
         myProcess.StartInfo.RedirectStandardInput = False
-
 
         myProcess.StartInfo.UseShellExecute = True ' A remettre à false
         myProcess.StartInfo.FileName = Me.m_strRPath
@@ -487,7 +483,6 @@ Public Class frmEcotroph
 
     End Function
 
-
     Public Shared Function charge_grid(donnees As String(), ByRef grille As DataGridView) As Integer
 
         Dim tab_trans(,) As String
@@ -497,7 +492,6 @@ Public Class frmEcotroph
         Dim nbl As Integer = donnees.Length
         Dim nbcol As Integer = (donnees(0).Split(vbTab).Length)
 
-
         ReDim tab_trans(nbcol, nbl)
         ReDim uneligne(nbcol)
         Dim deci_sep As String
@@ -505,17 +499,14 @@ Public Class frmEcotroph
         'Une astuce pour obtenir le sep décimal
         deci_sep = Mid$(CStr(1 / 2), 2, 1)
 
-
         ' La partie suivante est a mettre en fonction(donnees as data,sheet as )
         grille.ColumnCount = nbcol
-
 
         For igrp As Integer = 0 To nbl - 1
 
             If (grille.Rows.Count < nbl) Then grille.Rows.Add()
             uneligne = donnees(igrp).Split(vbTab)
             If uneligne.Length > 1 Then
-
 
                 If (uneligne(1).Contains("mE")) Then
                     donnees(igrp) = donnees(igrp).Substring(1, donnees(igrp).Length - 1)
@@ -540,7 +531,6 @@ Public Class frmEcotroph
         grille.RowCount = nbl
         Return (vbOK)
     End Function
-
 
     Public Shared Function get_params(type_smooth As Integer, Optional smooth_parameter As Double = Nothing, Optional decalage As Double = Nothing) As String
         'Cette fonction doit récupérer les paramètre du smooth
@@ -575,7 +565,6 @@ Public Class frmEcotroph
         If (Me.type_smooth2.Checked) Then param_pas = get_params(2, Me.smooth_param.Text, Me.decalage.Text)
         If (Me.type_smooth3.Checked) Then param_pas = get_params(3)
 
-
         'MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas)
         'MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas)
 
@@ -600,7 +589,6 @@ Public Class frmEcotroph
             "if (!is.null(dim(catches_tmp2))) {names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI');ecopath<-data.frame(ecopath,as.data.frame(catches_tmp2[1:length(rownames(ecopath)),]))};" &
             "return (ecopath[!(ecopath$group_name==''),])}};"
 
-
         commandes(3) = "ecopath<-read.ecopath.model_2015('" & Replace(fichier_data_transfert, "\", "\\") & "')"
         commandes(4) = "A<-create.smooth(ecopath" & param_pas & ")"
 
@@ -623,9 +611,7 @@ Public Class frmEcotroph
             m_logger.LogError(ex, "frmEcoTroph.Button2_Click(execute_r_1)")
         End Try
 
-
         Me.smooth_pdf.Navigate(fichierpdf)
-
 
         'smooth_pdf.Refresh()
         If My.Computer.FileSystem.FileExists(fichier) Then
@@ -641,7 +627,6 @@ Public Class frmEcotroph
             Me.NotifyUser(My.Resources.NO_OUTPUT_R, eMessageImportance.Critical)
         End If
 
-
         Cursor.Current = Cursors.Default
 
         'Test de la partie graphique, pour voir
@@ -651,19 +636,14 @@ Public Class frmEcotroph
     Private Sub Button3_Click(sender As System.Object, e As System.EventArgs) Handles Button3.Click
         Dim commandes() As String
 
-
-
         Dim fichierpdf As String = cFileUtils.MakeTempFile(".pdf")
         Dim fichier_data_transfert As String = cFileUtils.MakeTempFile(".xml")
         Dim fichier As String = cFileUtils.MakeTempFile(".txt")
         Dim log_ech As String
 
-
-
         Me.result_pdf.GoHome()
 
         Cursor.Current = Cursors.WaitCursor
-
 
         'Juste pour attendre que le composant web ne bloque pas le fichier qui doit être mis à jour
         Dim param_pas As String = ""
@@ -678,10 +658,7 @@ Public Class frmEcotroph
 
         'on charge les différents paramètres du create.smooth
 
-
         'Le code R en lui même
-
-
 
         fichier = Replace(fichier, "\", "\\")
 
@@ -703,7 +680,6 @@ Public Class frmEcotroph
           "names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI',paste('catch.',v$FleetName[-length(v$FleetName)],sep=''))};" &
           "if (!is.null(dim(catches_tmp2))) {names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI');ecopath<-data.frame(ecopath,as.data.frame(catches_tmp2[1:length(rownames(ecopath)),]))};" &
           "return (ecopath[!(ecopath$group_name==''),])}};"
-
 
         commandes(3) = "ecopath<-read.ecopath.model_2015('" & Replace(fichier_data_transfert, "\", "\\") & "');A<-create.ETmain(ecopath" & param_pas & ")"
 
@@ -729,7 +705,6 @@ Public Class frmEcotroph
         commandes(20) = " "
         commandes(21) = " quit('yes')"
 
-
         'on execute ce code R
 
         Try
@@ -742,12 +717,9 @@ Public Class frmEcotroph
             m_logger.LogError(ex, "frmEcoTroph.Button3_Click")
         End Try
 
-
         Me.result_pdf.Navigate(fichierpdf)
 
         If My.Computer.FileSystem.FileExists(fichier) Then
-
-
 
             'End If
 
@@ -755,8 +727,6 @@ Public Class frmEcotroph
 
             Dim totales As String = Join(recup, vbNewLine)
             Dim matrices() As String = Split(totales, "-----")
-
-
 
             Dim Ctr() As Control = Me.Controls.Find("Catch." & (ETinputdata.FleetName(0)), True)
             Try
@@ -791,14 +761,12 @@ Public Class frmEcotroph
                         charge_grid(matrices(compteur_fleet + 6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ctrl(0))
                     End If
 
-
                 Next
 
             Catch ex As Exception
                 Me.NotifyUser(cStringUtils.Localize("Problem in reading R script output. {0}", ex.Message), eMessageImportance.Critical)
                 m_logger.LogError(ex, "frmEcoTroph.Button3_Click(read_results)")
             End Try
-
 
         Else
             Me.NotifyUser(My.Resources.NO_OUTPUT_R, eMessageImportance.Critical)
@@ -807,7 +775,6 @@ Public Class frmEcotroph
         Cursor.Current = Cursors.Default
 
     End Sub
-
 
     Private Sub getgraphs_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles getgraphs.CheckedChanged
         If Me.getgraphs.Checked = True Then
@@ -824,7 +791,6 @@ Public Class frmEcotroph
     End Sub
 
     Private Sub Button4_Click_4(sender As System.Object, e As System.EventArgs)
-
 
     End Sub
 
@@ -888,7 +854,6 @@ Public Class frmEcotroph
 
         Cursor.Current = Cursors.WaitCursor
 
-
         'result_pdf_et_diag.GoHome()
 
         sauve_datagrid_xml(ETinputdata, fichier_data_transfert)
@@ -948,15 +913,11 @@ Public Class frmEcotroph
             End If
 
 
-
-
         End If
 
         'MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas & " et " & param_pas2)
 
-
         'Le code R en lui même
-
 
         fichier = Replace(fichier, "\", "\\")
 
@@ -979,7 +940,6 @@ Public Class frmEcotroph
          "names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI',paste('catch.',v$FleetName[-length(v$FleetName)],sep=''))};" &
          "if (!is.null(dim(catches_tmp2))) {names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI');ecopath<-data.frame(ecopath,as.data.frame(catches_tmp2[1:length(rownames(ecopath)),]))};" &
          "return (ecopath[!(ecopath$group_name==''),])}};"
-
 
         commandes(2) = "ecopath<-read.ecopath.model_2015('" & Replace(fichier_data_transfert, "\", "\\") & "');ETM<-create.ETmain(ecopath" & param_pas & ");A<-create.ETdiagnosis(ETM" & param_pas2 & param_iso & ")"
         commandes(3) = "B<-convert.list2tab(A)"
@@ -1016,8 +976,6 @@ Public Class frmEcotroph
             End If
         End If
 
-
-
         commandes(29) = "dev.off()"
         commandes(30) = " quit('yes')"
 
@@ -1031,15 +989,11 @@ Public Class frmEcotroph
             m_logger.LogError(ex, "frmEcoTroph.Button4_Click_2")
         End Try
 
-
-
         Me.result_pdf_et_diag.Navigate(fichierpdf)
 
         If My.Computer.FileSystem.FileExists(fichier) Then
 
-
             Dim recup() As String = File.ReadAllLines(fichier)
-
 
             Dim totales As String = Join(recup, vbNewLine)
             Dim matrices() As String = Split(totales, "-----")
@@ -1067,7 +1021,6 @@ Public Class frmEcotroph
 
                 For compteur_output As Integer = 0 To isopleth_output.Length - 1
 
-
                     Dim ctrl() As Control = Me.panel_result_diag.Controls.Find(isopleth_output(compteur_output), True)
 
                     If ctrl.Length = 0 Then
@@ -1089,13 +1042,11 @@ Public Class frmEcotroph
                         charge_grid(matrices(compteur_output + 10).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ctrl(0))
                     End If
 
-
                 Next
 
             Else
                 'process of deleting isopleth out if they were created before
                 For compteur_output As Integer = 0 To isopleth_output.Length - 1
-
 
                     Dim ctrl() As Control = Me.panel_result_diag.Controls.Find(isopleth_output(compteur_output), True)
 
@@ -1104,7 +1055,6 @@ Public Class frmEcotroph
                         'A voir pour éffacer carrément les tables 
                     End If
                 Next
-
 
             End If
             If (Me.same_mf.Checked And Me.All_group.Checked) Then
@@ -1131,9 +1081,7 @@ Public Class frmEcotroph
         Me.same_mf.Checked = True
         Me.Forag.Checked = True
 
-
         Me.b_input_check.Checked = False
-
 
     End Sub
 
@@ -1152,7 +1100,6 @@ Public Class frmEcotroph
 
     End Sub
 
-
     Private Sub List_fleet1_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles List_fleet1.SelectedIndexChanged
 
         Dim compteur_fin As Integer = Me.List_fleet1.SelectedItems.Count
@@ -1161,8 +1108,6 @@ Public Class frmEcotroph
         End If
 
     End Sub
-
-
 
     Private Sub mull_eff_EMSY_TextChanged(sender As System.Object, e As System.EventArgs)
 
@@ -1180,9 +1125,7 @@ Public Class frmEcotroph
                 Me.List_fleet1.Enabled = False
             Else
 
-
                 If (ETinputdata.NumFleet > 1 And Me.List_fleet1.Items.Count = 0) Then
-
 
                     For compteur = 0 To ETinputdata.NumFleet - 1
                         Me.List_fleet1.Items.Add(ETinputdata.FleetName(compteur))
@@ -1195,18 +1138,13 @@ Public Class frmEcotroph
             Me.List_fleet1.Enabled = False
         End If
 
-
     End Sub
 
     Private Sub Label19_Click(sender As System.Object, e As System.EventArgs)
 
     End Sub
 
-
-
     Private Sub Button7_Click(sender As System.Object, e As System.EventArgs) Handles Button7.Click
-
-
 
         Try
             Dim myservice As New cEcoBaseWDSL()
@@ -1217,9 +1155,7 @@ Public Class frmEcotroph
             Me.panel_webservi.Visible = True
             Me.panel_webservi.BringToFront()
 
-
             If Me.models_list.Items.Count = 0 Then
-
 
                 Try
 
@@ -1232,14 +1168,12 @@ Public Class frmEcotroph
                     m_logger.LogError(ex, "Button7_Click")
                 End Try
 
-
                 ReDim Me.num_model(myresult_xml.GetElementsByTagName("element").Count)
                 Dim compteur As Integer = 0
 
                 For Each node As XmlNode In myresult_xml.GetElementsByTagName("element")
 
                     If Not (IsNothing(node("model_name"))) Then
-
 
                         Me.models_list.Items.Add(node("model_name").InnerText)
                         Me.num_model(compteur) = node("model_number").InnerText
@@ -1262,18 +1196,14 @@ Public Class frmEcotroph
         Dim openFileDialog1 As New OpenFileDialog()
         Me.panel_webservi.Visible = False
 
-
         openFileDialog1.InitialDirectory = "c:\"
         openFileDialog1.Filter = My.Resources.FILEFILTER_XML
         openFileDialog1.FilterIndex = 2
         openFileDialog1.RestoreDirectory = True
 
-
-
         Dim url_eco As String
 
         url_eco = "https://ecobase.ecopath.org/php/extract_model.php?model=" & Me.num_model(Me.models_list.SelectedIndex)
-
 
         Try
             Dim myservice As New cEcoBaseWDSL()
@@ -1282,8 +1212,6 @@ Public Class frmEcotroph
 
             'Dim myresult As String
             'Dim myresult_xml As New XmlDocument()
-
-
 
             ' Good way to get the model from the webservice
 
@@ -1296,7 +1224,6 @@ Public Class frmEcotroph
             'et ans le second cas ce qui est renvoyé n'ets pas apprécié. Il faut modifier le web service pour qu'il soit plsu conforme
             'ce qui ne doit pas être grand chose
 
-
             'Dim Str As System.IO.Stream
             'Dim srRead As System.IO.StreamReader
 
@@ -1307,7 +1234,6 @@ Public Class frmEcotroph
             'Str = resp.GetResponseStream
             'srRead = New System.IO.StreamReader(Str)
             'myresult = srRead.ReadToEnd()
-
 
             'myresult_xml.LoadXml(myresult)
 
@@ -1327,11 +1253,7 @@ Public Class frmEcotroph
             Dim reader As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
 
 
-
-
             ETinputdata = CType(reader.Deserialize(New StringReader(myservice.getModel("input_data", Me.num_model(Me.models_list.SelectedIndex)))), ETinputtot)
-
-
 
             Dim DataGrid As DataGridView = Me.ETgridinput
             'List faut une procédure pour afficher cela
@@ -1393,16 +1315,13 @@ Public Class frmEcotroph
             Me.list_group_diag.Enabled = True
             Dim compteur As Integer
 
-
             If (Me.ETgridinput.RowCount > 1 And Me.list_group_diag.Items.Count = 0) Then
-
 
                 For compteur = 1 To Me.ETgridinput.RowCount - 2
                     If (DirectCast(Me.ETgridinput.Item(4, compteur).Value, Single) > 0) Then Me.list_group_diag.Items.Add(Me.ETgridinput.Item(0, compteur).Value)
 
                 Next
             End If
-
 
         End If
     End Sub
@@ -1422,12 +1341,7 @@ Public Class frmEcotroph
     Private Sub Button8_Click(sender As System.Object, e As System.EventArgs) Handles Button8.Click
         Me.panel_webservi.Visible = False
 
-
     End Sub
-
-
-
-
 
 
 
@@ -1442,7 +1356,6 @@ Public Class frmEcotroph
     Private Sub PictureBox5_Click(sender As System.Object, e As System.EventArgs) Handles PictureBox5.Click
         System.Diagnostics.Process.Start(Me.aide & "#diagnose")
     End Sub
-
 
     Private Sub result_pdf_DocumentCompleted(sender As System.Object, e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles result_pdf.DocumentCompleted
 

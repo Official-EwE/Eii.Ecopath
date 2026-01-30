@@ -15,8 +15,6 @@ Imports ScientificInterfaceShared.Utilities
 Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------
@@ -833,7 +831,6 @@ Namespace Controls
         ''' graph axis.</remarks>
         ''' -------------------------------------------------------------------
         Public Overridable Sub RescaleAndRedraw(Optional iPane As Integer = -1)
-
 
             'Me.Redraw()
             Me.m_zgc.BeginInvoke(New MethodInvoker(AddressOf Me.DoRescaleAndRedraw))

@@ -11,8 +11,6 @@ Imports EwECore.Plugins
 Imports EwECore.Plugins.Ecospace
 Imports EwEUtils.Utilities
 
-
-
 Public Class cComplexityDataset
     Implements ISpatialDataSetPlugin
     Implements IConfigurable

@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Definitions
 
-
-
 Namespace Commands
 
     ''' -----------------------------------------------------------------------

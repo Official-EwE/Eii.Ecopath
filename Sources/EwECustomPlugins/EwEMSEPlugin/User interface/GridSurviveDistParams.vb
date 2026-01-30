@@ -12,8 +12,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Properties
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.
@@ -145,7 +143,6 @@ Public Class gridSurviveDistParameters
         'Me.AutoSizeColumn(eSurviveColumnTypes.Alpha, 50)
         'Me.AutoSizeColumn(eSurviveColumnTypes.Beta, 50)
 
-
         'Me.AutoSizeColumn(eSurviveColumnTypes.Name, 150)
 
     End Sub
@@ -219,5 +216,4 @@ Public Class gridSurviveDistParameters
 #End Region ' Overrides
 
 End Class
-
 

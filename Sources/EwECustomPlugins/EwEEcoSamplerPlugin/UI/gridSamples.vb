@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 #Const ShowRatings = 0
 #Const ShowPerturbations = 0
 

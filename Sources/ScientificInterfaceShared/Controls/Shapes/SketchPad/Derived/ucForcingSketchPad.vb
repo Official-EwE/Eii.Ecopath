@@ -10,8 +10,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

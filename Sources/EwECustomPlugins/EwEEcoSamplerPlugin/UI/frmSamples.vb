@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ' ToDo: make record button image blink with a timer
 
 Public Class frmSamples

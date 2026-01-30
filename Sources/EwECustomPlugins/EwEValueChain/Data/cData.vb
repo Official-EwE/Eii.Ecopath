@@ -875,7 +875,6 @@ Public Class cData
 
         ' Check if not already exists
 
-
         ' Check for loop
         If unitTarget.IsLoop(unitSource) Then
             Me.SendMessage(My.Resources.ERROR_LINK_LOOP)
@@ -1300,7 +1299,6 @@ Public Class cData
                 Next
             Next
         End If
-
 
         Dim links As List(Of Link) = Me.m_lLinks _
         .OfType(Of cLink)() _

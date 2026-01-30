@@ -5,8 +5,6 @@
 Imports EwECore.ValueWrapper
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Properties
 
     ''' -----------------------------------------------------------------------

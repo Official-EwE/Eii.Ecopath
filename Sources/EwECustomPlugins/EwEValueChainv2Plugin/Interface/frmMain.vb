@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 
-
-
 ''' <summary>
 ''' The pages supported by the value chain.
 ''' </summary>

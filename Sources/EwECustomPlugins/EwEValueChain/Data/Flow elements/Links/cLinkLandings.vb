@@ -9,8 +9,6 @@ Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Species-dependent link.

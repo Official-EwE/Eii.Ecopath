@@ -7,8 +7,6 @@ Imports EwECore
 Imports EwECore.Common
 Imports ValueChain
 
-
-
 Public Class cLandingsLinkManager
 
     Private m_model As cValueChainController = Nothing
@@ -39,7 +37,6 @@ Public Class cLandingsLinkManager
         ' Iterate over all links and check:
         ' - Do the source and target exist? If not, flag the link for deletion (should not have orphans, but ok)
         ' - Does the source producer still catch the selected species? If no, flag the link for deletion
-
 
         Dim links As cLink() = Nothing
         Dim link As cLinkLandings = Nothing

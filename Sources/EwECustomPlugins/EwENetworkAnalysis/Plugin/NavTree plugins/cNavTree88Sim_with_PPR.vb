@@ -5,8 +5,6 @@
 Imports EwECore
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cNavTree88Sim_with_PPR
     Inherits cNavTree84Sim
 

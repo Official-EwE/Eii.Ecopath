@@ -9,8 +9,6 @@ Imports System.Text
 Imports EwEUtils.Utilities
 Imports OfficeOpenXml
 
-
-
 Public Class cGenericDataReader
 
 #Region " Config "
@@ -383,7 +381,6 @@ Public Class cGenericDataReader
 #End Region ' Internals
 
 #Region " Utilities "
-
 
     Public Shared Function Value(Of T As IConvertible)(val As Object, valDefault As T) As T
         If Convert.IsDBNull(val) Then Return valDefault

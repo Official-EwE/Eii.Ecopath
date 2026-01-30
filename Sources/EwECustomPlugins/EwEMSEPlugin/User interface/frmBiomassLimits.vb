@@ -210,7 +210,6 @@ Public Class frmBiomassLimits
     '    Dim iStart As Integer = 0
     '    Dim SumQuotaShare As Single = 0
 
-
     '    SumQuotaShare = m_quotashares.ReadRowDist(0).mShare
 
     '    For i = 2 To m_quotashares.CountDist

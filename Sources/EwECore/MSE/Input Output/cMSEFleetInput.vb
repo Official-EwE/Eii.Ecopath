@@ -157,7 +157,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property FleetCV(iTime As Integer) As Single
 
             Get
@@ -169,7 +168,6 @@ Namespace MSE
             End Set
 
         End Property
-
 
         Public Property CatchRefLower() As Single
 
@@ -194,7 +192,6 @@ Namespace MSE
             End Set
 
         End Property
-
 
         Public Property EffortRefLower() As Single
 
@@ -278,7 +275,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property LowerLPEffortBound() As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.MSELowerLPEffort))
@@ -287,7 +283,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSELowerLPEffort, value)
             End Set
         End Property
-
 
         Public Property UpperLPEffortBound() As Single
             Get
@@ -298,7 +293,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSEUpperLPEffort, value)
             End Set
         End Property
-
 
 #End Region
 
@@ -313,7 +307,6 @@ Namespace MSE
                 Me.SetStatus(eVarNameFlags.MSEQIncrease, value)
             End Set
         End Property
-
 
         Public Property CatchRefUpperStatus() As eStatusFlags
             Get

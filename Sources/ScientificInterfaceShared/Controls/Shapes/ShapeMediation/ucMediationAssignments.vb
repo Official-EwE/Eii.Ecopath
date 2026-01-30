@@ -291,7 +291,6 @@ Namespace Controls
 
         End Sub
 
-
         Public Sub LoadAsLine()
 
             Try
@@ -538,6 +537,4 @@ Namespace Controls
     End Class
 
 End Namespace
-
-
 

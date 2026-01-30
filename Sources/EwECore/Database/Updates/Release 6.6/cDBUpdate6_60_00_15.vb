@@ -4,8 +4,6 @@
 
 Imports EwECore.Database
 
-
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.60.0.15:</para>
@@ -42,8 +40,6 @@ Friend Class cDBUpdate6_60_00_15
         ' This has to succeed though
         Return db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN KMoveFit SINGLE")
 
-
     End Function
-
 
 End Class

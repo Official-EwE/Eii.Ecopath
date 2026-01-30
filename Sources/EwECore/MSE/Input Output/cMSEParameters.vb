@@ -160,7 +160,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property ForcastGain() As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.MSEForcastGain))
@@ -170,7 +169,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSEForcastGain, value)
             End Set
         End Property
-
 
         Public Property AssessPower() As Single
             Get
@@ -308,11 +306,9 @@ Namespace MSE
             End Set
         End Property
 
-
 #End Region
 
 #Region "Status Properties"
-
 
         Public Property RegulatoryMode() As eMSERegulationMode
             Get
@@ -322,8 +318,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSERegulatoryMode, value)
             End Set
         End Property
-
-
 
         Public Property EffortSource() As eMSEEffortSource
             Get
@@ -335,12 +329,10 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property StopRunStatus() As eStatusFlags
             Get
                 Return Me.GetStatus(eVarNameFlags.MSEUseEconomicPlugin)
             End Get
-
 
             Set(value As eStatusFlags)
                 Me.SetStatus(eVarNameFlags.MSEUseEconomicPlugin, value)
@@ -397,7 +389,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property MSEResultsStartYearStatus() As eStatusFlags
             Get
                 Return Me.GetStatus(eVarNameFlags.MSEResultsStartYear)
@@ -407,7 +398,6 @@ Namespace MSE
                 Me.SetStatus(eVarNameFlags.MSEResultsStartYear, value)
             End Set
         End Property
-
 
         Public Property MSEResultsEndYearStatus() As eStatusFlags
             Get

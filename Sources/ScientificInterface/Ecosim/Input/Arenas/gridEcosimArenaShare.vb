@@ -7,10 +7,7 @@ Option Explicit On
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecosim
-
 
     Public Class gridEcosimArenaShare
         Inherits cEwEGrid

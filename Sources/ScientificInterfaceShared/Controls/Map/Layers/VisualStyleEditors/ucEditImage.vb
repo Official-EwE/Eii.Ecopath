@@ -7,8 +7,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

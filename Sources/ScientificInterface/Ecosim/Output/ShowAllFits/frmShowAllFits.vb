@@ -4,12 +4,9 @@
 
 Option Explicit On
 
-
 Imports System.IO
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 Namespace Ecosim
 
@@ -965,6 +962,4 @@ Namespace Ecosim
     End Class
 
 End Namespace
-
-
 

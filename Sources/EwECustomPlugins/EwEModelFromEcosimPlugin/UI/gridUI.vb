@@ -6,8 +6,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid to configure 'Ecopath model from Ecosim' generation.

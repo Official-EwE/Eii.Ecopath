@@ -6,8 +6,6 @@ Imports System.Reflection
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid showing loaded EwE assembly details.

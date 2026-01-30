@@ -12,8 +12,6 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class frmBiomassEmitter
 
 #Region " Constructor "

@@ -4,8 +4,6 @@
 
 Imports EwECore.ValueWrapper
 
-
-
 Public Class cEcosimFleetInput
     Inherits cCoreInputOutputBase
 

@@ -11,8 +11,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Main interface to define the functional responses of groups to environmental drivers.
 ''' </summary>
@@ -118,7 +116,6 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Me.LoadDrivers()
 
     End Sub
-
 
     ''' <summary>
     ''' Add the selected groups to the currently selected map
@@ -280,7 +277,6 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 
         Next
 
-
         Return lstGroups.ToArray()
     End Function
 
@@ -312,7 +308,6 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
                             Dim grp As cEcospaceGroupInput = Me.m_uic.Core.EcospaceGroupInputs(igrp)
                             If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Or
                                 Me.m_managertype = eCoreComponentType.EcospaceMortalityResponseInteractionManager Then
-
 
                                 Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.ToString(grp))
                                 ndgrp.Tag = grp
@@ -364,7 +359,6 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Return Nothing
 
     End Function
-
 
 #End Region ' Private Methods
 

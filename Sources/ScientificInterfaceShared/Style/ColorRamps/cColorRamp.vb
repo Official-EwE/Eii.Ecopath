@@ -5,9 +5,6 @@
 Imports EwEUtils.UserInterface
 
 
-
-
-
 Namespace Style
 
     ''' -------------------------------------------------------------------
@@ -95,7 +92,6 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public MustOverride Function GetColorInvariant(dValue As Double, Optional dValueMax As Double = 1.0) As VisualColor
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Recalculates a colour lookup value by applying ColorOffsets.
@@ -130,7 +126,6 @@ Namespace Style
                 Return 0
             End Try
         End Function
-
 
     End Class
 

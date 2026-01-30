@@ -83,13 +83,11 @@ Public MustInherit Class cMPAOptBaseClass
 
     Protected AreaBoundary As Single
 
-
 #End Region
 
 #End Region
 
 #Region "Construction and Initialization"
-
 
     Sub New()
 
@@ -120,7 +118,6 @@ Public MustInherit Class cMPAOptBaseClass
 
     End Function
 
-
     Protected Sub InitIsMPA()
         Dim nRows As Integer = Me.m_SpaceData.InRow
         Dim nCols As Integer = Me.m_SpaceData.InCol
@@ -144,7 +141,6 @@ Public MustInherit Class cMPAOptBaseClass
         Me.m_StateCallback = OnRunStateChanged
         Me.m_SendMessageDelegate = OnSendMessage
     End Sub
-
 
 #End Region
 
@@ -182,7 +178,6 @@ Public MustInherit Class cMPAOptBaseClass
         End Get
     End Property
 
-
     Public Overridable ReadOnly Property isRunning() As Boolean Implements IMPASearchModel.isRunning
         Get
             Return Me.m_bRunning
@@ -212,7 +207,6 @@ Public MustInherit Class cMPAOptBaseClass
             Next ic
         Next ir
     End Sub
-
 
     Public Overridable Function setAllCellsToMPA(MAPIndex As Integer) As Boolean Implements IMPASearchModel.setAllCellsToMPA
 
@@ -254,7 +248,6 @@ Public MustInherit Class cMPAOptBaseClass
         End If
     End Function
 
-
     Public Overridable ReadOnly Property Results() As System.Collections.Generic.List(Of cObjectiveResult) Implements IMPASearchModel.Results
         Get
             Return Me.m_lstObjectiveResults
@@ -266,7 +259,6 @@ Public MustInherit Class cMPAOptBaseClass
             Return Me.m_nIters
         End Get
     End Property
-
 
     ''' <inheritdocs cref="IMPASearchModel.ConfigureAutosave"/>
     Public Overridable Sub ConfigureAutosave(bAutosave As Boolean, strOutputPath As String, strHeader As String) _
@@ -280,7 +272,6 @@ Public MustInherit Class cMPAOptBaseClass
 
 #Region "Running the model"
 
-
     Friend Overridable Function EvaluateRun() As Single
         Dim curSum As Double 'results of the search run
 
@@ -291,7 +282,6 @@ Public MustInherit Class cMPAOptBaseClass
                      Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_search.ManValue / Me.ManValueBase +
                      Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_search.EcoValue / Me.EcoValueBase +
                      Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.m_search.DiversityIndex / Me.DiversityBase
-
 
             'Calculate boundary length/area ratio
             Me.AreaBoundary = Me.CalculateAreaOverBondaryLength()
@@ -372,7 +362,6 @@ Public MustInherit Class cMPAOptBaseClass
         'bitches...
         'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-
         'EwE5 see  KeepOrReloadCellValues(Biomass)
         If Me.nInterationCompleted = 0 And iYear = Me.m_data.EcoSpaceStartYear Then
             'First model interation and the year to start subsequent runs on 
@@ -389,7 +378,6 @@ Public MustInherit Class cMPAOptBaseClass
         End If
 
     End Sub
-
 
     Protected Overridable Sub fireOnIteration()
 
@@ -411,7 +399,6 @@ Public MustInherit Class cMPAOptBaseClass
                                     ", Mandated Value = " & search.ManValue / Me.ManValueBase &
                                     ", Eco Value = " & search.EcoValue / Me.EcoValueBase)
     End Sub
-
 
     Protected Sub StoreEcospaceState(biomass() As Single)
         Dim i As Integer, j As Integer, ip As Integer
@@ -435,7 +422,6 @@ Public MustInherit Class cMPAOptBaseClass
         Next
 
     End Sub
-
 
     Protected Sub RestoreEcospaceState(biomass() As Single)
         Dim i As Integer, j As Integer, ip As Integer
@@ -489,7 +475,6 @@ Public MustInherit Class cMPAOptBaseClass
         Return False
 
     End Function
-
 
     Protected Function CalculateAreaOverBondaryLength() As Single
         Dim ir As Integer
@@ -695,7 +680,6 @@ Public MustInherit Class cMPAOptBaseClass
         ' ReDim IsMPA(m_SpaceData.InRow + 1, m_SpaceData.InCol + 1)
 
     End Sub
-
 
 #End Region
 

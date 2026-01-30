@@ -5,8 +5,6 @@
 Imports Debug = System.Diagnostics.Debug
 
 
-
-
 Public Class cLogisticFourParamsShapeFunction
     Inherits cShapeFunction
 

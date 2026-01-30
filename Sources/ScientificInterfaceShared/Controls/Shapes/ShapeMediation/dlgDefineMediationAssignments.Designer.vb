@@ -4,7 +4,6 @@
 
 Namespace Controls
 
-
     Partial Class dlgDefineMediationAssignments
         Inherits System.Windows.Forms.Form
 

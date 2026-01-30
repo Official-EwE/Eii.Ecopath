@@ -5,8 +5,6 @@
 Option Explicit On
 
 
-
-
 Namespace Ecosim
 
     Public Interface IBlockSelector

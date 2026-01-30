@@ -14,7 +14,6 @@ Public Class cFishingRateShape
 
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cFishingRateShape)()
 
-
     Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager, DBID As Integer, strFleetName As String)
 
         MyBase.New(EcoSimData, Manager, DBID, eDataTypes.FishingEffort)
@@ -35,7 +34,6 @@ Public Class cFishingRateShape
         Me.m_bInInit = False
 
     End Sub
-
 
     ''' <summary>
     ''' Initialize the propeties from the underlying EcoSim data structures at the existing array index (iEcoSimIndex)
@@ -157,7 +155,6 @@ Public Class cFishingRateShape
 
     End Function
 
-
     ''' <summary>
     ''' Update the underlying EcoSim data structures
     ''' </summary>
@@ -212,6 +209,5 @@ Public Class cFishingRateShape
         Return True
 
     End Function
-
 
 End Class

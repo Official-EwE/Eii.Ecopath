@@ -5,10 +5,7 @@
 Imports EwEUtils.Utilities
 Imports SourceGrid2.DataModels
 
-
-
 Namespace Controls.EwEGrid
-
 
     Public Class EwEComboBoxCellEditor
         Inherits EditorComboBox

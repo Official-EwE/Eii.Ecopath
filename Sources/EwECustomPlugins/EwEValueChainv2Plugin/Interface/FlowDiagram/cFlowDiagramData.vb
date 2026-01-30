@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ValueChain
 
-
-
 Public Class cFlowDiagramData
     Implements IFlowDiagramData
     Implements IUIElement

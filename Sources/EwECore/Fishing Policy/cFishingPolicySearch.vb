@@ -4,11 +4,9 @@
 
 'Option Explicit On
 
-
 Imports EwECore.Ecosim
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
 
 Namespace FishingPolicy
 
@@ -44,7 +42,6 @@ Namespace FishingPolicy
 
         'ToDo_jb cFishingPolicySearch What is the message from EwE5 in UseCostPenalty() should this change the InitOption if it fails the test
 
-
 #Region "Public variables"
 
         Public SearchCompletedCallBack As SearchCompletedDelegate
@@ -79,7 +76,6 @@ Namespace FishingPolicy
 
 #Region "Private modeling variables"
 
-
         Private Resline As Integer
         Private CritValue(cSearchDatastructures.N_CRIT_RESULTS) As Single
         'Dim X() As Double
@@ -100,7 +96,6 @@ Namespace FishingPolicy
         'used by SearchForBaseProfitability
         Dim PropToPlaintiff As Single 'this never get set to anything other than zero
 
-
 #End Region
 
 #Region "Private Core variables"
@@ -110,7 +105,6 @@ Namespace FishingPolicy
         Private m_searchData As cSearchDatastructures
         Private m_pluginManager As cPluginManager
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cFishingPolicySearch)()
-
 
 #End Region
 
@@ -171,7 +165,6 @@ Namespace FishingPolicy
 
         End Sub
 
-
         Private Sub runSearch()
             'Hi Villy if econ is 'net economic value' it is totval calculated in cSearchDatastructures.EcosimSummarizeIndicators()
             '[14:46:10] Joe Buszowski says: if econ is Ecosystem structure then it is ecovalue calculated in cSearchDatastructures.calcYearlySummaryValues()
@@ -184,7 +177,6 @@ Namespace FishingPolicy
 
                 Me.SearchFailed = False
                 Me.StopEstimation = False
-
 
                 Me.m_searchData = Me.m_core.m_SearchData
                 Me.m_searchData.SearchMode = eSearchModes.FishingPolicy 'make sure the search is turned on this will also set some default values based on the flag
@@ -341,7 +333,6 @@ Namespace FishingPolicy
 
 #Region "Message handling"
 
-
         Private Sub AddMessage(strMessage As String, Optional msgType As eMessageType = eMessageType.ErrorEncountered, Optional msgImportance As eMessageImportance = eMessageImportance.Critical)
 
             Try
@@ -354,7 +345,6 @@ Namespace FishingPolicy
             End Try
 
         End Sub
-
 
         Private Sub addMessage(ByRef msg As cMessage)
 
@@ -415,7 +405,6 @@ Namespace FishingPolicy
                 'Next
                 'System.Console.WriteLine()
 #End If
-
 
             Catch ex As Exception
                 m_logger.LogError(ex, "{0}.printstats() Error printing stats.", Me.ToString)
@@ -487,11 +476,9 @@ Namespace FishingPolicy
             'If StopEstimation = True Then SearchFailed = True : frmOptF.MousePointer = vbDefault : DoEvents()
         End Sub
 
-
 #End Region
 
 #Region "Private modeling code"
-
 
         Private Sub checkUseCostPenalty(nSearchBlocks As Integer)
             '  Dim TempTotVal As Double, TempEmploy As Double, TempManVal As Double, TempEcoVal As Double
@@ -517,7 +504,6 @@ Namespace FishingPolicy
             End If
 
         End Sub
-
 
         Sub Minimize(n As Integer, X() As Double, SearchMethod As eSearchOptionTypes)
             'Sub Minimize(n As Integer, X() As Double, SearchMethod As Integer, ColorN() As Long, CritVa() As Single)
@@ -555,8 +541,6 @@ Namespace FishingPolicy
             '             this main program.
             '
             '***********************************************************************
-
-
 
             'dimension variables to be passed between ReadData and Func here
             'replace example statements with your own variables
@@ -1057,7 +1041,6 @@ pte:        ' continue
             ' go to (18,54),link
 110:        '  continue
 
-
             For i = 1 To n
                 Z = hh * Xm(i)
                 W(i) = W(i) + Z
@@ -1084,7 +1067,6 @@ Ptc:        If Me.PrintOn = True Then
             End If
 
 endline:    ' '
-
 
         End Sub
 
@@ -1188,7 +1170,6 @@ endline:    ' '
 
         End Function
 
-
         Sub DFPmin(P() As Double, n As Integer, FTOL As Double, iter As Integer, ift As Integer, FRET As Double)
             Dim Itmax As Integer, eps As Double, Fp As Double, i As Integer, j As Integer
             Dim its As Integer, Fac As Double, Fae As Double, Fad As Double, Dum As Double
@@ -1268,8 +1249,6 @@ endline:    ' '
         End Sub
 
 
-
-
         Sub DFUNC(X() As Double, ByRef DF() As Double, n As Integer)
             Dim Dstep As Double, Fbase As Double, i As Integer
             'DF(1) = 2 * X(1) - 0.9 * X(2)
@@ -1283,13 +1262,11 @@ endline:    ' '
             Next
         End Sub
 
-
         Function FUNC2(X() As Double, n As Integer) As Double
             'FUNC2 = X(1) ^ 2 + X(2) ^ 2 - 0.9 * X(1) * X(2)
             FUNC2 = Me.FUNC(X, n)
             Me.ifn = Me.ifn + 1
         End Function
-
 
         Sub LINMIN(ByRef P() As Double, ByRef xi() As Double, n As Integer, ByRef FRET As Double)
             Dim Tol As Double, j As Integer, Ax As Double, XX As Double, Fa As Double
@@ -1310,7 +1287,6 @@ endline:    ' '
                 P(j) = P(j) + xi(j)
             Next j
         End Sub
-
 
         Sub MNBRAK(ByRef Ax As Double, ByRef Bx As Double, ByRef cx As Double, ByRef Fa As Double, ByRef Fb As Double, ByRef FC As Double, ByRef Dum As Double)
             Dim Q As Double, R As Double, Gold As Double, Glimit As Double, Tiny As Double
@@ -1476,7 +1452,6 @@ endline:    ' '
             BRENT = Fx
         End Function
 
-
         Private Function FUNC(X As Double) As Double
             FUNC = Me.F1DIM(X)
         End Function
@@ -1489,7 +1464,6 @@ endline:    ' '
             F1DIM = Me.FUNC2(XT, Me.ncom)
             Erase XT
         End Function
-
 
         Sub SearchForBaseProfitability(X() As Double, n As Integer)
             ' Dim totval As Double, Employ As Double, manvalue As Double, ecovalue As Double
@@ -1745,7 +1719,6 @@ Next
 
         End Function
 
-
 #End Region
 
     End Class
@@ -1798,7 +1771,6 @@ Next
 
         End Sub
 
-
         Public Property nBlocks() As Integer
             Get
                 Return Me.m_nblocks
@@ -1815,7 +1787,6 @@ Next
             End Get
         End Property
 
-
         Friend Sub Clear()
             Me.Totals = 0
             Me.nCalls = 0
@@ -1827,8 +1798,6 @@ Next
             Array.Clear(Me.CompensationMatrix, 0, Me.CompensationMatrix.Length)
 
         End Sub
-
-
 
     End Class
 

@@ -5,8 +5,6 @@
 Imports EwECore.Database
 Imports EwEUtils.Utilities
 
-
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.50.0.27:</para>
@@ -331,7 +329,6 @@ Friend Class cDBUpdate6_50_00_27
 
     End Sub
 
-
     Private Sub ReadMediationParameters(MediationDataRow As DataRow, ByRef Mean As Single, ByRef SDLeft As Single, ByRef SDRight As Single, ByRef DataWidth As Single,
                                          ByRef Xmin As Single, ByRef XMax As Single)
 
@@ -381,6 +378,5 @@ Friend Class cDBUpdate6_50_00_27
         Return False
 
     End Function
-
 
 End Class

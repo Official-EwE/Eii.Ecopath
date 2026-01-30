@@ -7,8 +7,6 @@ Imports System.Diagnostics
 Imports System.Globalization
 Imports System.Net
 
-
-
 Namespace Utilities
 
     ''' -----------------------------------------------------------------------
@@ -245,7 +243,6 @@ Namespace Utilities
             dtBlackFriday.AddDays(iDaysToNextFriday)
             Return dtBlackFriday
         End Function
-
 
         Public Shared Function GetNextEvent() As eNextEvent
 

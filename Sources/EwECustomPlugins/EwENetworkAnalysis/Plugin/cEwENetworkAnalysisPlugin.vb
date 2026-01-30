@@ -536,7 +536,6 @@ Public Class cEwENetworkAnalysisPlugin
         End Set
     End Property
 
-
 #End Region ' AutoRun
 
 #Region " Internal helpers "

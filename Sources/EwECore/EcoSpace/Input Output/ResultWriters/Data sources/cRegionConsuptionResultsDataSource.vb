@@ -5,8 +5,6 @@
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 
-
-
 ''' <summary>
 ''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for averaged consumption by region.
 ''' </summary>

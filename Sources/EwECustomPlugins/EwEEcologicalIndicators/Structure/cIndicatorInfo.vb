@@ -7,8 +7,6 @@ Imports EwECore
 Imports EwECore.Common
 Imports EwECore.Style
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Class providing name, description and access to computed values for a single indicator.

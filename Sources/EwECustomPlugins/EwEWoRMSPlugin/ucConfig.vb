@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Interface for configuring a WoRMS web service connection.

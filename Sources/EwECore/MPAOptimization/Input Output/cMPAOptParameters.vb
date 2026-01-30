@@ -109,7 +109,6 @@ Public Class cMPAOptParameters
 
     End Property
 
-
     Public Property StepSize() As Integer
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.MPAOptStepSize))
@@ -148,7 +147,6 @@ Public Class cMPAOptParameters
         End Set
 
     End Property
-
 
     Public Property MinArea() As Integer
         Get

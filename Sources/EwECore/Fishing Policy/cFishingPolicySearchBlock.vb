@@ -32,7 +32,6 @@ Public Class cFishingPolicySearchBlock
 
     End Sub
 
-
     Public Property SearchBlocks(iTimeIndex As Integer) As Integer
 
         Get
@@ -66,6 +65,5 @@ Public Class cFishingPolicySearchBlock
         End Set
 
     End Property
-
 
 End Class

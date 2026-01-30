@@ -7,8 +7,6 @@ Imports System.Windows.Forms
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Diagram element to wrap and reflect all existing links between two units in

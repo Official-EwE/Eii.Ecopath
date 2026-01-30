@@ -8,8 +8,6 @@ Imports EwECore
 Imports EwECore.Common
 Imports EwEUtils.Utilities
 
-
-
 ''' <summary>
 ''' CSV writer for Value Chain results.
 ''' </summary>

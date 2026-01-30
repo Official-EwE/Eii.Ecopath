@@ -6,8 +6,6 @@ Imports EwECore
 Imports EwECore.Common
 Imports EwEUtils.SystemUtilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base class for computing biodiversity indicators.

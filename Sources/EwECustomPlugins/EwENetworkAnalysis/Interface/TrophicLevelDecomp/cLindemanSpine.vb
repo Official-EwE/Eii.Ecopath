@@ -12,8 +12,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' 

@@ -6,8 +6,6 @@ Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecospace
 
     Public Class frmSpatialTimeSeries
@@ -92,7 +90,6 @@ Namespace Ecospace
             Catch ex As Exception
                 Debug.Assert(False)
             End Try
-
 
             ' Fill filter combo
             Me.m_tscmbLayerVariable.Items.Add(New cSpatialDataAdapterFilterItem(Nothing))

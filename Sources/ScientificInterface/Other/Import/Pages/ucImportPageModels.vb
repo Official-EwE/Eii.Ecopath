@@ -7,8 +7,6 @@ Imports EwECore.DataSources
 Imports ScientificInterfaceShared.Controls.Wizard
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Import
 
     ''' =======================================================================

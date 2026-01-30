@@ -7,7 +7,6 @@ Public Enum eMPAOptimizationModels
     RandomSearch
 End Enum
 
-
 Public Class cMPAOptDataStructures
 
     Const MIN_RUN_LENGTH As Integer = 3
@@ -105,8 +104,6 @@ Public Class cMPAOptDataStructures
     End Property
 
 End Class
-
-
 
 ''' <summary>
 ''' MPA cell selected during a trial

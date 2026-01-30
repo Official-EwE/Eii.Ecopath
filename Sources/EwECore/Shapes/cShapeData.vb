@@ -133,7 +133,6 @@ Public MustInherit Class cShapeData
         'm_Ymax = sValue
     End Sub
 
-
     Private Sub setDefaultEditBlocks()
         Me.m_x1 = 1
         Me.m_x2 = Me.m_nPoints
@@ -350,7 +349,6 @@ Public MustInherit Class cShapeData
 #End Region ' Friend methods
 
 #Region " ICoreInterface implementation "
-
 
     Public Property DBID() As Integer _
         Implements ICoreInterface.DBID

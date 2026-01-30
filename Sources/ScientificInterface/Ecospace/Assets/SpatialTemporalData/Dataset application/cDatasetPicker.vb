@@ -7,8 +7,6 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Arguments for a <see cref="cDatasetPicker.OnPicked">dataset selection event</see>.

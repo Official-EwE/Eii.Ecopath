@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Controls.EwEGrid
 
-
-
 Namespace Controls
 
 #Disable Warning CA1063 ' Implement IDisposable Correctly
@@ -353,7 +351,6 @@ Namespace Controls
 
             Private m_cb As DataGridViewCheckBoxCell = Nothing
 
-
             ''' -------------------------------------------------------------------
             ''' <summary>
             ''' Constructor
@@ -446,7 +443,6 @@ Namespace Controls
                     Me.m_node.Checked = (value = CheckState.Checked)
                 End Set
             End Property
-
 
 #Region " Event handling "
 

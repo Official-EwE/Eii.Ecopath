@@ -8,8 +8,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style
 
 
-
-
 Namespace Controls
 
     ''' ---------------------------------------------------------------------------
@@ -732,7 +730,6 @@ DefaultValue(True)>
             Dim iGroupStart As Integer = 1
             Dim iGroupEnd As Integer = 1
             Dim bSelected As Boolean = (Me.SelectedIndex > -1)
-
 
             If (Not Me.IsInitialized()) Then Return
 

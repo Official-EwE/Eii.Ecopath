@@ -4,7 +4,6 @@
 
 Namespace Common
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Template for linear programming engines.
@@ -103,7 +102,6 @@ Namespace Common
         ''' <returns>The computed optimized value for the row or variable.</returns>
         ''' -------------------------------------------------------------------
         Function GetValue(iItem As Integer) As Double
-
 
         Function GetDualValue(iItem As Integer) As Double
 

@@ -6,8 +6,6 @@ Imports System.ComponentModel
 Imports System.Reflection
 Imports EwEUtils.Utilities
 
-
-
 Namespace Controls.EwEGrid
 
     ''' ===========================================================================

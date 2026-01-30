@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Panel to interact with a single unit in a flow.
@@ -189,7 +187,6 @@ Public Class plUnitControl
 #End If
         End If
 
-
         ' Clear background
         Using br As New SolidBrush(clrBackground)
             e.Graphics.FillRectangle(br, rc)
@@ -229,7 +226,6 @@ Public Class plUnitControl
                 fmt.Alignment = If(cSystemUtils.IsRightToLeft, StringAlignment.Far, StringAlignment.Near)
                 fmt.LineAlignment = StringAlignment.Near
             End If
-
 
             If My.Settings.ShowAltNames Then strName = Me.Unit.NameLocal
             If String.IsNullOrWhiteSpace(strName) Then strName = Me.Unit.Name

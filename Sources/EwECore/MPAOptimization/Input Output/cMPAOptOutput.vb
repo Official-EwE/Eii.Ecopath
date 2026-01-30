@@ -63,10 +63,7 @@ Public Class cMPAOptOutput
         val = New cValue(core, New Single, eVarNameFlags.MPAOptAreaBoundary, eStatusFlags.NotEditable, eValueTypes.Sng)
         Me.m_values.Add(val.varName, val)
 
-
-
     End Sub
-
 
     Friend Sub Init(ByRef mpaData As cMPAOptDataStructures, SpaceData As cEcospaceDataStructures)
 
@@ -175,7 +172,6 @@ Public Class cMPAOptOutput
 
     End Property
 
-
     Public Property EconomicValue() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.MPAOptEconomicValue))
@@ -253,7 +249,6 @@ Public Class cMPAOptOutput
         End Set
 
     End Property
-
 
     Public Property AreaBoundaryValue() As Single
         Get

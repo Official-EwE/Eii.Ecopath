@@ -49,7 +49,6 @@ Public Class cStanzaDatastructures
     ''' <remarks>Populated in <see cref="cEcoSpace.InitPackets"> InitPackets</see></remarks>
     Public Nnursery() As Integer
 
-
     Public Zcell(,,) As Single   'mortality rate by cell and species
     Public MaxAgeSpecies() As Integer
     Public Npackets As Integer  'total # of packets per age
@@ -118,7 +117,6 @@ Public Class cStanzaDatastructures
     Public WmatWinf() As Single ' weight at maturity/ weight at infinity (max weight) from EwE5 interface
     Public EggsStanza() As Single
 
-
     ''' <summary>Boolean flag set in an interface.</summary>
     ''' <remarks>Used by SplitUpdate(b)</remarks>
     Public FixedFecundity() As Boolean
@@ -144,11 +142,9 @@ Public Class cStanzaDatastructures
     ''' </remarks>
     Public SpeciesCode(,) As Integer
 
-
     Public isForcedIBMRecruits() As Boolean
     'Public IBMForcedNPackets(,) As Single
     Public IBMForcedCells()(,) As Single
-
 
 #Region " Private data "
 
@@ -200,7 +196,6 @@ Public Class cStanzaDatastructures
         ReDim Me.EggAtSpawn(Me.Nsplit)
 
         ReDim Me.isForcedIBMRecruits(Me.Nsplit)
-
 
         For i As Integer = 0 To Me.Nsplit : For j As Integer = 0 To Me.MaxStanza : Me.SpawnProp(i, j) = 1.0 : Next : Next
 
@@ -316,7 +311,6 @@ Public Class cStanzaDatastructures
             d.Stanza_CB = Me.Stanza_CB.Clone
             d.EggsStanza = Me.EggsStanza.Clone
 
-
             d.FixedFecundity = Me.FixedFecundity.Clone
             d.BaseEggsStanza = Me.BaseEggsStanza.Clone
             d.RecPowerSplit = Me.RecPowerSplit.Clone
@@ -369,5 +363,4 @@ Public Class cStanzaDatastructures
     End Sub
 
 End Class
-
 

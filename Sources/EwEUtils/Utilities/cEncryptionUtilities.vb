@@ -5,8 +5,6 @@
 Imports System.Security.Cryptography
 Imports System.Text
 
-
-
 Namespace Utilities
 
     ''' -----------------------------------------------------------------------

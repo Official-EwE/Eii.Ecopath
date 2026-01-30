@@ -8,8 +8,6 @@ Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 
-
-
 Public Class ucDefaults
 
 #Region " Helper class "

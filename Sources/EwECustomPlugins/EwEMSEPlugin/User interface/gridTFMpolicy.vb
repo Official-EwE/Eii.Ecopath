@@ -11,8 +11,6 @@ Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.

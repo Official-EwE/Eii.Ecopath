@@ -15,10 +15,7 @@ Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Controls
-
 
     ' ToDo: base on styleguide
 

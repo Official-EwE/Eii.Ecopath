@@ -18,7 +18,6 @@ Imports Debug = System.Diagnostics.Debug
 
 '
 
-
 #Disable Warning CA1063 ' Implement IDisposable Correctly
 ''' ===========================================================================
 ''' <summary>
@@ -807,7 +806,6 @@ Public Class cEIIXMLDataSource
 
         ' Allocate space
         ecopathDS.RedimPedigree()
-
 
         Try
             For Each drow As DataRow In dtPedigree.Rows
@@ -3553,7 +3551,6 @@ Public Class cEIIXMLDataSource
     End Function
 
 #Region " Forcing Shapes "
-
 
     ''' -------------------------------------------------------------------
     ''' <summary>

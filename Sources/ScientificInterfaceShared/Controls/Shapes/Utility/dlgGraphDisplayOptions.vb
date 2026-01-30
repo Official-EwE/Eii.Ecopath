@@ -4,10 +4,7 @@
 
 Option Explicit On
 
-
 Imports ScientificInterfaceShared.Definitions
-
-
 
 Namespace Controls
 

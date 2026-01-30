@@ -9,7 +9,6 @@ Imports EwECore
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-
 '
 Namespace HCR_GroupNS
 
@@ -209,8 +208,6 @@ Namespace HCR_GroupNS
                 End If
 
             End If
-
-
 
         End Function
 

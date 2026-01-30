@@ -80,7 +80,6 @@ Public Class cEcosimGroupInput
 
 #Region "Constructor"
 
-
     Sub New(core As cCore, DBID As Integer)
         MyBase.New(core)
 

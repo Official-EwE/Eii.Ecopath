@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Style.cStyleGuide
 
-
-
 Public Class cTransectVectorRenderer
     Inherits cVectorLayerRenderer
 

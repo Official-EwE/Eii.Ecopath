@@ -14,8 +14,6 @@ Imports ValueChain
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 
-
-
 Public Class gridEcopathResult
     Inherits cEwEGrid
     Implements IResultView

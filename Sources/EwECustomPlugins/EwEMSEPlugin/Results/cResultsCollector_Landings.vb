@@ -7,7 +7,6 @@ Imports EwECore
 Public Class cResultsCollector_Landings
     Inherits cResultsCollector_Catch
 
-
     Public Overrides ReadOnly Property DataName As String
         Get
             Dim fmt As New EwECore.Style.cCurrencyUnitFormatter("")

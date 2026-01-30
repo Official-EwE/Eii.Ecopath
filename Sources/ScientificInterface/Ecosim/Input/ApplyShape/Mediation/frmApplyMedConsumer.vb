@@ -19,7 +19,6 @@ Namespace Ecosim
             Me.InitializeComponent()
         End Sub
 
-
         Protected Overrides ReadOnly Property Grid() As gridApplyShapeBase
             Get
                 Return Me.m_grid

@@ -11,8 +11,6 @@ Imports System.Windows.Forms
 Imports System.Xml
 Imports EwEUtils.SystemUtilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Custom <see cref="SettingsProvider"/> to affect a few of the default

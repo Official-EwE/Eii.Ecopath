@@ -11,8 +11,6 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Extensions
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' EcoWriter plug-in user interface.

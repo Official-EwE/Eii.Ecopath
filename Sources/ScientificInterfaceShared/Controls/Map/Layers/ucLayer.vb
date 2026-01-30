@@ -13,8 +13,6 @@ Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.Map
 
     ''' <summary>

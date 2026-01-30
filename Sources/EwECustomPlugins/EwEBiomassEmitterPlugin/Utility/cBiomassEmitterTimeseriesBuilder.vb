@@ -7,5 +7,4 @@
 ''' </summary>
 Public Class cBiomassEmitterTimeseriesBuilder
 
-
 End Class

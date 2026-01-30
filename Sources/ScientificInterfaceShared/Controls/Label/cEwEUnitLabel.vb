@@ -5,8 +5,6 @@
 Imports EwECore.Style
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
 
     Public Class cEwEUnitLabel

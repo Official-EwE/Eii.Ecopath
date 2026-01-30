@@ -11,8 +11,6 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' <summary>
 ''' Grid class that shows how taxonomy will be merged.
 ''' </summary>

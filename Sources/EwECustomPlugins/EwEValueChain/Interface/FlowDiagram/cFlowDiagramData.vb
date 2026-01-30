@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
-
-
 Public Class cFlowDiagramData
     Implements IFlowDiagramData
     Implements IUIElement

@@ -6,8 +6,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SourceGrid2.DataModels
 
-
-
 Namespace UI
 
     ''' -----------------------------------------------------------------------

@@ -5,8 +5,6 @@
 Imports System.Reflection
 Imports EwEUtils.Utilities
 
-
-
 ''' <summary>
 ''' All web links
 ''' </summary>
@@ -29,7 +27,6 @@ Public Class cWebLinks
     Private Const g_Access2010 As String = "https://www.microsoft.com/en-us/download/details.aspx?id=13255"
     Private Const g_TextBook As String = "https://pressbooks.bccampus.ca/ewemodel"
     Private Const g_UserGuide As String = "https://pressbooks.bccampus.ca/eweguide"
-
 
     Private m_core As cCore = Nothing
 

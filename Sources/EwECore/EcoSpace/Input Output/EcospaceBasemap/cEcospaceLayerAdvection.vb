@@ -4,8 +4,6 @@
 
 Imports EwEUtils.Utilities
 
-
-
 ''' <summary>
 ''' Layer providing access to Ecospace advection data.
 ''' </summary>

@@ -106,7 +106,6 @@ Namespace Ecospace
             End Try
         End Sub
 
-
 #End Region ' Events
 
 #Region " Internals "

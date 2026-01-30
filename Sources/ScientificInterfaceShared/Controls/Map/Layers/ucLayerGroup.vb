@@ -7,8 +7,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Controls.Map
 
     ''' -----------------------------------------------------------------------
@@ -82,7 +80,6 @@ Namespace Controls.Map
 
             Me.UpdateControls()
             Me.UpdateSize()
-
 
         End Sub
 

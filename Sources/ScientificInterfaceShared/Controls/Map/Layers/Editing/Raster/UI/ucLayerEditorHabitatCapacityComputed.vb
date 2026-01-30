@@ -85,7 +85,6 @@ Namespace Controls.Map.Layers
 
         Private Sub OnSetDefaultAllClick(sender As System.Object, e As System.EventArgs)
 
-
             Dim ngrps As Integer = Me.UIContext.Core.nGroups
 
             Try

@@ -107,7 +107,6 @@ Public Class cEcosimOutput
         End Get
     End Property
 
-
     Public Overrides Function GetVariable(VarName As eVarNameFlags,
                                           Optional iIndex As Integer = -9999,
                                           Optional iIndex2 As Integer = -9999,

@@ -6,8 +6,6 @@ Imports EwECore.MSE
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecosim
 
     ''' =======================================================================
@@ -189,7 +187,6 @@ Namespace Ecosim
                     maxXaxisValue = CSng(1.2 / Me.Group.RHalfB0Ratio)  '1.2 is just to give some extra space on the x axis
                 End If
 
-
                 'the max recruitment = RecEcop*(Ratio+1)
                 Dim maxYaxisValue As Single = EcopathRecruitment * (Me.Group.RHalfB0Ratio + 1)
 
@@ -208,7 +205,6 @@ Namespace Ecosim
                     data.Biomass(i) = BiomassStep
                     'Rec=(Rmax*C2)/(Ratio*Be+C2)
                 Next
-
 
                 Return data
             End If

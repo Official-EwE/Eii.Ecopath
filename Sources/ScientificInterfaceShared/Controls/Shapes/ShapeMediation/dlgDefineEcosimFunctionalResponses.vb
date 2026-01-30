@@ -11,8 +11,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Main interface to define the functional responses of groups to environmental drivers.
 ''' </summary>

@@ -6,8 +6,6 @@ Imports System.Timers
 Imports EwECore
 Imports ScientificInterfaceShared
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' The best class name ever.

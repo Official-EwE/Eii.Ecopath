@@ -56,7 +56,6 @@ Public Class cIBMSolver
     Private m_rand As Random
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cIBMSolver)()
 
-
     Public Sub Init()
 
     End Sub
@@ -154,7 +153,6 @@ Public Class cIBMSolver
 
     End Sub
 
-
 #End Region
 
     Sub MovePackets(ip As Integer)
@@ -250,7 +248,6 @@ Public Class cIBMSolver
                         End If
                     End If
 
-
                     For imm = 1 To Nmoves
 
                         ' Q: should nmoves be adapted in this loop if an advected packet traverses cells with a different advection velocity?
@@ -306,7 +303,6 @@ Public Class cIBMSolver
                                     aa = Mrat : bb = Mrat : cc = Mrat : dd = Mrat
                                 End If
 
-
                             End If
 
                             Debug.Assert((aa + bb + cc + dd) > 0, "Opps!")
@@ -315,7 +311,6 @@ Public Class cIBMSolver
                         Catch ex As Exception
                             Debug.Assert(False, ex.Message)
                         End Try
-
 
                         ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         ''for debugging 
@@ -375,7 +370,6 @@ Public Class cIBMSolver
             End If
         Loop
 
-
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Code from EwE5
         'Dim i As Integer = 0
@@ -401,7 +395,6 @@ Public Class cIBMSolver
         '    End If
         'End If
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
     End Sub
 
@@ -469,7 +462,6 @@ Public Class cIBMSolver
             If Me.m_Stanza.AgeIndex1(isp) > Me.m_Stanza.MaxAgeSpecies(isp) Then
                 Me.m_Stanza.AgeIndex1(isp) = 0
             End If
-
 
             'finally set abundance at youngest age to recruitment rate
             'WARNING Youngest age is stored in the ia1 index NOT Age 0 as it is in Ecosim
@@ -600,7 +592,6 @@ Public Class cIBMSolver
                 Next ip
             End If ' m_Stanza.EggAtSpawn(isp)
 
-
             If Me.m_Stanza.isForcedIBMRecruits(isp) = True Then
                 'this stanza is forced
                 'populate all the packets in each nursery cell 
@@ -661,7 +652,6 @@ Public Class cIBMSolver
         Debug.Print("N Packets = " + Me.m_Stanza.Npackets.ToString + ", N Nursery Packets = " + npcks.ToString)
 
     End Sub
-
 
     Private Function ForceNurseryCells(isp As Integer) As Single
         'Set all the forced cells with age 0 forcing values to Nursery Cells 

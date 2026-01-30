@@ -5,11 +5,7 @@
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace MSE
-
-
 
     Public Delegate Function MSECounterDelegate(SizeType As eCoreCounterTypes) As Integer
 
@@ -31,7 +27,6 @@ Namespace MSE
         NoCap
         Predicted
     End Enum
-
 
     Public Class cMSEDataStructures
 
@@ -124,7 +119,6 @@ Namespace MSE
         Public BaseManValue As Double
         Public BaseEcoVal As Double
 
-
         ''' <summary>
         ''' Use for EwE5 Closed Loop Fishing Rate Assessment method
         ''' </summary>
@@ -208,7 +202,6 @@ Namespace MSE
         ''' <remarks>This is in years the model runs on timesteps</remarks>
         Public StartYear As Integer
 
-
         ''' <summary>
         ''' Year to stop the regulations on
         ''' </summary>
@@ -251,7 +244,6 @@ Namespace MSE
         ''' Total allowable catch
         ''' </summary>
         Public TAC() As Single
-
 
         ''' <summary>
         ''' Fixed fishing mortality
@@ -311,7 +303,6 @@ Namespace MSE
 
 #Region " Constructor "
 
-
         Public Sub New(EPdata As cEcopathDataStructures,
                        ESdata As cEcosimDatastructures)
 
@@ -331,7 +322,6 @@ Namespace MSE
 #End Region 'Constructor
 
 #Region "Methods and Properties"
-
 
         Public ReadOnly Property UseQuotaRegs() As Boolean
             Get
@@ -481,7 +471,6 @@ Namespace MSE
 
         End Sub
 
-
         ''' <summary>
         ''' Redimension variables and set default variable values.
         ''' </summary>
@@ -593,7 +582,6 @@ Namespace MSE
 
         End Sub
 
-
         Public Sub redimTime(Optional originalNumberOfYears As Integer = cCore.NULL_VALUE)
 
             Try
@@ -640,7 +628,6 @@ Namespace MSE
             Catch ex As Exception
 
             End Try
-
 
         End Sub
 
@@ -826,7 +813,6 @@ Namespace MSE
             End Get
         End Property
 
-
         Public Sub setDefaultRecruitmentCV()
             For igrp As Integer = 1 To Me.NGroups
                 Me.cvRec(igrp) = 0.8
@@ -887,7 +873,6 @@ Namespace MSE
             Next igrp
 
         End Sub
-
 
         ''' <summary>
         ''' Set default values for the recruitment model
@@ -1020,7 +1005,6 @@ Namespace MSE
             Me.m_CounterDelegate = CounterDelegate
         End Sub
 
-
         ''' <summary>
         ''' Add an Iteration/Model Run to the stats
         ''' </summary>
@@ -1129,7 +1113,6 @@ Namespace MSE
 
         End Sub
 
-
         Public Sub ComputeStats()
             Dim means() As Single
 
@@ -1146,7 +1129,6 @@ Namespace MSE
                 Debug.Assert(False, Me.ToString & ".ComputeStats() in calculation of histogram!")
                 m_logger.LogError(ex, "cMSESummaryStats.ComputeStats() Exception in calculation of histogram")
             End Try
-
 
             'Mean
             Try
@@ -1299,7 +1281,6 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property AboveLimit(index As Integer) As Single
             Get
                 If Me.m_bounds IsNot Nothing Then
@@ -1320,7 +1301,6 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property MeanValues(Index As Integer) As Single()
             Get
                 Try
@@ -1331,8 +1311,6 @@ Namespace MSE
                 End Try
             End Get
         End Property
-
-
 
         Private ReadOnly Property calcHistogram(GroupingIndex As Integer) As Single()
             Get
@@ -1414,7 +1392,6 @@ Namespace MSE
             End Get
         End Property
 
-
         ''' <summary>
         ''' Return the stored values for an iteration as an array
         ''' </summary>
@@ -1478,7 +1455,6 @@ Namespace MSE
                 Return Me.m_nStepsPerYear
             End Get
         End Property
-
 
     End Class
 

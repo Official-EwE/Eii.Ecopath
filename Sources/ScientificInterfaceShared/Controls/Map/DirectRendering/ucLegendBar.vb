@@ -4,8 +4,6 @@
 
 Imports System.ComponentModel
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

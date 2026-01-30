@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
 
-
-
 ''' <summary>
 ''' 
 ''' </summary>

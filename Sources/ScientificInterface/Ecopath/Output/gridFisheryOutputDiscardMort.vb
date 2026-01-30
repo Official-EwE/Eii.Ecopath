@@ -7,7 +7,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
-
     Public Class gridFisheryOutputDiscardMort
         Inherits cEwEGrid
 

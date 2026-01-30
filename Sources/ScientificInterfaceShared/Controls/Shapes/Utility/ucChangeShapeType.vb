@@ -7,8 +7,6 @@ Option Explicit On
 Imports EwECore.Common
 Imports ScientificInterfaceShared.Style
 
-
-
 ' ToDo: Document this class
 
 Namespace Controls

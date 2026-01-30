@@ -8,8 +8,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style
 
 
-
-
 Namespace Controls
 
     ''' ---------------------------------------------------------------------------

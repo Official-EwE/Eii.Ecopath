@@ -15,7 +15,6 @@ Namespace MSE
         Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
         Private m_MSEData As cMSEDataStructures
 
-
 #Region "Construction"
 
         Public Sub New(core As cCore, MSEData As cMSEDataStructures, GroupDBID As Integer, groupIndex As Integer)
@@ -48,7 +47,6 @@ Namespace MSE
             val = New cValue(core, New Single, eVarNameFlags.MSEUpperRiskPercent, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng, meta)
             Me.m_values.Add(val.varName, val)
 
-
             ' meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.MSEBiomass, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eCoreCounterTypes.nEcosimTimeSteps)
             Me.m_values.Add(val.varName, val)
@@ -58,7 +56,6 @@ Namespace MSE
 
             'MSEHistogram
         End Sub
-
 
         Public Sub Init()
 
@@ -71,13 +68,11 @@ Namespace MSE
             Me.m_coreData.Add(eVarNameFlags.MSEBiomass, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
             Me.m_coreData.Add(eVarNameFlags.MSECatchByGroup, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Yield, Me.Index))
 
-
         End Sub
 
 #End Region
 
 #Region "Overridden base class methods"
-
 
         Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
@@ -105,7 +100,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property UpperRiskPercent() As Single
             Get
                 Return CInt(Me.GetVariable(eVarNameFlags.MSEUpperRiskPercent))
@@ -115,7 +109,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSEUpperRiskPercent, value)
             End Set
         End Property
-
 
         Public Property LowerRiskCountStatus() As eStatusFlags
             Get
@@ -127,7 +120,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property UpperRiskCountStatus() As eStatusFlags
             Get
                 Return Me.GetStatus(eVarNameFlags.MSEUpperRiskPercent)
@@ -137,7 +129,6 @@ Namespace MSE
                 Me.SetStatus(eVarNameFlags.MSEUpperRiskPercent, value)
             End Set
         End Property
-
 
         Public ReadOnly Property Biomass(iTime As Integer) As Single
             Get
@@ -206,7 +197,6 @@ Namespace MSE
         Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
         Private m_MSEData As cMSEDataStructures
 
-
 #Region "Construction"
 
         Public Sub New(ByRef theCore As cCore, MSEData As cMSEDataStructures, GroupDBID As Integer, groupIndex As Integer)
@@ -235,7 +225,6 @@ Namespace MSE
             'MSEHistogram
         End Sub
 
-
         Public Sub Init()
 
             'the results arrays of ecosim are redim for each run
@@ -252,7 +241,6 @@ Namespace MSE
 #End Region
 
 #Region "Overridden base class methods"
-
 
         Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
@@ -343,7 +331,6 @@ Namespace MSE
             Me.m_VarToStat = CoreVarToMSEStat
         End Sub
 
-
         Public Function Contains(VarName As eVarNameFlags) As Boolean
             Return Me.m_VarToStat.ContainsKey(VarName)
         End Function
@@ -429,7 +416,6 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property Histogram(iBin As Integer) As Single
             Get
                 iBin -= 1
@@ -449,13 +435,11 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property BinWidths() As Single
             Get
                 Return Me.m_data.HistoBinWidths(Me.m_index)
             End Get
         End Property
-
 
         Public ReadOnly Property CV() As Single
             Get
@@ -469,7 +453,6 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property nBins() As Integer
             Get
                 Return Me.m_data.HistoNBins(Me.m_index)
@@ -482,13 +465,11 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property Max() As Single
             Get
                 Return Me.m_data.Max(Me.m_index)
             End Get
         End Property
-
 
         Public ReadOnly Property Values(Iteration As Integer) As Single()
             Get
@@ -520,7 +501,6 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property nIterations() As Integer
             Get
                 Return Me.m_data.nIterations(Me.m_index)
@@ -532,7 +512,6 @@ Namespace MSE
                 Return Me.m_data.nTimeSteps
             End Get
         End Property
-
 
         Public ReadOnly Property nStepsPerYear() As Integer
             Get
@@ -552,7 +531,6 @@ Namespace MSE
         Protected m_MSEStats As cMSESummaryStats
         Protected m_Stats As cMSEResultsStatsWrapper
         Protected m_varLookup As Dictionary(Of eVarNameFlags, MSE.eMSEStatNames)
-
 
 #Region "Construction"
 
@@ -582,7 +560,6 @@ Namespace MSE
 #End Region
 
 #Region "Overridden base class methods"
-
 
         Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
@@ -654,13 +631,11 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property Std() As Single
             Get
                 Return Me.m_Stats.Std
             End Get
         End Property
-
 
         Public ReadOnly Property nIterations() As Integer
             Get
@@ -733,7 +708,6 @@ Namespace MSE
             Return True
 
         End Function
-
 
         Public Overrides Sub Clear()
             MyBase.Clear()
@@ -867,7 +841,6 @@ Namespace MSE
             End Set
         End Property
 
-
         'mean
         Public Property MeanEconomicValue() As Single
             Get
@@ -928,7 +901,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSEBestTotalValue, value)
             End Set
         End Property
-
 
         Public Property TrialNumber() As Integer
             Get

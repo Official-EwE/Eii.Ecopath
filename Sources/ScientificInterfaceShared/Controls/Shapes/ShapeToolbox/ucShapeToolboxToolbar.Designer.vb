@@ -4,7 +4,6 @@
 
 Namespace Controls
 
-
     Partial Class ucShapeToolboxToolbar
         Inherits System.Windows.Forms.UserControl
 

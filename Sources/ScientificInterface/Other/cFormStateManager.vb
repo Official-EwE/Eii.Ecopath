@@ -6,8 +6,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports WeifenLuo.WinFormsUI.Docking
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Helper class; maintains form enabled / availability states in the AppLauncher.

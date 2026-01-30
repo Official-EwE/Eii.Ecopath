@@ -6,7 +6,6 @@ Imports System.Math
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
 ''' <summary>
 ''' Class to provide access to functions needed both internally to the core and 
 ''' externally by plugins or other things.
@@ -72,7 +71,6 @@ Public Class cEcoFunctions
 
         End Try
     End Function
-
 
     Public Function KemptonsQ(iNumLiving As Integer, ttlx As Single(),
                               Bio() As Single, Quan As Single) As Single
@@ -290,7 +288,6 @@ Public Class cEcoFunctions
 
     End Sub
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the zero-based stanza index for a group index, or <see cref="cCore.NULL_VALUE"/>
@@ -318,8 +315,6 @@ Public Class cEcoFunctions
     End Function
 
 End Class
-
-
 
 Public Class cMatrixCalc
 
@@ -400,8 +395,6 @@ Public Class cMatrixCalc
             Debug.Assert(False)
             Return 0
         End Try
-
-
 
         '        If ErrCode Then Error ErrCode
         'sseqnexit:

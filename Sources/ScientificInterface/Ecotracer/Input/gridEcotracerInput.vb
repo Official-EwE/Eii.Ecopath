@@ -6,7 +6,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecotracer
 
-
     Public Class gridEcotracerInput
         Inherits cEwEGrid
 

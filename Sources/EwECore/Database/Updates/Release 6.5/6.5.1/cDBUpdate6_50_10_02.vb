@@ -4,8 +4,6 @@
 
 Imports EwECore.Database
 
-
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.50.1.02:</para>
@@ -94,6 +92,5 @@ Friend Class cDBUpdate6_50_10_02
         Return True
 
     End Function
-
 
 End Class

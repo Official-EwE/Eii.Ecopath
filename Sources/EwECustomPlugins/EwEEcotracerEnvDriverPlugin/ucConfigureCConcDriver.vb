@@ -14,8 +14,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
-
-
 Public Class ucConfigureCConcDriver
     Implements IOptionsPage
     Implements IUIElement
@@ -24,7 +22,6 @@ Public Class ucConfigureCConcDriver
 
     Private m_ds As cEcotracerConcentrationDataset = Nothing
     Private m_bInUpdate As Boolean = False
-
 
 #End Region ' Private vars 
 
@@ -66,7 +63,6 @@ Public Class ucConfigureCConcDriver
 
         MyBase.OnLoad(e)
     End Sub
-
 
 #End Region ' Overrides
 

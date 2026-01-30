@@ -4,8 +4,6 @@
 
 Imports EwECore.ValueWrapper
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Inputs for a single pedigree level within a pedigree category.

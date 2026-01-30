@@ -279,7 +279,6 @@ Public Class cMonteCarloGroup
 
     End Sub
 
-
     Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
 
         Dim keyvalue As KeyValuePair(Of eVarNameFlags, cValue)

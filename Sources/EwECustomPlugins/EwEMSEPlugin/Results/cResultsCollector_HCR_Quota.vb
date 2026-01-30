@@ -23,6 +23,4 @@ Public MustInherit Class cResultsCollector_HCR_Quota
         End Get
     End Property
 
-
-
 End Class

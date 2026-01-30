@@ -4,8 +4,6 @@
 
 Imports System.IO
 
-
-
 Public Class cENAData
 
     Public nGroups As Integer
@@ -95,7 +93,6 @@ Public Class cENAData
                 End If
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'EXPORTS
 
@@ -118,7 +115,6 @@ Public Class cENAData
 
                 End If
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'FLOW TO DETRITUS (CONSUMPTION)

@@ -268,15 +268,12 @@ Public Class cEcosimEnviroInputData
 
 #Region "Overloaded Methods not implemented by cEcosimEnviroInputData"
 
-
     Friend Function Init(EnviroMediationData As cMediationDataStructures, SpaceData As cEcospaceDataStructures) As Boolean _
         Implements IEnviroInputData.Init
-
 
         Debug.Assert(False, Me.ToString + ".Init(cMediationDataStructures,cEcospaceDataStructures) not implemented by " + Me.ToString)
 
     End Function
-
 
     ''' <summary>
     ''' Return a value for a cell in the input map base on the the response function for a group.
@@ -290,10 +287,7 @@ Public Class cEcosimEnviroInputData
 
         Debug.Assert(False, Me.ToString + ".ResponseFunction(igrp,irow,icol) not implemented for " + Me.ToString)
 
-
     End Function
-
-
 
 
 #End Region

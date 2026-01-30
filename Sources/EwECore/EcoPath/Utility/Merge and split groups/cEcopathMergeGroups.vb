@@ -5,8 +5,6 @@
 Imports EwECore.Auxiliary
 Imports EwEUtils.Utilities
 
-
-
 Namespace Ecopath
 
     ''' ---------------------------------------------------------------------------
@@ -315,7 +313,6 @@ Namespace Ecopath
             Me.m_data.IsValid = Not String.IsNullOrWhiteSpace(Me.m_data.GroupName)
 
         End Function
-
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

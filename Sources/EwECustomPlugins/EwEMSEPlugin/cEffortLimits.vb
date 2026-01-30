@@ -9,8 +9,6 @@ Imports EwECore
 Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
 
-
-
 Public Class cEffortLimits
     Implements IMSEData
 
@@ -107,8 +105,6 @@ Public Class cEffortLimits
                     End If
                 Loop
 
-
-
             Catch ex As Exception
                 ' CSV malformed
                 cMSEUtils.LogError(msg, "Effort limits cannot load from " & strFilename & ". " & ex.Message)
@@ -188,7 +184,6 @@ Public Class cEffortLimits
             Me.m_decaying_max_effort = value
         End Set
     End Property
-
 
 #End Region ' Public bits
 

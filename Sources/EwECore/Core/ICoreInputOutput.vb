@@ -192,7 +192,6 @@ Public MustInherit Class cCoreInputOutputBase
 #End If
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cCoreInputOutputBase)()
 
-
 #End Region ' DEBUG ONLY
 
     ''' <summary>
@@ -1227,7 +1226,6 @@ Friend Interface IResultsWrapper
 
 End Interface
 
-
 ''' <summary>
 ''' 4D array with the first two indexes fixed
 ''' </summary>
@@ -1263,7 +1261,6 @@ Friend Class c4DResultsWrapper
 
 End Class
 
-
 ''' <summary>
 ''' 4D array with the first two indexes fixed
 ''' </summary>
@@ -1296,7 +1293,6 @@ Friend Class c4DResultsWrapperFirstFixed
     End Sub
 
 End Class
-
 
 ''' <summary>
 ''' 2D array with the first index fixed
@@ -1365,8 +1361,6 @@ Friend Class c2DResultsWrapper2Fixed
     End Sub
 
 End Class
-
-
 
 ''' <summary>
 ''' 3D array with the first index fixed
@@ -1437,8 +1431,5 @@ Friend Class c3DResultsWrapper2Fixed
 End Class
 
 #End Region
-
-
-
 
 

@@ -282,7 +282,6 @@ Public Class cSurvivability
 
 #Region " Functions "
 
-
     ''' <summary>
     ''' Samples the survivability parameters
     ''' </summary>
@@ -385,7 +384,6 @@ Public Class cSurvivability
         End Try
 
         Return New cSampledSurvivability(TIteration, TFleetNumber, TGroupNumber, TSurvivability)
-
 
     End Function
 
@@ -512,7 +510,6 @@ Public Class cSurvivability
 
     End Function
 
-
     Public Function IsChanged() As Boolean _
         Implements IMSEData.IsChanged
         Return False
@@ -624,7 +621,6 @@ Public Class cSurvivability
         Return bSuccess
 
     End Function
-
 
     ''' <summary>
     ''' Extracts a survivability distribution parameter + information from csv

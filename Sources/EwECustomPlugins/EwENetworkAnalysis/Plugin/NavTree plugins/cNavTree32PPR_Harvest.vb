@@ -4,8 +4,6 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cNavTree32PPR_Harvest
     Inherits cNavTree30PPR
 

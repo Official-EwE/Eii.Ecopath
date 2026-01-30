@@ -62,7 +62,6 @@ Public Class gridMSEBatchFixedFIter
             'Get the group info
             group = Me.Core.MSEBatchManager.FixedFGroups(Me.iSelGroup)
 
-
             Me.AddRow()
 
             Me(iParIter, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iParIter))
@@ -86,7 +85,6 @@ Public Class gridMSEBatchFixedFIter
         End Get
     End Property
 
-
     Public Property iSelGroup As Integer
         Get
             Return Me.m_iSelGroup
@@ -104,8 +102,6 @@ Public Class gridMSEBatchFixedFIter
         End Set
 
     End Property
-
-
 
 
     ''' -----------------------------------------------------------------------
@@ -141,8 +137,6 @@ Public Class gridMSEBatchFixedFIter
 
     End Function
 
-
 #End Region ' Overrides
-
 
 End Class

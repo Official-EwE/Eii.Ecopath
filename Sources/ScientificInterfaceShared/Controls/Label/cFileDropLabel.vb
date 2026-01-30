@@ -5,8 +5,6 @@
 Imports System.ComponentModel
 Imports System.IO
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

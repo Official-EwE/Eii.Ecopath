@@ -15,8 +15,6 @@ Imports ScientificInterfaceShared
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class dlgEcobaseImport
 
 #Region " Private vars "
@@ -491,7 +489,6 @@ Public Class dlgEcobaseImport
         End Try
 
     End Sub
-
 
     Private Sub OnGetUserAgreement(sender As Object, e As DoWorkEventArgs) _
         Handles m_wrkGetAgreement.DoWork

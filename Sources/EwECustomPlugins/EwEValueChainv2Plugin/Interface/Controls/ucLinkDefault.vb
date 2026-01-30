@@ -7,8 +7,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ValueChain
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' User control that reflects a default link.

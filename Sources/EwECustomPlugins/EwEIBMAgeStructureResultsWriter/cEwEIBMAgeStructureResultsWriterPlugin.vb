@@ -73,13 +73,11 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
                 values = Nothing
             Next InputDataType
 
-
         Catch ex As Exception
             m_logger.LogError(ex, "SaveAgeStructure. Error saving IBM Age Structure results")
         End Try
 
     End Sub
-
 
     Private Function ComputeAgeStructureByRegion(InputData As cInputDataTypes) As Single()()()
 
@@ -129,7 +127,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
         Return RegionValues
 
     End Function
-
 
     Private Function ComputeAgeStructureByRegion_LowMemory(InputData As cInputDataTypes) As Single()()()
 
@@ -182,8 +179,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
     End Function
 
-
-
     Protected Overrides Function FileExtension() As String
         Return "RegionAgeStructure"
     End Function
@@ -197,7 +192,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
         End If
 
     End Sub
-
 
     Private Sub CreateBaseFiles(InputData As cInputDataTypes)
 
@@ -217,7 +211,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
                         sbAges.Append("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.EcopathData.GroupName(iEco)) + "_" + CStr(iage))
                     Next iage
                     Dim header As String = "Timestep, Region" + sbAges.ToString
-
 
                     strm.WriteLine("Max Age," + CStr(Me.m_StanzaData.MaxAgeSpecies(isp)))
                     strm.WriteLine(header)
@@ -246,10 +239,7 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
             m_logger.LogError(ex, "CreateBaseFiles. Error creating IBM Age Structure base files")
         End Try
 
-
     End Sub
-
-
 
     Private Sub SaveRegionAgeStructureToFile(Values()()() As Single, InputDataType As cInputDataTypes)
         Dim iage As Integer
@@ -293,7 +283,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
     End Sub
 
-
     Private Function getRegionFileName(isp As Integer, iRegion As Integer, DataType As String) As String
 
         Dim region As String = CStr(iRegion)
@@ -306,7 +295,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
     End Function
 
-
     Private Sub InitOutputTypes()
 
         m_lstDataTypes = New List(Of cInputDataTypes)
@@ -318,7 +306,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
         m_lstDataTypes.Add(Number)
 
     End Sub
-
 
 #End Region
 
@@ -356,7 +343,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
     End Sub
 
-
     Public Sub Initialize(theCore As Object) Implements IPlugin.Initialize
 
     End Sub
@@ -368,13 +354,11 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
         End If
     End Sub
 
-
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "IBM Age Structure"
         End Get
     End Property
-
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
@@ -397,9 +381,7 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
 #End Region
 
-
 #Region "NOT USED Age Structure by Cell"
-
 
 #If False Then
 
@@ -412,7 +394,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
     Private Sub SaveAgeStructureToFile(Values()(,)() As Single)
 
         Dim fnTemplate As String = "{0}_AgeStructure_{1}.csv"
-
 
         For isp As Integer = 1 To Me.m_StanzaData.Nsplit
 
@@ -427,7 +408,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
                 sbAges.Append("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.EcopathData.GroupName(iEco)) + "_" + CStr(iage))
             Next iage
             Dim header As String = "Stanza_Index, Multi_Name, Column, Row" + sbAges.ToString
-
 
             strm.WriteLine("Max Age," + CStr(Me.m_StanzaData.MaxAgeSpecies(isp)))
             strm.WriteLine(header)
@@ -461,7 +441,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
         Next isp
 
     End Sub
-
 
     Private Function ComputeAgeStructureByCell() As Single()(,)()
 
@@ -507,7 +486,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
                         '  n(isp)(irow, icol) = New Single(Me.m_StanzaData.MaxAgeSpecies(isp)) {}
                     End If
 
-
                     If Me.m_StanzaData.Npacket(isp, ii, ipkt) > 0 Then
                         Values(isp)(irow, icol)(ii) += Me.m_StanzaData.Npacket(isp, iage, ipkt)
 
@@ -521,7 +499,6 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
             Next ipkt
 
         Next isp
-
 
         'For isp As Integer = 1 To Me.StanzaData.Nsplit
 
@@ -549,6 +526,5 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
 #End If
 #End Region
-
 
 End Class

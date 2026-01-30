@@ -14,8 +14,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Main UI for the Aquamaps distribution envelope import plug-in
 ''' </summary>

@@ -6,10 +6,7 @@ Option Explicit On
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecosim
-
 
     Public Class gridEcosimGroupInput
         Inherits cEwEGrid
@@ -55,8 +52,6 @@ Namespace Ecosim
             Me(0, eColumnTypes.QBMaxQBO) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_QBMAXQBO)
             Me(0, eColumnTypes.SwitchPower) = New cEwEColumnHeaderCell(SharedResources.HEADER_SWITCHINGPOWER_VALRANGE)
             Me(0, eColumnTypes.AddPredMortProp) = New cEwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_PROPADDITIVEMORT)
-
-
 
             Me.FixedColumns = 2
 
@@ -175,7 +170,6 @@ Namespace Ecosim
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
             Next
         End Sub
-
 
     End Class
 

@@ -13,8 +13,6 @@ Imports Microsoft.Extensions.Logging
 Imports System.Windows.Forms
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Main and only interface for this plug-in.
@@ -92,7 +90,6 @@ Public Class frmMain
 #End Region ' Form overrides
 
 #Region " Event handlers "
-
 
     Private Sub OnBrowseIn(sender As System.Object, e As System.EventArgs) _
         Handles m_btnChooseSrc.Click

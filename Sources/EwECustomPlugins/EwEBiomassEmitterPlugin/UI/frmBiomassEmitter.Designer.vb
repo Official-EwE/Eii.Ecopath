@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
-
-
 Partial Class frmBiomassEmitter
     Inherits frmEwE
 

@@ -64,7 +64,6 @@ Public MustInherit Class cThreadWaitBase
         'No Wait Time this just checks if the thread is blocked
         If WaitTimeInMillSec = 0 Then Return Me.m_SignalState.WaitOne(0)
 
-
         If WaitTimeInMillSec = -1 Then
             waitForever = True
         Else
@@ -72,7 +71,6 @@ Public MustInherit Class cThreadWaitBase
             'use a separate timer to figure out if the wait has timed out
             stpwWaitTime = Stopwatch.StartNew
         End If
-
 
         'Wait is in a loop because
         'm_SignalState is signaled when a thread is running
@@ -109,7 +107,6 @@ Public MustInherit Class cThreadWaitBase
         Return result
 
     End Function
-
 
     Private Sub RunInterfaceMessagePump()
         Try

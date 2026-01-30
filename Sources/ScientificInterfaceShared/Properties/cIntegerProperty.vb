@@ -5,8 +5,6 @@
 Imports EwECore.ValueWrapper
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Properties
 
     ''' -----------------------------------------------------------------------
@@ -118,7 +116,6 @@ Namespace Properties
                     i = CInt(meta.NullValue)
                 End If
             End If
-
 
             Try
                 If (newValue Is Nothing) Or (Convert.ToInt32(newValue) = cCore.NULL_VALUE) Then

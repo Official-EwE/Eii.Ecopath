@@ -10,8 +10,6 @@ Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecosim
 
     ''' <summary>
@@ -22,7 +20,6 @@ Namespace Ecosim
         'ToDo frmMSY now that it is multithreaded it needs to protect against the user doing stupid things during a run
         'Closing the form!
         'Changing model parameters...
-
 
 #Region " Privates "
 

@@ -14,8 +14,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
-
-
 Public Class ucEcoEngineerConfigUI
     Implements IOptionsPage
     Implements IUIElement

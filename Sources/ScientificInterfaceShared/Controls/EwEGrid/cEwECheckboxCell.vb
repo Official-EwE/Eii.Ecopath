@@ -6,10 +6,7 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-
-
 Namespace Controls.EwEGrid
-
 
     Public Class cEwECheckboxCell
         Inherits SourceGrid2.Cells.Real.CheckBox

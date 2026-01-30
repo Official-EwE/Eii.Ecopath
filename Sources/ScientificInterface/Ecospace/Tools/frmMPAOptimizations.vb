@@ -374,7 +374,6 @@ Namespace Ecospace
 
         Private Sub OnReset(sender As System.Object, e As System.EventArgs)
 
-
             Me.RunMode = eFormModeTypes.Prepare
 
         End Sub
@@ -951,7 +950,6 @@ Namespace Ecospace
             Catch ex As Exception
 
             End Try
-
 
         End Sub
 

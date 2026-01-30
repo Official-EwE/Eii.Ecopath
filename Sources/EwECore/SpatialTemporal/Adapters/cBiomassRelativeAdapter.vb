@@ -54,7 +54,6 @@ Namespace SpatialData
 
         End Sub
 
-
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
         ''' <remarks>Overridden to scale values prior to being set in the 
@@ -97,7 +96,6 @@ Namespace SpatialData
             Return False
 
         End Function
-
 
         Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap, layer As cEcospaceLayer,
                                                   conn As cSpatialDataConnection, iTime As Integer, dt As Date,

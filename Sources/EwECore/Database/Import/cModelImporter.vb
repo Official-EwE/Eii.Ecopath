@@ -7,8 +7,6 @@ Imports System.Text
 Imports EwECore.Common
 Imports Microsoft.Extensions.Logging
 
-
-
 Namespace Database
 
     ''' -------------------------------------------------------------------

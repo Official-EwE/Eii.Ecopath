@@ -262,7 +262,6 @@ Public Class cStanzaGroup
 
     End Property
 
-
     ''' <summary>
     ''' Overloaded to set the isDirty flag
     ''' </summary>
@@ -339,7 +338,6 @@ Public Class cStanzaGroup
             Me.SetVariable(eVarNameFlags.RecruitmentStanza, value)
         End Set
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

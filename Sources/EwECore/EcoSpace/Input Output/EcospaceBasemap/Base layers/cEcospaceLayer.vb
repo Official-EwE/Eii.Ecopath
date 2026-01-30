@@ -10,8 +10,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base class for providing cell-based interaction with Ecospace data.
@@ -218,7 +216,6 @@ Public MustInherit Class cEcospaceLayer
             ' NOP
         End Set
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

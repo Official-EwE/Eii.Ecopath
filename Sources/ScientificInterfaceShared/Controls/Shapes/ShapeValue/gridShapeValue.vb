@@ -6,8 +6,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid disaplying individual values of a <see cref="cShapeData">shape</see>

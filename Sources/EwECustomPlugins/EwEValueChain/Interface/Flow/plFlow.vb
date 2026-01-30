@@ -17,8 +17,6 @@ Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Flow editor control, including flow area, relevant toolbar(s) and 

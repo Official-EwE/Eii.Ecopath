@@ -4,8 +4,6 @@
 
 Imports EwECore.DataSources
 
-
-
 Namespace Database
 
     ''' =======================================================================

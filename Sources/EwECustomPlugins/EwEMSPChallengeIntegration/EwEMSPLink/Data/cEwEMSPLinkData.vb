@@ -11,8 +11,6 @@ Imports System.Xml
 Imports EwECore
 Imports EwEUtils.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Data container for a list of games.

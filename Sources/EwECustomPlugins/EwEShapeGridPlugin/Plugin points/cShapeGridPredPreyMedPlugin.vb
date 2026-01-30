@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Controls
 
-
-
 Public Class cShapeGridPredPreyMedPlugin
     Inherits cShapeGridPlugin
 

@@ -41,7 +41,6 @@ Namespace Ecospace
             MyBase.OnFormClosed(e)
         End Sub
 
-
         Protected Overrides ReadOnly Property Grid() As gridApplyShapeBase
             Get
                 Return Me.m_grid

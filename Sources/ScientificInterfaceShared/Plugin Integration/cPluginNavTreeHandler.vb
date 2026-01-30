@@ -7,8 +7,6 @@ Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 
-
-
 Namespace Integration
 
     ''' ---------------------------------------------------------------------------
@@ -218,7 +216,6 @@ Namespace Integration
         Protected Overrides Sub EnablePlugin(ip As IGUIPlugin, bEnable As Boolean)
             ' Always enabled
         End Sub
-
 
 #End Region ' Tree item handling
 

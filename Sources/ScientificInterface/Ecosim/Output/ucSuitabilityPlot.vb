@@ -7,8 +7,6 @@ Option Explicit On
 Imports EwEUtils.Utilities
 Imports ZedGraph
 
-
-
 Public Class ucSuitabilityPlot
     Implements IUIElement
 

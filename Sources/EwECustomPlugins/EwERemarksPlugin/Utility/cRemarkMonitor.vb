@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Properties
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Helper class, monitors available <see cref="cProperty"/> instances

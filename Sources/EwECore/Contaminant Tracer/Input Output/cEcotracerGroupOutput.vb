@@ -56,7 +56,6 @@ Public Class cEcotracerGroupOutput
                     'environment data stored in zero group
                     Return Me.m_TracerData.TracerCB(iGroup, iTimeStep)
 
-
             End Select
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -110,7 +109,6 @@ Public Class cEcotracerGroupOutput
         End Set
     End Property
 
-
     Public Property ConBio(iGroup As Integer, iTimeStep As Integer) As Single
         Get
             Try
@@ -130,7 +128,6 @@ Public Class cEcotracerGroupOutput
             End Try
         End Set
     End Property
-
 
 #End Region
 

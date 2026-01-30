@@ -10,8 +10,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace WebServices.Ecobase
 
 #Region " Model "

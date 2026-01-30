@@ -5,8 +5,6 @@
 Imports System.ComponentModel
 Imports EwEUtils.SystemUtilities
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

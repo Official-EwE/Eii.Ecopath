@@ -5,8 +5,6 @@
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecopath.Input
 
     ''' =======================================================================

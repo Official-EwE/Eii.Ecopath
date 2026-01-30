@@ -7,8 +7,6 @@ Imports ScientificInterfaceShared.Controls
 Imports LumenWorks.Framework.IO.Csv
 Imports EwEUtils.Utilities
 
-
-
 Public Class frmEditDecreaseEffort
 
     Private m_mse As cMSE = Nothing
@@ -86,6 +84,5 @@ Public Class frmEditDecreaseEffort
         If Not Me.m_bInitialized Then Return
         Me.m_data.decaying_max_effort = Me.rbDecaying.Checked
     End Sub
-
 
 End Class

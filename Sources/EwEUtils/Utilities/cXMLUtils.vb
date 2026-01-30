@@ -5,8 +5,6 @@
 Imports System.Xml
 Imports System.Text
 
-
-
 Namespace Utilities
 
     ''' ---------------------------------------------------------------------------
@@ -74,7 +72,6 @@ Namespace Utilities
             Return name
 
         End Function
-
 
     End Class
 

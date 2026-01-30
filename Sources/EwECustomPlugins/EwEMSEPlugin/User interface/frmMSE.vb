@@ -11,8 +11,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Public Class frmMSE
 
 #Region " Private vars "
@@ -507,7 +505,6 @@ Public Class frmMSE
 
     End Sub
 
-
     Private Sub OnGenerateSampleSurvivabilities(sender As System.Object, e As System.EventArgs) Handles m_btnSampleSurvivabilities.Click
 
         Try
@@ -516,7 +513,6 @@ Public Class frmMSE
             m_logger.LogError(ex, "CEFAS.frmMSE::OnGenerateSampleSurvivabilities")
         End Try
     End Sub
-
 
     Private Sub OnDeleteResults(sender As System.Object, e As System.EventArgs) _
         Handles m_btnDeleteResults.Click
@@ -577,7 +573,6 @@ Public Class frmMSE
 
         End Try
     End Sub
-
 
 #End Region ' Control events
 
@@ -659,8 +654,6 @@ Public Class frmMSE
 
 #End Region ' Path / model validation
 
-
-
     Private Sub InsertValueIntoArray(ByRef LandingsArray As Double(,,,), ByRef iStrategy As Integer, ByRef iFleet As Integer, ByRef iGroup As Integer, ByRef iTimeStep As Integer, ByRef THEVALUE As Double)
         LandingsArray(iStrategy, iFleet, iGroup, iTimeStep) = 123456789
     End Sub
@@ -697,6 +690,5 @@ Public Class frmMSE
         End Try
 
     End Sub
-
 
 End Class

@@ -4,7 +4,6 @@
 
 Namespace Ecospace.Basemap
 
-
     Partial Class frmEcospaceComputedCapacity
         Inherits frmEwE
 

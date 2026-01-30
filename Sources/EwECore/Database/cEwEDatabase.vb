@@ -10,8 +10,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 #If VERBOSE Then
 #Const VERBOSE_LEVEL = 4
 #End If
@@ -484,7 +482,6 @@ Namespace Database
 #End Region ' Class cEwEDbWriter
 
 #Region " Private vars and constants "
-
 
         ''' <summary>Current database version.</summary>
         Private m_sVersion As Single = 0.0

@@ -5,8 +5,6 @@
 Imports EwECore
 Imports EwEUtils.SystemUtilities.cSystemUtils
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Value Chain results holder.
@@ -137,7 +135,6 @@ Public Class cResults
                 End If
 
                 sProfit = sRevenue - sCost
-
 
                 ' TotalUtility a.k.a. Throughput = cost when (profit < 0), revenue otherwise
                 sTotalUtility = If(sProfit < 0, sCost, sRevenue)

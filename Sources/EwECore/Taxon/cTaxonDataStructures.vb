@@ -82,7 +82,6 @@ Public Class cTaxonDataStructures
     Public TaxonWinf() As Single
     Public TaxonK() As Single
 
-
     ''' <summary>Group taxon index - may be used by model, initially designed for quick taxon access code.</summary>
     Private m_alGroupTaxa() As List(Of Integer)
 

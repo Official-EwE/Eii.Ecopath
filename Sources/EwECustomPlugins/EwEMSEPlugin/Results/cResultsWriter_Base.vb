@@ -7,7 +7,6 @@ Imports System.IO
 
 Public MustInherit Class cResultsWriter_Base
 
-
     Protected m_MSE As cMSE
     Protected m_Core As cCore
     Protected m_nStrategies As Integer
@@ -23,6 +22,5 @@ Public MustInherit Class cResultsWriter_Base
             Return Me.m_MSE.Strategies(iStrategy - 1).Name
         End Get
     End Property
-
 
 End Class

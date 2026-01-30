@@ -654,7 +654,6 @@ Public Class cLPSolver
                 End If
             End If
 
-
             Dim lpResult As lpsolve55.lpsolve_return
             lpResult = lpsolve55.solve(lp)
 
@@ -711,8 +710,6 @@ Public Class cLPSolver
         Return rv
 
     End Function
-
-
 
     Public Sub SolveLPSolve()
 
@@ -787,7 +784,6 @@ Public Class cLPSolver
         Return Me.m_lDefs(iData).m_dResult
     End Function
 
-
     Public Function GetDualValue(iData As Integer) As Double Implements ILPSolver.GetDualValue
         Return Me.m_lDefs(iData).m_DualValue
     End Function
@@ -839,6 +835,5 @@ Public Class cLPSolver
     End Function
 
 #End Region ' Internals
-
 
 End Class

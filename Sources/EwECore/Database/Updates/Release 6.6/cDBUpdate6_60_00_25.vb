@@ -5,8 +5,6 @@
 Imports EwECore.Database
 Imports Microsoft.Extensions.Logging
 
-
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.60.0.25:</para>

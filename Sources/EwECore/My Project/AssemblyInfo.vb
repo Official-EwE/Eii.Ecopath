@@ -22,7 +22,6 @@ Imports System.Runtime.InteropServices
 'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("61df149b-9be5-4923-aa40-d25cf630a273")>
 
-
 '
 '      Major Version
 '      Minor Version 

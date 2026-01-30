@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Controls
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid for showing fishing mortality shapes.

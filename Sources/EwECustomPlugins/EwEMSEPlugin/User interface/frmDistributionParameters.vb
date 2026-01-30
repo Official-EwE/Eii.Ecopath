@@ -7,8 +7,6 @@ Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class frmDistributionParameters
 
     Private m_ecopathdist As cEcopathDistributionParams = Nothing
@@ -227,7 +225,5 @@ Public Class frmDistributionParameters
     End Sub
 
 #End Region ' Control events
-
-
 
 End Class

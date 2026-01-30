@@ -6,7 +6,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
-
     Public Class gridSearchRates
         Inherits cEwEGrid
 

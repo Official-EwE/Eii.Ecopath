@@ -4,7 +4,6 @@
 
 #Region "Imports"
 
-
 Option Explicit On
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging

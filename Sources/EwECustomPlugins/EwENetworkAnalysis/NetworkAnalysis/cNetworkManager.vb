@@ -11,8 +11,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Manager for the Network Analysis
 ''' </summary>
@@ -562,7 +560,6 @@ Public Class cNetworkManager
 
             Me.m_econetwork.InitForEcosim()
             Me.m_runstate = eRunState.EcosimNetworkInitialized
-
 
         Catch ex As Exception
             m_logger.LogError(ex, "Ecosim Network Analysis initialization error")
@@ -1122,7 +1119,6 @@ Public Class cNetworkManager
         End Get
     End Property
 
-
     ''' <summary>
     ''' Ascendency total import
     ''' </summary>
@@ -1140,7 +1136,6 @@ Public Class cNetworkManager
             Return Me.m_econetwork.Aop
         End Get
     End Property
-
 
     ''' <summary>
     ''' Ascendency total export
@@ -1217,7 +1212,6 @@ Public Class cNetworkManager
             Return Me.m_econetwork.Eip
         End Get
     End Property
-
 
     ''' <summary>
     ''' Overhead total import
@@ -1312,7 +1306,6 @@ Public Class cNetworkManager
             Return Me.m_econetwork.Cip
         End Get
     End Property
-
 
     ''' <summary>
     ''' Capacity total import

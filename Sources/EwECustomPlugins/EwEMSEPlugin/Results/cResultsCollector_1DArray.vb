@@ -31,7 +31,6 @@ Public MustInherit Class cResultsCollector_1DArray
         End Get
     End Property
 
-
     Protected WriteOnly Property SetValue(iStrategy As Integer, iElement As Integer, iTime As Integer) As Object
         Set(value As Object)
             Me.m_DataArray(iStrategy - 1, iElement - 1, iTime - 1) = value

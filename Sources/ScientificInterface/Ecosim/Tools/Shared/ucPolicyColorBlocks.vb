@@ -369,7 +369,6 @@ Namespace Ecosim
 
                 Me.m_sColWidth = sMinColWidth + (sMaxColWidth - sMinColWidth)
 
-
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
                 Throw New ApplicationException(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)

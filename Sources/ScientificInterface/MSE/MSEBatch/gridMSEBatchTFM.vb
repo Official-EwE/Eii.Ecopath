@@ -5,7 +5,6 @@
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
 Public Class gridMSEBatchTFM
     Inherits cEwEGrid
 
@@ -147,7 +146,6 @@ Public Class gridMSEBatchTFM
         End Get
     End Property
 
-
     Public Property iCurIter As Integer
         Get
             Return Me.m_iter
@@ -165,7 +163,6 @@ Public Class gridMSEBatchTFM
         End Set
 
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -209,6 +206,5 @@ Public Class gridMSEBatchTFM
     End Function
 
 #End Region ' Overrides
-
 
 End Class

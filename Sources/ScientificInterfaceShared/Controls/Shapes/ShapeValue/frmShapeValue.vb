@@ -7,8 +7,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
-
-
 ' JS 12/12/17: This dialog has gotten way too cluttered. Needs to be rethought and rebuilt from scratch
 ' JS 27/02/19: Perhaps merge the functionality here with the increasingly powerful "Change Shape" UI?
 
@@ -388,7 +386,6 @@ Public Class frmShapeValue
         Me.m_lblViewAs.Visible = False
         Me.m_cmbViewAs.Visible = False
 
-
         If (ts IsNot Nothing) Then
             Me.m_txtName.Text = ts.Name
             Me.m_fpWeight.Value = ts.WtType
@@ -469,7 +466,6 @@ Public Class frmShapeValue
         Dim fts As cFleetTimeSeries = Nothing
         Dim gts As cGroupTimeSeries = Nothing
         Dim bSucces As Boolean = True
-
 
         'Get the time series
         ts = DirectCast(Me.m_shape, cTimeSeries)

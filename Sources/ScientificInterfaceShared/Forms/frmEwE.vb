@@ -12,8 +12,6 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Forms
 
     ''' ---------------------------------------------------------------------------
@@ -255,7 +253,6 @@ Namespace Forms
                     Me.UIContext.FormSettings.Apply(Me)
                 End If
             End If
-
 
             ' Set form icon based on core state
             Select Case Me.CoreExecutionState

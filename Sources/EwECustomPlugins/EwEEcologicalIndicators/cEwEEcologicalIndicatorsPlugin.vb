@@ -18,8 +18,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class that connects to the core plug-in points. All indicator computations
@@ -105,7 +103,6 @@ Public Class cEwEEcologicalIndicatorsPlugin
         AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsPropertyChanged
 
     End Sub
-
 
 #End Region ' Construction
 

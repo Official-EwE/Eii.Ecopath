@@ -15,7 +15,6 @@ Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls
 Imports Debug = System.Diagnostics.Debug
 
-
 Public Class cMSEPluginPoint
     Implements IMenuItemPlugin
     Implements ICorePlugin
@@ -197,7 +196,6 @@ Public Class cMSEPluginPoint
         Me.m_mhEcosim.Dispose()
         Me.m_mhSettings.Dispose()
 
-
     End Sub
 
     Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) _
@@ -275,7 +273,6 @@ Public Class cMSEPluginPoint
         End Try
 
     End Sub
-
 
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) _
         Implements IEcosimEndTimestepPlugin.EcosimEndTimeStep

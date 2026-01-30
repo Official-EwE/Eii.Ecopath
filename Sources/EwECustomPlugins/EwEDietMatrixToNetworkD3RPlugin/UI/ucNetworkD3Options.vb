@@ -5,8 +5,6 @@
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
 
-
-
 Public Class ucNetworkD3Options
     Implements IOptionsPage
 

@@ -11,8 +11,6 @@ Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to change diet multipliers.
@@ -183,5 +181,4 @@ Public Class gridDiets
 #End Region ' Overrides
 
 End Class
-
 

@@ -6,8 +6,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Ecotracer
 
     ''' <summary>
@@ -56,7 +54,6 @@ Namespace Ecotracer
             Me.UpdateControls()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Ecosim, eCoreComponentType.Ecospace}
-
 
         End Sub
 

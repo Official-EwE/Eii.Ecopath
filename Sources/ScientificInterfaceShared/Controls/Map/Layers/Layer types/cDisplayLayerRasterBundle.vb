@@ -5,8 +5,6 @@
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 
-
-
 Namespace Controls.Map.Layers
 
     ''' -------------------------------------------------------------------

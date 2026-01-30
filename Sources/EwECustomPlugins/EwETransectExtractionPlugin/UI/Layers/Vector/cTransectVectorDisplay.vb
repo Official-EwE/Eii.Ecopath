@@ -6,8 +6,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 
-
-
 Public Class cTransectVectorDisplay
     Inherits cDisplayLayer
 

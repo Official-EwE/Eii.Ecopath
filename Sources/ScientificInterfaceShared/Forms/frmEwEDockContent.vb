@@ -7,8 +7,6 @@ Imports ScientificInterfaceShared.Extensions
 Imports ScientificInterfaceShared.Style
 Imports WeifenLuo.WinFormsUI.Docking
 
-
-
 Namespace Forms
 
     ''' =======================================================================
@@ -213,7 +211,6 @@ Namespace Forms
             Me.Pulse(cStyleGuide.GetImage(Me.m_importancePulse), iNumPulses)
 
         End Sub
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>

@@ -90,7 +90,6 @@ Public Class cPrebalModel
         PQ
     End Enum
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Update the data for the pre-bal diagnostics. Call this after Ecopath has ran.

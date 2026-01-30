@@ -11,7 +11,6 @@ Public Class frmSelectPredatorPrey
 
     Public Event FormExited()
 
-
     Public Sub New(i As cSelectionData, ByRef p As cCore)
         MyBase.New(i, p)
         ' This call is required by the Windows Form Designer.

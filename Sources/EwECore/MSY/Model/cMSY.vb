@@ -7,8 +7,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace MSY
 
     ''' -----------------------------------------------------------------------
@@ -376,7 +374,6 @@ Namespace MSY
 
         End Function
 
-
         Friend Function InitForSingleRun() As Boolean
 
             Try
@@ -394,7 +391,6 @@ Namespace MSY
             Return True
 
         End Function
-
 
         Friend Sub setForcedGroupB()
 
@@ -669,7 +665,6 @@ Namespace MSY
 
             End If
 
-
         End Sub
 
         Private Function runSingleSpeciesToDepletion() As Boolean
@@ -868,7 +863,6 @@ Namespace MSY
 
             End If
 
-
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'EwE5
             'If GearShow = 0 Then
@@ -880,9 +874,7 @@ Namespace MSY
             'End If
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
         End Sub
-
 
         ''' <summary>
         ''' Runs the Ecosim rk4 for length of time set in Me.m_msyData.nYearsPerTrial
@@ -921,7 +913,6 @@ Namespace MSY
 
         End Function
 
-
         Private Function getTotalValue(FishingMort() As Single, Biomass() As Single) As Single
             Dim value As Single
 
@@ -937,7 +928,6 @@ Namespace MSY
 
             Return value
         End Function
-
 
         Private Sub getEcosimRunResults(F As Single, bIncrementing As Boolean)
             Try
@@ -984,7 +974,6 @@ Namespace MSY
             End Try
 
         End Sub
-
 
         Private Sub getFMSYResults()
             Try
@@ -1226,6 +1215,4 @@ Namespace MSY
     End Class
 
 End Namespace
-
-
 

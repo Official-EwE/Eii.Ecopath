@@ -4,8 +4,6 @@
 
 Imports EwECore.Style
 
-
-
 ''' <summary>
 ''' Layer providing access to Ecospace Primarey Production data.
 ''' </summary>

@@ -8,8 +8,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class dlgManageTimeSeries
 
 #Region " Helper classes "
@@ -569,7 +567,6 @@ Public Class dlgManageTimeSeries
         Me.m_dgvImportPreview.ColumnCount = tsrPreview.ColumnCount
         Me.m_dgvImportPreview.RowCount = tsrPreview.RowCount + 1
 
-
     End Sub
 
     Private Sub m_dgvImportPreview_CellValueNeeded(sender As Object, e As DataGridViewCellValueEventArgs) _
@@ -696,7 +693,6 @@ Public Class dlgManageTimeSeries
         Dim msg As New cMessage(cStringUtils.Localize("Imported {0} time serie(s), {1} forcing function(s) into {2}. {3} error(s) occurred", iNumTS, iNumForcing, Me.DatasetName, iNumError),
                                 eMessageType.DataImport, eCoreComponentType.Ecosim, If(iNumError = 0, eMessageImportance.Information, eMessageImportance.Critical))
         Me.m_uic.Core.Messages.SendMessage(msg)
-
 
         ' Release appropriate level (this will reload the time series definitions)
         Me.m_uic.Core.ReleaseBatchLock(clf, bSucces)

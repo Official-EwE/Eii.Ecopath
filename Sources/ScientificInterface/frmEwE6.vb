@@ -64,7 +64,6 @@ Public Class frmEwE6
     Private m_bIsInitialized As Boolean = False
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmEwE6)()
 
-
 #Region " Panels "
 
     Private Const cPANEL_REMARKS As String = "remarks"
@@ -1877,7 +1876,6 @@ Public Class frmEwE6
         Next
         ' Eradicate menu items
         Me.m_tsmiFileRecent.DropDownItems.Clear()
-
 
         For Each item In Me.m_tsbEcopath.DropDownItems
             If (item.Tag IsNot Nothing) Then
@@ -5281,7 +5279,6 @@ Public Class frmEwE6
     Private Sub OnModelNameChanged(prop As cProperty, cf As cProperty.eChangeFlags)
         Me.UpdateModelControls()
     End Sub
-
 
 #End Region  ' Event handlers
 

@@ -9,8 +9,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class frmEcopathDietTreeMaps
 
 #Region " Private vars "

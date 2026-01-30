@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.Map.Layers
 
     Public Class ucLayerEditorSailCost

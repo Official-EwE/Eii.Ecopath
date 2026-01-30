@@ -6,8 +6,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Properties
 Imports SourceGrid2.VisualModels
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Cell that provides edit capabilities of the remark text of a <see cref="cProperty"/>, 

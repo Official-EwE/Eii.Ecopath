@@ -7,8 +7,6 @@ Imports EwECore.Style
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Supported property sort modes.

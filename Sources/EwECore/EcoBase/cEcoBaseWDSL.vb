@@ -10,7 +10,6 @@
 ' Converted VB file contained errors in the event firing logic, which were fixed by hand
 ' ===============================================================================
 
-
 Namespace WebServices
 
 #If NETFRAMEWORK Then

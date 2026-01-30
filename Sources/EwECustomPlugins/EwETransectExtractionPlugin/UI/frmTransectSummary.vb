@@ -14,8 +14,6 @@ Imports ScientificInterfaceShared.Style
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ' ToDo: show transect cell coordinates in value tooltip. This requires overriding zedgraph 
 
 Public Class frmTransectSummary

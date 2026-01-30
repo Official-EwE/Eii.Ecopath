@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Database
 
     ''' -----------------------------------------------------------------------
@@ -222,7 +220,6 @@ Namespace Database
 
                 Next K
 
-
                 '' "Read DietComp"
                 ReDim ecopathDS.DietChanged(1, 0)
                 For K = 1 To ecopathDS.NumGroups
@@ -270,7 +267,6 @@ Namespace Database
                 buff = eiiStrm.ReadLine()
                 'Input(fnum, jnk)
 
-
                 buff = eiiStrm.ReadLine()
                 recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
 
@@ -285,7 +281,6 @@ Namespace Database
                 'the ecosystem remarks.
                 'junk
                 buff = eiiStrm.ReadLine()
-
 
                 'parms.Bomass accumulation added March 95/VC
                 '-91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  0  -92  0 

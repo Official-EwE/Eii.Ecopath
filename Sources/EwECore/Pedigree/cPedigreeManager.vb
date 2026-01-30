@@ -7,8 +7,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class that contains and distributes <see cref="cPedigreeLevel">pedigree levels</see>,

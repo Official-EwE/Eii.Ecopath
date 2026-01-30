@@ -12,8 +12,6 @@ Imports ScientificInterfaceShared.Style
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' =======================================================================
 ''' <summary>
 ''' Form, implementing the Cefas MSE Fishing policy mortality (a.k.a hockey stick) 
@@ -626,5 +624,4 @@ Public Class frmTFMpolicy
 #End Region ' Dragging
 
 End Class
-
 

@@ -9,8 +9,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map
 
-
-
 Namespace Style
 
     ''' <summary>
@@ -123,7 +121,6 @@ Namespace Style
         Public Sub RemoveAll()
             Me.m_dtEntries.Clear()
         End Sub
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>

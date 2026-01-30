@@ -6,8 +6,6 @@ Imports EwECore.Style
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.EwEGrid
 
     ''' -----------------------------------------------------------------------

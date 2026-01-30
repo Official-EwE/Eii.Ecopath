@@ -6,8 +6,6 @@ Option Explicit On
 Imports EwECore
 Imports EwECore.Common
 
-
-
 Public Class cLandingsLinkManager
 
     Private m_data As cData = Nothing

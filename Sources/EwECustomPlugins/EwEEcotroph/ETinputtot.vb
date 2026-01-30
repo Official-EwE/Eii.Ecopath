@@ -6,8 +6,6 @@ Imports System.IO
 Imports System.Xml.Serialization
 Imports EwECore.Common
 
-
-
 Public Class ETinputtot
 
     Public ModelName As String

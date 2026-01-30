@@ -5,8 +5,6 @@
 Imports System.IO
 Imports EwEUtils.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Reads one or more time series from a text input source.

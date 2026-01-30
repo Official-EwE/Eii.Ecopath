@@ -4,8 +4,6 @@
 
 Imports EwECore.ValueWrapper
 
-
-
 Namespace SearchObjectives
 
     'ValWeights uses the same array indexes to store different values
@@ -63,7 +61,6 @@ Namespace SearchObjectives
                 Me.SetVariable(eVarNameFlags.FPSFleetJobCatchValue, value)
             End Set
         End Property
-
 
         Public Property TargetProfitability() As Single
             Get
@@ -214,10 +211,8 @@ Namespace SearchObjectives
 
 #Region "Groups "
 
-
     Public Class cSearchObjectiveGroupInput
         Inherits cCoreGroupBase
-
 
         Public Sub New(core As cCore, DBID As Integer)
             MyBase.New(core)
@@ -252,7 +247,6 @@ Namespace SearchObjectives
             Me.AllowValidation = True
 
         End Sub
-
 
         Public Property MandRelBiom() As Single
             Get
@@ -338,7 +332,6 @@ Namespace SearchObjectives
 
         End Sub
 
-
         Public Property DiscountRate() As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.SearchDiscountRate))
@@ -348,7 +341,6 @@ Namespace SearchObjectives
                 Me.SetVariable(eVarNameFlags.SearchDiscountRate, value)
             End Set
         End Property
-
 
         Public Property GenDiscRate() As Single
             Get
@@ -360,7 +352,6 @@ Namespace SearchObjectives
             End Set
         End Property
 
-
         Public Property BaseYear() As Integer
             Get
                 Return CInt(Me.GetVariable(eVarNameFlags.SearchBaseYear))
@@ -371,7 +362,6 @@ Namespace SearchObjectives
             End Set
         End Property
 
-
         Public Property PrevCostEarning() As Boolean
             Get
                 Return CBool(Me.GetVariable(eVarNameFlags.SearchPrevCostEarning))
@@ -381,7 +371,6 @@ Namespace SearchObjectives
                 Me.SetVariable(eVarNameFlags.SearchPrevCostEarning, value)
             End Set
         End Property
-
 
         Public Property FishingMortalityPenalty() As Boolean
             Get
