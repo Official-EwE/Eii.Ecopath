@@ -7,8 +7,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Controls.Map
 
     ''' ---------------------------------------------------------------------------

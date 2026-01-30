@@ -8,8 +8,6 @@ Imports EwECore.Auxiliary
 Imports EwEUtils.UserInterface
 Imports EwEUtils.Utilities
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' On-board helper class that actively updates model-derived settings in the style guide.

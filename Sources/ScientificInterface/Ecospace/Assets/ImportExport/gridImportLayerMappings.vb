@@ -6,10 +6,7 @@ Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecospace.Basemap
-
 
     Public Class gridImportLayerMappings
         Inherits cEwEGrid
@@ -102,7 +99,6 @@ Namespace Ecospace.Basemap
 
             Me.FixedColumns = 1
             Me.FixedColumnWidths = False
-
 
         End Sub
 

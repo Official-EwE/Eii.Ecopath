@@ -4,8 +4,6 @@
 
 Imports System.Xml
 
-
-
 Public Interface IXMLDocSettings
 
     ''' -----------------------------------------------------------------------

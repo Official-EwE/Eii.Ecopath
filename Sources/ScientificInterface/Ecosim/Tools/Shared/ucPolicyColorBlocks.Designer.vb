@@ -7,7 +7,6 @@ Namespace Ecosim
     Partial Class ucPolicyColorBlocks
         Inherits System.Windows.Forms.UserControl
 
-
         'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer
 

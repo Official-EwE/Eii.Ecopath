@@ -12,7 +12,6 @@
 Public Class cEcospaceLayerIBMAge1Forcing
     Inherits cEcospaceLayerSingle
 
-
     Public Sub New(theCore As cCore, manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerIBMAge1Forcing, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerIBMAge1Forcing

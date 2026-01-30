@@ -4,7 +4,6 @@
 
 Imports EwECore.Database
 
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.40.0.02:</para>
@@ -119,6 +118,5 @@ Friend Class cDBUpdate6_40_00_02
         Return CInt(db.GetValue(strSQL))
 
     End Function
-
 
 End Class

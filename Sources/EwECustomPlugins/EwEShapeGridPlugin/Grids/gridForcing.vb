@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid for showing regular Forcing Functions.

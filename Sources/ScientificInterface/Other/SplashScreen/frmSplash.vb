@@ -6,8 +6,6 @@ Imports System.Text
 Imports EwELicense
 Imports EwEUtils.Utilities
 
-
-
 Friend Class frmSplash
 
     Public Sub New()
@@ -93,7 +91,6 @@ Friend Class frmSplash
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         Me.CenterToScreen()
-
 
         MyBase.OnLoad(e)
 

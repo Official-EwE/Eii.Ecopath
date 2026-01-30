@@ -5,8 +5,6 @@
 Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Commands
 
-
-
 Namespace Integration
 
     ''' ===========================================================================

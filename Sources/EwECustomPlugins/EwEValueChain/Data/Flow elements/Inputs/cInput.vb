@@ -4,8 +4,6 @@
 
 Imports EwECore
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' A value that entered a cUnit during processing.

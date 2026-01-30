@@ -23,7 +23,6 @@ Public Class cBetapdfShapeFunction
         End Get
     End Property
 
-
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.Shape"/>
     ''' <summary>

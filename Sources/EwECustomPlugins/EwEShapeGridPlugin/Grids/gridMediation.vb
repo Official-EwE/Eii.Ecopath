@@ -4,8 +4,6 @@
 
 Imports EwECore
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base class grid for showing <see cref="cMediationBaseFunction">mediation</see>-derived

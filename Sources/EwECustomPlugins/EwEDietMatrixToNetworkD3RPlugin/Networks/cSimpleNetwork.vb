@@ -6,8 +6,6 @@ Imports System.Text
 Imports EwECore
 Imports EwEUtils.Utilities
 
-
-
 Public Class cSimpleNetwork
     Inherits cNetwork
 

@@ -11,8 +11,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' <summary>
 ''' Grid class that shows how diets will be merged.
 ''' </summary>

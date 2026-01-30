@@ -82,7 +82,6 @@ Public Class cDatabaseReader
 
     End Function
 
-
     Private Function Validate(Core As EwECore.cCore) As Boolean
         Dim bPassed As Boolean = False
         Try
@@ -123,6 +122,5 @@ Public Class cDatabaseReader
         Return bPassed
 
     End Function
-
 
 End Class

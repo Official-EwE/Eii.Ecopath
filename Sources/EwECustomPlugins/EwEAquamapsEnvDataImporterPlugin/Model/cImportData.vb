@@ -4,8 +4,6 @@
 
 Imports EwECore
 
-
-
 ''' <summary>
 ''' Data for the Aquamaps distribution envelope import process.
 ''' </summary>

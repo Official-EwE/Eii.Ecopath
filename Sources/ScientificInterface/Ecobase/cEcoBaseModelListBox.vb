@@ -6,8 +6,6 @@ Imports EwECore.WebServices.Ecobase
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cEcoBaseModelListBox
     Inherits ScientificInterfaceShared.Controls.cFlickerFreeListBox
     Implements IUIElement

@@ -13,8 +13,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Public Class frmFleetTradeoffs
 
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmFleetTradeoffs)()

@@ -31,7 +31,6 @@ Public Class cFishingMortShape
 
     End Sub
 
-
     ''' <summary>
     ''' Initialize the propeties from the underlying EcoSim data structures at the existing array index (iEcoSimIndex)
     ''' </summary>

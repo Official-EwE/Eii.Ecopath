@@ -77,7 +77,6 @@ Namespace Other
 
 #Region " Interface implementation "
 
-
 #End Region ' Interface implementation
 
 #Region " Public interfaces "

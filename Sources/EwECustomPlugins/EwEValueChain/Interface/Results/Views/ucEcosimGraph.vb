@@ -6,8 +6,6 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' 

@@ -8,8 +8,6 @@ Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' <para>Helper class that loads and saves core autosave settings from a XML 

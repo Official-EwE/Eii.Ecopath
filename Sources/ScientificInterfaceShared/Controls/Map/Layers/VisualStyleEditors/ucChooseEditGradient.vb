@@ -6,8 +6,6 @@ Imports EwECore.Auxiliary
 Imports EwEUtils
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

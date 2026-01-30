@@ -165,7 +165,6 @@ Public Class cMarineRegionsWSDL
         Return CType(results(0), gazetteerRecord())
     End Function
 
-
     Public Overloads Sub getGazetteerRecordsBySourceAsync(gazetteerSource As String)
         Me.getGazetteerRecordsBySourceAsync(gazetteerSource, Nothing)
     End Sub
@@ -276,29 +275,24 @@ Public Class cMarineRegionsWSDL
         RaiseEvent getGazetteerRelationsByMRGIDCompleted(Me, New getGazetteerRelationsByMRGIDCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
-
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerWMSes", RequestNamespace:="http://gazetteer/v1.0/gazetteerWMSes", ResponseNamespace:="http://gazetteer/v1.0/gazetteerWMSes")>
     Public Function getGazetteerWMSes(MRGID As Integer) As gazetteerWMS()
         Dim results() As Object = Me.Invoke("getGazetteerWMSes", New Object() {MRGID})
         Return CType(results(0), gazetteerWMS())
     End Function
 
-
     Public Function BegingetGazetteerWMSes(MRGID As Integer, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerWMSes", New Object() {MRGID}, callback, asyncState)
     End Function
-
 
     Public Function EndgetGazetteerWMSes(asyncResult As System.IAsyncResult) As gazetteerWMS()
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), gazetteerWMS())
     End Function
 
-
     Public Overloads Sub getGazetteerWMSesAsync(MRGID As Integer)
         Me.getGazetteerWMSesAsync(MRGID, Nothing)
     End Sub
-
 
     Public Overloads Sub getGazetteerWMSesAsync(MRGID As Integer, userState As Object)
         If (Me.getGazetteerWMSesOperationCompleted Is Nothing) Then
@@ -406,29 +400,24 @@ Public Class cMarineRegionsWSDL
         RaiseEvent getGazetteerSourcesCompleted(Me, New getGazetteerSourcesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
-
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("getGazetteerNamesByMRGID", RequestNamespace:="http://gazetteer/v1.0/gazetteerNames", ResponseNamespace:="http://gazetteer/v1.0/gazetteerNames")>
     Public Function getGazetteerNamesByMRGID(MRGID As Integer) As String()
         Dim results() As Object = Me.Invoke("getGazetteerNamesByMRGID", New Object() {MRGID})
         Return CType(results(0), String())
     End Function
 
-
     Public Function BegingetGazetteerNamesByMRGID(MRGID As Integer, callback As System.AsyncCallback, asyncState As Object) As System.IAsyncResult
         Return Me.BeginInvoke("getGazetteerNamesByMRGID", New Object() {MRGID}, callback, asyncState)
     End Function
-
 
     Public Function EndgetGazetteerNamesByMRGID(asyncResult As System.IAsyncResult) As String()
         Dim results() As Object = Me.EndInvoke(asyncResult)
         Return CType(results(0), String())
     End Function
 
-
     Public Overloads Sub getGazetteerNamesByMRGIDAsync(MRGID As Integer)
         Me.getGazetteerNamesByMRGIDAsync(MRGID, Nothing)
     End Sub
-
 
     Public Overloads Sub getGazetteerNamesByMRGIDAsync(MRGID As Integer, userState As Object)
         If (Me.getGazetteerNamesByMRGIDOperationCompleted Is Nothing) Then
@@ -443,13 +432,11 @@ Public Class cMarineRegionsWSDL
         RaiseEvent getGazetteerNamesByMRGIDCompleted(Me, New getGazetteerNamesByMRGIDCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
     End Sub
 
-
     Public Shadows Sub CancelAsync(userState As Object)
         MyBase.CancelAsync(userState)
     End Sub
 
 End Class
-
 
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.6.1590.0"),
  System.SerializableAttribute(),
@@ -486,7 +473,6 @@ Public Class gazetteerRecord
 
     Private acceptedField As String
 
-
     Public Property MRGID As Integer
         Get
             Return Me.mRGIDField
@@ -495,7 +481,6 @@ Public Class gazetteerRecord
             Me.mRGIDField = Value
         End Set
     End Property
-
 
     Public Property preferredGazetteerName As String
         Get
@@ -506,7 +491,6 @@ Public Class gazetteerRecord
         End Set
     End Property
 
-
     Public Property preferredGazetteerNameLang As String
         Get
             Return Me.preferredGazetteerNameLangField
@@ -515,7 +499,6 @@ Public Class gazetteerRecord
             Me.preferredGazetteerNameLangField = Value
         End Set
     End Property
-
 
     Public Property placeType As String
         Get
@@ -526,7 +509,6 @@ Public Class gazetteerRecord
         End Set
     End Property
 
-
     Public Property latitude As String
         Get
             Return Me.latitudeField
@@ -535,7 +517,6 @@ Public Class gazetteerRecord
             Me.latitudeField = Value
         End Set
     End Property
-
 
     Public Property longitude As String
         Get
@@ -546,7 +527,6 @@ Public Class gazetteerRecord
         End Set
     End Property
 
-
     Public Property minLatitude As String
         Get
             Return Me.minLatitudeField
@@ -555,7 +535,6 @@ Public Class gazetteerRecord
             Me.minLatitudeField = Value
         End Set
     End Property
-
 
     Public Property maxLatitude As String
         Get
@@ -566,7 +545,6 @@ Public Class gazetteerRecord
         End Set
     End Property
 
-
     Public Property minLongitude As String
         Get
             Return Me.minLongitudeField
@@ -575,7 +553,6 @@ Public Class gazetteerRecord
             Me.minLongitudeField = Value
         End Set
     End Property
-
 
     Public Property maxLongitude As String
         Get
@@ -586,7 +563,6 @@ Public Class gazetteerRecord
         End Set
     End Property
 
-
     Public Property precision As String
         Get
             Return Me.precisionField
@@ -595,7 +571,6 @@ Public Class gazetteerRecord
             Me.precisionField = Value
         End Set
     End Property
-
 
     Public Property gazetteerSource As String
         Get
@@ -606,7 +581,6 @@ Public Class gazetteerRecord
         End Set
     End Property
 
-
     Public Property status As String
         Get
             Return Me.statusField
@@ -615,7 +589,6 @@ Public Class gazetteerRecord
             Me.statusField = Value
         End Set
     End Property
-
 
     Public Property accepted As String
         Get
@@ -638,7 +611,6 @@ Public Class gazetteerSource
 
     Private sourceURLField As String
 
-
     Public Property source As String
         Get
             Return Me.sourceField
@@ -647,7 +619,6 @@ Public Class gazetteerSource
             Me.sourceField = Value
         End Set
     End Property
-
 
     Public Property sourceURL As String
         Get
@@ -670,7 +641,6 @@ Public Class gazetteerType
 
     Private descriptionField As String
 
-
     Public Property type As String
         Get
             Return Me.typeField
@@ -679,7 +649,6 @@ Public Class gazetteerType
             Me.typeField = Value
         End Set
     End Property
-
 
     Public Property description As String
         Get
@@ -710,7 +679,6 @@ Public Class gazetteerWMS
 
     Private featureTypeField As String
 
-
     Public Property MRGID As Integer
         Get
             Return Me.mRGIDField
@@ -719,7 +687,6 @@ Public Class gazetteerWMS
             Me.mRGIDField = Value
         End Set
     End Property
-
 
     Public Property url As String
         Get
@@ -730,7 +697,6 @@ Public Class gazetteerWMS
         End Set
     End Property
 
-
     Public Property value As String
         Get
             Return Me.valueField
@@ -739,7 +705,6 @@ Public Class gazetteerWMS
             Me.valueField = Value
         End Set
     End Property
-
 
     Public Property [namespace] As String
         Get
@@ -750,7 +715,6 @@ Public Class gazetteerWMS
         End Set
     End Property
 
-
     Public Property featureName As String
         Get
             Return Me.featureNameField
@@ -759,7 +723,6 @@ Public Class gazetteerWMS
             Me.featureNameField = Me.value
         End Set
     End Property
-
 
     Public Property featureType As String
         Get
@@ -783,7 +746,6 @@ Public Class gazetteerRelation
     Private secondMRGIDField As Integer
 
     Private relationTypeField As String
-
 
     Public Property firstMRGID As Integer
         Get
@@ -942,7 +904,6 @@ Public Class getGazetteerRelationsByMRGIDCompletedEventArgs
         MyBase.New(exception, cancelled, userState)
         Me.results = Me.results
     End Sub
-
 
     Public ReadOnly Property Result As gazetteerRelation()
         Get

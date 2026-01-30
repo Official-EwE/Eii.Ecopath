@@ -4,8 +4,6 @@
 
 Imports EwECore
 
-
-
 ' ToDo:
 ' - Remove scenario storage to parameters, remove from container
 

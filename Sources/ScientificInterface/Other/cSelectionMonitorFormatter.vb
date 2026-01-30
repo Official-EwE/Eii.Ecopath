@@ -6,8 +6,6 @@ Imports EwECore.Style
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cSelectionMonitorFormatter
     Implements ITypeFormatter
 

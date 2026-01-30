@@ -8,7 +8,6 @@ Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
-
 Public Class cByGroup
     Inherits cContentManager
 

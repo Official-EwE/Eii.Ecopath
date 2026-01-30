@@ -4,8 +4,6 @@
 
 Imports System.Windows.Forms
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Dialog for adding existing units to a flow diagram.

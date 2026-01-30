@@ -5,10 +5,7 @@
 Imports EwECore.FishingPolicy
 Imports ZedGraph
 
-
-
 Namespace Ecosim
-
 
     Public Class cFPSKiteDiagramHelper
         Inherits cZedGraphKiteHelper

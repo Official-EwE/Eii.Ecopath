@@ -4,8 +4,6 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cNavTree61CP_CTL1_C
     Inherits cNavTree60CP_CPTL1
 

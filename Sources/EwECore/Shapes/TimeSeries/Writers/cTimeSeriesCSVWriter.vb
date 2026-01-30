@@ -5,8 +5,6 @@
 Imports System.IO
 Imports EwEUtils.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Write a time series dataset to a text output source.

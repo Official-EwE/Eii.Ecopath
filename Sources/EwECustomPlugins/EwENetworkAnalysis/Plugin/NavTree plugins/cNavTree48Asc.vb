@@ -4,8 +4,6 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cNavTree48Asc
     Inherits cNavTreeControlPlugin
 

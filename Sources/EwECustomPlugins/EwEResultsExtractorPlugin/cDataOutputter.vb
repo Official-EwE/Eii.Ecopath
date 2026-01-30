@@ -235,7 +235,6 @@ Public Class cDataOutputer
                 fDateTime.Hour.ToString & "-" & fDateTime.Minute.ToString & "-" _
                 & fDateTime.Second.ToString & ")"
 
-
         If Me.mFunctionalGroupData.Count > 0 Then
             fileName = My.Resources.FUNC_GROUP & CurrentTime
             FunctionalWB = ex.Workbooks.Add()
@@ -311,7 +310,6 @@ Public Class cDataOutputer
         ex.Quit()
 
     End Sub
-
 
 #Region " Message "
 

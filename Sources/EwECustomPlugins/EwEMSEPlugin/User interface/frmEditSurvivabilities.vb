@@ -7,7 +7,6 @@ Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
 Public Class frmEditSurvivabilities
     Implements IDisposable
 

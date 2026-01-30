@@ -245,7 +245,6 @@ Friend Class cMSEPlotter
             m_logger.LogError(ex, "cMSEPlotter.AddMean() Exception")
         End Try
 
-
     End Sub
 
     ''' <summary>
@@ -290,7 +289,6 @@ Friend Class cMSEPlotter
 
     End Sub
 
-
     Private Function getRefPoint(ItemIndex As Integer) As cMSERefPoint
 
         Dim refPoint As cMSERefPoint = Nothing
@@ -322,7 +320,6 @@ Friend Class cMSEPlotter
             System.Console.WriteLine(ex.Message)
             m_logger.LogError(ex, "getRefPoint")
         End Try
-
 
         Return refPoint
 
@@ -475,12 +472,10 @@ Friend Class cMSEPlotter
 
             End Select
 
-
             Return ""
 
         End Get
     End Property
-
 
     Private ReadOnly Property XLabel() As String
         Get
@@ -579,7 +574,6 @@ Friend Class cMSEPlotter
         End Try
 
     End Sub
-
 
     Private Sub PlotValues()
 

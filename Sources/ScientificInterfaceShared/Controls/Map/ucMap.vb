@@ -4,7 +4,6 @@
 
 Option Explicit On
 
-
 Imports System.ComponentModel
 Imports System.IO
 Imports System.Reflection
@@ -16,8 +15,6 @@ Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
-
-
 
 
 #Const DRAW_THREADED = 0
@@ -869,7 +866,6 @@ Namespace Controls.Map
                 Return Math.Min(CInt(bm.InCol / 10), CInt(bm.InRow / 10))
             End Get
         End Property
-
 
 #End Region ' Helper methods
 

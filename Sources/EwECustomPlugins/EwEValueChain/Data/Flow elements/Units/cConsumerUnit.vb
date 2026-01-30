@@ -5,8 +5,6 @@
 Imports System.ComponentModel
 Imports EwEUtils.Utilities
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' This class represents a group of Consumers in the Ecost economic model.

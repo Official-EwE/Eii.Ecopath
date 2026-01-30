@@ -1972,7 +1972,6 @@ Namespace Database
             '           once for every shape. These writers can be made global to the class, similar to the 
             '           remarks writer, or can have local scope, to be passed on to the writing methods.
 
-
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Ecosim nshapes] WHERE modelName='{0}'", Me.m_strModelName))
             If reader Is Nothing Then Return
 

@@ -15,8 +15,6 @@ Imports ScientificInterfaceShared.Utilities
 Imports ZedGraph
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' User control that allows users to align a response function to environmental 
 ''' data. This control contains a graph showing a histogram for selected environmental 

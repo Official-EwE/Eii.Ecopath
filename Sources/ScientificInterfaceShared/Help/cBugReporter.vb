@@ -6,8 +6,6 @@ Imports System.Reflection
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Helper class for generating a bug report to be sent via the shell.

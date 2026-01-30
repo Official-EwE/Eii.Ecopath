@@ -8,8 +8,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Other
 
     ''' =======================================================================
@@ -48,7 +46,6 @@ Namespace Other
             Me.Text = cStringUtils.Localize(My.Resources.ABOUT_CAPTION, My.Resources.GENERIC_CAPTION)
             Me.m_lbTitle.Text = EwEVersion(True, True, False)
             Me.m_lbVersion.Text = EwERelease()
-
 
             Me.m_lbCopyright.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 

@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterface.Wizard
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecosim
 
     ''' =======================================================================

@@ -8,8 +8,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Commands
 
     ''' ---------------------------------------------------------------------------

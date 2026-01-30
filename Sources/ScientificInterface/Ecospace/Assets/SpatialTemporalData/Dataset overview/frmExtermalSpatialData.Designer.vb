@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecospace
 
     Partial Class frmSpatialTimeSeries

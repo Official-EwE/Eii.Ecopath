@@ -45,5 +45,4 @@ Friend Class cDBUpdate6_02_00_04
         Return bSucces
     End Function
 
-
 End Class

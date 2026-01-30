@@ -420,7 +420,6 @@ Namespace SpatialData
 
         End Function
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns an array of data converter templates compatible with a <see cref="ISpatialDataSet"/>.

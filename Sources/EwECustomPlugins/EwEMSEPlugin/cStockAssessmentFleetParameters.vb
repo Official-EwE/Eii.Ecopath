@@ -4,7 +4,6 @@
 
 #Region "Imports"
 
-
 Option Explicit On
 
 Imports EwECore
@@ -27,13 +26,11 @@ Public Class cStockAssessmentFleetParameters
         Me.m_epData = EcoPathData
     End Sub
 
-
     Public ReadOnly Property Name As String
         Get
             Return Me.m_epData.FleetName(Me.m_iFlt)
         End Get
     End Property
-
 
     Public Property cvImpError As Single
         Get
@@ -65,16 +62,13 @@ Public Class cStockAssessmentFleetParameters
 
     End Function
 
-
     Public Function toCSVString() As String
         Return cStringUtils.ToCSVField(Me.Name) + "," + cStringUtils.ToCSVField(Me.iFleetIndex) + "," +
             cStringUtils.ToCSVField(Me.cvImpError)
     End Function
 
-
     Public Shared Function toCSVHeader() As String
         Return "'FleetName','FleetIndex','FleetImplementationError'"
     End Function
 End Class
-
 

@@ -4,8 +4,6 @@
 
 Imports EwECore.Core
 
-
-
 ''' <summary>
 ''' Base layer providing access to Ecospace data as cells of integer values.
 ''' </summary>

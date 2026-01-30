@@ -8,8 +8,6 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Utilities
 
-
-
 Public Class cBiomassLimits
     Implements IMSEData
 
@@ -79,8 +77,6 @@ Public Class cBiomassLimits
     'Public Function SaveLimitsToCSV() As Boolean
 
     'End Function
-
-
 
     Public Function GetUpperLimit(iGrp As Integer) As Double
         For Each iBiomassLimit In Me.lstBiomassLimits
@@ -275,7 +271,6 @@ Public Class cBiomassLimits
         'End If
 
         'Return breturn
-
 
         If (String.IsNullOrWhiteSpace(strFilename)) Then
             strFilename = Me.DefaultFileName

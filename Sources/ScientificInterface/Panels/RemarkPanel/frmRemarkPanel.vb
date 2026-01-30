@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Panel that provides details for a selected core value. From here, remarks

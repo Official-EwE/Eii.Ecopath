@@ -5,7 +5,6 @@
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
-
 Partial Class frmCEFASRecruitment
     Inherits frmEwE
 
@@ -176,5 +175,4 @@ Partial Class frmCEFASRecruitment
     Private WithEvents m_grid As EwEMSEPlugin.gridCEFASRecruitment
 
 End Class
-
 

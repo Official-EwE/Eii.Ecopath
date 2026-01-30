@@ -5,8 +5,6 @@
 Imports System.Reflection
 Imports EwEUtils.Utilities
 
-
-
 <CodeAnalysis.SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification:="We know what we're doing! Really!")>
 Public Class cDataTableEnumerator(Of T)
     Implements IEnumerator(Of T)
@@ -52,7 +50,6 @@ Public Class cDataTableEnumerator(Of T)
                     Dim pt As Type = prop.PropertyType
                     Dim st As Type = val.GetType()
                     Dim bNeedDefault As Boolean = False
-
 
                     ' Fix DBNull
                     If Convert.IsDBNull(val) Then

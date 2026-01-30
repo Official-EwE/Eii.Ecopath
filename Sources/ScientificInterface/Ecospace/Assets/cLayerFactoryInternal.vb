@@ -6,8 +6,6 @@ Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
-
-
 Namespace Ecospace.Basemap.Layers
 
     ''' =======================================================================

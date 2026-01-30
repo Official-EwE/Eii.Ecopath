@@ -6,8 +6,6 @@ Imports EwECore.Common
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid to edit the varying number of parameters of a <see cref="IShapeFunction">shape function</see>.
@@ -128,7 +126,6 @@ Public Class gridShapeFunctionParameters
         MyBase.Update()
         Me.UpdateValues()
     End Sub
-
 
     Private Sub UpdateValues()
         Try

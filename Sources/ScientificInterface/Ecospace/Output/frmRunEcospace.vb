@@ -906,7 +906,6 @@ Namespace Ecospace
                     strName = ecopathDS.FleetName(iFleet)
                 End If
 
-
                 If Me.StyleGuide.ShowMapsDateInLabels Then
                     strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, strName, strDate)
                 Else
@@ -929,8 +928,6 @@ Namespace Ecospace
 #End Region ' Map 
 
 #Region " Events "
-
-
 
         Private Sub OnOutputTabSelected(sender As Object, e As System.EventArgs) _
             Handles m_tcOutputs.SelectedIndexChanged
@@ -1174,7 +1171,6 @@ Namespace Ecospace
 
         End Sub
 
-
         Private Sub onGraphTypeCheckedChanged(sender As Object, e As System.EventArgs) _
             Handles m_rbRelBiomassGraph.CheckedChanged, m_rbConsumpGraph.CheckedChanged, m_rbFishMortGraph.CheckedChanged, m_rbPredMortGraph.CheckedChanged, m_rbCatchGraph.CheckedChanged
 
@@ -1353,7 +1349,6 @@ Namespace Ecospace
                 Me.CalcMapDimension(Me.Core.nFleets, Me.m_iNumPlotsVert, Me.m_iNumPlotsHorz)
             End If
 
-
             Me.AppendPlotData()
             Me.m_pbMap.Invalidate()
             'Me.UpdateControls()
@@ -1478,7 +1473,6 @@ Namespace Ecospace
 
         End Sub
 
-
         Private Sub initMapsOverBiomass(TimeStepData As cEcospaceTimestep)
             Dim bContaminantsOn As Boolean = False
 
@@ -1510,7 +1504,6 @@ Namespace Ecospace
             End Try
 
         End Sub
-
 
         Private Sub ClearResults()
 
@@ -1771,7 +1764,6 @@ Namespace Ecospace
             End If
 
         End Sub
-
 
         Private Sub InitLocalMemory(TimeStepData As cEcospaceTimestep)
             Dim size As Integer = (TimeStepData.inCols + 1) * (TimeStepData.inRows + 1) * (Me.Core.nGroups + 1)

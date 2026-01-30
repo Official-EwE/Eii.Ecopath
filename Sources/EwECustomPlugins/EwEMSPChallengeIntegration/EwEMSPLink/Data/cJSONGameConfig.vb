@@ -7,8 +7,6 @@ Imports EwECore
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' JSON file serialization class that reads a game configuration.

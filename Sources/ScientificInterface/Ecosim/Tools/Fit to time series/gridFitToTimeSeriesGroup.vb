@@ -7,7 +7,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
-
     Public Class gridFitToTimeSeriesGroup
         Inherits cEwEGrid
 
@@ -77,5 +76,4 @@ Namespace Ecosim
     End Class
 
 End Namespace
-
 

@@ -9,8 +9,6 @@ Imports EwECore
 Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
 
-
-
 Public Class cDiets
     Implements IMSEData
 

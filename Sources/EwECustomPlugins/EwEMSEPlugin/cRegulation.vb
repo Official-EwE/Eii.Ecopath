@@ -7,8 +7,6 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Utilities
 
-
-
 ' TO MARK:
 ' JS 05May14: Sorry, hijacked this file and simplified things a bit:
 ' - Regulations are stored in a 'sister file' to a strategy rather than in the strategy 

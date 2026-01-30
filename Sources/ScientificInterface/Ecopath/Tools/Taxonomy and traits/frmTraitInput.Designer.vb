@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecopath.Input
 
     Partial Class frmTaxonInput

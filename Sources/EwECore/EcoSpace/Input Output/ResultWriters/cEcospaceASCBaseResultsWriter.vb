@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base Class for ASC Specific Writers that implement <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 

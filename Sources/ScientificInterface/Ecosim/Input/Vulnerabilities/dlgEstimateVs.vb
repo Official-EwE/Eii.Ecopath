@@ -5,8 +5,6 @@
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecosim
 
     ''' =======================================================================

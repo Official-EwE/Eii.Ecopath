@@ -4,8 +4,6 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid class for showing MPA optimizations progress information.

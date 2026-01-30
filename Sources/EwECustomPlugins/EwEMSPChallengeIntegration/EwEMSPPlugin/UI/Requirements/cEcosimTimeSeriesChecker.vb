@@ -5,8 +5,6 @@
 Imports EwECore
 Imports EwECore.Common
 
-
-
 Namespace UI
 
     ''' ---------------------------------------------------------------------------

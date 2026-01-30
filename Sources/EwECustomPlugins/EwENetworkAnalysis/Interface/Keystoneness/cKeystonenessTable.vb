@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style.cStyleGuide
 
 
-
-
 Public Class cKeystonenessTable
     Inherits cContentManager
 

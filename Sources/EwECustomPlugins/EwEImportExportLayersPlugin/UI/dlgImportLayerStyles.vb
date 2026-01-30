@@ -11,8 +11,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class dlgImportLayerStyles
 
     Private m_uic As cUIContext = Nothing

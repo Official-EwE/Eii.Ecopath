@@ -5,7 +5,6 @@
 Imports EwECore.MSE
 Imports ZedGraph
 
-
 Public Class frmMSERunBatch
 
     ' ToDo: Add XML comments
@@ -32,7 +31,6 @@ Public Class frmMSERunBatch
         Me.m_BatchManager.onMessageDelegate = AddressOf Me.onMSEBatchMessage
 
     End Sub
-
 
     Private Sub btRunBatch_Click(sender As Object, e As System.EventArgs) Handles btRunBatch.Click
 
@@ -68,13 +66,10 @@ Public Class frmMSERunBatch
                     Me.m_btStop.Enabled = False
                     Me.btRunBatch.Enabled = True
 
-
             End Select
         Catch ex As Exception
 
         End Try
-
-
 
         ' Next
 

@@ -7,8 +7,6 @@ Imports System.Security.AccessControl
 Imports EwEUtils.Utilities
 Imports Microsoft.Win32
 
-
-
 ''' <summary>
 ''' https://stackoverflow.com/questions/57850624/prevent-a-computer-from-entering-sleep-standby-hibernate-while-program-is-runnin
 ''' </summary>

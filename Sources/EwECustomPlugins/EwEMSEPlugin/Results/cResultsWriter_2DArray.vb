@@ -42,7 +42,6 @@ Public Class cResultsWriter_2DArray
             Me.Start_index_for_iGrp = 1
         End If
 
-
         ReDim Me.m_StreamWriters(Me.m_ResultsArray.nFleets, Me.m_ResultsArray.nGroups)
 
         For iGrp As Integer = Me.Start_index_for_iGrp To Me.m_Core.nGroups

@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' EwE 6.6 Monte Carlo result writer, using separate files for baseline, 

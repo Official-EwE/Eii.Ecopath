@@ -7,8 +7,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
 
-
-
 Namespace WebServices.Ecobase
 
     ''' -----------------------------------------------------------------------

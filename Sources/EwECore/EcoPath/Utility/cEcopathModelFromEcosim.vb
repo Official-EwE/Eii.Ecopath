@@ -92,7 +92,6 @@ Public Class cEcopathModelFromEcosim
         SetToZero
     End Enum
 
-
     Public Function InitRun(strOutputPath As String) As Boolean
 
         Me.m_msgStatus = New cMessage(My.Resources.CoreMessages.MODELFROMSIM_GENERATED, eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
@@ -144,8 +143,6 @@ Public Class cEcopathModelFromEcosim
         Return Me.SaveModel(strFileName, strModelName, iTime, Me.m_data.BACalcMode, iNumYearsAverage, WeightPower)
 
     End Function
-
-
 
     Public Sub LogStatus(strStatus As String, status As eStatusFlags)
 

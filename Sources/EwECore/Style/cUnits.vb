@@ -5,8 +5,6 @@
 Imports System.Text
 Imports EwEUtils.Utilities
 
-
-
 ' ToDo: add Distance unit (km, mi, etc), to be used by Area and Mapping
 
 Namespace Style

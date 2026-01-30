@@ -92,7 +92,6 @@ Public Class cEcosimMortalityResponseManager
         End Get
     End Property
 
-
     Public ReadOnly Property InputData(ByVal iDataIndex As Integer) As IEnviroInputData Implements IEnvironmentalResponseManager.EnviroData
         Get
             If iDataIndex > 0 And iDataIndex <= Me.nInputData Then
@@ -114,13 +113,11 @@ Public Class cEcosimMortalityResponseManager
         Debug.Print(Me.ToString + ".Update() not implemented yet!")
     End Sub
 
-
     Public ReadOnly Property MediationData As cMediationDataStructures Implements IEnvironmentalResponseManager.MediationData
         Get
             Return Me.m_medData
         End Get
     End Property
-
 
     Public ReadOnly Property SimData As cEcosimDatastructures Implements IEnvironmentalResponseManager.SimData
         Get
@@ -128,14 +125,12 @@ Public Class cEcosimMortalityResponseManager
         End Get
     End Property
 
-
     Public ReadOnly Property SpaceData As cEcospaceDataStructures Implements IEnvironmentalResponseManager.SpaceData
         Get
             Debug.Assert(False, Me.ToString + ".SpaceData() not valid for this implementation.")
             Return Nothing
         End Get
     End Property
-
 
     Private Sub CheckResponseOverlap(EnviroFuntion As cEcosimEnviroInputData, iGrp As Integer)
         Dim msg As New Text.StringBuilder

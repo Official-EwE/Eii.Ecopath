@@ -14,8 +14,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace SystemUtilities
 
     ''' <summary>
@@ -279,7 +277,6 @@ Namespace SystemUtilities
         Public Shared Function Platform() As System.PlatformID
             Return Environment.OSVersion.Platform
         End Function
-
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

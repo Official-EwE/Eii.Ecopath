@@ -266,7 +266,6 @@ Public Class cValueChainPlugin
     Public Function LoadModel(dataSource As Object) As Boolean _
         Implements IEcopathPlugin.LoadModel
 
-
         ' Sanity checks
         Debug.Assert(Me.m_data.IsChanged() = False)
 
@@ -417,7 +416,6 @@ Public Class cValueChainPlugin
         ' Abort if not allowed to run with Ecosim
         If (parms.RunWithEcosim = False) Then Return
 
-
         If (Me.m_dataBroadcaster IsNot Nothing) Then
             Me.m_dataBroadcaster.BroadcastData(Me.Name, Me.m_ddx)
         End If
@@ -485,7 +483,6 @@ Public Class cValueChainPlugin
     Private Function GetValue(vn As cResults.eVariableType, iTimeStep As Integer, iFleet As Integer) As Single
         Return Me.m_result.GetTimeStepTotal(vn, iTimeStep, Nothing, iFleet, cResults.GetVariableContributionType(vn))
     End Function
-
 
     Public Sub Broadcaster(broadcaster As IDataBroadcaster) _
         Implements IDataProducerPlugin.Broadcaster

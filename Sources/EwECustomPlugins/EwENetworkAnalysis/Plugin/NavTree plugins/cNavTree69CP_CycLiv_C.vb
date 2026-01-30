@@ -4,8 +4,6 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cNavTree69CP_CycLiv_C
     Inherits cNavTree68CP_CycLiv
 

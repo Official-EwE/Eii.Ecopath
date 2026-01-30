@@ -14,8 +14,6 @@ Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
-
-
 ' ToDo: add leniency to date parsing (yy vs yyyy, M vs MM)
 
 Public Class cMPADynamicsEngine
@@ -272,7 +270,6 @@ Public Class cMPADynamicsEngine
             Return lStates
         End Get
     End Property
-
 
     'Public Function LoadExcel(strExcel As String) As Boolean
     '    Me.Clear()

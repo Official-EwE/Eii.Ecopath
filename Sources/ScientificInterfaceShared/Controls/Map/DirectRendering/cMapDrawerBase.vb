@@ -7,8 +7,6 @@ Option Explicit On
 Imports System.Threading
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.Map
 
     ''' ---------------------------------------------------------------------------

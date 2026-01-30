@@ -5,8 +5,6 @@
 Imports System.Text
 Imports EwEUtils.Utilities
 
-
-
 Namespace Style
 
     ''' ---------------------------------------------------------------------------

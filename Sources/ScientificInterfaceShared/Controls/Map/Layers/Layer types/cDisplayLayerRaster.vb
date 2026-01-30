@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.Map.Layers
 
     ''' <summary>

@@ -6,8 +6,6 @@ Imports System.ComponentModel
 Imports EwECore.Database
 Imports EwEUtils.Utilities
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Class for holding default link properties, used when forging new links 

@@ -408,7 +408,6 @@ Public Class cWoRMSPluginPoint
             Next
         End If
 
-
         ' Create new results
         Me.m_results = New cWoRMSTaxonSearchResults(Me.m_term, lResults.ToArray(), cTypeUtils.TypeToString(Me.GetType))
         ' Broadcast results

@@ -11,8 +11,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
 
-
-
 ''' <summary>
 ''' Grid class that shows how basic input parameters will be merged.
 ''' </summary>

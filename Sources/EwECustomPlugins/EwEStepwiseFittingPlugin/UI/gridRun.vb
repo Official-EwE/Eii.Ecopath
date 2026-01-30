@@ -8,8 +8,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class gridRun
     Inherits cEwEGrid
 

@@ -7,8 +7,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
-
-
 Namespace Ecospace.Advection
 
     Public Class frmAdvection

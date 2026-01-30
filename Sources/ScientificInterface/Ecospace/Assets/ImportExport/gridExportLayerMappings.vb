@@ -5,10 +5,7 @@
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecospace.Basemap
-
 
     Public Class gridExportLayerMappings
         Inherits cEwEGrid

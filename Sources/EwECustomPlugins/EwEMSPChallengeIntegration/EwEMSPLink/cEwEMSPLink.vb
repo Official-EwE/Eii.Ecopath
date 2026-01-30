@@ -11,8 +11,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' MEL contact point for interacting with Ecospace.
 ''' </summary>
@@ -22,7 +20,6 @@ Public Class cEwEMSPLink
 
     Private m_game As cGame = Nothing
     Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEMSPLink)()
-
 
 #End Region ' Private vars
 

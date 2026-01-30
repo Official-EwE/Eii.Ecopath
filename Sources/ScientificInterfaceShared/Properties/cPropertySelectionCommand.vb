@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Commands
 Imports SourceGrid2
 
-
-
 Namespace Properties
 
     ''' ---------------------------------------------------------------------------

@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' 

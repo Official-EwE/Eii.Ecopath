@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Controls
 
     ' ToDo_JS: add plot to to preview selected shape contour

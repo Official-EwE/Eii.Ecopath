@@ -8,8 +8,6 @@ Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-
-
 ''' -------------------------------------------------------------------
 ''' <summary>
 ''' A cell visualizer that renders a <see cref="cShapeData">shape</see>
@@ -42,7 +40,6 @@ Public Class cEwEGridShapeThumbnailVisualizer
                                                   e As System.Windows.Forms.PaintEventArgs,
                                                   rcClient As System.Drawing.Rectangle,
                                                   status As SourceGrid2.DrawCellStatus)
-
 
         Dim shape As cShapeData = DirectCast(cell.GetValue(pos), cShapeData)
 

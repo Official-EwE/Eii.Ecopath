@@ -13,8 +13,6 @@ Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 
-
-
 Public Class gridEcopathResult
     Inherits cEwEGrid
     Implements IResultView

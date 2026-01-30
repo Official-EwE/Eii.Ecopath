@@ -62,7 +62,6 @@ Public Class cMediatedInteractionManager
             Next iprey
         Next ipred
 
-
         Dim lstLandingApTypes As New List(Of eForcingFunctionApplication)({eForcingFunctionApplication.OffVesselPrice})
         For iFleet As Integer = 1 To Me.m_EPData.NumFleet
             For iGroup As Integer = 1 To Me.m_EPData.NumGroups
@@ -83,7 +82,6 @@ Public Class cMediatedInteractionManager
             Me.m_interactionGroup.Add(Me.getHashKey(ipred, ipred), interaction)
 
         Next ipred
-
 
     End Function
 
@@ -174,8 +172,6 @@ Public Class cMediatedInteractionManager
     End Property
 
 
-
-
     Public ReadOnly Property GroupInteraction(PredIndex As Integer) As cPredPreyInteraction
         Get
             Try
@@ -191,7 +187,6 @@ Public Class cMediatedInteractionManager
             End Try
         End Get
     End Property
-
 
     Public ReadOnly Property isLandings(iFleet As Integer, iGroup As Integer) As Boolean
         Get
@@ -218,8 +213,6 @@ Public Class cMediatedInteractionManager
             End Try
         End Get
     End Property
-
-
 
     ''' <summary>
     ''' Get the maximum number of shapes that can be assigned to an interaction.

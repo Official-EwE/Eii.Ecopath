@@ -12,7 +12,6 @@ Namespace ValueWrapper
 
         Public Property iSecondIndex As Integer
 
-
         ''' <summary>
         ''' Constructor with no validation object
         ''' </summary>
@@ -41,7 +40,6 @@ Namespace ValueWrapper
             End If
 
         End Sub
-
 
         ''' <summary>
         ''' Set the size of the array to the value in the cores data counter i.e. nGroups

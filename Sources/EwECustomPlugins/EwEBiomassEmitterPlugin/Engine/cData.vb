@@ -8,8 +8,6 @@ Imports EwECore.Auxiliary
 Imports EwECore.Common
 Imports EwEUtils.Utilities
 
-
-
 Public Class cData
 
     Private ReadOnly Property Plugin As cEwEBiomassEmitterPlugin = Nothing

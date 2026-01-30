@@ -4,8 +4,6 @@
 
 Imports EwECore
 
-
-
 Public Class cShapeDataComparer
     Implements IComparer(Of cShapeData)
 

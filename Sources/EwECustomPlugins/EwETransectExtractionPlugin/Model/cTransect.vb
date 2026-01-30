@@ -5,8 +5,6 @@
 Imports System.Drawing
 Imports EwECore
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Container for a single transect.
@@ -38,7 +36,6 @@ Public Class cTransect
 #End Region ' Constructor
 
 #Region " Transect properties "
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

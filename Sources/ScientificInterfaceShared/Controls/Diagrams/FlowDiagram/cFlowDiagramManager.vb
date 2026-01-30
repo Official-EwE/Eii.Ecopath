@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Definitions
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Extensions.modExtensions
 
-
-
 Namespace Controls
 
     ''' ===========================================================================
@@ -215,7 +213,6 @@ Namespace Controls
             If (rcLabel.Width > 0) Then
                 strTemp = strTemp.CompactString(rcLabel.Width, Me.Font)
             End If
-
 
             ' Store
             Me.m_strLabel = strTemp.Trim

@@ -25,7 +25,6 @@ Public Class cGridSolver
 
     Public CPUTime As Single
 
-
 #End Region
 
 #Region "Private data"
@@ -98,7 +97,6 @@ Public Class cGridSolver
     Private m_stpwCopy As Stopwatch
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cGridSolver)()
 
-
 #End Region
 
 #Region "Constructor and Initialization"
@@ -156,7 +154,6 @@ Public Class cGridSolver
             Return Me.iLastGrp - Me.iFirstIndex + 1
         End Get
     End Property
-
 
     ''' <summary>
     ''' Set the groups to iterate over.
@@ -287,7 +284,6 @@ Public Class cGridSolver
             Debug.Assert(False, ex.Message)
         End Try
     End Sub
-
 
 #End Region
 
@@ -508,8 +504,6 @@ exitline:
     End Sub
 
 
-
-
     Private Sub CopyToLocal(ip As Integer)
 
         Debug.Assert(Me.bUseLocalMemory, Me.ToString + ".CopyToLocal() Called when local memory is not being used.")
@@ -532,7 +526,6 @@ exitline:
         'ReDim dloc(M + 1, NomCols + 1)
         'ReDim eloc(M + 1, NomCols + 1)
 
-
         For i As Integer = 0 To Me.M + 1
             For j As Integer = 0 To Me.NomCols + 1
                 Me.Xloc(i, j) = Me.X(i, j, ip)
@@ -548,7 +541,6 @@ exitline:
         Me.m_stpwCopy.Stop()
 
     End Sub
-
 
     Private Sub CopyStartEndRowCol()
 
@@ -602,9 +594,7 @@ exitline:
             Me.m_stpwCopy.Stop()
         End If
 
-
     End Sub
-
 
     Private Sub UpdateCoreData(ip As Integer)
         Me.m_stpwCopy.Start()

@@ -52,7 +52,6 @@ Public Class cRegionCatchResultsDataSource
 
     End Function
 
-
     Public Overrides Sub Init(Optional OptionalIndex As Integer = 0)
 
         Me.m_RegionIndex = OptionalIndex

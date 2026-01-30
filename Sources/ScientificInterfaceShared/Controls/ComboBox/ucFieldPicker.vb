@@ -6,8 +6,6 @@ Imports System.IO
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 
-
-
 Namespace Controls
 
     ''' <summary>

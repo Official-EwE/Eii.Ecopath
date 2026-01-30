@@ -79,7 +79,6 @@ Friend Class cMSEEventSource
         End Try
     End Sub
 
-
     Private Sub fireOnRunCompleted()
         Try
             RaiseEvent onRunCompleted()

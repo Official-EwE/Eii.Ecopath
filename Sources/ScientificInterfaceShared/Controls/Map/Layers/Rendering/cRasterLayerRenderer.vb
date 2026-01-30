@@ -5,8 +5,6 @@
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------

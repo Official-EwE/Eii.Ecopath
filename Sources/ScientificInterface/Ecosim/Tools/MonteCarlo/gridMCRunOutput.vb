@@ -7,7 +7,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
-
     Public Class gridMCRunOutput
         Inherits cEwEGrid
 
@@ -80,5 +79,4 @@ Namespace Ecosim
     End Class
 
 End Namespace
-
 

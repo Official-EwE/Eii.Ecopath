@@ -10,8 +10,6 @@ Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' <see cref="SourceGrid2.VisualModels.Common">visual model</see> to show a

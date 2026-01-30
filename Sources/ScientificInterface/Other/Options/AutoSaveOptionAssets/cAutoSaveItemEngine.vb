@@ -7,8 +7,6 @@ Imports EwECore.Plugins
 Imports EwECore.Plugins.UI
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Other
 
     ''' -----------------------------------------------------------------------

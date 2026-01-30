@@ -210,5 +210,4 @@ Public Class gridRiskResults
         End Try
     End Sub
 
-
 End Class

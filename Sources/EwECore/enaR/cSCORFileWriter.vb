@@ -7,7 +7,6 @@ Imports System.IO
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-
 Public Class cSCORFileWriter
 
     Private m_EPData As cEcopathDataStructures
@@ -40,7 +39,6 @@ Public Class cSCORFileWriter
                 strm.WriteLine(Me.m_EPData.GroupName(igrp).Replace(" ", ""))
             Next igrp
 
-
             Dim frmStr As String = "{0,3} {1,6:F6}"
 
             For igrp = 1 To Me.m_EPData.NumGroups
@@ -51,7 +49,6 @@ Public Class cSCORFileWriter
             For igrp = 1 To Me.m_EPData.NumGroups
                 strm.WriteLine(frmStr, igrp, ENARData.Import(igrp))
             Next
-
 
             strm.WriteLine(" -1 0.")
             For igrp = 1 To Me.m_EPData.NumGroups
@@ -88,7 +85,6 @@ Public Class cSCORFileWriter
         Return bReturn
 
     End Function
-
 
 #If 0 Then
      Private Function Write(strFileName As String) As Boolean

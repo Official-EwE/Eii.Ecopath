@@ -5,8 +5,6 @@
 Option Explicit On
 
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Helper class that tries to make sure the interface correctly loads a particular
@@ -227,7 +225,6 @@ Public Class cCoreController
 
         Return bSuccess
     End Function
-
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>

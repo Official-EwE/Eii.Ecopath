@@ -9,8 +9,6 @@ Imports System.IO
 Imports EwEUtils.Utilities
 Imports Microsoft.Win32
 
-
-
 Namespace Interop
 
     ''' -----------------------------------------------------------------------

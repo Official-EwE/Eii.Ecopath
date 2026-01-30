@@ -14,8 +14,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' =======================================================================
 ''' <summary>
 ''' Form, implementing the Ecosim Recruitment interface.
@@ -273,7 +271,6 @@ Public Class frmCEFASRecruitment
                 data.Biomass(i) = BiomassStep
                 'Rec=(Rmax*C2)/(Ratio*Be+C2)
             Next
-
 
             Return data
         End If

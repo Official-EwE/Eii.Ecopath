@@ -10,8 +10,6 @@ Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-
-
 Public Class cCConcSpatialRaster
     Implements ISpatialRaster
 

@@ -281,7 +281,6 @@ Public Enum eSpaceResultsFleets
     Value
 End Enum
 
-
 Public Enum eSpaceResultsFleetsGroups
     CatchBio
     Value
@@ -483,7 +482,6 @@ Public Enum eScaleType As Integer
     ''' <summary>Value are scaled before being applied.</summary>
     Relative
 End Enum
-
 
 #Region " Core execution state "
 
@@ -1117,7 +1115,6 @@ Public Enum eVarNameFlags As Integer
     EcospaceSpinupYears
     EcospaceCapacityEnabled
 
-
     ''' <summary>Number of fish in a monthly stanza age group</summary>
     StanzaNumberAtAge
     ''' <summary>Weight of individual fish in a monthly stanza age group</summary>
@@ -1149,7 +1146,6 @@ Public Enum eVarNameFlags As Integer
     nEffortDistThreads
     ''' <summary>To document</summary>
     EcospaceSaveThreadingLog
-
 
     IFDPower
     ''' <summary>To document</summary>
@@ -3704,7 +3700,6 @@ Public Enum eEcospaceResultsAverageType
     TimeStep
     Annual
 End Enum
-
 
 #End Region ' Ecospace Capacity and Habitat
 

@@ -9,8 +9,6 @@ Imports SourceGrid2.Cells.Real
 Imports SourceGrid2.DataModels
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Foundation class for showing <see cref="cShapeData"/> in a grid.

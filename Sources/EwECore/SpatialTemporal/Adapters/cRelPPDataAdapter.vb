@@ -138,5 +138,3 @@ Namespace SpatialData
 
 End Namespace
 
-
-

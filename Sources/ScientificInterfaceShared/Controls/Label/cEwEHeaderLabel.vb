@@ -7,8 +7,6 @@ Imports System.Threading
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
 
-
-
 Namespace Controls
 
     ''' ===========================================================================

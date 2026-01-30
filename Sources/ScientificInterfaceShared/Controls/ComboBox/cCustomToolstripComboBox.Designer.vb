@@ -7,7 +7,6 @@ Namespace Controls
     Partial Class cCustomToolstripComboBox
         Inherits System.Windows.Forms.ToolStripComboBox
 
-
         'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer
 

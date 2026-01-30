@@ -6,8 +6,6 @@ Imports EwECore.ValueWrapper
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Contains the Model Run Parameters for EcoSim
 ''' i.e. 'NumberYears' number of years to run the model for
@@ -146,7 +144,6 @@ Public Class cEcoSimModelParameters
 
     End Sub
 
-
 #End Region
 
 #Region "Mustoverride Method implementation for this class"
@@ -178,7 +175,6 @@ Public Class cEcoSimModelParameters
         '                Else
         '                    value.Status = eStatusFlags.OK
         '                End If
-
 
         '            Case eValueTypes.Str
 
@@ -217,7 +213,6 @@ Public Class cEcoSimModelParameters
 #End Region
 
 #Region "Variables via dot (.) operator"
-
 
     ''' <summary>
     ''' Number of years to run the EcoSim model for
@@ -539,7 +534,6 @@ Public Class cEcoSimModelParameters
 
     End Property
 
-
     Public Property PredictEffortStatus() As eStatusFlags
 
         Get
@@ -551,8 +545,6 @@ Public Class cEcoSimModelParameters
         End Set
 
     End Property
-
-
 
     Public Property DiscountStatus() As eStatusFlags
 

@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ' ToDo_JS: remove commands from handlers, and move to central handling across the UI
 
 Namespace Controls

@@ -5,8 +5,6 @@
 Option Explicit On
 Imports EwEUtils.Utilities
 
-
-
 Public Class ucOptionsPluginAssemblyDetails
 
     Private m_pa As cPluginAssembly = Nothing

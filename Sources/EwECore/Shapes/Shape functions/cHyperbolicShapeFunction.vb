@@ -40,7 +40,6 @@ Public Class cHyperbolicShapeFunction
             'Next i
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
             If YBase <> YZero Then
                 xHalf = CSng((YEnd - YZero) * (cShapeFunction.xBase / (YBase - YZero)) - cShapeFunction.xBase)
             Else

@@ -5,8 +5,6 @@
 Imports System.Text
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
-
-
 Namespace Controls.Map
 
     ''' -----------------------------------------------------------------------

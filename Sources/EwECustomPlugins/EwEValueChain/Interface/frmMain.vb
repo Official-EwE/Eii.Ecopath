@@ -9,8 +9,6 @@ Imports System.Windows.Forms
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 
-
-
 Public Class frmMain
 
 #Region " Vars "

@@ -8,8 +8,6 @@ Imports EwECore.Common
 Imports EwECore.WebServices
 Imports EwEUtils.Utilities
 
-
-
 Namespace Database
 
     ''' -----------------------------------------------------------------------

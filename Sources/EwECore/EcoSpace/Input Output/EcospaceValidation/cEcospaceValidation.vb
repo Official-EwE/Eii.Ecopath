@@ -6,8 +6,6 @@ Option Explicit On
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Statistics to aid the validation and calibration of Ecospace.
 ''' </summary>

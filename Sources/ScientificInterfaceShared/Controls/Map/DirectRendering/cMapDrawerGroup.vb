@@ -6,8 +6,6 @@ Option Explicit On
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.Map
 
     ''' ---------------------------------------------------------------------------

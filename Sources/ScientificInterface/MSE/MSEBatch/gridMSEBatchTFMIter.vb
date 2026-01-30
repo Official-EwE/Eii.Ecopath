@@ -96,7 +96,6 @@ Public Class gridMSEBatchTFMIter
         End Get
     End Property
 
-
     Public Property iSelGroup As Integer
         Get
             Return Me.m_iSelGroup
@@ -114,8 +113,6 @@ Public Class gridMSEBatchTFMIter
         End Set
 
     End Property
-
-
 
 
     ''' -----------------------------------------------------------------------
@@ -162,8 +159,6 @@ Public Class gridMSEBatchTFMIter
 
     End Function
 
-
 #End Region ' Overrides
-
 
 End Class

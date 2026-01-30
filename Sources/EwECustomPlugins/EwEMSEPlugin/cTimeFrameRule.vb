@@ -4,7 +4,6 @@
 
 Option Explicit On
 
-
 Imports EwECore
 Imports System.IO
 Imports EwEUtils.Utilities
@@ -57,7 +56,6 @@ Public Class cTimeFrameRule
         Return CSng(Me.init_F - (iYearProjecting / (Me.NYears + 1)) * (Me.init_F - HCR_F))
 
         'Return HCR_F + ((NYears + 1 - iYearProjecting) / (NYears + 1)) * Distance_From_HCR_F
-
 
     End Function
 
@@ -112,7 +110,6 @@ Public Class cTimeFrameRule
             Return False
         End If
 
-
     End Function
 
     '    Public Sub calcFsfromTimeFrameRules(iCurrentTimestep As Integer)
@@ -146,6 +143,5 @@ Public Class cTimeFrameRule
     '            End If
     '        End If
     '    End Sub
-
 
 End Class

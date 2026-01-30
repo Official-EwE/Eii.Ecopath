@@ -14,8 +14,6 @@ Imports System.Globalization
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
-
-
 Public Module modUtility
 
     Public Const DEFAULT_COL_WIDTH As Integer = 70
@@ -34,7 +32,6 @@ Public Module modUtility
             DataGrid.Columns(intColIndex).SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Next
     End Sub
-
 
     Public Sub AddCurve(strName As String, CurveVar() As Single, Pane As GraphPane,
       MyColor As Color, Optional Symbol As SymbolType = SymbolType.None)

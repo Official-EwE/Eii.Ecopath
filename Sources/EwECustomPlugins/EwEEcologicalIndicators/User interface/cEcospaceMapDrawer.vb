@@ -7,8 +7,6 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' <summary>
 ''' Renderer for Ecospace-derived indicators
 ''' </summary>

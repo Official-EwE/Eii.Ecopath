@@ -6,8 +6,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 Imports ZedGraph
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' 

@@ -56,7 +56,6 @@ Namespace Plugins.Ecospace
         Function MapFleetFileName(ByRef FileName As String, varname As eVarNameFlags, iFlt As Integer,
                                   strExt As String, iModelTimeStep As Integer) As Boolean
 
-
     End Interface
 
 End Namespace

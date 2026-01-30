@@ -5,8 +5,6 @@
 ' To enforce dilligent programming
 Imports EwECore
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class that computes all Ecosim-based indicators.

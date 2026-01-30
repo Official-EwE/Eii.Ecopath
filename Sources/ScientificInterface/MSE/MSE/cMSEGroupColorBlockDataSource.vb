@@ -6,8 +6,6 @@ Imports EwECore.MSE
 Imports ScientificInterface.Ecosim
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 #Region "IPolicyColorBlockDataSource implementation for MSE"
 
 Public Class cMSEGroupColorBlockDataSource
@@ -83,12 +81,10 @@ Public Class cMSEGroupColorBlockDataSource
                 Me.m_BlockSelector.BlockValues = cvs.ToArray
             End If
 
-
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
     End Sub
-
 
     ''' <inheritdoc cref="IPolicyColorBlockDataSource.Init"/>
     Public Sub Init() _

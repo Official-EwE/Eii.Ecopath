@@ -6,8 +6,6 @@ Imports System.Reflection
 Imports EwECore
 Imports EwECore.Style
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Descriptor of the content of a single ecological outcome layer in the MSP game. 
@@ -352,8 +350,6 @@ Public Class cOutcome
                                 b += dVal * Math.Max(0, Math.Min(1, Me.Denominator(iItem)))
                             End If
                         Next iItem
-
-
 
                         If (a > 0) Then
 

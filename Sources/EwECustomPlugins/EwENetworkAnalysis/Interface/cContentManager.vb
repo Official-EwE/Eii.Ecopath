@@ -8,8 +8,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class for populating NA view controls.

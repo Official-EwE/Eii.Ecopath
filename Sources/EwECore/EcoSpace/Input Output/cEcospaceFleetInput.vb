@@ -111,7 +111,6 @@ Public Class cEcospaceFleetInput
         End Set
     End Property
 
-
 #End Region ' Properties by dot (.) operator
 
 #Region " Status by dot (.) operator "
@@ -145,8 +144,6 @@ Public Class cEcospaceFleetInput
             Me.SetStatus(eVarNameFlags.MPAFishery, value, iMPA)
         End Set
     End Property
-
-
 
 #End Region ' Status by dot (.) operator 
 

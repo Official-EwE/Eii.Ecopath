@@ -13,8 +13,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecopath.Controls.FlowDiagram
 
     ''' =======================================================================

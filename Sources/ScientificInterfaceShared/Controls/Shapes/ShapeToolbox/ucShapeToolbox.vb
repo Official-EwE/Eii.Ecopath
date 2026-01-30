@@ -7,8 +7,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------
@@ -515,8 +513,6 @@ Namespace Controls
                 Me.m_lvShapes.LargeImageList = largeImageList
 
             End If
-
-
 
             Me.m_lvShapes.ResumeLayout()
 

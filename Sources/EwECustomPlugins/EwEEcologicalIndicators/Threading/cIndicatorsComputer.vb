@@ -4,8 +4,6 @@
 
 Imports System.Threading
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' An indicator calculator

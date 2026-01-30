@@ -4,7 +4,6 @@
 
 Imports ScientificInterfaceShared.Forms
 
-
 Partial Class frmEcospaceEnvironmentalResponses
     Inherits frmEwE
 
@@ -211,5 +210,4 @@ Partial Class frmEcospaceEnvironmentalResponses
     Private WithEvents m_scBottomBits As System.Windows.Forms.SplitContainer
 
 End Class
-
 

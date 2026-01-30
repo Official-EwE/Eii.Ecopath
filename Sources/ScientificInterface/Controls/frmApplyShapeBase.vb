@@ -46,7 +46,6 @@ Public Class frmApplyShapeBase
 
 #Region " Mandatory overrides "
 
-
     Protected Overridable ReadOnly Property Grid() As gridApplyShapeBase
         Get
             Return Nothing

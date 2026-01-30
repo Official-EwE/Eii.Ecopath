@@ -13,10 +13,7 @@ Namespace Commands
     Public Class cShowHideItemsCommand
         Inherits cCommand
 
-
         Public Shared COMMAND_NAME As String = "~showhideitems"
-
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>

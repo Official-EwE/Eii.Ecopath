@@ -8,8 +8,6 @@ Imports System.Xml
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
-
-
 Namespace Emulator
 
     ''' -------------------------------------------------------------------

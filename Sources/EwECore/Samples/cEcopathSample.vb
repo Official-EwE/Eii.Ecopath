@@ -6,8 +6,6 @@ Imports EwECore.ValueWrapper
 Imports EwEUtils.Extensions
 Imports EwEUtils.Utilities
 
-
-
 Namespace Samples
 
     ''' -------------------------------------------------------------------

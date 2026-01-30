@@ -9,8 +9,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
@@ -262,7 +260,6 @@ Public Class cEcospaceXYZTResultsWriter
         If varname = eVarNameFlags.Concentration Then
             ifirst = 0
         End If
-
 
         For igrp As Integer = ifirst To Me.m_core.m_EcopathData.NumGroups
             strFN = Me.GetGroupFileName(varname, igrp, "csv")

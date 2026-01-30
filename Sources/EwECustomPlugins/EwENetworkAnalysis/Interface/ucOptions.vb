@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Controls
 
-
-
 Public Class ucOptions
     Implements IOptionsPage
 
@@ -82,7 +80,6 @@ Public Class ucOptions
 
     End Sub
 
-
     Private Sub OnSaveEcosimWoPPRChecked(sender As Object, e As EventArgs) Handles m_cbAutosaveEcosimWoPPR.CheckedChanged
 
         If Me.m_bInUpdate Then Return
@@ -143,7 +140,6 @@ Public Class ucOptions
         Me.m_cbAutosaveRoot.Checked = False
         Me.m_cbCalculateCyclesPathways.Checked = False
     End Sub
-
 
 #End Region ' Options page implementation 
 

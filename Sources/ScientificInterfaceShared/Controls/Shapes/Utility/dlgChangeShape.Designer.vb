@@ -4,7 +4,6 @@
 
 Namespace Controls
 
-
     Partial Class dlgChangeShape
         Inherits System.Windows.Forms.Form
 

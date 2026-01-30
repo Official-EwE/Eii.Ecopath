@@ -14,9 +14,6 @@ Imports ScientificInterfaceShared.Style
 
 
 
-
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.
@@ -58,7 +55,6 @@ Public Class gridErrorCVs
 #End Region ' Constructor
 
 #Region " Public interfaces "
-
 
     Public Property ErrorDataType As frmEditAssessmentError.eErrorDataType
         Get
@@ -129,7 +125,6 @@ Public Class gridErrorCVs
 
     End Sub
 
-
     Private Sub FillFleetData()
         Dim Fleet As cStockAssessmentFleetParameters
         Dim Cell As ICell
@@ -155,7 +150,6 @@ Public Class gridErrorCVs
 
         Next iFlt
     End Sub
-
 
     Private Sub FillGroupData()
         Dim Group As cStockAssessmentParameters
@@ -252,10 +246,7 @@ Public Class gridErrorCVs
 
     End Function
 
-
-
 #End Region ' Overrides
 
 End Class
-
 

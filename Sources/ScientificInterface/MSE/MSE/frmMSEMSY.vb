@@ -6,8 +6,6 @@ Imports System.Text
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Form, implements the main MSY search interface.

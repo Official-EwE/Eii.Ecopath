@@ -38,7 +38,6 @@ End Enum
 Public Class cFishingPolicyParameters
     Inherits cCoreInputOutputBase
 
-
     Public Sub New(core As cCore, DBID As Integer)
         MyBase.New(core)
 
@@ -153,7 +152,6 @@ Public Class cFishingPolicyParameters
         End Set
     End Property
 
-
     Public Property MaxNumEval() As Single
         Get
             Return CType(Me.GetVariable(eVarNameFlags.FPSMaxNumEval), Single)
@@ -163,7 +161,6 @@ Public Class cFishingPolicyParameters
             Me.SetVariable(eVarNameFlags.FPSMaxNumEval, value)
         End Set
     End Property
-
 
     Public Property MaxEffChange() As Single
         Get
@@ -175,7 +172,6 @@ Public Class cFishingPolicyParameters
         End Set
     End Property
 
-
     Public Property SearchOption() As eSearchOptionTypes
         Get
             Return CType(Me.GetVariable(eVarNameFlags.FPSSearchOption), eSearchOptionTypes)
@@ -185,7 +181,6 @@ Public Class cFishingPolicyParameters
             Me.SetVariable(eVarNameFlags.FPSSearchOption, value)
         End Set
     End Property
-
 
     Public Property OptimizeApproach() As eOptimizeApproachTypes
         Get
@@ -207,7 +202,6 @@ Public Class cFishingPolicyParameters
         End Set
     End Property
 
-
     Public Property MaxPortUtil() As Boolean
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.FPSMaxPortUtil))
@@ -218,7 +212,6 @@ Public Class cFishingPolicyParameters
         End Set
     End Property
 
-
     Public Property IncludeComp() As Boolean
         Get
             Return CBool(Me.GetVariable(eVarNameFlags.FPSIncludeComp))
@@ -228,7 +221,6 @@ Public Class cFishingPolicyParameters
             Me.SetVariable(eVarNameFlags.FPSIncludeComp, value)
         End Set
     End Property
-
 
     Public Property BatchRun() As Boolean
         Get
@@ -273,8 +265,5 @@ Public Class cFishingPolicyParameters
 End Class
 
 
-
-
 #End Region
-
 

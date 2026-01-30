@@ -5,8 +5,6 @@
 Imports EwECore.Common
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecospace
 
     ''' -----------------------------------------------------------------------
@@ -454,7 +452,6 @@ Namespace Ecospace
             Me.m_fpContact = New cPropertyFormatProvider(Me.UIContext, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
 
         End Sub
-
 
 #End Region ' Internals
 

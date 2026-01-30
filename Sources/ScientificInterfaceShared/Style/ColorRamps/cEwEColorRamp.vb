@@ -5,8 +5,6 @@
 Option Explicit On
 Imports EwEUtils.UserInterface
 
-
-
 Namespace Style
 
     ''' -------------------------------------------------------------------

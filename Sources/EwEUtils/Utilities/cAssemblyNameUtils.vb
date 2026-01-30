@@ -9,8 +9,6 @@ Imports EwECore.Common
 Imports System.Security.Policy
 Imports System.Security.Permissions
 
-
-
 Namespace Utilities
 
     ''' =======================================================================
@@ -125,7 +123,6 @@ Namespace Utilities
             If (an Is Nothing) Then Return String.Empty
             Return cStringUtils.ToHexString(an.GetPublicKeyToken())
         End Function
-
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

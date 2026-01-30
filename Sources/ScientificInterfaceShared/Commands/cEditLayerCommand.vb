@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 
-
-
 Namespace Commands
 
     ''' ---------------------------------------------------------------------------

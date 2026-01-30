@@ -5,8 +5,6 @@
 Imports System.Globalization
 Imports EwEUtils.Utilities
 
-
-
 Namespace Style
 
     ''' ---------------------------------------------------------------------------

@@ -8,8 +8,6 @@ Imports EwECore.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Base class for holding link information in the flow.
@@ -105,7 +103,6 @@ Public Class cLink
     Public Sub New()
         MyBase.New()
     End Sub
-
 
     <Browsable(True),
         Category(cCATEGORY_GENERIC),

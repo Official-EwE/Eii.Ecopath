@@ -4,8 +4,6 @@
 
 Imports System.Reflection
 
-
-
 ' ToDo_JS: Make menu items toggle automatically
 
 Namespace Commands

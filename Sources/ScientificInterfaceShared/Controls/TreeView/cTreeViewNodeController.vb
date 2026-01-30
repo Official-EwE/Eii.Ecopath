@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Commands
 
-
-
 Namespace Controls
 
 #Region " cTreeViewNodeController "

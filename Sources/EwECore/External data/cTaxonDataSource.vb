@@ -8,8 +8,6 @@ Imports EwECore.Plugins.Data
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace ExternalData
 
     ''' -----------------------------------------------------------------------

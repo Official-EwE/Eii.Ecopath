@@ -10,8 +10,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
 
-
-
 Public Class cFromPrimaryProd
     Inherits cContentManager
 

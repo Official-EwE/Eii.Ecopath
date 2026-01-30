@@ -22,7 +22,6 @@ Public Class cExponentialShapeFunction
         End Get
     End Property
 
-
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.Shape"/>
     ''' <summary>

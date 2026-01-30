@@ -7,8 +7,6 @@ Imports System.Text
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-
-
 Namespace SpatialData
 
     ''' -----------------------------------------------------------------------

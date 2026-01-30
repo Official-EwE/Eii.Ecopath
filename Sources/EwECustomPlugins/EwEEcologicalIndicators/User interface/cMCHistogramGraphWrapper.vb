@@ -11,8 +11,6 @@ Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Helper class to to update the graph that reflects Ecospace biodiversity indicators.

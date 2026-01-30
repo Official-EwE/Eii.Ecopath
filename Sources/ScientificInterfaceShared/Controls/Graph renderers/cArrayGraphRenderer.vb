@@ -6,8 +6,6 @@ Option Explicit On
 Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Style
 
-
-
 ' ToDo: FIX scaling; the legend renders on top of graph when groups are rendered as indexes only
 
 Namespace Controls
@@ -451,7 +449,6 @@ Namespace Controls
             End Select
 
         End Sub
-
 
         Private Sub DrawGridFront(g As Graphics,
                                    rect As Rectangle,

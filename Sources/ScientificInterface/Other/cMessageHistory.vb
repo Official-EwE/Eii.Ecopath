@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Class that performs message functions:</para>
@@ -372,7 +370,6 @@ Public Class cMessageHistory
             Return Me.m_lHistory.ToArray
         End Get
     End Property
-
 
 #End Region ' Public interfaces
 

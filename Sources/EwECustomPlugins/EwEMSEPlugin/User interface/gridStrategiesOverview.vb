@@ -11,8 +11,6 @@ Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow biomass limits to be specified for credible results.
@@ -237,7 +235,6 @@ Public Class gridStrategiesOverview
         ri = Me.Rows(p.Row)
         strat = DirectCast(ri.Tag, Strategy)
 
-
         If DirectCast(cell.GetValue(p), Boolean) = True Then
             strat.RunThisStrategy = False
         Else
@@ -344,8 +341,6 @@ Public Class gridStrategiesOverview
 
     'End Property
 
-
-
     Private Sub RaiseDataChangeEvent()
         Try
             RaiseEvent onEdited()
@@ -357,5 +352,4 @@ Public Class gridStrategiesOverview
 #End Region ' Overrides
 
 End Class
-
 

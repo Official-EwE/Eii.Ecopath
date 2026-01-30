@@ -5,10 +5,7 @@
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.EwEGrid
-
 
     Public Class cPropertyCheckboxCell
         Inherits cEwECheckboxCell

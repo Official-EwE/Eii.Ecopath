@@ -65,7 +65,6 @@ Public Class cEcopathGroupOutput
 
     End Sub
 
-
 #End Region
 
 #Region "Must Override Methods"
@@ -1135,7 +1134,6 @@ Public Class cEcopathGroupOutput
         End Set
     End Property
 
-
     ''' <summary>
     '''  Proportion of mortality due to predation and other mort 
     ''' </summary>
@@ -1286,7 +1284,6 @@ Public Class cEcopathGroupOutput
         Friend Set(value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.MortCoFishRate, value)
         End Set
-
 
     End Property
 
@@ -1498,5 +1495,4 @@ Public Class cEcopathGroupOutput
 #End Region
 
 End Class
-
 

@@ -8,8 +8,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' =======================================================================
 ''' <summary>
 ''' Dialog, implementing the Ecospace Edit Basemap user interface.
@@ -173,7 +171,6 @@ Public Class dlgEditBasemap
         Me.m_lblUnitLat.Text = strUnit
         Me.m_lblUnitCellSize.Text = strUnit
         Me.m_lblUnitCellLen.Text = fmt.ToString(eUnitMapRefType.km)
-
 
         Me.m_btnOk.Enabled = True
 

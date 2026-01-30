@@ -7,10 +7,7 @@ Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.VisualModels
 
-
-
 Namespace Controls.EwEGrid
-
 
     Public Class cEwEStatusCell
         Inherits cEwECellBase

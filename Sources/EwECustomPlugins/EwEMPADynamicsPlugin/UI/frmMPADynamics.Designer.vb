@@ -5,8 +5,6 @@
 Option Explicit On
 Imports ScientificInterfaceShared.Forms
 
-
-
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmMPADynamics
     Inherits frmEwE

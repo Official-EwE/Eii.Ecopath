@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Controls.Wizard
 
-
-
 Namespace Import
 
     ''' =======================================================================

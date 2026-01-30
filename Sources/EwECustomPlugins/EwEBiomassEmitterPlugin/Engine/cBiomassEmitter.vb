@@ -164,8 +164,6 @@ Public Class cBiomassEmitter
 
     End Sub
 
-
-
 #End Region ' Run
 
 End Class

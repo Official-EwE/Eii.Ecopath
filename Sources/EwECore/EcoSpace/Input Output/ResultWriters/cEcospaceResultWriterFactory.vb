@@ -7,8 +7,6 @@ Imports EwECore.Common
 Imports EwECore.Plugins.Ecospace
 Imports Microsoft.Extensions.Logging
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Factory class for creating an <see cref="IEcospaceResultsWriter"/>
@@ -61,6 +59,5 @@ Public Class cEcospaceResultWriterFactory
         Return writers.ToArray()
 
     End Function
-
 
 End Class

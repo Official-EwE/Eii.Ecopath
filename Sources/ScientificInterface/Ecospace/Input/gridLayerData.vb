@@ -6,8 +6,6 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SourceGrid2
 
 
-
-
 Public Class gridLayerData
     Inherits cEwEGrid
 
@@ -102,7 +100,6 @@ Public Class gridLayerData
             style = cStyleGuide.eStyleFlags.NotEditable
         End If
         Dim bChanged As Boolean = False
-
 
         ' Grab the data
         data = Me.m_layer.Data

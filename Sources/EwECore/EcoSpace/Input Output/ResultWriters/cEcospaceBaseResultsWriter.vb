@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see>
@@ -189,7 +187,6 @@ Public MustInherit Class cEcospaceBaseResultsWriter
                 grpName = Me.m_core.m_EcopathData.GroupName(iGrp)
             End If
 
-
             If (String.IsNullOrWhiteSpace(grpName)) Then Return ""
 
             ' Is there a time step in the file name?
@@ -254,7 +251,6 @@ Public MustInherit Class cEcospaceBaseResultsWriter
                                                     iFlt As Integer,
                                                     strExt As String,
                                                     Optional iModelTimeStep As Integer = cCore.NULL_VALUE) As String
-
 
         Dim Filename As String
         If Me.m_core.PluginManager.EcospaceResultsMapFleetFileName(Filename, varname, iFlt, strExt, iModelTimeStep) Then

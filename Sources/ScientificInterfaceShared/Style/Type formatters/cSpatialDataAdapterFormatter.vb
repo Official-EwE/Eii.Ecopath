@@ -6,8 +6,6 @@ Imports EwECore.SpatialData
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 
-
-
 Namespace Style
 
     ''' ---------------------------------------------------------------------------

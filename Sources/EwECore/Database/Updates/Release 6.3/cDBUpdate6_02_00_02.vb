@@ -18,7 +18,6 @@ Imports EwECore.Database
 Friend Class cDBUpdate6_02_00_02
     Inherits cDBUpdate
 
-
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cDBUpdate.UpdateVersion"/>
     ''' -----------------------------------------------------------------------

@@ -8,8 +8,6 @@ Imports EwECore.Common
 Imports System.Text
 Imports EwEUtils.Utilities
 
-
-
 ''' <summary>
 ''' Aquamaps file reader.
 ''' </summary>

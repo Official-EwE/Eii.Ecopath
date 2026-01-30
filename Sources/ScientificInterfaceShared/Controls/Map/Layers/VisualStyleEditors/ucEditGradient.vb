@@ -6,8 +6,6 @@ Imports System.ComponentModel
 Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

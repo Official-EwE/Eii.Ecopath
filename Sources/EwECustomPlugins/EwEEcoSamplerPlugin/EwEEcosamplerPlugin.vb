@@ -16,8 +16,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls
 
-
-
 Public Class EwEEcosamplerPlugin
     Implements IMonteCarloPlugin
     Implements IEcosimInitializedPlugin
@@ -247,7 +245,6 @@ Public Class EwEEcosamplerPlugin
             Me.m_sampleman.StoreEcosimDiagnostics(Me.m_sampleCurrent, Me.m_montecarlo, Me.m_esdata)
             Me.m_sampleCurrent = Nothing
         End If
-
 
     End Sub
 

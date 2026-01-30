@@ -24,7 +24,6 @@ Public Class frmMSEBatchParameters
     Private Sub EcospaceParameters_Load(sender As Object, e As System.EventArgs) _
           Handles Me.Load
 
-
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE}
 
         Me.m_batchManager = Me.UIContext.Core.MSEBatchManager
@@ -51,7 +50,6 @@ Public Class frmMSEBatchParameters
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
         Me.m_fpBiomass = Nothing
-
 
         MyBase.OnFormClosed(e)
     End Sub

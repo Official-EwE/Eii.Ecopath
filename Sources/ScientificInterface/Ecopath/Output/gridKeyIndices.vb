@@ -4,7 +4,6 @@
 
 Namespace Ecopath.Output
 
-
     Public Class gridKeyIndices
         Inherits cEwEGrid
 

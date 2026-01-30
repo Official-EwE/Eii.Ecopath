@@ -6,8 +6,6 @@ Imports System.Threading
 Imports EwEUtils.Utilities
 Imports Microsoft.Office.Interop.Access
 
-
-
 Namespace Database
 
     ''' =======================================================================

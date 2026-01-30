@@ -9,8 +9,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Helper class for writing MSE interations to file.
 ''' </summary>

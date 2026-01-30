@@ -225,8 +225,6 @@ Public Class cEcospaceMortalityResponseManager
 #End Region ' Friend interfaces
 
 
-
-
     Public ReadOnly Property SimData As cEcosimDatastructures Implements IEnvironmentalResponseManager.SimData
         Get
             Return Nothing

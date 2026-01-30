@@ -7,8 +7,6 @@ Option Explicit On
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecopath
 
     Public Class EditMultiStanza
@@ -142,7 +140,6 @@ Namespace Ecopath
             If Me.m_bInUpdate Then Return
             'Me.UpdateControls()
         End Sub
-
 
         Private Sub OnCalculate(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCalculate.Click

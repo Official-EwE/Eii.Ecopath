@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ' ToDo: In order to enable in-place shape editing, all shapes need to be duplicated,
 '       and on OK, changed shapes will need to be applied. That is a big change
 

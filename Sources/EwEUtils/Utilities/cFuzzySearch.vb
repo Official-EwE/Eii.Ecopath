@@ -6,8 +6,6 @@ Imports System
 Imports System.Collections.Generic
 Imports EwEUtils.SystemUtilities.cSystemUtils
 
-
-
 Namespace Utilities
 
     ''' -----------------------------------------------------------------------

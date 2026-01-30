@@ -4,8 +4,6 @@
 
 Imports EwECore.Common
 
-
-
 Public Class cNormalShapeFunction
     Inherits cShapeFunction
 
@@ -161,7 +159,6 @@ Public Class cNormalShapeFunction
 
     End Sub
 
-
     Public Overrides Function Apply(obj As Object) As Boolean
         If Not MyBase.Apply(obj) Then
             Return False
@@ -227,7 +224,6 @@ Public Class cNormalShapeFunction
             Me.ParamValue(eParNames.Max) = value
         End Set
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IShapeFunction.ParamValue"/>

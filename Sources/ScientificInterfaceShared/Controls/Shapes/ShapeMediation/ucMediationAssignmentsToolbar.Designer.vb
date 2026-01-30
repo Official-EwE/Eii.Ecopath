@@ -4,7 +4,6 @@
 
 Namespace Controls
 
-
     Partial Class ucMediationAssignmentsToolbar
         Inherits System.Windows.Forms.UserControl
 

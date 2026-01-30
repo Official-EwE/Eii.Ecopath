@@ -8,7 +8,6 @@ Imports Debug = System.Diagnostics.Debug
 
 Namespace SpatialData
 
-
     ''' <summary>
     ''' Adapter base class for forcing data.
     ''' </summary>
@@ -77,7 +76,6 @@ Namespace SpatialData
 
 #Region " Variables"
 
-
         Protected m_spaceData As cEcospaceDataStructures
 
         Protected m_ForcingMaps As cForcingMapIndexPair()
@@ -86,7 +84,6 @@ Namespace SpatialData
 #End Region
 
 #Region "Construction and Initialization"
-
 
         Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
@@ -105,7 +102,6 @@ Namespace SpatialData
             MyBase.Initialize()
             Me.m_spaceData = Me.m_core.m_EcospaceData
         End Sub
-
 
 #End Region
 
@@ -181,7 +177,6 @@ Namespace SpatialData
 
         End Sub
 
-
         ''' <summary>
         ''' Restores forced data to forced state, overwriting the predicted values. 
         ''' Cells in the external data that are cCore.NULL_VALUE will not be restored.
@@ -254,7 +249,6 @@ Namespace SpatialData
 
         End Sub
 
-
         Protected Sub setIsForced(iLayerIndex As Integer)
 
             Debug.Assert(Me.m_ForcingMaps(iLayerIndex) IsNot Nothing, Me.ToString + ".setIsForced() Layer index not set to valid layer!")
@@ -273,7 +267,6 @@ Namespace SpatialData
         End Sub
 
 #End Region
-
 
     End Class
 

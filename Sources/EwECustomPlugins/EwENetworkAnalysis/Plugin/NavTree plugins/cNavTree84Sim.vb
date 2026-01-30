@@ -5,8 +5,6 @@
 Imports EwECore
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cNavTree84Sim
     Inherits cNavTreeControlPlugin
 

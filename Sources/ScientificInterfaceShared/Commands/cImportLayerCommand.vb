@@ -4,10 +4,7 @@
 
 Imports System.IO
 
-
-
 Namespace Commands
-
 
     Public Enum eNativeLayerFileFormatTypes As Byte
         [Default] = 0

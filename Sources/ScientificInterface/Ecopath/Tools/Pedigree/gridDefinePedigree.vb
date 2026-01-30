@@ -8,8 +8,6 @@ Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Grid class for the Edit Pedigree Levels interface.

@@ -8,8 +8,6 @@ Imports EwECore.Plugins.Data
 Imports EwECore.Plugins.UI
 Imports EwEUtils.Utilities
 
-
-
 Namespace Ecopath.Input
 
     ''' <summary>

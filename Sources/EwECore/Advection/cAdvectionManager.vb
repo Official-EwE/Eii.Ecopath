@@ -7,8 +7,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Ecospace.Advection
 
     'ToDo 15-Aug-2016 added a variable for the threshold upwelling depth
@@ -283,7 +281,6 @@ Namespace Ecospace.Advection
                 Return False
             End If
 
-
             Try
                 bSuccess = Me.m_comp.RunPhysicsModel()
             Catch ex As Exception
@@ -294,7 +291,6 @@ Namespace Ecospace.Advection
                                                          eMessageImportance.Critical,
                                                          eDataTypes.EcospaceAdvectionManager))
 
-
                 bSuccess = False
             End Try
 
@@ -304,7 +300,6 @@ Namespace Ecospace.Advection
 
             Return bSuccess
         End Function
-
 
         Public Function RunPhysicsModel(SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
 
@@ -353,7 +348,6 @@ Namespace Ecospace.Advection
 
         End Function
 
-
         Private Sub RunThreaded()
 
             Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
@@ -370,7 +364,6 @@ Namespace Ecospace.Advection
 
         End Sub
 
-
         Public Sub ClearAdvectionResults()
             Try
                 For imon As Integer = 1 To 12
@@ -386,7 +379,6 @@ Namespace Ecospace.Advection
             End Try
 
         End Sub
-
 
         Public Function Revert() As Boolean
 
@@ -521,8 +513,6 @@ Namespace Ecospace.Advection
             End Try
         End Sub
 
-
-
 #End Region ' Events
 
 #Region " ICoreInterface implementation "
@@ -596,7 +586,6 @@ Namespace Ecospace.Advection
 
 #End Region ' ICoreInterface implementation
 
-
 #Region "Code from the original advection model"
 
 #If 0 Then 'Hide the old code behind compiler directives
@@ -616,8 +605,6 @@ Namespace Ecospace.Advection
             Me.m_core.StateMonitor.SetIsSearching(eSearchModes.NotInSearch)
 
         End Sub
-
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>

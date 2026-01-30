@@ -6,8 +6,6 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Simple log file to register multisim execution events.

@@ -4,8 +4,6 @@
 
 Imports EwECore.Database
 
-
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.50.0.25:</para>

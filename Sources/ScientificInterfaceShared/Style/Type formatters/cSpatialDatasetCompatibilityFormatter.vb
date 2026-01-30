@@ -5,8 +5,6 @@
 Imports EwECore.SpatialData
 Imports EwEUtils.Utilities
 
-
-
 Namespace Style
 
     ''' ---------------------------------------------------------------------------
@@ -27,7 +25,6 @@ Namespace Style
 
             Dim comp As cDatasetCompatilibity = Nothing
             Dim strBit As String = ""
-
 
             Try
                 comp = DirectCast(value, cDatasetCompatilibity)

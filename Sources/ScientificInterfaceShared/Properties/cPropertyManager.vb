@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
 
 
-
-
 Namespace Properties
 
     ''' -----------------------------------------------------------------------

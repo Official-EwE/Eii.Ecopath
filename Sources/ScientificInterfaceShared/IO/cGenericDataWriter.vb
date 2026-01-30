@@ -7,8 +7,6 @@ Imports System.Text
 Imports EwEUtils.Utilities
 Imports OfficeOpenXml
 
-
-
 Public Class cGenericDataWriter
 
 #Region " Generic "

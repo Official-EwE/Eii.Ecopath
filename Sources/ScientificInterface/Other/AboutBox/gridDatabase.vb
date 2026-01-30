@@ -6,8 +6,6 @@ Imports EwECore.Database
 Imports EwECore.DataSources
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid showing EwE database details.

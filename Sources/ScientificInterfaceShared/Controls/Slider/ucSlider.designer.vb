@@ -4,7 +4,6 @@
 
 Namespace Controls
 
-
     Partial Class ucSlider
         Inherits System.Windows.Forms.UserControl
 

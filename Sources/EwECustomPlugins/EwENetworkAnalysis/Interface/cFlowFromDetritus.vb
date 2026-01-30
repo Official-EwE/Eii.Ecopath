@@ -10,8 +10,6 @@ Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
 
-
-
 Public Class cFlowFromDetritus
     Inherits cContentManager
 

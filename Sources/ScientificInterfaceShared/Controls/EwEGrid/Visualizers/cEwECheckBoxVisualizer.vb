@@ -6,8 +6,6 @@ Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-
-
 Namespace Controls.EwEGrid
 
     ''' -------------------------------------------------------------------

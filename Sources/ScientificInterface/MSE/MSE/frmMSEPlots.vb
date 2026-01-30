@@ -59,7 +59,6 @@ Public Class frmMSEPlots
         Me.m_curPlotData = ePlotData.Biomass
         Me.m_curPlotType = ePlotTypes.Histogram
 
-
         Try
             Me.DrawPlots()
         Catch ex As Exception
@@ -208,7 +207,6 @@ Public Class frmMSEPlots
         Me.Cursor = Cursors.Default
 
     End Sub
-
 
     Private Sub onPlotTypeCheckedChanged(sender As Object, e As System.EventArgs) Handles m_rbHisto.CheckedChanged, m_rbValues.CheckedChanged
 

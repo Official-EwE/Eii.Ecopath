@@ -7,8 +7,6 @@ Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports EwEUtils.Utilities
 
-
-
 Namespace Ecospace.Controls
 
     Public Class dlgExportSpatialData

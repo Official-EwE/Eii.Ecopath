@@ -11,8 +11,6 @@ Public Class cResultsCollector_RealisedDiscardedFs
         End Get
     End Property
 
-
-
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
             Return Me.m_MSE.NYearsProject * Me.m_MSE.EcosimData.NumStepsPerYear

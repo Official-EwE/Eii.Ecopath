@@ -4,8 +4,6 @@
 
 Imports EwECore.Common
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Class defining Ecosim run/computation dependencies for exchanging data.

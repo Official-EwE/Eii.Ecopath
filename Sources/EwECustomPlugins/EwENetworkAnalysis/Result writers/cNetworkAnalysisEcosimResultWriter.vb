@@ -9,8 +9,6 @@ Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Helper class to write network analysis results to a CSV file.

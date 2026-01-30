@@ -4,8 +4,6 @@
 
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.Map.Layers
 
     Public Class ucLayerEditorPort
@@ -104,7 +102,6 @@ Namespace Controls.Map.Layers
             Handles m_btnSet.Click
             Me.UIContext.Core.SetEcospaceAllCoastToPort(Me.FleetIndex)
         End Sub
-
 
     End Class
 

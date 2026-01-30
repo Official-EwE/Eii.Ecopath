@@ -4,8 +4,6 @@
 
 Imports EwECore.ValueWrapper
 
-
-
 ''' <summary>
 ''' Layer providing access to Ecospace depth data.
 ''' </summary>

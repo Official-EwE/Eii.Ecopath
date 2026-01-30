@@ -5,8 +5,6 @@
 Option Explicit On
 
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Form implementing all functionality to add, remove and edit
@@ -87,7 +85,5 @@ Public Class frmEcospaceEnvironmentalResponses
 #End Region ' Overrides
 
 End Class
-
-
 
 

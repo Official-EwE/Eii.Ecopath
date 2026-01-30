@@ -4,7 +4,6 @@
 
 Namespace Controls
 
-
     Partial Class ucMediationSketchPad
         Inherits ucSketchPad
 

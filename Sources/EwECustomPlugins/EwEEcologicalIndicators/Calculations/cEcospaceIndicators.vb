@@ -6,8 +6,6 @@ Imports System.Drawing
 Imports EwECore
 Imports EwECore.Common
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class that computes all Ecospace-based indicators.

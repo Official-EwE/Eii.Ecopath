@@ -119,7 +119,6 @@ Public Class cComputeLandingPortions
                 End If
             Next
 
-
             'Now we must have a way to relate the catches by species and fleet to producers
             'I presume here (for lack of knowledge of how it has been implemented)
             'that there is a matrix, which stores 'producer-association', somewhat like this
@@ -132,7 +131,6 @@ Public Class cComputeLandingPortions
             'RunOK = core.RunEcoPath()
 
             'RunOK = RunOK And core.RunEcoSim()
-
 
             'the timeseries catches are annual values, so sum up for every year only
             If iTimeStep Mod 12 = 0 Then 'another year gone by
@@ -176,7 +174,6 @@ Public Class cComputeLandingPortions
                 'so calculate: AvPrice = SumValue / Sumcatch 
 
                 'Now it's time to run the economic module
-
 
                 'better store the results for this year
                 'a modified results.dump I presume

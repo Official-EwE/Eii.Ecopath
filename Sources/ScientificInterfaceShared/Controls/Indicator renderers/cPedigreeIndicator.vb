@@ -5,8 +5,6 @@
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

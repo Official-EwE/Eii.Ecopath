@@ -4,10 +4,7 @@
 
 Imports ZedGraph
 
-
-
 Namespace Controls
-
 
     Public Class cEcosimOutputPlotHelper
         Inherits cZedGraphHelper

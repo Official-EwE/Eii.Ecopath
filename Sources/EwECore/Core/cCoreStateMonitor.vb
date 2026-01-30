@@ -5,8 +5,6 @@
 Imports System.ComponentModel
 Imports EwECore.DataSources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Monitor that distributes Core execution state change events and Core data

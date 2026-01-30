@@ -74,7 +74,6 @@ Public Class cValueChainPluginV2
         End Get
     End Property
 
-
     Public ReadOnly Property Controller As cValueChainController
         Get
             Return Me.m_controller
@@ -86,7 +85,6 @@ Public Class cValueChainPluginV2
             Return Me.m_results
         End Get
     End Property
-
 
     Public Overrides ReadOnly Property Name() As String
         Get
@@ -423,7 +421,6 @@ Public Class cValueChainPluginV2
         ' Abort if not allowed to run with Ecosim
         If (parms.RunWithEcosim = False) Then Return
 
-
         If (Me.m_dataBroadcaster IsNot Nothing) Then
             Me.m_dataBroadcaster.BroadcastData(Me.Name, Me.m_ddx)
         End If
@@ -491,7 +488,6 @@ Public Class cValueChainPluginV2
     Private Function GetValue(vn As cValueChainResults.eVariableType, iTimeStep As Integer, iFleet As Integer) As Single
         Return Me.m_results.GetTimeStepTotal(vn, iTimeStep, Nothing, iFleet, cValueChainResults.GetVariableContributionType(vn))
     End Function
-
 
     Public Sub Broadcaster(broadcaster As IDataBroadcaster) _
         Implements IDataProducerPlugin.Broadcaster

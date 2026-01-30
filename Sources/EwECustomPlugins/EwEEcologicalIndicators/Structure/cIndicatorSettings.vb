@@ -6,8 +6,6 @@ Imports EwECore
 Imports EwECore.Style
 Imports EwECore.Common
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Central indicator definitions.

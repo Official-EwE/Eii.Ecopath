@@ -5,8 +5,6 @@
 Imports System.ComponentModel
 Imports EwEUtils.Utilities
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' This class holds defaults for <see cref="cWholesalerUnit">wholeseller units</see>

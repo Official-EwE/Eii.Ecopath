@@ -8,8 +8,6 @@ Imports EwECore.ValueWrapper
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Writer to save Ecopath estimates to a CSV file.

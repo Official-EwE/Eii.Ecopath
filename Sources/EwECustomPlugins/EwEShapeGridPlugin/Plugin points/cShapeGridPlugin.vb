@@ -8,8 +8,6 @@ Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public MustInherit Class cShapeGridPlugin
     Implements IUIContextPlugin
     Implements IDisposedPlugin

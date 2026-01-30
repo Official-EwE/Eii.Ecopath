@@ -5,8 +5,6 @@
 Imports System.ComponentModel
 Imports EwEUtils.Utilities
 
-
-
 <TypeConverter(GetType(cPropertySorter)),
     DefaultProperty("Name"),
     Serializable()>
@@ -218,8 +216,6 @@ Public MustInherit Class cEconomicUnit
         results.Store(Me, cResults.eVariableType.CostManagementRoyaltyCertification, sSum, iTimeStep)
         Return True
     End Function
-
-
 
     Protected Overridable Function CalcTax(results As cResults,
                 sInputBiomass As Single, sInputValue As Single,

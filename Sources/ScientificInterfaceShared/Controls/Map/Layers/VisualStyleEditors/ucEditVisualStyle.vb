@@ -4,8 +4,6 @@
 
 Imports EwECore.Auxiliary
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

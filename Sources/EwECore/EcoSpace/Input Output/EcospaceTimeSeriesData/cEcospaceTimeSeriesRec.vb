@@ -114,7 +114,6 @@ Namespace EcospaceTimeSeries
             Return csvStr.ToString
         End Function
 
-
         Public ReadOnly Property ReadValidation As eTimeSeriesRecValidations
             Get
                 Return Me.m_validation
@@ -151,7 +150,6 @@ Namespace EcospaceTimeSeries
 
             Return bReturn
         End Function
-
 
 #End Region
 

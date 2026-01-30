@@ -11,8 +11,6 @@ Imports System.Security.AccessControl
 Imports System.Text
 Imports EwEUtils.SystemUtilities
 
-
-
 Namespace Utilities
 
     ''' =======================================================================
@@ -535,7 +533,6 @@ Namespace Utilities
             End If
 
         End Function
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>

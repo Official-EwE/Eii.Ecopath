@@ -42,7 +42,6 @@ Public Class cEcospaceRegionOutput
 
     End Sub
 
-
     Public Sub Init()
 
         Try
@@ -85,7 +84,6 @@ Public Class cEcospaceRegionOutput
 
     End Function
 
-
     Public Overloads Function GetStatus(varName As eVarNameFlags, iFleet As Integer, iGroup As Integer) As eStatusFlags
         Return eStatusFlags.OK 'Oh Yeah 
     End Function
@@ -101,7 +99,6 @@ Public Class cEcospaceRegionOutput
         ReDim Me.m_CatchFleetGroup(1, Me.m_core.nFleets, Me.m_core.nGroups)
         Return True
     End Function
-
 
 #End Region
 
@@ -145,7 +142,6 @@ Public Class cEcospaceRegionOutput
             End Try
         End Set
     End Property
-
 
     Public Property CatchFleetGroupEnd(iFleet As Integer, iGroup As Integer) As Single
         Get
@@ -245,7 +241,6 @@ Public Class cEcospaceRegionOutput
         End Set
     End Property
 
-
     Public Property CatchFleetGroupStartStatus(iGroup As Integer, iFleet As Integer) As eStatusFlags
         Get
             Return Me.GetStatus(eVarNameFlags.EcospaceRegionCatchStart, iGroup, iFleet)
@@ -255,7 +250,6 @@ Public Class cEcospaceRegionOutput
             Me.SetStatus(eVarNameFlags.EcospaceRegionCatchStart, value, iGroup, iFleet)
         End Set
     End Property
-
 
     Public Property CatchFleetGroupEndStatus(iGroup As Integer, iFleet As Integer) As eStatusFlags
         Get

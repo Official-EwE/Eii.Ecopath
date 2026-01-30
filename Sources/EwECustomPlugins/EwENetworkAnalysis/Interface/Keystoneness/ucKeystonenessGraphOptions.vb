@@ -4,7 +4,6 @@
 
 Imports System.Windows.Forms
 
-
 Public Class ucKeystonenessGraphOptions
     Inherits UserControl
 

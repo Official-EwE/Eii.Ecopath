@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
-
-
 Partial Class frmTFMpolicy
     Inherits frmEwE
 
@@ -342,5 +340,4 @@ Partial Class frmTFMpolicy
     Private WithEvents m_tsbnEditHCR As System.Windows.Forms.ToolStripButton
     Friend WithEvents m_chkUnits As CheckBox
 End Class
-
 

@@ -9,8 +9,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' <summary>
 ''' Pre-EwE6.6 result writer, writing all MC output to one single CSV file.
 ''' </summary>
@@ -287,7 +285,6 @@ Public Class cMonteCarloResultsWriterOneFile
 
     End Function
 
-
     Private Function ToCSVString(Values(,,) As Single, FirstFixedIndex As Integer, SecondFixedIndex As Integer) As String
 
         Dim buff As New StringBuilder()
@@ -302,7 +299,6 @@ Public Class cMonteCarloResultsWriterOneFile
         Return buff.ToString()
 
     End Function
-
 
     Private Function ToCSVString(Values(,) As Single, FixedIndex As Integer) As String
 
@@ -319,7 +315,6 @@ Public Class cMonteCarloResultsWriterOneFile
 
     End Function
 
-
     Private Function ToCSVString(Values(,,) As Single, Variable As cEcosimDatastructures.eEcosimResults, iGroup As Integer) As String
 
         Dim buff As New StringBuilder()
@@ -335,7 +330,6 @@ Public Class cMonteCarloResultsWriterOneFile
 
     End Function
 
-
     Private Function ToCSVString(Values() As String) As String
 
         Dim buff As New StringBuilder()
@@ -350,7 +344,6 @@ Public Class cMonteCarloResultsWriterOneFile
         Return buff.ToString
 
     End Function
-
 
     Private Function ToCSVString(values() As Single) As String
 

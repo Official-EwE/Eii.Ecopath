@@ -5,10 +5,7 @@
 Option Explicit On
 
 
-
-
 Namespace Ecosim
-
 
     ''' =======================================================================
     ''' <summary>
@@ -18,7 +15,6 @@ Namespace Ecosim
     ''' =======================================================================
     Public Class ucParmBlockCodes
         Implements IBlockSelector
-
 
 #Region " Private variables "
 
@@ -186,7 +182,6 @@ Namespace Ecosim
         ''' <param name="Index"></param>
         ''' <remarks>Not used for this implementation</remarks>
         Public Event OnValueChanged(newValue As Single, Index As Integer) Implements IBlockSelector.OnValueChanged
-
 
 #End Region ' Public events
 

@@ -15,8 +15,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Public Class cSFPManager
 
 #Region " Private vars "
@@ -359,7 +357,6 @@ Public Class cSFPManager
             End If
             Me.SendIterationUpdated(iteration)
         End If
-
 
         ' Container done?
         If (Not cnt.IsRunning) Then
@@ -809,8 +806,6 @@ Public Class cSFPManager
                 writer.WriteLine()
                 writer.Write("Iteration Name")
                 writer.WriteLine()
-
-
 
                 Try
 

@@ -34,5 +34,4 @@ Public Class cResultsCollector_RealisedDiscardedFs_Yearly
         End Get
     End Property
 
-
 End Class

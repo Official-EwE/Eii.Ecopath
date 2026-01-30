@@ -8,10 +8,7 @@ Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
-
-
 Namespace TL1ToPreyToConsumer
-
 
     Public Class cCyclesPathwaysSummary
         Inherits cContentManager

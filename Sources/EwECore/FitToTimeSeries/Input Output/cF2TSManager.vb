@@ -31,8 +31,6 @@ Public Class cF2TSManager
     Private m_runstoppedHandler As RunStoppedDelegate = Nothing
     Private m_runModelHandler As RunModelDelegate = Nothing
 
-
-
     'Messaging 
     'list of messages sent from the model
     Private m_lstMessages As List(Of cMessage)
@@ -214,7 +212,6 @@ Public Class cF2TSManager
         Me.Clear()
     End Sub
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Stores the values in the manager back to the underlying data structures.
@@ -389,7 +386,6 @@ Public Class cF2TSManager
         End Set
     End Property
 
-
     ''' <summary>
     ''' Number of data points for the AIC indicator
     ''' </summary>
@@ -404,7 +400,6 @@ Public Class cF2TSManager
             Me.SetVariable(eVarNameFlags.F2TSNAICData, value)
         End Set
     End Property
-
 
     Public ReadOnly Property nTimeSeriesYears() As Integer
         Get
@@ -506,7 +501,6 @@ Public Class cF2TSManager
         End Get
     End Property
 
-
     ''' <summary>
     ''' Block the calling thread until the model has finished running
     ''' </summary>
@@ -515,7 +509,6 @@ Public Class cF2TSManager
         Return Me.m_nonBlockingWait.Wait(WaitTimeInMilSec)
     End Function
 
-
     Public Sub ReleaseWait() Implements IThreadedProcess.ReleaseWait
         Me.m_nonBlockingWait.ReleaseWait()
     End Sub
@@ -523,7 +516,6 @@ Public Class cF2TSManager
     Public Sub SetWait() Implements IThreadedProcess.SetWait
         Me.m_nonBlockingWait.SetWait()
     End Sub
-
 
     Private Function isRefDataLoaded() As Boolean
 
@@ -943,7 +935,6 @@ Public Class cF2TSManager
 
     End Sub
 
-
     ''' <summary>
     ''' Delegate handler called by the model when the run has stopped
     ''' </summary>
@@ -979,7 +970,6 @@ Public Class cF2TSManager
             m_logger.LogError(ex, "Error during RunStoppedCallback()")
             Debug.Assert(False, ex.Message)
         End Try
-
 
     End Sub
 
@@ -1042,7 +1032,6 @@ Public Class cF2TSManager
 
         End Try
     End Sub
-
 
     ''' <summary>
     ''' Delegate handler for Model to add a message to the managers list of messages

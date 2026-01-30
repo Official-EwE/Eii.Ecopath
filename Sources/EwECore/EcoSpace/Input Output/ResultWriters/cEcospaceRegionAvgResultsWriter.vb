@@ -8,8 +8,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
@@ -25,7 +23,6 @@ Public Class cEcospaceRegionAvgResultsWriter
 
     Public Const cDATA_NAME As String = "regavg"
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceRegionAvgResultsWriter)()
-
 
 #Region " Private classes "
 
@@ -235,7 +232,6 @@ Public Class cEcospaceRegionAvgResultsWriter
 
             Next
         Next
-
 
     End Sub
 

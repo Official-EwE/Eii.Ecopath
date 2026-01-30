@@ -8,7 +8,6 @@
 '    Private Sub 
 'End Class
 
-
 '    Friend m_TabName As String
 '    Friend m_Header As String
 '    Friend m_ColTitles As List(Of cColumnHeader)
@@ -79,7 +78,5 @@
 '    Public Sub AddHeader(SuperTitle As String, Optional SubTitle As List(Of String) = Nothing)
 '        m_ColTitles.Add(New cColumnHeader(SuperTitle, SubTitle))
 '    End Sub
-
-
 
 'End Class

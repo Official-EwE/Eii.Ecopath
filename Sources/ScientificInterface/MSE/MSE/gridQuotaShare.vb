@@ -6,8 +6,6 @@ Imports EwECore.MSE
 Imports EwECore.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecosim
 
     ''' ===========================================================================

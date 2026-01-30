@@ -12,8 +12,6 @@ Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports EwEMSEPlugin.HCR_GroupNS
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.

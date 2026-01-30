@@ -7,8 +7,6 @@ Imports EwEUtils.SystemUtilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Controls
 
     ''' =======================================================================
@@ -287,7 +285,6 @@ Namespace Controls
             Catch ex As Exception
             End Try
         End Sub
-
 
 #End Region ' Event handling
 

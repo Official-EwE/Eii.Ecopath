@@ -4,8 +4,6 @@
 
 Imports System.Drawing.Drawing2D
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

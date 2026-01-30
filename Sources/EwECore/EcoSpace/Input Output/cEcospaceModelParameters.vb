@@ -102,7 +102,6 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             Me.m_values.Add(val.varName, val)
 
-
             val = New cValue(core, 1, eVarNameFlags.nIBMMovementThreads, eStatusFlags.Null, eValueTypes.Int)
             val.AffectsRunState = False
             Me.m_values.Add(val.varName, val)
@@ -240,7 +239,6 @@ Public Class cEcospaceModelParameters
             Me.m_values.Add(val.varName, val)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
             'set status flags to default values
             Me.ResetStatusFlags()
@@ -640,7 +638,6 @@ Public Class cEcospaceModelParameters
             Me.SetVariable(eVarNameFlags.EcospaceAutosaveSelectedGroupsFleetsOnly, value)
         End Set
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -4,8 +4,6 @@
 
 Imports EwEUtils.Utilities
 
-
-
 Public Class cEcospaceASCMapContaminants
     Inherits cEcospaceASCBaseResultsWriter
 

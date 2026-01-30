@@ -5,8 +5,6 @@
 Imports System.ComponentModel
 Imports System.Reflection
 
-
-
 Namespace Controls
 
     ''' ===========================================================================

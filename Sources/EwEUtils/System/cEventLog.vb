@@ -5,8 +5,6 @@
 Imports System
 Imports System.Diagnostics
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Utility class for writing entries to the Windows Event log.

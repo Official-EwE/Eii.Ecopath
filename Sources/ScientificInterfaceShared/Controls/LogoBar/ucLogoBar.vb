@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 
-
-
 ''' <summary>
 ''' Simple control to display a bar of logos.
 ''' Future improvements:

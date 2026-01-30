@@ -4,8 +4,6 @@
 
 Imports EwEUtils.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Helper class, parses a setting string into ampersand parameter/value pairs.

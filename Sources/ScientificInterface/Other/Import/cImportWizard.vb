@@ -9,8 +9,6 @@ Imports EwECore.DataSources
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
 
-
-
 Namespace Import
 
     ''' =======================================================================

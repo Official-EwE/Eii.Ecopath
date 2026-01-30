@@ -8,8 +8,6 @@ Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cMPAState
 
     Private m_ds As cEcospaceDataStructures = Nothing

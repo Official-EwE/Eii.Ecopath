@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SourceGrid2
 Imports ValueChain
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' 
@@ -111,7 +109,6 @@ Public Class ucUnitGrid
         Dim pd As PropertyDescriptor = Nothing
 
         Me.Redim(Me.m_api.Length + 1, Me.m_lUnits.Count + 1)
-
 
         ' For every row
         For iRow As Integer = 0 To Me.RowsCount - 1

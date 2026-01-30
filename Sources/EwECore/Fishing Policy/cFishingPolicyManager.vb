@@ -60,7 +60,6 @@ Namespace FishingPolicy
 
         End Sub
 
-
         Public Sub DisConnect()
 
             Me.m_StartRunDelegate = Nothing
@@ -68,11 +67,7 @@ Namespace FishingPolicy
             Me.m_ProgressDelegate = Nothing
             Me.m_SearchCompletedDelegate = Nothing
 
-
-
         End Sub
-
-
 
         Friend Sub New()
 
@@ -307,7 +302,6 @@ Namespace FishingPolicy
         '    End Try
         'End Sub
 
-
 #End Region
 
 #Region "Public Properties"
@@ -359,7 +353,6 @@ Namespace FishingPolicy
                 Return Me.m_FPsearch.Results
             End Get
         End Property
-
 
         ''' <summary>
         ''' Count of the current search run
@@ -431,7 +424,6 @@ Namespace FishingPolicy
 
         End Sub
 
-
         Private Sub OnFPSProgressHandler()
 
             Try
@@ -465,7 +457,6 @@ Namespace FishingPolicy
             End Try
 
         End Sub
-
 
         Private Sub OnFPSAddMessageHandler(ByRef message As cMessage)
             'add the message to the managers list of mesasges

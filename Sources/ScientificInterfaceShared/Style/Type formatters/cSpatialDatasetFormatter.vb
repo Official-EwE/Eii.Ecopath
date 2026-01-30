@@ -5,8 +5,6 @@
 Imports EwECore.Common
 Imports EwEUtils.Utilities
 
-
-
 Namespace Style
 
     ''' ---------------------------------------------------------------------------

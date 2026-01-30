@@ -4,8 +4,6 @@
 
 Imports EwECore.Common
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Implementation of <see cref="IEcospaceResultsWriter"/> to write Ecospace effort
@@ -50,5 +48,4 @@ Public Class cEcospaceASCMapEffortWriter
     End Function
 
 End Class
-
 

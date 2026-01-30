@@ -88,7 +88,6 @@ Namespace SearchObjectives
                     Me.m_lstGroups.Add(grp)
                 Next
 
-
                 Me.m_lstFleets.Clear()
                 Dim flt As cSearchObjectiveFleetInput
                 For iflt As Integer = 1 To Me.m_core.nFleets
@@ -255,7 +254,6 @@ Namespace SearchObjectives
 
         End Function
 
-
         Public ReadOnly Property ValueWeights() As cSearchObjectiveWeights Implements ISearchObjective.ValueWeights
             Get
                 Return Me.m_valWeights
@@ -280,14 +278,10 @@ Namespace SearchObjectives
             End Get
         End Property
 
-
     End Class
 
 #End Region
 
 End Namespace
-
-
-
 
 

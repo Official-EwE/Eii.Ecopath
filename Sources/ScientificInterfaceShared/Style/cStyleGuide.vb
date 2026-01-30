@@ -20,8 +20,6 @@ Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Utilities
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Style
 
     ''' ---------------------------------------------------------------------------
@@ -1281,7 +1279,6 @@ Namespace Style
                 FleetColorInvariant(core, iFleet) = ToVisualColor(value)
             End Set
         End Property
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -2552,7 +2549,6 @@ Namespace Style
             If (fs And System.Drawing.FontStyle.Strikeout) <> 0 Then v = v Or VisualFontStyle.Strikeout
             Return v
         End Function
-
 
         Public Shared Function FromVisualFontStyle(v As VisualFontStyle) As System.Drawing.FontStyle
             Dim fs As System.Drawing.FontStyle = System.Drawing.FontStyle.Regular

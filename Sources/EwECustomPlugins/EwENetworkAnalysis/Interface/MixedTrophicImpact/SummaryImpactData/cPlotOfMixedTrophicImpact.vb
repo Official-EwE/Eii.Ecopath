@@ -16,8 +16,6 @@ Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' MTI graph with circles
@@ -251,7 +249,6 @@ Public Class cPlotOfMixedTrophicImpact
             Me.Plot.Invalidate(True)
         End Set
     End Property
-
 
     Public Property DrawGrid() As Boolean
         Get

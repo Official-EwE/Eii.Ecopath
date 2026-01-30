@@ -8,8 +8,6 @@ Imports System.IO
 Imports EwECore
 Imports EwECore.Common
 
-
-
 ''' <summary>
 ''' Class to wrap a list of Strategies into an object
 ''' </summary>
@@ -58,7 +56,6 @@ Public Class Strategies
         Return False
 
     End Function
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -147,8 +144,6 @@ Public Class Strategies
         Return bSuccess
 
     End Function
-
-
 
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
 

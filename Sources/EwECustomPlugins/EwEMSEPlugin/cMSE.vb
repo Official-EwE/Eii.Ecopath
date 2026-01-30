@@ -16,8 +16,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports Troschuetz.Random.Distributions.Continuous
 
-
-
 Public Class cMSE
 
 #Region "Internal definitions"
@@ -295,7 +293,6 @@ Public Class cMSE
         End Get
     End Property
 
-
     Friend ReadOnly Property currentStrategy As Strategy
         Get
             'use the current strategy index to get the current 
@@ -303,8 +300,6 @@ Public Class cMSE
             'Return m_currentStrategy
         End Get
     End Property
-
-
 
     Public Property RunState As eRunStates
         Get
@@ -461,7 +456,6 @@ Public Class cMSE
             End If
         End If
 
-
         ' Make sure plug-in has all dirs
         Dim strPath As String = Me.DataPath
         For Each f As cMSEUtils.eMSEPaths In [Enum].GetValues(GetType(cMSEUtils.eMSEPaths))
@@ -481,7 +475,6 @@ Public Class cMSE
         ' .. add more
 
         ' --- END GENERATING ALL ESSENTIAL INPUT FILES FOR A NEW MSE FOLDER ---
-
 
         ' Re-assess state
         Me.InvalidateConfigurationState(True)
@@ -709,7 +702,6 @@ Public Class cMSE
 
     End Sub
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns whether the MSE plug-in has all directories that it needs in the
@@ -773,7 +765,6 @@ Public Class cMSE
         Return (Me.m_tsInputDataCompatibility = TriState.True)
 
     End Function
-
 
     Public Function IsRunDataCompatible() As Boolean
 
@@ -848,7 +839,6 @@ Public Class cMSE
         Return Me.m_iNumModelsAvailable
 
     End Function
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -1586,7 +1576,6 @@ Public Class cMSE
         Collectors.Add(PredationMortality_Collector_Yearly)
         Collectors.Add(PredationMortalityPreyOnly_Yearly_Collector)
 
-
         For Each iCollector In Collectors
             iCollector.Initialise(Me)
         Next
@@ -1709,7 +1698,6 @@ Public Class cMSE
         Writers.Add(PredationMortalityPreyOnly_Writer_Yearly)
 
     End Sub
-
 
     Private Sub Run()
 
@@ -1908,7 +1896,6 @@ Public Class cMSE
 
             Debug.Assert(Me.m_PassedChangeInFAtBeginProjTest, "Somewhere the jump in F from end of hindcast to beginning of forecast is too big. See ")
 
-
             'ecosimData.NTimes is the number of months so 17 years = 204 timesteps
             Me.m_core.EcosimModelParameters.NumberYears = CInt(Me.OriginalNTimesteps / Me.m_ecosim.EcosimData.NumStepsPerYear)
 
@@ -1961,7 +1948,6 @@ Public Class cMSE
     Private Sub SaveResults2CSV(ByRef iModel As Integer, ByRef FleetCatchTable As DataTable, ByRef GroupResultsTable As DataTable,
                      ByRef swFleet As StreamWriter, ByRef swGroup As StreamWriter)
 
-
         'Save the FleetCatchTable to CSV
         'swFleet.WriteLine("Model,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
         For iRow = 0 To FleetCatchTable.Rows.Count - 1
@@ -1991,11 +1977,9 @@ Public Class cMSE
                                 cStringUtils.FormatNumber(RowData.Field(Of Double)("ResultValue")))
         Next
 
-
     End Sub
 
     Private Sub InitArraysForStrategy()
-
 
         'Initialise Arrays for recording the F's from Targ and Cons HCR's
         ReDim Me.TargetFs(Me.m_core.nGroups - 1, Me.NYearsProject - 1)
@@ -2027,7 +2011,6 @@ Public Class cMSE
             Next
         Next
 
-
         'Initialise arrays for recording the realised F's
         ReDim Me.m_RealisedFs(Me.m_core.nGroups - 1, Me.NYearsProject * Me.m_ecosim.EcosimData.NumStepsPerYear - 1)
         For iGrp = 1 To Me.m_core.nGroups
@@ -2053,7 +2036,6 @@ Public Class cMSE
         Next
 
     End Sub
-
 
     Private Sub initResultsTables(ByRef FleetCatchTable As DataTable, ByRef ResultsTable As DataTable)
 
@@ -2132,8 +2114,6 @@ Public Class cMSE
         ReDim Me.MaxEffortThisYear(Me.m_core.nFleets - 1)
 
     End Sub
-
-
 
     ''' <summary>
     ''' Read the DietMatrix file for this trial and populate the Ecopath diet matrix
@@ -2332,7 +2312,6 @@ Public Class cMSE
             Console.WriteLine("This set of parameters is no good")
         Else
 
-
             'Output the trajectories of the efforts
             'For iFleet As Integer = 1 To m_core.nFleets
             '    Dim EffortVals(OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1) As Single
@@ -2468,7 +2447,6 @@ Public Class cMSE
             End If 'Not B(iTrial - 1, igrp - 1) = cCore.NULL_VALUE 
         Next igrp
 
-
         'Vulnerabilities
         For iPrey As Integer = 1 To Me.m_core.nGroups
 
@@ -2553,7 +2531,6 @@ Public Class cMSE
 
     End Function
 
-
     Private Sub initTrajectoryHCRFQuotaByFleetGroupFiles(msgReport As cMessage, HCRF_Targ As List(Of StreamWriter), HCRF_Cons As List(Of StreamWriter),
                                                HCR_Quota_Targ(,) As StreamWriter, HCR_Quota_Cons(,) As StreamWriter)
         Dim strFile As String
@@ -2588,7 +2565,6 @@ Public Class cMSE
             Next
             HCRF_Cons(igrp - 1).WriteLine()
 
-
             'writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.HCRQuota_Targ, strFile))
             'msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
@@ -2609,7 +2585,6 @@ Public Class cMSE
                     HCR_Quota_Targ(iFleet - 1, igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
                 Next
                 HCR_Quota_Targ(iFleet - 1, igrp - 1).WriteLine()
-
 
                 writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.HCRQuota_Cons, strFile))
                 msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
@@ -2700,7 +2675,6 @@ Public Class cMSE
                 Next
                 LandingsFleetGroupTrajectories(iFleet - 1, iGrp).WriteLine()
 
-
                 writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DiscardsTrajectories, strFile))
                 msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
@@ -2716,7 +2690,6 @@ Public Class cMSE
                 Next
                 DiscardsFleetGroupTrajectories(iFleet - 1, iGrp).WriteLine()
 
-
                 writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.CatchTrajectories, strFile))
                 msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
@@ -2731,8 +2704,6 @@ Public Class cMSE
                     CatchFleetGroupTrajectories(iFleet - 1, iGrp).Write("," & cStringUtils.FormatNumber(iTime))
                 Next
                 CatchFleetGroupTrajectories(iFleet - 1, iGrp).WriteLine()
-
-
 
                 writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ValueTrajectories, strFile))
                 msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
@@ -2753,8 +2724,6 @@ Public Class cMSE
         Next
 
     End Sub
-
-
 
 
     Private Sub initTrajectoryCatchTrajectoryFiles(msgReport As cMessage, LandingsTrajectories As List(Of StreamWriter),
@@ -2779,7 +2748,6 @@ Public Class cMSE
             Next
             LandingsTrajectories(igrp - 1).WriteLine()
 
-
             'Init Discard CSV file
             writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.DiscardsTrajectories, strFile))
             msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
@@ -2794,7 +2762,6 @@ Public Class cMSE
                 DiscardsTrajectories(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
             Next
             DiscardsTrajectories(igrp - 1).WriteLine()
-
 
             'Init Catch CSV file
             writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.CatchTrajectories, strFile))
@@ -2837,7 +2804,6 @@ Public Class cMSE
             Next
             RealisedF(igrp - 1).WriteLine()
 
-
             writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.RealisedLandedF, strFile))
             msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
@@ -2851,7 +2817,6 @@ Public Class cMSE
                 RealisedLandedF(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
             Next
             RealisedLandedF(igrp - 1).WriteLine()
-
 
             writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.RealisedDiscardF, strFile))
             msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
@@ -2911,8 +2876,6 @@ Public Class cMSE
         '[catch rate] * [effort] * [density dependant catchability]
         Return CSng(Me._simdata.relQ(FleetIndex, GroupIndex) * Me._simdata.FishRateGear(FleetIndex, TimeStep) * DenDep)
     End Function
-
-
 
     'Private Sub initBaseCatchRate()
     '    Me.BaseCatchRate = New Single(Me._pathdata.NumFleet, Me._pathdata.NumGroups) {}
@@ -3161,8 +3124,6 @@ Public Class cMSE
 
     End Function
 
-
-
     Private Function DetermineZeroEffortFleets(ByRef FTargCons(,) As Double) As Integer()
         Dim ZeroEffortFleets As New List(Of Integer)
 
@@ -3187,7 +3148,6 @@ Public Class cMSE
         Dim FfromHCR As Single
 
         'Calc the maximum decreases in the biomass
-
 
         'Initialise FTargetandConservation
         For i = 1 To Me.m_core.nGroups
@@ -3574,7 +3534,6 @@ Public Class cMSE
         Dim ecopathData As cEcopathDataStructures = Me.m_ecopath.EcopathData
         Dim iPointer As Integer = 0
 
-
         'Dim DirichletArray(mCore.nLivingGroups - 1, mCore.nLivingGroups - 1) As Single
 
         'Array.Clear(DirichletArray, 0, DirichletArray.GetLength(1))
@@ -3746,7 +3705,6 @@ Public Class cMSE
 
         strmWriter.WriteLine("ModelNumber,Strategy,GroupName,F")
 
-
         ''output model number
         'strmWriter.Write("Model Number")
         'For iModel = 1 To NModels2Run
@@ -3824,7 +3782,6 @@ Public Class cMSE
         Return imax
 
     End Function
-
 
     Private Sub RecordHighestValueStock(iTime As Integer, iFleet As Integer, iMax As Integer)
 
@@ -4066,8 +4023,6 @@ Public Class cMSE
 
     End Sub
 
-
-
     Private Sub CalcEffortAndDiscards(BiomassAtTimestep() As Single, iTime As Integer, NumberTimeStepsIntoProjection As Integer, QMult() As Single)
 
         Dim iMax As Integer
@@ -4093,7 +4048,6 @@ Public Class cMSE
 
                         'Alters the discard parameters
                         Me.SetDiscardParameters_HighestValue_Selective(iFleet, iTime, BiomassAtTimestep)
-
 
                     Case cRegulations.eRegMethod.WeakestStock
 
@@ -4182,7 +4136,6 @@ Public Class cMSE
 
     End Sub
 
-
     Private Sub SetMinMaxEfforts(iTime As Integer)
         For iFleet = 1 To Me.m_core.nFleets
 
@@ -4202,10 +4155,8 @@ Public Class cMSE
 
             If Me.m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then Me.MaxEffortThisYear(iFleet - 1) = 200
 
-
         Next
     End Sub
-
 
     Private Function Calc_RealisedLandedFs(BiomassAtT As Single, iGrp As Integer, t As Integer) As Single
         Dim iFleet As Integer, Ft As Single
@@ -4276,7 +4227,6 @@ Public Class cMSE
         End Try
 
     End Sub
-
 
     'Public Sub RecordPredation(ByRef BiomassAtTimestep() As Single, iTime As Integer)
 
@@ -4452,7 +4402,6 @@ Public Class cMSE
 
     End Sub
 
-
 #End Region ' Helper methods
 
 #Region " Configurable settings "
@@ -4588,7 +4537,6 @@ Public Class cMSE
         Me.m_bQSet = False
 
     End Sub
-
 
     Private Sub setQModifiers(iTime As Integer)
 
@@ -4847,7 +4795,6 @@ Public Class cMSE
         Me.m_bQSet = False
     End Sub
 
-
 #End Region
 
 #Region "Error checking"
@@ -4861,7 +4808,6 @@ Public Class cMSE
         'However, should the max change in efforts be specified much different to 5% and this test is still to be applied then it
         'changing this value is advisable.
         Const max_percent_change_F = 0.05
-
 
         If iTime = Me.OriginalNTimesteps + 1 Then
             Dim FChange As Double
@@ -5023,8 +4969,6 @@ Public Class cMSE
     '    Next
     'End Sub
 
-
-
     'Private Sub SaveResults2CSV(ByRef iModel As Integer, ByRef FleetEffortTable As DataTable, ByRef FleetCatchTable As DataTable, ByRef GroupResultsTable As DataTable, _
     '                     ByRef TrajectoryTable As DataTable, ByRef HCR_F_Tab As DataTable, ByRef HCR_Quota_Tab As DataTable, _
     '                     ByRef Realised_F_Tab As DataTable, ByRef Realised_Landed_F_Tab As DataTable, ByRef Realised_Discard_F_Tab As DataTable, _
@@ -5041,10 +4985,8 @@ Public Class cMSE
     '                     ByRef swCatchFleetGroupTraj(,) As StreamWriter, swValueFleetGroupTraj(,) As StreamWriter, _
     '                     ByRef swHighestValueGroup As StreamWriter, ByRef swChokeGroup As StreamWriter)
 
-
      Private Sub SaveResults2CSV(ByRef iModel As Integer, ByRef FleetCatchTable As DataTable, ByRef GroupResultsTable As DataTable, _
                      ByRef swFleet As StreamWriter, ByRef swGroup As StreamWriter)
-
 
         'Save the FleetCatchTable to CSV
         'swFleet.WriteLine("Model,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
@@ -5074,7 +5016,6 @@ Public Class cMSE
                                 cStringUtils.ToCSVField(RowData.Field(Of String)("ResultName")), _
                                 cStringUtils.FormatNumber(RowData.Field(Of Double)("ResultValue")))
         Next
-
 
         'Dim TempRow As DataRow
         'Dim TempArrayResultsTarget(m_core.nGroups - 1, NYearsProject - 1) As Double
@@ -5126,7 +5067,6 @@ Public Class cMSE
         '    Next
         'Next
 
-
         ''Save the HCR F and Quota trajectories
         'For iGrp = 1 To m_core.nGroups
         '    For iRow = 1 To HCR_F_Tab.Rows.Count
@@ -5144,8 +5084,6 @@ Public Class cMSE
         '        Next
         '        swHCR_F_Targ(iGrp - 1).WriteLine()
 
-
-
         '        'Output the conservation F's to file
         '        swHCR_F_Cons(iGrp - 1).Write("{0},{1},{2},{3}", _
         '                                   cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name), _
@@ -5157,8 +5095,6 @@ Public Class cMSE
         '            swHCR_F_Cons(iGrp - 1).Write("," & cStringUtils.FormatNumber(TempArrayResultsConservation(iGrp - 1, iYear - 1)))
         '        Next
         '        swHCR_F_Cons(iGrp - 1).WriteLine()
-
-
 
         '        For iFleet = 1 To m_core.nFleets
 
@@ -5177,8 +5113,6 @@ Public Class cMSE
         '                swHCR_Quota_Targ(iFleet - 1, iGrp - 1).Write("," & cStringUtils.FormatNumber(TempArrayQuotasTraj(iFleet - 1, iGrp - 1, iYear - 1)))
         '            Next
         '            swHCR_Quota_Targ(iFleet - 1, iGrp - 1).WriteLine()
-
-
 
         '            'Output the conservation F's to file
         '            swHCR_Quota_Cons(iFleet - 1, iGrp - 1).Write("{0},{1},{2},{3},{4}", _
@@ -5218,7 +5152,6 @@ Public Class cMSE
 
         '    Next
         'Next
-
 
         ''Save the Realised Landed F trajectories
         'For iGrp = 1 To m_core.nGroups
@@ -5261,8 +5194,6 @@ Public Class cMSE
         '    Next
         'Next
 
-
-
         ''Save the Catch Trajectories
         'For iGrp = 1 To m_core.nGroups
         '    For iRow = 1 To CatchTrajTable.Rows.Count
@@ -5280,8 +5211,6 @@ Public Class cMSE
         '        Next
         '        swLandingsTraj(iGrp - 1).WriteLine()
 
-
-
         '        'Output the discards
         '        swDiscardsTraj(iGrp - 1).Write("{0},{1},{2},{3}", _
         '                                       cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name), _
@@ -5293,8 +5222,6 @@ Public Class cMSE
         '                                           TempArrayCatchesTraj(iTime, 0, iGrp, eCatchTypes.DiscardSurvivals)))
         '        Next
         '        swDiscardsTraj(iGrp - 1).WriteLine()
-
-
 
         '        'Output the catches
         '        swCatchTraj(iGrp - 1).Write("{0},{1},{2},{3}", _
@@ -5356,8 +5283,6 @@ Public Class cMSE
         '            Next
         '            swDiscardsFleetGroupTraj(iFleet - 1, iGrp).WriteLine()
 
-
-
         '            'Output the Landings to file
         '            swCatchFleetGroupTraj(iFleet - 1, iGrp).Write("{0},{1},{2},{3},{4}", _
         '                                                          cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name), _
@@ -5396,7 +5321,6 @@ Public Class cMSE
         '        Next
         '        swLandingsFleetGroupTraj(iFleet - 1, AllGroups).WriteLine()
 
-
         '        'Output the Discards of all groups to file
         '        swDiscardsFleetGroupTraj(iFleet - 1, AllGroups).Write("{0},{1},{2},{3},{4}", _
         '                                                              cStringUtils.ToCSVField("All Groups"), _
@@ -5416,7 +5340,6 @@ Public Class cMSE
         '            swDiscardsFleetGroupTraj(iFleet - 1, AllGroups).Write("," & cStringUtils.FormatNumber(SumDiscardsAcrossAllGroups))
         '        Next
         '        swDiscardsFleetGroupTraj(iFleet - 1, AllGroups).WriteLine()
-
 
         '        'Output the Catch of all groups to file
         '        swCatchFleetGroupTraj(iFleet - 1, AllGroups).Write("{0},{1},{2},{3},{4}", _
@@ -5459,7 +5382,6 @@ Public Class cMSE
         '    Next
         'Next
 
-
         ''Save FleetEffortTable to CSV
         'For iRow = 0 To FleetEffortTable.Rows.Count - 1
         '    swFleetEffort.WriteLine()
@@ -5474,7 +5396,6 @@ Public Class cMSE
         '        swFleetEffort.Write("," & cStringUtils.FormatNumber(EffortVals(iTimeStep - 1)))
         '    Next
         'Next
-
 
         ''Save the trajectories by group
         'For iRow = 0 To TrajectoryTable.Rows.Count - 1
@@ -5502,7 +5423,6 @@ Public Class cMSE
         '    Next
         '    Trajectory2Csv(RowData.Field(Of Integer)("GroupID") - 1).WriteLine()
         'Next
-
 
     End Sub
 

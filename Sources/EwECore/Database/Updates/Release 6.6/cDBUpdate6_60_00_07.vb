@@ -5,8 +5,6 @@
 Imports EwECore.Database
 Imports EwEUtils.Utilities
 
-
-
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.60.0.06:</para>

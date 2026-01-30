@@ -8,10 +8,7 @@ Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 
-
-
 Namespace CyclesAll
-
 
     Public Class cSummaryCyclesPathways
         Inherits cContentManager

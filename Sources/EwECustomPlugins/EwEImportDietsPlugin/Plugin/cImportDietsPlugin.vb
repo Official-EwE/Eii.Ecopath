@@ -337,7 +337,6 @@ Public Class cImportDietsPlugin
         End Get
     End Property
 
-
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "EwEImportDietsPlugin"

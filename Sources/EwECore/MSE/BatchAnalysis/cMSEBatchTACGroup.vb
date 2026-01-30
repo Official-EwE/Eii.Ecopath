@@ -47,7 +47,6 @@ Namespace MSE
 
         End Sub
 
-
         Public Property TAC As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.MSETAC))
@@ -78,8 +77,6 @@ Namespace MSE
             End Set
         End Property
 
-
-
         Public Property isManaged As Boolean
             Get
                 Return CBool(Me.GetVariable(eVarNameFlags.MSEBatchTACManaged))
@@ -89,7 +86,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSEBatchTACManaged, value)
             End Set
         End Property
-
 
         Public Property TACValue(IterationIndex As Integer) As Single
             Get
@@ -109,8 +105,6 @@ Namespace MSE
             End Set
         End Property
 
-
-
         Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = -9999) As Object
 
             Select Case VarName
@@ -122,7 +116,6 @@ Namespace MSE
             Return MyBase.GetVariable(VarName, iIndex, iIndex2, iIndex3)
 
         End Function
-
 
         Public Overrides Function SetVariable(VarName As eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As Boolean
 
@@ -137,7 +130,6 @@ Namespace MSE
             Return MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
 
         End Function
-
 
         Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
             MyBase.ResetStatusFlags(bForceReset)
@@ -161,7 +153,6 @@ Namespace MSE
             Return True
 
         End Function
-
 
     End Class
 

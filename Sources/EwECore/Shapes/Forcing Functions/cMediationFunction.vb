@@ -63,7 +63,6 @@ Public Class cMediationFunction
 
     End Sub
 
-
 #End Region ' Constructors
 
 #Region "Properties"
@@ -84,7 +83,6 @@ Public Class cMediationFunction
         If Me.m_bInInit Then
             Return False
         End If
-
 
         Dim nused As Integer
         For Each grp As cMediatingGroup In Me.m_groups
@@ -257,5 +255,4 @@ Public Class cMediationFunction
 #End Region '  List Interfaces
 
 End Class
-
 

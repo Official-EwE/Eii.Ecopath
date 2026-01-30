@@ -6,8 +6,6 @@ Imports EwECore.Ecosim
 Imports EwECore.Style
 Imports EwEUtils.Utilities
 
-
-
 Namespace Style
 
     ''' ---------------------------------------------------------------------------

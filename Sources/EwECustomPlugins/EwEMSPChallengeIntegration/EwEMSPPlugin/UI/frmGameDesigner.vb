@@ -25,8 +25,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 
-
-
 ' TODO: Crashes happen when opening MSP tools UI during an Ecospace run, when outcomes have not been calibrated
 ' Change: move time step control from form to MSP Tools plug-in, and handle pausing there.
 ' --- THIS IS JUST A UI ISSUE, AND DOES NOT AFFECT LIVE GAMES ---
@@ -714,7 +712,6 @@ Namespace UI
             End Try
 
         End Sub
-
 
         Private Sub OnScribanExport(sender As Object, e As EventArgs) Handles m_tsbnRenderScribanTemplate.Click
             Dim cfg As cGame = Me.SelectedGame()

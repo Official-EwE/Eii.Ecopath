@@ -6,8 +6,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------
@@ -291,7 +289,6 @@ Namespace Controls
                 Me(0, 0) = New cEwEColumnHeaderCell(My.Resources.HEADER_NAME)
                 Me(0, 1) = New cEwEColumnHeaderCell(My.Resources.HEADER_RELATIVEWEIGHT)
             End If
-
 
         End Sub
 

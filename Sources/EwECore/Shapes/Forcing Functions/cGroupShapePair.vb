@@ -18,7 +18,6 @@ Public Class cGroupShapePair
     Private m_manager As cEggProductionShapeManager
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cGroupShapePair)()
 
-
     Public Function Clear() As Boolean
         Me.ShapeID = cCore.NULL_VALUE
         Me.m_shape = Nothing

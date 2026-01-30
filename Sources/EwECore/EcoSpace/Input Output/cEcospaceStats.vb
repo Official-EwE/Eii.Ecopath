@@ -32,7 +32,6 @@ Public Class cEcospaceStats
             val = New cValue(core, New Single, eVarNameFlags.EcospaceSS, eStatusFlags.NotEditable, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
-
             val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.EcospaceSSGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups)
             Me.m_values.Add(val.varName, val)
 
@@ -98,8 +97,6 @@ Public Class cEcospaceStats
         End Set
     End Property
 
-
-
     Public Property SSStatus() As eStatusFlags
         Get
             Return Me.GetStatus(eVarNameFlags.EcospaceSS)
@@ -108,7 +105,6 @@ Public Class cEcospaceStats
             Me.SetStatus(eVarNameFlags.EcospaceSS, value)
         End Set
     End Property
-
 
     ''' <summary>
     ''' SS by group
@@ -123,8 +119,6 @@ Public Class cEcospaceStats
             Me.SetVariable(eVarNameFlags.EcospaceSSGroup, value, iGrp)
         End Set
     End Property
-
-
 
     Public Property SSGroupStatus() As eStatusFlags
         Get
@@ -166,8 +160,6 @@ Public Class cEcospaceStats
         End Set
     End Property
 
-
-
     Public Property RegionSSStatus(iRegion As Integer) As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.EcospaceRegionSS, iRegion)
@@ -180,7 +172,5 @@ Public Class cEcospaceStats
 #End If
 
 #End Region
-
-
 
 End Class

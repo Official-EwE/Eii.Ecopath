@@ -5,8 +5,6 @@
 Imports EwECore
 Imports EwECore.FitToTimeSeries
 
-
-
 Public Class cSFPVandASearch
     Inherits cSFPGenericIteration
 

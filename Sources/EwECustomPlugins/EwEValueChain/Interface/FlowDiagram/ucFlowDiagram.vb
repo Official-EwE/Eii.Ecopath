@@ -18,8 +18,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Public Class ucFlowDiagram
     Inherits UserControl
     Implements IUIElement

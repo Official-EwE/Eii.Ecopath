@@ -8,7 +8,6 @@
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
 ''' <summary>
 ''' This class wraps the underlying EcoSim data structures
 ''' </summary>
@@ -189,7 +188,6 @@ Public Class cEcosimDatastructures
     Public Kemptons() As Single
     ''' <summary>Shannon Diversity Index</summary>
     Public ShannonDiversity() As Single
-
 
     ''' <summary> Max vulnerability across all prey for this predator VulnerabilityPredator(pred) = max(VulMult(prey,pred))</summary>
     Public VulnerabilityPredator() As Single
@@ -400,7 +398,6 @@ Public Class cEcosimDatastructures
     'Public PhHalf() As Single
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
     ''' <summary>
     ''' Structure to contain all settings that wrap the primitive defining the contents of a forcing or time shape
@@ -651,7 +648,6 @@ Public Class cEcosimDatastructures
 
     Public PropDiscardMortTime(,) As Single
 
-
     ''' <summary>
     ''' Unit conversion factor for fishing effort 
     ''' </summary>
@@ -842,7 +838,6 @@ Public Class cEcosimDatastructures
 
     End Sub
 
-
     Private Sub RedimVariabs1()
         Dim i, j As Integer
 
@@ -937,7 +932,6 @@ Public Class cEcosimDatastructures
 
         ReDim Me.moTot(Me.nGroups)
 
-
         ' JS 3May16: make sure there is no overhang from past scenarios
         'Me.lstEnviroInputData.Clear()
 
@@ -962,7 +956,6 @@ Public Class cEcosimDatastructures
             Me.FisForced(igrp) = False
         Next
     End Sub
-
 
     Public Sub Clear()
         Me.nGroups = 0
@@ -1107,7 +1100,6 @@ Public Class cEcosimDatastructures
 
     End Function
 
-
     ''' <summary>
     ''' Resize the Forcing Shape Data to the new size this can be bigger or smaller then the existing number of elements
     ''' </summary>
@@ -1136,7 +1128,6 @@ Public Class cEcosimDatastructures
         '    Return False
         'End Try
 
-
     End Function
 
     ''' <summary>
@@ -1161,10 +1152,7 @@ Public Class cEcosimDatastructures
             Return False
         End Try
 
-
     End Function
-
-
 
     ''' <summary>
     ''' Dimension all forcing function variables by ForcingPoints (number of forcing points/simulation years) and or ForcingShapes (number of forcing shapes)
@@ -1307,7 +1295,6 @@ Public Class cEcosimDatastructures
         'so I have switched it to SetupParametersDefault1 after the defaults are read (ini)
         'SetupParametersDefault1()
 
-
         'read ini file stored defaults here 
         'at this time there is no mechanisim for storing defaults 
         'so I have just hardwired the same values as are in the default ini file 
@@ -1373,7 +1360,6 @@ Public Class cEcosimDatastructures
         If Me.FtimeAdjust(0) < 0 Then Me.FtimeAdjust(0) = 0.5
         If Me.MoPred(0) <= 0 Then Me.MoPred(0) = 1
 
-
     End Sub
 
     Public Sub SetDefaultCatchabilities(landing(,) As Single, discard(,) As Single, b() As Single, iFlt As Integer, iGrp As Integer)
@@ -1390,7 +1376,6 @@ Public Class cEcosimDatastructures
         Next
 
     End Sub
-
 
     Public Sub SetDefaultCatchabilities(landing(,) As Single, discard(,) As Single, b() As Single)
         Dim iflt As Integer
@@ -1437,7 +1422,6 @@ Public Class cEcosimDatastructures
 
     End Sub
 
-
     ''' <summary>
     ''' Set the summary time periods to using the Ecoism run length (NTime)
     ''' </summary>
@@ -1452,7 +1436,6 @@ Public Class cEcosimDatastructures
         End Try
 
     End Sub
-
 
     Public Sub RedimTime()
         'Dim MaxTime As Integer
@@ -1471,7 +1454,6 @@ Public Class cEcosimDatastructures
         ' DefaultCatchabilities()
 
     End Sub
-
 
     ''' <summary>
     ''' Redim preserve the Fishing Rate and Fish Mort arrays to the number of time steps the model will run for.
@@ -1524,7 +1506,6 @@ Public Class cEcosimDatastructures
         ReDim Me.PredPreyResultsOverTime(2, Me.nGroups, Me.nGroups, nt)
         ReDim Me.ResultsAvgByPreyPred(1, Me.nGroups, Me.nGroups)
 
-
         'fisheries data
         ReDim Me.ResultsSumCatchByGroupGear(Me.nGroups, Me.nGear, nt) ' groups,fleets,time
         ReDim Me.ResultsSumFMortByGroupGear(Me.nGroups, Me.nGear, nt)
@@ -1553,7 +1534,6 @@ Public Class cEcosimDatastructures
 
     End Sub
 
-
     ''' <summary>
     ''' Erase all the results arrays 
     ''' </summary>
@@ -1574,7 +1554,6 @@ Public Class cEcosimDatastructures
 
     End Sub
 
-
     ''' <summary>
     ''' Number of time steps to run the model for
     ''' </summary>
@@ -1584,7 +1563,6 @@ Public Class cEcosimDatastructures
             Return Me.NumYears * Me.NumStepsPerYear
         End Get
     End Property
-
 
     ''' <summary>
     ''' Set default fish rate values
@@ -1630,8 +1608,6 @@ Public Class cEcosimDatastructures
     '    Next
 
     'End Sub
-
-
 
 
     ''' <summary>
@@ -1853,7 +1829,6 @@ Public Class cEcosimDatastructures
         End Try
     End Sub
 
-
     ''' <summary>
     ''' Get the time index for the Summary Start and End Time
     ''' </summary>
@@ -1902,18 +1877,15 @@ Public Class cEcosimDatastructures
             Return False
         End Try
 
-
     End Function
 
     Public Function getSummaryValueByGroup(iGroup As Integer, iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single) As Boolean
         Return Me.getSummarybyGroupFleet(Me.ResultsSumValueByGroupGear, iGroup, iFleet, startCatch, endCatch)
     End Function
 
-
     Public Function getSummaryCostByCatch(iFleet As Integer, ByRef startCost As Single, ByRef endcost As Single) As Boolean
         Me.getSummaryByFleet(Me.ResultsEffort, iFleet, startCost, endcost)
     End Function
-
 
     Public Function getSummaryCatchByGroup(iGroup As Integer, iFleet As Integer, ByRef startCatch As Single, ByRef endCatch As Single) As Boolean
         Return Me.getSummarybyGroupFleet(Me.ResultsSumCatchByGroupGear, iGroup, iFleet, startCatch, endCatch)
@@ -1964,7 +1936,6 @@ Public Class cEcosimDatastructures
 
     End Function
 
-
     Private Function getSummaryByFleet(ByRef values(,) As Single, iFleet As Integer, ByRef startVal As Single, ByRef endVal As Single) As Boolean
         Dim bsum As Single, nbsum As Integer, stime As Integer, itime As Integer
         Dim sumValues(1) As Single
@@ -2000,7 +1971,6 @@ Public Class cEcosimDatastructures
         End Try
 
     End Function
-
 
     ''' <summary>
     ''' Computed summarized results for Ecosim
@@ -2067,5 +2037,4 @@ Public Class cEcosimDatastructures
     End Sub
 
 End Class
-
 

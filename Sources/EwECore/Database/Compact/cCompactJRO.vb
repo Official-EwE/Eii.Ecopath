@@ -6,8 +6,6 @@ Imports System.IO
 Imports System.Text
 Imports Microsoft.Win32
 
-
-
 Namespace Database
 
     ''' =======================================================================

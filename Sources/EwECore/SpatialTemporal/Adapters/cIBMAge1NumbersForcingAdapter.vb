@@ -5,8 +5,6 @@
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
-
-
 Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
@@ -20,7 +18,6 @@ Namespace SpatialData
 #Region " Private vars "
 
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cIBMAge1NumbersForcingAdapter)()
-
 
 #End Region ' Private vars
 
@@ -62,7 +59,6 @@ Namespace SpatialData
 
         End Function
 
-
         Private Function ForceIBM(layer As cEcospaceLayer,
                                              conn As cSpatialDataConnection,
                                              iRow As Integer,
@@ -89,7 +85,6 @@ Namespace SpatialData
             Return True
 
         End Function
-
 
         Public Overrides Function CalculateScalar(SumOverPeriod As Double, nMapCells As Double) As Double
             Try
@@ -125,7 +120,6 @@ Namespace SpatialData
             End Try
             Return True
         End Function
-
 
         Friend Overrides Sub SaveLayerData()
             'System.Console.WriteLine(Me.ToString + ".SaveLayerData()")

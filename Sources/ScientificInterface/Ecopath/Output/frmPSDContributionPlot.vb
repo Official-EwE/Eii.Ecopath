@@ -7,8 +7,6 @@ Option Explicit On
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecopath.Output
 
     Public Class PSDContributionPlot

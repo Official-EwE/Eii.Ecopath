@@ -5,8 +5,6 @@
 Imports System.Text
 Imports EwEUtils.SystemUtilities
 
-
-
 Namespace Auxiliary
 
     ''' =======================================================================

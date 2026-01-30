@@ -12,8 +12,6 @@ Imports ScientificInterfaceShared.Style
 Imports ZedGraph
 
 
-
-
 Public Class cIndicesWithoutPPREst
     Inherits cContentManager
 
@@ -125,6 +123,4 @@ Public Class cIndicesWithoutPPREst
     End Sub
 
 End Class
-
-
 

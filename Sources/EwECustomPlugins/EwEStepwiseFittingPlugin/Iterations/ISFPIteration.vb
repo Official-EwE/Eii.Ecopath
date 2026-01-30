@@ -7,8 +7,6 @@ Imports EwECore.FitToTimeSeries
 Imports System.Windows.Forms
 
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' 

@@ -51,7 +51,6 @@ Public Class cPluginAssembly
     ''' <summary>Assembly license expiry date. For UI display purposes only</summary>
     Private m_dtExpiry As DateTime = DateTime.MinValue
 
-
 #End Region ' Private parts
 
 #Region " Constructor "

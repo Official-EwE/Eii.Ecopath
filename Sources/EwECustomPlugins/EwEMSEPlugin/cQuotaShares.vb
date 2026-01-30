@@ -9,8 +9,6 @@ Imports EwECore
 Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
 
-
-
 Public Class cQuotaShares
     Implements IMSEData
 
@@ -376,7 +374,6 @@ Public Class cQuotaShares
         cMSEUtils.ReleaseWriter(writer)
         Return bSuccess
 
-
     End Function
 
     Public Function FileExists(Optional strFilename As String = "") As Boolean _
@@ -489,8 +486,6 @@ Public Class cQuotaShares
             '    End If
             'Next
         End If
-
-
 
     End Sub
 

@@ -5,8 +5,6 @@
 Imports EwECore
 Imports EwEUtils.SystemUtilities
 
-
-
 ''' <summary>
 ''' SFPParameters is the one instance that holds all settings to define the fitting bounds, 
 ''' including bounds for K and spline points; the vulnerability cap, the index of the 

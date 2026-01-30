@@ -8,7 +8,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
 Namespace EcospaceTimeSeries
 
     Public Enum eTimeSeriesRecValidations As Integer
@@ -49,9 +48,7 @@ Namespace EcospaceTimeSeries
 
         'ToDo: Complete intellisense XML code comments
 
-
 #Region "Private data"
-
 
         '  Private m_dcDataByDate As Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
         Private m_core As cCore
@@ -82,7 +79,6 @@ Namespace EcospaceTimeSeries
         Private m_dataSets As DataSet
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcospaceTimeSeriesManager)()
 
-
 #End Region
 
 #Region " Public data/properties "
@@ -103,7 +99,6 @@ Namespace EcospaceTimeSeries
                 End If
             End Set
         End Property
-
 
         Public ReadOnly Property ContaminantInputFileName As String
             Get
@@ -131,7 +126,6 @@ Namespace EcospaceTimeSeries
 
 #Region "Construction Initialization"
 
-
         Public Sub New(Core As cCore, EcospaceData As cEcospaceDataStructures)
 
             Me.m_core = Core
@@ -140,7 +134,6 @@ Namespace EcospaceTimeSeries
             Me.m_dataSets = New DataSet()
 
         End Sub
-
 
         Public Sub InitForRun()
 
@@ -165,7 +158,6 @@ Namespace EcospaceTimeSeries
             End Try
 
         End Sub
-
 
         Private Sub InitForRead(VarName As eVarNameFlags)
 
@@ -225,7 +217,6 @@ Namespace EcospaceTimeSeries
                 System.Console.WriteLine("--------------------------------")
             Next
 
-
         End Sub
 
         ''' <summary>
@@ -265,7 +256,6 @@ Namespace EcospaceTimeSeries
             End Try
 
             If Me.ContainsData(VarName) Then
-
 
                 Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_NRECORDS_LOADED, Me.nRecords(VarName)),
                                                        eMessageType.DataModified, eCoreComponentType.Ecospace,
@@ -328,7 +318,6 @@ Namespace EcospaceTimeSeries
                         Debug.Assert(Not Double.IsNaN(Me.DatSumZ2))
                     End If
 
-
                 Next
             Catch ex As Exception
                 'This shouldn't happen during normal execution!
@@ -341,7 +330,6 @@ Namespace EcospaceTimeSeries
             Return True
 
         End Function
-
 
         Public Function ForceContaminantConcentrations(iTimeStep As Integer) As Boolean
 
@@ -376,8 +364,6 @@ Namespace EcospaceTimeSeries
             Return True
 
         End Function
-
-
 
         Public ReadOnly Property SS As Double
             Get
@@ -433,7 +419,6 @@ Namespace EcospaceTimeSeries
 
         End Function
 
-
         Private Sub setFileNames(InputFileName As String, OutputFileName As String, VarName As eVarNameFlags)
             Select Case VarName
                 Case eVarNameFlags.EcospaceMapBiomass
@@ -444,8 +429,6 @@ Namespace EcospaceTimeSeries
             End Select
         End Sub
 
-
-
         Public ReadOnly Property nRecords(VarName As eVarNameFlags) As Integer
             Get
                 If Me.m_dataSets.Tables.Contains(VarName.ToString) Then
@@ -454,8 +437,6 @@ Namespace EcospaceTimeSeries
                 Return 0
             End Get
         End Property
-
-
 
         ''' <summary>
         ''' Is there Ecospace time series data loaded
@@ -513,7 +494,6 @@ Namespace EcospaceTimeSeries
             Return bReturn
 
         End Function
-
 
         ''' <summary>
         ''' Check the Extent of the input time series data against the current Ecospace map extent
@@ -581,13 +561,11 @@ Namespace EcospaceTimeSeries
 
         End Sub
 
-
         Public Function getDefaultOutputFileName(InputFileName As String) As String
             If (String.IsNullOrWhiteSpace(InputFileName)) Then Return ""
             Dim tempFileName As String = IO.Path.GetFileNameWithoutExtension(InputFileName) + "_Residuals.csv"
             Return Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.Ecospace), tempFileName)
         End Function
-
 
         Private Sub dumpDebugData()
             'dump data to console window for debugging

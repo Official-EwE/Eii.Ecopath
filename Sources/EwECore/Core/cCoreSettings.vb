@@ -4,8 +4,6 @@
 
 Imports EwEUtils.SystemUtilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Storage class for system-wide, model independent EwE core settings.

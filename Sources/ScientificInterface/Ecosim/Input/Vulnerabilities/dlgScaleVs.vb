@@ -5,8 +5,6 @@
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 
-
-
 Namespace Ecosim
 
     ''' <summary>

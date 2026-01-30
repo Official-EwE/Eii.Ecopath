@@ -5,8 +5,6 @@
 Imports EwECore
 Imports EwEMSPLink
 
-
-
 Namespace Emulator
 
     ''' ---------------------------------------------------------------------------

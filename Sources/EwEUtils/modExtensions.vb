@@ -8,8 +8,6 @@ Imports System.Reflection
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic
 
-
-
 <HideModuleNameAttribute()>
 Public Module Extensions
 

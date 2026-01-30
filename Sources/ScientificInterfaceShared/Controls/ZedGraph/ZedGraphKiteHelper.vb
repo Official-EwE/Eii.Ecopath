@@ -5,8 +5,6 @@
 Imports System.Drawing.Drawing2D
 Imports ZedGraph
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------

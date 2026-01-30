@@ -125,7 +125,6 @@ Public Class cPluginManager
     Private m_bLoaded As Boolean = False
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cPluginManager)()
 
-
 #End Region ' Private variables
 
 #Region " Initialization "
@@ -1142,7 +1141,6 @@ Public Class cPluginManager
           "EcopathRunInitialized",
            New Object() {EcoPathDataStructures, TaxonDataStructures, StanzaDataStructures})
 
-
         Return bSucces
 
     End Function
@@ -1383,7 +1381,6 @@ Public Class cPluginManager
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimRunCompletedPlugin),
                                                     "EcosimRunCompleted",
                                                     New Object() {EcosimDatastructures})
-
 
         ' Invoke IEcosimRunInitializedPlugin.EcosimRunInitialized(EcosimDatastructures)
         Return bSucces And Me.TryInvokeMethod(GetType(IEcosimRunCompletedPostPlugin),
@@ -1648,7 +1645,6 @@ Public Class cPluginManager
         Return Me.TryInvokeMethod(GetType(IEcospaceLayerChangePlugin), "EcospaceEndLayerChange", New Object() {iTime, dt, layer})
     End Function
 
-
     Public Function EcospaceResultsModelAreaFileName(ByRef FileName As String, DataSourceAsObject As Object, AvgType As eEcospaceResultsAverageType) As Boolean
 
         Dim args() As Object = New Object() {FileName, DataSourceAsObject, AvgType}
@@ -1660,9 +1656,7 @@ Public Class cPluginManager
 
         Return bSucces
 
-
     End Function
-
 
     Public Function EcospaceResultsMapGroupFileName(ByRef FileName As String, varname As eVarNameFlags,
                                                     iGrp As Integer, strExt As String, iModelTimeStep As Integer) As Boolean
@@ -1675,7 +1669,6 @@ Public Class cPluginManager
         FileName = CStr(args(0))
 
         Return bSucces
-
 
     End Function
 
@@ -1690,7 +1683,6 @@ Public Class cPluginManager
         FileName = CStr(args(0))
 
         Return bSucces
-
 
     End Function
 
@@ -2006,7 +1998,6 @@ Public Class cPluginManager
 
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSEIterationStarted",
           New Object() {})
-
 
     End Function
 

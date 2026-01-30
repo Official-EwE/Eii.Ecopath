@@ -8,8 +8,6 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style.cStyleGuide
 
-
-
 Public Class dlgEditTransect
 
     Private m_uic As cUIContext = Nothing

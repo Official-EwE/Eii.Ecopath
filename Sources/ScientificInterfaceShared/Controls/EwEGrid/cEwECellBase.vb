@@ -9,8 +9,6 @@ Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SourceGrid2.Cells.Real
 
-
-
 Namespace Controls.EwEGrid
 
     ''' -------------------------------------------------------------------

@@ -8,8 +8,6 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
-
-
 Public Class cTransectVectorEditor
     Inherits cLayerEditorVector
 

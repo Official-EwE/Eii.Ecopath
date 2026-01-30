@@ -11,8 +11,6 @@ Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid to allow species quota interaction.
@@ -160,5 +158,4 @@ Public Class gridMaxDecreaseEffort
 #End Region ' Overrides
 
 End Class
-
 

@@ -11,8 +11,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ' ToDo: add check on delete if dataset is applied in this model. Could also be applied to other models, have no idea
 ' ToDo: add indexing overview
 ' ToDo: add cache overview
@@ -165,7 +163,6 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
         End Sub
 
-
         Private Sub OnImport(sender As Object, e As EventArgs) _
             Handles m_btnImport.Click
             Try
@@ -260,7 +257,6 @@ Namespace Ecospace.Controls
             Me.m_manSets.Reload(True)
             Me.Close()
         End Sub
-
 
         Private Sub OnManageConfigurations(sender As System.Object, e As System.EventArgs) _
             Handles m_btnManageConfigurations.Click
@@ -397,7 +393,6 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
 
         End Function
-
 
 #End Region ' Internals 
 

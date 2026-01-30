@@ -11,8 +11,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecosim
 
     ''' =======================================================================
@@ -277,7 +275,6 @@ Namespace Ecosim
             Me.m_pbFlowDiagram.Invalidate()  'This redraws the FlowDiag with highlighted node
         End Sub
 
-
         Private Sub OnFlowDiagramMouseClick(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseClick
 
@@ -516,7 +513,6 @@ Namespace Ecosim
 
         End Sub
 
-
         Private Sub OnTreeFlowRateLegendChanged(sender As cTreeFlowDiagramRenderer)
 
             ' ToDo: globalize this
@@ -562,7 +558,6 @@ Namespace Ecosim
                 End Try
             End If
         End Sub
-
 
 #End Region ' Tree events
 
@@ -709,7 +704,6 @@ Namespace Ecosim
             End If
 
         End Sub
-
 
         Private Sub OnSaveToBatchImage(sender As System.Object, e As System.EventArgs) _
           Handles m_tsmiSaveToBatchImage.Click
@@ -936,7 +930,6 @@ Namespace Ecosim
         Private Delegate Sub AppendButtonDelegate(Btn As Button, txt As String)
         Private Delegate Sub AppendSliderDelegate(sl As ucSlider, val As Integer)
         Private Delegate Sub RunCompletedDelegate()
-
 
         Private Sub AppendTextBox(TB As TextBox, txt As String)
 

@@ -26,7 +26,6 @@ Public Class cResultsCollector_RealisedLandedFs
 
     'End Sub
 
-
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
             Return Me.m_MSE.NYearsProject * Me.m_MSE.EcosimData.NumStepsPerYear

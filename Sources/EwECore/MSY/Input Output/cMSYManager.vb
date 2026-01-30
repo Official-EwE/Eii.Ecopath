@@ -605,7 +605,6 @@ Namespace MSY
                 Me.m_MSY.EcosimRK4(Me.m_msyData.nYearsPerTrial)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Create an F time series from the Ecopath F for the selected group
                 'All other timeseries will be disabled

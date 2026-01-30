@@ -5,8 +5,6 @@
 Imports ScientificInterfaceShared.Utilities
 Imports SourceGrid2
 
-
-
 Namespace Controls.EwEGrid
 
     ''' -------------------------------------------------------------------

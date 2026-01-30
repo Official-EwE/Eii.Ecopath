@@ -144,7 +144,6 @@ Public MustInherit Class cMediationBaseFunction
         End Set
     End Property
 
-
     ''' <summary>
     ''' X Axis base value for sum of x biomass
     ''' </summary>
@@ -209,8 +208,6 @@ Public MustInherit Class cMediationBaseFunction
         Return True
 
     End Function
-
-
 
 #End Region ' Updating
 

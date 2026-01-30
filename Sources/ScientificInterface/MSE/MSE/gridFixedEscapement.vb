@@ -7,8 +7,6 @@ Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 
-
-
 Public Class gridFixedEscapement
     Inherits cEwEGrid
 

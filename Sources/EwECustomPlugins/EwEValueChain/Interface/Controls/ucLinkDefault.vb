@@ -7,8 +7,6 @@ Imports EwECore.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' User control that reflects a default link.

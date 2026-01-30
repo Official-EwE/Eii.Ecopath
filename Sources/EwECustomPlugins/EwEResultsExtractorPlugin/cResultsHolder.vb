@@ -9,7 +9,6 @@ Imports EwECore.Plugins.Ecosim
 Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 
-
 Public Class cResultsHolder
 
     Implements IMenuItemPlugin
@@ -205,8 +204,6 @@ Public Class cResultsHolder
         Next
 
     End Sub
-
-
 
     Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements IEcosimRunInitializedPlugin.EcosimRunInitialized
         ReDim Me.ZStat(Me.mTimeSeries.AppliedNdatType, Me.mTimeSeries.AppliedDatPoints)

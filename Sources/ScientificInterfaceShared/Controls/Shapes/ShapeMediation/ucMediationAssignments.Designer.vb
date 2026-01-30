@@ -4,7 +4,6 @@
 
 Namespace Controls
 
-
     Partial Class ucMediationAssignments
         Inherits System.Windows.Forms.UserControl
 
@@ -56,6 +55,4 @@ Namespace Controls
     End Class
 
 End Namespace
-
-
 

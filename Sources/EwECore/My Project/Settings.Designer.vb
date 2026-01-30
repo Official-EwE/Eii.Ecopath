@@ -12,10 +12,7 @@
 ' </auto-generated>
 '------------------------------------------------------------------------------
 
-
 Option Explicit On
-
-
 
 <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),
  Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0"),

@@ -12,8 +12,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ' ToDo: Populate dataset details panel
 ' ToDo: Respond to configuration / name changes
 ' ToDo: Enable varname hierarchy in TreeView

@@ -12,14 +12,12 @@ Public Class cLandingsMediationShapeManager
 
     Private m_medData As cMediationDataStructures
 
-
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
 
         Me.Init()
 
     End Sub
-
 
     Public Overrides ReadOnly Property NPoints() As Integer
         Get

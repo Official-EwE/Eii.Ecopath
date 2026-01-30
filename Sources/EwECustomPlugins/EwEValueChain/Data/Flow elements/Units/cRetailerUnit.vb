@@ -5,8 +5,6 @@
 Imports System.ComponentModel
 Imports EwEUtils.Utilities
 
-
-
 <TypeConverter(GetType(cPropertySorter)),
     DefaultProperty("Name"),
     Serializable()>

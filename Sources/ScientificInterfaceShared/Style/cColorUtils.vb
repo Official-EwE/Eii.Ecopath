@@ -5,8 +5,6 @@
 Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Utilities
 
     ''' -----------------------------------------------------------------------
@@ -123,7 +121,6 @@ Namespace Utilities
             Dim soften As Single = clr.A / 255.0!
             Return ((soften * clr.R + soften * clr.G + soften * clr.B) / 3) < 127
         End Function
-
 
         Public Shared Function IsLight(clr As Color) As Boolean
             Return Not IsDark(clr)

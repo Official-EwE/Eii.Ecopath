@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SourceGrid2
 
-
-
 ''' ===========================================================================
 ''' <summary>
 ''' Grid for showing a whack of links.

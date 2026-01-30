@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
 
 
-
-
 Namespace Controls.Map.Layers
 
     ''' =======================================================================

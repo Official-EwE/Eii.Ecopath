@@ -9,7 +9,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace
 
-
     Public Class gridDefineEnvDriverMaps
         Inherits cEwEGrid
 
@@ -518,7 +517,6 @@ Namespace Ecospace
 
         End Function
 
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Cell click handler, called in response to clicking button-like cells.
@@ -973,5 +971,4 @@ Namespace Ecospace
     End Class
 
 End Namespace
-
 

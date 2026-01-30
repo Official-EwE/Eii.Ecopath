@@ -9,8 +9,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Public Class cUnitHeaderFormatter
 
     Private m_uic As cUIContext

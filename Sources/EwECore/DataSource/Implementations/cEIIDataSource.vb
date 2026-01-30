@@ -9,7 +9,6 @@ Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 '
 
-
 ''' ===========================================================================
 ''' <summary>
 ''' Data access for an EwE5 .EII file
@@ -306,7 +305,6 @@ Public Class cEIIDataSource
                 If ecopathDS.GE(K) = 0 Then ecopathDS.GE(K) = cCore.NULL_VALUE
 
             Next K
-
 
             ' Read DietComp
             ReDim ecopathDS.DietChanged(1, 0)

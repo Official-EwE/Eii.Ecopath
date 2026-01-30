@@ -141,7 +141,6 @@ Public Class cMessageStateHandler
 
     End Function
 
-
 #End Region ' Internals
 
 End Class

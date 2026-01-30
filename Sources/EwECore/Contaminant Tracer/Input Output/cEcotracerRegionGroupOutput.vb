@@ -97,7 +97,6 @@ Public Class cEcotracerRegionGroupOutput
         End Set
     End Property
 
-
     Public Property CB(iRegion As Integer, iGroup As Integer, iTimeStep As Integer) As Single
         Get
             Try
@@ -137,7 +136,6 @@ Public Class cEcotracerRegionGroupOutput
             End Try
         End Set
     End Property
-
 
     Public Property CBEnvironment(iRegion As Integer, iTimeStep As Integer) As Single
 

@@ -4,7 +4,6 @@
 
 #Region "Imports"
 
-
 Option Explicit On
 
 Imports EwECore
@@ -93,7 +92,6 @@ Public Class cStockAssessmentParameters
         End Set
     End Property
 
-
     Public ReadOnly Property Name As String
         Get
             Return Me.m_pathdata.GroupName(Me.iGroupIndex)
@@ -111,7 +109,6 @@ Public Class cStockAssessmentParameters
             Return Me.m_Assessment.Core.EcopathGroupInputs(Me.iGroupIndex).IsFished
         End Get
     End Property
-
 
     Private Sub FireOnChanged()
 
@@ -145,7 +142,6 @@ Public Class cStockAssessmentParameters
         Return True
 
     End Function
-
 
     Public Function toCSVString() As String
         Return cStringUtils.ToCSVField(Me.Name) + "," + cStringUtils.ToCSVField(Me.iGroupIndex) + "," +

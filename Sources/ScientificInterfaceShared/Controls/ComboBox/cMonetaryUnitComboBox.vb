@@ -6,8 +6,6 @@ Imports System.Globalization
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
 
     ''' ---------------------------------------------------------------------------

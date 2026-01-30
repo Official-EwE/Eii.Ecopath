@@ -8,7 +8,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace
 
-
     Public Class gridDefineImportanceMaps
         Inherits cEwEGrid
 
@@ -818,5 +817,4 @@ Namespace Ecospace
     End Class
 
 End Namespace
-
 

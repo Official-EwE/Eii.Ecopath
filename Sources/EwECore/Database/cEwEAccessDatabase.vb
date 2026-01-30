@@ -50,7 +50,6 @@ Namespace Database
         Private m_strFileName As String = ""
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEAccessDatabase)()
 
-
 #End Region ' Private vars
 
 #Region " Generic "

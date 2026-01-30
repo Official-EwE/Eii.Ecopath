@@ -9,8 +9,6 @@ Imports EwECore.Database
 Imports EwECore
 Imports ScientificInterfaceShared.Style
 
-
-
 <TypeConverter(GetType(cPropertySorter)),
     DefaultProperty("Name"),
     Serializable()>

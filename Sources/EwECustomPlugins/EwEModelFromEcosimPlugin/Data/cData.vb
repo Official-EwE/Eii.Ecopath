@@ -7,8 +7,6 @@ Imports EwECore
 Imports EwECore.Common
 Imports EwEUtils.Utilities
 
-
-
 Friend Class cData
     Public Enum eModelAggregationTypes
         Annual = 0
@@ -215,7 +213,6 @@ Friend Class cData
                                                             Me.EwEModelName, Me.YearLabel(iYear)), False)
         End Get
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

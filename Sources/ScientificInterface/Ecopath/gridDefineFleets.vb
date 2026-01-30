@@ -9,8 +9,6 @@ Imports SourceGrid2.Cells
 Imports SourceGrid2.VisualModels
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Grid class for the Edit Fleets interface.

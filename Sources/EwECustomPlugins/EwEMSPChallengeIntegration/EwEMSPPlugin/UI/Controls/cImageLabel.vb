@@ -5,8 +5,6 @@
 Imports System.Drawing
 Imports System.Windows.Forms
 
-
-
 Namespace UI
 
     ''' ---------------------------------------------------------------------------

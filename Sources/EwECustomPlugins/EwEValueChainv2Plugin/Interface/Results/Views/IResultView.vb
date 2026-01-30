@@ -6,8 +6,6 @@ Imports System.Collections.Generic
 Imports ScientificInterfaceShared.Controls
 Imports ValueChain
 
-
-
 Public Interface IResultView
 
     ''' -----------------------------------------------------------------------

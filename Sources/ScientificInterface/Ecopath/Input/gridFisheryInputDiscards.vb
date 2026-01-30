@@ -152,7 +152,6 @@ Namespace Ecopath.Input
                 Me(Me.RowsCount - 1, fleetIndex + 1) = New cPropertyCell(propSumCol)
             Next
 
-
             opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumAll.ToArray())
             propSumAll = Me.Formula(opSumAll)
 

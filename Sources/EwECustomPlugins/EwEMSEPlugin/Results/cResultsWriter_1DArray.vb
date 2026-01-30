@@ -14,7 +14,6 @@ Public Class cResultsWriter_1DArray
     Protected m_ResultsArray As cResultsCollector_1DArray
     Protected m_StreamWriters As List(Of StreamWriter)
 
-
     Public Overrides Sub Initialise(msgReport As EwECore.cMessage, MSE As cMSE, Results_Array As cResultsCollector_Base, FolderPath As cMSEUtils.eMSEPaths)
 
         Dim strFile As String

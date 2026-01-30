@@ -6,8 +6,6 @@ Option Explicit On
 
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls
 
     ''' -----------------------------------------------------------------------
@@ -255,6 +253,4 @@ Namespace Controls
     End Class
 
 End Namespace
-
-
 

@@ -5,16 +5,11 @@
 #Const DUMP_TO_FILE = 0
 
 
-
-
-
 Imports EwECore.Style
 Imports EwECore.ValueWrapper
 #If DUMP_TO_FILE Then
 Imports System.IO
 #End If
-
-
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

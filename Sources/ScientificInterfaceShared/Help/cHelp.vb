@@ -4,8 +4,6 @@
 
 Imports System.IO
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Light-weight implementation of F1-driven application-wide help support.

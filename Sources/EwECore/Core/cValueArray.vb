@@ -16,7 +16,6 @@ Namespace ValueWrapper
         Protected m_nObjects As Integer = cCore.NULL_VALUE 'number of object in the array
         Protected m_Countertype As eCoreCounterTypes
 
-
         Sub New(core As cCore, theValueType As eValueTypes, VarName As eVarNameFlags, Status As eStatusFlags, CounterType As eCoreCounterTypes,
                 MetaData As cVariableMetaData, Optional Validator As cValidatorDefault = Nothing)
             MyBase.New(core, Nothing, VarName, Status, theValueType, MetaData, Validator)

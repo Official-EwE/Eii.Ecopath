@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
-
-
 Public Class frmDefineTransects
 
     Private m_layerRaster As cTransectLayer = Nothing
@@ -156,7 +154,6 @@ Public Class frmDefineTransects
         End If
 
     End Sub
-
 
 #End Region ' Events
 

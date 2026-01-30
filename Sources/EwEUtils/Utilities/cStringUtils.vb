@@ -15,8 +15,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace Utilities
 
     ''' ---------------------------------------------------------------------------
@@ -2061,7 +2059,6 @@ Namespace Utilities
                             Case eFilterIndexTypes.FirstIndex : value = data.GetValue(iFilter, i, j)
                             Case eFilterIndexTypes.LastIndex : value = data.GetValue(i, j, iFilter)
                         End Select
-
 
                         If tData Is GetType(Boolean) Then
                             sbRow.Append(If(CBool(value), "1", "0"))

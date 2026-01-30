@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid displaying <see cref="cTimeSeries"/>.

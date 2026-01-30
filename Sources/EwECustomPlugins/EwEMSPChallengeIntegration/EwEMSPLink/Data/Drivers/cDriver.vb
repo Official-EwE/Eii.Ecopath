@@ -4,8 +4,6 @@
 
 Imports EwECore
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base driver class for inserting MSP pressure data into Ecospace input variables.

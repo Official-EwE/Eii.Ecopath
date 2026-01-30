@@ -4,8 +4,6 @@
 
 Imports EwECore
 
-
-
 Friend Class cKeystone3
 
     Private Class cGroup

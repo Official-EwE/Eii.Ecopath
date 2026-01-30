@@ -145,7 +145,6 @@ Public Class cEcospaceTimestep
             ReDim Me.m_biomassByRegion(Me.m_spaceData.NGroups, Me.m_spaceData.nRegions)
             ReDim Me.m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
 
-
             ReDim Me.m_F(Me.m_spaceData.NGroups)
             ReDim Me.m_pred(Me.m_spaceData.NGroups)
             ReDim Me.m_consum(Me.m_spaceData.NGroups)
@@ -325,7 +324,6 @@ Public Class cEcospaceTimestep
 
     End Property
 
-
     Public Property [Catch](iGroup As Single) As Single
 
         Get
@@ -417,7 +415,6 @@ Public Class cEcospaceTimestep
 
     End Property
 
-
     ''' <summary>
     ''' Average Biomass relative to the base by group (Bt/B0)
     ''' </summary>
@@ -443,7 +440,6 @@ Public Class cEcospaceTimestep
 
     End Property
 
-
     ''' <summary>
     ''' Number of rows in the map
     ''' </summary>
@@ -452,7 +448,6 @@ Public Class cEcospaceTimestep
             Return Me.m_spaceData.InRow
         End Get
     End Property
-
 
     ''' <summary>
     ''' Number of columns in the map
@@ -698,5 +693,4 @@ Public Class cEcospaceTimestep
 #End Region
 
 End Class
-
 

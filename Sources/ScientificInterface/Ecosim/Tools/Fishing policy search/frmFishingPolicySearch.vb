@@ -478,7 +478,6 @@ Namespace Ecosim
 
                 Me.UpdateResultsGraph(results)
 
-
             Catch ex As Exception
                 m_logger.LogError(ex, "SearchProgressHandler. Error in Fishing Policy search.")
                 Me.SendErrorMessage("Error in Fishing Policy search. " & ex.Message)
@@ -596,7 +595,6 @@ Namespace Ecosim
 
         Private Sub UpdateResultsGraph(results As cFPSSearchResults)
 
-
             Dim aiBlocks() As Integer = results.BlockNumber
             Dim asResults() As Single = results.BlockResults
 
@@ -622,10 +620,8 @@ Namespace Ecosim
             Dim lResults As List(Of cObjectiveResult) = Nothing
             Dim res As cObjectiveResult = Nothing
 
-
             '' Get the results
             'lResults = Me.m_manager.Results()
-
 
             'iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
 
@@ -636,7 +632,6 @@ Namespace Ecosim
             '                           res.objFuncMandatedValue, res.objFuncEcologicalValue, _
             '                           res.objBiomassDiversity, res.objFuncAreaBorder, _
             '                           res.objFuncTotal, res.PercentageClosed)
-
 
         End Sub
 #End Region ' Graphing region
@@ -726,7 +721,6 @@ Namespace Ecosim
                 Return Me.m_BlockCells
             End Get
         End Property
-
 
         Public ReadOnly Property TotalBlocks() As Integer Implements IPolicyColorBlockDataSource.TotalBlocks
             Get
@@ -883,14 +877,11 @@ Namespace Ecosim
             End Get
         End Property
 
-
         Public Function BlockToValue(iBlock As Integer) As Single Implements Ecosim.IPolicyColorBlockDataSource.BlockToValue
             'For the fishing policy block selector the iBlock is the value
             Return iBlock
         End Function
     End Class
-
-
 
 #End Region
 

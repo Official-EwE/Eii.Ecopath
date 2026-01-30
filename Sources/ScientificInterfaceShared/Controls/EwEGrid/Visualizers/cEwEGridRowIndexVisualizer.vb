@@ -4,7 +4,6 @@
 
 Namespace Controls.EwEGrid
 
-
     Public Class cEwEGridRowIndexVisualizer
         Inherits cEwEGridVisualizerBase
 

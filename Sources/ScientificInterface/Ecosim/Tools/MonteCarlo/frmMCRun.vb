@@ -404,7 +404,6 @@ Namespace Ecosim
             End If
         End Sub
 
-
         'Private Sub cbRetainCurPattern_CheckedChanged(sender As System.Object, e As System.EventArgs) _
         '    Handles m_cbRetainCurPattern.CheckedChanged, m_cbSRA.CheckedChanged
         '    If Not Me.m_mcmanager Is Nothing Then

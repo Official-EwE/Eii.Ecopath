@@ -7,8 +7,6 @@ Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports ScientificInterfaceShared.Utilities
 
-
-
 Namespace Ecospace.Controls
 
     Public Class ucSpatialTimeSeriesToolbox
@@ -542,7 +540,6 @@ Namespace Ecospace.Controls
 
         End Sub
 
-
         ''' <summary>
         ''' Draw the actual dataset bar, data points and labels
         ''' </summary>
@@ -599,7 +596,6 @@ Namespace Ecospace.Controls
                 g.DrawString(pos.Dataset.CustomName, ft, SystemBrushes.ControlText, Math.Max(rcBack.X, rcLabel.X), rcLabel.Y)
             End Using
 
-
             For i As Integer = 0 To pos.DataPoint.Count - 1
                 Dim iStep As Integer = pos.DataPoint(i)
                 rcDot.X = rcBar.X + (iStep - pos.DataStart) * Me.m_iTimestepSize - c_dotradius
@@ -630,7 +626,6 @@ Namespace Ecospace.Controls
                 End Select
             Next
 
-
         End Sub
 
         Private Function DatasetPos(ds As ISpatialDataSet) As cDatasetInfo
@@ -646,7 +641,6 @@ Namespace Ecospace.Controls
             Dim iEnd As Integer = (pos.DataEnd + 1) * Me.m_iTimestepSize - 1
             Return New Rectangle(iStart, c_headerheight + pos.PosVert * (c_barheight + 2 * c_barmargin) + c_barmargin, iEnd - iStart, c_barheight)
         End Function
-
 
         Private Function TimestepFromPoint(pt As Point) As Integer
             If (Me.m_iTimestepSize = 0) Then Return -1

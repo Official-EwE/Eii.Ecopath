@@ -5,8 +5,6 @@
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Grid for showing fishing effort shapes.

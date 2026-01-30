@@ -6,8 +6,6 @@ Imports EwECore.MSE
 Imports ScientificInterface.Ecosim
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' <summary>
 ''' Implementation of IPolicyColorBlockDataSource for MSE Fleets
 ''' </summary>
@@ -29,7 +27,6 @@ Public Class cMSEFishingColorBlockDataSource
         End Get
     End Property
 
-
     Public ReadOnly Property TotalBlocks() As Integer Implements IPolicyColorBlockDataSource.TotalBlocks
         Get
             Return Me.m_uic.Core.EcosimModelParameters.NumberYears
@@ -39,7 +36,6 @@ Public Class cMSEFishingColorBlockDataSource
     Public Sub New(UIContext As cUIContext)
         Me.m_uic = UIContext
     End Sub
-
 
     ''' <summary>
     ''' Attach an IBlockSelector to the data source
@@ -124,7 +120,6 @@ Public Class cMSEFishingColorBlockDataSource
             'Don't set the value
             Return
         End If
-
 
         ' Fill single block
 

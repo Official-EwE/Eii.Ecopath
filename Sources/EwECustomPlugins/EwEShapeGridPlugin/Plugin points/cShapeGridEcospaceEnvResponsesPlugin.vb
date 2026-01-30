@@ -4,8 +4,6 @@
 
 Imports EwECore
 
-
-
 Public Class cShapeGridEcospaceEnvResponsesPlugin
     Inherits cShapeGridPlugin
 

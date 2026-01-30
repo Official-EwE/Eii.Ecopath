@@ -6,8 +6,6 @@ Imports System.Collections.Generic
 Imports ScientificInterfaceShared.Style
 Imports EwECore.Common
 
-
-
 Public Interface IGraphView
 
     Sub SetData(strGraphTitle As String,

@@ -10,8 +10,6 @@ Imports ScientificInterfaceShared.Definitions
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Helper class to to update the graph that reflects MC sim biodiversity indicators.

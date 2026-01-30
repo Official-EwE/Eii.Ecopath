@@ -7,8 +7,6 @@ Imports System.Drawing
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 
-
-
 ' ToDo: globalize this class
 ' ToDo: comment class and methods
 ' ToDo: comment code

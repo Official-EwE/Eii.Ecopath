@@ -4,8 +4,6 @@
 
 Imports EwECore
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Factory to access available Ecospace drivers.

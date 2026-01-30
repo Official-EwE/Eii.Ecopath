@@ -50,8 +50,6 @@ Public Interface IThreadedProcess
     ''' ---------------------------------------------------------------------------
     ReadOnly Property IsRunning() As Boolean
 
-
     WriteOnly Property MessagePump As cCore.MessagePumpDelegate
-
 
 End Interface

@@ -105,7 +105,6 @@ Public MustInherit Class CreateCollectionForData
             Next
         Next
 
-
     End Sub
 
     Public MustOverride Sub PopulateAttachedList(i As String)

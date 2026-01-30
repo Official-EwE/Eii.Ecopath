@@ -129,7 +129,6 @@ Public Class cEcotrophPlugin
         End Try
     End Sub
 
-
     Private Function HasInterface(theForm As System.Windows.Forms.Form) As Boolean
         If theForm Is Nothing Then Return False
         If theForm.IsDisposed Then Return False
@@ -188,7 +187,6 @@ Public Class cEcotrophPlugin
             ETinputdata.ModelName = epdata.ModelName
             ETinputdata.ModelDescription = epdata.ModelDescription
 
-
             For ifleet As Integer = 0 To epdata.NumFleet - 1
                 ETinputdata.FleetName(ifleet) = epdata.FleetName(ifleet + 1)
                 ETinputdatafromEP.Catches(ifleet) = New Single(epdata.GroupName.Length) {}
@@ -196,7 +194,6 @@ Public Class cEcotrophPlugin
                 For j As Integer = 1 To epdata.B.Length - 1
                     If (ETinputdatafromEP.accessibility(j) = 0 And (epdata.Landing(ifleet, j) > 0 Or epdata.Discard(ifleet, j) > 0)) Then ETinputdatafromEP.accessibility(j) = default_accessibility
                     ETinputdatafromEP.Catches(ifleet)(j) = epdata.Landing(ifleet + 1, j) + epdata.Discard(ifleet + 1, j)
-
 
                 Next
             Next

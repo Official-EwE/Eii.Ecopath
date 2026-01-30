@@ -44,5 +44,4 @@ Public Class cResultsCollector_PredationMortality_PreyOnly_Yearly
         End Get
     End Property
 
-
 End Class

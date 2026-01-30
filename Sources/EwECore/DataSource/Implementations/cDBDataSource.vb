@@ -12,8 +12,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace DataSources
 
     ''' ---------------------------------------------------------------------------
@@ -1619,7 +1617,6 @@ Namespace DataSources
                         ' JS 14jun12: Leading CB separated from leading B (default to LeadingLifeStage)
                         stanzaDS.BaseStanzaCB(iStanza) = CInt(Me.m_db.ReadSafe(rdStanza, "LeadingCB", stanzaDS.BaseStanza(iStanza)))
 
-
                     Catch ex As Exception
                         Me.LogError(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
                         bSucces = False
@@ -1890,7 +1887,6 @@ Namespace DataSources
             Return False
 
         End Function
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -6051,7 +6047,6 @@ Namespace DataSources
 
             Dim iShapeID As Integer = medData.MediationDBIDs(iShape)
             Dim shapeParms As cEcosimDatastructures.ShapeParameters = medData.MediationShapeParams(iShape)
-
 
             Try
                 writer = Me.m_db.GetWriter("EcosimShapeMediation")
@@ -11110,7 +11105,6 @@ Namespace DataSources
 
             If Not bSucces Then ds.m_samples.Clear()
 
-
             Return bSucces
 
         End Function
@@ -11424,7 +11418,6 @@ Namespace DataSources
             Return True
 
         End Function
-
 
 #End Region ' Cleanup
 

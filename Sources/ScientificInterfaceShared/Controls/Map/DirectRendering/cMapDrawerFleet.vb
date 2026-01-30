@@ -5,8 +5,6 @@
 Option Explicit On
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.Map
 
     ''' ---------------------------------------------------------------------------

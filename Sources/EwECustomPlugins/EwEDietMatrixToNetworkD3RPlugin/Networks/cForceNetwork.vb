@@ -7,8 +7,6 @@ Imports EwECore
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' <summary>
 ''' Helper class for generating a NetworkD3 forceNetwork graph
 ''' </summary>

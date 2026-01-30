@@ -8,7 +8,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
-
     Public Class gridBasicEstimates
         Inherits cEwEGrid
 

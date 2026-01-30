@@ -154,7 +154,6 @@ Public Class cDatabaseLink
                 End If
             Next
 
-
             ' Load flow diagrams
             aObjects = Me.m_db.ReadObjects(GetType(cFlowDiagram), False)
             For Each obj As cOOPStorable In aObjects : data.CreateFlowDiagram(DirectCast(obj, cFlowDiagram)) : Next

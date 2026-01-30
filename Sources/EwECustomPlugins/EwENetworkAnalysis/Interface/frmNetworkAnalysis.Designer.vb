@@ -5,8 +5,6 @@
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Controls
 
-
-
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmNetworkAnalysis
     Inherits DockContent

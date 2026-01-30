@@ -6,8 +6,6 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Helper class; maintains content of the status strip panes in the AppLauncher.

@@ -20,7 +20,6 @@ Public Class cENARDataStructures
     ''' </summary>
     Public Import() As Single
 
-
     Public Sub New(NumberOfGroups As Integer)
 
         Me.nGroups = NumberOfGroups

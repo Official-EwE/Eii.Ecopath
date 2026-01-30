@@ -55,7 +55,6 @@ Friend Class cDBUpdate6_00_04_02
     ''' -----------------------------------------------------------------------
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-
         Return Me.FixCurrencyUnits(db)
 
     End Function

@@ -4,7 +4,6 @@
 
 Option Explicit On
 
-
 Public Class frmMSEBatchFixedF
 
     ' ToDo: Add XML comments
@@ -43,9 +42,7 @@ Public Class frmMSEBatchFixedF
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.Ecosim}
 
-
     End Sub
-
 
     Private Property NIters As Integer
         Get
@@ -55,7 +52,6 @@ Public Class frmMSEBatchFixedF
             Me.m_BatchManager.Parameters.nFixedFIteration = value
         End Set
     End Property
-
 
     Private Sub txNTFM_TextChanged(sender As System.Object, e As System.EventArgs) Handles txNFixedF.TextChanged
 
@@ -76,7 +72,6 @@ Public Class frmMSEBatchFixedF
 
     End Sub
 
-
     Private Sub UpDwnIter_ValueChanged(sender As System.Object, e As System.EventArgs) Handles UpDwnIter.ValueChanged
         Dim iter As Integer = CInt(Me.UpDwnIter.Value)
         If Me.m_BatchManager Is Nothing Then Exit Sub
@@ -84,7 +79,6 @@ Public Class frmMSEBatchFixedF
             Me.grdGroups.iCurIter = iter
         End If
     End Sub
-
 
     Private Sub OnIterCalcTypeChanged(sender As System.Object, e As System.EventArgs) _
           Handles rbCalcTypePercent.CheckedChanged, rbCalcTypeValue.CheckedChanged
@@ -124,13 +118,11 @@ Public Class frmMSEBatchFixedF
 
     End Sub
 
-
     Private Sub cbGroups_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cbGroups.SelectedIndexChanged
         If Me.m_BatchManager Is Nothing Then Exit Sub
         Dim grp As cCoreInputOutputBase = DirectCast(Me.cbGroups.SelectedItem, cCoreInputOutputControlItem).Source
         Me.grdIters.iSelGroup = grp.Index
     End Sub
-
 
     Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
         Dim bRefresh As Boolean
@@ -166,10 +158,8 @@ Public Class frmMSEBatchFixedF
 
                 End If
 
-
         End Select
 
     End Sub
-
 
 End Class

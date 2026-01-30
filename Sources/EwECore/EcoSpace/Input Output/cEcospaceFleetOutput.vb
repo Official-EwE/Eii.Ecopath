@@ -58,7 +58,6 @@ Public Class cEcospaceFleetOutput
 
     End Sub
 
-
     Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
         Try
@@ -77,9 +76,7 @@ Public Class cEcospaceFleetOutput
 
     End Function
 
-
 #Region "Variable via dot '.' operator"
-
 
     Public Property CatchStart() As Single
         Get
@@ -101,7 +98,6 @@ Public Class cEcospaceFleetOutput
         End Set
     End Property
 
-
     Public Property ValueStart() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.EcospaceFleetValueStart))
@@ -121,7 +117,6 @@ Public Class cEcospaceFleetOutput
             Me.SetVariable(eVarNameFlags.EcospaceFleetValueEnd, value)
         End Set
     End Property
-
 
     Public Property CostStart() As Single
         Get
@@ -143,7 +138,6 @@ Public Class cEcospaceFleetOutput
         End Set
     End Property
 
-
     Public Property EffortES() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.EcospaceFleetEffortES))
@@ -164,7 +158,6 @@ Public Class cEcospaceFleetOutput
             Return CSng(Me.GetVariable(eVarNameFlags.EcospaceFleetValue, Time))
         End Get
     End Property
-
 
     Public ReadOnly Property Profit() As Single
         Get
@@ -221,7 +214,6 @@ Public Class cEcospaceFleetOutput
             Me.SetVariable(eVarNameFlags.EcospaceFleetValueEnd, value)
         End Set
     End Property
-
 
     Public Property CostStartStatus() As eStatusFlags
         Get

@@ -5,7 +5,6 @@
 Imports System.ComponentModel
 Imports SourceGrid2
 
-
 Public MustInherit Class gridApplyShapeBase
     Inherits cEwEGrid
 

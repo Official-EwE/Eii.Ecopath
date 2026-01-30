@@ -5,8 +5,6 @@
 Imports System.Reflection
 Imports System.Text
 
-
-
 Namespace Controls
 
     ''' =======================================================================

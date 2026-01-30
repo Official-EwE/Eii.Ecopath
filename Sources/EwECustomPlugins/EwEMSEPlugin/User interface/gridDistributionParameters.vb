@@ -11,8 +11,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 
-
-
 ' ToDo: Change col labels to lower, upper and midpoint
 ' ToDo: Midpoint should be enabled when distr = Triangular 
 
@@ -328,5 +326,4 @@ Public Class gridDistributionParameters
 #End Region ' Overrides
 
 End Class
-
 

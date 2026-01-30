@@ -57,7 +57,6 @@ Namespace MSECommandFile
 
         Public MustOverride Function Validate() As Boolean Implements IMSEParameter.Validate
 
-
         Public Sub New(BatchManager As cMSECommandFileReader)
             Me.m_manager = BatchManager
         End Sub
@@ -77,7 +76,6 @@ Namespace MSECommandFile
             End Get
         End Property
 
-
         Public ReadOnly Property Manager() As cMSECommandFileReader
             Get
                 Return Me.m_manager
@@ -92,11 +90,7 @@ Namespace MSECommandFile
             End Try
         End Sub
 
-
     End Class
-
-
-
 
 
     ''' <summary>
@@ -109,7 +103,6 @@ Namespace MSECommandFile
         Inherits cParameterBase
 
         Protected m_lstPs As List(Of Single)
-
 
         Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
@@ -139,7 +132,6 @@ Namespace MSECommandFile
             Return False
 
         End Function
-
 
         Private Function readData(ParameterString As String) As Boolean
             Dim values() As String
@@ -208,7 +200,6 @@ Namespace MSECommandFile
         End Function
     End Class
 
-
     ''' <summary>
     ''' Base class for parameter objects that have only one value String or Numeric
     ''' </summary>
@@ -217,7 +208,6 @@ Namespace MSECommandFile
         Inherits cParameterBase
 
         Protected m_data As String
-
 
         Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
@@ -254,7 +244,6 @@ Namespace MSECommandFile
 
     End Class
 
-
     ''' <summary>
     ''' Base class for parameter object that contain one parameter value and are numeric
     ''' </summary>
@@ -262,10 +251,8 @@ Namespace MSECommandFile
     Public MustInherit Class cParameterNumericBase
         Inherits cParameterObjectBase
 
-
         Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
-
 
         End Sub
 
@@ -287,7 +274,6 @@ Namespace MSECommandFile
 
 #Region "Implementations"
 
-
     Public Class cOutputDirParameter
         Inherits cParameterObjectBase
 
@@ -297,7 +283,6 @@ Namespace MSECommandFile
             Me.m_DataTag = cMSECommandFileReader.OUTPUT_DATA_TAG
 
         End Sub
-
 
         Public Overrides Sub Update()
             Try
@@ -314,7 +299,6 @@ Namespace MSECommandFile
             If Directory.Exists(dir) Then
                 Return True
             End If
-
 
             Try
                 Directory.CreateDirectory(dir)
@@ -345,7 +329,6 @@ Namespace MSECommandFile
 
         End Sub
 
-
         Public Overrides Sub Update()
             'nothing to update...
         End Sub
@@ -370,11 +353,8 @@ Namespace MSECommandFile
         End Function
     End Class
 
-
-
     Public Class cPPDevParameter
         Inherits cParameterNumericBase
-
 
         Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
@@ -400,13 +380,10 @@ Namespace MSECommandFile
 
         End Function
 
-
     End Class
-
 
     Public Class cNumSimsParameter
         Inherits cParameterNumericBase
-
 
         Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
@@ -432,7 +409,6 @@ Namespace MSECommandFile
     Public Class cStartYearParameter
         Inherits cParameterNumericBase
 
-
         Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
 
@@ -453,7 +429,6 @@ Namespace MSECommandFile
         End Function
 
     End Class
-
 
     Public Class cRunTypeParameter
         Inherits cParameterNumericBase
@@ -478,7 +453,6 @@ Namespace MSECommandFile
                 bsuccess = False
             End Try
 
-
             Return bsuccess
 
         End Function
@@ -495,7 +469,6 @@ Namespace MSECommandFile
 
         End Sub
 
-
         Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.RUNTYPE_DATA_TAG, ControlString)
@@ -503,7 +476,6 @@ Namespace MSECommandFile
         End Function
 
     End Class
-
 
     Public Class cErrorCVParameter
         Inherits cParameterNumericBase
@@ -514,7 +486,6 @@ Namespace MSECommandFile
             Me.m_DataTag = cMSECommandFileReader.CV_DATA_TAG
 
         End Sub
-
 
         Public Overrides Sub Update()
             Dim data As Single = Single.Parse(Me.m_data)
@@ -527,7 +498,6 @@ Namespace MSECommandFile
 
         End Sub
 
-
         Public Shared Function CanRead(ControlString As String) As Boolean
 
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.CV_DATA_TAG, ControlString)
@@ -536,10 +506,8 @@ Namespace MSECommandFile
 
     End Class
 
-
     Public Class cFParameter
         Inherits cParameterListBase
-
 
         Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
@@ -591,7 +559,6 @@ Namespace MSECommandFile
 
             Return MyBase.ValidateIndexes(Me.Manager.nGroups)
 
-
             'Try
             '    Dim lstIndexes As List(Of IMSEParameter) = Me.m_manager.getTagData(Me.m_IndexTag)
             '    If lstIndexes.Count < 1 Then
@@ -630,8 +597,6 @@ Namespace MSECommandFile
 
     Public Class cControlTypeParameter
         Inherits cParameterListBase
-
-
 
         Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
@@ -740,7 +705,6 @@ Namespace MSECommandFile
                     batchDat.TAC(Me.Index, indexs(i)) = tac
                 Next
 
-
             Catch ex As Exception
                 Throw New Exception("Exception in Fixed Fishing Mortality. " & ex.Message)
             End Try
@@ -761,7 +725,6 @@ Namespace MSECommandFile
         End Function
     End Class
 
-
     Public Class cIndexParameter
         Implements IMSEParameter
 
@@ -778,7 +741,6 @@ Namespace MSECommandFile
                 Return Me.m_tag
             End Get
         End Property
-
 
         Public Function Init(ParameterString As String) As Boolean Implements IMSEParameter.Init
             Try
@@ -801,7 +763,6 @@ Namespace MSECommandFile
 
                 Return True
 
-
             Catch ex As Exception
                 'Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
                 'Me.SendMessage(CORE_TAB & ex.Message)
@@ -809,7 +770,6 @@ Namespace MSECommandFile
             End Try
 
             Return False
-
 
         End Function
 
@@ -835,8 +795,6 @@ Namespace MSECommandFile
         End Property
 
     End Class
-
-
 
     Public Class cTFMParameter
         Inherits cParameterBase
@@ -865,7 +823,6 @@ Namespace MSECommandFile
 
                 Return True
 
-
             Catch ex As Exception
                 Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
                 Me.SendMessage(cStringUtils.vbTab & ex.Message)
@@ -874,9 +831,7 @@ Namespace MSECommandFile
 
             Return False
 
-
         End Function
-
 
         Private Function readData(ParameterString As String) As Boolean
             Dim values() As String
@@ -908,7 +863,6 @@ Namespace MSECommandFile
             Return True
 
         End Function
-
 
         Public Overrides Sub Update()
 
@@ -944,9 +898,7 @@ Namespace MSECommandFile
                 System.Console.WriteLine(Me.ToString & ".Update() Exception: " & ex.Message)
             End Try
 
-
         End Sub
-
 
         Public Shared Function CanRead(ControlString As String) As Boolean
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.TFM_DATA_TAG, ControlString)
@@ -957,7 +909,6 @@ Namespace MSECommandFile
             Dim index() As Integer = lstIndexs.Item(0).getIndexes
             Return index
         End Function
-
 
         Public Overrides Function Validate() As Boolean '
 
@@ -1015,7 +966,6 @@ Namespace MSECommandFile
 
         End Function
 
-
     End Class
 
     Public Class cPPParameter
@@ -1045,7 +995,6 @@ Namespace MSECommandFile
 
         End Function
 
-
         Private Function readData(ParameterString As String) As Boolean
             Dim values() As String
             values = ParameterString.Split(","c)
@@ -1066,7 +1015,6 @@ Namespace MSECommandFile
 
         End Function
 
-
         Public Overrides Sub Update()
 
             Try
@@ -1079,11 +1027,9 @@ Namespace MSECommandFile
                 data.ForcingIndexes(Me.Index) = Me.m_FFIndex
                 data.ForcingNames(Me.Index) = Me.m_FFName
 
-
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".Update() Exception: " & ex.Message)
             End Try
-
 
         End Sub
 
@@ -1126,7 +1072,6 @@ Namespace MSECommandFile
 
             End Try
 
-
         End Function
 
         Public Overrides Function getIndexes() As Integer()
@@ -1159,7 +1104,6 @@ Namespace MSECommandFile
 
                 Return True
 
-
             Catch ex As Exception
                 Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
                 Me.SendMessage(cStringUtils.vbTab & ex.Message)
@@ -1168,9 +1112,7 @@ Namespace MSECommandFile
 
             Return False
 
-
         End Function
-
 
         Public Overrides Sub Update()
 
@@ -1185,7 +1127,6 @@ Namespace MSECommandFile
             End Try
 
         End Sub
-
 
         Public Shared Function CanRead(ControlString As String) As Boolean
 
@@ -1202,13 +1143,11 @@ Namespace MSECommandFile
 
         End Function
 
-
         Public Overrides Function getIndexes() As Integer()
             Return Nothing
         End Function
 
     End Class
-
 
     Public Class cEndYearParameter
         Inherits cParameterNumericBase
@@ -1220,11 +1159,9 @@ Namespace MSECommandFile
 
         End Sub
 
-
         Public Overrides Sub Update()
             Me.m_manager.MSEData.EndYear = Integer.Parse(Me.m_data)
         End Sub
-
 
         Public Shared Function CanRead(ControlString As String) As Boolean
             Return cMSECommandFileReader.CanRead(cMSECommandFileReader.ENDYEAR_DATA_TAG, ControlString)
@@ -1232,10 +1169,8 @@ Namespace MSECommandFile
 
     End Class
 
-
     Public Class cVersionNumberParameter
         Inherits cParameterNumericBase
-
 
         Public Sub New(FileReader As cMSECommandFileReader)
             MyBase.New(FileReader)
@@ -1244,7 +1179,6 @@ Namespace MSECommandFile
 
         End Sub
 
-
         Public Overrides Function Init(ParameterString As String) As Boolean
             Dim bSuccess As Boolean = MyBase.Init(ParameterString)
             If Me.Validate Then
@@ -1252,7 +1186,6 @@ Namespace MSECommandFile
             End If
             Return bSuccess
         End Function
-
 
         Public Overrides Sub Update()
             'update the version number
@@ -1285,11 +1218,8 @@ Namespace MSECommandFile
 
     End Class
 
-
 #End Region
 
 End Namespace
-
-
 
 

@@ -6,8 +6,6 @@ Imports System.Reflection
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Style
 
-
-
 Namespace Controls.EwEGrid
 
     ''' ===========================================================================

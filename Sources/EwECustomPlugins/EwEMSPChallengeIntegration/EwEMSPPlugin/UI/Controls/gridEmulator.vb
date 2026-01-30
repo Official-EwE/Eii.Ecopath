@@ -13,8 +13,6 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 
-
-
 Namespace UI
 
     ''' -----------------------------------------------------------------------

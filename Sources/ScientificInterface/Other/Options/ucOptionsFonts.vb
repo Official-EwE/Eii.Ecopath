@@ -93,7 +93,6 @@ Namespace Other
             Me.InitializeComponent()
             Me.UIContext = uic
 
-
         End Sub
 
 #End Region ' Constructors
@@ -404,7 +403,6 @@ Namespace Other
             End Set
         End Property
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Helper methods to draw a custom listcontrol item 
@@ -437,5 +435,4 @@ Namespace Other
     End Class
 
 End Namespace
-
 

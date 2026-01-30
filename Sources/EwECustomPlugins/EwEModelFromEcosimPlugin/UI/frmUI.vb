@@ -12,8 +12,6 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Main form for the plug-in
@@ -347,8 +345,6 @@ Friend Class frmUI
         End If
 
     End Sub
-
-
 
 #End Region ' Internals
 
