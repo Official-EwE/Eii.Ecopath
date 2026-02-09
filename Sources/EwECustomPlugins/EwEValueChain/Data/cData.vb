@@ -52,7 +52,7 @@ Public Class cData
 
 #End Region ' Private vars 
 
-    Public Sub New(core As cCore, Optional serviceProvider As IServiceProvider = Nothing)
+    Public Sub New(core As cCore, serviceProvider As IServiceProvider)
         MyBase.New(core)
 
         cData.s_inst = Me
