@@ -130,7 +130,7 @@ Public Class frmSURIMIChecker
                 End If
 
                 mlk = New MultiLevelKey(KeyDomain.Species, False)
-                If (Not String.IsNullOrWhiteSpace(SpeciesCode)) Then
+                If (Not String.IsNullOrWhiteSpace(codeSpecies)) Then
                     mlk.SetField(SpeciesFields.SpeciesCode, nameVocSpecies & ":" & codeSpecies, m_regFields)
                 End If
                 If (Not String.IsNullOrWhiteSpace(codeLifeStage)) Then
