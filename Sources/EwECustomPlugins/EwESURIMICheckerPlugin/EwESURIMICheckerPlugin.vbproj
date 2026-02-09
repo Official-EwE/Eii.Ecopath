@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <Company>Ecopath International Initiative Research Association</Company>
     <Product>EwESURIMICheckerPlugin</Product>
-    <Copyright>Copyright © 2012 -</Copyright>
+    <Copyright>Copyright © 2026-</Copyright>
     <Description>Plug-in for Ecopath with Ecosim that provides an overview of remarks entered througout a model</Description>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
@@ -35,9 +35,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>EwESURIMICheckerPlugin.snk</AssemblyOriginatorKeyFile>
+	<AssemblyOriginatorKeyFile>EsESURIMICheckerPlugin.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutputPath>bin\x64\Debug\</OutputPath>
@@ -49,6 +47,9 @@
     <DocumentationFile>EwESURIMICheckerPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Eii.ControlledVocabularies" Version="1.0.32" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
@@ -79,6 +80,10 @@
     <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Update="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
