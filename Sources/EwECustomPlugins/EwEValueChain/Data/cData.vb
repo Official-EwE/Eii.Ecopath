@@ -9,7 +9,6 @@ Imports EwECore
 Imports EwECore.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
-Imports Eii.ControlledVocabularies
 Imports Eii.ControlledVocabularies.Vocabularies.Species
 
 ''' ===========================================================================
@@ -45,6 +44,7 @@ Public Class cData
     Private Shared s_inst As cData = Nothing
 
     Private m_lItems As New List(Of cCoreInputOutputBase)
+    Private m_asfis As ASFISSpeciesCodeVocabulary = Nothing
 
 #If DEBUG Then
     Private m_valueChainStorageService As IValueChainStorageService = Nothing
@@ -52,10 +52,12 @@ Public Class cData
 
 #End Region ' Private vars 
 
-    Public Sub New(core As cCore)
+    Public Sub New(core As cCore, Optional serviceProvider As IServiceProvider = Nothing)
         MyBase.New(core)
 
         cData.s_inst = Me
+
+        m_asfis = TryCast(serviceProvider.GetService(GetType(ASFISSpeciesCodeVocabulary)), ASFISSpeciesCodeVocabulary)
 
         Me.m_coreComponent = eCoreComponentType.External
         Me.m_dataType = eDataTypes.External
@@ -1273,8 +1275,8 @@ Public Class cData
         }
 
         ' Populate aliases
-        Dim asfis As New ASFISSpeciesCodeVocabulary(Nothing, Nothing, Nothing)
-        If asfis.Load() Then
+
+        If m_asfis.Load() Then
             For i As Integer = 1 To Me.Core.nGroups
                 Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(i)
                 For j As Integer = 1 To grp.NTaxon
@@ -1291,7 +1293,7 @@ Public Class cData
                         ' Retrieve code
                         Dim code As String = tax.CodeFAO
                         ' If missing, find in ASFIS
-                        If String.IsNullOrWhiteSpace(code) Then code = asfis.FindCode(scname, 80)
+                        If String.IsNullOrWhiteSpace(code) Then code = m_asfis.FindCode(scname, 80)
                         ' Add alias if defined
                         If (Not String.IsNullOrWhiteSpace(code)) Then parameter.Aliases(code) = grp.Name
 
