@@ -2,10 +2,16 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
+Imports Eii.ControlledVocabularies.Descriptors
+Imports Eii.ControlledVocabularies.Inference.Field
+Imports Eii.ControlledVocabularies.Vocabularies.LifeStage
+Imports Eii.ControlledVocabularies.Vocabularies.Species
 Imports EwECore
 Imports EwECore.Plugins
 Imports EwECore.Plugins.Ecospace
 Imports EwECore.Plugins.UI
+Imports EwEUtils.Logging
+Imports Microsoft.Extensions.DependencyInjection
 Imports ScientificInterfaceShared.Controls
 
 Public Class EwESURIMICheckerPlugin
@@ -13,6 +19,7 @@ Public Class EwESURIMICheckerPlugin
 
     Private m_uic As cUIContext = Nothing
     Private m_frm As frmSURIMIChecker = Nothing
+    Private m_serviceProvider As IServiceProvider
 
     Public ReadOnly Property ControlImage As Object Implements IGUIPlugin.ControlImage
         Get
@@ -77,6 +84,22 @@ Public Class EwESURIMICheckerPlugin
     End Sub
 
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
+        ' Configure DI container
+
+        Dim services As New ServiceCollection()
+        services.AddLogging()
+
+        ' Register the LoggerFactory from LoggingContext
+        services.AddSingleton(LoggingContext.LoggerFactory)
+        services.AddSingleton(Of IKeyFieldDescriptorRegistry, KeyFieldDescriptorRegistry)()
+        services.AddSingleton(Of IKeyFieldDescriptorIndexer, KeyFieldDescriptorIndexer)()
+        services.AddSingleton(Of FieldInferenceOrchestrator)()
+
+        ' Register ASFISSpeciesCodeVocabulary - it will automatically get ILogger<ASFISSpeciesCodeVocabulary> from the factory
+        services.AddSingleton(Of ASFISSpeciesCodeVocabulary)()
+        services.AddSingleton(Of SURIMILifestageVocabulary)()
+
+        m_serviceProvider = services.BuildServiceProvider()
 
     End Sub
 
@@ -90,8 +113,9 @@ Public Class EwESURIMICheckerPlugin
     Private Function GetUI() As frmSURIMIChecker
 
         If (Not Me.HasUI) Then
-            Me.m_frm = New frmSURIMIChecker(Me.m_uic)
+            Me.m_frm = New frmSURIMIChecker(Me.m_uic, m_serviceProvider)
         End If
+
         Return Me.m_frm
 
     End Function
@@ -102,4 +126,5 @@ Public Class EwESURIMICheckerPlugin
         End If
         Return False
     End Function
+
 End Class

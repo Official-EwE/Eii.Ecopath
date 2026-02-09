@@ -277,7 +277,6 @@ Public Class cValueChainPluginV2
             End If
         Catch ex As Exception
             m_logger.LogError(ex, "VC::cValueChainPluginV2.LoadModel")
-            Throw
         End Try
 
         Return False
