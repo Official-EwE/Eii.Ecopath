@@ -11,9 +11,10 @@ Imports Eii.ControlledVocabularies.Vocabularies
 Imports Eii.ControlledVocabularies.Vocabularies.LifeStage
 Imports Eii.ControlledVocabularies.Vocabularies.Species
 Imports EwECore
+Imports EwECore.cCore
 Imports ScientificInterfaceShared.Controls
 
-Public Class frmSURIMIChecker
+Public Class dlgSURIMIChecker
 
     Const Source As String = "SURIMI"
 
@@ -80,6 +81,7 @@ Public Class frmSURIMIChecker
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOK.Click
+        Me.Apply()
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
@@ -151,6 +153,9 @@ Public Class frmSURIMIChecker
 
     Private Sub FillSpeciesGrid()
 
+        Dim core As cCore = Me.UIContext.Core
+        Dim fact As New MultiLevelKeyFactory()
+
         Dim dt As New DataTable()
         dt.Columns.Add("iGroup", GetType(Integer)).ColumnMapping = MappingType.Hidden
         dt.Columns.Add("iTaxon", GetType(Integer)).ColumnMapping = MappingType.Hidden
@@ -163,18 +168,23 @@ Public Class frmSURIMIChecker
         dt.Columns.Add("MultiLevelKey", GetType(String))
         dt.Columns.Add("Source", GetType(String))
 
-        Dim core As cCore = Me.UIContext.Core
-        For i As Integer = 1 To core.nGroups
-            Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(i)
+        For i As Integer = 1 To Core.nGroups
+            Dim grp As cEcoPathGroupInput = Core.EcopathGroupInputs(i)
             For j As Integer = 1 To grp.NTaxon
-                Dim tax As cTaxon = core.Taxon(grp.iTaxon(j))
+                Dim tax As cTaxon = Core.Taxon(grp.iTaxon(j))
                 Dim SpeciesCode As String = ""
                 Dim LifeStageCode As String = ""
                 If (Not String.IsNullOrWhiteSpace(tax.SourceKey) And tax.Source = Source) Then
-                    Dim f As New MultiLevelKeyFactory()
-                    Dim mlk = f.FromString(tax.SourceKey, KeyDomain.Species, m_regFields)
-                    SpeciesCode = mlk.GetField(SpeciesFields.SpeciesCode).Value
-                    SpeciesCode = mlk.GetField(SpeciesFields.SpeciesCode).Value
+
+                    Dim mlk = fact.FromString(tax.SourceKey, KeyDomain.Species, m_regFields)
+
+                    If (mlk IsNot Nothing) Then
+                        Dim f As IMultiLevelKeyField = mlk.GetField(SpeciesFields.SpeciesCode)
+                        If (f IsNot Nothing) Then SpeciesCode = f.Value
+                        f = mlk.GetField(SpeciesFields.Lifestage)
+                        If (f IsNot Nothing) Then LifeStageCode = f.Value
+                    End If
+
                 End If
                 Dim dr = dt.NewRow()
                 dr("iGroup") = i
@@ -198,6 +208,24 @@ Public Class frmSURIMIChecker
         src.DataSource = m_dtSpecies
         Me.m_dgvSpecies.DataSource = src
 
+    End Sub
+
+    Private Sub Apply()
+        Dim core As cCore = Me.UIContext.Core
+        Dim bChanged As Boolean = False
+        core.SetBatchLock(eBatchLockType.Update)
+
+        For Each dr As DataRow In m_dtSpecies.Rows
+            Dim iTaxon As Integer = CInt(dr("iTaxon"))
+            Dim tax As cTaxon = core.Taxon(iTaxon)
+
+            If (String.Compare(tax.SourceKey, CStr(dr("MultiLevelKey")), True) <> 0) Then
+                tax.SourceKey = CStr(dr("MultiLevelKey"))
+                tax.Source = Source
+                bChanged = True
+            End If
+        Next
+        core.ReleaseBatchLock(eBatchChangeLevelFlags.Ecopath, bChanged)
     End Sub
 
 End Class
