@@ -4,6 +4,7 @@
 
 Imports System.Text
 Imports System.Threading
+Imports Eii.BlobStore
 Imports Eii.ControlledVocabularies.Descriptors
 Imports Eii.ControlledVocabularies.Inference.Field
 Imports Eii.ControlledVocabularies.Vocabularies.Species
@@ -158,6 +159,7 @@ Public Class cValueChainPlugin
         services.AddSingleton(LoggingContext.LoggerFactory)
         services.AddSingleton(Of IKeyFieldDescriptorRegistry, KeyFieldDescriptorRegistry)()
         services.AddSingleton(Of IKeyFieldDescriptorIndexer, KeyFieldDescriptorIndexer)()
+        services.AddSingleton(Of IBlobStore)(Function(sp) New LocalBlobStore(inputRoot:="Includes", outputRoot:="Output"))
         services.AddSingleton(Of FieldInferenceOrchestrator)()
 
         ' Register ASFISSpeciesCodeVocabulary - it will automatically get ILogger<ASFISSpeciesCodeVocabulary> from the factory

@@ -2,6 +2,7 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
+Imports Eii.BlobStore
 Imports Eii.ControlledVocabularies.Descriptors
 Imports Eii.ControlledVocabularies.Inference.Field
 Imports Eii.ControlledVocabularies.Vocabularies.LifeStage
@@ -94,6 +95,7 @@ Public Class EwESURIMICheckerPlugin
         services.AddSingleton(LoggingContext.LoggerFactory)
         services.AddSingleton(Of IKeyFieldDescriptorRegistry, KeyFieldDescriptorRegistry)()
         services.AddSingleton(Of IKeyFieldDescriptorIndexer, KeyFieldDescriptorIndexer)()
+        services.AddSingleton(Of IBlobStore)(Function(sp) New LocalBlobStore(inputRoot:="Includes", outputRoot:="Output"))
         services.AddSingleton(Of FieldInferenceOrchestrator)()
 
         ' Register ASFISSpeciesCodeVocabulary - it will automatically get ILogger<ASFISSpeciesCodeVocabulary> from the factory
