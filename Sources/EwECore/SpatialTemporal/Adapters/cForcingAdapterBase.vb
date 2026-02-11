@@ -1,28 +1,12 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 Namespace SpatialData
-
 
     ''' <summary>
     ''' Adapter base class for forcing data.
@@ -92,7 +76,6 @@ Namespace SpatialData
 
 #Region " Variables"
 
-
         Protected m_spaceData As cEcospaceDataStructures
 
         Protected m_ForcingMaps As cForcingMapIndexPair()
@@ -101,7 +84,6 @@ Namespace SpatialData
 #End Region
 
 #Region "Construction and Initialization"
-
 
         Public Sub New(core As cCore, varName As eVarNameFlags, cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
@@ -120,7 +102,6 @@ Namespace SpatialData
             MyBase.Initialize()
             Me.m_spaceData = Me.m_core.m_EcospaceData
         End Sub
-
 
 #End Region
 
@@ -196,7 +177,6 @@ Namespace SpatialData
 
         End Sub
 
-
         ''' <summary>
         ''' Restores forced data to forced state, overwriting the predicted values. 
         ''' Cells in the external data that are cCore.NULL_VALUE will not be restored.
@@ -226,8 +206,8 @@ Namespace SpatialData
                                         'this acts as a mask for cells that were not forced.
                                         'The external data only sets modeled cells that are <> cCore.NULL_VALUE to forcing values. 
                                         'In cForcingMapIndexPair.data() cCore.NULL_VALUE = not modeled,  cForcingMapIndexPair.NULL_CELL = modeled but not forced
-                                        If SpaceData.Depth(ir, ic) > 0 And _
-                                            pair.data(ir, ic) <> cCore.NULL_VALUE And _
+                                        If SpaceData.Depth(ir, ic) > 0 And
+                                            pair.data(ir, ic) <> cCore.NULL_VALUE And
                                             pair.data(ir, ic) <> cForcingMapIndexPair.NULL_CELL Then
 
                                             SpaceData.Bcell(ir, ic, pair.iLayerIndex) = pair.data(ir, ic)
@@ -269,7 +249,6 @@ Namespace SpatialData
 
         End Sub
 
-
         Protected Sub setIsForced(iLayerIndex As Integer)
 
             Debug.Assert(Me.m_ForcingMaps(iLayerIndex) IsNot Nothing, Me.ToString + ".setIsForced() Layer index not set to valid layer!")
@@ -288,7 +267,6 @@ Namespace SpatialData
         End Sub
 
 #End Region
-
 
     End Class
 

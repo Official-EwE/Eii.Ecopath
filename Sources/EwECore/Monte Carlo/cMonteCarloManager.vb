@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Threading
 Imports EwECore.Common
@@ -27,8 +9,6 @@ Imports EwECore.Plugins.MonteCarlo
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 ''' <summary>
 ''' Manager to run the Ecosim Monte Carlo.
@@ -63,7 +43,6 @@ Public Class cMonteCarloManager
     ''' <summary>Available monte carlo result writers.</summary>
     Private m_ResultsWriters As New List(Of IMonteCarloResultsWriter)
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMonteCarloManager)()
-
 
 #End Region
 
@@ -107,7 +86,6 @@ Public Class cMonteCarloManager
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".init()", ex)
         End Try
-
 
     End Sub
 
@@ -318,7 +296,6 @@ Public Class cMonteCarloManager
 
     End Sub
 
-
     Private Sub MCEcopathInterationHandler()
 
         Try
@@ -338,11 +315,9 @@ Public Class cMonteCarloManager
 
     End Sub
 
-
     Private Sub MCTrialProgressHandler()
 
         Try
-
 
             'tell the interface
             If Me.m_SyncObject IsNot Nothing And Me.m_dlgMCTrialStepHandler IsNot Nothing Then
@@ -352,7 +327,6 @@ Public Class cMonteCarloManager
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".MCTrialProgressHandler() " & ex.Message)
         End Try
-
 
     End Sub
 
@@ -372,11 +346,9 @@ Public Class cMonteCarloManager
 
     End Sub
 
-
 #End Region
 
 #Region " Saving "
-
 
     ''' <summary>
     ''' Apply the Monte Carlo results (best fitting parameters) to the Ecopath inputs (B,PB....)

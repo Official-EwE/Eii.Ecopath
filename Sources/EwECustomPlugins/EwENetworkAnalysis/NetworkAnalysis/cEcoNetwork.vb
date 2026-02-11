@@ -1,23 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
@@ -27,8 +10,6 @@ Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 Public Class cEcoNetwork
 
@@ -460,7 +441,6 @@ Public Class cEcoNetwork
         End Try
     End Sub
 
-
     Private Sub OnAbortTimerEvent(source As Object, e As System.Timers.ElapsedEventArgs)
 
         If Not Me.bUseAbortTimer Then Exit Sub
@@ -540,7 +520,6 @@ Public Class cEcoNetwork
                 ' PROCEED TO THE MIXED TROPHIC IMPACT ROUTINE
                 CatchSum = 0
 
-
                 For i = 1 To m_epdata.NumLiving
                     CatchSum = CatchSum + m_epdata.Landing(0, i) + m_epdata.Discard(0, i) 'Catch(i%)
                 Next i
@@ -587,7 +566,6 @@ Public Class cEcoNetwork
         Return bSucces
         'Count = 2
     End Function
-
 
     ''' <summary>
     ''' Initialization of the Required PP routines
@@ -653,7 +631,6 @@ Public Class cEcoNetwork
 
     End Function
 
-
     ''' <summary>
     ''' Dump the ouput for debugging to the Console or a text stream
     ''' </summary>
@@ -693,7 +670,6 @@ Public Class cEcoNetwork
         End If
 
     End Sub
-
 
     Private Sub NetworkDimensioning()
         Try
@@ -1399,7 +1375,6 @@ Public Class cEcoNetwork
                 'PRINT USING "######.## ######.## "; RaiEm1(i); RaiEm2(i)
             Next i
 
-
             For i = 1 To MM
                 For j = 1 To MM
                     Aold(i, j) = AUL(i, j)
@@ -1412,8 +1387,6 @@ Public Class cEcoNetwork
                 Next j                      'Aold is for pyramid (and bank) screen
                 told = told + Hold(i)       'Total flow using energy
             Next i
-
-
 
 
 EmergyRun:
@@ -1646,7 +1619,6 @@ EmergyRun:
         Next i
         'WITH FISHERY
 
-
         For i = 1 To m_epdata.NumGroups               'FOR HOST-MATRIX FOR IMPACT
             If NoRespC(i) > 0 Then
                 For j = 1 To m_epdata.NumLiving  'Groups + m_epdata.NumFleet         'EXCL RESP
@@ -1786,7 +1758,6 @@ EmergyRun:
         End If                            'End of print cycling
         ' Mark = 0
 
-
 nextroute:
         If chk > 0 And DCnt = 1 Then GoTo EmergyRun
 
@@ -1810,10 +1781,7 @@ nextroute:
         '     End If                          'End of pyramid and bank screen
 
 
-
-
     End Sub
-
 
     '=======================MatMultS%===================================
     'MatMultS% multiplies two single precision matrices and places the
@@ -1847,7 +1815,6 @@ smulterr:
         Resume smultexit
     End Function
 
-
     Private Function MatInvS(ByVal A(,) As Single) As Integer
         Dim bserrcode As Integer, col As Integer, ErrCode As Integer, row As Integer
         Dim Ain(,) As Single, Ein() As Single, X() As Single
@@ -1861,7 +1828,6 @@ smulterr:
         Dim Up As Integer = m_core.EcoFunction.MatrixCalc.Up
         ReDim m_core.EcoFunction.MatrixCalc.rpvt(Up)
         ReDim m_core.EcoFunction.MatrixCalc.cpvt(Up)
-
 
         ReDim Ain(Up, Up)
         ReDim Ein(Up)
@@ -1893,7 +1859,6 @@ sinverr:
         Resume sinvexit
     End Function
 
-
     Private Sub CalcImport()
         Dim i As Integer
         For i = 1 To m_epdata.NumGroups
@@ -1905,15 +1870,12 @@ sinverr:
         Next i
     End Sub
 
-
     Private Sub AddUp_i_j(ByVal i As Integer, ByVal Au As Single, ByVal E1 As Single, ByVal C1 As Single)
 
         Ac(i) = Ac(i) + Au
         Ec(i) = Ec(i) + E1
         CC(i) = CC(i) + C1
     End Sub
-
-
 
     Private Sub Impacts()
 
@@ -1952,7 +1914,6 @@ sinverr:
                     FC(i, j) = 0
                 Next
             Next i
-
 
             For i = 1 To m_epdata.NumGroups      'Impacting
                 For j = 1 To m_epdata.NumGroups  'Impacted=host
@@ -2031,9 +1992,7 @@ EndOfImp:
             Throw New ApplicationException("Impacts() ", ex)
         End Try
 
-
     End Sub
-
 
     Private Sub CheckForBenificialPredation()
         Dim i As Integer
@@ -2068,13 +2027,11 @@ EndOfImp:
 
     End Sub
 
-
     Private Sub Assign1DimInteg(ByVal Start As Integer, ByVal slut As Integer, ByVal value As Integer, ByVal vectorGetValue() As Integer)
         For i As Integer = Start To slut
             vectorGetValue(i) = value
         Next
     End Sub
-
 
     Private Sub CyclePrint(ByVal CycDC(,) As Single, ByVal Cons() As Single) 'Have identified a cycle
         Dim arrow As Integer, bib As Integer
@@ -2121,7 +2078,6 @@ EndOfImp:
 
     End Sub
 
-
     Private Sub ImportAmount()
         'This subroutine gives the total import (as an amount) to each group
         Try
@@ -2166,7 +2122,6 @@ EndOfImp:
         Dim APred As Integer, Comp As Integer, pred As Integer, prey As Integer
         Dim Answer As Object = Nothing
         Dim Cnt As Integer
-
 
         'Dim iProg As Integer
 
@@ -2303,7 +2258,6 @@ NextPivot:
 
     End Sub
 
-
     Private Sub CheckPath(ByVal Pivot As Integer, ByRef prey As Integer)
         Dim K As Integer
         Try
@@ -2318,7 +2272,6 @@ NextPivot:
             m_logger.LogError(ex, "Error in Ecopath CheckPath calculation")
             Throw New ApplicationException("CheckPath() " & ex.Message, ex)
         End Try
-
 
     End Sub
 
@@ -2346,7 +2299,6 @@ NextPivot:
 
     End Sub
 
-
     Private Sub SumDiet(ByRef SumDC() As Single)
         Dim i As Integer, j As Integer
         'VC 280ct99: below summed up with dc(i, N1+1) for import but it is in dc(i,0)?????
@@ -2367,7 +2319,6 @@ NextPivot:
 
         ' Diet is to be made to sum to 1
     End Sub
-
 
     Private Sub ThruputByGroup()
         Dim i As Integer, j As Integer
@@ -2391,7 +2342,6 @@ NextPivot:
             Throw New ApplicationException("ThruputBYGroup() " & ex.Message, ex)
         End Try
 
-
         'TrPut(i) [called H() by Ulanowics] gives the throughput
         'for each group - including cycles.
         'If there is import to a consumer group then it is assumed
@@ -2407,7 +2357,6 @@ NextPivot:
         'QB=0, and to 1 if there is import (QB>0).
 
     End Sub
-
 
     Private Sub CalcCycDC(ByRef CycDC(,) As Single)
         Dim i As Integer, j As Integer
@@ -2468,7 +2417,6 @@ NextPivot:
             Throw New ApplicationException("CalcDCNoCyc() " & ex.Message, ex)
         End Try
 
-
         'Diet compositions for consumers are made to sum to one,
         'subtracting what's needed to break all cycles.
         '
@@ -2499,7 +2447,6 @@ NextPivot:
             m_logger.LogError(ex, "Error in Ecopath CalcSumCycDC calculation")
             Throw New ApplicationException("CalcSumCycDC() " & ex.Message, ex)
         End Try
-
 
     End Sub
 
@@ -2742,7 +2689,6 @@ NextPivot:
         End Try
     End Sub
 
-
     Private Sub CalcTotalPP()
         Try
             totalPP = 0
@@ -2755,7 +2701,6 @@ NextPivot:
         End Try
     End Sub
 
-
     'Sub CheckIfPPisInput(ByVal NoPP As Boolean)
     '    NoPP = False
     '    For K As Integer = 1 To m_epdata.NumGroups
@@ -2763,7 +2708,6 @@ NextPivot:
     '    Next K
 
     'End Sub
-
 
     Private Sub CalcDetFlow(ByVal DetFlow As Single)
         Dim i As Integer
@@ -3105,8 +3049,6 @@ NextPivot:
         '-----------------------------------------
         '...***  sub-routines *** ....
 
-
-
         'CountPath:
         '        arrow = 1
         '        For K = pivot - 1 To Level
@@ -3151,7 +3093,6 @@ NextPivot:
         '            If arrow = 0 Then NoPath = NoPath + 1
         '        End If
         '        Return
-
 
         'PathPrint:
         '        Mess$ = ""
@@ -3259,7 +3200,6 @@ NextPivot:
 
     End Sub
 
-
     'Private Sub printpath(ByVal Topic As Integer, ByRef mess As String, ByRef arrow As Integer, ByRef NoPath As Integer)
     Private Sub printpath(ByVal Topic As Integer, ByRef mess As String, ByRef NoArrows As Integer, ByRef NoPath As Integer) 'joeh
         Dim K As Integer
@@ -3319,7 +3259,6 @@ NextPivot:
 
     End Sub
 
-
     'Private Sub PreyProd(ByVal Topic As Integer, ByVal sel2 As Integer, ByRef mess As String, ByRef arrow As Integer, ByRef NoPath As Integer)
     Private Sub PreyProd(ByVal Topic As Integer, ByVal sel2 As Integer, ByRef mess As String, ByRef NoArrows As Integer, ByRef NoPath As Integer) 'joeh
         Dim PreyOK As Integer = -1
@@ -3336,7 +3275,6 @@ NextPivot:
 
     End Sub
 
-
     Private Sub CountPath()
         'arrow = 1
         'For K = pivot - 1 To Level
@@ -3347,7 +3285,6 @@ NextPivot:
         'Next K
         'If arrow = 0 Then NoPath = NoPath + 1
         'Return
-
 
     End Sub
 
@@ -3391,7 +3328,6 @@ NextPivot:
             'which has to have been run before the network analysis for ecosim can be initialized
             OrigPPR(0) = RaiseToPP(0)
             OrigPPR(1) = RaiseToDet(0)
-
 
             'If Inrow > 0 Then
             '    ReDim ByTLspace(Ntimes, 7, 4, HalfDegreeRow, HalfDegreeCol)
@@ -3557,7 +3493,6 @@ NextPivot:
                     SimQB(i) = m_esdata.Eatenby(i) / BB(i)
                     SimIm(i) = m_epdata.DC(i, 0) * SimQB(i)
 
-
                     'jb 4-Jan-2021 Calculation of Respiration changed to match Ecopath 
                     'Ecosim model that runs flat should have the same NA outputs as Ecopath
                     'This fixes a bug that caused Ecosim Network Analysis outputs to be different from Ecopath values 
@@ -3610,7 +3545,6 @@ NextPivot:
             '    Debug.Assert(False)
             'End If
 
-
             ''jb BUG Jan-2021 SimEx and SimResp are not the same as the Ecospath versions when calculated on a flat Ecosim model
             Ulanow(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, SimEx, SimResp)
             Lindeman(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, SimEx, SimResp)
@@ -3618,7 +3552,6 @@ NextPivot:
             'With Ecopath variables
             'Ulanow(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, m_epdata.Ex, m_epdata.Resp)
             'Lindeman(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, m_epdata.Ex, m_epdata.Resp)
-
 
             If PPRon Then
                 ' DoWhat = "Ecosim PPR"

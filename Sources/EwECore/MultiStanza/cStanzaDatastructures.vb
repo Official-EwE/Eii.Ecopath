@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.Utilities
 
@@ -63,7 +48,6 @@ Public Class cStanzaDatastructures
     ''' </summary>
     ''' <remarks>Populated in <see cref="cEcoSpace.InitPackets"> InitPackets</see></remarks>
     Public Nnursery() As Integer
-
 
     Public Zcell(,,) As Single   'mortality rate by cell and species
     Public MaxAgeSpecies() As Integer
@@ -133,7 +117,6 @@ Public Class cStanzaDatastructures
     Public WmatWinf() As Single ' weight at maturity/ weight at infinity (max weight) from EwE5 interface
     Public EggsStanza() As Single
 
-
     ''' <summary>Boolean flag set in an interface.</summary>
     ''' <remarks>Used by SplitUpdate(b)</remarks>
     Public FixedFecundity() As Boolean
@@ -159,11 +142,9 @@ Public Class cStanzaDatastructures
     ''' </remarks>
     Public SpeciesCode(,) As Integer
 
-
     Public isForcedIBMRecruits() As Boolean
     'Public IBMForcedNPackets(,) As Single
     Public IBMForcedCells()(,) As Single
-
 
 #Region " Private data "
 
@@ -215,7 +196,6 @@ Public Class cStanzaDatastructures
         ReDim Me.EggAtSpawn(Me.Nsplit)
 
         ReDim Me.isForcedIBMRecruits(Me.Nsplit)
-
 
         For i As Integer = 0 To Me.Nsplit : For j As Integer = 0 To Me.MaxStanza : Me.SpawnProp(i, j) = 1.0 : Next : Next
 
@@ -331,7 +311,6 @@ Public Class cStanzaDatastructures
             d.Stanza_CB = Me.Stanza_CB.Clone
             d.EggsStanza = Me.EggsStanza.Clone
 
-
             d.FixedFecundity = Me.FixedFecundity.Clone
             d.BaseEggsStanza = Me.BaseEggsStanza.Clone
             d.RecPowerSplit = Me.RecPowerSplit.Clone
@@ -384,5 +363,4 @@ Public Class cStanzaDatastructures
     End Sub
 
 End Class
-
 

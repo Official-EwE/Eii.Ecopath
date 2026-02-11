@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Drawing
 Imports System.Drawing.Imaging
@@ -35,8 +17,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 Public Class ucFlowDiagram
     Inherits UserControl
@@ -80,9 +60,9 @@ Public Class ucFlowDiagram
 
 #End Region ' Private bits
 
-    Public Sub New(uic As cUIContext, _
-                   data As cData, _
-                   model As cModel, _
+    Public Sub New(uic As cUIContext,
+                   data As cData,
+                   model As cModel,
                    result As cResults)
 
         Me.InitializeComponent()
@@ -226,7 +206,7 @@ Public Class ucFlowDiagram
                 ifData.Create(cmdFO.FileName)
                 Me.m_doodler.Load(ifData, Me.m_pbFlowDiagram)
             Catch ex As Exception
-                Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message), _
+                Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message),
                                         eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                 Me.m_uic.Core.Messages.SendMessage(msg)
             End Try
@@ -252,7 +232,7 @@ Public Class ucFlowDiagram
                 ifData.Create(cmdFS.FileName)
                 Me.m_doodler.Save(ifData, Me.m_pbFlowDiagram)
             Catch ex As Exception
-                Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
+                Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message),
                                         eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                 Me.m_uic.Core.Messages.SendMessage(msg)
             End Try
@@ -315,14 +295,14 @@ Public Class ucFlowDiagram
                 bmp.Save(cmdFS.FileName, fmt)
 
                 ' ToDo: globalize this
-                Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Value Chain flow diagram image", cmdFS.FileName), _
+                Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Value Chain flow diagram image", cmdFS.FileName),
                                         eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdFS.FileName)
                 Me.m_uic.Core.Messages.SendMessage(msg)
 
             Catch ex As Exception
                 m_logger.LogError(ex, "VC::ucFlowDiagram::OnSaveImage(" & cmdFS.FileName & ")")
-                Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
+                Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message),
                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                 Me.m_uic.Core.Messages.SendMessage(msg)
             End Try

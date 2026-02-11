@@ -1,22 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Threading
 Imports Microsoft.Extensions.Logging
@@ -40,7 +24,6 @@ Public Class cGridSolver
     Public iterThread As Integer 'total iterations 
 
     Public CPUTime As Single
-
 
 #End Region
 
@@ -114,7 +97,6 @@ Public Class cGridSolver
     Private m_stpwCopy As Stopwatch
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cGridSolver)()
 
-
 #End Region
 
 #Region "Constructor and Initialization"
@@ -172,7 +154,6 @@ Public Class cGridSolver
             Return Me.iLastGrp - Me.iFirstIndex + 1
         End Get
     End Property
-
 
     ''' <summary>
     ''' Set the groups to iterate over.
@@ -303,7 +284,6 @@ Public Class cGridSolver
             Debug.Assert(False, ex.Message)
         End Try
     End Sub
-
 
 #End Region
 
@@ -524,8 +504,6 @@ exitline:
     End Sub
 
 
-
-
     Private Sub CopyToLocal(ip As Integer)
 
         Debug.Assert(Me.bUseLocalMemory, Me.ToString + ".CopyToLocal() Called when local memory is not being used.")
@@ -548,7 +526,6 @@ exitline:
         'ReDim dloc(M + 1, NomCols + 1)
         'ReDim eloc(M + 1, NomCols + 1)
 
-
         For i As Integer = 0 To Me.M + 1
             For j As Integer = 0 To Me.NomCols + 1
                 Me.Xloc(i, j) = Me.X(i, j, ip)
@@ -564,7 +541,6 @@ exitline:
         Me.m_stpwCopy.Stop()
 
     End Sub
-
 
     Private Sub CopyStartEndRowCol()
 
@@ -618,9 +594,7 @@ exitline:
             Me.m_stpwCopy.Stop()
         End If
 
-
     End Sub
-
 
     Private Sub UpdateCoreData(ip As Integer)
         Me.m_stpwCopy.Start()
@@ -1040,7 +1014,7 @@ exitline:
 
     End Function
 
-    Private Sub bandec(ByRef a(,) As Double, totCells As Integer, N As Integer, _
+    Private Sub bandec(ByRef a(,) As Double, totCells As Integer, N As Integer,
         ByRef al(,) As Double, ByRef indx() As Integer, ByRef d As Single)
 
         Dim i As Integer, j As Integer, k As Integer, l As Integer

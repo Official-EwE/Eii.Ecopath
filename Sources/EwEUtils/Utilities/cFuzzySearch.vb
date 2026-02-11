@@ -1,30 +1,10 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System
 Imports System.Collections.Generic
 Imports EwEUtils.SystemUtilities.cSystemUtils
-
-
 
 Namespace Utilities
 
@@ -35,8 +15,8 @@ Namespace Utilities
     ''' -----------------------------------------------------------------------
     Public Class cFuzzySearch
 
-        Public Sub New(Optional options As eSearchOptions = eSearchOptions.Default, _
-                       Optional strSplitChars As String = " ,", _
+        Public Sub New(Optional options As eSearchOptions = eSearchOptions.Default,
+                       Optional strSplitChars As String = " ,",
                        Optional strQualifierChars As String = """()[]{}")
             Me.Options = options
             Me.SplitCharacters = strSplitChars
@@ -69,8 +49,8 @@ Namespace Utilities
         ''' <param name="iThreshold">Search difference tolerance threshold [1, <see cref="Integer.MaxValue"/>>.</param>
         ''' <returns>An array of <see cref="cBaseSearchResult">fuzzy search results</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Find(strSearchTerm As String, _
-                             data As String(), _
+        Public Function Find(strSearchTerm As String,
+                             data As String(),
                              iThreshold As Integer) As cArraySearchResult()
 
             ' Analyze options
@@ -134,8 +114,8 @@ Namespace Utilities
                                     Dim strArrayTerm As String = lArrayTerms(iArrayTerm)
                                     iOffset = CInt(If(iSearchTerm = 0 And iArrayTerm = 0, 0, 1))
 
-                                    If (Not String.IsNullOrWhiteSpace(strArrayTerm)) And _
-                                        (Not lIgnored.Contains(strArrayTerm)) And _
+                                    If (Not String.IsNullOrWhiteSpace(strArrayTerm)) And
+                                        (Not lIgnored.Contains(strArrayTerm)) And
                                         (strArrayTerm.Length >= Me.MinWordLength) Then
 
                                         ' Make value lowercase if string casing is irrelevant

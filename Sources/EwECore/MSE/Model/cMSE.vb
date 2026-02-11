@@ -1,23 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwECore.Common
@@ -102,7 +85,6 @@ Namespace MSE
         'We will also need to make sure that there is no initialization that needs to happen for the loaded and unloaded timeseries data
         'FishRateNo(), FishForced(), PoolForceZ()?? See cTimeSeriesDataStructures.DoDatValCalculations(). I think Effort is already dealt with.
 
-
         'ToDo_jb 29-Sept-2010 why is there no variation when running Fixed F policy
         'ToDo_jb 29-Sept-2010 fix StartT it needs to be 1 when Start Year = 1 
 
@@ -118,12 +100,10 @@ Namespace MSE
         Public Const FLEETCATCH_DATA As String = "MSE_CatchByFleet"
         Public Const QUOTAGROUP_DATA As String = "MSE_QuotaByGroup"
 
-
         Public Enum eResultsData
             GroupQuota
             FleetQuota
         End Enum
-
 
 #Region "Private data"
 
@@ -163,7 +143,6 @@ Namespace MSE
 
         Private m_DataDir As String
 
-
         ''' <summary>Dictionary of arrays that are use to store results that are gathered by the MSE.</summary>
         ''' <remarks>Use to store results that are not computed by Ecosim.</remarks>
         Private m_lstData As Dictionary(Of eResultsData, Single(,))
@@ -185,7 +164,6 @@ Namespace MSE
         Private m_FleetCode() As Integer, m_GroupCode() As Integer, m_GoalRowID As Integer
         Private m_QStar(,) As Single
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSE)()
-
 
 #End Region
 
@@ -221,7 +199,6 @@ Namespace MSE
                 Return False
             End Get
         End Property
-
 
         Private ReadOnly Property StartT() As Integer
             Get
@@ -299,7 +276,6 @@ Namespace MSE
             End Try
         End Sub
 
-
         Friend Sub InitAssessment()
             Dim iGrp As Integer
             Try
@@ -315,7 +291,6 @@ Namespace MSE
             End Try
 
         End Sub
-
 
         Public Sub InitForRun()
 
@@ -421,7 +396,6 @@ Namespace MSE
                     Next
                 Next
 
-
             Catch ex As Exception
                 m_logger.LogError(ex, "InitForRun")
                 Throw New ApplicationException(Me.ToString & ".InitForRun() Error:" & ex.Message, ex)
@@ -456,8 +430,6 @@ Namespace MSE
 
         End Sub
 
-
-
         Private Sub InitResults()
             Try
                 If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return
@@ -482,7 +454,6 @@ Namespace MSE
 
         End Sub
 
-
         Private Sub setBestTotalValue()
 
             Try
@@ -506,9 +477,7 @@ Namespace MSE
                 Throw New ApplicationException("MSE.setBestTotalValue() Error: " & ex.Message, ex)
             End Try
 
-
         End Sub
-
 
         Private Sub SetBaseValues()
             Dim i As Integer, j As Integer, Cval As Single
@@ -596,7 +565,6 @@ Namespace MSE
 
         End Sub
 
-
         ''' <summary>
         ''' Set Effort back to its original value after a run
         ''' </summary>
@@ -621,7 +589,6 @@ Namespace MSE
             End Try
 
         End Sub
-
 
         Private Function OutputWriterFactory() As IMSEOutputWriter
             Dim output As IMSEOutputWriter
@@ -734,7 +701,6 @@ Namespace MSE
 
         End Function
 
-
         Private Sub InitForTrial()
 
             Me.InitAssessment()
@@ -834,7 +800,6 @@ Namespace MSE
 
         End Sub
 
-
         Private Sub setFishForcedToBase()
 
             'reloads time series forcing data into core arrays and resets FisForced(groups)
@@ -865,7 +830,6 @@ Namespace MSE
                 ' Debug.Assert(Pless + Pgreater <= 100, "MSE Probability calculation!!!!")
                 System.Console.WriteLine("Group = " & Me.m_core.m_EcopathData.GroupName(i) & ", less = " & Pless.ToString & ", greater = " & Pgreater.ToString)
             Next
-
 
             System.Console.WriteLine()
 
@@ -930,7 +894,6 @@ Namespace MSE
 
         End Sub
 
-
         ''' <summary>
         ''' Sum results of Model run into Mean values
         ''' </summary>
@@ -949,8 +912,6 @@ Namespace MSE
                     Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.EcoValue / Me.EcoValueBase)
 
         End Sub
-
-
 
         Private Sub PostMessage(CurrentState As eMSERunStates)
 
@@ -985,7 +946,6 @@ Namespace MSE
 
         End Sub
 
-
         ''' <summary>
         ''' Count the number of times the Biomass is outside the lower or upper risk boundry
         ''' </summary>
@@ -1015,8 +975,6 @@ Namespace MSE
             End Try
 
         End Sub
-
-
 
         ''' <summary>
         ''' Set Fgear() and QYear() for a management strategy evaluation
@@ -1070,9 +1028,7 @@ Namespace MSE
                 Throw New ApplicationException(Me.ToString & ".YearTimeStep() Error: " & ex.Message, ex)
             End Try
 
-
         End Sub
-
 
         Friend Sub AssessFs(Fgear() As Single, Bbar() As Single)
             'does assessment at end of simulated year in runmodelvalue if ploton=true,
@@ -1160,9 +1116,7 @@ Namespace MSE
                 Throw New ApplicationException(Me.ToString & ".AssessFs() Error: " & ex.Message, ex)
             End Try
 
-
         End Sub
-
 
         Friend Sub VaryForcing(ByRef ForcingMultTime() As Single)
 
@@ -1179,8 +1133,6 @@ Namespace MSE
             End Try
 
         End Sub
-
-
 
 
         Public Sub DoRegulations(Biomass() As Single, Effort() As Single, QMult() As Single, QYear() As Single, iTimeStep As Integer, iMonth As Integer, iYear As Integer)
@@ -1228,7 +1180,6 @@ Namespace MSE
                         'Me.m_Ecosim.SetFtimeFromGear(iTimeStep, QYear, Me.m_esData.PredictSimEffort)
                         Me.m_Ecosim.SetFtimeFromGear(iTimeStep, QYear, True)
 
-
                     Else 'Me.isTStepRegulated(iTimeStep)
                         'xxxxxxxxxxxxxxx
                         'Not Regulated or Quota
@@ -1256,7 +1207,6 @@ Namespace MSE
             End Try
 
         End Sub
-
 
         Public Sub setFishTime(Biomass() As Single, ByRef FishYear() As Single, Qmult() As Single, iTime As Integer, iyear As Integer)
             Dim igrp As Integer
@@ -1582,7 +1532,6 @@ Namespace MSE
                     badded = cLPSolver.lpsolve55.set_bounds(ptrLp, iFlt, CDbl(Me.m_data.LowLPEffort(iFlt)), CDbl(Me.m_data.UpperLPEffort(iFlt)))
                 Next
 
-
                 'Get fishing mortality at this time step
                 For iFlt = 1 To Me.m_data.nFleets
                     For iGrp = 1 To Me.m_data.NGroups
@@ -1650,7 +1599,6 @@ Namespace MSE
 
         End Sub
 
-
         Private Sub setStartTEndT()
             Me.m_StartT = (Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear + 1
             If Me.m_data.EndYear > 0 Then
@@ -1671,7 +1619,6 @@ Namespace MSE
             Return False
 
         End Function
-
 
         Private Function stockRecruitment(iGroup As Integer, B As Single, BioEst As Single, Blast As Single) As Single
             'B is the biomass calculated by Ecosim
@@ -1728,7 +1675,6 @@ Namespace MSE
             End Try
 
         End Sub
-
 
         ''' <summary>
         ''' Update fishing quotas for regulated fisheries
@@ -1824,7 +1770,6 @@ Namespace MSE
 
         End Sub
 
-
         ''' <summary>
         ''' Save the quota values to memory
         ''' </summary>
@@ -1895,7 +1840,6 @@ Namespace MSE
 
 #Region "MSY"
 
-
         Public Sub RunMSYSearch()
             'WE'll run Ecosim for an additional 25 years to avoid the effort not being sustainable
 
@@ -1934,7 +1878,6 @@ Namespace MSE
             'next is a vc temp fix for debugging
             'Data.MSYStartTimeIndex = 649
             Dim FinestEffortStep As Double = 0.01
-
 
             Try
 
@@ -2005,7 +1948,6 @@ Namespace MSE
                             'to avoid this: set a limit on the F values for the exploited groups:
                             'if that happens set the value to a low value, so that it may try a lower effort
                             ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
-
 
                             If CurValue = 0 Then Done = True 'no effort or no value
                             If CurValue < 0 Then Stop
@@ -2081,7 +2023,6 @@ Namespace MSE
                             TSdisabled.Enabled = True
                             DS.Update()
                         End If
-
 
                         '==================this part not needed for teeb ---------------------------
                         'We now know the MSY effort, so can estimate, oeh, something
@@ -2203,9 +2144,7 @@ Namespace MSE
                                                             eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
             End Try
 
-
         End Sub
-
 
         Public Sub RunMSYSearchUsingFishingMortalityInsteadOfEffort()
             'WE'll run Ecosim for an additional 25 years to avoid the effort not being sustainable
@@ -2291,7 +2230,6 @@ Namespace MSE
 
                             Me.SetFishingMortality(iGrp, CSng(tryF))
 
-
                             'run ecosim with the current effort
                             Me.m_Ecosim.Run()
 
@@ -2302,7 +2240,6 @@ Namespace MSE
                             'to avoid this: set a limit on the F values for the exploited groups:
                             'if that happens set the value to a low value, so that it may try a lower effort
                             ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
-
 
                             If CurValue = 0 Then Done = True 'no effort or no value
                             If CurValue < 0 Then Stop
@@ -2358,7 +2295,6 @@ Namespace MSE
                                 TooBigF = tryF
                             End If
 
-
                             lastValue = CurValue
                             If tryF > 0 And CheckTangent = False Then
                                 If Math.Abs(1 - lastF / tryF) < 0.01 Then Done = True
@@ -2376,10 +2312,8 @@ Namespace MSE
                             'tell the interface an iteration has been completed
                             Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iGrp, CSng(MSYF(iGrp))))
 
-
                             If Me.m_data.StopRun Then Exit Do
                         Loop
-
 
                         If Me.m_data.StopRun Then Exit For
 
@@ -2406,10 +2340,7 @@ Namespace MSE
                                                             eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
             End Try
 
-
         End Sub
-
-
 
         Private Function EvaluateMSY(curFleet As Integer) As Single
             'MSY Search has just completed a run 
@@ -2501,7 +2432,6 @@ Namespace MSE
 
         End Function
 
-
         Private Function SetFishingMortality(Group As Integer, Val As Single) As Boolean
 
             'Dim FManager As cFishingMortalityManger = Me.m_core.FishMortShapeManager
@@ -2525,7 +2455,6 @@ Namespace MSE
             Return bSucces
 
         End Function
-
 
         Private Function SetFishingMortalityOverTime(Group As Integer, Ftime() As Single, Setting As Boolean) As Boolean
 
@@ -2562,7 +2491,6 @@ Namespace MSE
             Return bSucces
 
         End Function
-
 
         Private Function CheckIfFishingMortalitiesTooHigh(curFleet As Integer) As Boolean
 
@@ -2613,7 +2541,6 @@ Namespace MSE
             '    m_core.EcoSimModelParameters.NumberYears = NumberOfYears + 100
             '    SetBaseValues()
 
-
             '    'Setup Ecosim 
             '    'timestep handler that ecosim will call where we can grab data during the run
             '    'see the Private Sub onMSYEcosimTimestep(...)
@@ -2630,14 +2557,12 @@ Namespace MSE
             '    'Finally reset the effort to the original effort (for all fleets)
             '    SetEffortToBaseValue(True)
 
-
             '    'reset the number of years that Ecosim will run
             '    m_core.EcoSimModelParameters.NumberYears = NumberOfYears
 
             'Catch ex As Exception
 
             'End Try
-
 
         End Sub
 
@@ -2654,7 +2579,6 @@ Namespace MSE
             End Try
 
         End Sub
-
 
         ''' <summary>
         ''' Ecosim Timestep delegate handler for the MSY Search
@@ -2788,7 +2712,6 @@ Namespace MSE
 
         End Sub
 
-
         ''' <summary>
         ''' Summarize the economic data gathered by Ecosim at the end of a trial
         ''' </summary>
@@ -2912,13 +2835,11 @@ Namespace MSE
                             CurValue(iTo) /= Me.m_esData.NTimes
                         Next
 
-
                         'If MoreMoney = 0 Then Stop
 
                         For iTo As Integer = 1 To nFleets
                             ValueDifferenceFromTo(iFlt, iTo) = (CurValue(iTo) - FleetBaseValue(iTo)) '/ MoreMoney
                         Next
-
 
                         'get the directory to dump the data to
                         'Me.m_DataDir = AppDomain.CurrentDomain.BaseDirectory & "MSE\"
@@ -3016,7 +2937,6 @@ Namespace MSE
             Return CSng(X)
         End Function
 
-
 #End Region
 
     End Class
@@ -3032,6 +2952,5 @@ Namespace MSE
         Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,)))
 
     End Interface
-
 
 End Namespace

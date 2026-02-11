@@ -1,31 +1,11 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Threading
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 Namespace Ecospace.Advection
 
@@ -301,7 +281,6 @@ Namespace Ecospace.Advection
                 Return False
             End If
 
-
             Try
                 bSuccess = Me.m_comp.RunPhysicsModel()
             Catch ex As Exception
@@ -312,7 +291,6 @@ Namespace Ecospace.Advection
                                                          eMessageImportance.Critical,
                                                          eDataTypes.EcospaceAdvectionManager))
 
-
                 bSuccess = False
             End Try
 
@@ -322,7 +300,6 @@ Namespace Ecospace.Advection
 
             Return bSuccess
         End Function
-
 
         Public Function RunPhysicsModel(SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
 
@@ -371,7 +348,6 @@ Namespace Ecospace.Advection
 
         End Function
 
-
         Private Sub RunThreaded()
 
             Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
@@ -388,7 +364,6 @@ Namespace Ecospace.Advection
 
         End Sub
 
-
         Public Sub ClearAdvectionResults()
             Try
                 For imon As Integer = 1 To 12
@@ -404,7 +379,6 @@ Namespace Ecospace.Advection
             End Try
 
         End Sub
-
 
         Public Function Revert() As Boolean
 
@@ -539,8 +513,6 @@ Namespace Ecospace.Advection
             End Try
         End Sub
 
-
-
 #End Region ' Events
 
 #Region " ICoreInterface implementation "
@@ -614,7 +586,6 @@ Namespace Ecospace.Advection
 
 #End Region ' ICoreInterface implementation
 
-
 #Region "Code from the original advection model"
 
 #If 0 Then 'Hide the old code behind compiler directives
@@ -634,8 +605,6 @@ Namespace Ecospace.Advection
             Me.m_core.StateMonitor.SetIsSearching(eSearchModes.NotInSearch)
 
         End Sub
-
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>

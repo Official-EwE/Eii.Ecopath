@@ -1,4 +1,8 @@
-﻿Imports System.IO
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
+
+Imports System.IO
 Imports Microsoft.Extensions.Logging
 Namespace Logging
 

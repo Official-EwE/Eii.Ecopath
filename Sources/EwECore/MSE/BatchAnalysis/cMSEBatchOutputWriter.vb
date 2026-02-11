@@ -1,23 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports System.Text
@@ -72,7 +55,6 @@ Namespace MSEBatchManager
             Next
 
         End Sub
-
 
         Public Sub WriteBatchHeader()
             Dim header As New StringBuilder
@@ -159,7 +141,6 @@ Namespace MSEBatchManager
                 End If
 
             Next iOut
-
 
         End Sub
 
@@ -248,13 +229,11 @@ Namespace MSEBatchManager
                     strm(istrm).Close()
                 Next
 
-
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".SaveIteration() Exception: " & ex.Message)
             End Try
 
         End Sub
-
 
         Private Function getOuputStreams() As StreamWriter()
             'ToDo_jb getOuputStreams handle errors opening stream
@@ -307,7 +286,6 @@ Namespace MSEBatchManager
 
         End Function
 
-
         Private Function getOuputValue(OutputType As eMSEBatchOuputTypes, igrp As Integer, iTime As Integer) As String
             Select Case OutputType
 
@@ -352,7 +330,6 @@ Namespace MSEBatchManager
         Public Sub Init() Implements IMSEOutputWriter.Init
 
         End Sub
-
 
         Private Function getRunTypeHeader() As String
             Dim header As String
@@ -408,12 +385,10 @@ Namespace MSEBatchManager
             Return False
         End Function
 
-
         Private Function getModelName() As String
             Dim modelPath As String = DirectCast(Me.m_core.DataSource.Connection, Database.cEwEAccessDatabase).Name
             Return Path.GetFileName(modelPath)
         End Function
-
 
         Public Sub setSimCounter()
             Me.m_nSim = 0
@@ -421,9 +396,7 @@ Namespace MSEBatchManager
 
     End Class
 
-
 #Region "Output by group"
-
 
     Public Class cMSEBatchOutputWriterByGroup
         Implements EwECore.MSE.IMSEOutputWriter
@@ -440,8 +413,6 @@ Namespace MSEBatchManager
         Private Const QB_FILENAME As String = "MSEBatch_QB"
         Private Const FEEDINGTIME_FILENAME As String = "MSEBatch_FeedingTime"
 
-
-
         Public Sub New(theCore As cCore, MSEData As cMSEDataStructures, MSEBatchData As cMSEBatchDataStructures)
             Me.m_core = theCore
             Me.m_MSEdata = MSEData
@@ -454,7 +425,6 @@ Namespace MSEBatchManager
 
                 'only delete file that we are going to write too
                 If Me.m_BatchData.isOuputSaved(iOut) Then
-
 
                     For igrp As Integer = 1 To Me.m_MSEdata.NGroups
                         Try
@@ -470,7 +440,6 @@ Namespace MSEBatchManager
             Next
 
         End Sub
-
 
         Public Sub WriteBatchHeader()
             'Dim header As New StringBuilder
@@ -505,7 +474,6 @@ Namespace MSEBatchManager
                 'only save outputs where isOuputSaved() = True
                 If Me.m_BatchData.isOuputSaved(iOut) Then
                     For igrp As Integer = 1 To Me.m_MSEdata.NGroups
-
 
                         header = New StringBuilder()
                         Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
@@ -543,7 +511,6 @@ Namespace MSEBatchManager
                 End If
 
             Next iOut
-
 
         End Sub
 
@@ -599,13 +566,11 @@ Namespace MSEBatchManager
                     strm(istrm).Close()
                 Next
 
-
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".SaveIteration() Exception: " & ex.Message)
             End Try
 
         End Sub
-
 
         Private Function getOuputStreams() As StreamWriter()
             'ToDo_jb getOuputStreams handle errors opening stream
@@ -655,7 +620,6 @@ Namespace MSEBatchManager
 
         End Function
 
-
         Private Function getOuputValue(OutputType As eMSEBatchOuputTypes, igrp As Integer, iTime As Integer) As String
             Select Case OutputType
 
@@ -702,7 +666,6 @@ Namespace MSEBatchManager
 
         End Sub
 
-
         Private Function getRunTypeHeader() As String
             Dim header As String
 
@@ -736,7 +699,6 @@ Namespace MSEBatchManager
             Return ouputStr
 
         End Function
-
 
         Private Function getModelName() As String
             Dim modelPath As String = DirectCast(Me.m_core.DataSource.Connection, Database.cEwEAccessDatabase).Name

@@ -1,30 +1,10 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
-
-
 
 Namespace Controls
 
@@ -33,7 +13,7 @@ Namespace Controls
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    
+
     Public Class ucMediationAssignmentsGrid
         Inherits EwEGrid.cEwEGrid
 
@@ -77,8 +57,8 @@ Namespace Controls
         ''' <param name="sWeight">Fleet if <paramref name="obj"/> refers to a group.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function Add(obj As cCoreInputOutputBase, _
-                            objSec As cCoreInputOutputBase, _
+        Public Function Add(obj As cCoreInputOutputBase,
+                            objSec As cCoreInputOutputBase,
                             sWeight As Single) As Boolean
             If (Me.FindRow(obj, objSec) <> -1) Then Return False
 
@@ -136,7 +116,7 @@ Namespace Controls
         ''' <param name="obj"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function Remove(obj As cCoreInputOutputBase, _
+        Public Function Remove(obj As cCoreInputOutputBase,
                                objSec As cCoreInputOutputBase) As Boolean
             Dim iRow As Integer = Me.FindRow(obj, objSec)
             If (iRow = -1) Then Return False
@@ -151,7 +131,7 @@ Namespace Controls
         ''' <param name="obj"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function Find(obj As cCoreInputOutputBase, _
+        Public Function Find(obj As cCoreInputOutputBase,
                              objSec As cCoreInputOutputBase) As Boolean
             Return (Me.FindRow(obj, objSec) > -1)
         End Function
@@ -227,7 +207,7 @@ Namespace Controls
         ''' <param name="obj"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function FindRow(obj As cCoreInputOutputBase, _
+        Private Function FindRow(obj As cCoreInputOutputBase,
                                  objSec As cCoreInputOutputBase) As Integer
             Dim objTest As cCoreInputOutputBase = Nothing
             Dim objTestSec As cCoreInputOutputBase = Nothing
@@ -309,7 +289,6 @@ Namespace Controls
                 Me(0, 0) = New cEwEColumnHeaderCell(My.Resources.HEADER_NAME)
                 Me(0, 1) = New cEwEColumnHeaderCell(My.Resources.HEADER_RELATIVEWEIGHT)
             End If
-
 
         End Sub
 

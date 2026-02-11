@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 Imports System.ComponentModel
@@ -201,7 +186,7 @@ Public Class cPredPreyInteraction
 #Region "ICoreInterface implementation"
 
     ''' <inheritdocs cref="ICoreInterface.DataType"/>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public Overrides ReadOnly Property DataType() As eDataTypes
         Get
             Return eDataTypes.PredPreyInteraction
@@ -209,7 +194,7 @@ Public Class cPredPreyInteraction
     End Property
 
     ''' <inheritdocs cref="ICoreInterface.GetID"/>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public Overrides Function GetID() As String
         Return cValueID.GetDataTypeID(Me.DataType, CInt(Me.m_pred * 1000 + Me.m_prey))
     End Function

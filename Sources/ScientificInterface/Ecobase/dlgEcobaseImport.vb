@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports System.IO
@@ -32,8 +14,6 @@ Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 Public Class dlgEcobaseImport
 
@@ -427,7 +407,7 @@ Public Class dlgEcobaseImport
     End Sub
 
     Private Sub OnFilterSelected(sender As System.Object, e As System.EventArgs) _
-        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiEcoType.Click, _
+        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiEcoType.Click,
                 m_tsmiDepth.Click, m_tsmiTemperature.Click, m_tsmiReference.Click, m_tsmiModelName.Click
 
         Dim tsmi As ToolStripItem = DirectCast(sender, ToolStripItem)
@@ -486,7 +466,7 @@ Public Class dlgEcobaseImport
         Catch exWeb As Net.WebException
             msg = New cMessage(My.Resources.ECOBASE_ERROR_NOCONNECTION, eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
         Catch ex As Exception
-            msg = New cMessage(String.Format(My.Resources.ECOBASE_ERROR_COMMUNICATION, ex.Message), _
+            msg = New cMessage(String.Format(My.Resources.ECOBASE_ERROR_COMMUNICATION, ex.Message),
                                     eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
         End Try
 
@@ -509,7 +489,6 @@ Public Class dlgEcobaseImport
         End Try
 
     End Sub
-
 
     Private Sub OnGetUserAgreement(sender As Object, e As DoWorkEventArgs) _
         Handles m_wrkGetAgreement.DoWork
@@ -679,8 +658,8 @@ Public Class dlgEcobaseImport
         If (Me.m_model Is Nothing) Then Return ""
         If (Me.m_model.FirstYear = 0) Then Return "?"
         If (Me.m_model.NumYears <= 1) Then Return CStr(Me.m_model.FirstYear)
-        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
-                                     Me.m_model.FirstYear, _
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT,
+                                     Me.m_model.FirstYear,
                                      Me.m_model.FirstYear + Math.Max(1, Me.m_model.NumYears) - 1)
 
     End Function
@@ -693,8 +672,8 @@ Public Class dlgEcobaseImport
 
         If (Me.m_model Is Nothing) Then Return ""
         If (Me.m_model.North = Me.m_model.South) Then Return SharedResources.GENERIC_VALUE_NONE
-        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
-                                     cStringUtils.Localize("{0}N", sg.FormatNumber(Me.m_model.North)), _
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT,
+                                     cStringUtils.Localize("{0}N", sg.FormatNumber(Me.m_model.North)),
                                      cStringUtils.Localize("{0}S", sg.FormatNumber(Me.m_model.South)))
 
     End Function
@@ -707,8 +686,8 @@ Public Class dlgEcobaseImport
 
         If (Me.m_model Is Nothing) Then Return ""
         If (Me.m_model.North = Me.m_model.South) Then Return SharedResources.GENERIC_VALUE_NONE
-        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
-                                     cStringUtils.Localize("{0}W", sg.FormatNumber(Me.m_model.West)), _
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT,
+                                     cStringUtils.Localize("{0}W", sg.FormatNumber(Me.m_model.West)),
                                      cStringUtils.Localize("{0}E", sg.FormatNumber(Me.m_model.East)))
 
     End Function

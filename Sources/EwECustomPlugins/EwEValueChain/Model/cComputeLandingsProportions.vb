@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
 Imports EwECore.Common
@@ -89,8 +73,8 @@ Public Class cComputeLandingPortions
                     If TypeOf (ts) Is cGroupTimeSeries Then
                         Dim grpTS As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
 
-                        If ts.TimeSeriesType = eTimeSeriesType.Catches Or _
-                           ts.TimeSeriesType = eTimeSeriesType.CatchesRel Or _
+                        If ts.TimeSeriesType = eTimeSeriesType.Catches Or
+                           ts.TimeSeriesType = eTimeSeriesType.CatchesRel Or
                            ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
                             ' The group that the TS is applied to
                             Dim iSp As Integer = grpTS.GroupIndex
@@ -136,7 +120,6 @@ Public Class cComputeLandingPortions
                 End If
             Next
 
-
             'Now we must have a way to relate the catches by species and fleet to producers
             'I presume here (for lack of knowledge of how it has been implemented)
             'that there is a matrix, which stores 'producer-association', somewhat like this
@@ -149,7 +132,6 @@ Public Class cComputeLandingPortions
             'RunOK = EwECore.RunEcoPath()
 
             'RunOK = RunOK And EwECore.RunEcoSim()
-
 
             'the timeseries catches are annual values, so sum up for every year only
             If iTimeStep Mod 12 = 0 Then 'another year gone by
@@ -170,18 +152,18 @@ Public Class cComputeLandingPortions
                         If Me.m_ProducerReference(iSp, iFt) > 0 Then
                             'If there is a TS catch then use it
                             If iSpTimeSeriesCatch(iSp) Then
-                                Me.m_sumCatch(Me.m_ProducerReference(iSp, iFt)) += _
+                                Me.m_sumCatch(Me.m_ProducerReference(iSp, iFt)) +=
                                     iTSCatch(iSp, iYr) * ProportionOfLanding(iSp, iFt) * sArea
                                 'sum value = landing x marketprice (which is really landingprice
-                                Me.m_sumValue(Me.m_ProducerReference(iSp, iFt)) += _
+                                Me.m_sumValue(Me.m_ProducerReference(iSp, iFt)) +=
                                     iTSCatch(iSp, iYr) * ProportionOfLanding(iSp, iFt) _
                                     * EwECore.EcopathFleetInputs(iFt).OffVesselValue(iSp)
                             Else        'if not then use the Ecosim landing
-                                Me.m_sumCatch(Me.m_ProducerReference(iSp, iFt)) += _
+                                Me.m_sumCatch(Me.m_ProducerReference(iSp, iFt)) +=
                                     EwECore.EcosimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcosimGroupOutputs(iSp).FishMort(iTimeStep) _
                                     * sArea
                                 'sum value = landing x marketprice (which is really landingprice
-                                Me.m_sumValue(Me.m_ProducerReference(iSp, iFt)) += _
+                                Me.m_sumValue(Me.m_ProducerReference(iSp, iFt)) +=
                                     EwECore.EcosimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcosimGroupOutputs(iSp).FishMort(iTimeStep) _
                                     * EwECore.EcopathFleetInputs(iFt).OffVesselValue(iSp) * sArea
                             End If
@@ -193,7 +175,6 @@ Public Class cComputeLandingPortions
                 'so calculate: AvPrice = SumValue / Sumcatch 
 
                 'Now it's time to run the economic module
-
 
                 'better store the results for this year
                 'a modified results.dump I presume

@@ -1,31 +1,11 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-
-
 
 ' JS 12/12/17: This dialog has gotten way too cluttered. Needs to be rethought and rebuilt from scratch
 ' JS 27/02/19: Perhaps merge the functionality here with the increasingly powerful "Change Shape" UI?
@@ -406,7 +386,6 @@ Public Class frmShapeValue
         Me.m_lblViewAs.Visible = False
         Me.m_cmbViewAs.Visible = False
 
-
         If (ts IsNot Nothing) Then
             Me.m_txtName.Text = ts.Name
             Me.m_fpWeight.Value = ts.WtType
@@ -487,7 +466,6 @@ Public Class frmShapeValue
         Dim fts As cFleetTimeSeries = Nothing
         Dim gts As cGroupTimeSeries = Nothing
         Dim bSucces As Boolean = True
-
 
         'Get the time series
         ts = DirectCast(Me.m_shape, cTimeSeries)

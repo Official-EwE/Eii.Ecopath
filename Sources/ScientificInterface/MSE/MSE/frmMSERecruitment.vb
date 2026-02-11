@@ -1,30 +1,10 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.MSE
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 Namespace Ecosim
 
@@ -207,7 +187,6 @@ Namespace Ecosim
                     maxXaxisValue = CSng(1.2 / Me.Group.RHalfB0Ratio)  '1.2 is just to give some extra space on the x axis
                 End If
 
-
                 'the max recruitment = RecEcop*(Ratio+1)
                 Dim maxYaxisValue As Single = EcopathRecruitment * (Me.Group.RHalfB0Ratio + 1)
 
@@ -226,7 +205,6 @@ Namespace Ecosim
                     data.Biomass(i) = BiomassStep
                     'Rec=(Rmax*C2)/(Ratio*Be+C2)
                 Next
-
 
                 Return data
             End If

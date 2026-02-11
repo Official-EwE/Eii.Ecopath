@@ -1,25 +1,8 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.ValueWrapper
-
 
 Public Class cEcosimFleetOutput
     Inherits cCoreInputOutputBase
@@ -27,7 +10,6 @@ Public Class cEcosimFleetOutput
     'dictionary of vars and wrappers that directly access the core data
     Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
     Private m_simData As cEcosimDatastructures
-
 
     Public Sub New(core As cCore, iFleet As Integer)
         MyBase.New(core)
@@ -75,7 +57,6 @@ Public Class cEcosimFleetOutput
 
     End Sub
 
-
     Public Sub Init()
 
         'the results arrays of ecosim are redim for each run
@@ -88,8 +69,6 @@ Public Class cEcosimFleetOutput
         'ResultsSumCatchByGear
 
     End Sub
-
-
 
     Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
@@ -114,7 +93,6 @@ Public Class cEcosimFleetOutput
             Me.SetVariable(eVarNameFlags.EcosimFleetProfit, value)
         End Set
     End Property
-
 
     Public Property JobsSummary() As Single
         Get
@@ -146,7 +124,6 @@ Public Class cEcosimFleetOutput
         End Set
     End Property
 
-
     Public Property ValueStart() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.EcosimFleetValueStart))
@@ -166,7 +143,6 @@ Public Class cEcosimFleetOutput
             Me.SetVariable(eVarNameFlags.EcosimFleetValueEnd, value)
         End Set
     End Property
-
 
     Public Property CostStart() As Single
         Get
@@ -212,8 +188,6 @@ Public Class cEcosimFleetOutput
 
     End Property
 
-
-
 #End Region
 
 #Region "Status via dot '.' operator"
@@ -258,7 +232,6 @@ Public Class cEcosimFleetOutput
         End Set
     End Property
 
-
     Public Property CostStartStatus() As eStatusFlags
         Get
             Return Me.GetStatus(eVarNameFlags.EcosimFleetCostStart)
@@ -290,6 +263,5 @@ Public Class cEcosimFleetOutput
     End Property
 
 #End Region
-
 
 End Class

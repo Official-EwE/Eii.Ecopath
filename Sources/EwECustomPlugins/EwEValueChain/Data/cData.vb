@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports Eii.ValueChain.Storage
@@ -24,6 +9,7 @@ Imports EwECore
 Imports EwECore.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
+Imports Eii.ControlledVocabularies.Vocabularies.Species
 
 ''' ===========================================================================
 ''' <summary>
@@ -58,6 +44,7 @@ Public Class cData
     Private Shared s_inst As cData = Nothing
 
     Private m_lItems As New List(Of cCoreInputOutputBase)
+    Private m_asfis As ASFISSpeciesCodeVocabulary = Nothing
 
 #If DEBUG Then
     Private m_valueChainStorageService As IValueChainStorageService = Nothing
@@ -65,10 +52,12 @@ Public Class cData
 
 #End Region ' Private vars 
 
-    Public Sub New(core As cCore)
+    Public Sub New(core As cCore, serviceProvider As IServiceProvider)
         MyBase.New(core)
 
         cData.s_inst = Me
+
+        m_asfis = TryCast(serviceProvider.GetService(GetType(ASFISSpeciesCodeVocabulary)), ASFISSpeciesCodeVocabulary)
 
         Me.m_coreComponent = eCoreComponentType.External
         Me.m_dataType = eDataTypes.External
@@ -199,7 +188,7 @@ Public Class cData
         Me.IsChanged = False
 
 #If DEBUG Then
-        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".sqlite")
+        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".vc.sqlite")
         m_valueChainStorageService.LoadValueChain(strSQL)
 #End If
         Return bSucces And Me.m_db.IsConnected
@@ -221,7 +210,7 @@ Public Class cData
 
         bSucces = Me.m_db.SaveModel(Me)
 
-        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".sqlite")
+        Dim strSQL As String = Path.ChangeExtension(Me.m_strDBName, ".vc.sqlite")
         bSucces = Me.m_db.SaveModel(Me) And SaveValueChain(strSQL)
 
         If bSucces Then Me.IsChanged = False
@@ -888,7 +877,6 @@ Public Class cData
 
         ' Check if not already exists
 
-
         ' Check for loop
         If unitTarget.IsLoop(unitSource) Then
             Me.SendMessage(My.Resources.ERROR_LINK_LOOP)
@@ -1272,6 +1260,7 @@ Public Class cData
     Private Function SaveValueChain(accessDbFilePath As String) As Boolean
 
 #If DEBUG Then
+
         Dim parameter As Parameter = New Parameter With {
             .DBID = Me.m_parameters.DBID,
             .EquilibriumEffortIncrement = Me.m_parameters.EquilibriumEffortIncrement,
@@ -1281,8 +1270,37 @@ Public Class cData
             .RunWithEcosim = Me.m_parameters.RunWithEcosim,
             .RunWithSearches = Me.m_parameters.RunWithSearches,
             .ZoomFactor = Me.m_parameters.ZoomFactor,
-            .DeletePrompt = Me.m_parameters.DeletePrompt
+            .DeletePrompt = Me.m_parameters.DeletePrompt,
+            .Aliases = New Dictionary(Of String, String)()
         }
+
+        ' Populate aliases
+
+        If m_asfis.Load() Then
+            For i As Integer = 1 To Me.Core.nGroups
+                Dim grp As cEcoPathGroupInput = Me.Core.EcopathGroupInputs(i)
+                For j As Integer = 1 To grp.NTaxon
+                    Dim tax As cTaxon = Me.Core.Taxon(grp.iTaxon(j))
+                    If (tax IsNot Nothing) Then
+
+                        ' Retrieve scientific name
+                        Dim scname As String = tax.Common
+                        ' If missing, construct from genus + species
+                        If (String.IsNullOrWhiteSpace(scname)) Then scname = tax.Genus + " " + tax.Species
+                        ' Add alias if defined
+                        If (Not String.IsNullOrWhiteSpace(scname)) Then parameter.Aliases(scname) = grp.Name
+
+                        ' Retrieve code
+                        Dim code As String = tax.CodeFAO
+                        ' If missing, find in ASFIS
+                        If String.IsNullOrWhiteSpace(code) Then code = m_asfis.FindCode(scname, 80)
+                        ' Add alias if defined
+                        If (Not String.IsNullOrWhiteSpace(code)) Then parameter.Aliases(code) = grp.Name
+
+                    End If
+                Next
+            Next
+        End If
 
         Dim links As List(Of Link) = Me.m_lLinks _
         .OfType(Of cLink)() _

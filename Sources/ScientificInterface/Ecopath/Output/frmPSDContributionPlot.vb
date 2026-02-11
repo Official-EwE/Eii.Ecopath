@@ -1,30 +1,11 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 Namespace Ecopath.Output
 
@@ -61,7 +42,7 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub llbGroups_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles m_lbGroups.SelectedIndexChanged
-            Me.AddCurves(Me.CreatePane(My.Resources.CAPTION_PSD_GROUP_CONTRIB, SharedResources.HEADER_BODYWEIGHT_LOGg, _
+            Me.AddCurves(Me.CreatePane(My.Resources.CAPTION_PSD_GROUP_CONTRIB, SharedResources.HEADER_BODYWEIGHT_LOGg,
                      SharedResources.HEADER_BIOMASS_LOGg))
 
             'highlight group contribution in the histogram
@@ -79,7 +60,7 @@ Namespace Ecopath.Output
 
 #Region " Helper methods "
 
-        Private Function CreatePane(strTitle As String, strXAxisTitle As String, _
+        Private Function CreatePane(strTitle As String, strXAxisTitle As String,
                                     strYAxisTitle As String) As GraphPane
             Dim pane As GraphPane = Me.m_graph.GraphPane
             Me.InitGraphPane(strTitle, strXAxisTitle, strYAxisTitle)
@@ -176,7 +157,7 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Function AddCurveToGraphPane(pane As GraphPane, strName As String, list As PointPairList, _
+        Private Function AddCurveToGraphPane(pane As GraphPane, strName As String, list As PointPairList,
                                         clrFill As Color, clrBorder As Color) As BarItem
             Dim curve As BarItem = Nothing
             curve = pane.AddBar(strName, list, clrFill)

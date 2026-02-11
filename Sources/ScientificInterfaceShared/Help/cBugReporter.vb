@@ -1,30 +1,10 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Reflection
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
-
-
 
 ''' ===========================================================================
 ''' <summary>
@@ -41,8 +21,8 @@ Public Class cBugReporter
     ''' <param name="strMailTo">Target email address.</param>
     ''' <param name="pm">Plug-in manager to extract components from.</param>
     ''' -----------------------------------------------------------------------
-    Public Shared Function BugReport(strAppName As String, _
-                                     strMailTo As String, _
+    Public Shared Function BugReport(strAppName As String,
+                                     strMailTo As String,
                                      Optional pm As cPluginManager = Nothing) As String
 
         Dim an As AssemblyName = Nothing
@@ -64,14 +44,14 @@ Public Class cBugReporter
         sbBody.AppendLine(cSysConfig.OSVersion())
         sbBody.AppendLine(cSysConfig.NETVersion())
         For Each an In cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.EwECore)
-            sbBody.AppendLine(String.Format("* {0}={2},{1}", _
+            sbBody.AppendLine(String.Format("* {0}={2},{1}",
                                             an.Name, cStringUtils.ToHexString(an.GetPublicKeyToken), an.Version))
         Next
 
         If (pm IsNot Nothing) Then
             For Each pa As cPluginAssembly In pm.PluginAssemblies
                 an = pa.AssemblyName
-                sbBody.AppendLine(String.Format("- {0}={2},{1}", _
+                sbBody.AppendLine(String.Format("- {0}={2},{1}",
                                                 an.Name, cStringUtils.ToHexString(an.GetPublicKeyToken), an.Version))
             Next
         End If

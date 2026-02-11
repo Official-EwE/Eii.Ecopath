@@ -1,27 +1,10 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Math
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
 
 ''' <summary>
 ''' Class to provide access to functions needed both internally to the core and 
@@ -89,8 +72,7 @@ Public Class cEcoFunctions
         End Try
     End Function
 
-
-    Public Function KemptonsQ(iNumLiving As Integer, ttlx As Single(), _
+    Public Function KemptonsQ(iNumLiving As Integer, ttlx As Single(),
                               Bio() As Single, Quan As Single) As Single
 
         'VC programmed this function 23 October 2002 from Tony Pitcher's description
@@ -306,7 +288,6 @@ Public Class cEcoFunctions
 
     End Sub
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the zero-based stanza index for a group index, or <see cref="cCore.NULL_VALUE"/>
@@ -334,8 +315,6 @@ Public Class cEcoFunctions
     End Function
 
 End Class
-
-
 
 Public Class cMatrixCalc
 
@@ -416,8 +395,6 @@ Public Class cMatrixCalc
             Debug.Assert(False)
             Return 0
         End Try
-
-
 
         '        If ErrCode Then Error ErrCode
         'sseqnexit:

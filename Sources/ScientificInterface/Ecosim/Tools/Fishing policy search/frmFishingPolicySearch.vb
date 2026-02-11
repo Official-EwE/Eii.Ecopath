@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.FishingPolicy
 Imports EwEUtils.Logging
@@ -493,7 +478,6 @@ Namespace Ecosim
 
                 Me.UpdateResultsGraph(results)
 
-
             Catch ex As Exception
                 m_logger.LogError(ex, "SearchProgressHandler. Error in Fishing Policy search.")
                 Me.SendErrorMessage("Error in Fishing Policy search. " & ex.Message)
@@ -611,7 +595,6 @@ Namespace Ecosim
 
         Private Sub UpdateResultsGraph(results As cFPSSearchResults)
 
-
             Dim aiBlocks() As Integer = results.BlockNumber
             Dim asResults() As Single = results.BlockResults
 
@@ -637,10 +620,8 @@ Namespace Ecosim
             Dim lResults As List(Of cObjectiveResult) = Nothing
             Dim res As cObjectiveResult = Nothing
 
-
             '' Get the results
             'lResults = Me.m_manager.Results()
-
 
             'iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
 
@@ -651,7 +632,6 @@ Namespace Ecosim
             '                           res.objFuncMandatedValue, res.objFuncEcologicalValue, _
             '                           res.objBiomassDiversity, res.objFuncAreaBorder, _
             '                           res.objFuncTotal, res.PercentageClosed)
-
 
         End Sub
 #End Region ' Graphing region
@@ -741,7 +721,6 @@ Namespace Ecosim
                 Return Me.m_BlockCells
             End Get
         End Property
-
 
         Public ReadOnly Property TotalBlocks() As Integer Implements IPolicyColorBlockDataSource.TotalBlocks
             Get
@@ -898,14 +877,11 @@ Namespace Ecosim
             End Get
         End Property
 
-
         Public Function BlockToValue(iBlock As Integer) As Single Implements Ecosim.IPolicyColorBlockDataSource.BlockToValue
             'For the fishing policy block selector the iBlock is the value
             Return iBlock
         End Function
     End Class
-
-
 
 #End Region
 

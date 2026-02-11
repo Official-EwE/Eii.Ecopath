@@ -1,31 +1,11 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 ''' ===========================================================================
 ''' <summary>
@@ -86,7 +66,7 @@ Public Class cDatasetPicker
     Private Class cDatasetSorter
         Implements IComparer(Of ISpatialDataSet)
 
-        Public Function Compare(x As EwECore.Common.ISpatialDataSet, _
+        Public Function Compare(x As EwECore.Common.ISpatialDataSet,
                                 y As EwECore.Common.ISpatialDataSet) As Integer _
                             Implements System.Collections.Generic.IComparer(Of EwECore.Common.ISpatialDataSet).Compare
             Return String.Compare(x.CustomName, y.CustomName)
@@ -151,9 +131,9 @@ Public Class cDatasetPicker
     ''' <param name="datasetCurrent">The currently selected <see cref="ISpatialDataSet"/>.</param>
     ''' <param name="tag">Optional tag to attach to the pick event.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Pick(control As Control, _
-                    datasets As ISpatialDataSet(), _
-                    datasetCurrent As ISpatialDataSet, _
+    Public Sub Pick(control As Control,
+                    datasets As ISpatialDataSet(),
+                    datasetCurrent As ISpatialDataSet,
                     Optional tag As Object = Nothing)
 
         Me.BuildMenu(datasets, datasetCurrent)
@@ -173,9 +153,9 @@ Public Class cDatasetPicker
     ''' <param name="datasetCurrent">The currently selected <see cref="ISpatialDataSet"/>.</param>
     ''' <param name="tag">Optional tag to attach to the pick event.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Pick(pt As Point, _
-                    datasets As ISpatialDataSet(), _
-                    datasetCurrent As ISpatialDataSet, _
+    Public Sub Pick(pt As Point,
+                    datasets As ISpatialDataSet(),
+                    datasetCurrent As ISpatialDataSet,
                     Optional tag As Object = Nothing)
 
         Me.BuildMenu(datasets, datasetCurrent)
@@ -184,7 +164,7 @@ Public Class cDatasetPicker
         Me.m_cmsData.Show(pt, ToolStripDropDownDirection.Default)
     End Sub
 
-    Private Sub BuildMenu(datasets As ISpatialDataSet(), _
+    Private Sub BuildMenu(datasets As ISpatialDataSet(),
                           datasetCurrent As ISpatialDataSet)
 
         Dim tsi As ToolStripMenuItem = Nothing

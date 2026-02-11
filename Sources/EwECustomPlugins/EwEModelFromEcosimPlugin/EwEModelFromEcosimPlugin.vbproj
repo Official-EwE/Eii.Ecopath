@@ -88,9 +88,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Sources\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
     <None Update="UserGuide\EwE model from time step.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -101,10 +98,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging">
-      <Version>10.0.1</Version>
-    </PackageReference>
   </ItemGroup>
 </Project>

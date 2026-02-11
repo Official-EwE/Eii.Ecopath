@@ -11,6 +11,7 @@ on:
 # contents: write   -> create releases and upload artifacts
 # packages: write   -> push NuGet packages to GitHub Packages
 permissions:
+  actions: read
   contents: write
   packages: write
 
@@ -96,15 +97,15 @@ jobs:
             nuget-${{ runner.os }}-
 
       # Cache build output (bin and obj) to speed up builds if inputs have not changed
-      - name: Cache build output
-        uses: actions/cache@v4
-        with:
-          path: |
-            **/bin
-            **/obj
-          key: build-${{ runner.os }}-${{ hashFiles('**/*.vbproj') }}
-          restore-keys: |
-            build-${{ runner.os }}-
+      # - name: Cache build output
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       **/bin
+      #       **/obj
+      #     key: build-${{ runner.os }}-${{ hashFiles('**/*.vbproj') }}
+      #     restore-keys: |
+      #       build-${{ runner.os }}-
 
       # Ensure GitHub Packages NuGet source is configured for this job before restore
       # Note: this composite action must set up the source in the current runner environment
@@ -254,17 +255,21 @@ jobs:
         shell: pwsh
 
       # List installer files for debugging
-      - name: List artifacts files
+      - name: List output dir
         run: dir $outputDir
         shell: pwsh
 
+      # List installer files for debugging
+      - name: List artifacts files
+        run: dir (Join-Path $PWD "artifacts")
+        shell: pwsh
 
       # required for the artifact to be available on the GitHub server
       - name: upload-unsigned-artifact
         id: upload-unsigned-artifact
         uses: actions/upload-artifact@v4
         with: 
-          path: './artifacts/*_32-bit_setup.exe'
+          path: './artifacts/*-bit_setup.exe'
 
       - id: optional_step_id
         uses: signpath/github-action-submit-signing-request@v2
@@ -283,9 +288,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: installers
-          path: |
-            artifacts-signed/*_32-bit_setup.exe
-            artifacts/*_64-bit_setup.exe
+          path: artifacts-signed/*-bit_setup.exe
 
   # 5) CREATE RELEASE
   # This job creates or updates a GitHub Release with auto-generated notes and uploads installers.

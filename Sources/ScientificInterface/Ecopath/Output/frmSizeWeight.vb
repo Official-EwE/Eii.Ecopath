@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -79,7 +64,7 @@ Namespace Ecopath.Output
 
 #Region " Helper methods "
 
-        Private Function CreatePane(strTitle As String, strXAxisTitle As String, _
+        Private Function CreatePane(strTitle As String, strXAxisTitle As String,
                                     strYAxisTitle As String) As GraphPane
             Dim pane As GraphPane = Me.zgcZedGraphCntl.GraphPane
 
@@ -87,7 +72,7 @@ Namespace Ecopath.Output
             Return pane
         End Function
 
-        Private Sub InitGraphPane(strTitle As String, strXAxisTitle As String, _
+        Private Sub InitGraphPane(strTitle As String, strXAxisTitle As String,
                                     strYAxisTitle As String, pane As GraphPane)
             pane.Title.Text = strTitle
             pane.Title.FontSpec.IsBold = False
@@ -138,7 +123,7 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Sub AddCurveToGraphPane(pane As GraphPane, legend As String, list As PointPairList, _
+        Private Sub AddCurveToGraphPane(pane As GraphPane, legend As String, list As PointPairList,
                                         clr As Color)
             pane.AddCurve(legend, list, clr, SymbolType.None)
         End Sub

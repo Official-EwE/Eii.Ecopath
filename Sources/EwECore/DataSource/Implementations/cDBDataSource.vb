@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Text
 Imports EwECore.Auxiliary
@@ -30,8 +12,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
-
-
 Namespace DataSources
 
     ''' ---------------------------------------------------------------------------
@@ -40,7 +20,7 @@ Namespace DataSources
     ''' and writing Ecopath, Ecosim and Ecospace data from a database.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    
+
     Public Class cDBDataSource
         Implements IEwEDataSource
         Implements IEcopathDataSource
@@ -1637,7 +1617,6 @@ Namespace DataSources
                         ' JS 14jun12: Leading CB separated from leading B (default to LeadingLifeStage)
                         stanzaDS.BaseStanzaCB(iStanza) = CInt(Me.m_db.ReadSafe(rdStanza, "LeadingCB", stanzaDS.BaseStanza(iStanza)))
 
-
                     Catch ex As Exception
                         Me.LogError(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
                         bSucces = False
@@ -1908,7 +1887,6 @@ Namespace DataSources
             Return False
 
         End Function
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -6069,7 +6047,6 @@ Namespace DataSources
 
             Dim iShapeID As Integer = medData.MediationDBIDs(iShape)
             Dim shapeParms As cEcosimDatastructures.ShapeParameters = medData.MediationShapeParams(iShape)
-
 
             Try
                 writer = Me.m_db.GetWriter("EcosimShapeMediation")
@@ -11128,7 +11105,6 @@ Namespace DataSources
 
             If Not bSucces Then ds.m_samples.Clear()
 
-
             Return bSucces
 
         End Function
@@ -11442,7 +11418,6 @@ Namespace DataSources
             Return True
 
         End Function
-
 
 #End Region ' Cleanup
 

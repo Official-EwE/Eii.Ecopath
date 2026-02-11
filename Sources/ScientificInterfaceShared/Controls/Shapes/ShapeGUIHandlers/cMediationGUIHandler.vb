@@ -1,27 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Controls
 
@@ -54,11 +33,11 @@ Namespace Controls
         ''' <param name="ma"><see cref="ucMediationAssignments">Mediation assignments control</see> to handle, if any.</param>
         ''' <param name="mat"><see cref="ucMediationAssignmentsToolbar"/> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Shadows Sub Attach(stb As ucShapeToolbox, _
-                                  stbtb As ucShapeToolboxToolbar, _
-                                  sp As ucSketchPad, _
-                                  sptb As ucSketchPadToolbar, _
-                                  ma As ucMediationAssignments, _
+        Public Overridable Shadows Sub Attach(stb As ucShapeToolbox,
+                                  stbtb As ucShapeToolboxToolbar,
+                                  sp As ucSketchPad,
+                                  sptb As ucSketchPadToolbar,
+                                  ma As ucMediationAssignments,
                                   mat As ucMediationAssignmentsToolbar)
 
             MyBase.Attach(stb, stbtb, sp, sptb)
@@ -268,7 +247,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Function EnableCommand(cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
-                Case eShapeCommandTypes.DefineMediation, _
+                Case eShapeCommandTypes.DefineMediation,
                      eShapeCommandTypes.ViewMode
                     Return (Me.SelectedShape IsNot Nothing)
                 Case eShapeCommandTypes.Import
@@ -280,8 +259,8 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.ExecuteCommand"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
-                                             Optional ashapes() As EwECore.cShapeData = Nothing, _
+        Public Overrides Sub ExecuteCommand(cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes,
+                                             Optional ashapes() As EwECore.cShapeData = Nothing,
                                              Optional data As Object = Nothing)
 
             Try

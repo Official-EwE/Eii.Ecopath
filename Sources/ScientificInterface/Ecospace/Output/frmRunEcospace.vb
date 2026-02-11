@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Drawing.Imaging
 Imports System.IO
@@ -921,7 +906,6 @@ Namespace Ecospace
                     strName = ecopathDS.FleetName(iFleet)
                 End If
 
-
                 If Me.StyleGuide.ShowMapsDateInLabels Then
                     strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, strName, strDate)
                 Else
@@ -944,8 +928,6 @@ Namespace Ecospace
 #End Region ' Map 
 
 #Region " Events "
-
-
 
         Private Sub OnOutputTabSelected(sender As Object, e As System.EventArgs) _
             Handles m_tcOutputs.SelectedIndexChanged
@@ -1189,7 +1171,6 @@ Namespace Ecospace
 
         End Sub
 
-
         Private Sub onGraphTypeCheckedChanged(sender As Object, e As System.EventArgs) _
             Handles m_rbRelBiomassGraph.CheckedChanged, m_rbConsumpGraph.CheckedChanged, m_rbFishMortGraph.CheckedChanged, m_rbPredMortGraph.CheckedChanged, m_rbCatchGraph.CheckedChanged
 
@@ -1368,7 +1349,6 @@ Namespace Ecospace
                 Me.CalcMapDimension(Me.Core.nFleets, Me.m_iNumPlotsVert, Me.m_iNumPlotsHorz)
             End If
 
-
             Me.AppendPlotData()
             Me.m_pbMap.Invalidate()
             'Me.UpdateControls()
@@ -1493,7 +1473,6 @@ Namespace Ecospace
 
         End Sub
 
-
         Private Sub initMapsOverBiomass(TimeStepData As cEcospaceTimestep)
             Dim bContaminantsOn As Boolean = False
 
@@ -1525,7 +1504,6 @@ Namespace Ecospace
             End Try
 
         End Sub
-
 
         Private Sub ClearResults()
 
@@ -1786,7 +1764,6 @@ Namespace Ecospace
             End If
 
         End Sub
-
 
         Private Sub InitLocalMemory(TimeStepData As cEcospaceTimestep)
             Dim size As Integer = (TimeStepData.inCols + 1) * (TimeStepData.inRows + 1) * (Me.Core.nGroups + 1)

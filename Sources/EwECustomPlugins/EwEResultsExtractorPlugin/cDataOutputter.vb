@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwECore
@@ -148,7 +132,7 @@ Public Class cDataOutputer
 
         Dim fileName As String
         Dim fDateTime As DateTime = DateTime.Now
-        Dim CurrentTime As String = "(D" & fDateTime.Day & "-" & fDateTime.Month & "-" & fDateTime.Year & ")(T" & _
+        Dim CurrentTime As String = "(D" & fDateTime.Day & "-" & fDateTime.Month & "-" & fDateTime.Year & ")(T" &
         fDateTime.Hour.ToString & "-" & fDateTime.Minute.ToString & "-" _
         & fDateTime.Second.ToString & ")"
         Dim ArrayData(,) As Object
@@ -247,10 +231,9 @@ Public Class cDataOutputer
         Dim fileName As String
         Dim ArrayData(,) As Object
 
-        Dim CurrentTime As String = "(D" & fDateTime.Day & "-" & fDateTime.Month & "-" & fDateTime.Year & ")(T" & _
+        Dim CurrentTime As String = "(D" & fDateTime.Day & "-" & fDateTime.Month & "-" & fDateTime.Year & ")(T" &
                 fDateTime.Hour.ToString & "-" & fDateTime.Minute.ToString & "-" _
                 & fDateTime.Second.ToString & ")"
-
 
         If Me.mFunctionalGroupData.Count > 0 Then
             fileName = My.Resources.FUNC_GROUP & CurrentTime
@@ -328,17 +311,16 @@ Public Class cDataOutputer
 
     End Sub
 
-
 #Region " Message "
 
     Private Sub PrepareExportMessage()
-        Me.mMsg = New cMessage(cStringUtils.Localize(My.Resources.GENERIC_SAVE, Me.PPath), _
+        Me.mMsg = New cMessage(cStringUtils.Localize(My.Resources.GENERIC_SAVE, Me.PPath),
                                         eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
         Me.mMsg.Hyperlink = Me.PPath
     End Sub
 
     Private Sub LogException(strError As String)
-        Me.mMsg = New cMessage(cStringUtils.Localize(My.Resources.GENERIC_SAVE_EXCEPTION, Me.PPath, strError), _
+        Me.mMsg = New cMessage(cStringUtils.Localize(My.Resources.GENERIC_SAVE_EXCEPTION, Me.PPath, strError),
                                eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Warning)
     End Sub
 
@@ -348,19 +330,19 @@ Public Class cDataOutputer
     ''' <param name="strName">The data was exported for.</param>
     ''' <param name="strFile">The file the data was exported to.</param>
     ''' <param name="status">Export succes status.</param>
-    Private Sub LogExport(strName As String, _
-                          strFile As String, _
+    Private Sub LogExport(strName As String,
+                          strFile As String,
                           Optional status As eStatusFlags = eStatusFlags.OK)
         If (Me.mMsg Is Nothing) Then Return
         Dim vs As cVariableStatus = Nothing
         Select Case Me.mOutputType
             Case eOutputTypes.CSV
-                vs = New cVariableStatus(status, _
-                                         cStringUtils.Localize(My.Resources.GENERIC_SAVE_CSV, strName, strFile), _
+                vs = New cVariableStatus(status,
+                                         cStringUtils.Localize(My.Resources.GENERIC_SAVE_CSV, strName, strFile),
                                          eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.Ecosim, 0)
             Case eOutputTypes.Excel
-                vs = New cVariableStatus(status, _
-                                         cStringUtils.Localize(My.Resources.GENERIC_SAVE_EXCEL, strName, strFile), _
+                vs = New cVariableStatus(status,
+                                         cStringUtils.Localize(My.Resources.GENERIC_SAVE_EXCEL, strName, strFile),
                                          eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.Ecosim, 0)
         End Select
         Me.mMsg.AddVariable(vs)

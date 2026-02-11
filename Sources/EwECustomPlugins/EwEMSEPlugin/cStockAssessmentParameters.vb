@@ -1,29 +1,8 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
-#Region "Imports"
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
+#Region "Imports"
 
 Option Explicit On
 
@@ -113,7 +92,6 @@ Public Class cStockAssessmentParameters
         End Set
     End Property
 
-
     Public ReadOnly Property Name As String
         Get
             Return Me.m_pathdata.GroupName(Me.iGroupIndex)
@@ -131,7 +109,6 @@ Public Class cStockAssessmentParameters
             Return Me.m_Assessment.Core.EcopathGroupInputs(Me.iGroupIndex).IsFished
         End Get
     End Property
-
 
     Private Sub FireOnChanged()
 
@@ -166,11 +143,10 @@ Public Class cStockAssessmentParameters
 
     End Function
 
-
     Public Function toCSVString() As String
-        Return cStringUtils.ToCSVField(Me.Name) + "," + cStringUtils.ToCSVField(Me.iGroupIndex) + "," + _
-            cStringUtils.ToCSVField(Me.ForcastGain) + "," + cStringUtils.ToCSVField(Me.RHalfB0Ratio) + "," + _
-            cStringUtils.ToCSVField(Me.cvRec) + "," + cStringUtils.ToCSVField(Me.CVObservationError) + "," + _
+        Return cStringUtils.ToCSVField(Me.Name) + "," + cStringUtils.ToCSVField(Me.iGroupIndex) + "," +
+            cStringUtils.ToCSVField(Me.ForcastGain) + "," + cStringUtils.ToCSVField(Me.RHalfB0Ratio) + "," +
+            cStringUtils.ToCSVField(Me.cvRec) + "," + cStringUtils.ToCSVField(Me.CVObservationError) + "," +
             cStringUtils.ToCSVField(Me.CVRecruitmentError)
     End Function
 

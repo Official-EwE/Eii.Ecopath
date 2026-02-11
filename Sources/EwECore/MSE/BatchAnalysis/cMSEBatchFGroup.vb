@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.ValueWrapper
 
@@ -63,7 +47,6 @@ Namespace MSE
 
         End Sub
 
-
         Public Property FixedMort As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.MSEFixedF))
@@ -94,8 +77,6 @@ Namespace MSE
             End Set
         End Property
 
-
-
         Public Property isManaged As Boolean
             Get
                 Return CBool(Me.GetVariable(eVarNameFlags.MSEBatchFManaged))
@@ -105,7 +86,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSEBatchFManaged, value)
             End Set
         End Property
-
 
         Public Property FixedFValue(IterationIndex As Integer) As Single
             Get
@@ -125,8 +105,6 @@ Namespace MSE
             End Set
         End Property
 
-
-
         Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = -9999) As Object
 
             Select Case VarName
@@ -138,7 +116,6 @@ Namespace MSE
             Return MyBase.GetVariable(VarName, iIndex, iIndex2, iIndex3)
 
         End Function
-
 
         Public Overrides Function SetVariable(VarName As eVarNameFlags, newValue As Object, Optional iSecondaryIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As Boolean
 
@@ -153,7 +130,6 @@ Namespace MSE
             Return MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
 
         End Function
-
 
         Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
             MyBase.ResetStatusFlags(bForceReset)

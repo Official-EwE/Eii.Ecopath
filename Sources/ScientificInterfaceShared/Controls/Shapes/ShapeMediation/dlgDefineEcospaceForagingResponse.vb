@@ -1,23 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
@@ -27,8 +10,6 @@ Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports Debug = System.Diagnostics.Debug
-
-
 
 ''' <summary>
 ''' Main interface to define the functional responses of groups to environmental drivers.
@@ -135,7 +116,6 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Me.LoadDrivers()
 
     End Sub
-
 
     ''' <summary>
     ''' Add the selected groups to the currently selected map
@@ -297,7 +277,6 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 
         Next
 
-
         Return lstGroups.ToArray()
     End Function
 
@@ -329,7 +308,6 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
                             Dim grp As cEcospaceGroupInput = Me.m_uic.Core.EcospaceGroupInputs(igrp)
                             If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Or
                                 Me.m_managertype = eCoreComponentType.EcospaceMortalityResponseInteractionManager Then
-
 
                                 Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.ToString(grp))
                                 ndgrp.Tag = grp
@@ -381,7 +359,6 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Return Nothing
 
     End Function
-
 
 #End Region ' Private Methods
 

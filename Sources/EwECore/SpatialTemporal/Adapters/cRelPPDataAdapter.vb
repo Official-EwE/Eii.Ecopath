@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 
@@ -82,12 +67,12 @@ Namespace SpatialData
         ''' <see cref="cSpatialScalarDataAdapter.SetCell"/> will scale external data to a the first timestep or a user defined value.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap, _
-                                                  layer As cEcospaceLayer, _
-                                                  conn As cSpatialDataConnection, _
-                                                  iTime As Integer, _
-                                                  dt As Date, _
-                                                  dataExternal As ISpatialRaster, _
+        Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap,
+                                                  layer As cEcospaceLayer,
+                                                  conn As cSpatialDataConnection,
+                                                  iTime As Integer,
+                                                  dt As Date,
+                                                  dataExternal As ISpatialRaster,
                                                   dNullValue As Double) As Boolean
 
             Try
@@ -152,6 +137,4 @@ Namespace SpatialData
     End Class
 
 End Namespace
-
-
 

@@ -1,29 +1,9 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 
 ''' <summary>
@@ -91,7 +71,6 @@ Public Class cSearchDatastructures
     Public DiscountFactor As Single
     'Public GenDiscountFactor As Single
 
-
     'jb in EwE5 these are defined in Fletch.bas
     Public Ecodistance As Single
     Public ExistValue As Single
@@ -148,12 +127,10 @@ Public Class cSearchDatastructures
     Public ManValue As Double
     Public EcoValue As Double
 
-
     'VC 20250403 These sector variables were not defined and were remarked out where used below
     Public SectorProfit As Double
     'Public SectorTotalValue As Double
     'Public SectorJobs As Double
-
 
     ''' <summary>Value of Catch</summary>
     ''' <remarks>By (fleet, livingGroup)
@@ -245,7 +222,6 @@ Public Class cSearchDatastructures
     Private Dalpha As Single
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSearchDatastructures)()
 
-
 #End Region
 
 #Region " Construction Destruction Cleanup "
@@ -302,7 +278,6 @@ Public Class cSearchDatastructures
         Me.m_SearchCatchSemaphor = Nothing
 
     End Sub
-
 
 #End Region ' Construction
 
@@ -433,7 +408,6 @@ Public Class cSearchDatastructures
         Return True
     End Function
 
-
     Public Function RedimToSimScenario(NumberOfYears As Integer) As Boolean
         Dim bSuccess As Boolean = True
         bSuccess = bSuccess And Me.RedimGroups()
@@ -441,7 +415,6 @@ Public Class cSearchDatastructures
         bSuccess = bSuccess And Me.RedimTime(NumberOfYears)
         Return bSuccess
     End Function
-
 
     Private Function RedimGroups() As Boolean
 
@@ -461,7 +434,6 @@ Public Class cSearchDatastructures
         End Try
         Return True
     End Function
-
 
     Public Sub RedimForRun()
         ReDim Me.BaseYearIncome(Me.NumFleets)
@@ -537,7 +509,6 @@ Public Class cSearchDatastructures
 
     End Sub
 
-
     Public Function SetFletchPars() As Integer
         'determines number of fishing rate parameters to be varied and
         'assigns parameter number to each fishing rate block code used
@@ -603,7 +574,6 @@ Public Class cSearchDatastructures
 
     End Sub
 
-
     Public Sub setRandomFRates()
         Dim rd As New Random
 
@@ -617,7 +587,6 @@ Public Class cSearchDatastructures
         Next
 
     End Sub
-
 
     Public Sub setBaseYearEffort(ByRef EcosimData As cEcosimDatastructures)
         If Me.BaseYear = 0 Then Me.BaseYear = 1
@@ -663,7 +632,6 @@ Public Class cSearchDatastructures
                     For i = 1 To Me.m_NBlocks : Me.m_storedFrates(i) = 0.0001 : Next
                 End If
 
-
             ElseIf Me.InitOption = eInitOption.CurrentF Then
 
                 'Fishing Rates from 
@@ -684,12 +652,10 @@ Public Class cSearchDatastructures
 
             End If
 
-
         Catch ex As Exception
             m_logger.LogError(ex, "Error setting fishing rate to initial values.")
             Throw New ApplicationException("Error setting fishing rate to initial values.", ex)
         End Try
-
 
     End Sub
 
@@ -718,7 +684,6 @@ Public Class cSearchDatastructures
 
     End Sub
 
-
     Public Sub setMaxEffort(nSearchBlocks As Integer)
         Me.MaxEffort = 10000
         For i As Integer = 1 To nSearchBlocks
@@ -736,7 +701,6 @@ Public Class cSearchDatastructures
             End If
         Next
     End Sub
-
 
     Public Sub initForRun(EcoPathData As cEcopathDataStructures, EcosimData As cEcosimDatastructures)
 
@@ -784,7 +748,6 @@ Public Class cSearchDatastructures
         Me.Employ = 0
         Me.ManValue = 0
         Me.DiversityIndex = 0
-
 
     End Sub
 
@@ -856,7 +819,6 @@ Public Class cSearchDatastructures
 
     End Sub
 
-
     Public Sub ClearYearlyData()
         Array.Clear(Me.CatchYear, 0, Me.CatchYear.Length)
         Array.Clear(Me.CatchYearGroup, 0, Me.CatchYearGroup.Length)
@@ -909,7 +871,6 @@ Public Class cSearchDatastructures
 
     End Sub
 
-
     ''' <summary>
     ''' Calculate yearly summary data based on Biomass for this time step
     ''' </summary>
@@ -961,7 +922,6 @@ Public Class cSearchDatastructures
 
     End Sub
 
-
     Public Sub calcBaseYearCost(iYear As Integer, nSpatialCells As Integer)
 
         Dim CV As Single
@@ -970,7 +930,6 @@ Public Class cSearchDatastructures
         'jb removed BaseYearIncome() because it was not used for anything other than testing if it had been calculated
         'and would cause a crash if NumFleet = 0 in BaseYearIncome(1) = 0 BaseYearIncome() was dimmed by NumFleet
         'Here it is replaced with bBaseYearSet to set the base year only once at the start of a run
-
 
         'VC 20250417: Problem: when using a later baseyear the baseyearcost should not be calculated
         'from the Ecopath catches as they are now. Trying to "fix" this by multiplying BaseYearEffort on the BaseYearCost
@@ -1070,7 +1029,6 @@ Public Class cSearchDatastructures
         ' it calls for inititally setting profit = totval, then subtractin cost
         Me.Profit = Me.TotVal
 
-
         For iFlt = 1 To Me.m_EPdata.NumFleet
 
             'NetCost() = [Sum of NetCost] + [long term value of the last time step]
@@ -1098,7 +1056,6 @@ Public Class cSearchDatastructures
         Next
 
     End Sub
-
 
     Public Sub EcoSpaceSummarizeIndicators(Fgear() As Single, ModelRunLength As Integer,
                                            ModelRunLengthPostBaseYear As Integer,
@@ -1148,13 +1105,11 @@ Public Class cSearchDatastructures
         ' First setting it = totval then subtracting cost
         Me.Profit = Me.TotVal
 
-
         For iflt = 1 To Me.m_EPdata.NumFleet
 
             If Me.BaseYearCost(iflt) > 0 And Me.BaseYearEffort(iflt) > 0 Then
                 Me.NetCost(iflt) += Fgear(iflt) * Me.BaseYearCost(iflt) / Me.BaseYearEffort(iflt) * LTV
             End If
-
 
             'NetCost() = [Sum of NetCost] + [long term value of the last time step]
             'totval includes the same accounting
@@ -1210,7 +1165,6 @@ Public Class cSearchDatastructures
         Return LTV
     End Function
 
-
     ''' <summary>
     ''' JB 3-Nov-201 GenDiscountFactor removed from interface until we get this sorted out
     ''' 
@@ -1261,10 +1215,7 @@ Public Class cSearchDatastructures
 
     End Function
 
-
 #End Region
 
 End Class
-
-
 

@@ -1,22 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 
@@ -297,7 +281,6 @@ Public Enum eSpaceResultsFleets
     Value
 End Enum
 
-
 Public Enum eSpaceResultsFleetsGroups
     CatchBio
     Value
@@ -499,7 +482,6 @@ Public Enum eScaleType As Integer
     ''' <summary>Value are scaled before being applied.</summary>
     Relative
 End Enum
-
 
 #Region " Core execution state "
 
@@ -1133,7 +1115,6 @@ Public Enum eVarNameFlags As Integer
     EcospaceSpinupYears
     EcospaceCapacityEnabled
 
-
     ''' <summary>Number of fish in a monthly stanza age group</summary>
     StanzaNumberAtAge
     ''' <summary>Weight of individual fish in a monthly stanza age group</summary>
@@ -1165,7 +1146,6 @@ Public Enum eVarNameFlags As Integer
     nEffortDistThreads
     ''' <summary>To document</summary>
     EcospaceSaveThreadingLog
-
 
     IFDPower
     ''' <summary>To document</summary>
@@ -3720,7 +3700,6 @@ Public Enum eEcospaceResultsAverageType
     TimeStep
     Annual
 End Enum
-
 
 #End Region ' Ecospace Capacity and Habitat
 

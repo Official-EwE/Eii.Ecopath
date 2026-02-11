@@ -1,29 +1,9 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.ValueWrapper
 Imports ScientificInterfaceShared.Style
-
-
 
 Namespace Properties
 
@@ -34,7 +14,7 @@ Namespace Properties
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cIntegerProperty
-        : Inherits cProperty
+        Inherits cProperty
 
         Private m_iValue As Integer = 0
         Private m_Style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
@@ -59,8 +39,8 @@ Namespace Properties
         ''' </para>
         ''' </param>
         ''' -------------------------------------------------------------------
-        Public Sub New(Source As EwECore.cCoreInputOutputBase, VarName As eVarNameFlags, _
-                Optional SourceSec As EwECore.cCoreInputOutputBase = Nothing, _
+        Public Sub New(Source As EwECore.cCoreInputOutputBase, VarName As eVarNameFlags,
+                Optional SourceSec As EwECore.cCoreInputOutputBase = Nothing,
                 Optional iSecIndexOffset As Integer = 0)
             MyBase.New(Source, VarName, SourceSec, iSecIndexOffset)
         End Sub
@@ -123,7 +103,7 @@ Namespace Properties
         ''' Overridden to make sure a value is passed to the core as a true Integer.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Function SetValue(newValue As Object, _
+        Public Overrides Function SetValue(newValue As Object,
                                            Optional notify As TriState = TriState.UseDefault) As Boolean
 
             Dim val As cValue = Me.ValueDescriptor
@@ -136,7 +116,6 @@ Namespace Properties
                     i = CInt(meta.NullValue)
                 End If
             End If
-
 
             Try
                 If (newValue Is Nothing) Or (Convert.ToInt32(newValue) = cCore.NULL_VALUE) Then

@@ -1,30 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
 Imports EwECore.MSE
@@ -35,9 +11,6 @@ Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 
 Imports ScientificInterfaceShared.Style
-
-
-
 
 
 
@@ -69,7 +42,7 @@ Public Class gridErrorCVs
 #Region " Constructor "
 
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
 
         Me.m_CurSelectedDataType = frmEditAssessmentError.eErrorDataType.GroupObervationError
 
@@ -82,7 +55,6 @@ Public Class gridErrorCVs
 #End Region ' Constructor
 
 #Region " Public interfaces "
-
 
     Public Property ErrorDataType As frmEditAssessmentError.eErrorDataType
         Get
@@ -153,7 +125,6 @@ Public Class gridErrorCVs
 
     End Sub
 
-
     Private Sub FillFleetData()
         Dim Fleet As cStockAssessmentFleetParameters
         Dim Cell As ICell
@@ -179,7 +150,6 @@ Public Class gridErrorCVs
 
         Next iFlt
     End Sub
-
 
     Private Sub FillGroupData()
         Dim Group As cStockAssessmentParameters
@@ -266,20 +236,17 @@ Public Class gridErrorCVs
 
         'If bEdited Then
         Try
-                RaiseEvent onEdited()
-            Catch ex As Exception
+            RaiseEvent onEdited()
+        Catch ex As Exception
 
-            End Try
+        End Try
         'End If
 
         Return MyBase.OnCellEdited(p, cell)
 
     End Function
 
-
-
 #End Region ' Overrides
 
 End Class
-
 

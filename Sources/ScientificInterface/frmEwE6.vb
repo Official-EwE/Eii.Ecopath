@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports System.IO
@@ -78,7 +63,6 @@ Public Class frmEwE6
     ''' <summary>Flag indicating that the EwE is fully initialized</summary>
     Private m_bIsInitialized As Boolean = False
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of frmEwE6)()
-
 
 #Region " Panels "
 
@@ -1892,7 +1876,6 @@ Public Class frmEwE6
         Next
         ' Eradicate menu items
         Me.m_tsmiFileRecent.DropDownItems.Clear()
-
 
         For Each item In Me.m_tsbEcopath.DropDownItems
             If (item.Tag IsNot Nothing) Then
@@ -5296,7 +5279,6 @@ Public Class frmEwE6
     Private Sub OnModelNameChanged(prop As cProperty, cf As cProperty.eChangeFlags)
         Me.UpdateModelControls()
     End Sub
-
 
 #End Region  ' Event handlers
 

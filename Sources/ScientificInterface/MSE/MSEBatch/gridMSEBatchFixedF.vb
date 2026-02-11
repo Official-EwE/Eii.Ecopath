@@ -1,25 +1,9 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
 
 Public Class gridMSEBatchFixedF
     Inherits cEwEGrid
@@ -44,7 +28,7 @@ Public Class gridMSEBatchFixedF
 #End Region ' Internal defs
 
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
         Me.m_iter = 1
     End Sub
 
@@ -78,7 +62,6 @@ Public Class gridMSEBatchFixedF
         Me(0, eColumnTypes.FixedFValue) = New cEwEColumnHeaderCell("Iter.(" & Me.iCurIter.ToString & ")")
         Me(0, eColumnTypes.FixedFLow) = New cEwEColumnHeaderCell("Lower " & limitStr) 'B lim(-)
         Me(0, eColumnTypes.FixedFUp) = New cEwEColumnHeaderCell("Upper " & limitStr) 'B Lim(+)
-
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -114,7 +97,6 @@ Public Class gridMSEBatchFixedF
             Me(iGroup, eColumnTypes.FixedFLow) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFLower)
             Me(iGroup, eColumnTypes.FixedFUp) = New cPropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBatchFUpper)
 
-
         Next iGroup
 
     End Sub
@@ -129,7 +111,6 @@ Public Class gridMSEBatchFixedF
             Return eCoreComponentType.MSE
         End Get
     End Property
-
 
     Public Property iCurIter As Integer
         Get
@@ -147,7 +128,6 @@ Public Class gridMSEBatchFixedF
         End Set
 
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -187,7 +167,6 @@ Public Class gridMSEBatchFixedF
     End Function
 
     Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
-
 
     End Function
 

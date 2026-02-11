@@ -1,28 +1,12 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
 Imports System.Threading
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
 
 Public Class cSpaceSolver
 
@@ -111,7 +95,6 @@ Public Class cSpaceSolver
 
     Private lossSpace()(,) As Single
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cSpaceSolver)()
-
 
     'These are total sums for every cell, so must be summed for each thread seperately, then combined after they've all run
     'Public BtimeLocal() As Single
@@ -335,7 +318,6 @@ Public Class cSpaceSolver
         Me.m_ConTracer.CInitialize()
     End Sub
 
-
     Private Sub InitForTimestep()
 
         Try
@@ -539,7 +521,6 @@ Public Class cSpaceSolver
                         'F = Ecosim F at this time step
                         Me.FishTime(iGrp) = Me.m_SimData.FishRateNo(iGrp, itt)
 
-
                         For Me.ig = 1 To Me.m_Data.nFleets
                             'Effort used to calculate Catch and Value in cEcospace.accumCatchData
                             Me.m_Data.EffortSpace(Me.ig, i, j) = 1.0
@@ -656,7 +637,6 @@ Public Class cSpaceSolver
                     Me.Cper(i, j, iGrp) = 0.001F * Me.m_SimData.Cbase(iGrp)
                 End If
 
-
                 Me.m_Data.MOLoss(iGrp)(i, j) = Me.m_moLoss(iGrp)
 
             Next iGrp
@@ -751,7 +731,6 @@ Public Class cSpaceSolver
             '                    'This is the long-term predicted biomass in the cell from not fishing there
             '                    '   If AMm(i, j, ip) > 0 Then Bclose(i, j, ip) = -Bcell(i, j, ip) * AMm(i, j, ip) / (AMm(i, j, P) - Ftime(i, j, ip))
 
-
             Return True
 
         Catch ex As Exception
@@ -761,8 +740,6 @@ Public Class cSpaceSolver
         End Try
 
     End Function
-
-
 
     Private Function SolveCellC(ByVal i As Integer, ByVal j As Integer) As Boolean
         Dim iGrp As Integer
@@ -1009,7 +986,6 @@ Public Class cSpaceSolver
             Dim moMult As Single = 1
             For i = 1 To Me.m_Data.NGroups
 
-
                 Me.Eatenby(i) = Me.Eatenby(i) + Me.m_SimData.QBoutside(i) * Biomass(i)
 
                 If i <= Me.m_Data.nLiving Then      'Living group
@@ -1143,7 +1119,6 @@ Public Class cSpaceSolver
         Next
 
     End Sub
-
 
     Private Function getM0Mult(igrp As Integer, irow As Integer, icol As Integer) As Single
         Dim MoMult As Single
@@ -1285,7 +1260,6 @@ Public Class cSpaceSolver
         Next
 
     End Sub
-
 
     ''' <summary>
     ''' Accumulate the fisheries data (catch) for a single group for this map cell. 
@@ -1570,7 +1544,6 @@ Public Class cSpaceSolver
         d.Populate(Me.m_Data, Biomass, Production, consumpt, FishingMort, Me.Eatenof, FlowToDertitus, DetritusFlowByGroup, Me.TotFisheriesDiscards)
     End Sub
 
-
     Private Sub setRelFitnessBase(i As Integer, j As Integer)
         Dim relFit As Single
 
@@ -1609,7 +1582,6 @@ Public Class cSpaceSolver
         End If 'Me.itt < 13 
 
     End Sub
-
 
 End Class
 
@@ -1816,11 +1788,9 @@ Public Class cSpaceSolver_LocalMemory
     'Private isFished(,,) As Boolean
     ' Private isCaught(,) As Boolean
 
-
 #End Region
 
 #Region "Construction Initialization"
-
 
     ''' <summary>
     ''' First time initialization run after construction. This gets run on the cores threads.
@@ -1873,7 +1843,6 @@ Public Class cSpaceSolver_LocalMemory
         End If 'If Me.bUseLocalMemory Then
 
     End Sub
-
 
     Private Sub initLocalDataForRun()
 
@@ -1986,7 +1955,6 @@ Public Class cSpaceSolver_LocalMemory
         Eatenby = New Single(nGroups) {}
         MedVal = New Single(nGroups) {}
 
-
         SimGE = New Single(nGroups) {}
         FtimeMax = New Single(nGroups) {}
         Cbase = New Single(nGroups) {}
@@ -2077,7 +2045,6 @@ Public Class cSpaceSolver_LocalMemory
 
     End Sub
 
-
     Public Sub Clear()
 
         Try
@@ -2102,7 +2069,6 @@ Public Class cSpaceSolver_LocalMemory
         iLstCell = iLastCell
     End Sub
 
-
     ''' <summary>
     ''' Do any processing necessary at the start of a new year
     ''' </summary>
@@ -2121,8 +2087,6 @@ Public Class cSpaceSolver_LocalMemory
 
     End Sub
 
-
-
 #End Region
 
 #Region "Public 'Solve'"
@@ -2135,7 +2099,6 @@ Public Class cSpaceSolver_LocalMemory
     Public Sub Solve(ByVal obParam As Object)
         'For our purposes here we are ignoring the obParam argument 
         'this sub signature is required by the ThreadPool.QueueUserWorkItem(...)
-
 
         'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
         'Console.WriteLine("Solve Derivt OBID = " & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
@@ -2183,8 +2146,6 @@ Public Class cSpaceSolver_LocalMemory
     End Sub
 
 
-
-
 #Region "SolveCell Local and Shared memory"
 
     ''' <summary>
@@ -2227,8 +2188,6 @@ Public Class cSpaceSolver_LocalMemory
                     EffortSpace(ig, 0) = 1 ' 1 x FishMGear(ig, ip)
                 Next
             End If 'If m_Data.PredictEffort > 0 Then
-
-
 
             For iGrp = 1 To m_Data.NGroups
                 'abmpa: at this point (after having been in solvegrid) the BCell holds
@@ -2462,8 +2421,6 @@ Public Class cSpaceSolver_LocalMemory
 #End Region
 
 
-
-
     ''' <summary>
     ''' Calculate trophic interaction for a single map cell
     ''' </summary>
@@ -2510,7 +2467,6 @@ Public Class cSpaceSolver_LocalMemory
                     EffortSpace(ig, 0) = 1 ' 1 x FishMGear(ig, ip)
                 Next
             End If 'If m_Data.PredictEffort > 0 Then
-
 
             'Init group data 
             For iGrp = 1 To m_Data.NGroups
@@ -3088,7 +3044,6 @@ Public Class cSpaceSolver_LocalMemory
 
     End Sub
 
-
     ''' <summary>
     ''' Accumulate the fisheries data (catch) for a single group for this map cell. 
     ''' This is called before DerivtRed(), in the time step, so it is the condition at the start of the time step.
@@ -3182,7 +3137,6 @@ Public Class cSpaceSolver_LocalMemory
 
     End Sub
 
-
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'FOR DEGUGGING ONLY HAS NOT BEEN TESTED
     'SimDetritus from Ecosim moved here to see if calling Ecosim is slowing down the threading
@@ -3191,7 +3145,6 @@ Public Class cSpaceSolver_LocalMemory
         Dim i As Integer, j As Integer, K As Integer
         Dim ToDet As Single, DetFlowN As Single
         DetFlowN = 0
-
 
         'DetritusByGroup() needs to be cleared because the values are summed into it
         Array.Clear(DetritusByGroup, 0, Me.m_Data.NGroups)
@@ -3242,7 +3195,6 @@ Public Class cSpaceSolver_LocalMemory
     End Sub
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
     Private Sub copyCoreToLocal(SourceMap(,,) As Single, ByRef DestinationLinear(,) As Single)
         Dim i As Integer
         Dim n As Integer = iLstCell - iFrstCell + 1
@@ -3260,7 +3212,6 @@ Public Class cSpaceSolver_LocalMemory
 
     End Sub
 
-
     Private Sub copyLocalToCore(SourceLinear(,) As Single, ByRef DestinationMap(,,) As Single)
         Dim i As Integer
         Dim n As Integer = iLstCell - iFrstCell + 1
@@ -3272,7 +3223,6 @@ Public Class cSpaceSolver_LocalMemory
             Next
             i += 1
         Next iCell
-
 
     End Sub
 

@@ -1,23 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
@@ -26,8 +9,6 @@ Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
-
-
 
 Namespace Controls
 
@@ -93,13 +74,13 @@ Namespace Controls
             Me.OnShapeChanged()
         End Sub
 
-        Protected Overrides Sub DrawShape(shape As EwECore.cShapeData, _
-                rcImage As System.Drawing.Rectangle, _
-                g As System.Drawing.Graphics, _
-                clr As System.Drawing.Color, _
-                bDrawLabels As Boolean, _
-                drawMode As eSketchDrawModeTypes, _
-                iXMax As Integer, _
+        Protected Overrides Sub DrawShape(shape As EwECore.cShapeData,
+                rcImage As System.Drawing.Rectangle,
+                g As System.Drawing.Graphics,
+                clr As System.Drawing.Color,
+                bDrawLabels As Boolean,
+                drawMode As eSketchDrawModeTypes,
+                iXMax As Integer,
                 sYMax As Single)
 
             ' ToDo: localize this
@@ -122,8 +103,8 @@ Namespace Controls
             If Me.Shape Is Nothing Then Return
 
             'Draw the line with y's value equal to 1
-            g.DrawLine(Pens.Black, _
-                cShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.XAxisMaxValue, sYMax), _
+            g.DrawLine(Pens.Black,
+                cShapeImage.ToImagePoint(New PointF(0, 1), Me.ClientRectangle, Me.XAxisMaxValue, sYMax),
                 cShapeImage.ToImagePoint(New PointF(Me.XAxisMaxValue, 1), Me.ClientRectangle, Me.XAxisMaxValue, sYMax))
 
             ' Draw the axis when this mode is on

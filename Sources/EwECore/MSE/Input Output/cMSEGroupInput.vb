@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.ValueWrapper
 
@@ -37,7 +22,6 @@ Namespace MSE
             'default OK status used for setVariable
             'see comment setVariable(...)
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
-
 
             'MSEBioCV
             val = New cValueArray(core, eValueTypes.SingleArray, eVarNameFlags.MSEBioCV, eStatusFlags.Null, eCoreCounterTypes.nEcosimYears)
@@ -72,7 +56,6 @@ Namespace MSE
             'Ref levels
             val = New cValue(core, New Single, eVarNameFlags.MSERefBioEstUpper, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
-
 
             'Fleets ref levels
             val = New cValue(core, New Single, eVarNameFlags.MSERefGroupCatchLower, eStatusFlags.Null, eValueTypes.Sng)
@@ -140,7 +123,6 @@ Namespace MSE
 
         End Property
 
-
         Public Property BiomassCV(TimeIndex As Integer) As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.MSEBioCV, TimeIndex))
@@ -160,7 +142,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSELowerRisk, value)
             End Set
         End Property
-
 
         Public Property UpperRisk() As Single
             Get
@@ -201,7 +182,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSERefBioEstUpper, value)
             End Set
         End Property
-
 
         Public Property BiomassEstRefLower() As Single
             Get
@@ -253,7 +233,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property RHalfB0Ratio() As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.RHalfB0Ratio))
@@ -274,7 +253,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property RecruitmentCV() As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.MSERecruitmentCV))
@@ -284,7 +262,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSERecruitmentCV, value)
             End Set
         End Property
-
 
         Public Property BLim() As Single
             Get

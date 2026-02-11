@@ -1,31 +1,11 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.Utilities
 Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 Imports System.Drawing.Drawing2D
-
-
 
 Public Class cLindemanSpineDiagram
 
@@ -155,7 +135,7 @@ Public Class cLindemanSpineDiagram
 
             If Me.NetworkManager Is Nothing Then Return New Size(0, 0)
             rcBoxFar = Me.GetBoxRectangle(3, Me.NumTrophicLevels)
-            Return New Size(Me.GetMargin() * 2 + rcBoxFar.X + rcBoxFar.Width, _
+            Return New Size(Me.GetMargin() * 2 + rcBoxFar.X + rcBoxFar.Width,
                             Me.GetMargin() * 2 + rcBoxFar.Y + rcBoxFar.Height)
         End Get
     End Property
@@ -226,19 +206,19 @@ Public Class cLindemanSpineDiagram
                 sTE = Me.NetworkManager.PPTransferEfficiency(iTL)
             End If
 
-            Me.RenderBox(g, penNormal, ft, _
-                         brText, brBack, _
-                         1, iTL, strTL, _
-                         Me.FormatNumber(sImp, Me.m_bShowImport), _
-                         Me.FormatNumber(sTST, Me.m_bShowTST), _
-                         Me.FormatNumber(sB, Me.m_bShowB), _
-                         Me.FormatNumber(sBAccum, Me.m_bShowAccum), _
-                         Me.FormatNumber(sExp, iTL > 1), _
+            Me.RenderBox(g, penNormal, ft,
+                         brText, brBack,
+                         1, iTL, strTL,
+                         Me.FormatNumber(sImp, Me.m_bShowImport),
+                         Me.FormatNumber(sTST, Me.m_bShowTST),
+                         Me.FormatNumber(sB, Me.m_bShowB),
+                         Me.FormatNumber(sBAccum, Me.m_bShowAccum),
+                         Me.FormatNumber(sExp, iTL > 1),
                          Me.FormatNumber(sResp, iTL > 1))
 
-            Me.DrawPredAndTE(g, penNormal, ft, brText, _
-                             1, iTL, _
-                             Me.FormatNumber(sCons), _
+            Me.DrawPredAndTE(g, penNormal, ft, brText,
+                             1, iTL,
+                             Me.FormatNumber(sCons),
                              Me.FormatNumber(sTE, iTL > 1))
 
         Next iTL
@@ -256,19 +236,19 @@ Public Class cLindemanSpineDiagram
             sCons = Me.NetworkManager.DetConsByPred(iTL)
             sTE = Me.NetworkManager.DetTransferEfficiency(iTL)
 
-            Me.RenderBox(g, penNormal, ft, _
-                         brText, brBack, _
-                         2, iTL, strTL, _
-                         Me.FormatNumber(sImp, Me.m_bShowImport), _
-                         Me.FormatNumber(sTST, Me.m_bShowTST), _
-                         Me.FormatNumber(sB, Me.m_bShowB), _
-                         Me.FormatNumber(sBAccum, Me.m_bShowAccum), _
-                         Me.FormatNumber(sExp, iTL > 1), _
+            Me.RenderBox(g, penNormal, ft,
+                         brText, brBack,
+                         2, iTL, strTL,
+                         Me.FormatNumber(sImp, Me.m_bShowImport),
+                         Me.FormatNumber(sTST, Me.m_bShowTST),
+                         Me.FormatNumber(sB, Me.m_bShowB),
+                         Me.FormatNumber(sBAccum, Me.m_bShowAccum),
+                         Me.FormatNumber(sExp, iTL > 1),
                          Me.FormatNumber(sResp, sResp <> 0))
 
-            Me.DrawPredAndTE(g, penNormal, ft, brText, _
-                             2, iTL, _
-                             Me.FormatNumber(sCons), _
+            Me.DrawPredAndTE(g, penNormal, ft, brText,
+                             2, iTL,
+                             Me.FormatNumber(sCons),
                              Me.FormatNumber(sTE, iTL > 1))
 
         Next iTL
@@ -283,14 +263,14 @@ Public Class cLindemanSpineDiagram
             End If
             sSumFlowToDet += (sPPF2D + sDetF2D)
 
-            Me.DrawFlowToDetritus(g, penNormal, ft, brText, _
-                                  iTL, _
-                                  Me.FormatNumber(sPPF2D), _
-                                  Me.FormatNumber(sDetF2D), _
+            Me.DrawFlowToDetritus(g, penNormal, ft, brText,
+                                  iTL,
+                                  Me.FormatNumber(sPPF2D),
+                                  Me.FormatNumber(sDetF2D),
                                   Me.FormatNumber(sSumFlowToDet, iTL = Me.NumTrophicLevels))
         Next
 
-        Me.DrawConsumptionOfDetritus(g, penNormal, ft, brText, _
+        Me.DrawConsumptionOfDetritus(g, penNormal, ft, brText,
                                      Me.FormatNumber(Me.NetworkManager.DetConsByPred(1)))
 
         Me.RenderLegend(g, penNormal, ft, brText, brBack)
@@ -323,10 +303,10 @@ Public Class cLindemanSpineDiagram
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Private Function GetBoxRectangle(iRow As Integer, iTL As Integer) As Rectangle
-        Return New Rectangle( _
-                Me.GetMargin() + Math.Max(0, iTL - 1) * Me.m_iColWidth, _
-                Me.GetMargin() + Math.Max(0, iRow - 1) * Me.m_iColHeight, _
-                Me.m_iBoxWidth, _
+        Return New Rectangle(
+                Me.GetMargin() + Math.Max(0, iTL - 1) * Me.m_iColWidth,
+                Me.GetMargin() + Math.Max(0, iRow - 1) * Me.m_iColHeight,
+                Me.m_iBoxWidth,
                 Me.m_iBoxHeight)
     End Function
 
@@ -355,17 +335,17 @@ Public Class cLindemanSpineDiagram
     ''' <param name="strExport">Value to display in the export section of the box.</param>
     ''' <param name="strResp">Value to display in the respiration section of the box.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub RenderBox(g As Graphics, _
-                          pen As Pen, _
-                          font As Font, _
-                          brFore As Brush, brBack As Brush, _
-                          iRow As Integer, iTL As Integer, _
-                          strTL As String, _
-                          strImport As String, _
-                          strTST As String, _
-                          strBiomass As String, _
-                          strBiomAccum As String, _
-                          strExport As String, _
+    Private Sub RenderBox(g As Graphics,
+                          pen As Pen,
+                          font As Font,
+                          brFore As Brush, brBack As Brush,
+                          iRow As Integer, iTL As Integer,
+                          strTL As String,
+                          strImport As String,
+                          strTST As String,
+                          strBiomass As String,
+                          strBiomAccum As String,
+                          strExport As String,
                           strResp As String)
 
         If Me.m_bCollapseDetritus Then
@@ -442,22 +422,21 @@ Public Class cLindemanSpineDiagram
     ''' <param name="strPredation"></param>
     ''' <param name="strTE"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub DrawPredAndTE(g As Graphics, _
-                              pen As Pen, _
-                              font As Font, _
-                              brText As Brush, _
-                              iRowFrom As Integer, iColFrom As Integer, _
+    Private Sub DrawPredAndTE(g As Graphics,
+                              pen As Pen,
+                              font As Font,
+                              brText As Brush,
+                              iRowFrom As Integer, iColFrom As Integer,
                               strPredation As String, strTE As String)
-
 
         If (iColFrom < 1) Or (iColFrom >= Me.NumTrophicLevels) Then Return
         If (Me.m_bCollapseDetritus And iRowFrom <> 1) Then Return
 
         Dim rcBoxFrom As Rectangle = Me.GetBoxRectangle(iRowFrom, iColFrom)
         Dim rcBoxTo As Rectangle = Me.GetBoxRectangle(iRowFrom, iColFrom + 1)
-        Dim rcPred As New Rectangle(rcBoxFrom.X + rcBoxFrom.Width, _
-                                    rcBoxFrom.Y, _
-                                    rcBoxTo.X - (rcBoxFrom.X + rcBoxFrom.Width), _
+        Dim rcPred As New Rectangle(rcBoxFrom.X + rcBoxFrom.Width,
+                                    rcBoxFrom.Y,
+                                    rcBoxTo.X - (rcBoxFrom.X + rcBoxFrom.Width),
                                     CInt(rcBoxFrom.Height / 2))
         Dim rcXferF As New Rectangle(rcPred.X, rcPred.Y + rcPred.Height, rcPred.Width, rcPred.Height)
         Dim fmt As New StringFormat()
@@ -492,13 +471,13 @@ Public Class cLindemanSpineDiagram
     ''' <param name="strFlowD">Flow from Detritus to Detritus.</param>
     ''' <param name="strFlowTotal"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub DrawFlowToDetritus(g As Graphics, _
-                                   pen As Pen, _
-                                   font As Font, _
-                                   brText As Brush, _
-                                   iTL As Integer, _
-                                   strFlowP As String, _
-                                   strFlowD As String, _
+    Private Sub DrawFlowToDetritus(g As Graphics,
+                                   pen As Pen,
+                                   font As Font,
+                                   brText As Brush,
+                                   iTL As Integer,
+                                   strFlowP As String,
+                                   strFlowD As String,
                                    strFlowTotal As String)
 
         Dim rcBoxFrom As Rectangle = Me.GetBoxRectangle(1, iTL)
@@ -610,10 +589,10 @@ Public Class cLindemanSpineDiagram
     ''' This connector only applies to collapsed detritus diagrams for TL II.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub DrawConsumptionOfDetritus(g As Graphics, _
-                                          pen As Pen, _
-                                          font As Font, _
-                                          brText As Brush, _
+    Private Sub DrawConsumptionOfDetritus(g As Graphics,
+                                          pen As Pen,
+                                          font As Font,
+                                          brText As Brush,
                                           strConsumption As String)
 
         Dim rcBoxTo As Rectangle = Me.GetBoxRectangle(1, 2)
@@ -653,8 +632,8 @@ Public Class cLindemanSpineDiagram
     ''' if this box could be repositioned.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub RenderLegend(g As Graphics, _
-                             pen As Pen, font As Font, _
+    Private Sub RenderLegend(g As Graphics,
+                             pen As Pen, font As Font,
                              brText As Brush, brBack As Brush)
 
         Dim rcBox As Rectangle = Me.GetBoxRectangle(3, 2)
@@ -706,7 +685,7 @@ Public Class cLindemanSpineDiagram
 
     End Sub
 
-    Private Function FormatNumber(sVal As Single, _
+    Private Function FormatNumber(sVal As Single,
                                   Optional bIsValid As Boolean = True) As String
 
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK

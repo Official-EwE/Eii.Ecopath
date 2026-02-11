@@ -1,22 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwEUtils.Utilities
@@ -183,7 +167,6 @@ Public Class cMPARandomSearch
 
     End Sub
 
-
 #End Region
 
 #Region "Running"
@@ -208,7 +191,6 @@ Public Class cMPARandomSearch
         Me.setRunState(cMPAOptManager.eRunStates.Completed)
 
     End Sub
-
 
     Private Sub runSearch()
 
@@ -387,7 +369,6 @@ Public Class cMPARandomSearch
                     Me.CumulativeCellWeight(ix) = sum
                 Next
 
-
                 Do While iThisCell = 0
                     Dim RanVal As Double = Me.m_generator.NextDouble()
                     For j As Integer = 0 To cells.Count - 1
@@ -476,7 +457,6 @@ Public Class cMPARandomSearch
             '3. Any "importance" layer, i.e. Jeroen, we need to be able to store "importance" layers, which for now can be cut and pasted into ecospace. 
             '   The "importance" layers will need to have a title and description, plus a value for each cell. 
             '4. How much does the cell contribute to fishing pressure for the cells to be protected
-
 
             'Scan through the spreadsheet with the importance layers, and set up the likelihood function.
 

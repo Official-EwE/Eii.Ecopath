@@ -1,0 +1,18 @@
+extensions: designer.cs
+extensions: .cs
+// SPDX-License-Identifier: EUPL-1.2
+// This file is part of Ecopath with Ecosim (EwE).
+// Copyright © 1991– Ecopath International Initiative (EII)
+
+extensions: .vb
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
+
+extensions: .xaml
+<!-- 
+SPDX-License-Identifier: EUPL-1.2
+This file is part of Ecopath with Ecosim (EwE).
+Copyright © 1991– Ecopath International Initiative (EII)
+
+-->

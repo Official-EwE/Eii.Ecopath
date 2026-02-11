@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Data.SqlClient
 Imports System.Collections.Generic
@@ -26,8 +8,6 @@ Imports System.Text
 Imports System
 Imports System.Data
 Imports System.Diagnostics
-
-
 
 Namespace Database
 
@@ -113,7 +93,7 @@ Namespace Database
         ''' </code>
         ''' </remarks>
         ''' -------------------------------------------------------
-        Public Sub New(strQuery As String, _
+        Public Sub New(strQuery As String,
                        Optional fields As KeyValuePair(Of String, String)() = Nothing)
 
             Me.m_strQuery = strQuery
@@ -183,8 +163,8 @@ Namespace Database
         ''' </code>
         ''' </remarks>
         ''' -------------------------------------------------------
-        Public Function AddClause(strSegment As String, _
-                                  strField As String, _
+        Public Function AddClause(strSegment As String,
+                                  strField As String,
                                   astrValues() As String) As Integer
 
             Dim sbValues As New StringBuilder()
@@ -210,7 +190,7 @@ Namespace Database
         ''' <param name="strOrder">The segment to add.</param>
         ''' <param name="fields">Hash table with fields to substitute (optional).</param>
         ''' -------------------------------------------------------
-        Public Sub AddOrder(strOrder As String, _
+        Public Sub AddOrder(strOrder As String,
                             Optional fields As KeyValuePair(Of String, String)() = Nothing)
 
             If (String.IsNullOrWhiteSpace(strOrder)) Then Return
@@ -226,7 +206,7 @@ Namespace Database
         ''' <param name="strGroup">The segment to add.</param>
         ''' <param name="fields">Value fields to substitute (optional).</param>
         ''' -------------------------------------------------------
-        Public Sub AddGroup(strGroup As String, _
+        Public Sub AddGroup(strGroup As String,
                             Optional fields As KeyValuePair(Of String, String)() = Nothing)
 
             If (String.IsNullOrWhiteSpace(strGroup)) Then Return
@@ -311,7 +291,7 @@ Namespace Database
         ''' <param name="dtSubst">Dictionary with key/value pairs to substitute</param>
         ''' <returns>The reworked string</returns>
         ''' -------------------------------------------------------
-        Private Function Subst(strIn As String, _
+        Private Function Subst(strIn As String,
                                Optional dtSubst As Dictionary(Of String, String) = Nothing) As String
 
             Dim strOut As String = strIn
@@ -325,8 +305,8 @@ Namespace Database
 
         End Function
 
-        Private Function ToClauseString(strSegment As String, _
-                                        strField As String, _
+        Private Function ToClauseString(strSegment As String,
+                                        strField As String,
                                         strValues As String) As String
 
             Dim strOut As String = ""

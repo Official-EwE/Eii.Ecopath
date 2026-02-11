@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 ' ToDo_JS: perhaps add the ability to pre-load and cache external maps X time steps ahead on a separate thread?
 '  - Aim is to speed up loading external data while Ecospace computes. Is worthwhile for EcoOcean, but
@@ -290,7 +275,6 @@ Namespace SpatialData
                                             Me.m_core.PluginManager.EcospaceBeginLayerChange(iTime, dt, layer)
                                         End If
 
-
                                         ' Integrate data
                                         Me.Adapt(bm, layer, conn, iTime, dtVirt, dataExternal, dNoData)
 
@@ -358,7 +342,6 @@ Namespace SpatialData
         Public Overridable Sub EndRun()
             If (Me.PreserveLayerData) Then Me.RestoreLayerData()
         End Sub
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -592,7 +575,6 @@ Namespace SpatialData
 
         End Sub
 
-
         Public Overridable Function RestoreForcing(SpaceData As cEcospaceDataStructures) As Boolean
             'Only forcing adapters have data to restore
             Return True
@@ -702,7 +684,6 @@ Namespace SpatialData
             Return lConn.ToArray
 
         End Function
-
 
         Public Function AddConnection(iLayer As Integer, conn As cSpatialDataConnection) As cSpatialDataConnection
 

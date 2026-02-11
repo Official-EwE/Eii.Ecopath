@@ -1,32 +1,16 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
-    
     Public Class gridConsumption
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
             Me.FixedColumnWidths = False
         End Sub
 
@@ -45,7 +29,7 @@ Namespace Ecopath.Output
 
             Dim source As cCoreGroupBase = Nothing
 
-            Me.Redim(Me.core.nGroups + 3, 2)
+            Me.Redim(Me.Core.nGroups + 3, 2)
             'Set header cells
             Dim iRow As Integer = Me.RowsCount
 
@@ -54,8 +38,8 @@ Namespace Ecopath.Output
 
             Dim columnIndex As Integer = 2
 
-            For i As Integer = 1 To Me.core.nGroups
-                source = Me.core.EcopathGroupOutputs(i)
+            For i As Integer = 1 To Me.Core.nGroups
+                source = Me.Core.EcopathGroupOutputs(i)
                 'Group name row header cell
                 Me(i, 0) = New cEwERowHeaderCell(CStr(i))
                 Me(i, 1) = New cEwERowHeaderCell(source.Name)
@@ -99,17 +83,17 @@ Namespace Ecopath.Output
             Dim columnIndex As Integer = 2
             Dim rowCnt As Integer = Me.RowsCount
 
-            For iPred As Integer = 1 To Me.core.nGroups
+            For iPred As Integer = 1 To Me.Core.nGroups
 
                 'Get the group output
-                source = Me.core.EcopathGroupOutputs(iPred)
+                source = Me.Core.EcopathGroupOutputs(iPred)
                 If source.PP < 1 Or source.PP = 2 Then
 
                     alPropSumAll.Clear()
 
-                    For iPrey As Integer = 1 To Me.core.nGroups
+                    For iPrey As Integer = 1 To Me.Core.nGroups
                         ' Get the group output
-                        sourceSec = Me.core.EcopathGroupOutputs(iPrey)
+                        sourceSec = Me.Core.EcopathGroupOutputs(iPrey)
                         ' Get the indexed comsumption property by (rowIndex, columnIndex)
                         prop = pm.GetProperty(sourceSec, eVarNameFlags.Consumption, source)
                         cell = New cPropertyCell(prop)

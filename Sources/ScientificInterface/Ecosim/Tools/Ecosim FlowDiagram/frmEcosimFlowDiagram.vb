@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Drawing.Imaging
 Imports System.IO
@@ -28,8 +10,6 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 Namespace Ecosim
 
@@ -295,7 +275,6 @@ Namespace Ecosim
             Me.m_pbFlowDiagram.Invalidate()  'This redraws the FlowDiag with highlighted node
         End Sub
 
-
         Private Sub OnFlowDiagramMouseClick(sender As Object, e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseClick
 
@@ -534,7 +513,6 @@ Namespace Ecosim
 
         End Sub
 
-
         Private Sub OnTreeFlowRateLegendChanged(sender As cTreeFlowDiagramRenderer)
 
             ' ToDo: globalize this
@@ -580,7 +558,6 @@ Namespace Ecosim
                 End Try
             End If
         End Sub
-
 
 #End Region ' Tree events
 
@@ -727,7 +704,6 @@ Namespace Ecosim
             End If
 
         End Sub
-
 
         Private Sub OnSaveToBatchImage(sender As System.Object, e As System.EventArgs) _
           Handles m_tsmiSaveToBatchImage.Click
@@ -954,7 +930,6 @@ Namespace Ecosim
         Private Delegate Sub AppendButtonDelegate(Btn As Button, txt As String)
         Private Delegate Sub AppendSliderDelegate(sl As ucSlider, val As Integer)
         Private Delegate Sub RunCompletedDelegate()
-
 
         Private Sub AppendTextBox(TB As TextBox, txt As String)
 

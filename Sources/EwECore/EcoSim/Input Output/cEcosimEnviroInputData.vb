@@ -1,27 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Public Class cEcosimEnviroInputData
     Implements IEnviroInputData
@@ -289,15 +268,12 @@ Public Class cEcosimEnviroInputData
 
 #Region "Overloaded Methods not implemented by cEcosimEnviroInputData"
 
-
     Friend Function Init(EnviroMediationData As cMediationDataStructures, SpaceData As cEcospaceDataStructures) As Boolean _
         Implements IEnviroInputData.Init
-
 
         Debug.Assert(False, Me.ToString + ".Init(cMediationDataStructures,cEcospaceDataStructures) not implemented by " + Me.ToString)
 
     End Function
-
 
     ''' <summary>
     ''' Return a value for a cell in the input map base on the the response function for a group.
@@ -311,10 +287,7 @@ Public Class cEcosimEnviroInputData
 
         Debug.Assert(False, Me.ToString + ".ResponseFunction(igrp,irow,icol) not implemented for " + Me.ToString)
 
-
     End Function
-
-
 
 
 #End Region

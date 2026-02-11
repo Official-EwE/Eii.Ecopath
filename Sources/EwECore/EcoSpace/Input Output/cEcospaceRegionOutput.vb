@@ -1,22 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.ValueWrapper
 Imports Microsoft.Extensions.Logging
@@ -57,7 +41,6 @@ Public Class cEcospaceRegionOutput
         Me.m_values.Add(val.varName, val)
 
     End Sub
-
 
     Public Sub Init()
 
@@ -101,7 +84,6 @@ Public Class cEcospaceRegionOutput
 
     End Function
 
-
     Public Overloads Function GetStatus(varName As eVarNameFlags, iFleet As Integer, iGroup As Integer) As eStatusFlags
         Return eStatusFlags.OK 'Oh Yeah 
     End Function
@@ -117,7 +99,6 @@ Public Class cEcospaceRegionOutput
         ReDim Me.m_CatchFleetGroup(1, Me.m_core.nFleets, Me.m_core.nGroups)
         Return True
     End Function
-
 
 #End Region
 
@@ -161,7 +142,6 @@ Public Class cEcospaceRegionOutput
             End Try
         End Set
     End Property
-
 
     Public Property CatchFleetGroupEnd(iFleet As Integer, iGroup As Integer) As Single
         Get
@@ -261,7 +241,6 @@ Public Class cEcospaceRegionOutput
         End Set
     End Property
 
-
     Public Property CatchFleetGroupStartStatus(iGroup As Integer, iFleet As Integer) As eStatusFlags
         Get
             Return Me.GetStatus(eVarNameFlags.EcospaceRegionCatchStart, iGroup, iFleet)
@@ -271,7 +250,6 @@ Public Class cEcospaceRegionOutput
             Me.SetStatus(eVarNameFlags.EcospaceRegionCatchStart, value, iGroup, iFleet)
         End Set
     End Property
-
 
     Public Property CatchFleetGroupEndStatus(iGroup As Integer, iFleet As Integer) As eStatusFlags
         Get

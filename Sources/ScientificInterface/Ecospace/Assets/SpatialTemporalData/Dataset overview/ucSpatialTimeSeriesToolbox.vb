@@ -1,31 +1,11 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Drawing.Drawing2D
 Imports EwECore.Common
 Imports EwECore.SpatialData
 Imports ScientificInterfaceShared.Utilities
-
-
 
 Namespace Ecospace.Controls
 
@@ -560,7 +540,6 @@ Namespace Ecospace.Controls
 
         End Sub
 
-
         ''' <summary>
         ''' Draw the actual dataset bar, data points and labels
         ''' </summary>
@@ -617,7 +596,6 @@ Namespace Ecospace.Controls
                 g.DrawString(pos.Dataset.CustomName, ft, SystemBrushes.ControlText, Math.Max(rcBack.X, rcLabel.X), rcLabel.Y)
             End Using
 
-
             For i As Integer = 0 To pos.DataPoint.Count - 1
                 Dim iStep As Integer = pos.DataPoint(i)
                 rcDot.X = rcBar.X + (iStep - pos.DataStart) * Me.m_iTimestepSize - c_dotradius
@@ -648,7 +626,6 @@ Namespace Ecospace.Controls
                 End Select
             Next
 
-
         End Sub
 
         Private Function DatasetPos(ds As ISpatialDataSet) As cDatasetInfo
@@ -664,7 +641,6 @@ Namespace Ecospace.Controls
             Dim iEnd As Integer = (pos.DataEnd + 1) * Me.m_iTimestepSize - 1
             Return New Rectangle(iStart, c_headerheight + pos.PosVert * (c_barheight + 2 * c_barmargin) + c_barmargin, iEnd - iStart, c_barheight)
         End Function
-
 
         Private Function TimestepFromPoint(pt As Point) As Integer
             If (Me.m_iTimestepSize = 0) Then Return -1

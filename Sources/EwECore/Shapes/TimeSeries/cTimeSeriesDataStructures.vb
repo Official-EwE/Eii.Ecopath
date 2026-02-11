@@ -1,22 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
@@ -104,7 +88,6 @@ Public Class cTimeSeriesDataStructures
 
     ''' <summary>Number of datum points across all applied time series.</summary>
     Public AppliedDatPoints As Integer
-
 
     Public AppliedAICTimeSeries As Integer
 
@@ -236,7 +219,6 @@ Public Class cTimeSeriesDataStructures
         Return its
 
     End Function
-
 
     Public Function isTimeStepValid(iModelTimeStep As Integer) As Boolean
         ' System.Console.WriteLine(iModelTimeStep.ToString)
@@ -761,7 +743,6 @@ Public Class cTimeSeriesDataStructures
 
     End Sub
 
-
     Public Sub LoadForcingData()
         'Forcing data is loaded from the database into the same data structures as the other time series data DatVal(ipoint,itype)
         'This allocates arrays for each forcing type PoolForceBB(group,point),PoolForceZ(group,point) and PoolForceCatch(group,point)
@@ -1126,7 +1107,6 @@ End Class
 
 #If 0 Then
 
-
 'jb 12-July-2016 Removed the cEcospaceTimeSeriesDataStructures with the implementation of Ecosim biomass forcing time series in Ecospace
 'Just use the Cores cTimeSeriesDataStructures object until we need something more advanced  
 ''' <summary>
@@ -1146,14 +1126,12 @@ Public Class cEcospaceTimeSeriesDataStructures
     ' ------------------------------------------------
     Public SPRegion() As Integer
 
-
     Friend Overloads Sub RedimTimeSeries()
         MyBase.RedimTimeSeries()
 
         ReDim iSPRegion(nTimeSeries)
 
     End Sub
-
 
     Friend Overloads Sub RedimAppliedTimeSeries()
         MyBase.RedimEnabledTimeSeries()

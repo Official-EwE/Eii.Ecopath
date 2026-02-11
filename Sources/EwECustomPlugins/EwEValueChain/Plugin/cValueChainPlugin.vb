@@ -1,24 +1,12 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Text
 Imports System.Threading
+Imports Eii.ControlledVocabularies.Descriptors
+Imports Eii.ControlledVocabularies.Inference.Field
+Imports Eii.ControlledVocabularies.Vocabularies.Species
 Imports EwECore
 Imports EwECore.Common
 Imports EwECore.Plugins
@@ -30,6 +18,7 @@ Imports EwECore.Plugins.Search
 Imports EwECore.Plugins.UI
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.DependencyInjection
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls
 Imports Debug = System.Diagnostics.Debug
@@ -72,6 +61,7 @@ Public Class cValueChainPlugin
     Private m_searchds As cSearchDatastructures = Nothing
     Private m_bInSearch As Boolean = False
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cValueChainPlugin)()
+    Private m_serviceProvider As IServiceProvider
 
 #End Region ' Privates
 
@@ -159,6 +149,22 @@ Public Class cValueChainPlugin
     ''' Initialize the Plugin. This is called when the core loads the Plugin. It will only be called once.
     ''' </summary>
     Public Overrides Sub Initialize(core As Object)
+        ' Configure DI container
+
+        Dim services As New ServiceCollection()
+        services.AddLogging()
+
+        ' Register the LoggerFactory from LoggingContext
+        services.AddSingleton(LoggingContext.LoggerFactory)
+        services.AddSingleton(Of IKeyFieldDescriptorRegistry, KeyFieldDescriptorRegistry)()
+        services.AddSingleton(Of IKeyFieldDescriptorIndexer, KeyFieldDescriptorIndexer)()
+        services.AddSingleton(Of FieldInferenceOrchestrator)()
+
+        ' Register ASFISSpeciesCodeVocabulary - it will automatically get ILogger<ASFISSpeciesCodeVocabulary> from the factory
+        services.AddSingleton(Of ASFISSpeciesCodeVocabulary)()
+
+
+        m_serviceProvider = services.BuildServiceProvider()
 
         ' Sanity checks
         Debug.Assert(core IsNot Nothing)
@@ -174,7 +180,7 @@ Public Class cValueChainPlugin
 
                 Me.m_core = DirectCast(core, EwECore.cCore)
                 Me.m_ddx = New cPluginData(cTypeUtils.TypeToString(Me.GetType()))
-                Me.m_data = New cData(Me.m_core)
+                Me.m_data = New cData(Me.m_core, m_serviceProvider)
                 Me.m_model = New cModel()
                 Me.m_result = New cResults(Me.m_data)
                 Me.m_linkman = New cLandingsLinkManager(Me.m_data, Me.m_core)
@@ -280,7 +286,6 @@ Public Class cValueChainPlugin
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(dataSource As Object) As Boolean _
         Implements IEcopathPlugin.LoadModel
-
 
         ' Sanity checks
         Debug.Assert(Me.m_data.IsChanged() = False)
@@ -432,7 +437,6 @@ Public Class cValueChainPlugin
         ' Abort if not allowed to run with Ecosim
         If (parms.RunWithEcosim = False) Then Return
 
-
         If (Me.m_dataBroadcaster IsNot Nothing) Then
             Me.m_dataBroadcaster.BroadcastData(Me.Name, Me.m_ddx)
         End If
@@ -500,7 +504,6 @@ Public Class cValueChainPlugin
     Private Function GetValue(vn As cResults.eVariableType, iTimeStep As Integer, iFleet As Integer) As Single
         Return Me.m_result.GetTimeStepTotal(vn, iTimeStep, Nothing, iFleet, cResults.GetVariableContributionType(vn))
     End Function
-
 
     Public Sub Broadcaster(broadcaster As IDataBroadcaster) _
         Implements IDataProducerPlugin.Broadcaster

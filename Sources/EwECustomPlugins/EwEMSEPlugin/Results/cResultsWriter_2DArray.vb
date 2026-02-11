@@ -1,27 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 3 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see https://www.gnu.org/licenses/gpl-3.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Strict Off
 
@@ -62,7 +41,6 @@ Public Class cResultsWriter_2DArray
         Else
             Me.Start_index_for_iGrp = 1
         End If
-
 
         ReDim Me.m_StreamWriters(Me.m_ResultsArray.nFleets, Me.m_ResultsArray.nGroups)
 
@@ -132,11 +110,11 @@ Public Class cResultsWriter_2DArray
                 For iStrategy = 1 To Me.m_ResultsArray.nStrategies
                     'Output the Landings to file
                     If Me.m_MSE.Strategies(iStrategy - 1).RunThisStrategy = False Then Continue For
-                    Me.m_StreamWriters(iFleet, iGrp).Write("{0},{1},{2},{3},{4}", _
-                                                                  cStringUtils.ToCSVField(GroupName), _
-                                                                  cStringUtils.ToCSVField(FleetName), _
-                                                                  cStringUtils.FormatNumber(Me.m_ResultsArray.ModelID), _
-                                                                  cStringUtils.ToCSVField(Me.StrategyName(iStrategy)), _
+                    Me.m_StreamWriters(iFleet, iGrp).Write("{0},{1},{2},{3},{4}",
+                                                                  cStringUtils.ToCSVField(GroupName),
+                                                                  cStringUtils.ToCSVField(FleetName),
+                                                                  cStringUtils.FormatNumber(Me.m_ResultsArray.ModelID),
+                                                                  cStringUtils.ToCSVField(Me.StrategyName(iStrategy)),
                                                                   cStringUtils.ToCSVField(Me.m_ResultsArray.DataName))
                     For iTime = 1 To Me.m_ResultsArray.NumberOfTimeRecords
                         Me.m_StreamWriters(iFleet, iGrp).Write("," & cStringUtils.FormatNumber(Me.m_ResultsArray.GetValue(iStrategy, iGrp, iFleet, iTime)))
