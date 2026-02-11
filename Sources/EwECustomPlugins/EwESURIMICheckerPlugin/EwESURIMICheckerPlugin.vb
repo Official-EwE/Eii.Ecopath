@@ -18,7 +18,6 @@ Public Class EwESURIMICheckerPlugin
     Implements IMenuItemPlugin, IEcospaceInitializedPlugin, IUIContextPlugin
 
     Private m_uic As cUIContext = Nothing
-    Private m_frm As frmSURIMIChecker = Nothing
     Private m_serviceProvider As IServiceProvider
 
     Public ReadOnly Property ControlImage As Object Implements IGUIPlugin.ControlImage
@@ -77,7 +76,9 @@ Public Class EwESURIMICheckerPlugin
 
     Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Object) Implements IGUIPlugin.OnControlClick
         Try
-            frmPlugin = Me.GetUI()
+            ' Ignore frmPlugin
+            Dim dlg = New dlgSURIMIChecker(Me.m_uic, m_serviceProvider)
+            dlg.ShowDialog(Me.m_uic.FormMain)
         Catch ex As Exception
 
         End Try
@@ -109,22 +110,5 @@ Public Class EwESURIMICheckerPlugin
     Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
-
-    Private Function GetUI() As frmSURIMIChecker
-
-        If (Not Me.HasUI) Then
-            Me.m_frm = New frmSURIMIChecker(Me.m_uic, m_serviceProvider)
-        End If
-
-        Return Me.m_frm
-
-    End Function
-
-    Private Function HasUI() As Boolean
-        If (Me.m_frm IsNot Nothing) Then
-            Return (Me.m_frm.IsDisposed = False)
-        End If
-        Return False
-    End Function
 
 End Class
