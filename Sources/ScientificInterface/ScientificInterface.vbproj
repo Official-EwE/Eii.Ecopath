@@ -62,6 +62,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <AssemblyVersion>6.7.0.19625</AssemblyVersion>
+    <FileVersion>6.7.0.19625</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SourceGrid2">
@@ -1082,7 +1084,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEStepwiseFittingPlugin\EwEStepwiseFittingPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwETransectExtractionPlugin\EwETransectExtractionPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEWindowsIntegrationPlugin\EwEWindowsIntegrationPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj" />
     <ProjectReference Include="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
