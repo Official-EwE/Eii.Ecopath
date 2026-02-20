@@ -62,8 +62,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
-    <AssemblyVersion>6.7.0.19625</AssemblyVersion>
-    <FileVersion>6.7.0.19625</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SourceGrid2">
