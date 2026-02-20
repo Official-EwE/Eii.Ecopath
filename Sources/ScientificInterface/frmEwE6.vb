@@ -1421,7 +1421,7 @@ Public Class frmEwE6
     ''' This logic will need to change entirely. A database 
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Private Function CovertToEwE6(strFileName As String) As cEwEDatabase.eCompatibilityTypes
+    Private Function CovertToEwE6(ByRef strFileName As String) As cEwEDatabase.eCompatibilityTypes
 
         ' Obvious check: let's make we don't already have this model open
         If (Not String.IsNullOrWhiteSpace(Me.SelectedFileName)) Then
