@@ -5,10 +5,10 @@
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
 #ifndef Compile64Bit
-  #define Compile64Bit "1"                    ; set to 0 to compile 32 bit
+  #define Compile64Bit "0"                    ; set to 0 to compile 32 bit
 #endif
 
-#define CodeSigning 0                      ; set to 0 to disable code signing
+#define CodeSigning 1                      ; set to 0 to disable code signing
 
 ; Optional features
 #define RobertsBank 0
