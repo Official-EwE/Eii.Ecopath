@@ -3,6 +3,7 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
+Imports System.Runtime.Caching
 Imports System.Threading
 Imports EwECore.MSE
 Imports EwEUtils.Utilities
@@ -917,7 +918,7 @@ Namespace Ecosim
                     Me.setDenDepCatchMult(Me.BB)
 
                     Me.setForcedCatchabilities(itt, iyr, QYear)
-                    Me.m_Data.SetRelQToT(itime, True)
+                    Me.m_Data.SetRelQToT(itime, False)
 
                     If (Me.m_pluginManager IsNot Nothing) Then Me.m_pluginManager.EcosimBeginTimeStep(Me.BB, Me.m_Data, itime)
 
@@ -927,6 +928,8 @@ Namespace Ecosim
                     Me.setEffortFromPlugin(QYear, itime, iyr)
                     'Set FishTime() (fishing mort at timestep)
                     Me.setFishTime(itime, iyr, QYear)
+
+                    Me.setForcedDiscards(itt, iyr, QYear)
 
                     If Me.m_search.SearchMode = eSearchModes.MSE Then
                         'MSE Quota regulations
@@ -969,8 +972,6 @@ Namespace Ecosim
                     'both before and after call to rk4 (otherwise Z calculation as loss/bb) 
                     'is wrong later in time step
                     Me.setForcedBiomass(itt, iyr)
-
-                    Me.setForcedDiscards(itt, iyr, QYear)
 
                     Me.clearMonthlyStanzaVars()
                     For irk4 As Integer = 1 To Me.m_Data.StepsPerMonth
@@ -1395,21 +1396,8 @@ Namespace Ecosim
                 'Qmult(group) density dependent catchability at the current biomass set in setDenDepCatchMult()
                 For iGrp As Integer = 1 To Me.nvar
 
-                    ''Is this group forced in some way
-                    'isForced = (Me.m_RefData.isTimeStepValid(iForcing)) And ((Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0) Or Me.m_Data.FisForced(iGrp))
-
                     'Is this group forced in some way
                     isForced = (Me.m_RefData.isTimeStepValid(iForcing)) And ((Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0) Or Me.m_RefData.ForcedFs(iGrp, iTime) >= 0)
-
-                    'If (Not Me.m_RefData.isTimeStepValid(iTime)) And Me.m_Data.FisForced(iGrp) Then
-                    '    ' 
-                    '    'boo uaaa
-                    '    Me.m_Data.FisForced(iGrp) = False
-                    '    isForced = False
-                    '    Me.SetFtimeFromGear(BB, iTime, QYear, False)
-                    '    Me.m_Data.FisForced(iGrp) = True
-
-                    'End If
 
                     If isForced Then
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1449,7 +1437,6 @@ Namespace Ecosim
                         'Include density dependant catchability
                         'FishRateNo() is fishing mortality at the current effort by group,time
 
-                        'Debug.Assert(iGrp <> 17 And iTime < 601)
                         Me.m_Data.FishTime(iGrp) = Me.m_Data.FishRateNo(iGrp, iTime) * Me.Qmult(iGrp)
                     End If
 
@@ -1465,49 +1452,52 @@ Namespace Ecosim
         End Sub
 
         Private Sub setForcedDiscards(ByVal iModelTimeStep As Integer, iYear As Integer, QYear() As Single)
-            Dim bForced As Boolean = False
             Dim bFChanged As Boolean = False
             Dim totCatch As Single
+            Dim Ft As Single
 
             Dim iForcedTime As Integer = Me.m_RefData.toForcingTimeStep(iModelTimeStep, iYear)
 
             For igrp As Integer = 1 To Me.m_Data.nGroups
-                For iflt As Integer = 1 To Me.m_Data.nGear
+                Ft = 0.0
 
-                    Dim discardmortForced As Single = Me.m_RefData.PoolForceDiscardMort(iflt, igrp, iForcedTime)
-                    If (discardmortForced < 0) Then discardmortForced = Me.m_RefData.PoolForceDiscardMort(iflt, 0, iForcedTime)
+                If Me.m_Data.IsEcosimDiscardsForced(igrp) And (Not Me.m_RefData.isFishingMortForced(igrp, iForcedTime)) Then
 
-                    If discardmortForced >= 0.0 Then
-                        'Discard Mortality has changed
-                        'Save the discard mortality rate for this timestep
-                        Me.m_Data.PropDiscardMortTime(iflt, igrp) = discardmortForced
-                        'Propdiscardtime() does NOT include discards that survived
-                        Me.m_Data.PropDiscardTime(iflt, igrp) = (1 - Me.m_Data.PropLandedTime(iflt, igrp)) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
+                    For iflt As Integer = 1 To Me.m_Data.nGear
 
-                        bFChanged = True
-                        bForced = True
-                    End If
+                        'Mortality of discards
+                        Dim discardmortForced As Single = Me.m_RefData.PoolForceDiscardMort(iflt, igrp, iForcedTime)
+                        If (discardmortForced < 0) Then discardmortForced = Me.m_RefData.PoolForceDiscardMort(iflt, 0, iForcedTime)
 
-                    Dim discardprop As Single = Me.m_RefData.PoolForceDiscardProp(iflt, igrp, iForcedTime)
-                    If (discardprop < 0) Then discardprop = Me.m_RefData.PoolForceDiscardProp(iflt, 0, iForcedTime)
+                        'Mortality on discards has been forced/change
+                        'reset the mortality on discard proportions
+                        If discardmortForced >= 0.0 Then
+                            'Discard Mortality has changed
+                            'Save the discard mortality rate for this timestep
+                            Me.m_Data.PropDiscardMortTime(iflt, igrp) = discardmortForced
+                            'Propdiscardtime() does NOT include discards that survived
+                            Me.m_Data.PropDiscardTime(iflt, igrp) = (1 - Me.m_Data.PropLandedTime(iflt, igrp)) * Me.m_Data.PropDiscardMortTime(iflt, igrp)
+                            bFChanged = True
+                        End If
 
-                    If discardprop >= 0.0 Then
-                        'Propdiscardtime does not include discards that survived
-                        Me.m_Data.PropDiscardTime(iflt, igrp) = discardprop * Me.m_Data.PropDiscardMortTime(iflt, igrp)
-                        Me.m_Data.PropLandedTime(iflt, igrp) = 1 - discardprop
+                        'Proportion of landing to discards
+                        Dim discardprop As Single = Me.m_RefData.PoolForceDiscardProp(iflt, igrp, iForcedTime)
+                        If (discardprop < 0) Then discardprop = Me.m_RefData.PoolForceDiscardProp(iflt, 0, iForcedTime)
 
-                        bForced = True
-                        bFChanged = True
-                    End If
+                        If discardprop >= 0.0 Then
+                            'Propdiscardtime does not include discards that survived
+                            Me.m_Data.PropDiscardTime(iflt, igrp) = discardprop * Me.m_Data.PropDiscardMortTime(iflt, igrp)
+                            Me.m_Data.PropLandedTime(iflt, igrp) = 1 - discardprop
 
-                    If bFChanged Then
+                            bFChanged = True
+                        End If
+
                         Debug.Assert((Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp)) <= 1.0001, "Opps cEcosimModel.setForcedDiscards() may have calculated an incorrect PropLandedTime() or Propdiscardtime()")
                         'FishMGear() only contains catch that incure mortality
                         'Changing the discard mortality rate changes F
                         'Changing the proportion of landings and discards changes F if discard mort rate is not 1
                         'Calulate the new F from base values 
                         totCatch = (Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)) * (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp))
-                        'Debug.Assert(Me.m_Data.FishMGear(iflt, igrp) = (totCatch / Me.m_EPData.B(igrp)))
                         Me.m_Data.FishMGear(iflt, igrp) = totCatch / Me.m_EPData.B(igrp)
 
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1516,17 +1506,26 @@ Namespace Ecosim
                         'debugTestRelQFishMGear will test this assumption
                         'FishMGear() = relQ() * (PropLandedTime() + Propdiscardtime())
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                        Ft = Ft + QYear(iflt) * Me.m_Data.FishMGear(iflt, igrp) * Me.m_Data.FishRateGear(iflt, iModelTimeStep) * (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.PropDiscardTime(iflt, igrp))
+
+                    Next iflt
+
+                    If bFChanged Then
+
+                        'Save F for this time step 
+                        'NOT including Density Dependant Catchability.
+                        'This is because Density Dependant Catchability is dependant on B(t) B(0) ratio which we may not know for given t
+                        'Density Dependant Catchability will need to be applied during the timestep when FishTime() is populated In SetFishTime()
+                        Me.m_Data.FishRateNo(igrp, iModelTimeStep) = Ft
+
+                        'Include Density Dependant Catchability in the F that is applied to the current timestep
+                        Me.m_Data.FishTime(igrp) = Me.m_Data.FishRateNo(igrp, iModelTimeStep) * Me.Qmult(igrp)
                         bFChanged = False
-                    End If 'bFChanged
+                    End If
 
-                Next iflt
+                End If 'group is forced
             Next igrp
-
-            If bForced Then
-                Me.SetFtimeFromGear(iModelTimeStep, QYear, PredEffort:=False, ForcedDiscards:=True)
-                'Debugging check that FishMGear and relQ are still in sync
-                'Me.debugTestRelQFishMGear()
-            End If
 
         End Sub
 
@@ -3331,6 +3330,10 @@ Namespace Ecosim
             End If
             Me.SetArenaVulandSearchRates()
 
+            Me.TimeSeriesData.SetDiscardForcing(Me.m_Data.IsEcosimDiscardsForced)
+
+
+
         End Sub
 
         Private Sub InitRelaSwitch()     'Switching
@@ -5128,7 +5131,7 @@ Namespace Ecosim
 
             'Check SimDetritus to make sure it uses discards correctly
 
-            Me.m_Data.SetRelQToT(t, True)
+            Me.m_Data.SetRelQToT(t, False)
 
             'fishing mortality at the current effort
             For i = 1 To Me.m_Data.nGroups
@@ -5141,9 +5144,9 @@ Namespace Ecosim
                         'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
                         'Debug.Assert(m_Data.relQ(ig, i) = 0)
 
-                        ' js 12-dec-2023: when driving dicard mort, relQ(ig, i) may return -9999
-                        Ft = Ft + QYear(ig) * Math.Max(Me.m_Data.relQ(ig, i), 0) * Me.m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.PropDiscardTime(ig, i))
-                        'Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
+                        'relQ(fleet,group) is total catchability it includes discards that survived
+                        'PropDiscardTime(fleet,group) does not include discards that survived
+                        Ft = Ft + QYear(ig) * Me.m_Data.relQ(ig, i) * Me.m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.PropDiscardTime(ig, i))
                     Next
 
                     'Save F for this time step 

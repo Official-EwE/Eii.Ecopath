@@ -429,3 +429,6 @@ FodyWeavers.xsd
 
 # Rider files
 .idea
+
+# Installer output directory
+Deployment/Output/
