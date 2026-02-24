@@ -696,7 +696,7 @@ Public Class cEcoOceanDriveEffortPlugin
 
     Public ReadOnly Property ControlImage As Object Implements IGUIPlugin.ControlImage
         Get
-            Return Nothing
+            Return ScientificInterfaceShared.My.Resources.nav_input
         End Get
     End Property
 

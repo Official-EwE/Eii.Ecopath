@@ -123,7 +123,7 @@ Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win64\lpsolve55.dll"; DestDir: "{a
 ; Source: "{#DefRoot}{#DefSrc}\System.Text.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ; - User guide
-Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE6_userguide.chm"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: userguide
+Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE6_userguide.chm"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 ; - Tools
 Source: "{#DefRoot}{#DefSrc}\Tools\code_for_plotting_dirichlets.R"; DestDir: "{app}\Tools\"; Flags: ignoreversion
 
@@ -131,7 +131,7 @@ Source: "{#DefRoot}{#DefSrc}\Tools\code_for_plotting_dirichlets.R"; DestDir: "{a
 ; Analysis
 ; Source: "{#DefRoot}{#DefSrc}\EwENetworkAnalysisPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\na
 ; Source: "{#DefRoot}{#DefSrc}\EwEPrebalPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\prebal
-Source: "{#DefRoot}{#DefSrc}\UserGuide\Link - 2010 - Adding rigor to ecological network models by evalu.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\prebal
+Source: "{#DefRoot}{#DefSrc}\UserGuide\Link - 2010 - Adding rigor to ecological network models by evalu.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 ; Source: "{#DefRoot}{#DefSrc}\EwEValueChainv2Plugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\valuechain
 ; Source: "{#DefRoot}{#DefSrc}\UserGuide\ChristensenValueChainMS.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\valuechain
 ; Source: "{#DefRoot}{#DefSrc}\EwEEcologicalIndicatorsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecolind
@@ -147,7 +147,7 @@ Source: "{#DefRoot}{#DefSrc}\UserGuide\Link - 2010 - Adding rigor to ecological 
 ; Source: "{#DefRoot}{#DefSrc}\UserGuide\Ecoengineer user guide.pdf"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecoengineers
 ; Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
 ; Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\biomassemitter
-Source: "{#DefRoot}{#DefSrc}\UserGuide\Biomass-emitter-guide.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\input\biomassemitter
+Source: "{#DefRoot}{#DefSrc}\UserGuide\Biomass-emitter-guide.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 ; Source: "{#DefRoot}{#DefSrc}\EwEImportDietsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\szumadiets
 ; Source: "{#DefRoot}{#DefSrc}\EwEEcotracerEnvDriverPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\ecotracer
 #if RandomizeMPAs == 1
@@ -159,37 +159,37 @@ Source: "{#DefRoot}{#DefSrc}\UserGuide\Biomass-emitter-guide.pdf"; DestDir: "{ap
 
 ; Output
 ; Source: "{#DefRoot}{#DefSrc}\EwEResultsExtractorPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\resultextractor
-Source: "{#DefRoot}{#DefSrc}\UserGuide\ResultsExtractorPlug.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\output\resultextractor
+Source: "{#DefRoot}{#DefSrc}\UserGuide\ResultsExtractorPlug.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 ; Source: "{#DefRoot}{#DefSrc}\EwEModelFromEcosimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\modelfromsim
-Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE model from time step.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\output\modelfromsim
-; Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
+Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE model from time step.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
 ; Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3RPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
 ; Source: "{#DefRoot}{#DefSrc}\EwEIBMAgeStructureResultsWriterPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\IBMwriter
 ; Source: "{#DefRoot}{#DefSrc}\EwEenaRPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\enaR
 
 ; Automation
 ; Source: "{#DefRoot}{#DefSrc}\EwEMultiSimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\multisim
-Source: "{#DefRoot}{#DefSrc}\UserGuide\EwEMultiSimPlugin.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\multisim
-; Source: "{#DefRoot}{#DefSrc}\EwEStepwiseFittingPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\stepwisef
-; Source: "{#DefRoot}{#DefSrc}\EwEMSEPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\mse
-Source: "{#DefRoot}{#DefSrc}\LumenWorks.Framework.IO.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: plugin\automation\mse
-Source: "{#DefRoot}{#DefSrc}\Troschuetz.Random.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: plugin\automation\mse
-; Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
-Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler-user-manual.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
+Source: "{#DefRoot}{#DefSrc}\UserGuide\EwEMultiSimPlugin.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\EwEStepwiseFittingPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\EwEMSEPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\LumenWorks.Framework.IO.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\Troschuetz.Random.dll"; DestDir: "{app}"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler-user-manual.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 
 ; UI
-; Source: "{#DefRoot}{#DefSrc}\EwERemarksPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\ui\remarks
-; Source: "{#DefRoot}{#DefSrc}\EwEShapeGridPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\ui\shapegrid
-; Source: "{#DefRoot}{#DefSrc}\EwEWindowsIntegrationPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\winintegration
+; Source: "{#DefRoot}{#DefSrc}\EwERemarksPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\EwEShapeGridPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\EwEWindowsIntegrationPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
 
 ; Pro
-; Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spinup
-; Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\pro\spattemp
-; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Analysis.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
-; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Extensions.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+; Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
+; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Analysis.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; 
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; 
+; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Extensions.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
 ; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Modeling.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Positioning.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
 ; Source: "{#DefRoot}{#DefSrc}\DotSpatial.Projections.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\pro\spattemp
@@ -203,71 +203,19 @@ Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler-user-manual.pdf"; DestDir: "{a
 ; Source: "{#DefRoot}{#DefSrc}\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\projects\msptools
 
 #if Compile64Bit == "0"
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\*.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\*.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion
 #else
-Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\*.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\pro\spattemp
+Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\*.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion
 #endif
 
 ; -- RBT --
 #if RobertsBank == 1
-; Source: "{#DefRoot}{#DefSrc}\EwEDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
-; Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\robertsbank
+; Source: "{#DefRoot}{#DefSrc}\EwEDepthChangePlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\EwEEcospaceMonteCarloPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
 #endif
 
 ; -- SAMPLE DATABASES --
-Source: "{#DefRoot}{#DefDB}\Anchovy Bay Spatial.ewemdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
-
-[Components]
-Name: "userguide"; Description: "EwE user guide (2008)"; Types: full custom
-Name: "databases"; Description: "Sample EwE models"; Types: full custom
-Name: "plugin"; Description: "Plug-ins"; Types: full custom
-Name: "plugin\analysis"; Description: "Analysis"; Types: full custom
-Name: "plugin\analysis\ecolind"; Description: "Ecological Indicators"; Types: full
-Name: "plugin\analysis\ecotroph"; Description: "EcoTroph"; Types: custom full
-Name: "plugin\analysis\na"; Description: "Network Analysis"; Types: compact custom full
-Name: "plugin\analysis\prebal"; Description: "Pre-balance diagnostics"; Types: full custom
-Name: "plugin\analysis\valuechain"; Description: "Value chain"; Types: full
-Name: "plugin\analysis\fleetTO"; Description: "Fleet trade-offs"; Types: full
-Name: "plugin\input"; Description: "Data retrieval"; Types: full custom
-Name: "plugin\input\worms"; Description: "WoRMS taxonomy search"; Types: full
-Name: "plugin\input\mergegroups"; Description: "Merge groups"; Types: full
-Name: "plugin\input\mpadynamics"; Description: "MPA dynamics"; Types: full
-Name: "plugin\input\aquamaps"; Description: "Aquamaps functional response importer"; Types: full
-Name: "plugin\input\ecoengineers"; Description: "Eco-engineer dynamics"; Types: full
-Name: "plugin\input\szumadiets"; Description: "Diet import utility"; Types: full
-Name: "plugin\input\layerimportexport"; Description: "Ecospace layer style import and export"; Types: full
-Name: "plugin\input\biomassemitter"; Description: "Biomass emitter"; Types: full
-Name: "plugin\input\ecotracer"; Description: "Ecotracer impacts"; Types: full
-#if ExcludeDeadCells == 1
-Name: "plugin\input\excldeadcells"; Description: "Exclude isolated cells"; Types: full
-#endif
-#if RandomizeMPAs == 1
-Name: "plugin\input\randomizeMPAs"; Description: "Randomize MPA cells"; Types: full
-#endif
-Name: "plugin\output"; Description: "Data export"; Types: full
-Name: "plugin\output\modelfromsim"; Description: "Ecopath model from Ecosim"; Types: full
-Name: "plugin\output\resultextractor"; Description: "Results extractor"; Types: full
-Name: "plugin\output\transects"; Description: "Transects extraction"; Types: full
-Name: "plugin\output\networkD3"; Description: "Export diet matrix to NetworkD3"; Types: full
-Name: "plugin\output\IBMwriter"; Description: "Ecospace IBM age structure autosave"; Types: full
-Name: "plugin\output\enaR"; Description: "Ecospace enaR"; Types: full
-Name: "plugin\automation"; Description: "Automation"; Types: full custom
-Name: "plugin\automation\multisim"; Description: "Multi-Sim"; Types: custom full
-Name: "plugin\automation\stepwisef"; Description: "Stepwise Fitting"; Types: full
-Name: "plugin\automation\mse"; Description: "Cefas MSE"; Types: custom full
-Name: "plugin\automation\sampler"; Description: "Ecosampler"; Types: full
-Name: "plugin\ui"; Description: "Usability"; Types: full custom
-Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
-Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
-Name: "plugin\ui\winintegration"; Description: "Windows integration"; Types: full
-Name: "plugin\pro"; Description: "Professional features"; Types: full custom
-Name: "plugin\pro\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
-Name: "plugin\pro\spinup"; Description: "Ecospace spin-up"; Types: full
-Name: "plugin\projects"; Description: "Project specific plugins"; Types: full custom
-Name: "plugin\projects\msptools"; Description: "MSP Challenge tools"; Types: full
-#if RobertsBank == 1
-Name: "plugin\robertsbank"; Description: "Roberts Bank utilities"; Types: full custom
-#endif
+Source: "{#DefRoot}{#DefDB}\Anchovy Bay Spatial.ewemdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion
 
 [Tasks]
 Name: "desktopicon"; Description: "Add desktop icon"
