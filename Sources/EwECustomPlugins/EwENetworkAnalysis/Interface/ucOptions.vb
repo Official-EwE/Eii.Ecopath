@@ -1,28 +1,8 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports ScientificInterfaceShared.Controls
-
-
 
 Public Class ucOptions
     Implements IOptionsPage
@@ -100,7 +80,6 @@ Public Class ucOptions
 
     End Sub
 
-
     Private Sub OnSaveEcosimWoPPRChecked(sender As Object, e As EventArgs) Handles m_cbAutosaveEcosimWoPPR.CheckedChanged
 
         If Me.m_bInUpdate Then Return
@@ -161,7 +140,6 @@ Public Class ucOptions
         Me.m_cbAutosaveRoot.Checked = False
         Me.m_cbCalculateCyclesPathways.Checked = False
     End Sub
-
 
 #End Region ' Options page implementation 
 

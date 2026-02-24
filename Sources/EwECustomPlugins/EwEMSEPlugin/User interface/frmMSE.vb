@@ -1,30 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
 Imports EwECore.Common
@@ -34,8 +10,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 Public Class frmMSE
 
@@ -280,8 +254,8 @@ Public Class frmMSE
             If String.IsNullOrWhiteSpace(Me.MSE.ModelCompatibilityInfo) Then
                 Me.m_tbxNumAvailableModels.Text = CStr(Me.MSE.NumModelsAvailable)
             Else
-                Me.m_tbxNumAvailableModels.Text = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
-                                                                Me.MSE.NumModelsAvailable, _
+                Me.m_tbxNumAvailableModels.Text = String.Format(SharedResources.GENERIC_LABEL_DETAILED,
+                                                                Me.MSE.NumModelsAvailable,
                                                                 Me.MSE.ModelCompatibilityInfo)
             End If
             Me.m_tbxNumAvailableFishingStrategies.Text = CStr(Me.MSE.NumStrategiesAvailable)
@@ -531,7 +505,6 @@ Public Class frmMSE
 
     End Sub
 
-
     Private Sub OnGenerateSampleSurvivabilities(sender As System.Object, e As System.EventArgs) Handles m_btnSampleSurvivabilities.Click
 
         Try
@@ -540,7 +513,6 @@ Public Class frmMSE
             m_logger.LogError(ex, "CEFAS.frmMSE::OnGenerateSampleSurvivabilities")
         End Try
     End Sub
-
 
     Private Sub OnDeleteResults(sender As System.Object, e As System.EventArgs) _
         Handles m_btnDeleteResults.Click
@@ -601,7 +573,6 @@ Public Class frmMSE
 
         End Try
     End Sub
-
 
 #End Region ' Control events
 
@@ -682,8 +653,6 @@ Public Class frmMSE
     End Function
 
 #End Region ' Path / model validation
- 
-
 
     Private Sub InsertValueIntoArray(ByRef LandingsArray As Double(,,,), ByRef iStrategy As Integer, ByRef iFleet As Integer, ByRef iGroup As Integer, ByRef iTimeStep As Integer, ByRef THEVALUE As Double)
         LandingsArray(iStrategy, iFleet, iGroup, iTimeStep) = 123456789
@@ -721,6 +690,5 @@ Public Class frmMSE
         End Try
 
     End Sub
-
 
 End Class

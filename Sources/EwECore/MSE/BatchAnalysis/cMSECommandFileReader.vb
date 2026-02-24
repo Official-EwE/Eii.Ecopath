@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 
@@ -24,7 +9,6 @@ Imports EwECore.MSEBatchManager
 Imports EwEUtils.Utilities
 
 Namespace MSECommandFile
-
 
     Public Class cMSECommandFileReader
 
@@ -40,7 +24,6 @@ Namespace MSECommandFile
         Public Const ENDYEAR_DATA_TAG As String = "End_Year"
         Public Const VERSION_DATA_TAG As String = "Control_File_Version"
         Public Const STARTYEAR_DATA_TAG As String = "Start_Year"
-
 
         Public Const OUTPUT_DATA_TAG As String = "Output_Directory"
 
@@ -136,7 +119,6 @@ Namespace MSECommandFile
             Dim bSuccess As Boolean
             Try
 
-
                 Dim line As String
                 Dim ParamReader As IMSEParameter
                 Dim stream As StreamReader = New StreamReader(filename)
@@ -171,7 +153,6 @@ Namespace MSECommandFile
             Return bSuccess
 
         End Function
-
 
         Public Function ValidateData() As Boolean
             Dim bReturn As Boolean = True
@@ -296,11 +277,9 @@ Namespace MSECommandFile
                 Return New cOutputDirParameter(Me)
             End If
 
-
             If cOuputParameter.CanRead(controlString) Then
                 Return New cOuputParameter(Me)
             End If
-
 
             If cEndYearParameter.CanRead(controlString) Then
                 Return New cEndYearParameter(Me)
@@ -485,7 +464,6 @@ Namespace MSECommandFile
             End If
         End Function
 
-
         ''' <summary>
         ''' Is this string a Tag from the control file
         ''' </summary>
@@ -499,7 +477,6 @@ Namespace MSECommandFile
             End If
             Return False
         End Function
-
 
         Public Shared Function CanRead(Tag As String, ControlString As String) As Boolean
             Dim values() As String
@@ -567,13 +544,11 @@ Namespace MSECommandFile
 
         End Function
 
-
         Friend ReadOnly Property Core() As cCore
             Get
                 Return Me.m_core
             End Get
         End Property
-
 
         Friend ReadOnly Property MSEData() As cMSEDataStructures
             Get
@@ -581,13 +556,11 @@ Namespace MSECommandFile
             End Get
         End Property
 
-
         Friend ReadOnly Property nGroups() As Integer
             Get
                 Return Me.m_MSEdata.NGroups
             End Get
         End Property
-
 
         Friend ReadOnly Property nFleets() As Integer
             Get
@@ -610,7 +583,6 @@ Namespace MSECommandFile
             Return eQuotaTypes.NoControls
         End Function
 
-
         Friend Function RunIndexToRunType(RunIndex As Integer) As eMSEBatchRunTypes
 
             Try
@@ -621,7 +593,6 @@ Namespace MSECommandFile
             Return eMSEBatchRunTypes.Any
 
         End Function
-
 
         Friend Function OuputTagToOuputType(OuputTag As String) As eMSEBatchOuputTypes
             Try

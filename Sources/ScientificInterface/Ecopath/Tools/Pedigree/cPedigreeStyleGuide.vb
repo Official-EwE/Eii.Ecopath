@@ -1,27 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Ecopath.Tools
 
@@ -67,8 +46,8 @@ Namespace Ecopath.Tools
         ''' <see cref="RenderStyle">present render style</see>.</param>
         ''' <returns>A color.</returns>
         ''' -------------------------------------------------------------------
-        Public Function BackgroundColor(clrBack As Color, _
-                                        level As cPedigreeLevel, _
+        Public Function BackgroundColor(clrBack As Color,
+                                        level As cPedigreeLevel,
                                         Optional style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As Color
 
             ' Fix up render style
@@ -102,7 +81,7 @@ Namespace Ecopath.Tools
         ''' <returns>A text that represents the given level, considering the
         ''' <paramref name="style">provided</paramref> and <see cref="RenderStyle">selected</see> render styles.</returns>
         ''' -------------------------------------------------------------------
-        Public Function DisplayText(level As cPedigreeLevel, _
+        Public Function DisplayText(level As cPedigreeLevel,
                                     Optional style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As String
 
             ' Fix up render style

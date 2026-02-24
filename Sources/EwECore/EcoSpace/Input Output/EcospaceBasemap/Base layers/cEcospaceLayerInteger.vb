@@ -1,28 +1,8 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Core
-
-
 
 ''' <summary>
 ''' Base layer providing access to Ecospace data as cells of integer values.
@@ -53,10 +33,10 @@ Public Class cEcospaceLayerInteger
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(core As cCore, _
-                   manager As IEcospaceLayerManager, _
-                   strName As String, _
-                   varName As eVarNameFlags, _
+    Public Sub New(core As cCore,
+                   manager As IEcospaceLayerManager,
+                   strName As String,
+                   varName As eVarNameFlags,
                    Optional iIndex As Integer = cCore.NULL_VALUE)
 
         MyBase.New(core, core.m_EcospaceData.GetLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Integer))
@@ -70,10 +50,10 @@ Public Class cEcospaceLayerInteger
     ''' <param name="theCore"></param>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(theCore As cCore, _
-                   data As Integer(,), _
-                   strName As String, _
-                   Optional meta As cVariableMetaData = Nothing, _
+    Public Sub New(theCore As cCore,
+                   data As Integer(,),
+                   strName As String,
+                   Optional meta As cVariableMetaData = Nothing,
                    Optional vn As eVarNameFlags = eVarNameFlags.NotSet)
 
         MyBase.New(theCore, CObj(data), strName, GetType(Integer), meta, vn)

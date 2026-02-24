@@ -1,30 +1,10 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
-
-
 
 Namespace Ecospace.Basemap.Layers
 
@@ -55,8 +35,8 @@ Namespace Ecospace.Basemap.Layers
         ''' Ecospace basemap.</param>
         ''' <returns>An array of layers</returns>
         ''' -------------------------------------------------------------------
-        Public Overloads Function GetLayers(uic As cUIContext, _
-                                            varName As eVarNameFlags, _
+        Public Overloads Function GetLayers(uic As cUIContext,
+                                            varName As eVarNameFlags,
                                             Optional layerData As cEcospaceLayer = Nothing) As cDisplayLayerRaster()
 
             Dim lLayers As New List(Of cDisplayLayerRaster)

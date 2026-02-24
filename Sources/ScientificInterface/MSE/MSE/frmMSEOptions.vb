@@ -1,21 +1,7 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
+
 Imports EwECore.MSE
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
@@ -86,7 +72,6 @@ Public Class frmMSEOptions
         'Me.m_fpForecast = New cPropertyFormatProvider(Me.UIContext, Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
         Me.m_fpSBPower = New cPropertyFormatProvider(Me.UIContext, Me.m_txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
         Me.m_fpMaxEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_txMaxEffort, Me.m_MSE.ModelParameters, eVarNameFlags.MSEMaxEffort)
-
 
         'Assessment methods Catch Estimated Biomass and Direct Exploitation are stored in the tag property of the radio buttons
         'see the Changed event of the radio buttons for setting the parameters
@@ -180,7 +165,6 @@ Public Class frmMSEOptions
         Catch ex As Exception
             Debug.Assert(False, "Exception setting MSE Effort Mode. " & ex.Message)
         End Try
-
 
     End Sub
 

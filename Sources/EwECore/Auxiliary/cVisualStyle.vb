@@ -1,25 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Drawing
 Imports System.Drawing.Imaging
@@ -27,10 +8,7 @@ Imports System.IO
 Imports EwEUtils.UserInterface
 Imports Newtonsoft.Json
 
- 
-
 Namespace Auxiliary
-
 
     Public Class VisualStyleDto
         Public Property foreColor As String          ' "#RRGGBBAA"
@@ -108,6 +86,7 @@ Namespace Auxiliary
         End Function
 
         Public Shared Function ToDto(vs As cVisualStyle) As VisualStyleDto
+            If (vs Is Nothing) Then vs = New cVisualStyle()
             Dim dto As New VisualStyleDto With {
                 .foreColor = vs.ForeColour.ToHex(),
                 .backColor = vs.BackColour.ToHex(),
@@ -125,8 +104,12 @@ Namespace Auxiliary
             Return dto
         End Function
 
-        ' Apply DTO back to runtime object
-        Public Shared Sub ApplyDto(vs As cVisualStyle, dto As VisualStyleDto)
+        ''' <summary>
+        ''' Apply DTO back to a visual style
+        ''' </summary>
+        ''' <param name="vs"></param>
+        ''' <param name="dto"></param>
+        Public Shared Sub FromDto(vs As cVisualStyle, dto As VisualStyleDto)
             If dto Is Nothing Then Return
             vs.ForeColour = HexToColor(dto.foreColor)
             vs.BackColour = HexToColor(dto.backColor)
@@ -169,7 +152,7 @@ Namespace Auxiliary
         Dim dto = System.Text.Json.JsonSerializer.Deserialize(Of VisualStyleDto)(json)
 #End If
                 Dim vs As New cVisualStyle()
-                ApplyDto(vs, dto)
+                FromDto(vs, dto)
                 Return vs
             End If
 
@@ -357,7 +340,6 @@ Namespace Auxiliary
                 End Using
             End Set
         End Property
-
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

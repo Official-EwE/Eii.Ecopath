@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
@@ -67,7 +51,6 @@ Namespace MSEBatchManager
         ''' <remarks>If RunType = eMSEBatchRunTypes.TFM then nParIters = nTFMs</remarks>
         Public nParIters As Integer
 
-
         ''' <summary>
         ''' Names of the loaded forcing functions
         ''' </summary>
@@ -101,7 +84,6 @@ Namespace MSEBatchManager
         Public tfmFmax(,) As Single
         Public tfmFmin(,) As Single
 
-
         Public FixedF(,) As Single
         Public TAC(,) As Single
         Public STDevForcing As Single
@@ -115,7 +97,6 @@ Namespace MSEBatchManager
 
         Public m_nGroups As Integer
         Public m_nFleets As Integer
-
 
         Public m_orgBlim() As Single
         Public m_orgBbase() As Single
@@ -157,7 +138,6 @@ Namespace MSEBatchManager
         Public GroupRunType() As eMSEBatchRunTypes
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSEBatchDataStructures)()
 
-
         Public ReadOnly Property nGroups As Integer
             Get
                 Return Me.m_nGroups
@@ -179,7 +159,6 @@ Namespace MSEBatchManager
             ReDim Me.ForcingNames(Me.nForcing)
 
         End Sub
-
 
         Public ReadOnly Property nOuputTypes() As Integer
             Get
@@ -280,7 +259,6 @@ Namespace MSEBatchManager
         '    Me.bForcingLoaded = False
         'End Sub
 
-
         Public Sub New(MSEdata As MSE.cMSEDataStructures)
             Try
                 Me.redimToMSE(MSEdata)
@@ -305,7 +283,6 @@ Namespace MSEBatchManager
             Me.redimFixedF(1, MSEdata.NGroups)
 
         End Sub
-
 
         ''' <summary>
         ''' Store the initial state of the MSE data so it can be restored later
@@ -358,9 +335,6 @@ Namespace MSEBatchManager
 
         End Sub
 
-
-
     End Class
-
 
 End Namespace

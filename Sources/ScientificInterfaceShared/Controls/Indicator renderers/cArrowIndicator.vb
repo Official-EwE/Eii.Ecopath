@@ -1,22 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Drawing.Drawing2D
 
@@ -43,11 +27,11 @@ Namespace Controls
         ''' <param name="sSize">Size of the angle. [0, 1], 0 is smallest size, 1 will
         ''' size the arrow to optimally fit in the rectangle with 1 pixel margin.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub DrawArrow(g As Graphics, _
-                                    clr As Color, _
-                                    rc As Rectangle, _
-                                    sAngle As Single, _
-                                    sSize As Single, _
+        Public Shared Sub DrawArrow(g As Graphics,
+                                    clr As Color,
+                                    rc As Rectangle,
+                                    sAngle As Single,
+                                    sSize As Single,
                                     Optional bFilledArrow As Boolean = True)
 
             Dim matOrg As Matrix = g.Transform

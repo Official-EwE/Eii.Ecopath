@@ -18,10 +18,10 @@
 ' ===============================================================================
 '
 
-Option Strict On
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecospace
+Imports EwECore.Plugins.UI
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -51,7 +51,7 @@ Public Class cMPAOpenStatePlugin
     ''' </summary>
     ''' <param name="core">The EwE core.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(ByVal core As Object) Implements IPlugin.Initialize
         Try
             Me.m_core = DirectCast(core, cCore)
         Catch ex As Exception
@@ -68,7 +68,7 @@ Public Class cMPAOpenStatePlugin
     ''' <param name="EcospaceDatastructures">- ignored -</param>
     ''' -----------------------------------------------------------------------
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) _
-        Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
+        Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
         ' Santiy checks
         If (Me.m_core Is Nothing) Then Return
@@ -95,7 +95,7 @@ Public Class cMPAOpenStatePlugin
     ''' <param name="iTime">The time step that is currently being executed.</param>
     ''' -----------------------------------------------------------------------
     Public Sub EcospaceBeginTimeStepPost(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) _
-        Implements EwEPlugin.IEcospaceBeginTimestepPostPlugin.EcospaceBeginTimeStepPost
+        Implements IEcospaceBeginTimestepPostPlugin.EcospaceBeginTimeStepPost
 
         ' Sanity checks
         If (Me.m_core Is Nothing) Then Return
@@ -114,7 +114,7 @@ Public Class cMPAOpenStatePlugin
         If (iTime = CInt(Me.m_core.nEcospaceTimeSteps / 2)) Then
             ' This message will appear in the EwE6 status panel
             Dim msg As New cMessage(Me.Name & ": MPA " & MPA.Name & " activated at time step " & iTime & ", " & AbsoluteDateForTimeStep.ToShortDateString,
-                                    eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+                                    eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
             Me.m_core.Messages.SendMessage(msg)
         End If
 
@@ -127,7 +127,7 @@ Public Class cMPAOpenStatePlugin
     ''' <param name="EcoSpaceDatastructures">- ignored -</param>
     ''' -----------------------------------------------------------------------
     Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) _
-        Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
+        Implements IEcospaceRunCompletedPlugin.EcospaceRunCompleted
 
         ' Santiy checks
         If (Me.m_core Is Nothing) Then Return
@@ -149,30 +149,30 @@ Public Class cMPAOpenStatePlugin
     End Sub
 
     Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
-        Return New eCoreComponentType() {eCoreComponentType.EcoSpace}
+        Return New eCoreComponentType() {eCoreComponentType.Ecospace}
     End Function
 
 #Region " Generic plug-in bits "
 
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author() As String Implements IPlugin.Author
         Get
             Return "Jeroen Steenbeek"
         End Get
     End Property
 
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact() As String Implements IPlugin.Contact
         Get
             Return "ewedevteam@gmail.com"
         End Get
     End Property
 
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description() As String Implements IPlugin.Description
         Get
             Return "Plug-in that opens and closes MPAs"
         End Get
     End Property
 
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name() As String Implements IPlugin.Name
         Get
             Return "MPAOpenStatePlugin"
         End Get

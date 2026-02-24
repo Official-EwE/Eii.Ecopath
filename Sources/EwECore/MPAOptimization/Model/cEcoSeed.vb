@@ -1,23 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwEUtils.Utilities
@@ -58,7 +41,6 @@ Namespace EcoSeed
 
         Private SideStep As Integer
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcoSeed)()
-
 
 #End Region
 
@@ -143,7 +125,6 @@ Namespace EcoSeed
 
         End Sub
 
-
         Public Overrides Sub Run() 'Implements IMPASearchModel.Run
 
             Me.m_bRunning = True
@@ -161,7 +142,6 @@ Namespace EcoSeed
             Me.setRunState(cMPAOptManager.eRunStates.Completed)
 
         End Sub
-
 
         Friend Sub runSeed()
             Dim NotAllCellsAreMPAs As Boolean
@@ -339,8 +319,6 @@ Namespace EcoSeed
 
         End Sub
 
-
-
         ''' <summary>
         ''' Find the next set of MPA cells to evaluate
         ''' </summary>
@@ -449,7 +427,6 @@ Namespace EcoSeed
 
             Exit Sub
 
-
            If 2 = 3 And StartMPA And RunningMPA Then
                 Select Case m_data.SeedBlockSize2
                     Case 1
@@ -485,7 +462,6 @@ Namespace EcoSeed
             'ReDim bbTOT(NumGroups)
             'If MPAstep = 0 Then MPAstep = 1
         End Sub
-
 
         Private Sub clearCurrentMPATestCells()
             Dim ir As Integer, ic As Integer
@@ -630,8 +606,6 @@ Namespace EcoSeed
             Next iro
         End Sub
 
-
-
         Private Sub SelectNewMPAcell_orgMPALayers() 'this occurs just before before start of new timestep
             Dim ir As Integer, ic As Integer, i As Integer ', j As Integer
             Dim fnum As Integer
@@ -704,8 +678,6 @@ Namespace EcoSeed
 
         End Sub
 
-
-
 #End If
 
 #End Region
@@ -737,7 +709,6 @@ Namespace EcoSeed
     End Class
 
 #Region "Dead code from EwE5"
-
 
 #If 0 Then
 

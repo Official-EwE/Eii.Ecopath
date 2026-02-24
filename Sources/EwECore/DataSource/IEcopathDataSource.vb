@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 
@@ -92,7 +77,7 @@ Namespace DataSources
         ''' core a full data reload is required after a group is created.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Function AddGroup(strGroupName As String, sPP As Single, sVBK As Single, _
+        Function AddGroup(strGroupName As String, sPP As Single, sVBK As Single,
                           iPosition As Integer, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
@@ -170,7 +155,7 @@ Namespace DataSources
         ''' is defined without having any groups. To avoid this situation, this method
         ''' requires valid <paramref name="aiGroupID">group IDs</paramref>.</remarks>
         ''' -------------------------------------------------------------------
-        Function AppendStanza(strStanzaName As String, aiGroupID() As Integer, iGroupAges() As Integer, _
+        Function AppendStanza(strStanzaName As String, aiGroupID() As Integer, iGroupAges() As Integer,
                 ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
@@ -224,13 +209,13 @@ Namespace DataSources
         ''' <param name="iDBID">Database ID assigned to the new pedigree level.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddPedigreeLevel(iPosition As Integer, _
-                                  strName As String, _
-                                  iColor As Integer, _
-                                  strDescription As String, _
-                                  varName As eVarNameFlags, _
-                                  sIndexValue As Single, _
-                                  sConfidence As Single, _
+        Function AddPedigreeLevel(iPosition As Integer,
+                                  strName As String,
+                                  iColor As Integer,
+                                  strDescription As String,
+                                  varName As eVarNameFlags,
+                                  sIndexValue As Single,
+                                  sConfidence As Single,
                                   ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------

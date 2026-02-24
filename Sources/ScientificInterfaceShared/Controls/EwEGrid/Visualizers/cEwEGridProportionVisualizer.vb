@@ -1,27 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Controls.EwEGrid
 
@@ -30,14 +9,14 @@ Namespace Controls.EwEGrid
     ''' A visualizer that renders cell values [0, 1] as a progress bar.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    
+
     Public Class cEwEGridProportionVisualizer
         Inherits cEwEGridVisualizerBase
 
-        Protected Overrides Sub DrawCell_ImageAndText(cell As SourceGrid2.Cells.ICellVirtual, _
-                                                      pos As SourceGrid2.Position, _
-                                                      e As System.Windows.Forms.PaintEventArgs, _
-                                                      rc As System.Drawing.Rectangle, _
+        Protected Overrides Sub DrawCell_ImageAndText(cell As SourceGrid2.Cells.ICellVirtual,
+                                                      pos As SourceGrid2.Position,
+                                                      e As System.Windows.Forms.PaintEventArgs,
+                                                      rc As System.Drawing.Rectangle,
                                                       status As SourceGrid2.DrawCellStatus)
 
             Dim objVal As Object = cell.GetValue(pos)

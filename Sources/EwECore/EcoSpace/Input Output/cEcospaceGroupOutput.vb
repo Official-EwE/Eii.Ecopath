@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.ValueWrapper
 
@@ -66,7 +51,6 @@ Public Class cEcospaceGroupOutput
 
     End Sub
 
-
     Public Sub Init()
 
         Me.m_CoreData.Clear()
@@ -87,7 +71,6 @@ Public Class cEcospaceGroupOutput
     'Status of ouput should be set to eStatusFlags.NotEditable Or eStatusFlags.Null for all timesteps that are not computed 
     'Once the data has be populate with the results from the last model run status should be set to eStatusFlags.NotEditable Or eStatusFlags.ValueComputed
     'This allows an interface to tell if the data at a timestep has been populated by the model run
-
 
     Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
         Dim i As Integer
@@ -137,7 +120,6 @@ Public Class cEcospaceGroupOutput
 
     End Function
 
-
     Public Overrides Function GetStatus(VarName As eVarNameFlags, Optional iIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As eStatusFlags
 
         If Not Me.m_CoreData.ContainsKey(VarName) Then
@@ -149,7 +131,6 @@ Public Class cEcospaceGroupOutput
         End If
 
     End Function
-
 
 #End Region
 
@@ -187,7 +168,6 @@ Public Class cEcospaceGroupOutput
 
     End Property
 
-
 #End Region
 
 #Region "Summary values"
@@ -214,7 +194,6 @@ Public Class cEcospaceGroupOutput
         End Set
     End Property
 
-
     Public Property CatchStart(iFleet As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.EcospaceGroupCatchStart, iFleet))
@@ -225,7 +204,6 @@ Public Class cEcospaceGroupOutput
         End Set
     End Property
 
-
     Public Property CatchEnd(iFleet As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.EcospaceGroupCatchEnd, iFleet))
@@ -235,7 +213,6 @@ Public Class cEcospaceGroupOutput
             Me.SetVariable(eVarNameFlags.EcospaceGroupCatchEnd, value, iFleet)
         End Set
     End Property
-
 
     Public Property ValueStart(iFleet As Integer) As Single
         Get
@@ -256,7 +233,6 @@ Public Class cEcospaceGroupOutput
             Me.SetVariable(eVarNameFlags.EcospaceGroupValueEnd, value, iFleet)
         End Set
     End Property
-
 
 #End Region
 
@@ -282,7 +258,6 @@ Public Class cEcospaceGroupOutput
         End Set
     End Property
 
-
     Public Property CatchStartBiomassStatus(IFleet As Integer) As eStatusFlags
         Get
             Return Me.GetStatus(eVarNameFlags.EcospaceGroupCatchStart, IFleet)
@@ -293,7 +268,6 @@ Public Class cEcospaceGroupOutput
         End Set
     End Property
 
-
     Public Property CatchEndBiomassStatus(IFleet As Integer) As eStatusFlags
         Get
             Return Me.GetStatus(eVarNameFlags.EcospaceGroupCatchEnd, IFleet)
@@ -303,7 +277,6 @@ Public Class cEcospaceGroupOutput
             Me.SetStatus(eVarNameFlags.EcospaceGroupCatchEnd, value, IFleet)
         End Set
     End Property
-
 
     Public Property ValueStartStatus(IFleet As Integer) As eStatusFlags
         Get

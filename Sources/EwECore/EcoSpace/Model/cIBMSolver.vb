@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Threading
 Imports Microsoft.Extensions.Logging
@@ -70,7 +55,6 @@ Public Class cIBMSolver
 
     Private m_rand As Random
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cIBMSolver)()
-
 
     Public Sub Init()
 
@@ -169,7 +153,6 @@ Public Class cIBMSolver
 
     End Sub
 
-
 #End Region
 
     Sub MovePackets(ip As Integer)
@@ -265,7 +248,6 @@ Public Class cIBMSolver
                         End If
                     End If
 
-
                     For imm = 1 To Nmoves
 
                         ' Q: should nmoves be adapted in this loop if an advected packet traverses cells with a different advection velocity?
@@ -321,7 +303,6 @@ Public Class cIBMSolver
                                     aa = Mrat : bb = Mrat : cc = Mrat : dd = Mrat
                                 End If
 
-
                             End If
 
                             Debug.Assert((aa + bb + cc + dd) > 0, "Opps!")
@@ -330,7 +311,6 @@ Public Class cIBMSolver
                         Catch ex As Exception
                             Debug.Assert(False, ex.Message)
                         End Try
-
 
                         ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         ''for debugging 
@@ -390,7 +370,6 @@ Public Class cIBMSolver
             End If
         Loop
 
-
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Code from EwE5
         'Dim i As Integer = 0
@@ -416,7 +395,6 @@ Public Class cIBMSolver
         '    End If
         'End If
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
     End Sub
 
@@ -484,7 +462,6 @@ Public Class cIBMSolver
             If Me.m_Stanza.AgeIndex1(isp) > Me.m_Stanza.MaxAgeSpecies(isp) Then
                 Me.m_Stanza.AgeIndex1(isp) = 0
             End If
-
 
             'finally set abundance at youngest age to recruitment rate
             'WARNING Youngest age is stored in the ia1 index NOT Age 0 as it is in Ecosim
@@ -615,7 +592,6 @@ Public Class cIBMSolver
                 Next ip
             End If ' m_Stanza.EggAtSpawn(isp)
 
-
             If Me.m_Stanza.isForcedIBMRecruits(isp) = True Then
                 'this stanza is forced
                 'populate all the packets in each nursery cell 
@@ -676,7 +652,6 @@ Public Class cIBMSolver
         Debug.Print("N Packets = " + Me.m_Stanza.Npackets.ToString + ", N Nursery Packets = " + npcks.ToString)
 
     End Sub
-
 
     Private Function ForceNurseryCells(isp As Integer) As Single
         'Set all the forced cells with age 0 forcing values to Nursery Cells 

@@ -1,28 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
 Imports EwECore.Common
@@ -56,7 +34,6 @@ Public Class frmEditAssessmentError
 
 #End Region
 
-
 #Region "Private Variables"
 
     Private m_mse As cMSE = Nothing
@@ -64,7 +41,6 @@ Public Class frmEditAssessmentError
     Private m_StockAssess As cStockAssessmentModel
 
 #End Region
-
 
 #Region "Construction, Initialization and Destruction"
 
@@ -74,7 +50,6 @@ Public Class frmEditAssessmentError
         Me.InitializeComponent()
         Me.Grid = Me.m_grdError
     End Sub
-
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
@@ -105,7 +80,7 @@ Public Class frmEditAssessmentError
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
         If (Me.m_bIsDirty = True) Then
-            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_UNSAVED_CHANGES, _
+            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_UNSAVED_CHANGES,
                                  eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             fmsg.Reply = eMessageReply.YES
             Me.Core.Messages.SendMessage(fmsg)
@@ -127,7 +102,6 @@ Public Class frmEditAssessmentError
     End Sub
 
 #End Region
-
 
 #Region "Events"
 

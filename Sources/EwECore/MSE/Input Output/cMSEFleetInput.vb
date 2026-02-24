@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 #Region "Imports"
 Imports EwECore.ValueWrapper
@@ -123,7 +108,7 @@ Namespace MSE
                 Try
                     Select Case value.varName
 
-                        Case eVarNameFlags.MSEFleetWeight, _
+                        Case eVarNameFlags.MSEFleetWeight,
                              eVarNameFlags.QuotaShare
 
                             For igrp As Integer = 1 To Me.m_core.nLivingGroups
@@ -172,7 +157,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property FleetCV(iTime As Integer) As Single
 
             Get
@@ -184,7 +168,6 @@ Namespace MSE
             End Set
 
         End Property
-
 
         Public Property CatchRefLower() As Single
 
@@ -209,7 +192,6 @@ Namespace MSE
             End Set
 
         End Property
-
 
         Public Property EffortRefLower() As Single
 
@@ -293,7 +275,6 @@ Namespace MSE
             End Set
         End Property
 
-
         Public Property LowerLPEffortBound() As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.MSELowerLPEffort))
@@ -302,7 +283,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSELowerLPEffort, value)
             End Set
         End Property
-
 
         Public Property UpperLPEffortBound() As Single
             Get
@@ -313,7 +293,6 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSEUpperLPEffort, value)
             End Set
         End Property
-
 
 #End Region
 
@@ -328,7 +307,6 @@ Namespace MSE
                 Me.SetStatus(eVarNameFlags.MSEQIncrease, value)
             End Set
         End Property
-
 
         Public Property CatchRefUpperStatus() As eStatusFlags
             Get

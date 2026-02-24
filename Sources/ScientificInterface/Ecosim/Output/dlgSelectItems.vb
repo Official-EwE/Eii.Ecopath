@@ -1,28 +1,8 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.Utilities
-
-
 
 Public Class dlgSelectItems
     Inherits Form
@@ -88,8 +68,8 @@ Public Class dlgSelectItems
     ''' <param name="Defaults">Default selection to use when the user pressed 'Default'. Provide nothing to omit the defaults option.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Overloads Function ShowDialog(owner As IWin32Window, _
-                                         Optional Selected As Integer() = Nothing, _
+    Public Overloads Function ShowDialog(owner As IWin32Window,
+                                         Optional Selected As Integer() = Nothing,
                                          Optional Defaults As Integer() = Nothing) As DialogResult
 
         Me.m_aobjSelection = Selected

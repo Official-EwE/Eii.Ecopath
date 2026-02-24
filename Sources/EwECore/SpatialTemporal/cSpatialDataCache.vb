@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Drawing
 Imports System.IO
@@ -181,8 +166,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataCache.GetFileName"/>"
         ''' -------------------------------------------------------------------
-        Public Function GetFileName(ds As ISpatialDataSet, _
-                                    ptfTL As PointF, ptfBR As PointF, dCellSize As Double, time As DateTime, _
+        Public Function GetFileName(ds As ISpatialDataSet,
+                                    ptfTL As PointF, ptfBR As PointF, dCellSize As Double, time As DateTime,
                                     strFilter As String, strExt As String) As String _
                                 Implements ISpatialDataCache.GetFileName
 
@@ -233,8 +218,8 @@ Namespace SpatialData
         ''' if missing.</param>
         ''' <returns>A cache path.</returns>
         ''' -------------------------------------------------------------------
-        Private Function GetCacheFolder(ds As ISpatialDataSet, _
-                                        ptfTL As PointF, ptfBR As PointF, _
+        Private Function GetCacheFolder(ds As ISpatialDataSet,
+                                        ptfTL As PointF, ptfBR As PointF,
                                         dCellSize As Double, bCreateIfMissing As Boolean) As String
 
             ' Sanity checks
@@ -244,7 +229,7 @@ Namespace SpatialData
             Debug.Assert(Not ptfTL.Equals(ptfBR), "Need non-empty bounding box")
 
             Dim strDSFolder As String = Me.GetCacheFolder(ds)
-            Dim strBoxFolder As String = Path.Combine(strDSFolder, _
+            Dim strBoxFolder As String = Path.Combine(strDSFolder,
                                                       cStringUtils.Localize("[{0},{1}-{2},{3}]", cStringUtils.FormatSingle(ptfTL.X), cStringUtils.FormatSingle(ptfBR.Y), cStringUtils.FormatSingle(ptfBR.X), cStringUtils.FormatSingle(ptfTL.Y)))
             Dim strCacheFolder As String = System.IO.Path.Combine(strBoxFolder, cStringUtils.FormatSingle(CSng(dCellSize)))
 
@@ -325,7 +310,7 @@ Namespace SpatialData
                 Try
                     Dim astrBits As String() = strPath.Split(Path.DirectorySeparatorChar)
                     guid = System.Guid.Parse(astrBits(astrBits.Length - 1))
-                    bValid = Not guid.Empty.Equals(guid)
+                    bValid = Not Guid.Empty.Equals(guid)
                 Catch ex As Exception
                     ' Totally false, lol
                     bValid = False

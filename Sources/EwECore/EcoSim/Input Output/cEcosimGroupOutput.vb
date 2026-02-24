@@ -1,22 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.ValueWrapper
 Imports Microsoft.Extensions.Logging
@@ -80,7 +64,6 @@ Public Class cEcosimGroupOutput
 
     End Sub
 
-
     Public Sub Init()
 
         'the results arrays of ecosim are redim for each run
@@ -90,7 +73,6 @@ Public Class cEcosimGroupOutput
 
         'jb 15-Nov-2010 Force the garbage collection on the memory that was released above
         GC.Collect()
-
 
         'cEcosimDataStrucures.ResultsOverTime(var,group,time) Var and Group are fixed
         Me.m_coreData.Add(eVarNameFlags.EcosimBiomass, New c3DResultsWrapper2Fixed(Me.m_simData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
@@ -150,7 +132,6 @@ Public Class cEcosimGroupOutput
 
 #Region "Overridden base class methods"
 
-
     Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
         If Not Me.m_coreData.ContainsKey(VarName) Then
@@ -206,7 +187,6 @@ Public Class cEcosimGroupOutput
 #End Region
 
 #Region "Properties via dot operator"
-
 
     ''' <summary>
     ''' Is the catch on this group aggregated across all the fleets.
@@ -457,13 +437,11 @@ Public Class cEcosimGroupOutput
         End Get
     End Property
 
-
     Public ReadOnly Property LandingsByFleet(iFleetIndex As Integer, iTime As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.EcosimLandingsGroupGear, iFleetIndex, iTime))
         End Get
     End Property
-
 
 #End Region
 
@@ -508,7 +486,6 @@ Public Class cEcosimGroupOutput
         End Get
 
     End Property
-
 
     Public ReadOnly Property Consumption(iPredGroup As Integer, iTime As Integer) As Single
         Get
@@ -558,7 +535,6 @@ Public Class cEcosimGroupOutput
         End Set
     End Property
 
-
     Public Property CatchStart(iFleet As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.EcosimGroupCatchStart, iFleet))
@@ -569,7 +545,6 @@ Public Class cEcosimGroupOutput
         End Set
     End Property
 
-
     Public Property CatchEnd(iFleet As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.EcosimGroupCatchEnd, iFleet))
@@ -579,7 +554,6 @@ Public Class cEcosimGroupOutput
             Me.SetVariable(eVarNameFlags.EcosimGroupCatchEnd, value, iFleet)
         End Set
     End Property
-
 
     Public Property ValueStart(iFleet As Integer) As Single
         Get

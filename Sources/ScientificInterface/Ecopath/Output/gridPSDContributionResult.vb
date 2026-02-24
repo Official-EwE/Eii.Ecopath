@@ -1,34 +1,18 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
-    
     Public Class gridPSDContributionResult
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Private m_frm As Form = Nothing
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
@@ -132,7 +116,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New cEwERowHeaderCell("")
-            Me(iRow, 1) = New cEwERowHeaderCell(sharedResources.HEADER_SUM)
+            Me(iRow, 1) = New cEwERowHeaderCell(SharedResources.HEADER_SUM)
             For iGroup As Integer = 1 To Me.Core.nLivingGroups
                 If Me.IsGroupSelected(iGroup) Then
                     source = Me.Core.EcopathGroupOutputs(iGroup)

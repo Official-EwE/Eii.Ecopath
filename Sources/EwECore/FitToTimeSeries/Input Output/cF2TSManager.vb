@@ -1,23 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports System.Threading
@@ -47,8 +30,6 @@ Public Class cF2TSManager
     Private m_runstepHandler As RunStepDelegate = Nothing
     Private m_runstoppedHandler As RunStoppedDelegate = Nothing
     Private m_runModelHandler As RunModelDelegate = Nothing
-
-
 
     'Messaging 
     'list of messages sent from the model
@@ -231,7 +212,6 @@ Public Class cF2TSManager
         Me.Clear()
     End Sub
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Stores the values in the manager back to the underlying data structures.
@@ -406,7 +386,6 @@ Public Class cF2TSManager
         End Set
     End Property
 
-
     ''' <summary>
     ''' Number of data points for the AIC indicator
     ''' </summary>
@@ -421,7 +400,6 @@ Public Class cF2TSManager
             Me.SetVariable(eVarNameFlags.F2TSNAICData, value)
         End Set
     End Property
-
 
     Public ReadOnly Property nTimeSeriesYears() As Integer
         Get
@@ -523,7 +501,6 @@ Public Class cF2TSManager
         End Get
     End Property
 
-
     ''' <summary>
     ''' Block the calling thread until the model has finished running
     ''' </summary>
@@ -532,7 +509,6 @@ Public Class cF2TSManager
         Return Me.m_nonBlockingWait.Wait(WaitTimeInMilSec)
     End Function
 
-
     Public Sub ReleaseWait() Implements IThreadedProcess.ReleaseWait
         Me.m_nonBlockingWait.ReleaseWait()
     End Sub
@@ -540,7 +516,6 @@ Public Class cF2TSManager
     Public Sub SetWait() Implements IThreadedProcess.SetWait
         Me.m_nonBlockingWait.SetWait()
     End Sub
-
 
     Private Function isRefDataLoaded() As Boolean
 
@@ -960,7 +935,6 @@ Public Class cF2TSManager
 
     End Sub
 
-
     ''' <summary>
     ''' Delegate handler called by the model when the run has stopped
     ''' </summary>
@@ -996,7 +970,6 @@ Public Class cF2TSManager
             m_logger.LogError(ex, "Error during RunStoppedCallback()")
             Debug.Assert(False, ex.Message)
         End Try
-
 
     End Sub
 
@@ -1059,7 +1032,6 @@ Public Class cF2TSManager
 
         End Try
     End Sub
-
 
     ''' <summary>
     ''' Delegate handler for Model to add a message to the managers list of messages

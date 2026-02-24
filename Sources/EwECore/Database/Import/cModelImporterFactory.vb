@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 Imports EwECore.Database
@@ -40,8 +25,8 @@ Public Class cModelImporterFactory
     ''' <returns>A <see cref="cEwE5ModelImporter">EwE5 model importer</see>, if
     ''' all went well, or Nothing otherwise.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetModelImporter(core As cCore, _
-                                            strSource As String, _
+    Public Shared Function GetModelImporter(core As cCore,
+                                            strSource As String,
                                             pm As cPluginManager) As IModelImporter
 
         If (strSource.ToLower().StartsWith("ewe-ecobase:")) Then

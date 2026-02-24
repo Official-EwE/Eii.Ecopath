@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Strict Off ' OUCH
 
@@ -281,7 +266,6 @@ Public Class cEcopathDataStructures
     ''' <summary>Fate of discards (by fleet, #detritus)</summary>
     Public DiscardFate(,) As Single
 
-
     ''' <summary>Landinged biomass (by fleet,group)</summary>
     Public Landing(,) As Single
     ''' <summary>Market value of landings (by fleet,group)</summary>
@@ -291,7 +275,6 @@ Public Class cEcopathDataStructures
     Public PropDiscard(,) As Single
     ''' <summary>Proportion of regulated discards that die (by fleet, group)</summary>
     Public PropDiscardMort(,) As Single ' gear group 0-1
-
 
     Public RTZ As Single 'sum of respiration
     Public Consum As Single
@@ -421,7 +404,6 @@ Public Class cEcopathDataStructures
             Debug.Assert(False, Me.ToString & ".redimGroups Error: " & ex.Message)
         End Try
 
-
     End Function
 
     ''' <summary>
@@ -541,7 +523,6 @@ Public Class cEcopathDataStructures
 
         Return True
     End Function
-
 
     ''' <summary>
     ''' Redimension all fishing variables
@@ -685,7 +666,6 @@ Public Class cEcopathDataStructures
         End Try
 
     End Function
-
 
     ''' <summary>
     '''     Computes 

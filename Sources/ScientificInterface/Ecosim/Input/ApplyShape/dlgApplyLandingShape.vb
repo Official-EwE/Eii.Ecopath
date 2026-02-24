@@ -1,30 +1,10 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 Namespace Ecosim
 
@@ -103,7 +83,7 @@ Namespace Ecosim
         ''' be a fleet or a group depending on the <paramref name="editMode"/>.</param>
         ''' <param name="editMode">Flag stating how this group should be interpreted.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(uic As cUIContext, _
+        Public Sub New(uic As cUIContext,
                        iTarget As Integer, editMode As eEditMode)
 
             Me.Init(uic, editMode)
@@ -169,8 +149,8 @@ Namespace Ecosim
             ' Set labels
             Select Case Me.m_editMode
                 Case eEditMode.FleetGroup
-                    Me.Text = cStringUtils.Localize(My.Resources.CAPTION_PRICEELASTICITY_LANDING, _
-                                            Me.m_iSelFleet, Me.m_strSelFleet, _
+                    Me.Text = cStringUtils.Localize(My.Resources.CAPTION_PRICEELASTICITY_LANDING,
+                                            Me.m_iSelFleet, Me.m_strSelFleet,
                                             Me.m_iSelGroup, Me.m_strSelGroup)
                 Case eEditMode.Group
                     Me.Text = cStringUtils.Localize(My.Resources.CAPTION_PRICEELASTICITY_GROUP, Me.m_iSelGroup, Me.m_strSelGroup)
@@ -310,7 +290,7 @@ Namespace Ecosim
         ''' <param name="uic"></param>
         ''' <param name="editMode"></param>
         ''' -------------------------------------------------------------------
-        Private Sub Init(uic As cUIContext, _
+        Private Sub Init(uic As cUIContext,
                          editMode As eEditMode)
 
             Me.InitializeComponent()
@@ -409,7 +389,7 @@ Namespace Ecosim
                 Next
 
                 ' Not found, and still room for more?
-                If (Not bFound) And _
+                If (Not bFound) And
                    (iNumApplied < Me.m_InteractionManager.MaxNShapes) Then
                     ' #Yes: add
                     itemSrc = New ListViewItem(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, shapeSelected.Index, shapeSelected.Name))

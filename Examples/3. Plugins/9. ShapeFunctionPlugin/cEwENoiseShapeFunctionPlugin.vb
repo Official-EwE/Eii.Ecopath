@@ -18,14 +18,10 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
 Imports EwECore
-Imports EwEPlugin
-Imports EwEUtils.Core
-
-#End Region ' Imports
+Imports EwECore.Common
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecosim
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -34,7 +30,7 @@ Imports EwEUtils.Core
 ''' ---------------------------------------------------------------------------
 Public Class cEwENoiseShapeFunctionPlugin
     Inherits cShapeFunction
-    Implements EwEPlugin.IEcosimShapeFunctionPlugin
+    Implements IEcosimShapeFunctionPlugin
 
 #Region " Internal vars "
 
@@ -48,42 +44,42 @@ Public Class cEwENoiseShapeFunctionPlugin
 #Region " Generic plug-in bits "
 
     Public ReadOnly Property Name As String _
-        Implements EwEPlugin.IPlugin.Name
+        Implements IPlugin.Name
         Get
             Return "EwE6.example.shapefunction.noise"
         End Get
     End Property
 
     Public ReadOnly Property Author As String _
-        Implements EwEPlugin.IPlugin.Author
+        Implements IPlugin.Author
         Get
             Return "EwE development team / Ecopath International Initiative"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String _
-        Implements EwEPlugin.IPlugin.Contact
+        Implements IPlugin.Contact
         Get
             Return "mailto:ewedevteam@gmail.com"
         End Get
     End Property
 
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.DisplayName
         Get
             Return My.Resources.NAME_NOISE
         End Get
     End Property
 
     Public ReadOnly Property Description As String _
-        Implements EwEPlugin.IPlugin.Description
+        Implements IPlugin.Description
         Get
             Return My.Resources.DESCRIPTION_NOISE
         End Get
     End Property
 
     Public Sub Initialize(core As Object) _
-        Implements EwEPlugin.IPlugin.Initialize
+        Implements IPlugin.Initialize
         Try
             Me.m_core = DirectCast(core, cCore)
             Me.Defaults()

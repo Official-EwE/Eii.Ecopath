@@ -1,27 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Controls
 
@@ -54,36 +33,36 @@ Namespace Controls
             Private m_strHyperlink As String = ""
             Private m_time As Date
 
-            Public Sub New(strText As String, _
-                           strHyperlink As String, _
+            Public Sub New(strText As String,
+                           strHyperlink As String,
                            time As Date)
                 MyBase.New(strText)
                 Me.m_strHyperlink = strHyperlink
                 Me.m_time = time
             End Sub
 
-            Public Sub New(strText As String, _
-                           strHyperlink As String, _
-                           time As Date, _
+            Public Sub New(strText As String,
+                           strHyperlink As String,
+                           time As Date,
                            children() As TreeNode)
                 MyBase.New(strText, children)
                 Me.m_strHyperlink = strHyperlink
             End Sub
 
-            Public Sub New(strText As String, _
-                           strHyperlink As String, _
-                           time As Date, _
-                           imageindex As Integer, _
+            Public Sub New(strText As String,
+                           strHyperlink As String,
+                           time As Date,
+                           imageindex As Integer,
                            selectedImageIndex As Integer)
-                MyBase.new(strText, imageindex, selectedImageIndex)
+                MyBase.New(strText, imageindex, selectedImageIndex)
                 Me.m_strHyperlink = strHyperlink
             End Sub
 
-            Public Sub New(strText As String, _
-                           strHyperlink As String, _
-                           imageindex As Integer, _
-                           time As Date, _
-                           selectedImageIndex As Integer, _
+            Public Sub New(strText As String,
+                           strHyperlink As String,
+                           imageindex As Integer,
+                           time As Date,
+                           selectedImageIndex As Integer,
                            children() As TreeNode)
                 MyBase.New(strText, imageindex, selectedImageIndex, children)
                 Me.m_strHyperlink = strHyperlink

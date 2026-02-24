@@ -1,30 +1,9 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwEUtils.Utilities
-
-
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -756,7 +735,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> if the line number
     ''' is irrelevant.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub ReportError(strError As String, _
+    Private Sub ReportError(strError As String,
                             Optional iLineNumber As Integer = cCore.NULL_VALUE)
 
         ' Flag line error if possible
@@ -995,7 +974,7 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' This method has been deprecated in favour of <see cref="NumPoints"/>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    <Obsolete("Use NumPoints instead")> _
+    <Obsolete("Use NumPoints instead")>
     Public ReadOnly Property NumYears() As Integer
         Get
             Return Me.NumPoints

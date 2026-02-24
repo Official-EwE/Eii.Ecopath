@@ -1,27 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace DataSources
 
@@ -90,7 +69,7 @@ Namespace DataSources
         ''' <param name="iScenarioID">Database ID to save the current scenario to.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function SaveEcosimScenarioAs(strScenarioName As String, strDescription As String, _
+        Function SaveEcosimScenarioAs(strScenarioName As String, strDescription As String,
                 strAuthor As String, strContact As String, ByRef iScenarioID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
@@ -104,7 +83,7 @@ Namespace DataSources
         ''' <param name="iScenarioID">Database ID assigned to the new scenario.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendEcosimScenario(strScenarioName As String, strDescription As String, _
+        Function AppendEcosimScenario(strScenarioName As String, strDescription As String,
                 strAuthor As String, strContact As String, ByRef iScenarioID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
@@ -178,13 +157,13 @@ Namespace DataSources
         ''' <param name="iDatasetID">Database ID assigned to the new dataset.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendTimeSeriesDataset(strDatasetName As String, _
-                                         strDescription As String, _
-                                         strAuthor As String, _
-                                         strContact As String, _
-                                         iFirstYear As Integer, _
-                                         iNumPoints As Integer, _
-                                         interval As eTSDataSetInterval, _
+        Function AppendTimeSeriesDataset(strDatasetName As String,
+                                         strDescription As String,
+                                         strAuthor As String,
+                                         strContact As String,
+                                         iFirstYear As Integer,
+                                         iNumPoints As Integer,
+                                         interval As eTSDataSetInterval,
                                          ByRef iDatasetID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------

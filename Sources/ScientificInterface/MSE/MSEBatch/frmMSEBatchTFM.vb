@@ -1,24 +1,8 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
-
 
 Public Class frmMSEBatchTFM
 
@@ -58,9 +42,7 @@ Public Class frmMSEBatchTFM
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.Ecosim}
 
-
     End Sub
-
 
     Private Sub txNTFM_TextChanged(sender As System.Object, e As System.EventArgs) Handles txNTFM.TextChanged
 
@@ -85,7 +67,6 @@ Public Class frmMSEBatchTFM
 
     End Sub
 
-
     Private Sub UpDwnIter_ValueChanged(sender As System.Object, e As System.EventArgs) Handles UpDwnIter.ValueChanged
         Dim iter As Integer = CInt(Me.UpDwnIter.Value)
         If Me.m_BatchManager Is Nothing Then Exit Sub
@@ -93,7 +74,6 @@ Public Class frmMSEBatchTFM
             Me.grdGroups.iCurIter = iter
         End If
     End Sub
-
 
     Private Sub OnIterCalcTypeChanged(sender As System.Object, e As System.EventArgs) _
           Handles rbCalcTypePercent.CheckedChanged, rbCalcTypeValue.CheckedChanged
@@ -133,13 +113,11 @@ Public Class frmMSEBatchTFM
 
     End Sub
 
-
     Private Sub cbGroups_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cbGroups.SelectedIndexChanged
         If Me.m_BatchManager Is Nothing Then Exit Sub
         Dim grp As cCoreInputOutputBase = DirectCast(Me.cbGroups.SelectedItem, cCoreInputOutputControlItem).Source
         Me.grdIters.iSelGroup = grp.Index
     End Sub
-
 
     Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
         Dim brefresh As Boolean
@@ -164,8 +142,8 @@ Public Class frmMSEBatchTFM
 
                     'Has one of the iteration values has been edited
                     For Each var As cVariableStatus In msg.Variables
-                        If var.VarName = eVarNameFlags.MSETFMFOptValues Or _
-                           var.VarName = eVarNameFlags.MSETFMBLimValues Or _
+                        If var.VarName = eVarNameFlags.MSETFMFOptValues Or
+                           var.VarName = eVarNameFlags.MSETFMBLimValues Or
                            var.VarName = eVarNameFlags.MSETFMBBaseValues Then
                             brefresh = True
                             Exit For
@@ -179,10 +157,8 @@ Public Class frmMSEBatchTFM
 
                 End If
 
-
         End Select
 
     End Sub
-
 
 End Class

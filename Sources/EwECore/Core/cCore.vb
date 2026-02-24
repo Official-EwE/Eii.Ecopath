@@ -1,24 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports System.Text
@@ -41,9 +23,6 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
-
 
 
 #Disable Warning IDE0017 ' Suppress "Object initialization can be simplified" 
@@ -194,7 +173,6 @@ Public Class cCore
     Private m_ArenaManager As cEcosimArenaManager = Nothing
     Private Shared ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cCore)()
 
-
 #If Not NET Then
     Private m_license As cLicense = Nothing
 #End If
@@ -319,7 +297,6 @@ Public Class cCore
             m_logger.LogError(ex, "GetCoreCounter {counterType}", counterType)
             Debug.Assert(False, Me.ToString & ".getCoreCounter() Error: " & ex.Message)
         End Try
-
 
     End Function
 
@@ -1299,7 +1276,6 @@ Public Class cCore
 
     End Function
 
-
     Private Sub InitThreadedProcesses()
         Try
 
@@ -1344,7 +1320,6 @@ Public Class cCore
 
             'the Ecopath Data belongs to the core instead of Ecopath so that it can be shared by all the models
             Me.m_Ecopath.EcopathData = Me.m_EcopathData
-
 
             'protect against error loading the validators
             Try
@@ -2013,7 +1988,6 @@ Public Class cCore
         End If
         Return bSucces
     End Function
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -3156,7 +3130,6 @@ Public Class cCore
         Me.m_dgtStop = dgt
     End Sub
 
-
     ''' <summary>
     ''' Sets a delegate that a Manager can use to pump messages in the interface waiting for a process/thread to complete.
     ''' </summary>
@@ -3390,7 +3363,6 @@ Public Class cCore
             Return Me.m_EcospaceData
         End Get
     End Property
-
 
     ''' <summary>Flag to affect which groups to auto-save data for.</summary>
     ''' <remarks>Values are set by the UI. This logic is currently only used by the Ecospace result writers.</remarks>
@@ -4237,7 +4209,6 @@ Public Class cCore
                 output.EEOutput = CSng(m_EcopathData.EE(iGroup))
                 output.GEOutput = CSng(m_EcopathData.GE(iGroup))
 
-
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'mortality coefficients are computed when they are needed
                 'see Ewe-5 code frmPasicParams.DisplayMortalityCoefficients() for original code
@@ -4796,7 +4767,6 @@ Public Class cCore
         End Try
 
     End Function
-
 
     Friend Function LoadEcopathFleetOutputs() As Boolean
         Dim iFleet As Integer
@@ -6876,7 +6846,6 @@ Public Class cCore
         Return True
     End Function
 
-
     Friend Sub InitEcosimLinks()
 
         ' ToDo: protect this
@@ -7047,7 +7016,6 @@ Public Class cCore
                 Return False
             End If
 
-
             Me.m_SearchData.RedimToSimScenario(Me.nEcosimYears)
 
             '  Me.m_EcoSimData.Debug_InitEcosimResponse()
@@ -7195,7 +7163,6 @@ Public Class cCore
 
         Me.m_EcosimEnviroResponseManager.Clear()
         Me.m_EcosimMortalityResponseManager.Clear()
-
 
         ' Invoke plugin point to allow plug-ins to clean up now Ecosim has gone
         If (Me.PluginManager IsNot Nothing) Then
@@ -7660,7 +7627,6 @@ Public Class cCore
         Dim sBio As Single, EndBio As Single, sCatch As Single, EndCatch As Single
         Dim sVal As Single, endVal As Single
 
-
         For Each group As cEcosimGroupOutput In m_EcoSimGroupOutputs
 
             'reset the reference to the sim results arrays
@@ -7813,7 +7779,6 @@ Public Class cCore
         End Get
     End Property
 
-
     Public ReadOnly Property EcosimArenaManager() As cEcosimArenaManager
         Get
             Return Me.m_ArenaManager
@@ -7832,8 +7797,6 @@ Public Class cCore
         End Get
     End Property
 
-
-
     Public ReadOnly Property EnviroResponseShapeManager() As cEnviroResponseShapeManager
 
         Get
@@ -7849,7 +7812,6 @@ Public Class cCore
 
     End Property
 
-
     'Public ReadOnly Property EcosimEnviroResponseShapeManager() As cEcosimResponseShapeManager
 
     '    Get
@@ -7864,8 +7826,6 @@ Public Class cCore
     '    End Get
 
     'End Property
-
-
 
     ''' <summary>
     ''' Update all the underlying data structures that contain EcoSim scenario data
@@ -7914,7 +7874,6 @@ Public Class cCore
             m_EcoSimData.SwitchPower(iGroup) = group.SwitchingPower
             m_EcoSimData.PaddP(iGroup) = group.AdditivePredationMortality
 
-
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
                 m_EcoSimData.VulMult(iGroup, iPred) = group.VulMult(iPred)
@@ -7962,7 +7921,6 @@ Public Class cCore
             ''For it As Integer = 1 To Me.nEcosimTimeSteps
             'Me.m_Ecosim.SetFtimeFromGear(arrayValue.iThirdIndex, QYear, True)
             'Next
-
 
         Catch ex As Exception
             m_logger.LogError("UpdateEcoSimFleetInput. Error updating EcoSim fleet data: {message}", ex.Message)
@@ -8032,7 +7990,6 @@ Public Class cCore
             m_logger.LogError("StopEcoSim. Error stopping EcoSim model: {message}", ex.Message)
         End Try
     End Sub
-
 
     ''' <summary>
     ''' Change the number of years the ecosim model runs for
@@ -8122,7 +8079,6 @@ Public Class cCore
             Throw New ApplicationException("Error changing number of Ecosim years.", ex)
         End Try
 
-
     End Sub
 
 #Region "EcoSim multi threading"
@@ -8154,7 +8110,6 @@ Public Class cCore
                                         ProgressDelegate As EcoSim.EcoSimTimeStepDelegate,
                                         CompletedDelegate As EcoSim.EcoSimCompletedDelegate) As Boolean
 
-
         Try
 
             m_publisher.bHoldMessages = True
@@ -8171,7 +8126,6 @@ Public Class cCore
                     Return False
                 End If 'If mEcoSimThread.IsAlive Then
             End If 'If Not mEcoSimThread Is Nothing Then
-
 
             'Progress delegate from the user interface this is what will get called by Me.EcoSimProgress_handler(...) from cEcoSim.ProcessTimeStep(...)
             m_InterfaceDelegate = ProgressDelegate
@@ -8204,7 +8158,6 @@ Public Class cCore
         Return True
 
     End Function
-
 
        ''' <summary>
     ''' Run the EcoSim Model
@@ -8239,10 +8192,7 @@ Public Class cCore
 
         'End Try
 
-
-
     End Sub
-
 
         ''' <summary>
     ''' Delegate handler for the current EcoSim time-step. Marshalls data from the EcoSim thread to the User Interface thread.
@@ -8276,9 +8226,7 @@ Public Class cCore
 
         End Try
 
-
     End Sub
-
 
 #End If
 
@@ -8677,8 +8625,6 @@ Public Class cCore
 
     'End Function
 
-
-
 #If 0 Then
 
     ''' <summary>
@@ -8902,7 +8848,6 @@ Public Class cCore
         Return Me.m_Ecosim.EstimateVulnerabilities(iGroup, PotGrowth, FWMax, estimates)
     End Function
 
-
     Public Sub SetFtimeFromGear(t As Integer, QYear() As Single, PredEffort As Boolean)
         Try
             Me.m_Ecosim.SetFtimeFromGear(t, QYear, PredEffort)
@@ -9028,7 +8973,6 @@ Public Class cCore
         m_mapInteractionManager = New cEcospaceEnviroResponseManager(Me)
         m_mapInteractionManager.Init(Me.m_EcospaceData, Me.m_EcoSimData.CapEnvResData)
 
-
         'jb Moved to InitEcosim
         'm_EcosimEnviroResponseManager = New cEcosimEnviroResponseManager(Me)
         'jb Use the Ecospace Environmental Response functions for now
@@ -9036,7 +8980,6 @@ Public Class cCore
         'm_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.EcosimEnvResFunctions)
         'm_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.CapEnvResData)
         'Me.m_EcoSim.EcosimEnviroResponseManager = m_EcosimEnviroResponseManager
-
 
         'm_EcosimMortalityResponseManager = New cEcosimMortalityResponseManager(Me)
         'jb Use the Ecospace Environmental Response functions for now
@@ -9046,7 +8989,6 @@ Public Class cCore
 
         m_mapMortalityManager = New cEcospaceMortalityResponseManager(Me)
         m_mapMortalityManager.Init(Me.m_EcospaceData, Me.m_EcoSimData.CapEnvResData)
-
 
         'm_EcosimEnviroResponseManager = New cEcosimEnviroResponseManager(Me)
         ''jb Use the Ecospace Environmental Response functions for now
@@ -9148,7 +9090,7 @@ Public Class cCore
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Convert an Ecospace time step to absolute time.
+    ''' Convert an Ecosim time step to absolute time.
     ''' </summary>
     ''' <param name="iTime">The Ecospace time step to convert.</param>
     ''' <returns>The absolute time represented by a time step.</returns>
@@ -9166,7 +9108,7 @@ Public Class cCore
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Convert an absolute time to an Ecospace time step.
+    ''' Convert an absolute time to an Ecosim time step.
     ''' </summary>
     ''' <param name="dt">The date to convert to a time step.</param>
     ''' <returns></returns>
@@ -9378,7 +9320,6 @@ Public Class cCore
         End Get
     End Property
 
-
     Private Sub onEcoSpaceRunCompleted(Succeeded As Boolean)
 
         Try
@@ -9499,7 +9440,6 @@ Public Class cCore
         Return True
 
     End Function
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -9683,7 +9623,6 @@ Public Class cCore
 
     End Function
 
-
     'Private Sub CheckEcosimCatchability()
 
     '    Dim bUpdate As Boolean = False
@@ -9779,12 +9718,11 @@ Public Class cCore
 
                 Next igrp
 
-                Me.SaveEcospaceENA(m_spaceresults)
-
                 'Save to the current writer always (saveannual = false) or once per year (saveannual=true) for the first time step
                 'Default is to save every time step
                 If (iTime >= EcospaceModelParameters.FirstOutputTimeStep) Then
                     If ((iTime - EcospaceModelParameters.FirstOutputTimeStep) Mod CInt(EcospaceModelParameters.NumberOfTimeStepsPerYear) = 0) Or (Me.m_EcospaceData.SaveAnnual = False) Then
+                        Me.SaveEcospaceENA(m_spaceresults)
                         Me.SaveEcospaceResults(Me.m_spaceresults)
                     End If
                 End If
@@ -10361,7 +10299,6 @@ Public Class cCore
             Me.m_EcospaceData.isCapacityChanged = True
             Me.m_EcospaceData.setHabCapGroupIsChanged(True)
 
-
             'hardwire some capacity maps for debugging
             Me.m_EcospaceData.setDebugCapMaps(Me.m_EcoSimData.CapEnvResData)
             Debug.Print("Ecospace Shapemanager Init")
@@ -10409,7 +10346,6 @@ Public Class cCore
 
             bSuccess = bSuccess And Me.CapacityMapInteractionManager.Load()
             bSuccess = bSuccess And Me.MortalityMapInteractionManager.Load()
-
 
             Me.m_EcospaceStats = New cEcospaceStats(Me, cCore.NULL_VALUE)
             'For debugging add the RelCin Layer to the Capacity maps
@@ -10680,7 +10616,6 @@ Public Class cCore
         ' Return succes
         Return bSucces
     End Function
-
 
     ''' <summary>
     ''' Update all the underlying data structures that contain Ecospace scenario data
@@ -11129,7 +11064,6 @@ Public Class cCore
             Return False
         End Try
 
-
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -11258,7 +11192,6 @@ Public Class cCore
             'load a new results object for the new scenario
             m_spaceresults = New cEcospaceTimestep(Me, Me.m_EcoSimData, Me.m_EcospaceData, Me.m_Stanza)
 
-
             'in the other InitEcospacexxxx the data is loaded during the init
             'for the output LoadEcospaceResults() is not called until the model has successfully run 
 
@@ -11266,7 +11199,6 @@ Public Class cCore
             Debug.Assert(False, Me.ToString & ".InitEcospaceOutputs() Error: " & ex.Message)
         End Try
     End Sub
-
 
     Private Sub initEcospaceResultsWriters()
         'Output writing
@@ -11282,7 +11214,6 @@ Public Class cCore
             End Try
         Next
     End Sub
-
 
     Private Sub LoadEcospaceResults()
         'see cEcoSpace.ScaleAfterNumStep(), summarizeCatchData() and summarizeTimeStepData()
@@ -11317,7 +11248,6 @@ Public Class cCore
                 m_EcospaceData.getSumValueFleet(flt.Index, stVal, endVal)
                 flt.ValueStart = stVal
                 flt.ValueEnd = endVal
-
 
                 m_EcospaceData.getSumEffortES(flt.Index, stVal)
                 flt.EffortES = stVal
@@ -11356,7 +11286,6 @@ Public Class cCore
                     Next iflt
 
                 Next igrp
-
 
             Next rgn
 
@@ -12053,7 +11982,6 @@ Public Class cCore
 
         Return bsucces
     End Function
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -13177,7 +13105,6 @@ Public Class cCore
 
             Me.m_tracerData.MaxTimeSteps = Me.m_EcotracerModelParameters.MaxTimeSteps
 
-
         Catch ex As Exception
             m_logger.LogError(ex, "UpdateEcotracerModelParameters. Exception:{message}", ex.Message)
             Debug.Assert(False, "EcoSim Parameters will not be set Error: " & ex.Message)
@@ -13238,7 +13165,6 @@ Public Class cCore
             Debug.Assert(False, Me.ToString & ".InitEcotracerGroups() Error: " & ex.Message)
             Return False
         End Try
-
 
     End Function
 
@@ -13314,7 +13240,6 @@ Public Class cCore
         Return True
 
     End Function
-
 
     Private Sub loadEcotracerResults()
 
@@ -13801,7 +13726,6 @@ Public Class cCore
 
     End Sub
 
-
     ''' <summary>
     ''' Have the core Validate a cValue object
     ''' </summary>
@@ -13922,11 +13846,9 @@ Public Class cCore
 
                 End If
 
-
             Case eVarNameFlags.EcosimSumEnd, eVarNameFlags.EcosimSumStart, eVarNameFlags.EcosimSumNTimeSteps
 
                 Me.validateEcosimSummaryTimes(ValueObject)
-
 
             Case eVarNameFlags.MPAOptEndYear
                 'Last year of the MPA Optimization Search
@@ -13942,7 +13864,6 @@ Public Class cCore
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
-
 
             Case eVarNameFlags.MPAOptStartYear
                 'First year of the MPA Optimization Search
@@ -13983,7 +13904,6 @@ Public Class cCore
 
     End Function
 
-
     Private Sub validateEcosimSummaryTimes(ByRef ValueObject As cValue)
 
         Dim val As Single = CSng(ValueObject.Value)
@@ -14017,7 +13937,6 @@ Public Class cCore
             ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.ToString(ValueObject.varName), ValueObject.Value)
             ValueObject.ValidationStatus = eStatusFlags.FailedValidation
         End If
-
 
     End Sub
 
@@ -14055,7 +13974,6 @@ Public Class cCore
                         End If
 
                 End Select
-
 
             Case eDataTypes.EcoPathGroupInput
                 Debug.Assert(TypeOf obj Is cEcoPathGroupInput)
@@ -14099,7 +14017,6 @@ Public Class cCore
                 'all Fleet stuff is handled in PostVariableUpdated()
                 'The Case statement was just left here for reference
 
-
             Case eDataTypes.EcoSimModelParameter
                 Debug.Assert(TypeOf obj Is cEcoSimModelParameters)
                 Dim params As cEcoSimModelParameters = DirectCast(obj, cEcoSimModelParameters)
@@ -14122,7 +14039,6 @@ Public Class cCore
                             End If
                         End If
 
-
                 End Select
 
             Case eDataTypes.EcoSimGroupInput
@@ -14141,7 +14057,6 @@ Public Class cCore
                             Debug.Assert(False, "PostVariableValidation() setvulratecell error. " & ex.StackTrace)
                         End Try
 
-
                 End Select
 
             'Case eDataTypes.EcosimFleetInput
@@ -14157,12 +14072,10 @@ Public Class cCore
             '            Me.m_EcoSim.SetFtimeFromGear(arrayValue.iThirdIndex, QYear, True)
             '            'Next
 
-
             '        Catch ex As Exception
 
             '        End Try
             '    End If
-
 
             Case eDataTypes.EcospaceGroup
 
@@ -14349,11 +14262,9 @@ Public Class cCore
             Me.Cascade_Name(CStr(value.Value), obj, msg)
         End If
 
-
         ' Cascade PP changes across models
 
     End Sub
-
 
     ''' <summary>
     ''' A Variable has been validated succesfully and has been stored in the core. 
@@ -14572,7 +14483,6 @@ Public Class cCore
                     Case eVarNameFlags.UseIBM
                         Me.Set_IBM_Flags(emp)
 
-
                     Case eVarNameFlags.EcospaceNumberSummaryTimeSteps, eVarNameFlags.EcospaceSummaryTimeEnd, eVarNameFlags.EcospaceSummaryTimeStart
                         Me.LoadEcospaceResults()
 
@@ -14590,7 +14500,6 @@ Public Class cCore
                         Me.m_EcospaceData.ReDimEffortZones()
 
                 End Select 'Select Case value.varName
-
 
             Case eDataTypes.EcospaceGroup
 
@@ -14652,7 +14561,6 @@ Public Class cCore
                 'jb if the fisheries quotas are changed, make sure the status flags are reset 
                 'the client may have edited values that are not editable
                 obj.ResetStatusFlags()
-
 
             Case eDataTypes.MSEGroupInput
 
@@ -14815,7 +14723,6 @@ Public Class cCore
                         Me.m_publisher.AddMessage(New cMessage("Arenas modified", TypeOfChange, eCoreComponentType.Ecosim, eMessageImportance.Maintenance, eDataTypes.EcosimArenaShare))
                     End If
 
-
                 Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerHabitat
 
                     Me.m_Ecospace.UpdateDepthMap()
@@ -14959,7 +14866,6 @@ Public Class cCore
                                       eCoreComponentType.EcospaceMortalityResponseInteractionManager, eMessageImportance.Maintenance))
                     End If
 
-
                 Case eDataTypes.EcospaceSpatialDataConnection
                     Me.m_publisher.AddMessage(New cMessage("Spatial data configuration changed.", TypeOfChange, eCoreComponentType.Ecospace, eMessageImportance.Maintenance, eDataTypes.EcospaceSpatialDataConnection))
 
@@ -15000,7 +14906,6 @@ Public Class cCore
 
             'Ecospace map input map(s) may have change
             'Let Ecospace decide what to update in response
-
 
             If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
                 'Capacity layer has changed
@@ -15321,7 +15226,6 @@ Public Class cCore
 
     Friend m_MPAOptData As cMPAOptDataStructures
 
-
     Friend ReadOnly Property MPAOptData() As cMPAOptDataStructures
         Get
             Return m_MPAOptData
@@ -15344,7 +15248,6 @@ Public Class cCore
 #End Region
 
 #Region "MSE"
-
 
     Public ReadOnly Property MSEManager() As cMSEManager
         Get

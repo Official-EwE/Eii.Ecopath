@@ -16,15 +16,15 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-#Region " Imports "
-
-Option Strict On
-Imports EwEPlugin
+Imports System.Media
 Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.Ecospace
+Imports EwECore.Plugins.MonteCarlo
+Imports EwECore.Plugins.UI
 
-#End Region ' Imports
 
 Public Class cEwEJobDonePluginPoint
     Implements IAutoRunPlugin
@@ -86,23 +86,23 @@ Public Class cEwEJobDonePluginPoint
 
     Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
         ' Inform the world which run types we respond to
-        Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.EcoSpace}
+        Return New eCoreComponentType() {eCoreComponentType.Ecopath, eCoreComponentType.Ecosim, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.Ecospace}
     End Function
 
     Public Sub EcopathRunCompletedPost(ByRef EcopathDataStructures As Object) Implements IEcopathRunCompletedPostPlugin.EcopathRunCompletedPost
-        If Me.AutoRun(eCoreComponentType.EcoPath) Then
+        If Me.AutoRun(eCoreComponentType.Ecopath) Then
             Me.PlayNotification()
         End If
     End Sub
 
     Public Sub EcosimRunCompletedPost(EcosimDatastructures As Object) Implements IEcosimRunCompletedPostPlugin.EcosimRunCompletedPost
-        If Me.AutoRun(eCoreComponentType.EcoSim) Then
+        If Me.AutoRun(eCoreComponentType.Ecosim) Then
             Me.PlayNotification()
         End If
     End Sub
 
     Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements IEcospaceRunCompletedPlugin.EcospaceRunCompleted
-        If Me.AutoRun(eCoreComponentType.EcoSpace) Then
+        If Me.AutoRun(eCoreComponentType.Ecospace) Then
             Me.PlayNotification()
         End If
     End Sub
@@ -136,8 +136,7 @@ Public Class cEwEJobDonePluginPoint
 #Region " Notification "
 
     Private Sub PlayNotification()
-        cSoundUtilities.PlaySound(Windows.Forms.MessageBoxIcon.Information)
-        ' Would it not be nice to show a toast notification here? Needs integration into the Win10 API
+        SystemSounds.Asterisk.Play()
     End Sub
 
 #End Region ' Notification

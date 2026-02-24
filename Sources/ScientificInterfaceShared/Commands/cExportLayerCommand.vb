@@ -1,27 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Commands
 
@@ -40,7 +19,7 @@ Namespace Commands
         Public Shared cCOMMAND_NAME As String = "~exportLayer"
 
         Public Sub New(cmdh As cCommandHandler)
-            MyBase.new(cmdh, cExportLayerCommand.cCOMMAND_NAME)
+            MyBase.New(cmdh, cExportLayerCommand.cCOMMAND_NAME)
         End Sub
 
         ''' ---------------------------------------------------------------------------
@@ -54,7 +33,7 @@ Namespace Commands
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' <param name="alayers">The layers to export data from.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(alayers() As cEcospaceLayer, _
+        Public Overloads Sub Invoke(alayers() As cEcospaceLayer,
                                     Optional format As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default)
             Me.m_alayers = alayers
             Me.m_format = format

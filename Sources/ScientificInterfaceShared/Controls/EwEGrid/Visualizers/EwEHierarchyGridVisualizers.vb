@@ -1,23 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Controls.EwEGrid
 
@@ -27,9 +10,9 @@ Namespace Controls.EwEGrid
     ''' for rendering EwE hierarchical parent row header cells
     ''' </summary>
     ''' -------------------------------------------------------------------
-    
+
     Public Class cVisualizerEwECollapseExpandRowHeader
-        : Inherits cEwEGridRowHeaderVisualizer
+        Inherits cEwEGridRowHeaderVisualizer
 
         Public Enum eCollapsedState As Integer
             NoChildren = 0
@@ -38,7 +21,7 @@ Namespace Controls.EwEGrid
         End Enum
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
             Me.ImageAlignment = ContentAlignment.MiddleCenter
         End Sub
 
@@ -61,12 +44,12 @@ Namespace Controls.EwEGrid
     ''' for rendering EwE hierarchical parent row header cells
     ''' </summary>
     ''' -------------------------------------------------------------------
-    
+
     Public Class cVisualizerEwEParentRowHeader
-        : Inherits cEwEGridRowHeaderVisualizer
+        Inherits cEwEGridRowHeaderVisualizer
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
     End Class
@@ -77,15 +60,15 @@ Namespace Controls.EwEGrid
     ''' for rendering EwE hierarchical child row header cells
     ''' </summary>
     ''' -------------------------------------------------------------------
-    
+
     Public Class cVisualizerEwEChildRowHeader
-        : Inherits cEwEGridRowHeaderVisualizer
+        Inherits cEwEGridRowHeaderVisualizer
 
         ''' <summary>Size of label indentation</summary>
         Private Const cINDENT_SIZE As Integer = 20
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
             Me.Indentation = cVisualizerEwEChildRowHeader.cINDENT_SIZE
         End Sub
 

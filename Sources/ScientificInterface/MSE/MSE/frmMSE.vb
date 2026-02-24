@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.MSE
 Imports ZedGraph
@@ -272,7 +257,6 @@ Public Class frmMSE
 
     End Sub
 
-
     Private Sub onRunClick(sender As Object, e As System.EventArgs) Handles m_btRun.Click
 
         Try
@@ -282,7 +266,6 @@ Public Class frmMSE
         End Try
 
     End Sub
-
 
     ''' <summary>
     ''' Change the biomass assessment method based on the selected radio button
@@ -357,8 +340,6 @@ Public Class frmMSE
             System.Console.WriteLine(Me.ToString & ".AddMeanLineToGraph() Error: " & ex.Message)
         End Try
     End Sub
-
-
 
     Private Function nVisGroups() As Integer
         Dim n As Integer

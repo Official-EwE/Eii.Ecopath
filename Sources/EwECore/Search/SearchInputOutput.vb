@@ -1,28 +1,8 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.ValueWrapper
-
-
 
 Namespace SearchObjectives
 
@@ -81,7 +61,6 @@ Namespace SearchObjectives
                 Me.SetVariable(eVarNameFlags.FPSFleetJobCatchValue, value)
             End Set
         End Property
-
 
         Public Property TargetProfitability() As Single
             Get
@@ -232,10 +211,8 @@ Namespace SearchObjectives
 
 #Region "Groups "
 
-
     Public Class cSearchObjectiveGroupInput
         Inherits cCoreGroupBase
-
 
         Public Sub New(core As cCore, DBID As Integer)
             MyBase.New(core)
@@ -270,7 +247,6 @@ Namespace SearchObjectives
             Me.AllowValidation = True
 
         End Sub
-
 
         Public Property MandRelBiom() As Single
             Get
@@ -356,7 +332,6 @@ Namespace SearchObjectives
 
         End Sub
 
-
         Public Property DiscountRate() As Single
             Get
                 Return CSng(Me.GetVariable(eVarNameFlags.SearchDiscountRate))
@@ -366,7 +341,6 @@ Namespace SearchObjectives
                 Me.SetVariable(eVarNameFlags.SearchDiscountRate, value)
             End Set
         End Property
-
 
         Public Property GenDiscRate() As Single
             Get
@@ -378,7 +352,6 @@ Namespace SearchObjectives
             End Set
         End Property
 
-
         Public Property BaseYear() As Integer
             Get
                 Return CInt(Me.GetVariable(eVarNameFlags.SearchBaseYear))
@@ -389,7 +362,6 @@ Namespace SearchObjectives
             End Set
         End Property
 
-
         Public Property PrevCostEarning() As Boolean
             Get
                 Return CBool(Me.GetVariable(eVarNameFlags.SearchPrevCostEarning))
@@ -399,7 +371,6 @@ Namespace SearchObjectives
                 Me.SetVariable(eVarNameFlags.SearchPrevCostEarning, value)
             End Set
         End Property
-
 
         Public Property FishingMortalityPenalty() As Boolean
             Get

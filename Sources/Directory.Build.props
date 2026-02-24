@@ -1,7 +1,14 @@
 
 <Project>
-  <PropertyGroup>
-    <!-- Default for the repo; override in CI via /p -->
-    <UseProjectReferences>true</UseProjectReferences>
-  </PropertyGroup>
+	<Import Project="Version.props" />
+	<PropertyGroup>
+		<Version>$(EweVersion)</Version>
+		<AssemblyVersion>$(EweVersion)</AssemblyVersion>
+		<FileVersion>$(EweVersion)</FileVersion>
+		<InformationalVersion>$(EweVersion)</InformationalVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<!-- Default for the repo; override in CI via /p -->
+		<UseProjectReferences>true</UseProjectReferences>
+	</PropertyGroup>
 </Project>

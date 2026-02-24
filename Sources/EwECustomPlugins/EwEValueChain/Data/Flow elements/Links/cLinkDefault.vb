@@ -1,30 +1,10 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports EwECore.Database
 Imports EwEUtils.Utilities
-
-
 
 ''' ===========================================================================
 ''' <summary>
@@ -32,9 +12,9 @@ Imports EwEUtils.Utilities
 ''' between units in the flow.
 ''' </summary>
 ''' ===========================================================================
-<TypeConverter(GetType(cPropertySorter)), _
-    DefaultProperty("Name"), _
-    Serializable()> _
+<TypeConverter(GetType(cPropertySorter)),
+    DefaultProperty("Name"),
+    Serializable()>
 Public Class cLinkDefault
     Inherits cEwEDatabase.cOOPStorable
 
@@ -70,11 +50,11 @@ Public Class cLinkDefault
 
 #Region " Properties "
 
-    <Browsable(True), _
-       Category(cCATEGORY_GENERIC), _
-       DisplayName("Name"), _
-       Description("Name of this link"), _
-       cPropertySorter.PropertyOrder(1)> _
+    <Browsable(True),
+       Category(cCATEGORY_GENERIC),
+       DisplayName("Name"),
+       Description("Name of this link"),
+       cPropertySorter.PropertyOrder(1)>
     Public Overridable Property Name() As String
         Get
             Return ""
@@ -84,7 +64,7 @@ Public Class cLinkDefault
         End Set
     End Property
 
-    <Browsable(False)> _
+    <Browsable(False)>
     Public Property LinkType() As Integer
         Get
             Return Me.m_linkType
@@ -94,12 +74,12 @@ Public Class cLinkDefault
         End Set
     End Property
 
-    <Browsable(True), _
-     Category(cCATEGORY_TRANSFER), _
-     DisplayName("Biomass ratio"), _
-     Description("Ratio of biomass change (proportion, [0-1])"), _
-     DefaultValue(1.0!), _
-     cPropertySorter.PropertyOrder(1)> _
+    <Browsable(True),
+     Category(cCATEGORY_TRANSFER),
+     DisplayName("Biomass ratio"),
+     Description("Ratio of biomass change (proportion, [0-1])"),
+     DefaultValue(1.0!),
+     cPropertySorter.PropertyOrder(1)>
     Public Overridable Property BiomassRatio() As Single
         Get
             Return Me.m_sBiomassRatio
@@ -110,12 +90,12 @@ Public Class cLinkDefault
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(cCATEGORY_TRANSFER), _
-        DisplayName("Value per ton"), _
-        Description("Value per ton"), _
-        DefaultValue(1.0!), _
-        cPropertySorter.PropertyOrder(2)> _
+    <Browsable(True),
+        Category(cCATEGORY_TRANSFER),
+        DisplayName("Value per ton"),
+        Description("Value per ton"),
+        DefaultValue(1.0!),
+        cPropertySorter.PropertyOrder(2)>
     Public Overridable Property ValuePerTon() As Single
         Get
             Return Me.m_sValuePerTon
@@ -126,12 +106,12 @@ Public Class cLinkDefault
         End Set
     End Property
 
-    <Browsable(True), _
-        Category(cCATEGORY_TRANSFER), _
-        DisplayName("Value ratio"), _
-        Description("Value ratio, the ratio between value of product and value of raw material (the input to the previous box)"), _
-        DefaultValue(1.0!), _
-        cPropertySorter.PropertyOrder(3)> _
+    <Browsable(True),
+        Category(cCATEGORY_TRANSFER),
+        DisplayName("Value ratio"),
+        Description("Value ratio, the ratio between value of product and value of raw material (the input to the previous box)"),
+        DefaultValue(1.0!),
+        cPropertySorter.PropertyOrder(3)>
     Public Overridable Property ValueRatio() As Single
         Get
             Return Me.m_sValueRatio

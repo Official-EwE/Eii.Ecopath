@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
-' ===============================================================================
-'
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
@@ -29,8 +13,6 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-
-
 
 Public Class ucEcoEngineerConfigUI
     Implements IOptionsPage
@@ -418,7 +400,7 @@ Public Class ucEcoEngineerConfigUI
     ''' <param name="B">B parameter.</param>
     ''' <param name="C">C parameter.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub AddPreDefinedComplexityRule(ByVal strSpeciesName As String, ByVal strMask As String, _
+    Private Sub AddPreDefinedComplexityRule(ByVal strSpeciesName As String, ByVal strMask As String,
                                             ByVal A As Single, ByVal B As Single, ByVal C As Single)
 
         Dim strRuleName As String = strSpeciesName
@@ -605,10 +587,10 @@ Public Class ucEcoEngineerConfigUI
 
         For Each r As cComplexityRule In Me.m_cmbPreDefinedRules.Items
             If Not r.IsDefault Then
-                Dim strRule As String = String.Format("{0}|{1}|{2}|{3}", _
-                                                      r.Name.Replace("|", "-"), _
-                                                      cStringUtils.FormatSingle(r.A), _
-                                                      cStringUtils.FormatSingle(r.B), _
+                Dim strRule As String = String.Format("{0}|{1}|{2}|{3}",
+                                                      r.Name.Replace("|", "-"),
+                                                      cStringUtils.FormatSingle(r.A),
+                                                      cStringUtils.FormatSingle(r.B),
                                                       cStringUtils.FormatSingle(r.C))
                 My.Settings.PreDefined.Add(strRule)
             End If

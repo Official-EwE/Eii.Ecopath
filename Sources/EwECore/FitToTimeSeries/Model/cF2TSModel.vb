@@ -1,29 +1,11 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Ecosim
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
 
 Namespace FitToTimeSeries
 
@@ -47,7 +29,6 @@ Namespace FitToTimeSeries
     ''' </summary>
     ''' <remarks>RunState() will contain the run type. Results() will contain the results of the last iteration.  </remarks>
     Public Delegate Sub RunModelDelegate(runType As eRunType, iCurrentIterationStep As Integer, nTotalInterationSteps As Integer)
-
 
     ''' <summary>
     ''' A search of sensitivity run has started
@@ -101,7 +82,6 @@ Namespace FitToTimeSeries
 
 #Region "Modeling Varaibles"
 
-
         Dim rmax As Single, Jit As Integer, ic As Integer
         Dim SO As Single, dinc As Single, n As Integer, ip As Integer
         Dim i As Integer, Ipn() As Integer, Rbet As Single
@@ -143,7 +123,6 @@ Namespace FitToTimeSeries
         'sensitivity for predators
         Dim PSen() As Single
 
-
 #End Region
 
 #End Region
@@ -173,7 +152,6 @@ Namespace FitToTimeSeries
                 AddMessageHandler As RunMessageDelegate,
                 RunModelHandler As RunModelDelegate,
                 SendMessageHandler As RunMessageDelegate)
-
 
             ' Safety check
             Debug.Assert(Me.RunState = eRunType.Idle)
@@ -403,7 +381,6 @@ Namespace FitToTimeSeries
 
                 Next ipred
 
-
             Catch ex As Threading.ThreadAbortException
                 ' Done
                 'this should not happen under normal circumstances
@@ -425,7 +402,6 @@ Namespace FitToTimeSeries
             Me.m_runstoppedHandler(eRunType.SensitivitySS2VByPredator)
 
         End Sub
-
 
         Public Sub setNBlocksFromSensitivity(nBlocks As Integer)
             Dim n As Integer
@@ -553,7 +529,6 @@ Namespace FitToTimeSeries
 #End Region ' Search
 
 #Region " Notifications "
-
 
         ' Received delegate instances to report progress to
         Private m_runstartedHandler As RunStartedDelegate = Nothing
@@ -777,7 +752,6 @@ Namespace FitToTimeSeries
 
         End Sub
 
-
         Private Sub DoEstimation(ByRef Failed As Integer)
             Dim t As Integer = 0
             Dim EvalCount As Integer = 0
@@ -989,7 +963,6 @@ Namespace FitToTimeSeries
                                         eMessageImportance.Warning))
             End Try
 
-
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'ORIGINAL EWE5 CODE
             '
@@ -1116,14 +1089,11 @@ Namespace FitToTimeSeries
             '        SetParsFromP(P())
             '        'frmSearch.Res.Print iter; ":"; Ss
 
-
             '        'RegVar = SS / Df
             '        Return
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
         End Sub
-
 
         Sub SetVblock(ByRef esData As cEcosimDatastructures)
             Dim i As Integer, j As Integer, ii As Integer
@@ -1193,10 +1163,7 @@ Namespace FitToTimeSeries
 1140:           Next
             Next i REM end of matrix inversion routine
 
-
         End Sub
-
-
 
         Private Sub sub290()
             '290:    REM routine to calculate sensitivity matrix SE(k,j) of all observations j to all parameters P(k), j=1 to ni+naux and k=1 to n, 
@@ -1246,7 +1213,6 @@ Namespace FitToTimeSeries
             Return
 
         End Sub
-
 
         Private Sub sub300()
             '300:    REM routine to calculate yhat(1...nobs),er(1...nobs)=yobs-yhat, and
@@ -1356,7 +1322,6 @@ Namespace FitToTimeSeries
 650:        Return
 
         End Sub
-
 
         Private Sub sub900()
             '900:    REM save parameter estimates
@@ -1549,7 +1514,6 @@ Namespace FitToTimeSeries
 
         End Sub
 
-
         Sub SPLINE(X() As Single, Y() As Single, n As Integer, yp1 As Single, ypn As Single, y2() As Single)
             Dim U() As Single, i As Integer, Sig As Single, P As Single, Dum1 As Single, Dum2 As Single
             Dim Qn As Single, Un As Single, K As Integer
@@ -1616,7 +1580,6 @@ Namespace FitToTimeSeries
                 m_logger.LogError(ex, "cEcosimSearch.modelCalled")
             End Try
         End Sub
-
 
 #End Region
 

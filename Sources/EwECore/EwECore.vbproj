@@ -160,12 +160,11 @@
   <ItemGroup>
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
-    <Content Include="Includes\Troschuetz.Random.dll" />
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.1" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
@@ -178,6 +177,7 @@
     <Compile Remove="Validators\cValidatorOutput.vb" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Private.Uri" Version="4.3.2" />
     <PackageReference Include="System.ServiceModel.Primitives">
       <Version>10.0.652802</Version>
     </PackageReference>

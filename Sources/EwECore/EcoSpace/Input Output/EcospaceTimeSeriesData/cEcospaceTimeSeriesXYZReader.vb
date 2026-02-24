@@ -1,23 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwEUtils.Utilities
@@ -109,7 +92,6 @@ Namespace EcospaceTimeSeries
                 Me.m_StartDate = rec.TimeStamp
             End If
 
-
             If Date.Compare(Me.m_EndDate, rec.TimeStamp) < 0 Then
                 Me.m_EndDate = rec.TimeStamp
             End If
@@ -141,12 +123,10 @@ Namespace EcospaceTimeSeries
             End If
         End Sub
 
-
         Private Sub getExtent(rec As cEcospaceTimeSeriesRec)
             Me.m_MaxRow = Math.Max(rec.Row, Me.m_MaxRow)
             Me.m_MaxCol = Math.Max(rec.Col, Me.m_MaxCol)
         End Sub
-
 
         Public Property FileName As String
 
@@ -169,7 +149,6 @@ Namespace EcospaceTimeSeries
                 Return Me.m_MaxRow
             End Get
         End Property
-
 
         Public ReadOnly Property MaxCol As Integer
             Get

@@ -1,30 +1,11 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
 Imports EwEUtils.Utilities
 Imports ZedGraph
-
-
 
 Public Class ucSuitabilityPlot
     Implements IUIElement
@@ -191,19 +172,19 @@ Public Class ucSuitabilityPlot
             Select Case Me.m_plottype
 
                 Case ePlotTypes.Electivity
-                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY & cStringUtils.vbCrLf & _
+                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY & cStringUtils.vbCrLf &
                                My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
                     strXAxisTitle = ""
                     strYAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY
 
                 Case ePlotTypes.FunctionalResponse
-                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP & cStringUtils.vbCrLf & _
+                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP & cStringUtils.vbCrLf &
                                My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
                     strXAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM
                     strYAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_QPREY_BPRED
 
                 Case ePlotTypes.Suitability
-                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY & cStringUtils.vbCrLf & _
+                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY & cStringUtils.vbCrLf &
                                My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
                     strXAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM
                     strYAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY
@@ -249,9 +230,9 @@ Public Class ucSuitabilityPlot
                     Next
 
                     ' Add curve
-                    gp.AddCurve(preyEcopath.Name, _
-                                asX, asY, _
-                                Me.m_uic.StyleGuide.GroupColor(Me.UIContext.Core, iPrey), _
+                    gp.AddCurve(preyEcopath.Name,
+                                asX, asY,
+                                Me.m_uic.StyleGuide.GroupColor(Me.UIContext.Core, iPrey),
                                 ZedGraph.SymbolType.None)
                 End If
             Next

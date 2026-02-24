@@ -1,27 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Controls.EwEGrid
 
@@ -30,7 +9,7 @@ Namespace Controls.EwEGrid
     ''' A cell visualizer that reflects a cell value as a color.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    
+
     Public Class cEwEGridColorVisualizer
         Inherits SourceGrid2.VisualModels.Common
 
@@ -39,11 +18,11 @@ Namespace Controls.EwEGrid
         ''' Overidden to render cell value as a color
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_ImageAndText( _
-                p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                p_CellPosition As SourceGrid2.Position, _
-                e As System.Windows.Forms.PaintEventArgs, _
-                p_ClientRectangle As System.Drawing.Rectangle, _
+        Protected Overrides Sub DrawCell_ImageAndText(
+                p_Cell As SourceGrid2.Cells.ICellVirtual,
+                p_CellPosition As SourceGrid2.Position,
+                e As System.Windows.Forms.PaintEventArgs,
+                p_ClientRectangle As System.Drawing.Rectangle,
                 p_Status As SourceGrid2.DrawCellStatus)
 
             Dim value As Object = p_Cell.GetValue(p_CellPosition)

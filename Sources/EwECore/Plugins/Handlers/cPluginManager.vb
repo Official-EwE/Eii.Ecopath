@@ -1,21 +1,7 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
+
 Imports System.IO
 Imports System.Reflection
 Imports System.Threading
@@ -138,7 +124,6 @@ Public Class cPluginManager
     ''' <summary>Flag stating whether plug-ins have been loaded.</summary>
     Private m_bLoaded As Boolean = False
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cPluginManager)()
-
 
 #End Region ' Private variables
 
@@ -1156,7 +1141,6 @@ Public Class cPluginManager
           "EcopathRunInitialized",
            New Object() {EcoPathDataStructures, TaxonDataStructures, StanzaDataStructures})
 
-
         Return bSucces
 
     End Function
@@ -1397,7 +1381,6 @@ Public Class cPluginManager
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcosimRunCompletedPlugin),
                                                     "EcosimRunCompleted",
                                                     New Object() {EcosimDatastructures})
-
 
         ' Invoke IEcosimRunInitializedPlugin.EcosimRunInitialized(EcosimDatastructures)
         Return bSucces And Me.TryInvokeMethod(GetType(IEcosimRunCompletedPostPlugin),
@@ -1662,7 +1645,6 @@ Public Class cPluginManager
         Return Me.TryInvokeMethod(GetType(IEcospaceLayerChangePlugin), "EcospaceEndLayerChange", New Object() {iTime, dt, layer})
     End Function
 
-
     Public Function EcospaceResultsModelAreaFileName(ByRef FileName As String, DataSourceAsObject As Object, AvgType As eEcospaceResultsAverageType) As Boolean
 
         Dim args() As Object = New Object() {FileName, DataSourceAsObject, AvgType}
@@ -1674,9 +1656,7 @@ Public Class cPluginManager
 
         Return bSucces
 
-
     End Function
-
 
     Public Function EcospaceResultsMapGroupFileName(ByRef FileName As String, varname As eVarNameFlags,
                                                     iGrp As Integer, strExt As String, iModelTimeStep As Integer) As Boolean
@@ -1689,7 +1669,6 @@ Public Class cPluginManager
         FileName = CStr(args(0))
 
         Return bSucces
-
 
     End Function
 
@@ -1704,7 +1683,6 @@ Public Class cPluginManager
         FileName = CStr(args(0))
 
         Return bSucces
-
 
     End Function
 
@@ -2020,7 +1998,6 @@ Public Class cPluginManager
 
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IMSERunPlugin), "MSEIterationStarted",
           New Object() {})
-
 
     End Function
 

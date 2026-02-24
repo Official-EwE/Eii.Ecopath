@@ -1,30 +1,8 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 #Region "Imports"
-
 
 Option Explicit On
 
@@ -49,7 +27,6 @@ Public Class cStockAssessmentModel
     'Todo Debug initialization of Stock Assessment model and Ecosim, figure out how this works with the strategies
 
     'ToDo use of CVbiomEst() in the Kalman Gain filter. Should this be it's own variable?
-
 
 #Region "Private data"
 
@@ -179,7 +156,6 @@ Public Class cStockAssessmentModel
 
     End Sub
 
-
     Private Sub InitInterfaceParameters()
         Try
 
@@ -201,7 +177,6 @@ Public Class cStockAssessmentModel
         End Try
 
     End Sub
-
 
     Private Sub InitBiomass()
         'Init Bestimate() and BestimateLast() to the start biomass with some error
@@ -297,11 +272,9 @@ Public Class cStockAssessmentModel
 
     End Sub
 
-
 #End Region
 
 #Region "Public Methods"
-
 
     Public Function DoAnnualStockAssessment(Strategy As Strategy, iTimestep As Integer, Biomass() As Single) As Single()
         Try
@@ -349,7 +322,6 @@ Public Class cStockAssessmentModel
 
     End Function
 
-
     Public Sub RunEnded()
 
         cMSEUtils.ReleaseWriter(Me.m_strmBobsB)
@@ -384,7 +356,6 @@ Public Class cStockAssessmentModel
             Return Nothing
         End Get
     End Property
-
 
     Public Sub OnParameterChanged(iGroupIndex As Integer)
         'InitStockAssessment()
@@ -482,7 +453,6 @@ Public Class cStockAssessmentModel
 
     End Function
 
-
     Private Sub dumpBioEstOverB(Strategy As Strategy, iTimestep As Integer, BioEst() As Single, B() As Single)
         Try
             Me.m_strmBobsB.Write(Me.m_iTrial.ToString & "," & Strategy.Name & "," & iTimestep.ToString)
@@ -579,13 +549,11 @@ Public Class cStockAssessmentModel
 
     End Function
 
-
     Friend ReadOnly Property Core As cCore
         Get
             Return Me.m_core
         End Get
     End Property
-
 
     Private ReadOnly Property MSE As cMSE
         Get
@@ -596,7 +564,6 @@ Public Class cStockAssessmentModel
     Private Function DefaultFileName() As String
         Return cMSEUtils.MSEFile(Me.m_MSE.DataPath, cMSEUtils.eMSEPaths.StockAssessment, "StockAssessment.csv")
     End Function
-
 
     Private Sub InitOutputFiles()
         Try
@@ -704,7 +671,6 @@ Public Class cStockAssessmentModel
         Return breturn
     End Function
 
-
     Private Function ReadGroupData(strm As StreamReader) As Boolean
         Dim buff As String
         Dim breturn As Boolean = True
@@ -800,7 +766,6 @@ Public Class cStockAssessmentModel
 
         Try
 
-
             If (strm IsNot Nothing) Then
 
                 strm.WriteLine(cStockAssessmentParameters.toCSVHeader)
@@ -843,6 +808,5 @@ Public Class cStockAssessmentModel
     End Function
 
 #End Region
-
 
 End Class

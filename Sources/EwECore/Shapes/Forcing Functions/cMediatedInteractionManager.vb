@@ -1,22 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 Imports Microsoft.Extensions.Logging
@@ -78,7 +62,6 @@ Public Class cMediatedInteractionManager
             Next iprey
         Next ipred
 
-
         Dim lstLandingApTypes As New List(Of eForcingFunctionApplication)({eForcingFunctionApplication.OffVesselPrice})
         For iFleet As Integer = 1 To Me.m_EPData.NumFleet
             For iGroup As Integer = 1 To Me.m_EPData.NumGroups
@@ -99,7 +82,6 @@ Public Class cMediatedInteractionManager
             Me.m_interactionGroup.Add(Me.getHashKey(ipred, ipred), interaction)
 
         Next ipred
-
 
     End Function
 
@@ -190,8 +172,6 @@ Public Class cMediatedInteractionManager
     End Property
 
 
-
-
     Public ReadOnly Property GroupInteraction(PredIndex As Integer) As cPredPreyInteraction
         Get
             Try
@@ -207,7 +187,6 @@ Public Class cMediatedInteractionManager
             End Try
         End Get
     End Property
-
 
     Public ReadOnly Property isLandings(iFleet As Integer, iGroup As Integer) As Boolean
         Get
@@ -234,8 +213,6 @@ Public Class cMediatedInteractionManager
             End Try
         End Get
     End Property
-
-
 
     ''' <summary>
     ''' Get the maximum number of shapes that can be assigned to an interaction.

@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 Imports System.ComponentModel
@@ -384,7 +369,6 @@ Namespace Ecosim
 
                 Me.m_sColWidth = sMinColWidth + (sMaxColWidth - sMinColWidth)
 
-
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
                 Throw New ApplicationException(Me.ToString & ".DrawRowCols() Exception: " & ex.Message)
@@ -564,7 +548,7 @@ Namespace Ecosim
             End If
 
             ' Format tooltip as as "value (x, y)"
-            strValue = String.Format(SharedResources.GENERIC_LABEL_POINT, strValue, _
+            strValue = String.Format(SharedResources.GENERIC_LABEL_POINT, strValue,
                                      Me.m_DataSource.RowLabel(ptBlock.Y), ptBlock.X)
 
             cToolTipShared.GetInstance().SetToolTip(Me.m_pbFishingBlocks, strValue)
