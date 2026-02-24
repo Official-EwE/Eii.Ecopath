@@ -1,30 +1,10 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 Namespace Ecopath.Output
 
@@ -195,8 +175,8 @@ Namespace Ecopath.Output
                         ' #Yes: Is there overlap, and did we not already process this pred/prey combination?
                         '       (n.b. Hlap and Plap are populated bi-directionally)
                         ' JS: test set to EXCEED the cut-off (>) rather than include cut-off (>=) to avoid 0 cut-off values.
-                        If (prey.Hlap(iPred) > Me.m_sCutOff) And _
-                           (prey.Plap(iPred) > Me.m_sCutOff) And _
+                        If (prey.Hlap(iPred) > Me.m_sCutOff) And
+                           (prey.Plap(iPred) > Me.m_sCutOff) And
                            (iPrey > iPred) Then
 
                             ' #Yes: create a new line item for this pred/prey combo
@@ -223,7 +203,7 @@ Namespace Ecopath.Output
                             ' Need to show labels?
                             If (Me.m_bShowLabels) Then
                                 ' #Yes: create text label
-                                label = New TextObj(String.Format("{0}, {1}", pred.Index, prey.Index), _
+                                label = New TextObj(String.Format("{0}, {1}", pred.Index, prey.Index),
                                                     prey.Hlap(iPred), prey.Plap(iPred), CoordType.AxisXYScale, AlignH.Left, AlignV.Top)
                                 ' Style text label
                                 label.FontSpec.Border.IsVisible = False
@@ -251,9 +231,9 @@ Namespace Ecopath.Output
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub OnColourOptionChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_rbPredator.CheckedChanged, _
-                    m_rbPrey.CheckedChanged, _
-                    m_rbOverlap.CheckedChanged, _
+            Handles m_rbPredator.CheckedChanged,
+                    m_rbPrey.CheckedChanged,
+                    m_rbOverlap.CheckedChanged,
                     m_rbNone.CheckedChanged
 
             If (Me.UIContext Is Nothing) Then Return

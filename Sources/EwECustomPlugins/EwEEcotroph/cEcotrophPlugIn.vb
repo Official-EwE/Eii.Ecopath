@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Université Européenne de Bretagne, Agrocampus Ouest, Rennes, France
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
 Imports EwECore.Plugins
@@ -145,7 +129,6 @@ Public Class cEcotrophPlugin
         End Try
     End Sub
 
-
     Private Function HasInterface(theForm As System.Windows.Forms.Form) As Boolean
         If theForm Is Nothing Then Return False
         If theForm.IsDisposed Then Return False
@@ -204,7 +187,6 @@ Public Class cEcotrophPlugin
             ETinputdata.ModelName = epdata.ModelName
             ETinputdata.ModelDescription = epdata.ModelDescription
 
-
             For ifleet As Integer = 0 To epdata.NumFleet - 1
                 ETinputdata.FleetName(ifleet) = epdata.FleetName(ifleet + 1)
                 ETinputdatafromEP.Catches(ifleet) = New Single(epdata.GroupName.Length) {}
@@ -212,7 +194,6 @@ Public Class cEcotrophPlugin
                 For j As Integer = 1 To epdata.B.Length - 1
                     If (ETinputdatafromEP.accessibility(j) = 0 And (epdata.Landing(ifleet, j) > 0 Or epdata.Discard(ifleet, j) > 0)) Then ETinputdatafromEP.accessibility(j) = default_accessibility
                     ETinputdatafromEP.Catches(ifleet)(j) = epdata.Landing(ifleet + 1, j) + epdata.Discard(ifleet + 1, j)
-
 
                 Next
             Next

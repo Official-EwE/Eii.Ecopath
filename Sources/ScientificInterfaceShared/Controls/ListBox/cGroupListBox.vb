@@ -1,32 +1,11 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style
-
-
 
 
 Namespace Controls
@@ -507,10 +486,10 @@ DefaultValue(True)>
         ''' States whether non-living groups should be shown in the list box.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("Determine how groups are tracked and added"), _
-         Category("EwE6"), _
-         DefaultValue(eGroupTrackingType.AllGroups)> _
+        <Browsable(True),
+         Description("Determine how groups are tracked and added"),
+         Category("EwE6"),
+         DefaultValue(eGroupTrackingType.AllGroups)>
         Public Property GroupListTracking() As eGroupTrackingType
             Get
                 Return Me.m_grouptrackingtype
@@ -609,7 +588,7 @@ DefaultValue(True)>
         ''' Get/set the selected group index (single selection listboxes only).
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property SelectedGroupIndex() As Integer
             Get
                 Dim gi As cGroupItem = Me.GroupItem(Me.SelectedIndex)
@@ -632,7 +611,7 @@ DefaultValue(True)>
         ''' Get/set the selected group (single selection listboxes only).
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property SelectedGroup() As cEcoPathGroupInput
             Get
                 Dim gi As cGroupItem = DirectCast(Me.SelectedItem, cGroupItem)
@@ -751,7 +730,6 @@ DefaultValue(True)>
             Dim iGroupStart As Integer = 1
             Dim iGroupEnd As Integer = 1
             Dim bSelected As Boolean = (Me.SelectedIndex > -1)
-
 
             If (Not Me.IsInitialized()) Then Return
 

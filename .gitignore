@@ -429,4 +429,6 @@ FodyWeavers.xsd
 
 # Rider files
 .idea
-/Output/mse_New Ecosim scenario SPACE
+
+# Installer output directory
+Deployment/Output/

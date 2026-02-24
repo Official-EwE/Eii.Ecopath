@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
 
@@ -67,7 +51,6 @@ Public Class cDietCalculator
 
     End Function
 
-
     Private ReadOnly Property nGroups As Integer
         Get
             Return Me.m_Core.nGroups
@@ -79,7 +62,6 @@ Public Class cDietCalculator
             Return Me.m_Core.nLivingGroups
         End Get
     End Property
-
 
     Private Sub CalcChessonAlpha(i As Integer, ByRef Alpha(,) As Single, B() As Single, DCij(,) As Single)
         'will calculate Chesson's Alpha from the equation si = ri/pi / sum(rn/pn)
@@ -105,7 +87,6 @@ Public Class cDietCalculator
         Return
 
     End Sub
-
 
     Private Sub IterateForDiet(Alpha(,) As Single, ExternalDiets As cDietPreferences)
         Dim Cnt As Integer
@@ -195,7 +176,6 @@ Public Class cDietCalculator
             End If
         Next
 
-
         Me.m_Core.SetBatchLock(EwECore.cCore.eBatchLockType.Update)
 
         'So now we know all there is to know about the diets:
@@ -234,7 +214,6 @@ Public Class cDietCalculator
 
     End Sub
 
-
     Public Sub RescaleDietsToDietSum(pred As Integer, ByRef Diet(,) As Single, OldDietSum As Double)
         Dim i As Integer
         Dim Sum As Double
@@ -260,7 +239,6 @@ Public Class cDietCalculator
         'Debug.Assert(newSum <> 0, "Diet didn't sum to one...")
 
     End Sub
-
 
 #Region "Orginal Code from EwE5"
 
@@ -318,7 +296,6 @@ Public Class cDietCalculator
                 End If
             Next i
 
-
             SQL = "SELECT * from [Group x Group] where modelName='" & mName & "'"
         Set y_Recordset = CCY.UpdatableRecords(SQL)
         If y_Recordset.RecordCount > 0 Then y_Recordset.MoveFirst
@@ -342,7 +319,6 @@ Public Class cDietCalculator
                 y_Recordset.MoveNext
             Loop
 
-
             ReDim Alpha(NumGroups, NumGroups)
             ReDim SumR(1 To NumGroups)
             SumBio = 0
@@ -361,14 +337,12 @@ Public Class cDietCalculator
             CCY.CloseConnection
         End Sub
 
-
     
     Public Sub Chesson()
         Dim LivingBio As Single
         Dim MaxBio As Single
         Dim Alpha(,) As Single = New Single(nGroups, nGroups) {}
         Dim SumR() As Single = New Single(nGroups) {}
-
 
         MaxBio = 0
         LivingBio = 0
@@ -390,7 +364,6 @@ Public Class cDietCalculator
             End If
             SumBio = SumBio + Me.m_EcopathData.B(i)
         Next i%
-
 
         For i = 1 To Me.nGroups               'CALCULATION OF PREFERENCE INDEX
             SumR(i) = 0
@@ -514,8 +487,6 @@ End Sub
     
 #End If
 
-
 #End Region
-
 
 End Class

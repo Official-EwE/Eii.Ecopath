@@ -1,29 +1,10 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.Extensions
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 Public Class cEcospaceDataStructures
 
@@ -565,7 +546,6 @@ Public Class cEcospaceDataStructures
     Public jStartCol() As Integer
     Public jEndCol() As Integer
 
-
     'total number of water cells on the map
     'used by spaceSolver to split up the cells to each thread according to # of water cells
     Public iTotalWaterCells As Integer
@@ -702,7 +682,6 @@ Public Class cEcospaceDataStructures
     ''' </remarks>
     Public BRatio() As Single
 
-
     ''' <summary>
     ''' List of map cells that have a value in the Sail(,,)array less than EffortDistThreshold
     ''' </summary>
@@ -757,7 +736,6 @@ Public Class cEcospaceDataStructures
     ''' Set in <see cref="cEcospace.SetEffortParameters"> cEcospace.SetEffortParameter()
     ''' </see></remarks>
     Public TotEffort() As Single
-
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Spatial effort distribution penalty variables
@@ -881,7 +859,6 @@ Public Class cEcospaceDataStructures
     Public ConKdetSpace(,)(,,) As Single '(row,col)(ngroups, ndetritus,nfleets)
 
     Public ConKtrophic(,)() As Single '(row,col)(inLinks)
-
 
 #End Region
 
@@ -1154,7 +1131,6 @@ Public Class cEcospaceDataStructures
 
             Me.SetDefaultMeanVelocityMvel()
 
-
             Me.DoPenaltysearch = True
             Me.NoFishWeight = 0.3
             Me.PenPow = 10.0
@@ -1169,7 +1145,6 @@ Public Class cEcospaceDataStructures
             Next 'set preferred habitat to 1 (pelagic) by default
             'Debug.Assert(False, "Ftarget(3) = 0.05")
             'If NGroups > 0 Then Ftarget(3) = 0.05
-
 
             Me.ReDimFleets()
 
@@ -1196,7 +1171,6 @@ Public Class cEcospaceDataStructures
         End Try
 
     End Function
-
 
     Public Sub SetDefaultThreads()
         'multi threading defaults
@@ -1251,7 +1225,6 @@ Public Class cEcospaceDataStructures
             Throw New System.Exception(Me.ToString & ".SetDefaultMeanVelocityMvel() Error: " & ex.Message)
         End Try
 
-
     End Sub
 
     ''' <summary>
@@ -1269,7 +1242,6 @@ Public Class cEcospaceDataStructures
             Debug.Assert(False, Me.ToString & ".RedimMPAVariables() Error: " & ex.Message)
             Throw New System.Exception(Me.ToString & ".RedimMPAVariables() Error: " & ex.Message)
         End Try
-
 
     End Sub
 
@@ -1291,7 +1263,6 @@ Public Class cEcospaceDataStructures
             Debug.Assert(False, Me.ToString & ".RedimMigratoryVariables() Error: " & ex.Message)
             Throw New System.Exception(Me.ToString & ".RedimMigratoryVariables() Error: " & ex.Message)
         End Try
-
 
     End Sub
 
@@ -1348,7 +1319,6 @@ Public Class cEcospaceDataStructures
             Debug.Assert(False, Me.ToString & ".RedimHabitatVariables() Error: " & ex.Message)
             Throw New System.Exception(Me.ToString & ".RedimHabitatVariables() Error: " & ex.Message)
         End Try
-
 
     End Sub
 
@@ -1467,7 +1437,6 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-
     Private Sub setFleetDefaults()
 
         'jb just set to default of one
@@ -1537,8 +1506,6 @@ Public Class cEcospaceDataStructures
         Next
 
 
-
-
         'Dim iseq As Integer
         'For ir As Integer = 1 To Me.InRow
         '    For ic As Integer = 1 To Me.InCol
@@ -1548,7 +1515,6 @@ Public Class cEcospaceDataStructures
         'Next
 
     End Sub
-
 
     'Friend Sub debugSetAdvectionVectors()
     '    Debug.Assert(False, "Warning Advection Vectors have been hardcoded for debuging...")
@@ -1588,7 +1554,6 @@ Public Class cEcospaceDataStructures
     '                                    Me.MigMaps(igrp, imon)(ii, jj) = True
     '                                Next
     '                            Next
-
 
     '                        End If
 
@@ -1630,7 +1595,6 @@ Public Class cEcospaceDataStructures
         Next igrp
     End Sub
 
-
     Friend Sub debugTestDiscardsMaps()
         Dim sumDiscards As Single
         Dim n As Integer
@@ -1657,9 +1621,7 @@ Public Class cEcospaceDataStructures
 
         System.Console.WriteLine("---------------END Discards Dump-------------------")
 
-
     End Sub
-
 
     Friend Sub debugDumpContaminantMap(foriGroup As Integer)
         System.Console.WriteLine("-------------Contaminants for " + foriGroup.ToString + "----------")
@@ -1677,12 +1639,9 @@ Public Class cEcospaceDataStructures
             Next
         Next
 
-
         System.Console.WriteLine("Sum, " + sumC.ToString)
         System.Console.WriteLine("-----------------------")
     End Sub
-
-
 
     ''' <summary>
     ''' Populate <see cref="cEcospaceDataStructures.FleetSailCells"></see> with a list of map cells in <see cref="cEcospaceDataStructures.Sail"></see> that are less than <see cref="cEcospaceDataStructures.EffortDistThreshold"></see>
@@ -1838,8 +1797,6 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-
-
     ''' <summary>
     ''' Allocate memory for an array with 3 dimensions
     ''' </summary>
@@ -1864,7 +1821,6 @@ Public Class cEcospaceDataStructures
         ReDim array(d1, d2, d3)
 
     End Sub
-
 
     ''' <summary>
     ''' Allocate memory for an array of singles with 2 dimensions
@@ -2197,8 +2153,6 @@ Public Class cEcospaceDataStructures
     End Sub
 
 
-
-
     Public Sub RedimConSimVars()
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -2309,7 +2263,6 @@ Public Class cEcospaceDataStructures
 
     End Function
 
-
     Public Sub setDefaultSummaryPeriod()
         Try
             Debug.Assert(Me.TimeStep > 0)
@@ -2342,7 +2295,6 @@ Public Class cEcospaceDataStructures
         ReDim Me.SpaceEffortByRegionFleetCount(ttYears, Me.nFleets, Me.nRegions)
 
     End Sub
-
 
     ''' <summary>
     ''' Get sum of Biomass by Region Group for the Start and End summary period
@@ -2464,7 +2416,6 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-
     ''' <summary>
     ''' Get Cost by Fleet for summary periods
     ''' </summary>
@@ -2505,8 +2456,6 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-
-
     ''' <summary>
     ''' Get Value by Fleet for summary periods
     ''' </summary>
@@ -2530,7 +2479,6 @@ Public Class cEcospaceDataStructures
         endValue = endValue / nts
 
     End Sub
-
 
     ''' <summary>
     ''' Get Value by Fleet for summary periods
@@ -2557,7 +2505,6 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-
     ''' <summary>
     ''' Get Catch by REgion, Fleet, Group for summary periods
     ''' </summary>
@@ -2581,7 +2528,6 @@ Public Class cEcospaceDataStructures
         endCatch = endCatch / nts
 
     End Sub
-
 
     ''' <summary>
     ''' Average the results values over number of water cells
@@ -2640,7 +2586,6 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-
     Public Sub SummarizeResultsByFleet(nTimeSteps As Integer, ByVal EcopathCost(,) As Single, ByVal JobMultiplier() As Single)
         Dim SailEffort As Single, FishEffort As Single
         Dim cost As Single, value As Single
@@ -2674,7 +2619,6 @@ Public Class cEcospaceDataStructures
         Next
 
     End Sub
-
 
     ''' <summary>
     ''' Get the indexes for the user defined time windows that the results data is summarized over
@@ -2740,7 +2684,6 @@ Public Class cEcospaceDataStructures
         Catch ex As Exception
             Debug.Assert(False, "Failed to init debug capacity map")
         End Try
-
 
     End Sub
 

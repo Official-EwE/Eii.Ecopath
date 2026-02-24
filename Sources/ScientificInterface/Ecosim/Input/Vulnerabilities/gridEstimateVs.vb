@@ -1,35 +1,14 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-
-
 Namespace Ecosim
 
-    
     Public Class gridEstimateVs
         Inherits cEwEGrid
 
@@ -55,9 +34,9 @@ Namespace Ecosim
         End Enum
 
         ''' <summary>Column indices displaying computed vul values.</summary>
-        Private Shared c_vulcols As eColumnTypes() = {eColumnTypes.PG_VwithFT, _
-                                                      eColumnTypes.PG_VwoFT, _
-                                                      eColumnTypes.FMax_VwithFT, _
+        Private Shared c_vulcols As eColumnTypes() = {eColumnTypes.PG_VwithFT,
+                                                      eColumnTypes.PG_VwoFT,
+                                                      eColumnTypes.FMax_VwithFT,
                                                       eColumnTypes.FMax_VwoFT}
 
         ''' <summary>Feedback style to use for selected vul cells.</summary>
@@ -236,9 +215,9 @@ Namespace Ecosim
 
             Select Case DirectCast(p.Column, eColumnTypes)
 
-                Case eColumnTypes.FMax_VwithFT, _
-                     eColumnTypes.FMax_VwoFT, _
-                     eColumnTypes.PG_VwithFT, _
+                Case eColumnTypes.FMax_VwithFT,
+                     eColumnTypes.FMax_VwoFT,
+                     eColumnTypes.PG_VwithFT,
                      eColumnTypes.PG_VwoFT
 
                     If Me.UpdateVulSelection(p.Row, DirectCast(p.Column, eColumnTypes)) Then
@@ -256,7 +235,7 @@ Namespace Ecosim
 
             Select Case DirectCast(p.Column, eColumnTypes)
 
-                Case eColumnTypes.FMax, _
+                Case eColumnTypes.FMax,
                      eColumnTypes.PotGrowth
                     Me.RecalcVulnerabilities(p.Row)
                     Return True

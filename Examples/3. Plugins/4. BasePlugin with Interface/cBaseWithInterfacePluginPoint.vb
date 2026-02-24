@@ -18,19 +18,16 @@
 ' ===============================================================================
 '
 
-#Region " Imports "
-
-Option Strict On
-Imports System.IO
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
-Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Core
+Imports EwECore.Plugins.Ecopath
+Imports EwECore.Plugins.Ecosim
+Imports EwECore.Plugins.Ecospace
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
-
-#End Region
 
 ''' <summary>
 ''' Base code that can be used as a template to create a new plug-in.
@@ -53,15 +50,15 @@ Imports ScientificInterfaceShared.Controls
 ''' </remarks>
 ''' 
 Public Class cBaseWithInterfacePluginPoint
-    Implements EwEPlugin.IPlugin
-    Implements EwEPlugin.ICorePlugin
-    Implements EwEPlugin.IEcopathPlugin
-    Implements EwEPlugin.IEcopathRunInitializedPlugin
-    Implements EwEPlugin.IEcosimInitializedPlugin
-    Implements EwEPlugin.IEcospaceInitializedPlugin
-    Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.IMenuItemPlugin
-    Implements EwEPlugin.INavigationTreeItemPlugin
+    Implements IPlugin
+    Implements ICorePlugin
+    Implements IEcopathPlugin
+    Implements IEcopathRunInitializedPlugin
+    Implements IEcosimInitializedPlugin
+    Implements IEcospaceInitializedPlugin
+    Implements IUIContextPlugin
+    Implements IMenuItemPlugin
+    Implements INavigationTreeItemPlugin
 
     ' ToDo Add your own EwEPlugin interface implementations here
     ' With the cursor at the end of the new Implements line press the enter key
@@ -72,8 +69,8 @@ Public Class cBaseWithInterfacePluginPoint
     ''' <summary>The core that this plug-in can use</summary>
     Private m_core As cCore
 
-    Private m_EcoPath As cEcoPathModel
-    Private m_EcoSim As cEcoSimModel
+    Private m_EcoPath As cEcopathModel
+    Private m_EcoSim As cEcosimModel
     Private m_EcoSpace As cEcoSpace
     Private m_EcoPathData As cEcopathDataStructures
     Private m_EcoSimData As cEcosimDatastructures
@@ -107,7 +104,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' for later use.
     ''' </summary>
     ''' <param name="CoreAsObject">The core, casted to a generic object</param>
-    Public Sub Initialize(CoreAsObject As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(CoreAsObject As Object) Implements IPlugin.Initialize
         Try
             m_core = DirectCast(CoreAsObject, cCore)
         Catch ex As Exception
@@ -123,14 +120,14 @@ Public Class cBaseWithInterfacePluginPoint
     ''' <param name="EcopathAsObject"></param>
     ''' <param name="EcoSimAsObject"></param>
     ''' <param name="EcoSpaceAsObject"></param>
-    Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
+    Public Sub CoreInitialized(ByRef EcopathAsObject As Object, ByRef EcoSimAsObject As Object, ByRef EcoSpaceAsObject As Object) Implements ICorePlugin.CoreInitialized
         Try
 
-            m_EcoPath = TryCast(EcopathAsObject, cEcoPathModel)
-            m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
+            m_EcoPath = TryCast(EcopathAsObject, cEcopathModel)
+            m_EcoSim = TryCast(EcoSimAsObject, cEcosimModel)
             m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing), _
+            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing),
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
         Catch ex As Exception
@@ -144,7 +141,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' </summary>
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
+    Public Function LoadModel(dataSource As Object) As Boolean Implements IEcopathPlugin.LoadModel
         Try
 
             'Cast the datasource 
@@ -166,7 +163,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' </summary>
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
+    Public Function SaveModel(dataSource As Object) As Boolean Implements IEcopathPlugin.SaveModel
         System.Console.WriteLine(Me.ToString + ".SaveModel()")
 
         Return True
@@ -176,7 +173,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' An Ecopath model has been closed.
     ''' </summary>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
+    Public Function CloseModel() As Boolean Implements IEcopathPlugin.CloseModel
         System.Console.WriteLine(Me.ToString + ".CloseModel()")
 
         Try
@@ -203,14 +200,14 @@ Public Class cBaseWithInterfacePluginPoint
     ''' <param name="EcopathDataAsObject"></param>
     ''' <param name="TaxonDataAsObject"></param>
     ''' <param name="StanzaDataAsObject"></param>
-    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
+    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements IEcopathRunInitializedPlugin.EcopathRunInitialized
 
         Me.m_EcoPathData = TryCast(EcopathDataAsObject, cEcopathDataStructures)
         Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathRunInitialized() Failed to get EcopathDataStructures.")
 
     End Sub
 
-    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
+    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements IEcosimInitializedPlugin.EcosimInitialized
         System.Console.WriteLine(Me.ToString + ".EcosimInitialized()")
 
         Me.m_EcoSimData = TryCast(EcosimDatastructures, cEcosimDatastructures)
@@ -218,7 +215,7 @@ Public Class cBaseWithInterfacePluginPoint
 
     End Sub
 
-    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
+    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements IEcospaceInitializedPlugin.EcospaceInitialized
         System.Console.WriteLine(Me.ToString + ".EcospaceInitialized()")
 
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
@@ -269,7 +266,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' </summary>
     ''' <param name="uic">The <see cref="cUIContext"/> to connect to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
 
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
@@ -285,7 +282,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IGUIPlugin.DisplayName
+    Public ReadOnly Property DisplayName() As String Implements IGUIPlugin.DisplayName
         Get
             Return "Base User Interface Plugin"
         End Get
@@ -296,7 +293,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' Tell EwE6 what image to show for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage() As Object Implements IGUIPlugin.ControlImage
         Get
             ' Use an image from the pool of shared resources
             Return ScientificInterfaceShared.My.Resources.fish
@@ -309,7 +306,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' over a user interface element for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlTooltipText() As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText() As String Implements IGUIPlugin.ControlTooltipText
         Get
             ' Show the description as a tooltip text
             Return Me.Description
@@ -322,7 +319,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Object) Implements IGUIPlugin.OnControlClick
 
         Dim bHasInterface As Boolean = False
 
@@ -366,7 +363,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' Tell EwE6 where to place an item in its main menu.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation() As String Implements IMenuItemPlugin.MenuItemLocation
         Get
             ' For example, a plug-in menu item should be placed in the main the 'Tools' menu. 
             Return "MenuTools"
@@ -379,10 +376,10 @@ Public Class cBaseWithInterfacePluginPoint
     ''' to users.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState() As eCoreExecutionState Implements IGUIPlugin.EnabledState
         Get
             ' This plug-in is available at any time during EwE execution
-            Return EwEUtils.Core.eCoreExecutionState.Idle
+            Return eCoreExecutionState.Idle
         End Get
     End Property
 
@@ -391,7 +388,7 @@ Public Class cBaseWithInterfacePluginPoint
     ''' Tell EwE6 where to place an item in its navigation tree.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+    Public ReadOnly Property NavigationTreeItemLocation() As String Implements INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             ' As an example, place a navigation tree item under the main 'tools' node.
             Return "ndTools"
@@ -402,25 +399,25 @@ Public Class cBaseWithInterfacePluginPoint
 
 #Region "IPlugin implementation"
 
-    Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
             Return "Me"
         End Get
     End Property
 
-    Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
             Return "you@someplace.com"
         End Get
     End Property
 
-    Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
             Return "Provides a base for building a plugin"
         End Get
     End Property
 
-    Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "EwEBasePlugin"
         End Get

@@ -19,8 +19,6 @@
 '
 
 Imports EwECore
-Imports EwEPlugin
-Imports System
 
 Module ConsolePluginApp
 

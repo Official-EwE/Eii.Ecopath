@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Math
 Imports System.Threading
@@ -106,7 +91,6 @@ Public Class cEcoSpace
     Private m_spaceSolvers As List(Of cSpaceSolver)
     Private m_IBMGrowSolvers As List(Of cIBMSolver)
     Private m_IBMMoveSolvers As List(Of cIBMSolver)
-
 
     Private m_TimestepDelegate As EcoSpaceTimeStepDelegate
 
@@ -299,7 +283,6 @@ Public Class cEcoSpace
 
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcoSpace)()
 
-
 #End Region
 
 #Region "Construction Destruction"
@@ -318,11 +301,9 @@ Public Class cEcoSpace
 
     End Sub
 
-
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
-
 
 #End Region
 
@@ -377,7 +358,6 @@ Public Class cEcoSpace
     ''' </summary>
     Public Property EcoPathData() As cEcopathDataStructures
 
-
     ''' <summary>
     ''' Ecosim data used for initial state
     ''' </summary>
@@ -390,7 +370,6 @@ Public Class cEcoSpace
     Public Property EcoSim() As Ecosim.cEcosimModel
 
     Public Property ContaiminantTracerData() As cContaminantTracerDataStructures
-
 
     Public Property TimeSeriesData() As cTimeSeriesDataStructures
         Get
@@ -417,7 +396,6 @@ Public Class cEcoSpace
     Public Property SearchData() As cSearchDatastructures
 
     Public Property MPAOptimization() As IMPASearchModel
-
 
     Public WriteOnly Property RunCompletedDelegate() As EcoSpaceRunCompletedDelegate
         Set(ByVal value As EcoSpaceRunCompletedDelegate)
@@ -518,7 +496,6 @@ Public Class cEcoSpace
 
             cEcoSpace.nFleets = Me.EcoSpaceData.nFleets
 
-
             'redim all 
             If Me.redimForRun() Then
 
@@ -552,7 +529,6 @@ Public Class cEcoSpace
         Return bsuccess
 
     End Function
-
 
     ''' <summary>
     ''' Run EcoSpace on a seperate thread from the calling routine. This will return before the EcoSpace run has completed.
@@ -623,7 +599,6 @@ Public Class cEcoSpace
 
     End Sub
 
-
     Private Sub fireRunCompleted(ByVal ob As Object)
         Try
             If Me.m_OnRunCompletedDelegate IsNot Nothing Then
@@ -659,7 +634,6 @@ Public Class cEcoSpace
         End Set
 
     End Property
-
 
     Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
         Dim result As Boolean = True
@@ -762,7 +736,6 @@ Public Class cEcoSpace
         Dim stpwchEffort As New Stopwatch
         Dim stpwchIBMMultiStanza As New Stopwatch
 
-
         Try
 
 #If Dumpcb Then
@@ -810,7 +783,6 @@ Public Class cEcoSpace
             Me.EcoSpaceData.YearNow = 1
             Me.ForceBiomassWithEcosimTimeSeries(1)
             ' hack to dump ecotracer C/B to csv file 
-
 
             'Set b(),c(),d() and e() cell movement parameters based on the migration movement gradient MigGrad()
             Me.VaryMigMovementParameters(imonth:=1)
@@ -889,6 +861,9 @@ Public Class cEcoSpace
                         'if so, then update actual advection from the monthly X and Y velocity vectors
                         For iRow = 0 To Me.EcoSpaceData.InRow + 1
                             For iCol = 0 To Me.EcoSpaceData.InCol + 1
+                                'If i = 18 And j = 38 Then Debug.Assert(False)
+
+
                                 Me.EcoSpaceData.Xvel(iRow, iCol) = Me.EcoSpaceData.MonthlyXvel(Me.EcoSpaceData.MonthNow)(iRow, iCol)
                                 Me.EcoSpaceData.Yvel(iRow, iCol) = Me.EcoSpaceData.MonthlyYvel(Me.EcoSpaceData.MonthNow)(iRow, iCol)
                                 Me.EcoSpaceData.UpVel(iRow, iCol) = Me.EcoSpaceData.MonthlyUpWell(Me.EcoSpaceData.MonthNow)(iRow, iCol)
@@ -919,7 +894,6 @@ Public Class cEcoSpace
                     Me.EcoSimData.tval(ifrc) = Me.EcoSimData.zscale(Me.its, ifrc)
                 Next
 
-
                 'ToDo_jb EggProdShapeSplit() make sure this is correct
                 'set current relative reproductive rates for stanzas groups
                 For iSplt As Integer = 1 To Me.StanzaData.Nsplit
@@ -930,7 +904,6 @@ Public Class cEcoSpace
                 Next
 
                 If Me.EcoSpaceData.PredictEffort Then
-
 
                     'Sets proportion of discards landed and discarded 
                     'With the Ecosim Discards Forcing time series
@@ -992,7 +965,6 @@ Public Class cEcoSpace
                 stpwchGrid.Start()
                 Me.runGridSolverThreads()
                 stpwchGrid.Stop()
-
 
                 'Debugging dump grid CPU times to the console
                 'dumpGridRunTimes()
@@ -1181,7 +1153,6 @@ Public Class cEcoSpace
                 Me.SearchData.EcoSpaceSummarizeIndicators(Fgear, runTime, RuntimePB, Me.EcoSpaceData.nWaterCells)
             End If
 
-
             Me.TimeSeriesManager.RunCompleted()
 
             'degugging 
@@ -1238,7 +1209,6 @@ Public Class cEcoSpace
             'Ehhh that's the breaks ehhh
         End Try
     End Sub
-
 
     ''' <summary>
     ''' Set time step index counters. This includes setting the counters for the Spin-Up period.
@@ -1328,7 +1298,6 @@ Public Class cEcoSpace
         Return
 
     End Sub
-
 
     Private Sub BeginTimeStep(ByRef Fgear() As Single, ByVal its As Integer, ByVal imonth As Integer, ByRef iYear As Integer, ByRef BiomassCellAvg() As Single, ByVal relfopt() As Single, ByVal TimeStep As Single)
         Try
@@ -1446,7 +1415,6 @@ Public Class cEcoSpace
             Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
         End Try
 
-
         'Dim i As Integer
 
         'Try
@@ -1482,7 +1450,6 @@ Public Class cEcoSpace
         'Catch ex As Exception
 
         'End Try
-
 
     End Sub
 
@@ -1647,7 +1614,6 @@ Public Class cEcoSpace
 
     End Sub
 
-
     Private Sub runIBMSolverThreads()
         Dim solver As cIBMSolver
         Dim iFstGrp As Integer
@@ -1778,7 +1744,6 @@ Public Class cEcoSpace
 
     End Sub
 
-
     Private Sub runGridSolverThreads()
         Dim solver As cGridSolver
         Dim iFstGrp As Integer
@@ -1854,7 +1819,6 @@ Public Class cEcoSpace
         Catch ex As Exception
 
         End Try
-
 
     End Sub
     Private Sub runSpaceSolverThreads()
@@ -2057,7 +2021,6 @@ Public Class cEcoSpace
 
     End Sub
 
-
     Private Sub summarizeContaminantTracer()
         Dim i As Integer
         Dim j As Integer
@@ -2105,7 +2068,6 @@ Public Class cEcoSpace
         Next iRgn
 
     End Sub
-
 
     Private Sub runContaminantTracerExplicit1(ByRef Derivcon As Single(,,), ByRef Derivcon2 As Single(,,), ByVal ntc As Integer)
         Dim i As Integer, j As Integer, iGrp As Integer
@@ -2167,9 +2129,7 @@ Public Class cEcoSpace
             Next
         Next iGrp
 
-
     End Sub
-
 
     Private Sub runContaminantTracerExplicit2(ByRef Derivcon As Single(,,), ByRef Derivcon2 As Single(,,), ByVal ntc As Integer)
         Dim i As Integer, j As Integer, iGrp As Integer
@@ -2344,7 +2304,6 @@ Public Class cEcoSpace
 #End If
 
     End Sub
-
 
     Private Sub dumpCellComputeTimes()
         System.Console.WriteLine("Cell compute times")
@@ -3110,13 +3069,11 @@ Public Class cEcoSpace
 
             Me.EcoSpaceData.allocate(Me.EcoSpaceData.RelMoveFitGroup, Me.EcoSpaceData.NGroups, Me.EcoSpaceData.InRow + 1, Me.EcoSpaceData.InCol + 1)
 
-
             If Me.EcoPathData.isEcospaceModelCoupled Then Me.EcoSpaceData.allocate(Me.EcoSpaceData.GroupDetritus, Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol, Me.EcoSpaceData.NGroups)
 
             ReDim Me.EcoSpaceData.TotEffort(Me.EcoSpaceData.nFleets)
             ReDim Me.EcoSpaceData.AttractNofish(Me.EcoSpaceData.nFleets)
             ReDim Me.EcoSpaceData.Pencon(Me.EcoSpaceData.NGroups)
-
 
             ReDim Me.Btime(Me.EcoSpaceData.NGroups)
             ReDim Me.TotLoss(Me.EcoSpaceData.NGroups)
@@ -3176,10 +3133,8 @@ Public Class cEcoSpace
 
     End Function
 
-
     'Sub SetKmove()
     '    Dim i As Integer
-
 
     '    ReDim PzoTOmove(m_Data.NGroups)
     '    ' ReDim Kmovefit(m_Data.NGroups)
@@ -3199,9 +3154,7 @@ Public Class cEcoSpace
 
     '    Next
 
-
     'End Sub
-
 
     Sub SetBoundaryDepths()
         'set cells around system boundary to depth 1 so as to allow flow across them and proper
@@ -3338,8 +3291,6 @@ Public Class cEcoSpace
 
     End Sub
 
-
-
     ''' <summary>
     ''' Local version of derivtRed() used by Ecospace during initialization ONLY 
     ''' </summary>
@@ -3394,7 +3345,6 @@ Public Class cEcoSpace
 
         'End of energy
 
-
         If Me.EcoSimData.BioMedData.MedIsUsed(0) Then Me.EcoSim.SetMedFunctions(Biomass)
 
         Me.EcoSim.setpred(Biomass)
@@ -3410,7 +3360,6 @@ Public Class cEcoSpace
         Next
         Me.EcoSimData.NutFree = Me.EcoSimData.NutTot * RelProd - Me.EcoSimData.NutBiom
         If Me.EcoSimData.NutFree < Me.EcoSimData.NutMin Then Me.EcoSimData.NutFree = Me.EcoSimData.NutMin
-
 
         For j = Me.EcoSpaceData.nLiving + 1 To Me.EcoSpaceData.NGroups
             ToDetritus(j - Me.EcoSpaceData.nLiving) = 0
@@ -3661,8 +3610,6 @@ Public Class cEcoSpace
 
     End Function
 
-
-
     ''' <summary>
     ''' Scaling Sailing cost 
     ''' </summary>
@@ -3748,11 +3695,9 @@ Public Class cEcoSpace
                 Me.EcoSpaceData.SailScale(iFlt) = 1
             End If
 
-
         Next iFlt
 
     End Sub
-
 
     Private Sub SetEffortParameters(ResetTotEffort As Boolean)
         'this predicts total effort by gear type over model cells
@@ -4035,7 +3980,6 @@ Public Class cEcoSpace
         End If
     End Sub
 
-
     Private Sub debugDumpFlowRates(flowArray(,,) As Single, iGrp As Integer, Optional msg As String = " ")
         Dim tempstr As String
         Debug.Print(msg)
@@ -4065,7 +4009,6 @@ Public Class cEcoSpace
         '  Next igrp
     End Sub
 
-
     Private Function getMoveRate(igrp As Integer, imonth As Integer, irow As Integer, iCol As Integer) As Single
         If Not Me.EcoSpaceData.IsMigratory(igrp) Then
             Return Me.EcoSpaceData.Mrate(igrp)
@@ -4077,7 +4020,6 @@ Public Class cEcoSpace
             End If
         End If
     End Function
-
 
     ''' <summary>
     ''' Returns the relative movement from bad habitat multiplier based on preferred habitat and percentage of habitat type in the cell.
@@ -4126,7 +4068,6 @@ Public Class cEcoSpace
 
     End Function
 
-
     Function RelHabMove(ByVal i1 As Integer, ByVal j1 As Integer, ByVal i2 As Integer, ByVal j2 As Integer, ByVal G(,,) As Single, ByVal gk As Single, ByVal ihab As Integer) As Single
         'sets relative movement rate using slope of g() function between origin (i1,j1) and destination (i2,j2) cells
         'function is 1 when slope ss is zero
@@ -4143,7 +4084,6 @@ Public Class cEcoSpace
                 Stop
         End Select
     End Function
-
 
     Sub SolveGrid(ByVal ip As Integer, ByVal Aloc(,,) As Single, ByVal Floc(,,) As Single, ByVal X(,,) As Single, ByVal M As Integer, ByVal NomCols As Integer, ByVal Tol As Single, ByVal jord() As Integer, ByVal W As Single)
         'this routine solves for equilibrium field of concentrations x over a grid
@@ -4505,7 +4445,6 @@ exitline:
                                 'If Effpred < Effmin Then m_Data.EffortSpace(Iflt,i,j)=Effmin Else m_EffortSpace(iflt,i,j)=Effpred
                                 'JB instead we are applying a relaxation scheme to when setting m_EffortSpace(iflt,i,j)
 
-
                                 'VC Sail() above: to avoid dividing with zero
                                 Valt = (Valt ^ Me.EcoSpaceData.EffPower(iFlt)) / (EffortCost + Pencost + SailCost * Me.EcoSpaceData.Sail(iFlt)(i, j) / Me.EcoSpaceData.SailScale(iFlt))
                                 'jb 9-May-2014 change re Carls email
@@ -4524,7 +4463,6 @@ exitline:
                             End If 'Me.m_Data.IsFished(iFlt, i, j)
                         Next j
                     Next i
-
 
                     Dim sumEff As Single = 0, nEf As Integer = 0
                     For i = 1 To Me.EcoSpaceData.InRow
@@ -4886,7 +4824,6 @@ exitline:
 
     End Sub
 
-
     ''' <summary>
     ''' Run the PredictEffortDistribution on multiple threads
     ''' </summary>
@@ -5028,7 +4965,6 @@ exitline:
         Array.Clear(Me.EcoSpaceData.Ftot, 0, Me.EcoSpaceData.Ftot.Length)
         Array.Clear(Me.EcoSpaceData.EffortSpace, 0, Me.EcoSpaceData.EffortSpace.Length)
 
-
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'First run the Effort Distrubution threads by Fleet
         'This Computes the Effort by Fleet into EffortSpace(iFlt, iRow, iCol)
@@ -5124,7 +5060,6 @@ exitline:
 
     End Sub
 
-
     Private Shared Function getNextFleet(ByRef FleetIndex As Integer) As Boolean
         SyncLock cEcoSpace.FleetSyncLock
             'cEcoSpace.FleetCounter  Must be set to zero before this is used
@@ -5147,7 +5082,6 @@ exitline:
     '        Return New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded)
     '    End If
     'End Function
-
 
     Private Function computeThreadLoad(TotalWork As Integer, WorkCompleted As Integer, TotalThreads As Integer, CurrentThread As Integer) As Integer
         Return CInt(TotalWork - WorkCompleted) / (TotalThreads - (CurrentThread - 1))
@@ -5283,7 +5217,6 @@ exitline:
         Me.bEffortAdjusted = True
 
     End Sub
-
 
     ''' <summary>
     ''' This is a modified version of PredictEffortDistribution, to be called only once at around simulation
@@ -5798,8 +5731,6 @@ exitline:
 
     End Sub
 
-
-
     Sub VaryMigMovementParameters(ByVal imonth As Integer)
         '20-Jan-2016 Altered to base the migration movement on an area rather than a single point
         'the original code that set the movement based on a single cell is in VaryMigMovementParameters_SinglePoint()
@@ -5903,12 +5834,9 @@ exitline:
                                     Me.C(i, j, ip) = Me.CNomig(i, j, ip) * Me.RelMoveFit(i, j)
                                     Me.Bcw(i + 1, j, ip) = Me.BcwNomig(i + 1, j, ip) * Me.RelMoveFit(i + 1, j)
 
-
                                     'If ((i = 1 And j = 1) Or (i = 2 And j = 2) Or (i = 3 And j = 3)) And (ip = 5 And RelMoveFit(i, j) <> 1.0) Then
                                     '    Debug.WriteLine(j.ToString + ", b, " + BcwNomig(i, j + 1, ip).ToString + ", bcw, " + Bcw(i, j + 1, ip).ToString)
                                     'End If
-
-
 
                                 End If
 
@@ -5940,7 +5868,6 @@ exitline:
 
     End Sub
 
-
     Sub setRelFitnessMovement(ByVal imonth As Integer)
         'NOT USED Store Relative fitness movement inside a cell by group
         '20-Jan-2016 Altered to base the migration movement on an area rather than a single point
@@ -5963,8 +5890,6 @@ exitline:
         Next ip
 
     End Sub
-
-
 
 
     ''' <summary>
@@ -6004,7 +5929,6 @@ exitline:
         'End If
 
     End Function
-
 
     Private Sub TeleportMigrationBiomass(iMonth As Integer)
 
@@ -6063,17 +5987,12 @@ exitline:
             Debug.Assert(Math.Abs(tempBSum / sumB(imig)) < 1.0001)
         Next imig
 
-
     End Sub
-
-
-
 
 
     Function RelMigMove(ByVal iRowFrom As Integer, ByVal iColFrom As Integer, ByVal iRowTo As Integer, ByVal iColTo As Integer, ByVal G(,) As Single, ByVal gk As Single, ByVal iMigGrp As Integer, ByVal imonth As Integer, ByVal ip As Integer) As Single
         'sets relative movement rate using slope of g() function between origin (i1,j1) and destination (i2,j2) cells
         'function is 1 when slope ss is zero
-
 
         'Return 1.0
 
@@ -6358,7 +6277,6 @@ exitline:
 
     End Sub
 
-
     Private Function estimateMaxTimestep()
         Dim ntc As Integer
         Dim i As Integer, j As Integer, iGrp As Integer
@@ -6483,14 +6401,11 @@ exitline:
     '            End If 'If m_EPdata.fCatch(igrp) > 0 Then
     '        Next igrp
 
-
     '    Catch ex As Exception
     '        m_logger.LogError(ex, "Ecospace: Error in accumCatchData")
     '    End Try
 
     '    Me.m_SpaceCatchSemaphor.Release()
-
-
 
     '    '                        '060109VC: Adding Time Series Reference Data to Ecospace
     '    '                        'Will only save data for once per year, (at half year)
@@ -6525,7 +6440,6 @@ exitline:
     '    '                        End If
 
     'End Sub
-
 
     Private Sub calcValue(ByVal iCumTime As Integer, ByVal iYear As Integer)
         Dim igrp As Integer
@@ -6583,7 +6497,6 @@ exitline:
         Next igrp
 
     End Sub
-
 
     Private Sub UpdateThreadedResults()
         Dim solver As cSpaceSolver
@@ -6719,8 +6632,6 @@ exitline:
 
     End Sub
 
-
-
     ''' <summary>
     ''' Keep the Biomass results for this time step after all the calculation have been done. Trophic (deritRed), Spatial distribution (solve grid) and Multi-stanza biomasses updated.
     ''' </summary>
@@ -6761,7 +6672,6 @@ exitline:
 
     End Sub
 
-
     Private Sub marshallOnTimeStep(ByVal iTime As Integer)
         Try
             Me.m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnTimeStep), iTime)
@@ -6769,7 +6679,6 @@ exitline:
             m_logger.LogError(ex, "marshallOnTimeStep")
         End Try
     End Sub
-
 
 #End Region
 
@@ -6817,7 +6726,6 @@ exitline:
         Next i
 
     End Sub
-
 
 #If 0 Then
 
@@ -6918,7 +6826,6 @@ exitline:
 
         End Try
 
-
     End Function
 
     ''' <summary>
@@ -7003,9 +6910,7 @@ exitline:
 
         End Try
 
-
     End Function
-
 
     Private Sub InitSolversForYear(ByVal iYear As Integer)
         Try
@@ -7019,8 +6924,6 @@ exitline:
         End Try
 
     End Sub
-
-
 
     Private Sub resetSpaceSolverSpinup()
         Try
@@ -7038,7 +6941,6 @@ exitline:
             Throw New ApplicationException(Me.ToString & ".InitForYear() Error:  " & ex.Message, ex)
         End Try
     End Sub
-
 
     ''' <summary>
     ''' Creates a spacesolver object for each thread, and initialises them with references to ecospace variables
@@ -7075,8 +6977,6 @@ exitline:
 
                 Me.m_IBMGrowSolvers.Add(solver)
             Next i
-
-
 
             If Me.m_IBMMoveSolvers Is Nothing Then
                 Me.m_IBMMoveSolvers = New List(Of cIBMSolver)
@@ -7116,9 +7016,7 @@ exitline:
 
         End Try
 
-
     End Function
-
 
     Private Sub SolverErrorHandler(ByVal ThreadID As Integer, ByVal msg As String)
         Me.m_solverErrorMsg = msg
@@ -7156,7 +7054,6 @@ exitline:
             Throw New ApplicationException(Me.ToString & ".UpdateGridSolverThreads() Error:  " & ex.Message, ex)
 
         End Try
-
 
     End Function
 
@@ -7285,7 +7182,6 @@ exitline:
 
     End Function
 
-
 #End Region
 
 #Region "Summary stats"
@@ -7304,7 +7200,6 @@ exitline:
         Dim SpNObs() As Integer
         Dim SpSumZ() As Single
         Dim SpSumZ2() As Single
-
 
         ReDim Erpred(Me.m_refdata.AppliedNdatType * Me.m_refdata.AppliedDatPoints)
         '  ReDim ErTrace(m_refdata.NdatType * m_refdata.NdatYear)
@@ -7448,7 +7343,6 @@ exitline:
         '    Next
         'Next
 
-
         ''        '--------------------------------------------------
         ''        'Trace SS Spatial:
         ''        TraceSS = 0
@@ -7502,7 +7396,6 @@ exitline:
         '        CalculateSpaceSS = Ss
     End Function
 
-
     Public Sub RedimSpaceCSVvariables()
         'Ecosim name    Ecospace name
 
@@ -7541,8 +7434,6 @@ exitline:
         ReDim Me.EcoSpaceData.IsSpShown(Me.EcoSpaceData.SpDat)
         ReDim Me.EcoSpaceData.SpRegion(Me.EcoSpaceData.SpDat)
     End Sub
-
-
 
 #End Region
 
@@ -7712,15 +7603,6 @@ exitline:
 
     End Sub
 
-    Private Sub InitSearch()
-
-        Me.SearchData.RedimForRun()
-        Me.SearchData.bBaseYearSet = False
-        Me.SearchData.initForRun(Me.EcoPathData, Me.EcoSimData)
-        Me.SearchData.setBaseYearEffort(Me.EcoSimData)
-
-    End Sub
-
     ''' <summary>
     ''' Initialize numbers, weights, and positions ipacket,jpacket for IBM representation
     ''' note must be called in findspatialequilibrium after calls to initialize ecospace
@@ -7748,7 +7630,6 @@ exitline:
         ReDim Me.StanzaData.Wpacket(Me.StanzaData.Nsplit, Me.StanzaData.MaxAgeSplit, Me.StanzaData.Npackets)
         ReDim Me.StanzaData.iPacket(Me.StanzaData.Nsplit, Me.StanzaData.MaxAgeSplit, Me.StanzaData.Npackets)
         ReDim Me.StanzaData.jPacket(Me.StanzaData.Nsplit, Me.StanzaData.MaxAgeSplit, Me.StanzaData.Npackets)
-
 
         'Initialize data structure for forcing Age 1 IBM Packets
         Me.StanzaData.IBMForcedCells = New Single(Me.StanzaData.Nsplit)(,) {}
@@ -7837,11 +7718,9 @@ exitline:
         Next
         ReDim Me.StanzaData.Zcell(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol, Me.EcoSpaceData.NGroups)  'this variable used to store spatial field of total mortality rates for survival updates
 
-
         'checkStanzaBiomass()
         'Dim ages As cAgeStructSave = New cAgeStructSave(Me.EcoSpaceData, Me.StanzaData, Me.EcoPathData)
         'ages.SaveAgeStructure()
-
 
     End Sub
 
@@ -7867,11 +7746,7 @@ exitline:
         Next iage
 
 
-
-
         BPath = Me.EcoPathData.B(2)
-
-
 
         'Next ist
     End Sub
@@ -7960,7 +7835,6 @@ exitline:
     '    Return RegionValues
 
     'End Function
-
 
     ''' <summary>
     ''' Finds nearest suitable cell for IBM packets entering a stanza in a cell not suitable for that stanza
@@ -8064,7 +7938,6 @@ exitline:
 
     End Sub
 
-
     Function HabIsOk(ByVal ieco As Integer, ByVal i As Integer, ByVal j As Integer) As Boolean
         'If Depth(i, j) > 0 And (PrefHab(ieco, HabType(i, j)) = True Or PrefHab(ieco, 0) = True) Then
         If Me.EcoSpaceData.Depth(i, j) > 0 And Me.EcoSpaceData.HabCap(ieco)(i, j) > 0.5 Then
@@ -8073,8 +7946,6 @@ exitline:
             HabIsOk = False
         End If
     End Function
-
-
 
 #End Region
 
@@ -8111,7 +7982,6 @@ exitline:
         Dim inCol As Integer = Me.EcoSpaceData.InCol
         Dim iStart As Integer = iFleet
         Dim iEnd As Integer = iFleet
-
 
         If iStart <= 0 Then iStart = 0 : iEnd = Me.EcoSpaceData.nFleets
 
@@ -8268,9 +8138,6 @@ exitline:
     End Sub
 
 
-
-
-
     ''' <summary>
     ''' Set capacity maps from all input sources 
     ''' Habitats, habitat preference, habitat proportion in cell, Input Capacity Maps and enviromental response functions.
@@ -8332,7 +8199,6 @@ exitline:
 
     End Sub
 
-
     Private Sub ClearHabCapGroups(isCapChanged() As Boolean)
 
         For igrp As Integer = 0 To Me.EcoSpaceData.NGroups
@@ -8357,9 +8223,7 @@ exitline:
 
         Next igrp
 
-
     End Sub
-
 
     ''' <summary>
     ''' Create and run the AdjustLowHapCapsThreaded() threads
@@ -8409,9 +8273,7 @@ exitline:
             Debug.Assert(False, Me.ToString & ".runAjustLowHabCapsThreaded() AdjustLowHabCapsThreaded timed out.")
         End If
 
-
     End Sub
-
 
     ''' <summary>
     ''' Multithreaded version
@@ -8550,7 +8412,6 @@ exitline:
             System.Console.WriteLine("Ecospace.AdjustLowHabCapsThreaded Exception: " & ex.Message)
         End Try
 
-
     End Sub
 
     ''' <summary>
@@ -8686,7 +8547,6 @@ exitline:
         Return False
 
     End Function
-
 
     Private Sub normalizeCapacityMap()
         Dim iGrp As Integer, ir As Integer, ic As Integer
@@ -8844,7 +8704,6 @@ exitline:
             'Next ir
             'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-
             If bChanged Then
                 'maybe send a message
                 System.Console.WriteLine("Habitat proportions normalized.")
@@ -8903,7 +8762,6 @@ exitline:
 
     End Function
 
-
     ''' <summary>
     ''' Set Capacity based on enviromental response functions
     ''' </summary>
@@ -8959,13 +8817,11 @@ exitline:
 
     End Function
 
-
     Private Function setMoMaps() As Boolean
         Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
         Dim map As IEnviroInputData
         Dim imap As Integer = -1 'zero based index
         If (Me.EcoSpaceData.MortalityResponseDrivers Is Nothing) Then Return False
-
 
         For Each map In Me.EcoSpaceData.MortalityResponseDrivers
             imap += 1
@@ -9115,7 +8971,6 @@ exitline:
             Me.bInitSpinUpBase = False
 
         End If 'Me.m_Data.UseSpinUp And Me.m_Data.bInitSpinUpBase
-
 
         'xxxxxxxxxxxxxxx USING SPIN-UP xxxxxxxxxxxxxxxxxxxxxx'
         If Me.EcoSpaceData.UseSpinUp And Not Me.EcoSpaceData.UseSpinUpBase Then
@@ -9546,7 +9401,6 @@ exitline:
         Next
     End Sub
 
-
      Sub VaryMigMovementParameters(ByVal imonth As Integer)
         'sets solvegrid movement arrays based on depth map
         Dim i As Integer, j As Integer, ip As Integer, AdScale As Single ', iad As Integer, iju As Integer
@@ -9695,7 +9549,6 @@ exitline:
         End Try
     End Sub
 
-
     Sub VaryMovementParameters(ByVal imonth As Integer, ByVal ip As Integer, ByVal ieco As Integer)
         'EwE5 definition IsIad and IsIju indexes remove these are iAdult and iJuvenial indexes for the split pool code
         'Sub VaryMovementParameters(ByVal imonth As Integer, ByVal ip As Integer, ByVal IsIad As Integer, ByVal IsIju As Integer, ByVal ieco As Integer)
@@ -9819,7 +9672,6 @@ exitline:
 
     End Sub
 
-
     Sub VaryMigMovementParameters_SinglePoint(ByVal imonth As Integer)
         '20-Jan-2016 Original code to set migration movement based on a single point
         'Update to set migration movement based on an area
@@ -9940,7 +9792,6 @@ exitline:
         Next imig
     End Sub
 
-
     Private Sub SetMigGrad_SinglePoint()
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         '20-Jan-2016 original code to set MigGrad(),migration movement gradients, base on a preferred row and col/ single cell
@@ -10055,7 +9906,6 @@ exitline:
         End Try
     End Sub
 
-
     Private Sub SetMigGrad_Distance()
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         '20-Jan-2016 This was for debugging the Area based migration movements 
@@ -10142,8 +9992,6 @@ exitline:
                 Next imonth
             Next iMigGrp
 
-
-
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'DUBUGGING
             'Dump the migration maps to the debug/immediate window
@@ -10168,8 +10016,6 @@ exitline:
             Debug.Assert(False, ex.Message)
         End Try
     End Sub
-
-
 
     Private Sub SetMigGrad_Distance()
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -10282,7 +10128,6 @@ exitline:
         End Try
     End Sub
 
-
     
     ''' <summary>
     ''' Calculate advection for a given month.
@@ -10387,7 +10232,6 @@ exitline:
         ''UpCap.Caption = "Upwelling velocities, max=" + Format$(UpMax / CellLength, "###.##") + "km/yr"
     End Sub
 
-
     
     'Private Sub runContaminantTracerSolveGrid()
     '    Dim i As Integer
@@ -10437,11 +10281,9 @@ exitline:
     '    '    Next igrp
     '    'Next iRgn
 
-
     'End Sub
 
 #End If
 #End Region
-
 
 End Class

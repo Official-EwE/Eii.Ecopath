@@ -1,23 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Threading
 Imports EwECore.SearchObjectives
@@ -51,7 +34,6 @@ Namespace MSE
         Inherits cThreadWaitBase
         Implements ICoreInterface
         Implements ISearchObjective
-
 
 #Region "Private data"
 
@@ -110,7 +92,6 @@ Namespace MSE
             Me.m_bConnected = True
 
         End Sub
-
 
         Public Sub Disconnect()
 
@@ -194,7 +175,6 @@ Namespace MSE
             End Get
         End Property
 
-
         Public ReadOnly Property BiomassStats() As cCoreInputOutputList(Of cCoreInputOutputBase)
             Get
                 Return Me.m_lstBiomassStats
@@ -268,7 +248,6 @@ Namespace MSE
                 Return DirectCast(Me.m_lstFStats(iGroupIndex), cMSEStats) 'Return Me.m_lstBioEstStats
             End Get
         End Property
-
 
         Public ReadOnly Property ModelParameters() As cMSEParameters
             Get
@@ -388,7 +367,6 @@ Namespace MSE
                     System.Console.WriteLine(Me.ToString & ".ProcessCallBack() Exception thrown from PluginManager. " & ex.Message)
                 End Try
 
-
                 Me.m_thrdRunMSE = New Thread(AddressOf Me.m_MSE.Run)
                 Me.m_thrdRunMSE.Name = "MSE"
 
@@ -502,8 +480,6 @@ Namespace MSE
             '            eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
             'End If
 
-
-
             ' End If ' If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.PredictUseQuota Or _
 
             'jb 15-April-2010 Don't need to do this anymore Effort is set by MSE if EffortSource = NoCap
@@ -530,7 +506,6 @@ Namespace MSE
             '        Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_VALIDATION_EFFORT, fleets), _
             '                                    eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
             '    End If
-
 
             'End If 'If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.TrackUseQuota Then
 
@@ -763,7 +738,6 @@ Namespace MSE
                     stat.Name = Me.m_core.m_EcopathData.GroupName(stat.Index)
                 Next
 
-
                 'fleets
                 For Each mseFlt As cMSEFleetInput In Me.m_lstEcopathFleetInputs
                     mseFlt.AllowValidation = False
@@ -847,7 +821,6 @@ Namespace MSE
 
         End Function
 
-
         Private Function loadBatch() As Boolean
             Dim breturn As Boolean
             Try
@@ -899,7 +872,6 @@ Namespace MSE
                 'Me.m_parameters = Nothing
                 'Me.m_MSE = Nothing
                 'Me.m_Batch = Nothing
-
 
             Catch ex As Exception
                 m_logger.LogError(ex, "Exception clearing MSE manager")
@@ -1071,7 +1043,6 @@ Namespace MSE
 
         End Sub
 
-
         ''' <summary>
         ''' Reset quota shares to defaults.
         ''' </summary>
@@ -1110,7 +1081,6 @@ Namespace MSE
 
 #Region "Model communication callback delegates for model and interface"
 
-
         ''' <summary>
         ''' Callback handler called by the MSE model
         ''' </summary>
@@ -1144,7 +1114,6 @@ Namespace MSE
 
         End Sub
 
-
         Private Sub fireCallBack(obj As Object)
             Try
                 'Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
@@ -1156,7 +1125,6 @@ Namespace MSE
                 Debug.Assert(False, Me.ToString & " Error sending message to interface.")
             End Try
         End Sub
-
 
         Private Sub ProcessCallBack(CallBackType As eMSERunStates)
 
@@ -1224,7 +1192,6 @@ Namespace MSE
 
         End Sub
 
-
         ''' <summary>
         ''' Callback handler called by the MSY search 
         ''' </summary>
@@ -1250,7 +1217,6 @@ Namespace MSE
             End Try
 
         End Sub
-
 
         Private Sub fireMSYCallBack(obj As Object)
             Try
@@ -1418,8 +1384,5 @@ Namespace MSE
     End Class
 
 End Namespace
-
-
-
 
 

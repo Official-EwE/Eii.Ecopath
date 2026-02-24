@@ -1,32 +1,12 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports System.Net
 Imports EwECore.Common
 Imports EwECore.WebServices
 Imports EwEUtils.Utilities
-
- 
 
 Namespace Database
 
@@ -405,8 +385,8 @@ Namespace Database
                 bSucces = False
             End Try
 
-            Return bSucces And _
-                Me.m_dbTarget.ReleaseWriter(writerLifeStages, bSucces) And _
+            Return bSucces And
+                Me.m_dbTarget.ReleaseWriter(writerLifeStages, bSucces) And
                 Me.m_dbTarget.ReleaseWriter(writerStanza, bSucces)
 
         End Function
@@ -527,9 +507,9 @@ Namespace Database
                 For i As Integer = 1 To Me.m_data.NumFleets
                     For j As Integer = 1 To Me.m_data.NumGroups
 
-                        If (Landing(i, j) > 0.0!) Or _
-                           (Discard(i, j) > 0.0!) Or _
-                           (Market(i, j) > 0.0!) Or _
+                        If (Landing(i, j) > 0.0!) Or
+                           (Discard(i, j) > 0.0!) Or
+                           (Market(i, j) > 0.0!) Or
                            (PropDiscardMort(i, j) > 0.0!) Then
 
                             drow = writer.NewRow()
@@ -684,8 +664,8 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            bSucces = Me.m_dbTarget.Execute("DELETE FROM EcopathStanzaTaxon") And _
-                      Me.m_dbTarget.Execute("DELETE FROM EcopathGroupTaxon") And _
+            bSucces = Me.m_dbTarget.Execute("DELETE FROM EcopathStanzaTaxon") And
+                      Me.m_dbTarget.Execute("DELETE FROM EcopathGroupTaxon") And
                       Me.m_dbTarget.Execute("DELETE FROM EcopathTaxon")
 
             wr = Me.m_dbTarget.GetWriter("EcopathTaxon")

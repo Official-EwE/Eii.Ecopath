@@ -1,30 +1,10 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
-
-
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -55,7 +35,7 @@ Public Class gridShapeValue
     ''' <param name="bSuppressZeroes">States whether the grid will hide (True)
     ''' or show (False) zeroes.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Clear(iNumValues As Integer, _
+    Public Sub Clear(iNumValues As Integer,
                      bSuppressZeroes As Boolean)
 
         Me.m_iNumValues = iNumValues
@@ -74,8 +54,8 @@ Public Class gridShapeValue
     ''' <param name="displayMode">Mode that indicates how to format label
     ''' values.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub SetValues(shape As cShapeData, _
-                         iNumValues As Integer, _
+    Public Sub SetValues(shape As cShapeData,
+                         iNumValues As Integer,
                          displayMode As frmShapeValue.eDisplayMode)
 
         If (TypeOf shape Is cTimeSeries) Then

@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Threading
 Imports EwECore.SearchObjectives
@@ -117,8 +102,8 @@ Namespace MSY
                     'Is a time series loaded?
                     If bEnabledTS Then
                         ' #Yep: Ask the user what to do
-                        Dim fbMsg As cFeedbackMessage = New cFeedbackMessage(My.Resources.CoreMessages.MSY_WARNING_TIMESERIES, _
-                                                                             eCoreComponentType.MSY, eMessageType.StateNotMet, eMessageImportance.Question, _
+                        Dim fbMsg As cFeedbackMessage = New cFeedbackMessage(My.Resources.CoreMessages.MSY_WARNING_TIMESERIES,
+                                                                             eCoreComponentType.MSY, eMessageType.StateNotMet, eMessageImportance.Question,
                                                                              eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
                         fbMsg.Suppressable = True
                         Me.m_Core.Messages.SendMessage(fbMsg)
@@ -619,7 +604,6 @@ Namespace MSY
                 'Run the RK4. This runs the core ecosim (derivt()) calculations without any support from the core or Ecosim it self
                 Me.m_MSY.EcosimRK4(Me.m_msyData.nYearsPerTrial)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Create an F time series from the Ecopath F for the selected group

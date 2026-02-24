@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports EwEUtils.Utilities
@@ -103,7 +88,7 @@ Namespace Controls
         ''' Get/set the <see cref="cMediationBaseFunction"/> to display in this control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property Shape() As cMediationBaseFunction
             Get
                 Return Me.m_medfn
@@ -131,7 +116,7 @@ Namespace Controls
             End Get
         End Property
 
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -167,9 +152,9 @@ Namespace Controls
         ''' Get/set the X-axis label for the control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Category("Mediation"), _
-         Description("Label to display on the Y axis")> _
+        <Browsable(True),
+         Category("Mediation"),
+         Description("Label to display on the Y axis")>
         Public Property XAxisLabel() As String
             Get
                 Return Me.m_strXAxisLabel
@@ -188,9 +173,9 @@ Namespace Controls
         ''' Get/set the Y-axis label for the control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Category("Mediation"), _
-         Description("Label to display on the X axis")> _
+        <Browsable(True),
+         Category("Mediation"),
+         Description("Label to display on the X axis")>
         Public Property YAxisLabel() As String
             Get
                 Return Me.m_strYAxisLabel
@@ -209,9 +194,9 @@ Namespace Controls
         ''' Get/set the X-axis label for the control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Category("Mediation"), _
-         Description("Data view mode")> _
+        <Browsable(True),
+         Category("Mediation"),
+         Description("Data view mode")>
         Public Property ViewMode() As eViewModeTypes
             Get
                 Return Me.m_viewmode
@@ -228,9 +213,9 @@ Namespace Controls
         ''' Get/set the title for the control.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Category("Mediation"), _
-         Description("Graph title")> _
+        <Browsable(True),
+         Category("Mediation"),
+         Description("Graph title")>
         Public Property Title() As String
             Get
                 Return Me.m_strTitle
@@ -306,7 +291,6 @@ Namespace Controls
 
         End Sub
 
-
         Public Sub LoadAsLine()
 
             Try
@@ -358,7 +342,7 @@ Namespace Controls
                 'lstPts.Add(Xmax, resShape.ShapeData(resShape.XMax))
 
                 'need a way to find the color of the shape
-                Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_RESPONSE_TARGET, fmt.ToString(resShape)), _
+                Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_RESPONSE_TARGET, fmt.ToString(resShape)),
                                                              lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)
                 pane.CurveList.Add(il)
 
@@ -410,12 +394,12 @@ Namespace Controls
                     ' Is a landings interaction?
                     If (medLandings.iFleetIndex > 0) Then
                         Dim sourceSec As cCoreInputOutputBase = Me.m_uic.Core.EcopathFleetInputs(medLandings.iFleetIndex)
-                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, _
-                                                 fmt.ToString(source), _
+                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED,
+                                                 fmt.ToString(source),
                                                  fmt.ToString(sourceSec))
                     Else
-                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, _
-                                                 fmt.ToString(source), _
+                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE,
+                                                 fmt.ToString(source),
                                                  My.Resources.GENERIC_VALUE_ALL)
                     End If
                 Else
@@ -553,6 +537,4 @@ Namespace Controls
     End Class
 
 End Namespace
-
-
 

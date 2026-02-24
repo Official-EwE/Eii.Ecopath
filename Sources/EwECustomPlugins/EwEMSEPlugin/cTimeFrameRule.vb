@@ -1,31 +1,8 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
-
 
 Imports EwECore
 Imports System.IO
@@ -80,7 +57,6 @@ Public Class cTimeFrameRule
 
         'Return HCR_F + ((NYears + 1 - iYearProjecting) / (NYears + 1)) * Distance_From_HCR_F
 
-
     End Function
 
     Public Function CheckValidRule(iYearProjecting As Integer, HCR_F As Single, CurrentTimeStep As Integer) As Boolean
@@ -134,7 +110,6 @@ Public Class cTimeFrameRule
             Return False
         End If
 
-
     End Function
 
     '    Public Sub calcFsfromTimeFrameRules(iCurrentTimestep As Integer)
@@ -168,6 +143,5 @@ Public Class cTimeFrameRule
     '            End If
     '        End If
     '    End Sub
-
 
 End Class

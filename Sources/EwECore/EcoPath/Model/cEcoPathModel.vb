@@ -1,30 +1,10 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 
 Namespace Ecopath
@@ -153,7 +133,6 @@ Namespace Ecopath
             End Get
         End Property
 
-
         ''' <summary>
         ''' Do not send any messages
         ''' </summary>
@@ -187,7 +166,6 @@ Namespace Ecopath
             End Try
 
         End Sub
-
 
         ''' <summary>
         ''' Get or Set the cEcoPathDatastructures object
@@ -463,7 +441,6 @@ Namespace Ecopath
             Next igrp
 
         End Sub
-
 
         ''' <summary>
         ''' Set all QB values that are CORE_NULL to Zero
@@ -848,7 +825,6 @@ Namespace Ecopath
 
         End Function
 
-
         Private Sub CalcTotalPrimProd()
             Dim i As Integer
 
@@ -1011,7 +987,6 @@ Namespace Ecopath
             If Not msg Is Nothing Then
                 Me.NotifyCore(msg)
             End If
-
 
             'Also calculate the average market value by group  -- average value
             For j = 1 To Me.m_Data.NumGroups
@@ -1313,7 +1288,6 @@ Namespace Ecopath
 
         End Sub
 
-
         Private Sub CheckForImportOnlyGroups()
 
             Dim nFound As Integer = 0
@@ -1508,7 +1482,6 @@ Namespace Ecopath
 
         End Sub
 
-
 #Region "Estimate Parameters"
 
         Private Function EstimateParameters(EstimateFor As eEstimateParameterFor, ByRef Result As eStatusFlags) As Boolean
@@ -1573,7 +1546,6 @@ LoopCalc:
                         '    Return False
                         'End If
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
                     End If 'If EstimateFor = eEstimateParameterFor.ParameterEstimation Then
                 End If ' If LoopC > m_data.NumGroups + 2 Then
@@ -1745,7 +1717,6 @@ LoopCalc:
             Return True
         End Function
 
-
         Sub FindCyclesWhenEstimatingBiomass()
             ' Sub FindCyclesWhenEstimatingBiomass(Cons() As Single)'EwE5
             'CycDC [previously called CD] contains the proportion of the diet that is the minimum
@@ -1899,7 +1870,6 @@ NextPivot:
             'frmWait = Nothing
         End Sub
 
-
         Sub CheckPath(ByRef path() As Integer, Pivot As Integer, ByRef prey As Integer, level As Integer)
             Dim K As Integer
 
@@ -1908,7 +1878,6 @@ NextPivot:
             Next K
 
         End Sub
-
 
         Private Sub RedimVariables()
 
@@ -1966,7 +1935,6 @@ NextPivot:
 
         End Sub
 
-
         Private Function CountNoOfMissing(ByRef Mis() As Integer, ByRef nNoMissing As Integer, From As eEstimateParameterFor) As Boolean
             'Private Sub CountNoOfMissing(ByRef Mis() As Integer, ByRef NoMissing As Integer, From As String, chk As Integer)
 
@@ -2016,7 +1984,6 @@ NextPivot:
             Return True
 
         End Function
-
 
         Private Sub EstimatePB(ByRef Pass As Integer)
             Dim MM2 As Double
@@ -2099,7 +2066,6 @@ NextPivot:
 nextJ:
             Next j
         End Sub
-
 
         Private Sub EstimateB(ByRef Pass As Integer, EstimateFor As eEstimateParameterFor, ByRef SenExit As Boolean)
             Dim i As Integer
@@ -2375,8 +2341,6 @@ nextJ:
         End Function
 
 
-
-
         Private Sub EstimateQBorB_1(Pass As Integer)
             'The following is a routine made by VC in March 1994 to estimate
             'QB Or B independent of the Generalized Inverse. It works in cases
@@ -2468,7 +2432,6 @@ nextJ:
             Dim LHS(Me.m_Data.NumGroups, Me.m_Data.NumGroups) As Single
 
             Try
-
 
                 '             Count number of unknown B's and QB's
                 '             ------------------------------------
@@ -2595,8 +2558,6 @@ nextJ:
                     Next j
                 End If
 
-
-
                 '             If parameters have been estimated
                 '             ---------------------------------
                 If Estim = 1 Then
@@ -2616,7 +2577,6 @@ nextJ:
             End Try
 
         End Sub
-
 
         Private Sub SolvenoBnoQB(ByRef pass As Integer, ByRef NBQB As Integer)
             'Solve equation if B(i) and QB(i) are both unknown
@@ -2920,7 +2880,6 @@ ONE:
             End Try
         End Sub
 
-
         Private Sub EstimateTrophicLevels(iNumGroups As Integer, iNumLiving As Integer,
                                           PP() As Single, Diet(,) As Single, TLreturn() As Single)
 
@@ -2993,7 +2952,6 @@ ONE:
                 End If
             End If
         End Function
-
 
         Private Function DoIterationsToEstimateB() As Integer
             'VC programmed this function on 12 March 2002 to be able to estimate B for groups that are cannibalistic
@@ -3112,7 +3070,6 @@ nextJ:
             strm.Close()
 
         End Sub
-
 
         Private Sub dumpInputPars()
             Try

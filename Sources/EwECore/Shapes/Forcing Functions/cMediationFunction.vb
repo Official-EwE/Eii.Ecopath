@@ -1,23 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 ''' <summary>
 ''' Mediation functions inherit their base functionality from cMediationBaseFunction 
@@ -32,7 +15,7 @@ Public Class cMediationFunction
 
 #Region " Constructors "
 
-    Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager, _
+    Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager,
                    data As cMediationDataStructures, DBID As Integer, DataType As eDataTypes)
         'mediation data arrays from EcoSim
         'Public MedWeights(nGroups + nGear, MediationShapes) As Single 'defines biomass weights for med X
@@ -80,7 +63,6 @@ Public Class cMediationFunction
 
     End Sub
 
-
 #End Region ' Constructors
 
 #Region "Properties"
@@ -101,7 +83,6 @@ Public Class cMediationFunction
         If Me.m_bInInit Then
             Return False
         End If
-
 
         Dim nused As Integer
         For Each grp As cMediatingGroup In Me.m_groups
@@ -274,5 +255,4 @@ Public Class cMediationFunction
 #End Region '  List Interfaces
 
 End Class
-
 

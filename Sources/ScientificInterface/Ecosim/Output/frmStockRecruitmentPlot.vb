@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
@@ -258,7 +243,7 @@ Namespace Ecosim
                 Me.IsRunning = bEcosimRunning
 
                 ' Configure run/stop button
-                Me.m_btnRun.Text = if(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN)
+                Me.m_btnRun.Text = If(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN)
                 Me.m_btnRun.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
                 ' Reflect change immediately
                 Me.m_btnRun.Update()
@@ -331,8 +316,8 @@ Namespace Ecosim
 
                     pane.ReverseTransform(ptMouse, x, y)
                     item = pane.AddCurve("", New Double() {0.0, x}, New Double() {0.0, y}, Color.Black, SymbolType.None)
-                    Me.m_lblPt.Text = cStringUtils.Localize(My.Resources.ECOSIM_SR_SLOPELABEL, _
-                                               sg.FormatNumber(CSng(x)), sg.FormatNumber(CSng(y)), _
+                    Me.m_lblPt.Text = cStringUtils.Localize(My.Resources.ECOSIM_SR_SLOPELABEL,
+                                               sg.FormatNumber(CSng(x)), sg.FormatNumber(CSng(y)),
                                                sg.FormatNumber(CSng(y / x)))
                     Me.RemoveSlopeCurve(item)
                 End If
@@ -440,7 +425,7 @@ Namespace Ecosim
                     If results.hasSRData(i, j) Then
                         tmpSR = New cSRData(results.BStock(i, j), results.BRecruitment(i, j))
                         For k As Integer = 0 To Me.m_SRResults.Count - 1
-                            If (ReferenceEquals(stanza, Me.m_SRResults(k).StanzaGroup)) And _
+                            If (ReferenceEquals(stanza, Me.m_SRResults(k).StanzaGroup)) And
                                (ReferenceEquals(group, Me.m_SRResults(k).GroupStart)) Then
                                 Me.m_SRResults(k).Data.Add(tmpSR)
                                 Exit For
@@ -478,8 +463,8 @@ Namespace Ecosim
                     ppl.Add(srd.Stock, srd.Recruitment)
                 Next
 
-                curve = Me.m_plot.GraphPane.AddCurve(srl.Title, ppl, _
-                                      Me.StyleGuide.GroupColor(Me.Core, srl.GroupStart.Index), _
+                curve = Me.m_plot.GraphPane.AddCurve(srl.Title, ppl,
+                                      Me.StyleGuide.GroupColor(Me.Core, srl.GroupStart.Index),
                                       SymbolType.Circle)
 
                 curve.IsVisible = srl.IsVisible

@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
@@ -37,7 +21,7 @@ Public MustInherit Class cMediationBaseFunction
 
 #Region " Constructors "
 
-    Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager, _
+    Friend Sub New(EcoSimData As cEcosimDatastructures, Manager As cBaseShapeManager,
                    data As cMediationDataStructures, DBID As Integer, DataType As eDataTypes)
         'mediation data arrays from EcoSim
         'Public MedWeights(nGroups + nGear, MediationShapes) As Single 'defines biomass weights for med X
@@ -160,7 +144,6 @@ Public MustInherit Class cMediationBaseFunction
         End Set
     End Property
 
-
     ''' <summary>
     ''' X Axis base value for sum of x biomass
     ''' </summary>
@@ -225,8 +208,6 @@ Public MustInherit Class cMediationBaseFunction
         Return True
 
     End Function
-
-
 
 #End Region ' Updating
 

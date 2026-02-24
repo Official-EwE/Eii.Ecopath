@@ -1,21 +1,6 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Core
 
@@ -159,7 +144,6 @@ Public Class cEcospaceTimestep
             ReDim Me.m_ConMax(Me.m_spaceData.NGroups)
             ReDim Me.m_biomassByRegion(Me.m_spaceData.NGroups, Me.m_spaceData.nRegions)
             ReDim Me.m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
-
 
             ReDim Me.m_F(Me.m_spaceData.NGroups)
             ReDim Me.m_pred(Me.m_spaceData.NGroups)
@@ -340,7 +324,6 @@ Public Class cEcospaceTimestep
 
     End Property
 
-
     Public Property [Catch](iGroup As Single) As Single
 
         Get
@@ -432,7 +415,6 @@ Public Class cEcospaceTimestep
 
     End Property
 
-
     ''' <summary>
     ''' Average Biomass relative to the base by group (Bt/B0)
     ''' </summary>
@@ -458,7 +440,6 @@ Public Class cEcospaceTimestep
 
     End Property
 
-
     ''' <summary>
     ''' Number of rows in the map
     ''' </summary>
@@ -467,7 +448,6 @@ Public Class cEcospaceTimestep
             Return Me.m_spaceData.InRow
         End Get
     End Property
-
 
     ''' <summary>
     ''' Number of columns in the map
@@ -713,5 +693,4 @@ Public Class cEcospaceTimestep
 #End Region
 
 End Class
-
 

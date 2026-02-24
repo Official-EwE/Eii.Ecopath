@@ -1,30 +1,10 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.ValueWrapper
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 ''' <summary>
 ''' Contains the Model Run Parameters for EcoSim
@@ -164,7 +144,6 @@ Public Class cEcoSimModelParameters
 
     End Sub
 
-
 #End Region
 
 #Region "Mustoverride Method implementation for this class"
@@ -196,7 +175,6 @@ Public Class cEcoSimModelParameters
         '                Else
         '                    value.Status = eStatusFlags.OK
         '                End If
-
 
         '            Case eValueTypes.Str
 
@@ -235,7 +213,6 @@ Public Class cEcoSimModelParameters
 #End Region
 
 #Region "Variables via dot (.) operator"
-
 
     ''' <summary>
     ''' Number of years to run the EcoSim model for
@@ -536,7 +513,7 @@ Public Class cEcoSimModelParameters
     Public Property BiomassOnStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.BiomassOn)
+            Return Me.GetStatus(eVarNameFlags.BiomassOn)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -557,7 +534,6 @@ Public Class cEcoSimModelParameters
 
     End Property
 
-
     Public Property PredictEffortStatus() As eStatusFlags
 
         Get
@@ -570,12 +546,10 @@ Public Class cEcoSimModelParameters
 
     End Property
 
-
-
     Public Property DiscountStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.Discount)
+            Return Me.GetStatus(eVarNameFlags.Discount)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -587,7 +561,7 @@ Public Class cEcoSimModelParameters
     Public Property EquilibriumStepSizeStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.EquilibriumStepSize)
+            Return Me.GetStatus(eVarNameFlags.EquilibriumStepSize)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -599,7 +573,7 @@ Public Class cEcoSimModelParameters
     Public Property EquilMaxFishingRateStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.EquilMaxFishingRate)
+            Return Me.GetStatus(eVarNameFlags.EquilMaxFishingRate)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -611,7 +585,7 @@ Public Class cEcoSimModelParameters
     Public Property NudgeCheckStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.NudgeChecked)
+            Return Me.GetStatus(eVarNameFlags.NudgeChecked)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -623,7 +597,7 @@ Public Class cEcoSimModelParameters
     Public Property NumberYearStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.EcoSimNYears)
+            Return Me.GetStatus(eVarNameFlags.EcoSimNYears)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -635,7 +609,7 @@ Public Class cEcoSimModelParameters
     Public Property NumStepAvgStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.NumStepAvg)
+            Return Me.GetStatus(eVarNameFlags.NumStepAvg)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -647,7 +621,7 @@ Public Class cEcoSimModelParameters
     Public Property NutFreeBasePropStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.NutBaseFreeProp)
+            Return Me.GetStatus(eVarNameFlags.NutBaseFreeProp)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -659,7 +633,7 @@ Public Class cEcoSimModelParameters
     Public Property NutForceFunctionNumberStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.NutForceFunctionNumber)
+            Return Me.GetStatus(eVarNameFlags.NutForceFunctionNumber)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -683,7 +657,7 @@ Public Class cEcoSimModelParameters
     Public Property StepSizeStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.StepSize)
+            Return Me.GetStatus(eVarNameFlags.StepSize)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -695,7 +669,7 @@ Public Class cEcoSimModelParameters
     Public Property SystemRecoveryStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.SystemRecovery)
+            Return Me.GetStatus(eVarNameFlags.SystemRecovery)
         End Get
 
         Friend Set(value As eStatusFlags)
@@ -707,7 +681,7 @@ Public Class cEcoSimModelParameters
     Public Property UseVarPQStatus() As eStatusFlags
 
         Get
-            Return Me.getStatus(eVarNameFlags.UseVarPQ)
+            Return Me.GetStatus(eVarNameFlags.UseVarPQ)
         End Get
 
         Friend Set(value As eStatusFlags)

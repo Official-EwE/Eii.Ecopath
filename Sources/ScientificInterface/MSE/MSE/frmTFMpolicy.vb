@@ -1,30 +1,10 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.MSE
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 Namespace Ecosim
 
@@ -184,9 +164,9 @@ Namespace Ecosim
                         lpts.Add(4, Me.m_group.FOpt) ' Max X value?
                     End If
 
-                    line = New LineItem(Me.m_group.Name, _
-                    lpts, _
-                    Me.StyleGuide.GroupColor(Me.Core, Me.m_group.Index), _
+                    line = New LineItem(Me.m_group.Name,
+                    lpts,
+                    Me.StyleGuide.GroupColor(Me.Core, Me.m_group.Index),
                     SymbolType.Circle)
                     line.Line.Width = 2.0
 

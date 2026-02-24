@@ -1,25 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- Ecopath International Initiative, Barcelona, Spain and
-'                 Joint Reseach Centre, Ispra, Italy.
-' ===============================================================================
-'
-
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
 Imports EwECore.Common
@@ -27,8 +8,6 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 ''' <summary>
 ''' Performs the actual import from <see cref="cImportData"/> to <see cref="cEnviroResponseFunction"/>.
@@ -79,14 +58,14 @@ Public Class cImporter
                         If (Array.IndexOf(drivers, env.Name) >= 0) Then
                             Try
                                 Dim strName As String = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, env.Name, file.Species)
-                                cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core, _
-                                                                          cStringUtils.Localize(My.Resources.STATUS_CREATING_DETAIL, strName), _
+                                cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core,
+                                                                          cStringUtils.Localize(My.Resources.STATUS_CREATING_DETAIL, strName),
                                                                           -1)
                                 If Me.CreateShape(strName, env) Then
                                     vs = New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_IMPORT_DETAIL_SUCCESS, strName),
                                                              eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
                                 Else
-                                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, String.Format(My.Resources.PROMPT_IMPORT_DETAIL_FAILED, strName), _
+                                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, String.Format(My.Resources.PROMPT_IMPORT_DETAIL_FAILED, strName),
                                                              eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
                                 End If
                                 msg.AddVariable(vs)

@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwEUtils.Utilities
 Imports ZedGraph
@@ -252,9 +237,9 @@ Namespace Ecopath.Output
             pane.CurveList.Clear()
 
             'JS 23Mar09: Zedgraph helper performs standardized label, axis styling
-            Me.m_zgh.ConfigurePane(My.Resources.CAPTION_PSD, _
-                                   SharedResources.HEADER_BODYWEIGHT_LOGg, _
-                                   SharedResources.HEADER_BIOMASS_LOGg, _
+            Me.m_zgh.ConfigurePane(My.Resources.CAPTION_PSD,
+                                   SharedResources.HEADER_BODYWEIGHT_LOGg,
+                                   SharedResources.HEADER_BIOMASS_LOGg,
                                    True)
 
             'JS 15Oct09: Fonts are set via StyleGuide
@@ -297,7 +282,7 @@ Namespace Ecopath.Output
             Me.FindSystemPSD(sSystemPSD)
 
             'Find regression of the system PSD
-            Me.FindRegression(sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation, _
+            Me.FindRegression(sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation,
                               sLowWtClass, sHighWtClass, iSampleSize, sSystemPSD)
 
             For iWtClass As Integer = 1 To Me.Core.nWeightClasses
@@ -317,13 +302,13 @@ Namespace Ecopath.Output
             'PSD regression plot
             If iSampleSize = 2 Then
                 'Without std err
-                strLabel = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_WO_STDERR, sg.FormatNumber(sSlope), _
-                                    sg.FormatNumber(sIntercept), sg.FormatNumber(sCorrelation) & cStringUtils.vbCrLf, _
+                strLabel = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_WO_STDERR, sg.FormatNumber(sSlope),
+                                    sg.FormatNumber(sIntercept), sg.FormatNumber(sCorrelation) & cStringUtils.vbCrLf,
                                     sg.FormatNumber(sLowWtClass), sg.FormatNumber(sHighWtClass), sg.FormatNumber(iSampleSize))
             Else
                 'With std err
-                strLabel = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_W_STDERR, sg.FormatNumber(sSlope), sg.FormatNumber(sSlopeStdErr), _
-                                    sg.FormatNumber(sIntercept), sg.FormatNumber(sInterceptStdErr), sg.FormatNumber(sCorrelation) & cStringUtils.vbCrLf, _
+                strLabel = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_W_STDERR, sg.FormatNumber(sSlope), sg.FormatNumber(sSlopeStdErr),
+                                    sg.FormatNumber(sIntercept), sg.FormatNumber(sInterceptStdErr), sg.FormatNumber(sCorrelation) & cStringUtils.vbCrLf,
                                     sg.FormatNumber(sLowWtClass), sg.FormatNumber(sHighWtClass), sg.FormatNumber(iSampleSize))
             End If
             Me.AddCurveToGraphPane(pane, resultLists(1), strLabel, Color.Black)
@@ -337,7 +322,7 @@ Namespace Ecopath.Output
             Next
         End Sub
 
-        Private Sub AddCurveToGraphPane(pane As GraphPane, list As PointPairList, _
+        Private Sub AddCurveToGraphPane(pane As GraphPane, list As PointPairList,
                                         strLabel As String, lineClr As Color)
             Dim lnItem As LineItem
 
@@ -410,9 +395,9 @@ Namespace Ecopath.Output
 
         End Sub
 
-        Private Sub FindRegression(ByRef sSlope As Single, ByRef sSlopeStdErr As Single, _
-                                   ByRef sIntercept As Single, ByRef sInterceptStdErr As Single, _
-                                   ByRef sCorrelation As Single, ByRef sLowWtClass As Single, ByRef sHighWtClass As Single, _
+        Private Sub FindRegression(ByRef sSlope As Single, ByRef sSlopeStdErr As Single,
+                                   ByRef sIntercept As Single, ByRef sInterceptStdErr As Single,
+                                   ByRef sCorrelation As Single, ByRef sLowWtClass As Single, ByRef sHighWtClass As Single,
                                    ByRef iSampleSize As Integer, sSystemPSD() As Single)
 
             Dim sXValue As Single = 0
@@ -484,7 +469,7 @@ Namespace Ecopath.Output
             sSlopeStdErr = CSng(dEstStdErr / (Math.Sqrt(iNum - 1) * dXStdDev))
             sInterceptStdErr = CSng(dEstStdErr * Math.Sqrt((1 / iNum) + (dXMean ^ 2 / ((iNum - 1) * dXStdDev ^ 2))))
 
-            sCorrelation = CSng((iNum * dSumXY - dSumX * dSumY) / _
+            sCorrelation = CSng((iNum * dSumXY - dSumX * dSumY) /
                            (Math.Sqrt(iNum * dSumXSq - dSumX ^ 2) * Math.Sqrt(iNum * dSumYSq - dSumY ^ 2)))
             sLowWtClass = sXMin
             sHighWtClass = sXMax

@@ -85,9 +85,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Sources\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
     <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -102,10 +99,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging">
-      <Version>10.0.1</Version>
-    </PackageReference>
   </ItemGroup>
 </Project>

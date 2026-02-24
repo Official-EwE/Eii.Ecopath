@@ -18,8 +18,8 @@
 ' ===============================================================================
 '
 
-Imports EwEPlugin
-Imports EwECore
+Imports EwECore.Plugins
+Imports EwECore.Plugins.Ecosim
 
 ''' <summary>
 ''' Base code of a plug-in that monitors Ecosim time steps.
@@ -34,14 +34,14 @@ Public Class cEcosimPlugin
     Implements IEcosimEndTimestepPlugin
 
     Public Sub Initialize(ByVal core As Object) _
-        Implements EwEPlugin.IPlugin.Initialize
+        Implements IPlugin.Initialize
 
         MsgBox(Me.Name & " loaded")
 
     End Sub
 
     Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer, ByVal Ecosimresults As Object) _
-        Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
+        Implements IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         If iTime = 42 Then
             MsgBox("Ecosim run: Group 1 has biomass " & BiomassAtTimestep(1) & " at time step " & iTime)
@@ -50,28 +50,28 @@ Public Class cEcosimPlugin
     End Sub
 
     Public ReadOnly Property Author() As String _
-        Implements EwEPlugin.IPlugin.Author
+        Implements IPlugin.Author
         Get
             Return "your name"
         End Get
     End Property
 
     Public ReadOnly Property Contact() As String _
-        Implements EwEPlugin.IPlugin.Contact
+        Implements IPlugin.Contact
         Get
             Return "your email"
         End Get
     End Property
 
     Public ReadOnly Property Description() As String _
-        Implements EwEPlugin.IPlugin.Description
+        Implements IPlugin.Description
         Get
             Return "a description"
         End Get
     End Property
 
     Public ReadOnly Property Name() As String _
-        Implements EwEPlugin.IPlugin.Name, EwEPlugin.IPlugin.DisplayName
+        Implements IPlugin.Name, IPlugin.DisplayName
         Get
             Return "Ecosim plug-in example"
         End Get

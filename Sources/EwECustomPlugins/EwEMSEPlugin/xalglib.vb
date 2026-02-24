@@ -1,3 +1,7 @@
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
+
 Module XAlglib
 
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -67,11 +71,9 @@ Module XAlglib
         End Sub
     End Class
 
-
     Public Class hqrndstate
         Public csobj As alglib.hqrndstate
     End Class
-
 
     Public Sub hqrndrandomize(ByRef state As hqrndstate)
         Try
@@ -82,7 +84,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub hqrndseed(s1 As Integer, s2 As Integer, ByRef state As hqrndstate)
         Try
             state = New hqrndstate()
@@ -92,7 +93,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function hqrnduniformr(state As hqrndstate) As Double
         Try
             hqrnduniformr = alglib.hqrnduniformr(state.csobj)
@@ -100,7 +100,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function hqrnduniformi(state As hqrndstate, n As Integer) As Integer
         Try
@@ -110,7 +109,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function hqrndnormal(state As hqrndstate) As Double
         Try
             hqrndnormal = alglib.hqrndnormal(state.csobj)
@@ -118,7 +116,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub hqrndunit2(state As hqrndstate, ByRef x As Double, ByRef y As Double)
         Try
@@ -128,7 +125,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub hqrndnormal2(state As hqrndstate, ByRef x1 As Double, ByRef x2 As Double)
         Try
             alglib.hqrndnormal2(state.csobj, x1, x2)
@@ -136,7 +132,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function hqrndexponential(state As hqrndstate, lambdav As Double) As Double
         Try
@@ -146,7 +141,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function hqrnddiscrete(state As hqrndstate, x() As Double, n As Integer) As Double
         Try
             hqrnddiscrete = alglib.hqrnddiscrete(state.csobj, x, n)
@@ -154,7 +148,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function hqrndcontinuous(state As hqrndstate, x() As Double, n As Integer) As Double
         Try
@@ -183,7 +176,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub kdtreebuild(xy(,) As Double, n As Integer, nx As Integer, ny As Integer, normtype As Integer, ByRef kdt As kdtree)
         Try
             kdt = New kdtree()
@@ -192,7 +184,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub kdtreebuild(xy(,) As Double, nx As Integer, ny As Integer, normtype As Integer, ByRef kdt As kdtree)
         Try
@@ -203,7 +194,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub kdtreebuildtagged(xy(,) As Double, tags() As Integer, n As Integer, nx As Integer, ny As Integer, normtype As Integer, ByRef kdt As kdtree)
         Try
             kdt = New kdtree()
@@ -212,7 +202,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub kdtreebuildtagged(xy(,) As Double, tags() As Integer, nx As Integer, ny As Integer, normtype As Integer, ByRef kdt As kdtree)
         Try
@@ -223,7 +212,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function kdtreequeryknn(kdt As kdtree, x() As Double, k As Integer, selfmatch As Boolean) As Integer
         Try
             kdtreequeryknn = alglib.kdtreequeryknn(kdt.csobj, x, k, selfmatch)
@@ -231,7 +219,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function kdtreequeryknn(kdt As kdtree, x() As Double, k As Integer) As Integer
         Try
@@ -241,7 +228,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function kdtreequeryrnn(kdt As kdtree, x() As Double, r As Double, selfmatch As Boolean) As Integer
         Try
             kdtreequeryrnn = alglib.kdtreequeryrnn(kdt.csobj, x, r, selfmatch)
@@ -249,7 +235,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function kdtreequeryrnn(kdt As kdtree, x() As Double, r As Double) As Integer
         Try
@@ -259,7 +244,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function kdtreequeryaknn(kdt As kdtree, x() As Double, k As Integer, selfmatch As Boolean, eps As Double) As Integer
         Try
             kdtreequeryaknn = alglib.kdtreequeryaknn(kdt.csobj, x, k, selfmatch, eps)
@@ -267,7 +251,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function kdtreequeryaknn(kdt As kdtree, x() As Double, k As Integer, eps As Double) As Integer
         Try
@@ -277,7 +260,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Sub kdtreequeryresultsx(kdt As kdtree, ByRef x(,) As Double)
         Try
             alglib.kdtreequeryresultsx(kdt.csobj, x)
@@ -285,7 +267,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub kdtreequeryresultsxy(kdt As kdtree, ByRef xy(,) As Double)
         Try
@@ -295,7 +276,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub kdtreequeryresultstags(kdt As kdtree, ByRef tags() As Integer)
         Try
             alglib.kdtreequeryresultstags(kdt.csobj, tags)
@@ -303,7 +283,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub kdtreequeryresultsdistances(kdt As kdtree, ByRef r() As Double)
         Try
@@ -313,7 +292,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub kdtreequeryresultsxi(kdt As kdtree, ByRef x(,) As Double)
         Try
             alglib.kdtreequeryresultsxi(kdt.csobj, x)
@@ -321,7 +299,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub kdtreequeryresultsxyi(kdt As kdtree, ByRef xy(,) As Double)
         Try
@@ -331,7 +308,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub kdtreequeryresultstagsi(kdt As kdtree, ByRef tags() As Integer)
         Try
             alglib.kdtreequeryresultstagsi(kdt.csobj, tags)
@@ -339,7 +315,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub kdtreequeryresultsdistancesi(kdt As kdtree, ByRef r() As Double)
         Try
@@ -350,8 +325,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub cmatrixtranspose(m As Integer, n As Integer, a(,) As alglib.complex, ia As Integer, ja As Integer, ByRef b(,) As alglib.complex, ib As Integer, jb As Integer)
         Try
             alglib.cmatrixtranspose(m, n, a, ia, ja, b, ib, jb)
@@ -359,7 +332,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixtranspose(m As Integer, n As Integer, a(,) As Double, ia As Integer, ja As Integer, ByRef b(,) As Double, ib As Integer, jb As Integer)
         Try
@@ -369,7 +341,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixcopy(m As Integer, n As Integer, a(,) As alglib.complex, ia As Integer, ja As Integer, ByRef b(,) As alglib.complex, ib As Integer, jb As Integer)
         Try
             alglib.cmatrixcopy(m, n, a, ia, ja, b, ib, jb)
@@ -377,7 +348,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixcopy(m As Integer, n As Integer, a(,) As Double, ia As Integer, ja As Integer, ByRef b(,) As Double, ib As Integer, jb As Integer)
         Try
@@ -387,7 +357,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixrank1(m As Integer, n As Integer, ByRef a(,) As alglib.complex, ia As Integer, ja As Integer, ByRef u() As alglib.complex, iu As Integer, ByRef v() As alglib.complex, iv As Integer)
         Try
             alglib.cmatrixrank1(m, n, a, ia, ja, u, iu, v, iv)
@@ -395,7 +364,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixrank1(m As Integer, n As Integer, ByRef a(,) As Double, ia As Integer, ja As Integer, ByRef u() As Double, iu As Integer, ByRef v() As Double, iv As Integer)
         Try
@@ -405,7 +373,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixmv(m As Integer, n As Integer, a(,) As alglib.complex, ia As Integer, ja As Integer, opa As Integer, x() As alglib.complex, ix As Integer, ByRef y() As alglib.complex, iy As Integer)
         Try
             alglib.cmatrixmv(m, n, a, ia, ja, opa, x, ix, y, iy)
@@ -413,7 +380,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixmv(m As Integer, n As Integer, a(,) As Double, ia As Integer, ja As Integer, opa As Integer, x() As Double, ix As Integer, ByRef y() As Double, iy As Integer)
         Try
@@ -423,7 +389,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixrighttrsm(m As Integer, n As Integer, a(,) As alglib.complex, i1 As Integer, j1 As Integer, isupper As Boolean, isunit As Boolean, optype As Integer, ByRef x(,) As alglib.complex, i2 As Integer, j2 As Integer)
         Try
             alglib.cmatrixrighttrsm(m, n, a, i1, j1, isupper, isunit, optype, x, i2, j2)
@@ -431,7 +396,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixlefttrsm(m As Integer, n As Integer, a(,) As alglib.complex, i1 As Integer, j1 As Integer, isupper As Boolean, isunit As Boolean, optype As Integer, ByRef x(,) As alglib.complex, i2 As Integer, j2 As Integer)
         Try
@@ -441,7 +405,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixrighttrsm(m As Integer, n As Integer, a(,) As Double, i1 As Integer, j1 As Integer, isupper As Boolean, isunit As Boolean, optype As Integer, ByRef x(,) As Double, i2 As Integer, j2 As Integer)
         Try
             alglib.rmatrixrighttrsm(m, n, a, i1, j1, isupper, isunit, optype, x, i2, j2)
@@ -449,7 +412,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixlefttrsm(m As Integer, n As Integer, a(,) As Double, i1 As Integer, j1 As Integer, isupper As Boolean, isunit As Boolean, optype As Integer, ByRef x(,) As Double, i2 As Integer, j2 As Integer)
         Try
@@ -459,7 +421,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixsyrk(n As Integer, k As Integer, alpha As Double, a(,) As alglib.complex, ia As Integer, ja As Integer, optypea As Integer, beta As Double, ByRef c(,) As alglib.complex, ic As Integer, jc As Integer, isupper As Boolean)
         Try
             alglib.cmatrixsyrk(n, k, alpha, a, ia, ja, optypea, beta, c, ic, jc, isupper)
@@ -467,7 +428,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixsyrk(n As Integer, k As Integer, alpha As Double, a(,) As Double, ia As Integer, ja As Integer, optypea As Integer, beta As Double, ByRef c(,) As Double, ic As Integer, jc As Integer, isupper As Boolean)
         Try
@@ -477,7 +437,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixgemm(m As Integer, n As Integer, k As Integer, alpha As alglib.complex, a(,) As alglib.complex, ia As Integer, ja As Integer, optypea As Integer, b(,) As alglib.complex, ib As Integer, jb As Integer, optypeb As Integer, beta As alglib.complex, ByRef c(,) As alglib.complex, ic As Integer, jc As Integer)
         Try
             alglib.cmatrixgemm(m, n, k, alpha, a, ia, ja, optypea, b, ib, jb, optypeb, beta, c, ic, jc)
@@ -485,7 +444,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixgemm(m As Integer, n As Integer, k As Integer, alpha As Double, a(,) As Double, ia As Integer, ja As Integer, optypea As Integer, b(,) As Double, ib As Integer, jb As Integer, optypeb As Integer, beta As Double, ByRef c(,) As Double, ic As Integer, jc As Integer)
         Try
@@ -496,8 +454,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub samplemoments(x() As Double, n As Integer, ByRef mean As Double, ByRef variance As Double, ByRef skewness As Double, ByRef kurtosis As Double)
         Try
             alglib.samplemoments(x, n, mean, variance, skewness, kurtosis)
@@ -505,7 +461,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub samplemoments(x() As Double, ByRef mean As Double, ByRef variance As Double, ByRef skewness As Double, ByRef kurtosis As Double)
         Try
@@ -515,7 +470,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function samplemean(x() As Double, n As Integer) As Double
         Try
             samplemean = alglib.samplemean(x, n)
@@ -523,7 +477,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function samplemean(x() As Double) As Double
         Try
@@ -533,7 +486,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function samplevariance(x() As Double, n As Integer) As Double
         Try
             samplevariance = alglib.samplevariance(x, n)
@@ -541,7 +493,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function samplevariance(x() As Double) As Double
         Try
@@ -551,7 +502,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function sampleskewness(x() As Double, n As Integer) As Double
         Try
             sampleskewness = alglib.sampleskewness(x, n)
@@ -559,7 +509,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function sampleskewness(x() As Double) As Double
         Try
@@ -569,7 +518,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function samplekurtosis(x() As Double, n As Integer) As Double
         Try
             samplekurtosis = alglib.samplekurtosis(x, n)
@@ -577,7 +525,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function samplekurtosis(x() As Double) As Double
         Try
@@ -587,7 +534,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Sub sampleadev(x() As Double, n As Integer, ByRef adev As Double)
         Try
             alglib.sampleadev(x, n, adev)
@@ -595,7 +541,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub sampleadev(x() As Double, ByRef adev As Double)
         Try
@@ -605,7 +550,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub samplemedian(x() As Double, n As Integer, ByRef median As Double)
         Try
             alglib.samplemedian(x, n, median)
@@ -613,7 +557,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub samplemedian(x() As Double, ByRef median As Double)
         Try
@@ -623,7 +566,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub samplepercentile(x() As Double, n As Integer, p As Double, ByRef v As Double)
         Try
             alglib.samplepercentile(x, n, p, v)
@@ -631,7 +573,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub samplepercentile(x() As Double, p As Double, ByRef v As Double)
         Try
@@ -641,7 +582,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function cov2(x() As Double, y() As Double, n As Integer) As Double
         Try
             cov2 = alglib.cov2(x, y, n)
@@ -649,7 +589,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function cov2(x() As Double, y() As Double) As Double
         Try
@@ -659,7 +598,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function pearsoncorr2(x() As Double, y() As Double, n As Integer) As Double
         Try
             pearsoncorr2 = alglib.pearsoncorr2(x, y, n)
@@ -667,7 +605,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function pearsoncorr2(x() As Double, y() As Double) As Double
         Try
@@ -677,7 +614,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function spearmancorr2(x() As Double, y() As Double, n As Integer) As Double
         Try
             spearmancorr2 = alglib.spearmancorr2(x, y, n)
@@ -685,7 +621,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function spearmancorr2(x() As Double, y() As Double) As Double
         Try
@@ -695,7 +630,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Sub covm(x(,) As Double, n As Integer, m As Integer, ByRef c(,) As Double)
         Try
             alglib.covm(x, n, m, c)
@@ -703,7 +637,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub covm(x(,) As Double, ByRef c(,) As Double)
         Try
@@ -713,7 +646,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub pearsoncorrm(x(,) As Double, n As Integer, m As Integer, ByRef c(,) As Double)
         Try
             alglib.pearsoncorrm(x, n, m, c)
@@ -721,7 +653,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub pearsoncorrm(x(,) As Double, ByRef c(,) As Double)
         Try
@@ -731,7 +662,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spearmancorrm(x(,) As Double, n As Integer, m As Integer, ByRef c(,) As Double)
         Try
             alglib.spearmancorrm(x, n, m, c)
@@ -739,7 +669,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spearmancorrm(x(,) As Double, ByRef c(,) As Double)
         Try
@@ -749,7 +678,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub covm2(x(,) As Double, y(,) As Double, n As Integer, m1 As Integer, m2 As Integer, ByRef c(,) As Double)
         Try
             alglib.covm2(x, y, n, m1, m2, c)
@@ -757,7 +685,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub covm2(x(,) As Double, y(,) As Double, ByRef c(,) As Double)
         Try
@@ -767,7 +694,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub pearsoncorrm2(x(,) As Double, y(,) As Double, n As Integer, m1 As Integer, m2 As Integer, ByRef c(,) As Double)
         Try
             alglib.pearsoncorrm2(x, y, n, m1, m2, c)
@@ -775,7 +701,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub pearsoncorrm2(x(,) As Double, y(,) As Double, ByRef c(,) As Double)
         Try
@@ -785,7 +710,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spearmancorrm2(x(,) As Double, y(,) As Double, n As Integer, m1 As Integer, m2 As Integer, ByRef c(,) As Double)
         Try
             alglib.spearmancorrm2(x, y, n, m1, m2, c)
@@ -793,7 +717,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spearmancorrm2(x(,) As Double, y(,) As Double, ByRef c(,) As Double)
         Try
@@ -803,7 +726,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function pearsoncorrelation(x() As Double, y() As Double, n As Integer) As Double
         Try
             pearsoncorrelation = alglib.pearsoncorrelation(x, y, n)
@@ -811,7 +733,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function spearmanrankcorrelation(x() As Double, y() As Double, n As Integer) As Double
         Try
@@ -822,8 +743,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Sub dsoptimalsplit2(a() As Double, c() As Integer, n As Integer, ByRef info As Integer, ByRef threshold As Double, ByRef pal As Double, ByRef pbl As Double, ByRef par As Double, ByRef pbr As Double, ByRef cve As Double)
         Try
             alglib.dsoptimalsplit2(a, c, n, info, threshold, pal, pbl, par, pbr, cve)
@@ -831,7 +750,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub dsoptimalsplit2fast(ByRef a() As Double, ByRef c() As Integer, ByRef tiesbuf() As Integer, ByRef cntbuf() As Integer, ByRef bufr() As Double, ByRef bufi() As Integer, n As Integer, nc As Integer, alpha As Double, ByRef info As Integer, ByRef threshold As Double, ByRef rms As Double, ByRef cvrms As Double)
         Try
@@ -946,7 +864,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub dfbuildrandomdecisionforest(xy(,) As Double, npoints As Integer, nvars As Integer, nclasses As Integer, ntrees As Integer, r As Double, ByRef info As Integer, ByRef df As decisionforest, ByRef rep As dfreport)
         Try
             df = New decisionforest()
@@ -956,7 +873,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub dfbuildrandomdecisionforestx1(xy(,) As Double, npoints As Integer, nvars As Integer, nclasses As Integer, ntrees As Integer, nrndvars As Integer, r As Double, ByRef info As Integer, ByRef df As decisionforest, ByRef rep As dfreport)
         Try
@@ -968,7 +884,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub dfprocess(df As decisionforest, x() As Double, ByRef y() As Double)
         Try
             alglib.dfprocess(df.csobj, x, y)
@@ -976,7 +891,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub dfprocessi(df As decisionforest, x() As Double, ByRef y() As Double)
         Try
@@ -986,7 +900,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function dfrelclserror(df As decisionforest, xy(,) As Double, npoints As Integer) As Double
         Try
             dfrelclserror = alglib.dfrelclserror(df.csobj, xy, npoints)
@@ -994,7 +907,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function dfavgce(df As decisionforest, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -1004,7 +916,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function dfrmserror(df As decisionforest, xy(,) As Double, npoints As Integer) As Double
         Try
             dfrmserror = alglib.dfrmserror(df.csobj, xy, npoints)
@@ -1013,7 +924,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function dfavgerror(df As decisionforest, xy(,) As Double, npoints As Integer) As Double
         Try
             dfavgerror = alglib.dfavgerror(df.csobj, xy, npoints)
@@ -1021,7 +931,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function dfavgrelerror(df As decisionforest, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -1032,8 +941,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function gammafunction(x As Double) As Double
         Try
             gammafunction = alglib.gammafunction(x)
@@ -1041,7 +948,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function lngamma(x As Double, ByRef sgngam As Double) As Double
         Try
@@ -1052,8 +958,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function errorfunction(x As Double) As Double
         Try
             errorfunction = alglib.errorfunction(x)
@@ -1061,7 +965,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function errorfunctionc(x As Double) As Double
         Try
@@ -1071,7 +974,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function normaldistribution(x As Double) As Double
         Try
             normaldistribution = alglib.normaldistribution(x)
@@ -1080,7 +982,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function inverf(e As Double) As Double
         Try
             inverf = alglib.inverf(e)
@@ -1088,7 +989,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function invnormaldistribution(y0 As Double) As Double
         Try
@@ -1099,8 +999,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function incompletegamma(a As Double, x As Double) As Double
         Try
             incompletegamma = alglib.incompletegamma(a, x)
@@ -1109,7 +1007,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function incompletegammac(a As Double, x As Double) As Double
         Try
             incompletegammac = alglib.incompletegammac(a, x)
@@ -1117,7 +1014,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function invincompletegammac(a As Double, y0 As Double) As Double
         Try
@@ -1128,8 +1024,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Sub rmatrixqr(ByRef a(,) As Double, m As Integer, n As Integer, ByRef tau() As Double)
         Try
             alglib.rmatrixqr(a, m, n, tau)
@@ -1137,7 +1031,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixlq(ByRef a(,) As Double, m As Integer, n As Integer, ByRef tau() As Double)
         Try
@@ -1147,7 +1040,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixqr(ByRef a(,) As alglib.complex, m As Integer, n As Integer, ByRef tau() As alglib.complex)
         Try
             alglib.cmatrixqr(a, m, n, tau)
@@ -1155,7 +1047,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixlq(ByRef a(,) As alglib.complex, m As Integer, n As Integer, ByRef tau() As alglib.complex)
         Try
@@ -1165,7 +1056,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixqrunpackq(a(,) As Double, m As Integer, n As Integer, tau() As Double, qcolumns As Integer, ByRef q(,) As Double)
         Try
             alglib.rmatrixqrunpackq(a, m, n, tau, qcolumns, q)
@@ -1173,7 +1063,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixqrunpackr(a(,) As Double, m As Integer, n As Integer, ByRef r(,) As Double)
         Try
@@ -1183,7 +1072,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixlqunpackq(a(,) As Double, m As Integer, n As Integer, tau() As Double, qrows As Integer, ByRef q(,) As Double)
         Try
             alglib.rmatrixlqunpackq(a, m, n, tau, qrows, q)
@@ -1191,7 +1079,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixlqunpackl(a(,) As Double, m As Integer, n As Integer, ByRef l(,) As Double)
         Try
@@ -1201,7 +1088,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixqrunpackq(a(,) As alglib.complex, m As Integer, n As Integer, tau() As alglib.complex, qcolumns As Integer, ByRef q(,) As alglib.complex)
         Try
             alglib.cmatrixqrunpackq(a, m, n, tau, qcolumns, q)
@@ -1209,7 +1095,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixqrunpackr(a(,) As alglib.complex, m As Integer, n As Integer, ByRef r(,) As alglib.complex)
         Try
@@ -1219,7 +1104,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixlqunpackq(a(,) As alglib.complex, m As Integer, n As Integer, tau() As alglib.complex, qrows As Integer, ByRef q(,) As alglib.complex)
         Try
             alglib.cmatrixlqunpackq(a, m, n, tau, qrows, q)
@@ -1227,7 +1111,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixlqunpackl(a(,) As alglib.complex, m As Integer, n As Integer, ByRef l(,) As alglib.complex)
         Try
@@ -1237,7 +1120,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixbd(ByRef a(,) As Double, m As Integer, n As Integer, ByRef tauq() As Double, ByRef taup() As Double)
         Try
             alglib.rmatrixbd(a, m, n, tauq, taup)
@@ -1245,7 +1127,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixbdunpackq(qp(,) As Double, m As Integer, n As Integer, tauq() As Double, qcolumns As Integer, ByRef q(,) As Double)
         Try
@@ -1255,7 +1136,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixbdmultiplybyq(qp(,) As Double, m As Integer, n As Integer, tauq() As Double, ByRef z(,) As Double, zrows As Integer, zcolumns As Integer, fromtheright As Boolean, dotranspose As Boolean)
         Try
             alglib.rmatrixbdmultiplybyq(qp, m, n, tauq, z, zrows, zcolumns, fromtheright, dotranspose)
@@ -1263,7 +1143,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixbdunpackpt(qp(,) As Double, m As Integer, n As Integer, taup() As Double, ptrows As Integer, ByRef pt(,) As Double)
         Try
@@ -1273,7 +1152,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixbdmultiplybyp(qp(,) As Double, m As Integer, n As Integer, taup() As Double, ByRef z(,) As Double, zrows As Integer, zcolumns As Integer, fromtheright As Boolean, dotranspose As Boolean)
         Try
             alglib.rmatrixbdmultiplybyp(qp, m, n, taup, z, zrows, zcolumns, fromtheright, dotranspose)
@@ -1281,7 +1159,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixbdunpackdiagonals(b(,) As Double, m As Integer, n As Integer, ByRef isupper As Boolean, ByRef d() As Double, ByRef e() As Double)
         Try
@@ -1291,7 +1168,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixhessenberg(ByRef a(,) As Double, n As Integer, ByRef tau() As Double)
         Try
             alglib.rmatrixhessenberg(a, n, tau)
@@ -1299,7 +1175,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixhessenbergunpackq(a(,) As Double, n As Integer, tau() As Double, ByRef q(,) As Double)
         Try
@@ -1309,7 +1184,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixhessenbergunpackh(a(,) As Double, n As Integer, ByRef h(,) As Double)
         Try
             alglib.rmatrixhessenbergunpackh(a, n, h)
@@ -1317,7 +1191,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub smatrixtd(ByRef a(,) As Double, n As Integer, isupper As Boolean, ByRef tau() As Double, ByRef d() As Double, ByRef e() As Double)
         Try
@@ -1327,7 +1200,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub smatrixtdunpackq(a(,) As Double, n As Integer, isupper As Boolean, tau() As Double, ByRef q(,) As Double)
         Try
             alglib.smatrixtdunpackq(a, n, isupper, tau, q)
@@ -1336,7 +1208,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub hmatrixtd(ByRef a(,) As alglib.complex, n As Integer, isupper As Boolean, ByRef tau() As alglib.complex, ByRef d() As Double, ByRef e() As Double)
         Try
             alglib.hmatrixtd(a, n, isupper, tau, d, e)
@@ -1344,7 +1215,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub hmatrixtdunpackq(a(,) As alglib.complex, n As Integer, isupper As Boolean, tau() As alglib.complex, ByRef q(,) As alglib.complex)
         Try
@@ -1355,8 +1225,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Function rmatrixbdsvd(ByRef d() As Double, e() As Double, n As Integer, isupper As Boolean, isfractionalaccuracyrequired As Boolean, ByRef u(,) As Double, nru As Integer, ByRef c(,) As Double, ncc As Integer, ByRef vt(,) As Double, ncvt As Integer) As Boolean
         Try
             rmatrixbdsvd = alglib.rmatrixbdsvd(d, e, n, isupper, isfractionalaccuracyrequired, u, nru, c, ncc, vt, ncvt)
@@ -1364,8 +1232,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
-
 
 
     Public Function rmatrixsvd(a(,) As Double, m As Integer, n As Integer, uneeded As Integer, vtneeded As Integer, additionalmemory As Integer, ByRef w() As Double, ByRef u(,) As Double, ByRef vt(,) As Double) As Boolean
@@ -1472,7 +1338,6 @@ Module XAlglib
         Public csobj As alglib.lrreport
     End Class
 
-
     Public Sub lrbuild(xy(,) As Double, npoints As Integer, nvars As Integer, ByRef info As Integer, ByRef lm As linearmodel, ByRef ar As lrreport)
         Try
             lm = New linearmodel()
@@ -1482,7 +1347,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lrbuilds(xy(,) As Double, s() As Double, npoints As Integer, nvars As Integer, ByRef info As Integer, ByRef lm As linearmodel, ByRef ar As lrreport)
         Try
@@ -1494,7 +1358,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lrbuildzs(xy(,) As Double, s() As Double, npoints As Integer, nvars As Integer, ByRef info As Integer, ByRef lm As linearmodel, ByRef ar As lrreport)
         Try
             lm = New linearmodel()
@@ -1504,7 +1367,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lrbuildz(xy(,) As Double, npoints As Integer, nvars As Integer, ByRef info As Integer, ByRef lm As linearmodel, ByRef ar As lrreport)
         Try
@@ -1516,7 +1378,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lrunpack(lm As linearmodel, ByRef v() As Double, ByRef nvars As Integer)
         Try
             alglib.lrunpack(lm.csobj, v, nvars)
@@ -1524,7 +1385,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lrpack(v() As Double, nvars As Integer, ByRef lm As linearmodel)
         Try
@@ -1535,7 +1395,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function lrprocess(lm As linearmodel, x() As Double) As Double
         Try
             lrprocess = alglib.lrprocess(lm.csobj, x)
@@ -1543,7 +1402,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function lrrmserror(lm As linearmodel, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -1553,7 +1411,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function lravgerror(lm As linearmodel, xy(,) As Double, npoints As Integer) As Double
         Try
             lravgerror = alglib.lravgerror(lm.csobj, xy, npoints)
@@ -1561,7 +1418,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function lravgrelerror(lm As linearmodel, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -1572,8 +1428,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Sub filtersma(ByRef x() As Double, n As Integer, k As Integer)
         Try
             alglib.filtersma(x, n, k)
@@ -1581,7 +1435,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub filtersma(ByRef x() As Double, k As Integer)
         Try
@@ -1591,7 +1444,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub filterema(ByRef x() As Double, n As Integer, alpha As Double)
         Try
             alglib.filterema(x, n, alpha)
@@ -1599,7 +1451,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub filterema(ByRef x() As Double, alpha As Double)
         Try
@@ -1609,7 +1460,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub filterlrma(ByRef x() As Double, n As Integer, k As Integer)
         Try
             alglib.filterlrma(x, n, k)
@@ -1618,7 +1468,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub filterlrma(ByRef x() As Double, k As Integer)
         Try
             alglib.filterlrma(x, k)
@@ -1626,8 +1475,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
-
 
 
     Public Sub kmeansgenerate(xy(,) As Double, npoints As Integer, nvars As Integer, k As Integer, restarts As Integer, ByRef info As Integer, ByRef c(,) As Double, ByRef xyc() As Integer)
@@ -1639,8 +1486,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Function smatrixevd(a(,) As Double, n As Integer, zneeded As Integer, isupper As Boolean, ByRef d() As Double, ByRef z(,) As Double) As Boolean
         Try
             smatrixevd = alglib.smatrixevd(a, n, zneeded, isupper, d, z)
@@ -1648,7 +1493,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function smatrixevdr(a(,) As Double, n As Integer, zneeded As Integer, isupper As Boolean, b1 As Double, b2 As Double, ByRef m As Integer, ByRef w() As Double, ByRef z(,) As Double) As Boolean
         Try
@@ -1658,7 +1502,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function smatrixevdi(a(,) As Double, n As Integer, zneeded As Integer, isupper As Boolean, i1 As Integer, i2 As Integer, ByRef w() As Double, ByRef z(,) As Double) As Boolean
         Try
             smatrixevdi = alglib.smatrixevdi(a, n, zneeded, isupper, i1, i2, w, z)
@@ -1666,7 +1509,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function hmatrixevd(a(,) As alglib.complex, n As Integer, zneeded As Integer, isupper As Boolean, ByRef d() As Double, ByRef z(,) As alglib.complex) As Boolean
         Try
@@ -1676,7 +1518,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function hmatrixevdr(a(,) As alglib.complex, n As Integer, zneeded As Integer, isupper As Boolean, b1 As Double, b2 As Double, ByRef m As Integer, ByRef w() As Double, ByRef z(,) As alglib.complex) As Boolean
         Try
             hmatrixevdr = alglib.hmatrixevdr(a, n, zneeded, isupper, b1, b2, m, w, z)
@@ -1684,7 +1525,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function hmatrixevdi(a(,) As alglib.complex, n As Integer, zneeded As Integer, isupper As Boolean, i1 As Integer, i2 As Integer, ByRef w() As Double, ByRef z(,) As alglib.complex) As Boolean
         Try
@@ -1694,7 +1534,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function smatrixtdevd(ByRef d() As Double, e() As Double, n As Integer, zneeded As Integer, ByRef z(,) As Double) As Boolean
         Try
             smatrixtdevd = alglib.smatrixtdevd(d, e, n, zneeded, z)
@@ -1702,7 +1541,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function smatrixtdevdr(ByRef d() As Double, e() As Double, n As Integer, zneeded As Integer, a As Double, b As Double, ByRef m As Integer, ByRef z(,) As Double) As Boolean
         Try
@@ -1712,7 +1550,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function smatrixtdevdi(ByRef d() As Double, e() As Double, n As Integer, zneeded As Integer, i1 As Integer, i2 As Integer, ByRef z(,) As Double) As Boolean
         Try
             smatrixtdevdi = alglib.smatrixtdevdi(d, e, n, zneeded, i1, i2, z)
@@ -1720,7 +1557,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function rmatrixevd(a(,) As Double, n As Integer, vneeded As Integer, ByRef wr() As Double, ByRef wi() As Double, ByRef vl(,) As Double, ByRef vr(,) As Double) As Boolean
         Try
@@ -1731,8 +1567,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Sub rmatrixrndorthogonal(n As Integer, ByRef a(,) As Double)
         Try
             alglib.rmatrixrndorthogonal(n, a)
@@ -1740,7 +1574,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixrndcond(n As Integer, c As Double, ByRef a(,) As Double)
         Try
@@ -1750,7 +1583,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixrndorthogonal(n As Integer, ByRef a(,) As alglib.complex)
         Try
             alglib.cmatrixrndorthogonal(n, a)
@@ -1758,7 +1590,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixrndcond(n As Integer, c As Double, ByRef a(,) As alglib.complex)
         Try
@@ -1768,7 +1599,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub smatrixrndcond(n As Integer, c As Double, ByRef a(,) As Double)
         Try
             alglib.smatrixrndcond(n, c, a)
@@ -1776,7 +1606,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spdmatrixrndcond(n As Integer, c As Double, ByRef a(,) As Double)
         Try
@@ -1786,7 +1615,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub hmatrixrndcond(n As Integer, c As Double, ByRef a(,) As alglib.complex)
         Try
             alglib.hmatrixrndcond(n, c, a)
@@ -1794,7 +1622,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub hpdmatrixrndcond(n As Integer, c As Double, ByRef a(,) As alglib.complex)
         Try
@@ -1804,7 +1631,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixrndorthogonalfromtheright(ByRef a(,) As Double, m As Integer, n As Integer)
         Try
             alglib.rmatrixrndorthogonalfromtheright(a, m, n)
@@ -1812,7 +1638,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixrndorthogonalfromtheleft(ByRef a(,) As Double, m As Integer, n As Integer)
         Try
@@ -1822,7 +1647,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixrndorthogonalfromtheright(ByRef a(,) As alglib.complex, m As Integer, n As Integer)
         Try
             alglib.cmatrixrndorthogonalfromtheright(a, m, n)
@@ -1830,7 +1654,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixrndorthogonalfromtheleft(ByRef a(,) As alglib.complex, m As Integer, n As Integer)
         Try
@@ -1840,7 +1663,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub smatrixrndmultiply(ByRef a(,) As Double, n As Integer)
         Try
             alglib.smatrixrndmultiply(a, n)
@@ -1848,7 +1670,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub hmatrixrndmultiply(ByRef a(,) As alglib.complex, n As Integer)
         Try
@@ -1859,8 +1680,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub rmatrixlu(ByRef a(,) As Double, m As Integer, n As Integer, ByRef pivots() As Integer)
         Try
             alglib.rmatrixlu(a, m, n, pivots)
@@ -1868,7 +1687,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixlu(ByRef a(,) As alglib.complex, m As Integer, n As Integer, ByRef pivots() As Integer)
         Try
@@ -1878,7 +1696,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function hpdmatrixcholesky(ByRef a(,) As alglib.complex, n As Integer, isupper As Boolean) As Boolean
         Try
             hpdmatrixcholesky = alglib.hpdmatrixcholesky(a, n, isupper)
@@ -1886,7 +1703,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function spdmatrixcholesky(ByRef a(,) As Double, n As Integer, isupper As Boolean) As Boolean
         Try
@@ -1897,8 +1713,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function rmatrixrcond1(a(,) As Double, n As Integer) As Double
         Try
             rmatrixrcond1 = alglib.rmatrixrcond1(a, n)
@@ -1906,7 +1720,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function rmatrixrcondinf(a(,) As Double, n As Integer) As Double
         Try
@@ -1916,7 +1729,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function spdmatrixrcond(a(,) As Double, n As Integer, isupper As Boolean) As Double
         Try
             spdmatrixrcond = alglib.spdmatrixrcond(a, n, isupper)
@@ -1924,7 +1736,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function rmatrixtrrcond1(a(,) As Double, n As Integer, isupper As Boolean, isunit As Boolean) As Double
         Try
@@ -1934,7 +1745,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function rmatrixtrrcondinf(a(,) As Double, n As Integer, isupper As Boolean, isunit As Boolean) As Double
         Try
             rmatrixtrrcondinf = alglib.rmatrixtrrcondinf(a, n, isupper, isunit)
@@ -1942,7 +1752,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function hpdmatrixrcond(a(,) As alglib.complex, n As Integer, isupper As Boolean) As Double
         Try
@@ -1952,7 +1761,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function cmatrixrcond1(a(,) As alglib.complex, n As Integer) As Double
         Try
             cmatrixrcond1 = alglib.cmatrixrcond1(a, n)
@@ -1960,7 +1768,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function cmatrixrcondinf(a(,) As alglib.complex, n As Integer) As Double
         Try
@@ -1970,7 +1777,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function rmatrixlurcond1(lua(,) As Double, n As Integer) As Double
         Try
             rmatrixlurcond1 = alglib.rmatrixlurcond1(lua, n)
@@ -1978,7 +1784,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function rmatrixlurcondinf(lua(,) As Double, n As Integer) As Double
         Try
@@ -1988,7 +1793,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function spdmatrixcholeskyrcond(a(,) As Double, n As Integer, isupper As Boolean) As Double
         Try
             spdmatrixcholeskyrcond = alglib.spdmatrixcholeskyrcond(a, n, isupper)
@@ -1996,7 +1800,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function hpdmatrixcholeskyrcond(a(,) As alglib.complex, n As Integer, isupper As Boolean) As Double
         Try
@@ -2006,7 +1809,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function cmatrixlurcond1(lua(,) As alglib.complex, n As Integer) As Double
         Try
             cmatrixlurcond1 = alglib.cmatrixlurcond1(lua, n)
@@ -2014,7 +1816,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function cmatrixlurcondinf(lua(,) As alglib.complex, n As Integer) As Double
         Try
@@ -2024,7 +1825,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function cmatrixtrrcond1(a(,) As alglib.complex, n As Integer, isupper As Boolean, isunit As Boolean) As Double
         Try
             cmatrixtrrcond1 = alglib.cmatrixtrrcond1(a, n, isupper, isunit)
@@ -2032,7 +1832,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function cmatrixtrrcondinf(a(,) As alglib.complex, n As Integer, isupper As Boolean, isunit As Boolean) As Double
         Try
@@ -2067,7 +1866,6 @@ Module XAlglib
         Public csobj As alglib.matinvreport
     End Class
 
-
     Public Sub rmatrixluinverse(ByRef a(,) As Double, pivots() As Integer, n As Integer, ByRef info As Integer, ByRef rep As matinvreport)
         Try
             rep = New matinvreport()
@@ -2076,7 +1874,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixluinverse(ByRef a(,) As Double, pivots() As Integer, ByRef info As Integer, ByRef rep As matinvreport)
         Try
@@ -2087,7 +1884,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixinverse(ByRef a(,) As Double, n As Integer, ByRef info As Integer, ByRef rep As matinvreport)
         Try
             rep = New matinvreport()
@@ -2096,7 +1892,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixinverse(ByRef a(,) As Double, ByRef info As Integer, ByRef rep As matinvreport)
         Try
@@ -2107,7 +1902,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixluinverse(ByRef a(,) As alglib.complex, pivots() As Integer, n As Integer, ByRef info As Integer, ByRef rep As matinvreport)
         Try
             rep = New matinvreport()
@@ -2116,7 +1910,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixluinverse(ByRef a(,) As alglib.complex, pivots() As Integer, ByRef info As Integer, ByRef rep As matinvreport)
         Try
@@ -2127,7 +1920,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixinverse(ByRef a(,) As alglib.complex, n As Integer, ByRef info As Integer, ByRef rep As matinvreport)
         Try
             rep = New matinvreport()
@@ -2136,7 +1928,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixinverse(ByRef a(,) As alglib.complex, ByRef info As Integer, ByRef rep As matinvreport)
         Try
@@ -2147,7 +1938,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spdmatrixcholeskyinverse(ByRef a(,) As Double, n As Integer, isupper As Boolean, ByRef info As Integer, ByRef rep As matinvreport)
         Try
             rep = New matinvreport()
@@ -2156,7 +1946,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spdmatrixcholeskyinverse(ByRef a(,) As Double, ByRef info As Integer, ByRef rep As matinvreport)
         Try
@@ -2167,7 +1956,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spdmatrixinverse(ByRef a(,) As Double, n As Integer, isupper As Boolean, ByRef info As Integer, ByRef rep As matinvreport)
         Try
             rep = New matinvreport()
@@ -2176,7 +1964,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spdmatrixinverse(ByRef a(,) As Double, ByRef info As Integer, ByRef rep As matinvreport)
         Try
@@ -2187,7 +1974,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub hpdmatrixcholeskyinverse(ByRef a(,) As alglib.complex, n As Integer, isupper As Boolean, ByRef info As Integer, ByRef rep As matinvreport)
         Try
             rep = New matinvreport()
@@ -2196,7 +1982,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub hpdmatrixcholeskyinverse(ByRef a(,) As alglib.complex, ByRef info As Integer, ByRef rep As matinvreport)
         Try
@@ -2207,7 +1992,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub hpdmatrixinverse(ByRef a(,) As alglib.complex, n As Integer, isupper As Boolean, ByRef info As Integer, ByRef rep As matinvreport)
         Try
             rep = New matinvreport()
@@ -2216,7 +2000,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub hpdmatrixinverse(ByRef a(,) As alglib.complex, ByRef info As Integer, ByRef rep As matinvreport)
         Try
@@ -2227,7 +2010,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixtrinverse(ByRef a(,) As Double, n As Integer, isupper As Boolean, isunit As Boolean, ByRef info As Integer, ByRef rep As matinvreport)
         Try
             rep = New matinvreport()
@@ -2236,7 +2018,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixtrinverse(ByRef a(,) As Double, isupper As Boolean, ByRef info As Integer, ByRef rep As matinvreport)
         Try
@@ -2247,7 +2028,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixtrinverse(ByRef a(,) As alglib.complex, n As Integer, isupper As Boolean, isunit As Boolean, ByRef info As Integer, ByRef rep As matinvreport)
         Try
             rep = New matinvreport()
@@ -2256,7 +2036,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixtrinverse(ByRef a(,) As alglib.complex, isupper As Boolean, ByRef info As Integer, ByRef rep As matinvreport)
         Try
@@ -2268,8 +2047,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub fisherlda(xy(,) As Double, npoints As Integer, nvars As Integer, nclasses As Integer, ByRef info As Integer, ByRef w() As Double)
         Try
             alglib.fisherlda(xy, npoints, nvars, nclasses, info, w)
@@ -2277,7 +2054,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub fisherldan(xy(,) As Double, npoints As Integer, nvars As Integer, nclasses As Integer, ByRef info As Integer, ByRef w(,) As Double)
         Try
@@ -2306,7 +2082,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpcreate0(nin As Integer, nout As Integer, ByRef network As multilayerperceptron)
         Try
             network = New multilayerperceptron()
@@ -2315,7 +2090,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpcreate1(nin As Integer, nhid As Integer, nout As Integer, ByRef network As multilayerperceptron)
         Try
@@ -2326,7 +2100,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpcreate2(nin As Integer, nhid1 As Integer, nhid2 As Integer, nout As Integer, ByRef network As multilayerperceptron)
         Try
             network = New multilayerperceptron()
@@ -2335,7 +2108,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpcreateb0(nin As Integer, nout As Integer, b As Double, d As Double, ByRef network As multilayerperceptron)
         Try
@@ -2346,7 +2118,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpcreateb1(nin As Integer, nhid As Integer, nout As Integer, b As Double, d As Double, ByRef network As multilayerperceptron)
         Try
             network = New multilayerperceptron()
@@ -2355,7 +2126,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpcreateb2(nin As Integer, nhid1 As Integer, nhid2 As Integer, nout As Integer, b As Double, d As Double, ByRef network As multilayerperceptron)
         Try
@@ -2366,7 +2136,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpcreater0(nin As Integer, nout As Integer, a As Double, b As Double, ByRef network As multilayerperceptron)
         Try
             network = New multilayerperceptron()
@@ -2375,7 +2144,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpcreater1(nin As Integer, nhid As Integer, nout As Integer, a As Double, b As Double, ByRef network As multilayerperceptron)
         Try
@@ -2386,7 +2154,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpcreater2(nin As Integer, nhid1 As Integer, nhid2 As Integer, nout As Integer, a As Double, b As Double, ByRef network As multilayerperceptron)
         Try
             network = New multilayerperceptron()
@@ -2395,7 +2162,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpcreatec0(nin As Integer, nout As Integer, ByRef network As multilayerperceptron)
         Try
@@ -2406,7 +2172,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpcreatec1(nin As Integer, nhid As Integer, nout As Integer, ByRef network As multilayerperceptron)
         Try
             network = New multilayerperceptron()
@@ -2415,7 +2180,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpcreatec2(nin As Integer, nhid1 As Integer, nhid2 As Integer, nout As Integer, ByRef network As multilayerperceptron)
         Try
@@ -2426,7 +2190,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlprandomize(network As multilayerperceptron)
         Try
             alglib.mlprandomize(network.csobj)
@@ -2434,7 +2197,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlprandomizefull(network As multilayerperceptron)
         Try
@@ -2444,7 +2206,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpproperties(network As multilayerperceptron, ByRef nin As Integer, ByRef nout As Integer, ByRef wcount As Integer)
         Try
             alglib.mlpproperties(network.csobj, nin, nout, wcount)
@@ -2452,7 +2213,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function mlpgetinputscount(network As multilayerperceptron) As Integer
         Try
@@ -2462,7 +2222,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mlpgetoutputscount(network As multilayerperceptron) As Integer
         Try
             mlpgetoutputscount = alglib.mlpgetoutputscount(network.csobj)
@@ -2470,7 +2229,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function mlpgetweightscount(network As multilayerperceptron) As Integer
         Try
@@ -2480,7 +2238,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mlpissoftmax(network As multilayerperceptron) As Boolean
         Try
             mlpissoftmax = alglib.mlpissoftmax(network.csobj)
@@ -2488,7 +2245,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function mlpgetlayerscount(network As multilayerperceptron) As Integer
         Try
@@ -2498,7 +2254,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mlpgetlayersize(network As multilayerperceptron, k As Integer) As Integer
         Try
             mlpgetlayersize = alglib.mlpgetlayersize(network.csobj, k)
@@ -2506,7 +2261,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub mlpgetinputscaling(network As multilayerperceptron, i As Integer, ByRef mean As Double, ByRef sigma As Double)
         Try
@@ -2516,7 +2270,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpgetoutputscaling(network As multilayerperceptron, i As Integer, ByRef mean As Double, ByRef sigma As Double)
         Try
             alglib.mlpgetoutputscaling(network.csobj, i, mean, sigma)
@@ -2524,7 +2277,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpgetneuroninfo(network As multilayerperceptron, k As Integer, i As Integer, ByRef fkind As Integer, ByRef threshold As Double)
         Try
@@ -2534,7 +2286,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function mlpgetweight(network As multilayerperceptron, k0 As Integer, i0 As Integer, k1 As Integer, i1 As Integer) As Double
         Try
             mlpgetweight = alglib.mlpgetweight(network.csobj, k0, i0, k1, i1)
@@ -2542,7 +2293,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub mlpsetinputscaling(network As multilayerperceptron, i As Integer, mean As Double, sigma As Double)
         Try
@@ -2552,7 +2302,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpsetoutputscaling(network As multilayerperceptron, i As Integer, mean As Double, sigma As Double)
         Try
             alglib.mlpsetoutputscaling(network.csobj, i, mean, sigma)
@@ -2560,7 +2309,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpsetneuroninfo(network As multilayerperceptron, k As Integer, i As Integer, fkind As Integer, threshold As Double)
         Try
@@ -2570,7 +2318,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpsetweight(network As multilayerperceptron, k0 As Integer, i0 As Integer, k1 As Integer, i1 As Integer, w As Double)
         Try
             alglib.mlpsetweight(network.csobj, k0, i0, k1, i1, w)
@@ -2578,7 +2325,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpactivationfunction(net As Double, k As Integer, ByRef f As Double, ByRef df As Double, ByRef d2f As Double)
         Try
@@ -2588,7 +2334,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpprocess(network As multilayerperceptron, x() As Double, ByRef y() As Double)
         Try
             alglib.mlpprocess(network.csobj, x, y)
@@ -2596,7 +2341,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpprocessi(network As multilayerperceptron, x() As Double, ByRef y() As Double)
         Try
@@ -2606,7 +2350,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function mlperror(network As multilayerperceptron, xy(,) As Double, ssize As Integer) As Double
         Try
             mlperror = alglib.mlperror(network.csobj, xy, ssize)
@@ -2614,7 +2357,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function mlperrorn(network As multilayerperceptron, xy(,) As Double, ssize As Integer) As Double
         Try
@@ -2624,7 +2366,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mlpclserror(network As multilayerperceptron, xy(,) As Double, ssize As Integer) As Integer
         Try
             mlpclserror = alglib.mlpclserror(network.csobj, xy, ssize)
@@ -2632,7 +2373,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function mlprelclserror(network As multilayerperceptron, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -2642,7 +2382,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mlpavgce(network As multilayerperceptron, xy(,) As Double, npoints As Integer) As Double
         Try
             mlpavgce = alglib.mlpavgce(network.csobj, xy, npoints)
@@ -2650,7 +2389,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function mlprmserror(network As multilayerperceptron, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -2660,7 +2398,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mlpavgerror(network As multilayerperceptron, xy(,) As Double, npoints As Integer) As Double
         Try
             mlpavgerror = alglib.mlpavgerror(network.csobj, xy, npoints)
@@ -2668,7 +2405,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function mlpavgrelerror(network As multilayerperceptron, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -2678,7 +2414,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Sub mlpgrad(network As multilayerperceptron, x() As Double, desiredy() As Double, ByRef e As Double, ByRef grad() As Double)
         Try
             alglib.mlpgrad(network.csobj, x, desiredy, e, grad)
@@ -2686,7 +2421,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpgradn(network As multilayerperceptron, x() As Double, desiredy() As Double, ByRef e As Double, ByRef grad() As Double)
         Try
@@ -2696,7 +2430,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpgradbatch(network As multilayerperceptron, xy(,) As Double, ssize As Integer, ByRef e As Double, ByRef grad() As Double)
         Try
             alglib.mlpgradbatch(network.csobj, xy, ssize, e, grad)
@@ -2704,7 +2437,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpgradnbatch(network As multilayerperceptron, xy(,) As Double, ssize As Integer, ByRef e As Double, ByRef grad() As Double)
         Try
@@ -2714,7 +2446,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlphessiannbatch(network As multilayerperceptron, xy(,) As Double, ssize As Integer, ByRef e As Double, ByRef grad() As Double, ByRef h(,) As Double)
         Try
             alglib.mlphessiannbatch(network.csobj, xy, ssize, e, grad, h)
@@ -2722,7 +2453,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlphessianbatch(network As multilayerperceptron, xy(,) As Double, ssize As Integer, ByRef e As Double, ByRef grad() As Double, ByRef h(,) As Double)
         Try
@@ -2793,7 +2523,6 @@ Module XAlglib
         Public csobj As alglib.densesolverlsreport
     End Class
 
-
     Public Sub rmatrixsolve(a(,) As Double, n As Integer, b() As Double, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x() As Double)
         Try
             rep = New densesolverreport()
@@ -2802,7 +2531,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixsolvem(a(,) As Double, n As Integer, b(,) As Double, m As Integer, rfs As Boolean, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x(,) As Double)
         Try
@@ -2813,7 +2541,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixlusolve(lua(,) As Double, p() As Integer, n As Integer, b() As Double, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x() As Double)
         Try
             rep = New densesolverreport()
@@ -2822,7 +2549,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixlusolvem(lua(,) As Double, p() As Integer, n As Integer, b(,) As Double, m As Integer, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x(,) As Double)
         Try
@@ -2833,7 +2559,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixmixedsolve(a(,) As Double, lua(,) As Double, p() As Integer, n As Integer, b() As Double, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x() As Double)
         Try
             rep = New densesolverreport()
@@ -2842,7 +2567,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixmixedsolvem(a(,) As Double, lua(,) As Double, p() As Integer, n As Integer, b(,) As Double, m As Integer, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x(,) As Double)
         Try
@@ -2853,7 +2577,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixsolvem(a(,) As alglib.complex, n As Integer, b(,) As alglib.complex, m As Integer, rfs As Boolean, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x(,) As alglib.complex)
         Try
             rep = New densesolverreport()
@@ -2862,7 +2585,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixsolve(a(,) As alglib.complex, n As Integer, b() As alglib.complex, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x() As alglib.complex)
         Try
@@ -2873,7 +2595,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixlusolvem(lua(,) As alglib.complex, p() As Integer, n As Integer, b(,) As alglib.complex, m As Integer, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x(,) As alglib.complex)
         Try
             rep = New densesolverreport()
@@ -2882,7 +2603,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixlusolve(lua(,) As alglib.complex, p() As Integer, n As Integer, b() As alglib.complex, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x() As alglib.complex)
         Try
@@ -2893,7 +2613,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub cmatrixmixedsolvem(a(,) As alglib.complex, lua(,) As alglib.complex, p() As Integer, n As Integer, b(,) As alglib.complex, m As Integer, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x(,) As alglib.complex)
         Try
             rep = New densesolverreport()
@@ -2902,7 +2621,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub cmatrixmixedsolve(a(,) As alglib.complex, lua(,) As alglib.complex, p() As Integer, n As Integer, b() As alglib.complex, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x() As alglib.complex)
         Try
@@ -2913,7 +2631,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spdmatrixsolvem(a(,) As Double, n As Integer, isupper As Boolean, b(,) As Double, m As Integer, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x(,) As Double)
         Try
             rep = New densesolverreport()
@@ -2922,7 +2639,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spdmatrixsolve(a(,) As Double, n As Integer, isupper As Boolean, b() As Double, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x() As Double)
         Try
@@ -2933,7 +2649,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spdmatrixcholeskysolvem(cha(,) As Double, n As Integer, isupper As Boolean, b(,) As Double, m As Integer, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x(,) As Double)
         Try
             rep = New densesolverreport()
@@ -2942,7 +2657,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spdmatrixcholeskysolve(cha(,) As Double, n As Integer, isupper As Boolean, b() As Double, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x() As Double)
         Try
@@ -2953,7 +2667,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub hpdmatrixsolvem(a(,) As alglib.complex, n As Integer, isupper As Boolean, b(,) As alglib.complex, m As Integer, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x(,) As alglib.complex)
         Try
             rep = New densesolverreport()
@@ -2962,7 +2675,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub hpdmatrixsolve(a(,) As alglib.complex, n As Integer, isupper As Boolean, b() As alglib.complex, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x() As alglib.complex)
         Try
@@ -2973,7 +2685,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub hpdmatrixcholeskysolvem(cha(,) As alglib.complex, n As Integer, isupper As Boolean, b(,) As alglib.complex, m As Integer, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x(,) As alglib.complex)
         Try
             rep = New densesolverreport()
@@ -2983,7 +2694,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub hpdmatrixcholeskysolve(cha(,) As alglib.complex, n As Integer, isupper As Boolean, b() As alglib.complex, ByRef info As Integer, ByRef rep As densesolverreport, ByRef x() As alglib.complex)
         Try
             rep = New densesolverreport()
@@ -2992,7 +2702,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixsolvels(a(,) As Double, nrows As Integer, ncols As Integer, b() As Double, threshold As Double, ByRef info As Integer, ByRef rep As densesolverlsreport, ByRef x() As Double)
         Try
@@ -3031,7 +2740,6 @@ Module XAlglib
         Public csobj As alglib.mnlreport
     End Class
 
-
     Public Sub mnltrainh(xy(,) As Double, npoints As Integer, nvars As Integer, nclasses As Integer, ByRef info As Integer, ByRef lm As logitmodel, ByRef rep As mnlreport)
         Try
             lm = New logitmodel()
@@ -3042,7 +2750,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mnlprocess(lm As logitmodel, x() As Double, ByRef y() As Double)
         Try
             alglib.mnlprocess(lm.csobj, x, y)
@@ -3050,7 +2757,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mnlprocessi(lm As logitmodel, x() As Double, ByRef y() As Double)
         Try
@@ -3060,7 +2766,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mnlunpack(lm As logitmodel, ByRef a(,) As Double, ByRef nvars As Integer, ByRef nclasses As Integer)
         Try
             alglib.mnlunpack(lm.csobj, a, nvars, nclasses)
@@ -3068,7 +2773,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mnlpack(a(,) As Double, nvars As Integer, nclasses As Integer, ByRef lm As logitmodel)
         Try
@@ -3079,7 +2783,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function mnlavgce(lm As logitmodel, xy(,) As Double, npoints As Integer) As Double
         Try
             mnlavgce = alglib.mnlavgce(lm.csobj, xy, npoints)
@@ -3087,7 +2790,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function mnlrelclserror(lm As logitmodel, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -3097,7 +2799,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mnlrmserror(lm As logitmodel, xy(,) As Double, npoints As Integer) As Double
         Try
             mnlrmserror = alglib.mnlrmserror(lm.csobj, xy, npoints)
@@ -3105,7 +2806,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function mnlavgerror(lm As logitmodel, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -3115,7 +2815,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mnlavgrelerror(lm As logitmodel, xy(,) As Double, ssize As Integer) As Double
         Try
             mnlavgrelerror = alglib.mnlavgrelerror(lm.csobj, xy, ssize)
@@ -3124,7 +2823,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mnlclserror(lm As logitmodel, xy(,) As Double, npoints As Integer) As Integer
         Try
             mnlclserror = alglib.mnlclserror(lm.csobj, xy, npoints)
@@ -3132,8 +2830,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
-
 
 
     Public Class mincgstate
@@ -3178,7 +2874,6 @@ Module XAlglib
         Public csobj As alglib.mincgreport
     End Class
 
-
     Public Sub mincgcreate(n As Integer, x() As Double, ByRef state As mincgstate)
         Try
             state = New mincgstate()
@@ -3187,7 +2882,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mincgcreate(x() As Double, ByRef state As mincgstate)
         Try
@@ -3198,7 +2892,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mincgcreatef(n As Integer, x() As Double, diffstep As Double, ByRef state As mincgstate)
         Try
             state = New mincgstate()
@@ -3207,7 +2900,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mincgcreatef(x() As Double, diffstep As Double, ByRef state As mincgstate)
         Try
@@ -3218,7 +2910,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mincgsetcond(state As mincgstate, epsg As Double, epsf As Double, epsx As Double, maxits As Integer)
         Try
             alglib.mincgsetcond(state.csobj, epsg, epsf, epsx, maxits)
@@ -3226,7 +2917,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mincgsetscale(state As mincgstate, s() As Double)
         Try
@@ -3236,7 +2926,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mincgsetxrep(state As mincgstate, needxrep As Boolean)
         Try
             alglib.mincgsetxrep(state.csobj, needxrep)
@@ -3244,7 +2933,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mincgsetcgtype(state As mincgstate, cgtype As Integer)
         Try
@@ -3254,7 +2942,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mincgsetstpmax(state As mincgstate, stpmax As Double)
         Try
             alglib.mincgsetstpmax(state.csobj, stpmax)
@@ -3262,7 +2949,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mincgsuggeststep(state As mincgstate, stp As Double)
         Try
@@ -3272,7 +2958,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mincgsetprecdefault(state As mincgstate)
         Try
             alglib.mincgsetprecdefault(state.csobj)
@@ -3280,7 +2965,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mincgsetprecdiag(state As mincgstate, d() As Double)
         Try
@@ -3290,7 +2974,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mincgsetprecscale(state As mincgstate)
         Try
             alglib.mincgsetprecscale(state.csobj)
@@ -3298,7 +2981,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function mincgiteration(state As mincgstate) As Boolean
         Try
@@ -3380,7 +3062,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mincgoptimize(state As mincgstate, grad As ndimensional_grad, rep As ndimensional_rep, obj As Object)
         Dim innerobj As alglib.mincg.mincgstate = state.csobj.innerobj
         If grad Is Nothing Then
@@ -3406,8 +3087,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub mincgresults(state As mincgstate, ByRef x() As Double, ByRef rep As mincgreport)
         Try
             rep = New mincgreport()
@@ -3417,7 +3096,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mincgresultsbuf(state As mincgstate, ByRef x() As Double, ByRef rep As mincgreport)
         Try
             alglib.mincgresultsbuf(state.csobj, x, rep.csobj)
@@ -3426,7 +3104,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mincgrestartfrom(state As mincgstate, x() As Double)
         Try
             alglib.mincgrestartfrom(state.csobj, x)
@@ -3434,7 +3111,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mincgsetgradientcheck(state As mincgstate, teststep As Double)
         Try
@@ -3577,7 +3253,6 @@ Module XAlglib
         Public csobj As alglib.minbleicreport
     End Class
 
-
     Public Sub minbleiccreate(n As Integer, x() As Double, ByRef state As minbleicstate)
         Try
             state = New minbleicstate()
@@ -3586,7 +3261,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minbleiccreate(x() As Double, ByRef state As minbleicstate)
         Try
@@ -3597,7 +3271,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleiccreatef(n As Integer, x() As Double, diffstep As Double, ByRef state As minbleicstate)
         Try
             state = New minbleicstate()
@@ -3606,7 +3279,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minbleiccreatef(x() As Double, diffstep As Double, ByRef state As minbleicstate)
         Try
@@ -3617,7 +3289,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicsetbc(state As minbleicstate, bndl() As Double, bndu() As Double)
         Try
             alglib.minbleicsetbc(state.csobj, bndl, bndu)
@@ -3625,7 +3296,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minbleicsetlc(state As minbleicstate, c(,) As Double, ct() As Integer, k As Integer)
         Try
@@ -3635,7 +3305,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicsetlc(state As minbleicstate, c(,) As Double, ct() As Integer)
         Try
             alglib.minbleicsetlc(state.csobj, c, ct)
@@ -3643,7 +3312,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minbleicsetinnercond(state As minbleicstate, epsg As Double, epsf As Double, epsx As Double)
         Try
@@ -3653,7 +3321,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicsetoutercond(state As minbleicstate, epsx As Double, epsi As Double)
         Try
             alglib.minbleicsetoutercond(state.csobj, epsx, epsi)
@@ -3661,7 +3328,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minbleicsetscale(state As minbleicstate, s() As Double)
         Try
@@ -3671,7 +3337,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicsetprecdefault(state As minbleicstate)
         Try
             alglib.minbleicsetprecdefault(state.csobj)
@@ -3679,7 +3344,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minbleicsetprecdiag(state As minbleicstate, d() As Double)
         Try
@@ -3689,7 +3353,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicsetprecscale(state As minbleicstate)
         Try
             alglib.minbleicsetprecscale(state.csobj)
@@ -3697,7 +3360,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minbleicsetmaxits(state As minbleicstate, maxits As Integer)
         Try
@@ -3707,7 +3369,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicsetxrep(state As minbleicstate, needxrep As Boolean)
         Try
             alglib.minbleicsetxrep(state.csobj, needxrep)
@@ -3716,7 +3377,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicsetstpmax(state As minbleicstate, stpmax As Double)
         Try
             alglib.minbleicsetstpmax(state.csobj, stpmax)
@@ -3724,7 +3384,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function minbleiciteration(state As minbleicstate) As Boolean
         Try
@@ -3806,7 +3465,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicoptimize(state As minbleicstate, grad As ndimensional_grad, rep As ndimensional_rep, obj As Object)
         Dim innerobj As alglib.minbleic.minbleicstate = state.csobj.innerobj
         If grad Is Nothing Then
@@ -3832,8 +3490,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub minbleicresults(state As minbleicstate, ByRef x() As Double, ByRef rep As minbleicreport)
         Try
             rep = New minbleicreport()
@@ -3843,7 +3499,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicresultsbuf(state As minbleicstate, ByRef x() As Double, ByRef rep As minbleicreport)
         Try
             alglib.minbleicresultsbuf(state.csobj, x, rep.csobj)
@@ -3852,7 +3507,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicrestartfrom(state As minbleicstate, x() As Double)
         Try
             alglib.minbleicrestartfrom(state.csobj, x)
@@ -3860,7 +3514,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minbleicsetgradientcheck(state As minbleicstate, teststep As Double)
         Try
@@ -3924,7 +3577,6 @@ Module XAlglib
         Public csobj As alglib.mcpdreport
     End Class
 
-
     Public Sub mcpdcreate(n As Integer, ByRef s As mcpdstate)
         Try
             s = New mcpdstate()
@@ -3933,7 +3585,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mcpdcreateentry(n As Integer, entrystate As Integer, ByRef s As mcpdstate)
         Try
@@ -3944,7 +3595,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mcpdcreateexit(n As Integer, exitstate As Integer, ByRef s As mcpdstate)
         Try
             s = New mcpdstate()
@@ -3953,7 +3603,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mcpdcreateentryexit(n As Integer, entrystate As Integer, exitstate As Integer, ByRef s As mcpdstate)
         Try
@@ -3964,7 +3613,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mcpdaddtrack(s As mcpdstate, xy(,) As Double, k As Integer)
         Try
             alglib.mcpdaddtrack(s.csobj, xy, k)
@@ -3972,7 +3620,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mcpdaddtrack(s As mcpdstate, xy(,) As Double)
         Try
@@ -3982,7 +3629,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mcpdsetec(s As mcpdstate, ec(,) As Double)
         Try
             alglib.mcpdsetec(s.csobj, ec)
@@ -3990,7 +3636,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mcpdaddec(s As mcpdstate, i As Integer, j As Integer, c As Double)
         Try
@@ -4000,7 +3645,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mcpdsetbc(s As mcpdstate, bndl(,) As Double, bndu(,) As Double)
         Try
             alglib.mcpdsetbc(s.csobj, bndl, bndu)
@@ -4008,7 +3652,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mcpdaddbc(s As mcpdstate, i As Integer, j As Integer, bndl As Double, bndu As Double)
         Try
@@ -4018,7 +3661,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mcpdsetlc(s As mcpdstate, c(,) As Double, ct() As Integer, k As Integer)
         Try
             alglib.mcpdsetlc(s.csobj, c, ct, k)
@@ -4026,7 +3668,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mcpdsetlc(s As mcpdstate, c(,) As Double, ct() As Integer)
         Try
@@ -4036,7 +3677,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mcpdsettikhonovregularizer(s As mcpdstate, v As Double)
         Try
             alglib.mcpdsettikhonovregularizer(s.csobj, v)
@@ -4044,7 +3684,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mcpdsetprior(s As mcpdstate, pp(,) As Double)
         Try
@@ -4054,7 +3693,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mcpdsetpredictionweights(s As mcpdstate, pw() As Double)
         Try
             alglib.mcpdsetpredictionweights(s.csobj, pw)
@@ -4062,7 +3700,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mcpdsolve(s As mcpdstate)
         Try
@@ -4072,7 +3709,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mcpdresults(s As mcpdstate, ByRef p(,) As Double, ByRef rep As mcpdreport)
         Try
             rep = New mcpdreport()
@@ -4081,8 +3717,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
-
 
 
     Public Class minlbfgsstate
@@ -4127,7 +3761,6 @@ Module XAlglib
         Public csobj As alglib.minlbfgsreport
     End Class
 
-
     Public Sub minlbfgscreate(n As Integer, m As Integer, x() As Double, ByRef state As minlbfgsstate)
         Try
             state = New minlbfgsstate()
@@ -4136,7 +3769,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlbfgscreate(m As Integer, x() As Double, ByRef state As minlbfgsstate)
         Try
@@ -4147,7 +3779,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlbfgscreatef(n As Integer, m As Integer, x() As Double, diffstep As Double, ByRef state As minlbfgsstate)
         Try
             state = New minlbfgsstate()
@@ -4156,7 +3787,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlbfgscreatef(m As Integer, x() As Double, diffstep As Double, ByRef state As minlbfgsstate)
         Try
@@ -4167,7 +3797,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlbfgssetcond(state As minlbfgsstate, epsg As Double, epsf As Double, epsx As Double, maxits As Integer)
         Try
             alglib.minlbfgssetcond(state.csobj, epsg, epsf, epsx, maxits)
@@ -4175,7 +3804,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlbfgssetxrep(state As minlbfgsstate, needxrep As Boolean)
         Try
@@ -4185,7 +3813,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlbfgssetstpmax(state As minlbfgsstate, stpmax As Double)
         Try
             alglib.minlbfgssetstpmax(state.csobj, stpmax)
@@ -4193,7 +3820,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlbfgssetscale(state As minlbfgsstate, s() As Double)
         Try
@@ -4203,7 +3829,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlbfgssetprecdefault(state As minlbfgsstate)
         Try
             alglib.minlbfgssetprecdefault(state.csobj)
@@ -4211,7 +3836,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlbfgssetpreccholesky(state As minlbfgsstate, p(,) As Double, isupper As Boolean)
         Try
@@ -4221,7 +3845,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlbfgssetprecdiag(state As minlbfgsstate, d() As Double)
         Try
             alglib.minlbfgssetprecdiag(state.csobj, d)
@@ -4230,7 +3853,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlbfgssetprecscale(state As minlbfgsstate)
         Try
             alglib.minlbfgssetprecscale(state.csobj)
@@ -4238,7 +3860,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function minlbfgsiteration(state As minlbfgsstate) As Boolean
         Try
@@ -4320,7 +3941,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlbfgsoptimize(state As minlbfgsstate, grad As ndimensional_grad, rep As ndimensional_rep, obj As Object)
         Dim innerobj As alglib.minlbfgs.minlbfgsstate = state.csobj.innerobj
         If grad Is Nothing Then
@@ -4346,8 +3966,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub minlbfgsresults(state As minlbfgsstate, ByRef x() As Double, ByRef rep As minlbfgsreport)
         Try
             rep = New minlbfgsreport()
@@ -4357,7 +3975,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlbfgsresultsbuf(state As minlbfgsstate, ByRef x() As Double, ByRef rep As minlbfgsreport)
         Try
             alglib.minlbfgsresultsbuf(state.csobj, x, rep.csobj)
@@ -4366,7 +3983,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlbfgsrestartfrom(state As minlbfgsstate, x() As Double)
         Try
             alglib.minlbfgsrestartfrom(state.csobj, x)
@@ -4374,7 +3990,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlbfgssetgradientcheck(state As minlbfgsstate, teststep As Double)
         Try
@@ -4464,7 +4079,6 @@ Module XAlglib
         Public csobj As alglib.mlpcvreport
     End Class
 
-
     Public Sub mlptrainlm(network As multilayerperceptron, xy(,) As Double, npoints As Integer, decay As Double, restarts As Integer, ByRef info As Integer, ByRef rep As mlpreport)
         Try
             rep = New mlpreport()
@@ -4473,7 +4087,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlptrainlbfgs(network As multilayerperceptron, xy(,) As Double, npoints As Integer, decay As Double, restarts As Integer, wstep As Double, maxits As Integer, ByRef info As Integer, ByRef rep As mlpreport)
         Try
@@ -4484,7 +4097,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlptraines(network As multilayerperceptron, trnxy(,) As Double, trnsize As Integer, valxy(,) As Double, valsize As Integer, decay As Double, restarts As Integer, ByRef info As Integer, ByRef rep As mlpreport)
         Try
             rep = New mlpreport()
@@ -4493,7 +4105,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpkfoldcvlbfgs(network As multilayerperceptron, xy(,) As Double, npoints As Integer, decay As Double, restarts As Integer, wstep As Double, maxits As Integer, foldscount As Integer, ByRef info As Integer, ByRef rep As mlpreport, ByRef cvrep As mlpcvreport)
         Try
@@ -4504,7 +4115,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpkfoldcvlm(network As multilayerperceptron, xy(,) As Double, npoints As Integer, decay As Double, restarts As Integer, foldscount As Integer, ByRef info As Integer, ByRef rep As mlpreport, ByRef cvrep As mlpcvreport)
         Try
@@ -4535,7 +4145,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpecreate0(nin As Integer, nout As Integer, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
             ensemble = New mlpensemble()
@@ -4544,7 +4153,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpecreate1(nin As Integer, nhid As Integer, nout As Integer, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
@@ -4555,7 +4163,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpecreate2(nin As Integer, nhid1 As Integer, nhid2 As Integer, nout As Integer, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
             ensemble = New mlpensemble()
@@ -4564,7 +4171,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpecreateb0(nin As Integer, nout As Integer, b As Double, d As Double, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
@@ -4575,7 +4181,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpecreateb1(nin As Integer, nhid As Integer, nout As Integer, b As Double, d As Double, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
             ensemble = New mlpensemble()
@@ -4584,7 +4189,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpecreateb2(nin As Integer, nhid1 As Integer, nhid2 As Integer, nout As Integer, b As Double, d As Double, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
@@ -4595,7 +4199,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpecreater0(nin As Integer, nout As Integer, a As Double, b As Double, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
             ensemble = New mlpensemble()
@@ -4604,7 +4207,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpecreater1(nin As Integer, nhid As Integer, nout As Integer, a As Double, b As Double, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
@@ -4615,7 +4217,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpecreater2(nin As Integer, nhid1 As Integer, nhid2 As Integer, nout As Integer, a As Double, b As Double, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
             ensemble = New mlpensemble()
@@ -4624,7 +4225,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpecreatec0(nin As Integer, nout As Integer, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
@@ -4635,7 +4235,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpecreatec1(nin As Integer, nhid As Integer, nout As Integer, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
             ensemble = New mlpensemble()
@@ -4644,7 +4243,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpecreatec2(nin As Integer, nhid1 As Integer, nhid2 As Integer, nout As Integer, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
@@ -4655,7 +4253,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpecreatefromnetwork(network As multilayerperceptron, ensemblesize As Integer, ByRef ensemble As mlpensemble)
         Try
             ensemble = New mlpensemble()
@@ -4665,7 +4262,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlperandomize(ensemble As mlpensemble)
         Try
             alglib.mlperandomize(ensemble.csobj)
@@ -4673,7 +4269,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub mlpeproperties(ensemble As mlpensemble, ByRef nin As Integer, ByRef nout As Integer)
         Try
@@ -4683,7 +4278,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function mlpeissoftmax(ensemble As mlpensemble) As Boolean
         Try
             mlpeissoftmax = alglib.mlpeissoftmax(ensemble.csobj)
@@ -4691,7 +4285,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub mlpeprocess(ensemble As mlpensemble, x() As Double, ByRef y() As Double)
         Try
@@ -4701,7 +4294,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpeprocessi(ensemble As mlpensemble, x() As Double, ByRef y() As Double)
         Try
             alglib.mlpeprocessi(ensemble.csobj, x, y)
@@ -4709,7 +4301,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function mlperelclserror(ensemble As mlpensemble, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -4719,7 +4310,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mlpeavgce(ensemble As mlpensemble, xy(,) As Double, npoints As Integer) As Double
         Try
             mlpeavgce = alglib.mlpeavgce(ensemble.csobj, xy, npoints)
@@ -4727,7 +4317,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function mlpermserror(ensemble As mlpensemble, xy(,) As Double, npoints As Integer) As Double
         Try
@@ -4737,7 +4326,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mlpeavgerror(ensemble As mlpensemble, xy(,) As Double, npoints As Integer) As Double
         Try
             mlpeavgerror = alglib.mlpeavgerror(ensemble.csobj, xy, npoints)
@@ -4746,7 +4334,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function mlpeavgrelerror(ensemble As mlpensemble, xy(,) As Double, npoints As Integer) As Double
         Try
             mlpeavgrelerror = alglib.mlpeavgrelerror(ensemble.csobj, xy, npoints)
@@ -4754,7 +4341,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub mlpebagginglm(ensemble As mlpensemble, xy(,) As Double, npoints As Integer, decay As Double, restarts As Integer, ByRef info As Integer, ByRef rep As mlpreport, ByRef ooberrors As mlpcvreport)
         Try
@@ -4766,7 +4352,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpebagginglbfgs(ensemble As mlpensemble, xy(,) As Double, npoints As Integer, decay As Double, restarts As Integer, wstep As Double, maxits As Integer, ByRef info As Integer, ByRef rep As mlpreport, ByRef ooberrors As mlpcvreport)
         Try
             rep = New mlpreport()
@@ -4777,7 +4362,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub mlpetraines(ensemble As mlpensemble, xy(,) As Double, npoints As Integer, decay As Double, restarts As Integer, ByRef info As Integer, ByRef rep As mlpreport)
         Try
             rep = New mlpreport()
@@ -4786,8 +4370,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
-
 
 
     Public Sub pcabuildbasis(x(,) As Double, npoints As Integer, nvars As Integer, ByRef info As Integer, ByRef s2() As Double, ByRef v(,) As Double)
@@ -4824,7 +4406,6 @@ Module XAlglib
         Public csobj As alglib.odesolverreport
     End Class
 
-
     Public Sub odesolverrkck(y() As Double, n As Integer, x() As Double, m As Integer, eps As Double, h As Double, ByRef state As odesolverstate)
         Try
             state = New odesolverstate()
@@ -4834,7 +4415,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub odesolverrkck(y() As Double, x() As Double, eps As Double, h As Double, ByRef state As odesolverstate)
         Try
             state = New odesolverstate()
@@ -4843,7 +4423,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function odesolveriteration(state As odesolverstate) As Boolean
         Try
@@ -4882,8 +4461,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub odesolverresults(state As odesolverstate, ByRef m As Integer, ByRef xtbl() As Double, ByRef ytbl(,) As Double, ByRef rep As odesolverreport)
         Try
             rep = New odesolverreport()
@@ -4894,8 +4471,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub fftc1d(ByRef a() As alglib.complex, n As Integer)
         Try
             alglib.fftc1d(a, n)
@@ -4903,7 +4478,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub fftc1d(ByRef a() As alglib.complex)
         Try
@@ -4913,7 +4487,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub fftc1dinv(ByRef a() As alglib.complex, n As Integer)
         Try
             alglib.fftc1dinv(a, n)
@@ -4921,7 +4494,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub fftc1dinv(ByRef a() As alglib.complex)
         Try
@@ -4931,7 +4503,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub fftr1d(a() As Double, n As Integer, ByRef f() As alglib.complex)
         Try
             alglib.fftr1d(a, n, f)
@@ -4939,7 +4510,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub fftr1d(a() As Double, ByRef f() As alglib.complex)
         Try
@@ -4949,7 +4519,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub fftr1dinv(f() As alglib.complex, n As Integer, ByRef a() As Double)
         Try
             alglib.fftr1dinv(f, n, a)
@@ -4957,7 +4526,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub fftr1dinv(f() As alglib.complex, ByRef a() As Double)
         Try
@@ -4968,8 +4536,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub convc1d(a() As alglib.complex, m As Integer, b() As alglib.complex, n As Integer, ByRef r() As alglib.complex)
         Try
             alglib.convc1d(a, m, b, n, r)
@@ -4977,7 +4543,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub convc1dinv(a() As alglib.complex, m As Integer, b() As alglib.complex, n As Integer, ByRef r() As alglib.complex)
         Try
@@ -4987,7 +4552,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub convc1dcircular(s() As alglib.complex, m As Integer, r() As alglib.complex, n As Integer, ByRef c() As alglib.complex)
         Try
             alglib.convc1dcircular(s, m, r, n, c)
@@ -4995,7 +4559,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub convc1dcircularinv(a() As alglib.complex, m As Integer, b() As alglib.complex, n As Integer, ByRef r() As alglib.complex)
         Try
@@ -5005,7 +4568,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub convr1d(a() As Double, m As Integer, b() As Double, n As Integer, ByRef r() As Double)
         Try
             alglib.convr1d(a, m, b, n, r)
@@ -5013,7 +4575,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub convr1dinv(a() As Double, m As Integer, b() As Double, n As Integer, ByRef r() As Double)
         Try
@@ -5023,7 +4584,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub convr1dcircular(s() As Double, m As Integer, r() As Double, n As Integer, ByRef c() As Double)
         Try
             alglib.convr1dcircular(s, m, r, n, c)
@@ -5031,7 +4591,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub convr1dcircularinv(a() As Double, m As Integer, b() As Double, n As Integer, ByRef r() As Double)
         Try
@@ -5042,8 +4601,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub corrc1d(signal() As alglib.complex, n As Integer, pattern() As alglib.complex, m As Integer, ByRef r() As alglib.complex)
         Try
             alglib.corrc1d(signal, n, pattern, m, r)
@@ -5051,7 +4608,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub corrc1dcircular(signal() As alglib.complex, m As Integer, pattern() As alglib.complex, n As Integer, ByRef c() As alglib.complex)
         Try
@@ -5061,7 +4617,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub corrr1d(signal() As Double, n As Integer, pattern() As Double, m As Integer, ByRef r() As Double)
         Try
             alglib.corrr1d(signal, n, pattern, m, r)
@@ -5069,7 +4624,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub corrr1dcircular(signal() As Double, m As Integer, pattern() As Double, n As Integer, ByRef c() As Double)
         Try
@@ -5080,8 +4634,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub fhtr1d(ByRef a() As Double, n As Integer)
         Try
             alglib.fhtr1d(a, n)
@@ -5089,7 +4641,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub fhtr1dinv(ByRef a() As Double, n As Integer)
         Try
@@ -5100,8 +4651,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub gqgeneraterec(alpha() As Double, beta() As Double, mu0 As Double, n As Integer, ByRef info As Integer, ByRef x() As Double, ByRef w() As Double)
         Try
             alglib.gqgeneraterec(alpha, beta, mu0, n, info, x, w)
@@ -5109,7 +4658,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub gqgenerategausslobattorec(alpha() As Double, beta() As Double, mu0 As Double, a As Double, b As Double, n As Integer, ByRef info As Integer, ByRef x() As Double, ByRef w() As Double)
         Try
@@ -5119,7 +4667,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub gqgenerategaussradaurec(alpha() As Double, beta() As Double, mu0 As Double, a As Double, n As Integer, ByRef info As Integer, ByRef x() As Double, ByRef w() As Double)
         Try
             alglib.gqgenerategaussradaurec(alpha, beta, mu0, a, n, info, x, w)
@@ -5127,7 +4674,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub gqgenerategausslegendre(n As Integer, ByRef info As Integer, ByRef x() As Double, ByRef w() As Double)
         Try
@@ -5137,7 +4683,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub gqgenerategaussjacobi(n As Integer, alpha As Double, beta As Double, ByRef info As Integer, ByRef x() As Double, ByRef w() As Double)
         Try
             alglib.gqgenerategaussjacobi(n, alpha, beta, info, x, w)
@@ -5146,7 +4691,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub gqgenerategausslaguerre(n As Integer, alpha As Double, ByRef info As Integer, ByRef x() As Double, ByRef w() As Double)
         Try
             alglib.gqgenerategausslaguerre(n, alpha, info, x, w)
@@ -5154,7 +4698,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub gqgenerategausshermite(n As Integer, ByRef info As Integer, ByRef x() As Double, ByRef w() As Double)
         Try
@@ -5165,8 +4708,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub gkqgeneraterec(alpha() As Double, beta() As Double, mu0 As Double, n As Integer, ByRef info As Integer, ByRef x() As Double, ByRef wkronrod() As Double, ByRef wgauss() As Double)
         Try
             alglib.gkqgeneraterec(alpha, beta, mu0, n, info, x, wkronrod, wgauss)
@@ -5174,7 +4715,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub gkqgenerategausslegendre(n As Integer, ByRef info As Integer, ByRef x() As Double, ByRef wkronrod() As Double, ByRef wgauss() As Double)
         Try
@@ -5184,7 +4724,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub gkqgenerategaussjacobi(n As Integer, alpha As Double, beta As Double, ByRef info As Integer, ByRef x() As Double, ByRef wkronrod() As Double, ByRef wgauss() As Double)
         Try
             alglib.gkqgenerategaussjacobi(n, alpha, beta, info, x, wkronrod, wgauss)
@@ -5193,7 +4732,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub gkqlegendrecalc(n As Integer, ByRef info As Integer, ByRef x() As Double, ByRef wkronrod() As Double, ByRef wgauss() As Double)
         Try
             alglib.gkqlegendrecalc(n, info, x, wkronrod, wgauss)
@@ -5201,7 +4739,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub gkqlegendretbl(n As Integer, ByRef x() As Double, ByRef wkronrod() As Double, ByRef wgauss() As Double, ByRef eps As Double)
         Try
@@ -5253,7 +4790,6 @@ Module XAlglib
         Public csobj As alglib.autogkstate
     End Class
 
-
     Public Sub autogksmooth(a As Double, b As Double, ByRef state As autogkstate)
         Try
             state = New autogkstate()
@@ -5262,7 +4798,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub autogksmoothw(a As Double, b As Double, xwidth As Double, ByRef state As autogkstate)
         Try
@@ -5273,7 +4808,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub autogksingular(a As Double, b As Double, alpha As Double, beta As Double, ByRef state As autogkstate)
         Try
             state = New autogkstate()
@@ -5283,7 +4817,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function autogkiteration(state As autogkstate) As Boolean
         Try
             autogkiteration = alglib.autogkiteration(state.csobj)
@@ -5291,7 +4824,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     ' This function is used to launcn iterations of ODE solver
@@ -5322,7 +4854,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub autogkresults(state As autogkstate, ByRef v As Double, ByRef rep As autogkreport)
         Try
             rep = New autogkreport()
@@ -5336,7 +4867,6 @@ Module XAlglib
         Public csobj As alglib.idwinterpolant
     End Class
 
-
     Public Function idwcalc(z As idwinterpolant, x() As Double) As Double
         Try
             idwcalc = alglib.idwcalc(z.csobj, x)
@@ -5344,7 +4874,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub idwbuildmodifiedshepard(xy(,) As Double, n As Integer, nx As Integer, d As Integer, nq As Integer, nw As Integer, ByRef z As idwinterpolant)
         Try
@@ -5355,7 +4884,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub idwbuildmodifiedshepardr(xy(,) As Double, n As Integer, nx As Integer, r As Double, ByRef z As idwinterpolant)
         Try
             z = New idwinterpolant()
@@ -5364,7 +4892,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub idwbuildnoisy(xy(,) As Double, n As Integer, nx As Integer, d As Integer, nq As Integer, nw As Integer, ByRef z As idwinterpolant)
         Try
@@ -5379,7 +4906,6 @@ Module XAlglib
         Public csobj As alglib.barycentricinterpolant
     End Class
 
-
     Public Function barycentriccalc(b As barycentricinterpolant, t As Double) As Double
         Try
             barycentriccalc = alglib.barycentriccalc(b.csobj, t)
@@ -5387,7 +4913,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub barycentricdiff1(b As barycentricinterpolant, t As Double, ByRef f As Double, ByRef df As Double)
         Try
@@ -5397,7 +4922,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub barycentricdiff2(b As barycentricinterpolant, t As Double, ByRef f As Double, ByRef df As Double, ByRef d2f As Double)
         Try
             alglib.barycentricdiff2(b.csobj, t, f, df, d2f)
@@ -5405,7 +4929,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub barycentriclintransx(b As barycentricinterpolant, ca As Double, cb As Double)
         Try
@@ -5415,7 +4938,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub barycentriclintransy(b As barycentricinterpolant, ca As Double, cb As Double)
         Try
             alglib.barycentriclintransy(b.csobj, ca, cb)
@@ -5423,7 +4945,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub barycentricunpack(b As barycentricinterpolant, ByRef n As Integer, ByRef x() As Double, ByRef y() As Double, ByRef w() As Double)
         Try
@@ -5433,7 +4954,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub barycentricbuildxyw(x() As Double, y() As Double, w() As Double, n As Integer, ByRef b As barycentricinterpolant)
         Try
             b = New barycentricinterpolant()
@@ -5442,7 +4962,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub barycentricbuildfloaterhormann(x() As Double, y() As Double, n As Integer, d As Integer, ByRef b As barycentricinterpolant)
         Try
@@ -5454,8 +4973,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub polynomialbar2cheb(p As barycentricinterpolant, a As Double, b As Double, ByRef t() As Double)
         Try
             alglib.polynomialbar2cheb(p.csobj, a, b, t)
@@ -5463,7 +4980,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub polynomialcheb2bar(t() As Double, n As Integer, a As Double, b As Double, ByRef p As barycentricinterpolant)
         Try
@@ -5474,7 +4990,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub polynomialcheb2bar(t() As Double, a As Double, b As Double, ByRef p As barycentricinterpolant)
         Try
             p = New barycentricinterpolant()
@@ -5484,7 +4999,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub polynomialbar2pow(p As barycentricinterpolant, c As Double, s As Double, ByRef a() As Double)
         Try
             alglib.polynomialbar2pow(p.csobj, c, s, a)
@@ -5493,7 +5007,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub polynomialbar2pow(p As barycentricinterpolant, ByRef a() As Double)
         Try
             alglib.polynomialbar2pow(p.csobj, a)
@@ -5501,7 +5014,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub polynomialpow2bar(a() As Double, n As Integer, c As Double, s As Double, ByRef p As barycentricinterpolant)
         Try
@@ -5512,7 +5024,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub polynomialpow2bar(a() As Double, ByRef p As barycentricinterpolant)
         Try
             p = New barycentricinterpolant()
@@ -5521,7 +5032,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub polynomialbuild(x() As Double, y() As Double, n As Integer, ByRef p As barycentricinterpolant)
         Try
@@ -5532,7 +5042,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub polynomialbuild(x() As Double, y() As Double, ByRef p As barycentricinterpolant)
         Try
             p = New barycentricinterpolant()
@@ -5541,7 +5050,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub polynomialbuildeqdist(a As Double, b As Double, y() As Double, n As Integer, ByRef p As barycentricinterpolant)
         Try
@@ -5552,7 +5060,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub polynomialbuildeqdist(a As Double, b As Double, y() As Double, ByRef p As barycentricinterpolant)
         Try
             p = New barycentricinterpolant()
@@ -5561,7 +5068,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub polynomialbuildcheb1(a As Double, b As Double, y() As Double, n As Integer, ByRef p As barycentricinterpolant)
         Try
@@ -5572,7 +5078,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub polynomialbuildcheb1(a As Double, b As Double, y() As Double, ByRef p As barycentricinterpolant)
         Try
             p = New barycentricinterpolant()
@@ -5581,7 +5086,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub polynomialbuildcheb2(a As Double, b As Double, y() As Double, n As Integer, ByRef p As barycentricinterpolant)
         Try
@@ -5592,7 +5096,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub polynomialbuildcheb2(a As Double, b As Double, y() As Double, ByRef p As barycentricinterpolant)
         Try
             p = New barycentricinterpolant()
@@ -5602,7 +5105,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function polynomialcalceqdist(a As Double, b As Double, f() As Double, n As Integer, t As Double) As Double
         Try
             polynomialcalceqdist = alglib.polynomialcalceqdist(a, b, f, n, t)
@@ -5610,7 +5112,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function polynomialcalceqdist(a As Double, b As Double, f() As Double, t As Double) As Double
         Try
@@ -5620,7 +5121,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function polynomialcalccheb1(a As Double, b As Double, f() As Double, n As Integer, t As Double) As Double
         Try
             polynomialcalccheb1 = alglib.polynomialcalccheb1(a, b, f, n, t)
@@ -5628,7 +5128,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function polynomialcalccheb1(a As Double, b As Double, f() As Double, t As Double) As Double
         Try
@@ -5638,7 +5137,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function polynomialcalccheb2(a As Double, b As Double, f() As Double, n As Integer, t As Double) As Double
         Try
             polynomialcalccheb2 = alglib.polynomialcalccheb2(a, b, f, n, t)
@@ -5646,7 +5144,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function polynomialcalccheb2(a As Double, b As Double, f() As Double, t As Double) As Double
         Try
@@ -5660,7 +5157,6 @@ Module XAlglib
         Public csobj As alglib.spline1dinterpolant
     End Class
 
-
     Public Sub spline1dbuildlinear(x() As Double, y() As Double, n As Integer, ByRef c As spline1dinterpolant)
         Try
             c = New spline1dinterpolant()
@@ -5669,7 +5165,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dbuildlinear(x() As Double, y() As Double, ByRef c As spline1dinterpolant)
         Try
@@ -5680,7 +5175,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dbuildcubic(x() As Double, y() As Double, n As Integer, boundltype As Integer, boundl As Double, boundrtype As Integer, boundr As Double, ByRef c As spline1dinterpolant)
         Try
             c = New spline1dinterpolant()
@@ -5689,7 +5183,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dbuildcubic(x() As Double, y() As Double, ByRef c As spline1dinterpolant)
         Try
@@ -5700,7 +5193,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dgriddiffcubic(x() As Double, y() As Double, n As Integer, boundltype As Integer, boundl As Double, boundrtype As Integer, boundr As Double, ByRef d() As Double)
         Try
             alglib.spline1dgriddiffcubic(x, y, n, boundltype, boundl, boundrtype, boundr, d)
@@ -5708,7 +5200,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dgriddiffcubic(x() As Double, y() As Double, ByRef d() As Double)
         Try
@@ -5718,7 +5209,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dgriddiff2cubic(x() As Double, y() As Double, n As Integer, boundltype As Integer, boundl As Double, boundrtype As Integer, boundr As Double, ByRef d1() As Double, ByRef d2() As Double)
         Try
             alglib.spline1dgriddiff2cubic(x, y, n, boundltype, boundl, boundrtype, boundr, d1, d2)
@@ -5726,7 +5216,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dgriddiff2cubic(x() As Double, y() As Double, ByRef d1() As Double, ByRef d2() As Double)
         Try
@@ -5736,7 +5225,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dconvcubic(x() As Double, y() As Double, n As Integer, boundltype As Integer, boundl As Double, boundrtype As Integer, boundr As Double, x2() As Double, n2 As Integer, ByRef y2() As Double)
         Try
             alglib.spline1dconvcubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2)
@@ -5744,7 +5232,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dconvcubic(x() As Double, y() As Double, x2() As Double, ByRef y2() As Double)
         Try
@@ -5754,7 +5241,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dconvdiffcubic(x() As Double, y() As Double, n As Integer, boundltype As Integer, boundl As Double, boundrtype As Integer, boundr As Double, x2() As Double, n2 As Integer, ByRef y2() As Double, ByRef d2() As Double)
         Try
             alglib.spline1dconvdiffcubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2, d2)
@@ -5762,7 +5248,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dconvdiffcubic(x() As Double, y() As Double, x2() As Double, ByRef y2() As Double, ByRef d2() As Double)
         Try
@@ -5772,7 +5257,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dconvdiff2cubic(x() As Double, y() As Double, n As Integer, boundltype As Integer, boundl As Double, boundrtype As Integer, boundr As Double, x2() As Double, n2 As Integer, ByRef y2() As Double, ByRef d2() As Double, ByRef dd2() As Double)
         Try
             alglib.spline1dconvdiff2cubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2, d2, dd2)
@@ -5781,7 +5265,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dconvdiff2cubic(x() As Double, y() As Double, x2() As Double, ByRef y2() As Double, ByRef d2() As Double, ByRef dd2() As Double)
         Try
             alglib.spline1dconvdiff2cubic(x, y, x2, y2, d2, dd2)
@@ -5789,7 +5272,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dbuildcatmullrom(x() As Double, y() As Double, n As Integer, boundtype As Integer, tension As Double, ByRef c As spline1dinterpolant)
         Try
@@ -5800,7 +5282,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dbuildcatmullrom(x() As Double, y() As Double, ByRef c As spline1dinterpolant)
         Try
             c = New spline1dinterpolant()
@@ -5809,7 +5290,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dbuildhermite(x() As Double, y() As Double, d() As Double, n As Integer, ByRef c As spline1dinterpolant)
         Try
@@ -5820,7 +5300,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dbuildhermite(x() As Double, y() As Double, d() As Double, ByRef c As spline1dinterpolant)
         Try
             c = New spline1dinterpolant()
@@ -5829,7 +5308,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dbuildakima(x() As Double, y() As Double, n As Integer, ByRef c As spline1dinterpolant)
         Try
@@ -5840,7 +5318,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dbuildakima(x() As Double, y() As Double, ByRef c As spline1dinterpolant)
         Try
             c = New spline1dinterpolant()
@@ -5850,7 +5327,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function spline1dcalc(c As spline1dinterpolant, x As Double) As Double
         Try
             spline1dcalc = alglib.spline1dcalc(c.csobj, x)
@@ -5858,7 +5334,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub spline1ddiff(c As spline1dinterpolant, x As Double, ByRef s As Double, ByRef ds As Double, ByRef d2s As Double)
         Try
@@ -5868,7 +5343,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dunpack(c As spline1dinterpolant, ByRef n As Integer, ByRef tbl(,) As Double)
         Try
             alglib.spline1dunpack(c.csobj, n, tbl)
@@ -5876,7 +5350,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dlintransx(c As spline1dinterpolant, a As Double, b As Double)
         Try
@@ -5886,7 +5359,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dlintransy(c As spline1dinterpolant, a As Double, b As Double)
         Try
             alglib.spline1dlintransy(c.csobj, a, b)
@@ -5894,7 +5366,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function spline1dintegrate(c As spline1dinterpolant, x As Double) As Double
         Try
@@ -5904,7 +5375,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Sub spline1dbuildmonotone(x() As Double, y() As Double, n As Integer, ByRef c As spline1dinterpolant)
         Try
             c = New spline1dinterpolant()
@@ -5913,7 +5383,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dbuildmonotone(x() As Double, y() As Double, ByRef c As spline1dinterpolant)
         Try
@@ -5928,7 +5397,6 @@ Module XAlglib
         Public csobj As alglib.sparsematrix
     End Class
 
-
     Public Sub sparsecreate(m As Integer, n As Integer, k As Integer, ByRef s As sparsematrix)
         Try
             s = New sparsematrix()
@@ -5937,7 +5405,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub sparsecreate(m As Integer, n As Integer, ByRef s As sparsematrix)
         Try
@@ -5948,7 +5415,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub sparsecreatecrs(m As Integer, n As Integer, ner() As Integer, ByRef s As sparsematrix)
         Try
             s = New sparsematrix()
@@ -5957,7 +5423,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub sparsecopy(s0 As sparsematrix, ByRef s1 As sparsematrix)
         Try
@@ -5968,7 +5433,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub sparseadd(s As sparsematrix, i As Integer, j As Integer, v As Double)
         Try
             alglib.sparseadd(s.csobj, i, j, v)
@@ -5976,7 +5440,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub sparseset(s As sparsematrix, i As Integer, j As Integer, v As Double)
         Try
@@ -5986,7 +5449,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function sparseget(s As sparsematrix, i As Integer, j As Integer) As Double
         Try
             sparseget = alglib.sparseget(s.csobj, i, j)
@@ -5994,7 +5456,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub sparseconverttocrs(s As sparsematrix)
         Try
@@ -6004,7 +5465,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub sparsemv(s As sparsematrix, x() As Double, ByRef y() As Double)
         Try
             alglib.sparsemv(s.csobj, x, y)
@@ -6012,7 +5472,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub sparsemtv(s As sparsematrix, x() As Double, ByRef y() As Double)
         Try
@@ -6022,7 +5481,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub sparsemv2(s As sparsematrix, x() As Double, ByRef y0() As Double, ByRef y1() As Double)
         Try
             alglib.sparsemv2(s.csobj, x, y0, y1)
@@ -6030,7 +5488,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub sparsesmv(s As sparsematrix, isupper As Boolean, x() As Double, ByRef y() As Double)
         Try
@@ -6040,7 +5497,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub sparsemm(s As sparsematrix, a(,) As Double, k As Integer, ByRef b(,) As Double)
         Try
             alglib.sparsemm(s.csobj, a, k, b)
@@ -6048,7 +5504,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub sparsemtm(s As sparsematrix, a(,) As Double, k As Integer, ByRef b(,) As Double)
         Try
@@ -6058,7 +5513,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub sparsemm2(s As sparsematrix, a(,) As Double, k As Integer, ByRef b0(,) As Double, ByRef b1(,) As Double)
         Try
             alglib.sparsemm2(s.csobj, a, k, b0, b1)
@@ -6066,7 +5520,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub sparsesmm(s As sparsematrix, isupper As Boolean, a(,) As Double, k As Integer, ByRef b(,) As Double)
         Try
@@ -6076,7 +5529,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub sparseresizematrix(s As sparsematrix)
         Try
             alglib.sparseresizematrix(s.csobj)
@@ -6085,7 +5537,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function sparseenumerate(s As sparsematrix, ByRef t0 As Integer, ByRef t1 As Integer, ByRef i As Integer, ByRef j As Integer, ByRef v As Double) As Boolean
         Try
             sparseenumerate = alglib.sparseenumerate(s.csobj, t0, t1, i, j, v)
@@ -6093,7 +5544,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function sparserewriteexisting(s As sparsematrix, i As Integer, j As Integer, v As Double) As Boolean
         Try
@@ -6107,7 +5557,6 @@ Module XAlglib
         Public csobj As alglib.normestimatorstate
     End Class
 
-
     Public Sub normestimatorcreate(m As Integer, n As Integer, nstart As Integer, nits As Integer, ByRef state As normestimatorstate)
         Try
             state = New normestimatorstate()
@@ -6117,7 +5566,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub normestimatorsetseed(state As normestimatorstate, seedval As Integer)
         Try
             alglib.normestimatorsetseed(state.csobj, seedval)
@@ -6125,7 +5573,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub normestimatorestimatesparse(state As normestimatorstate, a As sparsematrix)
         Try
@@ -6135,7 +5582,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub normestimatorresults(state As normestimatorstate, ByRef nrm As Double)
         Try
             alglib.normestimatorresults(state.csobj, nrm)
@@ -6143,8 +5589,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
-
 
 
     Public Class minqpstate
@@ -6218,7 +5662,6 @@ Module XAlglib
         Public csobj As alglib.minqpreport
     End Class
 
-
     Public Sub minqpcreate(n As Integer, ByRef state As minqpstate)
         Try
             state = New minqpstate()
@@ -6228,7 +5671,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minqpsetlinearterm(state As minqpstate, b() As Double)
         Try
             alglib.minqpsetlinearterm(state.csobj, b)
@@ -6236,7 +5678,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minqpsetquadraticterm(state As minqpstate, a(,) As Double, isupper As Boolean)
         Try
@@ -6246,7 +5687,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minqpsetquadraticterm(state As minqpstate, a(,) As Double)
         Try
             alglib.minqpsetquadraticterm(state.csobj, a)
@@ -6254,7 +5694,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minqpsetstartingpoint(state As minqpstate, x() As Double)
         Try
@@ -6264,7 +5703,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minqpsetorigin(state As minqpstate, xorigin() As Double)
         Try
             alglib.minqpsetorigin(state.csobj, xorigin)
@@ -6272,7 +5710,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minqpsetalgocholesky(state As minqpstate)
         Try
@@ -6282,7 +5719,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minqpsetbc(state As minqpstate, bndl() As Double, bndu() As Double)
         Try
             alglib.minqpsetbc(state.csobj, bndl, bndu)
@@ -6290,7 +5726,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minqpsetlc(state As minqpstate, c(,) As Double, ct() As Integer, k As Integer)
         Try
@@ -6300,7 +5735,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minqpsetlc(state As minqpstate, c(,) As Double, ct() As Integer)
         Try
             alglib.minqpsetlc(state.csobj, c, ct)
@@ -6308,7 +5742,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minqpoptimize(state As minqpstate)
         Try
@@ -6318,7 +5751,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minqpresults(state As minqpstate, ByRef x() As Double, ByRef rep As minqpreport)
         Try
             rep = New minqpreport()
@@ -6327,7 +5759,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minqpresultsbuf(state As minqpstate, ByRef x() As Double, ByRef rep As minqpreport)
         Try
@@ -6438,7 +5869,6 @@ Module XAlglib
         Public csobj As alglib.minlmreport
     End Class
 
-
     Public Sub minlmcreatevj(n As Integer, m As Integer, x() As Double, ByRef state As minlmstate)
         Try
             state = New minlmstate()
@@ -6447,7 +5877,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlmcreatevj(m As Integer, x() As Double, ByRef state As minlmstate)
         Try
@@ -6458,7 +5887,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmcreatev(n As Integer, m As Integer, x() As Double, diffstep As Double, ByRef state As minlmstate)
         Try
             state = New minlmstate()
@@ -6467,7 +5895,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlmcreatev(m As Integer, x() As Double, diffstep As Double, ByRef state As minlmstate)
         Try
@@ -6478,7 +5905,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmcreatefgh(n As Integer, x() As Double, ByRef state As minlmstate)
         Try
             state = New minlmstate()
@@ -6487,7 +5913,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlmcreatefgh(x() As Double, ByRef state As minlmstate)
         Try
@@ -6498,7 +5923,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmsetcond(state As minlmstate, epsg As Double, epsf As Double, epsx As Double, maxits As Integer)
         Try
             alglib.minlmsetcond(state.csobj, epsg, epsf, epsx, maxits)
@@ -6506,7 +5930,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlmsetxrep(state As minlmstate, needxrep As Boolean)
         Try
@@ -6516,7 +5939,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmsetstpmax(state As minlmstate, stpmax As Double)
         Try
             alglib.minlmsetstpmax(state.csobj, stpmax)
@@ -6524,7 +5946,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlmsetscale(state As minlmstate, s() As Double)
         Try
@@ -6534,7 +5955,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmsetbc(state As minlmstate, bndl() As Double, bndu() As Double)
         Try
             alglib.minlmsetbc(state.csobj, bndl, bndu)
@@ -6543,7 +5963,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmsetacctype(state As minlmstate, acctype As Integer)
         Try
             alglib.minlmsetacctype(state.csobj, acctype)
@@ -6551,7 +5970,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function minlmiteration(state As minlmstate) As Boolean
         Try
@@ -6622,7 +6040,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmoptimize(state As minlmstate, fvec As ndimensional_fvec, jac As ndimensional_jac, rep As ndimensional_rep, obj As Object)
         Dim innerobj As alglib.minlm.minlmstate = state.csobj.innerobj
         If fvec Is Nothing Then
@@ -6653,7 +6070,6 @@ Module XAlglib
             Throw New AlglibException(E.msg)
         End Try
     End Sub
-
 
     Public Sub minlmoptimize(state As minlmstate, func As ndimensional_func, grad As ndimensional_grad, hess As ndimensional_hess, rep As ndimensional_rep, obj As Object)
         Dim innerobj As alglib.minlm.minlmstate = state.csobj.innerobj
@@ -6693,7 +6109,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmoptimize(state As minlmstate, func As ndimensional_func, jac As ndimensional_jac, rep As ndimensional_rep, obj As Object)
         Dim innerobj As alglib.minlm.minlmstate = state.csobj.innerobj
         If func Is Nothing Then
@@ -6724,7 +6139,6 @@ Module XAlglib
             Throw New AlglibException(E.msg)
         End Try
     End Sub
-
 
     Public Sub minlmoptimize(state As minlmstate, func As ndimensional_func, grad As ndimensional_grad, jac As ndimensional_jac, rep As ndimensional_rep, obj As Object)
         Dim innerobj As alglib.minlm.minlmstate = state.csobj.innerobj
@@ -6765,8 +6179,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub minlmresults(state As minlmstate, ByRef x() As Double, ByRef rep As minlmreport)
         Try
             rep = New minlmreport()
@@ -6776,7 +6188,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmresultsbuf(state As minlmstate, ByRef x() As Double, ByRef rep As minlmreport)
         Try
             alglib.minlmresultsbuf(state.csobj, x, rep.csobj)
@@ -6785,7 +6196,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmrestartfrom(state As minlmstate, x() As Double)
         Try
             alglib.minlmrestartfrom(state.csobj, x)
@@ -6793,7 +6203,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlmcreatevgj(n As Integer, m As Integer, x() As Double, ByRef state As minlmstate)
         Try
@@ -6804,7 +6213,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmcreatevgj(m As Integer, x() As Double, ByRef state As minlmstate)
         Try
             state = New minlmstate()
@@ -6813,7 +6221,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlmcreatefgj(n As Integer, m As Integer, x() As Double, ByRef state As minlmstate)
         Try
@@ -6824,7 +6231,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmcreatefgj(m As Integer, x() As Double, ByRef state As minlmstate)
         Try
             state = New minlmstate()
@@ -6833,7 +6239,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlmcreatefj(n As Integer, m As Integer, x() As Double, ByRef state As minlmstate)
         Try
@@ -6844,7 +6249,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minlmcreatefj(m As Integer, x() As Double, ByRef state As minlmstate)
         Try
             state = New minlmstate()
@@ -6853,7 +6257,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlmsetgradientcheck(state As minlmstate, teststep As Double)
         Try
@@ -7110,7 +6513,6 @@ Module XAlglib
         Public csobj As alglib.lsfitstate
     End Class
 
-
     Public Sub polynomialfit(x() As Double, y() As Double, n As Integer, m As Integer, ByRef info As Integer, ByRef p As barycentricinterpolant, ByRef rep As polynomialfitreport)
         Try
             p = New barycentricinterpolant()
@@ -7120,7 +6522,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub polynomialfit(x() As Double, y() As Double, m As Integer, ByRef info As Integer, ByRef p As barycentricinterpolant, ByRef rep As polynomialfitreport)
         Try
@@ -7132,7 +6533,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub polynomialfitwc(x() As Double, y() As Double, w() As Double, n As Integer, xc() As Double, yc() As Double, dc() As Integer, k As Integer, m As Integer, ByRef info As Integer, ByRef p As barycentricinterpolant, ByRef rep As polynomialfitreport)
         Try
             p = New barycentricinterpolant()
@@ -7142,7 +6542,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub polynomialfitwc(x() As Double, y() As Double, w() As Double, xc() As Double, yc() As Double, dc() As Integer, m As Integer, ByRef info As Integer, ByRef p As barycentricinterpolant, ByRef rep As polynomialfitreport)
         Try
@@ -7154,7 +6553,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub barycentricfitfloaterhormannwc(x() As Double, y() As Double, w() As Double, n As Integer, xc() As Double, yc() As Double, dc() As Integer, k As Integer, m As Integer, ByRef info As Integer, ByRef b As barycentricinterpolant, ByRef rep As barycentricfitreport)
         Try
             b = New barycentricinterpolant()
@@ -7164,7 +6562,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub barycentricfitfloaterhormann(x() As Double, y() As Double, n As Integer, m As Integer, ByRef info As Integer, ByRef b As barycentricinterpolant, ByRef rep As barycentricfitreport)
         Try
@@ -7176,7 +6573,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dfitpenalized(x() As Double, y() As Double, n As Integer, m As Integer, rho As Double, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
             s = New spline1dinterpolant()
@@ -7186,7 +6582,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dfitpenalized(x() As Double, y() As Double, m As Integer, rho As Double, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
@@ -7198,7 +6593,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dfitpenalizedw(x() As Double, y() As Double, w() As Double, n As Integer, m As Integer, rho As Double, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
             s = New spline1dinterpolant()
@@ -7208,7 +6602,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dfitpenalizedw(x() As Double, y() As Double, w() As Double, m As Integer, rho As Double, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
@@ -7220,7 +6613,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dfitcubicwc(x() As Double, y() As Double, w() As Double, n As Integer, xc() As Double, yc() As Double, dc() As Integer, k As Integer, m As Integer, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
             s = New spline1dinterpolant()
@@ -7230,7 +6622,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dfitcubicwc(x() As Double, y() As Double, w() As Double, xc() As Double, yc() As Double, dc() As Integer, m As Integer, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
@@ -7242,7 +6633,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dfithermitewc(x() As Double, y() As Double, w() As Double, n As Integer, xc() As Double, yc() As Double, dc() As Integer, k As Integer, m As Integer, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
             s = New spline1dinterpolant()
@@ -7252,7 +6642,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dfithermitewc(x() As Double, y() As Double, w() As Double, xc() As Double, yc() As Double, dc() As Integer, m As Integer, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
@@ -7264,7 +6653,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dfitcubic(x() As Double, y() As Double, n As Integer, m As Integer, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
             s = New spline1dinterpolant()
@@ -7274,7 +6662,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dfitcubic(x() As Double, y() As Double, m As Integer, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
@@ -7286,7 +6673,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline1dfithermite(x() As Double, y() As Double, n As Integer, m As Integer, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
             s = New spline1dinterpolant()
@@ -7296,7 +6682,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline1dfithermite(x() As Double, y() As Double, m As Integer, ByRef info As Integer, ByRef s As spline1dinterpolant, ByRef rep As spline1dfitreport)
         Try
@@ -7308,7 +6693,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitlinearw(y() As Double, w() As Double, fmatrix(,) As Double, n As Integer, m As Integer, ByRef info As Integer, ByRef c() As Double, ByRef rep As lsfitreport)
         Try
             rep = New lsfitreport()
@@ -7317,7 +6701,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitlinearw(y() As Double, w() As Double, fmatrix(,) As Double, ByRef info As Integer, ByRef c() As Double, ByRef rep As lsfitreport)
         Try
@@ -7328,7 +6711,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitlinearwc(y() As Double, w() As Double, fmatrix(,) As Double, cmatrix(,) As Double, n As Integer, m As Integer, k As Integer, ByRef info As Integer, ByRef c() As Double, ByRef rep As lsfitreport)
         Try
             rep = New lsfitreport()
@@ -7337,7 +6719,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitlinearwc(y() As Double, w() As Double, fmatrix(,) As Double, cmatrix(,) As Double, ByRef info As Integer, ByRef c() As Double, ByRef rep As lsfitreport)
         Try
@@ -7348,7 +6729,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitlinear(y() As Double, fmatrix(,) As Double, n As Integer, m As Integer, ByRef info As Integer, ByRef c() As Double, ByRef rep As lsfitreport)
         Try
             rep = New lsfitreport()
@@ -7357,7 +6737,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitlinear(y() As Double, fmatrix(,) As Double, ByRef info As Integer, ByRef c() As Double, ByRef rep As lsfitreport)
         Try
@@ -7368,7 +6747,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitlinearc(y() As Double, fmatrix(,) As Double, cmatrix(,) As Double, n As Integer, m As Integer, k As Integer, ByRef info As Integer, ByRef c() As Double, ByRef rep As lsfitreport)
         Try
             rep = New lsfitreport()
@@ -7377,7 +6755,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitlinearc(y() As Double, fmatrix(,) As Double, cmatrix(,) As Double, ByRef info As Integer, ByRef c() As Double, ByRef rep As lsfitreport)
         Try
@@ -7388,7 +6765,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitcreatewf(x(,) As Double, y() As Double, w() As Double, c() As Double, n As Integer, m As Integer, k As Integer, diffstep As Double, ByRef state As lsfitstate)
         Try
             state = New lsfitstate()
@@ -7397,7 +6773,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitcreatewf(x(,) As Double, y() As Double, w() As Double, c() As Double, diffstep As Double, ByRef state As lsfitstate)
         Try
@@ -7408,7 +6783,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitcreatef(x(,) As Double, y() As Double, c() As Double, n As Integer, m As Integer, k As Integer, diffstep As Double, ByRef state As lsfitstate)
         Try
             state = New lsfitstate()
@@ -7417,7 +6791,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitcreatef(x(,) As Double, y() As Double, c() As Double, diffstep As Double, ByRef state As lsfitstate)
         Try
@@ -7428,7 +6801,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitcreatewfg(x(,) As Double, y() As Double, w() As Double, c() As Double, n As Integer, m As Integer, k As Integer, cheapfg As Boolean, ByRef state As lsfitstate)
         Try
             state = New lsfitstate()
@@ -7437,7 +6809,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitcreatewfg(x(,) As Double, y() As Double, w() As Double, c() As Double, cheapfg As Boolean, ByRef state As lsfitstate)
         Try
@@ -7448,7 +6819,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitcreatefg(x(,) As Double, y() As Double, c() As Double, n As Integer, m As Integer, k As Integer, cheapfg As Boolean, ByRef state As lsfitstate)
         Try
             state = New lsfitstate()
@@ -7457,7 +6827,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitcreatefg(x(,) As Double, y() As Double, c() As Double, cheapfg As Boolean, ByRef state As lsfitstate)
         Try
@@ -7468,7 +6837,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitcreatewfgh(x(,) As Double, y() As Double, w() As Double, c() As Double, n As Integer, m As Integer, k As Integer, ByRef state As lsfitstate)
         Try
             state = New lsfitstate()
@@ -7477,7 +6845,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitcreatewfgh(x(,) As Double, y() As Double, w() As Double, c() As Double, ByRef state As lsfitstate)
         Try
@@ -7488,7 +6855,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitcreatefgh(x(,) As Double, y() As Double, c() As Double, n As Integer, m As Integer, k As Integer, ByRef state As lsfitstate)
         Try
             state = New lsfitstate()
@@ -7497,7 +6863,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitcreatefgh(x(,) As Double, y() As Double, c() As Double, ByRef state As lsfitstate)
         Try
@@ -7508,7 +6873,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitsetcond(state As lsfitstate, epsf As Double, epsx As Double, maxits As Integer)
         Try
             alglib.lsfitsetcond(state.csobj, epsf, epsx, maxits)
@@ -7516,7 +6880,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitsetstpmax(state As lsfitstate, stpmax As Double)
         Try
@@ -7526,7 +6889,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitsetxrep(state As lsfitstate, needxrep As Boolean)
         Try
             alglib.lsfitsetxrep(state.csobj, needxrep)
@@ -7534,7 +6896,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitsetscale(state As lsfitstate, s() As Double)
         Try
@@ -7544,7 +6905,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitsetbc(state As lsfitstate, bndl() As Double, bndu() As Double)
         Try
             alglib.lsfitsetbc(state.csobj, bndl, bndu)
@@ -7552,7 +6912,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function lsfititeration(state As lsfitstate) As Boolean
         Try
@@ -7638,7 +6997,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lsfitfit(state As lsfitstate, func As ndimensional_pfunc, grad As ndimensional_pgrad, rep As ndimensional_rep, obj As Object)
         Dim innerobj As alglib.lsfit.lsfitstate = state.csobj.innerobj
         If func Is Nothing Then
@@ -7669,7 +7027,6 @@ Module XAlglib
             Throw New AlglibException(E.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitfit(state As lsfitstate, func As ndimensional_pfunc, grad As ndimensional_pgrad, hess As ndimensional_phess, rep As ndimensional_rep, obj As Object)
         Dim innerobj As alglib.lsfit.lsfitstate = state.csobj.innerobj
@@ -7710,8 +7067,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub lsfitresults(state As lsfitstate, ByRef info As Integer, ByRef c() As Double, ByRef rep As lsfitreport)
         Try
             rep = New lsfitreport()
@@ -7720,7 +7075,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lsfitsetgradientcheck(state As lsfitstate, teststep As Double)
         Try
@@ -7737,7 +7091,6 @@ Module XAlglib
         Public csobj As alglib.pspline3interpolant
     End Class
 
-
     Public Sub pspline2build(xy(,) As Double, n As Integer, st As Integer, pt As Integer, ByRef p As pspline2interpolant)
         Try
             p = New pspline2interpolant()
@@ -7746,7 +7099,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub pspline3build(xy(,) As Double, n As Integer, st As Integer, pt As Integer, ByRef p As pspline3interpolant)
         Try
@@ -7757,7 +7109,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub pspline2buildperiodic(xy(,) As Double, n As Integer, st As Integer, pt As Integer, ByRef p As pspline2interpolant)
         Try
             p = New pspline2interpolant()
@@ -7766,7 +7117,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub pspline3buildperiodic(xy(,) As Double, n As Integer, st As Integer, pt As Integer, ByRef p As pspline3interpolant)
         Try
@@ -7777,7 +7127,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub pspline2parametervalues(p As pspline2interpolant, ByRef n As Integer, ByRef t() As Double)
         Try
             alglib.pspline2parametervalues(p.csobj, n, t)
@@ -7785,7 +7134,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub pspline3parametervalues(p As pspline3interpolant, ByRef n As Integer, ByRef t() As Double)
         Try
@@ -7795,7 +7143,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub pspline2calc(p As pspline2interpolant, t As Double, ByRef x As Double, ByRef y As Double)
         Try
             alglib.pspline2calc(p.csobj, t, x, y)
@@ -7803,7 +7150,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub pspline3calc(p As pspline3interpolant, t As Double, ByRef x As Double, ByRef y As Double, ByRef z As Double)
         Try
@@ -7813,7 +7159,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub pspline2tangent(p As pspline2interpolant, t As Double, ByRef x As Double, ByRef y As Double)
         Try
             alglib.pspline2tangent(p.csobj, t, x, y)
@@ -7821,7 +7166,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub pspline3tangent(p As pspline3interpolant, t As Double, ByRef x As Double, ByRef y As Double, ByRef z As Double)
         Try
@@ -7831,7 +7175,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub pspline2diff(p As pspline2interpolant, t As Double, ByRef x As Double, ByRef dx As Double, ByRef y As Double, ByRef dy As Double)
         Try
             alglib.pspline2diff(p.csobj, t, x, dx, y, dy)
@@ -7839,7 +7182,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub pspline3diff(p As pspline3interpolant, t As Double, ByRef x As Double, ByRef dx As Double, ByRef y As Double, ByRef dy As Double, ByRef z As Double, ByRef dz As Double)
         Try
@@ -7849,7 +7191,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub pspline2diff2(p As pspline2interpolant, t As Double, ByRef x As Double, ByRef dx As Double, ByRef d2x As Double, ByRef y As Double, ByRef dy As Double, ByRef d2y As Double)
         Try
             alglib.pspline2diff2(p.csobj, t, x, dx, d2x, y, dy, d2y)
@@ -7857,7 +7198,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub pspline3diff2(p As pspline3interpolant, t As Double, ByRef x As Double, ByRef dx As Double, ByRef d2x As Double, ByRef y As Double, ByRef dy As Double, ByRef d2y As Double, ByRef z As Double, ByRef dz As Double, ByRef d2z As Double)
         Try
@@ -7867,7 +7207,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function pspline2arclength(p As pspline2interpolant, a As Double, b As Double) As Double
         Try
             pspline2arclength = alglib.pspline2arclength(p.csobj, a, b)
@@ -7875,7 +7214,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function pspline3arclength(p As pspline3interpolant, a As Double, b As Double) As Double
         Try
@@ -7919,7 +7257,6 @@ Module XAlglib
         Public csobj As alglib.linlsqrreport
     End Class
 
-
     Public Sub linlsqrcreate(m As Integer, n As Integer, ByRef state As linlsqrstate)
         Try
             state = New linlsqrstate()
@@ -7929,7 +7266,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub linlsqrsetlambdai(state As linlsqrstate, lambdai As Double)
         Try
             alglib.linlsqrsetlambdai(state.csobj, lambdai)
@@ -7937,7 +7273,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub linlsqrsolvesparse(state As linlsqrstate, a As sparsematrix, b() As Double)
         Try
@@ -7947,7 +7282,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub linlsqrsetcond(state As linlsqrstate, epsa As Double, epsb As Double, maxits As Integer)
         Try
             alglib.linlsqrsetcond(state.csobj, epsa, epsb, maxits)
@@ -7955,7 +7289,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub linlsqrresults(state As linlsqrstate, ByRef x() As Double, ByRef rep As linlsqrreport)
         Try
@@ -7965,7 +7298,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub linlsqrsetxrep(state As linlsqrstate, needxrep As Boolean)
         Try
@@ -8050,7 +7382,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rbfcreate(nx As Integer, ny As Integer, ByRef s As rbfmodel)
         Try
             s = New rbfmodel()
@@ -8060,7 +7391,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rbfsetpoints(s As rbfmodel, xy(,) As Double, n As Integer)
         Try
             alglib.rbfsetpoints(s.csobj, xy, n)
@@ -8068,7 +7398,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rbfsetpoints(s As rbfmodel, xy(,) As Double)
         Try
@@ -8078,7 +7407,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rbfsetalgoqnn(s As rbfmodel, q As Double, z As Double)
         Try
             alglib.rbfsetalgoqnn(s.csobj, q, z)
@@ -8086,7 +7414,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rbfsetalgoqnn(s As rbfmodel)
         Try
@@ -8096,7 +7423,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rbfsetalgomultilayer(s As rbfmodel, rbase As Double, nlayers As Integer, lambdav As Double)
         Try
             alglib.rbfsetalgomultilayer(s.csobj, rbase, nlayers, lambdav)
@@ -8104,7 +7430,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rbfsetalgomultilayer(s As rbfmodel, rbase As Double, nlayers As Integer)
         Try
@@ -8114,7 +7439,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rbfsetlinterm(s As rbfmodel)
         Try
             alglib.rbfsetlinterm(s.csobj)
@@ -8122,7 +7446,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rbfsetconstterm(s As rbfmodel)
         Try
@@ -8132,7 +7455,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rbfsetzeroterm(s As rbfmodel)
         Try
             alglib.rbfsetzeroterm(s.csobj)
@@ -8140,7 +7462,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rbfbuildmodel(s As rbfmodel, ByRef rep As rbfreport)
         Try
@@ -8151,7 +7472,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Function rbfcalc2(s As rbfmodel, x0 As Double, x1 As Double) As Double
         Try
             rbfcalc2 = alglib.rbfcalc2(s.csobj, x0, x1)
@@ -8159,7 +7479,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function rbfcalc3(s As rbfmodel, x0 As Double, x1 As Double, x2 As Double) As Double
         Try
@@ -8169,7 +7488,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Sub rbfcalc(s As rbfmodel, x() As Double, ByRef y() As Double)
         Try
             alglib.rbfcalc(s.csobj, x, y)
@@ -8177,7 +7495,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rbfcalcbuf(s As rbfmodel, x() As Double, ByRef y() As Double)
         Try
@@ -8187,7 +7504,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rbfgridcalc2(s As rbfmodel, x0() As Double, n0 As Integer, x1() As Double, n1 As Integer, ByRef y(,) As Double)
         Try
             alglib.rbfgridcalc2(s.csobj, x0, n0, x1, n1, y)
@@ -8195,7 +7511,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rbfunpack(s As rbfmodel, ByRef nx As Integer, ByRef ny As Integer, ByRef xwr(,) As Double, ByRef nc As Integer, ByRef v(,) As Double)
         Try
@@ -8209,7 +7524,6 @@ Module XAlglib
         Public csobj As alglib.spline2dinterpolant
     End Class
 
-
     Public Function spline2dcalc(c As spline2dinterpolant, x As Double, y As Double) As Double
         Try
             spline2dcalc = alglib.spline2dcalc(c.csobj, x, y)
@@ -8217,7 +7531,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub spline2ddiff(c As spline2dinterpolant, x As Double, y As Double, ByRef f As Double, ByRef fx As Double, ByRef fy As Double, ByRef fxy As Double)
         Try
@@ -8227,7 +7540,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline2dlintransxy(c As spline2dinterpolant, ax As Double, bx As Double, ay As Double, by As Double)
         Try
             alglib.spline2dlintransxy(c.csobj, ax, bx, ay, by)
@@ -8236,7 +7548,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline2dlintransf(c As spline2dinterpolant, a As Double, b As Double)
         Try
             alglib.spline2dlintransf(c.csobj, a, b)
@@ -8244,7 +7555,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline2dcopy(c As spline2dinterpolant, ByRef cc As spline2dinterpolant)
         Try
@@ -8255,7 +7565,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline2dresamplebicubic(a(,) As Double, oldheight As Integer, oldwidth As Integer, ByRef b(,) As Double, newheight As Integer, newwidth As Integer)
         Try
             alglib.spline2dresamplebicubic(a, oldheight, oldwidth, b, newheight, newwidth)
@@ -8264,7 +7573,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline2dresamplebilinear(a(,) As Double, oldheight As Integer, oldwidth As Integer, ByRef b(,) As Double, newheight As Integer, newwidth As Integer)
         Try
             alglib.spline2dresamplebilinear(a, oldheight, oldwidth, b, newheight, newwidth)
@@ -8272,7 +7580,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline2dbuildbilinearv(x() As Double, n As Integer, y() As Double, m As Integer, f() As Double, d As Integer, ByRef c As spline2dinterpolant)
         Try
@@ -8283,7 +7590,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline2dbuildbicubicv(x() As Double, n As Integer, y() As Double, m As Integer, f() As Double, d As Integer, ByRef c As spline2dinterpolant)
         Try
             c = New spline2dinterpolant()
@@ -8293,7 +7599,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline2dcalcvbuf(c As spline2dinterpolant, x As Double, y As Double, ByRef f() As Double)
         Try
             alglib.spline2dcalcvbuf(c.csobj, x, y, f)
@@ -8301,7 +7606,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline2dcalcv(c As spline2dinterpolant, x As Double, y As Double, ByRef f() As Double)
         Try
@@ -8311,7 +7615,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline2dunpackv(c As spline2dinterpolant, ByRef m As Integer, ByRef n As Integer, ByRef d As Integer, ByRef tbl(,) As Double)
         Try
             alglib.spline2dunpackv(c.csobj, m, n, d, tbl)
@@ -8319,7 +7622,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline2dbuildbilinear(x() As Double, y() As Double, f(,) As Double, m As Integer, n As Integer, ByRef c As spline2dinterpolant)
         Try
@@ -8330,7 +7632,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline2dbuildbicubic(x() As Double, y() As Double, f(,) As Double, m As Integer, n As Integer, ByRef c As spline2dinterpolant)
         Try
             c = New spline2dinterpolant()
@@ -8339,7 +7640,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline2dunpack(c As spline2dinterpolant, ByRef m As Integer, ByRef n As Integer, ByRef tbl(,) As Double)
         Try
@@ -8353,7 +7653,6 @@ Module XAlglib
         Public csobj As alglib.spline3dinterpolant
     End Class
 
-
     Public Function spline3dcalc(c As spline3dinterpolant, x As Double, y As Double, z As Double) As Double
         Try
             spline3dcalc = alglib.spline3dcalc(c.csobj, x, y, z)
@@ -8361,7 +7660,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub spline3dlintransxyz(c As spline3dinterpolant, ax As Double, bx As Double, ay As Double, by As Double, az As Double, bz As Double)
         Try
@@ -8371,7 +7669,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline3dlintransf(c As spline3dinterpolant, a As Double, b As Double)
         Try
             alglib.spline3dlintransf(c.csobj, a, b)
@@ -8380,7 +7677,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline3dresampletrilinear(a() As Double, oldzcount As Integer, oldycount As Integer, oldxcount As Integer, newzcount As Integer, newycount As Integer, newxcount As Integer, ByRef b() As Double)
         Try
             alglib.spline3dresampletrilinear(a, oldzcount, oldycount, oldxcount, newzcount, newycount, newxcount, b)
@@ -8388,7 +7684,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline3dbuildtrilinearv(x() As Double, n As Integer, y() As Double, m As Integer, z() As Double, l As Integer, f() As Double, d As Integer, ByRef c As spline3dinterpolant)
         Try
@@ -8399,7 +7694,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline3dcalcvbuf(c As spline3dinterpolant, x As Double, y As Double, z As Double, ByRef f() As Double)
         Try
             alglib.spline3dcalcvbuf(c.csobj, x, y, z, f)
@@ -8408,7 +7702,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spline3dcalcv(c As spline3dinterpolant, x As Double, y As Double, z As Double, ByRef f() As Double)
         Try
             alglib.spline3dcalcv(c.csobj, x, y, z, f)
@@ -8416,7 +7709,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub spline3dunpackv(c As spline3dinterpolant, ByRef n As Integer, ByRef m As Integer, ByRef l As Integer, ByRef d As Integer, ByRef stype As Integer, ByRef tbl(,) As Double)
         Try
@@ -8427,8 +7719,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Function rmatrixludet(a(,) As Double, pivots() As Integer, n As Integer) As Double
         Try
             rmatrixludet = alglib.rmatrixludet(a, pivots, n)
@@ -8436,7 +7726,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function rmatrixludet(a(,) As Double, pivots() As Integer) As Double
         Try
@@ -8446,7 +7735,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function rmatrixdet(a(,) As Double, n As Integer) As Double
         Try
             rmatrixdet = alglib.rmatrixdet(a, n)
@@ -8454,7 +7742,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function rmatrixdet(a(,) As Double) As Double
         Try
@@ -8464,7 +7751,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function cmatrixludet(a(,) As alglib.complex, pivots() As Integer, n As Integer) As alglib.complex
         Try
             cmatrixludet = alglib.cmatrixludet(a, pivots, n)
@@ -8472,7 +7758,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function cmatrixludet(a(,) As alglib.complex, pivots() As Integer) As alglib.complex
         Try
@@ -8482,7 +7767,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function cmatrixdet(a(,) As alglib.complex, n As Integer) As alglib.complex
         Try
             cmatrixdet = alglib.cmatrixdet(a, n)
@@ -8490,7 +7774,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function cmatrixdet(a(,) As alglib.complex) As alglib.complex
         Try
@@ -8500,7 +7783,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function spdmatrixcholeskydet(a(,) As Double, n As Integer) As Double
         Try
             spdmatrixcholeskydet = alglib.spdmatrixcholeskydet(a, n)
@@ -8508,7 +7790,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function spdmatrixcholeskydet(a(,) As Double) As Double
         Try
@@ -8518,7 +7799,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function spdmatrixdet(a(,) As Double, n As Integer, isupper As Boolean) As Double
         Try
             spdmatrixdet = alglib.spdmatrixdet(a, n, isupper)
@@ -8526,7 +7806,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function spdmatrixdet(a(,) As Double) As Double
         Try
@@ -8537,8 +7816,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function smatrixgevd(a(,) As Double, n As Integer, isuppera As Boolean, b(,) As Double, isupperb As Boolean, zneeded As Integer, problemtype As Integer, ByRef d() As Double, ByRef z(,) As Double) As Boolean
         Try
             smatrixgevd = alglib.smatrixgevd(a, n, isuppera, b, isupperb, zneeded, problemtype, d, z)
@@ -8546,7 +7823,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function smatrixgevdreduce(ByRef a(,) As Double, n As Integer, isuppera As Boolean, b(,) As Double, isupperb As Boolean, problemtype As Integer, ByRef r(,) As Double, ByRef isupperr As Boolean) As Boolean
         Try
@@ -8557,8 +7833,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Sub rmatrixinvupdatesimple(ByRef inva(,) As Double, n As Integer, updrow As Integer, updcolumn As Integer, updval As Double)
         Try
             alglib.rmatrixinvupdatesimple(inva, n, updrow, updcolumn, updval)
@@ -8566,7 +7840,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub rmatrixinvupdaterow(ByRef inva(,) As Double, n As Integer, updrow As Integer, v() As Double)
         Try
@@ -8576,7 +7849,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixinvupdatecolumn(ByRef inva(,) As Double, n As Integer, updcolumn As Integer, u() As Double)
         Try
             alglib.rmatrixinvupdatecolumn(inva, n, updcolumn, u)
@@ -8585,7 +7857,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub rmatrixinvupdateuv(ByRef inva(,) As Double, n As Integer, u() As Double, v() As Double)
         Try
             alglib.rmatrixinvupdateuv(inva, n, u, v)
@@ -8593,8 +7864,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
-
 
 
     Public Function rmatrixschur(ByRef a(,) As Double, n As Integer, ByRef s(,) As Double) As Boolean
@@ -8647,7 +7916,6 @@ Module XAlglib
         Public csobj As alglib.minasareport
     End Class
 
-
     Public Sub minlbfgssetdefaultpreconditioner(state As minlbfgsstate)
         Try
             alglib.minlbfgssetdefaultpreconditioner(state.csobj)
@@ -8655,7 +7923,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minlbfgssetcholeskypreconditioner(state As minlbfgsstate, p(,) As Double, isupper As Boolean)
         Try
@@ -8665,7 +7932,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicsetbarrierwidth(state As minbleicstate, mu As Double)
         Try
             alglib.minbleicsetbarrierwidth(state.csobj, mu)
@@ -8674,7 +7940,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minbleicsetbarrierdecay(state As minbleicstate, mudecay As Double)
         Try
             alglib.minbleicsetbarrierdecay(state.csobj, mudecay)
@@ -8682,7 +7947,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minasacreate(n As Integer, x() As Double, bndl() As Double, bndu() As Double, ByRef state As minasastate)
         Try
@@ -8693,7 +7957,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minasacreate(x() As Double, bndl() As Double, bndu() As Double, ByRef state As minasastate)
         Try
             state = New minasastate()
@@ -8703,7 +7966,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minasasetcond(state As minasastate, epsg As Double, epsf As Double, epsx As Double, maxits As Integer)
         Try
             alglib.minasasetcond(state.csobj, epsg, epsf, epsx, maxits)
@@ -8711,7 +7973,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minasasetxrep(state As minasastate, needxrep As Boolean)
         Try
@@ -8721,7 +7982,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minasasetalgorithm(state As minasastate, algotype As Integer)
         Try
             alglib.minasasetalgorithm(state.csobj, algotype)
@@ -8730,7 +7990,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minasasetstpmax(state As minasastate, stpmax As Double)
         Try
             alglib.minasasetstpmax(state.csobj, stpmax)
@@ -8738,7 +7997,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function minasaiteration(state As minasastate) As Boolean
         Try
@@ -8788,8 +8046,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub minasaresults(state As minasastate, ByRef x() As Double, ByRef rep As minasareport)
         Try
             rep = New minasareport()
@@ -8799,7 +8055,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub minasaresultsbuf(state As minasastate, ByRef x() As Double, ByRef rep As minasareport)
         Try
             alglib.minasaresultsbuf(state.csobj, x, rep.csobj)
@@ -8807,7 +8062,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub minasarestartfrom(state As minasastate, x() As Double, bndl() As Double, bndu() As Double)
         Try
@@ -8859,7 +8113,6 @@ Module XAlglib
         Public csobj As alglib.lincgreport
     End Class
 
-
     Public Sub lincgcreate(n As Integer, ByRef state As lincgstate)
         Try
             state = New lincgstate()
@@ -8869,7 +8122,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lincgsetstartingpoint(state As lincgstate, x() As Double)
         Try
             alglib.lincgsetstartingpoint(state.csobj, x)
@@ -8877,7 +8129,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lincgsetcond(state As lincgstate, epsf As Double, maxits As Integer)
         Try
@@ -8887,7 +8138,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lincgsolvesparse(state As lincgstate, a As sparsematrix, isupper As Boolean, b() As Double)
         Try
             alglib.lincgsolvesparse(state.csobj, a.csobj, isupper, b)
@@ -8895,7 +8145,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lincgresults(state As lincgstate, ByRef x() As Double, ByRef rep As lincgreport)
         Try
@@ -8906,7 +8155,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lincgsetrestartfreq(state As lincgstate, srf As Integer)
         Try
             alglib.lincgsetrestartfreq(state.csobj, srf)
@@ -8915,7 +8163,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub lincgsetrupdatefreq(state As lincgstate, freq As Integer)
         Try
             alglib.lincgsetrupdatefreq(state.csobj, freq)
@@ -8923,7 +8170,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub lincgsetxrep(state As lincgstate, needxrep As Boolean)
         Try
@@ -8975,7 +8221,6 @@ Module XAlglib
         Public csobj As alglib.nleqreport
     End Class
 
-
     Public Sub nleqcreatelm(n As Integer, m As Integer, x() As Double, ByRef state As nleqstate)
         Try
             state = New nleqstate()
@@ -8984,7 +8229,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub nleqcreatelm(m As Integer, x() As Double, ByRef state As nleqstate)
         Try
@@ -8995,7 +8239,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub nleqsetcond(state As nleqstate, epsf As Double, maxits As Integer)
         Try
             alglib.nleqsetcond(state.csobj, epsf, maxits)
@@ -9003,7 +8246,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub nleqsetxrep(state As nleqstate, needxrep As Boolean)
         Try
@@ -9013,7 +8255,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub nleqsetstpmax(state As nleqstate, stpmax As Double)
         Try
             alglib.nleqsetstpmax(state.csobj, stpmax)
@@ -9021,7 +8262,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Function nleqiteration(state As nleqstate) As Boolean
         Try
@@ -9080,8 +8320,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub nleqresults(state As nleqstate, ByRef x() As Double, ByRef rep As nleqreport)
         Try
             rep = New nleqreport()
@@ -9091,7 +8329,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub nleqresultsbuf(state As nleqstate, ByRef x() As Double, ByRef rep As nleqreport)
         Try
             alglib.nleqresultsbuf(state.csobj, x, rep.csobj)
@@ -9100,7 +8337,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub nleqrestartfrom(state As nleqstate, x() As Double)
         Try
             alglib.nleqrestartfrom(state.csobj, x)
@@ -9108,8 +8344,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
-
 
 
     Public Sub airy(x As Double, ByRef ai As Double, ByRef aip As Double, ByRef bi As Double, ByRef bip As Double)
@@ -9121,8 +8355,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Function besselj0(x As Double) As Double
         Try
             besselj0 = alglib.besselj0(x)
@@ -9130,7 +8362,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function besselj1(x As Double) As Double
         Try
@@ -9140,7 +8371,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function besseljn(n As Integer, x As Double) As Double
         Try
             besseljn = alglib.besseljn(n, x)
@@ -9148,7 +8378,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function bessely0(x As Double) As Double
         Try
@@ -9158,7 +8387,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function bessely1(x As Double) As Double
         Try
             bessely1 = alglib.bessely1(x)
@@ -9166,7 +8394,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function besselyn(n As Integer, x As Double) As Double
         Try
@@ -9176,7 +8403,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function besseli0(x As Double) As Double
         Try
             besseli0 = alglib.besseli0(x)
@@ -9184,7 +8410,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function besseli1(x As Double) As Double
         Try
@@ -9194,7 +8419,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function besselk0(x As Double) As Double
         Try
             besselk0 = alglib.besselk0(x)
@@ -9202,7 +8426,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function besselk1(x As Double) As Double
         Try
@@ -9212,7 +8435,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function besselkn(nn As Integer, x As Double) As Double
         Try
             besselkn = alglib.besselkn(nn, x)
@@ -9220,8 +8442,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
-
 
 
     Public Function beta(a As Double, b As Double) As Double
@@ -9233,8 +8453,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function incompletebeta(a As Double, b As Double, x As Double) As Double
         Try
             incompletebeta = alglib.incompletebeta(a, b, x)
@@ -9242,7 +8460,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function invincompletebeta(a As Double, b As Double, y As Double) As Double
         Try
@@ -9253,8 +8470,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function binomialdistribution(k As Integer, n As Integer, p As Double) As Double
         Try
             binomialdistribution = alglib.binomialdistribution(k, n, p)
@@ -9263,7 +8478,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function binomialcdistribution(k As Integer, n As Integer, p As Double) As Double
         Try
             binomialcdistribution = alglib.binomialcdistribution(k, n, p)
@@ -9271,7 +8485,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function invbinomialdistribution(k As Integer, n As Integer, y As Double) As Double
         Try
@@ -9282,8 +8495,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function chebyshevcalculate(r As Integer, n As Integer, x As Double) As Double
         Try
             chebyshevcalculate = alglib.chebyshevcalculate(r, n, x)
@@ -9291,7 +8502,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function chebyshevsum(c() As Double, r As Integer, n As Integer, x As Double) As Double
         Try
@@ -9301,7 +8511,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Sub chebyshevcoefficients(n As Integer, ByRef c() As Double)
         Try
             alglib.chebyshevcoefficients(n, c)
@@ -9309,7 +8518,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub fromchebyshev(a() As Double, n As Integer, ByRef b() As Double)
         Try
@@ -9320,8 +8528,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Function chisquaredistribution(v As Double, x As Double) As Double
         Try
             chisquaredistribution = alglib.chisquaredistribution(v, x)
@@ -9329,7 +8535,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function chisquarecdistribution(v As Double, x As Double) As Double
         Try
@@ -9339,7 +8544,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function invchisquaredistribution(v As Double, y As Double) As Double
         Try
             invchisquaredistribution = alglib.invchisquaredistribution(v, y)
@@ -9347,8 +8551,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
-
 
 
     Public Function dawsonintegral(x As Double) As Double
@@ -9360,8 +8562,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function ellipticintegralk(m As Double) As Double
         Try
             ellipticintegralk = alglib.ellipticintegralk(m)
@@ -9369,7 +8569,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function ellipticintegralkhighprecision(m1 As Double) As Double
         Try
@@ -9379,7 +8578,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function incompleteellipticintegralk(phi As Double, m As Double) As Double
         Try
             incompleteellipticintegralk = alglib.incompleteellipticintegralk(phi, m)
@@ -9388,7 +8586,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function ellipticintegrale(m As Double) As Double
         Try
             ellipticintegrale = alglib.ellipticintegrale(m)
@@ -9396,7 +8593,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function incompleteellipticintegrale(phi As Double, m As Double) As Double
         Try
@@ -9407,8 +8603,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function exponentialintegralei(x As Double) As Double
         Try
             exponentialintegralei = alglib.exponentialintegralei(x)
@@ -9416,7 +8610,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function exponentialintegralen(x As Double, n As Integer) As Double
         Try
@@ -9427,8 +8620,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function fdistribution(a As Integer, b As Integer, x As Double) As Double
         Try
             fdistribution = alglib.fdistribution(a, b, x)
@@ -9436,7 +8627,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function fcdistribution(a As Integer, b As Integer, x As Double) As Double
         Try
@@ -9446,7 +8636,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function invfdistribution(a As Integer, b As Integer, y As Double) As Double
         Try
             invfdistribution = alglib.invfdistribution(a, b, y)
@@ -9454,8 +8643,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
-
 
 
     Public Sub fresnelintegral(x As Double, ByRef c As Double, ByRef s As Double)
@@ -9467,8 +8654,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Function hermitecalculate(n As Integer, x As Double) As Double
         Try
             hermitecalculate = alglib.hermitecalculate(n, x)
@@ -9476,7 +8661,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function hermitesum(c() As Double, n As Integer, x As Double) As Double
         Try
@@ -9486,7 +8670,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Sub hermitecoefficients(n As Integer, ByRef c() As Double)
         Try
             alglib.hermitecoefficients(n, c)
@@ -9494,8 +8677,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
-
 
 
     Public Sub jacobianellipticfunctions(u As Double, m As Double, ByRef sn As Double, ByRef cn As Double, ByRef dn As Double, ByRef ph As Double)
@@ -9507,8 +8688,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Function laguerrecalculate(n As Integer, x As Double) As Double
         Try
             laguerrecalculate = alglib.laguerrecalculate(n, x)
@@ -9517,7 +8696,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function laguerresum(c() As Double, n As Integer, x As Double) As Double
         Try
             laguerresum = alglib.laguerresum(c, n, x)
@@ -9525,7 +8703,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub laguerrecoefficients(n As Integer, ByRef c() As Double)
         Try
@@ -9536,8 +8713,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Function legendrecalculate(n As Integer, x As Double) As Double
         Try
             legendrecalculate = alglib.legendrecalculate(n, x)
@@ -9546,7 +8721,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function legendresum(c() As Double, n As Integer, x As Double) As Double
         Try
             legendresum = alglib.legendresum(c, n, x)
@@ -9554,7 +8728,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Sub legendrecoefficients(n As Integer, ByRef c() As Double)
         Try
@@ -9565,8 +8738,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Function poissondistribution(k As Integer, m As Double) As Double
         Try
             poissondistribution = alglib.poissondistribution(k, m)
@@ -9574,7 +8745,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function poissoncdistribution(k As Integer, m As Double) As Double
         Try
@@ -9584,7 +8754,6 @@ Module XAlglib
         End Try
     End Function
 
-
     Public Function invpoissondistribution(k As Integer, y As Double) As Double
         Try
             invpoissondistribution = alglib.invpoissondistribution(k, y)
@@ -9592,8 +8761,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
-
 
 
     Public Function psi(x As Double) As Double
@@ -9605,8 +8772,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Function studenttdistribution(k As Integer, t As Double) As Double
         Try
             studenttdistribution = alglib.studenttdistribution(k, t)
@@ -9614,7 +8779,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
-
 
     Public Function invstudenttdistribution(k As Integer, p As Double) As Double
         Try
@@ -9625,8 +8789,6 @@ Module XAlglib
     End Function
 
 
-
-
     Public Sub sinecosineintegrals(x As Double, ByRef si As Double, ByRef ci As Double)
         Try
             alglib.sinecosineintegrals(x, si, ci)
@@ -9634,7 +8796,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub hyperbolicsinecosineintegrals(x As Double, ByRef shi As Double, ByRef chi As Double)
         Try
@@ -9645,8 +8806,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub pearsoncorrelationsignificance(r As Double, n As Integer, ByRef bothtails As Double, ByRef lefttail As Double, ByRef righttail As Double)
         Try
             alglib.pearsoncorrelationsignificance(r, n, bothtails, lefttail, righttail)
@@ -9655,7 +8814,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub spearmanrankcorrelationsignificance(r As Double, n As Integer, ByRef bothtails As Double, ByRef lefttail As Double, ByRef righttail As Double)
         Try
             alglib.spearmanrankcorrelationsignificance(r, n, bothtails, lefttail, righttail)
@@ -9663,8 +8821,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
-
 
 
     Public Sub jarqueberatest(x() As Double, n As Integer, ByRef p As Double)
@@ -9676,8 +8832,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub mannwhitneyutest(x() As Double, n As Integer, y() As Double, m As Integer, ByRef bothtails As Double, ByRef lefttail As Double, ByRef righttail As Double)
         Try
             alglib.mannwhitneyutest(x, n, y, m, bothtails, lefttail, righttail)
@@ -9685,8 +8839,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
-
 
 
     Public Sub onesamplesigntest(x() As Double, n As Integer, median As Double, ByRef bothtails As Double, ByRef lefttail As Double, ByRef righttail As Double)
@@ -9698,8 +8850,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub studentttest1(x() As Double, n As Integer, mean As Double, ByRef bothtails As Double, ByRef lefttail As Double, ByRef righttail As Double)
         Try
             alglib.studentttest1(x, n, mean, bothtails, lefttail, righttail)
@@ -9708,7 +8858,6 @@ Module XAlglib
         End Try
     End Sub
 
-
     Public Sub studentttest2(x() As Double, n As Integer, y() As Double, m As Integer, ByRef bothtails As Double, ByRef lefttail As Double, ByRef righttail As Double)
         Try
             alglib.studentttest2(x, n, y, m, bothtails, lefttail, righttail)
@@ -9716,7 +8865,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub unequalvariancettest(x() As Double, n As Integer, y() As Double, m As Integer, ByRef bothtails As Double, ByRef lefttail As Double, ByRef righttail As Double)
         Try
@@ -9727,8 +8875,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub ftest(x() As Double, n As Integer, y() As Double, m As Integer, ByRef bothtails As Double, ByRef lefttail As Double, ByRef righttail As Double)
         Try
             alglib.ftest(x, n, y, m, bothtails, lefttail, righttail)
@@ -9736,7 +8882,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
 
     Public Sub onesamplevariancetest(x() As Double, n As Integer, variance As Double, ByRef bothtails As Double, ByRef lefttail As Double, ByRef righttail As Double)
         Try
@@ -9747,8 +8892,6 @@ Module XAlglib
     End Sub
 
 
-
-
     Public Sub wilcoxonsignedranktest(x() As Double, n As Integer, e As Double, ByRef bothtails As Double, ByRef lefttail As Double, ByRef righttail As Double)
         Try
             alglib.wilcoxonsignedranktest(x, n, e, bothtails, lefttail, righttail)
@@ -9756,8 +8899,6 @@ Module XAlglib
             Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
-
-
 
 
 End Module

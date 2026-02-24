@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 
@@ -55,7 +40,6 @@ Namespace SpatialData
             Me.m_spaceData = Me.m_core.m_EcospaceData
         End Sub
 
-
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialScalarDataAdapter.Adapt"/>
         ''' <remarks>
@@ -75,11 +59,9 @@ Namespace SpatialData
 
             If Not MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData) Then Return False
 
-
             'Tell the core IEnvironmentalResponseManager(s) that a layer has changed
             'in this case it allows the Mortality Manager to handle it's internal data
             Me.m_core.MortalityMapInteractionManager.UpdateLayer(layer)
-
 
             'isGroupHabCapChanged(group) tells the habitat capacity model 
             'that the capacity inputs for a group have changed.

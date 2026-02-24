@@ -1,24 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 Imports EwECore.Plugins
@@ -28,8 +10,6 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 ' ToDo: add check on delete if dataset is applied in this model. Could also be applied to other models, have no idea
 ' ToDo: add indexing overview
@@ -183,7 +163,6 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
         End Sub
 
-
         Private Sub OnImport(sender As Object, e As EventArgs) _
             Handles m_btnImport.Click
             Try
@@ -278,7 +257,6 @@ Namespace Ecospace.Controls
             Me.m_manSets.Reload(True)
             Me.Close()
         End Sub
-
 
         Private Sub OnManageConfigurations(sender As System.Object, e As System.EventArgs) _
             Handles m_btnManageConfigurations.Click
@@ -415,7 +393,6 @@ Namespace Ecospace.Controls
             Me.UpdateControls()
 
         End Function
-
 
 #End Region ' Internals 
 

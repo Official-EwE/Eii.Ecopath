@@ -1,22 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -27,12 +11,12 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Particle Size Distribution Growth user input.
     ''' </summary>
     ''' =======================================================================
-    
+
     Public Class gridGrowthParameters
-        : Inherits cEwEGrid
+        Inherits cEwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Public Overrides ReadOnly Property SuppressQuickEdits As Boolean
@@ -66,15 +50,15 @@ Namespace Ecopath.Input
             Dim group As cEcoPathGroupInput = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim intStanzaGroupIndex(Me.core.nLivingGroups) As Integer 'Hold the stanza group index
+            Dim intStanzaGroupIndex(Me.Core.nLivingGroups) As Integer 'Hold the stanza group index
             Dim hgcStanza As cEwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, cEwEHierarchyGridCell)
 
-            For i As Integer = 1 To Me.core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
+            For i As Integer = 1 To Me.Core.nLivingGroups : intStanzaGroupIndex(i) = -1 : Next
 
             'Tag stanza group
-            For stanzaGroupIndex As Integer = 0 To Me.core.nStanzas - 1
-                sg = Me.core.StanzaGroups(stanzaGroupIndex)
+            For stanzaGroupIndex As Integer = 0 To Me.Core.nStanzas - 1
+                sg = Me.Core.StanzaGroups(stanzaGroupIndex)
 
                 For iStanza As Integer = 1 To sg.nLifeStages
                     group = Me.Core.EcopathGroupInputs(sg.iGroups(iStanza))
@@ -86,8 +70,8 @@ Namespace Ecopath.Input
             Me.RowsCount = 1
 
             'Create rows for all groups
-            For iGroup As Integer = 1 To Me.core.nLivingGroups
-                group = Me.core.EcopathGroupInputs(iGroup)
+            For iGroup As Integer = 1 To Me.Core.nLivingGroups
+                group = Me.Core.EcopathGroupInputs(iGroup)
                 ' Is group stanza?
                 If intStanzaGroupIndex(group.Index) = -1 Then
                     ' #No: display group info
@@ -95,7 +79,7 @@ Namespace Ecopath.Input
                     Me.FillInRows(iRow, group)
                 Else
                     '#Yes: Group is stanza
-                    sg = Me.core.StanzaGroups(intStanzaGroupIndex(group.Index))
+                    sg = Me.Core.StanzaGroups(intStanzaGroupIndex(group.Index))
                     If Not dtStanzaCells.ContainsKey(sg) Then
                         hgcStanza = New cEwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)

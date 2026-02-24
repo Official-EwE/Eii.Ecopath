@@ -1,32 +1,12 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Style
 Imports EwEUtils.Logging
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -342,13 +322,13 @@ Public Class frmRemarkPanel
 
                         ' Format message
                         If prop.SourceSec IsNot Nothing Then
-                            strName = String.Format(My.Resources.SELECTION_INDEXEDVAR, _
-                                                    fmt.ToString(prop.Source), _
-                                                    strVarN, _
+                            strName = String.Format(My.Resources.SELECTION_INDEXEDVAR,
+                                                    fmt.ToString(prop.Source),
+                                                    strVarN,
                                                     fmt.ToString(prop.SourceSec))
                         Else
-                            strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
-                                                    fmt.ToString(prop.Source), _
+                            strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED,
+                                                    fmt.ToString(prop.Source),
                                                     strVarN)
                         End If
 

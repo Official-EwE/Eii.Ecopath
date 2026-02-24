@@ -1,29 +1,9 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 ''' <summary>
 ''' Contaminant tracing model.
@@ -74,7 +54,6 @@ Public Class cContaminantTracer
     Private m_Stanza As cStanzaDatastructures
     Private m_TracerData As cContaminantTracerDataStructures
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cContaminantTracer)()
-
 
     Public Sub Cupdate(Biom() As Single)
         Dim i As Integer, istep As Integer, Ceq As Single, Tst As Single, InputMult As Single
@@ -159,7 +138,6 @@ Public Class cContaminantTracer
 
     End Sub
 
-
     Public Sub ConDeriv(Biom() As Single, Derivcon() As Single, Cintotal() As Single, Closs() As Single, InputMult As Single, Space As Boolean)
         'calculates total derivative of contaminant concentrations given
         'rate coefficients from interface and monthly call to derivt
@@ -194,7 +172,6 @@ Public Class cContaminantTracer
                 ExcretToEnv = ExcretToEnv + ConFlow * Me.m_TracerData.CassimProp(j)
 
                 'Debug.Assert(Not Single.IsNaN(Cinflow(j)))
-
 
             Next ii
 
@@ -250,7 +227,6 @@ Public Class cContaminantTracer
             'save this result as the "loss" rate from environment to ecosystem components
             Me.loss(0) = Closs(0) : Biom(0) = 1
 
-
             For i = 0 To Me.m_EPData.NumGroups
                 If i = 0 Then
                     InputMultT = InputMult
@@ -282,9 +258,7 @@ Public Class cContaminantTracer
             Debug.Assert(False, ex.Message)
         End Try
 
-
     End Sub
-
 
     Public Sub CInitialize()
         'Public Sub CInitialize(nMapRows As Integer, nMapCols As Integer)
@@ -314,7 +288,6 @@ Public Class cContaminantTracer
 
     End Sub
 
-
     Public Sub Init(ByRef refTracerData As cContaminantTracerDataStructures, ByRef refEcopathData As cEcopathDataStructures, ByRef refEcosimData As cEcosimDatastructures, ByRef refStanzaData As cStanzaDatastructures)
 
         Me.m_TracerData = refTracerData
@@ -323,7 +296,6 @@ Public Class cContaminantTracer
         Me.m_Stanza = refStanzaData
 
     End Sub
-
 
     Public Sub SaveEcosimTimeStepData(iTime As Integer, Biomass() As Single, ByRef TracerData As cContaminantTracerDataStructures)
         Dim igrp As Integer
@@ -338,6 +310,5 @@ Public Class cContaminantTracer
             End If
         Next igrp
     End Sub
-
 
 End Class

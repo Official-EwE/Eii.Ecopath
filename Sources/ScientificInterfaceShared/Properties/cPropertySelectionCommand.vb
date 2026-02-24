@@ -1,29 +1,9 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports ScientificInterfaceShared.Commands
 Imports SourceGrid2
-
-
 
 Namespace Properties
 
@@ -32,7 +12,7 @@ Namespace Properties
     ''' This class implements a selection change <see cref="cCommand">Command</see>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    
+
     Public Class cPropertySelectionCommand
         Inherits cCommand
 
@@ -66,10 +46,10 @@ Namespace Properties
         ''' object that acts as secundary index to the selection.</param>
         ''' <param name="strStatus">Optional status message to include.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(pm As cPropertyManager, _
-                                    source As cCoreInputOutputBase, _
-                                    varName As eVarNameFlags, _
-                                    Optional sourceSec As cCoreInputOutputBase = Nothing, _
+        Public Overloads Sub Invoke(pm As cPropertyManager,
+                                    source As cCoreInputOutputBase,
+                                    varName As eVarNameFlags,
+                                    Optional sourceSec As cCoreInputOutputBase = Nothing,
                                     Optional strStatus As String = "")
 
             Dim prop As cProperty = Nothing
@@ -106,7 +86,7 @@ Namespace Properties
         ''' was selected.</param>
         ''' <param name="strStatus">Optional status message to include.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(prop As cProperty, _
+        Public Overloads Sub Invoke(prop As cProperty,
                                     Optional strStatus As String = "")
             ' Clear list of props
             Me.m_lprop.Clear()
@@ -124,7 +104,7 @@ Namespace Properties
         ''' <param name="aprop">Array of <see cref="cProperty">cProperty</see> 
         ''' instances that were selected.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(aprop() As cProperty, _
+        Public Overloads Sub Invoke(aprop() As cProperty,
                                     Optional strStatus As String = "")
             ' Clear list of props
             Me.m_lprop.Clear()
@@ -143,8 +123,8 @@ Namespace Properties
         ''' instances that were selected.</param>
         ''' <param name="event">The <see cref="SelectionChangeEventType">event</see> that fired this command.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(lprop As List(Of cProperty), _
-                                    [event] As SelectionChangeEventType, _
+        Public Overloads Sub Invoke(lprop As List(Of cProperty),
+                                    [event] As SelectionChangeEventType,
                                     Optional strStatus As String = "")
             ' Clear list of props
             Me.m_lprop.Clear()

@@ -1,31 +1,11 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Ecosim
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 Namespace MSY
 
@@ -169,7 +149,7 @@ Namespace MSY
         ''' <param name="EcopathData"><see cref="cEcopathDataStructures">Ecopath data structures</see> to use.</param>
         ''' <param name="EcosimData"><see cref="cEcosimDatastructures">Ecosim data structures</see> to use.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(Ecosim As cEcosimModel, MsyData As cMSYDataStructures, _
+        Public Sub New(Ecosim As cEcosimModel, MsyData As cMSYDataStructures,
                        EcopathData As cEcopathDataStructures, EcosimData As cEcosimDatastructures)
 
             Debug.Assert(Ecosim IsNot Nothing, Me.ToString & ".New() Invalid Ecosim Model object!")
@@ -394,7 +374,6 @@ Namespace MSY
 
         End Function
 
-
         Friend Function InitForSingleRun() As Boolean
 
             Try
@@ -412,7 +391,6 @@ Namespace MSY
             Return True
 
         End Function
-
 
         Friend Sub setForcedGroupB()
 
@@ -687,7 +665,6 @@ Namespace MSY
 
             End If
 
-
         End Sub
 
         Private Function runSingleSpeciesToDepletion() As Boolean
@@ -886,7 +863,6 @@ Namespace MSY
 
             End If
 
-
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'EwE5
             'If GearShow = 0 Then
@@ -898,9 +874,7 @@ Namespace MSY
             'End If
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
         End Sub
-
 
         ''' <summary>
         ''' Runs the Ecosim rk4 for length of time set in Me.m_msyData.nYearsPerTrial
@@ -939,7 +913,6 @@ Namespace MSY
 
         End Function
 
-
         Private Function getTotalValue(FishingMort() As Single, Biomass() As Single) As Single
             Dim value As Single
 
@@ -955,7 +928,6 @@ Namespace MSY
 
             Return value
         End Function
-
 
         Private Sub getEcosimRunResults(F As Single, bIncrementing As Boolean)
             Try
@@ -1002,7 +974,6 @@ Namespace MSY
             End Try
 
         End Sub
-
 
         Private Sub getFMSYResults()
             Try
@@ -1244,6 +1215,4 @@ Namespace MSY
     End Class
 
 End Namespace
-
-
 

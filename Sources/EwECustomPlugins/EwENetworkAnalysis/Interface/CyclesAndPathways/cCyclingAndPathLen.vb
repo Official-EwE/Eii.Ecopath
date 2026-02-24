@@ -1,32 +1,12 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 
 Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
-
-
 
 
 Public Class cCyclingAndPathLen
@@ -89,7 +69,7 @@ Public Class cCyclingAndPathLen
         'g_Recordset.Fields("PredatorCyclingIndex").value = 100 * Tc / TCyc
         strRowContent(0) = My.Resources.ROW_HDR_PRED_CYC_INDX
         If Math.Abs(Me.NetworkManager.ThroughputCycledPredatory) > 0.0 Then
-            strRowContent(1) = Me.StyleGuide.FormatNumber(100.0 * Me.NetworkManager.ThroughputCycledLiving / _
+            strRowContent(1) = Me.StyleGuide.FormatNumber(100.0 * Me.NetworkManager.ThroughputCycledLiving /
                 Me.NetworkManager.ThroughputCycledPredatory)
         Else
             strRowContent(1) = ""
@@ -117,7 +97,7 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 4, "% of total throughput")
         'g_Recordset.Fields("FinnCyclingIndex").value = 100 * TcD / TruPut
         strRowContent(0) = My.Resources.ROW_HDR_FINN_CYC_INDX
-        strRowContent(1) = Me.StyleGuide.FormatNumber(100.0 * Me.NetworkManager.ThroughputCycledAll / _
+        strRowContent(1) = Me.StyleGuide.FormatNumber(100.0 * Me.NetworkManager.ThroughputCycledAll /
             Me.NetworkManager.ThroughputTotal)
         strRowContent(2) = My.Resources.STR_PCT_TOTAL_THROUGHPUT
         Me.Grid.Rows(4).SetValues(strRowContent)
@@ -133,7 +113,7 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 5, "-")
         strRowContent(0) = My.Resources.ROW_HDR_FINN_MEAN_PATH_LEN
         If Me.NetworkManager.ThroughputExport + Me.NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ThroughputTotal / _
+            strRowContent(1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.ThroughputTotal /
                 (Me.NetworkManager.ThroughputExport + Me.NetworkManager.ThroughputResp))
         Else
             strRowContent(1) = ""
@@ -150,10 +130,10 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 6, "without detritus")
         'g_Recordset.Update()
         strRowContent(0) = My.Resources.ROW_HDR_FINN_STR_THRU_PATH_LEN
-        If Me.NetworkManager.ThroughputExport - Me.NetworkManager.ThroughputExportByGroup(Me.NetworkManager.nGroups) + _
+        If Me.NetworkManager.ThroughputExport - Me.NetworkManager.ThroughputExportByGroup(Me.NetworkManager.nGroups) +
             Me.NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = Me.StyleGuide.FormatNumber((Me.NetworkManager.ThroughputCycledPredatory - Me.NetworkManager.ThroughputCycledLiving) / _
-                (Me.NetworkManager.ThroughputExport - Me.NetworkManager.ThroughputExportByGroup(Me.NetworkManager.nGroups) + _
+            strRowContent(1) = Me.StyleGuide.FormatNumber((Me.NetworkManager.ThroughputCycledPredatory - Me.NetworkManager.ThroughputCycledLiving) /
+                (Me.NetworkManager.ThroughputExport - Me.NetworkManager.ThroughputExportByGroup(Me.NetworkManager.nGroups) +
                 Me.NetworkManager.ThroughputResp))
         Else
             strRowContent(1) = ""
@@ -169,7 +149,7 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 3, 7, "with detritus")
         strRowContent(0) = My.Resources.ROW_HDR_FINN_STR_THRU_PATH_LEN
         If Me.NetworkManager.ThroughputExport + Me.NetworkManager.ThroughputResp > 0.0 Then
-            strRowContent(1) = Me.StyleGuide.FormatNumber((Me.NetworkManager.ThroughputTotal - Me.NetworkManager.ThroughputCycledAll) / _
+            strRowContent(1) = Me.StyleGuide.FormatNumber((Me.NetworkManager.ThroughputTotal - Me.NetworkManager.ThroughputCycledAll) /
                 (Me.NetworkManager.ThroughputExport + Me.NetworkManager.ThroughputResp))
         Else
             strRowContent(1) = ""

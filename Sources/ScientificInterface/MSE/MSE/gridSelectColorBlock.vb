@@ -1,21 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
@@ -49,10 +34,10 @@ Public Class gridSelectColorBlock
             Me.m_parent = parent
         End Sub
 
-        Protected Overrides Sub DrawCell_Background(p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                                                    p_CellPosition As SourceGrid2.Position, _
-                                                    e As PaintEventArgs, _
-                                                    p_ClientRectangle As System.Drawing.Rectangle, _
+        Protected Overrides Sub DrawCell_Background(p_Cell As SourceGrid2.Cells.ICellVirtual,
+                                                    p_CellPosition As SourceGrid2.Position,
+                                                    e As PaintEventArgs,
+                                                    p_ClientRectangle As System.Drawing.Rectangle,
                                                     p_Status As SourceGrid2.DrawCellStatus)
 
             Me.BackColor = Me.m_parent.BlockColor(p_CellPosition.Column)
@@ -60,10 +45,10 @@ Public Class gridSelectColorBlock
 
         End Sub
 
-        Protected Overrides Sub DrawCell_Border(p_Cell As SourceGrid2.Cells.ICellVirtual, _
-                                                p_CellPosition As SourceGrid2.Position, _
-                                                e As PaintEventArgs, _
-                                                p_ClientRectangle As Rectangle, _
+        Protected Overrides Sub DrawCell_Border(p_Cell As SourceGrid2.Cells.ICellVirtual,
+                                                p_CellPosition As SourceGrid2.Position,
+                                                e As PaintEventArgs,
+                                                p_ClientRectangle As Rectangle,
                                                 p_Status As SourceGrid2.DrawCellStatus)
 
             Dim border As Border = Nothing
@@ -175,7 +160,7 @@ Public Class gridSelectColorBlock
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & " CellLostFocus() Exception: " & ex.Message)
         End Try
-        Return MyBase.OnCellEdited(p, Cell)
+        Return MyBase.OnCellEdited(p, cell)
 
     End Function
 

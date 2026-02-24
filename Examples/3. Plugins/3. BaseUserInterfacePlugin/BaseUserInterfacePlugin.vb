@@ -19,7 +19,8 @@
 '
 
 Imports EwECore
-Imports EwEPlugin
+Imports EwECore.Plugins
+Imports EwECore.Plugins.UI
 Imports ScientificInterfaceShared.Controls
 
 ''' <summary>
@@ -39,9 +40,9 @@ Imports ScientificInterfaceShared.Controls
 ''' </remarks>
 ''' 
 Public Class BaseUserInterfacePlugin
-    Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.IMenuItemPlugin
-    Implements EwEPlugin.INavigationTreeItemPlugin
+    Implements IUIContextPlugin
+    Implements IMenuItemPlugin
+    Implements INavigationTreeItemPlugin
 
 #Region " Private variables "
 
@@ -60,7 +61,7 @@ Public Class BaseUserInterfacePlugin
     ''' </summary>
     ''' <param name="uic">The <see cref="cUIContext"/> to connect to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
 
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
@@ -76,7 +77,7 @@ Public Class BaseUserInterfacePlugin
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IPlugin.DisplayName
+    Public ReadOnly Property DisplayName() As String Implements IPlugin.DisplayName
         Get
             Return "Basic User Interface Plugin"
         End Get
@@ -87,7 +88,7 @@ Public Class BaseUserInterfacePlugin
     ''' Tell EwE6 what image to show for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+    Public ReadOnly Property ControlImage() As Object Implements IGUIPlugin.ControlImage
         Get
             ' Use an image from the pool of shared resources
             Return ScientificInterfaceShared.My.Resources.fish
@@ -100,7 +101,7 @@ Public Class BaseUserInterfacePlugin
     ''' over a user interface element for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlTooltipText() As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+    Public ReadOnly Property ControlTooltipText() As String Implements IGUIPlugin.ControlTooltipText
         Get
             ' Show the description as a tooltip text
             Return Me.Description
@@ -112,7 +113,7 @@ Public Class BaseUserInterfacePlugin
     ''' Tell EwE6 what text to display for describing the plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+    Public ReadOnly Property Description() As String Implements IPlugin.Description
         Get
             Return "An example of nesting a plug-in in the EwE6 interface"
         End Get
@@ -124,7 +125,7 @@ Public Class BaseUserInterfacePlugin
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Object) Implements IGUIPlugin.OnControlClick
 
         Dim bHasInterface As Boolean = False
 
@@ -172,7 +173,7 @@ Public Class BaseUserInterfacePlugin
     ''' Tell EwE6 where to place an item in its main menu.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+    Public ReadOnly Property MenuItemLocation() As String Implements IMenuItemPlugin.MenuItemLocation
         Get
             ' For example, a plug-in menu item should be placed in the main the 'Tools' menu. 
             Return "MenuTools"
@@ -185,10 +186,10 @@ Public Class BaseUserInterfacePlugin
     ''' to users.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+    Public ReadOnly Property EnabledState() As eCoreExecutionState Implements IGUIPlugin.EnabledState
         Get
             ' This plug-in is available at any time during EwE execution
-            Return EwEUtils.Core.eCoreExecutionState.Idle
+            Return eCoreExecutionState.Idle
         End Get
     End Property
 
@@ -197,7 +198,7 @@ Public Class BaseUserInterfacePlugin
     ''' Tell EwE6 where to place an item in its navigation tree.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+    Public ReadOnly Property NavigationTreeItemLocation() As String Implements INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             ' As an example, place a navigation tree item under the main 'tools' node.
             Return "ndTools"
@@ -214,7 +215,7 @@ Public Class BaseUserInterfacePlugin
     ''' loads the plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub Initialize(ByVal core As Object) Implements IPlugin.Initialize
 
         ' Ignore this method; we really want the UI context
 
@@ -227,7 +228,7 @@ Public Class BaseUserInterfacePlugin
     ''' user interface structures such as the EwE6 main menu and navigation tree.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name() As String Implements IPlugin.Name
         Get
             Return "any name"
         End Get
@@ -238,7 +239,7 @@ Public Class BaseUserInterfacePlugin
     ''' Provide EwE6 with author information to display for the plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+    Public ReadOnly Property Author() As String Implements IPlugin.Author
         Get
             Return "UBC Institute for the Oceans and Fisheries"
         End Get
@@ -249,7 +250,7 @@ Public Class BaseUserInterfacePlugin
     ''' Provide EwE6 with contact information to display for the plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+    Public ReadOnly Property Contact() As String Implements IPlugin.Contact
         Get
             Return "mailto:ewedevteam@gmail.com"
         End Get

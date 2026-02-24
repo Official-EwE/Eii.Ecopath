@@ -1,32 +1,12 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwECore.Common
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
- 
 
 Namespace Database
 
@@ -240,7 +220,6 @@ Namespace Database
 
                 Next K
 
-
                 '' "Read DietComp"
                 ReDim ecopathDS.DietChanged(1, 0)
                 For K = 1 To ecopathDS.NumGroups
@@ -288,7 +267,6 @@ Namespace Database
                 buff = eiiStrm.ReadLine()
                 'Input(fnum, jnk)
 
-
                 buff = eiiStrm.ReadLine()
                 recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
 
@@ -303,7 +281,6 @@ Namespace Database
                 'the ecosystem remarks.
                 'junk
                 buff = eiiStrm.ReadLine()
-
 
                 'parms.Bomass accumulation added March 95/VC
                 '-91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  0  -92  0 
@@ -903,9 +880,9 @@ Namespace Database
                     For iGroup As Integer = 1 To Me.m_data.NumGroups
 
                         ' JS 04aug08: only save rows with data
-                        If (Me.m_data.Landing(iFleet, iGroup) > 0.0!) Or _
-                           (Me.m_data.Discard(iFleet, iGroup) > 0.0!) Or _
-                           ((Me.m_data.Market(iFleet, iGroup) > 0.0!) And (Me.m_data.Market(iFleet, iGroup) < 1.0!)) Or _
+                        If (Me.m_data.Landing(iFleet, iGroup) > 0.0!) Or
+                           (Me.m_data.Discard(iFleet, iGroup) > 0.0!) Or
+                           ((Me.m_data.Market(iFleet, iGroup) > 0.0!) And (Me.m_data.Market(iFleet, iGroup) < 1.0!)) Or
                            (Me.m_data.PropDiscardMort(iFleet, iGroup) > 0.0!) Then
 
                             drow = writer.NewRow()

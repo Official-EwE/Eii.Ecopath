@@ -1,30 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright:
-'    1991- Ecopath International Initiative, Barcelona, Spain
-'
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
 Imports EwECore.MSE
@@ -37,8 +13,6 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
-
-
 
 ''' =======================================================================
 ''' <summary>
@@ -298,7 +272,6 @@ Public Class frmCEFASRecruitment
                 'Rec=(Rmax*C2)/(Ratio*Be+C2)
             Next
 
-
             Return data
         End If
     End Function
@@ -379,7 +352,7 @@ Public Class frmCEFASRecruitment
                 Me.m_zgh.PlotLines(lLines.ToArray)
 
                 ' Set x-axis label
-                Me.m_zgh.AxisLabel(Me.m_zgh.GetPane(1).XAxis, _
+                Me.m_zgh.AxisLabel(Me.m_zgh.GetPane(1).XAxis,
                                    String.Format(SharedResources.GENERIC_LABEL_DOUBLE, SharedResources.HEADER_BIOMASS, Me.Group.Name))
             Else
                 ' Clear graph

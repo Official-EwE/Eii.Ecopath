@@ -1,27 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
-
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace Controls.Wizard
 
@@ -35,7 +14,7 @@ Namespace Controls.Wizard
     ''' tree structure, etc. For now I have not bothered.
     ''' </remarks>
     ''' =======================================================================
-    <CLSCompliant(True)> _
+    <CLSCompliant(True)>
     Public Class cWizard
         Implements IDisposable
 
@@ -71,9 +50,9 @@ Namespace Controls.Wizard
         ''' <param name="content">Panel where wizard can display its content.</param>
         ''' <param name="nav">Navigator attached to this wizard.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(uic As cUIContext, _
-                       parent As Form, _
-                       content As Panel, _
+        Public Sub New(uic As cUIContext,
+                       parent As Form,
+                       content As Panel,
                        nav As IWizardNavigation)
 
             ' Sanity checks

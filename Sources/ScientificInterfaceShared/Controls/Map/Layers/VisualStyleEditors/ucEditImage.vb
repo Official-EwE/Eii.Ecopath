@@ -1,31 +1,11 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
-
+' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-
 
 Namespace Controls
 
@@ -46,8 +26,8 @@ Namespace Controls
         ''' <param name="vs">The <see cref="cVisualStyle"/> to create the editor for.</param>
         ''' <param name="style">Aspect of the style that needs editing.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(uic As cUIContext, _
-                       vs As cVisualStyle, _
+        Public Sub New(uic As cUIContext,
+                       vs As cVisualStyle,
                        style As cVisualStyle.eVisualStyleTypes)
             MyBase.New(uic, vs, style)
             Me.InitializeComponent()

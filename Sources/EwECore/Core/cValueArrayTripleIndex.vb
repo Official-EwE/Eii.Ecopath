@@ -1,23 +1,6 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Namespace ValueWrapper
 
@@ -46,7 +29,6 @@ Namespace ValueWrapper
             'm_dataType = DataType
             Me.m_iArrayIndex = iFixedIndex1
             Me.Index = iFixedIndex1
-
 
             If Me.SetSize() Then 'this will redim the arrays and set m_nObjects
 
@@ -124,7 +106,6 @@ Namespace ValueWrapper
                     'It's the Me.Index property of this group or fleet the object was created for
                     Return DirectCast(Me.m_values, Array).GetValue(iIndex2, iIndex3)
                 End If
-
 
             End Get
             Set(value As Object)
