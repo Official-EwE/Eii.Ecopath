@@ -18,7 +18,7 @@
 ; Automated build will provide file version as a command line parameter
 ; /DSemVersion=6.6.{minor release no}
 #ifndef SemVersion
-  #define SemVersion "6.7.0"
+  #define SemVersion "6.7.58"
 #endif
 ; VersionInfoVersion={#SemVersion}
 
