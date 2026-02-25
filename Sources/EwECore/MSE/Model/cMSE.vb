@@ -208,6 +208,7 @@ Namespace MSE
             End Set
         End Property
 
+
 #End Region
 
 #Region "Modeling code"
@@ -256,7 +257,7 @@ Namespace MSE
             Me.m_refData = RefData
 
 
-            Me.m_Model = MSEModelFactory.ModelFactory(eModelTypes.EcoSpace)
+            Me.m_Model = MSEModelFactory.ModelFactory(eModelTypes.Ecosim)
             Me.m_Model.Init(Me.m_core, Ecosim, Ecospace)
 
             Me.m_Model.onModelTimeStep = AddressOf Me.onModelTimestep
@@ -2122,10 +2123,14 @@ Namespace MSE
                 Next
                 ' System.Console.WriteLine()
                 For igrp = 1 To Me.m_MSEData.nLiving
-                    Me.m_MSEData.BioStats.AddValue(igrp, CInt(iTime), Me.m_SimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
-                    Me.m_MSEData.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_SimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
-                    'Me.m_data.FStats.AddValue(igrp, CInt(iTime), 1 + (Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)))
-                    ' System.Console.Write((Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)).ToString & ",")
+
+                    Me.m_MSEData.BiomassCurT(igrp)(iTime) = Me.m_Model.BiomassGroupTimeStep(igrp, CInt(iTime))
+                    Me.m_MSEData.BioStats.AddValue(igrp, CInt(iTime), Me.m_Model.BiomassGroupTimeStep(igrp, CInt(iTime)))
+
+                    Me.m_MSEData.CatchCurT(igrp)(iTime) = Me.m_Model.CatchbyGroupTimeStep(igrp, CInt(iTime))
+                    ' CatchCurT
+                    Me.m_MSEData.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_Model.CatchbyGroupTimeStep(igrp, CInt(iTime)))
+
                 Next igrp
 
                 Dim sumValue As Single

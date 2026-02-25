@@ -65,8 +65,8 @@ Namespace MSE
             Me.m_coreData.Clear()
 
             'cEcosimDataStrucures.ResultsOverTime(var,group,time) Var and Group are fixed
-            Me.m_coreData.Add(eVarNameFlags.MSEBiomass, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
-            Me.m_coreData.Add(eVarNameFlags.MSECatchByGroup, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Yield, Me.Index))
+            'Me.m_coreData.Add(eVarNameFlags.MSEBiomass, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
+            'Me.m_coreData.Add(eVarNameFlags.MSECatchByGroup, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Yield, Me.Index))
 
         End Sub
 
@@ -76,13 +76,24 @@ Namespace MSE
 
         Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
-            If Not Me.m_coreData.ContainsKey(VarName) Then
-                'NOT in list of sim vars so get the value from the base class GetVariable(...)
-                Return MyBase.GetVariable(VarName, iIndex1, iIndex2)
-            Else
-                'Varname is access directly via the core data
-                Return Me.m_coreData.Item(VarName).Value(iIndex1, iIndex2)
-            End If
+            Select Case VarName
+                Case eVarNameFlags.MSEBiomass
+                    Return Me.m_MSEData.BiomassCurT(Me.Index)(iIndex1)
+                Case eVarNameFlags.MSECatchByGroup
+                    Return Me.m_MSEData.CatchCurT(Me.Index)(iIndex1)
+
+            End Select
+
+
+            'If Not Me.m_coreData.ContainsKey(VarName) Then
+            'NOT in list of sim vars so get the value from the base class GetVariable(...)
+            Return MyBase.GetVariable(VarName, iIndex1, iIndex2)
+            'Else
+
+
+            'Varname is access directly via the core data
+            'Return Me.m_coreData.Item(VarName).Value(iIndex1, iIndex2)
+            'End If
 
         End Function
 

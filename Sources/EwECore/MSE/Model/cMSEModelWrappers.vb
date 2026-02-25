@@ -30,7 +30,10 @@ Namespace MSE
 
         Function SetFtimeFromGear(ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean
 
-        Function CatchbyGroupFleetTimeStep(igrp As Integer, iFleet As Integer, iyear As Integer) As Single
+        Function CatchbyGroupFleetTimeStep(igrp As Integer, iFleet As Integer, iTime As Integer) As Single
+
+        Function CatchbyGroupTimeStep(igrp As Integer, iTime As Integer) As Single
+        Function BiomassGroupTimeStep(igrp As Integer, iTime As Integer) As Single
 
         WriteOnly Property onModelTimeStep As onModelTimeStepDelegate
 
@@ -118,6 +121,14 @@ Namespace MSE
         Public Function CatchbyGroupFleetTimeStep(igrp As Integer, iFlt As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.CatchbyGroupFleetTimeStep
             Return Me.m_Ecosim.EcosimData.ResultsSumCatchByGroupGear(igrp, iFlt, iTime)
         End Function
+
+        Public Function BiomassGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.BiomassGroupTimeStep
+            Throw New NotImplementedException()
+        End Function
+
+        Public Function CatchbyGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.CatchbyGroupTimeStep
+            Throw New NotImplementedException()
+        End Function
     End Class
 
 
@@ -125,8 +136,10 @@ Namespace MSE
         Implements IMSEModelWrapper
 
 
-        Private m_Ecospace As cEcoSpace
         Private m_Core As cCore
+        Private m_Ecospace As cEcoSpace
+        Private m_Ecosim As cEcosimModel
+
 
         Private m_OnModelTimeStepDelegate As IMSEModelWrapper.onModelTimeStepDelegate = Nothing
 
@@ -138,6 +151,7 @@ Namespace MSE
 
         Public Sub Init(Core As cCore, Ecosim As cEcosimModel, EcoSpace As cEcoSpace) Implements IMSEModelWrapper.Init
             m_Core = Core
+            m_Ecosim = Ecosim
             m_Ecospace = EcoSpace
         End Sub
 
@@ -153,7 +167,7 @@ Namespace MSE
         End Function
 
         Public Function SetBaseFFromGear() As Boolean Implements IMSEModelWrapper.SetBaseFFromGear
-            'throw New NotImplementedException()
+            Me.m_Ecosim.SetBaseFFromGear()
         End Function
 
         Public Function Run() As Boolean Implements IMSEModelWrapper.Run
@@ -162,7 +176,7 @@ Namespace MSE
         End Function
 
         Public Function SetFtimeFromGear(t As Integer, QYear() As Single, PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean Implements IMSEModelWrapper.SetFtimeFromGear
-            'Throw New NotImplementedException()
+            Me.m_Ecosim.SetFtimeFromGear(t, QYear, PredEffort)
         End Function
 
         Private Sub EcoSpaceCoreTimeStepDelegate(ByRef EcospaceResults As cEcospaceTimestep)
@@ -177,6 +191,14 @@ Namespace MSE
 
         Public Function CatchbyGroupFleetTimeStep(igrp As Integer, iFlt As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.CatchbyGroupFleetTimeStep
             Return Me.m_Ecospace.EcoSpaceData.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp, iTime)
+        End Function
+
+        Public Function BiomassGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.BiomassGroupTimeStep
+            Return Me.m_Ecospace.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
+        End Function
+
+        Public Function CatchbyGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.CatchbyGroupTimeStep
+            Return Me.m_Ecospace.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iTime)
         End Function
 
         'Private Sub EcoSpaceTimeStepDelegate(ByVal iTime As Integer)

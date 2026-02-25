@@ -5,6 +5,7 @@
 Imports System.Math
 Imports System.Threading
 Imports EwECore.MSE
+Imports EwECore.Plugins
 Imports EwECore.SpatialData
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
@@ -755,10 +756,10 @@ Public Class cEcoSpace
             Dim iTotalCells As Integer = Me.EcoSpaceData.InCol * Me.EcoSpaceData.InRow
 
             'Initialize IBM 
-            Me.InitIBM()
+            Me.InitIBM() '
 
             If Me.SearchData.bInSearch Then
-                Me.InitSearch()
+                'Me.InitSearch()
             End If
 
             Dim StartTime As Single = 0
@@ -840,6 +841,23 @@ Public Class cEcoSpace
                 If Me.SearchData.bInSearch Then
 
                     If Me.SearchData.SearchMode = eSearchModes.MSE Then
+
+                        'Dim FSearch As Single
+                        'Array.Clear(Me.SearchData.FishYear, 0, Me.SearchData.FishYear.Length)
+                        ''calculate fishing mortality if in Fishing policy or MSE
+                        ''used to overwrite FishRateNo() inside the month time loop
+                        'For iFlt As Integer = 1 To Me.EcoPathData.NumFleet
+                        '    For j = 1 To Me.EcoPathData.NumGroups
+                        '        'Don't include discards that survived  Propdiscardtime() does not include survivors
+                        '        FSearch = Me.EcoSimData.relQ(iFlt, j) * (Me.EcoSimData.PropLandedTime(iFlt, j) + Me.EcoSimData.PropDiscardTime(iFlt, j))
+                        '        Me.SearchData.FishYear(j) += Fgear(iFlt) * FSearch * QYear(iFlt)
+                        '        '********following line stops gear overwrite for cases where
+                        '        'model has been fit to historical data by using species F forcing
+                        '        'for years 1 to NYRDAT (policy impact allowed only for future years)
+                        '        If Me.EcoSimData.FisForced(j) And Me.EcoSpaceData.YearNow < Me.m_refdata.nYears Then Me.SearchData.FishYear(j) = Me.EcoSimData.FishRateNo(j, 12 * Me.EcoSpaceData.YearNow - 11)
+                        '    Next j
+                        'Next iFlt
+                        ''End If 'If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
 
 
                         MSERegulateEffort()
@@ -1321,6 +1339,25 @@ Public Class cEcoSpace
                     Me.SearchData.YearTimeStepEcoSpace(BiomassCellAvg, Fgear, iYear, Me.EcoSpaceData.nWaterCells, relfopt)
                     Me.SearchData.calcNetCost(Fgear, iYear)
                     Me.SearchData.calcYearlySummaryValues(BiomassCellAvg)
+
+                    If Me.SearchData.SearchMode = eSearchModes.MSE Then
+
+                        Dim FSearch As Single
+                        Array.Clear(Me.SearchData.FishYear, 0, Me.SearchData.FishYear.Length)
+                        'calculate fishing mortality if in Fishing policy or MSE
+                        'used to overwrite FishRateNo() inside the month time loop
+                        For iFlt As Integer = 1 To Me.EcoPathData.NumFleet
+                            For j = 1 To Me.EcoPathData.NumGroups
+                                'Don't include discards that survived  Propdiscardtime() does not include survivors
+                                FSearch = Me.EcoSimData.relQ(iFlt, j) * (Me.EcoSimData.PropLandedTime(iFlt, j) + Me.EcoSimData.PropDiscardTime(iFlt, j))
+                                Me.SearchData.FishYear(j) += Fgear(iFlt) * FSearch * QYear(iFlt)
+                                '********following line stops gear overwrite for cases where
+                                'model has been fit to historical data by using species F forcing
+                                'for years 1 to NYRDAT (policy impact allowed only for future years)
+                                If Me.EcoSimData.FisForced(j) And Me.EcoSpaceData.YearNow < Me.m_refdata.nYears Then Me.SearchData.FishYear(j) = Me.EcoSimData.FishRateNo(j, 12 * Me.EcoSpaceData.YearNow - 11)
+                            Next j
+                        Next iFlt
+                    End If 'If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
 
                 End If
 
@@ -6485,8 +6522,11 @@ exitline:
                         'Search CatchYear() is the sum of monthly catch over one year 
                         'Landings(igrp, iFlt) is the yearly Ecopath landings so convert it to monthly for Search CatchYear()
 
-                        Me.SearchData.CatchYear(iflt, igrp) += Me.EcoSpaceData.Landings(igrp, iflt) * Me.EcoSpaceData.TimeStep
-                        Me.SearchData.CatchYearGroup(igrp) += Me.EcoSpaceData.Landings(igrp, iflt) * Me.EcoSpaceData.TimeStep
+                        'Me.SearchData.CatchYear(iflt, igrp) += Me.EcoSpaceData.Landings(igrp, iflt) * Me.EcoSpaceData.TimeStep
+                        'Me.SearchData.CatchYearGroup(igrp) += Me.EcoSpaceData.Landings(igrp, iflt) * Me.EcoSpaceData.TimeStep
+
+                        Me.SearchData.CatchYear(iflt, igrp) += AvgLandings(igrp, iflt) * Me.EcoSpaceData.TimeStep
+                        Me.SearchData.CatchYearGroup(igrp) += AvgLandings(igrp, iflt) * Me.EcoSpaceData.TimeStep
                         If iYear > Me.SearchData.BaseYear Then
                             'Search value = Landings * [market value] * [price elasticity multiplier] * [discount factor] * [monthly conversion]
                             Me.SearchData.ValCatch(iflt, igrp) += ValLandings * Me.SearchData.DF * Me.EcoSpaceData.TimeStep
@@ -9067,7 +9107,7 @@ exitline:
         'RegulateEffort(Biomass() As Single, QMult() As Single, QYear() As Single, t As Integer, imonth As Integer)
 
         If Me.SearchData.SearchMode = eSearchModes.MSE Then
-            Me.m_MSE.DoRegulations(Btime, Nothing, Me.QMult, QYear, Me.EcoSpaceData.TimeNow, Me.EcoSpaceData.MonthNow, Me.EcoSpaceData.YearNow)
+            Me.m_MSE.DoRegulations(Btime, Nothing, Me.QMult, QYear, Me.its, Me.EcoSpaceData.MonthNow, Me.EcoSpaceData.YearNow)
             'Me.m_MSE.RegulateEffort(Btime, Me.QMult, Me.QYear, Me.EcoSpaceData.TimeNow, Me.EcoSpaceData.MonthNow)
         End If
     End Sub

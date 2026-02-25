@@ -141,6 +141,10 @@ Namespace MSE
 
         Public BioEstStats As cMSESummaryStats
 
+        Public BiomassCurT()() As Single
+
+        Public CatchCurT()() As Single
+
         ''' <summary>
         ''' Biomass estimated for the current year.
         ''' </summary>
@@ -442,6 +446,11 @@ Namespace MSE
 
             Me.QGrowUsed = Nothing ' (nFleets)
 
+            Me.BiomassCurT = Nothing
+            CatchCurT = Nothing
+
+
+
             Me.Bestimate = Nothing ' (NGroups)
             Me.BestimateLast = Nothing ' (NGroups)
 
@@ -502,6 +511,7 @@ Namespace MSE
             ReDim Me.CVFest(Me.nFleets)
 
             ReDim Me.QGrowUsed(Me.nFleets)
+
 
             ReDim Me.Bestimate(Me.NGroups)
             ReDim Me.BestimateLast(Me.NGroups)
@@ -612,11 +622,17 @@ Namespace MSE
                     firstYear = originalNumberOfYears + 1
                 End If
 
+
+                Me.BiomassCurT = New Single(Me.NGroups)() {}
+                CatchCurT = New Single(Me.NGroups)() {}
                 'set default values
                 For iGrp As Integer = 1 To Me.NGroups
                     For it As Integer = firstYear To Me.nYears
                         Me.CVBiomT(iGrp, it) = 0.2
                     Next
+
+                    Me.BiomassCurT(iGrp) = New Single(Me.nYears * Me.m_ESData.NumStepsPerYear) {}
+                    Me.CatchCurT(iGrp) = New Single(Me.nYears * Me.m_ESData.NumStepsPerYear) {}
                 Next
 
                 For iFlt As Integer = 1 To Me.nFleets
