@@ -15,6 +15,7 @@
 Option Explicit On
 
 Imports System
+Imports System.ComponentModel
 
 Namespace My.Resources
 
@@ -42,8 +43,46 @@ Namespace My.Resources
         Public ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
-                    Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("ScientificInterface.Resources", GetType(Resources).Assembly)
-                    resourceMan = temp
+                    Dim asm As Reflection.Assembly = GetType(Resources).Assembly
+
+                    ' Detect designer/shadow assembly context more reliably than LicenseManager alone
+                    Dim asmName As String = asm.GetName().Name
+                    Dim isDesignerAsm As Boolean =
+                        (LicenseManager.UsageMode = LicenseUsageMode.Designtime) OrElse
+                        asmName.IndexOf("designer", StringComparison.OrdinalIgnoreCase) >= 0 OrElse
+                        asmName.IndexOf("my project", StringComparison.OrdinalIgnoreCase) >= 0
+
+                    If isDesignerAsm Then
+                        ' 1) Prefer already-loaded real assembly
+                        For Each a In AppDomain.CurrentDomain.GetAssemblies()
+                            If String.Equals(a.GetName().Name, "EwE6", StringComparison.OrdinalIgnoreCase) Then
+                                asm = a
+                                Exit For
+                            End If
+                        Next
+
+                        ' 2) If not loaded, try load by simple name (probing paths)
+                        If String.Equals(asm.GetName().Name, asmName, StringComparison.OrdinalIgnoreCase) Then
+                            Try
+                                asm = Reflection.Assembly.Load("EwE6")
+                            Catch
+                                ' ignore
+                            End Try
+                        End If
+
+                        ' 3) If still not, try load from the design host base directory (often contains the built outputs)
+                        If asm Is Nothing OrElse String.Equals(asm.GetName().Name, asmName, StringComparison.OrdinalIgnoreCase) Then
+                            Try
+                                Dim p As String = IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EwE6.dll")
+                                If IO.File.Exists(p) Then
+                                    asm = Reflection.Assembly.LoadFrom(p)
+                                End If
+                            Catch
+                                ' ignore
+                            End Try
+                        End If
+                    End If
+                    resourceMan = New Global.System.Resources.ResourceManager("ScientificInterface.Resources", asm)
                 End If
                 Return resourceMan
             End Get

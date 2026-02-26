@@ -2,16 +2,11 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Imports System
-Imports System.Collections
-Imports System.Collections.Generic
-Imports System.Diagnostics
-Imports System.Drawing
+Imports System.ComponentModel
 Imports System.Globalization
 Imports System.IO
 Imports System.Reflection
 Imports System.Resources
-Imports System.Windows.Forms
 
 Namespace Utilities
 
@@ -207,6 +202,67 @@ Namespace Utilities
 
             Return dic
 
+        End Function
+
+        ''' <summary>
+        ''' Create a ResourceManager that works both at runtime and inside the WinForms designer for SDK-style VB projects.
+        ''' </summary>
+        ''' <param name="baseName">Fully qualified base name, e.g. "ScientificInterface.Resources"</param>
+        ''' <param name="runtimeAssembly">Assembly that contains the embedded .resources (normally: GetType(SomePublicType).Assembly)</param>
+        Public Shared Function Create(baseName As String, runtimeAssembly As Assembly) As ResourceManager
+            If runtimeAssembly Is Nothing Then Throw New ArgumentNullException(NameOf(runtimeAssembly))
+            If String.IsNullOrWhiteSpace(baseName) Then Throw New ArgumentException("baseName is required.", NameOf(baseName))
+
+            Dim asm As Assembly = runtimeAssembly
+
+            If IsDesignerContext(asm) Then
+                asm = ResolveRealAssembly(runtimeAssembly) ' may return original if it can’t do better
+            End If
+
+            Return New ResourceManager(baseName, asm)
+        End Function
+
+        Private Shared Function IsDesignerContext(asm As Assembly) As Boolean
+            If LicenseManager.UsageMode = LicenseUsageMode.Designtime Then Return True
+
+            Dim n As String = ""
+            Try
+                n = asm.GetName().Name
+            Catch
+            End Try
+
+            If String.IsNullOrEmpty(n) Then Return True
+
+            ' Heuristics for the VB designer shadow assembly names
+            If n.IndexOf("designer", StringComparison.OrdinalIgnoreCase) >= 0 Then Return True
+            If n.IndexOf("my project", StringComparison.OrdinalIgnoreCase) >= 0 Then Return True
+
+            Return False
+        End Function
+
+        Private Shared Function ResolveRealAssembly(preferred As Assembly) As Assembly
+            Dim preferredName As String = Nothing
+            Try
+                preferredName = preferred.GetName().Name
+            Catch
+            End Try
+
+            ' 1) Try to find a non-designer assembly that contains the resources base name by scanning loaded assemblies.
+            '    This avoids Load/LoadFrom in most cases.
+            Try
+                For Each a In AppDomain.CurrentDomain.GetAssemblies()
+                    If a Is Nothing Then Continue For
+                    If IsDesignerContext(a) Then Continue For
+                    ' If you want, you can also add a filter here for EwE assemblies only.
+                    ' Example: If Not a.GetName().Name.StartsWith("EwE", StringComparison.OrdinalIgnoreCase) Then Continue For
+                    Return a
+                Next
+            Catch
+                ' ignore
+            End Try
+
+            ' 2) Best effort: fall back to preferred assembly.
+            Return preferred
         End Function
 
     End Class

@@ -5,7 +5,7 @@
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
 #ifndef Compile64Bit
-  #define Compile64Bit "0"                    ; set to 0 to compile 32 bit
+  #define Compile64Bit "1"                    ; set to 0 to compile 32 bit
 #endif
 
 #define CodeSigning 1                      ; set to 0 to disable code signing
@@ -18,7 +18,7 @@
 ; Automated build will provide file version as a command line parameter
 ; /DSemVersion=6.6.{minor release no}
 #ifndef SemVersion
-  #define SemVersion "6.7.58"
+  #define SemVersion "6.7.59"
 #endif
 ; VersionInfoVersion={#SemVersion}
 
@@ -112,7 +112,7 @@ Name: "{app}\Includes\LPSolve\win64\"
 
 [Files]
 Source: "..\LICENSE.txt"; DestDir: "{app}\Resources\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "{#DefRoot}{#DefSrc}\EwE6.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\EwE6.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win32\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win32\"; Flags: ignoreversion
