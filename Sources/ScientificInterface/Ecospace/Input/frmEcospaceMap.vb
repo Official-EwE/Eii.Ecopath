@@ -176,7 +176,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerMPA)
             Me.AddData(eVarNameFlags.LayerPort)
             Me.AddData(eVarNameFlags.LayerSail, False)
-            'Me.AddData(eVarNameFlags.LayerEffortZone, False)
+            Me.AddData(eVarNameFlags.LayerEffortZone, False)
             Me.AddData(eVarNameFlags.LayerImportance)
 
             '  -- Reference layer
