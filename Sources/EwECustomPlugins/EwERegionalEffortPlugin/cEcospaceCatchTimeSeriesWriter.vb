@@ -1,15 +1,6 @@
-﻿' ===============================================================================
-' This file is part of the EcoOcean toolkit.
-'
-' To use EcoOceanUtils please contact the EcoOcean core team at
-' ecopathinternational@gmail.com
-'
-' Copyright 2017- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-#Region " Imports "
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Explicit On
 Option Strict On
@@ -18,8 +9,6 @@ Imports System.IO
 Imports EwECore
 Imports EwECore.Style
 Imports EwEUtils.Utilities
-
-#End Region ' Imports
 
 Friend Class cEcospaceCatchTimeSeriesWriter
 

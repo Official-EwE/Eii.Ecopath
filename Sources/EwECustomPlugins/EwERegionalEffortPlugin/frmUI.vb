@@ -1,15 +1,6 @@
-﻿' ===============================================================================
-' This file is part of the EcoOcean toolkit.
-'
-' To use EcoOceanUtils please contact the EcoOcean core team at
-' ecopathinternational@gmail.com
-'
-' Copyright 2017- 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
-#Region " Imports "
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Strict On
 Imports System.Windows.Forms
@@ -18,8 +9,6 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
-#End Region ' Imports
 
 Public Class frmUI
 
