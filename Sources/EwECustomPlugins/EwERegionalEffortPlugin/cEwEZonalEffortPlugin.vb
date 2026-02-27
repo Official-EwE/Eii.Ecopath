@@ -28,7 +28,7 @@ Imports ScientificInterfaceShared.Controls
 ''' per fleet, are delivered by Ecosim fishing effort. Effort can be set by LME or
 ''' by EEZ.
 ''' </summary>
-Public Class cEcoOceanDriveEffortPlugin
+Public Class cRegionalEffortPlugin
     Implements IUIContextPlugin
     Implements INavigationTreeItemPlugin
     Implements IEcospaceInitializedPlugin
@@ -39,7 +39,7 @@ Public Class cEcoOceanDriveEffortPlugin
     Implements IEcospaceRunCompletedPlugin
     Implements IAutoRunPlugin
 
-    Public Const PluginName As String = "zzEcoOcean04DriveEffort"
+    Public Const PluginName As String = "zzRegionalEffort"
 
 #Region " Private variables "
 
@@ -688,7 +688,7 @@ Public Class cEcoOceanDriveEffortPlugin
 
     Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
-            Return "ecoocean@ecopathinternational.org"
+            Return "dev@ecopathinternational.org"
         End Get
     End Property
 

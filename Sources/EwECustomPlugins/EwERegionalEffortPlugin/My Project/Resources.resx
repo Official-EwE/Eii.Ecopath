@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CAPTION" xml:space="preserve">
-    <value>EcoOcean zonal effort distribution</value>
+    <value>Zonal effort distribution</value>
   </data>
-  <data name="HEADER_AREAS" xml:space="preserve">
-    <value>Areas</value>
+  <data name="HEADER_ZONES" xml:space="preserve">
+    <value>Effort zones</value>
   </data>
   <data name="HEADER_EFFORT" xml:space="preserve">
     <value>Effort</value>

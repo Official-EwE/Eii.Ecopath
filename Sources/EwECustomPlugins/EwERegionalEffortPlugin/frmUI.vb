@@ -25,7 +25,7 @@ Public Class frmUI
 
 #Region " Private vars "
 
-    Private m_plugin As cEcoOceanDriveEffortPlugin = Nothing
+    Private m_plugin As cRegionalEffortPlugin = Nothing
     Private m_bInUpdate As Boolean = True
 
     Private WithEvents m_fpUseCostThreshold As cEwEFormatProvider = Nothing
@@ -33,7 +33,7 @@ Public Class frmUI
 
 #End Region ' Private vars
 
-    Public Sub New(plugin As cEcoOceanDriveEffortPlugin, uic As cUIContext)
+    Public Sub New(plugin As cRegionalEffortPlugin, uic As cUIContext)
         MyBase.New()
 
         Me.m_plugin = plugin
