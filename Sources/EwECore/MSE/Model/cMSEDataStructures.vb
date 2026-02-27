@@ -294,6 +294,9 @@ Namespace MSE
 
         Public lstNonOptSolutions As List(Of Integer)
 
+
+        Public ModelType As eModelTypes
+
 #End Region
 
 #Region "Private data"
@@ -320,6 +323,7 @@ Namespace MSE
             Me.StopRun = False
             Me.MSEMaxEffort = MSE_DEFAULT_MAXEFFORT
             Me.UseLPSolution = False
+            Me.ModelType = eModelTypes.Ecosim
 
         End Sub
 

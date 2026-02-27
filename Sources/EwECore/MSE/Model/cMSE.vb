@@ -256,8 +256,9 @@ Namespace MSE
             Me.m_pluginManager = PluginManager
             Me.m_refData = RefData
 
+            m_MSEData.ModelType = eModelTypes.EcoSpace
 
-            Me.m_Model = MSEModelFactory.ModelFactory(eModelTypes.Ecosim)
+            Me.m_Model = MSEModelFactory.ModelFactory(m_MSEData.ModelType)
             Me.m_Model.Init(Me.m_core, Ecosim, Ecospace)
 
             Me.m_Model.onModelTimeStep = AddressOf Me.onModelTimestep

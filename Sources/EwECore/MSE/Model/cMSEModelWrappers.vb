@@ -41,10 +41,6 @@ Namespace MSE
 
     End Interface
 
-    Public Enum eModelTypes
-        Ecosim
-        EcoSpace
-    End Enum
 
     Public NotInheritable Class MSEModelFactory
 
@@ -123,11 +119,11 @@ Namespace MSE
         End Function
 
         Public Function BiomassGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.BiomassGroupTimeStep
-            Throw New NotImplementedException()
+            Return Me.m_Ecosim.EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime)
         End Function
 
         Public Function CatchbyGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.CatchbyGroupTimeStep
-            Throw New NotImplementedException()
+            Return Me.m_Ecosim.EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime)
         End Function
     End Class
 

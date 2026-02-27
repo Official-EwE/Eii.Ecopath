@@ -6,6 +6,12 @@ Imports EwECore.ValueWrapper
 
 Namespace MSE
 
+    Public Enum eModelTypes
+        Ecosim
+        EcoSpace
+    End Enum
+
+
     Public Enum eAssessmentMethods
         Exact = 0
         CatchEstmBio = 1
@@ -135,6 +141,14 @@ Namespace MSE
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
+
+            'MSEModelType
+
+            meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eModelTypes)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(core, New Integer, eVarNameFlags.MSEModelType, eStatusFlags.Null, eValueTypes.Int, meta, Me.m_core.m_validators.getValidator(eVarNameFlags.MSEModelType))
+            val.Stored = True
+            Me.m_values.Add(val.varName, val)
+
             Me.ResetStatusFlags()
             Me.AllowValidation = True
 
@@ -159,6 +173,19 @@ Namespace MSE
                 Me.SetVariable(eVarNameFlags.MSEAssessMethod, value)
             End Set
         End Property
+
+
+        Public Property ModelType() As eModelTypes
+            Get
+                Return DirectCast(Me.GetVariable(eVarNameFlags.MSEModelType), eModelTypes)
+            End Get
+
+            Set(value As eModelTypes)
+                Me.SetVariable(eVarNameFlags.MSEModelType, value)
+            End Set
+        End Property
+
+
 
         Public Property ForcastGain() As Single
             Get

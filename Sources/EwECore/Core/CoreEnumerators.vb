@@ -1698,6 +1698,11 @@ Public Enum eVarNameFlags As Integer
     ''' <summary>Trial number for the current MSE output object (results)</summary>
     MSETrialNumber
 
+    ''' <summary>
+    ''' Use either EcoSim(default) or EcoSpace as the underlying ecosystem model
+    ''' </summary>
+    MSEModelType
+
     ''' <summary>To document</summary>
     MSEAssessMethod
     'MSEKalmanGain

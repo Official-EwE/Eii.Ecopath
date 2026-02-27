@@ -56,7 +56,8 @@ Friend Class cMSECSVOutputWriter
                     buff.Length = 0
                     For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                         If (its > 1) Then buff.Append(", ")
-                        buff.Append(cStringUtils.FormatSingle(esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, its)))
+                        'buff.Append(cStringUtils.FormatSingle(esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, its)))
+                        buff.Append(cStringUtils.FormatSingle(m_MSEdata.BiomassCurT(igrp)(its)))
                     Next
 
                     strm = New StreamWriter(strFile, True)
@@ -77,7 +78,8 @@ Friend Class cMSECSVOutputWriter
                         buff.Length = 0
                         For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                             If (its > 1) Then buff.Append(", ")
-                            buff.Append(cStringUtils.FormatSingle(esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, its)))
+                            'buff.Append(cStringUtils.FormatSingle(esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, its)))
+                            buff.Append(cStringUtils.FormatSingle(m_MSEdata.CatchCurT(igrp)(its)))
                         Next
 
                         strm = New StreamWriter(strFile, True)

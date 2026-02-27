@@ -782,6 +782,10 @@ Namespace MSE
                 Me.m_parameters.AssessmentMethod = Me.m_MSEdata.AssessMethod
                 Me.m_parameters.AssessPower = Me.m_MSEdata.AssessPower
 
+
+                Me.m_parameters.ModelType = Me.m_MSEdata.ModelType
+
+
                 'Use the first array element as the interface value
                 'Copied from EwE5
                 Try
@@ -978,6 +982,8 @@ Namespace MSE
                         Me.m_MSEdata.ResultsStartYear = Me.m_parameters.MSEResultsStartYear
                         Me.m_MSEdata.MSYEvaluateValue = Me.m_parameters.MSYEvaluateValue
                         Me.m_MSEdata.MSYRunSilent = Me.m_parameters.MSYRunSilent
+
+                        Me.m_MSEdata.ModelType = Me.m_parameters.ModelType
 
                         Me.m_MSEdata.MSEMaxEffort = Me.m_parameters.MaxEffort
 
