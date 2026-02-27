@@ -12,11 +12,7 @@
 Option Strict On
 Imports System.IO
 Imports System.Text
-Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports OfficeOpenXml.FormulaParsing.Excel.Functions.Math
-Imports OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup
 
 Public Class cMap
 

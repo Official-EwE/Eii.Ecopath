@@ -5,7 +5,6 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -14,7 +13,7 @@ Public Class frmUI
 
 #Region " Private vars "
 
-    Private m_plugin As cRegionalEffortPlugin = Nothing
+    Private m_plugin As cEcospaceDriveEffortPlugin = Nothing
     Private m_bInUpdate As Boolean = True
 
     Private WithEvents m_fpUseCostThreshold As cEwEFormatProvider = Nothing
@@ -22,7 +21,7 @@ Public Class frmUI
 
 #End Region ' Private vars
 
-    Public Sub New(plugin As cRegionalEffortPlugin, uic As cUIContext)
+    Public Sub New(plugin As cEcospaceDriveEffortPlugin, uic As cUIContext)
         MyBase.New()
 
         Me.m_plugin = plugin

@@ -17,7 +17,7 @@ Imports ScientificInterfaceShared.Controls
 ''' per fleet, are delivered by Ecosim fishing effort. Effort can be set by LME or
 ''' by EEZ.
 ''' </summary>
-Public Class cEcoOceanDriveEffortPlugin
+Public Class cEcospaceDriveEffortPlugin
     Implements IUIContextPlugin
     Implements INavigationTreeItemPlugin
     Implements IEcospaceInitializedPlugin
