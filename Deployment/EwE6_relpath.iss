@@ -123,7 +123,7 @@ Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win64\lpsolve55.dll"; DestDir: "{a
 ; Source: "{#DefRoot}{#DefSrc}\System.Text.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ; - User guide
-;Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE6_userguide.chm"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE6_userguide.chm"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 ; - Tools
 Source: "{#DefRoot}{#DefSrc}\Tools\code_for_plotting_dirichlets.R"; DestDir: "{app}\Tools\"; Flags: ignoreversion
 
