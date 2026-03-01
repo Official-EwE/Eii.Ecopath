@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports System.Data.OleDb
 Imports System.IO
@@ -233,7 +233,7 @@ Namespace Database
                 Select Case databaseType
                     Case eDataSourceTypes.Access2003
                         Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionMDB, strDatabase)
-                    Case eDataSourceTypes.Access2007
+                    Case eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite
                         Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionACCDB, strDatabase)
                     Case eDataSourceTypes.NotSet
                         Me.m_conn.ConnectionString = ""

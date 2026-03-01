@@ -80,6 +80,13 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Eii.Ecopath.Storage" Condition="'$(TargetFramework)' == 'net48'">
+      <HintPath>..\..\..\Eii.Ecopath.Storage\Eii.Ecopath.Storage\bin\Debug\net48\Eii.Ecopath.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Eii.Ecopath.Storage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=99ca70b97231d041" Condition="'$(TargetFramework)' == 'net8.0'">
+      <HintPath>..\..\..\Eii.Ecopath.Storage\Eii.Ecopath.Storage\bin\Debug\net8.0\Eii.Ecopath.Storage.dll</HintPath>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>    
     <Reference Include="Interop.JRO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=1d875393b3ebcad0, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.interop.access.dao, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
     <Reference Update="System">
@@ -175,6 +182,26 @@
     <Compile Remove="EcoSpace\Input Output\ResultWriters\Data sources\cRegionTLResultsDataSource.vb" />
     <Compile Remove="Shapes\TimeSeries\Readers\cTimeSeriesClipboardReader.vb" />
     <Compile Remove="Validators\cValidatorOutput.vb" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9">
+          <PrivateAssets>none</PrivateAssets>
+      </PackageReference>        
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9">
+          <PrivateAssets>none</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.9">
+          <PrivateAssets>none</PrivateAssets>
+      </PackageReference>
+  </ItemGroup>  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+      <PackageReference Include="EntityFramework" Version="6.5.1" />
+      <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
+      <PackageReference Include="System.Data.SQLite.EF6" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />

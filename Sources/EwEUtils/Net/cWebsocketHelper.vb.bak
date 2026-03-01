@@ -1,0 +1,102 @@
+﻿Imports System
+Imports System.Net
+Imports System.Net.WebSockets
+Imports System.Text
+Imports System.Threading
+Imports System.Threading.Tasks
+Imports Newtonsoft.Json
+Imports System.Collections.Concurrent
+
+Namespace NetUtilities
+
+Public Class cWebSocketHelper
+    Private Const ServerPrefix As String = "http://localhost:8080/ws/"
+    Private Shared listener As HttpListener = Nothing
+    Private Shared clients As New ConcurrentBag(Of WebSocket)()
+    Private Shared listenCts As CancellationTokenSource = Nothing
+    
+    ' Static constructor to register the exit handler
+    Shared Sub New()
+        AddHandler AppDomain.CurrentDomain.ProcessExit, Sub(sender, e)
+            StopServerAsync().GetAwaiter().GetResult()
+        End Sub
+    End Sub    
+    
+    ' Start the WebSocket server
+    Private Shared Async Function StartServerAsync() As Task
+        If listener IsNot Nothing Then Return
+        listener = New HttpListener()
+        listener.Prefixes.Add(ServerPrefix)
+        listener.Start()
+        listenCts = New CancellationTokenSource()
+        Await Task.Run(Async Function()
+            While Not listenCts.IsCancellationRequested
+                Try
+                    Dim ctx = Await listener.GetContextAsync()
+                    If ctx.Request.IsWebSocketRequest Then
+                        Dim wsContext = Await ctx.AcceptWebSocketAsync(Nothing)
+                        Dim ws = wsContext.WebSocket
+                        clients.Add(ws)
+                    Else
+                        ctx.Response.StatusCode = 400
+                        ctx.Response.Close()
+                    End If
+                Catch ex As Exception
+                    ' Listener stopped or error
+                End Try
+            End While
+        End Function)
+    End Function
+    
+
+    Public Shared Function BroadcastMessageAsync(ParamArray args() As Object) As Task
+        Task.Run(Async Sub()
+            Await StartServerAsync()
+            Await BroadcastMessageAsyncInternal(args)
+        End Sub)
+        Return Task.CompletedTask
+    End Function
+    
+    ' Broadcast a message to all connected clients
+    Private Shared Async Function BroadcastMessageAsyncInternal(ParamArray args() As Object) As Task
+        Dim json As String = JsonConvert.SerializeObject(args)
+        Dim buffer As Byte() = Encoding.UTF8.GetBytes(json)
+        Dim segment As New ArraySegment(Of Byte)(buffer)
+        Dim toRemove As New List(Of WebSocket)()
+        For Each ws In clients
+            If ws.State = WebSocketState.Open Then
+                Try
+                    Await ws.SendAsync(segment, WebSocketMessageType.Text, True, CancellationToken.None)
+                Catch
+                    toRemove.Add(ws)
+                End Try
+            Else
+                toRemove.Add(ws)
+            End If
+        Next
+        ' Remove closed clients
+        For Each ws In toRemove
+            clients.TryTake(ws)
+        Next
+    End Function
+
+    ' Stop the WebSocket server and close all clients
+    Private Shared Async Function StopServerAsync() As Task
+        If listener Is Nothing Then Return
+        listenCts.Cancel()
+        listener.Stop()
+        listener.Close()
+        listener = Nothing
+        For Each ws In clients
+            Try
+                If ws.State = WebSocketState.Open Then
+                    Await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Server shutting down", CancellationToken.None)
+                End If
+                ws.Dispose()
+            Catch
+            End Try
+        Next
+    End Function
+End Class
+
+End Namespace ' NetUtilitie

@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports System.IO
@@ -2103,7 +2103,8 @@ Public Class frmEwE6
         Select Case cDataSourceFactory.GetSupportedType(strFileName)
 
             Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007,
-                 eDataSourceTypes.EII, eDataSourceTypes.EIIXML
+                 eDataSourceTypes.EII, eDataSourceTypes.EIIXML,
+                 eDataSourceTypes.AccessVsSqlite, eDataSourceTypes.Sqlite
 
                 ' Check if target file exists at all before affecting anything
                 If Not File.Exists(strFileName) Then
@@ -2231,6 +2232,31 @@ Public Class frmEwE6
 
             Case eDataSourceTypes.NotSet
                 atResult = eDatasourceAccessType.Failed_UnknownType
+
+            Case eDataSourceTypes.Sqlite
+                If File.Exists(strFileName) Then
+                    Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName),
+                                                     eCoreComponentType.DataSource, eMessageType.DataValidation,
+                                                     eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                    fmsg.Reply = eMessageReply.NO
+                    Me.Core.Messages.SendMessage(fmsg)
+                    If fmsg.Reply = eMessageReply.NO Then Return Nothing
+                End If
+                db = New cEwEEFDatabase()
+                atResult = db.Create(strFileName, strModelName, True, format, Me.Core.DefaultAuthor)
+
+            Case eDataSourceTypes.AccessVsSqlite
+                If File.Exists(strFileName) Then
+                    Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName),
+                                                     eCoreComponentType.DataSource, eMessageType.DataValidation,
+                                                     eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                    fmsg.Reply = eMessageReply.NO
+                    Me.Core.Messages.SendMessage(fmsg)
+                    If fmsg.Reply = eMessageReply.NO Then Return Nothing
+                End If
+                db = New cEwEVersusDatabase(New cEwEAccessDatabase(), New cEwEEFDatabase())
+                atResult = db.Create(strFileName, strModelName, True, format, Me.Core.DefaultAuthor)
+                atResult = atResult Or DirectCast(db, cEwEVersusDatabase).Versus(strFileName)
         End Select
 
         ' Provide status feedback

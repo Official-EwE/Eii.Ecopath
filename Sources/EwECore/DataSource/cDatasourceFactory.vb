@@ -33,6 +33,13 @@ Namespace DataSources
                     Return eDataSourceTypes.EII
 
                 Case ".accdb", ".eweaccdb"
+                    ' check if alongside this file there is a .sqlite file
+                    Dim dir As String = Path.GetDirectoryName(strFile)
+                    Dim baseName As String = Path.GetFileNameWithoutExtension(strFile)
+                    Dim sqliteFile As String = Path.Combine(dir, baseName & ".sqlite")
+                    If File.Exists(sqliteFile) Then
+                        Return eDataSourceTypes.AccessVsSqlite
+                    End If
                     Return eDataSourceTypes.Access2007
 
                 Case ".mdb", ".ewemdb"
@@ -41,7 +48,8 @@ Namespace DataSources
                     Else
                         Return eDataSourceTypes.Access2003
                     End If
-
+                Case ".sqlite"
+                    Return eDataSourceTypes.Sqlite
                 Case ".eiixml"
                     Return eDataSourceTypes.EIIXML
 
@@ -96,8 +104,8 @@ Namespace DataSources
 
             ' Detect file type
             Select Case dst
-
-                Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003
+                ' Todo Case eDataSourceTypes.Sqlite
+                Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003, eDataSourceTypes.AccessVsSqlite
 
                     If File.Exists(strDatabase) Then
                         Dim db As New cEwEAccessDatabase()
@@ -184,7 +192,11 @@ Namespace DataSources
                      eDataSourceTypes.Access2007
                     ' Create a DB datasource on a MS Access database
                     Return New cDBDataSource(New cEwEAccessDatabase())
+                Case eDataSourceTypes.AccessVsSqlite
+                    Return New cDBDataSource(New cEwEVersusDatabase(New cEwEAccessDatabase(), New cEwEEFDatabase()))
 
+                Case eDataSourceTypes.Sqlite
+                    Return New cDBDataSource(New cEwEEFDatabase())
                 Case Else
                     '
             End Select

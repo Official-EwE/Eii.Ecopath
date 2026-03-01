@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports System.Data.OleDb
@@ -496,7 +496,7 @@ Namespace Database
         Private Const cDBVERSION_EWE5_MIN As Single = 1.6!
         ''' <summary>Newest EwE5 version number supported</summary>
         Private Const cDBVERSION_EWE5_MAX As Single = 1.73!
-        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEDatabase)()
+        Protected ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEDatabase)()
 
 #End Region ' Private vars and constants
 
@@ -803,7 +803,7 @@ Namespace Database
         ''' <param name="strSQL">Query to create the IDbCommand with.</param>
         ''' <returns>Nothing if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function CreateDBCommand(strSQL As String) As IDbCommand
+        Protected Overridable Function CreateDBCommand(strSQL As String) As IDbCommand
 
             Dim conn As IDbConnection = Me.GetConnection()
             Dim cmd As IDbCommand = Nothing

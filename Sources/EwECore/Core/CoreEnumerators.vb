@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports EwECore.Common
 
@@ -3052,21 +3052,21 @@ End Enum
 Public Enum eUnitCurrencyType As Integer
     ''' <summary>Unit currency type not set</summary>
     NotSet = 0
-    ''' <summary>Currency expressed in j/m²</summary>
+    ''' <summary>Currency expressed in j/mï¿½</summary>
     Joules = 1
-    ''' <summary>Currency expressed in kcal/m²</summary>
+    ''' <summary>Currency expressed in kcal/mï¿½</summary>
     Calorie = 2
-    ''' <summary>Currency expressed in g/m²</summary>
+    ''' <summary>Currency expressed in g/mï¿½</summary>
     Carbon = 3
-    ''' <summary>Currency expressed in dry weight (g/m²)</summary>
+    ''' <summary>Currency expressed in dry weight (g/mï¿½)</summary>
     DryWeight = 4
-    ''' <summary>Currency expressed in wet weight (t/km²)</summary>
+    ''' <summary>Currency expressed in wet weight (t/kmï¿½)</summary>
     WetWeight = 5
     ''' <summary>Custom currency unit</summary>
     CustomEnergy = 6
-    ''' <summary>Currency expressed in mg n/m²</summary>
+    ''' <summary>Currency expressed in mg n/mï¿½</summary>
     Nitrogen = 7
-    ''' <summary>Currency expressed in mg p/m²</summary>
+    ''' <summary>Currency expressed in mg p/mï¿½</summary>
     Phosporous = 8
     ''' <summary>Custom currency unit</summary>
     CustomNutrient = 9
@@ -3158,7 +3158,9 @@ Public Enum eDataSourceTypes
     ''' <summary>Datasource capable of handling EIIXML formatted data.</summary>
     EIIXML = 5
     ''' <summary>Data importable from EcoBase.</summary>
-    EcoBase
+    EcoBase = 6
+    Sqlite = 7
+    AccessVsSqlite = 8
 End Enum
 
 ''' -------------------------------------------------------------------
