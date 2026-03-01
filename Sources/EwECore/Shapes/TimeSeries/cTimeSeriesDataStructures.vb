@@ -231,6 +231,38 @@ Public Class cTimeSeriesDataStructures
         Return False
 
     End Function
+    ''' <summary>
+    ''' Has the fishing mortality for this group been forced via a time series
+    ''' This include both F and Catch forcing
+    ''' </summary>
+    ''' <param name="igrp">Index of the group</param>
+    ''' <param name="iModelTimeStep">Timestep to check in forcing data</param>
+    ''' <returns></returns>
+    Public Function isFishingMortForced(igrp As Integer, iModelTimeStep As Integer)
+
+        Try
+
+            If PoolForceCatch Is Nothing OrElse PoolForceCatch.Length = 0 Then
+                Return False
+            End If
+
+            If ForcedFs Is Nothing OrElse ForcedFs.Length = 0 Then
+                Return False
+            End If
+
+            Dim bisForced As Boolean
+            bisForced = (PoolForceCatch(igrp, iModelTimeStep) >= 0 And (ForcedFs(igrp, iModelTimeStep) >= 0))
+            Return bisForced
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString + ".isFForced() something went really wrong!")
+            m_logger.LogError(ex, "cTimeSeriesDataStructures.isFForced()")
+
+        End Try
+
+        Return False
+
+    End Function
 
     Private Sub ClearForcing()
 
@@ -465,7 +497,7 @@ Public Class cTimeSeriesDataStructures
                 While Not IsDiscardForced(igrp) And iflt <= Me.nFleets
                     Dim iDatPt As Integer = 1
                     While Not IsDiscardForced(igrp) And iDatPt <= Me.AppliedDatPoints
-                        IsDiscardForced(igrp) = (Me.PoolForceDiscardMort(iflt, igrp, iDatPt) > 0) Or (Me.PoolForceDiscardProp(iflt, igrp, iDatPt) > 0)
+                        IsDiscardForced(igrp) = (Me.PoolForceDiscardMort(iflt, igrp, iDatPt) >= 0) Or (Me.PoolForceDiscardProp(iflt, igrp, iDatPt) >= 0)
                         iDatPt += 1
                     End While
                     iflt += 1

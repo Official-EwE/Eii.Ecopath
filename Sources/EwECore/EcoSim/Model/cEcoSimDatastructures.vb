@@ -656,6 +656,8 @@ Public Class cEcosimDatastructures
 
     Public EcosimEnvResFunctions As New cMediationDataStructures
 
+    Public IsEcosimDiscardsForced() As Boolean
+
     Public Sub RedimVars()
 
         'jb I don't know why these where split up there may be some kind of a reason
@@ -931,6 +933,7 @@ Public Class cEcosimDatastructures
         ReDim Me.EffortConversionFactor(Me.nGear)
 
         ReDim Me.moTot(Me.nGroups)
+        ReDim Me.IsEcosimDiscardsForced(Me.nGroups)
 
         ' JS 3May16: make sure there is no overhang from past scenarios
         'Me.lstEnviroInputData.Clear()

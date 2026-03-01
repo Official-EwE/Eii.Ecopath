@@ -22,7 +22,7 @@ The EwE source code obtains packages from GitHub. This requires some configurati
 First, obtain a GitHub classic access token from https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens.
 Then, configure NuGet. As the configuration will contain your classic access token, we recommend making the following changes in a configuration file local to your machine which will not be stored with the code.
 
-The way to do this is described in the [EwE Wiki, package source secrets](https://github.com/Official-EwE/Ecopath-project/wiki/NuGet-packages#package-source-secrets).
+The way to do this is described in the [EwE Wiki, package source secrets](https://github.com/Official-EwE/Ecopath-project/wiki/NuGet-packages#adding-package-source-secrets-to-your-pc).
 
 This describes how you can run a CLI command to encrypt your access token and store it in your local NuGet.config file.
 
@@ -30,7 +30,7 @@ In AppData\Roaming\NuGet\NuGet.config, the EwE package source is shown as follow
 
     <packageSources>
       <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
-      <add key="EwE github" value="https://nuget.pkg.github.com/Official-EwE/index.json" />
+      <add key="github-Official-EwE" value="https://nuget.pkg.github.com/Official-EwE/index.json" />
     </packageSources>
 
 In AppData\Roaming\NuGet\NuGet.config, your GitHub access token is shown as an encrypted secret as follows:
@@ -44,10 +44,9 @@ In AppData\Roaming\NuGet\NuGet.config, your GitHub access token is shown as an e
 
 ## Creating and pushing NuGet packages to GitHub
 
-This solution contains 4 NuGet packages:
+This solution contains 3 NuGet packages:
 - EwECore
 - EwEUtils
-- EwEPlugin
 - ScientificInterfaceShared
 
 ### Created automatically after merging to master
