@@ -4,7 +4,8 @@
     <Platforms>x86;x64;AnyCPU</Platforms>
     <OutputType>WinExe</OutputType>
     <StartupObject>ScientificInterface.EwE6ApplicationFramework</StartupObject>
-    <AssemblyName>EwE6</AssemblyName>
+    <AssemblyName>ScientificInterface</AssemblyName>
+	<RootNamespace>ScientificInterface</RootNamespace>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
     <OptionStrict>On</OptionStrict>
     <ApplicationIcon>Resources\Ecopath0.ico</ApplicationIcon>
@@ -83,6 +84,7 @@
     <Reference Include="ZedGraph">
       <HintPath>..\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
     </Reference>
+	<Reference Include="System.Design" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="ScientificInterfaceShared.Commands" />
@@ -1082,7 +1084,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEStepwiseFittingPlugin\EwEStepwiseFittingPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwESURIMICheckerPlugin\EwESURIMICheckerPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwETransectExtractionPlugin\EwETransectExtractionPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEWindowsIntegrationPlugin\EwEWindowsIntegrationPlugin.vbproj" />
