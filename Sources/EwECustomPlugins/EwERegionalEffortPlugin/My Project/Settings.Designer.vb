@@ -76,9 +76,9 @@ Namespace My
     Friend Module MySettingsProperty
 
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>
-        Friend ReadOnly Property Settings() As Global.EwERegionalEffortPlugin.My.MySettings
+        Friend ReadOnly Property Settings() As Global.EwEZonalEffortPlugin.My.MySettings
             Get
-                Return Global.EwERegionalEffortPlugin.My.MySettings.Default
+                Return Global.EwEZonalEffortPlugin.My.MySettings.Default
             End Get
         End Property
     End Module
