@@ -14,7 +14,6 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -59,9 +58,6 @@ Public Class frmUI
 
         Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
 
-        Me.m_btnCalc.Text = ""
-        Me.m_btnCalc.Image = SharedResources.CalculatorHS
-
         Me.m_fpUseCostThreshold = New cPropertyFormatProvider(Me.UIContext, Me.m_cbOnlyFishBelowCostThreshold, parms, eVarNameFlags.UseEffortDistThreshold)
         Me.m_fpSailingCostThreshold = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxEffortDistThreshold, parms, eVarNameFlags.EffortDistThreshold)
 
@@ -96,7 +92,7 @@ Public Class frmUI
             Me.m_tbxEffortFile.Text = Me.m_plugin.EffortFileName
             Me.m_tbxZoneName.Text = Me.m_plugin.EffortZoneName
 
-            Me.m_cbAutoModeEnabled.Checked = Me.m_plugin.Enabled
+            Me.m_cbEnabled.Checked = Me.m_plugin.Enabled
             Me.m_cbNormalizeZonalEffort.Checked = Me.m_plugin.NormalizeEffort
             Me.m_cbWriteCatches.Checked = Me.m_plugin.WriteCatcheTimeSeries
             Me.m_cbWriteMortalities.Checked = Me.m_plugin.WriteMortalitiesTimeSeries
@@ -140,8 +136,8 @@ Public Class frmUI
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnLoadZonesCSV(sender As Object, e As EventArgs) _
-        Handles m_btnLoad.Click
+    Private Sub OnLoadZonesCSV(sender As Object, e As EventArgs)
+
 
         Dim dlg As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Load zonal file with cell areas", "", ScientificInterfaceShared.My.Resources.FILEFILTER_CSV)
         If (dlg.ShowDialog() = DialogResult.OK) Then
@@ -179,14 +175,8 @@ Public Class frmUI
 
     End Sub
 
-    Private Sub OnCalcZOnes(sender As Object, e As EventArgs) Handles m_btnCalc.Click
-
-        Me.CalcZones()
-
-    End Sub
-
     Private Sub OnSettingsChanged(sender As Object, e As EventArgs) _
-        Handles m_fpSailingCostThreshold.OnValueChanged, m_cbAutoModeEnabled.CheckedChanged, m_cbNormalizeZonalEffort.CheckedChanged,
+        Handles m_fpSailingCostThreshold.OnValueChanged, m_cbEnabled.CheckedChanged, m_cbNormalizeZonalEffort.CheckedChanged,
                 m_cbWriteCatches.CheckedChanged, m_cbWriteMortalities.CheckedChanged, m_cbWriteEffort.CheckedChanged
 
         If Me.m_bInUpdate Then Return
@@ -220,7 +210,7 @@ Public Class frmUI
 
     Private Sub Apply()
 
-        Me.m_plugin.Enabled = Me.m_cbAutoModeEnabled.Checked
+        Me.m_plugin.Enabled = Me.m_cbEnabled.Checked
         Me.m_plugin.NormalizeEffort = Me.m_cbNormalizeZonalEffort.Checked
         Me.m_plugin.WriteCatcheTimeSeries = Me.m_cbWriteCatches.Checked
         Me.m_plugin.WriteMortalitiesTimeSeries = Me.m_cbWriteMortalities.Checked

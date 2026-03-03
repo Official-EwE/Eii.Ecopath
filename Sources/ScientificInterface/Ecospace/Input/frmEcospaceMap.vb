@@ -176,7 +176,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerMPA)
             Me.AddData(eVarNameFlags.LayerPort)
             Me.AddData(eVarNameFlags.LayerSail, False)
-            'Me.AddData(eVarNameFlags.LayerEffortZone, False)
+            Me.AddData(eVarNameFlags.LayerEffortZone, False)
             Me.AddData(eVarNameFlags.LayerImportance)
 
             '  -- Reference layer
@@ -191,7 +191,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerExclusion, False)
             Me.AddData(eVarNameFlags.LayerDepth, False)
             ' Hide cell area until actually used in core
-            'Me.AddData(eVarNameFlags.LayerCellArea, False)
+            ' Me.AddData(eVarNameFlags.LayerCellArea, False)
             Me.AddData(eVarNameFlags.LayerAdvection, False)
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput, True)
             Me.AddData(eVarNameFlags.LayerMigration, False)

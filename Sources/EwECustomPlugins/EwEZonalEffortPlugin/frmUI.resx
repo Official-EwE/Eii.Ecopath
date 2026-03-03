@@ -118,40 +118,40 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_cbAutoModeEnabled.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_cbEnabled.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_cbAutoModeEnabled.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_cbEnabled.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 143</value>
   </data>
-  <data name="m_cbAutoModeEnabled.Size" type="System.Drawing.Size, System.Drawing">
-    <value>416, 17</value>
+  <data name="m_cbEnabled.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 14</value>
   </data>
-  <data name="m_cbAutoModeEnabled.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cbEnabled.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="m_cbAutoModeEnabled.Text" xml:space="preserve">
-    <value>Automatically drive fishing effort when zones are defined and time series are loaded</value>
+  <data name="m_cbEnabled.Text" xml:space="preserve">
+    <value>Enable zonal effort driving</value>
   </data>
-  <data name="&gt;&gt;m_cbAutoModeEnabled.Name" xml:space="preserve">
-    <value>m_cbAutoModeEnabled</value>
+  <data name="&gt;&gt;m_cbEnabled.Name" xml:space="preserve">
+    <value>m_cbEnabled</value>
   </data>
-  <data name="&gt;&gt;m_cbAutoModeEnabled.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_cbEnabled.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_cbAutoModeEnabled.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cbEnabled.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_cbAutoModeEnabled.ZOrder" xml:space="preserve">
-    <value>22</value>
+  <data name="&gt;&gt;m_cbEnabled.ZOrder" xml:space="preserve">
+    <value>20</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnChoosePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_btnChoosePath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>569, 110</value>
+    <value>566, 109</value>
   </data>
   <data name="m_btnChoosePath.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -172,7 +172,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnChoosePath.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>17</value>
   </data>
   <data name="m_cbWriteMortalities.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -202,7 +202,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbWriteMortalities.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>19</value>
   </data>
   <data name="m_hdrLMEEffort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -229,13 +229,13 @@
     <value>m_hdrLMEEffort</value>
   </data>
   <data name="&gt;&gt;m_hdrLMEEffort.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.58.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLMEEffort.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrLMEEffort.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>15</value>
   </data>
   <data name="m_tbxEffortDistThreshold.Location" type="System.Drawing.Point, System.Drawing">
     <value>144, 241</value>
@@ -259,7 +259,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxEffortDistThreshold.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="m_lblSailingCostThreshold.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -289,7 +289,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblSailingCostThreshold.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="m_lblEffortFile.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -316,7 +316,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblEffortFile.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="m_lblZone.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -343,7 +343,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblZone.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="m_hdrValidation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -367,13 +367,13 @@
     <value>m_hdrValidation</value>
   </data>
   <data name="&gt;&gt;m_hdrValidation.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.58.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrValidation.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrValidation.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="m_cbWriteCatches.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -403,7 +403,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbWriteCatches.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>18</value>
   </data>
   <data name="m_cbWriteEffort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -433,7 +433,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbWriteEffort.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="m_hdrZones.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -460,43 +460,13 @@
     <value>m_hdrZones</value>
   </data>
   <data name="&gt;&gt;m_hdrZones.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.7.58.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrZones.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrZones.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="m_btnLoad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnLoad.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnLoad.Location" type="System.Drawing.Point, System.Drawing">
-    <value>566, 29</value>
-  </data>
-  <data name="m_btnLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="m_btnLoad.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_btnLoad.Text" xml:space="preserve">
-    <value>&amp;Load CSV...</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.Name" xml:space="preserve">
-    <value>m_btnLoad</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnLoad.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>14</value>
   </data>
   <data name="m_tbxEffortFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -505,7 +475,7 @@
     <value>81, 112</value>
   </data>
   <data name="m_tbxEffortFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>482, 20</value>
+    <value>479, 20</value>
   </data>
   <data name="m_tbxEffortFile.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -520,7 +490,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxEffortFile.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="m_lblZoneName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -547,7 +517,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblZoneName.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="m_lblZoneInfo2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -556,7 +526,7 @@
     <value>81, 31</value>
   </data>
   <data name="m_lblZoneInfo2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>369, 20</value>
+    <value>479, 20</value>
   </data>
   <data name="m_lblZoneInfo2.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -571,7 +541,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblZoneInfo2.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="m_tbxZoneName.Location" type="System.Drawing.Point, System.Drawing">
     <value>81, 60</value>
@@ -592,7 +562,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxZoneName.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_pbStatus.Location" type="System.Drawing.Point, System.Drawing">
     <value>34, 166</value>
@@ -613,7 +583,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_pbStatus.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_lblStatus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -640,36 +610,6 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblStatus.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_btnCalc.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnCalc.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnCalc.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 29</value>
-  </data>
-  <data name="m_btnCalc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 23</value>
-  </data>
-  <data name="m_btnCalc.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_btnCalc.Text" xml:space="preserve">
-    <value>&amp;Load...</value>
-  </data>
-  <data name="&gt;&gt;m_btnCalc.Name" xml:space="preserve">
-    <value>m_btnCalc</value>
-  </data>
-  <data name="&gt;&gt;m_btnCalc.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCalc.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnCalc.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_btnLoadMap.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -679,7 +619,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnLoadMap.Location" type="System.Drawing.Point, System.Drawing">
-    <value>485, 29</value>
+    <value>566, 29</value>
   </data>
   <data name="m_btnLoadMap.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -700,7 +640,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnLoadMap.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>16</value>
   </data>
   <data name="m_cbOnlyFishBelowCostThreshold.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -730,7 +670,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbOnlyFishBelowCostThreshold.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>13</value>
   </data>
   <data name="m_cbNormalizeZonalEffort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -5292,6 +5232,6 @@
     <value>frmUI</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.0.18662, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.7.58.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

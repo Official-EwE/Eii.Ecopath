@@ -42,7 +42,7 @@ Partial Class frmUI
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmUI))
-        Me.m_cbAutoModeEnabled = New System.Windows.Forms.CheckBox()
+        Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
         Me.m_btnChoosePath = New System.Windows.Forms.Button()
         Me.m_cbWriteMortalities = New System.Windows.Forms.CheckBox()
         Me.m_hdrLMEEffort = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -54,27 +54,25 @@ Partial Class frmUI
         Me.m_cbWriteCatches = New System.Windows.Forms.CheckBox()
         Me.m_cbWriteEffort = New System.Windows.Forms.CheckBox()
         Me.m_hdrZones = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_btnLoad = New System.Windows.Forms.Button()
         Me.m_tbxEffortFile = New System.Windows.Forms.TextBox()
         Me.m_lblZoneName = New System.Windows.Forms.Label()
         Me.m_lblZoneInfo2 = New System.Windows.Forms.TextBox()
         Me.m_tbxZoneName = New System.Windows.Forms.TextBox()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_lblStatus = New System.Windows.Forms.Label()
-        Me.m_btnCalc = New System.Windows.Forms.Button()
         Me.m_btnLoadMap = New System.Windows.Forms.Button()
         Me.m_cbOnlyFishBelowCostThreshold = New System.Windows.Forms.CheckBox()
         Me.m_cbNormalizeZonalEffort = New System.Windows.Forms.CheckBox()
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'm_cbAutoModeEnabled
+        'm_cbEnabled
         '
-        resources.ApplyResources(Me.m_cbAutoModeEnabled, "m_cbAutoModeEnabled")
-        Me.m_cbAutoModeEnabled.Checked = True
-        Me.m_cbAutoModeEnabled.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.m_cbAutoModeEnabled.Name = "m_cbAutoModeEnabled"
-        Me.m_cbAutoModeEnabled.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_cbEnabled, "m_cbEnabled")
+        Me.m_cbEnabled.Checked = True
+        Me.m_cbEnabled.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.m_cbEnabled.Name = "m_cbEnabled"
+        Me.m_cbEnabled.UseVisualStyleBackColor = True
         '
         'm_btnChoosePath
         '
@@ -144,12 +142,6 @@ Partial Class frmUI
         Me.m_hdrZones.IsCollapsed = False
         Me.m_hdrZones.Name = "m_hdrZones"
         '
-        'm_btnLoad
-        '
-        resources.ApplyResources(Me.m_btnLoad, "m_btnLoad")
-        Me.m_btnLoad.Name = "m_btnLoad"
-        Me.m_btnLoad.UseVisualStyleBackColor = True
-        '
         'm_tbxEffortFile
         '
         resources.ApplyResources(Me.m_tbxEffortFile, "m_tbxEffortFile")
@@ -183,12 +175,6 @@ Partial Class frmUI
         resources.ApplyResources(Me.m_lblStatus, "m_lblStatus")
         Me.m_lblStatus.Name = "m_lblStatus"
         '
-        'm_btnCalc
-        '
-        resources.ApplyResources(Me.m_btnCalc, "m_btnCalc")
-        Me.m_btnCalc.Name = "m_btnCalc"
-        Me.m_btnCalc.UseVisualStyleBackColor = True
-        '
         'm_btnLoadMap
         '
         resources.ApplyResources(Me.m_btnLoadMap, "m_btnLoadMap")
@@ -213,7 +199,6 @@ Partial Class frmUI
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ControlBox = False
         Me.Controls.Add(Me.m_cbNormalizeZonalEffort)
-        Me.Controls.Add(Me.m_btnCalc)
         Me.Controls.Add(Me.m_lblStatus)
         Me.Controls.Add(Me.m_pbStatus)
         Me.Controls.Add(Me.m_tbxZoneName)
@@ -230,11 +215,10 @@ Partial Class frmUI
         Me.Controls.Add(Me.m_hdrZones)
         Me.Controls.Add(Me.m_hdrLMEEffort)
         Me.Controls.Add(Me.m_btnLoadMap)
-        Me.Controls.Add(Me.m_btnLoad)
         Me.Controls.Add(Me.m_btnChoosePath)
         Me.Controls.Add(Me.m_cbWriteCatches)
         Me.Controls.Add(Me.m_cbWriteMortalities)
-        Me.Controls.Add(Me.m_cbAutoModeEnabled)
+        Me.Controls.Add(Me.m_cbEnabled)
         Me.Name = "frmUI"
         Me.ShowInTaskbar = False
         Me.TabText = ""
@@ -244,7 +228,7 @@ Partial Class frmUI
 
     End Sub
     Private WithEvents m_btnChoosePath As Windows.Forms.Button
-    Private WithEvents m_cbAutoModeEnabled As Windows.Forms.CheckBox
+    Private WithEvents m_cbEnabled As Windows.Forms.CheckBox
     Private WithEvents m_cbWriteMortalities As Windows.Forms.CheckBox
     Private WithEvents m_hdrLMEEffort As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tbxEffortDistThreshold As Windows.Forms.TextBox
@@ -254,7 +238,6 @@ Partial Class frmUI
     Private WithEvents m_cbWriteCatches As Windows.Forms.CheckBox
     Private WithEvents m_cbWriteEffort As Windows.Forms.CheckBox
     Private WithEvents m_hdrZones As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_btnLoad As Windows.Forms.Button
     Private WithEvents m_tbxEffortFile As Windows.Forms.TextBox
     Private WithEvents m_lblSailingCostThreshold As Windows.Forms.Label
     Private WithEvents m_lblZoneName As Windows.Forms.Label
@@ -262,7 +245,6 @@ Partial Class frmUI
     Private WithEvents m_tbxZoneName As Windows.Forms.TextBox
     Private WithEvents m_pbStatus As Windows.Forms.PictureBox
     Private WithEvents m_lblStatus As Windows.Forms.Label
-    Private WithEvents m_btnCalc As Windows.Forms.Button
     Private WithEvents m_btnLoadMap As Windows.Forms.Button
     Private WithEvents m_cbOnlyFishBelowCostThreshold As Windows.Forms.CheckBox
     Private WithEvents m_cbNormalizeZonalEffort As Windows.Forms.CheckBox
