@@ -1079,7 +1079,7 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEMultiSimPlugin\EwEMultiSimPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEPrebalPlugin\EwEPrebalPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwERegionalEffortPlugin\EwERegionalEffortPlugin.vbproj" />
+    <ProjectReference Include="..\EwECustomPlugins\EwEZonalEffortPlugin\EwEZonalEffortPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwERemarksPlugin\EwERemarksPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj" />

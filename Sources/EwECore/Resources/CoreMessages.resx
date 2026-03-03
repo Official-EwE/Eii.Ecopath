@@ -1517,4 +1517,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="REGIONS_WARNING_UNUSED" xml:space="preserve">
     <value>There are {0} region(s) defined that will not be used by Ecospace</value>
   </data>
+  <data name="PROMPT_SPATIALOPT_IBM" xml:space="preserve">
+    <value>Running spatial optimizations with the IBM modus enabled can take a very long time. Are you sure you want to continue?</value>
+  </data>
 </root>
