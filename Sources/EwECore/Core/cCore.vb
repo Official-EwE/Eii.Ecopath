@@ -8034,7 +8034,7 @@ Public Class cCore
             'redim the cv vars to the new timesteps
             'The MSE will use Ecosim.NumYears for the new run length
             'So pass in the original number of years so it can figure out what to do
-            Me.m_MSEData.redimTime(orgNYears)
+            Me.m_MSEData.redimTime(Me.m_EcopathData.Landing, Me.m_EcopathData.Discard, orgNYears)
 
             'Reload the forcing data PoolForceBB(), PoolForceZ(), PoolForceCatch() and FishRateGear(), FishRateNo
             'forcing data needs to be the max of Reference data years and Ecosim Years

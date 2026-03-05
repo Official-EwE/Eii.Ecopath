@@ -31,9 +31,12 @@ Namespace MSE
         Function SetFtimeFromGear(ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean, Optional ForcedDiscards As Boolean = False) As Boolean
 
         Function CatchbyGroupFleetTimeStep(igrp As Integer, iFleet As Integer, iTime As Integer) As Single
-
         Function CatchbyGroupTimeStep(igrp As Integer, iTime As Integer) As Single
-        Function BiomassGroupTimeStep(igrp As Integer, iTime As Integer) As Single
+        Function BiomassbyGroupTimeStep(igrp As Integer, iTime As Integer) As Single
+        Function CatchbyFleetTimeStep(iFleet As Integer, iTime As Integer) As Single
+        Function EffortbyFleetTimeStep(iFleet As Integer, iTime As Integer) As Single
+        Function ValuebyFleetTimeStep(iFleet As Integer, iTime As Integer) As Single
+
 
         WriteOnly Property onModelTimeStep As onModelTimeStepDelegate
 
@@ -118,19 +121,30 @@ Namespace MSE
             Return Me.m_Ecosim.EcosimData.ResultsSumCatchByGroupGear(igrp, iFlt, iTime)
         End Function
 
-        Public Function BiomassGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.BiomassGroupTimeStep
+        Public Function BiomassbyGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.BiomassbyGroupTimeStep
             Return Me.m_Ecosim.EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime)
         End Function
 
         Public Function CatchbyGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.CatchbyGroupTimeStep
             Return Me.m_Ecosim.EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, iTime)
         End Function
+
+        Public Function CatchbyFleetTimeStep(iFleet As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.CatchbyFleetTimeStep
+            Return Me.m_Ecosim.EcosimData.ResultsSumCatchByGear(iFleet, iTime)
+        End Function
+
+        Public Function EffortbyFleetTimeStep(iFleet As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.EffortbyFleetTimeStep
+            Return Me.m_Ecosim.EcosimData.ResultsEffort(iFleet, iTime)
+        End Function
+
+        Public Function ValuebyFleetTimeStep(iFleet As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.ValuebyFleetTimeStep
+            Return Me.m_Ecosim.EcosimData.ResultsSumValueByGear(iFleet, iTime)
+        End Function
     End Class
 
 
     Public Class cMSEEcoSpaceWrapper
         Implements IMSEModelWrapper
-
 
         Private m_Core As cCore
         Private m_Ecospace As cEcoSpace
@@ -189,7 +203,7 @@ Namespace MSE
             Return Me.m_Ecospace.EcoSpaceData.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp, iTime)
         End Function
 
-        Public Function BiomassGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.BiomassGroupTimeStep
+        Public Function BiomassbyGroupTimeStep(igrp As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.BiomassbyGroupTimeStep
             Return Me.m_Ecospace.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
         End Function
 
@@ -197,15 +211,17 @@ Namespace MSE
             Return Me.m_Ecospace.EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iTime)
         End Function
 
-        'Private Sub EcoSpaceTimeStepDelegate(ByVal iTime As Integer)
-        '    Try
-        '        If m_OnModelTimeStepDelegate <> Nothing Then
-        '            m_OnModelTimeStepDelegate(iTime)
-        '        End If
-        '    Catch ex As ArgumentException
+        Public Function CatchbyFleetTimeStep(iFleet As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.CatchbyFleetTimeStep
+            Return Me.m_Ecospace.EcoSpaceData.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFleet, iTime)
+        End Function
 
-        '    End Try
-        'End Sub
+        Public Function EffortbyFleetTimeStep(iFleet As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.EffortbyFleetTimeStep
+            Return Me.m_Ecospace.EcoSpaceData.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFleet, iTime)
+        End Function
+
+        Public Function ValuebyFleetTimeStep(iFleet As Integer, iTime As Integer) As Single Implements IMSEModelWrapper.ValuebyFleetTimeStep
+            Return Me.m_Ecospace.EcoSpaceData.ResultsByFleet(eSpaceResultsFleets.Value, iFleet, iTime)
+        End Function
     End Class
 
 End Namespace

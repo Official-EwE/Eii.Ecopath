@@ -208,6 +208,13 @@ Namespace MSE
             End Set
         End Property
 
+        Public ReadOnly Property ModelWrapper() As IMSEModelWrapper
+            Get
+                Return Me.m_Model
+            End Get
+        End Property
+
+
 
 #End Region
 
@@ -255,8 +262,6 @@ Namespace MSE
             Me.m_PathData = EcopathData
             Me.m_pluginManager = PluginManager
             Me.m_refData = RefData
-
-            m_MSEData.ModelType = eModelTypes.EcoSpace
 
             Me.m_Model = MSEModelFactory.ModelFactory(m_MSEData.ModelType)
             Me.m_Model.Init(Me.m_core, Ecosim, Ecospace)
@@ -916,7 +921,7 @@ Namespace MSE
         Private Sub SaveIteration()
 
             Try
-                Me.m_output.saveIteration(Me.m_lstData)
+                Me.m_output.saveIteration(Me.m_Model, Me.m_lstData)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".SaveIteration() Exception: " & ex.Message)
             End Try
@@ -2125,10 +2130,10 @@ Namespace MSE
                 ' System.Console.WriteLine()
                 For igrp = 1 To Me.m_MSEData.nLiving
 
-                    Me.m_MSEData.BiomassCurT(igrp)(iTime) = Me.m_Model.BiomassGroupTimeStep(igrp, CInt(iTime))
-                    Me.m_MSEData.BioStats.AddValue(igrp, CInt(iTime), Me.m_Model.BiomassGroupTimeStep(igrp, CInt(iTime)))
+                    Me.m_MSEData.BiomassTime(igrp)(iTime) = Me.m_Model.BiomassbyGroupTimeStep(igrp, CInt(iTime))
+                    Me.m_MSEData.BioStats.AddValue(igrp, CInt(iTime), Me.m_Model.BiomassbyGroupTimeStep(igrp, CInt(iTime)))
 
-                    Me.m_MSEData.CatchCurT(igrp)(iTime) = Me.m_Model.CatchbyGroupTimeStep(igrp, CInt(iTime))
+                    Me.m_MSEData.CatchGroupTime(igrp)(iTime) = Me.m_Model.CatchbyGroupTimeStep(igrp, CInt(iTime))
                     ' CatchCurT
                     Me.m_MSEData.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_Model.CatchbyGroupTimeStep(igrp, CInt(iTime)))
 
@@ -2482,6 +2487,8 @@ Namespace MSE
         Sub Init()
 
         Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,)))
+
+        Sub saveIteration(MSEWrapperModel As IMSEModelWrapper, ListOfData As Dictionary(Of cMSE.eResultsData, Single(,)))
 
     End Interface
 

@@ -926,6 +926,9 @@ Namespace MSEBatchManager
 
                 Me.BatchData.StoreMSEState(Me.MSEData)
 
+                'only run Ecosm
+                Me.m_MSEdata.ModelType = eModelTypes.Ecosim
+
                 Me.m_runState = eBatchRunState.Running
                 Me.m_MSEdata.bInBatch = True
                 Me.BatchData.StopRun = False

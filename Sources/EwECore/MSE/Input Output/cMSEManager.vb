@@ -596,7 +596,7 @@ Namespace MSE
             Me.m_lstFleetStats.Clear()
             For iflt As Integer = 1 To Me.m_core.nFleets
                 Me.m_lstEcopathFleetInputs.Add(New cMSEFleetInput(Me.m_core, Me.m_core.m_EcopathData.FleetDBID(iflt)))
-                Me.m_lstFleetOutputs.Add(New cMSEFleetOutput(Me.m_core, Me.m_MSEdata, Me.m_core.m_EcopathData.FleetDBID(iflt), iflt))
+                Me.m_lstFleetOutputs.Add(New cMSEFleetOutput(Me.m_core, Me.m_MSEdata, Me.m_MSE.ModelWrapper, Me.m_core.m_EcopathData.FleetDBID(iflt), iflt))
                 Me.m_lstEffortStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.EffortStats, eDataTypes.MSEEffortStats, Me.m_VarToStat, Me.m_core.m_EcopathData.FleetDBID(iflt), iflt))
                 Me.m_lstFleetStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchFleetStats, eDataTypes.MSECatchByFleetStats, Me.m_VarToStat, Me.m_core.m_EcopathData.FleetDBID(iflt), iflt))
             Next
@@ -611,7 +611,7 @@ Namespace MSE
                 'BioEst
                 Me.m_lstBioEstStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioEstStats, eDataTypes.MSEBioEstStats, Me.m_VarToStat, Me.m_core.m_EcopathData.GroupDBID(igrp), igrp))
 
-                Me.m_lstGroupOutputs.Add(New cMSEGroupOutput(Me.m_core, Me.m_MSEdata, Me.m_core.m_EcopathData.GroupDBID(igrp), igrp))
+                Me.m_lstGroupOutputs.Add(New cMSEGroupOutput(Me.m_core, Me.m_MSEdata, Me.m_MSE.ModelWrapper, Me.m_core.m_EcopathData.GroupDBID(igrp), igrp))
                 Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcopathData.GroupDBID(igrp), igrp))
                 Me.m_lstGroupCatchStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchGroupStats, eDataTypes.MSECatchByGroupStats, Me.m_VarToStat, Me.m_core.m_EcopathData.GroupDBID(igrp), igrp))
 

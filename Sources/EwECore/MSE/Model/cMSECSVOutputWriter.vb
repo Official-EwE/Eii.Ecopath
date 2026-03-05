@@ -36,7 +36,7 @@ Friend Class cMSECSVOutputWriter
         End Get
     End Property
 
-    Public Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
+    Public Sub saveIteration(MSEWrapperModel As IMSEModelWrapper,ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
 
         If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return
 
@@ -56,8 +56,7 @@ Friend Class cMSECSVOutputWriter
                     buff.Length = 0
                     For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                         If (its > 1) Then buff.Append(", ")
-                        'buff.Append(cStringUtils.FormatSingle(esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, its)))
-                        buff.Append(cStringUtils.FormatSingle(m_MSEdata.BiomassCurT(igrp)(its)))
+                        buff.Append(cStringUtils.FormatSingle(MSEWrapperModel.BiomassbyGroupTimeStep(igrp, its)))
                     Next
 
                     strm = New StreamWriter(strFile, True)
@@ -78,8 +77,7 @@ Friend Class cMSECSVOutputWriter
                         buff.Length = 0
                         For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                             If (its > 1) Then buff.Append(", ")
-                            'buff.Append(cStringUtils.FormatSingle(esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, its)))
-                            buff.Append(cStringUtils.FormatSingle(m_MSEdata.CatchCurT(igrp)(its)))
+                            buff.Append(cStringUtils.FormatSingle(MSEWrapperModel.CatchbyGroupTimeStep(igrp, its)))
                         Next
 
                         strm = New StreamWriter(strFile, True)
@@ -123,7 +121,7 @@ Friend Class cMSECSVOutputWriter
                     buff.Length = 0
                     For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                         If (its > 1) Then buff.Append(", ")
-                        buff.Append(cStringUtils.FormatSingle(esData.ResultsSumCatchByGear(iflt, its)))
+                        buff.Append(cStringUtils.FormatSingle(MSEWrapperModel.CatchbyFleetTimeStep(iflt, its)))
                     Next
 
                     strm = New StreamWriter(strFile, True)
@@ -143,7 +141,7 @@ Friend Class cMSECSVOutputWriter
                     buff.Length = 0
                     For its As Integer = 1 To Me.m_core.GetCoreCounter(eCoreCounterTypes.nEcosimTimeSteps)
                         If its > 1 Then buff.Append(", ")
-                        buff.Append(cStringUtils.FormatSingle(esData.ResultsEffort(iflt, its)))
+                        buff.Append(cStringUtils.FormatSingle(MSEWrapperModel.EffortbyFleetTimeStep(iflt, its)))
                     Next
 
                     strm = New StreamWriter(strFile, True)
@@ -248,4 +246,7 @@ Friend Class cMSECSVOutputWriter
         End Try
     End Sub
 
+    Public Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
+
+    End Sub
 End Class

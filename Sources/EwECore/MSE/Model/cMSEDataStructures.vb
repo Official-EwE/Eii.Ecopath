@@ -2,6 +2,7 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
+Imports System.Runtime.InteropServices
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -141,9 +142,15 @@ Namespace MSE
 
         Public BioEstStats As cMSESummaryStats
 
-        Public BiomassCurT()() As Single
+        ''' <summary>
+        ''' Biomass used by the plots
+        ''' </summary>
+        Public BiomassTime()() As Single
 
-        Public CatchCurT()() As Single
+        ''' <summary>
+        ''' Catch used by the plots
+        ''' </summary>
+        Public CatchGroupTime()() As Single
 
         ''' <summary>
         ''' Biomass estimated for the current year.
@@ -294,7 +301,6 @@ Namespace MSE
 
         Public lstNonOptSolutions As List(Of Integer)
 
-
         Public ModelType As eModelTypes
 
 #End Region
@@ -389,7 +395,7 @@ Namespace MSE
                 Me.ResultsStartYear = 1
                 Me.ResultsEndYear = theCore.nEcosimYears
                 Me.EffortSource = eMSEEffortSource.NoCap
-                '  Me.EffortSource = eMSEEffortSource.EcosimEffort
+                Me.ModelType = eModelTypes.EcoSpace
 
             Catch ex As Exception
                 m_logger.LogError(ex, "cMSEDataStructures.Init() Exception")
@@ -450,8 +456,8 @@ Namespace MSE
 
             Me.QGrowUsed = Nothing ' (nFleets)
 
-            Me.BiomassCurT = Nothing
-            CatchCurT = Nothing
+            Me.BiomassTime = Nothing
+            CatchGroupTime = Nothing
 
 
 
@@ -596,7 +602,7 @@ Namespace MSE
 
         End Sub
 
-        Public Sub redimTime(Optional originalNumberOfYears As Integer = cCore.NULL_VALUE)
+        Public Sub redimTime(Landing(,) As Single, Discards(,) As Single, Optional originalNumberOfYears As Integer = cCore.NULL_VALUE)
 
             Try
                 'if time has changed then try to preserve the values
@@ -627,16 +633,17 @@ Namespace MSE
                 End If
 
 
-                Me.BiomassCurT = New Single(Me.NGroups)() {}
-                CatchCurT = New Single(Me.NGroups)() {}
+                Me.BiomassTime = New Single(Me.NGroups)() {}
+                Me.CatchGroupTime = New Single(Me.NGroups)() {}
                 'set default values
                 For iGrp As Integer = 1 To Me.NGroups
                     For it As Integer = firstYear To Me.nYears
                         Me.CVBiomT(iGrp, it) = 0.2
                     Next
 
-                    Me.BiomassCurT(iGrp) = New Single(Me.nYears * Me.m_ESData.NumStepsPerYear) {}
-                    Me.CatchCurT(iGrp) = New Single(Me.nYears * Me.m_ESData.NumStepsPerYear) {}
+                    Me.BiomassTime(iGrp) = New Single(Me.nYears * Me.m_ESData.NumStepsPerYear) {}
+                    Me.CatchGroupTime(iGrp) = New Single(Me.nYears * Me.m_ESData.NumStepsPerYear) {}
+
                 Next
 
                 For iFlt As Integer = 1 To Me.nFleets
