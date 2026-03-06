@@ -136,18 +136,7 @@ Public Class frmUI
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnLoadZonesCSV(sender As Object, e As EventArgs)
 
-
-        Dim dlg As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Load zonal file with cell areas", "", ScientificInterfaceShared.My.Resources.FILEFILTER_CSV)
-        If (dlg.ShowDialog() = DialogResult.OK) Then
-            Me.m_plugin.LoadZonesAndCellAreas(dlg.FileName)
-        End If
-
-        Me.Apply()
-        Me.UpdateControls()
-
-    End Sub
 
     Private Sub OnLoadZonesMap(sender As Object, e As EventArgs) _
         Handles m_btnLoadMap.Click
@@ -202,6 +191,7 @@ Public Class frmUI
                 If d.IsWaterCell(r, c) Then nMax = Math.Max(nMax, CInt(z.Cell(r, c)))
             Next
         Next
+        z.Invalidate()
 
         Me.Core.EcospaceModelParameters.nEffortZones = nMax
         Me.UpdateControls()

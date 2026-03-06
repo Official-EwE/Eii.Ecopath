@@ -190,78 +190,78 @@ Public Class cEcoOceanDriveEffortPlugin
 
     End Function
 
-    ''' <summary>
-    ''' Load effort zone and cell area CSV file.
-    ''' </summary>
-    ''' <returns>True if successful</returns>
-    Public Function LoadZonesAndCellAreas(fn As String) As Boolean
+    '''' <summary>
+    '''' Load effort zone and cell area CSV file.
+    '''' </summary>
+    '''' <returns>True if successful</returns>
+    'Public Function LoadZonesAndCellAreas(fn As String) As Boolean
 
-        Dim nMaxZone As Integer = 0
+    '    Dim nMaxZone As Integer = 0
 
-        ' Clear
-        Array.Clear(Me.m_ecospacedata.EffZones, 0, Me.m_ecospacedata.EffZones.Length)
+    '    ' Clear
+    '    Array.Clear(Me.m_ecospacedata.EffZones, 0, Me.m_ecospacedata.EffZones.Length)
 
-        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+    '    Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
 
-        ' Clear zone map and cell areas
-        For ir As Integer = 1 To bm.InRow
-            For ic As Integer = 1 To bm.InCol
-                If bm.IsModelledCell(ir, ic) Then
-                    Me.m_ecospacedata.EffZones(ir, ic) = 0
-                    Me.m_ecospacedata.CellArea(ir, ic) = 1
-                End If
-            Next ic
-        Next ir
+    '    ' Clear zone map and cell areas
+    '    For ir As Integer = 1 To bm.InRow
+    '        For ic As Integer = 1 To bm.InCol
+    '            If bm.IsModelledCell(ir, ic) Then
+    '                Me.m_ecospacedata.EffZones(ir, ic) = 0
+    '                Me.m_ecospacedata.CellArea(ir, ic) = 1
+    '            End If
+    '        Next ic
+    '    Next ir
 
-        Try
+    '    Try
 
-            Using sr As New StreamReader(fn)
+    '        Using sr As New StreamReader(fn)
 
-                'Skip header, presumed
-                'LME	ROW	COL	AREA_KM2
-                '64	    1	1	94.40899754
-                Dim line As String = sr.ReadLine()
-                Do
-                    line = sr.ReadLine()
-                    ' Is content?
-                    If Not String.IsNullOrEmpty(line) Then
-                        ' #Yes: split it
+    '            'Skip header, presumed
+    '            'LME	ROW	COL	AREA_KM2
+    '            '64	    1	1	94.40899754
+    '            Dim line As String = sr.ReadLine()
+    '            Do
+    '                line = sr.ReadLine()
+    '                ' Is content?
+    '                If Not String.IsNullOrEmpty(line) Then
+    '                    ' #Yes: split it
 
-                        Dim colVal As String() = line.Split({","c}, StringSplitOptions.RemoveEmptyEntries)
-                        ' Are all values present?
-                        If (colVal.Length = 4) Then
-                            ' #Yes: process this row
-                            Dim iZone As Integer = CInt(colVal(0))
-                            Dim ir As Integer = CInt(colVal(1))
-                            Dim ic As Integer = CInt(colVal(2))
-                            Dim area As Single = cStringUtils.ConvertToSingle(colVal(3), 0)
+    '                    Dim colVal As String() = line.Split({","c}, StringSplitOptions.RemoveEmptyEntries)
+    '                    ' Are all values present?
+    '                    If (colVal.Length = 4) Then
+    '                        ' #Yes: process this row
+    '                        Dim iZone As Integer = CInt(colVal(0))
+    '                        Dim ir As Integer = CInt(colVal(1))
+    '                        Dim ic As Integer = CInt(colVal(2))
+    '                        Dim area As Single = cStringUtils.ConvertToSingle(colVal(3), 0)
 
-                            If (ir > 0 And ic > 0 And ir <= Me.m_ecospacedata.InRow And ic <= Me.m_ecospacedata.InCol) Then
-                                If Me.m_ecospacedata.Depth(ir, ic) > 0 Then
-                                    Me.m_ecospacedata.EffZones(ir, ic) = iZone
-                                    nMaxZone = Math.Max(nMaxZone, iZone)
+    '                        If (ir > 0 And ic > 0 And ir <= Me.m_ecospacedata.InRow And ic <= Me.m_ecospacedata.InCol) Then
+    '                            If Me.m_ecospacedata.Depth(ir, ic) > 0 Then
+    '                                Me.m_ecospacedata.EffZones(ir, ic) = iZone
+    '                                nMaxZone = Math.Max(nMaxZone, iZone)
 
-                                    For c As Integer = 1 To Me.m_ecospacedata.InCol
-                                        Me.m_ecospacedata.CellArea(ir, c) = area
-                                    Next
-                                End If
-                            End If
-                        End If
-                    End If
-                Loop Until (line Is Nothing)
-            End Using ' sr
-        Catch ex As Exception
-            Return False
-        End Try
+    '                                For c As Integer = 1 To Me.m_ecospacedata.InCol
+    '                                    Me.m_ecospacedata.CellArea(ir, c) = area
+    '                                Next
+    '                            End If
+    '                        End If
+    '                    End If
+    '                End If
+    '            Loop Until (line Is Nothing)
+    '        End Using ' sr
+    '    Catch ex As Exception
+    '        Return False
+    '    End Try
 
-        Me.m_ecospacedata.nEffZones = nMaxZone
-        Me.m_ecospacedata.ReDimEffortZones()
+    '    Me.m_ecospacedata.nEffZones = nMaxZone
+    '    Me.m_ecospacedata.ReDimEffortZones()
 
-        ReDim Me.m_AreaFished(nMaxZone)
+    '    ReDim Me.m_AreaFished(nMaxZone)
 
-        Return True
+    '    Return True
 
-    End Function
+    'End Function
 
 #End Region ' Public bits
 
@@ -286,9 +286,8 @@ Public Class cEcoOceanDriveEffortPlugin
     Public Sub Kick()
         Try
             RaiseEvent OnChanged()
-            Console.WriteLine("Ouch!")
         Catch ex As Exception
-
+            Console.WriteLine("Ouch!")
         End Try
     End Sub
 
