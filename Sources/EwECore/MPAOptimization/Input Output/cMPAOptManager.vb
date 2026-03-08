@@ -271,6 +271,16 @@ Public Class cMPAOptManager
         ' Get real
         If Me.IsRunning Then Return False
 
+        ' Test IBM modus
+        If Me.m_core.EcospaceDataStructures.UseIBM Then
+            Dim msg As New cFeedbackMessage(My.Resources.CoreMessages.PROMPT_SPATIALOPT_IBM, eCoreComponentType.MPAOptimization, eMessageType.Any,
+                                                eMessageImportance.Warning, eMessageReplyStyle.YES_NO,
+                                                eDataTypes.MPAOptParameters, eMessageReply.NO)
+            msg.Reply = eMessageReply.NO
+            Me.m_core.Messages.SendMessage(msg)
+            If (msg.Reply <> eMessageReply.YES) Then Return False
+        End If
+
         Try
             Me.m_MPASearch.Connect(AddressOf Me.OnSearchIteration, AddressOf Me.OnRunStateChanged, AddressOf Me.OnSendMessage)
 

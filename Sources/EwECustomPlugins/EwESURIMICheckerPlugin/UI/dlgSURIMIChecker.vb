@@ -44,7 +44,7 @@ Public Class dlgSURIMIChecker
         m_regFields.Register(New KeyFieldDescriptor(SpeciesFields.Age, KeyDomain.Species, KeyPurpose.Age, FieldKind.Label, False, 3))
 
         m_regFields.Register(New KeyFieldDescriptor(FishingFields.GearCode, KeyDomain.FleetSegment, KeyPurpose.Gear, FieldKind.Code, True, 10))
-        m_regFields.Register(New KeyFieldDescriptor(FishingFields.Flag, KeyDomain.FleetSegment, KeyPurpose.Country, FieldKind.Code, False, 3))
+        m_regFields.Register(New KeyFieldDescriptor(FishingFields.CountryCode, KeyDomain.FleetSegment, KeyPurpose.Country, FieldKind.Code, False, 3))
 
         Console.WriteLine("Loading ASFIS voc: " & m_asfis.Load())
         Console.WriteLine("Loading SURIMI voc: " & m_surimi.Load())
@@ -91,7 +91,7 @@ Public Class dlgSURIMIChecker
         Me.Close()
     End Sub
 
-    Private Sub m_tsbnCalculateSpeciues_Click(sender As Object, e As EventArgs) Handles m_tsbnCalculateSpeciues.Click
+    Private Sub m_tsbnCalculateSpecies_Click(sender As Object, e As EventArgs) Handles m_tsbnCalculateSpeciues.Click
 
         Dim nameVocSpecies As String = m_asfis.VocabularyName
         Dim nameVocLStage As String = m_surimi.VocabularyName
