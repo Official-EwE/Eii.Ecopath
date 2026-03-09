@@ -1357,11 +1357,14 @@ Public Class frmEwE6
     Private Sub LoadPlugins()
         If (Me.IsDisposed) Then Return
         If (Me.UIContext Is Nothing) Then Return
+
         Try
             Dim disabledPlugins As New List(Of String)
-            For Each entry As Object In My.Settings.DisabledPlugins
-                disabledPlugins.Add(CStr(entry))
-            Next
+            If (My.Settings.DisabledPlugins IsNot Nothing) Then
+                For Each entry As Object In My.Settings.DisabledPlugins
+                    disabledPlugins.Add(CStr(entry))
+                Next
+            End If
             ' Load plug-ins from EwE root folder
             Me.m_pluginManager.LoadPlugins(".\", False, disabledPlugins.ToArray)
             ' Load plug-ins from dedicated plug-ins subfolder, recursively
