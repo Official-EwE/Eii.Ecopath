@@ -82,7 +82,7 @@ Namespace DataSources
             Select Case dst
                 Case eDataSourceTypes.Access2003 : Return ".ewemdb"
                 Case eDataSourceTypes.EII : Return ".eii"
-                Case eDataSourceTypes.Access2007 : Return ".eweaccdb"
+                Case eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite : Return ".eweaccdb"
                 Case eDataSourceTypes.EIIXML : Return ".eiixml"
             End Select
             Return ""

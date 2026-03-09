@@ -3,6 +3,8 @@
 Imports System.Data
 Imports System.IO
 Imports Eii.Ecopath.Storage
+Imports Microsoft.EntityFrameworkCore
+Imports Microsoft.EntityFrameworkCore.Infrastructure
 
 Namespace Database
     Public Class cEwEEFDatabase
@@ -12,17 +14,26 @@ Namespace Database
         Private m_strFileName As String = ""
         Private m_isReadOnly As Boolean = False
 
+        ' Private helper to ensure DbContext is initialized and migrated
+        Private Sub EnsureDbContext(strDatabase As String)
+            EwEDbContext.DefaultSQLiteFilePath = strDatabase
+            If m_dbContext Is Nothing Then
+                m_dbContext = New EwEDbContext()
+            End If
+#If NET48
+            m_dbContext.Database.Initialize(True)
+#Else
+            m_dbContext.Database.Migrate()
+#End If
+        End Sub
+
         Public Overrides Function Create(strDatabase As String, strModelName As String, Optional bOverwrite As Boolean = False, Optional format As eDataSourceTypes = eDataSourceTypes.NotSet, Optional strAuthor As String = "") As eDatasourceAccessType
             ' For EF, just set up the SQLite file and context
             Try
                 If File.Exists(strDatabase) AndAlso Not bOverwrite Then
                     Return eDatasourceAccessType.Failed_CannotSave
                 End If
-#If NET48_ONLY_PROJECT Then
-                ' Set the static path for EF context
-                EwEDbContext.DefaultSQLiteFilePath = strDatabase
-#End If
-                m_dbContext = New EwEDbContext()
+                EnsureDbContext(strDatabase)
                 m_strFileName = strDatabase
                 Return eDatasourceAccessType.Success
             Catch ex As Exception
@@ -36,10 +47,7 @@ Namespace Database
                     Return eDatasourceAccessType.Failed_CannotSave
                 End If
                 File.Copy(m_strFileName, strDatabaseTo, True)
-#If NET48_ONLY_PROJECT Then
-                EwEDbContext.DefaultSQLiteFilePath = strDatabaseTo
-#End If
-                m_dbContext = New EwEDbContext()
+                EnsureDbContext(strDatabaseTo)
                 m_strFileName = strDatabaseTo
                 Return eDatasourceAccessType.Success
             Catch ex As Exception
@@ -52,12 +60,14 @@ Namespace Database
                 If Not File.Exists(strDatabase) Then
                     Return eDatasourceAccessType.Failed_FileNotFound
                 End If
-#If NET48_ONLY_PROJECT Then
-                EwEDbContext.DefaultSQLiteFilePath = strDatabase
-#End If
-                m_dbContext = New EwEDbContext()
+                EnsureDbContext(strDatabase)
                 m_strFileName = strDatabase
                 m_isReadOnly = bReadOnly
+                ' Ensure connection is opened
+                Dim conn As IDbConnection = GetConnection()
+                If conn IsNot Nothing AndAlso conn.State <> ConnectionState.Open Then
+                    conn.Open()
+                End If
                 Return eDatasourceAccessType.Opened
             Catch ex As Exception
                 Return eDatasourceAccessType.Failed_Unknown
@@ -65,6 +75,10 @@ Namespace Database
         End Function
 
         Public Overrides Sub Close()
+            Dim conn As IDbConnection = GetConnection()
+            If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
             If m_dbContext IsNot Nothing Then
                 m_dbContext.Dispose()
                 m_dbContext = Nothing
@@ -87,7 +101,7 @@ Namespace Database
 #If NET48
                 Return m_dbContext.Database.Connection
 #Else
-               ' todo
+                Return m_dbContext.Database.GetDbConnection()
 #End If
             End If
             Return Nothing

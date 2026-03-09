@@ -2259,7 +2259,6 @@ Public Class frmEwE6
                 End If
                 db = New cEwEVersusDatabase(New cEwEAccessDatabase(), New cEwEEFDatabase())
                 atResult = db.Create(strFileName, strModelName, True, format, Me.Core.DefaultAuthor)
-                atResult = atResult Or DirectCast(db, cEwEVersusDatabase).Versus(strFileName)
         End Select
 
         ' Provide status feedback
@@ -3066,7 +3065,7 @@ Public Class frmEwE6
             Case eDataSourceTypes.Access2003
                 ' Only allow saving as MDB
                 strFileFilter = SharedResources.FILEFILTER_SAVE_MDB
-            Case eDataSourceTypes.Access2007
+            Case eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite
                 ' Only allow saving as ACCDB
                 strFileFilter = SharedResources.FILEFILTER_SAVE_ACCDB
             Case Else
@@ -3104,7 +3103,7 @@ Public Class frmEwE6
         Dim bEnable As Boolean = Me.Core.StateMonitor.HasEcopathLoaded
 
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
-            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
+            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite
                 ' NOP
             Case Else
                 ' Only allow save as when file was opened as MDB or ACCDB since the core does
@@ -5171,7 +5170,7 @@ Public Class frmEwE6
     ''' Update the directories in the Core to match any regular expressions.
     ''' </summary>
     ''' <remarks>
-    ''' Note that this will also reset the base directory for commands 
+    ''' Note that this will also reset the base directory for commands
     ''' <see cref="m_cmdFileOpen"/> and <see cref="m_cmdDirectoryOpen"/>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------

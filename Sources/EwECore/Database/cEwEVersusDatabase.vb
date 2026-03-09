@@ -16,19 +16,24 @@ Namespace Database
         End Sub
 
         Public Overrides Function Create(strDatabase As String, strModelName As String, Optional bOverwrite As Boolean = False, Optional format As eDataSourceTypes = eDataSourceTypes.NotSet, Optional strAuthor As String = "") As eDatasourceAccessType
-            Return dbAccessDatabase.Create(strDatabase, strModelName, bOverwrite, format, strAuthor)
+            Dim atResult As eDatasourceAccessType = dbAccessDatabase.Create(strDatabase, strModelName, bOverwrite, format, strAuthor)
+            ' Replace extension with .sqlite for EF database
+            Dim efDatabasePath As String = System.IO.Path.ChangeExtension(strDatabase, ".sqlite")
+            Return atResult And dbEfDatabase.Create(efDatabasePath, "", False, eDataSourceTypes.Sqlite)
         End Function
-
-        Public Function Versus(strDatabase As String) As eDatasourceAccessType
-            Return dbEfDatabase.Create(strDatabase, "", False, eDataSourceTypes.Sqlite)
-        End Function
-
 
         Public Overrides Function Open(strDatabase As String, Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, Optional bReadOnly As Boolean = False) As eDatasourceAccessType
-            Return dbAccessDatabase.Open(strDatabase, databaseType, bReadOnly)
+            Dim atResult As eDatasourceAccessType = dbAccessDatabase.Open(strDatabase, databaseType, bReadOnly)
+            ' Replace extension with .sqlite for EF database
+            Dim efDatabasePath As String = System.IO.Path.ChangeExtension(strDatabase, ".sqlite")
+            Return atResult And dbEfDatabase.Open(efDatabasePath, eDataSourceTypes.Sqlite, bReadOnly)
         End Function
 
         Public Overrides ReadOnly Property Name As String
+            Get
+                Return dbAccessDatabase.Name
+            End Get
+        End Property
 
         Public Overrides Function SaveAs(strDatabaseTo As String, strModelName As String, Optional bOverwrite As Boolean = False, Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
             Throw New NotImplementedException
@@ -39,11 +44,11 @@ Namespace Database
         End Function
 
         Public Overrides Function Compact(strFileFrom As String, strFileTo As String) As eDatasourceAccessType
-            Throw New NotImplementedException
+            return Me.dbAccessDatabase.Compact(strFileFrom , strFileTo)
         End Function
 
         Public Overrides Function CanCompact(strConnectionFrom As String, strConnectionTo As String) As Boolean
-            Throw New NotImplementedException
+            return Me.dbAccessDatabase.CanCompact(strConnectionFrom , strConnectionTo)
         End Function
 
         Public Overrides Function GetConnection() As IDbConnection
@@ -51,7 +56,7 @@ Namespace Database
         End Function
 
         Public Overrides Function CanConnect(dst As eDataSourceTypes) As Boolean
-            Throw New NotImplementedException
+            Return Me.dbAccessDatabase.CanConnect(dst)
         End Function
 
         Public Overrides ReadOnly Property Directory As String
