@@ -390,6 +390,10 @@ Namespace MSE
         Public Function ValidateRun() As Boolean
             Dim bOK As Boolean = True
 
+            If Not Me.m_MSE.CheckCoreState Then
+                Return False
+            End If
+
             For iTimeSeries As Integer = 1 To Me.m_core.nTimeSeries
                 If Me.m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardProportion Or
                   Me.m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardMortality Then
@@ -444,107 +448,13 @@ Namespace MSE
 
             End If
 
-            '14-May-2010 jb no need for this either
-            '
-            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            ''Check for fixed escapement
-            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Dim fixedGroups As String
-            'Dim fixed As Single
-            'For igrp As Integer = 1 To Me.m_core.nGroups
-            '    fixed = Me.m_core.MSEManager.GroupInputs(igrp).FixedEscapement + Me.m_core.MSEManager.GroupInputs(igrp).FixedF
-            '    If fixed > 0 Then
-            '        'Fixed escapement has been set for this group
-
-            '        'check the Quota options for this group
-            '        For iFlt As Integer = 1 To Me.m_core.nFleets
-            '            If Me.m_core.EcopathFleetInputs(iFlt).Landings(igrp) > 0 Then
-            '                If Me.EcopathFleetInputs(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
-            '                    'this group has both Fixed Escapement and Quota option set
-            '                    'Only Fixed Escapement will be used
-
-            '                    fixedGroups = fixedGroups & "'" & Me.m_core.MSEManager.GroupInputs(igrp).Name & "', "
-
-            '                End If
-            '            End If
-            '        Next
-
-            '    End If
-            'Next
-
-            'If Not String.IsNullOrEmpty(fixedGroups) Then
-
-            '    fixedGroups = fixedGroups.Remove(fixedGroups.Length - 2)
-
-            '    Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_VALIDATION_FIXEDESCAPEMENT, fixedGroups), _
-            '            eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
-            'End If
-
-            ' End If ' If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.PredictUseQuota Or _
-
-            'jb 15-April-2010 Don't need to do this anymore Effort is set by MSE if EffortSource = NoCap
-            ''If Ecosim Effort and Quota options are set
-            ''Make sure the Effort is set high so the Quota regulation will limit effort
-            ''This is not absolutely necessary
-            'If Me.ModelParameters.RegulatoryMode = eMSERegulationMode.UseRegulations Then
-            '    Dim fleets As String
-            '    'if we are regulating catch and using the Ecosim effort
-            '    'make sure the effort is high... what's high... that's a good question
-            '    For iflt As Integer = 0 To Me.m_core.nFleets - 1
-            '        Dim effShp As cForcingFunction
-            '        effShp = Me.m_core.FishingEffortShapeManager.Item(iflt)
-            '        ' JS 02Mar10: Only consider fleets with quota options set
-            '        If (effShp.Mean < 10) And (Me.m_MSEdata.QuotaType(iflt) <> eQuotaTypes.NotUsed) Then
-            '            fleets = fleets & "'" & effShp.Name & "', "
-            '        End If
-            '    Next
-
-            '    If Not String.IsNullOrEmpty(fleets) Then
-
-            '        'strip off the last ', '
-            '        fleets = fleets.Remove(fleets.Length - 2)
-            '        Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_VALIDATION_EFFORT, fleets), _
-            '                                    eMessageType.DataValidation, eCoreComponentType.MSE, eMessageImportance.Warning))
-            '    End If
-
-            'End If 'If Me.m_MSE.ModelParameters.EffortMode = eMSEEffortMode.TrackUseQuota Then
-
             Me.m_core.Messages.sendAllMessages()
 
             Return bOK
 
         End Function
 
-        'Public Sub RunMSYSearch(byFleet As Boolean)
-
-        '    Dim orgSearchMode As eSearchModes = Me.m_search.SearchMode
-        '    Me.m_search.SearchMode = eSearchModes.NotInSearch
-
-        '    If byFleet Then
-        '        Me.m_MSE.RunMSYSearch()
-        '        Me.m_MSE.RunBoEstimation()
-        '    Else 'F by group
-        '        Me.m_MSE.RunMSYSearchUsingFishingMortalityInsteadOfEffort()
-        '    End If
-
-        '    'the MSY search set BBase, Blim and Fopt these are in the Ecosim group inputs 
-        '    'Load the core values into the interface objects
-        '    Me.m_core.LoadEcosimGroups()
-        '    Me.Load()
-        '    'tell the interface that data has changed
-        '    Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.Ecosim, eMessageImportance.Maintenance, eDataTypes.EcoSimGroupInput))
-        '    'reference levels where set to Blim and Bbase
-        '    Me.m_core.Messages.AddMessage(New cMessage("", eMessageType.DataModified, eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEGroupInput))
-        '    Me.m_core.Messages.sendAllMessages()
-
-        '    Me.m_search.SearchMode = orgSearchMode
-
-        '    If Me.m_core.PluginManager IsNot Nothing Then
-        '        Me.m_core.PluginManager.MSYRunCompleted()
-        '    End If
-
-        'End Sub
-
+       
         Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
 
             If (Not Object.ReferenceEquals(Me.m_debug, theCore)) Then

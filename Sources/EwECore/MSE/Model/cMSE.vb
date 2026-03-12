@@ -664,6 +664,10 @@ Namespace MSE
             Dim itr As Integer
             Dim bSuccess As Boolean = True
 
+            If Not Me.CheckCoreState() Then
+                Return False
+            End If
+
             Try
                 m_logger.LogInformation("MSE run started.")
                 Me.PostMessage(eMSERunStates.Started)
@@ -755,7 +759,31 @@ Namespace MSE
 
         End Function
 
+        Public Function CheckCoreState() As Boolean
 
+            If Me.m_MSEData.ModelType = eModelTypes.Ecosim Then
+                If Me.m_core.StateMonitor.HasEcosimLoaded Then
+                    Return True
+                Else
+
+                    Me.m_core.Messages.SendMessage(New cMessage("Ecosim has not been loaded. You must load an Ecosim scenario.",
+                                                           eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
+                    Return False
+                End If 'Me.m_core.StateMonitor.HasEcosimLoaded
+            End If 'Me.m_MSEData.ModelType = eModelTypes.Ecosim
+
+            If Me.m_MSEData.ModelType = eModelTypes.EcoSpace Then
+                If Me.m_core.StateMonitor.HasEcospaceInitialized Then
+                    Return True
+                Else
+                    Me.m_core.Messages.SendMessage(New cMessage("EcoSpace has not been loaded. You must load an Ecospace scenario.",
+                                                                eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
+                    Return False
+                End If 'Me.m_core.StateMonitor.HasEcospaceInitialized
+            End If 'Me.m_MSEData.ModelType = eModelTypes.EcoSpace
+
+
+        End Function
         Private Sub InitForTrial()
 
             Me.InitAssessment()

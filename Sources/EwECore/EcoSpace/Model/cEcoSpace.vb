@@ -842,24 +842,6 @@ Public Class cEcoSpace
 
                     If Me.SearchData.SearchMode = eSearchModes.MSE Then
 
-                        'Dim FSearch As Single
-                        'Array.Clear(Me.SearchData.FishYear, 0, Me.SearchData.FishYear.Length)
-                        ''calculate fishing mortality if in Fishing policy or MSE
-                        ''used to overwrite FishRateNo() inside the month time loop
-                        'For iFlt As Integer = 1 To Me.EcoPathData.NumFleet
-                        '    For j = 1 To Me.EcoPathData.NumGroups
-                        '        'Don't include discards that survived  Propdiscardtime() does not include survivors
-                        '        FSearch = Me.EcoSimData.relQ(iFlt, j) * (Me.EcoSimData.PropLandedTime(iFlt, j) + Me.EcoSimData.PropDiscardTime(iFlt, j))
-                        '        Me.SearchData.FishYear(j) += Fgear(iFlt) * FSearch * QYear(iFlt)
-                        '        '********following line stops gear overwrite for cases where
-                        '        'model has been fit to historical data by using species F forcing
-                        '        'for years 1 to NYRDAT (policy impact allowed only for future years)
-                        '        If Me.EcoSimData.FisForced(j) And Me.EcoSpaceData.YearNow < Me.m_refdata.nYears Then Me.SearchData.FishYear(j) = Me.EcoSimData.FishRateNo(j, 12 * Me.EcoSpaceData.YearNow - 11)
-                        '    Next j
-                        'Next iFlt
-                        ''End If 'If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
-
-
                         MSERegulateEffort()
 
                     ElseIf Me.SearchData.SearchMode = eSearchModes.FishingPolicy Then
@@ -879,9 +861,6 @@ Public Class cEcoSpace
                         'if so, then update actual advection from the monthly X and Y velocity vectors
                         For iRow = 0 To Me.EcoSpaceData.InRow + 1
                             For iCol = 0 To Me.EcoSpaceData.InCol + 1
-                                'If i = 18 And j = 38 Then Debug.Assert(False)
-
-
                                 Me.EcoSpaceData.Xvel(iRow, iCol) = Me.EcoSpaceData.MonthlyXvel(Me.EcoSpaceData.MonthNow)(iRow, iCol)
                                 Me.EcoSpaceData.Yvel(iRow, iCol) = Me.EcoSpaceData.MonthlyYvel(Me.EcoSpaceData.MonthNow)(iRow, iCol)
                                 Me.EcoSpaceData.UpVel(iRow, iCol) = Me.EcoSpaceData.MonthlyUpWell(Me.EcoSpaceData.MonthNow)(iRow, iCol)
@@ -898,16 +877,9 @@ Public Class cEcoSpace
                 Me.VaryMigMovementParameters(Me.EcoSpaceData.MonthNow)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                'HACK ALERT
-                'Using our Harry Potter powers to magically move migrating biomass into the new area
-                'this totally messes up the trophic interaction 
-                'TeleportMigrationBiomass(EcoSpaceData.MonthNow)
-                'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
                 'set tval() (time step forcing value) to the value for this time step for each forcing shape
                 'Time forcing function are disable in EcoSpace via ApplyAVmodifiers() "UseTime" flag
-                'If ApplyAVmodifiers() is called with the UseTime = True then the time forcing function will be used
+                'If cSpaceSolver.ApplyAVmodifiers() is called with the UseTime = True then the time forcing function will be used
                 For ifrc As Integer = 0 To Me.EcoSimData.NumForcingShapes
                     Me.EcoSimData.tval(ifrc) = Me.EcoSimData.zscale(Me.its, ifrc)
                 Next
@@ -929,8 +901,6 @@ Public Class cEcoSpace
                     Me.updateOffVesselPrices(Me.its, Me.EcoSpaceData.YearNow)
 
                     'Run the penalty cost 
-                    'If Me.EcoSpaceData.DoPenaltysearch And (Me.its >= Me.EcoSpaceData.FirstPenaltyMonth) Then Me.SetPenaltyConstants()
-
                     Me.SetPenaltyConstants()
                     If Me.its >= 3 And Not Me.bEffortAdjusted Then Me.AdjustTotalEffort()
                     stpwchEffort.Start()
@@ -1360,7 +1330,6 @@ Public Class cEcoSpace
                     End If 'If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
 
                 End If
-
 
             End If
 
@@ -4908,7 +4877,6 @@ exitline:
             If iLastFleet > Me.EcoSpaceData.nFleets Then iLastFleet = Me.EcoSpaceData.nFleets
 
             'Distribute fishing effort across the map for the fleet indexes iFirstFleet to ilastfleet
-            'ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreaded, New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
             ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreaded, New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth, iYear))
             iFirstFleet += nFltsPerThread
         Next ithrd
