@@ -1,5 +1,4 @@
 ﻿Imports System.Data
-Imports System.Reflection
 Imports EwEUtils.NetUtilities
 
 Namespace Database
@@ -27,18 +26,15 @@ Namespace Database
             End If
         End Sub
 
-        Public Function CompareCurrentRow(readerA As IDataReader, readerB As IDataReader,
-                                          getPropTypes As Func(Of String, Dictionary(Of String, Type))) As List(Of RowDiff)
+        Public Function CompareCurrentRow(readerA As IDataReader, readerB As IDataReader) As List(Of RowDiff)
             Dim diffs As New List(Of RowDiff)()
             Dim colsA = GetColumnMap(readerA)
             Dim colsB = GetColumnMap(readerB)
-            Dim tableName = GetTableName(readerB)
-            Dim propTypes = If(getPropTypes IsNot Nothing, getPropTypes(tableName), New Dictionary(Of String, Type)())
 
             For Each col In colsA.Keys
                 If Not colsB.ContainsKey(col) Then Continue For
-                Dim valA = CoerceValue(readerA(colsA(col)), col, propTypes)
-                Dim valB = CoerceValue(readerB(colsB(col)), col, propTypes)
+                Dim valA = readerA(colsA(col))
+                Dim valB = readerB(colsB(col))
                 If Not ObjectsEqual(valA, valB) Then
                     diffs.Add(New RowDiff With {
                         .ColumnName = col,
@@ -48,20 +44,6 @@ Namespace Database
                 End If
             Next
             Return diffs
-        End Function
-
-        Private Function CoerceValue(value As Object, columnName As String, propTypes As Dictionary(Of String, Type)) As Object
-            Dim targetType = propTypes(columnName)
-            Dim underlying = If(Nullable.GetUnderlyingType(targetType), targetType)
-            If underlying = GetType(String) AndAlso value Is DBNull.Value Then
-                Return ""
-            End If
-            If value Is DBNull.Value OrElse value Is Nothing Then Return DBNull.Value
-            If Not propTypes.ContainsKey(columnName) Then Return value
-            If underlying = GetType(Boolean) AndAlso IsNumeric(value) Then
-                Return value <> 0
-            End If
-            Return value
         End Function
 
         Private Function GetColumnMap(reader As IDataReader) As Dictionary(Of String, Integer)
@@ -74,7 +56,7 @@ Namespace Database
             Return map
         End Function
 
-        Private Function GetTableName(reader As IDataReader) As String
+        Public Function GetTableName(reader As IDataReader) As String
             If _tableNameCache.ContainsKey(reader) Then Return _tableNameCache(reader)
             Dim name = "Unknown"
             Try
