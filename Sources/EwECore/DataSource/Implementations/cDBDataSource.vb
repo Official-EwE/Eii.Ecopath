@@ -2391,7 +2391,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                reader = Me.m_db.GetReader("SELECT * FROM EcopathDietComp")
+                reader = Me.m_db.GetReader("SELECT * FROM EcopathDietComp ORDER BY PredID ASC, PreyID ASC")
                 While reader.Read()
 
                     iPred = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PredID")))
@@ -2656,7 +2656,7 @@ Namespace DataSources
 
             Try
 
-                reader = Me.m_db.GetReader("SELECT * FROM EcopathCatch")
+                reader = Me.m_db.GetReader("SELECT * FROM EcopathCatch ORDER BY GroupID ASC, FleetID ASC")
                 While reader.Read()
 
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
@@ -2697,7 +2697,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                reader = Me.m_db.GetReader("SELECT * FROM EcopathDiscardFate")
+                reader = Me.m_db.GetReader("SELECT * FROM EcopathDiscardFate ORDER BY GroupID ASC, FleetID ASC")
                 If reader IsNot Nothing Then
 
                     While reader.Read()
@@ -10837,7 +10837,7 @@ Namespace DataSources
 
         Private Function LoadAuxillaryData() As Boolean
 
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM Auxillary")
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM Auxillary ORDER BY DBID ASC")
             Dim strValueID As String = ""
             Dim strRemark As String = ""
             Dim strVisualStyle As String = ""

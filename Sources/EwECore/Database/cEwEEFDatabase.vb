@@ -27,6 +27,10 @@ Namespace Database
 #End If
         End Sub
 
+        Public Function GetDbContext() As EwEDbContext
+            Return m_dbContext
+        End Function
+
         Public Overrides Function Create(strDatabase As String, strModelName As String, Optional bOverwrite As Boolean = False, Optional format As eDataSourceTypes = eDataSourceTypes.NotSet, Optional strAuthor As String = "") As eDatasourceAccessType
             ' For EF, just set up the SQLite file and context
             Try

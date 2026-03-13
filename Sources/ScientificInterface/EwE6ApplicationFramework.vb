@@ -6,6 +6,7 @@ Imports System.IO
 Imports System.Reflection
 Imports EwELicense
 Imports EwEUtils.Logging
+Imports EwEUtils.NetUtilities
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
@@ -32,6 +33,9 @@ Module EwE6ApplicationFramework
     Public Sub Main()
 
         Dim logPath = Path.GetDirectoryName(LoggingContext.LogFile)
+
+        ' Start websocket server for data messaging
+        Dim dummy = cWebSocketHelper.Instance
 
         ' Configure Serilog
         Log.Logger = New LoggerConfiguration() _

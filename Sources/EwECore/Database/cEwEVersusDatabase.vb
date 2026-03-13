@@ -72,7 +72,7 @@ Namespace Database
                 End Using
                 Using command As IDbCommand = dbEfDatabase.GetConnection().CreateCommand()
                     command.CommandText = strSQL
-                    secondaryReader = command.ExecuteReader()
+                    secondaryReader = command.ExecuteReader(CommandBehavior.KeyInfo)
                 End Using
             Catch ex As Exception
 #If VERBOSE_LEVEL >= 1 Then
@@ -81,7 +81,9 @@ Namespace Database
                 m_logger.LogError(ex, "cEwEDatabase.GetReader(" & strSQL & ")")
                 Return Nothing
             End Try
-            Return New cEwEVersusDataReader(primaryReader, secondaryReader)
+            Dim vsReader = New cEwEVersusDataReader(primaryReader, secondaryReader)
+            vsReader.SetFuncGetPropTypes(Function(t) dbEfDatabase.GetDbContext().GetPropTypes(t))
+            Return vsReader
         End Function
 
 

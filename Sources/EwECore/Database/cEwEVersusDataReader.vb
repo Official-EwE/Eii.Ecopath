@@ -1,6 +1,7 @@
 ﻿' SPDX-License-Identifier: EUPL-1.2
 ' Decorator for IDataReader to support both a primary data source, or a secondary with comparison
 Imports System.Data
+Imports EwEUtils.NetUtilities
 
 Namespace Database
     Public Class cEwEVersusDataReader
@@ -10,16 +11,24 @@ Namespace Database
         Private ReadOnly _secondaryReader As IDataReader
         Private ReadOnly _mode As Mode
 
+        Private _rowCount As Integer = 0
+        Private _rowDiffs As New List(Of DataReaderDiff.RowDiff)()
+        Private _getPropTypes As Func(Of String, Dictionary(Of String, Type))
+
         Public Enum Mode
             PrimaryOnly
             SecondaryOnly
             Compare
         End Enum
 
-        Public Sub New(Optional primaryReader As IDataReader = Nothing, Optional secondaryReader As IDataReader = Nothing, Optional mode As Mode = Mode.PrimaryOnly)
+        Public Sub New(Optional primaryReader As IDataReader = Nothing, Optional secondaryReader As IDataReader = Nothing, Optional mode As Mode = Mode.Compare)
             _primaryReader = primaryReader
             _secondaryReader = secondaryReader
             _mode = mode
+        End Sub
+
+        Public Sub SetFuncGetPropTypes(getPropTypes As Func(Of String, Dictionary(Of String, Type)))
+            _getPropTypes = getPropTypes
         End Sub
 
         ' Example: Read() implementation
@@ -31,9 +40,18 @@ Namespace Database
                     Return _secondaryReader IsNot Nothing AndAlso _secondaryReader.Read()
                 Case Mode.Compare
                     Dim primaryHasRow = _primaryReader IsNot Nothing AndAlso _primaryReader.Read()
-                    Dim secondaryHasRow = _secondaryReader IsNot Nothing AndAlso _secondaryReader.Read()
-                    ' Optionally compare row data here and log/report differences
-                    Return primaryHasRow Or secondaryHasRow
+                    _secondaryReader.Read()
+                    If primaryHasRow Then
+                        ' Accumulate diffs for this row
+                        _rowCount += 1
+                        _rowDiffs.AddRange(DataReaderDiff.CompareCurrentRow(_primaryReader, _secondaryReader, _getPropTypes))
+                    Else
+                        ' Reader exhausted — broadcast everything at once and reset
+                        DataReaderDiff.BroadcastDiffs(_primaryReader, _secondaryReader, _rowDiffs, _rowCount)
+                        _rowDiffs.Clear()
+                        _rowCount = 0
+                    End If
+                    Return primaryHasRow
                 Case Else
                     Return False
             End Select
@@ -50,7 +68,7 @@ Namespace Database
                     Dim primaryVal = _primaryReader.GetValue(i)
                     Dim secondaryVal = _secondaryReader.GetValue(i)
                     ' Optionally compare values and log/report differences
-                    Return primaryVal ' or secondaryVal, or both, or a tuple
+                    Return primaryVal
                 Case Else
                     Return Nothing
             End Select
@@ -72,7 +90,7 @@ Namespace Database
                     Case Mode.SecondaryOnly
                         Return _secondaryReader.Depth
                     Case Mode.Compare
-                        Return Math.Max(_primaryReader.Depth, _secondaryReader.Depth)
+                        Return _primaryReader.Depth
                     Case Else
                         Return 0
                 End Select
@@ -87,7 +105,7 @@ Namespace Database
                     Case Mode.SecondaryOnly
                         Return _secondaryReader.FieldCount
                     Case Mode.Compare
-                        Return Math.Max(_primaryReader.FieldCount, _secondaryReader.FieldCount)
+                        Return _primaryReader.FieldCount
                     Case Else
                         Return 0
                 End Select
@@ -146,7 +164,7 @@ Namespace Database
                 Case Mode.Compare
                     Dim primaryNext = _primaryReader.NextResult()
                     Dim secondaryNext = _secondaryReader.NextResult()
-                    Return primaryNext Or secondaryNext
+                    Return primaryNext
                 Case Else
                     Return False
             End Select
@@ -160,7 +178,7 @@ Namespace Database
                     Case Mode.SecondaryOnly
                         Return _secondaryReader.RecordsAffected
                     Case Mode.Compare
-                        Return Math.Max(_primaryReader.RecordsAffected, _secondaryReader.RecordsAffected)
+                        Return _primaryReader.RecordsAffected
                     Case Else
                         Return 0
                 End Select
@@ -464,7 +482,6 @@ Namespace Database
             _secondaryReader?.Dispose()
         End Sub
 
-        ' ...existing code...
     End Class
 End Namespace
 
