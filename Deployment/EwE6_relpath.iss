@@ -18,7 +18,7 @@
 ; Automated build will provide file version as a command line parameter
 ; /DSemVersion=6.6.{minor release no}
 #ifndef SemVersion
-  #define SemVersion "6.7.59"
+  #define SemVersion "6.7.64"
 #endif
 ; VersionInfoVersion={#SemVersion}
 
@@ -32,10 +32,11 @@
 
 ; Standard stuff
 #define MyAppName "Ecopath with Ecosim"
-#define MyAppExeName "ewe6.exe"
+#define MyAppExeName "ScientificInterface.exe"
 #define MyAppPublisher "Ecopath International Initiative"
 #define DefRoot "..\"
 #define DefDB "Database"
+
 
 [Setup]
 ; Code signing, fundamental for distributing installers and executables:
@@ -46,6 +47,12 @@
 ;   .pfx:   "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x86\signtool.exe" sign /a /f "D:\Cloud\Dropbox\EII_cert.pfx" /p muahaha /t http://timestamp.comodoca.com/authenticode $f
 ;   .cer    "C:\Program Files (x86)\Windows Kits\10\bin\10.0.20348.0\x64\signtool.exe" sign  /f ".\EII_cert_2024.cer" /csp "eToken Base Cryptographic Provider"  /k  "[SafeNet Token JC 0{{muahaha}}]=Sectigo_20240110133725" /t "http://timestamp.sectigo.com" /fd sha256 $f
 ; - Replace "muahaha" with the certificate password
+
+; Temporary workaround:
+;   EwE currently writes runtime files into its install tree.
+;   Install per-user to LocalAppData to avoid Program Files write permission issues.
+PrivilegesRequired=admin
+DefaultDirName={localappdata}\{#MyAppName} {#MyAppVersion}
 AllowNoIcons=True
 AlwaysShowGroupOnReadyPage=True
 AlwaysShowDirOnReadyPage=True
@@ -56,7 +63,6 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL=https://ecopathinternational.org
 AppSupportURL=mailto:support@ecopath.org
 AppVersion={#MyAppVersion}
-DefaultDirName={commonpf}\{#MyAppName} {#MyAppVersion}
 DefaultGroupName={#MyAppName}\Release {#MyAppVersion}
 MinVersion=0,6.1sp1
 SetupIconFile=Ecopath_install.ico
@@ -65,7 +71,7 @@ SetupIconFile=Ecopath_install.ico
 #else
 ; NOP
 #endif
-UninstallDisplayIcon={app}\{#MyAppName}
+UninstallDisplayIcon={userappdata}\{#MyAppName}
 WizardImageFile=EwE5Logo.bmp
 WizardSmallImageFile=EwE6Header.bmp
 WizardImageStretch=False
@@ -100,7 +106,7 @@ Name: "{app}\Includes\LPSolve\win64\"
 Name: "{app}\Resources\"
 Name: "{app}\Tools\"
 Name: "{app}\UserGuide\"
-; Name: "{app}\Plugins\"
+Name: "{app}\Plugins\"
 Name: "{app}\Includes\GDAL\"
 Name: "{app}\Includes\GDAL\win32\"
 Name: "{app}\Includes\GDAL\win32\gdalplugins\"
@@ -113,8 +119,8 @@ Name: "{app}\Includes\LPSolve\win64\"
 [Files]
 Source: "..\LICENSE.txt"; DestDir: "{app}\Resources\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe.config"; DestDir: "{app}"; DestName: "{#MyAppExeName}.config"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win32\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win32\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win64\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win64\"; Flags: ignoreversion
 

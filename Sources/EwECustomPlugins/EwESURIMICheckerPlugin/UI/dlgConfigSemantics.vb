@@ -3,6 +3,7 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Option Strict On
+Imports System.IO
 Imports System.Windows.Forms
 Imports Eii.ControlledVocabularies.Common
 Imports Eii.ControlledVocabularies.Core
@@ -10,18 +11,35 @@ Imports Eii.ControlledVocabularies.Descriptors
 Imports Eii.ControlledVocabularies.Vocabularies
 Imports Eii.ControlledVocabularies.Vocabularies.LifeStage
 Imports Eii.ControlledVocabularies.Vocabularies.Species
+Imports Eii.Semantics
 Imports EwECore
 Imports EwECore.cCore
 Imports ScientificInterfaceShared.Controls
 
-Public Class dlgSURIMIChecker
+' Elements in this UI:
+' - A manifest file, created by earlier users
+' - A registry, loaded from the manifest
+' - A model, with the entities to add to the registry
+' - A user interface which takes a datatable
+'
+' = Flows:
+' Startup:        Load manifest > Registry > Marge in groups, species and fleets > Generate Datatable > Update UI
+' User edit:      Update datatable > Update registry
+' User discovery: Update registry > Generate datatable > Update UI
+' Save:           Save registry
+'
+' This prototype does it all: no neat controller hierarchy. Sorry. Also hard-coded to groups, species and fleets. Soit
+
+Public Class dlgConfigSemantics
 
     Const Source As String = "SURIMI"
 
     Private m_dtSpecies As DataTable
-    Private m_regFields As New KeyFieldDescriptorRegistry()
-    Private m_asfis As ASFISSpeciesCodeVocabulary = Nothing
-    Private m_surimi As SURIMILifestageVocabulary = Nothing
+    Private m_regfields As IKeyFieldDescriptorRegistry
+    Private m_asfis As IControlledVocabulary
+    Private m_surimi As IControlledVocabulary
+    Private m_semreg As ISemanticRegistry
+    Private m_mlkfactory As IMultiLevelKeyFactory
 
     Public Sub New(uic As cUIContext, provider As IServiceProvider)
 
@@ -30,29 +48,39 @@ Public Class dlgSURIMIChecker
 
         Me.DoubleBuffered = True
 
-        Me.m_asfis = TryCast(provider.GetService(GetType(ASFISSpeciesCodeVocabulary)), ASFISSpeciesCodeVocabulary)
-        Me.m_surimi = TryCast(provider.GetService(GetType(SURIMILifestageVocabulary)), SURIMILifestageVocabulary)
+        ' Grab field descriptor registry
+        m_regfields = TryCast(provider.GetService(GetType(KeyFieldDescriptorRegistry)), IKeyFieldDescriptorRegistry)
+
+        ' Define standard fields
+        m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.SpeciesCode, KeyDomain.Species, KeyPurpose.Species, FieldKind.Code, True, 10))
+        m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.Lifestage, KeyDomain.Species, KeyPurpose.Lifestage, FieldKind.Label, False, 3))
+        m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.Length, KeyDomain.Species, KeyPurpose.Length, FieldKind.Label, False, 3))
+        m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.Age, KeyDomain.Species, KeyPurpose.Age, FieldKind.Label, False, 3))
+
+        m_regfields.Register(New KeyFieldDescriptor(FishingFields.GearCode, KeyDomain.FleetSegment, KeyPurpose.Gear, FieldKind.Code, True, 10))
+        m_regfields.Register(New KeyFieldDescriptor(FishingFields.CountryCode, KeyDomain.FleetSegment, KeyPurpose.Country, FieldKind.Code, False, 3))
+
+        ' Grab vocabularies
+        Me.m_asfis = TryCast(provider.GetService(GetType(ASFISSpeciesCodeVocabulary)), IControlledVocabulary)
+        Me.m_surimi = TryCast(provider.GetService(GetType(SURIMILifestageVocabulary)), IControlledVocabulary)
+
+        ' Grab registry
+        m_semreg = TryCast(provider.GetService(GetType(SemanticRegistry)), ISemanticRegistry)
+
+        ' Grab factory
+        m_mlkfactory = TryCast(provider.GetService(GetType(MultiLevelKeyFactory)), IMultiLevelKeyFactory)
 
     End Sub
 
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
 
-        m_regFields.Register(New KeyFieldDescriptor(SpeciesFields.SpeciesCode, KeyDomain.Species, KeyPurpose.Species, FieldKind.Code, True, 10))
-        m_regFields.Register(New KeyFieldDescriptor(SpeciesFields.Lifestage, KeyDomain.Species, KeyPurpose.Lifestage, FieldKind.Label, False, 3))
-        m_regFields.Register(New KeyFieldDescriptor(SpeciesFields.Length, KeyDomain.Species, KeyPurpose.Length, FieldKind.Label, False, 3))
-        m_regFields.Register(New KeyFieldDescriptor(SpeciesFields.Age, KeyDomain.Species, KeyPurpose.Age, FieldKind.Label, False, 3))
-
-        m_regFields.Register(New KeyFieldDescriptor(FishingFields.GearCode, KeyDomain.FleetSegment, KeyPurpose.Gear, FieldKind.Code, True, 10))
-        m_regFields.Register(New KeyFieldDescriptor(FishingFields.CountryCode, KeyDomain.FleetSegment, KeyPurpose.Country, FieldKind.Code, False, 3))
-
-        Console.WriteLine("Loading ASFIS voc: " & m_asfis.Load())
-        Console.WriteLine("Loading SURIMI voc: " & m_surimi.Load())
+        Me.LoadManifest()
 
         Me.m_tscmbSpeciesVoc.Items.Add(m_asfis)
         Me.m_tscmbSpeciesVoc.SelectedIndex = 0
 
-        Me.m_tscmbLifestageVoc.Items.Add(m_regFields)
+        Me.m_tscmbLifestageVoc.Items.Add(m_regfields)
         Me.m_tscmbLifestageVoc.SelectedIndex = 0
 
         Me.m_tscmbSpeciesVoc.ComboBox.FormattingEnabled = True
@@ -95,14 +123,13 @@ Public Class dlgSURIMIChecker
 
         Dim nameVocSpecies As String = m_asfis.VocabularyName
         Dim nameVocLStage As String = m_surimi.VocabularyName
-        Dim core As cCore = Me.UIContext.Core
 
         For Each dr As DataRow In Me.m_dtSpecies.Rows
 
             Try
 
-                Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(CInt(dr("iGroup")))
-                Dim tax As cTaxon = core.Taxon(CInt(dr("iTaxon")))
+                Dim grp As cEcoPathGroupInput = Core.EcopathGroupInputs(CInt(dr("iGroup")))
+                Dim tax As cTaxon = Core.Taxon(CInt(dr("iTaxon")))
 
                 Dim codeSpecies As String = ""
                 Dim codeLifeStage As String = ""
@@ -111,7 +138,7 @@ Public Class dlgSURIMIChecker
 
                 If (String.Compare(tax.Source, Source, True) = 0) Then
                     Dim f As New MultiLevelKeyFactory()
-                    mlk = f.FromString(tax.SourceKey, KeyDomain.Species, m_regFields)
+                    mlk = f.FromString(tax.SourceKey, KeyDomain.Species, m_regfields)
                     codeSpecies = mlk.GetField(SpeciesFields.SpeciesCode).Value
                     codeLifeStage = mlk.GetField(SpeciesFields.Lifestage).Value
                 End If
@@ -133,10 +160,10 @@ Public Class dlgSURIMIChecker
 
                 mlk = New MultiLevelKey(KeyDomain.Species, False)
                 If (Not String.IsNullOrWhiteSpace(codeSpecies)) Then
-                    mlk.SetField(SpeciesFields.SpeciesCode, nameVocSpecies & ":" & codeSpecies, m_regFields)
+                    mlk.SetField(SpeciesFields.SpeciesCode, nameVocSpecies & ":" & codeSpecies, m_regfields)
                 End If
                 If (Not String.IsNullOrWhiteSpace(codeLifeStage)) Then
-                    mlk.SetField(SpeciesFields.Lifestage, nameVocLStage & ":" & codeLifeStage, m_regFields)
+                    mlk.SetField(SpeciesFields.Lifestage, nameVocLStage & ":" & codeLifeStage, m_regfields)
                 End If
 
                 dr("SpeciesCode") = codeSpecies
@@ -168,15 +195,15 @@ Public Class dlgSURIMIChecker
         dt.Columns.Add("MultiLevelKey", GetType(String))
         dt.Columns.Add("Source", GetType(String))
 
-        For i As Integer = 1 To Core.nGroups
-            Dim grp As cEcoPathGroupInput = Core.EcopathGroupInputs(i)
+        For i As Integer = 1 To core.nGroups
+            Dim grp As cEcoPathGroupInput = core.EcopathGroupInputs(i)
             For j As Integer = 1 To grp.NTaxon
-                Dim tax As cTaxon = Core.Taxon(grp.iTaxon(j))
+                Dim tax As cTaxon = core.Taxon(grp.iTaxon(j))
                 Dim SpeciesCode As String = ""
                 Dim LifeStageCode As String = ""
                 If (Not String.IsNullOrWhiteSpace(tax.SourceKey) And tax.Source = Source) Then
 
-                    Dim mlk = fact.FromString(tax.SourceKey, KeyDomain.Species, m_regFields)
+                    Dim mlk = fact.FromString(tax.SourceKey, KeyDomain.Species, m_regfields)
 
                     If (mlk IsNot Nothing) Then
                         Dim f As IMultiLevelKeyField = mlk.GetField(SpeciesFields.SpeciesCode)
@@ -227,5 +254,41 @@ Public Class dlgSURIMIChecker
         Next
         core.ReleaseBatchLock(eBatchChangeLevelFlags.Ecopath, bChanged)
     End Sub
+
+    ''' <summary>
+    ''' Load the manifest in the central datatable
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function LoadManifest() As Boolean
+        Dim fn As String = Me.ManifestFileName()
+        Me.m_semreg.Clear()
+        If (File.Exists(fn)) Then
+            Try
+                Dim serializer As New SemanticRegistryJsonSerializer(m_mlkfactory, m_regfields)
+                serializer.Load(File.ReadAllText(fn), m_semreg)
+            Catch ex As Exception
+                Return False
+            End Try
+        End If
+        Return True
+    End Function
+
+    Public Function SaveManifest() As Boolean
+        Try
+            Dim fn As String = Me.ManifestFileName()
+            Dim serializer As New SemanticRegistryJsonSerializer(m_mlkfactory, m_regfields)
+
+            File.WriteAllText(fn, serializer.Save(m_semreg))
+        Catch ex As Exception
+            Return False
+        End Try
+        Return True
+    End Function
+
+    Private Function ManifestFileName() As String
+        Dim ds = Me.Core.DataSource
+        Dim fn As String = ds.ToString()
+        Return Path.ChangeExtension(fn, ".semantics")
+    End Function
 
 End Class
