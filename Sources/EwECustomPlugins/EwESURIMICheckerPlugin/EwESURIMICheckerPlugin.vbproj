@@ -49,6 +49,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Eii.ControlledVocabularies" Version="1.0.*" />
+    <PackageReference Include="Eii.SemanticRegistry" Version="2.0.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
