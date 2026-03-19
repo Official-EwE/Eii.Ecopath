@@ -1526,12 +1526,6 @@ Public Class cSpaceSolver
             Next
         Next
 
-        'If m_SimData.FirstTime = True Then
-        '    For i = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
-        '        m_SimData.DetritusOut(i) = (ToDetritus(i - m_PathData.NumLiving) - m_PathData.BA(i) + m_PathData.Immig(i) - EatenOf(i)) / Biomass(i) - m_SimData.Emig(i)
-        '        'DetritusOut(i) = (ToDetritus(i - mEPData.NumLiving) - BA(i) + DetPassedOn(i) + EX(i) + Immig(i) - Eatenof(i)) / Biomass(i) - Emig(i)
-        '    Next i
-        'End If
         Me.m_SimData.FirstTime = False
 
     End Sub

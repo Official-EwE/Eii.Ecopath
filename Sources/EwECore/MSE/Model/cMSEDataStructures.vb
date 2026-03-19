@@ -1113,8 +1113,6 @@ Namespace MSE
                 'so that Mean and STD lines can be drawn on time plots(full run) and the resutls grid can contain partial run
                 'Another issue with this is the year index some stats are monthly and some yearly so need to get the meaning of the index sorted out
 
-                'Dim Year As Integer = Me.TimeToYearIndex(TimeIndex)
-                'If Year >= Me.m_mseData.ResultsStartYear Then
 
                 index -= 1
                 Me.m_data(eSumIndexes.Sum, index) += Value
@@ -1123,8 +1121,6 @@ Namespace MSE
                 Me.m_data(eSumIndexes.Max, index) = Math.Max(Me.m_data(eSumIndexes.Max, index), Value)
 
                 Me.m_n(index) += 1
-
-                'End If'Year >= Me.m_mseData.ResultsStartYear
 
                 'data is stored in a list by grouping/iteration/time
                 'each iteration will have its own list of data points added in AddIteration()

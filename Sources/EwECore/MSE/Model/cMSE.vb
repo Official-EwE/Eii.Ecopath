@@ -1262,18 +1262,6 @@ Namespace MSE
 
                         'Regulate the effort every month
                         Me.RegulateEffort(Biomass, QMult, QYear, iTimeStep, iMonth)
-                        'Catch base on the regulated effort
-                        'Me.CalcCatch(Biomass, QMult, QYear, iTimeStep)
-
-                        '5-Nov-2012 jb Moved check of FisForced() to InitForTrial
-                        'And changed it to only set FisForced()=False if the Fleet is controled
-                        ''Ecosim will not set F from Effort if there is F timeseries loaded
-                        ''this tell Ecosim that there is NO timeseries loaded, even if there is...
-                        'For igrp As Integer = 1 To Me.m_data.nLiving
-                        '    If Me.m_esData.FisForced(igrp) = True Then
-                        '           Me.m_esData.FisForced(igrp) = False
-                        '    End If
-                        'Next
 
                         'jb PredictEffort = True flag will stop SetFtimeFromGear(...) from updating to the new regualted effort
                         'Me.m_Ecosim.SetFtimeFromGear(iTimeStep, QYear, Me.m_esData.PredictSimEffort)
@@ -2144,39 +2132,36 @@ Namespace MSE
                 If (iTime - 1) Mod 12 = 0 Then
                     'First month of a new year
                     Array.Clear(Me.m_MSEData.CatchYear, 0, Me.m_MSEData.CatchYear.Length)
-                    ' Array.Clear(Me.m_data.EffortYear, 0, Me.m_data.EffortYear.Length)
                 End If
 
                 'grab effort and catch
                 For iflt = 1 To Me.m_MSEData.nFleets
-                    ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
                     For igrp = 1 To Me.m_MSEData.NGroups
-                        'Me.m_MSEData.CatchYear(iflt, igrp) += Me.m_SimData.ResultsSumCatchByGroupGear(igrp, iflt, iTime)
                         Me.m_MSEData.CatchYear(iflt, igrp) += Me.m_Model.CatchbyGroupFleetTimeStep(igrp, iflt, iTime)
                     Next
                 Next
                 ' System.Console.WriteLine()
                 For igrp = 1 To Me.m_MSEData.nLiving
 
-                    Me.m_MSEData.BiomassTime(igrp)(iTime) = Me.m_Model.BiomassbyGroupTimeStep(igrp, CInt(iTime))
-                    Me.m_MSEData.BioStats.AddValue(igrp, CInt(iTime), Me.m_Model.BiomassbyGroupTimeStep(igrp, CInt(iTime)))
+                    Me.m_MSEData.BiomassTime(igrp)(iTime) = Me.m_Model.BiomassbyGroupTimeStep(igrp, iTime)
+                    Me.m_MSEData.BioStats.AddValue(igrp, iTime, Me.m_Model.BiomassbyGroupTimeStep(igrp, iTime))
 
-                    Me.m_MSEData.CatchGroupTime(igrp)(iTime) = Me.m_Model.CatchbyGroupTimeStep(igrp, CInt(iTime))
+                    Me.m_MSEData.CatchGroupTime(igrp)(iTime) = Me.m_Model.CatchbyGroupTimeStep(igrp, iTime)
                     ' CatchCurT
-                    Me.m_MSEData.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_Model.CatchbyGroupTimeStep(igrp, CInt(iTime)))
+                    Me.m_MSEData.CatchGroupStats.AddValue(igrp, iTime, Me.m_Model.CatchbyGroupTimeStep(igrp, iTime))
 
                 Next igrp
 
                 Dim sumValue As Single
 
                 For iflt = 1 To Me.m_SimData.nGear
-                    sumValue += Me.m_SimData.ResultsSumValueByGear(iflt, CInt(iTime))
-                    Me.m_MSEData.CatchFleetStats.AddValue(iflt, CInt(iTime), Me.m_SimData.ResultsSumCatchByGear(iflt, CInt(iTime)))
-                    Me.m_MSEData.EffortStats.AddValue(iflt, CInt(iTime), Me.m_SimData.ResultsEffort(iflt, CInt(iTime)))
-                    ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
+                    sumValue += Me.m_SimData.ResultsSumValueByGear(iflt, iTime)
+                    Me.m_MSEData.CatchFleetStats.AddValue(iflt, iTime, Me.m_Model.CatchbyFleetTimeStep(iflt, iTime))
+                    Me.m_MSEData.EffortStats.AddValue(iflt, iTime, Me.m_Model.EffortbyFleetTimeStep(iflt, iTime))
+                    ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, iTime)
                 Next iflt
 
-                Me.m_MSEData.ValueFleetStats.AddValue(1, CInt(iTime), sumValue)
+                Me.m_MSEData.ValueFleetStats.AddValue(1, iTime, sumValue)
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
