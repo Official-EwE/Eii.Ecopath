@@ -108,7 +108,7 @@ Namespace SpatialData
 
             Dim iNumTimeSteps As Integer = Me.m_core.nEcospaceTimeSteps
             ' Special case for datasets without temporal range
-            If (Me.m_ds.TimeStart = Date.MinValue) Or (Me.m_ds.TimeEnd = Date.MaxValue) Then
+            If (Me.m_ds.DateStart = Date.MinValue) Or (Me.m_ds.DateEnd = Date.MaxValue) Then
                 iNumTimeSteps = 0
             End If
 

@@ -5,10 +5,10 @@
 ; New in EwE 6.7: there will be no distinction between the regular and pro installer
 ; Adjust #defines in this section to select which components to include in an installer
 #ifndef Compile64Bit
-  #define Compile64Bit "1"                    ; set to 0 to compile 32 bit
+  #define Compile64Bit "0"                    ; set to 0 to compile 32 bit
 #endif
 
-#define CodeSigning 1                      ; set to 0 to disable code signing
+#define CodeSigning 0                      ; set to 0 to disable code signing
 
 ; Optional features
 #define RobertsBank 0
@@ -18,7 +18,7 @@
 ; Automated build will provide file version as a command line parameter
 ; /DSemVersion=6.6.{minor release no}
 #ifndef SemVersion
-  #define SemVersion "6.7.64"
+  #define SemVersion "6.7.65"
 #endif
 ; VersionInfoVersion={#SemVersion}
 
@@ -67,7 +67,7 @@ DefaultGroupName={#MyAppName}\Release {#MyAppVersion}
 MinVersion=0,6.1sp1
 SetupIconFile=Ecopath_install.ico
 #if CodeSigning == 1
-; SignTool=codesign /d $q{#MyAppName}$q $f
+  SignTool=codesign /d $q{#MyAppName}$q $f
 #else
 ; NOP
 #endif

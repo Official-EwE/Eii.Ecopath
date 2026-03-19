@@ -255,6 +255,8 @@ Public Class dlgConfigSemantics
         core.ReleaseBatchLock(eBatchChangeLevelFlags.Ecopath, bChanged)
     End Sub
 
+#Region " Manifest access "
+
     ''' <summary>
     ''' Load the manifest in the central datatable
     ''' </summary>
@@ -277,7 +279,6 @@ Public Class dlgConfigSemantics
         Try
             Dim fn As String = Me.ManifestFileName()
             Dim serializer As New SemanticRegistryJsonSerializer(m_mlkfactory, m_regfields)
-
             File.WriteAllText(fn, serializer.Save(m_semreg))
         Catch ex As Exception
             Return False
@@ -290,5 +291,19 @@ Public Class dlgConfigSemantics
         Dim fn As String = ds.ToString()
         Return Path.ChangeExtension(fn, ".semantics")
     End Function
+
+#End Region ' Manifest access
+
+#Region " Registry interactions "
+
+    Public Sub AddGroup(item As cEcoPathGroupInput)
+
+    End Sub
+
+    Public Sub AddSpecies(item As cTaxon)
+
+    End Sub
+
+#End Region ' Registry interactions
 
 End Class
