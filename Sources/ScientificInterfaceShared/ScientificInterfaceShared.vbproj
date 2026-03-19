@@ -589,9 +589,6 @@
     <Folder Include="Controls\Map\Layers\Rendering\Vector\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.Licence">
-      <Version>1.0.3</Version>
-    </PackageReference>
     <PackageReference Include="EPPlus" Version="8.4.1" />
     <PackageReference Include="System.Resources.Extensions" Version="10.0.2" />
   </ItemGroup>

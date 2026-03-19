@@ -28,47 +28,47 @@ Namespace Style
             Try
                 If (value IsNot Nothing) Then
 
-                    Dim obj As ISpatialDataSet = DirectCast(value, ISpatialDataSet)
-                    strResult = obj.CustomName
+                    Dim ds As ISpatialDataSet = DirectCast(value, ISpatialDataSet)
+                    strResult = ds.CustomName
 
                     Select Case descriptor
 
                         Case eDescriptorTypes.Name
                             ' Has configuration?
-                            If (obj.IsConfigured) Then
+                            If (ds.IsConfigured) Then
                                 ' #Yes: filter by lower time limit
-                                Select Case obj.DateStart
+                                Select Case ds.DateStart
 
                                     Case DateTime.MinValue
                                         ' Has upper range set?
-                                        If (obj.DateEnd < DateTime.MaxValue) Then
+                                        If (ds.DateEnd < DateTime.MaxValue) Then
                                             ' #Yes: Return <inf,upper] range
-                                            strResult = String.Format(My.Resources.LABEL_VALUE_UPTO, obj.CustomName, obj.DateEnd.ToShortDateString)
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_UPTO, ds.CustomName, ds.DateEnd.ToShortDateString)
                                         End If
 
                                     Case DateTime.MaxValue
                                         ' Something is screwed
                                         Debug.Assert(False)
 
-                                    Case obj.DateEnd
+                                    Case ds.DateEnd
                                         ' Start = end, and neither is inf: show a single date
-                                        strResult = String.Format(My.Resources.LABEL_VALUE_AT, obj.CustomName, obj.DateStart.ToShortDateString)
+                                        strResult = String.Format(My.Resources.LABEL_VALUE_AT, ds.CustomName, ds.DateStart.ToShortDateString)
 
                                     Case Else
                                         ' Has upper range set?
-                                        If (obj.DateEnd < DateTime.MaxValue) Then
+                                        If (ds.DateEnd < DateTime.MaxValue) Then
                                             ' #Yes: show [lower, upper] range
-                                            strResult = String.Format(My.Resources.LABEL_VALUE_RANGE, obj.CustomName, obj.DateStart.ToShortDateString, obj.DateEnd.ToShortDateString)
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_RANGE, ds.CustomName, ds.DateStart.ToShortDateString, ds.DateEnd.ToShortDateString)
                                         Else
                                             ' #No: show [lower, inf> range
-                                            strResult = String.Format(My.Resources.LABEL_VALUE_FROM, obj.CustomName, obj.DateStart.ToShortDateString)
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_FROM, ds.CustomName, ds.DateStart.ToShortDateString)
                                         End If
 
                                 End Select
                             End If
 
                         Case eDescriptorTypes.Description
-                            strResult = obj.CustomDescription
+                            strResult = ds.CustomDescription
                     End Select
                 Else
                     strResult = My.Resources.GENERIC_VALUE_NONE
