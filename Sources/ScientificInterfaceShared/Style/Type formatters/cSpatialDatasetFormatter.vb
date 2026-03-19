@@ -37,31 +37,31 @@ Namespace Style
                             ' Has configuration?
                             If (obj.IsConfigured) Then
                                 ' #Yes: filter by lower time limit
-                                Select Case obj.TimeStart
+                                Select Case obj.DateStart
 
                                     Case DateTime.MinValue
                                         ' Has upper range set?
-                                        If (obj.TimeEnd < DateTime.MaxValue) Then
+                                        If (obj.DateEnd < DateTime.MaxValue) Then
                                             ' #Yes: Return <inf,upper] range
-                                            strResult = String.Format(My.Resources.LABEL_VALUE_UPTO, obj.CustomName, obj.TimeEnd.ToShortDateString)
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_UPTO, obj.CustomName, obj.DateEnd.ToShortDateString)
                                         End If
 
                                     Case DateTime.MaxValue
                                         ' Something is screwed
                                         Debug.Assert(False)
 
-                                    Case obj.TimeEnd
+                                    Case obj.DateEnd
                                         ' Start = end, and neither is inf: show a single date
-                                        strResult = String.Format(My.Resources.LABEL_VALUE_AT, obj.CustomName, obj.TimeStart.ToShortDateString)
+                                        strResult = String.Format(My.Resources.LABEL_VALUE_AT, obj.CustomName, obj.DateStart.ToShortDateString)
 
                                     Case Else
                                         ' Has upper range set?
-                                        If (obj.TimeEnd < DateTime.MaxValue) Then
+                                        If (obj.DateEnd < DateTime.MaxValue) Then
                                             ' #Yes: show [lower, upper] range
-                                            strResult = String.Format(My.Resources.LABEL_VALUE_RANGE, obj.CustomName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_RANGE, obj.CustomName, obj.DateStart.ToShortDateString, obj.DateEnd.ToShortDateString)
                                         Else
                                             ' #No: show [lower, inf> range
-                                            strResult = String.Format(My.Resources.LABEL_VALUE_FROM, obj.CustomName, obj.TimeStart.ToShortDateString)
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_FROM, obj.CustomName, obj.DateStart.ToShortDateString)
                                         End If
 
                                 End Select

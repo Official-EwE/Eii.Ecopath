@@ -133,8 +133,8 @@ Namespace Ecospace.Controls
                 Dim strTEnd As String = ""
                 Dim ds As ISpatialDataSet = conn.Dataset
 
-                If (ds.TimeStart > Date.MinValue) And (ds.TimeStart < Date.MaxValue) Then strTStart = ds.TimeStart.ToShortDateString
-                If (ds.TimeEnd <> Date.MinValue) And (ds.TimeEnd < Date.MaxValue) Then strTEnd = ds.TimeEnd.ToShortDateString
+                If (ds.DateStart > Date.MinValue) And (ds.DateStart < Date.MaxValue) Then strTStart = ds.DateStart.ToShortDateString
+                If (ds.DateEnd <> Date.MinValue) And (ds.DateEnd < Date.MaxValue) Then strTEnd = ds.DateEnd.ToShortDateString
 
                 Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(i + 1))
                 Me(iRow, eColumnTypes.Name) = New cEwECell(ds.CustomName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)

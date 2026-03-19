@@ -188,8 +188,8 @@ Namespace Ecospace.Controls
 
                 Dim strTStart As String = SharedResources.GENERIC_VALUE_FIRSTTIMESTEP
                 Dim strTEnd As String = ""
-                If (ds.TimeStart > Date.MinValue) And (ds.TimeStart < Date.MaxValue) Then strTStart = Me.StyleGuide.FormatDate(ds.TimeStart, False)
-                If (ds.TimeEnd <> Date.MinValue) And (ds.TimeEnd < Date.MaxValue) Then strTEnd = Me.StyleGuide.FormatDate(ds.TimeEnd, False)
+                If (ds.DateStart > Date.MinValue) And (ds.DateStart < Date.MaxValue) Then strTStart = Me.StyleGuide.FormatDate(ds.DateStart, False)
+                If (ds.DateEnd <> Date.MinValue) And (ds.DateEnd < Date.MaxValue) Then strTEnd = Me.StyleGuide.FormatDate(ds.DateEnd, False)
 
                 iRow = Me.AddRow()
                 Me(iRow, eColumnTypes.Index) = New cEwERowHeaderCell(CStr(iDS))
