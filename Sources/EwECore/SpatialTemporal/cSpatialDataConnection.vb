@@ -141,31 +141,20 @@ Namespace SpatialData
 
             Dim nStepsYear As Integer = core.m_EcospaceData.nTimeStepsPerYear
             Dim iTime As Integer = core.AbsoluteTimeToEcospaceTimestep(dt)
+            Dim iTx As Integer = (iTime - 1) Mod nStepsYear ' Month 0-11
 
             If dt < Me.Dataset.DateStart Then
-
                 ' Need to borrow repeating first year point
                 Dim iDataStart As Integer = core.AbsoluteTimeToEcospaceTimestep(Me.Dataset.DateStart)
-
-                Dim iTx As Integer = iTime Mod nStepsYear
-                Dim iSx As Integer = iDataStart Mod nStepsYear
-                Dim iOffset As Integer = If(iTx < iSx, nStepsYear, 0)
-                Dim iDataReal As Integer = (iDataStart \ nStepsYear) * nStepsYear + iTx + iOffset
-
+                Dim iDataReal As Integer = iDataStart + iTx
                 Return core.EcospaceTimestepToAbsoluteTime(iDataReal)
             End If
 
             If dt > Me.Dataset.DateEnd Then
-
                 ' Need to borrow repeating end year point
-                Dim iDataEnd As Integer = core.AbsoluteTimeToEcospaceTimestep(Me.Dataset.DateEnd) - nStepsYear + 1
-
-                Dim iTx As Integer = iTime Mod nStepsYear
-                Dim iSX As Integer = iDataEnd Mod nStepsYear
-                Dim iOffset As Integer = If(iTx > iSX, nStepsYear, 0)
-
-                Return core.EcospaceTimestepToAbsoluteTime((iDataEnd \ nStepsYear) * nStepsYear + iTx - iOffset)
-
+                Dim iDataEnd As Integer = core.AbsoluteTimeToEcospaceTimestep(Me.Dataset.DateEnd)
+                Dim iDataReal As Integer = IIf(iTx = 0, iDataEnd, iDataEnd - nStepsYear + iTx)
+                Return core.EcospaceTimestepToAbsoluteTime(iDataReal)
             End If
 
             Return dt
