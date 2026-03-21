@@ -427,21 +427,11 @@ Namespace Ecospace.Controls
                 pos.Guid = conn.Dataset.GUID
                 pos.PosVert = iRow
 
-                If conn.Dataset.TimeStart = Date.MinValue Then
-                    pos.DataStart = 1
-                    pos.AppliedDataStart = pos.DataStart
-                Else
-                    pos.DataStart = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeStart)
-                    pos.AppliedDataStart = core.AbsoluteTimeToEcospaceTimestep(conn.TimeStart)
-                End If
+                pos.DataStart = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.DateStart)
+                pos.AppliedDataStart = core.AbsoluteTimeToEcospaceTimestep(conn.DateStart)
 
-                If conn.Dataset.TimeEnd = Date.MaxValue Then
-                    pos.DataEnd = core.nEcospaceTimeSteps
-                    pos.AppliedDataStart = pos.DataEnd
-                Else
-                    pos.DataEnd = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.TimeEnd)
-                    pos.AppliedDataEnd = core.AbsoluteTimeToEcospaceTimestep(conn.TimeEnd)
-                End If
+                pos.DataEnd = core.AbsoluteTimeToEcospaceTimestep(conn.Dataset.DateEnd)
+                pos.AppliedDataEnd = core.AbsoluteTimeToEcospaceTimestep(conn.DateEnd)
 
                 For iStep As Integer = pos.AppliedDataStart To pos.AppliedDataEnd
                     Dim bIsBorrowed As Boolean = False
@@ -662,14 +652,14 @@ Namespace Ecospace.Controls
 
             Dim ds As ISpatialDataSet = conn.Dataset
 
-            If (ds.TimeStart = Date.MinValue) Then Return True
-            If (ds.TimeEnd = Date.MaxValue) Then Return True
+            If (ds.DateStart = Date.MinValue) Then Return True
+            If (ds.DateEnd = Date.MaxValue) Then Return True
 
             Dim core As cCore = Me.m_uic.Core
             Dim dtStart As Date = core.EcospaceTimestepToAbsoluteTime(1)
             Dim dtEnd As Date = core.EcospaceTimestepToAbsoluteTime(core.nEcospaceTimeSteps)
 
-            Return dtStart < conn.TimeEnd And dtEnd > conn.TimeStart
+            Return dtStart < conn.DateEnd And dtEnd > conn.DateStart
 
         End Function
 

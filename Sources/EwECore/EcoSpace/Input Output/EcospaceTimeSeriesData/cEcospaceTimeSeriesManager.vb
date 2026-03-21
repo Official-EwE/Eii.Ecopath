@@ -87,6 +87,9 @@ Namespace EcospaceTimeSeries
 
         Public Property BiomassInputFileName As String
             Get
+                If (String.IsNullOrWhiteSpace(Me.m_BiomassFileName)) Then
+                    Return Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.EcospaceResults), "timeseries.txt")
+                End If
                 Return Me.m_BiomassFileName
             End Get
             Set(value As String)

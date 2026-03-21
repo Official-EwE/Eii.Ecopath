@@ -333,16 +333,16 @@ Public Class cComplexityDataset
         Return True
     End Function
 
-    Public ReadOnly Property TimeStart As Date _
-        Implements ISpatialDataSet.TimeStart
+    Public ReadOnly Property DateStart As Date _
+        Implements ISpatialDataSet.DateStart
         Get
             ' Beginning of any Ecospace run time
             Return Me.m_core.EcospaceTimestepToAbsoluteTime(1)
         End Get
     End Property
 
-    Public ReadOnly Property TimeEnd As Date _
-        Implements ISpatialDataSet.TimeEnd
+    Public ReadOnly Property DateEnd As Date _
+        Implements ISpatialDataSet.DateEnd
         Get
             ' End of any Ecospace run time
             Dim parms As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters

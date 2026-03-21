@@ -5,7 +5,6 @@
 Imports System.IO
 Imports System.Text
 Imports System.Xml
-Imports Eii.Semantics
 Imports EwECore.Auxiliary
 Imports EwECore.Common
 Imports EwECore.Database
@@ -179,12 +178,6 @@ Public Class cCore
 #End If
 
 #End Region ' Generic variables
-
-#Region " Semantics "
-
-    Public ReadOnly SemanticRegistry As New SemanticRegistry()
-
-#End Region ' Semantics
 
 #Region " Private Initialization Flags "
 
