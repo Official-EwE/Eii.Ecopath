@@ -395,7 +395,7 @@ Namespace MSE
                 Me.ResultsStartYear = 1
                 Me.ResultsEndYear = theCore.nEcosimYears
                 Me.EffortSource = eMSEEffortSource.NoCap
-                Me.ModelType = eModelTypes.EcoSpace
+                Me.ModelType = eModelTypes.Ecosim
 
             Catch ex As Exception
                 m_logger.LogError(ex, "cMSEDataStructures.Init() Exception")
