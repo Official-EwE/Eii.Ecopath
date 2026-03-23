@@ -143,7 +143,6 @@ Namespace MSE
 
 
             'MSEModelType
-
             meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eModelTypes)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(core, New Integer, eVarNameFlags.MSEModelType, eStatusFlags.Null, eValueTypes.Int, meta, Me.m_core.m_validators.getValidator(eVarNameFlags.MSEModelType))
             val.Stored = True

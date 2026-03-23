@@ -766,7 +766,7 @@ Namespace MSE
                     Return True
                 Else
 
-                    Me.m_core.Messages.SendMessage(New cMessage("Ecosim has not been loaded. You must load an Ecosim scenario.",
+                    Me.m_core.Messages.SendMessage(New cMessage("Ecosim has been selected, but no scenario is currently loaded. Please load an Ecosim scenario to proceed.",
                                                            eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
                     Return False
                 End If 'Me.m_core.StateMonitor.HasEcosimLoaded
@@ -776,7 +776,7 @@ Namespace MSE
                 If Me.m_core.StateMonitor.HasEcospaceInitialized Then
                     Return True
                 Else
-                    Me.m_core.Messages.SendMessage(New cMessage("EcoSpace has not been loaded. You must load an Ecospace scenario.",
+                    Me.m_core.Messages.SendMessage(New cMessage("Ecospace has been selected, but no scenario is currently loaded. Please load an Ecospace scenario to proceed.",
                                                                 eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
                     Return False
                 End If 'Me.m_core.StateMonitor.HasEcospaceInitialized
