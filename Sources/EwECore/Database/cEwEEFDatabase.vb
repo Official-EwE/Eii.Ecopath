@@ -4,7 +4,7 @@ Imports System.Data
 Imports System.IO
 Imports Eii.Ecopath.Storage
 Imports Microsoft.EntityFrameworkCore
-Imports Microsoft.EntityFrameworkCore.Infrastructure
+Imports Microsoft.Extensions.Logging
 
 Namespace Database
     Public Class cEwEEFDatabase
@@ -124,7 +124,7 @@ Namespace Database
         End Function
 
         Public Overrides Function MaxDBVersion() As Single
-            Return 1.0F ' Or whatever is appropriate for your EF schema
+            Return cDatabaseUpdater.MaxSupportedVersion
         End Function
 
         Public Overrides ReadOnly Property Directory As String
@@ -157,6 +157,23 @@ Namespace Database
             Dim cmd As IDbCommand = conn.CreateCommand()
             cmd.CommandText = strSQL
             Return cmd
+        End Function
+
+        Public Overrides Function GetReader(strSQL As String) As IDataReader
+            Dim reader As cCoercedDataReader = Nothing
+            Try
+                Using command As IDbCommand = Me.CreateDBCommand(strSQL)
+                    reader = New cCoercedDataReader(command.ExecuteReader())
+                End Using
+            Catch ex As Exception
+#If VERBOSE_LEVEL >= 1 Then
+                Console.WriteLine("GetReader error: {0}", ex.Message)
+#End If
+                m_logger.LogError(ex, "cEwEEFDatabase.GetReader(" & strSQL & ")")
+                reader = Nothing
+            End Try
+            reader.PropTypes = GetDbContext().GetPropTypes(DataReaderDiff.GetTableName(reader))
+            Return reader
         End Function
 
     End Class

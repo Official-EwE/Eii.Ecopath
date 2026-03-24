@@ -27,13 +27,37 @@ Namespace Database
 
         Private Function Coerce(value As Object, columnName As String) As Object
             Dim targetType As Type = Nothing
-            If Not PropTypes.TryGetValue(columnName, targetType) Then Return value
+            If Not _propTypes.TryGetValue(columnName, targetType) Then Return value
             Dim underlying = If(Nullable.GetUnderlyingType(targetType), targetType)
-            If underlying = GetType(String) AndAlso value Is DBNull.Value Then Return ""
-            If value Is DBNull.Value OrElse value Is Nothing Then Return DBNull.Value
-            If underlying = GetType(Boolean) AndAlso IsNumeric(value) Then Return value <> 0
 
+           ' Null handling: strings get empty string, everything else gets DBNull
+            If value Is DBNull.Value OrElse value Is Nothing Then
+                Return If(underlying = GetType(String), "", DBNull.Value)
+            End If
+
+            If underlying = GetType(Boolean) Then Return CoerceToBoolean(value)
+            If underlying = GetType(Integer) Then Return CoerceToInt32(value)
             Return value
+        End Function
+
+        Private Function CoerceToBoolean(value As Object) As Object
+            If TypeOf value Is Boolean Then Return value
+            If TypeOf value Is String Then
+                Dim s = DirectCast(value, String).Trim().ToLowerInvariant()
+                If s = "true"  OrElse s = "1" OrElse s = "yes" Then Return True
+                If s = "false" OrElse s = "0" OrElse s = "no"  Then Return False
+            End If
+            If IsNumeric(value) Then Return Convert.ToInt64(value) <> 0
+            Return value ' let the caller deal with an unconvertible value
+        End Function
+
+        Private Function CoerceToInt32(value As Object) As Object
+            If TypeOf value Is Integer Then Return value
+            Try
+                Return Convert.ToInt32(value)
+            Catch
+                Return value
+            End Try
         End Function
 
         ' --- Coerced accessors ---

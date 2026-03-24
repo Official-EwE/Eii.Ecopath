@@ -137,6 +137,16 @@ Namespace DataSources
                         access = eDatasourceAccessType.Failed_FileNotFound
                     End If
 
+                Case eDataSourceTypes.Sqlite
+                    Dim db As New cEwEEFDatabase()
+                    access = db.Open(strDatabase)
+                    If (access = eDatasourceAccessType.Opened) Then
+                        comp = db.Compatibility
+                        db.Close()
+                    Else
+                        access = eDatasourceAccessType.Failed_FileNotFound
+                    End If
+
                 Case eDataSourceTypes.NotSet
 
                     comp = cEwEDatabase.eCompatibilityTypes.Unknown

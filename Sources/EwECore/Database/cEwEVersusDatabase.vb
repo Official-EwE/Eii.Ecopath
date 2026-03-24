@@ -78,7 +78,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("GetReader error: {0}", ex.Message)
 #End If
-                m_logger.LogError(ex, "cEwEDatabase.GetReader(" & strSQL & ")")
+                m_logger.LogError(ex, "cEwEVersusDatabase.GetReader(" & strSQL & ")")
                 Return Nothing
             End Try
             Dim vsReader = New cEwEVersusDataReader(primaryReader, secondaryReader)

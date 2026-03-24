@@ -18,16 +18,17 @@ Namespace Database
             PrimaryOnly
             SecondaryOnly
             Compare
+            CompareAndSwap
         End Enum
 
-        Public Sub New(Optional primaryReader As IDataReader = Nothing, Optional secondaryReader As IDataReader = Nothing, Optional mode As Mode = Mode.Compare)
-            _primaryReader = New cCoercedDataReader(primaryReader)
-            _secondaryReader = New cCoercedDataReader(secondaryReader)
+        Public Sub New(Optional primaryReader As IDataReader = Nothing, Optional secondaryReader As IDataReader = Nothing, Optional mode As Mode = Mode.CompareAndSwap)
+            _primaryReader = New cCoercedDataReader(If(mode = Mode.CompareAndSwap, secondaryReader, primaryReader))
+            _secondaryReader = New cCoercedDataReader(If(mode = Mode.CompareAndSwap, primaryReader, secondaryReader))
             _mode = mode
         End Sub
 
         Public Sub SetFuncGetPropTypes(getPropTypes As Func(Of String, Dictionary(Of String, Type)))
-            Dim tableName = DataReaderDiff.GetTableName(_secondaryReader)
+            Dim tableName = DataReaderDiff.GetTableName(If(_mode = Mode.CompareAndSwap, _primaryReader, _secondaryReader))
             Dim propTypes = getPropTypes(tableName)
             _primaryReader.PropTypes = propTypes
             _secondaryReader.PropTypes = propTypes
@@ -40,13 +41,18 @@ Namespace Database
                 Case Mode.SecondaryOnly
                     Return _secondaryReader IsNot Nothing AndAlso _secondaryReader.Read()
                 Case Mode.Compare
+                Case Mode.CompareAndSwap
                     Dim primaryHasRow = _primaryReader IsNot Nothing AndAlso _primaryReader.Read()
                     _secondaryReader.Read()
                     If primaryHasRow Then
                         _rowCount += 1
                         _rowDiffs.AddRange(DataReaderDiff.CompareCurrentRow(_primaryReader, _secondaryReader))
                     Else
-                        DataReaderDiff.BroadcastDiffs(_primaryReader, _secondaryReader, _rowDiffs, _rowCount)
+                        If _mode = Mode.CompareAndSwap Then
+                            DataReaderDiff.BroadcastDiffs(_secondaryReader, _primaryReader, _rowDiffs, _rowCount)
+                        Else
+                            DataReaderDiff.BroadcastDiffs(_primaryReader, _secondaryReader, _rowDiffs, _rowCount)
+                        End If
                         _rowDiffs.Clear()
                         _rowCount = 0
                     End If
