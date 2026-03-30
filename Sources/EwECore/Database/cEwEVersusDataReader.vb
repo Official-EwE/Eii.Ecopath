@@ -21,7 +21,7 @@ Namespace Database
             CompareAndSwap
         End Enum
 
-        Public Sub New(Optional primaryReader As IDataReader = Nothing, Optional secondaryReader As IDataReader = Nothing, Optional mode As Mode = Mode.CompareAndSwap)
+        Public Sub New(Optional primaryReader As IDataReader = Nothing, Optional secondaryReader As IDataReader = Nothing, Optional mode As Mode = Mode.Compare)
             _primaryReader = New cCoercedDataReader(If(mode = Mode.CompareAndSwap, secondaryReader, primaryReader))
             _secondaryReader = New cCoercedDataReader(If(mode = Mode.CompareAndSwap, primaryReader, secondaryReader))
             _mode = mode
