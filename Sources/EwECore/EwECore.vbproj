@@ -80,13 +80,6 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Eii.Ecopath.Storage" Condition="'$(TargetFramework)' == 'net48'">
-      <HintPath>..\..\..\Eii.Ecopath.Storage\Eii.Ecopath.Storage\bin\Debug\net48\Eii.Ecopath.Storage.dll</HintPath>
-    </Reference>
-    <Reference Include="Eii.Ecopath.Storage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=99ca70b97231d041" Condition="'$(TargetFramework)' == 'net8.0'">
-      <HintPath>..\..\..\Eii.Ecopath.Storage\Eii.Ecopath.Storage\bin\Debug\net8.0\Eii.Ecopath.Storage.dll</HintPath>
-      <SpecificVersion>True</SpecificVersion>
-    </Reference>    
     <Reference Include="Interop.JRO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=1d875393b3ebcad0, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.interop.access.dao, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
     <Reference Update="System">
@@ -170,6 +163,7 @@
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.8" />
     <PackageReference Include="Eii.SemanticRegistry" Version="2.0.4" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.2" />
