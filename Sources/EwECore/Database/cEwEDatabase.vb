@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports System.Data.OleDb
@@ -229,7 +229,7 @@ Namespace Database
             ''' Returns an empty row for the given table to populate values into.
             ''' </summary>
             ''' <returns>An empty row</returns>
-            ''' <remarks>Note that this empty row is not yet added to the table. 
+            ''' <remarks>Note that this empty row is not yet added to the table.
             ''' If the row is populated to satisfaction, call <see cref="AddRow">AddRow</see>
             ''' to add it to the the list of rows waiting to be added to the database.</remarks>
             ''' ---------------------------------------------------------------
@@ -333,8 +333,8 @@ Namespace Database
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Helper method; replaces DBNull values that are specified as not 
-            ''' Nullable in the underlying Access database schema with the default 
+            ''' Helper method; replaces DBNull values that are specified as not
+            ''' Nullable in the underlying Access database schema with the default
             ''' value in the schema.
             ''' </summary>
             ''' <param name="drow">The row to fix.</param>
@@ -443,8 +443,8 @@ Namespace Database
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Helper method; replaces DBNull values that are specified as not 
-            ''' nullable in the underlying Access database schema with the default 
+            ''' Helper method; replaces DBNull values that are specified as not
+            ''' nullable in the underlying Access database schema with the default
             ''' value in the schema.
             ''' </summary>
             ''' <param name="drow">The row to fix.</param>
@@ -626,7 +626,7 @@ Namespace Database
         ''' Compact an EwE database.
         ''' </summary>
         ''' <param name="strFileFrom">Source database to compact.</param>
-        ''' <param name="strFileTo">Target database to compact to. If left 
+        ''' <param name="strFileTo">Target database to compact to. If left
         ''' blank, the source database is replaced with a compacted version.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
@@ -639,7 +639,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="strConnectionFrom">Compact source.</param>
         ''' <param name="strConnectionTo">Compact target.</param>
-        ''' <returns>True if a compact engine is available for the underlying 
+        ''' <returns>True if a compact engine is available for the underlying
         ''' database.</returns>
         ''' -------------------------------------------------------------------
         Public MustOverride Function CanCompact(strConnectionFrom As String,
