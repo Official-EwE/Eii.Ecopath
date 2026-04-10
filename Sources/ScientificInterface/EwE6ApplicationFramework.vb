@@ -34,8 +34,10 @@ Module EwE6ApplicationFramework
 
         Dim logPath = Path.GetDirectoryName(LoggingContext.LogFile)
 
-        ' Start websocket server for data messaging
-        Dim dummy = cWebSocketHelper.Instance
+        ' Conditionally start web-socket server to allow web-socket clients to connect
+        If Environment.GetEnvironmentVariable("EWE_ENABLE_WEBSOCKET") = "1" Then
+            Dim dummy = cWebSocketHelper.Instance
+        End If
 
         ' Configure Serilog
         Log.Logger = New LoggerConfiguration() _
