@@ -4,6 +4,7 @@
 
 Imports System.IO
 Imports EwECore.Database
+Imports EwEUtils.NetUtilities
 Imports EwEUtils.SystemUtilities
 
 Namespace DataSources
@@ -36,10 +37,15 @@ Namespace DataSources
                     ' check if alongside this file there is a .sqlite file
                     Dim dir As String = Path.GetDirectoryName(strFile)
                     Dim baseName As String = Path.GetFileNameWithoutExtension(strFile)
+
                     Dim sqliteFile As String = Path.Combine(dir, baseName & ".sqlite")
-                    If File.Exists(sqliteFile) Then
+                    ' Check if sqlite file is present,
+                    '   but also check if WebSocket server is running, needed for Access-Sqlite data source comparison,
+                    '   otherwise it will be a waist of resources
+                    If File.Exists(sqliteFile) And cWebsocketHelper.IsRunning() Then
                         Return eDataSourceTypes.AccessVsSqlite
                     End If
+
                     Return eDataSourceTypes.Access2007
 
                 Case ".mdb", ".ewemdb"

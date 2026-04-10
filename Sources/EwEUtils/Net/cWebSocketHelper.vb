@@ -129,6 +129,11 @@ Namespace NetUtilities
             _clients.Clear()
         End Function
 
+        ' Returns True if the singleton instance has been created and the server is running
+        Public Shared Function IsRunning() As Boolean
+            Return _instance IsNot Nothing AndAlso _instance._listener IsNot Nothing AndAlso _instance._listener.IsListening
+        End Function
+
     End Class
 
 End Namespace
