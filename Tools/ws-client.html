@@ -1,3 +1,23 @@
+<!--
+  WebSocket Monitor Client
+  ---------------------------------------------
+  This client connects to ws://localhost:5123/ws/ and displays incoming WebSocket messages.
+
+  Expected Message Structure:
+  - The client expects messages as JSON arrays with the following keys:
+      ["table", <tableName>, "rowCount", <rowCount>, "rowDiffs", <arrayOfDiffs>]
+    - "table" (string): The name of the table being reported.
+    - "rowCount" (number): The number of rows in the table.
+    - "rowDiffs" (array): An array of differences (can be empty).
+  - If "rowDiffs" is empty, the message is used to update the stats panel but is not shown in the main message list.
+  - If "rowDiffs" contains items, the message is displayed in the main message list and the stats panel is updated.
+  - Other JSON or plain text messages are also accepted and displayed, but only the above structure updates the stats panel.
+
+  Display Logic:
+  - The main message list shows only messages with non-empty "rowDiffs".
+  - The stats panel (right) shows the latest row count and whether there are diffs for each table.
+  - Messages are pretty-printed and HTML-escaped for safe display.
+-->
 <!DOCTYPE html>
 <html>
 <head>
