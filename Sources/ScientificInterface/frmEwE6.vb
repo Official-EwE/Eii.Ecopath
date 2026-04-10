@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports System.IO
@@ -39,7 +39,7 @@ Public Class frmEwE6
 
 #Region " Variables "
 
-    ' - Message handlers 
+    ' - Message handlers
     Private m_mhProgress As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
     Private m_mhEcospace As cMessageHandler = Nothing
@@ -108,7 +108,7 @@ Public Class frmEwE6
         ''' Constructor.
         ''' </summary>
         ''' <param name="frm">The <see cref="frmEwE6"/> to toggle presentation mode for.</param>
-        ''' <param name="bUseOpacity">If set to true, the main form will be totally 
+        ''' <param name="bUseOpacity">If set to true, the main form will be totally
         ''' opaque during a presentation mode switch.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(frm As frmEwE6, Optional bUseOpacity As Boolean = False)
@@ -951,7 +951,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Returns the file name of the current loaded model.
     ''' </summary>
-    ''' <param name="bFullPath">Flag stating thether the full path needs to be 
+    ''' <param name="bFullPath">Flag stating thether the full path needs to be
     ''' returned.</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property SelectedFileName(Optional bFullPath As Boolean = True) As String
@@ -1047,7 +1047,7 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
-        ' Add the dock panel 
+        ' Add the dock panel
         Me.m_DockPanel = New DockPanel()
         Me.m_DockPanel.Parent = Me
         Me.m_DockPanel.Dock = DockStyle.Fill
@@ -1171,7 +1171,7 @@ Public Class frmEwE6
                 Me.ClearScenarioDropdowns()
                 Me.ClearModelMRUDropdowns()
 
-                ' JS 13Dec10: Another attempt to free tooltip memory 
+                ' JS 13Dec10: Another attempt to free tooltip memory
                 Dim ts As cToolTipShared = cToolTipShared.GetInstance()
                 ts.RemoveAll()
                 ts.Dispose()
@@ -1187,7 +1187,7 @@ Public Class frmEwE6
                 Me.m_pluginManager.UIContext = Nothing
                 Me.UIContext = Nothing
 
-                ' Clear commands after all UI elements have lost their UI context, which 
+                ' Clear commands after all UI elements have lost their UI context, which
                 ' should have triggered proper cleanups
                 cmdh.Clear()
 
@@ -1421,7 +1421,7 @@ Public Class frmEwE6
     ''' converted file.</param>
     ''' <returns>A <see cref="cEwEDatabase.eCompatibilityTypes"/> value</returns>
     ''' <remarks>
-    ''' This logic will need to change entirely. A database 
+    ''' This logic will need to change entirely. A database
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Private Function CovertToEwE6(ByRef strFileName As String) As cEwEDatabase.eCompatibilityTypes
@@ -1527,7 +1527,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method, updates the state of controls reflecting the current model. 
+    ''' Helper method, updates the state of controls reflecting the current model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub UpdateModelControls()
@@ -1554,7 +1554,7 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Helper method, populate the content of the scenario drop-down controls
-    ''' with lists of scenarios available in the current model. 
+    ''' with lists of scenarios available in the current model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub PopulateScenarioDropdowns()
@@ -1650,7 +1650,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method, clear the content of the scenario drop-down controls. 
+    ''' Helper method, clear the content of the scenario drop-down controls.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub ClearScenarioDropdowns()
@@ -1779,7 +1779,7 @@ Public Class frmEwE6
     ''' </summary>
     ''' <param name="strFileName">Name of the file to remove.</param>
     ''' <param name="iStartPos">Index in the MRU list to start searching for
-    ''' the item to remove. If not provided, the search will start at the 
+    ''' the item to remove. If not provided, the search will start at the
     ''' beginning of the list.</param>
     ''' -----------------------------------------------------------------------
     Private Sub RemoveModelMRU(strFileName As String,
@@ -1796,7 +1796,7 @@ Public Class frmEwE6
                 Dim strEntry As String = CStr(alMDBmru(iStartPos))
                 ' Is same file?
                 If (String.Compare(strEntry, strFileName, True) = 0) Then
-                    ' #Yes: remove 
+                    ' #Yes: remove
                     alMDBmru.RemoveAt(iStartPos)
                     iStartPos -= 1
                 End If
@@ -1975,7 +1975,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method, tries to activate an opened dock panel or MDI child 
+    ''' Helper method, tries to activate an opened dock panel or MDI child
     ''' window.
     ''' </summary>
     ''' <param name="strNavLink">Navigation descriptor to find the panel with.</param>
@@ -1985,7 +1985,7 @@ Public Class frmEwE6
 
         Dim bFound As Boolean = False
 
-        ' Dock settings, loop through current opened 
+        ' Dock settings, loop through current opened
         For Each cnt As DockContent In Me.m_DockPanel.Contents
 
             If (TypeOf cnt.Tag Is String) Then
@@ -2094,7 +2094,7 @@ Public Class frmEwE6
     ''' </summary>
     ''' <param name="strFileName">Location of the model to open.</param>
     ''' <param name="loadsource">Flag indicating where the load request came from.</param>
-    ''' <remarks>This code is designed for strFileName to indicate a path. It should 
+    ''' <remarks>This code is designed for strFileName to indicate a path. It should
     ''' be possible to indicate a database as well. One day...</remarks>
     ''' ---------------------------------------------------------------------------
     Private Function LoadEcopathModel(strFileName As String,
@@ -2181,7 +2181,7 @@ Public Class frmEwE6
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Save model to a different datasource and switch to that new datasource. 
+    ''' Save model to a different datasource and switch to that new datasource.
     ''' </summary>
     ''' <param name="strFileName">Full path + extension of the file to save.</param>
     ''' ---------------------------------------------------------------------------
@@ -2204,7 +2204,7 @@ Public Class frmEwE6
     ''' <param name="format">The file format to create.</param>
     ''' <returns>An Ecopath database, if successful.</returns>
     ''' <remarks>
-    ''' Note that this will NOT load the new model! For this, 
+    ''' Note that this will NOT load the new model! For this,
     ''' <see cref="LoadEcopathModel"/> will need to be called.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
@@ -2273,7 +2273,7 @@ Public Class frmEwE6
                 importance = eMessageImportance.Critical
 
                 ' Should not occur
-                'Case eDatasourceAccessType.Failed_ReadOnly 
+                'Case eDatasourceAccessType.Failed_ReadOnly
 
             Case eDatasourceAccessType.Failed_OSUnsupported
                 strPrompt = My.Resources.PROMPT_DRIVERERROR
@@ -2313,7 +2313,7 @@ Public Class frmEwE6
     ''' <param name="strModelName">The name of the model to create.</param>
     ''' <returns>An Ecopath database, if successful.</returns>
     ''' <remarks>
-    ''' <para>Note that this will NOT load the new model! For this, 
+    ''' <para>Note that this will NOT load the new model! For this,
     ''' <see cref="LoadEcopathModel"/> will need to be called.</para>
     ''' <para>This method distills the database type from the provided file name.</para>
     ''' </remarks>
@@ -2460,7 +2460,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="strName"></param>
     ''' <param name="strDescription"></param>
@@ -2553,7 +2553,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="strName"></param>
     ''' <param name="strDescription"></param>
@@ -2576,7 +2576,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="es"></param>
     ''' <returns></returns>
@@ -2658,7 +2658,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="strName"></param>
     ''' <param name="strDescription"></param>
@@ -2677,7 +2677,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="es"></param>
     ''' <returns></returns>
@@ -2844,7 +2844,7 @@ Public Class frmEwE6
                     If (frm IsNot Nothing) Then
                         ' #Yes
                         If frm.WindowState = FormWindowState.Minimized Then frm.WindowState = FormWindowState.Normal
-                        ' Is this a dockable form? 
+                        ' Is this a dockable form?
                         If (TypeOf frm Is DockContent) And (Me.m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
                             ' #Yes: show the form in the dock panel
                             DirectCast(frm, DockContent).Show(Me.m_DockPanel, DockState.Document)
@@ -3350,7 +3350,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the 
+    ''' Command update handler; enables and disables the
     ''' <see cref="m_cmdViewPresentationMode">View Presentation Mode command</see>.
     ''' </summary>
     Private Sub OnUpdateViewPresentationMode(cmd As cCommand) _
@@ -3835,7 +3835,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; takes care of enabling and disabling the 
+    ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdLoadEcosimScenario">Load Ecosim Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateLoadEcosimScenario(cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnUpdate
@@ -3852,7 +3852,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; takes care of enabling and disabling the 
+    ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdCloseEcosimScenario">Close Ecosim Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateCloseEcosimScenario(cmd As cCommand) Handles m_cmdCloseEcosimScenario.OnUpdate
@@ -3912,7 +3912,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command handler; deletes an Ecosim scenario 
+    ''' Command handler; deletes an Ecosim scenario
     ''' </summary>
     Private Sub OnInvokeDeleteEcosimScenario(cmd As cCommand) _
          Handles m_cmdDeleteEcosimScenario.OnInvoke
@@ -4200,7 +4200,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the 
+    ''' Command update handler; enables and disables the
     ''' <see cref="m_cmdSaveEcospaceScenarioAs">Save Ecospace Scenario As</see> command.
     ''' </summary>
     Private Sub OnUpdateSaveEcospaceScenarioAs(cmd As cCommand) Handles m_cmdSaveEcospaceScenarioAS.OnUpdate
@@ -4208,7 +4208,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command handler; deletes an Ecosim scenario 
+    ''' Command handler; deletes an Ecosim scenario
     ''' </summary>
     Private Sub OnInvokeDeleteEcospaceScenario(cmd As cCommand) _
          Handles m_cmdDeleteEcospaceScenario.OnInvoke
@@ -4595,7 +4595,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the 
+    ''' Command update handler; enables and disables the
     ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
     ''' </summary>
     Private Sub OnUpdateExportLayerData(cmd As cCommand) _
@@ -4623,7 +4623,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the 
+    ''' Command update handler; enables and disables the
     ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
     ''' </summary>
     Private Sub OnUpdateEditLayer(cmd As cCommand) _
@@ -4704,7 +4704,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; takes care of enabling and disabling the 
+    ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdLoadEcotracerScenario">Load Ecotracer Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateLoadEcotracerScenario(cmd As cCommand) _
@@ -4723,7 +4723,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; takes care of enabling and disabling the 
+    ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdCloseEcotracerScenario">Close Ecotracer Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateCloseEcotracerScenario(cmd As cCommand) _
@@ -4904,7 +4904,7 @@ Public Class frmEwE6
                         pgcmd.Form.Hide()
                     End If
 
-                    ' Is this a dockable form? 
+                    ' Is this a dockable form?
                     If (TypeOf pgcmd.Form Is DockContent) And (Me.m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
                         ' #Yes
                         ' Fix dockstyle
@@ -4959,7 +4959,7 @@ Public Class frmEwE6
 
 #End Region ' License commands
 
-#End Region ' Command handlers 
+#End Region ' Command handlers
 
 #Region " Event handlers "
 
