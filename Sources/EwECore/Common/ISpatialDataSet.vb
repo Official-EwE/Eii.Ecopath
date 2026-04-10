@@ -54,7 +54,7 @@ Namespace Common
         ''' If no data is loaded or this property does not apply, this method is expected to return <see cref="DateTime.MaxValue"/>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        ReadOnly Property TimeStart() As DateTime
+        ReadOnly Property DateStart() As DateTime
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -64,7 +64,7 @@ Namespace Common
         ''' If no data is loaded or this property does not apply, this method is expected to return <see cref="DateTime.MinValue"/>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        ReadOnly Property TimeEnd() As DateTime
+        ReadOnly Property DateEnd() As DateTime
 
         ''' -------------------------------------------------------------------
         ''' <summary>

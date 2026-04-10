@@ -37,13 +37,15 @@ Namespace Ecospace.Controls
             Me.m_btnConfigDS = New System.Windows.Forms.Button()
             Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plExperimental = New System.Windows.Forms.Panel()
-            Me.m_tlTimeRangePanel = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tlpTimeRangePanel = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plStartYear = New System.Windows.Forms.Panel()
+            Me.m_dtpStart = New System.Windows.Forms.DateTimePicker()
             Me.m_lblStart = New System.Windows.Forms.Label()
             Me.m_rbStartWithData = New System.Windows.Forms.RadioButton()
             Me.m_rbStartYear = New System.Windows.Forms.RadioButton()
             Me.m_hdrTimeRange = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plEndYear = New System.Windows.Forms.Panel()
+            Me.m_dtpEnd = New System.Windows.Forms.DateTimePicker()
             Me.m_lblEnd = New System.Windows.Forms.Label()
             Me.m_rbEndWithData = New System.Windows.Forms.RadioButton()
             Me.m_rbEndYear = New System.Windows.Forms.RadioButton()
@@ -62,8 +64,6 @@ Namespace Ecospace.Controls
             Me.m_tsbnShowIncompatibleConnections = New System.Windows.Forms.ToolStripButton()
             Me.m_sep = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnDefineConnections = New System.Windows.Forms.ToolStripButton()
-            Me.m_dtpStart = New System.Windows.Forms.DateTimePicker()
-            Me.m_dtpEnd = New System.Windows.Forms.DateTimePicker()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnection.SuspendLayout()
             Me.m_plScalarAdapter.SuspendLayout()
@@ -71,7 +71,7 @@ Namespace Ecospace.Controls
             Me.m_plDataset.SuspendLayout()
             CType(Me.m_pbCompat, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_plExperimental.SuspendLayout()
-            Me.m_tlTimeRangePanel.SuspendLayout()
+            Me.m_tlpTimeRangePanel.SuspendLayout()
             Me.m_plStartYear.SuspendLayout()
             Me.m_plEndYear.SuspendLayout()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -248,17 +248,17 @@ Namespace Ecospace.Controls
             '
             'm_plExperimental
             '
-            Me.m_plExperimental.Controls.Add(Me.m_tlTimeRangePanel)
+            Me.m_plExperimental.Controls.Add(Me.m_tlpTimeRangePanel)
             resources.ApplyResources(Me.m_plExperimental, "m_plExperimental")
             Me.m_plExperimental.Name = "m_plExperimental"
             '
-            'm_tlTimeRangePanel
+            'm_tlpTimeRangePanel
             '
-            resources.ApplyResources(Me.m_tlTimeRangePanel, "m_tlTimeRangePanel")
-            Me.m_tlTimeRangePanel.Controls.Add(Me.m_plStartYear, 0, 1)
-            Me.m_tlTimeRangePanel.Controls.Add(Me.m_hdrTimeRange, 0, 0)
-            Me.m_tlTimeRangePanel.Controls.Add(Me.m_plEndYear, 0, 2)
-            Me.m_tlTimeRangePanel.Name = "m_tlTimeRangePanel"
+            resources.ApplyResources(Me.m_tlpTimeRangePanel, "m_tlpTimeRangePanel")
+            Me.m_tlpTimeRangePanel.Controls.Add(Me.m_plStartYear, 0, 1)
+            Me.m_tlpTimeRangePanel.Controls.Add(Me.m_hdrTimeRange, 0, 0)
+            Me.m_tlpTimeRangePanel.Controls.Add(Me.m_plEndYear, 0, 2)
+            Me.m_tlpTimeRangePanel.Name = "m_tlpTimeRangePanel"
             '
             'm_plStartYear
             '
@@ -268,6 +268,11 @@ Namespace Ecospace.Controls
             Me.m_plStartYear.Controls.Add(Me.m_rbStartYear)
             resources.ApplyResources(Me.m_plStartYear, "m_plStartYear")
             Me.m_plStartYear.Name = "m_plStartYear"
+            '
+            'm_dtpStart
+            '
+            resources.ApplyResources(Me.m_dtpStart, "m_dtpStart")
+            Me.m_dtpStart.Name = "m_dtpStart"
             '
             'm_lblStart
             '
@@ -304,6 +309,11 @@ Namespace Ecospace.Controls
             Me.m_plEndYear.Controls.Add(Me.m_rbEndYear)
             resources.ApplyResources(Me.m_plEndYear, "m_plEndYear")
             Me.m_plEndYear.Name = "m_plEndYear"
+            '
+            'm_dtpEnd
+            '
+            resources.ApplyResources(Me.m_dtpEnd, "m_dtpEnd")
+            Me.m_dtpEnd.Name = "m_dtpEnd"
             '
             'm_lblEnd
             '
@@ -362,7 +372,7 @@ Namespace Ecospace.Controls
             Me.m_lbSourceDatasets.Sorted = True
             Me.m_lbSourceDatasets.TextFilter = ""
             Me.m_lbSourceDatasets.UIContext = Nothing
-            Me.m_lbSourceDatasets.VariableFilter = eVarNameFlags.NotSet
+            Me.m_lbSourceDatasets.VariableFilter = EwECore.eVarNameFlags.NotSet
             '
             'm_btnRemove
             '
@@ -433,16 +443,6 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_tsbnDefineConnections, "m_tsbnDefineConnections")
             Me.m_tsbnDefineConnections.Name = "m_tsbnDefineConnections"
             '
-            'm_dtpStart
-            '
-            resources.ApplyResources(Me.m_dtpStart, "m_dtpStart")
-            Me.m_dtpStart.Name = "m_dtpStart"
-            '
-            'm_dtpEnd
-            '
-            resources.ApplyResources(Me.m_dtpEnd, "m_dtpEnd")
-            Me.m_dtpEnd.Name = "m_dtpEnd"
-            '
             'dlgApplyConnection
             '
             resources.ApplyResources(Me, "$this")
@@ -465,7 +465,7 @@ Namespace Ecospace.Controls
             Me.m_plDataset.ResumeLayout(False)
             CType(Me.m_pbCompat, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_plExperimental.ResumeLayout(False)
-            Me.m_tlTimeRangePanel.ResumeLayout(False)
+            Me.m_tlpTimeRangePanel.ResumeLayout(False)
             Me.m_plStartYear.ResumeLayout(False)
             Me.m_plStartYear.PerformLayout()
             Me.m_plEndYear.ResumeLayout(False)
@@ -517,7 +517,7 @@ Namespace Ecospace.Controls
         Private WithEvents m_tslFilter As ToolStripLabel
         Private WithEvents m_plExperimental As Panel
         Private WithEvents m_sep As ToolStripSeparator
-        Private WithEvents m_tlTimeRangePanel As TableLayoutPanel
+        Private WithEvents m_tlpTimeRangePanel As TableLayoutPanel
         Private WithEvents m_plStartYear As Panel
         Private WithEvents m_lblStart As Label
         Private WithEvents m_rbStartWithData As RadioButton

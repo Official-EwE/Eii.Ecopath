@@ -35,15 +35,15 @@ Friend NotInheritable Class cSpatialDatasetPlaceholder
     ''' <inheritdocs cref="ISpatialDataSet.GUID"/>
     Public Property GUID As Guid Implements ISpatialDataSet.GUID
 
-    ''' <inheritdocs cref="ISpatialDataSet.TimeStart"/>
-    Public ReadOnly Property TimeStart As Date Implements ISpatialDataSet.TimeStart
+    ''' <inheritdocs cref="ISpatialDataSet.DateStart"/>
+    Public ReadOnly Property DateStart As Date Implements ISpatialDataSet.DateStart
         Get
             Return Date.MinValue
         End Get
     End Property
 
-    ''' <inheritdocs cref="ISpatialDataSet.TimeEnd"/>
-    Public ReadOnly Property TimeEnd As Date Implements ISpatialDataSet.TimeEnd
+    ''' <inheritdocs cref="ISpatialDataSet.DateEnd"/>
+    Public ReadOnly Property DateEnd As Date Implements ISpatialDataSet.DateEnd
         Get
             Return Date.MaxValue
         End Get

@@ -168,6 +168,14 @@ Namespace Ecospace.Controls
             cToolTipShared.GetInstance().SetToolTip(Me.m_btnAdd, "Connect")
             cToolTipShared.GetInstance().SetToolTip(Me.m_btnRemove, "Disconnect")
 
+            Me.m_dtpStart.Format = DateTimePickerFormat.Custom
+            Me.m_dtpStart.CustomFormat = Me.m_strDateMask
+            Me.m_dtpStart.ShowUpDown = True
+
+            Me.m_dtpEnd.Format = DateTimePickerFormat.Custom
+            Me.m_dtpEnd.CustomFormat = Me.m_strDateMask
+            Me.m_dtpEnd.ShowUpDown = True
+
             Me.m_bInUpdate = False
             Me.CenterToParent()
 
@@ -500,7 +508,7 @@ Namespace Ecospace.Controls
                 Me.UpdateControls()
                 Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
 
-                Dim iStartTimeStep As Integer = Math.Max(1, Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.SelectedDataset.TimeStart))
+                Dim iStartTimeStep As Integer = Math.Max(1, Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.SelectedDataset.DateStart))
                 Dim dtStartDate As DateTime = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStartTimeStep)
                 Dim dScale As Double = 1.0
                 Dim msg As cMessage = Nothing
@@ -547,12 +555,9 @@ Namespace Ecospace.Controls
 
 #Region " Dating "
 
-        Private Sub OnEnterCustomStartYear(sender As Object, e As EventArgs)
-            Me.m_rbStartYear.Checked = True
-        End Sub
-
-        Private Sub OnEnterCustomRnfYear(sender As Object, e As EventArgs)
-            Me.m_rbEndYear.Checked = True
+        Private Sub OnCustonYearChanged(sender As Object, e As EventArgs) Handles m_dtpStart.ValueChanged, m_dtpEnd.ValueChanged
+            If (Me.m_bInUpdate) Then Return
+            Me.UpdateTimeRangePanelControls()
         End Sub
 
 #End Region ' Dating
@@ -574,12 +579,12 @@ Namespace Ecospace.Controls
                         Me.m_fpScale.Enabled = True
                     End If
 
-                    conn.CustomDateStart = If(m_rbStartWithData.Checked, DateTime.MaxValue, Me.m_dtpStart.Value)
-                    conn.CustomDateEnd = If(m_rbEndWithData.Checked, DateTime.MaxValue, Me.m_dtpEnd.Value)
+                    conn.CustomDateStart = If(m_rbStartWithData.Checked, cSpatialDataConnection.DateStartDefault, Me.m_dtpStart.Value)
+                    conn.CustomDateEnd = If(m_rbEndWithData.Checked, cSpatialDataConnection.DateEndDefault, Me.m_dtpEnd.Value)
 
-                    ' Sanity check
-                    Debug.Assert(conn.UseDefaultDateStart = Me.m_rbStartWithData.Checked)
-                    Debug.Assert(conn.UseDefaultDateEnd = Me.m_rbEndWithData.Checked)
+                    '' Sanity check
+                    'Debug.Assert(conn.UseDefaultDateStart = Me.m_rbStartWithData.Checked)
+                    'Debug.Assert(conn.UseDefaultDateEnd = Me.m_rbEndWithData.Checked)
 
                     Me.LayerChanged()
                 Catch ex As Exception
@@ -883,33 +888,56 @@ Namespace Ecospace.Controls
 
         Private Sub UpdateTimeRangePanel()
 
+            Dim core As cCore = Me.UIContext.Core
             Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection
-            If (conn Is Nothing) Then Return
+            Dim dtStart As DateTime = core.EcospaceTimestepToAbsoluteTime(1)
+            Dim dtEnd As DateTime = core.EcospaceTimestepToAbsoluteTime(core.nEcospaceTimeSteps)
 
             Dim bInUpdate As Boolean = Me.m_bInUpdate
             Me.m_bInUpdate = True
 
-            Me.m_rbStartWithData.Checked = conn.UseDefaultDateStart
-            Me.m_rbStartYear.Checked = Not conn.UseDefaultDateStart
-            Me.Populate(Me.m_dtpStart, conn.CustomDateStart)
+            If (conn IsNot Nothing) Then
 
-            Me.m_rbEndWithData.Checked = conn.UseDefaultDateEnd
-            Me.m_rbEndYear.Checked = Not conn.UseDefaultDateEnd
-            Me.Populate(Me.m_dtpEnd, conn.CustomDateEnd)
+                Me.m_rbStartWithData.Checked = conn.UseDefaultDateStart
+                Me.m_rbStartYear.Checked = Not conn.UseDefaultDateStart
+                If (dtStart < conn.CustomDateStart) Then dtStart = conn.CustomDateStart
+
+                Me.m_rbEndWithData.Checked = conn.UseDefaultDateEnd
+                Me.m_rbEndYear.Checked = Not conn.UseDefaultDateEnd
+                If (dtEnd > conn.CustomDateEnd) Then dtEnd = conn.CustomDateEnd
+
+                m_tlpTimeRangePanel.Enabled = True
+            Else
+                m_tlpTimeRangePanel.Enabled = False
+            End If
+
+            Me.Populate(Me.m_dtpStart, dtStart)
+            Me.Populate(Me.m_dtpEnd, dtEnd)
 
             Me.m_bInUpdate = bInUpdate
+
+            Me.UpdateTimeRangePanelControls()
 
         End Sub
 
         Private Sub Populate(dtp As DateTimePicker, d As Date)
-            If (cDateUtils.DateEquals(d, Date.MaxValue) Or cDateUtils.DateEquals(d, Date.MinValue)) Then
-                dtp.Visible = False
-            Else
-                dtp.Visible = True
-                dtp.Value = d
-                dtp.Format = DateTimePickerFormat.Custom
-                dtp.CustomFormat = Me.m_strDateMask
-            End If
+
+            If (d > DateTimePicker.MaximumDateTime) Then d = DateTimePicker.MaximumDateTime
+            If (d < DateTimePicker.MinimumDateTime) Then d = DateTimePicker.MinimumDateTime
+
+            dtp.Value = d
+
+        End Sub
+
+        Private Sub UpdateTimeRangePanelControls()
+
+            Dim core As cCore = Me.UIContext.Core
+            Dim dtStart As Date = Me.m_dtpStart.Value
+            Dim dtEnd As Date = Me.m_dtpEnd.Value
+
+            If (dtStart <= core.EcospaceTimestepToAbsoluteTime(1)) Then Me.m_rbStartWithData.Checked = True Else Me.m_rbStartYear.Checked = True
+            If (dtEnd >= core.EcospaceTimestepToAbsoluteTime(core.nEcospaceTimeSteps)) Then Me.m_rbEndWithData.Checked = True Else Me.m_rbEndYear.Checked = True
+
         End Sub
 
 #End Region ' Time range panel

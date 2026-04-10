@@ -6,7 +6,7 @@ Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class dlgSURIMIChecker
+Partial Class dlgConfigSemantics
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
@@ -29,7 +29,7 @@ Partial Class dlgSURIMIChecker
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSURIMIChecker))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgConfigSemantics))
         Me.m_tcMain = New System.Windows.Forms.TabControl()
         Me.m_tabSpecies = New System.Windows.Forms.TabPage()
         Me.m_tlpSpecies = New System.Windows.Forms.TableLayoutPanel()

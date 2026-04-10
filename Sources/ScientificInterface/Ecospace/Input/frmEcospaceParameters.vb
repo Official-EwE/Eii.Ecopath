@@ -410,15 +410,20 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnTimeSeriesOutputFile_Click(sender As Object, e As EventArgs) Handles m_btnTimeSeriesOutputFile.Click
-            Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
-            Dim dlgSave As New SaveFileDialog
 
-            dlgSave.Filter = SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT
-            dlgSave.InitialDirectory = IO.Path.GetDirectoryName(manager.OutputFileName)
-            dlgSave.FileName = IO.Path.GetFileName(manager.OutputFileName)
-            If dlgSave.ShowDialog = System.Windows.Forms.DialogResult.OK Then
-                manager.OutputFileName = dlgSave.FileName
-            End If
+            Try
+                Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
+                Dim dlgSave As New SaveFileDialog
+
+                dlgSave.Filter = SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT
+                dlgSave.InitialDirectory = IO.Path.GetDirectoryName(manager.OutputFileName)
+                dlgSave.FileName = IO.Path.GetFileName(manager.OutputFileName)
+                If dlgSave.ShowDialog = System.Windows.Forms.DialogResult.OK Then
+                    manager.OutputFileName = dlgSave.FileName
+                End If
+            Catch ex As Exception
+                ' ToDo: log this
+            End Try
 
         End Sub
 
