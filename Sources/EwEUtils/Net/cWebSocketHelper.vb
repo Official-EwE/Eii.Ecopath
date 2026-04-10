@@ -12,10 +12,18 @@ Namespace NetUtilities
 
         Private Const ServerPrefix As String = "http://localhost:5123/ws/"
 
-        ' Singleton instance
-        Private Shared ReadOnly _instance As New cWebSocketHelper()
+        ' Singleton instance (lazy initialization)
+        Private Shared _instance As cWebSocketHelper = Nothing
+        Private Shared ReadOnly _instanceLock As New Object()
         Public Shared ReadOnly Property Instance As cWebSocketHelper
             Get
+                If _instance Is Nothing Then
+                    SyncLock _instanceLock
+                        If _instance Is Nothing Then
+                            _instance = New cWebSocketHelper()
+                        End If
+                    End SyncLock
+                End If
                 Return _instance
             End Get
         End Property
@@ -26,7 +34,7 @@ Namespace NetUtilities
         Private _ready As New ManualResetEventSlim(False)
         Private _sendLock As New SemaphoreSlim(1, 1)
 
-        ' Private constructor — called once when _instance is created
+        ' Private constructor — only called via Instance property
         Private Sub New()
             _listener = New HttpListener()
             _listener.Prefixes.Add(ServerPrefix)
@@ -62,8 +70,8 @@ Namespace NetUtilities
 
         ' Broadcast serialised args to all connected clients (fire and forget)
         Public Shared Sub BroadcastMessage(ParamArray args() As Object)
-            _instance._ready.Wait()
-            Task.Run(Sub() _instance.BroadcastInternalAsync(args).GetAwaiter().GetResult())
+            Instance._ready.Wait()
+            Task.Run(Sub() Instance.BroadcastInternalAsync(args).GetAwaiter().GetResult())
         End Sub
 
         Private Async Function BroadcastInternalAsync(args() As Object) As Task
@@ -98,7 +106,7 @@ Namespace NetUtilities
 
         ' Gracefully stop the server and close all clients
         Public Shared Async Function StopServerAsync() As Task
-            Await _instance.StopInternalAsync()
+            Await Instance.StopInternalAsync()
         End Function
 
         Private Async Function StopInternalAsync() As Task
