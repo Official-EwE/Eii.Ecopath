@@ -40,8 +40,7 @@ Namespace Database
                     Return _primaryReader IsNot Nothing AndAlso _primaryReader.Read()
                 Case Mode.SecondaryOnly
                     Return _secondaryReader IsNot Nothing AndAlso _secondaryReader.Read()
-                Case Mode.Compare
-                Case Mode.CompareAndSwap
+                Case Mode.Compare, Mode.CompareAndSwap
                     Dim primaryHasRow = _primaryReader IsNot Nothing AndAlso _primaryReader.Read()
                     _secondaryReader.Read()
                     If primaryHasRow Then
