@@ -100,6 +100,10 @@ Namespace Database
 
 #Region " Internals "
 
+        Private Shared Function NormaliseVersion(v As Single) As Decimal
+            Return Math.Round(CDec(v), 7, MidpointRounding.AwayFromZero)
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns all available update objects in this assembly.
@@ -113,6 +117,7 @@ Namespace Database
             Dim clsAssembly As Assembly
             Dim upd As cDBUpdate = Nothing
 
+            Dim dVersion As Decimal = NormaliseVersion(sVersion)
             Try
                 ' Get assembly that declared the database updater class
                 clsAssembly = Assembly.GetAssembly(GetType(cDatabaseUpdater))
@@ -125,7 +130,7 @@ Namespace Database
                             ' #Yes: Create update instance
                             upd = DirectCast(Activator.CreateInstance(clsType, New Object() {}), cDBUpdate)
                             ' Is a valid update?
-                            If (upd.UpdateVersion > sVersion) Then
+                            If (NormaliseVersion(upd.UpdateVersion) > dVersion) Then
                                 ' #Yes: add to the list of updates
                                 lUpdates.Add(upd)
                             End If
