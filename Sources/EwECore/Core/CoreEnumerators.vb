@@ -6,13 +6,13 @@ Imports EwECore.Common
 
 #Region "cCoreEnumNamesIndex"
 
-' Singleton classes should not implement IDisposable; on core destruct
+' Singleton classes should not implement IDisposable; on core destruct 
 ' these classes will not re-initate and will thus be invalid when a new
 ' core attempts to use them.
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Helper class; creates and maintains quick lookup tables of string
+''' Helper class; creates and maintains quick lookup tables of string 
 ''' representations of enumerated types defined in the Core.
 ''' </summary>
 ''' <remarks>
@@ -98,7 +98,7 @@ Public Class cCoreEnumNamesIndex
     ''' <summary>
     ''' Returns a eVarNameFlags enum name.
     ''' </summary>
-    ''' <param name="e">The <see cref="eVarNameFlags">eVarNameFlags</see>
+    ''' <param name="e">The <see cref="eVarNameFlags">eVarNameFlags</see> 
     ''' enumerated value to retrieve the name for.</param>
     ''' -----------------------------------------------------------------------
     Public Function GetVarName(e As eVarNameFlags) As String
@@ -122,7 +122,7 @@ Public Class cCoreEnumNamesIndex
     ''' <summary>
     ''' Returns a eDataTypes enum name.
     ''' </summary>
-    ''' <param name="e">The <see cref="eDataTypes">eDataTypes</see>
+    ''' <param name="e">The <see cref="eDataTypes">eDataTypes</see> 
     ''' enumerated value to retrieve the name for.</param>
     ''' -----------------------------------------------------------------------
     Public Function GetDataTypeName(e As eDataTypes) As String
