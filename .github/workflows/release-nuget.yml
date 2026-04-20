@@ -63,12 +63,12 @@ jobs:
         run: echo "Version is ${{ steps.gitversion.outputs.SemVer }}"
         shell: pwsh
 
-  # 2) BUILD AND PACK NUGET
-  # This job restores dependencies and packs NuGet packages in dependency order.
-  build-pack-nuget:
-    name: Build and Pack NuGet packages (EwEUtils -> EwECore -> ScientificInterfaceShared)
+  # 2) PACK AND PUBLISH EwEUtils
+  # This job packs and publishes EwEUtils (no dependencies)
+  pack-publish-eweutils:
+    name: Pack and Publish EwEUtils
     runs-on: windows-latest
-    needs: [version]  # requires version outputs from the version job
+    needs: [version]
     steps:
       # Checkout repository
       - name: Checkout code
@@ -82,33 +82,12 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      # Install .NET Framework 4.8 dev pack (for building older projects that need targeting packs)
+      # Install .NET Framework 4.8 dev pack
       - name: Install .NET Framework targeting pack (4.8)
         run: choco install netfx-4.8-devpack -y
         shell: pwsh
 
-      # Cache NuGet packages to speed up repeated restores
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.nuget/packages
-          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.vbproj') }}
-          restore-keys: |
-            nuget-${{ runner.os }}-
-
-      # Cache build output (bin and obj) to speed up builds if inputs have not changed
-      # - name: Cache build output
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: |
-      #       **/bin
-      #       **/obj
-      #     key: build-${{ runner.os }}-${{ hashFiles('**/*.vbproj') }}
-      #     restore-keys: |
-      #       build-${{ runner.os }}-
-
-      # Ensure GitHub Packages NuGet source is configured for this job before restore
-      # Note: this composite action must set up the source in the current runner environment
+      # Configure GitHub Packages NuGet source
       - name: Setup Official-EwE NuGet source
         uses: ./.github/actions/setup-nuget-source
 
@@ -117,7 +96,7 @@ jobs:
         run: dotnet restore .\Sources\EwE6.sln
         shell: pwsh
 
-      # Pack in dependency order: EwEUtils -> EwECore -> ScientificInterfaceShared
+      # Pack EwEUtils
       - name: Pack EwEUtils
         run: |
           dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
@@ -127,6 +106,48 @@ jobs:
             /p:UseProjectReferences=false
         shell: pwsh
 
+      # Publish EwEUtils
+      - name: Publish EwEUtils (skip duplicates)
+        run: |
+          Get-ChildItem -Path ./nuget -Filter EwEUtils*.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+          }
+        shell: pwsh
+
+  # 3) PACK AND PUBLISH EwECore
+  # This job packs and publishes EwECore (depends on EwEUtils being published)
+  pack-publish-ewecore:
+    name: Pack and Publish EwECore
+    runs-on: windows-latest
+    needs: [version, pack-publish-eweutils]
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install .NET SDK 8
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # Install .NET Framework 4.8 dev pack
+      - name: Install .NET Framework targeting pack (4.8)
+        run: choco install netfx-4.8-devpack -y
+        shell: pwsh
+
+      # Configure GitHub Packages NuGet source
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
+
+      # Restore solution dependencies (will get published EwEUtils)
+      - name: Restore dependencies
+        run: dotnet restore .\Sources\EwE6.sln
+        shell: pwsh
+
+      # Pack EwECore
       - name: Pack EwECore
         run: |
           dotnet pack Sources/EwECore/EwECore.vbproj `
@@ -136,6 +157,48 @@ jobs:
             /p:UseProjectReferences=false
         shell: pwsh
 
+      # Publish EwECore
+      - name: Publish EwECore (skip duplicates)
+        run: |
+          Get-ChildItem -Path ./nuget -Filter EwECore*.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+          }
+        shell: pwsh
+
+  # 4) PACK AND PUBLISH ScientificInterfaceShared
+  # This job packs and publishes ScientificInterfaceShared (depends on EwEUtils and EwECore being published)
+  pack-publish-scientificinterfaceshared:
+    name: Pack and Publish ScientificInterfaceShared
+    runs-on: windows-latest
+    needs: [version, pack-publish-ewecore]
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install .NET SDK 8
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # Install .NET Framework 4.8 dev pack
+      - name: Install .NET Framework targeting pack (4.8)
+        run: choco install netfx-4.8-devpack -y
+        shell: pwsh
+
+      # Configure GitHub Packages NuGet source
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
+
+      # Restore solution dependencies (will get published EwEUtils and EwECore)
+      - name: Restore dependencies
+        run: dotnet restore .\Sources\EwE6.sln
+        shell: pwsh
+
+      # Pack ScientificInterfaceShared
       - name: Pack ScientificInterfaceShared
         run: |
           dotnet pack Sources/ScientificInterfaceShared/ScientificInterfaceShared.vbproj `
@@ -145,57 +208,20 @@ jobs:
             /p:UseProjectReferences=false
         shell: pwsh
 
-      # List the built NuGet packages in the local folder
-      - name: List NuGet output files
-        run: dir ./nuget
-        shell: pwsh
-
-      # Upload NuGet packages as a workflow artifact to share with publish job
-      - name: Upload NuGet packages artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: nuget-packages
-          path: ./nuget/*.nupkg
-
-  # 3) PUBLISH NUGET
-  # This job downloads the packaged NuGet artifacts and pushes them to GitHub Packages.
-  publish-nuget:
-    name: Publish NuGet packages to GitHub Packages
-    runs-on: windows-latest
-    needs: [build-pack-nuget]  # depends on the packages being built and uploaded
-    steps:
-      # Checkout can help if any metadata or repo info is needed; safe to include
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      # Download the NuGet packages artifact produced by the build-pack-nuget job
-      - name: Download NuGet packages artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: nuget-packages
-          path: nuget
-
-      # Configure the GitHub Packages source again in this job (each job runs on a clean VM)
-      - name: Setup Official-EwE NuGet source
-        uses: ./.github/actions/setup-nuget-source
-
-      # Push all .nupkg files to GitHub Packages
-      # secrets.GITHUB_TOKEN is used as the API key and skip-duplicate avoids failing if the same version exists
-      - name: Publish packages (skip duplicates)
+      # Publish ScientificInterfaceShared
+      - name: Publish ScientificInterfaceShared (skip duplicates)
         run: |
-          Get-ChildItem -Path ./nuget -Filter *.nupkg | ForEach-Object {
+          Get-ChildItem -Path ./nuget -Filter ScientificInterfaceShared*.nupkg | ForEach-Object {
             dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
           }
         shell: pwsh
 
-  # 4) BUILD INSTALLERS
+  # 5) BUILD INSTALLERS
   # This job builds the solution for x86 and x64, compiles the Inno Setup installers, and uploads them.
   build-installers:
     name: Build EwE6 (x86 and x64) and Inno Setup installers
     runs-on: windows-latest
-    needs: [version]  # requires version outputs for stamping binaries and installers
+    needs: [version, pack-publish-scientificinterfaceshared]  # requires version outputs for stamping binaries and installers
     steps:
       # Checkout code
       - name: Checkout code
@@ -290,7 +316,7 @@ jobs:
           name: installers
           path: artifacts-signed/*-bit_setup.exe
 
-  # 5) CREATE RELEASE
+  # 6) CREATE RELEASE
   # This job creates or updates a GitHub Release with auto-generated notes and uploads installers.
   release:
     name: Create or Update GitHub Release with auto notes
