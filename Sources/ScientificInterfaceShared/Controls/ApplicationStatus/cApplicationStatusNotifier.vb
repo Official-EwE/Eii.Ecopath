@@ -27,7 +27,6 @@ Namespace Controls
 
             If (core Is Nothing) Then Return
             If (core.Messages Is Nothing) Then Return
-            If (core.TestRik) Then Return
 
             ' Provide default
             If (String.IsNullOrWhiteSpace(strText)) Then strText = My.Resources.GENERIC_STATUS_BUSY
