@@ -943,8 +943,8 @@ Namespace Ecospace.Controls
                 Dim dtStart As Date = Me.m_dtpStart.Value
                 Dim dtEnd As Date = Me.m_dtpEnd.Value
 
-                If (dtStart = conn.Dataset.DateStart) Then Me.m_rbStartWithData.Checked = True Else Me.m_rbStartYear.Checked = True
-                If (dtEnd = conn.Dataset.DateEnd) Then Me.m_rbEndWithData.Checked = True Else Me.m_rbEndYear.Checked = True
+                If (cDateUtils.DateEquals(dtStart, conn.Dataset.DateStart)) Then Me.m_rbStartWithData.Checked = True Else Me.m_rbStartYear.Checked = True
+                If (cDateUtils.DateEquals(dtEnd, conn.Dataset.DateEnd)) Then Me.m_rbEndWithData.Checked = True Else Me.m_rbEndYear.Checked = True
             End If
 
         End Sub
