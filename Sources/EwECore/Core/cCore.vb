@@ -185,7 +185,6 @@ Public Class cCore
     ''' <remarks>True if a Core has been initialized.</remarks>
     Private m_bCoreIsInit As Boolean = False
     Private m_bEcoSimIsInit As Boolean = False
-
 #End Region
 
 #Region " Public Core Counters "
