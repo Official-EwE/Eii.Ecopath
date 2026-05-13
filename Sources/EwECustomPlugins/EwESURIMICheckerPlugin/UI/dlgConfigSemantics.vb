@@ -4,6 +4,7 @@
 
 Option Strict On
 Imports System.IO
+Imports System.Text.Json
 Imports System.Windows.Forms
 Imports Eii.ControlledVocabularies.Common
 Imports Eii.ControlledVocabularies.Core
@@ -11,7 +12,7 @@ Imports Eii.ControlledVocabularies.Descriptors
 Imports Eii.ControlledVocabularies.Vocabularies
 Imports Eii.ControlledVocabularies.Vocabularies.LifeStage
 Imports Eii.ControlledVocabularies.Vocabularies.Species
-Imports Eii.Semantics
+Imports Eii.SemanticRegistry
 Imports EwECore
 Imports EwECore.cCore
 Imports ScientificInterfaceShared.Controls
@@ -48,27 +49,34 @@ Public Class dlgConfigSemantics
 
         Me.DoubleBuffered = True
 
-        ' Grab field descriptor registry
-        m_regfields = TryCast(provider.GetService(GetType(KeyFieldDescriptorRegistry)), IKeyFieldDescriptorRegistry)
+        Try
 
-        ' Define standard fields
-        m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.SpeciesCode, KeyDomain.Species, KeyPurpose.Species, FieldKind.Code, True, 10))
-        m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.Lifestage, KeyDomain.Species, KeyPurpose.Lifestage, FieldKind.Label, False, 3))
-        m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.Length, KeyDomain.Species, KeyPurpose.Length, FieldKind.Label, False, 3))
-        m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.Age, KeyDomain.Species, KeyPurpose.Age, FieldKind.Label, False, 3))
+            ' Grab field descriptor registry
+            m_regfields = TryCast(provider.GetService(GetType(KeyFieldDescriptorRegistry)), IKeyFieldDescriptorRegistry)
 
-        m_regfields.Register(New KeyFieldDescriptor(FishingFields.GearCode, KeyDomain.FleetSegment, KeyPurpose.Gear, FieldKind.Code, True, 10))
-        m_regfields.Register(New KeyFieldDescriptor(FishingFields.CountryCode, KeyDomain.FleetSegment, KeyPurpose.Country, FieldKind.Code, False, 3))
+            ' Define standard fields
+            m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.SpeciesCode, KeyDomain.Species, KeyPurpose.Species, FieldKind.Code, True, 10))
+            m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.Lifestage, KeyDomain.Species, KeyPurpose.Lifestage, FieldKind.Label, False, 3))
+            m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.Length, KeyDomain.Species, KeyPurpose.Length, FieldKind.Label, False, 3))
+            m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.Age, KeyDomain.Species, KeyPurpose.Age, FieldKind.Label, False, 3))
 
-        ' Grab vocabularies
-        Me.m_asfis = TryCast(provider.GetService(GetType(ASFISSpeciesCodeVocabulary)), IControlledVocabulary)
-        Me.m_surimi = TryCast(provider.GetService(GetType(SURIMILifestageVocabulary)), IControlledVocabulary)
+            m_regfields.Register(New KeyFieldDescriptor(FishingFields.GearCode, KeyDomain.FleetSegment, KeyPurpose.Gear, FieldKind.Code, True, 10))
+            m_regfields.Register(New KeyFieldDescriptor(FishingFields.CountryCode, KeyDomain.FleetSegment, KeyPurpose.Country, FieldKind.Code, False, 3))
 
-        ' Grab registry
-        m_semreg = TryCast(provider.GetService(GetType(SemanticRegistry)), ISemanticRegistry)
+            ' Grab factory
+            m_mlkfactory = TryCast(provider.GetService(GetType(MultiLevelKeyFactory)), IMultiLevelKeyFactory)
 
-        ' Grab factory
-        m_mlkfactory = TryCast(provider.GetService(GetType(MultiLevelKeyFactory)), IMultiLevelKeyFactory)
+            ' Grab registry
+            m_semreg = TryCast(provider.GetService(GetType(SemanticRegistry)), ISemanticRegistry)
+
+            ' Grab vocabularies
+            m_asfis = TryCast(provider.GetService(GetType(ASFISSpeciesCodeVocabulary)), IControlledVocabulary)
+            m_surimi = TryCast(provider.GetService(GetType(SURIMILifestageVocabulary)), IControlledVocabulary)
+
+        Catch ex As Exception
+
+        End Try
+
 
     End Sub
 
@@ -266,8 +274,8 @@ Public Class dlgConfigSemantics
         Me.m_semreg.Clear()
         If (File.Exists(fn)) Then
             Try
-                Dim serializer As New SemanticRegistryJsonSerializer(m_mlkfactory, m_regfields)
-                serializer.Load(File.ReadAllText(fn), m_semreg)
+                Dim dto As SemanticRegistryDto = JsonSerializer.Deserialize(Of SemanticRegistryDto)(File.ReadAllText(fn))
+                Return SemanticRegistrySerializer.FromDto(m_semreg, dto)
             Catch ex As Exception
                 Return False
             End Try
@@ -278,12 +286,15 @@ Public Class dlgConfigSemantics
     Public Function SaveManifest() As Boolean
         Try
             Dim fn As String = Me.ManifestFileName()
-            Dim serializer As New SemanticRegistryJsonSerializer(m_mlkfactory, m_regfields)
-            File.WriteAllText(fn, serializer.Save(m_semreg))
+            Dim dto As New SemanticRegistryDto()
+            If (SemanticRegistrySerializer.ToDto(m_semreg, dto)) Then
+                File.WriteAllText(fn, JsonSerializer.Serialize(Of SemanticRegistryDto)(dto))
+                Return True
+            End If
         Catch ex As Exception
             Return False
         End Try
-        Return True
+        Return False
     End Function
 
     Private Function ManifestFileName() As String
