@@ -3,11 +3,12 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports Eii.BlobStore
+Imports Eii.ControlledVocabularies.Core
 Imports Eii.ControlledVocabularies.Descriptors
 Imports Eii.ControlledVocabularies.Inference.Field
 Imports Eii.ControlledVocabularies.Vocabularies.LifeStage
 Imports Eii.ControlledVocabularies.Vocabularies.Species
-Imports Eii.Semantics
+Imports Eii.SemanticRegistry
 Imports EwECore
 Imports EwECore.Plugins
 Imports EwECore.Plugins.UI
@@ -36,13 +37,13 @@ Public Class EwESURIMICheckerPlugin
 
     Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState
         Get
-            Return eCoreExecutionState.EcospaceLoaded
+            Return eCoreExecutionState.EcopathLoaded
         End Get
     End Property
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "ndSURIMIcheck"
+            Return "ndXEwEInterop"
         End Get
     End Property
 
@@ -95,11 +96,12 @@ Public Class EwESURIMICheckerPlugin
 
         ' Register the LoggerFactory from LoggingContext
         services.AddSingleton(LoggingContext.LoggerFactory)
-        services.AddSingleton(Of IKeyFieldDescriptorRegistry, KeyFieldDescriptorRegistry)()
-        services.AddSingleton(Of IKeyFieldDescriptorIndexer, KeyFieldDescriptorIndexer)()
+        services.AddSingleton(Of KeyFieldDescriptorRegistry)()
+        services.AddSingleton(Of KeyFieldDescriptorIndexer)()
         services.AddSingleton(Of IBlobStore)(Function(sp) New LocalBlobStore(inputRoot:="Includes", outputRoot:="Output"))
         services.AddSingleton(Of FieldInferenceOrchestrator)()
-        services.AddSingleton(Of ISemanticRegistry, SemanticRegistry)()
+        services.AddSingleton(Of MultiLevelKeyFactory)()
+        services.AddSingleton(Of SemanticRegistry)()
 
         ' Register ASFISSpeciesCodeVocabulary - it will automatically get ILogger<ASFISSpeciesCodeVocabulary> from the factory
         services.AddSingleton(Of ASFISSpeciesCodeVocabulary)()
