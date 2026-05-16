@@ -21,6 +21,8 @@ jobs:
   version:
     name: Determine version with GitVersion
     runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
     outputs:
       semver: ${{ steps.out.outputs.semver }}         # example: 6.7.30
       prerelease: ${{ steps.out.outputs.prerelease }} # example: alpha, beta, empty for stable
@@ -34,14 +36,14 @@ jobs:
 
       # Install GitVersion tool
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v3.0.0
+        uses: gittools/actions/gitversion/setup@v4.1.0
         with:
           versionSpec: '6.4.0'
 
       # Execute GitVersion using trunk-based configuration and v tag prefix
       - name: Run GitVersion
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v3.0.0
+        uses: gittools/actions/gitversion/execute@v4.1.0
         with:
           overrideConfig: |
             workflow=TrunkBased/preview1
