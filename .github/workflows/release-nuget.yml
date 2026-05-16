@@ -91,11 +91,6 @@ jobs:
       - name: Setup Official-EwE NuGet source
         uses: ./.github/actions/setup-nuget-source
 
-      # Restore solution dependencies
-      - name: Restore dependencies
-        run: dotnet restore .\Sources\EwE6.sln
-        shell: pwsh
-
       # Pack EwEUtils
       - name: Pack EwEUtils
         run: |
@@ -104,11 +99,6 @@ jobs:
             --output ./nuget `
             /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
-        shell: pwsh
-
-      # List the built NuGet packages in the local folder
-      - name: List NuGet output files
-        run: dir ./nuget
         shell: pwsh
 
       # Publish EwEUtils
@@ -146,11 +136,6 @@ jobs:
       # Configure GitHub Packages NuGet source
       - name: Setup Official-EwE NuGet source
         uses: ./.github/actions/setup-nuget-source
-
-      # Restore solution dependencies (will get published EwEUtils)
-      - name: Restore dependencies
-        run: dotnet restore .\Sources\EwE6.sln
-        shell: pwsh
 
       # Pack EwECore
       - name: Pack EwECore
@@ -197,11 +182,6 @@ jobs:
       # Configure GitHub Packages NuGet source
       - name: Setup Official-EwE NuGet source
         uses: ./.github/actions/setup-nuget-source
-
-      # Restore solution dependencies (will get published EwEUtils and EwECore)
-      - name: Restore dependencies
-        run: dotnet restore .\Sources\EwE6.sln
-        shell: pwsh
 
       # Pack ScientificInterfaceShared
       - name: Pack ScientificInterfaceShared
