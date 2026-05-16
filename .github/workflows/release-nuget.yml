@@ -20,7 +20,7 @@ jobs:
   # This job determines the semantic version using GitVersion and exposes it as outputs.
   version:
     name: Determine version with GitVersion
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     outputs:
       semver: ${{ steps.out.outputs.semver }}         # example: 6.7.30
       prerelease: ${{ steps.out.outputs.prerelease }} # example: alpha, beta, empty for stable
@@ -34,14 +34,14 @@ jobs:
 
       # Install GitVersion tool
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v4.1.0
+        uses: gittools/actions/gitversion/setup@v3.0.0
         with:
           versionSpec: '6.4.0'
 
       # Execute GitVersion using trunk-based configuration and v tag prefix
       - name: Run GitVersion
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v4.1.0
+        uses: gittools/actions/gitversion/execute@v3.0.0
         with:
           overrideConfig: |
             workflow=TrunkBased/preview1
@@ -67,7 +67,7 @@ jobs:
   # This job packs and publishes EwEUtils (no dependencies)
   pack-publish-eweutils:
     name: Pack and Publish EwEUtils
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     needs: [version]  # requires version outputs from the version job
     steps:
       # Checkout repository
@@ -113,7 +113,7 @@ jobs:
   # This job packs and publishes EwECore (depends on EwEUtils being published)
   pack-publish-ewecore:
     name: Pack and Publish EwECore
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     needs: [version, pack-publish-eweutils]
     steps:
       # Checkout repository
@@ -159,7 +159,7 @@ jobs:
   # This job packs and publishes ScientificInterfaceShared (depends on EwEUtils and EwECore being published)
   pack-publish-scientificinterfaceshared:
     name: Pack and Publish ScientificInterfaceShared
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     needs: [version, pack-publish-ewecore]
     steps:
       # Checkout repository
@@ -205,7 +205,7 @@ jobs:
   # This job builds the solution for x86 and x64, compiles the Inno Setup installers, and uploads them.
   build-installers:
     name: Build EwE6 (x86 and x64) and Inno Setup installers
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     needs: [version, pack-publish-scientificinterfaceshared]  # requires version outputs for stamping binaries and installers
     steps:
       # Checkout code
@@ -305,7 +305,7 @@ jobs:
   # This job creates or updates a GitHub Release with auto-generated notes and uploads installers.
   release:
     name: Create or Update GitHub Release with auto notes
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     needs: [version, build-installers]  # requires version info and built installers
     steps:
       # Download the installer artifacts produced by build-installers
