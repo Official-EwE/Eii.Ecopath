@@ -21,6 +21,8 @@ jobs:
   version:
     name: Determine version with GitVersion
     runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     outputs:
       semver: ${{ steps.out.outputs.semver }}         # example: 6.7.30
       prerelease: ${{ steps.out.outputs.prerelease }} # example: alpha, beta, empty for stable
@@ -68,6 +70,8 @@ jobs:
   pack-publish-eweutils:
     name: Pack and Publish EwEUtils
     runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
     needs: [version]  # requires version outputs from the version job
     steps:
       # Checkout repository
@@ -114,6 +118,8 @@ jobs:
   pack-publish-ewecore:
     name: Pack and Publish EwECore
     runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
     needs: [version, pack-publish-eweutils]
     steps:
       # Checkout repository
@@ -160,6 +166,8 @@ jobs:
   pack-publish-scientificinterfaceshared:
     name: Pack and Publish ScientificInterfaceShared
     runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
     needs: [version, pack-publish-ewecore]
     steps:
       # Checkout repository
@@ -206,6 +214,8 @@ jobs:
   build-installers:
     name: Build EwE6 (x86 and x64) and Inno Setup installers
     runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
     needs: [version, pack-publish-scientificinterfaceshared]  # requires version outputs for stamping binaries and installers
     steps:
       # Checkout code
@@ -306,6 +316,8 @@ jobs:
   release:
     name: Create or Update GitHub Release with auto notes
     runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
     needs: [version, build-installers]  # requires version info and built installers
     steps:
       # Download the installer artifacts produced by build-installers
