@@ -298,7 +298,7 @@ jobs:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: '6f2e61d1-dbf8-41da-9d92-80fb7fcf05a2'
           project-slug: 'Ecopath'
-          signing-policy-slug: 'EwE_Test'
+          signing-policy-slug: 'Production'
           github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
           wait-for-completion: true
           output-artifact-directory: './artifacts-signed'
