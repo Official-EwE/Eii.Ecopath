@@ -50,7 +50,7 @@
   <ItemGroup>
     <PackageReference Include="Eii.ControlledVocabularies" Version="1.0.*" />
     <PackageReference Include="Eii.SemanticRegistry" Version="2.0.10" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
