@@ -6,6 +6,7 @@ Imports Eii.BlobStore
 Imports Eii.ControlledVocabularies.Core
 Imports Eii.ControlledVocabularies.Descriptors
 Imports Eii.ControlledVocabularies.Inference.Field
+Imports Eii.ControlledVocabularies.Vocabularies
 Imports Eii.ControlledVocabularies.Vocabularies.LifeStage
 Imports Eii.ControlledVocabularies.Vocabularies.Species
 Imports Eii.SemanticRegistry
@@ -16,6 +17,12 @@ Imports EwEUtils.Logging
 Imports Microsoft.Extensions.DependencyInjection
 Imports ScientificInterfaceShared.Controls
 
+' Design principles
+' - Dictionary of MLK > EwE anchors (ValueID)
+' - UI shows all possible value IDs
+' - Filter by type
+' - Ability to automate discovery by type (taxon, group, fleet, etc)
+' - Should have CSV import + export
 Public Class EwESURIMICheckerPlugin
     Implements IMenuItemPlugin, IUIContextPlugin
 
@@ -96,16 +103,16 @@ Public Class EwESURIMICheckerPlugin
 
         ' Register the LoggerFactory from LoggingContext
         services.AddSingleton(LoggingContext.LoggerFactory)
-        services.AddSingleton(Of KeyFieldDescriptorRegistry)()
-        services.AddSingleton(Of KeyFieldDescriptorIndexer)()
+        services.AddSingleton(Of IKeyFieldDescriptorRegistry, KeyFieldDescriptorRegistry)()
+        services.AddSingleton(Of IKeyFieldDescriptorIndexer, KeyFieldDescriptorIndexer)()
         services.AddSingleton(Of IBlobStore)(Function(sp) New LocalBlobStore(inputRoot:="Includes", outputRoot:="Output"))
         services.AddSingleton(Of FieldInferenceOrchestrator)()
-        services.AddSingleton(Of MultiLevelKeyFactory)()
-        services.AddSingleton(Of SemanticRegistry)()
+        services.AddSingleton(Of IMultiLevelKeyFactory, MultiLevelKeyFactory)()
+        services.AddSingleton(Of ISemanticRegistry, SemanticRegistry)()
 
         ' Register ASFISSpeciesCodeVocabulary - it will automatically get ILogger<ASFISSpeciesCodeVocabulary> from the factory
-        services.AddSingleton(Of ASFISSpeciesCodeVocabulary)()
-        services.AddSingleton(Of SURIMILifestageVocabulary)()
+        services.AddSingleton(Of ISpeciesCodeVocabulary, ASFISSpeciesCodeVocabulary)()
+        services.AddSingleton(Of ILifestageCodeVocabulary, SURIMILifestageVocabulary)()
 
         m_serviceProvider = services.BuildServiceProvider()
 
