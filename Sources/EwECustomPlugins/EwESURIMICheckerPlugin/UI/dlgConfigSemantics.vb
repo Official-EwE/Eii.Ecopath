@@ -9,9 +9,8 @@ Imports System.Windows.Forms
 Imports Eii.ControlledVocabularies.Common
 Imports Eii.ControlledVocabularies.Core
 Imports Eii.ControlledVocabularies.Descriptors
+Imports Eii.ControlledVocabularies.Utils
 Imports Eii.ControlledVocabularies.Vocabularies
-Imports Eii.ControlledVocabularies.Vocabularies.LifeStage
-Imports Eii.ControlledVocabularies.Vocabularies.Species
 Imports Eii.SemanticRegistry
 Imports EwECore
 Imports EwECore.cCore
@@ -52,7 +51,7 @@ Public Class dlgConfigSemantics
         Try
 
             ' Grab field descriptor registry
-            m_regfields = TryCast(provider.GetService(GetType(KeyFieldDescriptorRegistry)), IKeyFieldDescriptorRegistry)
+            m_regfields = TryCast(provider.GetService(GetType(IKeyFieldDescriptorRegistry)), IKeyFieldDescriptorRegistry)
 
             ' Define standard fields
             m_regfields.Register(New KeyFieldDescriptor(SpeciesFields.SpeciesCode, KeyDomain.Species, KeyPurpose.Species, FieldKind.Code, True, 10))
@@ -64,14 +63,14 @@ Public Class dlgConfigSemantics
             m_regfields.Register(New KeyFieldDescriptor(FishingFields.CountryCode, KeyDomain.FleetSegment, KeyPurpose.Country, FieldKind.Code, False, 3))
 
             ' Grab factory
-            m_mlkfactory = TryCast(provider.GetService(GetType(MultiLevelKeyFactory)), IMultiLevelKeyFactory)
+            m_mlkfactory = TryCast(provider.GetService(GetType(IMultiLevelKeyFactory)), IMultiLevelKeyFactory)
 
             ' Grab registry
-            m_semreg = TryCast(provider.GetService(GetType(SemanticRegistry)), ISemanticRegistry)
+            m_semreg = TryCast(provider.GetService(GetType(ISemanticRegistry)), ISemanticRegistry)
 
             ' Grab vocabularies
-            m_asfis = TryCast(provider.GetService(GetType(ASFISSpeciesCodeVocabulary)), IControlledVocabulary)
-            m_surimi = TryCast(provider.GetService(GetType(SURIMILifestageVocabulary)), IControlledVocabulary)
+            m_asfis = TryCast(provider.GetService(GetType(ISpeciesCodeVocabulary)), IControlledVocabulary)
+            m_surimi = TryCast(provider.GetService(GetType(ILifestageCodeVocabulary)), IControlledVocabulary)
 
         Catch ex As Exception
 
@@ -129,60 +128,7 @@ Public Class dlgConfigSemantics
 
     Private Sub m_tsbnCalculateSpecies_Click(sender As Object, e As EventArgs) Handles m_tsbnCalculateSpeciues.Click
 
-        Dim nameVocSpecies As String = m_asfis.VocabularyName
-        Dim nameVocLStage As String = m_surimi.VocabularyName
-
-        For Each dr As DataRow In Me.m_dtSpecies.Rows
-
-            Try
-
-                Dim grp As cEcoPathGroupInput = Core.EcopathGroupInputs(CInt(dr("iGroup")))
-                Dim tax As cTaxon = Core.Taxon(CInt(dr("iTaxon")))
-
-                Dim codeSpecies As String = ""
-                Dim codeLifeStage As String = ""
-                Dim mlk As MultiLevelKey = Nothing
-                Dim bSkip As Boolean = False
-
-                If (String.Compare(tax.Source, Source, True) = 0) Then
-                    Dim f As New MultiLevelKeyFactory()
-                    mlk = f.FromString(tax.SourceKey, KeyDomain.Species, m_regfields)
-                    codeSpecies = mlk.GetField(SpeciesFields.SpeciesCode).Value
-                    codeLifeStage = mlk.GetField(SpeciesFields.Lifestage).Value
-                End If
-
-                If (String.IsNullOrWhiteSpace(codeSpecies)) Then
-                    Dim scname As String = (tax.Genus.Trim() + " " + tax.Species.Trim()).ToLowerInvariant()
-                    bSkip = String.IsNullOrWhiteSpace(tax.Species) Or String.IsNullOrWhiteSpace(scname)
-                    If (Not bSkip) Then bSkip = scname.EndsWith("p.")
-                    codeSpecies = m_asfis.FindCode(scname, 80)
-                End If
-
-                If (String.IsNullOrWhiteSpace(codeSpecies)) Then
-                    codeSpecies = m_asfis.FindCode(tax.Common, 80)
-                End If
-
-                If (tax.iStanza > 0 And String.IsNullOrWhiteSpace(codeLifeStage)) Then
-                    codeLifeStage = m_surimi.FindCode(grp.Name, 80)
-                End If
-
-                mlk = New MultiLevelKey(KeyDomain.Species, False)
-                If (Not String.IsNullOrWhiteSpace(codeSpecies)) Then
-                    mlk.SetField(SpeciesFields.SpeciesCode, nameVocSpecies & ":" & codeSpecies, m_regfields)
-                End If
-                If (Not String.IsNullOrWhiteSpace(codeLifeStage)) Then
-                    mlk.SetField(SpeciesFields.Lifestage, nameVocLStage & ":" & codeLifeStage, m_regfields)
-                End If
-
-                dr("SpeciesCode") = codeSpecies
-                dr("LifeStageCode") = codeLifeStage
-
-                dr("MultiLevelKey") = mlk.ToString()
-                dr("Source") = Source
-            Catch ex As Exception
-
-            End Try
-        Next
+        DetermineSpeciesCodes()
 
     End Sub
 
@@ -209,18 +155,13 @@ Public Class dlgConfigSemantics
                 Dim tax As cTaxon = core.Taxon(grp.iTaxon(j))
                 Dim SpeciesCode As String = ""
                 Dim LifeStageCode As String = ""
+
                 If (Not String.IsNullOrWhiteSpace(tax.SourceKey) And tax.Source = Source) Then
-
                     Dim mlk = fact.FromString(tax.SourceKey, KeyDomain.Species, m_regfields)
-
-                    If (mlk IsNot Nothing) Then
-                        Dim f As IMultiLevelKeyField = mlk.GetField(SpeciesFields.SpeciesCode)
-                        If (f IsNot Nothing) Then SpeciesCode = f.Value
-                        f = mlk.GetField(SpeciesFields.Lifestage)
-                        If (f IsNot Nothing) Then LifeStageCode = f.Value
-                    End If
-
+                    SpeciesCode = GetFieldValue(mlk, SpeciesFields.SpeciesCode, "")
+                    LifeStageCode = GetFieldValue(mlk, SpeciesFields.Lifestage, "")
                 End If
+
                 Dim dr = dt.NewRow()
                 dr("iGroup") = i
                 dr("iTaxon") = grp.iTaxon(j)
@@ -245,9 +186,93 @@ Public Class dlgConfigSemantics
 
     End Sub
 
+    Private Function GetFieldValue(mlk As IMultiLevelKey, fieldName As String, fallback As String) As String
+        If (mlk Is Nothing) Then Return fallback
+        Dim field As IMultiLevelKeyField = mlk.GetField(fieldName)
+        If (field Is Nothing) Then Return fallback
+        Return field.Value
+    End Function
+
+    Private Sub DetermineSpeciesCodes()
+
+        Dim nameVocSpecies As String = m_asfis.VocabularyName
+        Dim nameVocLStage As String = m_surimi.VocabularyName
+        Dim f As New MultiLevelKeyFactory()
+
+        For Each dr As DataRow In Me.m_dtSpecies.Rows
+
+            Try
+
+                Dim grp As cEcoPathGroupInput = Core.EcopathGroupInputs(CInt(dr("iGroup")))
+                Dim tax As cTaxon = Core.Taxon(CInt(dr("iTaxon")))
+                Dim codeSpeciesEntered As String = CStr(dr("SpeciesCode"))
+                Dim codeLifeStageEntered As String = CStr(dr("LifeStageCode"))
+
+                Dim codeSpecies As String = ""
+                Dim codeLifeStage As String = ""
+                Dim mlk As MultiLevelKey = Nothing
+                Dim bSkip As Boolean = False
+
+                If (String.Compare(tax.Source, Source, True) = 0) Then
+                    mlk = f.FromString(tax.SourceKey, KeyDomain.Species, m_regfields)
+                    codeSpecies = GetFieldValue(mlk, SpeciesFields.SpeciesCode, "")
+                    codeLifeStage = GetFieldValue(mlk, SpeciesFields.Lifestage, "")
+
+                    If (String.IsNullOrWhiteSpace(codeSpecies)) Then
+                        Dim scname As String = (tax.Genus.Trim() + " " + tax.Species.Trim()).ToLowerInvariant()
+                        bSkip = String.IsNullOrWhiteSpace(tax.Species) Or String.IsNullOrWhiteSpace(scname)
+                        If (Not bSkip) Then bSkip = scname.EndsWith("p.")
+                        codeSpecies = m_asfis.FindCode(scname, 80)
+                    End If
+
+                    If (String.IsNullOrWhiteSpace(codeSpecies)) Then
+                        codeSpecies = m_asfis.FindCode(tax.Common, 80)
+                    End If
+
+                    If (tax.iStanza > 0 And String.IsNullOrWhiteSpace(codeLifeStage)) Then
+                        codeLifeStage = m_surimi.FindCode(grp.Name, 80)
+                    End If
+                End If
+
+                bSkip = bSkip Or (String.IsNullOrWhiteSpace(codeSpecies)) Or
+                    (String.IsNullOrWhiteSpace(codeLifeStage) And Not String.IsNullOrWhiteSpace(codeLifeStageEntered))
+
+                If (Not bSkip) Then
+                    mlk = New MultiLevelKey(KeyDomain.Species, False)
+                    Dim bChanged As Boolean = False
+
+                    If (Not String.IsNullOrWhiteSpace(codeSpecies) And String.Compare(codeSpeciesEntered, codeSpecies, True) <> 0) Then
+                        mlk.SetField(SpeciesFields.SpeciesCode, nameVocSpecies & ":" & codeSpecies, m_regfields)
+                        dr("SpeciesCode") = codeSpecies
+                        bChanged = True
+                    End If
+
+                    If (Not String.IsNullOrWhiteSpace(codeLifeStage) And String.Compare(codeLifeStageEntered, codeLifeStage, True) <> 0) Then
+                        mlk.SetField(SpeciesFields.Lifestage, nameVocLStage & ":" & codeLifeStage, m_regfields)
+                        dr("LifeStageCode") = codeLifeStage
+                        bChanged = True
+                    End If
+
+                    If (bChanged) Then
+                        dr("MultiLevelKey") = mlk.ToString()
+                        dr("Source") = "Calculated"
+                    End If
+                End If
+
+            Catch ex As Exception
+
+            End Try
+        Next
+    End Sub
+
     Private Sub Apply()
+
         Dim core As cCore = Me.UIContext.Core
         Dim bChanged As Boolean = False
+
+        ' Remove all entries that can be configured in this UI
+        Me.ClearManifestEntries({SpeciesFields.SpeciesCode, SpeciesFields.Lifestage, FishingFields.GearCode})
+
         core.SetBatchLock(eBatchLockType.Update)
 
         For Each dr As DataRow In m_dtSpecies.Rows
@@ -259,8 +284,13 @@ Public Class dlgConfigSemantics
                 tax.Source = Source
                 bChanged = True
             End If
+
+            'Dim iGroup As Integer
+            'm_semreg.Set(tax.SourceKey, )
         Next
+
         core.ReleaseBatchLock(eBatchChangeLevelFlags.Ecopath, bChanged)
+
     End Sub
 
 #Region " Manifest access "
@@ -302,6 +332,26 @@ Public Class dlgConfigSemantics
         Dim fn As String = ds.ToString()
         Return Path.ChangeExtension(fn, ".semantics")
     End Function
+
+    Private Sub ClearManifestEntries(keysToRemove As String())
+
+        If (keysToRemove Is Nothing) Then Return
+        If (keysToRemove.Count = 0) Then Return
+
+        For i As Integer = 0 To keysToRemove.Count - 1
+            keysToRemove(i) = FieldPolicy.ForSchema(keysToRemove(i))
+        Next
+
+        Dim current As IMultiLevelKey() = m_semreg.GetAllSources()
+        For Each mlk As IMultiLevelKey In current
+            Dim bRemove As Boolean = False
+            Dim fields = mlk.FieldNames
+            For Each key As String In keysToRemove
+                If fields.Contains(key) Then m_semreg.Clear(key)
+            Next
+        Next
+
+    End Sub
 
 #End Region ' Manifest access
 

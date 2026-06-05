@@ -748,6 +748,8 @@ Public Class cEIIXMLDataSource
     Private Function LoadAuxillaryData() As Boolean
 
         Dim dt As DataTable = Me.ReadTable("Auxillary")
+        If (dt Is Nothing) Then Return False
+
         Dim strValueID As String = ""
         Dim strRemark As String = ""
         Dim strVisualStyle As String = ""
@@ -797,6 +799,8 @@ Public Class cEIIXMLDataSource
         ' Init data structure
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim dtPedigree As DataTable = Me.ReadTable("Pedigree")
+        If (dtPedigree Is Nothing) Then Return False
+
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim iLevel As Integer = 1
         Dim bSucces As Boolean = True
@@ -868,6 +872,7 @@ Public Class cEIIXMLDataSource
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim dtPedigree As DataTable = Me.ReadTable("EcopathGroupPedigree")
+        If (dtPedigree Is Nothing) Then Return False
         Dim iGroup As Integer
         Dim iVariable As Integer
         Dim iLevel As Integer
@@ -910,7 +915,14 @@ Public Class cEIIXMLDataSource
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim dt As DataTable = Me.ReadTable("EcopathTaxon")
-        taxonDS.NumTaxon = dt.Rows.Count
+
+        If (dt IsNot Nothing) Then
+            taxonDS.NumTaxon = dt.Rows.Count
+        Else
+            taxonDS.NumTaxon = 0
+            taxonDS.RedimTaxon()
+            Return False
+        End If
 
         taxonDS.RedimTaxon()
         Dim iTaxon As Integer = 1
@@ -961,9 +973,9 @@ Public Class cEIIXMLDataSource
 
         Debug.Assert(iTaxon - 1 = taxonDS.NumTaxon)
 
-        ' Read taxa assignments
-        bSucces = bSucces And Me.LoadEcopathGroupTaxon()
-        bSucces = bSucces And Me.LoadEcopathStanzaTaxon()
+        ' Read taxa assignments (may fail on older models)
+        Me.LoadEcopathGroupTaxon()
+        Me.LoadEcopathStanzaTaxon()
         Return True
 
     End Function
@@ -3844,6 +3856,8 @@ Public Class cEIIXMLDataSource
     Private Function ReadTable(strTable As String) As DataTable
 
         Dim xn As XmlNode = Me.m_doc.SelectSingleNode("/EwEModel/Table[translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + strTable.ToLower() + "']")
+        If (xn Is Nothing) Then Return Nothing
+
         Dim xnRow As XmlNode = Nothing
         Dim xaCols As XmlAttribute = xn.Attributes("Columns")
         Dim strRow As String = ""
