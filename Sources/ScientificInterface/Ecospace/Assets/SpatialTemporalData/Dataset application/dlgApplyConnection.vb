@@ -16,8 +16,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ' ToDo: Respond to configuration / name changes
 ' ToDo: Enable varname hierarchy in TreeView
 
-' ToDo: change date picker for masked text box
-
 Namespace Ecospace.Controls
 
     ''' -----------------------------------------------------------------------
@@ -53,6 +51,7 @@ Namespace Ecospace.Controls
         Private m_fpScale As cEwEFormatProvider = Nothing
         Private m_strDateMask As String = ""
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of dlgApplyConnection)()
+
 #End Region ' Private variables
 
 #Region " Constructor "
@@ -898,13 +897,19 @@ Namespace Ecospace.Controls
 
             If (conn IsNot Nothing) Then
 
-                Me.m_rbStartWithData.Checked = conn.UseDefaultDateStart
-                Me.m_rbStartYear.Checked = Not conn.UseDefaultDateStart
-                If (dtStart < conn.CustomDateStart) Then dtStart = conn.CustomDateStart
+                Dim startWithData As Boolean = conn.UseDefaultDateStart
+                dtStart = conn.Dataset.DateStart
 
-                Me.m_rbEndWithData.Checked = conn.UseDefaultDateEnd
-                Me.m_rbEndYear.Checked = Not conn.UseDefaultDateEnd
-                If (dtEnd > conn.CustomDateEnd) Then dtEnd = conn.CustomDateEnd
+                Me.m_rbStartWithData.Checked = startWithData
+                Me.m_rbStartYear.Checked = Not startWithData
+                If (Not startWithData) Then dtStart = conn.CustomDateStart
+
+                Dim endWithData = conn.UseDefaultDateEnd
+                dtEnd = conn.Dataset.DateEnd
+
+                Me.m_rbEndWithData.Checked = endWithData
+                Me.m_rbEndYear.Checked = Not endWithData
+                If (Not endWithData) Then dtEnd = conn.CustomDateEnd
 
                 m_tlpTimeRangePanel.Enabled = True
             Else
@@ -931,12 +936,16 @@ Namespace Ecospace.Controls
 
         Private Sub UpdateTimeRangePanelControls()
 
-            Dim core As cCore = Me.UIContext.Core
-            Dim dtStart As Date = Me.m_dtpStart.Value
-            Dim dtEnd As Date = Me.m_dtpEnd.Value
+            Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection
 
-            If (dtStart <= core.EcospaceTimestepToAbsoluteTime(1)) Then Me.m_rbStartWithData.Checked = True Else Me.m_rbStartYear.Checked = True
-            If (dtEnd >= core.EcospaceTimestepToAbsoluteTime(core.nEcospaceTimeSteps)) Then Me.m_rbEndWithData.Checked = True Else Me.m_rbEndYear.Checked = True
+            If (conn IsNot Nothing) Then
+
+                Dim dtStart As Date = Me.m_dtpStart.Value
+                Dim dtEnd As Date = Me.m_dtpEnd.Value
+
+                If (cDateUtils.DateEquals(dtStart, conn.Dataset.DateStart)) Then Me.m_rbStartWithData.Checked = True Else Me.m_rbStartYear.Checked = True
+                If (cDateUtils.DateEquals(dtEnd, conn.Dataset.DateEnd)) Then Me.m_rbEndWithData.Checked = True Else Me.m_rbEndYear.Checked = True
+            End If
 
         End Sub
 

@@ -28,7 +28,7 @@ Namespace SpatialData
         ''' <summary></summary>
         Public ReadOnly Property UseDefaultDateStart As Boolean
             Get
-                Return cDateUtils.DateEquals(Me.CustomDateStart, DateStartDefault)
+                Return cDateUtils.DateEquals(Me.CustomDateStart, DateStartDefault) Or Me.CustomDateStart > Me.Dataset.DateEnd
             End Get
         End Property
 
@@ -44,7 +44,7 @@ Namespace SpatialData
         ''' <summary></summary>
         Public ReadOnly Property UseDefaultDateEnd As Boolean
             Get
-                Return cDateUtils.DateEquals(Me.CustomDateEnd, DateEndDefault)
+                Return cDateUtils.DateEquals(Me.CustomDateEnd, DateEndDefault) Or Me.CustomDateEnd < Me.Dataset.DateStart
             End Get
         End Property
 

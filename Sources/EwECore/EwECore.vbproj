@@ -163,8 +163,9 @@
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.8" />
     <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.8" />
-    <PackageReference Include="Eii.SemanticRegistry" Version="2.0.4" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
@@ -199,6 +200,7 @@
       <PackageReference Include="System.Data.SQLite.EF6" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
     <PackageReference Include="System.ServiceModel.Primitives">
       <Version>10.0.652802</Version>

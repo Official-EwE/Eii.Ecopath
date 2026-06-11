@@ -2,8 +2,6 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Imports System
-Imports System.Diagnostics
 Imports System.Globalization
 Imports System.Net
 
