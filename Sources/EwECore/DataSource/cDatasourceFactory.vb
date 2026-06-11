@@ -110,7 +110,6 @@ Namespace DataSources
 
             ' Detect file type
             Select Case dst
-                ' Todo Case eDataSourceTypes.Sqlite
                 Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003, eDataSourceTypes.AccessVsSqlite
 
                     If File.Exists(strDatabase) Then
