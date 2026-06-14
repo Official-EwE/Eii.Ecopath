@@ -1,11 +1,12 @@
 # Workflow name shown in the Actions tab
 name: Release NuGet Packages for EwEUtils and EwECore, and create the EwE6 installer
 
-# Trigger: run this workflow on pushes to the master branch
+# Trigger: run this workflow on pushes to the master branch and experimental branch
 on:
   push:
     branches:
       - master
+      - cEwEEFDatabase   # ✅ EXPERIMENTAL branch added
 
 # Required permissions for this workflow
 # contents: write   -> create releases and upload artifacts
@@ -143,13 +144,31 @@ jobs:
       - name: Setup Official-EwE NuGet source
         uses: ./.github/actions/setup-nuget-source
 
+      # ✅ NEW: Compute experimental version only for EwECore
+      # On branch cEwEEFDatabase → add "-beta.<run_number>"
+      # On master → keep normal stable version
+      - name: Compute EwECore version
+        id: ewecore_version
+        shell: pwsh
+        run: |
+          $base = "${{ needs.version.outputs.semver }}"
+
+          if ("${{ github.ref_name }}" -eq "cEwEEFDatabase") {
+            $version = "$base-beta.${{ github.run_number }}"
+          } else {
+            $version = $base
+          }
+
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+          echo "Using version: $version"
+
       # Pack EwECore
       - name: Pack EwECore
         run: |
           dotnet pack Sources/EwECore/EwECore.vbproj `
             --configuration Release `
             --output ./nuget `
-            /p:PackageVersion=${{ needs.version.outputs.semver }} `
+            /p:PackageVersion=${{ steps.ewecore_version.outputs.version }} `
             /p:UseProjectReferences=false
         shell: pwsh
 
