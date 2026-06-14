@@ -42,7 +42,7 @@ Namespace DataSources
                     ' Check if sqlite file is present,
                     '   but also check if WebSocket server is running, needed for Access-Sqlite data source comparison,
                     '   otherwise it will be a waist of resources
-                    If File.Exists(sqliteFile) And cWebsocketHelper.IsRunning() Then
+                    If File.Exists(sqliteFile) Then             ' Rik disabled And cWebsocketHelper.IsRunning() Then
                         Return eDataSourceTypes.AccessVsSqlite
                     End If
 

@@ -20,9 +20,9 @@ Namespace Database
         Public Sub BroadcastDiffs(readerA As IDataReader, readerB As IDataReader, diffs As List(Of RowDiff), rowCount As Integer)
             Dim tableName = GetTableName(readerB)
             If diffs.Any() Then
-                cWebSocketHelper.BroadcastMessage("table", tableName, "rowCount", rowCount, "rowDiffs", diffs.ToArray())
+                'Rik disabled cWebSocketHelper.BroadcastMessage("table", tableName, "rowCount", rowCount, "rowDiffs", diffs.ToArray())
             Else
-                cWebSocketHelper.BroadcastMessage("table", tableName, "rowCount", rowCount)
+                'Rik disabled cWebSocketHelper.BroadcastMessage("table", tableName, "rowCount", rowCount)
             End If
         End Sub
 
