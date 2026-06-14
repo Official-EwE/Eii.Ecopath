@@ -72,7 +72,7 @@ jobs:
     runs-on: windows-2025-vs2026
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
-    needs: [version, pack-publish-eweutils]
+    needs: [version]
     steps:
       # Checkout repository
       - name: Checkout code
