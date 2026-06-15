@@ -11,7 +11,7 @@ runs:
         }
         dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
           --name "github-Official-EwE" `
-          --username ${{ github.repository_owner }} `
+          --username ${{ github.actor }} `
           --password ${{ github.token }} `
           --store-password-in-clear-text
 
