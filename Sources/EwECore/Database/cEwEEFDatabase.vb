@@ -3,6 +3,7 @@
 Imports System.Data
 Imports System.IO
 Imports Eii.Ecopath.Storage
+Imports EwEUtils.Utilities
 Imports Microsoft.EntityFrameworkCore
 Imports Microsoft.Extensions.Logging
 
@@ -96,8 +97,61 @@ Namespace Database
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Obtains and configures a <see cref="System.Data.IDataAdapter"/> for
+        ''' the current SQLite database via the underlying DbConnection.
+        ''' </summary>
+        ''' <param name="strSQL">The SQL query to obtain the adapter for.</param>
+        ''' <returns>A <see cref="System.Data.IDataAdapter"/> if successful,
+        ''' or Nothing when an error occurred.</returns>
+        ''' <remarks>
+        ''' <para>The returned adapter is initialized with default insert, update
+        ''' and delete commands based on the provided query.</para>
+        ''' <para>The obtained adapter should be released via
+        ''' <see cref="ReleaseAdapter">ReleaseAdapter</see>.</para>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Overrides Function GetAdapter(strSQL As String) As IDataAdapter
-            Throw New NotSupportedException("EF database does not support SQL adapters.")
+            If m_dbContext Is Nothing Then Return Nothing
+
+            Try
+                Dim conn As IDbConnection = GetConnection()
+                If conn Is Nothing Then Return Nothing
+                If conn.State <> ConnectionState.Open Then
+                    conn.Open()
+                End If
+
+#If NET48 Then
+                Dim sqliteConn As System.Data.SQLite.SQLiteConnection = TryCast(conn, System.Data.SQLite.SQLiteConnection)
+                If sqliteConn Is Nothing Then Return Nothing
+
+                Dim adapter As New System.Data.SQLite.SQLiteDataAdapter(strSQL, sqliteConn)
+                Dim cmdBuilder As New System.Data.SQLite.SQLiteCommandBuilder(adapter)
+                adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey
+                adapter.InsertCommand = cmdBuilder.GetInsertCommand(True)
+                adapter.UpdateCommand = cmdBuilder.GetUpdateCommand(True)
+                adapter.DeleteCommand = cmdBuilder.GetDeleteCommand(True)
+                Return adapter
+#Else
+                Throw New NotSupportedException(
+                    "IDataAdapter is not supported on the net8.0 EF Core path. " &
+                    "Use GetDbContext() to access entities directly via Entity Framework.")
+#End If
+
+            Catch ex As NotSupportedException
+                Throw
+
+            Catch ex As InvalidOperationException
+                m_logger.LogError(ex, cStringUtils.Localize(
+            "Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
+                Return Nothing
+
+            Catch ex As Exception
+                m_logger.LogError(ex, cStringUtils.Localize(
+            "Error when opening adapter for query '{0}': {1}", strSQL, ex.Message))
+                Return Nothing
+            End Try
         End Function
 
         Public Overrides Function GetConnection() As IDbConnection
