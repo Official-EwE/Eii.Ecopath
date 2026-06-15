@@ -69,10 +69,7 @@ Namespace Database
                 m_strFileName = strDatabase
                 m_isReadOnly = bReadOnly
                 ' Ensure connection is opened
-                Dim conn As IDbConnection = GetConnection()
-                If conn IsNot Nothing AndAlso conn.State <> ConnectionState.Open Then
-                    conn.Open()
-                End If
+                GetOpenConnection()
                 Return eDatasourceAccessType.Opened
             Catch ex As Exception
                 Return eDatasourceAccessType.Failed_Unknown
@@ -116,28 +113,20 @@ Namespace Database
             If m_dbContext Is Nothing Then Return Nothing
 
             Try
-                Dim conn As IDbConnection = GetConnection()
+                Dim conn As IDbConnection = GetOpenConnection()
                 If conn Is Nothing Then Return Nothing
-                If conn.State <> ConnectionState.Open Then
-                    conn.Open()
-                End If
 
                 Dim dbConn As System.Data.Common.DbConnection = TryCast(conn, System.Data.Common.DbConnection)
                 If dbConn Is Nothing Then Return Nothing
 
-                Dim factory As System.Data.Common.DbProviderFactory =
-            System.Data.Common.DbProviderFactories.GetFactory(dbConn)
+                Dim factory As System.Data.Common.DbProviderFactory = System.Data.Common.DbProviderFactories.GetFactory(dbConn)
                 If factory Is Nothing Then
-                    Throw New NotSupportedException(
-                "No DbProviderFactory found for connection type: " & dbConn.GetType().Name)
+                    Throw New NotSupportedException("No DbProviderFactory found for connection type: " & dbConn.GetType().Name)
                 End If
 
-                Dim adapter As System.Data.Common.DbDataAdapter =
-            TryCast(factory.CreateDataAdapter(), System.Data.Common.DbDataAdapter)
+                Dim adapter As System.Data.Common.DbDataAdapter = TryCast(factory.CreateDataAdapter(), System.Data.Common.DbDataAdapter)
                 If adapter Is Nothing Then
-                    Throw New NotSupportedException(
-                "IDataAdapter is not supported for provider: " & factory.GetType().Name &
-                ". Use GetDbContext() to access entities directly via Entity Framework.")
+                    Throw New NotSupportedException("IDataAdapter is not supported for provider: " & factory.GetType().Name & ". Use GetDbContext() to access entities directly via Entity Framework.")
                 End If
 
                 Dim cmd As System.Data.Common.DbCommand = dbConn.CreateCommand()
@@ -145,26 +134,20 @@ Namespace Database
                 adapter.SelectCommand = cmd
                 adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey
 
-                Dim cmdBuilder As System.Data.Common.DbCommandBuilder =
-            factory.CreateCommandBuilder()
+                Dim cmdBuilder As System.Data.Common.DbCommandBuilder = factory.CreateCommandBuilder()
                 cmdBuilder.DataAdapter = adapter
                 adapter.InsertCommand = DirectCast(cmdBuilder.GetInsertCommand(True), System.Data.Common.DbCommand)
                 adapter.UpdateCommand = DirectCast(cmdBuilder.GetUpdateCommand(True), System.Data.Common.DbCommand)
                 adapter.DeleteCommand = DirectCast(cmdBuilder.GetDeleteCommand(True), System.Data.Common.DbCommand)
 
                 Return adapter
-
             Catch ex As NotSupportedException
                 Throw
-
             Catch ex As InvalidOperationException
-                m_logger.LogError(ex, cStringUtils.Localize(
-            "Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
+                m_logger.LogError(ex, cStringUtils.Localize("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
                 Return Nothing
-
             Catch ex As Exception
-                m_logger.LogError(ex, cStringUtils.Localize(
-            "Error when opening adapter for query '{0}': {1}", strSQL, ex.Message))
+                m_logger.LogError(ex, cStringUtils.Localize("Error when opening adapter for query '{0}': {1}", strSQL, ex.Message))
                 Return Nothing
             End Try
         End Function
@@ -178,6 +161,20 @@ Namespace Database
 #End If
             End If
             Return Nothing
+        End Function
+
+        Private Function GetOpenConnection() As IDbConnection
+            Dim conn As IDbConnection = GetConnection()
+            If conn Is Nothing Then Return Nothing
+            If conn.State <> ConnectionState.Open Then
+                conn.Open()
+                ' Run PRAGMAs once on first open
+                Using pragmasCmd As IDbCommand = conn.CreateCommand()
+                    pragmasCmd.CommandText = "PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA cache_size=-64000; PRAGMA temp_store=MEMORY;"
+                    pragmasCmd.ExecuteNonQuery()
+                End Using
+            End If
+            Return conn
         End Function
 
         Public Overrides Function CanConnect(dst As eDataSourceTypes) As Boolean
@@ -218,11 +215,8 @@ Namespace Database
         Protected Overrides Function CreateDBCommand(strSQL As String) As IDbCommand
             ' For EF, create a command from the underlying DbConnection
             If m_dbContext Is Nothing Then Return Nothing
-            Dim conn As IDbConnection = GetConnection()
+            Dim conn As IDbConnection = GetOpenConnection()
             If conn Is Nothing Then Return Nothing
-            If conn.State <> ConnectionState.Open Then
-                conn.Open()
-            End If
             Dim cmd As IDbCommand = conn.CreateCommand()
             cmd.CommandText = strSQL
             Return cmd
