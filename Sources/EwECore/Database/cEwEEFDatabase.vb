@@ -122,22 +122,37 @@ Namespace Database
                     conn.Open()
                 End If
 
-#If NET48 Then
-                Dim sqliteConn As System.Data.SQLite.SQLiteConnection = TryCast(conn, System.Data.SQLite.SQLiteConnection)
-                If sqliteConn Is Nothing Then Return Nothing
+                Dim dbConn As System.Data.Common.DbConnection = TryCast(conn, System.Data.Common.DbConnection)
+                If dbConn Is Nothing Then Return Nothing
 
-                Dim adapter As New System.Data.SQLite.SQLiteDataAdapter(strSQL, sqliteConn)
-                Dim cmdBuilder As New System.Data.SQLite.SQLiteCommandBuilder(adapter)
+                Dim factory As System.Data.Common.DbProviderFactory =
+            System.Data.Common.DbProviderFactories.GetFactory(dbConn)
+                If factory Is Nothing Then
+                    Throw New NotSupportedException(
+                "No DbProviderFactory found for connection type: " & dbConn.GetType().Name)
+                End If
+
+                Dim adapter As System.Data.Common.DbDataAdapter =
+            TryCast(factory.CreateDataAdapter(), System.Data.Common.DbDataAdapter)
+                If adapter Is Nothing Then
+                    Throw New NotSupportedException(
+                "IDataAdapter is not supported for provider: " & factory.GetType().Name &
+                ". Use GetDbContext() to access entities directly via Entity Framework.")
+                End If
+
+                Dim cmd As System.Data.Common.DbCommand = dbConn.CreateCommand()
+                cmd.CommandText = strSQL
+                adapter.SelectCommand = cmd
                 adapter.MissingSchemaAction = MissingSchemaAction.AddWithKey
-                adapter.InsertCommand = cmdBuilder.GetInsertCommand(True)
-                adapter.UpdateCommand = cmdBuilder.GetUpdateCommand(True)
-                adapter.DeleteCommand = cmdBuilder.GetDeleteCommand(True)
+
+                Dim cmdBuilder As System.Data.Common.DbCommandBuilder =
+            factory.CreateCommandBuilder()
+                cmdBuilder.DataAdapter = adapter
+                adapter.InsertCommand = DirectCast(cmdBuilder.GetInsertCommand(True), System.Data.Common.DbCommand)
+                adapter.UpdateCommand = DirectCast(cmdBuilder.GetUpdateCommand(True), System.Data.Common.DbCommand)
+                adapter.DeleteCommand = DirectCast(cmdBuilder.GetDeleteCommand(True), System.Data.Common.DbCommand)
+
                 Return adapter
-#Else
-                Throw New NotSupportedException(
-                    "IDataAdapter is not supported on the net8.0 EF Core path. " &
-                    "Use GetDbContext() to access entities directly via Entity Framework.")
-#End If
 
             Catch ex As NotSupportedException
                 Throw
