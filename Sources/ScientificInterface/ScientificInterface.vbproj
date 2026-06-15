@@ -1131,4 +1131,28 @@
       <Version>7.0.0</Version>
     </PackageReference>
   </ItemGroup>
+  <!--
+    Copies the correct e_sqlite3.dll (SQLitePCLRaw native binary) to the output root.
+    Required because System.Data.SQLite 2.x uses SQLitePCLRaw as its native layer, but
+    net48 does not understand the 'runtimes\win-x64\native\' folder convention and needs
+    the DLL in the output root directly.
+
+    Can be removed once EwECore is referenced as a NuGet package, as the Eii.Ecopath.Storage
+    NuGet package's .targets file (build\net48\Eii.Ecopath.Storage.targets) will then handle
+    this copy automatically.
+  -->
+  <Target Name="CopyEsqlite3ToOutputRoot" AfterTargets="Build">
+      <PropertyGroup>
+          <_SQLiteArch Condition="'$(PlatformTarget)' == 'x86'">win-x86</_SQLiteArch>
+          <_SQLiteArch Condition="'$(PlatformTarget)' != 'x86'">win-x64</_SQLiteArch>
+      </PropertyGroup>
+      <ItemGroup>
+          <_ESqlite3Dll Include="$(NuGetPackageRoot)sqlitepclraw.lib.e_sqlite3\*\runtimes\$(_SQLiteArch)\native\e_sqlite3.dll" />
+      </ItemGroup>
+      <Copy
+          SourceFiles="@(_ESqlite3Dll)"
+          DestinationFolder="$(OutputPath)"
+          Condition="'@(_ESqlite3Dll)' != ''"
+          SkipUnchangedFiles="true" />
+  </Target>
 </Project>
