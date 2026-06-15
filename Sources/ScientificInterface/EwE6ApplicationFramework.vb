@@ -36,7 +36,7 @@ Module EwE6ApplicationFramework
 
         ' Conditionally start web-socket server to allow web-socket clients to connect
         If Environment.GetEnvironmentVariable("EWE_ENABLE_WEBSOCKET") = "1" Then
-            Dim dummy = cWebSocketHelper.Instance
+            'Rik disabled Dim dummy = cWebSocketHelper.Instance
         End If
 
         ' Configure Serilog
