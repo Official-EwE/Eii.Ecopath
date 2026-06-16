@@ -21,7 +21,7 @@ Namespace Database
             If m_dbContext Is Nothing Then
                 m_dbContext = New EwEDbContext()
             End If
-#If NET48
+#If NET48 Then
             m_dbContext.Database.Initialize(True)
 #Else
             m_dbContext.Database.Migrate()
@@ -154,7 +154,7 @@ Namespace Database
 
         Public Overrides Function GetConnection() As IDbConnection
             If m_dbContext IsNot Nothing Then
-#If NET48
+#If NET48 Then
                 Return m_dbContext.Database.Connection
 #Else
                 Return m_dbContext.Database.GetDbConnection()
