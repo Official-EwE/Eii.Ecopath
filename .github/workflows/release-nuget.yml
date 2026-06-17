@@ -80,11 +80,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Install .NET SDK 8
+      # Install .NET SDK 10
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       # Install .NET Framework 4.8 dev pack (for building older projects that need targeting packs)
       - name: Install .NET Framework targeting pack (4.8)
@@ -128,11 +128,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Install .NET SDK 8
+      # Install .NET SDK 10
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       # Install .NET Framework 4.8 dev pack
       - name: Install .NET Framework targeting pack (4.8)
@@ -176,11 +176,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Install .NET SDK 8
+      # Install .NET SDK 10
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       # Install .NET Framework 4.8 dev pack
       - name: Install .NET Framework targeting pack (4.8)
@@ -224,11 +224,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Install .NET SDK 8
+      # Install .NET SDK 10
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       # Install .NET Framework 4.8 targeting pack
       - name: Install .NET Framework targeting pack (4.8)
