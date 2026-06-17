@@ -1074,7 +1074,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcoTrophPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEModelFromEcosimPlugin\EwEModelFromEcosimPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEMSEPlugin\EwEMSEPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEMSPChallengeIntegration\EwEMSPLink\EwEMSPLink.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEMSPChallengeIntegration\EwEMSPPlugin\EwEMSPPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEMultiSimPlugin\EwEMultiSimPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj" />
