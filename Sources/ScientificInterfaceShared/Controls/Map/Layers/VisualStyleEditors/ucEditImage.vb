@@ -45,9 +45,15 @@ Namespace Controls
             Dim avs As cVisualStyle() = Me.UIContext.StyleGuide.GetVisualStyles(-1, cStyleGuide.eBrushType.Glyphs)
 
             For Each vs As cVisualStyle In avs
-                Me.m_glyphSelect.AddImage(vs.Image)
+                Dim img As Image = ConvertFromImageString(vs.ImageString)
+                If img IsNot Nothing Then
+                    Me.m_glyphSelect.AddImage(img)
+                End If
             Next
-            Me.m_glyphSelect.AddImage(Me.VisualStyle.Image)
+            Dim currentImg As Image = ConvertFromImageString(Me.VisualStyle.ImageString)
+            If currentImg IsNot Nothing Then
+                Me.m_glyphSelect.AddImage(currentImg)
+            End If
             Me.m_glyphSelect.Enabled = True
             Me.m_btnImport.Enabled = True
 
@@ -98,7 +104,8 @@ Namespace Controls
             Set(value As cVisualStyle)
                 MyBase.VisualStyle = value
                 If (MyBase.VisualStyle IsNot Nothing) And (Me.m_glyphSelect IsNot Nothing) Then
-                    Me.m_glyphSelect.SelectedImage = Me.VisualStyle.Image
+                    Dim img As Image = ConvertFromImageString(Me.VisualStyle.ImageString)
+                    Me.m_glyphSelect.SelectedImage = img
                 End If
             End Set
         End Property
@@ -106,9 +113,35 @@ Namespace Controls
         Public Overrides Function Apply(vs As cVisualStyle) As Boolean
             Dim img As Image = Me.m_glyphSelect.SelectedImage
             If (img IsNot Nothing) Then
-                vs.Image = Me.m_glyphSelect.SelectedImage
+                ' Convert System.Drawing.Image to Base64 PNG string
+                Try
+                    Using ms As New System.IO.MemoryStream()
+                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Png)
+                        vs.ImageString = Convert.ToBase64String(ms.ToArray())
+                    End Using
+                Catch ex As Exception
+                    ' Failed to convert
+                    Return False
+                End Try
             End If
             Return True
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert Base64 PNG string to System.Drawing.Image.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Shared Function ConvertFromImageString(base64Png As String) As Image
+            If String.IsNullOrEmpty(base64Png) Then Return Nothing
+            Try
+                Dim imageBytes As Byte() = Convert.FromBase64String(base64Png)
+                Using ms As New System.IO.MemoryStream(imageBytes)
+                    Return New Bitmap(ms)
+                End Using
+            Catch
+                Return Nothing
+            End Try
         End Function
 
 #End Region ' Overridables

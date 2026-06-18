@@ -22,7 +22,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
-    <IncludeSymbols>true</IncludeSymbols>
+	<DebugType>embedded</DebugType>
     <IncludeSource>true</IncludeSource>
     <IncludeReferencedProjects>True</IncludeReferencedProjects>
     <Company>EII</Company>
@@ -160,11 +160,10 @@
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.8" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.8" />
-    <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.9" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.9" />
+    <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.12" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="SkiaSharp" Version="3.119.4" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <PackageReference Include="Eii.Ecopath.Licence" Version="1.0.3" />
@@ -190,9 +189,9 @@
       </PackageReference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-      <PackageReference Include="EntityFramework" Version="6.5.1" />
+      <PackageReference Include="EntityFramework" Version="6.5.2" />
       <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
-      <PackageReference Include="System.Data.SQLite.EF6" Version="2.0.2" />
+      <PackageReference Include="System.Data.SQLite.EF6" Version="2.0.3" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
@@ -200,6 +199,7 @@
     <PackageReference Include="System.ServiceModel.Primitives">
       <Version>10.0.652802</Version>
     </PackageReference>
+    <PackageReference Include="System.Text.Json" Version="10.0.9" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
   <!-- Use a local project reference when UseProjectReferences is true -->
@@ -208,7 +208,6 @@
   </ItemGroup>
   <!-- Otherwise use a package reference.  -->
   <ItemGroup>
-    <!-- Otherwise use a package reference.  -->
     <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.*" />
   </ItemGroup>
 </Project>
