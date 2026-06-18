@@ -4056,8 +4056,20 @@ Public Class cEIIXMLDataSource
         If (Me.m_core IsNot Nothing) Then
             Me.m_core.m_publisher.AddMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance))
         End If
-        'Console.WriteLine(strMessage)
 
+        ' Log with appropriate level based on message importance
+        Select Case msgImportance
+            Case eMessageImportance.Critical
+                m_logger.LogCritical(strMessage)
+            Case eMessageImportance.Warning
+                m_logger.LogWarning(strMessage)
+            Case eMessageImportance.Information, eMessageImportance.Question
+                m_logger.LogInformation(strMessage)
+            Case eMessageImportance.Progress, eMessageImportance.Maintenance
+                m_logger.LogDebug(strMessage)
+            Case Else
+                m_logger.LogInformation(strMessage)
+        End Select
     End Sub
 
     Private Function ParseBoolean(strVal As String) As Boolean
