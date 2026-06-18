@@ -222,6 +222,11 @@ Namespace Database
             Return cmd
         End Function
 
+        Protected Overrides Function HasTable(strTableName As String) As Boolean
+            If m_dbContext Is Nothing Then Return False
+            Return m_dbContext.GetEntityTypeByTableName(strTableName) IsNot Nothing
+        End Function
+
         Public Overrides Function GetReader(strSQL As String) As IDataReader
             Dim reader As cCoercedDataReader = Nothing
             Try

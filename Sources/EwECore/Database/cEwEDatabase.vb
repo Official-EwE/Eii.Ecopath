@@ -1322,7 +1322,7 @@ Namespace Database
         ''' <param name="strTableName">The table to check.</param>
         ''' <returns>True if the table exists in the open connection.</returns>
         ''' -------------------------------------------------------------------
-        Protected Function HasTable(strTableName As String) As Boolean
+        Protected Overridable Function HasTable(strTableName As String) As Boolean
 
             If (Me.GetConnection() Is Nothing) Then Return False
 
