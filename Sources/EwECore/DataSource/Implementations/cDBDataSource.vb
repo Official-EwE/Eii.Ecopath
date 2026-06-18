@@ -7539,6 +7539,7 @@ Namespace DataSources
                 ecospaceDS.NoFishWeight = CSng(Me.m_db.ReadSafe(reader, "NoFishWeight", 0.3))
                 ecospaceDS.PenPow = CSng(Me.m_db.ReadSafe(reader, "PenaltyPower", 10))
                 ecospaceDS.FirstPenaltyMonth = CInt(Me.m_db.ReadSafe(reader, "FirstPenaltyMonth", 60))
+                ecospaceDS.EffortRelaxationWeight = CSng(Me.m_db.ReadSafe(reader, "EffortRelaxationWeight", 0.9!))
                 ecospaceDS.UseHabCapGradientCorrections = (CInt(Me.m_db.ReadSafe(reader, "UseHabCapGradientCorrections", 1)) <> 0)
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
@@ -7557,6 +7558,7 @@ Namespace DataSources
                 ecospaceDS.UseEffortDistThreshold = CInt(Me.m_db.ReadSafe(reader, "UseEffortDistrThreshold", 0)) = 1
                 ecospaceDS.EffortDistThreshold = CSng(Me.m_db.ReadSafe(reader, "EffortDistrThreshold", 10000))
                 ' ecospaceDS.FitResponseType = DirectCast(CInt(Me.m_db.ReadSafe(reader, "FitResponseType", eFitResponseType.None)), eFitResponseType)
+
 
                 stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
 
