@@ -2,7 +2,7 @@ name: Build Check
 on:
   pull_request:
     branches:
-      - master
+      - cEwEEFDatabase   # EXPERIMENTAL branch added
 
 jobs:
   build:
