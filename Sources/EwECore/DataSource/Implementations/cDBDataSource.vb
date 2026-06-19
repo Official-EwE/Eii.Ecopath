@@ -7763,6 +7763,7 @@ Namespace DataSources
                 drow("NoFishWeight") = ecospaceDS.NoFishWeight
                 drow("PenaltyPower") = ecospaceDS.PenPow
                 drow("FirstPenaltyMonth") = ecospaceDS.FirstPenaltyMonth
+                drow("EffortRelaxationWeight") = ecospaceDS.EffortRelaxationWeight
                 drow("UseHabCapGradientCorrections") = If(ecospaceDS.UseHabCapGradientCorrections, 1, 0)
 
                 drow("TotalTime") = ecospaceDS.TotalTime
