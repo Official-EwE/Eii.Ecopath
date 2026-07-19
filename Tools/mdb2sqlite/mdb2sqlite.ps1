@@ -198,6 +198,16 @@ function Convert-MdbToSqlite {
     Write-Host "Finalizing conversion.sql script..."
     "COMMIT;" | Add-Content -Path $conversionSql
 
+	Write-Host "Removing empty primary keys..."
+	$inputFile = ""
+	$tempFile = [System.IO.Path]::GetTempFileName()
+	Get-Content $conversionSql | ForEach-Object {
+		if ($_ -notmatch ', PRIMARY KEY \(\)') {
+			$_
+		}
+	} | Set-Content $tempFile
+	Move-Item $tempFile $conversionSql -Force
+
     Write-Host "Creating SQLite database and importing data..."
     $errorFile = Join-Path $cacheFolder 'sqlite_error.txt'
     if ($IsWindows -or $env:OS -eq 'Windows_NT') {
@@ -291,5 +301,6 @@ if (Test-Path $outDatabase -PathType Leaf) {
 }
 
 Convert-MdbToSqlite -scriptDir $scriptDir -inDatabase $inDatabase -outDatabase $outDatabase
+
 Write-Host "Conversion finished."
 exit 0
