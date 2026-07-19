@@ -121,10 +121,6 @@
     <AssemblyName>EwECore</AssemblyName>
     <RootNamespace>EwECore</RootNamespace>
     <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
-    <DebugType>embedded</DebugType>
-    <EmbedAllSources>true</EmbedAllSources>
-  </PropertyGroup>
-  <PropertyGroup>
     <PackageId>Eii.Ecopath.EwECore</PackageId>
     <Title>Ecopath with Ecosim Core</Title>
     <Description>A description of the EwECore package</Description>
@@ -136,6 +132,7 @@
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
 	<DebugType>embedded</DebugType>
     <IncludeSource>true</IncludeSource>
+    <EmbedAllSources>true</EmbedAllSources>    
     <IncludeReferencedProjects>True</IncludeReferencedProjects>
     <Company>EII</Company>
     <PackageIcon>EII_plain_128x128.png</PackageIcon>
