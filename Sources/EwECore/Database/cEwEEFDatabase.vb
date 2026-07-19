@@ -226,23 +226,26 @@ Namespace Database
             If m_dbContext Is Nothing Then Return False
             Return m_dbContext.GetEntityTypeByTableName(strTableName) IsNot Nothing
         End Function
-
+        
         Public Overrides Function GetReader(strSQL As String) As IDataReader
+            Dim command As IDbCommand = Nothing
             Dim reader As cCoercedDataReader = Nothing
             Try
-                Using command As IDbCommand = Me.CreateDBCommand(strSQL)
-                    reader = New cCoercedDataReader(command.ExecuteReader())
-                End Using
+                command = Me.CreateDBCommand(strSQL)
+                reader = New cCoercedDataReader(command.ExecuteReader())
             Catch ex As Exception
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("GetReader error: {0}", ex.Message)
 #End If
                 m_logger.LogError(ex, "cEwEEFDatabase.GetReader(" & strSQL & ")")
+                command?.Dispose()
                 reader = Nothing
             End Try
-            reader.PropTypes = GetDbContext().GetPropTypes(DataReaderDiff.GetTableName(reader))
+            If reader IsNot Nothing Then
+                reader.PropTypes = GetDbContext().GetPropTypes(DataReaderDiff.GetTableName(reader))
+            End If
             Return reader
-        End Function
+        End Function        
 
     End Class
 End Namespace
