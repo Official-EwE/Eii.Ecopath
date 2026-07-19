@@ -1,4 +1,115 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<!--
+  ============================================================
+  DEBUG SYMBOLS / STEP-THROUGH DEBUGGING — NOTES
+  ============================================================
+  Current setup: DebugType=embedded + EmbedAllSources=true
+    - Works fully offline, no auth needed.
+    - Applies to both Debug and Release (not split out).
+
+  TODO: move to Source Link instead of embedding sources in the package.
+  This is a more modern approach that avoids shipping source files
+  in the package itself, and instead fetches them from the GitHub repo
+  at the exact commit SHA of the build.
+  This requires consumers to have GitHub auth configured locally.
+
+  Trade-off vs current setup:
+    + Smaller package (no baked-in source files)
+    + Source always matches the exact commit SHA, not whatever was
+      packed at build time
+    - Every consumer must have valid GitHub auth configured locally,
+      or step-through just silently fails to load source
+    - No free public symbol server (nuget.org's only indexes public
+      packages) — snupkg has nowhere to go unless we host one
+
+  === MSBuild changes to make ===
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  Remove: <EmbedAllSources>true</EmbedAllSources> (no longer needed —
+  source is fetched from GitHub instead of baked in)
+
+  === Symbols: skip snupkg, embed portable PDB in the package instead ===
+  Since there's no symbol server for a private repo (GitHub Packages
+  doesn't run one, nuget.org won't index a private repo's symbols),
+  don't bother with SymbolPackageFormat=snupkg / IncludeSymbols. Just
+  ship a portable PDB alongside the DLL in the main package:
+
+  <PropertyGroup>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  This keeps symbol resolution simple (PDB is already local, right next
+  to the DLL) — the only remaining "fetch" step is Source Link pulling
+  the .cs files themselves from GitHub when a breakpoint/step needs them.
+
+  === Debug vs Release split ===
+  Local Debug builds (dirty tree / unpushed commits) won't resolve
+  cleanly via Source Link anyway — only meaningful for builds built
+  from a pushed commit SHA. Recommend:
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>portable</DebugType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  === Consumer-side setup (this is the part that actually matters now) ===
+  Because the repo is private, raw.githubusercontent.com will 404/401
+  for unauthenticated requests, so every machine that wants to step
+  into this source needs GitHub credentials wired up:
+
+  1. Install/rely on Git Credential Manager (GCM) — bundled with recent
+     Git for Windows and VS installs. Confirm with:
+       git config ––global credential.helper
+     (should show "manager" or "manager-core")
+
+  2. One-time per machine: trigger a GitHub auth prompt so GCM caches
+     a token. Easiest way is a throwaway private clone/fetch:
+       git ls-remote https://github.com/Official-EwE/Eii.Ecopath.git
+     This pops the GCM browser/device-code login. Needs a GitHub
+     account with at least read access to the repo. GCM stores the
+     resulting token in Windows Credential Manager (or platform
+     equivalent on macOS/Linux) — no PAT to manage manually in the
+     common case.
+
+  3. Alternative if GCM isn't available/allowed (e.g. locked-down
+     machine, CI agent): use a fine-grained PAT with "Contents: read"
+     on this repo, and store it via:
+       git config ––global credential.https://github.com.username <gh-user>
+     and let the credential store prompt once, pasting the PAT as the
+     password. Or set it non-interactively via an env var pattern like
+     GIT_ASKPASS pointing to a small script that echoes the PAT — useful
+     for build agents that need to symbolicate crash dumps later.
+
+  4. In Visual Studio (Tools > Options > Debugging > General):
+       - Uncheck "Enable Just My Code"
+       - Check "Enable Source Link support"
+     VS will use the same credential store as Git for the fetch, so if
+     step 1/3 worked, no extra VS-side auth needed.
+
+  5. Sanity check: set a breakpoint in consuming code, step into an
+     Eii.Ecopath call. First hit will show a brief "Source Link" fetch
+     in the status bar; if it instead prompts a login dialog or fails
+     silently with "no source available," credentials aren't wired up
+     — revisit step 1–3 before assuming Source Link itself is broken.
+
+  Known friction: this must be repeated (or scripted/documented for
+  onboarding) on every new dev machine and any CI agent that needs to
+  symbolicate crashes against private source. Budget for that when
+  deciding if this is worth it over just keeping embedded sources.
+  ============================================================
+-->
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFrameworks>net48;net10.0</TargetFrameworks>
@@ -10,7 +121,8 @@
     <AssemblyName>EwECore</AssemblyName>
     <RootNamespace>EwECore</RootNamespace>
     <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
+    <EmbedAllSources>true</EmbedAllSources>
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Eii.Ecopath.EwECore</PackageId>
