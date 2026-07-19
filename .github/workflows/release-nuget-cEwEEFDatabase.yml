@@ -117,7 +117,7 @@ jobs:
       - name: Pack EwECore
         run: |
           dotnet pack Sources/EwECore/EwECore.vbproj `
-            --configuration Release `
+            --configuration Debug `
             --output ./nuget `
             /p:PackageVersion=${{ steps.ewecore_version.outputs.version }} `
             /p:UseProjectReferences=false
