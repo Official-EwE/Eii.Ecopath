@@ -273,6 +273,13 @@ Namespace MSE
             End Get
         End Property
 
+        ''' <summary>Exposes the underlying MSE data structures for testing and diagnostics.</summary>
+        Public ReadOnly Property MSEData() As cMSEDataStructures
+            Get
+                Return Me.m_MSEdata
+            End Get
+        End Property
+
 #End Region
 
 #Region "Construction Initialization and Running of the model"
