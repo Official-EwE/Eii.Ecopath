@@ -10272,6 +10272,7 @@ Public Class cCore
             'Clears out any memory
             'And updates core state
             Me.CloseEcospaceScenario()
+            m_Ecospace.SearchData = m_SearchData
 
             Me.m_EcopathData.ActiveEcospaceScenario = -1
             Me.SpatialDataConnectionManager.DatasetManager.Reload(True)
@@ -10292,7 +10293,6 @@ Public Class cCore
             ' JB 12dec10: Space can not run longer than Sim
             If m_EcospaceData.TotalTime > m_EcoSimData.NumYears Then m_EcospaceData.TotalTime = m_EcoSimData.NumYears
 
-            m_Ecospace.SearchData = m_SearchData
 
             'all the input maps have changed if a new scenario is loaded
             Me.m_EcospaceData.isCapacityChanged = True
