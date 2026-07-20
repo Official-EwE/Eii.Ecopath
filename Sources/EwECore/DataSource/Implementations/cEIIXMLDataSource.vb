@@ -258,6 +258,7 @@ Public Class cEIIXMLDataSource
 
             Return bSucces
         Catch ex As Exception
+            m_logger.LogError(ex, "cEIIXMLDataSource.LoadModel")
             Return False
         End Try
 
@@ -346,6 +347,11 @@ Public Class cEIIXMLDataSource
         Dim dt As DataTable = Me.ReadTable("EcopathGroup")
         Dim iGroup As Integer = 1
         Dim bSucces As Boolean = True
+
+        If dt Is Nothing Then
+            'Debug.Assert(False, "Failed to access table EcopathModel")
+            Return False
+        End If
 
         ' Init data structure
         ecopathDS.NumGroups = dt.Rows.Count
@@ -444,6 +450,11 @@ Public Class cEIIXMLDataSource
         Dim sDiet As Single = 0.0!
         Dim bSucces As Boolean = True
 
+        If dt Is Nothing Then
+            'Debug.Assert(False, "Failed to access table EcopathModel")
+            Return False
+        End If
+
         Try
             For Each row As DataRow In dt.Rows
 
@@ -499,9 +510,13 @@ Public Class cEIIXMLDataSource
         Dim bSucces As Boolean = True
 
         dtStanza = Me.ReadTable("Stanza")
-        dtStanza.DefaultView.Sort = "StanzaID ASC"
-
         dtLifeStage = Me.ReadTable("StanzaLifeStage")
+
+        If (dtStanza Is Nothing) Or (dtLifeStage Is Nothing) Then
+            Return False
+        End If
+
+        dtStanza.DefaultView.Sort = "StanzaID ASC"
 
         ' Count the number of rows in StanzaInfo; this is the number of split groups that we're going to work with
         stanzaDS.Nsplit = dtStanza.Rows.Count
@@ -645,11 +660,19 @@ Public Class cEIIXMLDataSource
         Dim dtFleets As DataTable = Me.ReadTable("EcopathFleet")
         Dim iFleet As Integer = 1
         Dim bSucces As Boolean = True
+        Dim bHasColours = False
+
+        If (dtFleets Is Nothing) Then
+            Return False
+        End If
 
         ecopathDS.NoGearData = Not Me.IsFishing()
         ecopathDS.NumFleet = dtFleets.Rows.Count()
 
         If Not ecopathDS.RedimFleetVariables(True) Then Return False
+
+        ' Potential error caused by older databases
+        bHasColours = dtFleets.Columns.Contains("PoolColor")
 
         Try
             dtFleets.DefaultView.Sort = "Sequence ASC"
@@ -661,7 +684,11 @@ Public Class cEIIXMLDataSource
                 ecopathDS.CostPct(iFleet, eCostIndex.Fixed) = CSng(drow("FixedCost"))
                 ecopathDS.CostPct(iFleet, eCostIndex.Sail) = CSng(drow("SailingCost"))
                 ecopathDS.CostPct(iFleet, eCostIndex.CUPE) = CSng(drow("variableCost"))
-                ecopathDS.FleetColor(iFleet) = Integer.Parse(CStr(drow("PoolColor")), Globalization.NumberStyles.HexNumber)
+                If bHasColours Then
+                    ecopathDS.FleetColor(iFleet) = Integer.Parse(CStr(drow("PoolColor")), Globalization.NumberStyles.HexNumber)
+                Else
+                    ecopathDS.FleetColor(iFleet) = 0
+                End If
                 iFleet += 1
 
             Next
@@ -684,6 +711,11 @@ Public Class cEIIXMLDataSource
         Dim iFleet As Integer = 0
         Dim iGroup As Integer = 0
         Dim bSucces As Boolean = True
+
+        If (dtCatch Is Nothing) Then
+            Return False
+        End If
+
 
         Try
 
@@ -723,6 +755,10 @@ Public Class cEIIXMLDataSource
         Dim iGroup As Integer = 0
         Dim bSucces As Boolean = True
 
+        If (dt Is Nothing) Then
+            Return False
+        End If
+
         Try
             For Each drow As DataRow In dt.Rows
 
@@ -753,6 +789,10 @@ Public Class cEIIXMLDataSource
         Dim strVisualStyle As String = ""
         Dim ad As cAuxiliaryData = Nothing
         Dim bSucces As Boolean = True
+
+        If (dt Is Nothing) Then
+            Return True ' Is not a deal breaker
+        End If
 
         Me.m_core.m_dtAuxiliaryData.Clear()
 
@@ -800,6 +840,12 @@ Public Class cEIIXMLDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
         Dim iLevel As Integer = 1
         Dim bSucces As Boolean = True
+
+        If (dtPedigree Is Nothing) Then
+            ecopathDS.NumPedigreeLevels = 0
+            ecopathDS.RedimPedigree()
+            Return True ' Is not a deal breaker
+        End If
 
         ' Init data structure
         ecopathDS.NumPedigreeLevels = dtPedigree.Rows.Count()
@@ -873,6 +919,10 @@ Public Class cEIIXMLDataSource
         Dim iLevel As Integer
         Dim bSucces As Boolean = True
 
+        If (dtPedigree Is Nothing) Then
+            Return True ' Is not a deal breaker
+        End If
+
         Try
 
             For Each drow As DataRow In dtPedigree.Rows
@@ -910,7 +960,14 @@ Public Class cEIIXMLDataSource
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim dt As DataTable = Me.ReadTable("EcopathTaxon")
-        taxonDS.NumTaxon = dt.Rows.Count
+
+        If (dt IsNot Nothing) Then
+            taxonDS.NumTaxon = dt.Rows.Count
+        Else
+            taxonDS.NumTaxon = 0
+            taxonDS.RedimTaxon()
+            Return True
+        End If
 
         taxonDS.RedimTaxon()
         Dim iTaxon As Integer = 1
@@ -961,9 +1018,9 @@ Public Class cEIIXMLDataSource
 
         Debug.Assert(iTaxon - 1 = taxonDS.NumTaxon)
 
-        ' Read taxa assignments
-        bSucces = bSucces And Me.LoadEcopathGroupTaxon()
-        bSucces = bSucces And Me.LoadEcopathStanzaTaxon()
+        ' Read taxa assignments (may fail on older models)
+        Me.LoadEcopathGroupTaxon()
+        Me.LoadEcopathStanzaTaxon()
         Return True
 
     End Function
@@ -976,6 +1033,10 @@ Public Class cEIIXMLDataSource
         Dim iTaxon As Integer = 1
         Dim iGroup As Integer = 1
         Dim bSucces As Boolean = True
+
+        If (dt Is Nothing) Then
+            Return True ' Is not a deal breaker
+        End If
 
         Try
             For Each row As DataRow In dt.DefaultView.ToTable.Rows
@@ -1008,6 +1069,10 @@ Public Class cEIIXMLDataSource
         Dim iTaxon As Integer = 1
         Dim iStanza As Integer = 1
         Dim bSucces As Boolean = True
+
+        If (dt Is Nothing) Then
+            Return True ' Is not a deal breaker
+        End If
 
         Try
             For Each row As DataRow In dt.DefaultView.ToTable.Rows
@@ -1047,6 +1112,10 @@ Public Class cEIIXMLDataSource
         Dim dt As DataTable = Me.ReadTable("EcosimScenario")
         Dim iScenario As Integer = 1
         Dim bSucces As Boolean = True
+
+        If (dt Is Nothing) Then
+            Return False
+        End If
 
         ecopathDS.NumEcosimScenarios = dt.Rows.Count
         ecopathDS.RedimEcosimScenarios()
@@ -1090,6 +1159,10 @@ Public Class cEIIXMLDataSource
         Dim dt As DataTable = Me.ReadTable("EcospaceScenario")
         Dim iScenario As Integer = 1
         Dim bSucces As Boolean = True
+
+        If (dt Is Nothing) Then
+            Return False
+        End If
 
         ecopathDS.NumEcospaceScenarios = dt.Rows.Count
         ecopathDS.RedimEcospaceScenarios()
@@ -2408,6 +2481,7 @@ Public Class cEIIXMLDataSource
             ecospaceDS.NoFishWeight = Me.ReadSafe(drow, "NoFishWeight", 0.3!)
             ecospaceDS.PenPow = Me.ReadSafe(drow, "PenaltyPower", 10.0!)
             ecospaceDS.FirstPenaltyMonth = Me.ReadSafe(drow, "FirstPenaltyMonth", 60)
+            ecospaceDS.EffortRelaxationWeight = Me.ReadSafe(drow, "EffortRelaxationWeight", 0.9!)
             ecospaceDS.UseHabCapGradientCorrections = (CByte(Me.ReadSafe(drow, "UseHabCapGradientCorrections", 1)) <> 0)
 
             stanzaDS.NPacketsMultiplier = CSng(drow("NumPacketsMultiplier"))
@@ -3844,6 +3918,8 @@ Public Class cEIIXMLDataSource
     Private Function ReadTable(strTable As String) As DataTable
 
         Dim xn As XmlNode = Me.m_doc.SelectSingleNode("/EwEModel/Table[translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + strTable.ToLower() + "']")
+        If (xn Is Nothing) Then Return Nothing
+
         Dim xnRow As XmlNode = Nothing
         Dim xaCols As XmlAttribute = xn.Attributes("Columns")
         Dim strRow As String = ""

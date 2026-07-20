@@ -11,13 +11,17 @@ Namespace Logging
 
         ' Helper method to create a logger for a given type
         Public Function CreateLogger(Of T)() As ILogger
+            Dim innerLogger As ILogger
 
             ' Return a logger from the factory if available, otherwise return a NullLogger that does nothing
             If LoggerFactory IsNot Nothing Then
-                Return LoggerFactory.CreateLogger(GetType(T).FullName)
+                innerLogger = LoggerFactory.CreateLogger(GetType(T).FullName)
             Else
-                Return New NullLogger()
+                innerLogger = New NullLogger()
             End If
+
+            ' Wrap the logger with TraceErrorLogger to write to Trace on LogError calls
+            Return New TraceErrorLogger(innerLogger)
         End Function
 
         Public Property LogFile As String = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Ecopath with Ecosim", "Logs", $"log-{DateTime.Now:yyyyMMdd}.txt")
