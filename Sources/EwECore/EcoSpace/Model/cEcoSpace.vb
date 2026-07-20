@@ -4,9 +4,12 @@
 
 Imports System.Math
 Imports System.Threading
+Imports EwECore.MSE
+Imports EwECore.Plugins
 Imports EwECore.SpatialData
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime
 Imports Debug = System.Diagnostics.Debug
 
 'TODO: Spatial Penalty Cost test the penalty cost branch against the trunk for same results
@@ -274,6 +277,10 @@ Public Class cEcoSpace
 
     Private _IBMGrowTimer As Stopwatch
     Private _IBMMoveTimer As Stopwatch
+
+    Private m_MSE As cMSE
+    Private QMult() As Single
+    Private QYear() As Single
 
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcoSpace)()
 
@@ -692,6 +699,11 @@ Public Class cEcoSpace
 
     End Sub
 
+    Public Sub InitMSE(ByRef MSEModel As MSE.cMSE)
+        Me.m_MSE = MSEModel
+    End Sub
+
+
 #End Region
 
 #Region " Private modeling code "
@@ -744,11 +756,10 @@ Public Class cEcoSpace
             Dim iTotalCells As Integer = Me.EcoSpaceData.InCol * Me.EcoSpaceData.InRow
 
             'Initialize IBM 
-            Me.InitIBM()
+            Me.InitIBM() '
 
             If Me.SearchData.bInSearch Then
-                Me.SearchData.initForRun(Me.EcoPathData, Me.EcoSimData)
-                Me.SearchData.setBaseYearEffort(Me.EcoSimData)
+                'Me.InitSearch()
             End If
 
             Dim StartTime As Single = 0
@@ -828,13 +839,21 @@ Public Class cEcoSpace
                 Me.EcoseedBeginTimeStep(Me.EcoSpaceData.MonthNow, Me.EcoSpaceData.YearNow, Me.Btime)
 
                 If Me.SearchData.bInSearch Then
-                    For iRow = 1 To Me.EcoPathData.NumFleet
-                        If Me.SearchData.FblockCode(iRow, Me.EcoSpaceData.YearNow) > 0 Then
-                            Me.EcoSimData.FishRateGear(iRow, Me.its) = Fgear(iRow)
-                        End If
-                        Me.EcoSimData.FishRateGear(iRow, 0) = Fgear(iRow) 'm_Data.FishRateGear(i, itime)
-                    Next
-                End If
+
+                    If Me.SearchData.SearchMode = eSearchModes.MSE Then
+
+                        MSERegulateEffort()
+
+                    ElseIf Me.SearchData.SearchMode = eSearchModes.FishingPolicy Then
+
+                        For iRow = 1 To Me.EcoPathData.NumFleet
+                            If Me.SearchData.FblockCode(iRow, Me.EcoSpaceData.YearNow) > 0 Then
+                                Me.EcoSimData.FishRateGear(iRow, Me.its) = Fgear(iRow)
+                            End If
+                            Me.EcoSimData.FishRateGear(iRow, 0) = Fgear(iRow) 'm_Data.FishRateGear(i, itime)
+                        Next
+                    End If 'Me.SearchData.SearchMode
+                End If 'Me.SearchData.bInSearch
 
                 If Me.EcoSpaceData.isAdvectionActive Then
                     ' Is Advection NOT forced externally?
@@ -842,8 +861,6 @@ Public Class cEcoSpace
                         'if so, then update actual advection from the monthly X and Y velocity vectors
                         For iRow = 0 To Me.EcoSpaceData.InRow + 1
                             For iCol = 0 To Me.EcoSpaceData.InCol + 1
-                                'If i = 18 And j = 38 Then Debug.Assert(False)
-
                                 Me.EcoSpaceData.Xvel(iRow, iCol) = Me.EcoSpaceData.MonthlyXvel(Me.EcoSpaceData.MonthNow)(iRow, iCol)
                                 Me.EcoSpaceData.Yvel(iRow, iCol) = Me.EcoSpaceData.MonthlyYvel(Me.EcoSpaceData.MonthNow)(iRow, iCol)
                                 Me.EcoSpaceData.UpVel(iRow, iCol) = Me.EcoSpaceData.MonthlyUpWell(Me.EcoSpaceData.MonthNow)(iRow, iCol)
@@ -860,16 +877,9 @@ Public Class cEcoSpace
                 Me.VaryMigMovementParameters(Me.EcoSpaceData.MonthNow)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                'HACK ALERT
-                'Using our Harry Potter powers to magically move migrating biomass into the new area
-                'this totally messes up the trophic interaction 
-                'TeleportMigrationBiomass(EcoSpaceData.MonthNow)
-                'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
                 'set tval() (time step forcing value) to the value for this time step for each forcing shape
                 'Time forcing function are disable in EcoSpace via ApplyAVmodifiers() "UseTime" flag
-                'If ApplyAVmodifiers() is called with the UseTime = True then the time forcing function will be used
+                'If cSpaceSolver.ApplyAVmodifiers() is called with the UseTime = True then the time forcing function will be used
                 For ifrc As Integer = 0 To Me.EcoSimData.NumForcingShapes
                     Me.EcoSimData.tval(ifrc) = Me.EcoSimData.zscale(Me.its, ifrc)
                 Next
@@ -891,8 +901,6 @@ Public Class cEcoSpace
                     Me.updateOffVesselPrices(Me.its, Me.EcoSpaceData.YearNow)
 
                     'Run the penalty cost 
-                    'If Me.EcoSpaceData.DoPenaltysearch And (Me.its >= Me.EcoSpaceData.FirstPenaltyMonth) Then Me.SetPenaltyConstants()
-
                     Me.SetPenaltyConstants()
                     If Me.its >= 3 And Not Me.bEffortAdjusted Then Me.AdjustTotalEffort()
                     stpwchEffort.Start()
@@ -1098,6 +1106,10 @@ Public Class cEcoSpace
                     Me.SearchData.calcBaseYearCost(Me.EcoSpaceData.YearNow, Me.EcoSpaceData.nWaterCells)
                 End If
 
+                If Me.SearchData.SearchMode = eSearchModes.MSE And Me.EcoSpaceData.MonthNow = 12 Then
+                    Me.m_MSE.AssessFs(Fgear, Me.Btime)
+                End If
+
                 'GC.Collect()
                 'post notification that a time step has been completed
                 Me.marshallOnTimeStep(Me.itt)
@@ -1286,6 +1298,10 @@ Public Class cEcoSpace
             If Me.PluginManager IsNot Nothing Then Me.PluginManager.EcospaceBeginTimeStep(Me.EcoSpaceData, Me.itt)
 
             If imonth = 1 Then
+
+                'tell all the space solver threads that a new year has started
+                Me.InitSolversForYear(iYear)
+
                 'if we are in the first month then this is a new year
                 If Me.SearchData.bInSearch Then
                     'YearTimeStepEcoSpace() will compute DF, Fgear(), NetCost(), and FishYear() for this year step
@@ -1294,10 +1310,26 @@ Public Class cEcoSpace
                     Me.SearchData.calcNetCost(Fgear, iYear)
                     Me.SearchData.calcYearlySummaryValues(BiomassCellAvg)
 
-                End If
+                    If Me.SearchData.SearchMode = eSearchModes.MSE Then
 
-                'tell all the space solver threads that a new year has started
-                Me.InitSolversForYear(iYear)
+                        Dim FSearch As Single
+                        Array.Clear(Me.SearchData.FishYear, 0, Me.SearchData.FishYear.Length)
+                        'calculate fishing mortality if in Fishing policy or MSE
+                        'used to overwrite FishRateNo() inside the month time loop
+                        For iFlt As Integer = 1 To Me.EcoPathData.NumFleet
+                            For j = 1 To Me.EcoPathData.NumGroups
+                                'Don't include discards that survived  Propdiscardtime() does not include survivors
+                                FSearch = Me.EcoSimData.relQ(iFlt, j) * (Me.EcoSimData.PropLandedTime(iFlt, j) + Me.EcoSimData.PropDiscardTime(iFlt, j))
+                                Me.SearchData.FishYear(j) += Fgear(iFlt) * FSearch * QYear(iFlt)
+                                '********following line stops gear overwrite for cases where
+                                'model has been fit to historical data by using species F forcing
+                                'for years 1 to NYRDAT (policy impact allowed only for future years)
+                                If Me.EcoSimData.FisForced(j) And Me.EcoSpaceData.YearNow < Me.m_refdata.nYears Then Me.SearchData.FishYear(j) = Me.EcoSimData.FishRateNo(j, 12 * Me.EcoSpaceData.YearNow - 11)
+                            Next j
+                        Next iFlt
+                    End If 'If m_search.SearchMode = eSearchModes.FishingPolicy Or m_search.SearchMode = eSearchModes.MSE Then
+
+                End If
 
             End If
 
@@ -2445,6 +2477,11 @@ Public Class cEcoSpace
                     'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 End If
 
+                If Me.SearchData.bInSearch Then
+                    Me.QMult(ip) = 1.0
+                    Me.QYear(ip) = 1.0
+                End If
+
             Next ip
 
             For ig = 1 To Me.EcoSpaceData.nFleets
@@ -3082,6 +3119,11 @@ Public Class cEcoSpace
 
             Me.nEcospaceTimeSteps = CInt(Me.EcoSpaceData.TotalTime * (1.0 / Me.EcoSpaceData.TimeStep))
             success = success And Me.EcoSpaceData.redimTimeStepResults(Me.nEcospaceTimeSteps)
+
+            If Me.SearchData.bInSearch Then
+                Me.QMult = New Single(Me.EcoSpaceData.NGroups) {}
+                Me.QYear = New Single(Me.EcoSpaceData.NGroups) {}
+            End If
 
         Catch ex As Exception
             message = New cMessage(ex.Message,
@@ -4835,7 +4877,6 @@ exitline:
             If iLastFleet > Me.EcoSpaceData.nFleets Then iLastFleet = Me.EcoSpaceData.nFleets
 
             'Distribute fishing effort across the map for the fleet indexes iFirstFleet to ilastfleet
-            'ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreaded, New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
             ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreaded, New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth, iYear))
             iFirstFleet += nFltsPerThread
         Next ithrd
@@ -6448,17 +6489,20 @@ exitline:
                     If Me.SearchData.bInSearch Then
                         'Search CatchYear() is the sum of monthly catch over one year 
                         'Landings(igrp, iFlt) is the yearly Ecopath landings so convert it to monthly for Search CatchYear()
-                        Me.SearchData.CatchYear(iflt, igrp) += Me.EcoSpaceData.Landings(igrp, iflt) * Me.EcoSpaceData.TimeStep
+
+                        'Me.SearchData.CatchYear(iflt, igrp) += Me.EcoSpaceData.Landings(igrp, iflt) * Me.EcoSpaceData.TimeStep
+                        'Me.SearchData.CatchYearGroup(igrp) += Me.EcoSpaceData.Landings(igrp, iflt) * Me.EcoSpaceData.TimeStep
+
+                        Me.SearchData.CatchYear(iflt, igrp) += AvgLandings(igrp, iflt) * Me.EcoSpaceData.TimeStep
+                        Me.SearchData.CatchYearGroup(igrp) += AvgLandings(igrp, iflt) * Me.EcoSpaceData.TimeStep
                         If iYear > Me.SearchData.BaseYear Then
                             'Search value = Landings * [market value] * [price elasticity multiplier] * [discount factor] * [monthly conversion]
                             Me.SearchData.ValCatch(iflt, igrp) += ValLandings * Me.SearchData.DF * Me.EcoSpaceData.TimeStep
                         End If
-                    End If
-
-                End If '  If Landings(igrp, iFlt) > 0.0 Then
-
-            Next
-        Next
+                    End If 'Me.SearchData.bInSearch
+                End If 'Me.EcoSpaceData.Landings(igrp, iflt) > 0.0
+            Next iflt
+        Next igrp
 
     End Sub
 
@@ -7563,6 +7607,7 @@ exitline:
                                                     eMessageType.ErrorEncountered, eCoreComponentType.Ecospace, eMessageImportance.Critical))
 
         End Try
+
 
     End Sub
 
@@ -9024,6 +9069,15 @@ exitline:
 
         Next ig
 
+    End Sub
+
+    Private Sub MSERegulateEffort()
+        'RegulateEffort(Biomass() As Single, QMult() As Single, QYear() As Single, t As Integer, imonth As Integer)
+
+        If Me.SearchData.SearchMode = eSearchModes.MSE Then
+            Me.m_MSE.DoRegulations(Btime, Nothing, Me.QMult, QYear, Me.its, Me.EcoSpaceData.MonthNow, Me.EcoSpaceData.YearNow)
+            'Me.m_MSE.RegulateEffort(Btime, Me.QMult, Me.QYear, Me.EcoSpaceData.TimeNow, Me.EcoSpaceData.MonthNow)
+        End If
     End Sub
 
 #Region "Email from Carl 'code For constraining fishing rates In ecospace' Jan 15, 2023 "

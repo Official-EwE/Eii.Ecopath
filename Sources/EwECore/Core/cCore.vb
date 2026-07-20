@@ -8033,7 +8033,7 @@ Public Class cCore
             'redim the cv vars to the new timesteps
             'The MSE will use Ecosim.NumYears for the new run length
             'So pass in the original number of years so it can figure out what to do
-            Me.m_MSEData.redimTime(orgNYears)
+            Me.m_MSEData.redimTime(Me.m_EcopathData.Landing, Me.m_EcopathData.Discard, orgNYears)
 
             'Reload the forcing data PoolForceBB(), PoolForceZ(), PoolForceCatch() and FishRateGear(), FishRateNo
             'forcing data needs to be the max of Reference data years and Ecosim Years
@@ -8894,6 +8894,7 @@ Public Class cCore
 
     Private m_stpwSpaceTimer As Stopwatch
     Private m_spaceSaveTime As Double
+
 
 #End Region ' Variables
 
@@ -10271,6 +10272,7 @@ Public Class cCore
             'Clears out any memory
             'And updates core state
             Me.CloseEcospaceScenario()
+            m_Ecospace.SearchData = m_SearchData
 
             Me.m_EcopathData.ActiveEcospaceScenario = -1
             Me.SpatialDataConnectionManager.DatasetManager.Reload(True)
@@ -10291,7 +10293,6 @@ Public Class cCore
             ' JB 12dec10: Space can not run longer than Sim
             If m_EcospaceData.TotalTime > m_EcoSimData.NumYears Then m_EcospaceData.TotalTime = m_EcoSimData.NumYears
 
-            m_Ecospace.SearchData = m_SearchData
 
             'all the input maps have changed if a new scenario is loaded
             Me.m_EcospaceData.isCapacityChanged = True
@@ -15433,6 +15434,7 @@ Public Class cCore
 
 #If Not NET Then
 #Region " License "
+
 
     Public ReadOnly Property License As cLicense
         Get

@@ -14,15 +14,17 @@ Namespace MSE
         'dictionary of vars and wrappers that directly access the core data
         Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
         Private m_MSEData As cMSEDataStructures
+        Private m_MSEModelWrapper As IMSEModelWrapper
 
 #Region "Construction"
 
-        Public Sub New(core As cCore, MSEData As cMSEDataStructures, GroupDBID As Integer, groupIndex As Integer)
+        Public Sub New(core As cCore, MSEData As cMSEDataStructures, MSEModelWrapper As IMSEModelWrapper, GroupDBID As Integer, groupIndex As Integer)
             MyBase.New(core)
 
             Dim val As cValue
             Dim meta As cVariableMetaData
             Me.m_MSEData = MSEData
+            Me.m_MSEModelWrapper = MSEModelWrapper
 
             Me.m_dataType = eDataTypes.MSEGroupOutputs
             Me.m_coreComponent = eCoreComponentType.MSE
@@ -65,8 +67,8 @@ Namespace MSE
             Me.m_coreData.Clear()
 
             'cEcosimDataStrucures.ResultsOverTime(var,group,time) Var and Group are fixed
-            Me.m_coreData.Add(eVarNameFlags.MSEBiomass, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
-            Me.m_coreData.Add(eVarNameFlags.MSECatchByGroup, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Yield, Me.Index))
+            'Me.m_coreData.Add(eVarNameFlags.MSEBiomass, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, Me.Index))
+            'Me.m_coreData.Add(eVarNameFlags.MSECatchByGroup, New c3DResultsWrapper2Fixed(Me.m_core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Yield, Me.Index))
 
         End Sub
 
@@ -76,13 +78,16 @@ Namespace MSE
 
         Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
 
-            If Not Me.m_coreData.ContainsKey(VarName) Then
-                'NOT in list of sim vars so get the value from the base class GetVariable(...)
-                Return MyBase.GetVariable(VarName, iIndex1, iIndex2)
-            Else
-                'Varname is access directly via the core data
-                Return Me.m_coreData.Item(VarName).Value(iIndex1, iIndex2)
-            End If
+            Select Case VarName
+                Case eVarNameFlags.MSEBiomass
+                    Return Me.m_MSEModelWrapper.BiomassbyGroupTimeStep(Me.Index, iIndex1)
+                    'Return Me.m_MSEData.BiomassTime(Me.Index)(iIndex1)
+                Case eVarNameFlags.MSECatchByGroup
+                    Return Me.m_MSEModelWrapper.CatchbyGroupTimeStep(Me.Index, iIndex1)
+                    'Return Me.m_MSEData.CatchGroupTime(Me.Index)(iIndex1)
+            End Select
+
+            Return MyBase.GetVariable(VarName, iIndex1, iIndex2)
 
         End Function
 
@@ -196,15 +201,17 @@ Namespace MSE
         'dictionary of vars and wrappers that directly access the core data
         Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
         Private m_MSEData As cMSEDataStructures
+        Private m_MSEModelWrapper As IMSEModelWrapper
 
 #Region "Construction"
 
-        Public Sub New(ByRef theCore As cCore, MSEData As cMSEDataStructures, GroupDBID As Integer, groupIndex As Integer)
+        Public Sub New(ByRef theCore As cCore, MSEData As cMSEDataStructures, MSEModelWrapper As IMSEModelWrapper, GroupDBID As Integer, groupIndex As Integer)
             MyBase.New(theCore)
 
             Dim val As cValue = Nothing
             Dim meta As cVariableMetaData = Nothing
             Me.m_MSEData = MSEData
+            m_MSEModelWrapper = MSEModelWrapper
 
             Me.m_dataType = eDataTypes.MSEGroupOutputs
             Me.m_coreComponent = eCoreComponentType.MSE
@@ -232,7 +239,7 @@ Namespace MSE
             'so reset the reference
             Me.m_coreData.Clear()
 
-            Me.m_coreData.Add(eVarNameFlags.MSECatchByFleet, New c2DResultsWrapper(Me.m_core.m_EcoSimData.ResultsSumCatchByGear, Me.Index))
+            'Me.m_coreData.Add(eVarNameFlags.MSECatchByFleet, New c2DResultsWrapper(Me.m_core.m_EcoSimData.ResultsSumCatchByGear, Me.Index))
             Me.m_coreData.Add(eVarNameFlags.MSEValueByFleet, New c2DResultsWrapper(Me.m_core.m_EcoSimData.ResultsSumValueByGear, Me.Index))
             Me.m_coreData.Add(eVarNameFlags.MSEEffort, New c2DResultsWrapper(Me.m_core.m_EcoSimData.ResultsEffort, Me.Index))
 
@@ -243,6 +250,12 @@ Namespace MSE
 #Region "Overridden base class methods"
 
         Public Overrides Function GetVariable(VarName As eVarNameFlags, Optional iIndex1 As Integer = -9999, Optional iIndex2 As Integer = -9999, Optional iIndex3 As Integer = cCore.NULL_VALUE) As Object
+
+            Select Case VarName
+                Case eVarNameFlags.MSECatchByFleet
+                    Return m_MSEModelWrapper.CatchbyFleetTimeStep(Index, iIndex1)
+
+            End Select
 
             If Not Me.m_coreData.ContainsKey(VarName) Then
                 'NOT in list of sim vars so get the value from the base class GetVariable(...)

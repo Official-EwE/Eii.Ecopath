@@ -101,7 +101,7 @@ Namespace MSEBatchManager
 
             Me.m_core = theCore
             Me.m_MSE = MSE
-            Me.m_MSEdata = MSE.Data
+            Me.m_MSEdata = MSE.MSEData
 
             Me.m_BatchData = New cMSEBatchDataStructures(Me.m_MSEdata)
             Me.m_fileReader = New cMSECommandFileReader(Me.Core, Me)
@@ -925,6 +925,9 @@ Namespace MSEBatchManager
                 m_logger.LogInformation("MSE batch run started.")
 
                 Me.BatchData.StoreMSEState(Me.MSEData)
+
+                'only run Ecosm
+                Me.m_MSEdata.ModelType = eModelTypes.Ecosim
 
                 Me.m_runState = eBatchRunState.Running
                 Me.m_MSEdata.bInBatch = True

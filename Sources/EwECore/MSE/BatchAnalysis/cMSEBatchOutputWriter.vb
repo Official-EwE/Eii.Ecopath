@@ -394,6 +394,9 @@ Namespace MSEBatchManager
             Me.m_nSim = 0
         End Sub
 
+        Public Sub saveIteration(MSEWrapperModel As IMSEModelWrapper, ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
+            Throw New NotImplementedException()
+        End Sub
     End Class
 
 #Region "Output by group"
@@ -705,6 +708,9 @@ Namespace MSEBatchManager
             Return Path.GetFileName(modelPath)
         End Function
 
+        Public Sub saveIteration(MSEWrapperModel As IMSEModelWrapper, ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
+            Throw New NotImplementedException()
+        End Sub
     End Class
 
 #End Region

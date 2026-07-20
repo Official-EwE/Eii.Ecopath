@@ -47,7 +47,7 @@ Public Class frmMSEMSY
 
             'connect and disconnect every time we run the MSY
             Me.m_mse.Connect(Nothing, AddressOf Me.OnMSYProgress)
-            Me.m_mse.RunMSYSearch(True)
+            'Me.m_mse.RunMSYSearch(True)
             Me.m_mse.Disconnect()
 
         Catch ex As Exception

@@ -2,6 +2,7 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
+Imports System.Runtime.InteropServices
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -140,6 +141,16 @@ Namespace MSE
         Public JobsSum As cMSESummaryStats
 
         Public BioEstStats As cMSESummaryStats
+
+        ''' <summary>
+        ''' Biomass used by the plots
+        ''' </summary>
+        Public BiomassTime()() As Single
+
+        ''' <summary>
+        ''' Catch used by the plots
+        ''' </summary>
+        Public CatchGroupTime()() As Single
 
         ''' <summary>
         ''' Biomass estimated for the current year.
@@ -290,6 +301,8 @@ Namespace MSE
 
         Public lstNonOptSolutions As List(Of Integer)
 
+        Public ModelType As eModelTypes
+
 #End Region
 
 #Region "Private data"
@@ -315,7 +328,8 @@ Namespace MSE
             Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
             Me.MSEMaxEffort = MSE_DEFAULT_MAXEFFORT
-            Me.UseLPSolution = True
+            Me.UseLPSolution = False
+            Me.ModelType = eModelTypes.Ecosim
 
         End Sub
 
@@ -381,7 +395,7 @@ Namespace MSE
                 Me.ResultsStartYear = 1
                 Me.ResultsEndYear = theCore.nEcosimYears
                 Me.EffortSource = eMSEEffortSource.NoCap
-                '  Me.EffortSource = eMSEEffortSource.EcosimEffort
+                Me.ModelType = eModelTypes.Ecosim
 
             Catch ex As Exception
                 m_logger.LogError(ex, "cMSEDataStructures.Init() Exception")
@@ -441,6 +455,11 @@ Namespace MSE
             Me.CVFest = Nothing ' (nFleets)
 
             Me.QGrowUsed = Nothing ' (nFleets)
+
+            Me.BiomassTime = Nothing
+            CatchGroupTime = Nothing
+
+
 
             Me.Bestimate = Nothing ' (NGroups)
             Me.BestimateLast = Nothing ' (NGroups)
@@ -502,6 +521,7 @@ Namespace MSE
             ReDim Me.CVFest(Me.nFleets)
 
             ReDim Me.QGrowUsed(Me.nFleets)
+
 
             ReDim Me.Bestimate(Me.NGroups)
             ReDim Me.BestimateLast(Me.NGroups)
@@ -582,7 +602,7 @@ Namespace MSE
 
         End Sub
 
-        Public Sub redimTime(Optional originalNumberOfYears As Integer = cCore.NULL_VALUE)
+        Public Sub redimTime(Landing(,) As Single, Discards(,) As Single, Optional originalNumberOfYears As Integer = cCore.NULL_VALUE)
 
             Try
                 'if time has changed then try to preserve the values
@@ -612,11 +632,18 @@ Namespace MSE
                     firstYear = originalNumberOfYears + 1
                 End If
 
+
+                Me.BiomassTime = New Single(Me.NGroups)() {}
+                Me.CatchGroupTime = New Single(Me.NGroups)() {}
                 'set default values
                 For iGrp As Integer = 1 To Me.NGroups
                     For it As Integer = firstYear To Me.nYears
                         Me.CVBiomT(iGrp, it) = 0.2
                     Next
+
+                    Me.BiomassTime(iGrp) = New Single(Me.nYears * Me.m_ESData.NumStepsPerYear) {}
+                    Me.CatchGroupTime(iGrp) = New Single(Me.nYears * Me.m_ESData.NumStepsPerYear) {}
+
                 Next
 
                 For iFlt As Integer = 1 To Me.nFleets
@@ -1086,8 +1113,6 @@ Namespace MSE
                 'so that Mean and STD lines can be drawn on time plots(full run) and the resutls grid can contain partial run
                 'Another issue with this is the year index some stats are monthly and some yearly so need to get the meaning of the index sorted out
 
-                'Dim Year As Integer = Me.TimeToYearIndex(TimeIndex)
-                'If Year >= Me.m_mseData.ResultsStartYear Then
 
                 index -= 1
                 Me.m_data(eSumIndexes.Sum, index) += Value
@@ -1096,8 +1121,6 @@ Namespace MSE
                 Me.m_data(eSumIndexes.Max, index) = Math.Max(Me.m_data(eSumIndexes.Max, index), Value)
 
                 Me.m_n(index) += 1
-
-                'End If'Year >= Me.m_mseData.ResultsStartYear
 
                 'data is stored in a list by grouping/iteration/time
                 'each iteration will have its own list of data points added in AddIteration()

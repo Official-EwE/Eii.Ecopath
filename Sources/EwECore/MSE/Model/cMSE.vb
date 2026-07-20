@@ -1,6 +1,23 @@
-' SPDX-License-Identifier: EUPL-1.2
-' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- 
+'    Ecopath International Initiative, Barcelona, Spain
+' ===============================================================================
+'
+
+
 
 Imports System.IO
 Imports EwECore.Common
@@ -85,6 +102,7 @@ Namespace MSE
         'We will also need to make sure that there is no initialization that needs to happen for the loaded and unloaded timeseries data
         'FishRateNo(), FishForced(), PoolForceZ()?? See cTimeSeriesDataStructures.DoDatValCalculations(). I think Effort is already dealt with.
 
+
         'ToDo_jb 29-Sept-2010 why is there no variation when running Fixed F policy
         'ToDo_jb 29-Sept-2010 fix StartT it needs to be 1 when Start Year = 1 
 
@@ -100,22 +118,26 @@ Namespace MSE
         Public Const FLEETCATCH_DATA As String = "MSE_CatchByFleet"
         Public Const QUOTAGROUP_DATA As String = "MSE_QuotaByGroup"
 
+
         Public Enum eResultsData
             GroupQuota
             FleetQuota
         End Enum
+
 
 #Region "Private data"
 
         ' Private Const DEFAULT_EFFORT As Single = 1000000000
 
         Private m_core As cCore
-        Private m_data As cMSEDataStructures
-        Private m_Ecosim As Ecosim.cEcosimModel
-        Private m_Search As cSearchDatastructures
-        Private m_esData As cEcosimDatastructures
-        Private m_epdata As cEcopathDataStructures
+        Private m_MSEData As cMSEDataStructures
+        Private m_Ecosim__XXX As Ecosim.cEcosimModel
+        Private m_SearchData As cSearchDatastructures
+        Private m_SimData As cEcosimDatastructures
+        Private m_PathData As cEcopathDataStructures
         Private m_refData As cTimeSeriesDataStructures
+
+        Private m_Model As IMSEModelWrapper
 
         Private m_batchManager As MSEBatchManager.cMSEBatchManager
 
@@ -143,6 +165,7 @@ Namespace MSE
 
         Private m_DataDir As String
 
+
         ''' <summary>Dictionary of arrays that are use to store results that are gathered by the MSE.</summary>
         ''' <remarks>Use to store results that are not computed by Ecosim.</remarks>
         Private m_lstData As Dictionary(Of eResultsData, Single(,))
@@ -165,13 +188,14 @@ Namespace MSE
         Private m_QStar(,) As Single
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cMSE)()
 
+
 #End Region
 
 #Region "Public Properties"
 
-        Public ReadOnly Property Data() As cMSEDataStructures
+        Public ReadOnly Property MSEData() As cMSEDataStructures
             Get
-                Return Me.m_data
+                Return Me.m_MSEData
             End Get
         End Property
 
@@ -184,6 +208,14 @@ Namespace MSE
             End Set
         End Property
 
+        Public ReadOnly Property ModelWrapper() As IMSEModelWrapper
+            Get
+                Return Me.m_Model
+            End Get
+        End Property
+
+
+
 #End Region
 
 #Region "Modeling code"
@@ -193,12 +225,13 @@ Namespace MSE
         Private ReadOnly Property UsePlugin() As Boolean
             Get
                 If (Me.m_EconomicData IsNot Nothing) Then
-                    Return (Me.m_Search.MSEUseEconomicPlugin = True) And
+                    Return (Me.m_SearchData.MSEUseEconomicPlugin = True) And
                            (Me.m_EconomicData.EnableData(New cEcosimRunType) = True)
                 End If
                 Return False
             End Get
         End Property
+
 
         Private ReadOnly Property StartT() As Integer
             Get
@@ -220,27 +253,32 @@ Namespace MSE
             Me.m_core = theCore
         End Sub
 
-        Public Sub Init(MSEData As cMSEDataStructures, Ecosim As Ecosim.cEcosimModel, SearchData As cSearchDatastructures, EcopathData As cEcopathDataStructures, RefData As cTimeSeriesDataStructures, PluginManager As cPluginManager)
+        Public Sub Init(Ecosim As Ecosim.cEcosimModel, Ecospace As cEcoSpace, MSEData As cMSEDataStructures, SearchData As cSearchDatastructures, EcopathData As cEcopathDataStructures, RefData As cTimeSeriesDataStructures, PluginManager As cPluginManager)
 
-            Me.m_data = MSEData
-            Me.m_Ecosim = Ecosim
-            Me.m_Search = SearchData
-            Me.m_esData = Me.m_Ecosim.m_Data
-            Me.m_epdata = EcopathData
+            Me.m_MSEData = MSEData
+            'Me.m_Ecosim = Ecosim
+            Me.m_SearchData = SearchData
+            Me.m_SimData = Ecosim.m_Data
+            Me.m_PathData = EcopathData
             Me.m_pluginManager = PluginManager
             Me.m_refData = RefData
 
+            Me.m_Model = MSEModelFactory.ModelFactory(m_MSEData.ModelType)
+            Me.m_Model.Init(Me.m_core, Ecosim, Ecospace)
+
+            Me.m_Model.onModelTimeStep = AddressOf Me.onModelTimestep
+
             Me.m_EconomicData = cEconomicDataSource.getInstance()
-            Me.m_data.InitForRun()
+            Me.m_MSEData.InitForRun()
 
             'VC added a boolean to ex/include fleets from MSY runs
-            ReDim Me.Data.MSYEvaluateFleet(Me.m_epdata.NumFleet)
-            For i As Integer = 1 To Me.m_epdata.NumFleet
-                Me.Data.MSYEvaluateFleet(i) = True 'that's the default value
+            ReDim Me.MSEData.MSYEvaluateFleet(Me.m_PathData.NumFleet)
+            For i As Integer = 1 To Me.m_PathData.NumFleet
+                Me.MSEData.MSYEvaluateFleet(i) = True 'that's the default value
             Next
-            ReDim Me.Data.MSYEvaluateGroup(Me.m_epdata.NumGroups)
-            For i As Integer = 1 To Me.m_epdata.NumGroups
-                Me.Data.MSYEvaluateGroup(i) = True
+            ReDim Me.MSEData.MSYEvaluateGroup(Me.m_PathData.NumGroups)
+            For i As Integer = 1 To Me.m_PathData.NumGroups
+                Me.MSEData.MSYEvaluateGroup(i) = True
             Next
 
         End Sub
@@ -276,13 +314,14 @@ Namespace MSE
             End Try
         End Sub
 
+
         Friend Sub InitAssessment()
             Dim iGrp As Integer
             Try
 
-                For iGrp = 1 To Me.m_esData.nGroups
-                    Me.m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.RandomNormal()))
-                    Me.m_data.BestimateLast(iGrp) = Me.m_data.Bestimate(iGrp)
+                For iGrp = 1 To Me.m_SimData.nGroups
+                    Me.m_MSEData.Bestimate(iGrp) = Me.m_SimData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_MSEData.CVbiomEst(iGrp) * Me.RandomNormal()))
+                    Me.m_MSEData.BestimateLast(iGrp) = Me.m_MSEData.Bestimate(iGrp)
                 Next iGrp
 
             Catch ex As Exception
@@ -292,6 +331,7 @@ Namespace MSE
 
         End Sub
 
+
         Public Sub InitForRun()
 
             Try
@@ -300,11 +340,11 @@ Namespace MSE
                 Me.m_output = Me.OutputWriterFactory
                 Me.m_output.Init()
 
-                ReDim Me.BestTime(Me.m_epdata.NumGroups)
+                ReDim Me.BestTime(Me.m_PathData.NumGroups)
 
                 Dim rndSeed As Integer
                 'is this a batch run
-                If Me.m_data.bInBatch Then
+                If Me.m_MSEData.bInBatch Then
                     'Yes batch run
                     'if in batch run use the same random number sequence for each run
                     rndSeed = 42
@@ -313,10 +353,10 @@ Namespace MSE
                     'create a new random seed for each run
                     rndSeed = CInt(CInt(Date.Now.Ticks Mod Integer.MaxValue))
                     'make sure Fmin(igroup) and EndYear have not been set somehow....
-                    For igrp = 1 To Me.m_data.NGroups
-                        Me.m_data.Fmin(igrp) = 0
+                    For igrp = 1 To Me.m_MSEData.NGroups
+                        Me.m_MSEData.Fmin(igrp) = 0
                     Next
-                    Me.m_data.EndYear = cCore.NULL_VALUE
+                    Me.m_MSEData.EndYear = cCore.NULL_VALUE
                 End If
 
                 'create a new random number generator for each run
@@ -329,13 +369,13 @@ Namespace MSE
                     ds.EnableData(New cEcosimRunType) = Me.UsePlugin
                 End If
 
-                Me.m_data.StopRun = False
+                Me.m_MSEData.StopRun = False
 
-                Me.m_data.clearBioRisk()
+                Me.m_MSEData.clearBioRisk()
 
-                For igrp = 1 To Me.m_epdata.NumFleet
+                For igrp = 1 To Me.m_PathData.NumFleet
                     'save qgrowth parameter so as not to interfere with value fitting simulations
-                    Me.m_data.QGrowUsed(igrp) = Me.m_data.Qgrow(igrp)
+                    Me.m_MSEData.QGrowUsed(igrp) = Me.m_MSEData.Qgrow(igrp)
                 Next
 
                 ' B(t+1)=g(t)B(t)+Rt
@@ -350,25 +390,27 @@ Namespace MSE
                 Dim BaB As Single
                 'init RstockPred from GstockPred
                 'GstockPred could have been altered by an interface
-                For igrp = 1 To Me.m_epdata.NumLiving
+                For igrp = 1 To Me.m_PathData.NumLiving
                     'BaB is correct for Stanza groups because Ecopath.BA() gets updated with Stanza.BaBsplit()
                     BaB = Me.m_core.m_EcopathData.BA(igrp) / Me.m_core.m_EcopathData.B(igrp)
                     'gstockpred=exp(bab)-rstockratio, rather than 1-rstockratio.  Check to insure gstockpred>0
 
                     'Me.m_data.GstockPred(igrp) = 1 - Me.m_data.RstockRatio(igrp)
-                    Me.m_data.GstockPred(igrp) = CSng(Math.Exp(BaB) - Me.m_data.RstockRatio(igrp))
-                    If Me.m_data.GstockPred(igrp) < 0 Then Me.m_data.GstockPred(igrp) = 0
-                    Me.m_data.BhalfT(igrp) = Me.m_data.RHalfB0Ratio(igrp) * Me.m_epdata.B(igrp)
+                    Me.m_MSEData.GstockPred(igrp) = CSng(Math.Exp(BaB) - Me.m_MSEData.RstockRatio(igrp))
+                    If Me.m_MSEData.GstockPred(igrp) < 0 Then Me.m_MSEData.GstockPred(igrp) = 0
+                    Me.m_MSEData.BhalfT(igrp) = Me.m_MSEData.RHalfB0Ratio(igrp) * Me.m_PathData.B(igrp)
 
-                    Me.m_data.RStock0(igrp) = Me.m_data.RstockRatio(igrp) * Me.m_esData.StartBiomass(igrp)
-                    Me.m_data.Rmax(igrp) = Me.m_data.RStock0(igrp) * (Me.m_data.RHalfB0Ratio(igrp) + 1)
+                    Me.m_MSEData.RStock0(igrp) = Me.m_MSEData.RstockRatio(igrp) * Me.m_SimData.StartBiomass(igrp)
+                    Me.m_MSEData.Rmax(igrp) = Me.m_MSEData.RStock0(igrp) * (Me.m_MSEData.RHalfB0Ratio(igrp) + 1)
 
                 Next
 
-                Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
+                Me.m_Model.onModelTimeStep = AddressOf Me.onModelTimestep
+                Me.m_Model.InitForRun(False)
 
                 'initialize Ecosim
-                Me.m_Ecosim.Init(False)
+                'Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onEcosimTimestep
+                'Me.m_Ecosim.Init(False)
 
                 Me.InitResults()
 
@@ -382,19 +424,20 @@ Namespace MSE
                 'jb 10-sept-2010 HACK fix 
                 'some databases can contain -9999 for these values 
                 'this messes up the quota calculation so set them to zero
-                For igrp = 1 To Me.m_data.NGroups
-                    If Me.m_data.Fopt(igrp) < 0 Then Me.m_data.Fopt(igrp) = 0
-                    If Me.m_data.Blim(igrp) < 0 Then Me.m_data.Blim(igrp) = 0
-                    If Me.m_data.Bbase(igrp) < 0 Then Me.m_data.Bbase(igrp) = 0
+                For igrp = 1 To Me.m_MSEData.NGroups
+                    If Me.m_MSEData.Fopt(igrp) < 0 Then Me.m_MSEData.Fopt(igrp) = 0
+                    If Me.m_MSEData.Blim(igrp) < 0 Then Me.m_MSEData.Blim(igrp) = 0
+                    If Me.m_MSEData.Bbase(igrp) < 0 Then Me.m_MSEData.Bbase(igrp) = 0
                 Next
 
-                For igrp = 1 To Me.m_data.NGroups
-                    For iFlt As Integer = 1 To Me.m_data.nFleets
-                        If Me.m_esData.relQ(iFlt, igrp) > 0 Then
-                            Me.m_data.Fweight(iFlt, igrp) = 1
+                For igrp = 1 To Me.m_MSEData.NGroups
+                    For iFlt As Integer = 1 To Me.m_MSEData.nFleets
+                        If Me.m_SimData.relQ(iFlt, igrp) > 0 Then
+                            Me.m_MSEData.Fweight(iFlt, igrp) = 1
                         End If
                     Next
                 Next
+
 
             Catch ex As Exception
                 m_logger.LogError(ex, "InitForRun")
@@ -408,7 +451,7 @@ Namespace MSE
             Try
 
                 'set the ecosim predict effort flag back to its original value
-                Me.m_esData.PredictSimEffort = Me.m_orgPredictEffort
+                Me.m_SimData.PredictSimEffort = Me.m_orgPredictEffort
 
                 Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
                 If (ds IsNot Nothing) Then
@@ -430,6 +473,8 @@ Namespace MSE
 
         End Sub
 
+
+
         Private Sub InitResults()
             Try
                 If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return
@@ -441,11 +486,11 @@ Namespace MSE
 
                 Me.m_lstData = New Dictionary(Of eResultsData, Single(,))
                 Dim d(,) As Single
-                ReDim d(Me.m_epdata.NumGroups, Me.m_esData.NTimes)
+                ReDim d(Me.m_PathData.NumGroups, Me.m_SimData.NTimes)
                 Me.m_lstData.Add(eResultsData.GroupQuota, d)
 
                 'redim will create a new array
-                ReDim d(Me.m_epdata.NumFleet, Me.m_esData.NTimes)
+                ReDim d(Me.m_PathData.NumFleet, Me.m_SimData.NTimes)
                 Me.m_lstData.Add(eResultsData.FleetQuota, d)
 
             Catch ex As Exception
@@ -454,30 +499,34 @@ Namespace MSE
 
         End Sub
 
+
         Private Sub setBestTotalValue()
 
             Try
                 'Run Ecosim
-                Me.m_Ecosim.Run()
-
+                'Me.m_Ecosim.Run()
+                'Me.m_Model.Run()
+                'Debug.Assert(False, "Need to sort out how to get base values from Ecospace")
                 'get the base values from the search data
-                Me.m_data.BaseTotalVal = Me.m_Search.TotVal
-                Me.m_data.BaseEmployVal = Me.m_Search.Employ
-                Me.m_data.BaseManValue = Me.m_Search.ManValue
-                Me.m_data.BaseEcoVal = Me.m_Search.EcoValue
+                Me.m_MSEData.BaseTotalVal = Me.m_SearchData.TotVal
+                Me.m_MSEData.BaseEmployVal = Me.m_SearchData.Employ
+                Me.m_MSEData.BaseManValue = Me.m_SearchData.ManValue
+                Me.m_MSEData.BaseEcoVal = Me.m_SearchData.EcoValue
 
                 'cal base BestTotalValue (TotValBase,EmployBase... were set in SetBaseValues()
-                Me.m_data.BestTotalValue = CSng(Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_Search.Profit / Me.ProfitBase +
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / Me.EmployBase +
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.ManValue / Me.ManValueBase +
-                                 Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.EcoValue / Me.EcoValueBase)
+                Me.m_MSEData.BestTotalValue = CSng(Me.m_SearchData.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_SearchData.Profit / Me.ProfitBase +
+                                 Me.m_SearchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_SearchData.Employ / Me.EmployBase +
+                                 Me.m_SearchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_SearchData.ManValue / Me.ManValueBase +
+                                 Me.m_SearchData.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_SearchData.EcoValue / Me.EcoValueBase)
 
             Catch ex As Exception
                 m_logger.LogError(ex, "setBestTotalValue")
                 Throw New ApplicationException("MSE.setBestTotalValue() Error: " & ex.Message, ex)
             End Try
 
+
         End Sub
+
 
         Private Sub SetBaseValues()
             Dim i As Integer, j As Integer, Cval As Single
@@ -488,39 +537,39 @@ Namespace MSE
             Me.ProfitBase = 0
             Me.EmployBase = 0
 
-            For i = 1 To Me.m_epdata.NumLiving
-                Me.EcoValueBase = Me.EcoValueBase + Me.m_Search.BGoalValue(i)
-                Me.ManValueBase = Me.ManValueBase + Me.m_Search.MGoalValue(i)
+            For i = 1 To Me.m_PathData.NumLiving
+                Me.EcoValueBase = Me.EcoValueBase + Me.m_SearchData.BGoalValue(i)
+                Me.ManValueBase = Me.ManValueBase + Me.m_SearchData.MGoalValue(i)
             Next
 
-            Me.EcoValueBase = Me.EcoValueBase * Me.m_esData.NumYears
-            Me.ManValueBase = Me.ManValueBase * Me.m_esData.NumYears
+            Me.EcoValueBase = Me.EcoValueBase * Me.m_SimData.NumYears
+            Me.ManValueBase = Me.ManValueBase * Me.m_SimData.NumYears
             If Me.ManValueBase = 0 Then Me.ManValueBase = 1 'to avoid division with zero
 
-            For i = 1 To Me.m_epdata.NumLiving
-                For j = 1 To Me.m_epdata.NumFleet
-                    Cval = Me.m_esData.StartBiomass(i) * Me.m_esData.relQ(j, i) * Me.m_epdata.Market(j, i)
+            For i = 1 To Me.m_PathData.NumLiving
+                For j = 1 To Me.m_PathData.NumFleet
+                    Cval = Me.m_SimData.StartBiomass(i) * Me.m_SimData.relQ(j, i) * Me.m_PathData.Market(j, i)
                     Me.ProfitBase = Me.ProfitBase + Cval  '.5 here assumes cost likely 80% of income
-                    Me.EmployBase = Me.EmployBase + Cval * Me.m_Search.Jobs(j)
+                    Me.EmployBase = Me.EmployBase + Cval * Me.m_SearchData.Jobs(j)
                 Next
             Next
 
             'read the size of the array instead of using Ecosim.NTimes because it can be different if a timeseries has been loaded!!!
-            Dim n As Integer = Me.m_esData.FishRateGear.GetUpperBound(1)
-            ReDim Me.m_baseEffort(Me.m_esData.nGear, n)
+            Dim n As Integer = Me.m_SimData.FishRateGear.GetUpperBound(1)
+            ReDim Me.m_baseEffort(Me.m_SimData.nGear, n)
             For iflt As Integer = 1 To Me.m_core.nFleets
                 For it As Integer = 1 To n
-                    Me.m_baseEffort(iflt, it) = Me.m_esData.FishRateGear(iflt, it)
+                    Me.m_baseEffort(iflt, it) = Me.m_SimData.FishRateGear(iflt, it)
                 Next
             Next
 
-            n = Me.m_esData.FisForced.Length
+            n = Me.m_SimData.FisForced.Length
             ReDim Me.m_baseFishForced(n - 1)
-            Array.Copy(Me.m_esData.FisForced, Me.m_baseFishForced, n)
+            Array.Copy(Me.m_SimData.FisForced, Me.m_baseFishForced, n)
 
-            If Me.m_Search.DiscountFactor > 0 Then
-                Me.ProfitBase = Math.Abs(Me.ProfitBase) / Me.m_Search.DiscountFactor
-                Me.ProfitBase = Math.Abs(Me.EmployBase) / Me.m_Search.DiscountFactor
+            If Me.m_SearchData.DiscountFactor > 0 Then
+                Me.ProfitBase = Math.Abs(Me.ProfitBase) / Me.m_SearchData.DiscountFactor
+                Me.ProfitBase = Math.Abs(Me.EmployBase) / Me.m_SearchData.DiscountFactor
             End If
 
             Me.ManValueBase = Math.Abs(Me.ManValueBase)
@@ -542,20 +591,21 @@ Namespace MSE
 
             Try
                 'Only set Effort high if using controls and EffortSource is NoCap
-                If Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_data.EffortSource = eMSEEffortSource.NoCap Then
+                If Me.m_MSEData.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_MSEData.EffortSource = eMSEEffortSource.NoCap Then
 
-                    For iflt As Integer = 1 To Me.m_data.nFleets
+                    For iflt As Integer = 1 To Me.m_MSEData.nFleets
                         'Only if this fleet is regulated
-                        If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NoControls Then
+                        If Me.m_MSEData.QuotaType(iflt) <> eQuotaTypes.NoControls Then
                             For it As Integer = Me.StartT To Me.EndT
-                                Me.m_esData.FishRateGear(iflt, it) = Me.m_data.MSEMaxEffort
+                                Me.m_SimData.FishRateGear(iflt, it) = Me.m_MSEData.MSEMaxEffort
                             Next it
                         End If 'Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed
                     Next iflt
 
-                ElseIf Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
+                ElseIf Me.m_MSEData.RegulationMode = eMSERegulationMode.NoRegulations Then
 
-                    Me.m_Ecosim.SetBaseFFromGear()
+                    'Me.m_Ecosim.SetBaseFFromGear()
+                    Me.m_Model.SetBaseFFromGear()
 
                 End If
 
@@ -565,6 +615,7 @@ Namespace MSE
 
         End Sub
 
+
         ''' <summary>
         ''' Set Effort back to its original value after a run
         ''' </summary>
@@ -573,13 +624,13 @@ Namespace MSE
 
             Try
 
-                Dim n As Integer = Me.m_esData.FishRateGear.GetUpperBound(1)
+                Dim n As Integer = Me.m_SimData.FishRateGear.GetUpperBound(1)
                 'check the bounds
                 Debug.Assert(Me.m_baseEffort.GetUpperBound(1) >= n, Me.ToString & ".setEffortToOriginal() Effort array out of bounds!")
 
                 For iflt As Integer = 1 To Me.m_core.nFleets
                     For it As Integer = 1 To n
-                        Me.m_esData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
+                        Me.m_SimData.FishRateGear(iflt, it) = Me.m_baseEffort(iflt, it)
                     Next
                 Next
 
@@ -590,13 +641,14 @@ Namespace MSE
 
         End Sub
 
+
         Private Function OutputWriterFactory() As IMSEOutputWriter
             Dim output As IMSEOutputWriter
 
-            If Me.m_data.bInBatch Then
+            If Me.m_MSEData.bInBatch Then
                 output = Me.m_batchManager.OutputWriter
             Else
-                output = New cMSECSVOutputWriter(Me.m_core, Me.m_data)
+                output = New cMSECSVOutputWriter(Me.m_core, Me.m_MSEData)
             End If
 
             Debug.Assert(output IsNot Nothing, Me.ToString & ".OutputFactory() Failed to create CSV output object.")
@@ -612,56 +664,62 @@ Namespace MSE
             Dim itr As Integer
             Dim bSuccess As Boolean = True
 
+            If Not Me.CheckCoreState() Then
+                Return False
+            End If
+
             Try
                 m_logger.LogInformation("MSE run started.")
                 Me.PostMessage(eMSERunStates.Started)
 
                 'keep the original value of PredictEffort so we can set it back at the end of the run
-                Me.m_orgPredictEffort = Me.m_esData.PredictSimEffort
+                Me.m_orgPredictEffort = Me.m_SimData.PredictSimEffort
 
                 'turn off regulatory models for initialization
-                Me.m_esData.PredictSimEffort = False
+                Me.m_SimData.PredictSimEffort = False
 
                 'put the search mode to initialization for setting of base values
-                Me.m_Search.SearchMode = eSearchModes.InitializingSearch
-                Me.m_esData.bTimestepOutput = True
+                Me.m_SearchData.SearchMode = eSearchModes.InitializingSearch
+                Me.m_SimData.bTimestepOutput = True
 
                 'sets MeanEmploy, MeanVal, MeanManVal, MeanEcoVal, MeanTotalValue
                 Me.SetBaseValues()
 
                 'init the MSE data
                 Me.InitForRun()
-                Me.m_data.InitForRun()
+                Me.m_MSEData.InitForRun()
 
-                Me.m_Search.initForRun(Me.m_epdata, Me.m_esData)
-                Me.m_Search.SetMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
-                If Me.m_Search.BaseYear = 0 Then Me.m_Search.BaseYear = 1
-                Me.m_Search.setBaseYearEffort(Me.m_esData)
+                Me.m_SearchData.initForRun(Me.m_PathData, Me.m_SimData)
+                Me.m_SearchData.SetMinSearchBlocks() 'set number of search blocks to one and dim FblockCodes()
+                If Me.m_SearchData.BaseYear = 0 Then Me.m_SearchData.BaseYear = 1
+                Me.m_SearchData.setBaseYearEffort(Me.m_SimData)
 
                 'runs Ecosim and gets the base values
                 Me.setBestTotalValue()
 
                 'turn the evaluator on for the trials
                 'this will vary Effort (Ecosim.Fgear) and Catability (Ecosim.Qyear) via MSE.YearTimeStep() and MSE.AccessFs
-                Me.m_Search.SearchMode = eSearchModes.MSE
+                Me.m_SearchData.SearchMode = eSearchModes.MSE
 
                 'if we are predicting effort then make sure it is turned on in Ecosim
-                Me.m_esData.PredictSimEffort = False
-                If Me.m_data.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_data.EffortSource = eMSEEffortSource.Predicted Then
-                    Me.m_esData.PredictSimEffort = True
+                Me.m_SimData.PredictSimEffort = False
+                If Me.m_MSEData.RegulationMode = eMSERegulationMode.UseRegulations And Me.m_MSEData.EffortSource = eMSEEffortSource.Predicted Then
+                    Me.m_SimData.PredictSimEffort = True
                 End If
 
-                For itr = 1 To Me.m_data.NTrials
+                For itr = 1 To Me.m_MSEData.NTrials
 
                     Me.InitForTrial()
+                    Me.m_Model.InitForTrial()
 
-                    Me.m_data.CurrentIteration = itr
+                    Me.m_MSEData.CurrentIteration = itr
                     Me.AddIteration()
 
                     Me.PostMessage(eMSERunStates.IterationStarted)
 
+                    bSuccess = Me.m_Model.Run()
                     'run ecosim
-                    bSuccess = Me.m_Ecosim.Run()
+                    'bSuccess = Me.m_Ecosim.Run()
                     If Not bSuccess Then Exit For
                     'Threading.Thread.Sleep(2000)
 
@@ -676,7 +734,7 @@ Namespace MSE
                     ' System.Console.WriteLine("MSE PostMessage IterationCompleted " & itr.ToString)
                     Me.PostMessage(eMSERunStates.IterationCompleted)
 
-                    If Me.m_data.StopRun Then
+                    If Me.m_MSEData.StopRun Then
                         Exit For
                     End If
 
@@ -695,33 +753,58 @@ Namespace MSE
             Me.PostMessage(eMSERunStates.RunCompleted)
 
             'turn off the search
-            Me.m_Search.SearchMode = eSearchModes.NotInSearch
+            Me.m_SearchData.SearchMode = eSearchModes.NotInSearch
 
             Return bSuccess
 
         End Function
 
+        Public Function CheckCoreState() As Boolean
+
+            If Me.m_MSEData.ModelType = eModelTypes.Ecosim Then
+                If Me.m_core.StateMonitor.HasEcosimLoaded Then
+                    Return True
+                Else
+
+                    Me.m_core.Messages.SendMessage(New cMessage("Ecosim has been selected, but no scenario is currently loaded. Please load an Ecosim scenario to proceed.",
+                                                           eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
+                    Return False
+                End If 'Me.m_core.StateMonitor.HasEcosimLoaded
+            End If 'Me.m_MSEData.ModelType = eModelTypes.Ecosim
+
+            If Me.m_MSEData.ModelType = eModelTypes.EcoSpace Then
+                If Me.m_core.StateMonitor.HasEcospaceInitialized Then
+                    Return True
+                Else
+                    Me.m_core.Messages.SendMessage(New cMessage("Ecospace has been selected, but no scenario is currently loaded. Please load an Ecospace scenario to proceed.",
+                                                                eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
+                    Return False
+                End If 'Me.m_core.StateMonitor.HasEcospaceInitialized
+            End If 'Me.m_MSEData.ModelType = eModelTypes.EcoSpace
+
+
+        End Function
         Private Sub InitForTrial()
 
             Me.InitAssessment()
             'Set MSE data back to initial values for a new run
-            Me.m_data.InitForTrial()
+            Me.m_MSEData.InitForTrial()
 
-            For igrp As Integer = 1 To Me.m_epdata.NumLiving
-                Me.m_Search.CatchYearGroup(igrp) = Me.m_epdata.fCatch(igrp)
+            For igrp As Integer = 1 To Me.m_PathData.NumLiving
+                Me.m_SearchData.CatchYearGroup(igrp) = Me.m_PathData.fCatch(igrp)
             Next
 
             'Ecosim will not set F from Effort if there is F timeseries loaded
             'This will turn OFF the Forced F for groups that are fished by a Controlled Fleet
-            For igrp As Integer = 1 To Me.m_data.nLiving
-                If Me.m_esData.FisForced(igrp) = True Then
+            For igrp As Integer = 1 To Me.m_MSEData.nLiving
+                If Me.m_SimData.FisForced(igrp) = True Then
                     'Only if the group has forced F's
-                    For iflt As Integer = 1 To Me.m_data.nFleets
-                        If Me.m_esData.FishMGear(iflt, igrp) > 0 Then
+                    For iflt As Integer = 1 To Me.m_MSEData.nFleets
+                        If Me.m_SimData.FishMGear(iflt, igrp) > 0 Then
                             'Only if this fleet catches this group
-                            If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NoControls Then
+                            If Me.m_MSEData.QuotaType(iflt) <> eQuotaTypes.NoControls Then
                                 'Only if there are quota control on this fleet
-                                Me.m_esData.FisForced(igrp) = False
+                                Me.m_SimData.FisForced(igrp) = False
                                 'Once F is no longer forced for this group 
                                 'there is no point in checking the other fleets that fish this group
                                 Exit For
@@ -735,15 +818,15 @@ Namespace MSE
 
         Private Sub ComputeStats()
 
-            Me.m_data.BioStats.ComputeStats()
-            Me.m_data.CatchFleetStats.ComputeStats()
-            Me.m_data.CatchGroupStats.ComputeStats()
-            Me.m_data.EffortStats.ComputeStats()
-            Me.m_data.BioEstStats.ComputeStats()
+            Me.m_MSEData.BioStats.ComputeStats()
+            Me.m_MSEData.CatchFleetStats.ComputeStats()
+            Me.m_MSEData.CatchGroupStats.ComputeStats()
+            Me.m_MSEData.EffortStats.ComputeStats()
+            Me.m_MSEData.BioEstStats.ComputeStats()
 
-            Me.m_data.FLPDualValue.ComputeStats()
+            Me.m_MSEData.FLPDualValue.ComputeStats()
 
-            Me.m_data.ValueFleetStats.ComputeStats()
+            Me.m_MSEData.ValueFleetStats.ComputeStats()
 
         End Sub
 
@@ -753,21 +836,21 @@ Namespace MSE
         ''' <remarks></remarks>
         Private Sub AddIteration()
 
-            Me.m_data.BioStats.AddIteration()
-            Me.m_data.CatchFleetStats.AddIteration()
-            Me.m_data.CatchGroupStats.AddIteration()
-            Me.m_data.EffortStats.AddIteration()
+            Me.m_MSEData.BioStats.AddIteration()
+            Me.m_MSEData.CatchFleetStats.AddIteration()
+            Me.m_MSEData.CatchGroupStats.AddIteration()
+            Me.m_MSEData.EffortStats.AddIteration()
 
-            Me.m_data.FLPDualValue.AddIteration()
+            Me.m_MSEData.FLPDualValue.AddIteration()
             ' Me.m_data.FActualStats.AddIteration()
 
-            Me.m_data.BioEstStats.AddIteration()
+            Me.m_MSEData.BioEstStats.AddIteration()
 
-            Me.m_data.ProfitSum.AddIteration()
-            Me.m_data.JobsSum.AddIteration()
-            Me.m_data.CostSum.AddIteration()
+            Me.m_MSEData.ProfitSum.AddIteration()
+            Me.m_MSEData.JobsSum.AddIteration()
+            Me.m_MSEData.CostSum.AddIteration()
 
-            Me.m_data.ValueFleetStats.AddIteration()
+            Me.m_MSEData.ValueFleetStats.AddIteration()
 
         End Sub
 
@@ -789,7 +872,8 @@ Namespace MSE
                 Else
                     'Last Call the MSE is done
                     'reset F back to its base value based on the effort
-                    Me.m_Ecosim.SetBaseFFromGear()
+                    'Me.m_Ecosim.SetBaseFFromGear()
+                    Me.m_Model.SetBaseFFromGear()
 
                 End If
 
@@ -800,6 +884,7 @@ Namespace MSE
 
         End Sub
 
+
         Private Sub setFishForcedToBase()
 
             'reloads time series forcing data into core arrays and resets FisForced(groups)
@@ -807,54 +892,56 @@ Namespace MSE
             Me.m_core.m_TSData.DoDatValCalculations()
 
             'resets F in FishRateNo() based on forced Catches or Effort 
-            Me.m_Ecosim.SetBaseFFromGear()
+            'Me.m_Ecosim.SetBaseFFromGear()
+            Me.m_Model.SetBaseFFromGear()
 
         End Sub
 
         Private Sub dumpStats()
 
-            For i As Integer = 1 To Me.m_data.nLiving
-                Dim histo() As Single = Me.m_data.BioStats.Histogram(i)
+            For i As Integer = 1 To Me.m_MSEData.nLiving
+                Dim histo() As Single = Me.m_MSEData.BioStats.Histogram(i)
                 'histogram stuff for debugging
                 System.Console.WriteLine()
-                For ihist As Integer = 1 To Me.m_data.BioStats.HistoNBins(i)
+                For ihist As Integer = 1 To Me.m_MSEData.BioStats.HistoNBins(i)
                     System.Console.Write(histo(ihist).ToString & ", ")
                 Next
 
             Next
 
             System.Console.WriteLine("----P------")
-            For i As Integer = 1 To Me.m_data.nLiving
-                Dim Pless As Single = Me.m_data.BioStats.PercentageBelow(i, Me.m_data.BioBounds(i).Lower)
-                Dim Pgreater As Single = Me.m_data.BioStats.PercentageAbove(i, Me.m_data.BioBounds(i).Upper)
+            For i As Integer = 1 To Me.m_MSEData.nLiving
+                Dim Pless As Single = Me.m_MSEData.BioStats.PercentageBelow(i, Me.m_MSEData.BioBounds(i).Lower)
+                Dim Pgreater As Single = Me.m_MSEData.BioStats.PercentageAbove(i, Me.m_MSEData.BioBounds(i).Upper)
                 ' Debug.Assert(Pless + Pgreater <= 100, "MSE Probability calculation!!!!")
                 System.Console.WriteLine("Group = " & Me.m_core.m_EcopathData.GroupName(i) & ", less = " & Pless.ToString & ", greater = " & Pgreater.ToString)
             Next
 
+
             System.Console.WriteLine()
 
             System.Console.WriteLine("Biomass ranges")
-            System.Console.Write(Me.m_data.BioStats.ToString)
+            System.Console.Write(Me.m_MSEData.BioStats.ToString)
             System.Console.WriteLine()
 
             System.Console.WriteLine("Catch by group ranges")
-            System.Console.Write(Me.m_data.CatchGroupStats.ToString)
+            System.Console.Write(Me.m_MSEData.CatchGroupStats.ToString)
             System.Console.WriteLine()
 
             System.Console.WriteLine("Catch by fleet ranges")
-            System.Console.Write(Me.m_data.CatchFleetStats.ToString)
+            System.Console.Write(Me.m_MSEData.CatchFleetStats.ToString)
             System.Console.WriteLine()
 
             System.Console.WriteLine("Profit")
-            System.Console.Write(Me.m_data.ProfitSum.ToString)
+            System.Console.Write(Me.m_MSEData.ProfitSum.ToString)
             System.Console.WriteLine()
 
             System.Console.WriteLine("Cost")
-            System.Console.Write(Me.m_data.CostSum.ToString)
+            System.Console.Write(Me.m_MSEData.CostSum.ToString)
             System.Console.WriteLine()
 
             System.Console.WriteLine("Jobs")
-            System.Console.Write(Me.m_data.JobsSum.ToString)
+            System.Console.Write(Me.m_MSEData.JobsSum.ToString)
             System.Console.WriteLine()
 
         End Sub
@@ -862,7 +949,7 @@ Namespace MSE
         Private Sub SaveIteration()
 
             Try
-                Me.m_output.saveIteration(Me.m_lstData)
+                Me.m_output.saveIteration(Me.m_Model, Me.m_lstData)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".SaveIteration() Exception: " & ex.Message)
             End Try
@@ -879,20 +966,21 @@ Namespace MSE
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub PostPluginData()
-            If Me.m_Search.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
-                Me.m_pluginManager.PostRunSearchResults(Me.m_Search)
+            If Me.m_SearchData.MSEUseEconomicPlugin And (Me.m_pluginManager IsNot Nothing) Then
+                Me.m_pluginManager.PostRunSearchResults(Me.m_SearchData)
             End If
         End Sub
 
         Private Sub getMeanValues(NTrials As Integer)
 
-            Me.m_data.sumEmployVal = Me.m_data.sumEmployVal / NTrials
-            Me.m_data.SumProfit = Me.m_data.SumProfit / NTrials
-            Me.m_data.sumManVal = Me.m_data.sumManVal / NTrials
-            Me.m_data.sumEcoVal = Me.m_data.sumEcoVal / NTrials
-            Me.m_data.sumWeightedValues = Me.m_data.sumWeightedValues / NTrials
+            Me.m_MSEData.sumEmployVal = Me.m_MSEData.sumEmployVal / NTrials
+            Me.m_MSEData.SumProfit = Me.m_MSEData.SumProfit / NTrials
+            Me.m_MSEData.sumManVal = Me.m_MSEData.sumManVal / NTrials
+            Me.m_MSEData.sumEcoVal = Me.m_MSEData.sumEcoVal / NTrials
+            Me.m_MSEData.sumWeightedValues = Me.m_MSEData.sumWeightedValues / NTrials
 
         End Sub
+
 
         ''' <summary>
         ''' Sum results of Model run into Mean values
@@ -900,18 +988,20 @@ Namespace MSE
         ''' <remarks>Once the trials have been finished the mean will be calculated from the sums in getMeanValues() (e.g. MeanEmploy) </remarks>
         Private Sub SumValues()
 
-            Me.m_data.sumEmployVal += CSng(Me.m_Search.Employ)
-            Me.m_data.SumProfit += CSng(Me.m_Search.Profit)
-            Me.m_data.sumManVal += CSng(Me.m_Search.ManValue)
-            Me.m_data.sumEcoVal += CSng(Me.m_Search.EcoValue)
+            Me.m_MSEData.sumEmployVal += CSng(Me.m_SearchData.Employ)
+            Me.m_MSEData.SumProfit += CSng(Me.m_SearchData.Profit)
+            Me.m_MSEData.sumManVal += CSng(Me.m_SearchData.ManValue)
+            Me.m_MSEData.sumEcoVal += CSng(Me.m_SearchData.EcoValue)
 
-            Me.m_data.sumWeightedValues = CSng(Me.m_data.sumWeightedValues +
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_Search.Profit / Me.ProfitBase +
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_Search.Employ / Me.EmployBase +
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_Search.ManValue / Me.ManValueBase +
-                    Me.m_Search.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_Search.EcoValue / Me.EcoValueBase)
+            Me.m_MSEData.sumWeightedValues = CSng(Me.m_MSEData.sumWeightedValues +
+                    Me.m_SearchData.ValWeight(eSearchCriteriaResultTypes.Profit) * Me.m_SearchData.Profit / Me.ProfitBase +
+                    Me.m_SearchData.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.m_SearchData.Employ / Me.EmployBase +
+                    Me.m_SearchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.m_SearchData.ManValue / Me.ManValueBase +
+                    Me.m_SearchData.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.m_SearchData.EcoValue / Me.EcoValueBase)
 
         End Sub
+
+
 
         Private Sub PostMessage(CurrentState As eMSERunStates)
 
@@ -946,6 +1036,7 @@ Namespace MSE
 
         End Sub
 
+
         ''' <summary>
         ''' Count the number of times the Biomass is outside the lower or upper risk boundry
         ''' </summary>
@@ -955,16 +1046,16 @@ Namespace MSE
 
             Try
 
-                For i As Integer = 1 To Me.m_epdata.NumGroups
+                For i As Integer = 1 To Me.m_PathData.NumGroups
 
-                    If Me.m_data.BioR0(i) = False And Biomass(i) < Me.m_data.BioRiskValue(i, 0) * Me.m_esData.StartBiomass(i) Then
-                        Me.m_data.BioRiskCount(i, 0) = Me.m_data.BioRiskCount(i, 0) + 1
-                        Me.m_data.BioR0(i) = True
+                    If Me.m_MSEData.BioR0(i) = False And Biomass(i) < Me.m_MSEData.BioRiskValue(i, 0) * Me.m_SimData.StartBiomass(i) Then
+                        Me.m_MSEData.BioRiskCount(i, 0) = Me.m_MSEData.BioRiskCount(i, 0) + 1
+                        Me.m_MSEData.BioR0(i) = True
                     End If
 
-                    If Me.m_data.BioR1(i) = False And Biomass(i) > Me.m_data.BioRiskValue(i, 1) * Me.m_esData.StartBiomass(i) Then
-                        Me.m_data.BioRiskCount(i, 1) = Me.m_data.BioRiskCount(i, 1) + 1
-                        Me.m_data.BioR1(i) = True
+                    If Me.m_MSEData.BioR1(i) = False And Biomass(i) > Me.m_MSEData.BioRiskValue(i, 1) * Me.m_SimData.StartBiomass(i) Then
+                        Me.m_MSEData.BioRiskCount(i, 1) = Me.m_MSEData.BioRiskCount(i, 1) + 1
+                        Me.m_MSEData.BioR1(i) = True
                     End If
 
                 Next
@@ -975,6 +1066,8 @@ Namespace MSE
             End Try
 
         End Sub
+
+
 
         ''' <summary>
         ''' Set Fgear() and QYear() for a management strategy evaluation
@@ -988,13 +1081,13 @@ Namespace MSE
             Try
 
                 'Increase catchability with the annual growth factor, irrespective of regulation or closed loop type
-                For i As Integer = 1 To Me.m_epdata.NumFleet
+                For i As Integer = 1 To Me.m_PathData.NumFleet
                     If iYear > 1 Then
 
                         If Me.isTStepRegulated(Me.m_curT) Then
 
                             'Regulated Vary QYear()
-                            QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * CSng(Me.m_rndGen.NextDouble))
+                            QYear(i) = QYear(i) * (1 + Me.m_MSEData.QGrowUsed(i) * CSng(Me.m_rndGen.NextDouble))
 
                         Else
                             'Not Regulated 
@@ -1005,18 +1098,18 @@ Namespace MSE
                     End If 'If iYear > 1 Then
                 Next i
 
-                If Not Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
+                If Not Me.m_MSEData.RegulationMode = eMSERegulationMode.NoRegulations Then
                     'Only vary effort here if we are in the Tracking mode(effort is set by the current Ecosim Effort). 
                     Exit Sub
                 End If
 
                 'Vary Effort
-                For i As Integer = 1 To Me.m_epdata.NumFleet
+                For i As Integer = 1 To Me.m_PathData.NumFleet
                     If iYear > 1 Then
-                        If Me.m_data.Fwc(i, 1) > 0 Then Fgear(i) = Fgear(i) * Me.m_data.Fwc(i, 0) / Me.m_data.Fwc(i, 1)
+                        If Me.m_MSEData.Fwc(i, 1) > 0 Then Fgear(i) = Fgear(i) * Me.m_MSEData.Fwc(i, 0) / Me.m_MSEData.Fwc(i, 1)
                     Else
                         'First year
-                        Fgear(i) = CSng(Fgear(i) * (1 + Me.Normal * Math.Sqrt(Me.m_data.VarQest(i))))
+                        Fgear(i) = CSng(Fgear(i) * (1 + Me.Normal * Math.Sqrt(Me.m_MSEData.VarQest(i))))
                     End If
 
                     If Fgear(i) < 1.0E-20 Then Fgear(i) = 1.0E-20
@@ -1028,7 +1121,9 @@ Namespace MSE
                 Throw New ApplicationException(Me.ToString & ".YearTimeStep() Error: " & ex.Message, ex)
             End Try
 
+
         End Sub
+
 
         Friend Sub AssessFs(Fgear() As Single, Bbar() As Single)
             'does assessment at end of simulated year in runmodelvalue if ploton=true,
@@ -1043,30 +1138,30 @@ Namespace MSE
             Try
 
                 'are we running the regulatory code
-                If Not Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
+                If Not Me.m_MSEData.RegulationMode = eMSERegulationMode.NoRegulations Then
                     'Yes so don't use this to assess the effort
                     Exit Sub
                 End If
 
-                Debug.Assert(Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations, "MSE EffortMode incorrectly set!")
+                Debug.Assert(Me.m_MSEData.RegulationMode = eMSERegulationMode.NoRegulations, "MSE EffortMode incorrectly set!")
 
-                ReDim Fest(Me.m_epdata.NumFleet, Me.m_epdata.NumLiving), Best(Me.m_epdata.NumLiving)
+                ReDim Fest(Me.m_PathData.NumFleet, Me.m_PathData.NumLiving), Best(Me.m_PathData.NumLiving)
 
                 'first estimate fishing rates actually achieved by gear and species, Fest(ifleet,igroup) = catch(fleet,group)/biomass(group)
-                Select Case Me.m_data.AssessMethod
+                Select Case Me.m_MSEData.AssessMethod
 
                     Case eAssessmentMethods.Exact 'biomasses and catch known exactly
 
-                        For i = 1 To Me.m_epdata.NumFleet
-                            For j = 1 To Me.m_epdata.NumLiving
-                                If Bbar(j) > 0 Then Fest(i, j) = Me.m_Search.CatchYear(i, j) / Bbar(j) Else Fest(i, j) = 0
+                        For i = 1 To Me.m_PathData.NumFleet
+                            For j = 1 To Me.m_PathData.NumLiving
+                                If Bbar(j) > 0 Then Fest(i, j) = Me.m_SearchData.CatchYear(i, j) / Bbar(j) Else Fest(i, j) = 0
                             Next
                         Next
 
                     Case eAssessmentMethods.CatchEstmBio ' Fs from biomass estimates by pool
                         ' System.Console.WriteLine()
-                        For j = 1 To Me.m_epdata.NumLiving
-                            Best(j) = CSng(Math.Exp(Me.Normal2() * Me.m_data.CVbiomEst(j)) * Me.m_esData.StartBiomass(j) * (Bbar(j) / Me.m_esData.StartBiomass(j)) ^ Me.m_data.AssessPower)
+                        For j = 1 To Me.m_PathData.NumLiving
+                            Best(j) = CSng(Math.Exp(Me.Normal2() * Me.m_MSEData.CVbiomEst(j)) * Me.m_SimData.StartBiomass(j) * (Bbar(j) / Me.m_SimData.StartBiomass(j)) ^ Me.m_MSEData.AssessPower)
 
                             If Me.BestTime(j) > 0 Then  'have previous biomass estimate for this run
                                 'jb 8-Oct-2010 changed to use the same stock recruitment model as MSE regulatory model
@@ -1079,17 +1174,17 @@ Namespace MSE
 
                             Best(j) = Me.BestTime(j)
 
-                            For i = 1 To Me.m_epdata.NumFleet
-                                If Best(j) > 0 Then Fest(i, j) = Me.m_Search.CatchYear(i, j) / Best(j) Else Fest(i, j) = 0
+                            For i = 1 To Me.m_PathData.NumFleet
+                                If Best(j) > 0 Then Fest(i, j) = Me.m_SearchData.CatchYear(i, j) / Best(j) Else Fest(i, j) = 0
                             Next i
 
                         Next j
 
                     Case eAssessmentMethods.DirectExploitation ' Fs from direct exploitation method (eg tagging)
 
-                        For i = 1 To Me.m_epdata.NumFleet
-                            For j = 1 To Me.m_epdata.NumLiving
-                                Fest(i, j) = (Me.m_Search.CatchYear(i, j) / Bbar(j)) * CSng(Math.Exp(Me.Normal2() * Me.m_data.CVFest(j)))
+                        For i = 1 To Me.m_PathData.NumFleet
+                            For j = 1 To Me.m_PathData.NumLiving
+                                Fest(i, j) = (Me.m_SearchData.CatchYear(i, j) / Bbar(j)) * CSng(Math.Exp(Me.Normal2() * Me.m_MSEData.CVFest(j)))
                             Next
                         Next
 
@@ -1099,15 +1194,15 @@ Namespace MSE
                 End Select
 
                 'then update relative catchability estimates by gear
-                For i = 1 To Me.m_epdata.NumFleet
+                For i = 1 To Me.m_PathData.NumFleet
                     Fwt = 0
                     'If Fgear(i) = 0 Then Fgear(i) = 0.0000000001
-                    For j = 1 To Me.m_epdata.NumLiving
-                        Fwt = Fwt + Fest(i, j) * Me.m_data.Fweight(i, j)
+                    For j = 1 To Me.m_PathData.NumLiving
+                        Fwt = Fwt + Fest(i, j) * Me.m_MSEData.Fweight(i, j)
                     Next
-                    Fpred = Me.m_data.Fwc(i, 1) * (1 + Me.m_data.Qgrow(i) / 2)
+                    Fpred = Me.m_MSEData.Fwc(i, 1) * (1 + Me.m_MSEData.Qgrow(i) / 2)
                     If Fgear(i) > 0 And Fwt > 0 Then
-                        Me.m_data.Fwc(i, 1) = Fpred + Me.m_data.KalGainQ(i) * (Fwt / (Me.m_data.Wftot(i) * Fgear(i)) - Fpred)
+                        Me.m_MSEData.Fwc(i, 1) = Fpred + Me.m_MSEData.KalGainQ(i) * (Fwt / (Me.m_MSEData.Wftot(i) * Fgear(i)) - Fpred)
                     End If
                 Next
 
@@ -1116,23 +1211,27 @@ Namespace MSE
                 Throw New ApplicationException(Me.ToString & ".AssessFs() Error: " & ex.Message, ex)
             End Try
 
+
         End Sub
+
 
         Friend Sub VaryForcing(ByRef ForcingMultTime() As Single)
 
             Try
 
-                If Me.m_data.bInBatch Then
+                If Me.m_MSEData.bInBatch Then
                     Me.BatchManager.varyForcing(ForcingMultTime)
                 End If
 
             Catch ex As Exception
                 'Don't try again....
-                Me.m_data.bInBatch = False
+                Me.m_MSEData.bInBatch = False
                 Debug.Assert(False, ex.Message)
             End Try
 
         End Sub
+
+
 
 
         Public Sub DoRegulations(Biomass() As Single, Effort() As Single, QMult() As Single, QYear() As Single, iTimeStep As Integer, iMonth As Integer, iYear As Integer)
@@ -1142,7 +1241,7 @@ Namespace MSE
                 Me.setTime(iTimeStep, iYear)
 
                 'Is the effort regulated
-                If Me.Data.UseQuotaRegs Then
+                If Me.MSEData.UseQuotaRegs Then
                     'xxxxxxxxxxxxx
                     'Quota used
                     'xxxxxxxxxxxxx
@@ -1163,22 +1262,12 @@ Namespace MSE
 
                         'Regulate the effort every month
                         Me.RegulateEffort(Biomass, QMult, QYear, iTimeStep, iMonth)
-                        'Catch base on the regulated effort
-                        'Me.CalcCatch(Biomass, QMult, QYear, iTimeStep)
-
-                        '5-Nov-2012 jb Moved check of FisForced() to InitForTrial
-                        'And changed it to only set FisForced()=False if the Fleet is controled
-                        ''Ecosim will not set F from Effort if there is F timeseries loaded
-                        ''this tell Ecosim that there is NO timeseries loaded, even if there is...
-                        'For igrp As Integer = 1 To Me.m_data.nLiving
-                        '    If Me.m_esData.FisForced(igrp) = True Then
-                        '           Me.m_esData.FisForced(igrp) = False
-                        '    End If
-                        'Next
 
                         'jb PredictEffort = True flag will stop SetFtimeFromGear(...) from updating to the new regualted effort
                         'Me.m_Ecosim.SetFtimeFromGear(iTimeStep, QYear, Me.m_esData.PredictSimEffort)
-                        Me.m_Ecosim.SetFtimeFromGear(iTimeStep, QYear, True)
+                        'Me.m_Ecosim.SetFtimeFromGear(iTimeStep, QYear, True)
+                        Me.m_Model.SetFtimeFromGear(iTimeStep, QYear, True)
+
 
                     Else 'Me.isTStepRegulated(iTimeStep)
                         'xxxxxxxxxxxxxxx
@@ -1186,7 +1275,7 @@ Namespace MSE
                         'xxxxxxxxxxxxxxx
 
                         'set FishTime(group) (F at timestep) using FishYear and load timeseries data
-                        Me.setFishTime(Biomass, Me.m_Search.FishYear, QMult, iTimeStep, iYear)
+                        Me.setFishTime(Biomass, Me.m_SearchData.FishYear, QMult, iTimeStep, iYear)
 
                     End If 'Me.isTStepRegulated(iTimeStep)
 
@@ -1196,7 +1285,7 @@ Namespace MSE
                     'xxxxxxxxxxxxxxxxxxxx
 
                     'set FishTime(group) (F at timestep) using FishYear and load timeseries data
-                    Me.setFishTime(Biomass, Me.m_Search.FishYear, QMult, iTimeStep, iYear)
+                    Me.setFishTime(Biomass, Me.m_SearchData.FishYear, QMult, iTimeStep, iYear)
 
                 End If 'Me.Data.UseQuotaRegs
 
@@ -1207,6 +1296,7 @@ Namespace MSE
             End Try
 
         End Sub
+
 
         Public Sub setFishTime(Biomass() As Single, ByRef FishYear() As Single, Qmult() As Single, iTime As Integer, iyear As Integer)
             Dim igrp As Integer
@@ -1219,15 +1309,15 @@ Namespace MSE
                 'NOT in a regulated timestep
                 'Ok to use timeseries data
 
-                For igrp = 1 To Me.m_data.NGroups
+                For igrp = 1 To Me.m_MSEData.NGroups
 
                     'get the correct forcing time step index for this model time step
                     Dim iForced As Integer = Me.m_refData.toForcingTimeStep(iTime, iyear)
 
                     'Forced F
-                    If Me.m_esData.FisForced(igrp) Then
+                    If Me.m_SimData.FisForced(igrp) Then
                         'F forcing data was loaded into FishRateNo(group,time) by DoDatValCalculations()
-                        FishYear(igrp) = Me.m_esData.FishRateNo(igrp, iTime)
+                        FishYear(igrp) = Me.m_SimData.FishRateNo(igrp, iTime)
                     End If
 
                     'forced Catches
@@ -1247,7 +1337,7 @@ Namespace MSE
             Else
                 'Time step is Regulated
                 'Turn OFF Forced Mortality PoolForcedZ
-                For igrp = 1 To Me.m_data.NGroups
+                For igrp = 1 To Me.m_MSEData.NGroups
                     Me.m_refData.PoolForceZ(igrp, 0) = 0
                 Next
 
@@ -1256,12 +1346,12 @@ Namespace MSE
             'NOW
             '2 set FishRateNo(group,time) to FishYear(group)
             '3 set FishTime(group) to FishRateNo(group,time) * [density dep catchability]
-            For igrp = 1 To Me.m_data.NGroups
+            For igrp = 1 To Me.m_MSEData.NGroups
 
                 'set FishRateNo() to computed F from FishYear() and/or loaded timeseries data if not in regulated timestep
-                Me.m_esData.FishRateNo(igrp, iTime) = FishYear(igrp)
+                Me.m_SimData.FishRateNo(igrp, iTime) = FishYear(igrp)
                 'FishTime() is F at current t for Ecosim (Derivt)
-                Me.m_esData.FishTime(igrp) = Me.m_esData.FishRateNo(igrp, iTime) * Qmult(igrp)
+                Me.m_SimData.FishTime(igrp) = Me.m_SimData.FishRateNo(igrp, iTime) * Qmult(igrp)
 
             Next igrp
 
@@ -1273,41 +1363,41 @@ Namespace MSE
 
             If Not Me.isTStepRegulated(t) Then Return
 
-            If Me.m_data.UseLPSolution Then
+            If Me.m_MSEData.UseLPSolution Then
 
                 'Only call the LP Solution for the first month of the year
                 If imonth = 1 Then
                     'RegulateEffortViaLPSolve(Biomass, QMult, QYear, t)
                     Me.RegulateLPEffort(Biomass, QMult, QYear, t)
                 Else
-                    For ig = 1 To Me.m_epdata.NumFleet
-                        Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t - 1)
+                    For ig = 1 To Me.m_PathData.NumFleet
+                        Me.m_SimData.FishRateGear(ig, t) = Me.m_SimData.FishRateGear(ig, t - 1)
                     Next
                 End If
 
             Else
 
                 'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
-                For ig = 1 To Me.m_esData.nGear
+                For ig = 1 To Me.m_SimData.nGear
 
-                    Select Case Me.m_data.QuotaType(ig)
+                    Select Case Me.m_MSEData.QuotaType(ig)
 
                         Case eQuotaTypes.Effort
                             'NOT IMPLEMENTED at this time
-                            Debug.Assert(Me.m_data.QuotaType(ig) = eQuotaTypes.Effort, "Effort regulations have not been implemented at this time!")
+                            Debug.Assert(Me.m_MSEData.QuotaType(ig) = eQuotaTypes.Effort, "Effort regulations have not been implemented at this time!")
 
                         Case eQuotaTypes.Weakest 'limit effort to weakest stock
 
-                            For i = 1 To Me.m_data.NGroups
-                                If (Me.m_epdata.Landing(ig, i) + Me.m_epdata.Discard(ig, i)) > 0 Then
+                            For i = 1 To Me.m_MSEData.NGroups
+                                If (Me.m_PathData.Landing(ig, i) + Me.m_PathData.Discard(ig, i)) > 0 Then
                                     'Calculate the effort limitation, has quote been exceeded?
-                                    Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * QYear(ig) * Me.m_esData.FishMGear(ig, i) * Biomass(i)))
+                                    Elim = CSng(Me.m_MSEData.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * QYear(ig) * Me.m_SimData.FishMGear(ig, i) * Biomass(i)))
                                     Debug.Assert(Elim >= 0)
-                                    If Me.m_esData.FishRateGear(ig, t) > Elim Then
-                                        Me.m_esData.FishRateGear(ig, t) = Elim
+                                    If Me.m_SimData.FishRateGear(ig, t) > Elim Then
+                                        Me.m_SimData.FishRateGear(ig, t) = Elim
                                     End If
 
-                                    Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.RandomNormal()))
+                                    Me.m_SimData.FishRateGear(ig, t) = Me.m_SimData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_MSEData.CVFest(ig) * Me.RandomNormal()))
 
                                 End If
                             Next i
@@ -1318,10 +1408,10 @@ Namespace MSE
                             Dim vmax As Single = 0
                             Dim imax As Integer = 0
                             Dim v As Single
-                            For i = 1 To Me.m_data.NGroups
-                                If (Me.m_epdata.Landing(ig, i)) > 0 Then
+                            For i = 1 To Me.m_MSEData.NGroups
+                                If (Me.m_PathData.Landing(ig, i)) > 0 Then
                                     'find the stock with the biggest economic value
-                                    v = CSng(Me.m_data.QuotaTime(ig, i) * Me.m_epdata.Market(ig, i))
+                                    v = CSng(Me.m_MSEData.QuotaTime(ig, i) * Me.m_PathData.Market(ig, i))
                                     If v > vmax Then
                                         vmax = v
                                         imax = i
@@ -1330,33 +1420,33 @@ Namespace MSE
                             Next i
 
                             'get the effort limit for the stock with the biggest value
-                            Emax = CSng(Me.m_data.QuotaTime(ig, imax) / (1.0E-20 + QMult(imax) * QYear(ig) * Me.m_esData.FishMGear(ig, imax) * Biomass(imax)))
+                            Emax = CSng(Me.m_MSEData.QuotaTime(ig, imax) / (1.0E-20 + QMult(imax) * QYear(ig) * Me.m_SimData.FishMGear(ig, imax) * Biomass(imax)))
 
                             'Limit the effort if it is greater than the max allowable 
-                            If Emax < Me.m_esData.FishRateGear(ig, t) Then Me.m_esData.FishRateGear(ig, t) = Emax
-                            Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.RandomNormal()))
+                            If Emax < Me.m_SimData.FishRateGear(ig, t) Then Me.m_SimData.FishRateGear(ig, t) = Emax
+                            Me.m_SimData.FishRateGear(ig, t) = Me.m_SimData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_MSEData.CVFest(ig) * Me.RandomNormal()))
 
-                            For i = 1 To Me.m_data.NGroups
-                                If (Me.m_epdata.Landing(ig, i)) > 0 Then
-                                    ci = Me.m_esData.FishRateGear(ig, t) * QMult(i) * QYear(ig) * Me.m_esData.FishMGear(ig, i) * Biomass(i)
+                            For i = 1 To Me.m_MSEData.NGroups
+                                If (Me.m_PathData.Landing(ig, i)) > 0 Then
+                                    ci = Me.m_SimData.FishRateGear(ig, t) * QMult(i) * QYear(ig) * Me.m_SimData.FishMGear(ig, i) * Biomass(i)
 
-                                    If ci > Me.m_data.QuotaTime(ig, i) Then
+                                    If ci > Me.m_MSEData.QuotaTime(ig, i) Then
                                         'fishing mortality exceeds quota
-                                        Me.m_esData.PropLandedTime(ig, i) = CSng(Me.m_data.QuotaTime(ig, i) / (ci + 1.0E-20))
-                                        If Me.m_data.QuotaType(ig) = eQuotaTypes.HighestValue Then
+                                        Me.m_SimData.PropLandedTime(ig, i) = CSng(Me.m_MSEData.QuotaTime(ig, i) / (ci + 1.0E-20))
+                                        If Me.m_MSEData.QuotaType(ig) = eQuotaTypes.HighestValue Then
                                             'QuotaType = Strongest 
                                             'excess catch discarded and included in the fishing mortailtiy
-                                            Me.m_esData.PropDiscardTime(ig, i) = (1 - Me.m_esData.PropLandedTime(ig, i)) * Me.m_epdata.PropDiscardMort(ig, i)
+                                            Me.m_SimData.PropDiscardTime(ig, i) = (1 - Me.m_SimData.PropLandedTime(ig, i)) * Me.m_PathData.PropDiscardMort(ig, i)
                                         Else
                                             'QuotaType = Selective 
                                             'excess catch is NOT included in fishing mortaility all discards survive
-                                            Me.m_esData.PropDiscardTime(ig, i) = 0
+                                            Me.m_SimData.PropDiscardTime(ig, i) = 0
                                         End If
 
                                     Else
                                         'ci < QuotaTime
-                                        Me.m_esData.PropLandedTime(ig, i) = Me.m_epdata.PropLanded(ig, i)
-                                        Me.m_esData.PropDiscardTime(ig, i) = Me.m_epdata.PropDiscard(ig, i)
+                                        Me.m_SimData.PropLandedTime(ig, i) = Me.m_PathData.PropLanded(ig, i)
+                                        Me.m_SimData.PropDiscardTime(ig, i) = Me.m_PathData.PropDiscard(ig, i)
                                     End If
 
                                 End If
@@ -1386,19 +1476,19 @@ Namespace MSE
             'Me.m_LPSolver = New SimplexSolver
             Me.m_LPSolver = New cLPSolver
 
-            ReDim Me.m_FleetCode(Me.m_data.nFleets)
-            ReDim Me.m_GroupCode(Me.m_data.NGroups + 1)
-            ReDim Me.m_QStar(Me.m_data.NGroups, Me.m_data.nFleets)
+            ReDim Me.m_FleetCode(Me.m_MSEData.nFleets)
+            ReDim Me.m_GroupCode(Me.m_MSEData.NGroups + 1)
+            ReDim Me.m_QStar(Me.m_MSEData.NGroups, Me.m_MSEData.nFleets)
 
             'Add the Fleets as Variables and get the Variable ID's into m_FleetCode
-            For iflt As Integer = 1 To Me.m_data.nFleets
-                Me.m_LPSolver.AddVariable(Me.m_epdata.FleetName(iflt), Me.m_FleetCode(iflt))
+            For iflt As Integer = 1 To Me.m_MSEData.nFleets
+                Me.m_LPSolver.AddVariable(Me.m_PathData.FleetName(iflt), Me.m_FleetCode(iflt))
                 'Set the bounds 
-                Me.m_LPSolver.SetBounds(Me.m_FleetCode(iflt), Me.m_data.LowLPEffort(iflt), Me.m_data.UpperLPEffort(iflt)) 'Me.m_data.MaxEffort(iflt)
+                Me.m_LPSolver.SetBounds(Me.m_FleetCode(iflt), Me.m_MSEData.LowLPEffort(iflt), Me.m_MSEData.UpperLPEffort(iflt)) 'Me.m_data.MaxEffort(iflt)
             Next
 
-            For igrp As Integer = 1 To Me.m_data.nLiving
-                Me.m_LPSolver.AddRow(Me.m_epdata.GroupName(igrp), Me.m_GroupCode(igrp))
+            For igrp As Integer = 1 To Me.m_MSEData.nLiving
+                Me.m_LPSolver.AddRow(Me.m_PathData.GroupName(igrp), Me.m_GroupCode(igrp))
             Next
 
             Me.m_LPSolver.AddRow("VALUE", Me.m_GoalRowID)
@@ -1419,39 +1509,39 @@ Namespace MSE
             Dim iFlt As Integer, iGrp As Integer
 
             Dim VPerEffort() As Single
-            ReDim VPerEffort(Me.m_data.nFleets)
+            ReDim VPerEffort(Me.m_MSEData.nFleets)
 
             'Get fishing mortality at this time step
-            For iFlt = 1 To Me.m_data.nFleets
-                For iGrp = 1 To Me.m_data.nLiving
+            For iFlt = 1 To Me.m_MSEData.nFleets
+                For iGrp = 1 To Me.m_MSEData.nLiving
                     If t > 1 Then
                         'QStar(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
                         'Using Kalman filter to update catchability estimate
-                        Me.m_data.Qest(iGrp, iFlt) = (1 - Me.m_data.KalGainQ(iFlt)) * (Me.m_data.CatchYear(iFlt, iGrp) / 12) / Me.m_data.BestimateLast(iGrp) / (Me.m_esData.FishRateGear(iFlt, t - 12) + 1.0E-20F) + Me.m_data.KalGainQ(iFlt) * Me.m_data.Qest(iGrp, iFlt)
+                        Me.m_MSEData.Qest(iGrp, iFlt) = (1 - Me.m_MSEData.KalGainQ(iFlt)) * (Me.m_MSEData.CatchYear(iFlt, iGrp) / 12) / Me.m_MSEData.BestimateLast(iGrp) / (Me.m_SimData.FishRateGear(iFlt, t - 12) + 1.0E-20F) + Me.m_MSEData.KalGainQ(iFlt) * Me.m_MSEData.Qest(iGrp, iFlt)
                     End If
                     ' Me.m_data.Qest(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
-                    Me.m_data.QStar(iGrp, iFlt) = Me.m_data.Qest(iGrp, iFlt) * (Me.m_esData.PropLandedTime(iFlt, iGrp) + (1 - Me.m_esData.PropLandedTime(iFlt, iGrp)) * Me.m_epdata.PropDiscardMort(iFlt, iGrp))
+                    Me.m_MSEData.QStar(iGrp, iFlt) = Me.m_MSEData.Qest(iGrp, iFlt) * (Me.m_SimData.PropLandedTime(iFlt, iGrp) + (1 - Me.m_SimData.PropLandedTime(iFlt, iGrp)) * Me.m_PathData.PropDiscardMort(iFlt, iGrp))
                 Next iGrp
             Next iFlt
 
             'Get value for the LP Solver
-            For iFlt = 1 To Me.m_data.nFleets
-                For iGrp = 1 To Me.m_data.nLiving
-                    VPerEffort(iFlt) += Me.m_data.QStar(iGrp, iFlt) * Biomass(iGrp) * Me.m_epdata.Market(iFlt, iGrp) * Me.m_esData.PropLandedTime(iFlt, iGrp)
+            For iFlt = 1 To Me.m_MSEData.nFleets
+                For iGrp = 1 To Me.m_MSEData.nLiving
+                    VPerEffort(iFlt) += Me.m_MSEData.QStar(iGrp, iFlt) * Biomass(iGrp) * Me.m_PathData.Market(iFlt, iGrp) * Me.m_SimData.PropLandedTime(iFlt, iGrp)
                 Next iGrp
             Next iFlt
             Dim sumF As Single
-            For iGrp = 1 To Me.m_data.nLiving
+            For iGrp = 1 To Me.m_MSEData.nLiving
                 sumF = 0
-                For iFlt = 1 To Me.m_data.nFleets
-                    Me.m_LPSolver.SetCoefficient(Me.m_GroupCode(iGrp), Me.m_FleetCode(iFlt), Me.m_data.QStar(iGrp, iFlt))
-                    sumF += Me.m_data.QStar(iGrp, iFlt)
+                For iFlt = 1 To Me.m_MSEData.nFleets
+                    Me.m_LPSolver.SetCoefficient(Me.m_GroupCode(iGrp), Me.m_FleetCode(iFlt), Me.m_MSEData.QStar(iGrp, iFlt))
+                    sumF += Me.m_MSEData.QStar(iGrp, iFlt)
                 Next
                 'Debug.Assert(sumF <= Me.m_data.FTarget(iGrp))
-                Me.m_LPSolver.SetBounds(Me.m_GroupCode(iGrp), 0, Me.m_data.FTarget(iGrp))
+                Me.m_LPSolver.SetBounds(Me.m_GroupCode(iGrp), 0, Me.m_MSEData.FTarget(iGrp))
             Next
 
-            For iFlt = 1 To Me.m_data.nFleets
+            For iFlt = 1 To Me.m_MSEData.nFleets
                 Me.m_LPSolver.SetCoefficient(Me.m_GoalRowID, Me.m_FleetCode(iFlt), VPerEffort(iFlt))
                 Me.m_LPSolver.SetBounds(Me.m_GoalRowID, 0, Double.PositiveInfinity)
             Next
@@ -1478,29 +1568,29 @@ Namespace MSE
             'Dual or Shadow variables
             'Effort is regulated once a year at the first time step of the month
             'This populates all the time steps for this year with the dual values
-            For iGrp = 1 To Me.m_data.nLiving
+            For iGrp = 1 To Me.m_MSEData.nLiving
                 Dim dv As Single = Math.Abs(CSng(Me.m_LPSolver.GetDualValue(Me.m_GroupCode(iGrp))))
                 't is the first month of this year
                 For it As Integer = t To t + 11
-                    Me.m_data.FLPDualValue.AddValue(iGrp, it, dv)
+                    Me.m_MSEData.FLPDualValue.AddValue(iGrp, it, dv)
                 Next
             Next
 
             If lpSolveReturnValue = eSolverReturnValues.OPTIMAL Then
-                For iFlt = 1 To Me.m_data.nFleets
-                    Me.m_esData.FishRateGear(iFlt, t) = CSng(Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)))
+                For iFlt = 1 To Me.m_MSEData.nFleets
+                    Me.m_SimData.FishRateGear(iFlt, t) = CSng(Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)))
                     'System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
                 Next
             Else
                 'LP Solver failed to find an optimized solution 
                 'add the failed time step to the list of non optimal solutions
-                Me.m_data.lstNonOptSolutions.Add(t)
+                Me.m_MSEData.lstNonOptSolutions.Add(t)
 
                 'populate Effort with the effort from the last time step
                 Dim tNonOpt As Integer = t - 1
                 If t = 1 Then tNonOpt = 1
-                For iFlt = 1 To Me.m_data.nFleets
-                    Me.m_esData.FishRateGear(iFlt, t) = Me.m_esData.FishRateGear(iFlt, tNonOpt)
+                For iFlt = 1 To Me.m_MSEData.nFleets
+                    Me.m_SimData.FishRateGear(iFlt, t) = Me.m_SimData.FishRateGear(iFlt, tNonOpt)
                     'System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
                 Next
 
@@ -1523,32 +1613,33 @@ Namespace MSE
             Try
 
                 cLPSolver.lpsolve55.Init()
-                ReDim VPerEffort(Me.m_data.nFleets)
+                ReDim VPerEffort(Me.m_MSEData.nFleets)
 
-                Dim ptrLp As Integer = cLPSolver.lpsolve55.make_lp(0, Me.m_data.nFleets)
+                Dim ptrLp As IntPtr = cLPSolver.lpsolve55.make_lp(0, Me.m_MSEData.nFleets)
                 Dim badded As Boolean
                 'Add the Fleets as Variables and get the Variable ID's into m_FleetCode
-                For iFlt = 1 To Me.m_data.nFleets
-                    badded = cLPSolver.lpsolve55.set_bounds(ptrLp, iFlt, CDbl(Me.m_data.LowLPEffort(iFlt)), CDbl(Me.m_data.UpperLPEffort(iFlt)))
+                For iFlt = 1 To Me.m_MSEData.nFleets
+                    badded = cLPSolver.lpsolve55.set_bounds(ptrLp, iFlt, CDbl(Me.m_MSEData.LowLPEffort(iFlt)), CDbl(Me.m_MSEData.UpperLPEffort(iFlt)))
                 Next
 
+
                 'Get fishing mortality at this time step
-                For iFlt = 1 To Me.m_data.nFleets
-                    For iGrp = 1 To Me.m_data.NGroups
+                For iFlt = 1 To Me.m_MSEData.nFleets
+                    For iGrp = 1 To Me.m_MSEData.NGroups
                         If t > 1 Then
                             'QStar(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
                             'Using Kalman filter to update catchability estimate
-                            Me.m_data.Qest(iGrp, iFlt) = (1 - Me.m_data.KalGainQ(iFlt)) * (Me.m_data.CatchYear(iFlt, iGrp) / 12) / Me.m_data.BestimateLast(iGrp) / (Me.m_esData.FishRateGear(iFlt, t - 12) + 1.0E-20F) + Me.m_data.KalGainQ(iFlt) * Me.m_data.Qest(iGrp, iFlt)
+                            Me.m_MSEData.Qest(iGrp, iFlt) = (1 - Me.m_MSEData.KalGainQ(iFlt)) * (Me.m_MSEData.CatchYear(iFlt, iGrp) / 12) / Me.m_MSEData.BestimateLast(iGrp) / (Me.m_SimData.FishRateGear(iFlt, t - 12) + 1.0E-20F) + Me.m_MSEData.KalGainQ(iFlt) * Me.m_MSEData.Qest(iGrp, iFlt)
                         End If
-                        Me.m_data.Qest(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
-                        Me.m_data.QStar(iGrp, iFlt) = Me.m_data.Qest(iGrp, iFlt) * (Me.m_esData.PropLandedTime(iFlt, iGrp) + (1 - Me.m_esData.PropLandedTime(iFlt, iGrp)) * Me.m_epdata.PropDiscardMort(iFlt, iGrp))
+                        Me.m_MSEData.Qest(iGrp, iFlt) = Me.m_SimData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
+                        Me.m_MSEData.QStar(iGrp, iFlt) = Me.m_MSEData.Qest(iGrp, iFlt) * (Me.m_SimData.PropLandedTime(iFlt, iGrp) + (1 - Me.m_SimData.PropLandedTime(iFlt, iGrp)) * Me.m_PathData.PropDiscardMort(iFlt, iGrp))
                     Next iGrp
                 Next iFlt
 
                 'Get value for the LP Solver
-                For iFlt = 1 To Me.m_data.nFleets
-                    For iGrp = 1 To Me.m_data.NGroups
-                        VPerEffort(iFlt) += Me.m_data.QStar(iGrp, iFlt) * Biomass(iGrp) * Me.m_epdata.Market(iFlt, iGrp) * Me.m_esData.PropLandedTime(iFlt, iGrp)
+                For iFlt = 1 To Me.m_MSEData.nFleets
+                    For iGrp = 1 To Me.m_MSEData.NGroups
+                        VPerEffort(iFlt) += Me.m_MSEData.QStar(iGrp, iFlt) * Biomass(iGrp) * Me.m_PathData.Market(iFlt, iGrp) * Me.m_SimData.PropLandedTime(iFlt, iGrp)
                     Next iGrp
                 Next iFlt
 
@@ -1556,12 +1647,12 @@ Namespace MSE
                 badded = cLPSolver.lpsolve55.set_obj_fn(ptrLp, VPerEffort)
 
                 Dim constraint() As Double
-                ReDim constraint(Me.m_data.nFleets)
-                For iGrp = 1 To Me.m_data.NGroups
-                    For iFlt = 1 To Me.m_data.nFleets
-                        constraint(iFlt) = CDbl(Me.m_data.QStar(iGrp, iFlt))
+                ReDim constraint(Me.m_MSEData.nFleets)
+                For iGrp = 1 To Me.m_MSEData.NGroups
+                    For iFlt = 1 To Me.m_MSEData.nFleets
+                        constraint(iFlt) = CDbl(Me.m_MSEData.QStar(iGrp, iFlt))
                     Next
-                    badded = cLPSolver.lpsolve55.add_constraint(ptrLp, constraint, cLPSolver.lpsolve55.lpsolve_constr_types.LE, Me.m_data.FTarget(iGrp))
+                    badded = cLPSolver.lpsolve55.add_constraint(ptrLp, constraint, cLPSolver.lpsolve55.lpsolve_constr_types.LE, Me.m_MSEData.FTarget(iGrp))
                 Next
 
                 cLPSolver.lpsolve55.set_maxim(ptrLp)
@@ -1579,14 +1670,14 @@ Namespace MSE
                 ReDim dualValues(1 + cLPSolver.lpsolve55.get_Ncolumns(ptrLp) + cLPSolver.lpsolve55.get_Nrows(ptrLp))
                 cLPSolver.lpsolve55.get_dual_solution(ptrLp, dualValues)
 
-                For iFlt = 1 To Me.m_data.nFleets
-                    Me.m_esData.FishRateGear(iFlt, t) = CSng(solution(Me.m_data.NGroups + iFlt))
+                For iFlt = 1 To Me.m_MSEData.nFleets
+                    Me.m_SimData.FishRateGear(iFlt, t) = CSng(solution(Me.m_MSEData.NGroups + iFlt))
                     '    System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
                 Next
 
-                For iGrp = 1 To Me.m_data.nLiving
+                For iGrp = 1 To Me.m_MSEData.nLiving
                     For it As Integer = t To t + 11
-                        Me.m_data.FLPDualValue.AddValue(iGrp, it, CSng(Math.Abs(dualValues(iGrp))))
+                        Me.m_MSEData.FLPDualValue.AddValue(iGrp, it, CSng(Math.Abs(dualValues(iGrp))))
                     Next
                 Next
 
@@ -1599,12 +1690,13 @@ Namespace MSE
 
         End Sub
 
+
         Private Sub setStartTEndT()
-            Me.m_StartT = (Me.m_data.StartYear - 1) * Me.m_esData.NumStepsPerYear + 1
-            If Me.m_data.EndYear > 0 Then
-                Me.m_EndT = Me.m_data.EndYear * Me.m_esData.NumStepsPerYear
+            Me.m_StartT = (Me.m_MSEData.StartYear - 1) * Me.m_SimData.NumStepsPerYear + 1
+            If Me.m_MSEData.EndYear > 0 Then
+                Me.m_EndT = Me.m_MSEData.EndYear * Me.m_SimData.NumStepsPerYear
             Else
-                Me.m_EndT = Me.m_esData.NTimes
+                Me.m_EndT = Me.m_SimData.NTimes
             End If
         End Sub
 
@@ -1620,6 +1712,7 @@ Namespace MSE
 
         End Function
 
+
         Private Function stockRecruitment(iGroup As Integer, B As Single, BioEst As Single, Blast As Single) As Single
             'B is the biomass calculated by Ecosim
             'BioEst is the observed biomass(Ecosim biomass + random variation)
@@ -1634,21 +1727,21 @@ Namespace MSE
             'In the original code, we were just doing a factor reduction based on current F (catchyeargroup/Blast), without correcting relative to the ecopath base value of GstockPred.
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast)) 
-            Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast + Me.m_esData.Fish1(iGroup)))
-            Me.m_data.CatchYearGroup(iGroup) = 0
+            Me.m_MSEData.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_SearchData.CatchYearGroup(iGroup) / Blast + Me.m_SimData.Fish1(iGroup)))
+            Me.m_MSEData.CatchYearGroup(iGroup) = 0
 
-            RstockPred = CSng(Me.m_data.Rmax(iGroup) * Me.m_data.BestimateLast(iGroup) / (Me.m_data.BhalfT(iGroup) + Me.m_data.BestimateLast(iGroup)))
-            vPred = CSng((Me.m_data.RstockRatio(iGroup) * Me.m_data.cvRec(iGroup)) ^ 2 / (1 - Me.m_data.GstockPred(iGroup) ^ 2))
-            Me.m_data.KalmanGain(iGroup) = CSng(vPred / (vPred + Me.m_data.CVbiomEst(iGroup) ^ 2))
+            RstockPred = CSng(Me.m_MSEData.Rmax(iGroup) * Me.m_MSEData.BestimateLast(iGroup) / (Me.m_MSEData.BhalfT(iGroup) + Me.m_MSEData.BestimateLast(iGroup)))
+            vPred = CSng((Me.m_MSEData.RstockRatio(iGroup) * Me.m_MSEData.cvRec(iGroup)) ^ 2 / (1 - Me.m_MSEData.GstockPred(iGroup) ^ 2))
+            Me.m_MSEData.KalmanGain(iGroup) = CSng(vPred / (vPred + Me.m_MSEData.CVbiomEst(iGroup) ^ 2))
 
             'and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
             'VC091107 fixed problem in eq below
-            Best = Me.m_data.KalmanGain(iGroup) * BioEst + (1 - Me.m_data.KalmanGain(iGroup)) * (Me.m_data.GstockPred(iGroup) * Me.m_data.BestimateLast(iGroup) + RstockPred)
+            Best = Me.m_MSEData.KalmanGain(iGroup) * BioEst + (1 - Me.m_MSEData.KalmanGain(iGroup)) * (Me.m_MSEData.GstockPred(iGroup) * Me.m_MSEData.BestimateLast(iGroup) + RstockPred)
 
             'store the pred/actual
             Dim val As Single
             val = Best / B
-            Me.m_data.BioEstStats.AddValue(iGroup, Me.m_curYear, val)
+            Me.m_MSEData.BioEstStats.AddValue(iGroup, Me.m_curYear, val)
 
             Return Best
 
@@ -1661,10 +1754,10 @@ Namespace MSE
         Friend Sub DoAssessment(Biomass() As Single)
 
             Dim Bobs() As Single
-            ReDim Bobs(Me.m_epdata.NumGroups)
-            For i As Integer = 1 To Me.m_data.nLiving
-                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal()))
-                Me.m_data.Bestimate(i) = Me.stockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i))
+            ReDim Bobs(Me.m_PathData.NumGroups)
+            For i As Integer = 1 To Me.m_MSEData.nLiving
+                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_MSEData.CVbiomEst(i) * Me.RandomNormal()))
+                Me.m_MSEData.Bestimate(i) = Me.stockRecruitment(i, Biomass(i), Bobs(i), Me.m_MSEData.Bestimate(i))
             Next i
 
             Try
@@ -1675,6 +1768,7 @@ Namespace MSE
             End Try
 
         End Sub
+
 
         ''' <summary>
         ''' Update fishing quotas for regulated fisheries
@@ -1688,8 +1782,8 @@ Namespace MSE
             Dim iflt As Integer, igrp As Integer
             Dim tQuota() As Single
 
-            ReDim tQuota(Me.m_epdata.NumGroups)
-            Array.Clear(Me.m_data.FTarget, 0, Me.m_epdata.NumGroups)
+            ReDim tQuota(Me.m_PathData.NumGroups)
+            Array.Clear(Me.m_MSEData.FTarget, 0, Me.m_PathData.NumGroups)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'HACK WARNING
             'BatchMode (cMSEBatchManager) needs to be able to set FixedF() and TAC() values to zero and still have them considered a valid value
@@ -1702,61 +1796,61 @@ Namespace MSE
             '1 Set the quota via Fixed Escapement, Fixed Fishing Mortality or Target Fishing Mortality(hockey stick)
             '2 Apply uncertainty to the Quota
             '3 Share the Quota between the fleets
-            For igrp = 1 To Me.m_epdata.NumLiving
+            For igrp = 1 To Me.m_PathData.NumLiving
 
-                If Me.m_data.TAC(igrp) > 0 Then
+                If Me.m_MSEData.TAC(igrp) > 0 Then
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                     'Total Allowable Catch
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    Dim tac As Single = CSng(Math.Round(Me.m_data.TAC(igrp), 5))
+                    Dim tac As Single = CSng(Math.Round(Me.m_MSEData.TAC(igrp), 5))
                     tQuota(igrp) = tac
 
-                ElseIf Me.m_data.FixedEscapement(igrp) > 0 Then
+                ElseIf Me.m_MSEData.FixedEscapement(igrp) > 0 Then
                     'xxxxxxxxxxxxxxxxxxxxxxx
                     'Fixed Escapement
                     'xxxxxxxxxxxxxxxxxxxxxxx
 
-                    tQuota(igrp) = Me.m_data.Bestimate(igrp) - Me.m_data.FixedEscapement(igrp)
+                    tQuota(igrp) = Me.m_MSEData.Bestimate(igrp) - Me.m_MSEData.FixedEscapement(igrp)
                     If tQuota(igrp) < 0 Then tQuota(igrp) = 0
 
-                ElseIf Me.m_data.FixedF(igrp) > 0 Then
+                ElseIf Me.m_MSEData.FixedF(igrp) > 0 Then
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxx
                     'Fixed Mortality
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    Dim f As Single = CSng(Math.Round(Me.m_data.FixedF(igrp), 5))
-                    tQuota(igrp) = f * Me.m_data.Bestimate(igrp)
-                    Me.m_data.FTarget(igrp) = f
+                    Dim f As Single = CSng(Math.Round(Me.m_MSEData.FixedF(igrp), 5))
+                    tQuota(igrp) = f * Me.m_MSEData.Bestimate(igrp)
+                    Me.m_MSEData.FTarget(igrp) = f
 
                 Else
                     'xxxxxxxxxxxxxxxxxxxxxxxx
                     'Target Fishing Mortality
                     'xxxxxxxxxxxxxxxxxxxxxxxx
-                    Dim brange As Single = Me.m_data.Bbase(igrp) - Me.m_data.Blim(igrp)
+                    Dim brange As Single = Me.m_MSEData.Bbase(igrp) - Me.m_MSEData.Blim(igrp)
                     If brange <= 0 Then brange = 1.0E-20
 
                     'VC to JB: I think the Biomass below should be Bestimate instead; talked to Carl and he agrees. will be a double wham, which is OK.
-                    Me.m_data.FTarget(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / brange
+                    Me.m_MSEData.FTarget(igrp) = Me.m_MSEData.Fopt(igrp) * (Me.m_MSEData.Bestimate(igrp) - Me.m_MSEData.Blim(igrp)) / brange
 
                     'constrain the fishing mortality to min and max values. 
                     'Fmin(igrp) only gets set by the MSEBatchManager for all other runs it must be zero. 
-                    If Me.m_data.FTarget(igrp) < Me.m_data.Fmin(igrp) Then Me.m_data.FTarget(igrp) = Me.m_data.Fmin(igrp)
-                    If Me.m_data.FTarget(igrp) > Me.m_data.Fopt(igrp) Then Me.m_data.FTarget(igrp) = Me.m_data.Fopt(igrp)
+                    If Me.m_MSEData.FTarget(igrp) < Me.m_MSEData.Fmin(igrp) Then Me.m_MSEData.FTarget(igrp) = Me.m_MSEData.Fmin(igrp)
+                    If Me.m_MSEData.FTarget(igrp) > Me.m_MSEData.Fopt(igrp) Then Me.m_MSEData.FTarget(igrp) = Me.m_MSEData.Fopt(igrp)
 
-                    tQuota(igrp) = Me.m_data.FTarget(igrp) * Me.m_data.Bestimate(igrp)
+                    tQuota(igrp) = Me.m_MSEData.FTarget(igrp) * Me.m_MSEData.Bestimate(igrp)
 
                 End If
 
                 'Add uncertainty to the Quota set above
                 'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
                 'but assume uncertainty is smaller?????? not done here
-                tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
+                tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_MSEData.CVbiomEst(igrp) * Me.RandomNormal() - 0.5 * Me.m_MSEData.CVbiomEst(igrp) ^ 2))
 
             Next igrp
 
             'Share the Quota across the fleets for this timestep
-            For iflt = 1 To Me.m_esData.nGear
-                For igrp = 1 To Me.m_data.NGroups
-                    Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
+            For iflt = 1 To Me.m_SimData.nGear
+                For igrp = 1 To Me.m_MSEData.NGroups
+                    Me.m_MSEData.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_MSEData.Quotashare(iflt, igrp)
                 Next
             Next
 
@@ -1770,6 +1864,7 @@ Namespace MSE
 
         End Sub
 
+
         ''' <summary>
         ''' Save the quota values to memory
         ''' </summary>
@@ -1782,7 +1877,7 @@ Namespace MSE
             Try
 
                 Dim d(,) As Single = Me.m_lstData.Item(eResultsData.GroupQuota)
-                For igrp = 1 To Me.m_epdata.NumGroups
+                For igrp = 1 To Me.m_PathData.NumGroups
                     For it As Integer = 1 To 12
                         d(igrp, it + (Me.m_curYear - 1) * 12) = QuotaT(igrp)
                     Next
@@ -1790,10 +1885,10 @@ Namespace MSE
 
                 Dim sumb As Single
                 d = Me.m_lstData.Item(eResultsData.FleetQuota)
-                For iflt As Integer = 1 To Me.m_epdata.NumFleet
+                For iflt As Integer = 1 To Me.m_PathData.NumFleet
                     sumb = 0
-                    For igrp = 1 To Me.m_epdata.NumGroups
-                        sumb += QuotaT(igrp) * Me.m_data.Quotashare(iflt, igrp)
+                    For igrp = 1 To Me.m_PathData.NumGroups
+                        sumb += QuotaT(igrp) * Me.m_MSEData.Quotashare(iflt, igrp)
                     Next
                     For it As Integer = 1 To 12
                         d(iflt, it + (Me.m_curYear - 1) * 12) = sumb
@@ -1840,12 +1935,850 @@ Namespace MSE
 
 #Region "MSY"
 
-        Public Sub RunMSYSearch()
+
+        Private Function SetFishingEffort(Fleet As Integer, Val As Single) As Boolean
+
+            Dim Manager As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
+            Dim Shape As cShapeData = Nothing
+
+            Dim StartStep As Integer
+            Dim EndStep As Integer
+            If Fleet = 0 Then
+                StartStep = 0
+                EndStep = Me.m_core.nFleets - 1
+            Else
+                StartStep = Fleet - 1
+                EndStep = Fleet - 1
+            End If
+
+            For iFl As Integer = StartStep To EndStep
+                Shape = Manager.Item(iFl)
+                Shape.LockUpdates()
+                Try
+                    Shape.ShapeData(1) = 1
+                    For iTimeStep As Integer = Me.m_MSEData.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
+                        Shape.ShapeData(iTimeStep) = Val
+                        'set effort to unity 
+                    Next
+                Catch ex As Exception
+                    'Return False
+                End Try
+                Shape.UnlockUpdates()
+            Next
+            Manager.Update()
+            Return True
+
+        End Function
+
+
+
+        Private Function SetFishingMortality(Group As Integer, Val As Single) As Boolean
+
+            'Dim FManager As cFishingMortalityManger = Me.m_core.FishMortShapeManager
+            'Dim Shape As cShapeData = Nothing
+            Dim bSucces As Boolean = True
+            'Shape = FManager.Item(Group)
+            'Shape.LockUpdates()
+
+            Try
+                For iTimeStep As Integer = Me.m_MSEData.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
+                    '    Shape.ShapeData(iTimeStep) = Val
+                    Me.m_SimData.FishRateNo(Group, iTimeStep) = Val 'FishRateNo(nGroups,nTime)
+                Next
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            'Shape.UnlockUpdates()
+            'FManager.Update()
+
+            Return bSucces
+
+        End Function
+
+
+        Private Function SetFishingMortalityOverTime(Group As Integer, Ftime() As Single, Setting As Boolean) As Boolean
+
+            'Could not get direct setting of cfishingmortalitymanger to work:
+            'Dim FManager As cFishingMortalityManger = Me.m_core.FishMortShapeManager
+            'Dim Shape As cShapeData = Nothing
+            Dim bSucces As Boolean = True
+            'Shape = FManager.Item(Group)
+            'Shape.LockUpdates()
+
+            Try
+                For iTimeStep As Integer = Me.m_MSEData.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps
+                    If Setting Then
+                        Me.m_SimData.FishRateNo(Group, iTimeStep) = Ftime(iTimeStep)
+                    Else
+                        Ftime(iTimeStep) = Me.m_SimData.FishRateNo(Group, iTimeStep)
+                    End If
+                Next
+                'For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
+                '    If Setting Then
+                '        Shape.ShapeData(iTimeStep) = Ftime(iTimeStep)
+                '    Else
+                '        Ftime(iTimeStep) = Shape.ShapeData(iTimeStep)
+                '    End If
+                'Next
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            'Shape.UnlockUpdates()
+            'FManager.Update()
+
+            Return bSucces
+
+        End Function
+
+
+        Private Function CheckIfFishingMortalitiesTooHigh(curFleet As Integer) As Boolean
+
+            CheckIfFishingMortalitiesTooHigh = False
+
+            For iGrp As Integer = 1 To Me.m_SimData.nGroups
+                If Me.m_PathData.Landing(curFleet, iGrp) > 0 Then
+                    'need to limit the fishing mortality to avoid groups being crashed completely, making a temp fix here
+                    'm_esData.FishRateMax(iGrp) = m_epdata.PB(iGrp)
+                    'If Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, iGrp, m_core.nEcosimTimeSteps) > 10 * m_epdata.PB(iGrp) Then
+                    If Me.m_SimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, Me.m_core.nEcosimTimeSteps) < 0.000001 * Me.m_PathData.B(iGrp) Then
+                        ' should really use m_esData.FishRateMax(iGrp) Then
+                        Return True
+                    End If
+                End If
+            Next
+
+        End Function
+
+
+        Private Sub fireMSYProgress(MYSProgress As cMSYProgressArgs)
+
+            If Me.m_MSEData.MSYRunSilent Then Exit Sub
+
+            Try
+                If Me.m_MSYCallBack IsNot Nothing Then
+                    Me.m_MSYCallBack(MYSProgress)
+                End If
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+
+        ''' <summary>
+        ''' Ecosim Timestep delegate handler for the MSY Search
+        ''' </summary>
+        ''' <param name="iTime"></param>
+        ''' <param name="data"></param>
+        ''' <remarks></remarks>
+        Private Sub onMSYEcosimTimestep(iTime As Long, data As cEcoSimResults)
+
+            Try
+
+                'Ecosim has run a time step for the MSY search
+                'grab up anything you need during the time step
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
+            End Try
+
+        End Sub
+
+#End Region
+
+#End Region
+
+#Region "Time step data summary"
+        ''' <summary>
+        ''' Set Biomass and F cv's to use for this year.
+        ''' </summary>
+        ''' <remarks>CV's can vary on a yearly timestep set by the interface. This sets the CV to use for this year. </remarks>
+        Public Sub setTime(itime As Integer, iyr As Integer)
+
+            If Me.m_SearchData.SearchMode <> eSearchModes.MSE Then Return
+
+            Try
+
+                Me.m_curT = itime
+                Me.m_curYear = iyr
+
+                'CVbiomEst(ngroups) and CVFest(nfleets) is the cv that is used to vary biomass and fishing mortality
+                For igrp As Integer = 1 To Me.m_MSEData.NGroups
+                    Me.m_MSEData.CVbiomEst(igrp) = Me.m_MSEData.CVBiomT(igrp, iyr)
+                Next
+
+                For iflt As Integer = 1 To Me.m_MSEData.nFleets
+                    Me.m_MSEData.CVFest(iflt) = Me.m_MSEData.CVFT(iflt, iyr)
+                Next
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".setTime() Exception: " & ex.Message)
+                m_logger.LogError(ex, "setTime")
+            End Try
+
+        End Sub
+
+        Private Sub onModelTimestep(iTime As Integer)
+            Try
+                Dim iflt As Integer, igrp As Integer
+
+                If (Me.m_SearchData.SearchMode <> eSearchModes.MSE) Then Return
+
+                'After the first year
+
+                If (iTime - 1) Mod 12 = 0 Then
+                    'First month of a new year
+                    Array.Clear(Me.m_MSEData.CatchYear, 0, Me.m_MSEData.CatchYear.Length)
+                End If
+
+                'grab effort and catch
+                For iflt = 1 To Me.m_MSEData.nFleets
+                    For igrp = 1 To Me.m_MSEData.NGroups
+                        Me.m_MSEData.CatchYear(iflt, igrp) += Me.m_Model.CatchbyGroupFleetTimeStep(igrp, iflt, iTime)
+                    Next
+                Next
+                ' System.Console.WriteLine()
+                For igrp = 1 To Me.m_MSEData.nLiving
+
+                    Me.m_MSEData.BiomassTime(igrp)(iTime) = Me.m_Model.BiomassbyGroupTimeStep(igrp, iTime)
+                    Me.m_MSEData.BioStats.AddValue(igrp, iTime, Me.m_Model.BiomassbyGroupTimeStep(igrp, iTime))
+
+                    Me.m_MSEData.CatchGroupTime(igrp)(iTime) = Me.m_Model.CatchbyGroupTimeStep(igrp, iTime)
+                    ' CatchCurT
+                    Me.m_MSEData.CatchGroupStats.AddValue(igrp, iTime, Me.m_Model.CatchbyGroupTimeStep(igrp, iTime))
+
+                Next igrp
+
+                Dim sumValue As Single
+
+                For iflt = 1 To Me.m_SimData.nGear
+                    sumValue += Me.m_SimData.ResultsSumValueByGear(iflt, iTime)
+                    Me.m_MSEData.CatchFleetStats.AddValue(iflt, iTime, Me.m_Model.CatchbyFleetTimeStep(iflt, iTime))
+                    Me.m_MSEData.EffortStats.AddValue(iflt, iTime, Me.m_Model.EffortbyFleetTimeStep(iflt, iTime))
+                    ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, iTime)
+                Next iflt
+
+                Me.m_MSEData.ValueFleetStats.AddValue(1, iTime, sumValue)
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
+            End Try
+
+
+        End Sub
+
+        ''' <summary>
+        ''' Ecosim Timestep delegate handler 
+        ''' </summary>
+        ''' <param name="iTime"></param>
+        ''' <param name="data"></param>
+        Private Sub onEcosimTimestep(iTime As Long, data As cEcoSimResults)
+            Try
+                Dim iflt As Integer, igrp As Integer
+
+                If (Me.m_SearchData.SearchMode <> eSearchModes.MSE) Then Return
+
+                'After the first year
+
+                If (iTime - 1) Mod 12 = 0 Then
+                    'First month of a new year
+                    Array.Clear(Me.m_MSEData.CatchYear, 0, Me.m_MSEData.CatchYear.Length)
+                    ' Array.Clear(Me.m_data.EffortYear, 0, Me.m_data.EffortYear.Length)
+                End If
+
+                'grab effort and catch
+                For iflt = 1 To Me.m_MSEData.nFleets
+                    ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
+                    For igrp = 1 To Me.m_MSEData.NGroups
+                        Me.m_MSEData.CatchYear(iflt, igrp) += Me.m_SimData.ResultsSumCatchByGroupGear(igrp, iflt, CInt(iTime))
+                    Next
+                Next
+                ' System.Console.WriteLine()
+                For igrp = 1 To Me.m_MSEData.nLiving
+                    Me.m_MSEData.BioStats.AddValue(igrp, CInt(iTime), Me.m_SimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
+                    Me.m_MSEData.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_SimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
+                    'Me.m_data.FStats.AddValue(igrp, CInt(iTime), 1 + (Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)))
+                    ' System.Console.Write((Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)).ToString & ",")
+                Next igrp
+
+                Dim sumValue As Single
+
+                For iflt = 1 To Me.m_SimData.nGear
+                    sumValue += Me.m_SimData.ResultsSumValueByGear(iflt, CInt(iTime))
+                    Me.m_MSEData.CatchFleetStats.AddValue(iflt, CInt(iTime), Me.m_SimData.ResultsSumCatchByGear(iflt, CInt(iTime)))
+                    Me.m_MSEData.EffortStats.AddValue(iflt, CInt(iTime), Me.m_SimData.ResultsEffort(iflt, CInt(iTime)))
+                    ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
+                Next iflt
+
+                Me.m_MSEData.ValueFleetStats.AddValue(1, CInt(iTime), sumValue)
+
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
+            End Try
+
+        End Sub
+
+        ''' <summary>
+        ''' Event handler for Plugin Economic data
+        ''' </summary>
+        ''' <param name="EconomicData"></param>
+        ''' <remarks></remarks>
+        Private Sub onEconomicData(EconomicData As IEconomicData) ' Handles m_EconomicData.onEconomicData
+
+            Try
+
+                'Is there plugin economic data
+                If Me.UsePlugin Then
+                    'Plugin economic data from the ValueChain pluging is sent out every timestep
+                    'Store the data in cMSESummaryStats objects
+
+                    Me.m_MSEData.ProfitSum.AddValue(1, EconomicData.TimeStep, EconomicData.Total.Profit)
+                    Me.m_MSEData.JobsSum.AddValue(1, EconomicData.TimeStep, EconomicData.Total.NumberOfJobsTotal)
+                    Me.m_MSEData.CostSum.AddValue(1, EconomicData.TimeStep, EconomicData.Total.Cost)
+
+                End If
+
+            Catch ex As Exception
+                'make sure all exceptions are handled here and not back in the cEconomicDataSource object
+                System.Console.WriteLine(Me.ToString & ".onEconomicData() Error: " & ex.Message)
+                m_logger.LogError(ex, "onEconomicData")
+            End Try
+
+        End Sub
+
+
+        ''' <summary>
+        ''' Summarize the economic data gathered by Ecosim at the end of a trial
+        ''' </summary>
+        ''' <remarks>Economic data caculated by ecosim at the end of a run</remarks>
+        Private Sub summarizeEcosimEconomicData()
+
+            'ToDo_jb cMSE.summarizeEconomicData() figure out how to compute Economic data from the Ecosim data
+            If Not Me.UsePlugin Then
+
+                Dim sumValue As Single, sumEffort As Single, sumProfit As Single, sumJobs As Single, sumCost As Single
+                For iflt As Integer = 0 To Me.m_SimData.nGear
+
+                    For it As Integer = 1 To Me.m_SimData.nSumTimeSteps
+                        sumValue += Me.m_SimData.ResultsSumValueByGear(iflt, it)
+                    Next
+                    For it As Integer = 1 To Me.m_SimData.nSumTimeSteps
+                        sumEffort += Me.m_SimData.ResultsEffort(iflt, it)
+                    Next
+
+                    sumCost += Me.m_SearchData.NetCost(iflt)
+
+                    ' profit
+                    '[sum of value] * [ecopath profit (percentage of catch value that is profit /per unit of effort)]
+                    sumProfit = sumValue * (Me.m_PathData.cost(iflt, eCostIndex.Profit) / 100) * sumEffort
+
+                    'TEMP just for something to work with until we have ECost up and running
+                    '[value of catch] * [Jobs(fleet) from the search forms]
+                    sumJobs = sumValue * Me.m_SearchData.Jobs(iflt) 'Jobs(Fleet) percentage of value that goes to Jobs default=1
+
+                Next iflt
+
+                'Me.m_data.ProfitSum.AddValue(1, Me.m_Search.totval)
+                'Me.m_data.JobsSum.AddValue(1, sumJobs)
+                'Me.m_data.CostSum.AddValue(1, sumCost)
+
+            End If
+
+        End Sub
+
+
+        ''' <summary>
+        ''' Normally distrubute random number where mean = 0 std = 1
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Friend Function RandomNormal() As Single
+            Dim X As Double
+            Debug.Assert(Me.m_rndGen IsNot Nothing, Me.ToString & ".RandomNormal() Random number generator has not been initialized!")
+            X = -6
+            For i As Integer = 1 To 12
+                X = X + Me.m_rndGen.NextDouble
+            Next
+            Return CSng(X)
+        End Function
+
+
+        ''' <summary>
+        ''' Run fleet tradeoff analysis
+        ''' </summary>
+        Public Function RunFleetTradeoffs(outDir As String) As Boolean
+
+            Me.m_MSEData.StopRun = False
+
+            Dim outfn As String = Path.Combine(outDir, "FleetTradeoff.csv")
+            Dim nFleets As Integer = Me.m_SimData.nGear
+            Dim bSuccess As Boolean = True
+
+            'get the directory to dump the data to
+            If (Not cFileUtils.IsDirectoryAvailable(outDir, True)) Then Return bSuccess
+
+            Using strm As New StreamWriter(outfn)
+
+                If Me.m_core.SaveWithFileHeader Then
+                    strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                End If
+
+                Try
+
+                    'Exit Sub
+
+                    'no need to set time just use default: m_core.EcoSimModelParameters.NumberYears = NumberOfYears + 25
+                    'this is required to set the base effort values :
+                    Me.SetBaseValues()
+
+                    'Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onMSYEcosimTimestep
+
+                    Me.m_SimData.bTimestepOutput = True
+                    'let ecosim init to the new values
+                    'Me.m_Ecosim.Init(True)
+                    Me.m_Model.InitForRun(True)
+                    'run ecosim with the current effort
+                    'Me.m_Ecosim.Run()
+                    Me.m_Model.Run()
+
+                    Dim FleetBaseValue(nFleets) As Single
+                    Dim CurValue() As Single
+                    'Store the total base value obtained by each fishery 
+                    For iFlt As Integer = 1 To nFleets
+                        'For iGrp As Integer = 1 To m_epdata.NumGroups
+                        For it As Integer = 1 To Me.m_SimData.NTimes
+                            FleetBaseValue(iFlt) += Me.m_SimData.ResultsSumValueByGear(iFlt, it)  'm_esData.ResultsSumCatchByGroupGear(iGrp, iFlt, it) * Me.m_epdata.Market(iFlt, iGrp)
+                        Next
+                        'all of these values are annual values (even if they are by time step), so divide by number of months:
+                        FleetBaseValue(iFlt) /= Me.m_SimData.NTimes
+                        'Next
+                    Next
+
+                    Dim nSteps As Integer = nFleets
+                    Dim iStep As Integer = 1
+                    Dim ValueDifferenceFromTo(nFleets, nFleets) As Single
+
+                    For iFlt As Integer = 1 To nFleets
+
+                        Me.fireMSYProgress(New cMSYProgressArgs(nSteps, iStep, 0))
+
+                        Dim manEffort As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
+                        Dim shp As cShapeData = Nothing
+
+                        shp = manEffort.Item(iFlt - 1)
+                        shp.LockUpdates()
+                        For iT As Integer = 1 To Me.m_SimData.NTimes
+                            shp.ShapeData(iT) = 0.9! * Me.m_baseEffort(iFlt, iT)
+                        Next
+                        shp.UnlockUpdates(True)
+
+                        'For it As Integer = 1 To Me.m_esData.NTimes
+                        '    Me.m_esData.FishRateGear(iFlt, it) = CSng(1.1 * m_baseEffort(iFlt, it))
+                        'Next
+                        'let ecosim init to the new values ------ no init will overwrite the effort!!!!!
+                        ' Me.m_Ecosim.Init(True)
+                        'run ecosim with the current effort
+                        'Me.m_Ecosim.Run()
+
+                        Me.m_Model.Run()
+
+
+                        ReDim CurValue(nFleets)
+                        For iTo As Integer = 1 To nFleets
+                            For it As Integer = 1 To Me.m_SimData.NTimes
+                                CurValue(iTo) += Me.m_SimData.ResultsSumValueByGear(iTo, it)      'm_esData.ResultsSumCatchByGroupGear(iGrp, iFlt, it) * Me.m_epdata.Market(iFlt, iGrp)
+                            Next
+                            'divide by no months to get the average, which is the annual value:
+                            CurValue(iTo) /= Me.m_SimData.NTimes
+                        Next
+
+
+                        'If MoreMoney = 0 Then Stop
+
+                        For iTo As Integer = 1 To nFleets
+                            ValueDifferenceFromTo(iFlt, iTo) = (CurValue(iTo) - FleetBaseValue(iTo)) '/ MoreMoney
+                        Next
+
+
+                        'get the directory to dump the data to
+                        'Me.m_DataDir = AppDomain.CurrentDomain.BaseDirectory & "MSE\"
+                        'strm = New StreamWriter(getFilename("FleetTradeOff", "_Effort"), True)
+                        'For iFrom As Integer = 1 To nFleets
+                        '    Try
+                        '        buff = New StringBuilder
+                        '        For iT As Integer = 1 To m_esData.NTimes Step 12
+                        '            buff.Append(Me.m_esData.FishRateGear(iFrom, iT).ToString & ", ")
+                        '        Next
+                        '        strm.WriteLine(buff)
+
+                        '        buff = Nothing
+                        '    Catch ex As Exception
+                        '        ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
+                        '        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & getFilename("FleetTradeOff", Me.m_epdata.FleetName(iFrom)) & " Exception: " & ex.Message)
+                        '    End Try
+                        'Next
+                        'strm.Close()
+
+                        'Finally reset the effort to the original effort
+                        'SetEffortToBaseValue(True)
+                        shp = manEffort.Item(iFlt - 1)
+                        'Reset the fishing values
+                        shp.LockUpdates()
+                        For iT As Integer = 1 To Me.m_SimData.NTimes
+                            shp.ShapeData(iT) = Me.m_baseEffort(iFlt, iT)
+                        Next
+                        shp.UnlockUpdates(True)
+
+                    Next iFlt
+
+                    ' Header
+                    For iFrom As Integer = 1 To nFleets
+                        strm.Write(",")
+                        strm.Write(cStringUtils.ToCSVField(Me.m_PathData.FleetName(iFrom)))
+                    Next
+                    strm.WriteLine()
+                    For iFrom As Integer = 1 To nFleets
+                        Try
+
+                            strm.Write(cStringUtils.ToCSVField(Me.m_PathData.FleetName(iFrom)))
+                            strm.Write(",")
+
+                            Dim vSum As Single = 0
+                            For iTo As Integer = 1 To nFleets
+                                strm.Write(cStringUtils.FormatSingle(ValueDifferenceFromTo(iFrom, iTo)))
+                                strm.Write(",")
+                                vSum += ValueDifferenceFromTo(iFrom, iTo)
+                            Next
+                            strm.Write(cStringUtils.FormatSingle(vSum))
+                            strm.WriteLine()
+                        Catch ex As Exception
+                            m_logger.LogError(ex, "cMSE.RunFleetTradeoffs")
+                            bSuccess = False
+                        End Try
+                    Next
+
+                    iStep += 1
+
+                Catch ex As Exception
+                    m_logger.LogError(ex, "cMSE.RunFleetTradeoffs")
+                    bSuccess = False
+                End Try
+
+                strm.Flush()
+                strm.Close()
+
+            End Using
+
+            Dim msg As cMessage = Nothing
+            If bSuccess Then
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_FLEETTRADEOFF_SAVED, outfn), eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
+                msg.Hyperlink = outDir
+            Else
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_FLEETTRADEOFF_SAVE_ERROR, outfn), eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Warning)
+            End If
+            Me.m_core.Messages.SendMessage(msg)
+            Return bSuccess
+
+        End Function
+
+
+
+
+#End Region
+
+    End Class
+
+#End Region
+
+    Public Interface IMSEOutputWriter
+
+        'ReadOnly Property DataDir() As String
+
+        Sub Init()
+
+        Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,)))
+
+        Sub saveIteration(MSEWrapperModel As IMSEModelWrapper, ListOfData As Dictionary(Of cMSE.eResultsData, Single(,)))
+
+    End Interface
+
+#Region "Unused Code"
+
+#Region "MSY Stuff All now done in dedicated MSY Module"
+
+#If MSY Then
+
+    Private Function EvaluateMSYF(curGroup As Integer) As Single
+        'MSY Search has just completed a run 
+        'evaluate the value of the catch for this group with this Fishing mortality
+
+        Dim GroupCatch As Single = 0
+        For it As Integer = Me.m_core.nEcosimTimeSteps To Me.m_core.nEcosimTimeSteps
+            'only evaluate for the last timestep
+            GroupCatch += Me.m_SimData.FishRateNo(curGroup, it) * Me.m_SimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, curGroup, it)
+            '.Fish1.ResultsOverTime.ResultsSumCatchByGroupGear(igrp, iflt, it)
+            'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
+        Next
+        'average over the 25 years:
+        Return GroupCatch
+
+    End Function
+
+
+    
+        Public Sub RunMSYSearchUsingFishingMortalityInsteadOfEffort()
             'WE'll run Ecosim for an additional 25 years to avoid the effort not being sustainable
 
-            Me.m_data.StopRun = False
+            Me.m_MSEData.StopRun = False
 
-            Dim NumberOfYears As Integer = Me.m_esData.NumYears
+            Dim NumberOfYears As Integer = Me.m_SimData.NumYears
+            Dim extraYears As Integer = 25
+            Dim nGroups As Integer = Me.m_MSEData.NGroups
+
+            'Setup Ecosim 
+            'timestep handler that ecosim will call where we can grab data during the run
+            'see the Private Sub onMSYEcosimTimestep(...)
+            Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onMSYEcosimTimestep
+
+            Me.m_SimData.bTimestepOutput = True
+
+            Dim MSYF(nGroups) As Single
+            Dim MSYEffort(Me.m_PathData.NumFleet) As Single
+
+            'Dim GroupEffort() As Single
+
+            'this is required to set the base effort values :
+            Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears + extraYears
+            Me.SetBaseValues()
+
+            If Me.m_core.PluginManager IsNot Nothing Then
+                Me.m_pluginManager.MSYRunStarted(Me.m_MSEData, Me.m_SimData)
+            End If
+
+            'next is a vc temp fix for debugging
+            'Data.MSYStartTimeIndex = 649
+
+            Try
+
+                For iGrp As Integer = 1 To nGroups
+
+                    If Me.MSEData.MSYEvaluateGroup(iGrp) And Me.m_PathData.fCatch(iGrp) > 0 Then
+                        'fCatch is the Ecopath sum of landings and discards 
+                        Dim maxF As Single = 0
+                        For iT As Integer = 1 To Me.MSEData.MSYStartTimeIndex
+                            If Me.m_SimData.FishRateNo(iGrp, iT) > maxF Then
+                                maxF = Me.m_SimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, iGrp, iT)
+                                '.m_esData.FishRateNo(iGrp, iT)
+                            End If
+                        Next
+
+                        MSYF(iGrp) = 0
+                        'ReDim GroupEffort(m_data.NGroups)
+                        'For iGroup As Integer = 1 To Me.m_data.NGroups
+                        'If Data.MSYEvaluateGroup(iGroup) Then
+                        'If m_epdata.Landing(iFlt, iGroup) > 0 Then 'only if this fleet catches this group
+                        Dim Done As Boolean = False
+                        Dim CurValue As Double = 0
+                        Dim lastValue As Double = 0
+                        Dim maxValue As Double = 0
+
+                        Dim lastF As Double = 0
+                        Dim TooBigF As Double = -99
+                        Dim TooLowF As Double = -0.5
+                        Dim tryF As Double = 0.01
+
+                        Dim NumberOfSteps As Integer = 0
+
+                        If Me.m_core.EcosimModelParameters.NumberYears < NumberOfYears + extraYears Then
+                            Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears + extraYears
+                        End If
+
+                        System.Console.WriteLine()
+                        Dim FFactor As Integer = 2
+                        Dim CheckTangent As Boolean = False
+                        Dim LastLowerF As Double = 0
+
+                        Dim StoreF(12 * Me.m_core.EcosimModelParameters.NumberYears) As Single
+                        Me.SetFishingMortalityOverTime(iGrp, StoreF, False)
+
+                        Do While Done = False
+
+                            NumberOfSteps += 1
+
+                            'let ecosim init to the new values
+                            Me.m_Ecosim.Init(True)
+
+                            Me.SetFishingMortality(iGrp, CSng(tryF))
+
+
+                            'run ecosim with the current effort
+                            Me.m_Ecosim.Run()
+
+                            'evaluate the ecosim output for this fleet/effort combination
+                            CurValue = Me.EvaluateMSYF(iGrp)
+
+                            'if a fishery catches a group with low catch but high biomass, it may cause the effort to skyrocket
+                            'to avoid this: set a limit on the F values for the exploited groups:
+                            'if that happens set the value to a low value, so that it may try a lower effort
+                            ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
+
+
+                            If CurValue = 0 Then Done = True 'no effort or no value
+                            If CurValue < 0 Then Stop
+
+                            If CheckTangent Then   'only get in here if we are checking the neighbourhood of the max value
+                                If CurValue < maxValue Then
+                                    'go downward
+                                    TooLowF = LastLowerF
+                                    TooBigF = lastF
+                                Else
+                                    'move upward
+                                    LastLowerF = TooLowF
+                                    ' TooLowEffort = lastEffort
+                                    ' maxValue = CurValue
+                                End If
+                                CheckTangent = False
+                            ElseIf CurValue > maxValue Then   'this is the normal entrypont when moving up
+                                LastLowerF = TooLowF
+                                TooLowF = lastF
+                                If maxValue > 0 And TooBigF < 0 Then  'move faster if just starting out, and long way to go
+                                    If CurValue / maxValue > 0.97 * FFactor Then FFactor = 4 Else FFactor = 2
+                                End If
+                                maxValue = CurValue
+                                MSYF(iGrp) = CSng(tryF)
+                            Else
+                                If TooBigF < 0 Then
+                                    TooBigF = tryF
+                                    CheckTangent = True
+                                Else
+                                    'we are now somewhere below the msy effort, but at what side?
+                                    If tryF > MSYF(iGrp) Then  'on the right side
+                                        'reduce the toobigeffor to the current
+                                        TooBigF = tryF
+                                    Else   'below MSY
+                                        TooLowF = tryF
+                                    End If
+                                End If
+                            End If
+
+                            If CheckTangent Then
+                                tryF = 1.001 * TooLowF
+                                'LastLowerEffort = TooLowEffort / 2
+                            Else
+                                If TooBigF < 0 Then 'NOT YET FOUND THE TOP, SO DOUBLE UP
+                                    tryF = tryF * FFactor
+                                Else  'have previously found a bigger effort that gave lower value, so now we have bounds
+                                    tryF = (TooBigF - TooLowF) / 2 + TooLowF
+                                End If
+                            End If
+                            'Cap the max F:
+                            If tryF > maxF Then
+                                tryF = maxF
+                                TooBigF = tryF
+                            End If
+
+
+                            lastValue = CurValue
+                            If tryF > 0 And CheckTangent = False Then
+                                If Math.Abs(1 - lastF / tryF) < 0.01 Then Done = True
+                            End If
+                            lastF = tryF
+
+                            System.Console.WriteLine(NumberOfSteps.ToString & ", Group = " & iGrp.ToString &
+                                                  ", MSY F = " & MSYF(iGrp).ToString &
+                                                  ", Cur F = " & tryF.ToString &
+                                                  ", toolow = " & TooLowF.ToString &
+                                                  ", toobig = " & TooBigF.ToString &
+                                                  ", maxvalue = " & maxValue.ToString &
+                                                  ", curvalue = " & CurValue.ToString)
+
+                            'tell the interface an iteration has been completed
+                            Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iGrp, CSng(MSYF(iGrp))))
+
+
+                            If Me.m_MSEData.StopRun Then Exit Do
+                        Loop
+
+
+                        If Me.m_MSEData.StopRun Then Exit For
+
+                        'Finally reset the F to the original value 
+                        Me.SetFishingMortalityOverTime(iGrp, StoreF, True)
+                    End If
+                Next iGrp
+
+                'done plugin
+
+                'reset the number of years that Ecosim will run
+                Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears
+
+                If Me.m_core.PluginManager IsNot Nothing Then
+                    Me.m_pluginManager.MSYEffortCompleted(MSYEffort, MSYF)
+                End If
+
+                'MsgBox("MSY reference levels calculated")
+
+            Catch ex As Exception
+                m_logger.LogError(ex, "RunMSYSearchUsingFishingMortalityInsteadOfEffort")
+                Debug.Assert(False, Me.ToString & ".RunMSYSearchUsingFishingMortalityInsteadOfEffort() Exception: " & ex.Message)
+                Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_RUN_CALC_FMSY_ERROR, ex.Message),
+                                                            eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
+            End Try
+
+
+        End Sub
+
+
+
+        Private Function EvaluateMSY(curFleet As Integer) As Single
+            'MSY Search has just completed a run 
+            'evaluate the value of the catch for this fleet with this effort level
+            'Dim sumbio As Single
+
+            'VC wants to change this so that it can calc Value or Biomass
+            Dim FleetCatchValue As Single = 0
+            Dim marketPrice As Single
+
+            For igrp As Integer = 1 To Me.m_SimData.nGroups
+
+                If Me.m_PathData.Landing(curFleet, igrp) > 0 Then
+                    If Me.m_MSEData.MSYEvaluateValue Then
+                        marketPrice = Me.m_PathData.Market(curFleet, igrp)
+                    Else
+                        marketPrice = 1
+                    End If
+
+                    'VC temp fix for debugging:
+                    'marketPrice = 1
+
+                    Dim GroupCatch As Single = 0
+                    For it As Integer = Me.m_core.nEcosimTimeSteps To Me.m_core.nEcosimTimeSteps  'just one time step should do
+                        'only evaluate for the last 25 years: LAST TIMESTEP
+                        'For it As Integer = Me.m_esData.NTimes - 25 To Me.m_esData.NTimes
+                        'get data stored by ecosim over time  
+                        'Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
+                        'sumbio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
+                        'FleetCatchValue += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it) * Me.m_epdata.Market(curFleet, igrp) ' * PropCaughtByThisGear
+                        GroupCatch += Me.m_SimData.ResultsSumCatchByGroupGear(igrp, curFleet, it)
+                        'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
+                    Next
+                    'average over the 25 years:
+                    FleetCatchValue += (GroupCatch * Me.m_MSEData.MSYGroupWeight(igrp) * marketPrice)
+                End If
+            Next igrp
+            Return FleetCatchValue
+
+        End Function
+
+                Public Sub RunMSYSearch()
+            'WE'll run Ecosim for an additional 25 years to avoid the effort not being sustainable
+
+            Me.m_MSEData.StopRun = False
+
+            Dim NumberOfYears As Integer = Me.m_SimData.NumYears
             Dim extraYears As Integer = 25
 
             'Setup Ecosim 
@@ -1853,12 +2786,12 @@ Namespace MSE
             'see the Private Sub onMSYEcosimTimestep(...)
             Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onMSYEcosimTimestep
 
-            Me.m_esData.bTimestepOutput = True
+            Me.m_SimData.bTimestepOutput = True
 
-            Dim MSYeffort(Me.m_esData.nGear) As Single
-            Dim MSYF(Me.m_epdata.NumGroups) As Single
-            Dim bMSY(Me.m_esData.nGear, Me.m_epdata.NumGroups) As Double
-            Dim fMSY(Me.m_esData.nGear, Me.m_epdata.NumGroups) As Double
+            Dim MSYeffort(Me.m_SimData.nGear) As Single
+            Dim MSYF(Me.m_PathData.NumGroups) As Single
+            Dim bMSY(Me.m_SimData.nGear, Me.m_PathData.NumGroups) As Double
+            Dim fMSY(Me.m_SimData.nGear, Me.m_PathData.NumGroups) As Double
 
             'Dim GroupEffort() As Single
 
@@ -1872,17 +2805,18 @@ Namespace MSE
             Me.SetBaseValues()
 
             If Me.m_core.PluginManager IsNot Nothing Then
-                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_esData)
+                Me.m_pluginManager.MSYRunStarted(Me.m_MSEData, Me.m_SimData)
             End If
 
             'next is a vc temp fix for debugging
             'Data.MSYStartTimeIndex = 649
             Dim FinestEffortStep As Double = 0.01
 
+
             Try
 
-                For iFlt As Integer = 1 To Me.m_esData.nGear
-                    If Me.Data.MSYEvaluateFleet(iFlt) Then
+                For iFlt As Integer = 1 To Me.m_SimData.nGear
+                    If Me.MSEData.MSYEvaluateFleet(iFlt) Then
                         MSYeffort(iFlt) = 0
                         'ReDim GroupEffort(m_data.NGroups)
                         'For iGroup As Integer = 1 To Me.m_data.NGroups
@@ -1948,6 +2882,7 @@ Namespace MSE
                             'to avoid this: set a limit on the F values for the exploited groups:
                             'if that happens set the value to a low value, so that it may try a lower effort
                             ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
+
 
                             If CurValue = 0 Then Done = True 'no effort or no value
                             If CurValue < 0 Then Stop
@@ -2016,13 +2951,14 @@ Namespace MSE
                             'tell the interface an iteration has been completed
                             Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iFlt, CSng(MSYeffort(iFlt))))
 
-                            If Me.m_data.StopRun Then Exit Do
+                            If Me.m_MSEData.StopRun Then Exit Do
                         Loop
 
                         If TSdisabled IsNot Nothing Then
                             TSdisabled.Enabled = True
                             DS.Update()
                         End If
+
 
                         '==================this part not needed for teeb ---------------------------
                         'We now know the MSY effort, so can estimate, oeh, something
@@ -2035,22 +2971,22 @@ Namespace MSE
                         'now store the average biomasses from this run as the "MSY-biomass" for this fleet run
                         Dim SumBio As Single
                         Dim SumCatch As Single
-                        For igrp As Integer = 1 To Me.m_esData.nGroups
+                        For igrp As Integer = 1 To Me.m_SimData.nGroups
                             SumBio = 0
                             SumCatch = 0
-                            If Me.m_epdata.Landing(iFlt, igrp) > 0 Then
-                                For it As Integer = 1 To Me.m_esData.NTimes
+                            If Me.m_PathData.Landing(iFlt, igrp) > 0 Then
+                                For it As Integer = 1 To Me.m_SimData.NTimes
                                     'get data storted by ecosim over time  
-                                    SumBio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
-                                    SumCatch += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it)
+                                    SumBio += Me.m_SimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
+                                    SumCatch += Me.m_SimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it)
                                 Next
                             End If
-                            bMSY(iFlt, igrp) = SumBio / Me.m_esData.NTimes
+                            bMSY(iFlt, igrp) = SumBio / Me.m_SimData.NTimes
                             If SumBio > 0 Then fMSY(iFlt, igrp) = SumCatch / SumBio
                         Next igrp
                         '==================this part not needed for teeb ---------------------------
 
-                        If Me.m_data.StopRun Then Exit For
+                        If Me.m_MSEData.StopRun Then Exit For
 
                         'Finally reset the effort to the original effort (for all fleets)
                         Me.resetEffort(True)
@@ -2103,28 +3039,28 @@ Namespace MSE
 
                 'VC091103: What MSY biomass to use? a group may be caught by several fleets
                 'as a first approach I will use the MSY biomass for the fleet that catches most of the species
-                For igrp As Integer = 1 To Me.m_esData.nGroups
+                For igrp As Integer = 1 To Me.m_SimData.nGroups
                     Dim BiggestCatch As Single = -1
                     Dim BiggestFleet As Integer = -1
-                    For iflt As Integer = 1 To Me.m_esData.nGear
-                        If Me.m_epdata.Landing(iflt, igrp) + Me.m_epdata.Discard(iflt, igrp) > 0 Then
+                    For iflt As Integer = 1 To Me.m_SimData.nGear
+                        If Me.m_PathData.Landing(iflt, igrp) + Me.m_PathData.Discard(iflt, igrp) > 0 Then
                             'this fleet is catching this group
-                            If Me.m_epdata.Landing(iflt, igrp) + Me.m_epdata.Discard(iflt, igrp) > BiggestCatch Then
-                                BiggestCatch = Me.m_epdata.Landing(iflt, igrp) + Me.m_epdata.Discard(iflt, igrp)
+                            If Me.m_PathData.Landing(iflt, igrp) + Me.m_PathData.Discard(iflt, igrp) > BiggestCatch Then
+                                BiggestCatch = Me.m_PathData.Landing(iflt, igrp) + Me.m_PathData.Discard(iflt, igrp)
                                 BiggestFleet = iflt
                             End If
                         End If
                     Next
                     'now we know the biggestcatch, so save the biomass from there to the Bmsy:
                     If BiggestFleet > 0 Then
-                        Me.m_data.Bbase(igrp) = CSng(bMSY(BiggestFleet, igrp))
+                        Me.m_MSEData.Bbase(igrp) = CSng(bMSY(BiggestFleet, igrp))
                         'assume there's no fishing if the B is below half of the Bmsy
-                        Me.m_data.Blim(igrp) = CSng(bMSY(BiggestFleet, igrp) * 0.5)
-                        Me.m_data.Fopt(igrp) = CSng(fMSY(BiggestFleet, igrp))
+                        Me.m_MSEData.Blim(igrp) = CSng(bMSY(BiggestFleet, igrp) * 0.5)
+                        Me.m_MSEData.Fopt(igrp) = CSng(fMSY(BiggestFleet, igrp))
 
                         'set the reference levels to Blim and Bbase
-                        Me.m_data.BioBounds(igrp).Lower = Me.m_data.Blim(igrp)
-                        Me.m_data.BioBounds(igrp).Upper = Me.m_data.Bbase(igrp)
+                        Me.m_MSEData.BioBounds(igrp).Lower = Me.m_MSEData.Blim(igrp)
+                        Me.m_MSEData.BioBounds(igrp).Upper = Me.m_MSEData.Bbase(igrp)
                     End If
                 Next
 
@@ -2144,373 +3080,20 @@ Namespace MSE
                                                             eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
             End Try
 
-        End Sub
-
-        Public Sub RunMSYSearchUsingFishingMortalityInsteadOfEffort()
-            'WE'll run Ecosim for an additional 25 years to avoid the effort not being sustainable
-
-            Me.m_data.StopRun = False
-
-            Dim NumberOfYears As Integer = Me.m_esData.NumYears
-            Dim extraYears As Integer = 25
-            Dim nGroups As Integer = Me.m_data.NGroups
-
-            'Setup Ecosim 
-            'timestep handler that ecosim will call where we can grab data during the run
-            'see the Private Sub onMSYEcosimTimestep(...)
-            Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onMSYEcosimTimestep
-
-            Me.m_esData.bTimestepOutput = True
-
-            Dim MSYF(nGroups) As Single
-            Dim MSYEffort(Me.m_epdata.NumFleet) As Single
-
-            'Dim GroupEffort() As Single
-
-            'this is required to set the base effort values :
-            Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears + extraYears
-            Me.SetBaseValues()
-
-            If Me.m_core.PluginManager IsNot Nothing Then
-                Me.m_pluginManager.MSYRunStarted(Me.m_data, Me.m_esData)
-            End If
-
-            'next is a vc temp fix for debugging
-            'Data.MSYStartTimeIndex = 649
-
-            Try
-
-                For iGrp As Integer = 1 To nGroups
-
-                    If Me.Data.MSYEvaluateGroup(iGrp) And Me.m_epdata.fCatch(iGrp) > 0 Then
-                        'fCatch is the Ecopath sum of landings and discards 
-                        Dim maxF As Single = 0
-                        For iT As Integer = 1 To Me.Data.MSYStartTimeIndex
-                            If Me.m_esData.FishRateNo(iGrp, iT) > maxF Then
-                                maxF = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, iGrp, iT)
-                                '.m_esData.FishRateNo(iGrp, iT)
-                            End If
-                        Next
-
-                        MSYF(iGrp) = 0
-                        'ReDim GroupEffort(m_data.NGroups)
-                        'For iGroup As Integer = 1 To Me.m_data.NGroups
-                        'If Data.MSYEvaluateGroup(iGroup) Then
-                        'If m_epdata.Landing(iFlt, iGroup) > 0 Then 'only if this fleet catches this group
-                        Dim Done As Boolean = False
-                        Dim CurValue As Double = 0
-                        Dim lastValue As Double = 0
-                        Dim maxValue As Double = 0
-
-                        Dim lastF As Double = 0
-                        Dim TooBigF As Double = -99
-                        Dim TooLowF As Double = -0.5
-                        Dim tryF As Double = 0.01
-
-                        Dim NumberOfSteps As Integer = 0
-
-                        If Me.m_core.EcosimModelParameters.NumberYears < NumberOfYears + extraYears Then
-                            Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears + extraYears
-                        End If
-
-                        System.Console.WriteLine()
-                        Dim FFactor As Integer = 2
-                        Dim CheckTangent As Boolean = False
-                        Dim LastLowerF As Double = 0
-
-                        Dim StoreF(12 * Me.m_core.EcosimModelParameters.NumberYears) As Single
-                        Me.SetFishingMortalityOverTime(iGrp, StoreF, False)
-
-                        Do While Done = False
-
-                            NumberOfSteps += 1
-
-                            'let ecosim init to the new values
-                            Me.m_Ecosim.Init(True)
-
-                            Me.SetFishingMortality(iGrp, CSng(tryF))
-
-                            'run ecosim with the current effort
-                            Me.m_Ecosim.Run()
-
-                            'evaluate the ecosim output for this fleet/effort combination
-                            CurValue = Me.EvaluateMSYF(iGrp)
-
-                            'if a fishery catches a group with low catch but high biomass, it may cause the effort to skyrocket
-                            'to avoid this: set a limit on the F values for the exploited groups:
-                            'if that happens set the value to a low value, so that it may try a lower effort
-                            ' If CheckIfFishingMortalitiesTooHigh(iflt) Then CurValue = CurValue / 2
-
-                            If CurValue = 0 Then Done = True 'no effort or no value
-                            If CurValue < 0 Then Stop
-
-                            If CheckTangent Then   'only get in here if we are checking the neighbourhood of the max value
-                                If CurValue < maxValue Then
-                                    'go downward
-                                    TooLowF = LastLowerF
-                                    TooBigF = lastF
-                                Else
-                                    'move upward
-                                    LastLowerF = TooLowF
-                                    ' TooLowEffort = lastEffort
-                                    ' maxValue = CurValue
-                                End If
-                                CheckTangent = False
-                            ElseIf CurValue > maxValue Then   'this is the normal entrypont when moving up
-                                LastLowerF = TooLowF
-                                TooLowF = lastF
-                                If maxValue > 0 And TooBigF < 0 Then  'move faster if just starting out, and long way to go
-                                    If CurValue / maxValue > 0.97 * FFactor Then FFactor = 4 Else FFactor = 2
-                                End If
-                                maxValue = CurValue
-                                MSYF(iGrp) = CSng(tryF)
-                            Else
-                                If TooBigF < 0 Then
-                                    TooBigF = tryF
-                                    CheckTangent = True
-                                Else
-                                    'we are now somewhere below the msy effort, but at what side?
-                                    If tryF > MSYF(iGrp) Then  'on the right side
-                                        'reduce the toobigeffor to the current
-                                        TooBigF = tryF
-                                    Else   'below MSY
-                                        TooLowF = tryF
-                                    End If
-                                End If
-                            End If
-
-                            If CheckTangent Then
-                                tryF = 1.001 * TooLowF
-                                'LastLowerEffort = TooLowEffort / 2
-                            Else
-                                If TooBigF < 0 Then 'NOT YET FOUND THE TOP, SO DOUBLE UP
-                                    tryF = tryF * FFactor
-                                Else  'have previously found a bigger effort that gave lower value, so now we have bounds
-                                    tryF = (TooBigF - TooLowF) / 2 + TooLowF
-                                End If
-                            End If
-                            'Cap the max F:
-                            If tryF > maxF Then
-                                tryF = maxF
-                                TooBigF = tryF
-                            End If
-
-                            lastValue = CurValue
-                            If tryF > 0 And CheckTangent = False Then
-                                If Math.Abs(1 - lastF / tryF) < 0.01 Then Done = True
-                            End If
-                            lastF = tryF
-
-                            System.Console.WriteLine(NumberOfSteps.ToString & ", Group = " & iGrp.ToString &
-                                                  ", MSY F = " & MSYF(iGrp).ToString &
-                                                  ", Cur F = " & tryF.ToString &
-                                                  ", toolow = " & TooLowF.ToString &
-                                                  ", toobig = " & TooBigF.ToString &
-                                                  ", maxvalue = " & maxValue.ToString &
-                                                  ", curvalue = " & CurValue.ToString)
-
-                            'tell the interface an iteration has been completed
-                            Me.fireMSYProgress(New cMSYProgressArgs(NumberOfSteps, iGrp, CSng(MSYF(iGrp))))
-
-                            If Me.m_data.StopRun Then Exit Do
-                        Loop
-
-                        If Me.m_data.StopRun Then Exit For
-
-                        'Finally reset the F to the original value 
-                        Me.SetFishingMortalityOverTime(iGrp, StoreF, True)
-                    End If
-                Next iGrp
-
-                'done plugin
-
-                'reset the number of years that Ecosim will run
-                Me.m_core.EcosimModelParameters.NumberYears = NumberOfYears
-
-                If Me.m_core.PluginManager IsNot Nothing Then
-                    Me.m_pluginManager.MSYEffortCompleted(MSYEffort, MSYF)
-                End If
-
-                'MsgBox("MSY reference levels calculated")
-
-            Catch ex As Exception
-                m_logger.LogError(ex, "RunMSYSearchUsingFishingMortalityInsteadOfEffort")
-                Debug.Assert(False, Me.ToString & ".RunMSYSearchUsingFishingMortalityInsteadOfEffort() Exception: " & ex.Message)
-                Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_RUN_CALC_FMSY_ERROR, ex.Message),
-                                                            eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Critical))
-            End Try
 
         End Sub
 
-        Private Function EvaluateMSY(curFleet As Integer) As Single
-            'MSY Search has just completed a run 
-            'evaluate the value of the catch for this fleet with this effort level
-            'Dim sumbio As Single
 
-            'VC wants to change this so that it can calc Value or Biomass
-            Dim FleetCatchValue As Single = 0
-            Dim marketPrice As Single
 
-            For igrp As Integer = 1 To Me.m_esData.nGroups
 
-                If Me.m_epdata.Landing(curFleet, igrp) > 0 Then
-                    If Me.m_data.MSYEvaluateValue Then
-                        marketPrice = Me.m_epdata.Market(curFleet, igrp)
-                    Else
-                        marketPrice = 1
-                    End If
 
-                    'VC temp fix for debugging:
-                    'marketPrice = 1
+#End If
 
-                    Dim GroupCatch As Single = 0
-                    For it As Integer = Me.m_core.nEcosimTimeSteps To Me.m_core.nEcosimTimeSteps  'just one time step should do
-                        'only evaluate for the last 25 years: LAST TIMESTEP
-                        'For it As Integer = Me.m_esData.NTimes - 25 To Me.m_esData.NTimes
-                        'get data stored by ecosim over time  
-                        'Dim bio As Single = Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
-                        'sumbio += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it)
-                        'FleetCatchValue += Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, it) * Me.m_epdata.Market(curFleet, igrp) ' * PropCaughtByThisGear
-                        GroupCatch += Me.m_esData.ResultsSumCatchByGroupGear(igrp, curFleet, it)
-                        'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
-                    Next
-                    'average over the 25 years:
-                    FleetCatchValue += (GroupCatch * Me.m_data.MSYGroupWeight(igrp) * marketPrice)
-                End If
-            Next igrp
-            Return FleetCatchValue
+#End Region
 
-        End Function
+#If OTHERCODE Then
 
-        Private Function SetFishingEffort(Fleet As Integer, Val As Single) As Boolean
-
-            Dim Manager As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
-            Dim Shape As cShapeData = Nothing
-
-            Dim StartStep As Integer
-            Dim EndStep As Integer
-            If Fleet = 0 Then
-                StartStep = 0
-                EndStep = Me.m_core.nFleets - 1
-            Else
-                StartStep = Fleet - 1
-                EndStep = Fleet - 1
-            End If
-
-            For iFl As Integer = StartStep To EndStep
-                Shape = Manager.Item(iFl)
-                Shape.LockUpdates()
-                Try
-                    Shape.ShapeData(1) = 1
-                    For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
-                        Shape.ShapeData(iTimeStep) = Val
-                        'set effort to unity 
-                    Next
-                Catch ex As Exception
-                    'Return False
-                End Try
-                Shape.UnlockUpdates()
-            Next
-            Manager.Update()
-            Return True
-
-        End Function
-
-        Private Function EvaluateMSYF(curGroup As Integer) As Single
-            'MSY Search has just completed a run 
-            'evaluate the value of the catch for this group with this Fishing mortality
-
-            Dim GroupCatch As Single = 0
-            For it As Integer = Me.m_core.nEcosimTimeSteps To Me.m_core.nEcosimTimeSteps
-                'only evaluate for the last timestep
-                GroupCatch += Me.m_esData.FishRateNo(curGroup, it) * Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, curGroup, it)
-                '.Fish1.ResultsOverTime.ResultsSumCatchByGroupGear(igrp, iflt, it)
-                'System.Console.Write("Group " & igrp.ToString & " = " & FleetCatchValue.ToString & ", ")
-            Next
-            'average over the 25 years:
-            Return GroupCatch
-
-        End Function
-
-        Private Function SetFishingMortality(Group As Integer, Val As Single) As Boolean
-
-            'Dim FManager As cFishingMortalityManger = Me.m_core.FishMortShapeManager
-            'Dim Shape As cShapeData = Nothing
-            Dim bSucces As Boolean = True
-            'Shape = FManager.Item(Group)
-            'Shape.LockUpdates()
-
-            Try
-                For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
-                    '    Shape.ShapeData(iTimeStep) = Val
-                    Me.m_esData.FishRateNo(Group, iTimeStep) = Val 'FishRateNo(nGroups,nTime)
-                Next
-            Catch ex As Exception
-                bSucces = False
-            End Try
-
-            'Shape.UnlockUpdates()
-            'FManager.Update()
-
-            Return bSucces
-
-        End Function
-
-        Private Function SetFishingMortalityOverTime(Group As Integer, Ftime() As Single, Setting As Boolean) As Boolean
-
-            'Could not get direct setting of cfishingmortalitymanger to work:
-            'Dim FManager As cFishingMortalityManger = Me.m_core.FishMortShapeManager
-            'Dim Shape As cShapeData = Nothing
-            Dim bSucces As Boolean = True
-            'Shape = FManager.Item(Group)
-            'Shape.LockUpdates()
-
-            Try
-                For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps
-                    If Setting Then
-                        Me.m_esData.FishRateNo(Group, iTimeStep) = Ftime(iTimeStep)
-                    Else
-                        Ftime(iTimeStep) = Me.m_esData.FishRateNo(Group, iTimeStep)
-                    End If
-                Next
-                'For iTimeStep As Integer = Me.m_data.MSYStartTimeIndex To Me.m_core.nEcosimTimeSteps 'Step cCore.N_MONTHS
-                '    If Setting Then
-                '        Shape.ShapeData(iTimeStep) = Ftime(iTimeStep)
-                '    Else
-                '        Ftime(iTimeStep) = Shape.ShapeData(iTimeStep)
-                '    End If
-                'Next
-
-            Catch ex As Exception
-                bSucces = False
-            End Try
-
-            'Shape.UnlockUpdates()
-            'FManager.Update()
-
-            Return bSucces
-
-        End Function
-
-        Private Function CheckIfFishingMortalitiesTooHigh(curFleet As Integer) As Boolean
-
-            CheckIfFishingMortalitiesTooHigh = False
-
-            For iGrp As Integer = 1 To Me.m_esData.nGroups
-                If Me.m_epdata.Landing(curFleet, iGrp) > 0 Then
-                    'need to limit the fishing mortality to avoid groups being crashed completely, making a temp fix here
-                    'm_esData.FishRateMax(iGrp) = m_epdata.PB(iGrp)
-                    'If Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, iGrp, m_core.nEcosimTimeSteps) > 10 * m_epdata.PB(iGrp) Then
-                    If Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, Me.m_core.nEcosimTimeSteps) < 0.000001 * Me.m_epdata.B(iGrp) Then
-                        ' should really use m_esData.FishRateMax(iGrp) Then
-                        Return True
-                    End If
-                End If
-            Next
-
-        End Function
-
-        Public Sub RunBoEstimation()
+    Public Sub RunBoEstimation()
 
             'VC091202: We don't need the Bo reference now, using MSY levels instead
             'but leaving the code here for possible use later. 
@@ -2541,6 +3124,7 @@ Namespace MSE
             '    m_core.EcoSimModelParameters.NumberYears = NumberOfYears + 100
             '    SetBaseValues()
 
+
             '    'Setup Ecosim 
             '    'timestep handler that ecosim will call where we can grab data during the run
             '    'see the Private Sub onMSYEcosimTimestep(...)
@@ -2557,6 +3141,7 @@ Namespace MSE
             '    'Finally reset the effort to the original effort (for all fleets)
             '    SetEffortToBaseValue(True)
 
+
             '    'reset the number of years that Ecosim will run
             '    m_core.EcoSimModelParameters.NumberYears = NumberOfYears
 
@@ -2564,393 +3149,11 @@ Namespace MSE
 
             'End Try
 
-        End Sub
-
-        Private Sub fireMSYProgress(MYSProgress As cMSYProgressArgs)
-
-            If Me.m_data.MSYRunSilent Then Exit Sub
-
-            Try
-                If Me.m_MSYCallBack IsNot Nothing Then
-                    Me.m_MSYCallBack(MYSProgress)
-                End If
-            Catch ex As Exception
-
-            End Try
 
         End Sub
-
-        ''' <summary>
-        ''' Ecosim Timestep delegate handler for the MSY Search
-        ''' </summary>
-        ''' <param name="iTime"></param>
-        ''' <param name="data"></param>
-        ''' <remarks></remarks>
-        Private Sub onMSYEcosimTimestep(iTime As Long, data As cEcoSimResults)
-
-            Try
-
-                'Ecosim has run a time step for the MSY search
-                'grab up anything you need during the time step
-
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
-            End Try
-
-        End Sub
+#End If
 
 #End Region
 
-#End Region
-
-#Region "Time step data summary"
-        ''' <summary>
-        ''' Set Biomass and F cv's to use for this year.
-        ''' </summary>
-        ''' <remarks>CV's can vary on a yearly timestep set by the interface. This sets the CV to use for this year. </remarks>
-        Public Sub setTime(itime As Integer, iyr As Integer)
-
-            If Me.m_Search.SearchMode <> eSearchModes.MSE Then Return
-
-            Try
-
-                Me.m_curT = itime
-                Me.m_curYear = iyr
-
-                'CVbiomEst(ngroups) and CVFest(nfleets) is the cv that is used to vary biomass and fishing mortality
-                For igrp As Integer = 1 To Me.m_data.NGroups
-                    Me.m_data.CVbiomEst(igrp) = Me.m_data.CVBiomT(igrp, iyr)
-                Next
-
-                For iflt As Integer = 1 To Me.m_data.nFleets
-                    Me.m_data.CVFest(iflt) = Me.m_data.CVFT(iflt, iyr)
-                Next
-
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".setTime() Exception: " & ex.Message)
-                m_logger.LogError(ex, "setTime")
-            End Try
-
-        End Sub
-
-        ''' <summary>
-        ''' Ecosim Timestep delegate handler 
-        ''' </summary>
-        ''' <param name="iTime"></param>
-        ''' <param name="data"></param>
-        Private Sub onEcosimTimestep(iTime As Long, data As cEcoSimResults)
-            Try
-                Dim iflt As Integer, igrp As Integer
-
-                If (Me.m_Search.SearchMode <> eSearchModes.MSE) Then Return
-
-                'After the first year
-
-                If (iTime - 1) Mod 12 = 0 Then
-                    'First month of a new year
-                    Array.Clear(Me.m_data.CatchYear, 0, Me.m_data.CatchYear.Length)
-                    ' Array.Clear(Me.m_data.EffortYear, 0, Me.m_data.EffortYear.Length)
-                End If
-
-                'grab effort and catch
-                For iflt = 1 To Me.m_data.nFleets
-                    ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
-                    For igrp = 1 To Me.m_data.NGroups
-                        Me.m_data.CatchYear(iflt, igrp) += Me.m_esData.ResultsSumCatchByGroupGear(igrp, iflt, CInt(iTime))
-                    Next
-                Next
-                ' System.Console.WriteLine()
-                For igrp = 1 To Me.m_data.nLiving
-                    Me.m_data.BioStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
-                    Me.m_data.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
-                    'Me.m_data.FStats.AddValue(igrp, CInt(iTime), 1 + (Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)))
-                    ' System.Console.Write((Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)).ToString & ",")
-                Next igrp
-
-                Dim sumValue As Single
-
-                For iflt = 1 To Me.m_esData.nGear
-                    sumValue += Me.m_esData.ResultsSumValueByGear(iflt, CInt(iTime))
-                    Me.m_data.CatchFleetStats.AddValue(iflt, CInt(iTime), Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime)))
-                    Me.m_data.EffortStats.AddValue(iflt, CInt(iTime), Me.m_esData.ResultsEffort(iflt, CInt(iTime)))
-                    ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
-                Next iflt
-
-                Me.m_data.ValueFleetStats.AddValue(1, CInt(iTime), sumValue)
-
-            Catch ex As Exception
-                Debug.Assert(False, Me.ToString & ".onEcosimTimestep() Error: " & ex.Message)
-            End Try
-
-        End Sub
-
-        ''' <summary>
-        ''' Event handler for Plugin Economic data
-        ''' </summary>
-        ''' <param name="EconomicData"></param>
-        ''' <remarks></remarks>
-        Private Sub onEconomicData(EconomicData As IEconomicData) ' Handles m_EconomicData.onEconomicData
-
-            Try
-
-                'Is there plugin economic data
-                If Me.UsePlugin Then
-                    'Plugin economic data from the ValueChain pluging is sent out every timestep
-                    'Store the data in cMSESummaryStats objects
-
-                    Me.m_data.ProfitSum.AddValue(1, EconomicData.TimeStep, EconomicData.Total.Profit)
-                    Me.m_data.JobsSum.AddValue(1, EconomicData.TimeStep, EconomicData.Total.NumberOfJobsTotal)
-                    Me.m_data.CostSum.AddValue(1, EconomicData.TimeStep, EconomicData.Total.Cost)
-
-                End If
-
-            Catch ex As Exception
-                'make sure all exceptions are handled here and not back in the cEconomicDataSource object
-                System.Console.WriteLine(Me.ToString & ".onEconomicData() Error: " & ex.Message)
-                m_logger.LogError(ex, "onEconomicData")
-            End Try
-
-        End Sub
-
-        ''' <summary>
-        ''' Summarize the economic data gathered by Ecosim at the end of a trial
-        ''' </summary>
-        ''' <remarks>Economic data caculated by ecosim at the end of a run</remarks>
-        Private Sub summarizeEcosimEconomicData()
-
-            'ToDo_jb cMSE.summarizeEconomicData() figure out how to compute Economic data from the Ecosim data
-            If Not Me.UsePlugin Then
-
-                Dim sumValue As Single, sumEffort As Single, sumProfit As Single, sumJobs As Single, sumCost As Single
-                For iflt As Integer = 0 To Me.m_esData.nGear
-
-                    For it As Integer = 1 To Me.m_esData.nSumTimeSteps
-                        sumValue += Me.m_esData.ResultsSumValueByGear(iflt, it)
-                    Next
-                    For it As Integer = 1 To Me.m_esData.nSumTimeSteps
-                        sumEffort += Me.m_esData.ResultsEffort(iflt, it)
-                    Next
-
-                    sumCost += Me.m_Search.NetCost(iflt)
-
-                    ' profit
-                    '[sum of value] * [ecopath profit (percentage of catch value that is profit /per unit of effort)]
-                    sumProfit = sumValue * (Me.m_epdata.cost(iflt, eCostIndex.Profit) / 100) * sumEffort
-
-                    'TEMP just for something to work with until we have ECost up and running
-                    '[value of catch] * [Jobs(fleet) from the search forms]
-                    sumJobs = sumValue * Me.m_Search.Jobs(iflt) 'Jobs(Fleet) percentage of value that goes to Jobs default=1
-
-                Next iflt
-
-                'Me.m_data.ProfitSum.AddValue(1, Me.m_Search.totval)
-                'Me.m_data.JobsSum.AddValue(1, sumJobs)
-                'Me.m_data.CostSum.AddValue(1, sumCost)
-
-            End If
-
-        End Sub
-
-        ''' <summary>
-        ''' Run fleet tradeoff analysis
-        ''' </summary>
-        Public Function RunFleetTradeoffs(outDir As String) As Boolean
-
-            Me.m_data.StopRun = False
-
-            Dim outfn As String = Path.Combine(outDir, "FleetTradeoff.csv")
-            Dim nFleets As Integer = Me.m_esData.nGear
-            Dim bSuccess As Boolean = True
-
-            'get the directory to dump the data to
-            If (Not cFileUtils.IsDirectoryAvailable(outDir, True)) Then Return bSuccess
-
-            Using strm As New StreamWriter(outfn)
-
-                If Me.m_core.SaveWithFileHeader Then
-                    strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                End If
-
-                Try
-
-                    'Exit Sub
-
-                    'no need to set time just use default: m_core.EcoSimModelParameters.NumberYears = NumberOfYears + 25
-                    'this is required to set the base effort values :
-                    Me.SetBaseValues()
-
-                    Me.m_Ecosim.TimeStepDelegate = AddressOf Me.onMSYEcosimTimestep
-
-                    Me.m_esData.bTimestepOutput = True
-                    'let ecosim init to the new values
-                    Me.m_Ecosim.Init(True)
-                    'run ecosim with the current effort
-                    Me.m_Ecosim.Run()
-
-                    Dim FleetBaseValue(nFleets) As Single
-                    Dim CurValue() As Single
-                    'Store the total base value obtained by each fishery 
-                    For iFlt As Integer = 1 To nFleets
-                        'For iGrp As Integer = 1 To m_epdata.NumGroups
-                        For it As Integer = 1 To Me.m_esData.NTimes
-                            FleetBaseValue(iFlt) += Me.m_esData.ResultsSumValueByGear(iFlt, it)  'm_esData.ResultsSumCatchByGroupGear(iGrp, iFlt, it) * Me.m_epdata.Market(iFlt, iGrp)
-                        Next
-                        'all of these values are annual values (even if they are by time step), so divide by number of months:
-                        FleetBaseValue(iFlt) /= Me.m_esData.NTimes
-                        'Next
-                    Next
-
-                    Dim nSteps As Integer = nFleets
-                    Dim iStep As Integer = 1
-                    Dim ValueDifferenceFromTo(nFleets, nFleets) As Single
-
-                    For iFlt As Integer = 1 To nFleets
-
-                        Me.fireMSYProgress(New cMSYProgressArgs(nSteps, iStep, 0))
-
-                        Dim manEffort As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
-                        Dim shp As cShapeData = Nothing
-
-                        shp = manEffort.Item(iFlt - 1)
-                        shp.LockUpdates()
-                        For iT As Integer = 1 To Me.m_esData.NTimes
-                            shp.ShapeData(iT) = 0.9! * Me.m_baseEffort(iFlt, iT)
-                        Next
-                        shp.UnlockUpdates(True)
-
-                        'For it As Integer = 1 To Me.m_esData.NTimes
-                        '    Me.m_esData.FishRateGear(iFlt, it) = CSng(1.1 * m_baseEffort(iFlt, it))
-                        'Next
-                        'let ecosim init to the new values ------ no init will overwrite the effort!!!!!
-                        ' Me.m_Ecosim.Init(True)
-                        'run ecosim with the current effort
-                        Me.m_Ecosim.Run()
-
-                        ReDim CurValue(nFleets)
-                        For iTo As Integer = 1 To nFleets
-                            For it As Integer = 1 To Me.m_esData.NTimes
-                                CurValue(iTo) += Me.m_esData.ResultsSumValueByGear(iTo, it)      'm_esData.ResultsSumCatchByGroupGear(iGrp, iFlt, it) * Me.m_epdata.Market(iFlt, iGrp)
-                            Next
-                            'divide by no months to get the average, which is the annual value:
-                            CurValue(iTo) /= Me.m_esData.NTimes
-                        Next
-
-                        'If MoreMoney = 0 Then Stop
-
-                        For iTo As Integer = 1 To nFleets
-                            ValueDifferenceFromTo(iFlt, iTo) = (CurValue(iTo) - FleetBaseValue(iTo)) '/ MoreMoney
-                        Next
-
-                        'get the directory to dump the data to
-                        'Me.m_DataDir = AppDomain.CurrentDomain.BaseDirectory & "MSE\"
-                        'strm = New StreamWriter(getFilename("FleetTradeOff", "_Effort"), True)
-                        'For iFrom As Integer = 1 To nFleets
-                        '    Try
-                        '        buff = New StringBuilder
-                        '        For iT As Integer = 1 To m_esData.NTimes Step 12
-                        '            buff.Append(Me.m_esData.FishRateGear(iFrom, iT).ToString & ", ")
-                        '        Next
-                        '        strm.WriteLine(buff)
-
-                        '        buff = Nothing
-                        '    Catch ex As Exception
-                        '        ' Debug.Assert(False, Me.ToString & " Exception saving results to file " & getFilename(BIOMASS_DATA, Me.m_epdata.GroupName(igrp)))
-                        '        System.Console.WriteLine(Me.ToString & " Failed to write data to file " & getFilename("FleetTradeOff", Me.m_epdata.FleetName(iFrom)) & " Exception: " & ex.Message)
-                        '    End Try
-                        'Next
-                        'strm.Close()
-
-                        'Finally reset the effort to the original effort
-                        'SetEffortToBaseValue(True)
-                        shp = manEffort.Item(iFlt - 1)
-                        'Reset the fishing values
-                        shp.LockUpdates()
-                        For iT As Integer = 1 To Me.m_esData.NTimes
-                            shp.ShapeData(iT) = Me.m_baseEffort(iFlt, iT)
-                        Next
-                        shp.UnlockUpdates(True)
-
-                    Next iFlt
-
-                    ' Header
-                    For iFrom As Integer = 1 To nFleets
-                        strm.Write(",")
-                        strm.Write(cStringUtils.ToCSVField(Me.m_epdata.FleetName(iFrom)))
-                    Next
-                    strm.WriteLine()
-                    For iFrom As Integer = 1 To nFleets
-                        Try
-
-                            strm.Write(cStringUtils.ToCSVField(Me.m_epdata.FleetName(iFrom)))
-                            strm.Write(",")
-
-                            Dim vSum As Single = 0
-                            For iTo As Integer = 1 To nFleets
-                                strm.Write(cStringUtils.FormatSingle(ValueDifferenceFromTo(iFrom, iTo)))
-                                strm.Write(",")
-                                vSum += ValueDifferenceFromTo(iFrom, iTo)
-                            Next
-                            strm.Write(cStringUtils.FormatSingle(vSum))
-                            strm.WriteLine()
-                        Catch ex As Exception
-                            m_logger.LogError(ex, "cMSE.RunFleetTradeoffs")
-                            bSuccess = False
-                        End Try
-                    Next
-
-                    iStep += 1
-
-                Catch ex As Exception
-                    m_logger.LogError(ex, "cMSE.RunFleetTradeoffs")
-                    bSuccess = False
-                End Try
-
-                strm.Flush()
-                strm.Close()
-
-            End Using
-
-            Dim msg As cMessage = Nothing
-            If bSuccess Then
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_FLEETTRADEOFF_SAVED, outfn), eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
-                msg.Hyperlink = outDir
-            Else
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MSE_FLEETTRADEOFF_SAVE_ERROR, outfn), eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Warning)
-            End If
-            Me.m_core.Messages.SendMessage(msg)
-            Return bSuccess
-
-        End Function
-
-        ''' <summary>
-        ''' Normally distrubute random number where mean = 0 std = 1
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Friend Function RandomNormal() As Single
-            Dim X As Double
-            Debug.Assert(Me.m_rndGen IsNot Nothing, Me.ToString & ".RandomNormal() Random number generator has not been initialized!")
-            X = -6
-            For i As Integer = 1 To 12
-                X = X + Me.m_rndGen.NextDouble
-            Next
-            Return CSng(X)
-        End Function
-
-#End Region
-
-    End Class
-
-#End Region
-
-    Public Interface IMSEOutputWriter
-
-        'ReadOnly Property DataDir() As String
-
-        Sub Init()
-
-        Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,)))
-
-    End Interface
 
 End Namespace
