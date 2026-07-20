@@ -76,7 +76,7 @@
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
     <DebugType>none</DebugType>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="Interop.JRO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=1d875393b3ebcad0, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.interop.access.dao, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
     <Reference Update="System">
@@ -173,6 +173,13 @@
     <Compile Remove="Shapes\TimeSeries\Readers\cTimeSeriesClipboardReader.vb" />
     <Compile Remove="Validators\cValidatorOutput.vb" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <!-- JRO and DAO COM interop types are not available outside of .NET Framework -->
+    <Compile Remove="Database\Compact\cCompactJRO.vb" />
+    <Compile Remove="Database\Compact\cCompactDAO.vb" />
+    <!-- System.Web.Services.Protocols is not available outside of .NET Framework -->
+    <Compile Remove="EcoBase\cEcoBaseWDSL.vb" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
@@ -184,8 +191,8 @@
   <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
-  <ItemGroup>
-    <!-- Otherwise use a package reference.  -->
+  <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
+      <!-- Otherwise use a package reference.  -->
     <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.*" />
   </ItemGroup>
 </Project>
