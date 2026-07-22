@@ -21,7 +21,13 @@ public sealed class MSEDataStructuresTests
     [Fact]
     public void RegulationMode_HasExpectedValues()
     {
+        // Arrange
+        // no setup required
+
+        // Act
         var values = Enum.GetValues<eMSERegulationMode>();
+
+        // Assert
         values.Should().Contain(eMSERegulationMode.UseRegulations);
         values.Should().Contain(eMSERegulationMode.NoRegulations);
     }
@@ -29,7 +35,13 @@ public sealed class MSEDataStructuresTests
     [Fact]
     public void EffortSource_HasExpectedValues()
     {
+        // Arrange
+        // no setup required
+
+        // Act
         var values = Enum.GetValues<eMSEEffortSource>();
+
+        // Assert
         values.Should().Contain(eMSEEffortSource.EcosimEffort);
         values.Should().Contain(eMSEEffortSource.NoCap);
         values.Should().Contain(eMSEEffortSource.Predicted);
@@ -38,7 +50,13 @@ public sealed class MSEDataStructuresTests
     [Fact]
     public void AssessmentMethods_HasExpectedValues()
     {
+        // Arrange
+        // no setup required
+
+        // Act
         var values = Enum.GetValues<eAssessmentMethods>();
+
+        // Assert
         values.Should().Contain(eAssessmentMethods.Exact);
         values.Should().Contain(eAssessmentMethods.CatchEstmBio);
         values.Should().Contain(eAssessmentMethods.DirectExploitation);
@@ -47,7 +65,13 @@ public sealed class MSEDataStructuresTests
     [Fact]
     public void RunStates_HasExpectedValues()
     {
+        // Arrange
+        // no setup required
+
+        // Act
         var values = Enum.GetValues<eMSERunStates>();
+
+        // Assert
         values.Should().Contain(eMSERunStates.Started);
         values.Should().Contain(eMSERunStates.RunCompleted);
         values.Should().Contain(eMSERunStates.IterationCompleted);
@@ -73,23 +97,36 @@ public sealed class MSEDataStructuresIntegrationTests
     [Fact]
     public void MSEManager_IsAvailable_AfterModelLoad()
     {
+        // Arrange
+        // no setup required – fixture already loaded the model
+
+        // Act & Assert
         _fixture.Core.MSEManager.Should().NotBeNull();
     }
 
     [Fact]
     public void ModelParameters_DefaultNTrials_IsPositive()
     {
+        // Arrange
+        // no setup required
+
+        // Act & Assert
         _fixture.Core.MSEManager.ModelParameters.NTrials.Should().BeGreaterThan(0);
     }
 
     [Fact]
     public void ModelParameters_NTrials_CanBeSetAndRead()
     {
+        // Arrange
         var mse = _fixture.Core.MSEManager;
         int original = mse.ModelParameters.NTrials;
+
         try
         {
+            // Act
             mse.ModelParameters.NTrials = 7;
+
+            // Assert
             mse.ModelParameters.NTrials.Should().Be(7);
         }
         finally
@@ -99,21 +136,32 @@ public sealed class MSEDataStructuresIntegrationTests
     }
 
     [Fact]
-    public void MSEManager_NumGroups_MatchesCoreNGroups()
+    public void MSEManager_NumGroups_MatchesCoreNLivingGroups()
     {
-        _fixture.Core.MSEManager.NumGroups.Should().Be(_fixture.Core.nGroups);
+        // Arrange
+        // no setup required
+
+        // Act & Assert
+        _fixture.Core.MSEManager.NumGroups.Should().Be(_fixture.Core.nLivingGroups);
     }
 
     [Fact]
     public void MSEManager_NumFleets_MatchesCoreNFleets()
     {
+        // Arrange
+        // no setup required
+
+        // Act & Assert
         _fixture.Core.MSEManager.NumFleets.Should().Be(_fixture.Core.nFleets);
     }
 
     [Fact]
     public void BiomassStats_AreAvailable_ForEachGroup()
     {
+        // Arrange
         var mse = _fixture.Core.MSEManager;
+
+        // Act & Assert
         for (int i = 1; i <= mse.NumGroups; i++)
         {
             ((EwECore.MSE.cMSEStats)mse.BiomassStats[i]).Should().NotBeNull();

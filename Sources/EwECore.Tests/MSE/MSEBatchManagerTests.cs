@@ -68,40 +68,56 @@ public sealed class MSEBatchManagerTests : IDisposable
     [Fact]
     public void ReadCommandFile_WithMinimalTFMFile_ReturnsTrue()
     {
+        // Arrange
         int nGroups = _fixture.Core.nGroups;
         string file = WriteMinimalCommandFile(nGroups);
 
+        // Act
         bool result = _fixture.Core.MSEBatchManager.ReadCommandFile(file);
+
+        // Assert
         result.Should().BeTrue();
     }
 
     [Fact]
     public void ReadCommandFile_SetsIsInit_ToTrue_OnSuccess()
     {
+        // Arrange
         int nGroups = _fixture.Core.nGroups;
         string file = WriteMinimalCommandFile(nGroups);
 
+        // Act
         _fixture.Core.MSEBatchManager.ReadCommandFile(file);
+
+        // Assert
         _fixture.Core.MSEBatchManager.BatchData.isInit.Should().BeTrue();
     }
 
     [Fact]
     public void ReadCommandFile_SetsRunType_ToTFM_FromMinimalFile()
     {
+        // Arrange
         int nGroups = _fixture.Core.nGroups;
         string file = WriteMinimalCommandFile(nGroups);
 
+        // Act
         _fixture.Core.MSEBatchManager.ReadCommandFile(file);
+
+        // Assert
         _fixture.Core.MSEBatchManager.BatchData.RunType.Should().Be(eMSEBatchRunTypes.TFM);
     }
 
     [Fact]
     public void ReadCommandFile_SetsNSims_Correctly()
     {
+        // Arrange
         int nGroups = _fixture.Core.nGroups;
         string file = WriteMinimalCommandFile(nGroups);
 
+        // Act
         _fixture.Core.MSEBatchManager.ReadCommandFile(file);
+
+        // Assert
         // nParIters reflects the number of batch parameter iterations (TFM = 1)
         _fixture.Core.MSEBatchManager.BatchData.nParIters.Should().Be(1);
     }
@@ -113,30 +129,35 @@ public sealed class MSEBatchManagerTests : IDisposable
     [Fact]
     public void Run_WithMinimalCommandFile_CompletesWithoutError()
     {
+        // Arrange
         int nGroups = _fixture.Core.nGroups;
         string file = WriteMinimalCommandFile(nGroups);
         var batchMgr = _fixture.Core.MSEBatchManager;
-
         bool loaded = batchMgr.ReadCommandFile(file);
         loaded.Should().BeTrue();
 
+        // Act
         batchMgr.Run();
-        batchMgr.Wait();
+        batchMgr.Wait(2000); // wait for up to 2 seconds for the run to complete
 
+        // Assert
         batchMgr.BatchData.StopRun.Should().BeFalse();
     }
 
     [Fact]
     public void Run_IsNotRunning_AfterWaitReturns()
     {
+        // Arrange
         int nGroups = _fixture.Core.nGroups;
         string file = WriteMinimalCommandFile(nGroups);
         var batchMgr = _fixture.Core.MSEBatchManager;
-
         batchMgr.ReadCommandFile(file);
+
+        // Act
         batchMgr.Run();
         batchMgr.Wait();
 
+        // Assert
         batchMgr.IsRunning.Should().BeFalse();
     }
 }

@@ -209,135 +209,139 @@ jobs:
           }
         shell: pwsh
 
-  # 5) BUILD INSTALLERS
-  # This job builds the solution for x86 and x64, compiles the Inno Setup installers, and uploads them.
-  build-installers:
-    name: Build EwE6 (x86 and x64) and Inno Setup installers
-    runs-on: windows-2025-vs2026
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
-    needs: [version, pack-publish-scientificinterfaceshared]  # requires version outputs for stamping binaries and installers
-    steps:
-      # Checkout code
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+# Temporarily commented out the creation of the installer and a release.
+# Creating a release is a heavy impact on the "Actions and Packages storage" part of the Github billing. And it's not necessary on every push to master.
+# We should only create releases when it's necessary. But what event should we use.... idk.
 
-      # Install .NET SDK 10
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
+  # # 5) BUILD INSTALLERS
+  # # This job builds the solution for x86 and x64, compiles the Inno Setup installers, and uploads them.
+  # build-installers:
+  #   name: Build EwE6 (x86 and x64) and Inno Setup installers
+  #   runs-on: windows-2025-vs2026
+  #   env:
+  #     FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
+  #   needs: [version, pack-publish-scientificinterfaceshared]  # requires version outputs for stamping binaries and installers
+  #   steps:
+  #     # Checkout code
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      # Install .NET Framework 4.8 targeting pack
-      - name: Install .NET Framework targeting pack (4.8)
-        run: choco install netfx-4.8-devpack -y
-        shell: pwsh
+  #     # Install .NET SDK 10
+  #     - name: Setup .NET
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: '10.0.x'
 
-      # Install Inno Setup to get ISCC.exe
-      - name: Install Inno Setup
-        run: choco install innosetup -y
-        shell: pwsh
+  #     # Install .NET Framework 4.8 targeting pack
+  #     - name: Install .NET Framework targeting pack (4.8)
+  #       run: choco install netfx-4.8-devpack -y
+  #       shell: pwsh
 
-      # Configure NuGet source in this job before building
-      - name: Setup Official-EwE NuGet source
-        uses: ./.github/actions/setup-nuget-source
+  #     # Install Inno Setup to get ISCC.exe
+  #     - name: Install Inno Setup
+  #       run: choco install innosetup -y
+  #       shell: pwsh
 
-      # Build x86 with version stamping
-      - name: Build Release x86 with version
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x86 /p:UseProjectReferences=true
-        shell: pwsh
+  #     # Configure NuGet source in this job before building
+  #     - name: Setup Official-EwE NuGet source
+  #       uses: ./.github/actions/setup-nuget-source
 
-      # Build x64 with version stamping
-      - name: Build Release x64 with version
-        run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x64 /p:UseProjectReferences=true
-        shell: pwsh
+  #     # Build x86 with version stamping
+  #     - name: Build Release x86 with version
+  #       run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x86 /p:UseProjectReferences=true
+  #       shell: pwsh
 
-      # Create a local artifacts folder for installers
-      - name: Create artifacts directory
-        run: New-Item -ItemType Directory -Force -Path artifacts | Out-Null
-        shell: pwsh
+  #     # Build x64 with version stamping
+  #     - name: Build Release x64 with version
+  #       run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x64 /p:UseProjectReferences=true
+  #       shell: pwsh
 
-      # Compile the x86 installer with Inno Setup (Compile64Bit=0)
-      - name: Build Inno Setup Installer (x86)
-        run: |
-          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-          $outputDir = Join-Path $PWD "artifacts"
-          & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
-        shell: pwsh
+  #     # Create a local artifacts folder for installers
+  #     - name: Create artifacts directory
+  #       run: New-Item -ItemType Directory -Force -Path artifacts | Out-Null
+  #       shell: pwsh
 
-      # Compile the x64 installer with Inno Setup (Compile64Bit=1)
-      - name: Build Inno Setup Installer (x64)
-        run: |
-          $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-          $outputDir = Join-Path $PWD "artifacts"
-          & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
-        shell: pwsh
+  #     # Compile the x86 installer with Inno Setup (Compile64Bit=0)
+  #     - name: Build Inno Setup Installer (x86)
+  #       run: |
+  #         $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+  #         $outputDir = Join-Path $PWD "artifacts"
+  #         & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+  #       shell: pwsh
 
-      # List installer files for debugging
-      - name: List output dir
-        run: dir $outputDir
-        shell: pwsh
+  #     # Compile the x64 installer with Inno Setup (Compile64Bit=1)
+  #     - name: Build Inno Setup Installer (x64)
+  #       run: |
+  #         $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+  #         $outputDir = Join-Path $PWD "artifacts"
+  #         & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+  #       shell: pwsh
 
-      # List installer files for debugging
-      - name: List artifacts files
-        run: dir (Join-Path $PWD "artifacts")
-        shell: pwsh
+  #     # List installer files for debugging
+  #     - name: List output dir
+  #       run: dir $outputDir
+  #       shell: pwsh
 
-      # required for the artifact to be available on the GitHub server
-      - name: upload-unsigned-artifact
-        id: upload-unsigned-artifact
-        uses: actions/upload-artifact@v4
-        with: 
-          path: './artifacts/*-bit_setup.exe'
+  #     # List installer files for debugging
+  #     - name: List artifacts files
+  #       run: dir (Join-Path $PWD "artifacts")
+  #       shell: pwsh
 
-      - id: optional_step_id
-        uses: signpath/github-action-submit-signing-request@v2
-        with:
-          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
-          organization-id: '6f2e61d1-dbf8-41da-9d92-80fb7fcf05a2'
-          project-slug: 'Ecopath'
-          signing-policy-slug: 'Production'
-          github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
-          wait-for-completion: true
-          output-artifact-directory: './artifacts-signed'
+  #     # required for the artifact to be available on the GitHub server
+  #     - name: upload-unsigned-artifact
+  #       id: upload-unsigned-artifact
+  #       uses: actions/upload-artifact@v4
+  #       with: 
+  #         path: './artifacts/*-bit_setup.exe'
+
+  #     - id: optional_step_id
+  #       uses: signpath/github-action-submit-signing-request@v2
+  #       with:
+  #         api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+  #         organization-id: '6f2e61d1-dbf8-41da-9d92-80fb7fcf05a2'
+  #         project-slug: 'Ecopath'
+  #         signing-policy-slug: 'Production'
+  #         github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
+  #         wait-for-completion: true
+  #         output-artifact-directory: './artifacts-signed'
 
 
-      # Upload installers so the release job can use them.
-      - name: Upload installers artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: installers
-          path: artifacts-signed/*-bit_setup.exe
+  #     # Upload installers so the release job can use them.
+  #     - name: Upload installers artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: installers
+  #         path: artifacts-signed/*-bit_setup.exe
 
-  # 6) CREATE RELEASE
-  # This job creates or updates a GitHub Release with auto-generated notes and uploads installers.
-  release:
-    name: Create or Update GitHub Release with auto notes
-    runs-on: windows-2025-vs2026
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
-    needs: [version, build-installers]  # requires version info and built installers
-    steps:
-      # Download the installer artifacts produced by build-installers
-      - name: Download installers artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: installers
-          path: installers
+  # # 6) CREATE RELEASE
+  # # This job creates or updates a GitHub Release with auto-generated notes and uploads installers.
+  # release:
+  #   name: Create or Update GitHub Release with auto notes
+  #   runs-on: windows-2025-vs2026
+  #   env:
+  #     FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
+  #   needs: [version, build-installers]  # requires version info and built installers
+  #   steps:
+  #     # Download the installer artifacts produced by build-installers
+  #     - name: Download installers artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: installers
+  #         path: installers
 
-      # Create a release with v-prefixed tag and GitHub auto notes
-      # generate_release_notes: true will add "What's Changed" and "Full Changelog" sections
-      - name: Create GitHub Release with auto notes
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ needs.version.outputs.tag }}   # example: v6.7.30
-          name: ${{ needs.version.outputs.tag }}       # example: v6.7.30
-          generate_release_notes: true
-          files: |
-            installers/*_32-bit_setup.exe
-            installers/*_64-bit_setup.exe
-          prerelease: ${{ needs.version.outputs.prerelease != '' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     # Create a release with v-prefixed tag and GitHub auto notes
+  #     # generate_release_notes: true will add "What's Changed" and "Full Changelog" sections
+  #     - name: Create GitHub Release with auto notes
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: ${{ needs.version.outputs.tag }}   # example: v6.7.30
+  #         name: ${{ needs.version.outputs.tag }}       # example: v6.7.30
+  #         generate_release_notes: true
+  #         files: |
+  #           installers/*_32-bit_setup.exe
+  #           installers/*_64-bit_setup.exe
+  #         prerelease: ${{ needs.version.outputs.prerelease != '' }}
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -28,6 +28,9 @@ public sealed class MSECommandFileReaderCanReadTests
     [InlineData(cMSECommandFileReader.PPDEV_DATA_TAG, "PP_STDEV, 0.05")]
     public void CanRead_ReturnsTrue_ForMatchingTagAndLine(string tag, string line)
     {
+        // Arrange (from InlineData)
+
+        // Act & Assert
         cMSECommandFileReader.CanRead(tag, line).Should().BeTrue();
     }
 
@@ -37,24 +40,45 @@ public sealed class MSECommandFileReaderCanReadTests
     [InlineData(cMSECommandFileReader.RUNTYPE_DATA_TAG, "Constant_F, 0.1")]
     public void CanRead_ReturnsFalse_ForMismatchedTagAndLine(string tag, string line)
     {
+        // Arrange (from InlineData)
+
+        // Act & Assert
         cMSECommandFileReader.CanRead(tag, line).Should().BeFalse();
     }
 
     [Fact]
     public void CanRead_ReturnsFalse_ForNullLine()
     {
-        cMSECommandFileReader.CanRead(cMSECommandFileReader.NSIMS_DATA_TAG, null!).Should().BeFalse();
+        // Arrange
+        string tag = cMSECommandFileReader.NSIMS_DATA_TAG;
+
+        // Act
+        bool result = cMSECommandFileReader.CanRead(tag, null!);
+
+        // Assert
+        result.Should().BeFalse();
     }
 
     [Fact]
     public void CanRead_ReturnsFalse_ForEmptyLine()
     {
-        cMSECommandFileReader.CanRead(cMSECommandFileReader.NSIMS_DATA_TAG, string.Empty).Should().BeFalse();
+        // Arrange
+        string tag = cMSECommandFileReader.NSIMS_DATA_TAG;
+
+        // Act
+        bool result = cMSECommandFileReader.CanRead(tag, string.Empty);
+
+        // Assert
+        result.Should().BeFalse();
     }
 
     [Fact]
     public void TagConstants_HaveExpectedStringValues()
     {
+        // Arrange
+        // no setup required
+
+        // Act & Assert
         cMSECommandFileReader.NSIMS_DATA_TAG.Should().Be("Number_Sims");
         cMSECommandFileReader.CV_DATA_TAG.Should().Be("Error_CV");
         cMSECommandFileReader.RUNTYPE_DATA_TAG.Should().Be("Run_Type");
@@ -104,24 +128,34 @@ public sealed class MSECommandFileReaderReadTests : IDisposable
     [Fact]
     public void Read_MinimalFile_ReturnsTrue()
     {
+        // Arrange
         string file = WriteCommandFile(new[]
         {
             $"{cMSECommandFileReader.VERSION_DATA_TAG}, 1.0",
             $"{cMSECommandFileReader.RUNTYPE_DATA_TAG}, 3",
             $"{cMSECommandFileReader.NSIMS_DATA_TAG}, 5",
             $"{cMSECommandFileReader.CV_DATA_TAG}, 0.2",
+            $"{cMSECommandFileReader.TFM_INDEX_TAG}, 1, 2, 3, 4",
             $"{cMSECommandFileReader.TFM_DATA_TAG}, 0.5, 0.8, 0.3, 0.6"
         });
 
+        // Act
         bool result = _fixture.Core.MSEBatchManager.ReadCommandFile(file);
+
+        // Assert
         result.Should().BeTrue();
     }
 
     [Fact]
     public void Read_NonExistentFile_ReturnsFalse()
     {
+        // Arrange
         string nonExistent = Path.Combine(_tempDir, "does_not_exist.csv");
+
+        // Act
         bool result = _fixture.Core.MSEBatchManager.ReadCommandFile(nonExistent);
+
+        // Assert
         result.Should().BeFalse();
     }
 }

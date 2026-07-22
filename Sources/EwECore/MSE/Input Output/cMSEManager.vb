@@ -356,6 +356,10 @@ Namespace MSE
 
         End Sub
 
+        ''' <summary>
+        ''' Will be called whe a user clicks the Run button in the MSE form. This will start a new thread to run the MSE model.
+        ''' </summary>
+        ''' <returns></returns>
         Public Function Run() As Boolean
 
             Try
@@ -552,6 +556,11 @@ Namespace MSE
 
         End Sub
 
+        ''' <summary>
+        ''' This method is called when a new model is loaded. It connects the new cCore instance
+        ''' </summary>
+        ''' <param name="theCore"></param>
+        ''' <returns></returns>
         Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
 
             If (Not Object.ReferenceEquals(Me.m_debug, theCore)) Then
@@ -1369,6 +1378,12 @@ Namespace MSE
             MyBase.Finalize()
         End Sub
 
+
+        ''' <summary>
+        ''' Will be called when the user clicks on the Stop run button. This will stop the MSE run and return control to the user. The MSE run will be stopped at the end of the current iteration.
+        ''' </summary>
+        ''' <param name="WaitTimeInMillSec"></param>
+        ''' <returns></returns>
         Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
             Dim result As Boolean = True
 

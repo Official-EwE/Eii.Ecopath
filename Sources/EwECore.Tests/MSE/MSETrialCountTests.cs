@@ -27,14 +27,18 @@ public sealed class MSETrialCountTests
     [InlineData(5)]
     public void Run_CompletesExpectedNumberOfTrials(int nTrials)
     {
+        // Arrange
         var mse = _fixture.Core.MSEManager;
         int originalTrials = mse.ModelParameters.NTrials;
+        mse.ModelParameters.NTrials = nTrials;
+
         try
         {
-            mse.ModelParameters.NTrials = nTrials;
+            // Act
             mse.Run();
             mse.Wait();
 
+            // Assert
             // CurrentIteration is the 1-based index of the last completed trial;
             // after a clean run it should equal the number of trials requested.
             _fixture.Core.MSEManager.MSEData.CurrentIteration.Should().Be(nTrials);
@@ -48,13 +52,18 @@ public sealed class MSETrialCountTests
     [Fact]
     public void ModelParameters_NTrials_IsPersistedCorrectly()
     {
+        // Arrange
         var mse = _fixture.Core.MSEManager;
         int original = mse.ModelParameters.NTrials;
+
         try
         {
             foreach (int n in new[] { 1, 5, 10 })
             {
+                // Act
                 mse.ModelParameters.NTrials = n;
+
+                // Assert
                 mse.ModelParameters.NTrials.Should().Be(n);
             }
         }

@@ -32,9 +32,16 @@ public sealed class MSERunTests
     [Fact]
     public void ValidateRun_WithDefaultSettings_ReturnsTrue()
     {
+        // Arrange
+        // no setup required – the fixture already loaded the model
+
+        // Act
+        bool result = MSE.ValidateRun();
+
+        // Assert
         // The default LP solution mode means ValidateRun only checks time series;
         // for a plain Anchovy Bay Spatial model this should pass.
-        MSE.ValidateRun().Should().BeTrue();
+        result.Should().BeTrue();
     }
 
     // -----------------------------------------------------------------------
@@ -44,14 +51,18 @@ public sealed class MSERunTests
     [Fact]
     public void Run_WithOneTrialAndDefaultSettings_CompletesSuccessfully()
     {
+        // Arrange
         int originalTrials = MSE.ModelParameters.NTrials;
+        MSE.ModelParameters.NTrials = 1;
+
         try
         {
-            MSE.ModelParameters.NTrials = 1;
+            // Act
             bool started = MSE.Run();
-            started.Should().BeTrue("Run() should return true when the background thread starts");
-
             bool finished = MSE.Wait();
+
+            // Assert
+            started.Should().BeTrue("Run() should return true when the background thread starts");
             finished.Should().BeTrue("Wait() should return true once the MSE run completes");
         }
         finally
@@ -64,13 +75,17 @@ public sealed class MSERunTests
     [Fact]
     public void Run_IsNotRunning_AfterWaitReturns()
     {
+        // Arrange
         int originalTrials = MSE.ModelParameters.NTrials;
+        MSE.ModelParameters.NTrials = 1;
+
         try
         {
-            MSE.ModelParameters.NTrials = 1;
+            // Act
             MSE.Run();
             MSE.Wait();
 
+            // Assert
             MSE.IsRunning.Should().BeFalse("the MSE thread should have finished");
         }
         finally
@@ -82,15 +97,19 @@ public sealed class MSERunTests
     [Fact]
     public void Run_StopRun_IsFalse_AfterNormalCompletion()
     {
+        // Arrange
         int originalTrials = MSE.ModelParameters.NTrials;
+        MSE.ModelParameters.NTrials = 1;
+
         try
         {
-            MSE.ModelParameters.NTrials = 1;
+            // Act
             MSE.Run();
             MSE.Wait();
 
-            // Data.StopRun should still be false — it is only set to true by
-            // an explicit user/batch cancellation.
+            // Assert
+            // StopRun should still be false — it is only set to true by an explicit
+            // user/batch cancellation.
             _fixture.Core.MSEManager.MSEData.StopRun.Should().BeFalse();
         }
         finally
@@ -106,13 +125,17 @@ public sealed class MSERunTests
     [Fact]
     public void BiomassStats_ArePopulated_AfterRun()
     {
+        // Arrange
         int originalTrials = MSE.ModelParameters.NTrials;
+        MSE.ModelParameters.NTrials = 1;
+
         try
         {
-            MSE.ModelParameters.NTrials = 1;
+            // Act
             MSE.Run();
             MSE.Wait();
 
+            // Assert
             for (int i = 1; i <= MSE.NumGroups; i++)
             {
                 ((EwECore.MSE.cMSEStats)MSE.BiomassStats[i]).Should().NotBeNull();
@@ -127,13 +150,17 @@ public sealed class MSERunTests
     [Fact]
     public void EffortStats_ArePopulated_AfterRun()
     {
+        // Arrange
         int originalTrials = MSE.ModelParameters.NTrials;
+        MSE.ModelParameters.NTrials = 1;
+
         try
         {
-            MSE.ModelParameters.NTrials = 1;
+            // Act
             MSE.Run();
             MSE.Wait();
 
+            // Assert
             for (int i = 1; i <= MSE.NumFleets; i++)
             {
                 ((EwECore.MSE.cMSEStats)MSE.EffortStats[i]).Should().NotBeNull();

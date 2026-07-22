@@ -84,16 +84,17 @@ public sealed class MSERegressionTests
     [Fact]
     public void MSE_NumericalOutputs_MatchOrCreateBaseline()
     {
+        // Arrange
         var mse = _fixture.Core.MSEManager;
         int originalTrials = mse.ModelParameters.NTrials;
         bool originalBatch = _fixture.Core.MSEManager.MSEData.bInBatch;
+        mse.ModelParameters.NTrials = TrialCount;
+        // Force deterministic seed (seed 42 via bInBatch == true).
+        //_fixture.Core.MSEManager.MSEData.bInBatch = true;
 
         try
         {
-            // Force deterministic seed (seed 42 via bInBatch == true).
-            _fixture.Core.MSEManager.MSEData.bInBatch = true;
-            mse.ModelParameters.NTrials = TrialCount;
-
+            // Act
             mse.Run();
             mse.Wait();
 
@@ -107,6 +108,7 @@ public sealed class MSERegressionTests
                 NTrials = TrialCount
             };
 
+            // Assert
             if (!File.Exists(BaselineFile))
             {
                 // First run — write baseline and pass.
