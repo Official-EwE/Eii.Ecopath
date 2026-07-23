@@ -200,6 +200,13 @@ Namespace MSE
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets a value indicating whether the Linear Programming (LP)
+        ''' solution should be used by the Management Strategy Evaluation (MSE) run.
+        ''' </summary>
+        ''' <value>
+        ''' <c>True</c> to use the LP solution; otherwise, <c>False</c>.
+        ''' </value>
         Public Property UseLPSolution() As Boolean
             Get
                 Return CBool(Me.GetVariable(eVarNameFlags.MSELPSolution))

@@ -135,6 +135,8 @@ Namespace MSE
         Private m_orgPredictEffort As Boolean
         Private m_orgUsePlugin As Boolean = False
 
+        Private m_quotaUpdater As cMSEQuotaUpdater
+
         Private m_EconomicData As New cEconomicDataSource
 
         Private m_MSYCallBack As MSYProgressDelegate
@@ -229,6 +231,8 @@ Namespace MSE
             Me.m_epdata = EcopathData
             Me.m_pluginManager = PluginManager
             Me.m_refData = RefData
+
+            Me.m_quotaUpdater = New cMSEQuotaUpdater(Me.m_data, Me.m_epdata, Me.m_esData)
 
             Me.m_EconomicData = cEconomicDataSource.getInstance()
             Me.m_data.InitForRun()
@@ -1684,82 +1688,9 @@ Namespace MSE
         ''' with the quota for this year based on <see cref="cMSEDataStructures.Bestimate">cMSEDataStructures.Bestimate(ngroups)</see> 
         ''' , biomass from the stock assessment model.
         ''' </remarks>
-        Friend Sub UpdateQuotas(Biomass() As Single)
-            Dim iflt As Integer, igrp As Integer
-            Dim tQuota() As Single
+        Public Sub UpdateQuotas(Biomass() As Single)
 
-            ReDim tQuota(Me.m_epdata.NumGroups)
-            Array.Clear(Me.m_data.FTarget, 0, Me.m_epdata.NumGroups)
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'HACK WARNING
-            'BatchMode (cMSEBatchManager) needs to be able to set FixedF() and TAC() values to zero and still have them considered a valid value
-            'It does this by setting values to Epsilon 1.401298E-45 when the user enters zero
-            'This is interpreted as >0 then rounded off to zero
-            'this allows the interface and database to remain the same Zero means TAC() and FixedF() are NOT USED.
-            'It would be tricky to fix this with a flag and not break existing models.
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            '
-            '1 Set the quota via Fixed Escapement, Fixed Fishing Mortality or Target Fishing Mortality(hockey stick)
-            '2 Apply uncertainty to the Quota
-            '3 Share the Quota between the fleets
-            For igrp = 1 To Me.m_epdata.NumLiving
-
-                If Me.m_data.TAC(igrp) > 0 Then
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'Total Allowable Catch
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    Dim tac As Single = CSng(Math.Round(Me.m_data.TAC(igrp), 5))
-                    tQuota(igrp) = tac
-
-                ElseIf Me.m_data.FixedEscapement(igrp) > 0 Then
-                    'xxxxxxxxxxxxxxxxxxxxxxx
-                    'Fixed Escapement
-                    'xxxxxxxxxxxxxxxxxxxxxxx
-
-                    tQuota(igrp) = Me.m_data.Bestimate(igrp) - Me.m_data.FixedEscapement(igrp)
-                    If tQuota(igrp) < 0 Then tQuota(igrp) = 0
-
-                ElseIf Me.m_data.FixedF(igrp) > 0 Then
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'Fixed Mortality
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    Dim f As Single = CSng(Math.Round(Me.m_data.FixedF(igrp), 5))
-                    tQuota(igrp) = f * Me.m_data.Bestimate(igrp)
-                    Me.m_data.FTarget(igrp) = f
-
-                Else
-                    'xxxxxxxxxxxxxxxxxxxxxxxx
-                    'Target Fishing Mortality
-                    'xxxxxxxxxxxxxxxxxxxxxxxx
-                    Dim brange As Single = Me.m_data.Bbase(igrp) - Me.m_data.Blim(igrp)
-                    If brange <= 0 Then brange = 1.0E-20
-
-                    'VC to JB: I think the Biomass below should be Bestimate instead; talked to Carl and he agrees. will be a double wham, which is OK.
-                    Me.m_data.FTarget(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / brange
-
-                    'constrain the fishing mortality to min and max values. 
-                    'Fmin(igrp) only gets set by the MSEBatchManager for all other runs it must be zero. 
-                    If Me.m_data.FTarget(igrp) < Me.m_data.Fmin(igrp) Then Me.m_data.FTarget(igrp) = Me.m_data.Fmin(igrp)
-                    If Me.m_data.FTarget(igrp) > Me.m_data.Fopt(igrp) Then Me.m_data.FTarget(igrp) = Me.m_data.Fopt(igrp)
-
-                    tQuota(igrp) = Me.m_data.FTarget(igrp) * Me.m_data.Bestimate(igrp)
-
-                End If
-
-                'Add uncertainty to the Quota set above
-                'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
-                'but assume uncertainty is smaller?????? not done here
-                tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
-
-            Next igrp
-
-            'Share the Quota across the fleets for this timestep
-            For iflt = 1 To Me.m_esData.nGear
-                For igrp = 1 To Me.m_data.NGroups
-                    Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
-                Next
-            Next
-
+            Dim tQuota() As Single = Me.m_quotaUpdater.UpdateQuotas(AddressOf Me.RandomNormal)
             Try
                 Me.m_core.PluginManager.MSEUpdateQuotas(Biomass)
             Catch ex As Exception
@@ -2936,6 +2867,16 @@ Namespace MSE
             Next
             Return CSng(X)
         End Function
+
+        ''' <summary>
+        ''' Initializes the internal random number generator with a fixed seed.
+        ''' Intended for unit testing so that quota calculations can be exercised
+        ''' deterministically without launching a full MSE run.
+        ''' </summary>
+        ''' <param name="seed">Seed for the random number generator.</param>
+        Public Sub SeedRandomizer(seed As Integer)
+            Me.m_rndGen = New Random(seed)
+        End Sub
 
 #End Region
 
