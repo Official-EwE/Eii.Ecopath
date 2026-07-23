@@ -276,27 +276,10 @@ Namespace MSE
 
         Public MSEMaxEffort As Single
 
-        ''' <summary>
-        ''' Target fishing mortality rate (F) for the current year, indexed by living group.
-        ''' </summary>
-        ''' <remarks>
-        ''' Recomputed each year by <see cref="MSE.cMSE.UpdateQuotas">cMSE.UpdateQuotas()</see>, where the value
-        ''' depends on the active quota strategy for the group:
-        ''' for Fixed Fishing Mortality it is set to <see cref="FixedF"/>, and for Target Fishing Mortality it is
-        ''' derived from the hockey-stick rule using <c>Fopt</c>, <c>Bestimate</c>, <c>Blim</c> and <c>Bbase</c>,
-        ''' then constrained between <c>Fmin</c> and <c>Fopt</c>. The resulting F is multiplied by the estimated
-        ''' biomass to obtain the group quota.
-        ''' It is also used as the per-group upper bound/constraint on fishing mortality when the linear programming
-        ''' effort solution is applied (see <see cref="MSE.cMSE.RegulateLPEffort"/>).
-        ''' </remarks>
         Public FTarget() As Single
 
-        ''' <summary>
-        ''' When <c>True</c>, fishing effort regulation is solved using the linear programming (LP) solution via
-        ''' <see cref="MSE.cMSE.RegulateLPEffort">RegulateLPEffort()</see> (evaluated at the first month of each year). When <c>False</c>, the standard
-        ''' regulatory reduction of <c>FishRateGear</c> per gear is applied instead.
-        ''' </summary>
         Public UseLPSolution As Boolean
+
         Public CatchYear(,) As Single
         Public EffortYear() As Single
 
