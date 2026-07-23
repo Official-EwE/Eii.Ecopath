@@ -2868,16 +2868,6 @@ Namespace MSE
             Return CSng(X)
         End Function
 
-        ''' <summary>
-        ''' Initializes the internal random number generator with a fixed seed.
-        ''' Intended for unit testing so that quota calculations can be exercised
-        ''' deterministically without launching a full MSE run.
-        ''' </summary>
-        ''' <param name="seed">Seed for the random number generator.</param>
-        Public Sub SeedRandomizer(seed As Integer)
-            Me.m_rndGen = New Random(seed)
-        End Sub
-
 #End Region
 
     End Class

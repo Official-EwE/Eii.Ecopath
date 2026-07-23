@@ -281,13 +281,6 @@ Namespace MSE
             End Get
         End Property
 
-        ''' <summary>Exposes the underlying MSE engine for unit testing of internal calculations.</summary>
-        Public ReadOnly Property MSE As cMSE
-            Get
-                Return Me.m_MSE
-            End Get
-        End Property
-
 #End Region
 
 #Region "Construction Initialization and Running of the model"
