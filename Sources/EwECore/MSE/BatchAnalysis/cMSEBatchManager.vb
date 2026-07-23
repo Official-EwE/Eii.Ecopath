@@ -356,7 +356,8 @@ Namespace MSEBatchManager
 
         Private Sub fireProgress(ob As Object)
             Try
-                Me.m_OnProgressDelegate.Invoke(ob)
+                ' if there is no m_OnProgressDelegate, it will just skip the call and not throw an exception
+                Me.m_OnProgressDelegate?.Invoke(ob)
             Catch ex As Exception
 
             End Try

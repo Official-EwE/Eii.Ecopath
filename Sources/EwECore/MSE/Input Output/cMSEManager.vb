@@ -43,7 +43,8 @@ Namespace MSE
         Private m_search As cSearchDatastructures
         Private m_searchObjective As cSearchObjective
 
-        Private m_Batch As MSEBatchManager.cMSEBatchManager
+        ' MSEBatchManager is still a concept
+        'Private m_Batch As MSEBatchManager.cMSEBatchManager
 
         Private m_MSECallback As MSEProgressDelegate
         Private m_MSYCallback As MSYProgressDelegate
@@ -273,6 +274,13 @@ Namespace MSE
             End Get
         End Property
 
+        ''' <summary>Exposes the underlying MSE data structures for testing and diagnostics.</summary>
+        Public ReadOnly Property MSEData() As cMSEDataStructures
+            Get
+                Return Me.m_MSEdata
+            End Get
+        End Property
+
 #End Region
 
 #Region "Construction Initialization and Running of the model"
@@ -286,7 +294,8 @@ Namespace MSE
             Me.m_MSE = New cMSE(theCore)
             Me.m_MSEdata = data
 
-            Me.m_Batch = New MSEBatchManager.cMSEBatchManager()
+            ' MSEBatchManager is still a concept
+            'Me.m_Batch = New MSEBatchManager.cMSEBatchManager()
 
             'clear out the old data
             Me.m_VarToStat.Clear()
@@ -349,6 +358,10 @@ Namespace MSE
 
         End Sub
 
+        ''' <summary>
+        ''' Will be called whe a user clicks the Run button in the MSE form. This will start a new thread to run the MSE model.
+        ''' </summary>
+        ''' <returns></returns>
         Public Function Run() As Boolean
 
             Try
@@ -545,6 +558,11 @@ Namespace MSE
 
         End Sub
 
+        ''' <summary>
+        ''' This method is called when a new model is loaded. It connects the new cCore instance
+        ''' </summary>
+        ''' <param name="theCore"></param>
+        ''' <returns></returns>
         Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
 
             If (Not Object.ReferenceEquals(Me.m_debug, theCore)) Then
@@ -567,7 +585,8 @@ Namespace MSE
             Me.m_MSE.Init(Me.m_MSEdata, Me.m_core.m_Ecosim, Me.m_core.m_SearchData, Me.m_core.m_EcopathData, Me.m_core.m_TSData, Me.m_core.PluginManager)
 
             'Initialize the Batch manager
-            Me.m_Batch.Init(Me.m_core, Me.m_MSE)
+            ' MSEBatchManager is still a concept
+            ' Me.m_Batch.Init(Me.m_core, Me.m_MSE)
 
             'set CV to the first timestep
             Me.m_MSE.setTime(1, 1)
@@ -633,7 +652,8 @@ Namespace MSE
                 Me.loadInputs()
 
                 'Load the MSE Batch Manager
-                Me.loadBatch()
+                ' MSEBatchManager is still a concept
+                ' Me.loadBatch() 
 
             Catch ex As Exception
 
@@ -823,7 +843,8 @@ Namespace MSE
         Private Function loadBatch() As Boolean
             Dim breturn As Boolean
             Try
-                Me.m_Batch.LoadScenario()
+                ' MSEBatchManager is still a concept
+                'Me.m_Batch.LoadScenario()
 
                 'WARNING: this will overwrite any data loaded by the database
                 'Right now it's used for debugging to load data into the objects
@@ -854,7 +875,8 @@ Namespace MSE
                 Me.m_MSE.Disconnect()
                 Me.m_MSE.Clear()
 
-                Me.m_Batch.Clear()
+                ' MSEBatchManager is still a concept
+                'Me.m_Batch.Clear()
 
                 Me.m_output.Clear()
                 Me.m_parameters.Clear()
@@ -1362,6 +1384,12 @@ Namespace MSE
             MyBase.Finalize()
         End Sub
 
+
+        ''' <summary>
+        ''' Will be called when the user clicks on the Stop run button. This will stop the MSE run and return control to the user. The MSE run will be stopped at the end of the current iteration.
+        ''' </summary>
+        ''' <param name="WaitTimeInMillSec"></param>
+        ''' <returns></returns>
         Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
             Dim result As Boolean = True
 

@@ -523,7 +523,6 @@
   <!-- Use a local project reference when UseProjectReferences is true -->
   <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
     <ProjectReference Include="..\EwECore\EwECore.vbproj" />
-    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
   <!-- Otherwise use a package reference. (EwEUtils and EwEPlugin are referenced by EwEcore) -->
   <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
