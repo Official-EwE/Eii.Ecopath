@@ -55,7 +55,11 @@ public sealed class cMSEQuotaUpdaterTests
             NumFleet = nGear
         };
 
-        var esData = new cEcosimDatastructures { nGear = nGear };
+        var esData = new cEcosimDatastructures
+        {
+            nGear = nGear,
+            Fish1 = new float[numGroups + 1]
+        };
 
         var data = new cMSEDataStructures(epData, esData)
         {
@@ -70,10 +74,33 @@ public sealed class cMSEQuotaUpdaterTests
             CVbiomEst = new float[numGroups + 1],
             FTarget = new float[numGroups + 1],
             Quotashare = new float[nGear + 1, numGroups + 1],
-            QuotaTime = new float[nGear + 1, numGroups + 1]
+            QuotaTime = new float[nGear + 1, numGroups + 1],
+            // Fields read/written by cMSEStockRecruitment during DoAssessment.
+            BestimateLast = new float[numGroups + 1],
+            CatchYearGroup = new float[numGroups + 1],
+            Rmax = new float[numGroups + 1],
+            BhalfT = new float[numGroups + 1],
+            RstockRatio = new float[numGroups + 1],
+            cvRec = new float[numGroups + 1],
+            GstockPred = new float[numGroups + 1],
+            KalmanGain = new float[numGroups + 1]
         };
 
-        var updater = new cMSEQuotaUpdater(data, epData, esData);
+        // BioEstStats is written to as a side effect of StockRecruitment. Wire a
+        // real summary-stats object with a fixed time-step count so AddValue succeeds.
+        var stats = new cMSESummaryStats(
+            data, null, numGroups + 1, 1, eCoreCounterTypes.nGroups, _ => 5);
+        stats.Init();
+        stats.AddIteration();
+        data.BioEstStats = stats;
+
+        var search = new cSearchDatastructures(null, epData)
+        {
+            CatchYearGroup = new float[numGroups + 1]
+        };
+
+        var recruiter = new cMSEStockRecruitment(data, esData, search);
+        var updater = new cMSEQuotaUpdater(data, epData, esData, recruiter);
         return (updater, data);
     }
 
@@ -273,5 +300,80 @@ public sealed class cMSEQuotaUpdaterTests
         tQuota[igrp].Should().BeApproximately(10.0f, Tolerance);
         data.QuotaTime[1, igrp].Should().BeApproximately(7.0f, Tolerance);
         data.QuotaTime[2, igrp].Should().BeApproximately(3.0f, Tolerance);
+    }
+
+    // -----------------------------------------------------------------------
+    // DoAssessment: stock-recruitment biomass estimation (moved from cMSE)
+    // -----------------------------------------------------------------------
+
+    [Fact]
+    public void DoAssessment_KalmanGainOfOne_SetsBestimateToObservedBiomass()
+    {
+        // Arrange
+        const int igrp = 1;
+        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        data.Bestimate[igrp] = 2.0f;      // Blast for the delay-difference model (> 0)
+        data.CVbiomEst[igrp] = 0f;        // ZeroRandom -> Bobs = Biomass, KalmanGain = 1
+        data.Rmax[igrp] = 1f;
+        data.BhalfT[igrp] = 2f;
+        data.RstockRatio[igrp] = 1f;
+        data.cvRec[igrp] = 1f;
+        data.GstockPred[igrp] = 0f;
+        var biomass = new float[] { 0f, 3.0f };
+
+        // Act
+        updater.DoAssessment(biomass, curYear: 1, randomNormal: ZeroRandom);
+
+        // Assert
+        data.Bestimate[igrp].Should().BeApproximately(3.0f, Tolerance);
+        data.KalmanGain[igrp].Should().BeApproximately(1f, Tolerance);
+    }
+
+    [Fact]
+    public void DoAssessment_PartialKalmanGain_BlendsObservationAndPrediction()
+    {
+        // Arrange
+        const int igrp = 1;
+        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        data.Bestimate[igrp] = 2.0f;      // Blast
+        data.CVbiomEst[igrp] = 1f;        // KalmanGain = vPred/(vPred+1) = 0.5
+        data.Rmax[igrp] = 1f;
+        data.BhalfT[igrp] = 2f;           // RstockPred = 1*2/(2+2) = 0.5
+        data.RstockRatio[igrp] = 1f;
+        data.cvRec[igrp] = 1f;            // vPred = 1
+        data.GstockPred[igrp] = 0f;
+        var biomass = new float[] { 0f, 3.0f };
+
+        // Act
+        // Best = 0.5*3 + 0.5*(0*2 + 0.5) = 1.5 + 0.25 = 1.75
+        updater.DoAssessment(biomass, curYear: 1, randomNormal: ZeroRandom);
+
+        // Assert
+        data.Bestimate[igrp].Should().BeApproximately(1.75f, Tolerance);
+        data.KalmanGain[igrp].Should().BeApproximately(0.5f, Tolerance);
+    }
+
+    [Fact]
+    public void DoAssessment_OnlyProcessesLivingGroups()
+    {
+        // Arrange
+        const int living = 1, nonLiving = 2;
+        var (updater, data) = BuildUpdater(numGroups: 2, numLiving: 1, nGear: 1);
+        data.Bestimate[living] = 2.0f;
+        data.Bestimate[nonLiving] = 42.0f; // must stay untouched (index > nLiving)
+        data.CVbiomEst[living] = 0f;
+        data.Rmax[living] = 1f;
+        data.BhalfT[living] = 2f;
+        data.RstockRatio[living] = 1f;
+        data.cvRec[living] = 1f;
+        data.GstockPred[living] = 0f;
+        var biomass = new float[] { 0f, 3.0f, 5.0f };
+
+        // Act
+        updater.DoAssessment(biomass, curYear: 1, randomNormal: ZeroRandom);
+
+        // Assert
+        data.Bestimate[living].Should().BeApproximately(3.0f, Tolerance);
+        data.Bestimate[nonLiving].Should().Be(42.0f);
     }
 }

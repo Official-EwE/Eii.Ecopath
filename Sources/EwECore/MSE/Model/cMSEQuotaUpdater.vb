@@ -13,11 +13,30 @@ Namespace MSE
         Private ReadOnly m_data As cMSEDataStructures
         Private ReadOnly m_epdata As cEcopathDataStructures
         Private ReadOnly m_esData As cEcosimDatastructures
+        Private ReadOnly m_stockRecruitment As cMSEStockRecruitment
 
-        Public Sub New(data As cMSEDataStructures, epdata As cEcopathDataStructures, esData As cEcosimDatastructures)
+        Public Sub New(data As cMSEDataStructures, epdata As cEcopathDataStructures, esData As cEcosimDatastructures, stockRecruitment As cMSEStockRecruitment)
             Me.m_data = data
             Me.m_epdata = epdata
             Me.m_esData = esData
+            Me.m_stockRecruitment = stockRecruitment
+        End Sub
+
+        ''' <summary>
+        ''' Estimate biomass per living group via the stock-recruitment model and store it in <see cref="cMSEDataStructures.Bestimate"/>.
+        ''' </summary>
+        ''' <param name="Biomass">Biomass by group calculated by Ecosim.</param>
+        ''' <param name="curYear">Current MSE year index.</param>
+        ''' <param name="randomNormal">Supplies a normally distributed random number (mean 0, std 1).</param>
+        Public Sub DoAssessment(Biomass() As Single, curYear As Integer, randomNormal As Func(Of Single))
+
+            Dim Bobs() As Single
+            ReDim Bobs(Me.m_epdata.NumGroups)
+            For i As Integer = 1 To Me.m_data.nLiving
+                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * randomNormal()))
+                Me.m_data.Bestimate(i) = Me.m_stockRecruitment.StockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i), curYear)
+            Next i
+
         End Sub
 
         ''' <summary>

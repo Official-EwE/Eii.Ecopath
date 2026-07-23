@@ -137,6 +137,8 @@ Namespace MSE
 
         Private m_quotaUpdater As cMSEQuotaUpdater
 
+        Private m_stockRecruitment As cMSEStockRecruitment
+
         Private m_EconomicData As New cEconomicDataSource
 
         Private m_MSYCallBack As MSYProgressDelegate
@@ -232,7 +234,8 @@ Namespace MSE
             Me.m_pluginManager = PluginManager
             Me.m_refData = RefData
 
-            Me.m_quotaUpdater = New cMSEQuotaUpdater(Me.m_data, Me.m_epdata, Me.m_esData)
+            Me.m_stockRecruitment = New cMSEStockRecruitment(Me.m_data, Me.m_esData, Me.m_Search)
+            Me.m_quotaUpdater = New cMSEQuotaUpdater(Me.m_data, Me.m_epdata, Me.m_esData, Me.m_stockRecruitment)
 
             Me.m_EconomicData = cEconomicDataSource.getInstance()
             Me.m_data.InitForRun()
@@ -1074,7 +1077,7 @@ Namespace MSE
 
                             If Me.BestTime(j) > 0 Then  'have previous biomass estimate for this run
                                 'jb 8-Oct-2010 changed to use the same stock recruitment model as MSE regulatory model
-                                Me.BestTime(j) = Me.stockRecruitment(j, Bbar(j), Best(j), Me.BestTime(j))
+                                Me.BestTime(j) = Me.m_stockRecruitment.StockRecruitment(j, Bbar(j), Best(j), Me.BestTime(j), Me.m_curYear)
                                 'Bp = m_data.GstockPred(j) * BestTime(j) + m_data.RStock0(j)
                                 'BestTime(j) = Bp + m_data.KalmanGain(j) * (Best(j) - Bp)
                             Else
@@ -1624,52 +1627,13 @@ Namespace MSE
 
         End Function
 
-        Private Function stockRecruitment(iGroup As Integer, B As Single, BioEst As Single, Blast As Single) As Single
-            'B is the biomass calculated by Ecosim
-            'BioEst is the observed biomass(Ecosim biomass + random variation)
-            'Blast is the biomass predicted for the last timestep ( Blast = stockRecruitment(t-1) )
-
-            Dim RstockPred As Single
-            Dim vPred As Single
-            Dim Best As Single
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            ' What this correction basically does is to increase the year-to-year Biomass gain factor in the delaydifference model (effective GstockPred by year)
-            ' for situations where F has been reduced relative to ecopath base, and reduce the factor for years when F is higher than ecopath base.  
-            'In the original code, we were just doing a factor reduction based on current F (catchyeargroup/Blast), without correcting relative to the ecopath base value of GstockPred.
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast)) 
-            Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast + Me.m_esData.Fish1(iGroup)))
-            Me.m_data.CatchYearGroup(iGroup) = 0
-
-            RstockPred = CSng(Me.m_data.Rmax(iGroup) * Me.m_data.BestimateLast(iGroup) / (Me.m_data.BhalfT(iGroup) + Me.m_data.BestimateLast(iGroup)))
-            vPred = CSng((Me.m_data.RstockRatio(iGroup) * Me.m_data.cvRec(iGroup)) ^ 2 / (1 - Me.m_data.GstockPred(iGroup) ^ 2))
-            Me.m_data.KalmanGain(iGroup) = CSng(vPred / (vPred + Me.m_data.CVbiomEst(iGroup) ^ 2))
-
-            'and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
-            'VC091107 fixed problem in eq below
-            Best = Me.m_data.KalmanGain(iGroup) * BioEst + (1 - Me.m_data.KalmanGain(iGroup)) * (Me.m_data.GstockPred(iGroup) * Me.m_data.BestimateLast(iGroup) + RstockPred)
-
-            'store the pred/actual
-            Dim val As Single
-            val = Best / B
-            Me.m_data.BioEstStats.AddValue(iGroup, Me.m_curYear, val)
-
-            Return Best
-
-        End Function
-
         ''' <summary>
         ''' Populates Bestimate() and KalmanGain() for regulated fisheries
         ''' </summary>
         ''' <remarks></remarks>
         Friend Sub DoAssessment(Biomass() As Single)
 
-            Dim Bobs() As Single
-            ReDim Bobs(Me.m_epdata.NumGroups)
-            For i As Integer = 1 To Me.m_data.nLiving
-                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal()))
-                Me.m_data.Bestimate(i) = Me.stockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i))
-            Next i
+            Me.m_quotaUpdater.DoAssessment(Biomass, Me.m_curYear, AddressOf Me.RandomNormal)
 
             Try
                 'give the plugins a shot
