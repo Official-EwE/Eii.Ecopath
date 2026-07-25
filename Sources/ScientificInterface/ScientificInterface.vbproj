@@ -1130,6 +1130,12 @@
       <Version>7.0.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Tools\mdb2sqlite\*.exe;..\..\Tools\mdb2sqlite\*.ps1">
+      <Link>mdb2sqlite\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>  
   <!--
     Copies the correct e_sqlite3.dll (SQLitePCLRaw native binary) to the output root.
     Required because System.Data.SQLite 2.x uses SQLitePCLRaw as its native layer, but

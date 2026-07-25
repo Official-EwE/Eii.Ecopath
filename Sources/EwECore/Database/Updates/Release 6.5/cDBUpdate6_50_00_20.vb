@@ -47,7 +47,7 @@ Friend Class cDBUpdate6_50_00_20
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioGroupMigration ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioGroupMigration ADD FOREIGN KEY (GroupID) REFERENCES EcospaceScenarioGroup(GroupID)")
 
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcospaceScenarioGroupMigration")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcospaceScenarioGroupMigration")
 
         ' For each scenario
         '    read depth map

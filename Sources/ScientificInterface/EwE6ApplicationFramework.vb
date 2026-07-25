@@ -6,13 +6,11 @@ Imports System.IO
 Imports System.Reflection
 Imports EwELicense
 Imports EwEUtils.Logging
-Imports EwEUtils.NetUtilities
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Serilog
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
 
 Module EwE6ApplicationFramework
 
@@ -33,11 +31,6 @@ Module EwE6ApplicationFramework
     Public Sub Main()
 
         Dim logPath = Path.GetDirectoryName(LoggingContext.LogFile)
-
-        ' Conditionally start web-socket server to allow web-socket clients to connect
-        If Environment.GetEnvironmentVariable("EWE_ENABLE_WEBSOCKET") = "1" Then
-            'Rik disabled Dim dummy = cWebSocketHelper.Instance
-        End If
 
         ' Configure Serilog
         Log.Logger = New LoggerConfiguration() _

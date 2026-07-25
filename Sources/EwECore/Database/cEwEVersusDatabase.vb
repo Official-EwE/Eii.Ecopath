@@ -87,6 +87,17 @@ Namespace Database
         End Function
 
 
+        Public Overrides Function GetWriter(strTable As String) As IEwEDbWriter
+            Dim accessWriter As IEwEDbWriter = dbAccessDatabase.GetWriter(strTable)
+            Dim efWriter As New cEwEEFDbWriter(dbEfDatabase.GetDbContext(), strTable, m_logger)
+            Dim writer As IEwEDbWriter = New cEwEVersusDbWriter(
+                accessWriter, efWriter, strTable,
+                Function(t) dbEfDatabase.GetDbContext().GetPropTypes(t),
+                m_logger)
+            writer.RefCount += 1
+            Return writer
+        End Function
+
         ' Add methods to compare data retrieval between dbPrimary and dbSecondary as needed
     End Class
 End Namespace

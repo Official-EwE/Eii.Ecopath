@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports System.Drawing
 Imports System.Text
@@ -719,7 +719,7 @@ Namespace Database
         Private Sub ImportModels()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bWithSeason As Boolean = False
             Dim strYear As String = ""
@@ -729,7 +729,7 @@ Namespace Database
             Dim unitTime As eUnitTimeType = 0
 
             ' Clear table
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathModel")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathModel")
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Models] where modelName='{0}'", Me.m_strModelName))
             If reader Is Nothing Then Return
@@ -843,7 +843,7 @@ Namespace Database
             Dim iSequence As Integer = 0
 
             ' Clear table(s)
-            Me.m_dbTarget.Execute("DELETE * FROM Stanza")
+            Me.m_dbTarget.Execute("DELETE FROM Stanza")
 
             readerStanza = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Stanza] where modelName='{0}' ORDER BY StanzaName, Sequence ASC", Me.m_strModelName))
             If readerStanza Is Nothing Then Return
@@ -967,7 +967,7 @@ Namespace Database
         Private Sub ImportEcopathGroups()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim writerPedigree As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim nGroupID As Integer = 1
@@ -982,7 +982,7 @@ Namespace Database
             End If
 
             ' Clear table(s)
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathGroup")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathGroup")
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Group Info] WHERE modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
             If reader Is Nothing Then Return
@@ -1104,7 +1104,7 @@ Namespace Database
 
             Dim reader As IDataReader = Nothing
             Dim readerPred As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim nPreyID As Integer = 0
             Dim nPredatorID As Integer = 0
@@ -1167,7 +1167,7 @@ Namespace Database
 
             Dim strGroupName As String = ""
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim nGroupID As Integer = 0
             Dim drow As DataRow = Nothing
             Dim drowFK As DataRow = Nothing
@@ -1245,13 +1245,13 @@ Namespace Database
         Private Sub ImportGear()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim nFleetID As Integer = 1
             Dim nSequence As Integer = 1 ' Renumber sequence field
 
             ' Clear table(s)
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathFleet")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathFleet")
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Gear] where modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
             If reader Is Nothing Then Return
@@ -1301,7 +1301,7 @@ Namespace Database
         Private Sub ImportCatch()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim drowFK As DataRow = Nothing
             Dim nGroupID As Integer = 0
@@ -1351,7 +1351,7 @@ Namespace Database
         Private Sub ImportCatchCodes()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim drowFK As DataRow = Nothing
             Dim nGroupID As Integer = 0
@@ -1384,7 +1384,7 @@ Namespace Database
         Private Sub ImportDiscardFate()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim nGroupID As Integer = 0
             Dim nFleetID As Integer = 0
@@ -1463,7 +1463,7 @@ Namespace Database
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim lLevels As List(Of Integer) = Nothing
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim varName As eVarNameFlags = eVarNameFlags.NotSet
             Dim strDescription As String = ""
             Dim drow As DataRow = Nothing
@@ -1572,7 +1572,7 @@ Namespace Database
         Private Function ImportEcosim() As Boolean
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim nScenarioID As Integer = 1
@@ -1580,7 +1580,7 @@ Namespace Database
             Dim nMaxForcePoints As Integer = 1200
 
             ' Clear table(s)
-            Me.m_dbTarget.Execute("DELETE * FROM EcosimScenario")
+            Me.m_dbTarget.Execute("DELETE FROM EcosimScenario")
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim] where modelName='{0}'", Me.m_strModelName))
             If reader Is Nothing Then Return False
@@ -1658,7 +1658,7 @@ Namespace Database
         Private Sub ImportEcosimN()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 0
             Dim iGroupID As Integer = 1
@@ -1867,7 +1867,7 @@ Namespace Database
 
             Dim reader As IDataReader = Nothing
             Dim readerEcopath As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 0
             Dim iEcopathFleetID As Integer = 0
@@ -1953,7 +1953,7 @@ Namespace Database
         Private Sub ImportEcosimnShapes()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim readerSub As IDataReader = Nothing
             Dim writerSub As cEwEDatabase.cEwEDbWriter = Nothing
@@ -2161,7 +2161,7 @@ Namespace Database
                                             reader As IDataReader,
                                             Optional bIsSeasonal As Boolean = False) As Integer
 
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
             Dim fsd As New cForcingShapeData()
@@ -2283,7 +2283,7 @@ Namespace Database
                                             reader As IDataReader,
                                             Optional bIsSeasonal As Boolean = False) As Integer
 
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
@@ -2342,7 +2342,7 @@ Namespace Database
         Private Function CreateDummyShape(iShapeID As Integer, shapeDataType As eDataTypes,
                 Optional bIsSeasonal As Boolean = False) As Boolean
 
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim strZScale As String = ""
             Dim strTitle As String = ""
@@ -2427,7 +2427,7 @@ Namespace Database
         Private Sub AssignEcosimScenarioForcingShapes()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim iScenarioID As Integer = 0
             Dim iNutShapeNumber As Integer = 0
@@ -2486,7 +2486,7 @@ Namespace Database
 
             Dim strEcosimScenario As String = ""
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim iEggShape As Integer = 0
             Dim iEggShapeID As Integer = 0
             Dim iHatchShape As Integer = 0
@@ -2496,7 +2496,7 @@ Namespace Database
             Dim iEcosimScenarioID As Integer = 0
             Dim drow As DataRow = Nothing
 
-            Me.m_dbTarget.Execute("DELETE * FROM EcosimStanzaShape")
+            Me.m_dbTarget.Execute("DELETE FROM EcosimStanzaShape")
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT groupName, stanzaName, EggProdShape, HatchCode FROM [Group Stanza] WHERE (modelName='{0}')", Me.m_strModelName))
             If reader Is Nothing Then Return
@@ -2614,7 +2614,7 @@ Namespace Database
         Private Sub ImportEcosimNxN()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim sVul As Single = 0.0!
             Dim sDBVersion As Single = 0.0!
             Dim iScenarioID As Integer = 0
@@ -2741,7 +2741,7 @@ Namespace Database
         Private Sub ImportEcosimNxNInteraction()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             ' Special field values
             Dim iScenarioID As Integer = 0
@@ -2804,7 +2804,7 @@ Namespace Database
         Private Sub ImportTSDatasets()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iDatasetID As Integer = 0
             Dim strDataset As String = ""
@@ -3094,14 +3094,14 @@ Namespace Database
         Private Function ImportEcospaceScenario() As Boolean
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim nScenarioID As Integer = 1
             Dim iEcosimScenarioID As Integer = -1
             Dim depthmap As Single(,) = Nothing
 
             ' Clear table(s)
-            Me.m_dbTarget.Execute("DELETE * FROM EcospaceScenario")
+            Me.m_dbTarget.Execute("DELETE FROM EcospaceScenario")
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace] WHERE modelName='{0}'", Me.m_strModelName))
             If reader Is Nothing Then Return False
@@ -3173,7 +3173,7 @@ Namespace Database
         Private Sub ImportEcospaceHabitats()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 0
             Dim iHabitatID As Integer = 1
@@ -3238,7 +3238,7 @@ Namespace Database
         Private Sub ImportEcospaceMPA()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 1
             Dim nMPAID As Integer = 1
@@ -3290,7 +3290,7 @@ Namespace Database
         Private Sub ImportEcospaceGroups()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim writerSub As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim drowSub As DataRow = Nothing
@@ -3425,7 +3425,7 @@ Namespace Database
 
             Dim reader As IDataReader = Nothing
             Dim readerSub As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 1
             Dim strFlags As String = ""
@@ -3616,7 +3616,7 @@ Namespace Database
 
             Dim reader As IDataReader = Nothing
             Dim readerSub As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim writerSub As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
             Dim dtSub As DataTable = Nothing
@@ -3768,7 +3768,7 @@ Namespace Database
         Private Function ImportEcotracer() As Boolean
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 1
 
@@ -3815,7 +3815,7 @@ Namespace Database
         Private Sub ImportEcotracerN()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 0
             Dim iGroupID As Integer = 0
@@ -3860,7 +3860,7 @@ Namespace Database
         Private Sub ImportQuotes()
 
             Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iScenarioID As Integer = 0
             Dim iGroupID As Integer = 0
@@ -3990,7 +3990,7 @@ Namespace Database
                                      dataTypeSec As eDataTypes,
                                      nIDSec As Integer)
 
-            Dim writer As cEwEDatabase.cEwEDbWriter = Me.m_dbTarget.GetWriter("Auxillary")
+            Dim writer As IEwEDbWriter = Me.m_dbTarget.GetWriter("Auxillary")
             Dim dt As DataTable = Nothing
             Dim key As New cValueID(dataType, nID, varName, dataTypeSec, nIDSec)
             Dim strValueID As String = key.ToString()

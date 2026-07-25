@@ -90,7 +90,7 @@ Friend Class cDBUpdate6_01_00_007
         Dim astrVars() As String = New String() {"Biomass", "PBInput", "QBInput", "DietComp", "Landings"}
         Dim strGroupID As String = "EcopathGroupInput"
         Dim reader As IDataReader = db.GetReader("SELECT * FROM Auxillary")
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcopathGroupPedigree")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcopathGroupPedigree")
         Dim drow As DataRow = Nothing
         Dim bSucces As Boolean = True
 

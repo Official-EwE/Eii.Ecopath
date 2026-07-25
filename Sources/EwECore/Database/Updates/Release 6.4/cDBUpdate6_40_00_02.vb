@@ -62,7 +62,7 @@ Friend Class cDBUpdate6_40_00_02
     Private Function TransferData(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = db.GetReader("SELECT * FROM EcospaceScenarioCapacitDrivers")
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcospaceScenarioCapacityDrivers")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcospaceScenarioCapacityDrivers")
         Dim drow As DataRow = Nothing
         Dim lScenarioID As Long
         Dim lEcopathGroupID As Long

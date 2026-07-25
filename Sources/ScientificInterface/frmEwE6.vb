@@ -4969,6 +4969,29 @@ Public Class frmEwE6
             Dim strFileName As String = CStr(mnuItem.Tag)
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
             Me.LoadEcopathModel(strFileName, eLoadSourceType.MRU)
+            
+            ' Handle access->sqlite conversion
+            Dim dataSourceType As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strFileName)
+            Select Case dataSourceType
+                Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007,
+                     eDataSourceTypes.AccessVsSqlite
+#If DEBUG                    
+                    If dataSourceType = eDataSourceTypes.AccessVsSqlite Then
+                        ' Todo: localize the message
+                        Dim msg As New cFeedbackMessage("Open both Access and Sqlite databases with debug comparison features? Or cancel, to just open the Sqlite one", eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.OK_CANCEL)
+                        Me.Core.Messages.SendMessage(msg)
+                        If msg.Reply = eMessageReply.Cancel Then
+                            Me.LoadEcopathModel(Path.ChangeExtension(strFileName, ".sqlite"), eLoadSourceType.MRU)
+                        End If
+                        cApplicationStatusNotifier.EndProgress(Me.Core)
+                        Return                        
+                    End If                    
+#End If
+                    ' Convert to sqlite
+                    Me.Core.CloseModel()
+                    cMdb2SqliteConverter.ConvertMdbToSqlite(strFileName)
+                    Me.LoadEcopathModel(Path.ChangeExtension(strFileName, ".sqlite"), eLoadSourceType.MRU)
+            End Select
             cApplicationStatusNotifier.EndProgress(Me.Core)
         Catch ex As Exception
             ' Whoah!

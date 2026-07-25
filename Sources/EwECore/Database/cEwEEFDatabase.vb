@@ -245,7 +245,20 @@ Namespace Database
                 reader.PropTypes = GetDbContext().GetPropTypes(DataReaderDiff.GetTableName(reader))
             End If
             Return reader
-        End Function        
+        End Function
+
+        ''' ---------------------------------------------------------------
+        ''' <summary>
+        ''' Returns an EF-backed writer for the given table. Overridden because
+        ''' the base implementation constructs a cEwEDbWriter, which relies on
+        ''' GetAdapter() - and Microsoft.Data.Sqlite has no DbDataAdapter to give it.
+        ''' </summary>
+        ''' ---------------------------------------------------------------
+        Public Overrides Function GetWriter(strTable As String) As IEwEDbWriter
+            Dim writer As IEwEDbWriter = New cEwEEFDbWriter(Me.m_dbContext, strTable, Me.m_logger)
+            writer.RefCount += 1
+            Return writer
+        End Function
 
     End Class
 End Namespace
