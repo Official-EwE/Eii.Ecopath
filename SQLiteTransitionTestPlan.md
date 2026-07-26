@@ -1,9 +1,5 @@
 # SQLite Transition — Test Plan
 
-Items from your original list are kept as-is. Additions/extensions from reviewing
-the migration work are marked **[NEW]**, and existing items I expanded are marked
-**[EXTENDED]** with the addition noted.
-
 ## 1. Database creation & conversion
 
 - Create completely new SQLite database.
@@ -12,24 +8,24 @@ the migration work are marked **[NEW]**, and existing items I expanded are marke
 - Once converted is always converted. Re-opening an Access database should open
   an existing converted SQLite database.
   - Test a re-conversion by removing the existing SQLite file.
-- **[NEW] Test opening an Access database with a *stale/partial* SQLite file
+- **Test opening an Access database with a *stale/partial* SQLite file
   present** (e.g. a previous conversion that crashed or was killed mid-write).
   Confirm whether this is silently treated as "already converted" (opening a
   broken file) or detected and re-converted - this determines whether
   `cDataSourceFactory.GetSupportedType` needs a validity check beyond a bare
   `File.Exists`.
-- **[NEW] Test conversion when the `mdb2sqlite` tool/folder is missing** from
+- **Test conversion when the `mdb2sqlite` tool/folder is missing** from
   the output directory (e.g. incomplete deployment) - confirm a clear error is
   shown rather than a silent failure or crash.
-- **[NEW] Test conversion when the target `.sqlite` file is locked** by another
+- **Test conversion when the target `.sqlite` file is locked** by another
   process (e.g. left open in a SQLite browser) during a re-conversion attempt.
-- **[NEW] Test conversion of a large/complex real-world database** (many
+- **Test conversion of a large/complex real-world database** (many
   groups, fleets, time series, scenarios) - both for correctness and for
   reasonable conversion time.
-- **[NEW] Test conversion of a currently-open Access database** - confirm the
+- **Test conversion of a currently-open Access database** - confirm the
   model is fully closed (and the Access file unlocked) before `mdb2sqlite.exe`
   attempts to read it.
-- **[NEW] Verify the seeded `.sqlite` starter file (`EwE6.sqlite` embedded
+- **Verify the seeded `.sqlite` starter file (`EwE6.sqlite` embedded
   resource) has its `__EFMigrationsHistory` correctly pre-seeded** - creating a
   new database should not attempt to re-run the baseline migration's
   `CREATE TABLE` statements against a schema that's already there.
@@ -38,33 +34,33 @@ the migration work are marked **[NEW]**, and existing items I expanded are marke
 
 - Save opened database to SQLite database.
 - Cannot save to Access format anymore.
-- **[NEW] Save the same model twice in a row without closing/reopening in
+- **Save the same model twice in a row without closing/reopening in
   between**, for every table that uses the delete-and-rewrite save pattern
   (`EcopathDietComp`/`EcopathCatch` and similar). This is a specific regression
   test for the stale-`ChangeTracker`-entity bug found during development -
   confirm no "same primary key"/`UNIQUE constraint` errors on the second save.
-- **[NEW] Save, close the app entirely, reopen, save again** - same intent as
+- **Save, close the app entirely, reopen, save again** - same intent as
   above but across a fresh `DbContext`/process lifetime rather than just
   repeated in-session saves.
-- **[NEW] Kill the app (or pull power) mid-save**, then reopen the database.
+- **Kill the app (or pull power) mid-save**, then reopen the database.
   Confirm the `.sqlite-wal`/`.sqlite-shm` files get correctly replayed/
   checkpointed on next open, and no data is silently lost or the file left
   unopenable.
 
 ## 3. Legacy database update chain
 
-- **[NEW] Open a genuinely old Access database** (several versions behind,
+- **Open a genuinely old Access database** (several versions behind,
   ideally from "Release 6.2 and before") and confirm the full legacy update
   chain (`RunAllUpdates`) still runs correctly end-to-end on the Access side,
   then converts to SQLite afterward at the final version.
-- **[NEW] Confirm `RunAllUpdates` never attempts to run legacy update SQL
+- **Confirm `RunAllUpdates` never attempts to run legacy update SQL
   against a SQLite-backed database** - i.e. `SupportsLegacyDatabaseUpdates()`
   correctly short-circuits for `cEwEEFDatabase`, and correctly substitutes the
   Access sub-database for `cEwEVersusDatabase` (bypassing the EF side).
 - Do Access database updates using different regional settings, including
   `nl_NL`; read the `UpdateLog` table and check if the version numbers are
   correct.
-  - **[EXTENDED]** Also check other tables/columns known to store numeric or
+  - Also check other tables/columns known to store numeric or
     date values written via raw SQL text rather than parameterized queries
     (search for remaining `String.Format(...VALUES...)` patterns), not just
     `UpdateLog.Version` - the fix applied to `SetVersion` doesn't cover every
@@ -80,11 +76,11 @@ the migration work are marked **[NEW]**, and existing items I expanded are marke
   - Test `cEwEVersusDbWriter` by making changes to the model; see if
     comparisons are still equal.
   - Go through all Ecopath screens, do updates, deletion, save the model.
-- **[NEW] Systematically diff every table**, not just the ones touched while
+- **Systematically diff every table**, not just the ones touched while
   clicking through the UI - e.g. a scripted pass that opens a versus-database
   and runs `GetReader("SELECT * FROM <table>")` for every known table, to catch
   a mismatch on a table nobody happened to touch manually during testing.
-- **[NEW] Test the post-commit diff specifically for tables with composite
+- **Test the post-commit diff specifically for tables with composite
   keys** (`EcopathCatch`, `EcopathDietComp`, etc.) - these are the tables most
   likely to reveal key-ordering or matching bugs versus single-key tables.
 
@@ -92,7 +88,7 @@ the migration work are marked **[NEW]**, and existing items I expanded are marke
 
 - Open a SQLite database and go through all Ecopath screens, do updates,
   deletions, save the model.
-- **[NEW] Test the EwEValueChain plugin against a SQLite-backed database.**
+- **Test the EwEValueChain plugin against a SQLite-backed database.**
   This plugin's data model (`cFlowDiagram`, `cUnit`, `cParameters`, etc.) uses
   the `cOOPStorable`/OOP persistence subsystem, which relies on Access/OleDb-
   specific SQL (`ALTER TABLE ADD PRIMARY KEY/FOREIGN KEY`, and an
@@ -107,15 +103,15 @@ the migration work are marked **[NEW]**, and existing items I expanded are marke
   `cDBUpdate6_70_19.vb`?
 - Test if released NuGet `Eii.Ecopath.EwECore` package does not have source
   code embedded.
-- **[NEW] Confirm `<DebugType>`/`<EmbedAllSources>` settings are scoped
+- **Confirm `<DebugType>`/`<EmbedAllSources>` settings are scoped
   correctly per configuration** (Debug vs Release) in the shipped package -
   verify Release builds don't embed source into PDBs if that's not intended.
-- **[NEW] Test the x86 build specifically for the native SQLite binary.**
+- **Test the x86 build specifically for the native SQLite binary.**
   The custom `CopyEsqlite3ToOutputRoot` MSBuild target keys off
   `$(PlatformTarget)`, which may not actually be set to `x86` the way the
   target's condition assumes - verify the correct (`win-x86` vs `win-x64`)
   `e_sqlite3.dll` actually lands in the x86 output folder, not just x64/AnyCPU.
-- **[NEW] Verify `mdb2sqlite.exe`/`.ps1` are actually present in the shipped
+- **Verify `mdb2sqlite.exe`/`.ps1` are actually present in the shipped
   output** under the `mdb2sqlite\` subfolder (per the `.vbproj` copy-to-output
   rule), for both x86 and x64 release builds.
 
@@ -123,7 +119,7 @@ the migration work are marked **[NEW]**, and existing items I expanded are marke
 
 - Test EwECore cross-platform, Linux (shell only) and Windows (from shell,
   from ScientificInterface).
-- **[NEW] Test both net48 (EF6) and net10 (EF Core) builds explicitly for the
+- **Test both net48 (EF6) and net10 (EF Core) builds explicitly for the
   SQLite path.** The EF-side code has real branching between these two targets
   (`Database.Initialize` vs `Database.Migrate`, `Database.Connection` vs
   `Database.GetDbConnection()`, `DbContextTransaction` vs
@@ -142,7 +138,7 @@ the migration work are marked **[NEW]**, and existing items I expanded are marke
     ([commit](https://github.com/Official-EwE/Eii.Ecopath/commit/2562445d84ab4323affe9a3f6413043dda0c2aef))
 - Speed optimalisations
   ([commit](https://github.com/Official-EwE/Eii.Ecopath/commit/879c56ddee00d0a520cbf9aaed1b295e3ea943c9)).
-- **[NEW] Since this release bundles several independent changes (SQLite
+- **Since this release bundles several independent changes (SQLite
   migration, SkiaSharp, logging, speed optimizations), test that these don't
   interact badly with each other** - e.g. confirm the new logging changes
   correctly capture SQLite-path errors (`cEwEEFDatabase`/`cEwEEFDbWriter`'s
@@ -150,16 +146,16 @@ the migration work are marked **[NEW]**, and existing items I expanded are marke
 
 ## 9. Not yet covered above - worth deciding whether in scope
 
-- **[NEW] Performance comparison, Access vs SQLite**, for typical and
+- **Performance comparison, Access vs SQLite**, for typical and
   large models: load time, save time, and the versus-database's post-commit
   diff overhead specifically (since that runs an extra full comparison pass on
   every write while in comparison mode).
-- **[NEW] Concurrent/multi-instance access.** Access's connection strings use
+- **Concurrent/multi-instance access.** Access's connection strings use
   `Mode=Share Exclusive`; confirm what the equivalent expectation is for
   SQLite (WAL mode allows multiple readers + one writer) and whether two app
   instances opening the same `.sqlite` file behave as intended (blocked,
   allowed, or undefined).
-- **[NEW] `Compact`/`SaveAs` behavior for SQLite.** `cEwEEFDatabase.Compact`
+- **`Compact`/`SaveAs` behavior for SQLite.** `cEwEEFDatabase.Compact`
   currently returns `Failed_DeprecatedOperation` and `CanCompact` returns
   `False`. Confirm the UI correctly hides/disables the "Compact" option for
   SQLite-backed databases rather than presenting an action that always fails.
