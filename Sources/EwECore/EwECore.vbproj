@@ -51,7 +51,6 @@
     <None Include="README.md" Pack="True" PackagePath="\" />
     <None Include="..\..\EII_plain_128x128.png" Pack="True" PackagePath="\" />
     <None Include="Includes\*.*" Pack="true" PackagePath="Includes\" />
-    <None Remove="Resources\EwE6.sqlite" />
   </ItemGroup>
 	<ItemGroup>
 		<Import Include="System.Data" />
@@ -174,6 +173,7 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\EwE6.mdb"></EmbeddedResource>
+    <EmbeddedResource Include="Resources\EwE6.sqlite"></EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Includes\Interop.JRO.dll" />

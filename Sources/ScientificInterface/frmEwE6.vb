@@ -3062,12 +3062,10 @@ Public Class frmEwE6
 
         ' JS 27Jul08: Only able to save in current file format (save as between formats not supported by the core)
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
-            Case eDataSourceTypes.Access2003
-                ' Only allow saving as MDB
-                strFileFilter = SharedResources.FILEFILTER_SAVE_MDB
-            Case eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite
-                ' Only allow saving as ACCDB
-                strFileFilter = SharedResources.FILEFILTER_SAVE_ACCDB
+            Case eDataSourceTypes.Sqlite,
+                eDataSourceTypes.AccessVsSqlite ' Note that in this supported type it will write to both the SQLite and Access database
+                ' Only allow saving as SQLite
+                strFileFilter = SharedResources.FILEFILTER_SAVE_SQLITE
             Case Else
                 ' Not supported
                 Debug.Assert(False, "Option should not have been available")
@@ -3103,7 +3101,7 @@ Public Class frmEwE6
         Dim bEnable As Boolean = Me.Core.StateMonitor.HasEcopathLoaded
 
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
-            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite
+            Case eDataSourceTypes.AccessVsSqlite, eDataSourceTypes.Sqlite
                 ' NOP
             Case Else
                 ' Only allow save as when file was opened as MDB or ACCDB since the core does
