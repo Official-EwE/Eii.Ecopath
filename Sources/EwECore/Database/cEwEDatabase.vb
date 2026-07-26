@@ -627,6 +627,25 @@ Namespace Database
 
         Public MustOverride Function MaxDBVersion() As Single
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether this database supports being driven through the
+        ''' legacy cDBUpdate update chain (see cDatabaseUpdater.RunAllUpdates).
+        ''' </summary>
+        ''' <remarks>
+        ''' The legacy update chain was written for, and is only guaranteed to
+        ''' be compatible with, Access/OleDb SQL syntax - several historical
+        ''' updates use statements SQLite does not support (ALTER COLUMN, ADD/
+        ''' DROP CONSTRAINT, ADD PRIMARY KEY/FOREIGN KEY via ALTER TABLE). This
+        ''' defaults to True here so existing (Access) behavior is unchanged;
+        ''' override to return False for any database type that should never
+        ''' have this update chain run against it.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function SupportsLegacyDatabaseUpdates() As Boolean
+            Return True
+        End Function
+
 #End Region ' Compatibility
 
 #Region " Maintenance "
@@ -1253,7 +1272,7 @@ Namespace Database
         ''' <param name="strColumn">The name of the column to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function DropColumn(strTable As String, strColumn As String) As Boolean
+        Public Overridable Function DropColumn(strTable As String, strColumn As String) As Boolean
 
             Dim bSuccess As Boolean = True
 

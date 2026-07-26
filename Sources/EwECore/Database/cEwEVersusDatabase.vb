@@ -15,6 +15,31 @@ Namespace Database
             dbEfDatabase = efDatabase
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the underlying Access database this versus-database wraps,
+        ''' for use by code that needs to explicitly bypass the EF/SQLite side -
+        ''' see cDatabaseUpdater.RunAllUpdates and SupportsLegacyDatabaseUpdates.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Function GetAccessDatabase() As cEwEAccessDatabase
+            Return Me.dbAccessDatabase
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' The legacy update chain is not run against the versus-database
+        ''' itself - cDatabaseUpdater.RunAllUpdates instead substitutes
+        ''' GetAccessDatabase() and runs updates against that directly,
+        ''' bypassing the EF/SQLite side entirely (which does not support the
+        ''' legacy update chain's Access-specific SQL - see
+        ''' cEwEEFDatabase.SupportsLegacyDatabaseUpdates).
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function SupportsLegacyDatabaseUpdates() As Boolean
+            Return False
+        End Function
+
         Public Overrides Function Create(strDatabase As String, strModelName As String, Optional bOverwrite As Boolean = False, Optional format As eDataSourceTypes = eDataSourceTypes.NotSet, Optional strAuthor As String = "") As eDatasourceAccessType
             Dim atResult As eDatasourceAccessType = dbAccessDatabase.Create(strDatabase, strModelName, bOverwrite, format, strAuthor)
             ' Replace extension with .sqlite for EF database
