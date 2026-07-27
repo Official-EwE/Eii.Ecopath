@@ -103,6 +103,16 @@
   `cDBUpdate6_70_19.vb`?
 - Test if released NuGet `Eii.Ecopath.EwECore` package does not have source
   code embedded.
+- **Decide on and test debugging (step-into) support for released NuGet
+  packages.** Confirming Release builds don't embed source (previous bullet)
+  raises the flip side: how do consumers of `Eii.Ecopath.EwECore`/
+  `Eii.Ecopath.Storage` step into that code while debugging their own
+  projects? Options worth evaluating: publishing `.snupkg` symbol packages
+  (with Source Link) to a symbol server, or additionally publishing
+  debug-configuration NuGet packages to an authorized/private NuGet feed
+  specifically for internal debugging use. Whichever approach is chosen,
+  test that stepping into the package's code actually works from a
+  consuming project.
 - **Confirm `<DebugType>`/`<EmbedAllSources>` settings are scoped
   correctly per configuration** (Debug vs Release) in the shipped package -
   verify Release builds don't embed source into PDBs if that's not intended.
