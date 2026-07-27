@@ -24,6 +24,25 @@ Namespace Database
 
     End Class
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Thrown specifically when mdb2sqlite.exe could not download mdbtools-win
+    ''' due to a network failure (exit code 3 - see mdb2sqlite.ps1's own
+    ''' documented exit code convention). Only occurs on a machine's first-ever
+    ''' conversion, since subsequent runs reuse the cached mdbtools-win folder.
+    ''' Lets callers show a specific "internet connection required" message
+    ''' without checking a magic exit code number themselves.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Class cMdb2SqliteNetworkException
+        Inherits cMdb2SqliteConversionException
+
+        Public Sub New(strMessage As String, iExitCode As Integer)
+            MyBase.New(strMessage, iExitCode)
+        End Sub
+
+    End Class
+
 End Namespace
 
 #End If

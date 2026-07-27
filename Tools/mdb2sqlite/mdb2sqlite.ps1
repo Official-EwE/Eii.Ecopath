@@ -7,6 +7,11 @@
     Path to the .mdb or .eweaccdb file to convert.
 .PARAMETER outDatabase
     Path to the output .sqlite file.
+.PARAMETER CleanCache
+    If specified, removes the .Cache folder (downloaded/installed mdbtools,
+    and any leftover conversion.sql/sqlite_error.txt temp files) and exits,
+    without performing a conversion. Use this to force a fresh mdbtools
+    download/install on the next run, or to clean up after troubleshooting.
 .EXAMPLE
     .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
     On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
@@ -19,17 +24,34 @@
     .\mdb2sqlite.ps1 -generateExe
     This is only for Windows users.
     Generates the mdb2sqlite.exe executable from this script.
+.EXAMPLE
+    .\mdb2sqlite.ps1 -CleanCache
+    Removes the .Cache folder and exits.
 .LINK
     https://www.sqlite.org/download.html - Source of SQLite tools
     https://github.com/mdbtools/mdbtools - Source of mdbtools
     https://github.com/mdbtools/mdbtools/tree/dev/doc - Documentation for mdbtools
     https://github.com/lsgunth/mdbtools-win - Windows build of mdbtools
+.NOTES
+    Exit codes:
+      0 - Success.
+      1 - General failure (missing/invalid arguments, missing sqlite3.exe,
+          overwrite declined, sqlite3 import failure).
+      3 - Network failure: unable to download/install mdbtools (Windows:
+          mdbtools-win zip download; Linux: git clone / apt update / apt
+          upgrade / apt install). Requires an internet connection for
+          first-time setup on a given machine (subsequent runs reuse the
+          cached mdbtools installation). On Linux this is only used from the
+          shell directly, so it's mainly for consistency with the Windows
+          behavior and for this documentation, rather than anything checking
+          it programmatically.
 #>
 
 param (
     [string]$inDatabase,
     [string]$outDatabase = $null,
-	[switch]$generateExe    
+	[switch]$generateExe,
+    [switch]$CleanCache
 )
 
 function Show-SimpleError {
@@ -79,8 +101,13 @@ function Install-Mdbtools {
             }
             $zipUrl = 'https://github.com/Official-EwE/mdbtools-win/archive/refs/heads/master.zip'
             $zipPath = Join-Path $cacheFolder 'master.zip'
-            Write-Host "Downloading mdbtools-win master.zip..."
-            Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
+            try {
+                Write-Host "Downloading mdbtools-win master.zip..."
+                Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath -ErrorAction Stop
+            } catch {
+                Show-SimpleError "Unable to download mdbtools-win - an internet connection is required for first-time setup. ($($_.Exception.Message))"
+                exit 3
+            }
             Write-Host "Extracting master.zip..."
             Add-Type -AssemblyName System.IO.Compression.FileSystem
             [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $cacheFolder)
@@ -103,10 +130,26 @@ function Install-Mdbtools {
             # we need to build from source as apt-get version is too old, we need v1.0.1 or later
             Write-Host "mdbtools not found. Installing from source..."
             Remove-Item -Recurse -Force -ErrorAction SilentlyContinue ./.Cache/mdbtools
-            sudo git clone https://github.com/mdbtools/mdbtools.git ./.Cache/mdbtools            
+            sudo git clone https://github.com/mdbtools/mdbtools.git ./.Cache/mdbtools
+            if ($LASTEXITCODE -ne 0) {
+                Show-SimpleError "Unable to clone mdbtools - an internet connection is required for first-time setup."
+                exit 3
+            }
             sudo apt update
+            if ($LASTEXITCODE -ne 0) {
+                Show-SimpleError "Unable to run 'apt update' - an internet connection is required for first-time setup."
+                exit 3
+            }
             sudo apt upgrade -y
-            sudo apt install -y libtool automake autoconf gettext pkg-config bison flex libglib2.0-* make            
+            if ($LASTEXITCODE -ne 0) {
+                Show-SimpleError "Unable to run 'apt upgrade' - an internet connection is required for first-time setup."
+                exit 3
+            }
+            sudo apt install -y libtool automake autoconf gettext pkg-config bison flex libglib2.0-* make
+            if ($LASTEXITCODE -ne 0) {
+                Show-SimpleError "Unable to run 'apt install' - an internet connection is required for first-time setup."
+                exit 3
+            }
             Set-Location ./.Cache/mdbtools
             sudo autoreconf -i -f
             sudo ./configure --disable-dependency-trackingmd
@@ -239,13 +282,17 @@ if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript") {
 
 $scriptFile = Join-Path $scriptDir 'mdb2sqlite.ps1'
 if (-not (Test-Path $scriptFile -PathType Leaf)) {
-    Show-Warning "Warning: $scriptFile does not exist in the current directory. Unable to use Get-Help from exe."
+    Show-Warning "Warning: $scriptFile does not exist in the current directory. -generateExe will not work from here."
 }
 Write-Host "Script dir: $scriptDir"
 
 if ($generateExe) {
     if (-Not ($IsWindows -or ($env:OS -eq 'Windows_NT'))) {
         Show-SimpleError "Error: -generateExe option is only supported on Windows. Found: $env:OS"
+        exit 1
+    }
+    if ($MyInvocation.MyCommand.CommandType -ne "ExternalScript") {
+        Show-SimpleError "Error: -generateExe must be run via the .ps1 script, not the compiled .exe - a running exe cannot overwrite its own file. Use: powershell -ExecutionPolicy Bypass -File `"$scriptFile`" -generateExe"
         exit 1
     }
 	Restore-Ps2Exe
@@ -256,12 +303,19 @@ if ($generateExe) {
     exit 0
 }
 
-Show-Notice "Add command line argument -Help to show the full help"
-if ($args -contains "-Help" -or $args -contains "-?") {
-    Get-Help $scriptFile -Full | Out-String
+if ($CleanCache) {
+    $cacheFolder = Join-Path $scriptDir '.Cache'
+    if (Test-Path $cacheFolder) {
+        Write-Host "Removing $cacheFolder..."
+        Remove-Item -Recurse -Force $cacheFolder
+        Write-Host "Cache cleared."
+    } else {
+        Write-Host "Nothing to clean - $cacheFolder does not exist."
+    }
     exit 0
 }
 
+Show-Notice "Add command line argument -? to show the full help (-? -examples / -? -detailed / -? -full for more). Use -CleanCache to clear the .Cache folder."
 
 $errMsg = $False
 if (-not $inDatabase) {
@@ -275,7 +329,6 @@ if ($inDatabase) {
     }
 }
 if ($errMsg) {
-    Get-Help $scriptFile -Examples | Out-String
     exit 1
 }
 

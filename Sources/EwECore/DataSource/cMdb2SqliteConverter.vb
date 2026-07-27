@@ -17,6 +17,9 @@ Namespace Database
     ''' -----------------------------------------------------------------------
     Public Class cMdb2SqliteConverter
 
+        ''' <summary>Exit code mdb2sqlite.exe uses for "unable to download mdbtools-win due to a network failure" - see mdb2sqlite.ps1's documented exit code convention.</summary>
+        Private Const ExitCode_NetworkFailure As Integer = 3
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Converts an Access database to SQLite by running mdb2sqlite.exe.
@@ -25,7 +28,8 @@ Namespace Database
         ''' </summary>
         ''' <param name="strMdbFilename">Full path to the .mdb/.accdb file to convert.</param>
         ''' <exception cref="FileNotFoundException">The source file or mdb2sqlite.exe itself could not be found.</exception>
-        ''' <exception cref="cMdb2SqliteConversionException">mdb2sqlite.exe exited with a non-zero code, or could not be started.</exception>
+        ''' <exception cref="cMdb2SqliteNetworkException">mdb2sqlite.exe could not download mdbtools-win due to a network failure (first-time setup on this machine only).</exception>
+        ''' <exception cref="cMdb2SqliteConversionException">mdb2sqlite.exe exited with any other non-zero code, or could not be started.</exception>
         ''' -------------------------------------------------------------------
         Public Shared Sub ConvertMdbToSqlite(strMdbFilename As String)
 
@@ -60,7 +64,11 @@ Namespace Database
                 Using proc As Process = Process.Start(psi)
                     proc.WaitForExit()
 
-                    If proc.ExitCode <> 0 Then
+                    If proc.ExitCode = ExitCode_NetworkFailure Then
+                        Throw New cMdb2SqliteNetworkException(
+                            "mdb2sqlite.exe could not download mdbtools-win - an internet connection is required for first-time setup on this machine (see console output above).",
+                            proc.ExitCode)
+                    ElseIf proc.ExitCode <> 0 Then
                         Throw New cMdb2SqliteConversionException(
                             $"mdb2sqlite.exe exited with code {proc.ExitCode} (see console output above)", proc.ExitCode)
                     End If

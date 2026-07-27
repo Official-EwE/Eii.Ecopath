@@ -4967,44 +4967,79 @@ Public Class frmEwE6
             Dim strFileName As String = CStr(mnuItem.Tag)
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
             Me.LoadEcopathModel(strFileName, eLoadSourceType.MRU)
-            
-            ' Handle Access->SQLite conversion
-            Dim dataSourceType As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strFileName)
-            Select Case dataSourceType
-                Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007,
-                     eDataSourceTypes.AccessVsSqlite
 
-                    Dim strSqlitePath As String = Path.ChangeExtension(strFileName, ".sqlite")
+            Me.HandleAccessToSqliteConversion(strFileName)
 
-                    If dataSourceType = eDataSourceTypes.AccessVsSqlite Then
-                        ' A matching .sqlite already exists from a previous
-                        ' conversion - use it directly. No reconversion,
-                        ' regardless of build configuration.
-#If DEBUG
-                        ' Todo: localize the message
-                        Dim msg As New cFeedbackMessage("Open both Access and Sqlite databases with debug comparison features? Or cancel, to just open the Sqlite one", eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.OK_CANCEL)
-                        Me.Core.Messages.SendMessage(msg)
-                        If msg.Reply = eMessageReply.Cancel Then
-                            Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
-                        End If
-                        ' Reply = OK: model was already loaded via the versus-database
-                        ' path above this Select block - nothing further to do here.
-#Else
-                        Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
-#End If
-                        cApplicationStatusNotifier.EndProgress(Me.Core)
-                        Return
-                    End If
-
-                    ' No .sqlite counterpart yet - this is a first-time conversion
-                    Me.Core.CloseModel()
-                    cMdb2SqliteConverter.ConvertMdbToSqlite(strFileName)
-                    Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
-            End Select
             cApplicationStatusNotifier.EndProgress(Me.Core)
         Catch ex As Exception
             ' Whoah!
         End Try
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Handles converting an Access-sourced model to SQLite on first open. If
+    ''' strFileName is not Access-sourced, does nothing. If a SQLite
+    ''' counterpart already exists (AccessVsSqlite), loads it directly - or,
+    ''' in DEBUG builds, offers to keep the already-loaded versus-database
+    ''' model open for comparison instead. Otherwise closes the currently-
+    ''' loaded (Access) model, runs the conversion (retrying on request if it
+    ''' fails due to a network problem), and loads the resulting SQLite file.
+    ''' </summary>
+    ''' <param name="strFileName">The file that was just loaded via MRU.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub HandleAccessToSqliteConversion(strFileName As String)
+
+        Dim dataSourceType As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strFileName)
+        Select Case dataSourceType
+            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007,
+                 eDataSourceTypes.AccessVsSqlite
+
+                Dim strSqlitePath As String = Path.ChangeExtension(strFileName, ".sqlite")
+
+                If dataSourceType = eDataSourceTypes.AccessVsSqlite Then
+                    ' A matching .sqlite already exists from a previous
+                    ' conversion - use it directly. No reconversion,
+                    ' regardless of build configuration.
+#If DEBUG
+                    ' Todo: localize the message
+                    Dim msg As New cFeedbackMessage("Open both Access and Sqlite databases with debug comparison features? Or cancel, to just open the Sqlite one", eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.OK_CANCEL)
+                    Me.Core.Messages.SendMessage(msg)
+                    If msg.Reply = eMessageReply.Cancel Then
+                        Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
+                    End If
+                    ' Reply = OK: model was already loaded via the versus-database
+                    ' path above this Select block - nothing further to do here.
+#Else
+                    Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
+#End If
+                    Return
+                End If
+
+                ' No .sqlite counterpart yet - this is a first-time conversion
+                Me.Core.CloseModel()
+                Dim bConverted As Boolean = False
+                Do
+                    Try
+                        cMdb2SqliteConverter.ConvertMdbToSqlite(strFileName)
+                        bConverted = True
+                    Catch ex As cMdb2SqliteNetworkException
+                        ' Todo: localize the message
+                        If Me.AskFeedback("Converting this database to SQLite requires an internet connection (only needed once, to download the conversion tool). Please connect to the internet, then click OK to retry, or Cancel to stop.",
+                                          eMessageImportance.Warning, eCoreComponentType.External, eMessageReplyStyle.OK_CANCEL) = eMessageReply.Cancel Then
+                            Return
+                        End If
+                        ' Reply = OK: loop back and retry the conversion
+                    Catch ex As Exception
+                        ' Todo: localize the message
+                        Me.AskFeedback($"Failed to convert '{strFileName}' to SQLite: {ex.Message}",
+                                       eMessageImportance.Warning, eCoreComponentType.External, eMessageReplyStyle.OK)
+                        Return
+                    End Try
+                Loop Until bConverted
+                Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
+        End Select
+
     End Sub
 
     Private Sub OnSpatialTempMRUItemClicked(sender As Object, e As System.EventArgs)
