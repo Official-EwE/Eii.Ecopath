@@ -114,6 +114,11 @@
 - **Verify `mdb2sqlite.exe`/`.ps1` are actually present in the shipped
   output** under the `mdb2sqlite\` subfolder (per the `.vbproj` copy-to-output
   rule), for both x86 and x64 release builds.
+- **Check and fix TODOs, search for: "Todo: localize the message"** - several
+  user-facing messages added during the SQLite migration (conversion
+  failures, network-error prompts, etc.) were left as hardcoded English
+  strings with this marker rather than going through the normal
+  localization/resource mechanism.
 
 ## 7. Cross-platform / cross-target
 
