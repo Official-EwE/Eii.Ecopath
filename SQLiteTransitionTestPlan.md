@@ -204,3 +204,12 @@ create or convert to a SQLite file for the first time.
   - Re-run the `__EFMigrationsHistory`-related item in §1 (verifying
     `EwE6.sqlite` doesn't trigger a "table already exists" failure) now that
     there's an actual migration/history to check against.
+  - **Verify `Database.Initialize(True)` on the net48/EF6 side behaves
+    correctly against a file the net10.0 migrator tool has already brought
+    up to date.** Reading `net48\EwEDbContext.cs`, no `Database.SetInitializer`
+    or Migrations configuration is visible for this context, so the default
+    `CreateDatabaseIfNotExists` initializer should just see the file already
+    exists and no-op - but this should be confirmed by actually running it,
+    not assumed from reading the code alone, given the possibility of a
+    `SetInitializer` call or `Seed()` override existing elsewhere in the
+    codebase that hasn't been reviewed here.

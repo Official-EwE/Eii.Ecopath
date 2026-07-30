@@ -18,14 +18,21 @@ Namespace Database
         ' Private helper to ensure DbContext is initialized and migrated
         Private Sub EnsureDbContext(strDatabase As String)
             EwEDbContext.DefaultSQLiteFilePath = strDatabase
+        #If NET48 Then
+            ' net48 cannot run EF Core in-process (Eii.Ecopath.Storage's EwEDbContext
+            ' is net10.0-only there) - shell out to a self-contained net10.0 tool to
+            ' apply any pending migrations BEFORE this process's own EF6 context
+            ' ever touches the file.
+            cSqliteMigrator.MigrateDatabase(strDatabase)
+        #End If
             If m_dbContext Is Nothing Then
                 m_dbContext = New EwEDbContext()
             End If
-#If NET48 Then
+        #If NET48 Then
             m_dbContext.Database.Initialize(True)
-#Else
+        #Else
             m_dbContext.Database.Migrate()
-#End If
+        #End If
         End Sub
 
         Public Function GetDbContext() As EwEDbContext

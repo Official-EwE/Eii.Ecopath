@@ -1136,6 +1136,27 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>  
+  <PropertyGroup>
+    <_MigratorRid Condition="'$(Platform)' == 'x86'">win-x86</_MigratorRid>
+    <_MigratorRid Condition="'$(Platform)' != 'x86'">win-x64</_MigratorRid>
+  </PropertyGroup>
+  <ItemGroup>
+    <!--
+      Copies the self-contained Eii.Ecopath.Storage.Migrator tool (published
+      manually via "dotnet publish -r <rid> ..." - see
+      Tools\Eii.Ecopath.Storage.Migrator\Source) into the migrator\ output
+      subfolder, matching whichever platform this build targets. Used by
+      cSqliteMigrator.vb so net48 can apply pending EF Core migrations to a
+      SQLite database via this separate net10.0 process, since net48 cannot
+      run EF Core (a net10.0-only dependency of Eii.Ecopath.Storage there)
+      in-process. The .pdb is excluded - nothing debugs into this tool
+      directly, so there's no need to ship its symbols.
+    -->
+    <None Include="..\..\Tools\Eii.Ecopath.Storage.Migrator\Publish\$(_MigratorRid)\**\*.*" Exclude="..\..\Tools\Eii.Ecopath.Storage.Migrator\Publish\$(_MigratorRid)\**\*.pdb">
+      <Link>migrator\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <!--
     Copies the correct e_sqlite3.dll (SQLitePCLRaw native binary) to the output root.
     Required because System.Data.SQLite 2.x uses SQLitePCLRaw as its native layer, but
