@@ -36,7 +36,7 @@
       unaware of the very migration ScientificInterface needs applied, or
       apply a newer one ScientificInterface's own EF6 side isn't expecting.
     -->
-    <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.14" />
+    <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.17" />
   </ItemGroup>
 
 </Project>
