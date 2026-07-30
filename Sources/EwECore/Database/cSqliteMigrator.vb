@@ -35,6 +35,36 @@ Namespace Database
         ''' <exception cref="cSqliteMigratorException">The migrator tool ran but exited with a non-zero code, or could not be started.</exception>
         ''' -------------------------------------------------------------------
         Public Shared Sub MigrateDatabase(strSqliteFilename As String)
+            RunMigratorTool(strSqliteFilename)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Marks every migration currently known to Eii.Ecopath.Storage as
+        ''' already-applied in strSqliteFilename's __EFMigrationsHistory table,
+        ''' without running any of their Up() methods.
+        ''' </summary>
+        ''' <remarks>
+        ''' Only valid for a file whose schema is already known to match the
+        ''' latest EF Core model exactly - specifically, a .sqlite file that
+        ''' was JUST produced by converting an Access database via mdb2sqlite.
+        ''' Access databases are always brought fully up to date (via
+        ''' cDatabaseUpdater.RunAllUpdates) before conversion, and mdb2sqlite
+        ''' exports schema+data directly, entirely outside EF - so the result
+        ''' already has the right schema, but no migration history recorded
+        ''' at all. Calling this anywhere else (e.g. an arbitrary existing
+        ''' .sqlite file of unknown provenance) could incorrectly mark
+        ''' migrations as applied that never actually ran.
+        ''' </remarks>
+        ''' <param name="strSqliteFilename">Full path to the freshly-converted .sqlite file.</param>
+        ''' <exception cref="FileNotFoundException">The .sqlite file, or the migrator tool itself, could not be found.</exception>
+        ''' <exception cref="cSqliteMigratorException">The migrator tool ran but exited with a non-zero code, or could not be started.</exception>
+        ''' -------------------------------------------------------------------
+        Public Shared Sub SeedBaseline(strSqliteFilename As String)
+            RunMigratorTool(strSqliteFilename, "--seed-baseline")
+        End Sub
+
+        Private Shared Sub RunMigratorTool(strSqliteFilename As String, Optional strExtraArg As String = "")
 
             If Not File.Exists(strSqliteFilename) Then
                 Throw New FileNotFoundException($"File not found: {strSqliteFilename}", strSqliteFilename)
@@ -48,15 +78,18 @@ Namespace Database
             End If
 
             Dim strSqlitePathEscaped As String = strSqliteFilename.Replace("""", "\""")
+            Dim strArguments As String = $"""{strSqlitePathEscaped}"""
+            If strExtraArg <> "" Then
+                strArguments &= $" {strExtraArg}"
+            End If
 
-            ' Unlike cMdb2SqliteConverter (a one-off, user-initiated action
-            ' where a visible console window is acceptable), this runs
-            ' silently on every database open - a console window popping up
-            ' every time would be jarring. Output is captured instead, so it
-            ' can be included in the exception message on failure.
+            ' Runs silently on every database open/conversion - a console
+            ' window popping up every time would be jarring. Output is
+            ' captured instead, so it can be included in the exception
+            ' message on failure.
             Dim psi As New ProcessStartInfo() With {
                 .FileName = strToolPath,
-                .Arguments = $"""{strSqlitePathEscaped}""",
+                .Arguments = strArguments,
                 .UseShellExecute = False,
                 .RedirectStandardOutput = True,
                 .RedirectStandardError = True,

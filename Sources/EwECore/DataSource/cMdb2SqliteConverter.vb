@@ -79,6 +79,16 @@ Namespace Database
                 Throw New cMdb2SqliteConversionException(ex.Message, -1, ex)
             End Try
 
+            ' The Access database that was just converted is always fully up
+            ' to date (via cDatabaseUpdater.RunAllUpdates) before conversion,
+            ' and mdb2sqlite exports schema+data directly, entirely outside
+            ' EF - so the resulting .sqlite already has the right schema, but
+            ' no __EFMigrationsHistory at all. Seed it as fully baselined
+            ' here, automatically, so every caller gets an immediately
+            ' Migrate()-ready file with no separate step to remember.
+            Dim strSqlitePath As String = Path.ChangeExtension(strMdbFilename, ".sqlite")
+            cSqliteMigrator.SeedBaseline(strSqlitePath)
+
             ' --- Hidden + captured-output alternative (kept for later use) ---
             ' If we later want to run hidden and feed the tool's output into the
             ' app's own status log instead of a visible console window, swap the
