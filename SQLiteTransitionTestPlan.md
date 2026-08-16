@@ -140,6 +140,14 @@
   `Database.GetDbConnection()`, `DbContextTransaction` vs
   `IDbContextTransaction`) - a bug specific to one TFM's EF flavor could easily
   pass testing done only on the other.
+- [ ] **Run a full functional pass on x86, not just x64.** Development so far
+  has mostly happened on x64 - this is broader than the x86 native-binary
+  deployment check in §6 (which only confirms the right `e_sqlite3.dll`
+  lands in the output folder). Actually create/open/save both Access and
+  SQLite databases, run a conversion, and exercise the versus-database
+  comparison mode on an x86 build, since a platform that's barely been run
+  at all could have other, unrelated issues that packaging checks alone
+  wouldn't surface.
 
 ## 8. Other feature areas bundled into this release
 
