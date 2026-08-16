@@ -416,6 +416,7 @@ Public Class frmEwE6
             If (cDataSourceFactory.GetSupportedType(strDB) <> eDataSourceTypes.NotSet) Then
                 ' #Yes: try to open the model
                 Me.LoadEcopathModel(strDB, eLoadSourceType.CommandLine)
+                Me.HandleAccessToSqliteConversion(strDB)
             End If
         End If
 
@@ -1266,9 +1267,10 @@ Public Class frmEwE6
                 Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
                 If files.Length > 0 Then
                     Me.LoadEcopathModel(files(0), eLoadSourceType.User)
+                    Me.HandleAccessToSqliteConversion(files(0))
                 End If
             Catch ex As Exception
-
+                m_logger.LogError(ex, "frmEwE6.OnDragDrop")
             End Try
         End If
         MyBase.OnDragDrop(e)
@@ -3016,6 +3018,9 @@ Public Class frmEwE6
             ' Open the model
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
             Me.LoadEcopathModel(cmdFO.FileName, eLoadSourceType.User)
+
+            Me.HandleAccessToSqliteConversion(cmdFO.FileName)
+
             cApplicationStatusNotifier.EndProgress(Me.Core)
 
         End If

@@ -2,12 +2,19 @@
 
 ## 1. Database creation & conversion
 
-- [ ] Create completely new SQLite database.
-- [ ] Open existing Access database, either 2003 or 2007, to have it converted and
-  opening up a SQLite database.
-- [ ] Once converted is always converted. Re-opening an Access database should open
+- [x] Create completely new SQLite database.
+- Open existing Access database, to have it converted and opening up a SQLite database.
+  - [ ] Access 2003 database 'Open model...'
+  - [ ] Access 2003 database 'Open recent model...'
+  - [ ] Access 2003 database using drag-and-drop
+  - [ ] Access 2003 database by double clicking an Windows opening assocaited EwE
+  - [x] Access 2007 database 'Open model...'  (.eweaccdb)
+  - [x] Access 2007 database 'Open recent model...'  (.eweaccdb)
+  - [x] Access 2007 database using drag-and-drop  (.eweaccdb) 
+  - [] Access 2007 database by double clicking an Windows opening assocaited EwE 
+- [x] Once converted is always converted. Re-opening an Access database should open
   an existing converted SQLite database.
-  - Test a re-conversion by removing the existing SQLite file.
+  (To test a re-conversion, remove the existing SQLite file)
 - [ ] **Test opening an Access database with a *stale/partial* SQLite file
   present** (e.g. a previous conversion that crashed or was killed mid-write).
   Confirm whether this is silently treated as "already converted" (opening a
