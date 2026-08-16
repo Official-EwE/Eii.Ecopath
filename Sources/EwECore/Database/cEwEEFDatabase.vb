@@ -2,7 +2,9 @@
 ' Entity Framework implementation of cEwEDatabase for SQLite/EF
 Imports System.Data
 Imports System.IO
+Imports System.Reflection
 Imports Eii.Ecopath.Storage
+Imports EwECore.DataSources
 Imports EwEUtils.Utilities
 Imports Microsoft.EntityFrameworkCore
 Imports Microsoft.Extensions.Logging
@@ -39,18 +41,84 @@ Namespace Database
             Return m_dbContext
         End Function
 
-        Public Overrides Function Create(strDatabase As String, strModelName As String, Optional bOverwrite As Boolean = False, Optional format As eDataSourceTypes = eDataSourceTypes.NotSet, Optional strAuthor As String = "") As eDatasourceAccessType
-            ' For EF, just set up the SQLite file and context
-            Try
-                If File.Exists(strDatabase) AndAlso Not bOverwrite Then
-                    Return eDatasourceAccessType.Failed_CannotSave
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a new SQLite database, seeded from an embedded starter
+        ''' resource (mirrors cEwEAccessDatabase.Create - EnsureDbContext's
+        ''' Migrate()/Initialize(True) call needs the file to already exist;
+        ''' it does not create a schema from nothing).
+        ''' </summary>
+        ''' <param name="strDatabase">The file name of the .sqlite to create.</param>
+        ''' <param name="strAuthor">Name of the author to assign.</param>
+        ''' <param name="strModelName">Name of the model to use.</param>
+        ''' <param name="bOverwrite">States whether an existing database may be overwritten.</param>
+        ''' <param name="format">Database format type to use. If not set, the
+        ''' database type is deducted from the <paramref name="strDatabase">database</paramref>.</param>
+        ''' <returns>A <see cref="eDatasourceAccessType">eDatasourceAccessType</see> value</returns>
+        ''' <remarks>Note that this will NOT open the newly created database.</remarks>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function Create(strDatabase As String,
+                strModelName As String,
+                Optional bOverwrite As Boolean = False,
+                Optional format As eDataSourceTypes = eDataSourceTypes.NotSet,
+                Optional strAuthor As String = "") As eDatasourceAccessType
+
+            Dim strSource As String = ""
+            Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Success
+
+            If format = eDataSourceTypes.NotSet Then
+                format = cDataSourceFactory.GetSupportedType(strDatabase)
+            End If
+
+            Select Case format
+                Case eDataSourceTypes.Sqlite
+                    strSource = "EwE6.sqlite"
+                Case Else
+                    datResult = eDatasourceAccessType.Failed_UnknownType
+                    m_logger.LogInformation("Create DB: cannot determine format")
+            End Select
+
+            If (datResult = eDatasourceAccessType.Success) Then
+
+                ' Copy the starter resource to strDatabase FIRST - EnsureDbContext's
+                ' Migrate()/Initialize(True) call (via cSqliteMigrator on net48)
+                ' needs the file to already physically exist; it brings an
+                ' existing file up to date, it does not create one from nothing.
+                If cResourceUtils.SaveResourceToFile(strSource, strDatabase, bOverwrite, Assembly.GetExecutingAssembly()) Then
+                    Try
+                        EnsureDbContext(strDatabase)
+                        m_strFileName = strDatabase
+
+                        Me.Execute("UPDATE EcopathModel SET Name = ?, Author = ? WHERE ModelID = 1",
+                                   New Object() {strModelName, strAuthor})
+                        Try
+                            ' Egg - over-easy but slightly obfuscated ;)
+                            If strModelName.ToLower().Contains(cStringUtils.Shift("Dbsm!Xbmufst").ToLower()) Then
+                                Me.Execute("UPDATE EcopathGroup SET GroupName = ? WHERE GroupID = 1",
+                                           New Object() {cStringUtils.Shift("Dijdlfo!tiju")})
+                                Me.Execute("UPDATE EcopathFleet SET FleetName = ? WHERE FleetID = 1",
+                                           New Object() {cStringUtils.Shift("Tfbm!cbtifst")})
+                            End If
+                        Catch ex As Exception
+                            ' Do not let eggs make the pot explode
+                            m_logger.LogError(ex, "Create DB: found a rotten egg: " & ex.Message)
+                        End Try
+
+                        Me.Close()
+                        datResult = eDatasourceAccessType.Success
+
+                    Catch ex As Exception
+                        m_logger.LogError(ex, "Create DB: Exception when updating model name: " & ex.Message)
+                        datResult = eDatasourceAccessType.Failed_Unknown
+                    End Try
+                Else
+                    ' Unable to write to target location
+                    m_logger.LogError("Create DB: Unable to save to target location " & strDatabase)
+                    datResult = eDatasourceAccessType.Failed_CannotSave
                 End If
-                EnsureDbContext(strDatabase)
-                m_strFileName = strDatabase
-                Return eDatasourceAccessType.Success
-            Catch ex As Exception
-                Return eDatasourceAccessType.Failed_Unknown
-            End Try
+            End If
+            Return datResult
+
         End Function
 
         Public Overrides Function SaveAs(strDatabaseTo As String, strModelName As String, Optional bOverwrite As Boolean = False, Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
@@ -296,4 +364,3 @@ Namespace Database
 
     End Class
 End Namespace
-
