@@ -34,11 +34,11 @@ Namespace DataSources
                     Return eDataSourceTypes.EII
 
                 Case ".accdb", ".eweaccdb"
-                    ' check if alongside this file there is a .sqlite file
+                    ' check if alongside this file there is a .ewesqlite file
                     Dim dir As String = Path.GetDirectoryName(strFile)
                     Dim baseName As String = Path.GetFileNameWithoutExtension(strFile)
 
-                    Dim sqliteFile As String = Path.Combine(dir, baseName & ".sqlite")
+                    Dim sqliteFile As String = Path.Combine(dir, baseName & ".ewesqlite")
                     ' Check if sqlite file is present,
                     '   but also check if WebSocket server is running, needed for Access-Sqlite data source comparison,
                     '   otherwise it will be a waist of resources
@@ -54,7 +54,7 @@ Namespace DataSources
                     Else
                         Return eDataSourceTypes.Access2003
                     End If
-                Case ".sqlite"
+                Case ".sqlite", ".ewesqlite"
                     Return eDataSourceTypes.Sqlite
                 Case ".eiixml"
                     Return eDataSourceTypes.EIIXML

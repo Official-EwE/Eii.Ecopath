@@ -30,8 +30,8 @@ Namespace Database
         ''' enumerate pending migrations itself anyway (that information only
         ''' exists in the net10.0 assembly).
         ''' </summary>
-        ''' <param name="strSqliteFilename">Full path to the .sqlite file to migrate.</param>
-        ''' <exception cref="FileNotFoundException">The .sqlite file, or the migrator tool itself, could not be found.</exception>
+        ''' <param name="strSqliteFilename">Full path to the .ewesqlite file to migrate.</param>
+        ''' <exception cref="FileNotFoundException">The .ewesqlite file, or the migrator tool itself, could not be found.</exception>
         ''' <exception cref="cSqliteMigratorException">The migrator tool ran but exited with a non-zero code, or could not be started.</exception>
         ''' -------------------------------------------------------------------
         Public Shared Sub MigrateDatabase(strSqliteFilename As String)
@@ -46,18 +46,18 @@ Namespace Database
         ''' </summary>
         ''' <remarks>
         ''' Only valid for a file whose schema is already known to match the
-        ''' latest EF Core model exactly - specifically, a .sqlite file that
+        ''' latest EF Core model exactly - specifically, a .ewesqlite file that
         ''' was JUST produced by converting an Access database via mdb2sqlite.
         ''' Access databases are always brought fully up to date (via
         ''' cDatabaseUpdater.RunAllUpdates) before conversion, and mdb2sqlite
         ''' exports schema+data directly, entirely outside EF - so the result
         ''' already has the right schema, but no migration history recorded
         ''' at all. Calling this anywhere else (e.g. an arbitrary existing
-        ''' .sqlite file of unknown provenance) could incorrectly mark
+        ''' .ewesqlite file of unknown provenance) could incorrectly mark
         ''' migrations as applied that never actually ran.
         ''' </remarks>
-        ''' <param name="strSqliteFilename">Full path to the freshly-converted .sqlite file.</param>
-        ''' <exception cref="FileNotFoundException">The .sqlite file, or the migrator tool itself, could not be found.</exception>
+        ''' <param name="strSqliteFilename">Full path to the freshly-converted .ewesqlite file.</param>
+        ''' <exception cref="FileNotFoundException">The .ewesqlite file, or the migrator tool itself, could not be found.</exception>
         ''' <exception cref="cSqliteMigratorException">The migrator tool ran but exited with a non-zero code, or could not be started.</exception>
         ''' -------------------------------------------------------------------
         Public Shared Sub SeedBaseline(strSqliteFilename As String)

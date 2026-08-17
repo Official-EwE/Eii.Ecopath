@@ -12,9 +12,23 @@
   - [x] Access 2007 database 'Open recent model...'  (.eweaccdb)
   - [x] Access 2007 database using drag-and-drop  (.eweaccdb) 
   - [] Access 2007 database by double clicking an Windows opening assocaited EwE 
+- Open an existing SQLite database directly (not via Access conversion). Only
+  `.ewesqlite` is OS-associated with EwE - `.sqlite` stays openable for
+  backward/generic compatibility (same relationship as `.eweaccdb` vs
+  `.accdb`), so double-click is only meaningful for `.ewesqlite`.
+  - [ ] `.sqlite` file 'Open model...'
+  - [ ] `.sqlite` file 'Open recent model...'
+  - [ ] `.sqlite` file using drag-and-drop
+  - [ ] `.ewesqlite` file 'Open model...'
+  - [ ] `.ewesqlite` file 'Open recent model...'
+  - [ ] `.ewesqlite` file using drag-and-drop
+  - [ ] `.ewesqlite` file by double clicking a Windows-associated file
 - [x] Once converted is always converted. Re-opening an Access database should open
   an existing converted SQLite database.
   (To test a re-conversion, remove the existing SQLite file)
+  - [ ] Confirm the produced/detected companion file uses `.ewesqlite`, not
+    `.sqlite`, for both Access 2003 (`.mdb`/`.ewemdb`) and Access 2007
+    (`.accdb`/`.eweaccdb`) sources.
 - [ ] **Test opening an Access database with a *stale/partial* SQLite file
   present** (e.g. a previous conversion that crashed or was killed mid-write).
   Confirm whether this is silently treated as "already converted" (opening a
@@ -24,7 +38,7 @@
 - [ ] **Test conversion when the `mdb2sqlite` tool/folder is missing** from
   the output directory (e.g. incomplete deployment) - confirm a clear error is
   shown rather than a silent failure or crash.
-- [ ] **Test conversion when the target `.sqlite` file is locked** by another
+- [ ] **Test conversion when the target `.ewesqlite` file is locked** by another
   process (e.g. left open in a SQLite browser) during a re-conversion attempt.
 - [ ] **Test conversion of a large/complex real-world database** (many
   groups, fleets, time series, scenarios) - both for correctness and for
@@ -35,7 +49,11 @@
 - [ ] **Verify the seeded `.sqlite` starter file (`EwE6.sqlite` embedded
   resource) has its `__EFMigrationsHistory` correctly pre-seeded** - creating a
   new database should not attempt to re-run the baseline migration's
-  `CREATE TABLE` statements against a schema that's already there.
+  `CREATE TABLE` statements against a schema that's already there. (Note:
+  `EwE6.sqlite` itself is expected to keep the plain `.sqlite` extension as
+  an internal embedded resource, regardless of the `.ewesqlite` convention
+  used for user-facing files - see the open question about `.sqlite` support
+  in general before assuming this needs to change too.)
 
 ## 2. Saving
 
@@ -50,9 +68,9 @@
   above but across a fresh `DbContext`/process lifetime rather than just
   repeated in-session saves.
 - [ ] **Kill the app (or pull power) mid-save**, then reopen the database.
-  Confirm the `.sqlite-wal`/`.sqlite-shm` files get correctly replayed/
-  checkpointed on next open, and no data is silently lost or the file left
-  unopenable.
+  Confirm the `.sqlite-wal`/`.sqlite-shm` (or `.ewesqlite-wal`/`.ewesqlite-shm`)
+  files get correctly replayed/checkpointed on next open, and no data is
+  silently lost or the file left unopenable.
 
 ## 3. Legacy database update chain
 
@@ -90,6 +108,11 @@
 - [ ] **Test the post-commit diff specifically for tables with composite
   keys** (`EcopathCatch`, `EcopathDietComp`, etc.) - these are the tables most
   likely to reveal key-ordering or matching bugs versus single-key tables.
+- [ ] Confirm comparison mode is only ever entered via an Access 2007
+  (`.accdb`/`.eweaccdb`) source with an `.ewesqlite` companion - per the
+  `HandleAccessToSqliteConversion` refactor, Access 2003 (`.mdb`/`.ewemdb`)
+  sources should skip reconversion silently without ever offering this
+  Debug prompt.
 
 ## 5. Full UI walkthrough
 
@@ -136,6 +159,11 @@
   failures, network-error prompts, etc.) were left as hardcoded English
   strings with this marker rather than going through the normal
   localization/resource mechanism.
+- [ ] **Confirm the Inno Setup installer registers the `.ewesqlite` file
+  association** (launching `ScientificInterface.exe` on double-click), and
+  explicitly does *not* register a system-wide association for bare
+  `.sqlite` - it should remain openable from within the app without becoming
+  "the default app" for `.sqlite` files in general.
 
 ## 7. Cross-platform / cross-target
 
@@ -183,21 +211,33 @@
 - [ ] **Concurrent/multi-instance access.** Access's connection strings use
   `Mode=Share Exclusive`; confirm what the equivalent expectation is for
   SQLite (WAL mode allows multiple readers + one writer) and whether two app
-  instances opening the same `.sqlite` file behave as intended (blocked,
-  allowed, or undefined).
+  instances opening the same `.sqlite`/`.ewesqlite` file behave as intended
+  (blocked, allowed, or undefined).
 - [ ] **`Compact`/`SaveAs` behavior for SQLite.** `cEwEEFDatabase.Compact`
   currently returns `Failed_DeprecatedOperation` and `CanCompact` returns
   `False`. Confirm the UI correctly hides/disables the "Compact" option for
   SQLite-backed databases rather than presenting an action that always fails.
+- [ ] **Open question: should bare `.sqlite` support be removed entirely,
+  only accepting `.ewesqlite`?** Worth a deliberate decision rather than
+  defaulting either way. Keeping both mirrors the existing `.accdb`/
+  `.eweaccdb` precedent (generic extension stays openable, branded extension
+  is what's produced/associated) - removing `.sqlite` would also mean
+  deciding what happens to the `EwE6.sqlite` embedded starter resource,
+  which is referenced by name throughout `cEwEEFDatabase.Create`, the EF
+  Core scaffolding command, and the migration-seeding tooling. Note that
+  extension-based detection doesn't by itself guarantee a file is actually
+  a valid EwE database either way - if that's the underlying goal, it likely
+  needs actual content/schema validation on open, independent of this
+  decision.
 
 ## 10. Post-migration-setup (groundwork, not yet done)
 
 EF Core migrations haven't actually been set up yet - these are the
 prerequisites that need to exist before the migration-path tests below (or
 the `__EFMigrationsHistory`-related item in §1) can be meaningfully run.
-There are no already-converted user `.sqlite` files to worry about yet - this
-only needs to be right in `EwE6.sqlite` before any release that lets a user
-create or convert to a SQLite file for the first time.
+There are no already-converted user `.sqlite`/`.ewesqlite` files to worry
+about yet - this only needs to be right in `EwE6.sqlite` before any release
+that lets a user create or convert to a SQLite file for the first time.
 
 - [ ] Generate the baseline migration reflecting the current model
   (`dotnet ef migrations add InitialBaseline`).

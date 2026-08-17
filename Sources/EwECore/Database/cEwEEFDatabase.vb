@@ -48,7 +48,7 @@ Namespace Database
         ''' Migrate()/Initialize(True) call needs the file to already exist;
         ''' it does not create a schema from nothing).
         ''' </summary>
-        ''' <param name="strDatabase">The file name of the .sqlite to create.</param>
+        ''' <param name="strDatabase">The file name of the .ewesqlite to create.</param>
         ''' <param name="strAuthor">Name of the author to assign.</param>
         ''' <param name="strModelName">Name of the model to use.</param>
         ''' <param name="bOverwrite">States whether an existing database may be overwritten.</param>

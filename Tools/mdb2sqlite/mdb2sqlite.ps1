@@ -1,12 +1,12 @@
 <#
 .SYNOPSIS
-    Convert .mdb or .eweaccdb files to .sqlite using mdbtools-win.
+    Convert .mdb or .eweaccdb files to .ewesqlite using mdbtools-win.
 .PARAMETER generateExe
 	If specified, generates mdb2sqlite.exe using ps2exe.
 .PARAMETER inDatabase
     Path to the .mdb or .eweaccdb file to convert.
 .PARAMETER outDatabase
-    Path to the output .sqlite file.
+    Path to the output .ewesqlite file.
 .PARAMETER CleanCache
     If specified, removes the .Cache folder (downloaded/installed mdbtools,
     and any leftover conversion.sql/sqlite_error.txt temp files) and exits,
@@ -15,11 +15,11 @@
 .EXAMPLE
     .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
     On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
-    Converts the specified .mdb file to a .sqlite file using the same name but with .sqlite extension.    
+    Converts the specified .mdb file to a .ewesqlite file using the same name but with .ewesqlite extension.    
 .EXAMPLE
-    .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
-    On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
-    Converts the specified .mdb file to a .sqlite file.
+    .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.ewesqlite"
+    On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.ewesqlite"
+    Converts the specified .mdb file to a .ewesqlite file.
 .EXAMPLE
     .\mdb2sqlite.ps1 -generateExe
     This is only for Windows users.
@@ -332,9 +332,9 @@ if ($errMsg) {
     exit 1
 }
 
-# If outDatabase is not set, use inDatabase path with .sqlite extension
+# If outDatabase is not set, use inDatabase path with .ewesqlite extension
 if (-not $outDatabase) {
-    $outDatabase = [System.IO.Path]::ChangeExtension($inDatabase, ".sqlite")
+    $outDatabase = [System.IO.Path]::ChangeExtension($inDatabase, ".ewesqlite")
     Write-Host "Output database not specified. Using: $outDatabase"
 }
 

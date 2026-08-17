@@ -82,11 +82,11 @@ Namespace Database
             ' The Access database that was just converted is always fully up
             ' to date (via cDatabaseUpdater.RunAllUpdates) before conversion,
             ' and mdb2sqlite exports schema+data directly, entirely outside
-            ' EF - so the resulting .sqlite already has the right schema, but
+            ' EF - so the resulting .ewesqlite already has the right schema, but
             ' no __EFMigrationsHistory at all. Seed it as fully baselined
             ' here, automatically, so every caller gets an immediately
             ' Migrate()-ready file with no separate step to remember.
-            Dim strSqlitePath As String = Path.ChangeExtension(strMdbFilename, ".sqlite")
+            Dim strSqlitePath As String = Path.ChangeExtension(strMdbFilename, ".ewesqlite")
             cSqliteMigrator.SeedBaseline(strSqlitePath)
 
             ' --- Hidden + captured-output alternative (kept for later use) ---

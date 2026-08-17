@@ -42,15 +42,15 @@ Namespace Database
 
         Public Overrides Function Create(strDatabase As String, strModelName As String, Optional bOverwrite As Boolean = False, Optional format As eDataSourceTypes = eDataSourceTypes.NotSet, Optional strAuthor As String = "") As eDatasourceAccessType
             Dim atResult As eDatasourceAccessType = dbAccessDatabase.Create(strDatabase, strModelName, bOverwrite, format, strAuthor)
-            ' Replace extension with .sqlite for EF database
-            Dim efDatabasePath As String = System.IO.Path.ChangeExtension(strDatabase, ".sqlite")
+            ' Replace extension with .ewesqlite for EF database
+            Dim efDatabasePath As String = System.IO.Path.ChangeExtension(strDatabase, ".ewesqlite")
             Return atResult And dbEfDatabase.Create(efDatabasePath, "", False, eDataSourceTypes.Sqlite)
         End Function
 
         Public Overrides Function Open(strDatabase As String, Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, Optional bReadOnly As Boolean = False) As eDatasourceAccessType
             Dim atResult As eDatasourceAccessType = dbAccessDatabase.Open(strDatabase, databaseType, bReadOnly)
-            ' Replace extension with .sqlite for EF database
-            Dim efDatabasePath As String = System.IO.Path.ChangeExtension(strDatabase, ".sqlite")
+            ' Replace extension with .ewesqlite for EF database
+            Dim efDatabasePath As String = System.IO.Path.ChangeExtension(strDatabase, ".ewesqlite")
             Return atResult And dbEfDatabase.Open(efDatabasePath, eDataSourceTypes.Sqlite, bReadOnly)
         End Function
 

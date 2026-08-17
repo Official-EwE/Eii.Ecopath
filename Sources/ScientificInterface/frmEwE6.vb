@@ -5000,24 +5000,38 @@ Public Class frmEwE6
             Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007,
                  eDataSourceTypes.AccessVsSqlite
 
-                Dim strSqlitePath As String = Path.ChangeExtension(strFileName, ".sqlite")
+                Dim strSqlitePath As String = Path.ChangeExtension(strFileName, ".ewesqlite")
 
-                If dataSourceType = eDataSourceTypes.AccessVsSqlite Then
-                    ' A matching .sqlite already exists from a previous
-                    ' conversion - use it directly. No reconversion,
-                    ' regardless of build configuration.
+                ' AccessVsSqlite (.accdb/.eweaccdb with an existing companion)
+                ' offers the Debug-only comparison prompt below. Access2003
+                ' (.mdb/.ewemdb) never offers that prompt, regardless of build
+                ' configuration - but still needs to skip reconversion if a
+                ' companion file already exists, checked here directly rather
+                ' than via GetSupportedType (which only returns AccessVsSqlite
+                ' for .accdb/.eweaccdb).
+                Dim bSkipReconversion As Boolean =
+                    (dataSourceType = eDataSourceTypes.AccessVsSqlite) OrElse
+                    (dataSourceType = eDataSourceTypes.Access2003 AndAlso File.Exists(strSqlitePath))
+
+                If bSkipReconversion Then
+                    If dataSourceType = eDataSourceTypes.AccessVsSqlite Then
 #If DEBUG
-                    ' Todo: localize the message
-                    Dim msg As New cFeedbackMessage("Open both Access and Sqlite databases with debug comparison features? Or cancel, to just open the Sqlite one", eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.OK_CANCEL)
-                    Me.Core.Messages.SendMessage(msg)
-                    If msg.Reply = eMessageReply.Cancel Then
+                        ' Todo: localize the message
+                        Dim msg As New cFeedbackMessage("Open both Access and Sqlite databases with debug comparison features? Or cancel, to just open the Sqlite one", eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.OK_CANCEL)
+                        Me.Core.Messages.SendMessage(msg)
+                        If msg.Reply = eMessageReply.Cancel Then
+                            Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
+                        End If
+                        ' Reply = OK: model was already loaded via the versus-database
+                        ' path above this Select block - nothing further to do here.
+#Else
+                        Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
+#End If
+                    Else
+                        ' Access2003 with an existing companion .ewesqlite - just
+                        ' use it directly, no comparison prompt at all, ever.
                         Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
                     End If
-                    ' Reply = OK: model was already loaded via the versus-database
-                    ' path above this Select block - nothing further to do here.
-#Else
-                    Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
-#End If
                     Return
                 End If
 
