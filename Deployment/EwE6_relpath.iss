@@ -121,8 +121,6 @@ Source: "..\LICENSE.txt"; DestDir: "{app}\Resources\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe.config"; DestDir: "{app}"; DestName: "{#MyAppExeName}.config"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win32\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win32\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win64\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win64\"; Flags: ignoreversion
 
 ; - Strange For some reason the Json library is not included with the .net version
 ; - Put it in the app directory
