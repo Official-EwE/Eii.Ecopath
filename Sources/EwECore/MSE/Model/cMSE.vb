@@ -322,7 +322,7 @@ Namespace MSE
 
                 'create a new random number generator for each run
                 'the seed will decide if the sequence is unique or not
-                Me.m_rndGen = New Random(540751723) 'rndSeed)
+                Me.m_rndGen = New Random(rndSeed)
 
                 Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
                 If (ds IsNot Nothing) Then
