@@ -13,6 +13,24 @@ On **Windows**, use the prebuilt `mdb2sqlite.exe`. On **Linux**, run the PowerSh
 
 `sqlite3.exe` for Windows can be downloaded from https://www.sqlite.org/download.html.
 
+> [!WARNING]
+> **Known issue: "...cannot be loaded... is not digitally signed..."**
+>
+> Running `mdb2sqlite.ps1` directly on Windows (e.g. `.\mdb2sqlite.ps1 -generateExe`, or `.\mdb2sqlite.ps1 -inDatabase ...`) may fail with:
+> ```
+> File ...\mdb2sqlite.ps1 cannot be loaded. The file ...\mdb2sqlite.ps1 is not
+> digitally signed. You cannot run this script on the current system.
+> ```
+> This is Windows PowerShell's default execution policy blocking unsigned local scripts - unrelated to this script specifically, and does not affect the prebuilt `mdb2sqlite.exe`. Fix it either:
+> - **Once, for just that invocation:**
+>   ```powershell
+>   powershell -ExecutionPolicy Bypass -File .\mdb2sqlite.ps1 -generateExe
+>   ```
+> - **Permanently, for your user account** (no admin rights needed; applies to this and any other local `.ps1` script going forward):
+>   ```powershell
+>   Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+>   ```
+
 ## Usage
 
 ### Windows — using the `.exe`

@@ -1131,7 +1131,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Tools\mdb2sqlite\*.exe;..\..\Tools\mdb2sqlite\*.ps1">
+    <None Include="..\..\Tools\mdb2sqlite\*.exe">
       <Link>mdb2sqlite\%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
