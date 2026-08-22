@@ -75,14 +75,16 @@
 
 ## 3. Legacy database update chain
 
-- [ ] **Open a genuinely old Access database** (several versions behind,
+- [x] **Open a genuinely old Access database** (several versions behind,
   ideally from "Release 6.2 and before") and confirm the full legacy update
   chain (`RunAllUpdates`) still runs correctly end-to-end on the Access side,
   thesn converts to SQLite afterward at the final version.
-- [ ] **Confirm `RunAllUpdates` never attempts to run legacy update SQL
+- [x] **Confirm `RunAllUpdates` never attempts to run legacy update SQL
   against a SQLite-backed database** - i.e. `SupportsLegacyDatabaseUpdates()`
   correctly short-circuits for `cEwEEFDatabase`, and correctly substitutes the
   Access sub-database for `cEwEVersusDatabase` (bypassing the EF side).
+  => the legacy update will show a dialog if the UpdateLog table is out-of-date but it won't do any migrations
+  => EF migrations need to be make sure to also update the UpdateLog as I did with 6.702
 - [ ] Do Access database updates using different regional settings, including
   `nl_NL`; read the `UpdateLog` table and check if the version numbers are
   correct.
@@ -130,10 +132,12 @@
 
 ## 6. Release / packaging
 
-- [ ] Are `Eii.Ecopath.Storage`, `EwE6.sqlite` up-to-date? Any new updates after
+- [x] Are `Eii.Ecopath.Storage`, `EwE6.sqlite` up-to-date? Any new updates after
   `cDBUpdate6_70_19.vb`?
+  => no need. EF migrations will update it automatically.
+  see **Confirm `RunAllUpdates` never attempts to run legacy update SQL against a SQLite-backed database**
 - [ ] Test if released NuGet `Eii.Ecopath.EwECore` package does not have source
-  code embedded.
+  code embedded. (only the Debug version should have it ??)
 - [ ] **Decide on and test debugging (step-into) support for released NuGet
   packages.** Confirming Release builds don't embed source (previous bullet)
   raises the flip side: how do consumers of `Eii.Ecopath.EwECore`/
@@ -152,7 +156,7 @@
   `$(PlatformTarget)`, which may not actually be set to `x86` the way the
   target's condition assumes - verify the correct (`win-x86` vs `win-x64`)
   `e_sqlite3.dll` actually lands in the x86 output folder, not just x64/AnyCPU.
-- [ ] **Verify `mdb2sqlite.exe`/`.ps1` are actually present in the shipped
+- [ ] **Verify `mdb2sqlite.exe` is actually present in the shipped
   output** under the `mdb2sqlite\` subfolder (per the `.vbproj` copy-to-output
   rule), for both x86 and x64 release builds.
 - [ ] **Check and fix TODOs, search for: "Todo: localize the message"** - several
@@ -168,8 +172,10 @@
 
 ## 7. Cross-platform / cross-target
 
-- [ ] Test EwECore cross-platform, Linux (shell only) and Windows (from shell,
+- [x] Test EwECore cross-platform, Linux (shell only) and Windows (from shell,
   from ScientificInterface).
+  => tested Linux shell using MSP - net10 only
+  => tested ScientificInterface from Windows x64 - net48 only
 - [ ] **Test both net48 (EF6) and net10 (EF Core) builds explicitly for the
   SQLite path.** The EF-side code has real branching between these two targets
   (`Database.Initialize` vs `Database.Migrate`, `Database.Connection` vs
@@ -218,18 +224,6 @@
   currently returns `Failed_DeprecatedOperation` and `CanCompact` returns
   `False`. Confirm the UI correctly hides/disables the "Compact" option for
   SQLite-backed databases rather than presenting an action that always fails.
-- [ ] **Open question: should bare `.sqlite` support be removed entirely,
-  only accepting `.ewesqlite`?** Worth a deliberate decision rather than
-  defaulting either way. Keeping both mirrors the existing `.accdb`/
-  `.eweaccdb` precedent (generic extension stays openable, branded extension
-  is what's produced/associated) - removing `.sqlite` would also mean
-  deciding what happens to the `EwE6.sqlite` embedded starter resource,
-  which is referenced by name throughout `cEwEEFDatabase.Create`, the EF
-  Core scaffolding command, and the migration-seeding tooling. Note that
-  extension-based detection doesn't by itself guarantee a file is actually
-  a valid EwE database either way - if that's the underlying goal, it likely
-  needs actual content/schema validation on open, independent of this
-  decision.
 
 ## 10. Post-migration-setup (groundwork, not yet done)
 
@@ -240,16 +234,16 @@ There are no already-converted user `.sqlite`/`.ewesqlite` files to worry
 about yet - this only needs to be right in `EwE6.sqlite` before any release
 that lets a user create or convert to a SQLite file for the first time.
 
-- [ ] Generate the baseline migration reflecting the current model
+- [x] Generate the baseline migration reflecting the current model
   (`dotnet ef migrations add InitialBaseline`).
-- [ ] Seed `__EFMigrationsHistory` in the `EwE6.sqlite` starter resource file
+- [x] Seed `__EFMigrationsHistory` in the `EwE6.sqlite` starter resource file
   itself, marking `InitialBaseline` as already applied - so
   `Database.Migrate()` doesn't try to re-run `CREATE TABLE` against a schema
   that's already there. Read the exact `MigrationId`/`ProductVersion` values
   from the generated migration rather than hardcoding them, so they can't
   drift out of sync.
 - Once the above exists:
-  - [ ] **Test the EF Core migration path with a dummy migration.** Add a
+  - [x] **Test the EF Core migration path with a dummy migration.** Add a
     trivial, no-op (or otherwise harmless) migration after the baseline, then
     verify that creating a new SQLite database correctly applies it and
     records it in `__EFMigrationsHistory`. This validates the full
@@ -257,10 +251,10 @@ that lets a user create or convert to a SQLite file for the first time.
     without needing a real schema change to test against - i.e. confirms new
     databases don't just get the baseline schema but also pick up whatever
     ships after it.
-  - [ ] Re-run the `__EFMigrationsHistory`-related item in §1 (verifying
+  - [x] Re-run the `__EFMigrationsHistory`-related item in §1 (verifying
     `EwE6.sqlite` doesn't trigger a "table already exists" failure) now that
     there's an actual migration/history to check against.
-  - [ ] **Verify `Database.Initialize(True)` on the net48/EF6 side behaves
+  - [x] **Verify `Database.Initialize(True)` on the net48/EF6 side behaves
     correctly against a file the net10.0 migrator tool has already brought
     up to date.** Reading `net48\EwEDbContext.cs`, no `Database.SetInitializer`
     or Migrations configuration is visible for this context, so the default
