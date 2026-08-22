@@ -184,7 +184,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.10" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.19" />
+    <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.20" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="SkiaSharp" Version="3.119.4" />
   </ItemGroup>
