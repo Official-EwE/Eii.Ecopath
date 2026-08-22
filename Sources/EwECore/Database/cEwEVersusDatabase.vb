@@ -17,6 +17,31 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Closes both wrapped databases. The base cEwEDatabase.Close() only
+        ''' resets a version field and has no knowledge of dbAccessDatabase/
+        ''' dbEfDatabase - without this override, closing a versus-database
+        ''' left both connections (in particular the Access/OleDb one, with
+        ''' its exclusive file lock) open indefinitely, causing a spurious
+        ''' "already open" error the next time the same Access file was
+        ''' opened again.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub Close()
+            Try
+                dbAccessDatabase?.Close()
+            Catch ex As Exception
+                m_logger.LogError(ex, "cEwEVersusDatabase.Close(): failed to close the Access database")
+            End Try
+            Try
+                dbEfDatabase?.Close()
+            Catch ex As Exception
+                m_logger.LogError(ex, "cEwEVersusDatabase.Close(): failed to close the EF/SQLite database")
+            End Try
+            MyBase.Close()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Returns the underlying Access database this versus-database wraps,
         ''' for use by code that needs to explicitly bypass the EF/SQLite side -
         ''' see cDatabaseUpdater.RunAllUpdates and SupportsLegacyDatabaseUpdates.

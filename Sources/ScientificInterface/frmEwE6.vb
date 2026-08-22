@@ -415,8 +415,7 @@ Public Class frmEwE6
             ' #Yes: is compatible?
             If (cDataSourceFactory.GetSupportedType(strDB) <> eDataSourceTypes.NotSet) Then
                 ' #Yes: try to open the model
-                Me.LoadEcopathModel(strDB, eLoadSourceType.CommandLine)
-                Me.HandleAccessToSqliteConversion(strDB)
+                Me.LoadEcopathModelHandlingConversion(strDB, eLoadSourceType.CommandLine)
             End If
         End If
 
@@ -1266,8 +1265,7 @@ Public Class frmEwE6
             Try
                 Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
                 If files.Length > 0 Then
-                    Me.LoadEcopathModel(files(0), eLoadSourceType.User)
-                    Me.HandleAccessToSqliteConversion(files(0))
+                    Me.LoadEcopathModelHandlingConversion(files(0), eLoadSourceType.User)
                 End If
             Catch ex As Exception
                 m_logger.LogError(ex, "frmEwE6.OnDragDrop")
@@ -3017,10 +3015,7 @@ Public Class frmEwE6
 
             ' Open the model
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
-            Me.LoadEcopathModel(cmdFO.FileName, eLoadSourceType.User)
-
-            Me.HandleAccessToSqliteConversion(cmdFO.FileName)
-
+            Me.LoadEcopathModelHandlingConversion(cmdFO.FileName, eLoadSourceType.User)
             cApplicationStatusNotifier.EndProgress(Me.Core)
 
         End If
@@ -4971,10 +4966,7 @@ Public Class frmEwE6
             Dim mnuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
             Dim strFileName As String = CStr(mnuItem.Tag)
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
-            Me.LoadEcopathModel(strFileName, eLoadSourceType.MRU)
-
-            Me.HandleAccessToSqliteConversion(strFileName)
-
+            Me.LoadEcopathModelHandlingConversion(strFileName, eLoadSourceType.MRU)
             cApplicationStatusNotifier.EndProgress(Me.Core)
         Catch ex As Exception
             ' Whoah!
@@ -4993,49 +4985,67 @@ Public Class frmEwE6
     ''' </summary>
     ''' <param name="strFileName">The file that was just loaded via MRU.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub HandleAccessToSqliteConversion(strFileName As String)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Loads an Ecopath model, transparently redirecting Access-sourced files
+    ''' to their SQLite companion (converting first if none exists yet).
+    ''' Determines this upfront, before any load is attempted, rather than
+    ''' opening the Access file first and then closing/reopening the SQLite
+    ''' one afterward - so when a companion is already known to exist, the
+    ''' Access file is never opened at all (except deliberately, when Debug
+    ''' comparison mode is requested).
+    ''' </summary>
+    ''' <param name="strFileName">The file to open, as selected/dragged/passed by the caller.</param>
+    ''' <param name="loadsource">Where this load request came from.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub LoadEcopathModelHandlingConversion(strFileName As String, loadsource As eLoadSourceType)
 
         Dim dataSourceType As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strFileName)
+
         Select Case dataSourceType
-            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007,
-                 eDataSourceTypes.AccessVsSqlite
+
+            Case eDataSourceTypes.AccessVsSqlite
+
+                Dim strSqlitePath As String = Path.ChangeExtension(strFileName, ".ewesqlite")
+#If DEBUG
+                ' Todo: localize the message
+                Dim msg As New cFeedbackMessage("Open both Access and Sqlite databases with debug comparison features? Or cancel, to just open the Sqlite one", eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.OK_CANCEL)
+                Me.Core.Messages.SendMessage(msg)
+                If msg.Reply = eMessageReply.Cancel Then
+                    Me.LoadEcopathModel(strSqlitePath, loadsource)
+                Else
+                    ' Only now, having deliberately asked for comparison mode,
+                    ' do we actually open the Access file at all.
+                    Me.LoadEcopathModel(strFileName, loadsource)
+                End If
+#Else
+                ' A companion already exists - go straight to it. The Access
+                ' file is never opened at all in a Release build.
+                Me.LoadEcopathModel(strSqlitePath, loadsource)
+#End If
+
+            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
 
                 Dim strSqlitePath As String = Path.ChangeExtension(strFileName, ".ewesqlite")
 
-                ' AccessVsSqlite (.accdb/.eweaccdb with an existing companion)
-                ' offers the Debug-only comparison prompt below. Access2003
-                ' (.mdb/.ewemdb) never offers that prompt, regardless of build
-                ' configuration - but still needs to skip reconversion if a
-                ' companion file already exists, checked here directly rather
-                ' than via GetSupportedType (which only returns AccessVsSqlite
-                ' for .accdb/.eweaccdb).
-                Dim bSkipReconversion As Boolean =
-                    (dataSourceType = eDataSourceTypes.AccessVsSqlite) OrElse
-                    (dataSourceType = eDataSourceTypes.Access2003 AndAlso File.Exists(strSqlitePath))
-
-                If bSkipReconversion Then
-                    If dataSourceType = eDataSourceTypes.AccessVsSqlite Then
-#If DEBUG
-                        ' Todo: localize the message
-                        Dim msg As New cFeedbackMessage("Open both Access and Sqlite databases with debug comparison features? Or cancel, to just open the Sqlite one", eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.OK_CANCEL)
-                        Me.Core.Messages.SendMessage(msg)
-                        If msg.Reply = eMessageReply.Cancel Then
-                            Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
-                        End If
-                        ' Reply = OK: model was already loaded via the versus-database
-                        ' path above this Select block - nothing further to do here.
-#Else
-                        Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
-#End If
-                    Else
-                        ' Access2003 with an existing companion .ewesqlite - just
-                        ' use it directly, no comparison prompt at all, ever.
-                        Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
-                    End If
+                ' Access2003 (.mdb/.ewemdb) never offers the Debug comparison
+                ' prompt, regardless of build configuration - GetSupportedType
+                ' only ever returns AccessVsSqlite for .accdb/.eweaccdb, so the
+                ' companion check for .mdb/.ewemdb has to happen here directly.
+                If File.Exists(strSqlitePath) Then
+                    Me.LoadEcopathModel(strSqlitePath, loadsource)
                     Return
                 End If
 
-                ' No .sqlite counterpart yet - this is a first-time conversion
+                ' No companion yet - this is a first-time conversion. Open
+                ' the Access database first, same as a normal Access open -
+                ' this is what triggers the legacy update chain
+                ' (Core.LoadModel -> UpdateDatasource -> RunAllUpdates),
+                ' bringing it fully up to date. This step cannot be skipped:
+                ' cSqliteMigrator.SeedBaseline assumes the Access source is
+                ' always already at the latest version before conversion.
+                If Not Me.LoadEcopathModel(strFileName, loadsource) Then Return
+
                 Me.Core.CloseModel()
                 Dim bConverted As Boolean = False
                 Do
@@ -5056,7 +5066,13 @@ Public Class frmEwE6
                         Return
                     End Try
                 Loop Until bConverted
-                Me.LoadEcopathModel(strSqlitePath, eLoadSourceType.MRU)
+                Me.LoadEcopathModel(strSqlitePath, loadsource)
+
+            Case Else
+                ' Not Access-related at all (already SQLite, EII, etc.) -
+                ' load as-is, no redirection needed.
+                Me.LoadEcopathModel(strFileName, loadsource)
+
         End Select
 
     End Sub
