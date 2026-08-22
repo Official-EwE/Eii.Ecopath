@@ -2481,6 +2481,7 @@ Public Class cEIIXMLDataSource
             ecospaceDS.NoFishWeight = Me.ReadSafe(drow, "NoFishWeight", 0.3!)
             ecospaceDS.PenPow = Me.ReadSafe(drow, "PenaltyPower", 10.0!)
             ecospaceDS.FirstPenaltyMonth = Me.ReadSafe(drow, "FirstPenaltyMonth", 60)
+            ecospaceDS.EffortRelaxationWeight = Me.ReadSafe(drow, "EffortRelaxationWeight", 0.9!)
             ecospaceDS.UseHabCapGradientCorrections = (CByte(Me.ReadSafe(drow, "UseHabCapGradientCorrections", 1)) <> 0)
 
             stanzaDS.NPacketsMultiplier = CSng(drow("NumPacketsMultiplier"))

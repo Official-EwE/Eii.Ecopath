@@ -96,7 +96,7 @@
     <DocumentationFile>EwECore.xml</DocumentationFile>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="Interop.JRO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=1d875393b3ebcad0, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.interop.access.dao, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
     <Reference Update="System">
@@ -181,7 +181,9 @@
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.10" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.17" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="SkiaSharp" Version="3.119.4" />
@@ -194,7 +196,14 @@
     <Compile Remove="Shapes\TimeSeries\Readers\cTimeSeriesClipboardReader.vb" />
     <Compile Remove="Validators\cValidatorOutput.vb" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <!-- JRO and DAO COM interop types are not available outside of .NET Framework -->
+    <Compile Remove="Database\Compact\cCompactJRO.vb" />
+    <Compile Remove="Database\Compact\cCompactDAO.vb" />
+    <!-- System.Web.Services.Protocols is not available outside of .NET Framework -->
+    <Compile Remove="EcoBase\cEcoBaseWDSL.vb" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9">
           <PrivateAssets>none</PrivateAssets>
       </PackageReference>
@@ -227,8 +236,8 @@
   <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
-  <!-- Otherwise use a package reference.  -->
-  <ItemGroup>
+  <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
+      <!-- Otherwise use a package reference.  -->
     <PackageReference Include="Eii.Ecopath.EwEUtils" Version="6.7.*" />
   </ItemGroup>
 </Project>

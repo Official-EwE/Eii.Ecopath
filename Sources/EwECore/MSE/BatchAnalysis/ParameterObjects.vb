@@ -221,7 +221,7 @@ Namespace MSECommandFile
 
                 If (String.Compare(values(0), Me.Tag) = 0) Then
                     'Data
-                    Me.m_data = values(1)
+                    Me.m_data = values(1).Trim()
                     Return True
                 End If
 
