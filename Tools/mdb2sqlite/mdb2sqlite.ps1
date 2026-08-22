@@ -173,6 +173,7 @@ function Install-Sqlite {
             Show-SimpleError "sqlite.exe not found in $scriptDir. Please download sqlite.exe and place it in the script directory."
             exit 1
         }
+        return $sqliteExe
     } else { # Non-Windows (assuming Linux-based and supporting "apt"  so Ubuntu/Debian)
         Write-Host "Detected Linux. Checking for sqlite3..."
         $sqliteInstalled = $null -ne (Get-Command sqlite3 -ErrorAction SilentlyContinue)
@@ -183,6 +184,8 @@ function Install-Sqlite {
         } else {
             Write-Host "sqlite3 is already installed."
         }
+        # Already installed system-wide via apt - resolvable by bare name.
+        return "sqlite3"
     }    
 }
 
@@ -194,7 +197,7 @@ function Convert-MdbToSqlite {
     )
 
     Install-Mdbtools -scriptDir $scriptDir
-    Install-Sqlite -scriptDir $scriptDir
+    $sqliteExe = Install-Sqlite -scriptDir $scriptDir
 
     $cacheFolder = Join-Path $scriptDir '.Cache'
     $conversionSql = Join-Path $cacheFolder 'conversion.sql'
@@ -253,15 +256,43 @@ function Convert-MdbToSqlite {
 
     Write-Host "Creating SQLite database and importing data..."
     $errorFile = Join-Path $cacheFolder 'sqlite_error.txt'
-    if ($IsWindows -or $env:OS -eq 'Windows_NT') {
-        $importCmd = "cmd /c `"sqlite3 `"`"$outDatabase`"`" < `"`"$conversionSql`"`" 2> `"`"$errorFile`"`" `" "
-    } else {
-        $importCmd = "/bin/bash -c 'sqlite3 `"$outDatabase`" < `"$conversionSql`" 2> `"$errorFile`"'"
+
+    # Invoke sqlite3 directly via .NET's Process class, with the SQL file's
+    # raw bytes piped straight into its stdin. Deliberately NOT built as a
+    # "cmd /c `"...`" < ... 2> ..." string run through Invoke-Expression:
+    # such a string has to survive being parsed twice (first by PowerShell
+    # itself, then by cmd.exe/bash) using two different, incompatible
+    # quoting conventions - it only ever worked by coincidence for simple
+    # unquoted values, and broke the moment a path needing its own quotes
+    # (sqlite3's own full path) was introduced alongside another. Piping
+    # raw bytes directly also avoids any text-encoding mismatch between
+    # however conversion.sql was written and however a re-typed string
+    # would have been re-encoded.
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $sqliteExe
+    $psi.Arguments = "`"$outDatabase`""
+    $psi.RedirectStandardInput = $true
+    $psi.RedirectStandardError = $true
+    $psi.UseShellExecute = $false
+    $psi.CreateNoWindow = $true
+
+    Write-Host "Running: `"$sqliteExe`" `"$outDatabase`" < `"$conversionSql`""
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $psi
+    $process.Start() | Out-Null
+
+    $inputStream = [System.IO.File]::OpenRead($conversionSql)
+    try {
+        $inputStream.CopyTo($process.StandardInput.BaseStream)
+    } finally {
+        $inputStream.Close()
+        $process.StandardInput.Close()
     }
 
-    Write-Host "Running: $importCmd"    
-    Invoke-Expression $importCmd
-    $errorText = if (Test-Path $errorFile) { Get-Content $errorFile -Raw } else { '' }
+    $errorText = $process.StandardError.ReadToEnd()
+    $process.WaitForExit()
+    if ($errorText) { Set-Content -Path $errorFile -Value $errorText }
+
     if ($errorText) {
         Show-SimpleError "sqlite3 import failed: $errorText"
         exit 1
