@@ -5066,6 +5066,10 @@ Public Class frmEwE6
                         Return
                     End Try
                 Loop Until bConverted
+                If bConverted Then
+                    ' Todo: localize the message
+                    Me.SendMessage($"Successfully converted '{strFileName}' to SQLite", eMessageImportance.Information)
+                End If
                 Me.LoadEcopathModel(strSqlitePath, loadsource)
 
             Case Else
