@@ -11,22 +11,23 @@
   - [x] Access 2007 database 'Open model...'  (.eweaccdb)
   - [x] Access 2007 database 'Open recent model...'  (.eweaccdb)
   - [x] Access 2007 database using drag-and-drop  (.eweaccdb) 
-  - [] Access 2007 database by double clicking an Windows opening assocaited EwE 
+  - [x] Access 2007 database by double clicking an Windows opening assocaited EwE
+- [x] Test re-opening an model
 - Open an existing SQLite database directly (not via Access conversion). Only
   `.ewesqlite` is OS-associated with EwE - `.sqlite` stays openable for
   backward/generic compatibility (same relationship as `.eweaccdb` vs
   `.accdb`), so double-click is only meaningful for `.ewesqlite`.
-  - [ ] `.sqlite` file 'Open model...'
-  - [ ] `.sqlite` file 'Open recent model...'
-  - [ ] `.sqlite` file using drag-and-drop
-  - [ ] `.ewesqlite` file 'Open model...'
-  - [ ] `.ewesqlite` file 'Open recent model...'
-  - [ ] `.ewesqlite` file using drag-and-drop
-  - [ ] `.ewesqlite` file by double clicking a Windows-associated file
+  - [x] `.sqlite` file 'Open model...'
+  - [x] `.sqlite` file 'Open recent model...'
+  - [x] `.sqlite` file using drag-and-drop
+  - [x] `.ewesqlite` file 'Open model...'
+  - [x] `.ewesqlite` file 'Open recent model...'
+  - [x] `.ewesqlite` file using drag-and-drop
+  - [x] `.ewesqlite` file by double clicking a Windows-associated file
 - [x] Once converted is always converted. Re-opening an Access database should open
   an existing converted SQLite database.
   (To test a re-conversion, remove the existing SQLite file)
-  - [ ] Confirm the produced/detected companion file uses `.ewesqlite`, not
+  - [x] Confirm the produced/detected companion file uses `.ewesqlite`, not
     `.sqlite`, for both Access 2003 (`.mdb`/`.ewemdb`) and Access 2007
     (`.accdb`/`.eweaccdb`) sources.
 - [ ] **Test opening an Access database with a *stale/partial* SQLite file
@@ -77,7 +78,7 @@
 - [ ] **Open a genuinely old Access database** (several versions behind,
   ideally from "Release 6.2 and before") and confirm the full legacy update
   chain (`RunAllUpdates`) still runs correctly end-to-end on the Access side,
-  then converts to SQLite afterward at the final version.
+  thesn converts to SQLite afterward at the final version.
 - [ ] **Confirm `RunAllUpdates` never attempts to run legacy update SQL
   against a SQLite-backed database** - i.e. `SupportsLegacyDatabaseUpdates()`
   correctly short-circuits for `cEwEEFDatabase`, and correctly substitutes the
