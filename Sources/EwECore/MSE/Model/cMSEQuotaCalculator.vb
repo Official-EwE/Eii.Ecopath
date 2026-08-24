@@ -8,7 +8,7 @@ Namespace MSE
     ''' Computes the yearly MSE quota per group and shares it across fleets.
     ''' Extracted from <see cref="cMSE"/> and free of any core/plugin dependency.
     ''' </summary>
-    Public Class cMSEQuotaUpdater
+    Public Class cMSEQuotaCalculator
 
         Private ReadOnly m_data As cMSEDataStructures
         Private ReadOnly m_epdata As cEcopathDataStructures

@@ -135,7 +135,7 @@ Namespace MSE
         Private m_orgPredictEffort As Boolean
         Private m_orgUsePlugin As Boolean = False
 
-        Private m_quotaUpdater As cMSEQuotaUpdater
+        Private m_quotaCalculator As cMSEQuotaCalculator
 
         Private m_stockRecruitment As cMSEStockRecruitment
 
@@ -235,7 +235,7 @@ Namespace MSE
             Me.m_refData = RefData
 
             Me.m_stockRecruitment = New cMSEStockRecruitment(Me.m_data, Me.m_esData, Me.m_Search)
-            Me.m_quotaUpdater = New cMSEQuotaUpdater(Me.m_data, Me.m_epdata, Me.m_esData, Me.m_stockRecruitment)
+            Me.m_quotaCalculator = New cMSEQuotaCalculator(Me.m_data, Me.m_epdata, Me.m_esData, Me.m_stockRecruitment)
 
             Me.m_EconomicData = cEconomicDataSource.getInstance()
             Me.m_data.InitForRun()
@@ -1633,7 +1633,7 @@ Namespace MSE
         ''' <remarks></remarks>
         Friend Sub DoAssessment(Biomass() As Single)
 
-            Me.m_quotaUpdater.DoAssessment(Biomass, Me.m_curYear, AddressOf Me.RandomNormal)
+            Me.m_quotaCalculator.DoAssessment(Biomass, Me.m_curYear, AddressOf Me.RandomNormal)
 
             Try
                 'give the plugins a shot
@@ -1654,7 +1654,7 @@ Namespace MSE
         ''' </remarks>
         Public Sub UpdateQuotas(Biomass() As Single)
 
-            Dim tQuota() As Single = Me.m_quotaUpdater.UpdateQuotas(AddressOf Me.RandomNormal)
+            Dim tQuota() As Single = Me.m_quotaCalculator.UpdateQuotas(AddressOf Me.RandomNormal)
             Try
                 Me.m_core.PluginManager.MSEUpdateQuotas(Biomass)
             Catch ex As Exception

@@ -2,14 +2,13 @@
 // This file is part of Ecopath with Ecosim (EwE).
 // Copyright © 1991– Ecopath International Initiative (EII)
 
-using EwECore;
 using EwECore.MSE;
 using FluentAssertions;
 
 namespace EwECore.Tests.MSE;
 
 /// <summary>
-/// Pure unit tests for <see cref="cMSEQuotaUpdater"/>.
+/// Pure unit tests for <see cref="cMSEQuotaCalculator"/>.
 /// <para>
 /// The updater is exercised in isolation: minimal <c>cEcopathDataStructures</c>,
 /// <c>cEcosimDatastructures</c> and <c>cMSEDataStructures</c> instances are built
@@ -33,7 +32,7 @@ namespace EwECore.Tests.MSE;
 /// and the calculation is fully deterministic regardless of the random source.
 /// </para>
 /// </summary>
-public sealed class cMSEQuotaUpdaterTests
+public sealed class cMSEQuotaCalculatorTests
 {
     private const float Tolerance = 1e-4f;
 
@@ -41,11 +40,11 @@ public sealed class cMSEQuotaUpdaterTests
     private static float ZeroRandom() => 0f;
 
     /// <summary>
-    /// Builds a minimal, hand-wired <see cref="cMSEQuotaUpdater"/> plus the shared
+    /// Builds a minimal, hand-wired <see cref="cMSEQuotaCalculator"/> plus the shared
     /// <see cref="cMSEDataStructures"/> it mutates, sized for the given dimensions.
     /// Arrays are 1-based (index 0 unused) to match the VB engine conventions.
     /// </summary>
-    private static (cMSEQuotaUpdater updater, cMSEDataStructures data) BuildUpdater(
+    private static (cMSEQuotaCalculator updater, cMSEDataStructures data) BuildUpdater(
         int numGroups, int numLiving, int nGear)
     {
         var epData = new cEcopathDataStructures(null)
@@ -100,7 +99,7 @@ public sealed class cMSEQuotaUpdaterTests
         };
 
         var recruiter = new cMSEStockRecruitment(data, esData, search);
-        var updater = new cMSEQuotaUpdater(data, epData, esData, recruiter);
+        var updater = new cMSEQuotaCalculator(data, epData, esData, recruiter);
         return (updater, data);
     }
 
