@@ -6,6 +6,7 @@ Imports System.IO
 Imports EwECore.Common
 Imports EwECore.ExternalData
 Imports EwEUtils.Utilities
+Imports LpSolveDotNet
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -1509,27 +1510,27 @@ Namespace MSE
         End Sub
 
         ''' <summary>
-        ''' Get the LP Solution from the lpsolve55 API directly, instead of from the cLPSolver wrapper
+        ''' Get the LP Solution from the LpSolveDotNet API directly, instead of from the cLPSolver wrapper
         ''' </summary>
         ''' <param name="Biomass"></param>
         ''' <param name="QMult"></param>
         ''' <param name="QYear"></param>
         ''' <param name="t"></param>
-        ''' <remarks>This is for debugging the setup of LPSolve via the API</remarks>
+        ''' <remarks>This is for debugging the setup of LpSolveDotNet via the API</remarks>
         Private Sub RegulateEffortViaLPSolve(Biomass() As Single, QMult() As Single, QYear() As Single, t As Integer)
             Dim iFlt As Integer, iGrp As Integer
             Dim VPerEffort() As Double
 
             Try
 
-                cLPSolver.lpsolve55.Init()
+                LpSolve.Init()
                 ReDim VPerEffort(Me.m_data.nFleets)
 
-                Dim ptrLp As Integer = cLPSolver.lpsolve55.make_lp(0, Me.m_data.nFleets)
+                Dim ptrLp As LpSolve = LpSolve.make_lp(0, Me.m_data.nFleets)
                 Dim badded As Boolean
                 'Add the Fleets as Variables and get the Variable ID's into m_FleetCode
                 For iFlt = 1 To Me.m_data.nFleets
-                    badded = cLPSolver.lpsolve55.set_bounds(ptrLp, iFlt, CDbl(Me.m_data.LowLPEffort(iFlt)), CDbl(Me.m_data.UpperLPEffort(iFlt)))
+                    badded = ptrLp.set_bounds(iFlt, CDbl(Me.m_data.LowLPEffort(iFlt)), CDbl(Me.m_data.UpperLPEffort(iFlt)))
                 Next
 
                 'Get fishing mortality at this time step
@@ -1553,7 +1554,7 @@ Namespace MSE
                 Next iFlt
 
                 'Added the objective/goal before adding rows/constraints
-                badded = cLPSolver.lpsolve55.set_obj_fn(ptrLp, VPerEffort)
+                badded = ptrLp.set_obj_fn(VPerEffort)
 
                 Dim constraint() As Double
                 ReDim constraint(Me.m_data.nFleets)
@@ -1561,23 +1562,23 @@ Namespace MSE
                     For iFlt = 1 To Me.m_data.nFleets
                         constraint(iFlt) = CDbl(Me.m_data.QStar(iGrp, iFlt))
                     Next
-                    badded = cLPSolver.lpsolve55.add_constraint(ptrLp, constraint, cLPSolver.lpsolve55.lpsolve_constr_types.LE, Me.m_data.FTarget(iGrp))
+                    badded = ptrLp.add_constraint(constraint, lpsolve_constr_types.LE, Me.m_data.FTarget(iGrp))
                 Next
 
-                cLPSolver.lpsolve55.set_maxim(ptrLp)
-                Dim rv As cLPSolver.lpsolve55.lpsolve_return
-                rv = cLPSolver.lpsolve55.solve(ptrLp)
-                If rv <> cLPSolver.lpsolve55.lpsolve_return.OPTIMAL Then
+                ptrLp.set_maxim()
+                Dim rv As lpsolve_return
+                rv = ptrLp.solve()
+                If rv <> lpsolve_return.OPTIMAL Then
                     System.Console.WriteLine("LP Solver Non Optimal Solution: " & rv.ToString & " Timestep = " & t.ToString)
                 End If
 
                 Dim solution() As Double
-                ReDim solution(1 + cLPSolver.lpsolve55.get_Ncolumns(ptrLp) + cLPSolver.lpsolve55.get_Nrows(ptrLp))
-                cLPSolver.lpsolve55.get_primal_solution(ptrLp, solution)
+                ReDim solution(1 + ptrLp.get_Ncolumns() + ptrLp.get_Nrows())
+                ptrLp.get_primal_solution(solution)
 
                 Dim dualValues() As Double
-                ReDim dualValues(1 + cLPSolver.lpsolve55.get_Ncolumns(ptrLp) + cLPSolver.lpsolve55.get_Nrows(ptrLp))
-                cLPSolver.lpsolve55.get_dual_solution(ptrLp, dualValues)
+                ReDim dualValues(1 + ptrLp.get_Ncolumns() + ptrLp.get_Nrows())
+                ptrLp.get_dual_solution(dualValues)
 
                 For iFlt = 1 To Me.m_data.nFleets
                     Me.m_esData.FishRateGear(iFlt, t) = CSng(solution(Me.m_data.NGroups + iFlt))
@@ -1590,8 +1591,8 @@ Namespace MSE
                     Next
                 Next
 
-                'cLPSolver.lpsolve55.write_lp(ptrLp, "lp.txt")
-                cLPSolver.lpsolve55.delete_lp(ptrLp)
+                'LpSolveDotNet.write_lp(ptrLp, "lp.txt")
+                ptrLp.delete_lp()
 
             Catch ex As Exception
 

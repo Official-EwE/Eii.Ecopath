@@ -129,12 +129,6 @@
     <None Update="Class Diagrams\Message Handlers.cd">
       <SubType></SubType>
     </None>
-    <None Update="Includes\LPSolve\win32\lpsolve55.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Includes\LPSolve\win64\lpsolve55.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -159,6 +153,12 @@
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'x86'">
+    <PackageReference Include="LpSolveDotNet.Native.win-x86" Version="4.1.2" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' != 'x86'">
+    <PackageReference Include="LpSolveDotNet.Native.win-x64" Version="4.1.2" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.10" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.10" />
@@ -167,7 +167,12 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <PackageReference Include="Eii.Ecopath.Licence" Version="1.0.3" />
-  </ItemGroup>    
+    <!-- LpSolveDotNet is not strong-named. Because EwECore is strong-named, .NET Framework
+         refuses to load the unsigned dependency at runtime ("A strongly named assembly is required",
+         HRESULT 0x80131044). StrongNamer re-signs referenced unsigned assemblies at build time.
+         .NET (net10) does not enforce strong-name binding, so this is only needed for net48. -->
+    <PackageReference Include="StrongNamer" Version="0.2.5" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Remove="EcoSpace\Input Output\ResultWriters\Data sources\cRegionTLResultsDataSource.vb" />
     <Compile Remove="Shapes\TimeSeries\Readers\cTimeSeriesClipboardReader.vb" />

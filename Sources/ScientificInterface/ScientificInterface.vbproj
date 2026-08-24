@@ -1129,5 +1129,12 @@
     <PackageReference Include="Serilog.Sinks.File">
       <Version>7.0.0</Version>
     </PackageReference>
+    <!-- LpSolveDotNet (transitive via EwECore) is not strong-named. EwECore is built with
+         StrongNamer, which patches its LpSolveDotNet reference to StrongNamer's shared key.
+         Adding StrongNamer here signs the LpSolveDotNet.dll copied into this app's output
+         with that same key, so the runtime binding matches. -->
+    <PackageReference Include="StrongNamer">
+      <Version>0.2.5</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>
