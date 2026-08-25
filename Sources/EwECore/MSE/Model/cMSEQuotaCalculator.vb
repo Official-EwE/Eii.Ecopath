@@ -29,7 +29,7 @@ Namespace MSE
         Public Sub DoAssessment(Biomass() As Single, curYear As Integer, randomNormal As Func(Of Single))
 
             Dim Bobs() As Single
-            ReDim Bobs(Me.m_data.NGroups)
+            ReDim Bobs(Me.m_data.nGroups)
             For i As Integer = 1 To Me.m_data.nLiving
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * randomNormal()))
                 Me.m_data.Bestimate(i) = Me.m_stockRecruitment.StockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i), curYear)
@@ -45,8 +45,8 @@ Namespace MSE
             Dim iflt As Integer, igrp As Integer
             Dim tQuota() As Single
 
-            ReDim tQuota(Me.m_data.NGroups)
-            Array.Clear(Me.m_data.FTarget, 0, Me.m_data.NGroups)
+            ReDim tQuota(Me.m_data.nGroups)
+            Array.Clear(Me.m_data.FTarget, 0, Me.m_data.nGroups)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'HACK WARNING
             'BatchMode (cMSEBatchManager) needs to be able to set FixedF() and TAC() values to zero and still have them considered a valid value
@@ -112,7 +112,7 @@ Namespace MSE
 
             'Share the Quota across the fleets for this timestep
             For iflt = 1 To Me.m_data.nFleets   'nFleets holds the same value as cEcoSimDataStructures.nGear. It's set in cEcoSimModel.SetCounters
-                For igrp = 1 To Me.m_data.NGroups
+                For igrp = 1 To Me.m_data.nGroups
                     Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
                 Next
             Next

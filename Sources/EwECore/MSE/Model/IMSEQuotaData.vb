@@ -12,7 +12,7 @@ Namespace MSE
     Public Interface IMSEQuotaData
 
         ''' <summary>Total number of groups.</summary>
-        ReadOnly Property NGroups() As Integer
+        ReadOnly Property nGroups() As Integer
 
         ''' <summary>Number of living groups.</summary>
         ReadOnly Property nLiving() As Integer

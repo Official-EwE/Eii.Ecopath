@@ -43,7 +43,7 @@ public sealed class cMSEQuotaCalculatorTests
     {
         public FakeQuotaData(int numGroups, int numLiving, int nGear)
         {
-            NGroups = numGroups;
+            nGroups = numGroups;
             nLiving = numLiving;
             nFleets = nGear;
             TAC = new float[numGroups + 1];
@@ -60,7 +60,7 @@ public sealed class cMSEQuotaCalculatorTests
             QuotaTime = new float[nGear + 1, numGroups + 1];
         }
 
-        public int NGroups { get; }
+        public int nGroups { get; }
         public int nLiving { get; }
         public int nFleets { get; }
         public float[] TAC { get; set; }
