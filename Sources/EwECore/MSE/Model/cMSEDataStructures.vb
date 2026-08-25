@@ -35,7 +35,7 @@ Namespace MSE
 
         Public Const MSE_DEFAULT_MAXEFFORT As Integer = 200
 
-        Public NTrials As Integer
+        Public nTrials As Integer
 
         Public bInBatch As Boolean
 
@@ -312,7 +312,7 @@ Namespace MSE
 
             Debug.Assert(EPdata IsNot Nothing And ESdata IsNot Nothing, Me.ToString & ".New() Ecopath and Ecosim data cannot be Nothing!")
 
-            Me.NTrials = 10 'default number of trials
+            Me.nTrials = 10 'default number of trials
             Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
             Me.MSEMaxEffort = MSE_DEFAULT_MAXEFFORT

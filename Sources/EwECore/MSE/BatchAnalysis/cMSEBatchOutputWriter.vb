@@ -76,14 +76,14 @@ Namespace MSEBatchManager
                     header.AppendLine("Model_Name," & quote & model & quote)
                     Dim scenario As String = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
                     header.AppendLine("Ecosim_Scenario," & quote & scenario & quote)
-                    header.AppendLine("Number_Groups," & Me.m_MSEdata.NGroups.ToString)
+                    header.AppendLine("Number_Groups," & Me.m_MSEdata.nGroups.ToString)
                     header.AppendLine("Number_Fleets," & Me.m_MSEdata.nFleets.ToString)
 
                     header.AppendLine("Run_Type," & CInt(Me.m_BatchData.RunType).ToString & "," & Me.m_BatchData.RunType.ToString)
                     header.AppendLine("Number_PP_Forcing," & Me.m_BatchData.nForcing.ToString)
                     header.AppendLine("Number_FleetControls," & Me.m_BatchData.nControlTypes.ToString)
                     header.AppendLine("Number_RunType_Iterations," & Me.m_BatchData.nParIters)
-                    header.AppendLine("Number_Simulations," & Me.m_MSEdata.NTrials.ToString)
+                    header.AppendLine("Number_Simulations," & Me.m_MSEdata.nTrials.ToString)
 
                     strm(istrm).Write(header)
                     strm(istrm).Close()
@@ -168,7 +168,7 @@ Namespace MSEBatchManager
 
                         If Me.m_BatchData.OuputType(iOut) <> eMSEBatchOuputTypes.Effort Then
                             'WARNING: this only saves outputs that are by Group
-                            For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+                            For igrp As Integer = 1 To Me.m_MSEdata.nGroups
                                 Try
 
                                     buff = New StringBuilder()
@@ -426,7 +426,7 @@ Namespace MSEBatchManager
                 'only delete file that we are going to write too
                 If Me.m_BatchData.isOuputSaved(iOut) Then
 
-                    For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+                    For igrp As Integer = 1 To Me.m_MSEdata.nGroups
                         Try
                             Dim outfileName As String = Me.getOutputFileName(Me.OuputTypeToFileName(Me.m_BatchData.OuputType(iOut)), Me.m_core.m_EcopathData.GroupName(igrp), Me.getModelName)
                             'delete 
@@ -473,7 +473,7 @@ Namespace MSEBatchManager
 
                 'only save outputs where isOuputSaved() = True
                 If Me.m_BatchData.isOuputSaved(iOut) Then
-                    For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+                    For igrp As Integer = 1 To Me.m_MSEdata.nGroups
 
                         header = New StringBuilder()
                         Dim epdata As cEcopathDataStructures = Me.m_core.m_EcopathData
@@ -493,7 +493,7 @@ Namespace MSEBatchManager
 
                         'header.Append("Run type")
                         header.AppendLine(Me.getRunTypeHeader())
-                        For i As Integer = 1 To Me.m_MSEdata.NGroups
+                        For i As Integer = 1 To Me.m_MSEdata.nGroups
                             'only if there is catch of some sort
                             If Me.m_core.m_EcopathData.fCatch(i) > 0 Then
                                 header.AppendLine(Me.getRunTypeValue(i))
@@ -538,7 +538,7 @@ Namespace MSEBatchManager
                         ' strm.WriteLine(Me.m_BatchData.OuputType(iOut).ToString)
 
                         'WARNING: this only saves outputs that are by Group
-                        For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+                        For igrp As Integer = 1 To Me.m_MSEdata.nGroups
                             Try
 
                                 buff = New StringBuilder()
@@ -579,7 +579,7 @@ Namespace MSEBatchManager
 
                 'only save outputs where isOuputSaved() = True
                 If Me.m_BatchData.isOuputSaved(iOut) Then
-                    For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+                    For igrp As Integer = 1 To Me.m_MSEdata.nGroups
                         Dim outfileName As String = Me.getOutputFileName(Me.OuputTypeToFileName(Me.m_BatchData.OuputType(iOut)), Me.m_core.m_EcopathData.GroupName(igrp), Me.getModelName)
                         lstStreams.Add(New StreamWriter(outfileName, True))
                     Next

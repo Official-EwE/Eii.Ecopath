@@ -7399,7 +7399,7 @@ Namespace DataSources
                     Try
                         mseDS.AssessMethod = DirectCast(Me.m_db.ReadSafe(reader, "AssessMethod", eAssessmentMethods.CatchEstmBio), eAssessmentMethods)
                         mseDS.AssessPower = CSng(Me.m_db.ReadSafe(reader, "AssessPower", 1))
-                        mseDS.NTrials = CInt(Me.m_db.ReadSafe(reader, "NTrials", 10))
+                        mseDS.nTrials = CInt(Me.m_db.ReadSafe(reader, "NTrials", 10))
                         mseDS.MSYStartTimeIndex = CInt(Me.m_db.ReadSafe(reader, "StartIndex", 2))
                         mseDS.MSEMaxEffort = CSng(Me.m_db.ReadSafe(reader, "MaxEffort", cMSEDataStructures.MSE_DEFAULT_MAXEFFORT))
                     Catch ex As Exception
@@ -7444,7 +7444,7 @@ Namespace DataSources
                 drow("AssessMethod") = mseDS.AssessMethod
                 drow("AssessPower") = mseDS.AssessPower
                 drow("MaxEffort") = mseDS.MSEMaxEffort
-                drow("Ntrials") = mseDS.NTrials
+                drow("Ntrials") = mseDS.nTrials
                 drow("StartIndex") = mseDS.MSYStartTimeIndex
 
                 writer.AddRow(drow)
