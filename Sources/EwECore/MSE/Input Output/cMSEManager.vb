@@ -813,7 +813,7 @@ Namespace MSE
                 End Try
 
                 Me.m_parameters.UseEconomicPlugin = Me.m_search.MSEUseEconomicPlugin
-                Me.m_parameters.NTrials = Me.m_MSEdata.NTrials
+                Me.m_parameters.NTrials = Me.m_MSEdata.nTrials
                 Me.m_parameters.RegulatoryMode = Me.m_MSEdata.RegulationMode
                 Me.m_parameters.EffortSource = Me.m_MSEdata.EffortSource
 
@@ -991,7 +991,7 @@ Namespace MSE
 
                         Me.m_MSEdata.AssessMethod = Me.m_parameters.AssessmentMethod()
                         Me.m_MSEdata.AssessPower = Me.m_parameters.AssessPower()
-                        Me.m_MSEdata.NTrials = Me.m_parameters.NTrials()
+                        Me.m_MSEdata.nTrials = Me.m_parameters.NTrials()
                         Me.m_MSEdata.RegulationMode = Me.m_parameters.RegulatoryMode
                         Me.m_MSEdata.EffortSource = Me.m_parameters.EffortSource
                         Me.m_MSEdata.StartYear = Me.m_parameters.MSEStartYear
@@ -1086,7 +1086,7 @@ Namespace MSE
         ''' </summary>
         Public Sub SetDefaultGroupRefLevels()
             Dim refLevelPercent As Single = 0.5
-            For iGroup As Integer = 1 To Me.m_MSEdata.NGroups
+            For iGroup As Integer = 1 To Me.m_MSEdata.nGroups
                 'Me.m_MSEdata.BioBounds(iGroup).Lower = Me.m_MSEdata.Blim(iGroup)
                 'Me.m_MSEdata.BioBounds(iGroup).Upper = Me.m_MSEdata.Bbase(iGroup)
                 'Set default to percentage of Ecopath base

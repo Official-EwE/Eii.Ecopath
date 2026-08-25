@@ -34,7 +34,7 @@ Namespace MSE
 
         Public Const MSE_DEFAULT_MAXEFFORT As Integer = 200
 
-        Public NTrials As Integer
+        Public nTrials As Integer
 
         Public bInBatch As Boolean
 
@@ -311,7 +311,7 @@ Namespace MSE
 
             Debug.Assert(EPdata IsNot Nothing And ESdata IsNot Nothing, Me.ToString & ".New() Ecopath and Ecosim data cannot be Nothing!")
 
-            Me.NTrials = 10 'default number of trials
+            Me.nTrials = 10 'default number of trials
             Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
             Me.MSEMaxEffort = MSE_DEFAULT_MAXEFFORT
@@ -344,7 +344,7 @@ Namespace MSE
         End Property
 
         Public Sub clearBioRisk()
-            ReDim Me.BioRiskCount(Me.NGroups, 1)
+            ReDim Me.BioRiskCount(Me.nGroups, 1)
         End Sub
 
         ''' <summary>
@@ -476,45 +476,45 @@ Namespace MSE
         ''' </summary>
         Public Sub RedimVars()
 
-            ReDim Me.GstockPred(Me.NGroups)
-            ReDim Me.RstockRatio(Me.NGroups)
-            ReDim Me.RStock0(Me.NGroups)
-            ReDim Me.KalmanGain(Me.NGroups)
+            ReDim Me.GstockPred(Me.nGroups)
+            ReDim Me.RstockRatio(Me.nGroups)
+            ReDim Me.RStock0(Me.nGroups)
+            ReDim Me.KalmanGain(Me.nGroups)
             ReDim Me.VarQest(Me.nFleets), Me.KalGainQ(Me.nFleets), Me.VarQyear(Me.nFleets)
             ReDim Me.VarQgrow(Me.nFleets)
             ReDim Me.Wftot(Me.nFleets)
 
-            ReDim Me.BhalfT(Me.NGroups)
-            ReDim Me.Rmax(Me.NGroups)
-            ReDim Me.RHalfB0Ratio(Me.NGroups)
-            ReDim Me.cvRec(Me.NGroups)
+            ReDim Me.BhalfT(Me.nGroups)
+            ReDim Me.Rmax(Me.nGroups)
+            ReDim Me.RHalfB0Ratio(Me.nGroups)
+            ReDim Me.cvRec(Me.nGroups)
 
-            ReDim Me.Fweight(Me.nFleets, Me.NGroups)
+            ReDim Me.Fweight(Me.nFleets, Me.nGroups)
             ReDim Me.Qgrow(Me.nFleets)
             ReDim Me.Fwc(Me.nFleets, 1)
 
-            ReDim Me.BioR0(Me.NGroups)
-            ReDim Me.BioR1(Me.NGroups)
-            ReDim Me.BioRiskValue(Me.NGroups, 1)
-            ReDim Me.BioRiskCount(Me.NGroups, 1)
+            ReDim Me.BioR0(Me.nGroups)
+            ReDim Me.BioR1(Me.nGroups)
+            ReDim Me.BioRiskValue(Me.nGroups, 1)
+            ReDim Me.BioRiskCount(Me.nGroups, 1)
 
-            ReDim Me.CVbiomEst(Me.NGroups)
+            ReDim Me.CVbiomEst(Me.nGroups)
             ReDim Me.CVFest(Me.nFleets)
 
             ReDim Me.QGrowUsed(Me.nFleets)
 
-            ReDim Me.Bestimate(Me.NGroups)
-            ReDim Me.BestimateLast(Me.NGroups)
-            ReDim Me.QestLast(Me.NGroups)
+            ReDim Me.Bestimate(Me.nGroups)
+            ReDim Me.BestimateLast(Me.nGroups)
+            ReDim Me.QestLast(Me.nGroups)
 
-            ReDim Me.MSYGroupWeight(Me.NGroups)
-            For iGrp As Integer = 1 To Me.NGroups
+            ReDim Me.MSYGroupWeight(Me.nGroups)
+            For iGrp As Integer = 1 To Me.nGroups
                 Me.MSYGroupWeight(iGrp) = 1
             Next
 
-            ReDim Me.BioBounds(Me.NGroups)
-            ReDim Me.BioEstBounds(Me.NGroups)
-            ReDim Me.CatchGroupBounds(Me.NGroups)
+            ReDim Me.BioBounds(Me.nGroups)
+            ReDim Me.BioEstBounds(Me.nGroups)
+            ReDim Me.CatchGroupBounds(Me.nGroups)
             ReDim Me.CatchFleetBounds(Me.nFleets)
             ReDim Me.EffortFleetBounds(Me.nFleets)
 
@@ -525,7 +525,7 @@ Namespace MSE
             Me.AssessPower = 1
 
             'set default values
-            For iGrp As Integer = 1 To Me.NGroups
+            For iGrp As Integer = 1 To Me.nGroups
 
                 Me.BioEstBounds(iGrp) = New cMSEBounds(iGrp, 1, 1)
 
@@ -545,20 +545,20 @@ Namespace MSE
             Next iFlt
 
             ReDim Me.QuotaType(Me.nFleets)
-            ReDim Me.RegDiscard(Me.nFleets, Me.NGroups)
+            ReDim Me.RegDiscard(Me.nFleets, Me.nGroups)
             ReDim Me.MaxEffort(Me.nFleets)
-            ReDim Me.Quota(Me.nFleets, Me.NGroups)
+            ReDim Me.Quota(Me.nFleets, Me.nGroups)
 
-            ReDim Me.Quotashare(Me.nFleets, Me.NGroups)
-            ReDim Me.QuotaTime(Me.nFleets, Me.NGroups)
-            ReDim Me.FTarget(Me.NGroups)
-            ReDim Me.Blim(Me.NGroups)
-            ReDim Me.Bbase(Me.NGroups)
-            ReDim Me.Fopt(Me.NGroups)
-            ReDim Me.Fmin(Me.NGroups)
-            ReDim Me.FixedEscapement(Me.NGroups)
-            ReDim Me.FixedF(Me.NGroups)
-            ReDim Me.TAC(Me.NGroups)
+            ReDim Me.Quotashare(Me.nFleets, Me.nGroups)
+            ReDim Me.QuotaTime(Me.nFleets, Me.nGroups)
+            ReDim Me.FTarget(Me.nGroups)
+            ReDim Me.Blim(Me.nGroups)
+            ReDim Me.Bbase(Me.nGroups)
+            ReDim Me.Fopt(Me.nGroups)
+            ReDim Me.Fmin(Me.nGroups)
+            ReDim Me.FixedEscapement(Me.nGroups)
+            ReDim Me.FixedF(Me.nGroups)
+            ReDim Me.TAC(Me.nGroups)
 
             ReDim Me.LowLPEffort(Me.nFleets)
             ReDim Me.UpperLPEffort(Me.nFleets)
@@ -571,7 +571,7 @@ Namespace MSE
                 Me.LowLPEffort(iflt) = 0.01F
                 Me.UpperLPEffort(iflt) = MSE_DEFAULT_MAXEFFORT
 
-                For igrp As Integer = 1 To Me.NGroups
+                For igrp As Integer = 1 To Me.nGroups
                     Me.Quota(iflt, igrp) = cCore.NULL_VALUE
                 Next
             Next
@@ -591,7 +591,7 @@ Namespace MSE
                 If Me.CVBiomT IsNot Nothing Then
 
                     Try
-                        ReDim Preserve Me.CVBiomT(Me.NGroups, Me.nYears) 'groups,time
+                        ReDim Preserve Me.CVBiomT(Me.nGroups, Me.nYears) 'groups,time
                         ReDim Preserve Me.CVFT(Me.nFleets, Me.nYears)  ' fleets,time
                         bFullRedim = False
                     Catch ex As Exception
@@ -601,7 +601,7 @@ Namespace MSE
                 End If
 
                 If bFullRedim Then
-                    ReDim Me.CVBiomT(Me.NGroups, Me.nYears) 'groups,time
+                    ReDim Me.CVBiomT(Me.nGroups, Me.nYears) 'groups,time
                     ReDim Me.CVFT(Me.nFleets, Me.nYears)  ' fleets,time
                 End If 'bFullRedim
 
@@ -613,7 +613,7 @@ Namespace MSE
                 End If
 
                 'set default values
-                For iGrp As Integer = 1 To Me.NGroups
+                For iGrp As Integer = 1 To Me.nGroups
                     For it As Integer = firstYear To Me.nYears
                         Me.CVBiomT(iGrp, it) = 0.2
                     Next
@@ -681,7 +681,7 @@ Namespace MSE
             Try
                 sumCatch = 0
                 'sum the ecopath catch for this fleet
-                For igrp As Integer = 1 To Me.NGroups
+                For igrp As Integer = 1 To Me.nGroups
                     sumCatch += Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)
                 Next
                 Me.CatchFleetBounds(iflt) = New cMSEBounds(iflt, sumCatch * LB, sumCatch * UB)
@@ -738,10 +738,10 @@ Namespace MSE
 
             Next iFlt
 
-            ReDim Me.CatchYearGroup(Me.NGroups)
-            ReDim Me.CatchYear(Me.nFleets, Me.NGroups)
+            ReDim Me.CatchYearGroup(Me.nGroups)
+            ReDim Me.CatchYear(Me.nFleets, Me.nGroups)
 
-            For iGrp = 1 To Me.NGroups
+            For iGrp = 1 To Me.nGroups
                 Me.CatchYearGroup(iGrp) = Me.m_EPData.fCatch(iGrp)
                 'make sure Fmin did not get set to some strange value
                 If Me.Fmin(iGrp) < 0 Then Me.Fmin(iGrp) = 0
@@ -771,8 +771,8 @@ Namespace MSE
                 Me.CostSum.Init()
                 Me.JobsSum.Init()
 
-                ReDim Me.QStar(Me.NGroups, Me.nFleets)
-                ReDim Me.Qest(Me.NGroups, Me.nFleets)
+                ReDim Me.QStar(Me.nGroups, Me.nFleets)
+                ReDim Me.Qest(Me.nGroups, Me.nFleets)
 
                 Me.lstNonOptSolutions = New List(Of Integer)
 
@@ -783,7 +783,7 @@ Namespace MSE
 
         End Sub
 
-        Public ReadOnly Property NGroups() As Integer
+        Public ReadOnly Property nGroups() As Integer
             Get
                 Return Me.m_EPData.NumGroups
             End Get
@@ -814,7 +814,7 @@ Namespace MSE
         End Property
 
         Public Sub setDefaultRecruitmentCV()
-            For igrp As Integer = 1 To Me.NGroups
+            For igrp As Integer = 1 To Me.nGroups
                 Me.cvRec(igrp) = 0.8
             Next
         End Sub
@@ -830,7 +830,7 @@ Namespace MSE
             'If regulatory values have not been set (by the database) then set them to defaults
             For iflt = 1 To Me.nFleets
                 Me.MaxEffort(iflt) = 10 '10 times the ecopath base effort
-                For igrp = 1 To Me.NGroups
+                For igrp = 1 To Me.nGroups
                     Me.Quota(iflt, igrp) = Me.m_EPData.B(igrp) * 10 '10 time the ecopath biomass
                     Me.RHalfB0Ratio(igrp) = 0.2
                     Me.FixedF(igrp) = 0
@@ -857,7 +857,7 @@ Namespace MSE
         ''' <remarks>10%, 40% and Ecopath F</remarks>
         Public Sub setDefaultTFM()
 
-            For igrp As Integer = 1 To Me.NGroups
+            For igrp As Integer = 1 To Me.nGroups
                 If Me.m_EPData.fCatch(igrp) > 0 Then
                     Me.Blim(igrp) = Me.m_EPData.B(igrp) * 0.1F
                     Me.Bbase(igrp) = Me.m_EPData.B(igrp) * 0.4F
@@ -880,7 +880,7 @@ Namespace MSE
         ''' <remarks></remarks>
         Public Sub setDefaultRecruitment()
 
-            For igrp As Integer = 1 To Me.NGroups
+            For igrp As Integer = 1 To Me.nGroups
                 Me.RstockRatio(igrp) = CSng(1 - Math.Exp(-Me.m_EPData.PB(igrp)))
             Next
 
@@ -902,7 +902,7 @@ Namespace MSE
                     Exit Sub
                 End If
 
-                For igrp = 1 To Me.NGroups
+                For igrp = 1 To Me.nGroups
                     QuotaShareTot = 0
                     For iflt = 1 To Me.nFleets
                         QuotaShareTot += Me.m_EPData.Landing(iflt, igrp) + Me.m_EPData.Discard(iflt, igrp)

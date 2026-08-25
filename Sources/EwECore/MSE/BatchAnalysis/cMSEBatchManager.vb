@@ -773,7 +773,7 @@ Namespace MSEBatchManager
             Dim f As Single, tac As Single
             Me.m_BatchData.iCurRun = iParIter
 
-            For igrp = 1 To Me.m_MSEdata.NGroups
+            For igrp = 1 To Me.m_MSEdata.nGroups
 
                 Select Case Me.BatchData.RunType
 
@@ -876,20 +876,20 @@ Namespace MSEBatchManager
 
                 Case eMSEBatchRunTypes.TFM
 
-                    For igrp = 1 To Me.MSEData.NGroups
+                    For igrp = 1 To Me.MSEData.nGroups
                         If Me.m_MSEdata.FixedEscapement(igrp) <> 0 Then bFixedEsc = True
                         If Me.m_MSEdata.FixedF(igrp) <> 0 Then bFixedF = True
                         If Me.m_MSEdata.TAC(igrp) <> 0 Then bTAC = True
                     Next
 
                 Case eMSEBatchRunTypes.TAC
-                    For igrp = 1 To Me.MSEData.NGroups
+                    For igrp = 1 To Me.MSEData.nGroups
                         If Me.m_MSEdata.FixedEscapement(igrp) <> 0 Then bFixedEsc = True
                         If Me.m_MSEdata.FixedF(igrp) <> 0 Then bFixedF = True
                     Next
 
                 Case eMSEBatchRunTypes.FixedF
-                    For igrp = 1 To Me.MSEData.NGroups
+                    For igrp = 1 To Me.MSEData.nGroups
                         If Me.m_MSEdata.FixedEscapement(igrp) <> 0 Then bFixedEsc = True
                         If Me.m_MSEdata.TAC(igrp) <> 0 Then bTAC = True
                     Next
@@ -1063,7 +1063,7 @@ Namespace MSEBatchManager
 
         Friend ReadOnly Property nGroups() As Integer
             Get
-                Return Me.m_MSEdata.NGroups
+                Return Me.m_MSEdata.nGroups
             End Get
         End Property
 

@@ -394,7 +394,7 @@ Namespace MSECommandFile
 
         Public Overrides Sub Update()
 
-            Me.Manager.MSEData.NTrials = Integer.Parse(Me.m_data)
+            Me.Manager.MSEData.nTrials = Integer.Parse(Me.m_data)
 
         End Sub
 
