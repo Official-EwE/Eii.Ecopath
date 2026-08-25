@@ -10,15 +10,13 @@ Namespace MSE
     ''' </summary>
     Public Class cMSEQuotaCalculator
 
-        Private ReadOnly m_data As cMSEDataStructures
-        Private ReadOnly m_epdata As cEcopathDataStructures
-        Private ReadOnly m_esData As cEcosimDatastructures
-        Private ReadOnly m_stockRecruitment As cMSEStockRecruitment
+        Private ReadOnly m_data As IMSEQuotaData
 
-        Public Sub New(data As cMSEDataStructures, epdata As cEcopathDataStructures, esData As cEcosimDatastructures, stockRecruitment As cMSEStockRecruitment)
+
+        Private ReadOnly m_stockRecruitment As IMSEStockRecruitment
+
+        Public Sub New(data As IMSEQuotaData, stockRecruitment As IMSEStockRecruitment)
             Me.m_data = data
-            Me.m_epdata = epdata
-            Me.m_esData = esData
             Me.m_stockRecruitment = stockRecruitment
         End Sub
 
@@ -31,7 +29,7 @@ Namespace MSE
         Public Sub DoAssessment(Biomass() As Single, curYear As Integer, randomNormal As Func(Of Single))
 
             Dim Bobs() As Single
-            ReDim Bobs(Me.m_epdata.NumGroups)
+            ReDim Bobs(Me.m_data.NGroups)
             For i As Integer = 1 To Me.m_data.nLiving
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * randomNormal()))
                 Me.m_data.Bestimate(i) = Me.m_stockRecruitment.StockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i), curYear)
@@ -47,8 +45,8 @@ Namespace MSE
             Dim iflt As Integer, igrp As Integer
             Dim tQuota() As Single
 
-            ReDim tQuota(Me.m_epdata.NumGroups)
-            Array.Clear(Me.m_data.FTarget, 0, Me.m_epdata.NumGroups)
+            ReDim tQuota(Me.m_data.NGroups)
+            Array.Clear(Me.m_data.FTarget, 0, Me.m_data.NGroups)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'HACK WARNING
             'BatchMode (cMSEBatchManager) needs to be able to set FixedF() and TAC() values to zero and still have them considered a valid value
@@ -61,7 +59,7 @@ Namespace MSE
             '1 Set the quota via Fixed Escapement, Fixed Fishing Mortality or Target Fishing Mortality(hockey stick)
             '2 Apply uncertainty to the Quota
             '3 Share the Quota between the fleets
-            For igrp = 1 To Me.m_epdata.NumLiving
+            For igrp = 1 To Me.m_data.nLiving
 
                 If Me.m_data.TAC(igrp) > 0 Then
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -113,7 +111,7 @@ Namespace MSE
             Next igrp
 
             'Share the Quota across the fleets for this timestep
-            For iflt = 1 To Me.m_esData.nGear
+            For iflt = 1 To Me.m_data.nFleets   'nFleets holds the same value as cEcoSimDataStructures.nGear. It's set in cEcoSimModel.SetCounters
                 For igrp = 1 To Me.m_data.NGroups
                     Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
                 Next

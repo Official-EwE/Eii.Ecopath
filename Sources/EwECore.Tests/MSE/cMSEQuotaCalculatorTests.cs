@@ -10,13 +10,12 @@ namespace EwECore.Tests.MSE;
 /// <summary>
 /// Pure unit tests for <see cref="cMSEQuotaCalculator"/>.
 /// <para>
-/// The updater is exercised in isolation: minimal <c>cEcopathDataStructures</c>,
-/// <c>cEcosimDatastructures</c> and <c>cMSEDataStructures</c> instances are built
-/// by hand (no <c>cCore</c>, no plugin manager, no loaded model), so each quota
-/// branch can be verified deterministically.
+/// The calculator is exercised in isolation through the <see cref="IMSEQuotaData"/> and
+/// <see cref="IMSEStockRecruitment"/> interfaces, so no <c>cCore</c>, <c>cEcopathDataStructures</c>,
+/// <c>cEcosimDatastructures</c> or <c>cSearchDatastructures</c> instances are needed.
 /// </para>
 /// <para>
-/// Per living group <c>igrp</c> the updater computes:
+/// Per living group <c>igrp</c> the calculator computes:
 /// <code>
 /// TAC &gt; 0             -&gt; tQuota = Round(TAC, 5)
 /// FixedEscapement &gt; 0 -&gt; tQuota = max(Bestimate - FixedEscapement, 0)
@@ -28,7 +27,7 @@ namespace EwECore.Tests.MSE;
 /// tQuota *= Exp(CVbiomEst * randomNormal() - 0.5 * CVbiomEst^2)
 /// QuotaTime(iflt, igrp) = tQuota * Quotashare(iflt, igrp)
 /// </code>
-/// All tests set <c>CVbiomEst = 0</c> so the uncertainty factor is <c>Exp(0) = 1</c>
+/// All quota tests set <c>CVbiomEst = 0</c> so the uncertainty factor is <c>Exp(0) = 1</c>
 /// and the calculation is fully deterministic regardless of the random source.
 /// </para>
 /// </summary>
@@ -39,68 +38,71 @@ public sealed class cMSEQuotaCalculatorTests
     /// <summary>Deterministic random source; value is irrelevant while CVbiomEst == 0.</summary>
     private static float ZeroRandom() => 0f;
 
+    /// <summary>Lightweight in-memory implementation of <see cref="IMSEQuotaData"/>.</summary>
+    private sealed class FakeQuotaData : IMSEQuotaData
+    {
+        public FakeQuotaData(int numGroups, int numLiving, int nGear)
+        {
+            NGroups = numGroups;
+            nLiving = numLiving;
+            nFleets = nGear;
+            TAC = new float[numGroups + 1];
+            FixedEscapement = new float[numGroups + 1];
+            FixedF = new float[numGroups + 1];
+            Fopt = new float[numGroups + 1];
+            Fmin = new float[numGroups + 1];
+            Bbase = new float[numGroups + 1];
+            Blim = new float[numGroups + 1];
+            Bestimate = new float[numGroups + 1];
+            CVbiomEst = new float[numGroups + 1];
+            FTarget = new float[numGroups + 1];
+            Quotashare = new float[nGear + 1, numGroups + 1];
+            QuotaTime = new float[nGear + 1, numGroups + 1];
+        }
+
+        public int NGroups { get; }
+        public int nLiving { get; }
+        public int nFleets { get; }
+        public float[] TAC { get; set; }
+        public float[] FixedEscapement { get; set; }
+        public float[] FixedF { get; set; }
+        public float[] Fopt { get; set; }
+        public float[] Fmin { get; set; }
+        public float[] Bbase { get; set; }
+        public float[] Blim { get; set; }
+        public float[] Bestimate { get; set; }
+        public float[] CVbiomEst { get; set; }
+        public float[] FTarget { get; set; }
+        public float[,] Quotashare { get; set; }
+        public float[,] QuotaTime { get; set; }
+    }
+
+    /// <summary>Records every call and returns a configurable estimate.</summary>
+    private sealed class StubStockRecruitment : IMSEStockRecruitment
+    {
+        public List<(int iGroup, float B, float BioEst, float Blast, int iCurYear)> Calls { get; } = new();
+
+        public Func<int, float, float, float, int, float> Result { get; set; } =
+            (iGroup, b, bioEst, blast, iCurYear) => bioEst;
+
+        public float StockRecruitment(int iGroup, float B, float BioEst, float Blast, int iCurYear)
+        {
+            Calls.Add((iGroup, B, BioEst, Blast, iCurYear));
+            return Result(iGroup, B, BioEst, Blast, iCurYear);
+        }
+    }
+
     /// <summary>
-    /// Builds a minimal, hand-wired <see cref="cMSEQuotaCalculator"/> plus the shared
-    /// <see cref="cMSEDataStructures"/> it mutates, sized for the given dimensions.
-    /// Arrays are 1-based (index 0 unused) to match the VB engine conventions.
+    /// Builds a hand-wired <see cref="cMSEQuotaCalculator"/> plus the fake data it mutates,
+    /// sized for the given dimensions. Arrays are 1-based (index 0 unused) to match the VB engine.
     /// </summary>
-    private static (cMSEQuotaCalculator updater, cMSEDataStructures data) BuildUpdater(
+    private static (cMSEQuotaCalculator updater, FakeQuotaData data, StubStockRecruitment recruiter) BuildUpdater(
         int numGroups, int numLiving, int nGear)
     {
-        var epData = new cEcopathDataStructures(null)
-        {
-            NumGroups = numGroups,
-            NumLiving = numLiving,
-            NumFleet = nGear
-        };
-
-        var esData = new cEcosimDatastructures
-        {
-            nGear = nGear,
-            Fish1 = new float[numGroups + 1]
-        };
-
-        var data = new cMSEDataStructures(epData, esData)
-        {
-            TAC = new float[numGroups + 1],
-            FixedEscapement = new float[numGroups + 1],
-            FixedF = new float[numGroups + 1],
-            Fopt = new float[numGroups + 1],
-            Fmin = new float[numGroups + 1],
-            Bbase = new float[numGroups + 1],
-            Blim = new float[numGroups + 1],
-            Bestimate = new float[numGroups + 1],
-            CVbiomEst = new float[numGroups + 1],
-            FTarget = new float[numGroups + 1],
-            Quotashare = new float[nGear + 1, numGroups + 1],
-            QuotaTime = new float[nGear + 1, numGroups + 1],
-            // Fields read/written by cMSEStockRecruitment during DoAssessment.
-            BestimateLast = new float[numGroups + 1],
-            CatchYearGroup = new float[numGroups + 1],
-            Rmax = new float[numGroups + 1],
-            BhalfT = new float[numGroups + 1],
-            RstockRatio = new float[numGroups + 1],
-            cvRec = new float[numGroups + 1],
-            GstockPred = new float[numGroups + 1],
-            KalmanGain = new float[numGroups + 1]
-        };
-
-        // BioEstStats is written to as a side effect of StockRecruitment. Wire a
-        // real summary-stats object with a fixed time-step count so AddValue succeeds.
-        var stats = new cMSESummaryStats(
-            data, null, numGroups + 1, 1, eCoreCounterTypes.nGroups, _ => 5);
-        stats.Init();
-        stats.AddIteration();
-        data.BioEstStats = stats;
-
-        var search = new cSearchDatastructures(null, epData)
-        {
-            CatchYearGroup = new float[numGroups + 1]
-        };
-
-        var recruiter = new cMSEStockRecruitment(data, esData, search);
-        var updater = new cMSEQuotaCalculator(data, epData, esData, recruiter);
-        return (updater, data);
+        var data = new FakeQuotaData(numGroups, numLiving, nGear);
+        var recruiter = new StubStockRecruitment();
+        var updater = new cMSEQuotaCalculator(data, recruiter);
+        return (updater, data, recruiter);
     }
 
     // -----------------------------------------------------------------------
@@ -112,7 +114,7 @@ public sealed class cMSEQuotaCalculatorTests
     {
         // Arrange
         const int igrp = 1, iflt = 1;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        var (updater, data, _) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
         data.TAC[igrp] = 12.3456789f;   // rounded to 5 decimals -> 12.34568
         data.Quotashare[iflt, igrp] = 0.5f;
 
@@ -133,7 +135,7 @@ public sealed class cMSEQuotaCalculatorTests
     {
         // Arrange
         const int igrp = 1, iflt = 1;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        var (updater, data, _) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
         data.FixedEscapement[igrp] = 0.4f;
         data.Bestimate[igrp] = 1.0f;
         data.Quotashare[iflt, igrp] = 1.0f;
@@ -151,7 +153,7 @@ public sealed class cMSEQuotaCalculatorTests
     {
         // Arrange
         const int igrp = 1, iflt = 1;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        var (updater, data, _) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
         data.FixedEscapement[igrp] = 1.5f; // greater than biomass -> negative -> clamped to 0
         data.Bestimate[igrp] = 1.0f;
         data.Quotashare[iflt, igrp] = 1.0f;
@@ -173,7 +175,7 @@ public sealed class cMSEQuotaCalculatorTests
     {
         // Arrange
         const int igrp = 1, iflt = 1;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        var (updater, data, _) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
         data.FixedF[igrp] = 0.2f;
         data.Bestimate[igrp] = 3.0f;
         data.Quotashare[iflt, igrp] = 1.0f;
@@ -197,7 +199,7 @@ public sealed class cMSEQuotaCalculatorTests
         // Arrange
         const int igrp = 1, iflt = 1;
         const float bbase = 2.0f, blim = 0.5f, fopt = 0.4f, bestimate = 1.25f, quotashare = 0.5f;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        var (updater, data, _) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
         data.Bbase[igrp] = bbase;
         data.Blim[igrp] = blim;
         data.Fopt[igrp] = fopt;
@@ -219,7 +221,7 @@ public sealed class cMSEQuotaCalculatorTests
         // Arrange
         const int igrp = 1, iflt = 1;
         const float bbase = 2.0f, blim = 0.5f, fopt = 0.4f, bestimate = 3.0f, quotashare = 1.0f;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        var (updater, data, _) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
         data.Bbase[igrp] = bbase;
         data.Blim[igrp] = blim;
         data.Fopt[igrp] = fopt;
@@ -240,7 +242,7 @@ public sealed class cMSEQuotaCalculatorTests
         // Arrange
         const int igrp = 1, iflt = 1;
         const float bbase = 2.0f, blim = 0.5f, fopt = 0.4f, fmin = 0.1f, bestimate = 0.4f, quotashare = 1.0f;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        var (updater, data, _) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
         data.Bbase[igrp] = bbase;
         data.Blim[igrp] = blim;
         data.Fopt[igrp] = fopt;
@@ -263,7 +265,7 @@ public sealed class cMSEQuotaCalculatorTests
         const int igrp = 1, iflt = 1;
         // Bbase <= Blim forces brange to the 1e-20 fallback -> raw FTarget huge -> clamp to Fopt.
         const float bbase = 1.0f, blim = 1.0f, fopt = 0.3f, bestimate = 1.5f, quotashare = 1.0f;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        var (updater, data, _) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
         data.Bbase[igrp] = bbase;
         data.Blim[igrp] = blim;
         data.Fopt[igrp] = fopt;
@@ -287,7 +289,7 @@ public sealed class cMSEQuotaCalculatorTests
     {
         // Arrange
         const int igrp = 1;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 2);
+        var (updater, data, _) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 2);
         data.TAC[igrp] = 10.0f;
         data.Quotashare[1, igrp] = 0.7f;
         data.Quotashare[2, igrp] = 0.3f;
@@ -302,54 +304,50 @@ public sealed class cMSEQuotaCalculatorTests
     }
 
     // -----------------------------------------------------------------------
-    // DoAssessment: stock-recruitment biomass estimation (moved from cMSE)
+    // DoAssessment: delegation to the stock-recruitment model
     // -----------------------------------------------------------------------
 
     [Fact]
-    public void DoAssessment_KalmanGainOfOne_SetsBestimateToObservedBiomass()
+    public void DoAssessment_StoresRecruiterResult_AndPassesPreviousEstimateAsBlast()
     {
         // Arrange
         const int igrp = 1;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
-        data.Bestimate[igrp] = 2.0f;      // Blast for the delay-difference model (> 0)
-        data.CVbiomEst[igrp] = 0f;        // ZeroRandom -> Bobs = Biomass, KalmanGain = 1
-        data.Rmax[igrp] = 1f;
-        data.BhalfT[igrp] = 2f;
-        data.RstockRatio[igrp] = 1f;
-        data.cvRec[igrp] = 1f;
-        data.GstockPred[igrp] = 0f;
+        var (updater, data, recruiter) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        data.Bestimate[igrp] = 2.0f;      // previous estimate, passed to the recruiter as Blast
+        data.CVbiomEst[igrp] = 0f;        // ZeroRandom -> Bobs = Biomass
+        recruiter.Result = (_, _, _, _, _) => 7.5f;
         var biomass = new float[] { 0f, 3.0f };
 
         // Act
-        updater.DoAssessment(biomass, curYear: 1, randomNormal: ZeroRandom);
+        updater.DoAssessment(biomass, curYear: 4, randomNormal: ZeroRandom);
 
         // Assert
-        data.Bestimate[igrp].Should().BeApproximately(3.0f, Tolerance);
-        data.KalmanGain[igrp].Should().BeApproximately(1f, Tolerance);
+        data.Bestimate[igrp].Should().BeApproximately(7.5f, Tolerance);
+        recruiter.Calls.Should().ContainSingle();
+        recruiter.Calls[0].iGroup.Should().Be(igrp);
+        recruiter.Calls[0].B.Should().BeApproximately(3.0f, Tolerance);
+        recruiter.Calls[0].BioEst.Should().BeApproximately(3.0f, Tolerance);
+        recruiter.Calls[0].Blast.Should().BeApproximately(2.0f, Tolerance);
+        recruiter.Calls[0].iCurYear.Should().Be(4);
     }
 
     [Fact]
-    public void DoAssessment_PartialKalmanGain_BlendsObservationAndPrediction()
+    public void DoAssessment_AppliesObservationErrorToObservedBiomass()
     {
         // Arrange
         const int igrp = 1;
-        var (updater, data) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
-        data.Bestimate[igrp] = 2.0f;      // Blast
-        data.CVbiomEst[igrp] = 1f;        // KalmanGain = vPred/(vPred+1) = 0.5
-        data.Rmax[igrp] = 1f;
-        data.BhalfT[igrp] = 2f;           // RstockPred = 1*2/(2+2) = 0.5
-        data.RstockRatio[igrp] = 1f;
-        data.cvRec[igrp] = 1f;            // vPred = 1
-        data.GstockPred[igrp] = 0f;
+        var (updater, data, recruiter) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        data.CVbiomEst[igrp] = 0.5f;
         var biomass = new float[] { 0f, 3.0f };
+        float expectedBobs = 3.0f * (float)Math.Exp(0.5f * 1.0f); // Bobs = B * Exp(CV * rand)
 
         // Act
-        // Best = 0.5*3 + 0.5*(0*2 + 0.5) = 1.5 + 0.25 = 1.75
-        updater.DoAssessment(biomass, curYear: 1, randomNormal: ZeroRandom);
+        updater.DoAssessment(biomass, curYear: 1, randomNormal: () => 1.0f);
 
         // Assert
-        data.Bestimate[igrp].Should().BeApproximately(1.75f, Tolerance);
-        data.KalmanGain[igrp].Should().BeApproximately(0.5f, Tolerance);
+        recruiter.Calls.Should().ContainSingle();
+        recruiter.Calls[0].B.Should().BeApproximately(3.0f, Tolerance);
+        recruiter.Calls[0].BioEst.Should().BeApproximately(expectedBobs, Tolerance);
     }
 
     [Fact]
@@ -357,21 +355,17 @@ public sealed class cMSEQuotaCalculatorTests
     {
         // Arrange
         const int living = 1, nonLiving = 2;
-        var (updater, data) = BuildUpdater(numGroups: 2, numLiving: 1, nGear: 1);
+        var (updater, data, recruiter) = BuildUpdater(numGroups: 2, numLiving: 1, nGear: 1);
         data.Bestimate[living] = 2.0f;
         data.Bestimate[nonLiving] = 42.0f; // must stay untouched (index > nLiving)
-        data.CVbiomEst[living] = 0f;
-        data.Rmax[living] = 1f;
-        data.BhalfT[living] = 2f;
-        data.RstockRatio[living] = 1f;
-        data.cvRec[living] = 1f;
-        data.GstockPred[living] = 0f;
+        recruiter.Result = (_, _, bioEst, _, _) => bioEst;
         var biomass = new float[] { 0f, 3.0f, 5.0f };
 
         // Act
         updater.DoAssessment(biomass, curYear: 1, randomNormal: ZeroRandom);
 
         // Assert
+        recruiter.Calls.Should().ContainSingle();
         data.Bestimate[living].Should().BeApproximately(3.0f, Tolerance);
         data.Bestimate[nonLiving].Should().Be(42.0f);
     }

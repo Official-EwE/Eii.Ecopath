@@ -9,6 +9,7 @@ Namespace MSE
     ''' Extracted from <see cref="cMSE"/> and free of any core/plugin dependency.
     ''' </summary>
     Public Class cMSEStockRecruitment
+        Implements IMSEStockRecruitment
 
         Private ReadOnly m_data As cMSEDataStructures
         Private ReadOnly m_esData As cEcosimDatastructures
@@ -20,7 +21,7 @@ Namespace MSE
             Me.m_Search = search
         End Sub
 
-        Public Function StockRecruitment(iGroup As Integer, B As Single, BioEst As Single, Blast As Single, iCurYear As Integer) As Single
+        Public Function StockRecruitment(iGroup As Integer, B As Single, BioEst As Single, Blast As Single, iCurYear As Integer) As Single Implements IMSEStockRecruitment.StockRecruitment
             'B is the biomass calculated by Ecosim
             'BioEst is the observed biomass(Ecosim biomass + random variation)
             'Blast is the biomass predicted for the last timestep ( Blast = stockRecruitment(t-1) )
