@@ -269,18 +269,18 @@ Namespace MSEBatchManager
 
         Private Sub redimToMSE(MSEdata As MSE.cMSEDataStructures)
 
-            Me.m_nGroups = MSEdata.NGroups
+            Me.m_nGroups = MSEdata.nGroups
             Me.m_nFleets = MSEdata.nFleets
 
-            ReDim Me.GroupRunType(MSEdata.NGroups)
+            ReDim Me.GroupRunType(MSEdata.nGroups)
 
             Me.redimForcing(1)
             Me.redimControlTypes(1, MSEdata.nFleets)
 
             Me.redimOuputTypes()
-            Me.redimTAC(1, MSEdata.NGroups)
-            Me.redimTFM(1, MSEdata.NGroups)
-            Me.redimFixedF(1, MSEdata.NGroups)
+            Me.redimTAC(1, MSEdata.nGroups)
+            Me.redimTFM(1, MSEdata.nGroups)
+            Me.redimFixedF(1, MSEdata.nGroups)
 
         End Sub
 

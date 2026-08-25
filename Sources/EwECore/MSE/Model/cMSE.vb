@@ -314,7 +314,7 @@ Namespace MSE
                     'create a new random seed for each run
                     rndSeed = CInt(CInt(Date.Now.Ticks Mod Integer.MaxValue))
                     'make sure Fmin(igroup) and EndYear have not been set somehow....
-                    For igrp = 1 To Me.m_data.NGroups
+                    For igrp = 1 To Me.m_data.nGroups
                         Me.m_data.Fmin(igrp) = 0
                     Next
                     Me.m_data.EndYear = cCore.NULL_VALUE
@@ -383,13 +383,13 @@ Namespace MSE
                 'jb 10-sept-2010 HACK fix 
                 'some databases can contain -9999 for these values 
                 'this messes up the quota calculation so set them to zero
-                For igrp = 1 To Me.m_data.NGroups
+                For igrp = 1 To Me.m_data.nGroups
                     If Me.m_data.Fopt(igrp) < 0 Then Me.m_data.Fopt(igrp) = 0
                     If Me.m_data.Blim(igrp) < 0 Then Me.m_data.Blim(igrp) = 0
                     If Me.m_data.Bbase(igrp) < 0 Then Me.m_data.Bbase(igrp) = 0
                 Next
 
-                For igrp = 1 To Me.m_data.NGroups
+                For igrp = 1 To Me.m_data.nGroups
                     For iFlt As Integer = 1 To Me.m_data.nFleets
                         If Me.m_esData.relQ(iFlt, igrp) > 0 Then
                             Me.m_data.Fweight(iFlt, igrp) = 1
@@ -652,7 +652,7 @@ Namespace MSE
                     Me.m_esData.PredictSimEffort = True
                 End If
 
-                For itr = 1 To Me.m_data.NTrials
+                For itr = 1 To Me.m_data.nTrials
 
                     Me.InitForTrial()
 
@@ -1220,7 +1220,7 @@ Namespace MSE
                 'NOT in a regulated timestep
                 'Ok to use timeseries data
 
-                For igrp = 1 To Me.m_data.NGroups
+                For igrp = 1 To Me.m_data.nGroups
 
                     'get the correct forcing time step index for this model time step
                     Dim iForced As Integer = Me.m_refData.toForcingTimeStep(iTime, iyear)
@@ -1248,7 +1248,7 @@ Namespace MSE
             Else
                 'Time step is Regulated
                 'Turn OFF Forced Mortality PoolForcedZ
-                For igrp = 1 To Me.m_data.NGroups
+                For igrp = 1 To Me.m_data.nGroups
                     Me.m_refData.PoolForceZ(igrp, 0) = 0
                 Next
 
@@ -1257,7 +1257,7 @@ Namespace MSE
             'NOW
             '2 set FishRateNo(group,time) to FishYear(group)
             '3 set FishTime(group) to FishRateNo(group,time) * [density dep catchability]
-            For igrp = 1 To Me.m_data.NGroups
+            For igrp = 1 To Me.m_data.nGroups
 
                 'set FishRateNo() to computed F from FishYear() and/or loaded timeseries data if not in regulated timestep
                 Me.m_esData.FishRateNo(igrp, iTime) = FishYear(igrp)
@@ -1299,7 +1299,7 @@ Namespace MSE
 
                         Case eQuotaTypes.Weakest 'limit effort to weakest stock
 
-                            For i = 1 To Me.m_data.NGroups
+                            For i = 1 To Me.m_data.nGroups
                                 If (Me.m_epdata.Landing(ig, i) + Me.m_epdata.Discard(ig, i)) > 0 Then
                                     'Calculate the effort limitation, has quote been exceeded?
                                     Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * QYear(ig) * Me.m_esData.FishMGear(ig, i) * Biomass(i)))
@@ -1319,7 +1319,7 @@ Namespace MSE
                             Dim vmax As Single = 0
                             Dim imax As Integer = 0
                             Dim v As Single
-                            For i = 1 To Me.m_data.NGroups
+                            For i = 1 To Me.m_data.nGroups
                                 If (Me.m_epdata.Landing(ig, i)) > 0 Then
                                     'find the stock with the biggest economic value
                                     v = CSng(Me.m_data.QuotaTime(ig, i) * Me.m_epdata.Market(ig, i))
@@ -1337,7 +1337,7 @@ Namespace MSE
                             If Emax < Me.m_esData.FishRateGear(ig, t) Then Me.m_esData.FishRateGear(ig, t) = Emax
                             Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.RandomNormal()))
 
-                            For i = 1 To Me.m_data.NGroups
+                            For i = 1 To Me.m_data.nGroups
                                 If (Me.m_epdata.Landing(ig, i)) > 0 Then
                                     ci = Me.m_esData.FishRateGear(ig, t) * QMult(i) * QYear(ig) * Me.m_esData.FishMGear(ig, i) * Biomass(i)
 
@@ -1388,8 +1388,8 @@ Namespace MSE
             Me.m_LPSolver = New cLPSolver
 
             ReDim Me.m_FleetCode(Me.m_data.nFleets)
-            ReDim Me.m_GroupCode(Me.m_data.NGroups + 1)
-            ReDim Me.m_QStar(Me.m_data.NGroups, Me.m_data.nFleets)
+            ReDim Me.m_GroupCode(Me.m_data.nGroups + 1)
+            ReDim Me.m_QStar(Me.m_data.nGroups, Me.m_data.nFleets)
 
             'Add the Fleets as Variables and get the Variable ID's into m_FleetCode
             For iflt As Integer = 1 To Me.m_data.nFleets
@@ -1535,7 +1535,7 @@ Namespace MSE
 
                 'Get fishing mortality at this time step
                 For iFlt = 1 To Me.m_data.nFleets
-                    For iGrp = 1 To Me.m_data.NGroups
+                    For iGrp = 1 To Me.m_data.nGroups
                         If t > 1 Then
                             'QStar(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
                             'Using Kalman filter to update catchability estimate
@@ -1548,7 +1548,7 @@ Namespace MSE
 
                 'Get value for the LP Solver
                 For iFlt = 1 To Me.m_data.nFleets
-                    For iGrp = 1 To Me.m_data.NGroups
+                    For iGrp = 1 To Me.m_data.nGroups
                         VPerEffort(iFlt) += Me.m_data.QStar(iGrp, iFlt) * Biomass(iGrp) * Me.m_epdata.Market(iFlt, iGrp) * Me.m_esData.PropLandedTime(iFlt, iGrp)
                     Next iGrp
                 Next iFlt
@@ -1558,7 +1558,7 @@ Namespace MSE
 
                 Dim constraint() As Double
                 ReDim constraint(Me.m_data.nFleets)
-                For iGrp = 1 To Me.m_data.NGroups
+                For iGrp = 1 To Me.m_data.nGroups
                     For iFlt = 1 To Me.m_data.nFleets
                         constraint(iFlt) = CDbl(Me.m_data.QStar(iGrp, iFlt))
                     Next
@@ -1581,7 +1581,7 @@ Namespace MSE
                 ptrLp.get_dual_solution(dualValues)
 
                 For iFlt = 1 To Me.m_data.nFleets
-                    Me.m_esData.FishRateGear(iFlt, t) = CSng(solution(Me.m_data.NGroups + iFlt))
+                    Me.m_esData.FishRateGear(iFlt, t) = CSng(solution(Me.m_data.nGroups + iFlt))
                     '    System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
                 Next
 
@@ -1756,7 +1756,7 @@ Namespace MSE
 
             'Share the Quota across the fleets for this timestep
             For iflt = 1 To Me.m_esData.nGear
-                For igrp = 1 To Me.m_data.NGroups
+                For igrp = 1 To Me.m_data.nGroups
                     Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
                 Next
             Next
@@ -2154,7 +2154,7 @@ Namespace MSE
 
             Dim NumberOfYears As Integer = Me.m_esData.NumYears
             Dim extraYears As Integer = 25
-            Dim nGroups As Integer = Me.m_data.NGroups
+            Dim nGroups As Integer = Me.m_data.nGroups
 
             'Setup Ecosim 
             'timestep handler that ecosim will call where we can grab data during the run
@@ -2619,7 +2619,7 @@ Namespace MSE
                 Me.m_curYear = iyr
 
                 'CVbiomEst(ngroups) and CVFest(nfleets) is the cv that is used to vary biomass and fishing mortality
-                For igrp As Integer = 1 To Me.m_data.NGroups
+                For igrp As Integer = 1 To Me.m_data.nGroups
                     Me.m_data.CVbiomEst(igrp) = Me.m_data.CVBiomT(igrp, iyr)
                 Next
 
@@ -2656,7 +2656,7 @@ Namespace MSE
                 'grab effort and catch
                 For iflt = 1 To Me.m_data.nFleets
                     ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
-                    For igrp = 1 To Me.m_data.NGroups
+                    For igrp = 1 To Me.m_data.nGroups
                         Me.m_data.CatchYear(iflt, igrp) += Me.m_esData.ResultsSumCatchByGroupGear(igrp, iflt, CInt(iTime))
                     Next
                 Next
