@@ -136,9 +136,9 @@ Namespace MSE
         Private m_orgPredictEffort As Boolean
         Private m_orgUsePlugin As Boolean = False
 
-        Private m_quotaCalculator As cMSEQuotaCalculator
+        Private m_quotaCalculator As IMSEQuotaCalculator
 
-        Private m_stockRecruitment As cMSEStockRecruitment
+        Private m_stockRecruitment As IMSEStockRecruitment
 
         Private m_EconomicData As New cEconomicDataSource
 

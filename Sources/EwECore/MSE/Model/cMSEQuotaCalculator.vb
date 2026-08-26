@@ -9,6 +9,7 @@ Namespace MSE
     ''' Extracted from <see cref="cMSE"/> and free of any core/plugin dependency.
     ''' </summary>
     Public Class cMSEQuotaCalculator
+        Implements IMSEQuotaCalculator
 
         Private ReadOnly m_data As IMSEQuotaData
 
@@ -26,7 +27,7 @@ Namespace MSE
         ''' <param name="Biomass">Biomass by group calculated by Ecosim.</param>
         ''' <param name="curYear">Current MSE year index.</param>
         ''' <param name="randomNormal">Supplies a normally distributed random number (mean 0, std 1).</param>
-        Public Sub DoAssessment(Biomass() As Single, curYear As Integer, randomNormal As Func(Of Single))
+        Public Sub DoAssessment(Biomass() As Single, curYear As Integer, randomNormal As Func(Of Single)) Implements IMSEQuotaCalculator.DoAssessment
 
             Dim Bobs() As Single
             ReDim Bobs(Me.m_data.nGroups)
@@ -41,7 +42,7 @@ Namespace MSE
         ''' Set the quota, apply uncertainty and share it between the fleets. Returns the quota by group.
         ''' </summary>
         ''' <param name="randomNormal">Supplies a normally distributed random number (mean 0, std 1).</param>
-        Public Function UpdateQuotas(randomNormal As Func(Of Single)) As Single()
+        Public Function UpdateQuotas(randomNormal As Func(Of Single)) As Single() Implements IMSEQuotaCalculator.UpdateQuotas
             Dim iflt As Integer, igrp As Integer
             Dim tQuota() As Single
 
