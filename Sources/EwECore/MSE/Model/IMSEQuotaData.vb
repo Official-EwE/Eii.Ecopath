@@ -12,13 +12,13 @@ Namespace MSE
     Public Interface IMSEQuotaData
 
         ''' <summary>Total number of groups.</summary>
-        ReadOnly Property nGroups() As Integer
+        Property nGroups() As Integer
 
         ''' <summary>Number of living groups.</summary>
-        ReadOnly Property nLiving() As Integer
+        Property nLiving() As Integer
 
         ''' <summary>Number of fishing fleets.</summary>
-        ReadOnly Property nFleets() As Integer
+        Property nFleets() As Integer
 
         ''' <summary>Total allowable catch by group.</summary>
         Property TAC() As Single()

@@ -64,9 +64,9 @@ public sealed class cMSEStockRecruitmentTests
             cvRec = new float[numGroups + 1];
         }
 
-        public int nGroups { get; }
-        public int nLiving { get; }
-        public int nFleets { get; }
+        public int nGroups { get; set; }
+        public int nLiving { get; set; }
+        public int nFleets { get; set; }
         public float[] TAC { get; set; }
         public float[] FixedEscapement { get; set; }
         public float[] FixedF { get; set; }
@@ -113,7 +113,7 @@ public sealed class cMSEStockRecruitmentTests
         var stats = new SpyBioEstStats();
         data.BioEstStats = stats;
 
-        var recruiter = new cMSEStockRecruitment(data);
+        var recruiter = new cMSEStockRecruitment() { Data = data };
         return (recruiter, data, stats);
     }
 

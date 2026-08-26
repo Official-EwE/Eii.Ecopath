@@ -11,11 +11,13 @@ Namespace MSE
     Public Class cMSEStockRecruitment
         Implements IMSEStockRecruitment
 
-        Private ReadOnly m_data As IMSEQuotaData
+        Private m_data As IMSEQuotaData 'This data is not passed in the constructor to make it possible to use this class with Dependency Injection (DI)
 
-        Public Sub New(data As IMSEQuotaData)
-            Me.m_data = data
-        End Sub
+        Public WriteOnly Property Data() As IMSEQuotaData
+            Set(value As IMSEQuotaData)
+                Me.m_data = value
+            End Set
+        End Property
 
         Public Function StockRecruitment(iGroup As Integer, B As Single, BioEst As Single, Blast As Single, iCurYear As Integer) As Single Implements IMSEStockRecruitment.StockRecruitment
             'B is the biomass calculated by Ecosim

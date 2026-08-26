@@ -11,15 +11,19 @@ Namespace MSE
     Public Class cMSEQuotaCalculator
         Implements IMSEQuotaCalculator
 
-        Private ReadOnly m_data As IMSEQuotaData
-
+        Private m_data As IMSEQuotaData 'This data is not passed in the constructor to make it possible to use this class with Dependency Injection (DI)
 
         Private ReadOnly m_stockRecruitment As IMSEStockRecruitment
 
-        Public Sub New(data As IMSEQuotaData, stockRecruitment As IMSEStockRecruitment)
-            Me.m_data = data
+        Public Sub New(stockRecruitment As IMSEStockRecruitment)
             Me.m_stockRecruitment = stockRecruitment
         End Sub
+
+        Public WriteOnly Property Data() As IMSEQuotaData
+            Set(value As IMSEQuotaData)
+                Me.m_data = value
+            End Set
+        End Property
 
         ''' <summary>
         ''' Estimate biomass per living group via the stock-recruitment model and store it in <see cref="cMSEDataStructures.Bestimate"/>.
