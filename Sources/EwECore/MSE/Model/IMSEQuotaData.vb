@@ -56,6 +56,30 @@ Namespace MSE
         ''' <summary>Quota for the current year by (fleet, group), updated at the start of a year.</summary>
         Property QuotaTime() As Single(,)
 
+        ''' <summary>Sum of Catch for year group</summary>
+        ''' <remarks>index = (living)</remarks>
+        Property CatchYearGroup() As Single()
+
+        ''' <summary>
+        ''' Estimated biomass from the last year
+        ''' </summary>
+        ''' <remarks>Set to Bestimate() for the previous year.</remarks>
+        Property BestimateLast() As Single()
+
+        ''' <summary>Mortality due to fishing FCatch(group) / EcopathBiomass(group) by group </summary>
+        ''' <remarks>Initialized in SetupSimVariables() </remarks>
+        Property Fish1() As Single()
+        Property GstockPred() As Single()
+        Property RstockRatio() As Single()
+        Property KalmanGain() As Single()
+
+        Property BhalfT() As Single()
+        Property Rmax() As Single()
+        Property cvRec() As Single()
+
+        ''' <summary>Records predicted/actual biomass ratios per group and year. Only <see cref="IMSESummaryStats.AddValue"/> is required.</summary>
+        Property BioEstStats() As IMSESummaryStats
+
     End Interface
 
 End Namespace

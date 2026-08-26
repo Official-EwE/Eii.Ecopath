@@ -11,14 +11,10 @@ Namespace MSE
     Public Class cMSEStockRecruitment
         Implements IMSEStockRecruitment
 
-        Private ReadOnly m_data As cMSEDataStructures
-        Private ReadOnly m_esData As cEcosimDatastructures
-        Private ReadOnly m_Search As cSearchDatastructures
+        Private ReadOnly m_data As IMSEQuotaData
 
-        Public Sub New(data As cMSEDataStructures, esData As cEcosimDatastructures, search As cSearchDatastructures)
+        Public Sub New(data As IMSEQuotaData)
             Me.m_data = data
-            Me.m_esData = esData
-            Me.m_Search = search
         End Sub
 
         Public Function StockRecruitment(iGroup As Integer, B As Single, BioEst As Single, Blast As Single, iCurYear As Integer) As Single Implements IMSEStockRecruitment.StockRecruitment
@@ -35,7 +31,7 @@ Namespace MSE
             'In the original code, we were just doing a factor reduction based on current F (catchyeargroup/Blast), without correcting relative to the ecopath base value of GstockPred.
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast)) 
-            Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast + Me.m_esData.Fish1(iGroup)))
+            Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_data.CatchYearGroup(iGroup) / Blast + Me.m_data.Fish1(iGroup)))
             Me.m_data.CatchYearGroup(iGroup) = 0
 
             RstockPred = CSng(Me.m_data.Rmax(iGroup) * Me.m_data.BestimateLast(iGroup) / (Me.m_data.BhalfT(iGroup) + Me.m_data.BestimateLast(iGroup)))

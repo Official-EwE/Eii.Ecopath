@@ -29,7 +29,6 @@ Namespace MSE
     End Enum
 
     Public Class cMSEDataStructures
-        Implements IMSEQuotaData    'interface with all the data needed for the quota calculator. This allows the quota calculator to be used without the full core data structures
 
 #Region "Public Data"
 
@@ -59,7 +58,7 @@ Namespace MSE
 
         Public Qgrow() As Single 'Max catchability increase. Catchability increase over time due to improved fishing efficiency
         Public BioRiskValue(,) As Single 'Lower and Upper boundry for Biomass risk
-        Public Property CVbiomEst() As Single() Implements IMSEQuotaData.CVbiomEst 'Biomass coefficient of variation
+        Public Property CVbiomEst() As Single() 'Biomass coefficient of variation
         Public CVFest() As Single 'Fishing effort coefficient of variation
         Public CVBiomT(,) As Single 'groups,years
         ''' <summary>fleets,years</summary>
@@ -146,7 +145,7 @@ Namespace MSE
         ''' Biomass estimated for the current year.
         ''' </summary>
         ''' <remarks>Calculated via the Stock Assessment model in <see cref="MSE.cMSE.DoAssessment">DoAssessment()</see></remarks>
-        Public Property Bestimate() As Single() Implements IMSEQuotaData.Bestimate
+        Public Property Bestimate() As Single()
 
         ''' <summary>
         ''' Estimated biomass from the last year
@@ -221,35 +220,35 @@ Namespace MSE
         ''' <summary>
         ''' Biomass of group when fishing mortality is at Fopt(igroup)(max mortality) 
         ''' </summary>
-        Public Property Bbase() As Single() Implements IMSEQuotaData.Bbase
+        Public Property Bbase() As Single()
 
         ''' <summary>
         ''' Biomass of group when fishing mortality is at zero or Fmin(igroup)
         ''' </summary>
-        Public Property Blim() As Single() Implements IMSEQuotaData.Blim
+        Public Property Blim() As Single()
 
         ''' <summary>
         ''' Max fishing mortality
         ''' </summary>
-        Public Property Fopt() As Single() Implements IMSEQuotaData.Fopt
+        Public Property Fopt() As Single()
 
         ''' <summary>
         ''' Fishing mortality when biomass(igroup) is at Blim(igroup) Minimum fishing mortality
         ''' </summary>
         ''' <remarks>This is only set to none zero from the batch manager for all other runs it is zero</remarks>
-        Public Property Fmin() As Single() Implements IMSEQuotaData.Fmin
+        Public Property Fmin() As Single()
 
-        Public Property FixedEscapement() As Single() Implements IMSEQuotaData.FixedEscapement
+        Public Property FixedEscapement() As Single()
 
         ''' <summary>
         ''' Total allowable catch
         ''' </summary>
-        Public Property TAC() As Single() Implements IMSEQuotaData.TAC
+        Public Property TAC() As Single()
 
         ''' <summary>
         ''' Fixed fishing mortality
         ''' </summary>
-        Public Property FixedF() As Single() Implements IMSEQuotaData.FixedF
+        Public Property FixedF() As Single()
 
         ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
         Public MaxEffort() As Single 'gear
@@ -265,19 +264,19 @@ Namespace MSE
 
         ''' <summary>Percentage of total catch by at fleet on a group (by fleet, group)</summary>
         ''' <remarks>Sums to one across all fleets for a group</remarks>
-        Public Property Quotashare() As Single(,) Implements IMSEQuotaData.Quotashare
+        Public Property Quotashare() As Single(,)
 
         ''' <summary>
         ''' Quota for the current year by fleet/group updated at the start of a year by <see cref="MSE.cMSE.UpdateQuotas">cMSE.UpdateQuotas</see>
         ''' </summary>
         ''' <remarks>Used by <see cref="MSE.cMSE.DoRegulations">DoRegulations()</see> to do fisheries regulations based on user selected controls.</remarks>
-        Public Property QuotaTime() As Single(,) Implements IMSEQuotaData.QuotaTime
+        Public Property QuotaTime() As Single(,)
 
         Public CatchYearGroup() As Single
 
         Public MSEMaxEffort As Single
 
-        Public Property FTarget() As Single() Implements IMSEQuotaData.FTarget
+        Public Property FTarget() As Single()
 
         Public UseLPSolution As Boolean
 
@@ -784,9 +783,15 @@ Namespace MSE
 
         End Sub
 
-        Public ReadOnly Property nGroups() As Integer Implements IMSEQuotaData.nGroups
+        Public ReadOnly Property nGroups() As Integer
             Get
                 Return Me.m_EPData.NumGroups
+            End Get
+        End Property
+
+        Public ReadOnly Property Fish1() As Single()
+            Get
+                Return Me.m_ESData.Fish1
             End Get
         End Property
 
@@ -802,13 +807,13 @@ Namespace MSE
             End Get
         End Property
 
-        Public ReadOnly Property nFleets() As Integer Implements IMSEQuotaData.nFleets
+        Public ReadOnly Property nFleets() As Integer
             Get
                 Return Me.m_EPData.NumFleet
             End Get
         End Property
 
-        Public ReadOnly Property nLiving() As Integer Implements IMSEQuotaData.nLiving
+        Public ReadOnly Property nLiving() As Integer
             Get
                 Return Me.m_EPData.NumLiving
             End Get

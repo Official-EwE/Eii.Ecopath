@@ -11,10 +11,9 @@ namespace EwECore.Tests.MSE;
 /// <summary>
 /// Pure unit tests for <see cref="cMSEStockRecruitment"/>.
 /// <para>
-/// The estimator is exercised in isolation: minimal <c>cMSEDataStructures</c>,
-/// <c>cEcosimDatastructures</c> and <c>cSearchDatastructures</c> instances are
-/// built by hand (no <c>cCore</c>, no plugin manager, no loaded model), so the
-/// delay-difference / Kalman-filter math can be verified deterministically.
+/// The estimator is exercised in isolation through a hand-rolled <see cref="FakeQuotaData"/>
+/// implementing <see cref="IMSEQuotaData"/> (no <c>cCore</c>, no core data structures, no
+/// loaded model), so the delay-difference / Kalman-filter math can be verified deterministically.
 /// </para>
 /// <para>
 /// For living group <c>iGroup</c> the estimator computes:
@@ -34,57 +33,88 @@ public sealed class cMSEStockRecruitmentTests
 {
     private const float Tolerance = 1e-4f;
 
+    /// <summary>Lightweight in-memory implementation of <see cref="IMSEQuotaData"/>.</summary>
+    private sealed class FakeQuotaData : IMSEQuotaData
+    {
+        public FakeQuotaData(int numGroups, int numLiving, int nGear)
+        {
+            nGroups = numGroups;
+            nLiving = numLiving;
+            nFleets = nGear;
+            TAC = new float[numGroups + 1];
+            FixedEscapement = new float[numGroups + 1];
+            FixedF = new float[numGroups + 1];
+            Fopt = new float[numGroups + 1];
+            Fmin = new float[numGroups + 1];
+            Bbase = new float[numGroups + 1];
+            Blim = new float[numGroups + 1];
+            Bestimate = new float[numGroups + 1];
+            CVbiomEst = new float[numGroups + 1];
+            FTarget = new float[numGroups + 1];
+            Quotashare = new float[nGear + 1, numGroups + 1];
+            QuotaTime = new float[nGear + 1, numGroups + 1];
+            CatchYearGroup = new float[numGroups + 1];
+            BestimateLast = new float[numGroups + 1];
+            Fish1 = new float[numGroups + 1];
+            GstockPred = new float[numGroups + 1];
+            RstockRatio = new float[numGroups + 1];
+            KalmanGain = new float[numGroups + 1];
+            BhalfT = new float[numGroups + 1];
+            Rmax = new float[numGroups + 1];
+            cvRec = new float[numGroups + 1];
+        }
+
+        public int nGroups { get; }
+        public int nLiving { get; }
+        public int nFleets { get; }
+        public float[] TAC { get; set; }
+        public float[] FixedEscapement { get; set; }
+        public float[] FixedF { get; set; }
+        public float[] Fopt { get; set; }
+        public float[] Fmin { get; set; }
+        public float[] Bbase { get; set; }
+        public float[] Blim { get; set; }
+        public float[] Bestimate { get; set; }
+        public float[] CVbiomEst { get; set; }
+        public float[] FTarget { get; set; }
+        public float[,] Quotashare { get; set; }
+        public float[,] QuotaTime { get; set; }
+        public float[] CatchYearGroup { get; set; }
+        public float[] BestimateLast { get; set; }
+        public float[] Fish1 { get; set; }
+        public float[] GstockPred { get; set; }
+        public float[] RstockRatio { get; set; }
+        public float[] KalmanGain { get; set; }
+        public float[] BhalfT { get; set; }
+        public float[] Rmax { get; set; }
+        public float[] cvRec { get; set; }
+        public IMSESummaryStats BioEstStats { get; set; } = null!;
+    }
+
+    /// <summary>Records every <see cref="IMSESummaryStats.AddValue"/> call for verification.</summary>
+    private sealed class SpyBioEstStats : IMSESummaryStats
+    {
+        public List<(int Index, int TimeIndex, float Value)> Recorded { get; } = new();
+
+        public void AddValue(int index, int TimeIndex, float Value)
+            => Recorded.Add((index, TimeIndex, Value));
+    }
+
     /// <summary>
-    /// Builds a hand-wired <see cref="cMSEStockRecruitment"/> plus the data
-    /// structures it reads and mutates, sized for the given dimensions.
-    /// Arrays are 1-based (index 0 unused) to match the VB engine conventions.
+    /// Builds a hand-wired <see cref="cMSEStockRecruitment"/> plus the fake data it reads and
+    /// mutates, sized for the given dimensions. Arrays are 1-based (index 0 unused) to match
+    /// the VB engine conventions.
     /// </summary>
     private static (cMSEStockRecruitment recruiter,
-                    cMSEDataStructures data,
-                    cEcosimDatastructures esData,
-                    cSearchDatastructures search) BuildRecruiter(int numGroups, int numLiving)
+                    FakeQuotaData data,
+                    SpyBioEstStats stats) BuildRecruiter(int numGroups, int numLiving)
     {
-        var epData = new cEcopathDataStructures(null)
-        {
-            NumGroups = numGroups,
-            NumLiving = numLiving,
-            NumFleet = 1
-        };
-
-        var esData = new cEcosimDatastructures
-        {
-            nGear = 1,
-            Fish1 = new float[numGroups + 1]
-        };
-
-        var data = new cMSEDataStructures(epData, esData)
-        {
-            BestimateLast = new float[numGroups + 1],
-            CatchYearGroup = new float[numGroups + 1],
-            Rmax = new float[numGroups + 1],
-            BhalfT = new float[numGroups + 1],
-            RstockRatio = new float[numGroups + 1],
-            cvRec = new float[numGroups + 1],
-            GstockPred = new float[numGroups + 1],
-            KalmanGain = new float[numGroups + 1],
-            CVbiomEst = new float[numGroups + 1]
-        };
-
-        // BioEstStats is written to as a side effect. Wire a real summary-stats
-        // object with a fixed time-step count so AddValue succeeds.
-        var stats = new cMSESummaryStats(
-            data, null, numGroups + 1, 1, eCoreCounterTypes.nGroups, _ => 5);
-        stats.Init();
-        stats.AddIteration();
+        var data = new FakeQuotaData(numGroups, numLiving, nGear: 1);
+        var stats = new SpyBioEstStats();
         data.BioEstStats = stats;
 
-        var search = new cSearchDatastructures(null, epData)
-        {
-            CatchYearGroup = new float[numGroups + 1]
-        };
-
-        var recruiter = new cMSEStockRecruitment(data, esData, search);
-        return (recruiter, data, esData, search);
+        var recruiter = new cMSEStockRecruitment(data);
+        return (recruiter, data, stats);
     }
 
     // -----------------------------------------------------------------------
@@ -96,8 +126,8 @@ public sealed class cMSEStockRecruitmentTests
     {
         // Arrange
         const int igrp = 1;
-        var (recruiter, data, _, search) = BuildRecruiter(numGroups: 1, numLiving: 1);
-        search.CatchYearGroup[igrp] = 0f;   // no catch -> Exp(0) -> BestimateLast = Blast
+        var (recruiter, data, _) = BuildRecruiter(numGroups: 1, numLiving: 1);
+        data.CatchYearGroup[igrp] = 0f;     // no catch -> Exp(0) -> BestimateLast = Blast
         data.Rmax[igrp] = 1f;
         data.BhalfT[igrp] = 2f;
         data.RstockRatio[igrp] = 1f;
@@ -123,8 +153,8 @@ public sealed class cMSEStockRecruitmentTests
     {
         // Arrange
         const int igrp = 1;
-        var (recruiter, data, _, search) = BuildRecruiter(numGroups: 1, numLiving: 1);
-        search.CatchYearGroup[igrp] = 0f;
+        var (recruiter, data, _) = BuildRecruiter(numGroups: 1, numLiving: 1);
+        data.CatchYearGroup[igrp] = 0f;
         data.Rmax[igrp] = 1f;
         data.BhalfT[igrp] = 2f;             // RstockPred = 1*2/(2+2) = 0.5
         data.RstockRatio[igrp] = 1f;
@@ -150,8 +180,8 @@ public sealed class cMSEStockRecruitmentTests
     {
         // Arrange
         const int igrp = 1;
-        var (recruiter, data, _, search) = BuildRecruiter(numGroups: 1, numLiving: 1);
-        search.CatchYearGroup[igrp] = 2f;   // BestimateLast = 4 * Exp(-2/4 + 0) = 4 * Exp(-0.5)
+        var (recruiter, data, _) = BuildRecruiter(numGroups: 1, numLiving: 1);
+        data.CatchYearGroup[igrp] = 2f;     // BestimateLast = 4 * Exp(-2/4 + 0) = 4 * Exp(-0.5)
         data.Rmax[igrp] = 1f;
         data.BhalfT[igrp] = 2f;
         data.RstockRatio[igrp] = 1f;
@@ -175,9 +205,8 @@ public sealed class cMSEStockRecruitmentTests
     {
         // Arrange
         const int igrp = 1;
-        var (recruiter, data, _, search) = BuildRecruiter(numGroups: 1, numLiving: 1);
+        var (recruiter, data, _) = BuildRecruiter(numGroups: 1, numLiving: 1);
         data.CatchYearGroup[igrp] = 99f;    // should be cleared by the estimator
-        search.CatchYearGroup[igrp] = 0f;
         data.Rmax[igrp] = 1f;
         data.BhalfT[igrp] = 2f;
         data.RstockRatio[igrp] = 1f;
@@ -201,8 +230,8 @@ public sealed class cMSEStockRecruitmentTests
     {
         // Arrange
         const int igrp = 1, iCurYear = 1;
-        var (recruiter, data, _, search) = BuildRecruiter(numGroups: 1, numLiving: 1);
-        search.CatchYearGroup[igrp] = 0f;
+        var (recruiter, data, stats) = BuildRecruiter(numGroups: 1, numLiving: 1);
+        data.CatchYearGroup[igrp] = 0f;
         data.Rmax[igrp] = 1f;
         data.BhalfT[igrp] = 2f;
         data.RstockRatio[igrp] = 1f;
@@ -214,6 +243,9 @@ public sealed class cMSEStockRecruitmentTests
         recruiter.StockRecruitment(igrp, B: 3f, BioEst: 3f, Blast: 2f, iCurYear: iCurYear);
 
         // Assert
-        data.BioEstStats.get_Values(igrp, 1)[iCurYear].Should().BeApproximately(1f, Tolerance);
+        stats.Recorded.Should().ContainSingle();
+        stats.Recorded[0].Index.Should().Be(igrp);
+        stats.Recorded[0].TimeIndex.Should().Be(iCurYear);
+        stats.Recorded[0].Value.Should().BeApproximately(1f, Tolerance);
     }
 }

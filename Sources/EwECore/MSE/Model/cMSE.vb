@@ -235,8 +235,10 @@ Namespace MSE
             Me.m_pluginManager = PluginManager
             Me.m_refData = RefData
 
-            Me.m_stockRecruitment = New cMSEStockRecruitment(Me.m_data, Me.m_esData, Me.m_Search)
-            Me.m_quotaCalculator = New cMSEQuotaCalculator(Me.m_data, Me.m_stockRecruitment)
+            Dim MSEQuotaCalculatorData As IMSEQuotaData = New cMSEQuotaData(Me.m_data, Me.m_Search)
+
+            Me.m_stockRecruitment = New cMSEStockRecruitment(MSEQuotaCalculatorData)
+            Me.m_quotaCalculator = New cMSEQuotaCalculator(MSEQuotaCalculatorData, Me.m_stockRecruitment)
 
             Me.m_EconomicData = cEconomicDataSource.getInstance()
             Me.m_data.InitForRun()

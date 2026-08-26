@@ -58,6 +58,15 @@ public sealed class cMSEQuotaCalculatorTests
             FTarget = new float[numGroups + 1];
             Quotashare = new float[nGear + 1, numGroups + 1];
             QuotaTime = new float[nGear + 1, numGroups + 1];
+            CatchYearGroup = new float[numGroups + 1];
+            BestimateLast = new float[numGroups + 1];
+            Fish1 = new float[numGroups + 1];
+            GstockPred = new float[numGroups + 1];
+            RstockRatio = new float[numGroups + 1];
+            KalmanGain = new float[numGroups + 1];
+            BhalfT = new float[numGroups + 1];
+            Rmax = new float[numGroups + 1];
+            cvRec = new float[numGroups + 1];
         }
 
         public int nGroups { get; }
@@ -75,6 +84,16 @@ public sealed class cMSEQuotaCalculatorTests
         public float[] FTarget { get; set; }
         public float[,] Quotashare { get; set; }
         public float[,] QuotaTime { get; set; }
+        public float[] CatchYearGroup { get; set; }
+        public float[] BestimateLast { get; set; }
+        public float[] Fish1 { get; set; }
+        public float[] GstockPred { get; set; }
+        public float[] RstockRatio { get; set; }
+        public float[] KalmanGain { get; set; }
+        public float[] BhalfT { get; set; }
+        public float[] Rmax { get; set; }
+        public float[] cvRec { get; set; }
+        public IMSESummaryStats BioEstStats { get; set; } = null!;
     }
 
     /// <summary>Records every call and returns a configurable estimate.</summary>
