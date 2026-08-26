@@ -784,7 +784,7 @@ Namespace MSE
 
         End Sub
 
-        Public ReadOnly Property nGroups() As Integer Implements IMSEQuotaData.NGroups
+        Public ReadOnly Property nGroups() As Integer Implements IMSEQuotaData.nGroups
             Get
                 Return Me.m_EPData.NumGroups
             End Get
