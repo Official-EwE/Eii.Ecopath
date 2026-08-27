@@ -103,6 +103,7 @@ public sealed class cMSEQuotaCalculatorTests
 
         public Func<int, float, float, float, int, float> Result { get; set; } =
             (iGroup, b, bioEst, blast, iCurYear) => bioEst;
+        public IMSEQuotaData Data { set => throw new NotImplementedException(); }
 
         public float StockRecruitment(int iGroup, float B, float BioEst, float Blast, int iCurYear)
         {

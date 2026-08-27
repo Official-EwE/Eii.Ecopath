@@ -19,7 +19,7 @@ Namespace MSE
             Me.m_stockRecruitment = stockRecruitment
         End Sub
 
-        Public WriteOnly Property Data() As IMSEQuotaData
+        Public WriteOnly Property Data() As IMSEQuotaData Implements IMSEQuotaCalculator.Data
             Set(value As IMSEQuotaData)
                 Me.m_data = value
             End Set

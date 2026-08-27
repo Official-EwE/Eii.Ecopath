@@ -24,6 +24,11 @@ Namespace MSE
         ''' <param name="randomNormal">Supplies a normally distributed random number (mean 0, std 1).</param>
         Function UpdateQuotas(randomNormal As Func(Of Single)) As Single()
 
+        ''' <summary>
+        ''' The quota data contract used by the quota calculator. This is settable to allow for dependency injection (DI) and testing.
+        ''' </summary>
+        WriteOnly Property Data() As IMSEQuotaData
+
     End Interface
 
 End Namespace

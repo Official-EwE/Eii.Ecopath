@@ -21,6 +21,11 @@ Namespace MSE
         ''' <returns>The biomass estimate for the current year.</returns>
         Function StockRecruitment(iGroup As Integer, B As Single, BioEst As Single, Blast As Single, iCurYear As Integer) As Single
 
+        ''' <summary>
+        ''' The quota data contract used by the quota calculator. This is settable to allow for dependency injection (DI) and testing.
+        ''' </summary>
+        WriteOnly Property Data() As IMSEQuotaData
+
     End Interface
 
 End Namespace

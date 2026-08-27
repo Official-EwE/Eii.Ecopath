@@ -13,7 +13,7 @@ Namespace MSE
 
         Private m_data As IMSEQuotaData 'This data is not passed in the constructor to make it possible to use this class with Dependency Injection (DI)
 
-        Public WriteOnly Property Data() As IMSEQuotaData
+        Public WriteOnly Property Data() As IMSEQuotaData Implements IMSEStockRecruitment.Data
             Set(value As IMSEQuotaData)
                 Me.m_data = value
             End Set

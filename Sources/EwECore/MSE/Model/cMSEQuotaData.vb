@@ -13,31 +13,22 @@ Public Class cMSEQuotaData
         Me.m_Search = SearchData
     End Sub
 
-    Public Property nGroups As Integer Implements IMSEQuotaData.nGroups
+    Public ReadOnly Property nGroups As Integer Implements IMSEQuotaData.nGroups
         Get
             Return Me.m_data.nGroups
         End Get
-        Set(value As Integer)
-            Throw New NotSupportedException("nGroups is read-only on cMSEDataStructures.")
-        End Set
     End Property
 
-    Public Property nLiving As Integer Implements IMSEQuotaData.nLiving
+    Public ReadOnly Property nLiving As Integer Implements IMSEQuotaData.nLiving
         Get
             Return Me.m_data.nLiving
         End Get
-        Set(value As Integer)
-            Throw New NotSupportedException("nLiving is read-only on cMSEDataStructures.")
-        End Set
     End Property
 
-    Public Property nFleets As Integer Implements IMSEQuotaData.nFleets
+    Public ReadOnly Property nFleets As Integer Implements IMSEQuotaData.nFleets
         Get
             Return Me.m_data.nFleets
         End Get
-        Set(value As Integer)
-            Throw New NotSupportedException("nFleets is read-only on cMSEDataStructures.")
-        End Set
     End Property
 
     Public Property TAC As Single() Implements IMSEQuotaData.TAC
