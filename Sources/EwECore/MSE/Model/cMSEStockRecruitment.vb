@@ -34,7 +34,6 @@ Namespace MSE
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast)) 
             Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_data.CatchYearGroup(iGroup) / Blast + Me.m_data.Fish1(iGroup)))
-            Me.m_data.CatchYearGroup(iGroup) = 0
 
             RstockPred = CSng(Me.m_data.Rmax(iGroup) * Me.m_data.BestimateLast(iGroup) / (Me.m_data.BhalfT(iGroup) + Me.m_data.BestimateLast(iGroup)))
             vPred = CSng((Me.m_data.RstockRatio(iGroup) * Me.m_data.cvRec(iGroup)) ^ 2 / (1 - Me.m_data.GstockPred(iGroup) ^ 2))

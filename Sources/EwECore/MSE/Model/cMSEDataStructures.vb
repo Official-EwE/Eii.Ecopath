@@ -272,8 +272,6 @@ Namespace MSE
         ''' <remarks>Used by <see cref="MSE.cMSE.DoRegulations">DoRegulations()</see> to do fisheries regulations based on user selected controls.</remarks>
         Public Property QuotaTime() As Single(,)
 
-        Public CatchYearGroup() As Single
-
         Public MSEMaxEffort As Single
 
         Public Property FTarget() As Single()
@@ -738,11 +736,9 @@ Namespace MSE
 
             Next iFlt
 
-            ReDim Me.CatchYearGroup(Me.nGroups)
             ReDim Me.CatchYear(Me.nFleets, Me.nGroups)
 
             For iGrp = 1 To Me.nGroups
-                Me.CatchYearGroup(iGrp) = Me.m_EPData.fCatch(iGrp)
                 'make sure Fmin did not get set to some strange value
                 If Me.Fmin(iGrp) < 0 Then Me.Fmin(iGrp) = 0
 
