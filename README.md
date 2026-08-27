@@ -95,6 +95,7 @@ For the 32-bit installer, type:
 - Type `iscc /DCompile64Bit=0 /DSemVersion="1.0.9" /O"ScientificInterface\bin\x86\publish" "..\Deployment\EwE6_relpath.iss"`
 - A `ScientificInterface\bin\x86\publish\ewe_1.0.9_32-bit_setup.exe` will be created.
 
+
 For the 64-bit installer, type:
 - Type `iscc /DCompile64Bit=1 /DSemVersion="1.0.9" /O"ScientificInterface\bin\x64\publish" "..\Deployment\EwE6_relpath.iss"`
 - A `ScientificInterface\bin\x64\publish\ewe_1.0.9_64-bit_setup.exe` will be created.
