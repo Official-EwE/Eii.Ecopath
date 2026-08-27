@@ -49,6 +49,8 @@
 - When a test has no meaningful arrange step, keep the `// Arrange` comment and leave that section empty (or write a brief note such as `// no setup required`).
 - When act and assert cannot be cleanly separated (e.g. a single `Should()` call on the result of a method), use `// Act & Assert` as a combined comment.
 - `[Theory]` tests that receive all inputs via `[InlineData]` may use `// Arrange (from InlineData)` at the top instead of a separate setup block.
+- Only use the Moq package version 4.18.0
+- Only use the FluentAssertions package version 6.9.0
 
 ## Key conventions
 
@@ -62,3 +64,7 @@
 - Plugin discovery is interface-based, not registration-based. If you add or modify a plugin, preserve the `IPlugin` metadata contract: `Name` must stay unique and is also used for plugin UI ordering.
 - Be careful with working-directory-sensitive code and assets. Plugin loading uses relative folders such as `.\` and `.\plugins`, and the MSP harness uses relative `Input` and `output` directories.
 - This is a Windows-first repository: the desktop app targets `net48`, the solution is built in x86 and x64 configurations, and release automation also builds Inno Setup installers from `Deployment\EwE6_relpath.iss`.
+
+## Documentation Comments
+
+- Documentation comments must be a maximum of 165 characters long.

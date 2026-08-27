@@ -122,7 +122,7 @@ Namespace MSE
 
         Private m_output As IMSEOutputWriter
 
-        Dim m_rndGen As Random
+        Private m_randomService As IRandomService
 
         Private m_nTrials As Integer
 
@@ -135,6 +135,10 @@ Namespace MSE
         Private m_pluginManager As cPluginManager
         Private m_orgPredictEffort As Boolean
         Private m_orgUsePlugin As Boolean = False
+
+        Private m_quotaCalculator As IMSEQuotaCalculator
+
+        Private m_stockRecruitment As IMSEStockRecruitment
 
         Private m_EconomicData As New cEconomicDataSource
 
@@ -231,6 +235,12 @@ Namespace MSE
             Me.m_pluginManager = PluginManager
             Me.m_refData = RefData
 
+            Dim MSEQuotaCalculatorData As IMSEQuotaData = New cMSEQuotaData(Me.m_data, Me.m_Search)
+
+            Me.m_randomService = New cRandomService()
+            Me.m_stockRecruitment = New cMSEStockRecruitment() With {.Data = MSEQuotaCalculatorData}
+            Me.m_quotaCalculator = New cMSEQuotaCalculator(Me.m_stockRecruitment, Me.m_randomService) With {.Data = MSEQuotaCalculatorData}
+
             Me.m_EconomicData = cEconomicDataSource.getInstance()
             Me.m_data.InitForRun()
 
@@ -282,7 +292,7 @@ Namespace MSE
             Try
 
                 For iGrp = 1 To Me.m_esData.nGroups
-                    Me.m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.RandomNormal()))
+                    Me.m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.m_randomService.RandomNormal()))
                     Me.m_data.BestimateLast(iGrp) = Me.m_data.Bestimate(iGrp)
                 Next iGrp
 
@@ -320,9 +330,9 @@ Namespace MSE
                     Me.m_data.EndYear = cCore.NULL_VALUE
                 End If
 
-                'create a new random number generator for each run
+                'create a new random service for each run
                 'the seed will decide if the sequence is unique or not
-                Me.m_rndGen = New Random(rndSeed)
+                Me.m_randomService = New cRandomService(rndSeed)
 
                 Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
                 If (ds IsNot Nothing) Then
@@ -995,7 +1005,7 @@ Namespace MSE
                         If Me.isTStepRegulated(Me.m_curT) Then
 
                             'Regulated Vary QYear()
-                            QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * CSng(Me.m_rndGen.NextDouble))
+                            QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * CSng(Me.m_randomService.NextDouble))
 
                         Else
                             'Not Regulated 
@@ -1017,7 +1027,7 @@ Namespace MSE
                         If Me.m_data.Fwc(i, 1) > 0 Then Fgear(i) = Fgear(i) * Me.m_data.Fwc(i, 0) / Me.m_data.Fwc(i, 1)
                     Else
                         'First year
-                        Fgear(i) = CSng(Fgear(i) * (1 + Me.Normal * Math.Sqrt(Me.m_data.VarQest(i))))
+                        Fgear(i) = CSng(Fgear(i) * (1 + Me.m_randomService.Normal * Math.Sqrt(Me.m_data.VarQest(i))))
                     End If
 
                     If Fgear(i) < 1.0E-20 Then Fgear(i) = 1.0E-20
@@ -1067,11 +1077,11 @@ Namespace MSE
                     Case eAssessmentMethods.CatchEstmBio ' Fs from biomass estimates by pool
                         ' System.Console.WriteLine()
                         For j = 1 To Me.m_epdata.NumLiving
-                            Best(j) = CSng(Math.Exp(Me.Normal2() * Me.m_data.CVbiomEst(j)) * Me.m_esData.StartBiomass(j) * (Bbar(j) / Me.m_esData.StartBiomass(j)) ^ Me.m_data.AssessPower)
+                            Best(j) = CSng(Math.Exp(Me.m_randomService.Normal2() * Me.m_data.CVbiomEst(j)) * Me.m_esData.StartBiomass(j) * (Bbar(j) / Me.m_esData.StartBiomass(j)) ^ Me.m_data.AssessPower)
 
                             If Me.BestTime(j) > 0 Then  'have previous biomass estimate for this run
                                 'jb 8-Oct-2010 changed to use the same stock recruitment model as MSE regulatory model
-                                Me.BestTime(j) = Me.stockRecruitment(j, Bbar(j), Best(j), Me.BestTime(j))
+                                Me.BestTime(j) = Me.m_stockRecruitment.StockRecruitment(j, Bbar(j), Best(j), Me.BestTime(j), Me.m_curYear)
                                 'Bp = m_data.GstockPred(j) * BestTime(j) + m_data.RStock0(j)
                                 'BestTime(j) = Bp + m_data.KalmanGain(j) * (Best(j) - Bp)
                             Else
@@ -1090,7 +1100,7 @@ Namespace MSE
 
                         For i = 1 To Me.m_epdata.NumFleet
                             For j = 1 To Me.m_epdata.NumLiving
-                                Fest(i, j) = (Me.m_Search.CatchYear(i, j) / Bbar(j)) * CSng(Math.Exp(Me.Normal2() * Me.m_data.CVFest(j)))
+                                Fest(i, j) = (Me.m_Search.CatchYear(i, j) / Bbar(j)) * CSng(Math.Exp(Me.m_randomService.Normal2() * Me.m_data.CVFest(j)))
                             Next
                         Next
 
@@ -1308,7 +1318,7 @@ Namespace MSE
                                         Me.m_esData.FishRateGear(ig, t) = Elim
                                     End If
 
-                                    Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.RandomNormal()))
+                                    Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.m_randomService.RandomNormal()))
 
                                 End If
                             Next i
@@ -1335,7 +1345,7 @@ Namespace MSE
 
                             'Limit the effort if it is greater than the max allowable 
                             If Emax < Me.m_esData.FishRateGear(ig, t) Then Me.m_esData.FishRateGear(ig, t) = Emax
-                            Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.RandomNormal()))
+                            Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.m_randomService.RandomNormal()))
 
                             For i = 1 To Me.m_data.nGroups
                                 If (Me.m_epdata.Landing(ig, i)) > 0 Then
@@ -1621,52 +1631,13 @@ Namespace MSE
 
         End Function
 
-        Private Function stockRecruitment(iGroup As Integer, B As Single, BioEst As Single, Blast As Single) As Single
-            'B is the biomass calculated by Ecosim
-            'BioEst is the observed biomass(Ecosim biomass + random variation)
-            'Blast is the biomass predicted for the last timestep ( Blast = stockRecruitment(t-1) )
-
-            Dim RstockPred As Single
-            Dim vPred As Single
-            Dim Best As Single
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            ' What this correction basically does is to increase the year-to-year Biomass gain factor in the delaydifference model (effective GstockPred by year)
-            ' for situations where F has been reduced relative to ecopath base, and reduce the factor for years when F is higher than ecopath base.  
-            'In the original code, we were just doing a factor reduction based on current F (catchyeargroup/Blast), without correcting relative to the ecopath base value of GstockPred.
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast)) 
-            Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast + Me.m_esData.Fish1(iGroup)))
-            Me.m_data.CatchYearGroup(iGroup) = 0
-
-            RstockPred = CSng(Me.m_data.Rmax(iGroup) * Me.m_data.BestimateLast(iGroup) / (Me.m_data.BhalfT(iGroup) + Me.m_data.BestimateLast(iGroup)))
-            vPred = CSng((Me.m_data.RstockRatio(iGroup) * Me.m_data.cvRec(iGroup)) ^ 2 / (1 - Me.m_data.GstockPred(iGroup) ^ 2))
-            Me.m_data.KalmanGain(iGroup) = CSng(vPred / (vPred + Me.m_data.CVbiomEst(iGroup) ^ 2))
-
-            'and then we estimate a biomass from assessments, so Bestimate is what will be used for e.g., the fixed escapement policy.
-            'VC091107 fixed problem in eq below
-            Best = Me.m_data.KalmanGain(iGroup) * BioEst + (1 - Me.m_data.KalmanGain(iGroup)) * (Me.m_data.GstockPred(iGroup) * Me.m_data.BestimateLast(iGroup) + RstockPred)
-
-            'store the pred/actual
-            Dim val As Single
-            val = Best / B
-            Me.m_data.BioEstStats.AddValue(iGroup, Me.m_curYear, val)
-
-            Return Best
-
-        End Function
-
         ''' <summary>
         ''' Populates Bestimate() and KalmanGain() for regulated fisheries
         ''' </summary>
         ''' <remarks></remarks>
         Friend Sub DoAssessment(Biomass() As Single)
 
-            Dim Bobs() As Single
-            ReDim Bobs(Me.m_epdata.NumGroups)
-            For i As Integer = 1 To Me.m_data.nLiving
-                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal()))
-                Me.m_data.Bestimate(i) = Me.stockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i))
-            Next i
+            Me.m_quotaCalculator.DoAssessment(Biomass, Me.m_curYear)
 
             Try
                 'give the plugins a shot
@@ -1685,82 +1656,9 @@ Namespace MSE
         ''' with the quota for this year based on <see cref="cMSEDataStructures.Bestimate">cMSEDataStructures.Bestimate(ngroups)</see> 
         ''' , biomass from the stock assessment model.
         ''' </remarks>
-        Friend Sub UpdateQuotas(Biomass() As Single)
-            Dim iflt As Integer, igrp As Integer
-            Dim tQuota() As Single
+        Public Sub UpdateQuotas(Biomass() As Single)
 
-            ReDim tQuota(Me.m_epdata.NumGroups)
-            Array.Clear(Me.m_data.FTarget, 0, Me.m_epdata.NumGroups)
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'HACK WARNING
-            'BatchMode (cMSEBatchManager) needs to be able to set FixedF() and TAC() values to zero and still have them considered a valid value
-            'It does this by setting values to Epsilon 1.401298E-45 when the user enters zero
-            'This is interpreted as >0 then rounded off to zero
-            'this allows the interface and database to remain the same Zero means TAC() and FixedF() are NOT USED.
-            'It would be tricky to fix this with a flag and not break existing models.
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            '
-            '1 Set the quota via Fixed Escapement, Fixed Fishing Mortality or Target Fishing Mortality(hockey stick)
-            '2 Apply uncertainty to the Quota
-            '3 Share the Quota between the fleets
-            For igrp = 1 To Me.m_epdata.NumLiving
-
-                If Me.m_data.TAC(igrp) > 0 Then
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'Total Allowable Catch
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    Dim tac As Single = CSng(Math.Round(Me.m_data.TAC(igrp), 5))
-                    tQuota(igrp) = tac
-
-                ElseIf Me.m_data.FixedEscapement(igrp) > 0 Then
-                    'xxxxxxxxxxxxxxxxxxxxxxx
-                    'Fixed Escapement
-                    'xxxxxxxxxxxxxxxxxxxxxxx
-
-                    tQuota(igrp) = Me.m_data.Bestimate(igrp) - Me.m_data.FixedEscapement(igrp)
-                    If tQuota(igrp) < 0 Then tQuota(igrp) = 0
-
-                ElseIf Me.m_data.FixedF(igrp) > 0 Then
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'Fixed Mortality
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    Dim f As Single = CSng(Math.Round(Me.m_data.FixedF(igrp), 5))
-                    tQuota(igrp) = f * Me.m_data.Bestimate(igrp)
-                    Me.m_data.FTarget(igrp) = f
-
-                Else
-                    'xxxxxxxxxxxxxxxxxxxxxxxx
-                    'Target Fishing Mortality
-                    'xxxxxxxxxxxxxxxxxxxxxxxx
-                    Dim brange As Single = Me.m_data.Bbase(igrp) - Me.m_data.Blim(igrp)
-                    If brange <= 0 Then brange = 1.0E-20
-
-                    'VC to JB: I think the Biomass below should be Bestimate instead; talked to Carl and he agrees. will be a double wham, which is OK.
-                    Me.m_data.FTarget(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / brange
-
-                    'constrain the fishing mortality to min and max values. 
-                    'Fmin(igrp) only gets set by the MSEBatchManager for all other runs it must be zero. 
-                    If Me.m_data.FTarget(igrp) < Me.m_data.Fmin(igrp) Then Me.m_data.FTarget(igrp) = Me.m_data.Fmin(igrp)
-                    If Me.m_data.FTarget(igrp) > Me.m_data.Fopt(igrp) Then Me.m_data.FTarget(igrp) = Me.m_data.Fopt(igrp)
-
-                    tQuota(igrp) = Me.m_data.FTarget(igrp) * Me.m_data.Bestimate(igrp)
-
-                End If
-
-                'Add uncertainty to the Quota set above
-                'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
-                'but assume uncertainty is smaller?????? not done here
-                tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
-
-            Next igrp
-
-            'Share the Quota across the fleets for this timestep
-            For iflt = 1 To Me.m_esData.nGear
-                For igrp = 1 To Me.m_data.nGroups
-                    Me.m_data.QuotaTime(iflt, igrp) = tQuota(igrp) * Me.m_data.Quotashare(iflt, igrp)
-                Next
-            Next
-
+            Dim tQuota() As Single = Me.m_quotaCalculator.UpdateQuotas()
             Try
                 Me.m_core.PluginManager.MSEUpdateQuotas(Biomass)
             Catch ex As Exception
@@ -1808,34 +1706,14 @@ Namespace MSE
 
         End Sub
 
-        Private Function Normal2() As Single
-            Dim R As Single
-            'R = -6
-            'For i = 1 To 12
-            '    R = R + Rnd
-            'Next
-            R = CSng(2 * Me.m_rndGen.NextDouble - 1)
-            Normal2 = CSng(Math.Log((1 + R) / (1 - R)) / 1.82)
-
-        End Function
-
-        Function RandNormDist(stdev As Single, mean As Single) As Single
-            Return Me.Normal() * stdev + mean
-        End Function
-
         ''' <summary>
-        ''' Box-Muller normally distributed random number with a standard deviation of one
+        ''' Random number service used by the MSE. Recreated with a new seed for each run.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function Normal() As Single
-            Dim V1 As Double, V2 As Double
-            Do
-                V1 = Me.m_rndGen.NextDouble
-                V2 = Me.m_rndGen.NextDouble
-            Loop Until V1 > 0
-            Return CSng(Math.Sqrt(-2 * Math.Log(V1)) * Math.Cos(2 * 3.14159 * V2))
-        End Function
+        Friend ReadOnly Property RandomService As IRandomService
+            Get
+                Return Me.m_randomService
+            End Get
+        End Property
 
 #End Region
 
@@ -2921,21 +2799,6 @@ Namespace MSE
             Me.m_core.Messages.SendMessage(msg)
             Return bSuccess
 
-        End Function
-
-        ''' <summary>
-        ''' Normally distrubute random number where mean = 0 std = 1
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Friend Function RandomNormal() As Single
-            Dim X As Double
-            Debug.Assert(Me.m_rndGen IsNot Nothing, Me.ToString & ".RandomNormal() Random number generator has not been initialized!")
-            X = -6
-            For i As Integer = 1 To 12
-                X = X + Me.m_rndGen.NextDouble
-            Next
-            Return CSng(X)
         End Function
 
 #End Region
