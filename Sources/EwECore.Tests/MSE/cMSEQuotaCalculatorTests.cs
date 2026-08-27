@@ -4,6 +4,7 @@
 
 using EwECore.MSE;
 using FluentAssertions;
+using Moq;
 
 namespace EwECore.Tests.MSE;
 
@@ -24,7 +25,7 @@ namespace EwECore.Tests.MSE;
 ///                        brange  = max(Bbase - Blim, 1e-20)
 ///                        FTarget = clamp(Fopt * (Bestimate - Blim) / brange, Fmin, Fopt)
 ///                        tQuota  = FTarget * Bestimate
-/// tQuota *= Exp(CVbiomEst * randomNormal() - 0.5 * CVbiomEst^2)
+/// tQuota *= Exp(CVbiomEst * RandomNormal() - 0.5 * CVbiomEst^2)
 /// QuotaTime(iflt, igrp) = tQuota * Quotashare(iflt, igrp)
 /// </code>
 /// All quota tests set <c>CVbiomEst = 0</c> so the uncertainty factor is <c>Exp(0) = 1</c>
@@ -34,9 +35,6 @@ namespace EwECore.Tests.MSE;
 public sealed class cMSEQuotaCalculatorTests
 {
     private const float Tolerance = 1e-4f;
-
-    /// <summary>Deterministic random source; value is irrelevant while CVbiomEst == 0.</summary>
-    private static float ZeroRandom() => 0f;
 
     /// <summary>Lightweight in-memory implementation of <see cref="IMSEQuotaData"/>.</summary>
     private sealed class FakeQuotaData : IMSEQuotaData
@@ -117,11 +115,13 @@ public sealed class cMSEQuotaCalculatorTests
     /// sized for the given dimensions. Arrays are 1-based (index 0 unused) to match the VB engine.
     /// </summary>
     private static (cMSEQuotaCalculator updater, FakeQuotaData data, StubStockRecruitment recruiter) BuildUpdater(
-        int numGroups, int numLiving, int nGear)
+        int numGroups, int numLiving, int nGear, float randomNormal = 0f)
     {
         var data = new FakeQuotaData(numGroups, numLiving, nGear);
         var recruiter = new StubStockRecruitment();
-        var updater = new cMSEQuotaCalculator(recruiter) { Data = data };
+        var randomService = new Mock<IRandomService>();
+        randomService.Setup(r => r.RandomNormal()).Returns(randomNormal);
+        var updater = new cMSEQuotaCalculator(recruiter, randomService.Object) { Data = data };
         return (updater, data, recruiter);
     }
 
@@ -139,7 +139,7 @@ public sealed class cMSEQuotaCalculatorTests
         data.Quotashare[iflt, igrp] = 0.5f;
 
         // Act
-        float[] tQuota = updater.UpdateQuotas(ZeroRandom);
+        float[] tQuota = updater.UpdateQuotas();
 
         // Assert
         tQuota[igrp].Should().BeApproximately(12.34568f, Tolerance);
@@ -161,7 +161,7 @@ public sealed class cMSEQuotaCalculatorTests
         data.Quotashare[iflt, igrp] = 1.0f;
 
         // Act
-        float[] tQuota = updater.UpdateQuotas(ZeroRandom);
+        float[] tQuota = updater.UpdateQuotas();
 
         // Assert
         tQuota[igrp].Should().BeApproximately(0.6f, Tolerance);
@@ -179,7 +179,7 @@ public sealed class cMSEQuotaCalculatorTests
         data.Quotashare[iflt, igrp] = 1.0f;
 
         // Act
-        float[] tQuota = updater.UpdateQuotas(ZeroRandom);
+        float[] tQuota = updater.UpdateQuotas();
 
         // Assert
         tQuota[igrp].Should().BeApproximately(0f, Tolerance);
@@ -201,7 +201,7 @@ public sealed class cMSEQuotaCalculatorTests
         data.Quotashare[iflt, igrp] = 1.0f;
 
         // Act
-        float[] tQuota = updater.UpdateQuotas(ZeroRandom);
+        float[] tQuota = updater.UpdateQuotas();
 
         // Assert
         data.FTarget[igrp].Should().BeApproximately(0.2f, Tolerance);
@@ -228,7 +228,7 @@ public sealed class cMSEQuotaCalculatorTests
         float expectedFTarget = fopt * (bestimate - blim) / (bbase - blim);
 
         // Act
-        float[] tQuota = updater.UpdateQuotas(ZeroRandom);
+        float[] tQuota = updater.UpdateQuotas();
 
         // Assert
         data.FTarget[igrp].Should().BeApproximately(expectedFTarget, Tolerance);
@@ -249,7 +249,7 @@ public sealed class cMSEQuotaCalculatorTests
         data.Quotashare[iflt, igrp] = quotashare;
 
         // Act
-        float[] tQuota = updater.UpdateQuotas(ZeroRandom);
+        float[] tQuota = updater.UpdateQuotas();
 
         // Assert
         data.FTarget[igrp].Should().BeApproximately(fopt, Tolerance);
@@ -271,7 +271,7 @@ public sealed class cMSEQuotaCalculatorTests
         data.Quotashare[iflt, igrp] = quotashare;
 
         // Act
-        float[] tQuota = updater.UpdateQuotas(ZeroRandom);
+        float[] tQuota = updater.UpdateQuotas();
 
         // Assert
         data.FTarget[igrp].Should().BeApproximately(fmin, Tolerance);
@@ -293,7 +293,7 @@ public sealed class cMSEQuotaCalculatorTests
         data.Quotashare[iflt, igrp] = quotashare;
 
         // Act
-        float[] tQuota = updater.UpdateQuotas(ZeroRandom);
+        float[] tQuota = updater.UpdateQuotas();
 
         // Assert
         data.FTarget[igrp].Should().BeApproximately(fopt, Tolerance);
@@ -315,7 +315,7 @@ public sealed class cMSEQuotaCalculatorTests
         data.Quotashare[2, igrp] = 0.3f;
 
         // Act
-        float[] tQuota = updater.UpdateQuotas(ZeroRandom);
+        float[] tQuota = updater.UpdateQuotas();
 
         // Assert
         tQuota[igrp].Should().BeApproximately(10.0f, Tolerance);
@@ -334,12 +334,12 @@ public sealed class cMSEQuotaCalculatorTests
         const int igrp = 1;
         var (updater, data, recruiter) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
         data.Bestimate[igrp] = 2.0f;      // previous estimate, passed to the recruiter as Blast
-        data.CVbiomEst[igrp] = 0f;        // ZeroRandom -> Bobs = Biomass
+        data.CVbiomEst[igrp] = 0f;        // zero random -> Bobs = Biomass
         recruiter.Result = (_, _, _, _, _) => 7.5f;
         var biomass = new float[] { 0f, 3.0f };
 
         // Act
-        updater.DoAssessment(biomass, curYear: 4, randomNormal: ZeroRandom);
+        updater.DoAssessment(biomass, curYear: 4);
 
         // Assert
         data.Bestimate[igrp].Should().BeApproximately(7.5f, Tolerance);
@@ -356,13 +356,13 @@ public sealed class cMSEQuotaCalculatorTests
     {
         // Arrange
         const int igrp = 1;
-        var (updater, data, recruiter) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1);
+        var (updater, data, recruiter) = BuildUpdater(numGroups: 1, numLiving: 1, nGear: 1, randomNormal: 1.0f);
         data.CVbiomEst[igrp] = 0.5f;
         var biomass = new float[] { 0f, 3.0f };
         float expectedBobs = 3.0f * (float)Math.Exp(0.5f * 1.0f); // Bobs = B * Exp(CV * rand)
 
         // Act
-        updater.DoAssessment(biomass, curYear: 1, randomNormal: () => 1.0f);
+        updater.DoAssessment(biomass, curYear: 1);
 
         // Assert
         recruiter.Calls.Should().ContainSingle();
@@ -382,7 +382,7 @@ public sealed class cMSEQuotaCalculatorTests
         var biomass = new float[] { 0f, 3.0f, 5.0f };
 
         // Act
-        updater.DoAssessment(biomass, curYear: 1, randomNormal: ZeroRandom);
+        updater.DoAssessment(biomass, curYear: 1);
 
         // Assert
         recruiter.Calls.Should().ContainSingle();

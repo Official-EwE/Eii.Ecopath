@@ -15,8 +15,11 @@ Namespace MSE
 
         Private ReadOnly m_stockRecruitment As IMSEStockRecruitment
 
-        Public Sub New(stockRecruitment As IMSEStockRecruitment)
+        Private ReadOnly m_randomService As IRandomService
+
+        Public Sub New(stockRecruitment As IMSEStockRecruitment, randomService As IRandomService)
             Me.m_stockRecruitment = stockRecruitment
+            Me.m_randomService = randomService
         End Sub
 
         Public WriteOnly Property Data() As IMSEQuotaData Implements IMSEQuotaCalculator.Data
@@ -30,13 +33,12 @@ Namespace MSE
         ''' </summary>
         ''' <param name="Biomass">Biomass by group calculated by Ecosim.</param>
         ''' <param name="curYear">Current MSE year index.</param>
-        ''' <param name="randomNormal">Supplies a normally distributed random number (mean 0, std 1).</param>
-        Public Sub DoAssessment(Biomass() As Single, curYear As Integer, randomNormal As Func(Of Single)) Implements IMSEQuotaCalculator.DoAssessment
+        Public Sub DoAssessment(Biomass() As Single, curYear As Integer) Implements IMSEQuotaCalculator.DoAssessment
 
             Dim Bobs() As Single
             ReDim Bobs(Me.m_data.nGroups)
             For i As Integer = 1 To Me.m_data.nLiving
-                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * randomNormal()))
+                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.m_randomService.RandomNormal()))
                 Me.m_data.Bestimate(i) = Me.m_stockRecruitment.StockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i), curYear)
             Next i
 
@@ -45,8 +47,7 @@ Namespace MSE
         ''' <summary>
         ''' Set the quota, apply uncertainty and share it between the fleets. Returns the quota by group.
         ''' </summary>
-        ''' <param name="randomNormal">Supplies a normally distributed random number (mean 0, std 1).</param>
-        Public Function UpdateQuotas(randomNormal As Func(Of Single)) As Single() Implements IMSEQuotaCalculator.UpdateQuotas
+        Public Function UpdateQuotas() As Single() Implements IMSEQuotaCalculator.UpdateQuotas
             Dim iflt As Integer, igrp As Integer
             Dim tQuota() As Single
 
@@ -111,7 +112,7 @@ Namespace MSE
                 'Add uncertainty to the Quota set above
                 'VC091104 There will also be uncertainty on how well this quota is implemented so add this:
                 'but assume uncertainty is smaller?????? not done here
-                tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * randomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
+                tQuota(igrp) = tQuota(igrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(igrp) * Me.m_randomService.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(igrp) ^ 2))
 
             Next igrp
 

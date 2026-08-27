@@ -15,14 +15,12 @@ Namespace MSE
         ''' </summary>
         ''' <param name="Biomass">Biomass by group calculated by Ecosim.</param>
         ''' <param name="curYear">Current MSE year index.</param>
-        ''' <param name="randomNormal">Supplies a normally distributed random number (mean 0, std 1).</param>
-        Sub DoAssessment(Biomass() As Single, curYear As Integer, randomNormal As Func(Of Single))
+        Sub DoAssessment(Biomass() As Single, curYear As Integer)
 
         ''' <summary>
         ''' Set the quota, apply uncertainty and share it between the fleets. Returns the quota by group.
         ''' </summary>
-        ''' <param name="randomNormal">Supplies a normally distributed random number (mean 0, std 1).</param>
-        Function UpdateQuotas(randomNormal As Func(Of Single)) As Single()
+        Function UpdateQuotas() As Single()
 
         ''' <summary>
         ''' The quota data contract used by the quota calculator. This is settable to allow for dependency injection (DI) and testing.

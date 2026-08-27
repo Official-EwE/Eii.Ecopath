@@ -122,7 +122,7 @@ Namespace MSE
 
         Private m_output As IMSEOutputWriter
 
-        Dim m_rndGen As Random
+        Private m_randomService As IRandomService
 
         Private m_nTrials As Integer
 
@@ -237,8 +237,9 @@ Namespace MSE
 
             Dim MSEQuotaCalculatorData As IMSEQuotaData = New cMSEQuotaData(Me.m_data, Me.m_Search)
 
+            Me.m_randomService = New cRandomService()
             Me.m_stockRecruitment = New cMSEStockRecruitment() With {.Data = MSEQuotaCalculatorData}
-            Me.m_quotaCalculator = New cMSEQuotaCalculator(Me.m_stockRecruitment) With {.Data = MSEQuotaCalculatorData}
+            Me.m_quotaCalculator = New cMSEQuotaCalculator(Me.m_stockRecruitment, Me.m_randomService) With {.Data = MSEQuotaCalculatorData}
 
             Me.m_EconomicData = cEconomicDataSource.getInstance()
             Me.m_data.InitForRun()
@@ -291,7 +292,7 @@ Namespace MSE
             Try
 
                 For iGrp = 1 To Me.m_esData.nGroups
-                    Me.m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.RandomNormal()))
+                    Me.m_data.Bestimate(iGrp) = Me.m_esData.StartBiomass(iGrp) * CSng(Math.Exp(Me.m_data.CVbiomEst(iGrp) * Me.m_randomService.RandomNormal()))
                     Me.m_data.BestimateLast(iGrp) = Me.m_data.Bestimate(iGrp)
                 Next iGrp
 
@@ -329,9 +330,9 @@ Namespace MSE
                     Me.m_data.EndYear = cCore.NULL_VALUE
                 End If
 
-                'create a new random number generator for each run
+                'create a new random service for each run
                 'the seed will decide if the sequence is unique or not
-                Me.m_rndGen = New Random(rndSeed)
+                Me.m_randomService = New cRandomService(rndSeed)
 
                 Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
                 If (ds IsNot Nothing) Then
@@ -1004,7 +1005,7 @@ Namespace MSE
                         If Me.isTStepRegulated(Me.m_curT) Then
 
                             'Regulated Vary QYear()
-                            QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * CSng(Me.m_rndGen.NextDouble))
+                            QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * CSng(Me.m_randomService.NextDouble))
 
                         Else
                             'Not Regulated 
@@ -1026,7 +1027,7 @@ Namespace MSE
                         If Me.m_data.Fwc(i, 1) > 0 Then Fgear(i) = Fgear(i) * Me.m_data.Fwc(i, 0) / Me.m_data.Fwc(i, 1)
                     Else
                         'First year
-                        Fgear(i) = CSng(Fgear(i) * (1 + Me.Normal * Math.Sqrt(Me.m_data.VarQest(i))))
+                        Fgear(i) = CSng(Fgear(i) * (1 + Me.m_randomService.Normal * Math.Sqrt(Me.m_data.VarQest(i))))
                     End If
 
                     If Fgear(i) < 1.0E-20 Then Fgear(i) = 1.0E-20
@@ -1076,7 +1077,7 @@ Namespace MSE
                     Case eAssessmentMethods.CatchEstmBio ' Fs from biomass estimates by pool
                         ' System.Console.WriteLine()
                         For j = 1 To Me.m_epdata.NumLiving
-                            Best(j) = CSng(Math.Exp(Me.Normal2() * Me.m_data.CVbiomEst(j)) * Me.m_esData.StartBiomass(j) * (Bbar(j) / Me.m_esData.StartBiomass(j)) ^ Me.m_data.AssessPower)
+                            Best(j) = CSng(Math.Exp(Me.m_randomService.Normal2() * Me.m_data.CVbiomEst(j)) * Me.m_esData.StartBiomass(j) * (Bbar(j) / Me.m_esData.StartBiomass(j)) ^ Me.m_data.AssessPower)
 
                             If Me.BestTime(j) > 0 Then  'have previous biomass estimate for this run
                                 'jb 8-Oct-2010 changed to use the same stock recruitment model as MSE regulatory model
@@ -1099,7 +1100,7 @@ Namespace MSE
 
                         For i = 1 To Me.m_epdata.NumFleet
                             For j = 1 To Me.m_epdata.NumLiving
-                                Fest(i, j) = (Me.m_Search.CatchYear(i, j) / Bbar(j)) * CSng(Math.Exp(Me.Normal2() * Me.m_data.CVFest(j)))
+                                Fest(i, j) = (Me.m_Search.CatchYear(i, j) / Bbar(j)) * CSng(Math.Exp(Me.m_randomService.Normal2() * Me.m_data.CVFest(j)))
                             Next
                         Next
 
@@ -1317,7 +1318,7 @@ Namespace MSE
                                         Me.m_esData.FishRateGear(ig, t) = Elim
                                     End If
 
-                                    Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.RandomNormal()))
+                                    Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.m_randomService.RandomNormal()))
 
                                 End If
                             Next i
@@ -1344,7 +1345,7 @@ Namespace MSE
 
                             'Limit the effort if it is greater than the max allowable 
                             If Emax < Me.m_esData.FishRateGear(ig, t) Then Me.m_esData.FishRateGear(ig, t) = Emax
-                            Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.RandomNormal()))
+                            Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t) * CSng(Math.Exp(Me.m_data.CVFest(ig) * Me.m_randomService.RandomNormal()))
 
                             For i = 1 To Me.m_data.nGroups
                                 If (Me.m_epdata.Landing(ig, i)) > 0 Then
@@ -1636,7 +1637,7 @@ Namespace MSE
         ''' <remarks></remarks>
         Friend Sub DoAssessment(Biomass() As Single)
 
-            Me.m_quotaCalculator.DoAssessment(Biomass, Me.m_curYear, AddressOf Me.RandomNormal)
+            Me.m_quotaCalculator.DoAssessment(Biomass, Me.m_curYear)
 
             Try
                 'give the plugins a shot
@@ -1657,7 +1658,7 @@ Namespace MSE
         ''' </remarks>
         Public Sub UpdateQuotas(Biomass() As Single)
 
-            Dim tQuota() As Single = Me.m_quotaCalculator.UpdateQuotas(AddressOf Me.RandomNormal)
+            Dim tQuota() As Single = Me.m_quotaCalculator.UpdateQuotas()
             Try
                 Me.m_core.PluginManager.MSEUpdateQuotas(Biomass)
             Catch ex As Exception
@@ -1705,34 +1706,14 @@ Namespace MSE
 
         End Sub
 
-        Private Function Normal2() As Single
-            Dim R As Single
-            'R = -6
-            'For i = 1 To 12
-            '    R = R + Rnd
-            'Next
-            R = CSng(2 * Me.m_rndGen.NextDouble - 1)
-            Normal2 = CSng(Math.Log((1 + R) / (1 - R)) / 1.82)
-
-        End Function
-
-        Function RandNormDist(stdev As Single, mean As Single) As Single
-            Return Me.Normal() * stdev + mean
-        End Function
-
         ''' <summary>
-        ''' Box-Muller normally distributed random number with a standard deviation of one
+        ''' Random number service used by the MSE. Recreated with a new seed for each run.
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function Normal() As Single
-            Dim V1 As Double, V2 As Double
-            Do
-                V1 = Me.m_rndGen.NextDouble
-                V2 = Me.m_rndGen.NextDouble
-            Loop Until V1 > 0
-            Return CSng(Math.Sqrt(-2 * Math.Log(V1)) * Math.Cos(2 * 3.14159 * V2))
-        End Function
+        Friend ReadOnly Property RandomService As IRandomService
+            Get
+                Return Me.m_randomService
+            End Get
+        End Property
 
 #End Region
 
@@ -2818,21 +2799,6 @@ Namespace MSE
             Me.m_core.Messages.SendMessage(msg)
             Return bSuccess
 
-        End Function
-
-        ''' <summary>
-        ''' Normally distrubute random number where mean = 0 std = 1
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Friend Function RandomNormal() As Single
-            Dim X As Double
-            Debug.Assert(Me.m_rndGen IsNot Nothing, Me.ToString & ".RandomNormal() Random number generator has not been initialized!")
-            X = -6
-            For i As Integer = 1 To 12
-                X = X + Me.m_rndGen.NextDouble
-            Next
-            Return CSng(X)
         End Function
 
 #End Region

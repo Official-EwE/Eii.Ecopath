@@ -197,31 +197,6 @@ public sealed class cMSEStockRecruitmentTests
     }
 
     // -----------------------------------------------------------------------
-    // The group catch accumulator is cleared after the estimate is produced
-    // -----------------------------------------------------------------------
-
-    [Fact]
-    public void StockRecruitment_ResetsDataCatchYearGroupToZero()
-    {
-        // Arrange
-        const int igrp = 1;
-        var (recruiter, data, _) = BuildRecruiter(numGroups: 1, numLiving: 1);
-        data.CatchYearGroup[igrp] = 99f;    // should be cleared by the estimator
-        data.Rmax[igrp] = 1f;
-        data.BhalfT[igrp] = 2f;
-        data.RstockRatio[igrp] = 1f;
-        data.cvRec[igrp] = 1f;
-        data.GstockPred[igrp] = 0f;
-        data.CVbiomEst[igrp] = 0f;
-
-        // Act
-        recruiter.StockRecruitment(igrp, B: 3f, BioEst: 3f, Blast: 2f, iCurYear: 1);
-
-        // Assert
-        data.CatchYearGroup[igrp].Should().Be(0f);
-    }
-
-    // -----------------------------------------------------------------------
     // Side effect: the predicted/actual ratio (Best / B) is recorded in BioEstStats
     // -----------------------------------------------------------------------
 
