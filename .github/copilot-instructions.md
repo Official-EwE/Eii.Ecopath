@@ -49,6 +49,9 @@
 - When a test has no meaningful arrange step, keep the `// Arrange` comment and leave that section empty (or write a brief note such as `// no setup required`).
 - When act and assert cannot be cleanly separated (e.g. a single `Should()` call on the result of a method), use `// Act & Assert` as a combined comment.
 - `[Theory]` tests that receive all inputs via `[InlineData]` may use `// Arrange (from InlineData)` at the top instead of a separate setup block.
+- Use pinned versions for test libraries:
+  - `Moq` version `4.18.0`
+  - `FluentAssertions` version `6.6.0`
 
 ## Key conventions
 
