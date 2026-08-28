@@ -1,5 +1,5 @@
 # Ecopath with Ecosim (EwE) - Source Code
-This repository contains the **source code** for Ecopath with Ecosim (EwE), an ecosystem modeling software suite developed by the Ecopath International Initiative (EII).
+This repository contains the **source code** for Ecopath with Ecosim (EwE), an ecosystem modeling software suite developed by the Ecopath International Initiative (EII). Note that the former SVN server, where we developed EwE from 2004 to 2026, no longer exists.
 
 The master branch contains the latest stable release of EwE. 
 - **You can not commit directly to the master branch!!**
