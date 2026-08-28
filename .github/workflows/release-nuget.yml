@@ -209,6 +209,36 @@ jobs:
           }
         shell: pwsh
 
+  # 5) CREATE TAG
+  # Create a git tag so GitVersion can advance to the next patch version
+  create-tag:
+    name: Create Version Tag
+    runs-on: windows-2025-vs2026
+    needs: [version, pack-publish-scientificinterfaceshared]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create and push tag
+        shell: pwsh
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          $tag = "${{ needs.version.outputs.tag }}"
+
+          # Skip if tag already exists
+          if ((git tag -l $tag) -eq $tag) {
+            Write-Host "Tag $tag already exists"
+            exit 0
+          }
+
+          git tag $tag
+          git push origin $tag
+
 # Temporarily commented out the creation of the installer and a release.
 # Creating a release is a heavy impact on the "Actions and Packages storage" part of the Github billing. And it's not necessary on every push to master.
 # We should only create releases when it's necessary. But what event should we use.... idk.
