@@ -300,6 +300,22 @@ Namespace DataSources
             Return Me.m_db.IsReadOnly()
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="IEwEDataSource.IsLockedByAnotherSession" />
+        ''' -------------------------------------------------------------------
+        Public Function IsLockedByAnotherSession() As Boolean _
+            Implements IEwEDataSource.IsLockedByAnotherSession
+            Return Me.m_db.IsLockedByAnotherSession
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="IEwEDataSource.LocalReadOnlyCopyPath" />
+        ''' -------------------------------------------------------------------
+        Public Function LocalReadOnlyCopyPath() As String _
+            Implements IEwEDataSource.LocalReadOnlyCopyPath
+            Return Me.m_db.LocalReadOnlyCopyPath
+        End Function
+
 #Region " Helper methods "
 
         ''' <inheritdoc cref="IEcopathDataSource.CopyTo" />
@@ -11081,30 +11097,31 @@ Namespace DataSources
             Implements IEcopathSampleDataSource.LoadSamples
 
             Dim ds As Samples.cEcopathSampleDatastructures = Me.m_core.m_SampleData
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathSample")
             Dim iSeq As Integer = 0
             Dim bSucces As Boolean = True
 
             ds.m_samples.Clear()
 
-            While reader.Read()
-                iSeq += 1
-                Try
-                    Dim sample As New Samples.cEcopathSample(Me.m_core, CInt(reader("SampleID")), iSeq)
-                    sample.AllowValidation = False
-                    sample.Hash = CStr(reader("Hash"))
-                    sample.Source = CStr(reader("Source"))
-                    sample.Rating = CInt(reader("Rating"))
-                    sample.SS = CSng(Me.m_db.ReadSafe(reader, "SS", cCore.NULL_VALUE))
-                    sample.Generated = cDateUtils.JulianToDate(CDbl(reader("Generated")))
-                    sample.AllowValidation = True
+            Using reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathSample")
+                While reader.Read()
+                    iSeq += 1
+                    Try
+                        Dim sample As New Samples.cEcopathSample(Me.m_core, CInt(reader("SampleID")), iSeq)
+                        sample.AllowValidation = False
+                        sample.Hash = CStr(reader("Hash"))
+                        sample.Source = CStr(reader("Source"))
+                        sample.Rating = CInt(reader("Rating"))
+                        sample.SS = CSng(Me.m_db.ReadSafe(reader, "SS", cCore.NULL_VALUE))
+                        sample.Generated = cDateUtils.JulianToDate(CDbl(reader("Generated")))
+                        sample.AllowValidation = True
 
-                    ds.m_samples.Add(sample)
-                Catch ex As Exception
-                    Me.LogError(String.Format("Error {0} occurred while loading Ecopath samples", ex.Message))
-                    bSucces = False
-                End Try
-            End While
+                        ds.m_samples.Add(sample)
+                    Catch ex As Exception
+                        Me.LogError(String.Format("Error {0} occurred while loading Ecopath samples", ex.Message))
+                        bSucces = False
+                    End Try
+                End While
+            End Using
 
             bSucces = bSucces And Me.LoadGroupSamples() And
                                   Me.LoadDietSamples() And
@@ -11125,31 +11142,32 @@ Namespace DataSources
             Next
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupSample")
             Dim bSucces As Boolean = True
 
-            While reader.Read()
-                Try
-                    Dim DBID As Integer = CInt(reader("SampleID"))
-                    Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
+            Using reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupSample")
+                While reader.Read()
+                    Try
+                        Dim DBID As Integer = CInt(reader("SampleID"))
+                        Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
 
-                    If dt.ContainsKey(DBID) And iGroup > 0 Then
-                        Dim sample As Samples.cEcopathSample = dt(DBID)
-                        sample.B(iGroup) = CSng(reader("Biomass"))
-                        sample.PB(iGroup) = CSng(reader("ProdBiom"))
-                        sample.QB(iGroup) = CSng(reader("ConsBiom"))
-                        sample.EE(iGroup) = CSng(reader("EcoEfficiency"))
-                        sample.BA(iGroup) = CSng(reader("BiomAcc"))
-                        sample.BaBi(iGroup) = CSng(Me.m_db.ReadSafe(reader, "BiomAccRate", 0))
-                        If (iGroup <= Me.m_core.nLivingGroups) Then
-                            sample.DC(iGroup, 0) = CSng(Me.m_db.ReadSafe(reader, "ImpVar", 0))
+                        If dt.ContainsKey(DBID) And iGroup > 0 Then
+                            Dim sample As Samples.cEcopathSample = dt(DBID)
+                            sample.B(iGroup) = CSng(reader("Biomass"))
+                            sample.PB(iGroup) = CSng(reader("ProdBiom"))
+                            sample.QB(iGroup) = CSng(reader("ConsBiom"))
+                            sample.EE(iGroup) = CSng(reader("EcoEfficiency"))
+                            sample.BA(iGroup) = CSng(reader("BiomAcc"))
+                            sample.BaBi(iGroup) = CSng(Me.m_db.ReadSafe(reader, "BiomAccRate", 0))
+                            If (iGroup <= Me.m_core.nLivingGroups) Then
+                                sample.DC(iGroup, 0) = CSng(Me.m_db.ReadSafe(reader, "ImpVar", 0))
+                            End If
                         End If
-                    End If
-                Catch ex As Exception
-                    Me.LogError(String.Format("Error {0} occurred while reading EcopathGroupSample", ex.Message))
-                    bSucces = False
-                End Try
-            End While
+                    Catch ex As Exception
+                        Me.LogError(String.Format("Error {0} occurred while reading EcopathGroupSample", ex.Message))
+                        bSucces = False
+                    End Try
+                End While
+            End Using
             Return bSucces
 
         End Function
@@ -11163,27 +11181,28 @@ Namespace DataSources
             Next
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathDietCompSample")
             Dim bSucces As Boolean = True
 
-            While reader.Read()
-                Try
-                    Dim DBID As Integer = CInt(reader("SampleID"))
-                    Dim iPred As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PredID")))
-                    Dim iPrey As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PreyID")))
+            Using reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathDietCompSample")
+                While reader.Read()
+                    Try
+                        Dim DBID As Integer = CInt(reader("SampleID"))
+                        Dim iPred As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PredID")))
+                        Dim iPrey As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PreyID")))
 
-                    If dt.ContainsKey(DBID) And (iPred >= 0) And (iPrey >= 0) Then
-                        Dim sample As Samples.cEcopathSample = dt(DBID)
-                        Dim sDiet As Single = CSng(reader("Diet"))
-                        If (sDiet > cCore.NULL_VALUE) Then
-                            sample.DC(iPred, iPrey) = sDiet
+                        If dt.ContainsKey(DBID) And (iPred >= 0) And (iPrey >= 0) Then
+                            Dim sample As Samples.cEcopathSample = dt(DBID)
+                            Dim sDiet As Single = CSng(reader("Diet"))
+                            If (sDiet > cCore.NULL_VALUE) Then
+                                sample.DC(iPred, iPrey) = sDiet
+                            End If
                         End If
-                    End If
-                Catch ex As Exception
-                    Me.LogError(String.Format("Error {0} occurred while reading EcopathDietCompSample", ex.Message))
-                    bSucces = False
-                End Try
-            End While
+                    Catch ex As Exception
+                        Me.LogError(String.Format("Error {0} occurred while reading EcopathDietCompSample", ex.Message))
+                        bSucces = False
+                    End Try
+                End While
+            End Using
             Return bSucces
 
         End Function
@@ -11197,25 +11216,26 @@ Namespace DataSources
             Next
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcopathData
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupCatchSample")
             Dim bSucces As Boolean = True
 
-            While reader.Read()
-                Try
-                    Dim DBID As Integer = CInt(reader("SampleID"))
-                    Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
-                    Dim iFleet As Integer = Array.IndexOf(ecopathDS.FleetDBID, CInt(reader("FleetID")))
+            Using reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupCatchSample")
+                While reader.Read()
+                    Try
+                        Dim DBID As Integer = CInt(reader("SampleID"))
+                        Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
+                        Dim iFleet As Integer = Array.IndexOf(ecopathDS.FleetDBID, CInt(reader("FleetID")))
 
-                    If dt.ContainsKey(DBID) And iGroup > 0 And iFleet > 0 Then
-                        Dim sample As Samples.cEcopathSample = dt(DBID)
-                        sample.Landing(iFleet, iGroup) = CSng(reader("Landing"))
-                        sample.Discard(iFleet, iGroup) = CSng(reader("Discards"))
-                    End If
-                Catch ex As Exception
-                    Me.LogError(String.Format("Error {0} occurred while reading EcopathGroupCatchSample", ex.Message))
-                    bSucces = False
-                End Try
-            End While
+                        If dt.ContainsKey(DBID) And iGroup > 0 And iFleet > 0 Then
+                            Dim sample As Samples.cEcopathSample = dt(DBID)
+                            sample.Landing(iFleet, iGroup) = CSng(reader("Landing"))
+                            sample.Discard(iFleet, iGroup) = CSng(reader("Discards"))
+                        End If
+                    Catch ex As Exception
+                        Me.LogError(String.Format("Error {0} occurred while reading EcopathGroupCatchSample", ex.Message))
+                        bSucces = False
+                    End Try
+                End While
+            End Using
             Return bSucces
 
         End Function

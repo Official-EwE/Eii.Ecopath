@@ -587,6 +587,34 @@ Namespace Database
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether this database is read-only specifically because
+        ''' another session already holds a write lock on it. Defaults to
+        ''' False; only cEwEEFDatabase currently has a mechanism that can
+        ''' make this True. See cEwEEFDatabase.Open().
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable ReadOnly Property IsLockedByAnotherSession() As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Path of the local, disposable read-only copy this database is
+        ''' actually connected to, if any. Defaults to empty; only
+        ''' cEwEEFDatabase currently has a mechanism that can populate this.
+        ''' See cEwEEFDatabase.Open().
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable ReadOnly Property LocalReadOnlyCopyPath() As String
+            Get
+                Return ""
+            End Get
+        End Property
+
 #End Region ' Open and close
 
 #Region " Compatibility "
@@ -775,6 +803,7 @@ Namespace Database
             Try
                 'Me.ReleaseCachedWriters(True)
                 Me.m_transaction.Commit()
+                Me.m_transaction.Dispose()
                 Me.m_transaction = Nothing
                 Return True
             Catch ex As Exception
@@ -801,6 +830,7 @@ Namespace Database
             Try
                 'Me.ReleaseCachedWriters(False)
                 Me.m_transaction.Rollback()
+                Me.m_transaction.Dispose()
                 Me.m_transaction = Nothing
                 Return True
             Catch ex As Exception
@@ -3479,10 +3509,11 @@ Namespace Database
                 Dim sVersion As Single = GetVersion()
                 Try
                     ' Try EwE6 version first
-                    Dim reader As IDataReader = Me.GetReader("SELECT EwEVersion FROM UpdateLog WHERE Version=" & cStringUtils.FormatSingle(sVersion))
-                    While reader.Read()
-                        Me.m_strEwEversion = cStringUtils.Localize(My.Resources.CoreDefaults.GENERIC_VERSION, CStr(Me.ReadSafe(reader, "EwEVersion", "")))
-                    End While
+                    Using reader As IDataReader = Me.GetReader("SELECT EwEVersion FROM UpdateLog WHERE Version=" & cStringUtils.FormatSingle(sVersion))
+                        While reader.Read()
+                            Me.m_strEwEversion = cStringUtils.Localize(My.Resources.CoreDefaults.GENERIC_VERSION, CStr(Me.ReadSafe(reader, "EwEVersion", "")))
+                        End While
+                    End Using
 
                     ' If that didn't work
                     If String.IsNullOrWhiteSpace(Me.m_strEwEversion) Then
@@ -3635,15 +3666,16 @@ Namespace Database
         Public Function GetHistory() As cHistoryItem()
             Dim lHistory As New List(Of cHistoryItem)
             Dim item As cHistoryItem = Nothing
-            Dim r As IDataReader = Me.GetReader("SELECT * FROM UpdateLog ORDER BY Date ASC, Version ASC")
-            While r.Read
-                Try
-                    item = New cHistoryItem(CStr(r("Version")), CStr(r("Remark")), CStr(r("Date")))
-                    lHistory.Add(item)
-                Catch ex As Exception
-                    ' Whoah! Unable to parse the date?!
-                End Try
-            End While
+            Using r As IDataReader = Me.GetReader("SELECT * FROM UpdateLog ORDER BY Date ASC, Version ASC")
+                While r.Read
+                    Try
+                        item = New cHistoryItem(CStr(r("Version")), CStr(r("Remark")), CStr(r("Date")))
+                        lHistory.Add(item)
+                    Catch ex As Exception
+                        ' Whoah! Unable to parse the date?!
+                    End Try
+                End While
+            End Using
             Return lHistory.ToArray
         End Function
 
