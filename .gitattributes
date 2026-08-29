@@ -1,0 +1,14 @@
+# Do not perform any line ending conversions.
+# Do not perform any line ending conversions.
+# This repo primarily uses CRLF (Windows-style) line endings, as it is a
+# Visual Studio / .NET project, but some files use LF. By setting -text,
+# git will leave all files exactly as-is on both commit and checkout,
+# regardless of any global core.autocrlf or core.eol settings on a
+# contributor's machine.
+* -text
+
+# The Migrator tool's published output is self-contained (bundles the full
+# .NET runtime into a single file per platform), so each one is tens of MB.
+# Tracked via Git LFS rather than as a regular blob, so repo history doesn't
+# grow by ~150MB every time this tool gets republished.
+Tools/Eii.Ecopath.Storage.Migrator/Publish/** filter=lfs diff=lfs merge=lfs -text

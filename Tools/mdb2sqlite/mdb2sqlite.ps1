@@ -1,35 +1,57 @@
 <#
 .SYNOPSIS
-    Convert .mdb or .eweaccdb files to .sqlite using mdbtools-win.
+    Convert .mdb or .eweaccdb files to .ewesqlite using mdbtools-win.
 .PARAMETER generateExe
 	If specified, generates mdb2sqlite.exe using ps2exe.
 .PARAMETER inDatabase
     Path to the .mdb or .eweaccdb file to convert.
 .PARAMETER outDatabase
-    Path to the output .sqlite file.
+    Path to the output .ewesqlite file.
+.PARAMETER CleanCache
+    If specified, removes the .Cache folder (downloaded/installed mdbtools,
+    and any leftover conversion.sql/sqlite_error.txt temp files) and exits,
+    without performing a conversion. Use this to force a fresh mdbtools
+    download/install on the next run, or to clean up after troubleshooting.
 .EXAMPLE
     .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
     On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
-    Converts the specified .mdb file to a .sqlite file using the same name but with .sqlite extension.    
+    Converts the specified .mdb file to a .ewesqlite file using the same name but with .ewesqlite extension.    
 .EXAMPLE
-    .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
-    On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.sqlite"
-    Converts the specified .mdb file to a .sqlite file.
+    .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.ewesqlite"
+    On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb" -outDatabase "C:\path\to\output.ewesqlite"
+    Converts the specified .mdb file to a .ewesqlite file.
 .EXAMPLE
     .\mdb2sqlite.ps1 -generateExe
     This is only for Windows users.
     Generates the mdb2sqlite.exe executable from this script.
+.EXAMPLE
+    .\mdb2sqlite.ps1 -CleanCache
+    Removes the .Cache folder and exits.
 .LINK
     https://www.sqlite.org/download.html - Source of SQLite tools
     https://github.com/mdbtools/mdbtools - Source of mdbtools
     https://github.com/mdbtools/mdbtools/tree/dev/doc - Documentation for mdbtools
     https://github.com/lsgunth/mdbtools-win - Windows build of mdbtools
+.NOTES
+    Exit codes:
+      0 - Success.
+      1 - General failure (missing/invalid arguments, missing sqlite3.exe,
+          overwrite declined, sqlite3 import failure).
+      3 - Network failure: unable to download/install mdbtools (Windows:
+          mdbtools-win zip download; Linux: git clone / apt update / apt
+          upgrade / apt install). Requires an internet connection for
+          first-time setup on a given machine (subsequent runs reuse the
+          cached mdbtools installation). On Linux this is only used from the
+          shell directly, so it's mainly for consistency with the Windows
+          behavior and for this documentation, rather than anything checking
+          it programmatically.
 #>
 
 param (
     [string]$inDatabase,
     [string]$outDatabase = $null,
-	[switch]$generateExe    
+	[switch]$generateExe,
+    [switch]$CleanCache
 )
 
 function Show-SimpleError {
@@ -79,8 +101,13 @@ function Install-Mdbtools {
             }
             $zipUrl = 'https://github.com/Official-EwE/mdbtools-win/archive/refs/heads/master.zip'
             $zipPath = Join-Path $cacheFolder 'master.zip'
-            Write-Host "Downloading mdbtools-win master.zip..."
-            Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
+            try {
+                Write-Host "Downloading mdbtools-win master.zip..."
+                Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath -ErrorAction Stop
+            } catch {
+                Show-SimpleError "Unable to download mdbtools-win - an internet connection is required for first-time setup. ($($_.Exception.Message))"
+                exit 3
+            }
             Write-Host "Extracting master.zip..."
             Add-Type -AssemblyName System.IO.Compression.FileSystem
             [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $cacheFolder)
@@ -103,10 +130,26 @@ function Install-Mdbtools {
             # we need to build from source as apt-get version is too old, we need v1.0.1 or later
             Write-Host "mdbtools not found. Installing from source..."
             Remove-Item -Recurse -Force -ErrorAction SilentlyContinue ./.Cache/mdbtools
-            sudo git clone https://github.com/mdbtools/mdbtools.git ./.Cache/mdbtools            
+            sudo git clone https://github.com/mdbtools/mdbtools.git ./.Cache/mdbtools
+            if ($LASTEXITCODE -ne 0) {
+                Show-SimpleError "Unable to clone mdbtools - an internet connection is required for first-time setup."
+                exit 3
+            }
             sudo apt update
+            if ($LASTEXITCODE -ne 0) {
+                Show-SimpleError "Unable to run 'apt update' - an internet connection is required for first-time setup."
+                exit 3
+            }
             sudo apt upgrade -y
-            sudo apt install -y libtool automake autoconf gettext pkg-config bison flex libglib2.0-* make            
+            if ($LASTEXITCODE -ne 0) {
+                Show-SimpleError "Unable to run 'apt upgrade' - an internet connection is required for first-time setup."
+                exit 3
+            }
+            sudo apt install -y libtool automake autoconf gettext pkg-config bison flex libglib2.0-* make
+            if ($LASTEXITCODE -ne 0) {
+                Show-SimpleError "Unable to run 'apt install' - an internet connection is required for first-time setup."
+                exit 3
+            }
             Set-Location ./.Cache/mdbtools
             sudo autoreconf -i -f
             sudo ./configure --disable-dependency-trackingmd
@@ -130,6 +173,7 @@ function Install-Sqlite {
             Show-SimpleError "sqlite.exe not found in $scriptDir. Please download sqlite.exe and place it in the script directory."
             exit 1
         }
+        return $sqliteExe
     } else { # Non-Windows (assuming Linux-based and supporting "apt"  so Ubuntu/Debian)
         Write-Host "Detected Linux. Checking for sqlite3..."
         $sqliteInstalled = $null -ne (Get-Command sqlite3 -ErrorAction SilentlyContinue)
@@ -140,6 +184,8 @@ function Install-Sqlite {
         } else {
             Write-Host "sqlite3 is already installed."
         }
+        # Already installed system-wide via apt - resolvable by bare name.
+        return "sqlite3"
     }    
 }
 
@@ -151,7 +197,7 @@ function Convert-MdbToSqlite {
     )
 
     Install-Mdbtools -scriptDir $scriptDir
-    Install-Sqlite -scriptDir $scriptDir
+    $sqliteExe = Install-Sqlite -scriptDir $scriptDir
 
     $cacheFolder = Join-Path $scriptDir '.Cache'
     $conversionSql = Join-Path $cacheFolder 'conversion.sql'
@@ -198,17 +244,55 @@ function Convert-MdbToSqlite {
     Write-Host "Finalizing conversion.sql script..."
     "COMMIT;" | Add-Content -Path $conversionSql
 
+	Write-Host "Removing empty primary keys..."
+	$inputFile = ""
+	$tempFile = [System.IO.Path]::GetTempFileName()
+	Get-Content $conversionSql | ForEach-Object {
+		if ($_ -notmatch ', PRIMARY KEY \(\)') {
+			$_
+		}
+	} | Set-Content $tempFile
+	Move-Item $tempFile $conversionSql -Force
+
     Write-Host "Creating SQLite database and importing data..."
     $errorFile = Join-Path $cacheFolder 'sqlite_error.txt'
-    if ($IsWindows -or $env:OS -eq 'Windows_NT') {
-        $importCmd = "cmd /c `"sqlite3 `"`"$outDatabase`"`" < `"`"$conversionSql`"`" 2> `"`"$errorFile`"`" `" "
-    } else {
-        $importCmd = "/bin/bash -c 'sqlite3 `"$outDatabase`" < `"$conversionSql`" 2> `"$errorFile`"'"
+
+    # Invoke sqlite3 directly via .NET's Process class, with the SQL file's
+    # raw bytes piped straight into its stdin. Deliberately NOT built as a
+    # "cmd /c `"...`" < ... 2> ..." string run through Invoke-Expression:
+    # such a string has to survive being parsed twice (first by PowerShell
+    # itself, then by cmd.exe/bash) using two different, incompatible
+    # quoting conventions - it only ever worked by coincidence for simple
+    # unquoted values, and broke the moment a path needing its own quotes
+    # (sqlite3's own full path) was introduced alongside another. Piping
+    # raw bytes directly also avoids any text-encoding mismatch between
+    # however conversion.sql was written and however a re-typed string
+    # would have been re-encoded.
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $sqliteExe
+    $psi.Arguments = "`"$outDatabase`""
+    $psi.RedirectStandardInput = $true
+    $psi.RedirectStandardError = $true
+    $psi.UseShellExecute = $false
+    $psi.CreateNoWindow = $true
+
+    Write-Host "Running: `"$sqliteExe`" `"$outDatabase`" < `"$conversionSql`""
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $psi
+    $process.Start() | Out-Null
+
+    $inputStream = [System.IO.File]::OpenRead($conversionSql)
+    try {
+        $inputStream.CopyTo($process.StandardInput.BaseStream)
+    } finally {
+        $inputStream.Close()
+        $process.StandardInput.Close()
     }
 
-    Write-Host "Running: $importCmd"    
-    Invoke-Expression $importCmd
-    $errorText = if (Test-Path $errorFile) { Get-Content $errorFile -Raw } else { '' }
+    $errorText = $process.StandardError.ReadToEnd()
+    $process.WaitForExit()
+    if ($errorText) { Set-Content -Path $errorFile -Value $errorText }
+
     if ($errorText) {
         Show-SimpleError "sqlite3 import failed: $errorText"
         exit 1
@@ -229,13 +313,17 @@ if ($MyInvocation.MyCommand.CommandType -eq "ExternalScript") {
 
 $scriptFile = Join-Path $scriptDir 'mdb2sqlite.ps1'
 if (-not (Test-Path $scriptFile -PathType Leaf)) {
-    Show-Warning "Warning: $scriptFile does not exist in the current directory. Unable to use Get-Help from exe."
+    Show-Warning "Warning: $scriptFile does not exist in the current directory. -generateExe will not work from here."
 }
 Write-Host "Script dir: $scriptDir"
 
 if ($generateExe) {
     if (-Not ($IsWindows -or ($env:OS -eq 'Windows_NT'))) {
         Show-SimpleError "Error: -generateExe option is only supported on Windows. Found: $env:OS"
+        exit 1
+    }
+    if ($MyInvocation.MyCommand.CommandType -ne "ExternalScript") {
+        Show-SimpleError "Error: -generateExe must be run via the .ps1 script, not the compiled .exe - a running exe cannot overwrite its own file. Use: powershell -ExecutionPolicy Bypass -File `"$scriptFile`" -generateExe"
         exit 1
     }
 	Restore-Ps2Exe
@@ -246,12 +334,19 @@ if ($generateExe) {
     exit 0
 }
 
-Show-Notice "Add command line argument -Help to show the full help"
-if ($args -contains "-Help" -or $args -contains "-?") {
-    Get-Help $scriptFile -Full | Out-String
+if ($CleanCache) {
+    $cacheFolder = Join-Path $scriptDir '.Cache'
+    if (Test-Path $cacheFolder) {
+        Write-Host "Removing $cacheFolder..."
+        Remove-Item -Recurse -Force $cacheFolder
+        Write-Host "Cache cleared."
+    } else {
+        Write-Host "Nothing to clean - $cacheFolder does not exist."
+    }
     exit 0
 }
 
+Show-Notice "Add command line argument -? to show the full help (-? -examples / -? -detailed / -? -full for more). Use -CleanCache to clear the .Cache folder."
 
 $errMsg = $False
 if (-not $inDatabase) {
@@ -265,13 +360,12 @@ if ($inDatabase) {
     }
 }
 if ($errMsg) {
-    Get-Help $scriptFile -Examples | Out-String
     exit 1
 }
 
-# If outDatabase is not set, use inDatabase path with .sqlite extension
+# If outDatabase is not set, use inDatabase path with .ewesqlite extension
 if (-not $outDatabase) {
-    $outDatabase = [System.IO.Path]::ChangeExtension($inDatabase, ".sqlite")
+    $outDatabase = [System.IO.Path]::ChangeExtension($inDatabase, ".ewesqlite")
     Write-Host "Output database not specified. Using: $outDatabase"
 }
 
@@ -291,5 +385,6 @@ if (Test-Path $outDatabase -PathType Leaf) {
 }
 
 Convert-MdbToSqlite -scriptDir $scriptDir -inDatabase $inDatabase -outDatabase $outDatabase
+
 Write-Host "Conversion finished."
 exit 0

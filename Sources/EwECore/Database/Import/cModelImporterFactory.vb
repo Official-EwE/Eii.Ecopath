@@ -35,7 +35,7 @@ Public Class cModelImporterFactory
 
         Select Case cDataSourceFactory.GetSupportedType(strSource)
 
-            Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003
+            Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003, eDataSourceTypes.AccessVsSqlite
                 Return New cEwE5DatabaseImporter(core)
 
             Case eDataSourceTypes.EII

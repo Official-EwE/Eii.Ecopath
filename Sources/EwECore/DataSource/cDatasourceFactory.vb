@@ -4,6 +4,7 @@
 
 Imports System.IO
 Imports EwECore.Database
+Imports EwEUtils.NetUtilities
 Imports EwEUtils.SystemUtilities
 
 Namespace DataSources
@@ -33,6 +34,18 @@ Namespace DataSources
                     Return eDataSourceTypes.EII
 
                 Case ".accdb", ".eweaccdb"
+                    ' check if alongside this file there is a .ewesqlite file
+                    Dim dir As String = Path.GetDirectoryName(strFile)
+                    Dim baseName As String = Path.GetFileNameWithoutExtension(strFile)
+
+                    Dim sqliteFile As String = Path.Combine(dir, baseName & ".ewesqlite")
+                    ' Check if sqlite file is present,
+                    '   but also check if WebSocket server is running, needed for Access-Sqlite data source comparison,
+                    '   otherwise it will be a waist of resources
+                    If File.Exists(sqliteFile) Then             ' Rik disabled And cWebsocketHelper.IsRunning() Then
+                        Return eDataSourceTypes.AccessVsSqlite
+                    End If
+
                     Return eDataSourceTypes.Access2007
 
                 Case ".mdb", ".ewemdb"
@@ -41,7 +54,8 @@ Namespace DataSources
                     Else
                         Return eDataSourceTypes.Access2003
                     End If
-
+                Case ".sqlite", ".ewesqlite"
+                    Return eDataSourceTypes.Sqlite
                 Case ".eiixml"
                     Return eDataSourceTypes.EIIXML
 
@@ -74,7 +88,7 @@ Namespace DataSources
             Select Case dst
                 Case eDataSourceTypes.Access2003 : Return ".ewemdb"
                 Case eDataSourceTypes.EII : Return ".eii"
-                Case eDataSourceTypes.Access2007 : Return ".eweaccdb"
+                Case eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite : Return ".eweaccdb"
                 Case eDataSourceTypes.EIIXML : Return ".eiixml"
             End Select
             Return ""
@@ -96,8 +110,7 @@ Namespace DataSources
 
             ' Detect file type
             Select Case dst
-
-                Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003
+                Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003, eDataSourceTypes.AccessVsSqlite
 
                     If File.Exists(strDatabase) Then
                         Dim db As New cEwEAccessDatabase()
@@ -126,6 +139,16 @@ Namespace DataSources
                         access = eDatasourceAccessType.Success
                     Else
                         ' ToDo: create explicit enum value Failed_NoInternet
+                        access = eDatasourceAccessType.Failed_FileNotFound
+                    End If
+
+                Case eDataSourceTypes.Sqlite
+                    Dim db As New cEwEEFDatabase()
+                    access = db.Open(strDatabase)
+                    If (access = eDatasourceAccessType.Opened) Then
+                        comp = db.Compatibility
+                        db.Close()
+                    Else
                         access = eDatasourceAccessType.Failed_FileNotFound
                     End If
 
@@ -184,7 +207,11 @@ Namespace DataSources
                      eDataSourceTypes.Access2007
                     ' Create a DB datasource on a MS Access database
                     Return New cDBDataSource(New cEwEAccessDatabase())
+                Case eDataSourceTypes.AccessVsSqlite
+                    Return New cDBDataSource(New cEwEVersusDatabase(New cEwEAccessDatabase(), New cEwEEFDatabase()))
 
+                Case eDataSourceTypes.Sqlite
+                    Return New cDBDataSource(New cEwEEFDatabase())
                 Case Else
                     '
             End Select

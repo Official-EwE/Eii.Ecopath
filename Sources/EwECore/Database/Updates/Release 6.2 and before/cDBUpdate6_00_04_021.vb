@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports EwECore.Database
 
@@ -78,7 +78,7 @@ Friend Class cDBUpdate6_00_04_021
 
     Private Function SplitSDSal(db As cEwEDatabase) As Boolean
 
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim bSucces As Boolean = True
 

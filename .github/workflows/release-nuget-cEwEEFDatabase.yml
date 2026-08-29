@@ -1,0 +1,132 @@
+# Workflow name shown in the Actions tab
+name: Release NuGet Packages for EwEUtils and EwECore, and create the EwE6 installer
+
+# Trigger: run this workflow on pushes to the experimental branch
+on:
+  push:
+    branches:
+      - cEwEEFDatabase   # ✅ EXPERIMENTAL branch added
+
+# Required permissions for this workflow
+# contents: write   -> create releases and upload artifacts
+# packages: write   -> push NuGet packages to GitHub Packages
+permissions:
+  actions: read
+  contents: write
+  packages: write
+
+jobs:
+  # 1) VERSIONING
+  # This job determines the semantic version using GitVersion and exposes it as outputs.
+  version:
+    name: Determine version with GitVersion
+    runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    outputs:
+      semver: ${{ steps.out.outputs.semver }}         # example: 6.7.30
+      prerelease: ${{ steps.out.outputs.prerelease }} # example: alpha, beta, empty for stable
+      tag: ${{ steps.out.outputs.tag }}               # example: v6.7.30
+    steps:
+      # Checkout with full history so GitVersion can find tags
+      - name: Checkout code (full history for tags)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install GitVersion tool
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4
+        with:
+          versionSpec: '6.x'
+
+      # Execute GitVersion using trunk-based configuration and v tag prefix
+      - name: Run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v4
+        with:
+          overrideConfig: |
+            workflow=TrunkBased/preview1
+            commit-message-incrementing=Enabled
+            tag-prefix=v
+            increment=Patch
+
+      # Expose values from GitVersion to downstream jobs via job outputs
+      - name: Expose version outputs
+        id: out
+        shell: pwsh
+        run: |
+          "semver=${{ steps.gitversion.outputs.SemVer }}"        >> $env:GITHUB_OUTPUT
+          "prerelease=${{ steps.gitversion.outputs.PreReleaseLabel }}" >> $env:GITHUB_OUTPUT
+          "tag=v${{ steps.gitversion.outputs.SemVer }}"          >> $env:GITHUB_OUTPUT
+
+      # Log the resolved version for visibility
+      - name: Show extracted version
+        run: echo "Version is ${{ steps.gitversion.outputs.SemVer }}"
+        shell: pwsh
+
+  # 2) PACK AND PUBLISH EwECore
+  # This job packs and publishes EwECore (depends on EwEUtils being published)
+  pack-publish-ewecore:
+    name: Pack and Publish EwECore
+    runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
+    needs: [version]
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install .NET SDK 8
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # Install .NET Framework 4.8 dev pack
+      - name: Install .NET Framework targeting pack (4.8)
+        run: choco install netfx-4.8-devpack -y
+        shell: pwsh
+
+      # Configure GitHub Packages NuGet source
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
+
+      # ✅ NEW: Compute experimental version only for EwECore
+      # On branch cEwEEFDatabase → add "-beta.<run_number>"
+      # On master → keep normal stable version
+      - name: Compute EwECore version
+        id: ewecore_version
+        shell: pwsh
+        run: |
+          $base = "${{ needs.version.outputs.semver }}"
+
+          if ("${{ github.ref_name }}" -eq "cEwEEFDatabase") {
+            $version = "$base-beta.${{ github.run_number }}"
+          } else {
+            $version = $base
+          }
+
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+          echo "Using version: $version"
+
+      # Pack EwECore
+      - name: Pack EwECore
+        run: |
+          dotnet pack Sources/EwECore/EwECore.vbproj `
+            --configuration Debug `
+            --output ./nuget `
+            /p:PackageVersion=${{ steps.ewecore_version.outputs.version }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      # Publish EwECore
+      - name: Publish EwECore (skip duplicates)
+        run: |
+          Get-ChildItem -Path ./nuget -Filter Eii.Ecopath.EwECore*.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+          }
+        shell: pwsh

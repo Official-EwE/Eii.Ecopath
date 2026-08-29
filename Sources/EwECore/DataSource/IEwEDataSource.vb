@@ -35,6 +35,25 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' States whether this data source is read-only specifically because
+        ''' another session already holds a write lock on it, as opposed to
+        ''' being read-only for any other reason.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Function IsLockedByAnotherSession() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Path of the local, disposable read-only copy this session is
+        ''' actually connected to, if any. Empty when this session is not
+        ''' operating on a local copy (e.g. it holds the write lock, or this
+        ''' data source type has no such concept).
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Function LocalReadOnlyCopyPath() As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Clears any modified flags (use with care!)
         ''' </summary>
         ''' -------------------------------------------------------------------

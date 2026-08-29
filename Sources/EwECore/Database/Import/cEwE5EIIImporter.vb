@@ -682,13 +682,13 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Private Sub SaveModel()
 
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim strYear As String = ""
             Dim dt As DateTime = Nothing
 
             ' Clear table
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathModel")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathModel")
 
             writer = Me.m_dbTarget.GetWriter("EcopathModel")
 
@@ -724,12 +724,12 @@ Namespace Database
         ''' </summary>
         Private Function SaveGroups() As Boolean
 
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
             ' Clear table(s)
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathGroup")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathGroup")
             writer = Me.m_dbTarget.GetWriter("EcopathGroup")
 
             Try
@@ -786,11 +786,11 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Private Function SaveDietComp() As Boolean
 
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathDietComp")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathDietComp")
             writer = Me.m_dbTarget.GetWriter("EcopathDietComp")
 
             Try
@@ -832,7 +832,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Private Function SaveFleets() As Boolean
 
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
@@ -869,11 +869,11 @@ Namespace Database
         ''' </summary>
         Private Function SaveCatch() As Boolean
 
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathCatch")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathCatch")
             writer = Me.m_dbTarget.GetWriter("EcopathCatch")
             Try
                 For iFleet As Integer = 1 To Me.m_data.NumFleet
@@ -912,11 +912,11 @@ Namespace Database
         ''' </summary>
         Private Function SaveDiscardFate() As Boolean
 
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathDiscardFate")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathDiscardFate")
             writer = Me.m_dbTarget.GetWriter("EcopathDiscardFate")
             Try
                 For iFleet As Integer = 1 To Me.m_data.NumFleet
