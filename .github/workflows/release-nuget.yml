@@ -47,6 +47,7 @@ jobs:
         with:
           overrideConfig: |
             workflow=TrunkBased/preview1
+            mode=ContinuousDelivery
             commit-message-incrementing=Enabled
             tag-prefix=v
             increment=Patch
@@ -56,9 +57,9 @@ jobs:
         id: out
         shell: pwsh
         run: |
-          "semver=${{ steps.gitversion.outputs.SemVer }}"        >> $env:GITHUB_OUTPUT
-          "prerelease=${{ steps.gitversion.outputs.PreReleaseLabel }}" >> $env:GITHUB_OUTPUT
-          "tag=v${{ steps.gitversion.outputs.SemVer }}"          >> $env:GITHUB_OUTPUT
+          "semver=${{ steps.gitversion.outputs.MajorMinorPatch }}" >> $env:GITHUB_OUTPUT
+          "prerelease=" >> $env:GITHUB_OUTPUT
+          "tag=v${{ steps.gitversion.outputs.MajorMinorPatch }}" >> $env:GITHUB_OUTPUT
 
       # Log the resolved version for visibility
       - name: Show extracted version
