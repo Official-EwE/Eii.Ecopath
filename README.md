@@ -3,7 +3,7 @@ This repository contains the **source code** for Ecopath with Ecosim (EwE), an e
 
 The master branch contains the latest stable release of EwE. 
 - **You can not commit directly to the master branch!!**
-- **A Build Check will be performed before you can merge a PR into master!**
+- **A Build Check will be performed before you can merge a PR into master!!**
 
 [More information about working with Git](https://github.com/Official-EwE/Ecopath-project/wiki/Git-how-to)
 
