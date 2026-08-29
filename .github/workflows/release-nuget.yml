@@ -211,7 +211,8 @@ jobs:
         shell: pwsh
 
   # 5) CREATE TAG
-  # Create a git tag so GitVersion can advance to the next patch version
+  # Create a git tag so GitVersion can advance to the next patch version. 
+  # This is normally done by creating a release, but we are temporarilynot creating releases for every push to master to avoid storage costs.
   create-tag:
     name: Create Version Tag
     runs-on: windows-2025-vs2026
