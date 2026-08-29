@@ -215,11 +215,11 @@
   large models: load time, save time, and the versus-database's post-commit
   diff overhead specifically (since that runs an extra full comparison pass on
   every write while in comparison mode).
-- [ ] **Concurrent/multi-instance access.** Access's connection strings use
-  `Mode=Share Exclusive`; confirm what the equivalent expectation is for
-  SQLite (WAL mode allows multiple readers + one writer) and whether two app
-  instances opening the same `.sqlite`/`.ewesqlite` file behave as intended
-  (blocked, allowed, or undefined).
+- [x] **Concurrent/multi-instance access.** Access's connection strings use
+  `Mode=Share Exclusive`; SQLite instead uses an app-level companion lock
+  file with automatic read-only degrade - see §11 for the full test list
+  covering this mechanism specifically. (Kept here, checked, so this item's
+  history/rationale link isn't lost - the actual tests live in §11.)
 - [ ] **`Compact`/`SaveAs` behavior for SQLite.** `cEwEEFDatabase.Compact`
   currently returns `Failed_DeprecatedOperation` and `CanCompact` returns
   `False`. Confirm the UI correctly hides/disables the "Compact" option for
@@ -263,3 +263,160 @@ that lets a user create or convert to a SQLite file for the first time.
     not assumed from reading the code alone, given the possibility of a
     `SetInitializer` call or `Seed()` override existing elsewhere in the
     codebase that hasn't been reviewed here.
+
+## 11. Concurrent access / companion lock mechanism
+
+Covers the app-level companion-lock feature that replaces Access's
+`Mode=Share Exclusive` for SQLite: first opener gets read-write access;
+every subsequent opener degrades to read-only automatically rather than
+failing. See the design handoff for this feature for the rationale behind
+each mechanism referenced below.
+
+**Known, accepted limitation - not a bug if observed during testing**: a
+read-only session's local copy in `%TEMP%\EwEReadOnlyCopies\` may remain
+on disk, with its `.marker` already gone, for as long as the app keeps
+running after that session closes - see "The local-copy connection never
+releases" in `FILE_LOCK_HANDOFF.md` for the full investigation. This is
+expected. It gets cleaned up either by the exit-time sweep on normal app
+close (see below), or by `CleanUpOrphanedReadOnlyCopies()` on the next
+read-only `Open()` anywhere on the machine (the crash-recovery path).
+Don't file this as a defect if seen mid-session with the app still open.
+
+**Basic exclusivity and degrade**
+
+- [ ] Two instances, same machine, open the same `.ewesqlite`: first opens
+  read-write, second opens read-only with no error and no dialog - only the
+  title bar/status-bar read-only indicator changes.
+- [ ] Confirm a `.ewesqlite.lock` file appears next to the data file while
+  the writer session is open, and disappears when that session closes
+  cleanly.
+- [ ] Second (read-only) session: confirm edits are possible in the UI (Save
+  button stays enabled by design) but pressing Save produces the "opened in
+  read-only mode and cannot be saved" message and does not write anything.
+- [ ] Second session: confirm **Save As** still works and produces a fully
+  independent, fully writable new file.
+- [ ] Confirm the new diagnostic message ("Model 'X' is currently open
+  elsewhere - opened here from a local read-only copy") fires for the
+  second session and names the correct model.
+- [ ] Close the first (writer) session, then open a **third** instance -
+  confirm it acquires write access (not read-only), proving the lock was
+  actually released on a clean `Close()`, not just on process exit.
+- [ ] Repeat the two-instance test across the **actual shared/network drive**
+  intended for deployment, not just two instances on one PC - this is the
+  one that exercises `FileShare.None` over SMB specifically, which is a
+  materially different reliability question than same-machine locking.
+
+**Crash recovery** (process killed, not a normal close - see "Exit-time
+cleanup" below for the graceful-close path)
+
+- [ ] Kill the writer's process directly (Task Manager / `taskkill`, not a
+  normal close) - another instance should be able to acquire write access
+  immediately afterward, with no leftover `.lock` blocking it.
+- [ ] Kill a read-only session's process, then open anything read-only
+  afterward on the same machine - confirm the orphaned copy is swept away
+  on that next open via `CleanUpOrphanedReadOnlyCopies()`, not left behind
+  indefinitely.
+- [ ] If reproducible: kill a session's process **mid-copy** (e.g. trigger
+  open on a large file and kill the process within the first second) -
+  confirms the marker-before-copy ordering actually prevents a concurrent
+  sweep from deleting a copy that's still being written.
+- [ ] Leave several crashed sessions' worth of orphaned copies in
+  `%TEMP%\EwEReadOnlyCopies\`, then open one more read-only session - confirm
+  the sweep clears all of them in that single pass, not just the most recent
+  one.
+
+**Exit-time cleanup** (normal, graceful app close - a different mechanism
+from crash recovery above)
+
+- [ ] Open and close **several** read-only sessions in one app run (so
+  each leaves its own marker-less copy behind), then close the app
+  normally - confirm every one of those copies is gone from
+  `%TEMP%\EwEReadOnlyCopies\` shortly after the app fully exits, in a
+  single pass - not just the most recently closed one.
+- [ ] **Regression test for a real bug found and fixed during
+  development**: close a read-only model, then close the whole
+  application - confirm the app closes promptly, with no perceptible
+  hang or delay. An earlier draft of this mechanism used a synchronous,
+  sleep-based retry on `Close()` that measurably delayed application
+  shutdown; that was removed specifically because of this.
+- [ ] Open the app, do **only** normal read-write work (no read-only
+  session ever opened), then close it - confirm no cleanup script or
+  process appears at all. The exit-time hook only registers the first
+  time a session actually creates a local read-only copy, so a
+  pure-writer session should incur zero extra activity on close.
+- [ ] Kill the app (not a normal close) after leaving a read-only
+  session's copy behind - confirm the exit-time sweep does **not** run
+  (`AppDomain.ProcessExit` isn't reliably raised on a hard kill) - the
+  file should instead sit until `CleanUpOrphanedReadOnlyCopies()` catches
+  it on the next read-only `Open()`, per the crash-recovery tests above.
+
+**Schema/migration correctness for the read-only copy**
+
+- [ ] Open an older-but-still-supported-schema `.ewesqlite` file read-only
+  (second session) while a current build is running - confirm the local
+  copy is migrated to current schema and the session works normally, rather
+  than the reader silently operating against a stale schema or throwing on
+  a missing column.
+- [ ] Run the above specifically on the **net48 build**, since this path now
+  shells out to the net10.0 Migrator subprocess against the *local temp
+  copy* rather than the original network path - confirm the subprocess
+  handles a `%TEMP%\EwEReadOnlyCopies\<guid>.ewesqlite` argument correctly.
+
+**SaveAs lock transfer**
+
+- [ ] From a writer session, use Save As to a new path - confirm the
+  original file's `.lock` is released and a new `.lock` appears next to the
+  new file, and that a second instance opening the *original* file
+  afterward can now acquire write access on it.
+- [ ] From a writer session, Save As to a path where **another session
+  already holds the lock** on that exact target path (e.g. someone already
+  has that destination file open as writer) - confirm this session degrades
+  to read-only on the new file rather than silently believing it still has
+  exclusive access.
+
+**Environment/edge cases**
+
+- [ ] File path containing spaces and non-ASCII characters, for both the
+  real file and the resulting temp copy path.
+- [ ] Shared folder where the current user has **read-only permissions** (no
+  write access at all) - first user to open should fail to create the
+  `.lock` file gracefully and degrade straight to read-only, rather than
+  crashing or showing an unrelated error.
+- [ ] A **large** `.ewesqlite` file (if any real-world models approach this) -
+  confirm the copy-on-open time is acceptable and the UI doesn't appear to
+  hang with no feedback during the copy.
+- [ ] Run the two-instance test on a locked-down, IT-managed machine with
+  active antivirus/on-access scanning - confirms the rapid create/delete
+  file patterns involved aren't disrupted by AV interference in a way a dev
+  machine wouldn't reveal.
+- [ ] Confirm behavior when `%TEMP%` itself is unusually restricted or
+  redirected (e.g. roaming profile, group policy redirecting `TEMP` to a
+  network path) - the read-only copy folder should still resolve somewhere
+  writable and local.
+
+**Comparison/versus mode**
+
+- [ ] Open the same model in comparison mode (`cEwEVersusDatabase`) from a
+  second instance while a first instance holds it - confirm this does not
+  crash. Known limitation to confirm rather than be surprised by: the
+  versus-database itself does not currently surface
+  `IsLockedByAnotherSession`/read-only status even if its wrapped EF side
+  degraded, so the status bar may not reflect this correctly in comparison
+  mode specifically. Low priority given Access/comparison mode is being
+  deprecated, but worth confirming the behavior rather than leaving it
+  unknown.
+
+**Regression checks for incidental fixes found during the leak
+investigation** - these touch core code paths unrelated to locking
+specifically, found and fixed while chasing the connection-release
+mystery documented in `FILE_LOCK_HANDOFF.md`:
+
+- [ ] Open a model with Ecopath sample data (ratings, group samples, diet
+  composition samples, catch samples) and confirm all of it still loads
+  correctly - `LoadEcopathSamples`/`LoadGroupSamples`/`LoadDietSamples`/
+  `LoadGroupCatchSamples` were all changed to properly close their reader.
+- [ ] Perform a save (or any other transaction-wrapped operation) and
+  confirm it still commits correctly, and that a deliberately-failed
+  save still rolls back correctly - `CommitTransaction`/
+  `RollbackTransaction` now dispose the transaction object, in addition
+  to committing/rolling it back.
