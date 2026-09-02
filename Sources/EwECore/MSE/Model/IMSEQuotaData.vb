@@ -71,6 +71,7 @@ Namespace MSE
         Property Fish1() As Single()
         Property GstockPred() As Single()
         Property RstockRatio() As Single()
+        Property RHalfB0Ratio() As Single()
         Property KalmanGain() As Single()
 
         Property BhalfT() As Single()

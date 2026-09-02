@@ -184,6 +184,16 @@ Public Class cMSEQuotaData
         End Set
     End Property
 
+    Public Property RHalfB0Ratio As Single() Implements IMSEQuotaData.RHalfB0Ratio
+        Get
+            Return Me.m_data.RHalfB0Ratio
+        End Get
+        Set(value As Single())
+            Me.m_data.RHalfB0Ratio = value
+        End Set
+    End Property
+
+
     Public Property KalmanGain As Single() Implements IMSEQuotaData.KalmanGain
         Get
             Return Me.m_data.KalmanGain
