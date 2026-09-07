@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright Â© 1991â€“ Ecopath International Initiative (EII)
 
 Imports System.IO
 Imports EwECore.Common
@@ -78,7 +78,7 @@ Namespace MSE
         'ToDo_jb 1-Sept-2010 Email from Villy 
         'Joe,
         'It would be useful to have the option in the MSE to run it up to a certain point with whatever was in the Ecosim run, 
-        'and then only apply changes from the ‘start year’ (which already is in the MSE). 
+        'and then only apply changes from the â€˜start yearâ€™ (which already is in the MSE). 
         'So, it should use forced catches, F, and whatever is there. Currently it will uncheck the forced catches but that should be from the start year only
         '
         'This cannot be accomplished by simply loading and unloaded the timeseries data in the middle of the run. I don't think...
@@ -2398,7 +2398,7 @@ Namespace MSE
             'Its default value is obtained from the fitted model.  
             'We run  the  model for another 50 years. 
             'Then set the fishery for  the species  in question  to 0, 
-            'leave other fisheries constant at  the last year’s  effort level. 
+            'leave other fisheries constant at  the last yearâ€™s  effort level. 
             'The  biomass for the species at the  end of the simulation  is our default Bo.      
 
             'Setup Ecosim 
