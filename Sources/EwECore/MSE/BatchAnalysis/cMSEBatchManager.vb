@@ -682,7 +682,7 @@ Namespace MSEBatchManager
                     Dim iforce As Integer = simData.BioMedData.FunctionNumber(iGrp, iGrp, ifn)
                     'Yes vary the forcing data for this timestep
                     'System.Console.Write("tval=" & tval(iforce).ToString & ", ")
-                    ForcingMultTime(iforce) = Me.m_MSE.RandNormDist(Me.BatchData.STDevForcing, ForcingMultTime(iforce))
+                    ForcingMultTime(iforce) = Me.m_MSE.RandomService.RandNormDist(Me.BatchData.STDevForcing, ForcingMultTime(iforce))
 
                     'constrain the forcing value to >= zero
                     If ForcingMultTime(iforce) < 0 Then ForcingMultTime(iforce) = 0
