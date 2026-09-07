@@ -1,9 +1,14 @@
 # Ecopath with Ecosim (EwE) - Source Code
 This repository contains the **source code** for Ecopath with Ecosim (EwE), an ecosystem modeling software suite developed by the Ecopath International Initiative (EII).
 
+## 2026 migration from SVN to GitHub
+Our old and beloved EwE soruces server is no more. We transferred to a much more mature development backend, GitHub. The EwE source code is now really open source, and you can extract the source code without any user account. However, if you want to contrite to EwE, contact us and we'll allow your GitHub account into the EwE repo.
+
+## GitHub code layout
+
 The master branch contains the latest stable release of EwE. 
 - **You can not commit directly to the master branch!!**
-- **A Build Check will be performed before you can merge a PR into master**
+- **A Build Check will be performed before you can merge a PR into master!!**
 
 [More information about working with Git](https://github.com/Official-EwE/Ecopath-project/wiki/Git-how-to)
 
@@ -94,6 +99,7 @@ In the Visual Studio open the `Developer PowerShell` window and navigate to the 
 For the 32-bit installer, type:
 - Type `iscc /DCompile64Bit=0 /DSemVersion="1.0.9" /O"ScientificInterface\bin\x86\publish" "..\Deployment\EwE6_relpath.iss"`
 - A `ScientificInterface\bin\x86\publish\ewe_1.0.9_32-bit_setup.exe` will be created.
+
 
 For the 64-bit installer, type:
 - Type `iscc /DCompile64Bit=1 /DSemVersion="1.0.9" /O"ScientificInterface\bin\x64\publish" "..\Deployment\EwE6_relpath.iss"`
