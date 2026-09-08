@@ -41,9 +41,7 @@ Name: "{app}\Resources\"
 Name: "{app}\Tools\"
 Name: "{app}\UserGuide\"
 Name: "{app}\Plugins\"
-Name: "{app}\Includes\LPSolve\"
-Name: "{app}\Includes\LPSolve\win32\"
-Name: "{app}\Includes\LPSolve\win64\"
+Name: "{app}\Output\"
 
 [Files]
 Source: "gpl-2.0.txt"; DestDir: "{app}\Resources\"; Flags: ignoreversion
