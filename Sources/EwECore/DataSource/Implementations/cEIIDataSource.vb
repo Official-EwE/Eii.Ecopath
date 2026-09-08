@@ -826,6 +826,21 @@ Public Class cEIIDataSource
         Return True
     End Function
 
+    ''' <summary>
+    ''' Always False - this format is permanently read-only (see IsReadOnly),
+    ''' never because of another session's lock.
+    ''' </summary>
+    Public Function IsLockedByAnotherSession() As Boolean Implements DataSources.IEwEDataSource.IsLockedByAnotherSession
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' Always empty - this format has no local-copy concept.
+    ''' </summary>
+    Public Function LocalReadOnlyCopyPath() As String Implements DataSources.IEwEDataSource.LocalReadOnlyCopyPath
+        Return ""
+    End Function
+
     Public Sub Dispose() Implements IDisposable.Dispose
         GC.SuppressFinalize(Me)
     End Sub

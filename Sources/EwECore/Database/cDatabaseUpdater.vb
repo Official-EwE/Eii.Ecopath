@@ -192,6 +192,20 @@ Namespace Database
             If (db Is Nothing) Then Return False
             If (db.IsReadOnly) Then Return True
 
+            ' A versus-database wraps an Access database and an EF/SQLite
+            ' database together. The legacy update chain only understands
+            ' Access/OleDb SQL, so rather than driving both (which would fail
+            ' on the EF side - see cEwEEFDatabase.SupportsLegacyDatabaseUpdates),
+            ' substitute the underlying Access database and run updates
+            ' against that alone, bypassing the EF side entirely.
+            Dim versusDb As cEwEVersusDatabase = TryCast(db, cEwEVersusDatabase)
+            If versusDb IsNot Nothing Then
+                db = versusDb.GetAccessDatabase()
+            ElseIf Not db.SupportsLegacyDatabaseUpdates() Then
+                Me.m_logger.LogInformation("RunAllUpdates: {0} does not support legacy database updates, skipping.", db.GetType().Name)
+                Return True
+            End If
+
             ' Get DB version
             sDBVersion = db.GetVersion()
 

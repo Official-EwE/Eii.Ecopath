@@ -123,7 +123,7 @@ Friend Class cDBUpdate6_02_00_06
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN RegionMap MEMO")
 
         ' Store maps
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcospaceScenario")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcospaceScenario")
         Dim dt As DataTable = writer.GetDataTable
         For Each info In lRegions
             Dim drow As DataRow = dt.Rows.Find(info.iScenarioID)

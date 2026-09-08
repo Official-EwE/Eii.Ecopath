@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports EwECore.Database
 
@@ -60,7 +60,7 @@ Friend Class cDBUpdate6_00_05_001
     Private Function UpdatePedigree(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim bSucces As Boolean = True
 
@@ -107,7 +107,7 @@ Friend Class cDBUpdate6_00_05_001
     Private Function AddPSD(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim bSucces As Boolean = True
 
         Try

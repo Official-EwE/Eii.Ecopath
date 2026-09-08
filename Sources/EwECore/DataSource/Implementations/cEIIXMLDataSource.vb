@@ -47,7 +47,7 @@ Public Class cEIIXMLDataSource
     ''' Open an existing data source connection
     ''' </summary>
     ''' <param name="strName">Name of the EII file to open.</param>
-    ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
+    ''' <param name="core"><see cref="cCore">Core instance</see> that holds the
     ''' datastructures to read to, and write from.</param>
     ''' <returns>True if opened successfully.</returns>
     ''' -------------------------------------------------------------------
@@ -83,7 +83,7 @@ Public Class cEIIXMLDataSource
     ''' </summary>
     ''' <param name="strName">Name of the EII file to create.</param>
     ''' <param name="strModelName">Name to assign to the model.</param>
-    ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
+    ''' <param name="core"><see cref="cCore">Core instance</see> that holds the
     ''' datastructures to read to, and write from.</param>
     ''' <returns>Always false.</returns>
     ''' <remarks>This action is not supported in EwE6.</remarks>
@@ -125,7 +125,7 @@ Public Class cEIIXMLDataSource
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Clear change flags in the datasource. Since the EIIDataSource does 
+    ''' Clear change flags in the datasource. Since the EIIDataSource does
     ''' not support saving of data, this method contains no implementation
     ''' </summary>
     ''' -------------------------------------------------------------------
@@ -1102,7 +1102,7 @@ Public Class cEIIXMLDataSource
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' <remarks>
-    ''' Note that this will NOT load any actual Ecosim scenario. Scenario definitions 
+    ''' Note that this will NOT load any actual Ecosim scenario. Scenario definitions
     ''' merely provide a preview of available Ecosim scenarios in the database.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
@@ -1149,7 +1149,7 @@ Public Class cEIIXMLDataSource
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' <remarks>
-    ''' Note that this will NOT load any actual Ecospace scenario. Scenario definitions 
+    ''' Note that this will NOT load any actual Ecospace scenario. Scenario definitions
     ''' merely provide a preview of available Ecospace scenarios in the database.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
@@ -2110,7 +2110,7 @@ Public Class cEIIXMLDataSource
         dt.Clear()
         dt = Nothing
 
-        ' === Landings mediations === 
+        ' === Landings mediations ===
         medData = ecosimDS.PriceMedData
         dt = Me.ReadTable("EcosimScenarioShapeMedWeightsLandings")
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
@@ -2147,7 +2147,7 @@ Public Class cEIIXMLDataSource
 
         For Each drow As DataRow In dt.Rows
             Try
-                ' Get iStanza 
+                ' Get iStanza
                 iStanza = Array.IndexOf(stanzaDS.StanzaDBID, CInt(drow("StanzaID")))
                 ' Is valid stanza?
                 If (iStanza > 0) Then
@@ -2258,7 +2258,7 @@ Public Class cEIIXMLDataSource
 
         ' JS 02Nov12: The database structure cannot cascadingly delete time series when
         ' a pool code target is deleted. This is not a big problem, as PoolCode (indexes)
-        ' are translated to database IDs (persistent) upon import. However, lingering 
+        ' are translated to database IDs (persistent) upon import. However, lingering
         ' time series create a bit of a mess.
 
         If (iDataset > 0) Then
@@ -3029,7 +3029,7 @@ Public Class cEIIXMLDataSource
                     ElseIf ShapeType = eDataTypes.EcospaceEnviroMortalityResponse Then
                         ' Map pos 0 indicates Depth, any other ID indicates a Driver map
                         ecospaceDS.MortalityResposeFunctions(Math.Max(0, iMap), iGroup) = iShape
-                    End If 'If ShapeType = 
+                    End If 'If ShapeType =
                 End If
             Catch ex As Exception
                 bSucces = False
@@ -3649,8 +3649,8 @@ Public Class cEIIXMLDataSource
         'increment the number of forcing shapes and pass that into EcoSimDatastructure it will resize to the new number of shapes
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
-        'a proper datasource will 
-        'add a record to all tables that need it 
+        'a proper datasource will
+        'add a record to all tables that need it
         'compute the new number of shapes and use that to resize the Ecosim Data
         'populate the Ecosim Data in memory with the values from the datasource
         'return the new Ecosim Index and Database ID
@@ -3687,7 +3687,7 @@ Public Class cEIIXMLDataSource
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
         Debug.Assert(ecosimDS.NumForcingShapes - 1 > 0, "No more shapes to remove")
-        'jb this is just for testing 
+        'jb this is just for testing
         ecosimDS.ResizeForcingShapes(ecosimDS.NumForcingShapes - 1)
 
         'hack to fake database IDs
@@ -3879,6 +3879,21 @@ Public Class cEIIXMLDataSource
         Return True
     End Function
 
+    ''' <summary>
+    ''' Always False - this format is permanently read-only (see IsReadOnly),
+    ''' never because of another session's lock.
+    ''' </summary>
+    Public Function IsLockedByAnotherSession() As Boolean Implements DataSources.IEwEDataSource.IsLockedByAnotherSession
+        Return False
+    End Function
+
+    ''' <summary>
+    ''' Always empty - this format has no local-copy concept.
+    ''' </summary>
+    Public Function LocalReadOnlyCopyPath() As String Implements DataSources.IEwEDataSource.LocalReadOnlyCopyPath
+        Return ""
+    End Function
+
     Public Sub Dispose() Implements IDisposable.Dispose
         GC.SuppressFinalize(Me)
     End Sub
@@ -4057,8 +4072,20 @@ Public Class cEIIXMLDataSource
         If (Me.m_core IsNot Nothing) Then
             Me.m_core.m_publisher.AddMessage(New cMessage(strMessage, msgType, eCoreComponentType.DataSource, msgImportance))
         End If
-        'Console.WriteLine(strMessage)
 
+        ' Log with appropriate level based on message importance
+        Select Case msgImportance
+            Case eMessageImportance.Critical
+                m_logger.LogCritical(strMessage)
+            Case eMessageImportance.Warning
+                m_logger.LogWarning(strMessage)
+            Case eMessageImportance.Information, eMessageImportance.Question
+                m_logger.LogInformation(strMessage)
+            Case eMessageImportance.Progress, eMessageImportance.Maintenance
+                m_logger.LogDebug(strMessage)
+            Case Else
+                m_logger.LogInformation(strMessage)
+        End Select
     End Sub
 
     Private Function ParseBoolean(strVal As String) As Boolean

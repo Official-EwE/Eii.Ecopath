@@ -145,7 +145,7 @@ Friend Class cDBUpdate6_01_01_004
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN MinLon SINGLE")
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN MinLat SINGLE")
 
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcospaceScenario")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcospaceScenario")
         Dim dt As DataTable = writer.GetDataTable
 
         For Each loc In lModels

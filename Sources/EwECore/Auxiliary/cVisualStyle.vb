@@ -2,11 +2,9 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Imports System.Drawing
-Imports System.Drawing.Imaging
+Imports SkiaSharp
 Imports System.IO
 Imports EwEUtils.UserInterface
-Imports Newtonsoft.Json
 
 Namespace Auxiliary
 
@@ -24,27 +22,6 @@ Namespace Auxiliary
         Public Property colorRampName As String
     End Class
 
-    ' "#RRGGBBAA" <-> System.Drawing.Color
-    Public Class ColorHexJsonConverter
-        Inherits JsonConverter(Of System.Drawing.Color)
-
-        Public Overrides Function ReadJson(reader As JsonReader, objectType As Type, existingValue As System.Drawing.Color, hasExistingValue As Boolean, serializer As JsonSerializer) As System.Drawing.Color
-            Dim s = TryCast(reader.Value, String)
-            If String.IsNullOrEmpty(s) Then Return System.Drawing.Color.Empty
-            If s(0) = "#"c Then s = s.Substring(1)
-            Dim r = Convert.ToByte(s.Substring(0, 2), 16)
-            Dim g = Convert.ToByte(s.Substring(2, 2), 16)
-            Dim b = Convert.ToByte(s.Substring(4, 2), 16)
-            Dim a As Byte = If(s.Length >= 8, Convert.ToByte(s.Substring(6, 2), 16), CByte(255))
-            Return System.Drawing.Color.FromArgb(a, r, g, b)
-        End Function
-
-        Public Overrides Sub WriteJson(writer As JsonWriter, value As System.Drawing.Color, serializer As JsonSerializer)
-            Dim hex = $"#{value.R:X2}{value.G:X2}{value.B:X2}{value.A:X2}"
-            writer.WriteValue(hex)
-        End Sub
-    End Class
-
     <Serializable()>
     Public NotInheritable Class cVisualStyle
 
@@ -53,7 +30,7 @@ Namespace Auxiliary
         Private m_hatchStyle As VisualHatchStyle = VisualHatchStyle.DiagonalCross
         Private m_clrFore As VisualColor = VisualColor.FromHex("#FF000000")
         Private m_clrBack As VisualColor = VisualColor.FromHex("#00FFFFFF")
-        Private m_img As Image = Nothing
+        Private m_imgBytes As Byte() = Nothing
         Private m_strFontName As String = "Arial"
         Private m_sFontSize As Single = 8.0!
         Private m_fontstyle As VisualFontStyle = VisualFontStyle.Regular
@@ -66,13 +43,6 @@ Namespace Auxiliary
         Private m_container As cAuxiliaryData = Nothing
 
 #End Region ' Private vars
-
-        ' Windows migration, won;t work on .NET Core
-        Public Shared ReadOnly FixedImageFormat As ImageFormat = ImageFormat.Png
-
-        Private Shared Function ColorToHex(c As System.Drawing.Color) As String
-            Return $"#{c.R:X2}{c.G:X2}{c.B:X2}{c.A:X2}"
-        End Function
 
         Private Shared Function HexToColor(s As String) As VisualColor
             If String.IsNullOrEmpty(s) Then Return VisualColor.FromArgb(&HFFF0F0F0)
@@ -126,11 +96,7 @@ Namespace Auxiliary
 
         Public Shared Function SerializeStyle(vs As cVisualStyle) As String
             Dim dto = ToDto(vs)
-#If NETFRAMEWORK Then
-            Dim json = Newtonsoft.Json.JsonConvert.SerializeObject(dto, Newtonsoft.Json.Formatting.None)
-#Else
-    Dim json = System.Text.Json.JsonSerializer.Serialize(dto)
-#End If
+            Dim json = System.Text.Json.JsonSerializer.Serialize(dto)
             Dim bytes = System.Text.Encoding.UTF8.GetBytes(json)
             Return "v3:" & Convert.ToBase64String(bytes)
         End Function
@@ -146,11 +112,7 @@ Namespace Auxiliary
                 Dim blob = Convert.FromBase64String(s.Substring(3))
                 Dim jsonBytes As Byte() = blob
                 Dim json = System.Text.Encoding.UTF8.GetString(jsonBytes)
-#If NETFRAMEWORK Then
-                Dim dto = Newtonsoft.Json.JsonConvert.DeserializeObject(Of VisualStyleDto)(json)
-#Else
-        Dim dto = System.Text.Json.JsonSerializer.Deserialize(Of VisualStyleDto)(json)
-#End If
+                Dim dto = System.Text.Json.JsonSerializer.Deserialize(Of VisualStyleDto)(json)
                 Dim vs As New cVisualStyle()
                 FromDto(vs, dto)
                 Return vs
@@ -208,10 +170,10 @@ Namespace Auxiliary
                 vs.FontName = Me.FontName
                 vs.FontSize = Me.FontSize
                 vs.FontStyle = Me.FontStyle
-                If Me.Image IsNot Nothing Then
-                    vs.Image = DirectCast(Me.Image.Clone(), Image)
+                If Me.m_imgBytes IsNot Nothing Then
+                    vs.m_imgBytes = DirectCast(Me.m_imgBytes.Clone(), Byte())
                 Else
-                    vs.Image = Nothing
+                    vs.m_imgBytes = Nothing
                 End If
                 vs.ColorRampID = Me.ColorRampID
                 vs.ColorRampBreaks = Me.ColorRampBreaks
@@ -247,10 +209,10 @@ Namespace Auxiliary
             Me.HatchStyle = vs.HatchStyle
             Me.FontName = vs.FontName
             Me.FontStyle = vs.FontStyle
-            If vs.Image IsNot Nothing Then
-                Me.Image = DirectCast(vs.Image.Clone(), Image)
+            If vs.m_imgBytes IsNot Nothing Then
+                Me.m_imgBytes = DirectCast(vs.m_imgBytes.Clone(), Byte())
             Else
-                Me.Image = Nothing
+                Me.m_imgBytes = Nothing
             End If
             Me.ColorRampID = vs.ColorRampID
             Me.ColorRampBreaks = vs.ColorRampBreaks
@@ -297,14 +259,32 @@ Namespace Auxiliary
         ''' Get/set the image for a visual style, if any.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        <JsonIgnore>
-        Public Property Image() As Image
+        Public Property Image() As SKBitmap
             Get
-                Return Me.m_img
+                If Me.m_imgBytes Is Nothing Then Return Nothing
+                Try
+                    Return SKBitmap.Decode(Me.m_imgBytes)
+                Catch
+                    Return Nothing
+                End Try
             End Get
-            Set(value As Image)
-                If Not Equals(value, Me.m_img) Then
-                    Me.m_img = value
+            Set(value As SKBitmap)
+                Dim oldBytes = Me.m_imgBytes
+                If value Is Nothing Then
+                    Me.m_imgBytes = Nothing
+                Else
+                    Try
+                        Using image As SKImage = SKImage.FromBitmap(value)
+                            Using data As SKData = image.Encode(SKEncodedImageFormat.Png, 100)
+                                Me.m_imgBytes = data.ToArray()
+                            End Using
+                        End Using
+                    Catch
+                        Me.m_imgBytes = Nothing
+                    End Try
+                End If
+                ' Only update if changed
+                If Not ByteArraysEqual(oldBytes, Me.m_imgBytes) Then
                     Me.Update()
                 End If
             End Set
@@ -312,32 +292,30 @@ Namespace Auxiliary
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Serialize an image to and from a Hex string.
+        ''' Serialize an image to and from a base64 string (PNG format).
         ''' </summary>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
         Public Property ImageString As String
             Get
-                If Me.Image IsNot Nothing Then
-                    Using ms As New MemoryStream()
-                        Me.Image.Save(ms, cVisualStyle.FixedImageFormat) ' PNG
-                        Return Convert.ToBase64String(ms.ToArray())
-                    End Using
+                If Me.m_imgBytes IsNot Nothing Then
+                    Return Convert.ToBase64String(Me.m_imgBytes)
                 End If
                 Return Nothing
             End Get
             Set(value As String)
                 If String.IsNullOrEmpty(value) Then
-                    Me.Image = Nothing
+                    Me.m_imgBytes = Nothing
+                    Me.Update()
                     Return
                 End If
-                Dim imageData As Byte() = Convert.FromBase64String(value)
-                Using ms As New MemoryStream(imageData)
-                    Using imgTemp As New Bitmap(ms)
-                        ' Clone to detach from stream; also ensures we hold a real GDI+ image
-                        Me.Image = New Bitmap(imgTemp)
-                    End Using
-                End Using
+                Try
+                    Me.m_imgBytes = Convert.FromBase64String(value)
+                    Me.Update()
+                Catch
+                    Me.m_imgBytes = Nothing
+                    Me.Update()
+                End Try
             End Set
         End Property
 
@@ -493,11 +471,7 @@ Namespace Auxiliary
             If String.Compare(Me.FontName, vs.FontName, True) <> 0 Then Return False
             If Me.FontSize <> vs.FontSize Then Return False
             If Me.FontStyle <> vs.FontStyle Then Return False
-            If Me.Image IsNot Nothing Or vs.Image IsNot Nothing Then
-                If Me.Image Is Nothing Then Return False
-                If vs.Image Is Nothing Then Return False
-                Return Me.Image.Equals(vs.Image)
-            End If
+            If Not ByteArraysEqual(Me.m_imgBytes, vs.m_imgBytes) Then Return False
             If Me.ColorRampID <> vs.ColorRampID Then Return False
             If Me.ColorRampName <> vs.ColorRampName Then Return False
             If Me.ColorRampColors IsNot Nothing Then
@@ -533,6 +507,21 @@ Namespace Auxiliary
                 Me.m_container.Update()
             End If
         End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper to compare two byte arrays for equality.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Shared Function ByteArraysEqual(a As Byte(), b As Byte()) As Boolean
+            If a Is Nothing AndAlso b Is Nothing Then Return True
+            If a Is Nothing OrElse b Is Nothing Then Return False
+            If a.Length <> b.Length Then Return False
+            For i As Integer = 0 To a.Length - 1
+                If a(i) <> b(i) Then Return False
+            Next
+            Return True
+        End Function
 
     End Class ' cVisualStyle
 

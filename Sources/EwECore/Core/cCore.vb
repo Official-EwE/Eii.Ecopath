@@ -3465,6 +3465,16 @@ Public Class cCore
                 m_publisher.AddMessage(New cMessage("Loaded model '" & m_EwEModel.Name & "'", eMessageType.DataModified,
                                         eCoreComponentType.Core, eMessageImportance.Maintenance))
 
+                ' TEMP/diagnostic - confirms the local read-only-copy mechanism engaged as
+                ' designed. Consider removing, or moving to a resource string + Information
+                ' importance, once this has been verified in testing.
+                If (Me.DataSource.IsLockedByAnotherSession()) Then
+                    m_publisher.AddMessage(New cMessage(
+                        "Model '" & m_EwEModel.Name & "' is currently open elsewhere - opened here from a local read-only copy at '" &
+                        Me.DataSource.LocalReadOnlyCopyPath() & "'.",
+                        eMessageType.Any, eCoreComponentType.DataSource, eMessageImportance.Information))
+                End If
+
                 'copy the input data into the output data this could wait for a model run but it may be safer to do it here
                 m_EcopathData.CopyInputToModelArrays()
                 m_PSDData.Enabled = False ' Fixes bug 683

@@ -207,6 +207,10 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
+# except the Migrator tool's published output, which is committed since
+# it's manually published (not part of the ordinary build) and needs to be
+# deployed alongside ScientificInterface
+!Tools/Eii.Ecopath.Storage.Migrator/Publish/
 
 # Publish Web Output
 *.[Pp]ublish.xml

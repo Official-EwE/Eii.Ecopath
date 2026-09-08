@@ -1137,4 +1137,55 @@
       <Version>0.2.5</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Tools\mdb2sqlite\*.exe">
+      <Link>mdb2sqlite\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>  
+  <PropertyGroup>
+    <_MigratorRid Condition="'$(Platform)' == 'x86'">win-x86</_MigratorRid>
+    <_MigratorRid Condition="'$(Platform)' != 'x86'">win-x64</_MigratorRid>
+  </PropertyGroup>
+  <ItemGroup>
+    <!--
+      Copies the self-contained Eii.Ecopath.Storage.Migrator tool (published
+      manually via "dotnet publish -r <rid> ..." - see
+      Tools\Eii.Ecopath.Storage.Migrator\Source) into the migrator\ output
+      subfolder, matching whichever platform this build targets. Used by
+      cSqliteMigrator.vb so net48 can apply pending EF Core migrations to a
+      SQLite database via this separate net10.0 process, since net48 cannot
+      run EF Core (a net10.0-only dependency of Eii.Ecopath.Storage there)
+      in-process. The .pdb is excluded - nothing debugs into this tool
+      directly, so there's no need to ship its symbols.
+    -->
+    <None Include="..\..\Tools\Eii.Ecopath.Storage.Migrator\Publish\$(_MigratorRid)\**\*.*" Exclude="..\..\Tools\Eii.Ecopath.Storage.Migrator\Publish\$(_MigratorRid)\**\*.pdb">
+      <Link>migrator\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <!--
+    Copies the correct e_sqlite3.dll (SQLitePCLRaw native binary) to the output root.
+    Required because System.Data.SQLite 2.x uses SQLitePCLRaw as its native layer, but
+    net48 does not understand the 'runtimes\win-x64\native\' folder convention and needs
+    the DLL in the output root directly.
+
+    Can be removed once EwECore is referenced as a NuGet package, as the Eii.Ecopath.Storage
+    NuGet package's .targets file (build\net48\Eii.Ecopath.Storage.targets) will then handle
+    this copy automatically.
+  -->
+  <Target Name="CopyEsqlite3ToOutputRoot" AfterTargets="Build">
+      <PropertyGroup>
+          <_SQLiteArch Condition="'$(PlatformTarget)' == 'x86'">win-x86</_SQLiteArch>
+          <_SQLiteArch Condition="'$(PlatformTarget)' != 'x86'">win-x64</_SQLiteArch>
+      </PropertyGroup>
+      <ItemGroup>
+          <_ESqlite3Dll Include="$(NuGetPackageRoot)sqlitepclraw.lib.e_sqlite3\*\runtimes\$(_SQLiteArch)\native\e_sqlite3.dll" />
+      </ItemGroup>
+      <Copy
+          SourceFiles="@(_ESqlite3Dll)"
+          DestinationFolder="$(OutputPath)"
+          Condition="'@(_ESqlite3Dll)' != ''"
+          SkipUnchangedFiles="true" />
+  </Target>
 </Project>

@@ -34,7 +34,17 @@ Namespace Database
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Class cEwEDbWriter
-            Implements IDisposable
+            Implements IDisposable, IEwEDbWriter
+
+            ''' <summary>Reference count, used by GetWriter/ReleaseWriter bookkeeping.</summary>
+            Public Property RefCount As Integer Implements IEwEDbWriter.RefCount
+                Get
+                    Return Me.m_refcount
+                End Get
+                Set(value As Integer)
+                    Me.m_refcount = value
+                End Set
+            End Property
 
             ''' <summary>Database to write to</summary>
             Private m_db As cEwEDatabase = Nothing
@@ -154,7 +164,7 @@ Namespace Database
             ''' the writer; the writer is left open for further database operations.
             ''' </summary>
             ''' ---------------------------------------------------------------
-            Public Function Commit() As Boolean
+            Public Function Commit() As Boolean Implements IEwEDbWriter.Commit
 
                 ' Optimizations
                 If Not Me.IsConnected Then Return False
@@ -180,7 +190,7 @@ Namespace Database
             ''' <param name="bSaveChanges">States whether changes need to be saved (true)
             ''' or discarded (false).</param>
             ''' ---------------------------------------------------------------
-            Public Function Disconnect(Optional bSaveChanges As Boolean = True) As Boolean
+            Public Function Disconnect(Optional bSaveChanges As Boolean = True) As Boolean Implements IEwEDbWriter.Disconnect
 
                 Dim bSucces As Boolean = False
                 If Not Me.IsConnected Then Return bSucces
@@ -210,7 +220,7 @@ Namespace Database
             ''' </summary>
             ''' <returns>True if connected.</returns>
             ''' ---------------------------------------------------------------
-            Public Function IsConnected() As Boolean
+            Public Function IsConnected() As Boolean Implements IEwEDbWriter.IsConnected
                 Return Me.m_apt IsNot Nothing
             End Function
 
@@ -220,7 +230,7 @@ Namespace Database
             ''' ''' </summary>
             ''' <returns>True if disposed.</returns>
             ''' ---------------------------------------------------------------
-            Public Function IsDisposed() As Boolean
+            Public Function IsDisposed() As Boolean Implements IEwEDbWriter.IsDisposed
                 Return Me.m_bDisposed
             End Function
 
@@ -229,11 +239,11 @@ Namespace Database
             ''' Returns an empty row for the given table to populate values into.
             ''' </summary>
             ''' <returns>An empty row</returns>
-            ''' <remarks>Note that this empty row is not yet added to the table. 
+            ''' <remarks>Note that this empty row is not yet added to the table.
             ''' If the row is populated to satisfaction, call <see cref="AddRow">AddRow</see>
             ''' to add it to the the list of rows waiting to be added to the database.</remarks>
             ''' ---------------------------------------------------------------
-            Public Function NewRow() As DataRow
+            Public Function NewRow() As DataRow Implements IEwEDbWriter.NewRow
                 Try
                     Return Me.m_dt.NewRow()
                 Catch ex As Exception
@@ -254,7 +264,7 @@ Namespace Database
             ''' row sequence during deletes.</para>
             ''' </remarks>
             ''' ---------------------------------------------------------------
-            Public Sub AddRow(drow As DataRow)
+            Public Sub AddRow(drow As DataRow) Implements IEwEDbWriter.AddRow
                 'Me.FixStringLengths(drow)
                 Me.m_dt.Rows.Add(drow)
             End Sub
@@ -272,7 +282,7 @@ Namespace Database
             ''' row sequence during additions.</para>
             ''' </remarks>
             ''' ---------------------------------------------------------------
-            Public Function RemoveRow(drow As DataRow) As Boolean
+            Public Function RemoveRow(drow As DataRow) As Boolean Implements IEwEDbWriter.RemoveRow
                 Me.m_dt.Rows.Remove(drow)
                 Return True
             End Function
@@ -285,7 +295,7 @@ Namespace Database
             ''' <returns>The row</returns>
             ''' <remarks>This method might not be necessary?</remarks>
             ''' ---------------------------------------------------------------
-            Public Function GetRow(nRow As Integer) As DataRow
+            Public Function GetRow(nRow As Integer) As DataRow Implements IEwEDbWriter.GetRow
                 Return Me.m_dt.Rows(nRow)
             End Function
 
@@ -317,7 +327,7 @@ Namespace Database
             ''' </summary>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
-            Public Function GetDataTable() As DataTable
+            Public Function GetDataTable() As DataTable Implements IEwEDbWriter.GetDataTable
                 Return Me.m_dt
             End Function
 
@@ -327,14 +337,14 @@ Namespace Database
             ''' </summary>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
-            Public Function GetTableName() As String
+            Public Function GetTableName() As String Implements IEwEDbWriter.GetTableName
                 Return Me.m_strTable
             End Function
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Helper method; replaces DBNull values that are specified as not 
-            ''' Nullable in the underlying Access database schema with the default 
+            ''' Helper method; replaces DBNull values that are specified as not
+            ''' Nullable in the underlying Access database schema with the default
             ''' value in the schema.
             ''' </summary>
             ''' <param name="drow">The row to fix.</param>
@@ -443,8 +453,8 @@ Namespace Database
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Helper method; replaces DBNull values that are specified as not 
-            ''' nullable in the underlying Access database schema with the default 
+            ''' Helper method; replaces DBNull values that are specified as not
+            ''' nullable in the underlying Access database schema with the default
             ''' value in the schema.
             ''' </summary>
             ''' <param name="drow">The row to fix.</param>
@@ -496,7 +506,7 @@ Namespace Database
         Private Const cDBVERSION_EWE5_MIN As Single = 1.6!
         ''' <summary>Newest EwE5 version number supported</summary>
         Private Const cDBVERSION_EWE5_MAX As Single = 1.73!
-        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEDatabase)()
+        Protected ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEDatabase)()
 
 #End Region ' Private vars and constants
 
@@ -577,6 +587,34 @@ Namespace Database
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether this database is read-only specifically because
+        ''' another session already holds a write lock on it. Defaults to
+        ''' False; only cEwEEFDatabase currently has a mechanism that can
+        ''' make this True. See cEwEEFDatabase.Open().
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable ReadOnly Property IsLockedByAnotherSession() As Boolean
+            Get
+                Return False
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Path of the local, disposable read-only copy this database is
+        ''' actually connected to, if any. Defaults to empty; only
+        ''' cEwEEFDatabase currently has a mechanism that can populate this.
+        ''' See cEwEEFDatabase.Open().
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable ReadOnly Property LocalReadOnlyCopyPath() As String
+            Get
+                Return ""
+            End Get
+        End Property
+
 #End Region ' Open and close
 
 #Region " Compatibility "
@@ -617,6 +655,25 @@ Namespace Database
 
         Public MustOverride Function MaxDBVersion() As Single
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether this database supports being driven through the
+        ''' legacy cDBUpdate update chain (see cDatabaseUpdater.RunAllUpdates).
+        ''' </summary>
+        ''' <remarks>
+        ''' The legacy update chain was written for, and is only guaranteed to
+        ''' be compatible with, Access/OleDb SQL syntax - several historical
+        ''' updates use statements SQLite does not support (ALTER COLUMN, ADD/
+        ''' DROP CONSTRAINT, ADD PRIMARY KEY/FOREIGN KEY via ALTER TABLE). This
+        ''' defaults to True here so existing (Access) behavior is unchanged;
+        ''' override to return False for any database type that should never
+        ''' have this update chain run against it.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function SupportsLegacyDatabaseUpdates() As Boolean
+            Return True
+        End Function
+
 #End Region ' Compatibility
 
 #Region " Maintenance "
@@ -626,7 +683,7 @@ Namespace Database
         ''' Compact an EwE database.
         ''' </summary>
         ''' <param name="strFileFrom">Source database to compact.</param>
-        ''' <param name="strFileTo">Target database to compact to. If left 
+        ''' <param name="strFileTo">Target database to compact to. If left
         ''' blank, the source database is replaced with a compacted version.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
@@ -639,7 +696,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="strConnectionFrom">Compact source.</param>
         ''' <param name="strConnectionTo">Compact target.</param>
-        ''' <returns>True if a compact engine is available for the underlying 
+        ''' <returns>True if a compact engine is available for the underlying
         ''' database.</returns>
         ''' -------------------------------------------------------------------
         Public MustOverride Function CanCompact(strConnectionFrom As String,
@@ -746,6 +803,7 @@ Namespace Database
             Try
                 'Me.ReleaseCachedWriters(True)
                 Me.m_transaction.Commit()
+                Me.m_transaction.Dispose()
                 Me.m_transaction = Nothing
                 Return True
             Catch ex As Exception
@@ -772,6 +830,7 @@ Namespace Database
             Try
                 'Me.ReleaseCachedWriters(False)
                 Me.m_transaction.Rollback()
+                Me.m_transaction.Dispose()
                 Me.m_transaction = Nothing
                 Return True
             Catch ex As Exception
@@ -803,7 +862,7 @@ Namespace Database
         ''' <param name="strSQL">Query to create the IDbCommand with.</param>
         ''' <returns>Nothing if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function CreateDBCommand(strSQL As String) As IDbCommand
+        Protected Overridable Function CreateDBCommand(strSQL As String) As IDbCommand
 
             Dim conn As IDbConnection = Me.GetConnection()
             Dim cmd As IDbCommand = Nothing
@@ -878,10 +937,10 @@ Namespace Database
         ''' </summary>
         ''' <param name="strTable">The table to connect the EwEDbWriter to.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetWriter(strTable As String) As cEwEDbWriter
+        Public Overridable Function GetWriter(strTable As String) As IEwEDbWriter
 
             Dim key As String = strTable.ToLower()
-            Dim writer As cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim bIsValid As Boolean = False
 
             ' The writer may have perished due to a rollback 
@@ -895,7 +954,7 @@ Namespace Database
                 writer = New cEwEDbWriter(Me, strTable)
             End If
 
-            writer.m_refcount += 1
+            writer.RefCount += 1
             Return writer
 
         End Function
@@ -909,11 +968,11 @@ Namespace Database
         ''' <param name="bSaveChanges">States whether changes should be written (true) or discarded (false).</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function ReleaseWriter(writer As cEwEDbWriter, Optional bSaveChanges As Boolean = True) As Boolean
+        Public Overridable Function ReleaseWriter(writer As IEwEDbWriter, Optional bSaveChanges As Boolean = True) As Boolean
 
             Dim bSuccess As Boolean = False
 
-            writer.m_refcount -= 1
+            writer.RefCount -= 1
             bSuccess = writer.Disconnect(bSaveChanges)
             writer.Dispose()
 
@@ -993,14 +1052,32 @@ Namespace Database
         ''' <summary>
         ''' Executes a SQL command that does not return any information.
         ''' </summary>
-        ''' <param name="strSQL">The query to execute.</param>
+        ''' <param name="strSQL">The query to execute. When SQLParams is provided,
+        ''' this should contain the provider-appropriate positional placeholder
+        ''' syntax for the target connection (e.g. "?" for OleDb) in place of any
+        ''' parameter values.</param>
+        ''' <param name="SQLParams">Optional array of values to bind as real,
+        ''' typed command parameters, in the same order as the placeholders in
+        ''' strSQL. Use this instead of formatting values directly into the SQL
+        ''' text - embedding numbers or dates as string literals leaves them open
+        ''' to being misinterpreted by the database engine's own locale-sensitive
+        ''' text-to-value conversion (e.g. a decimal point being read as a
+        ''' thousands separator on a non-US-formatted machine). A Nothing element
+        ''' is bound as DBNull.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function Execute(strSQL As String) As Boolean
+        Public Overridable Function Execute(strSQL As String, Optional SQLParams As Object() = Nothing) As Boolean
 
             Dim bSucces As Boolean = True
             Try
                 Using command As IDbCommand = Me.CreateDBCommand(strSQL)
+                    If SQLParams IsNot Nothing Then
+                        For Each objParam In SQLParams
+                            Dim param As IDbDataParameter = command.CreateParameter()
+                            param.Value = If(objParam, DBNull.Value)
+                            command.Parameters.Add(param)
+                        Next
+                    End If
                     command.ExecuteNonQuery()
                 End Using
             Catch ex As Exception
@@ -1225,7 +1302,7 @@ Namespace Database
         ''' <param name="strColumn">The name of the column to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function DropColumn(strTable As String, strColumn As String) As Boolean
+        Public Overridable Function DropColumn(strTable As String, strColumn As String) As Boolean
 
             Dim bSuccess As Boolean = True
 
@@ -1322,7 +1399,7 @@ Namespace Database
         ''' <param name="strTableName">The table to check.</param>
         ''' <returns>True if the table exists in the open connection.</returns>
         ''' -------------------------------------------------------------------
-        Protected Function HasTable(strTableName As String) As Boolean
+        Protected Overridable Function HasTable(strTableName As String) As Boolean
 
             If (Me.GetConnection() Is Nothing) Then Return False
 
@@ -3432,10 +3509,11 @@ Namespace Database
                 Dim sVersion As Single = GetVersion()
                 Try
                     ' Try EwE6 version first
-                    Dim reader As IDataReader = Me.GetReader("SELECT EwEVersion FROM UpdateLog WHERE Version=" & cStringUtils.FormatSingle(sVersion))
-                    While reader.Read()
-                        Me.m_strEwEversion = cStringUtils.Localize(My.Resources.CoreDefaults.GENERIC_VERSION, CStr(Me.ReadSafe(reader, "EwEVersion", "")))
-                    End While
+                    Using reader As IDataReader = Me.GetReader("SELECT EwEVersion FROM UpdateLog WHERE Version=" & cStringUtils.FormatSingle(sVersion))
+                        While reader.Read()
+                            Me.m_strEwEversion = cStringUtils.Localize(My.Resources.CoreDefaults.GENERIC_VERSION, CStr(Me.ReadSafe(reader, "EwEVersion", "")))
+                        End While
+                    End Using
 
                     ' If that didn't work
                     If String.IsNullOrWhiteSpace(Me.m_strEwEversion) Then
@@ -3468,17 +3546,18 @@ Namespace Database
             Dim version As Version = cAssemblyUtils.GetVersion()
             Dim dtNow As Date = Date.Now()
             Dim strSQL As String = ""
+            Dim SQLParams As Object()
 
             If (sVersion < 6.120003!) Then
-                strSQL = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date]) VALUES('{0}', '{1}', '{2}')",
-                                                 cStringUtils.FormatSingle(sVersion), strRemark, dtNow.ToShortDateString())
+                strSQL = "INSERT INTO UpdateLog ([Version], [Remark], [Date]) VALUES (?, ?, ?)"
+                SQLParams = New Object() {sVersion, strRemark, dtNow.Date}
             Else
-                strSQL = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date], [EwEVersion]) VALUES('{0}', '{1}', '{2}', '{3}')",
-                                                 cStringUtils.FormatSingle(sVersion), strRemark, dtNow.ToShortDateString(), version.ToString())
+                strSQL = "INSERT INTO UpdateLog ([Version], [Remark], [Date], [EwEVersion]) VALUES (?, ?, ?, ?)"
+                SQLParams = New Object() {sVersion, strRemark, dtNow.Date, version.ToString()}
             End If
             Dim bSucces As Boolean = True
             Try
-                bSucces = Me.Execute(strSQL)
+                bSucces = Me.Execute(strSQL, SQLParams)
                 Me.m_sVersion = sVersion
             Catch ex As Exception
                 bSucces = False
@@ -3587,15 +3666,16 @@ Namespace Database
         Public Function GetHistory() As cHistoryItem()
             Dim lHistory As New List(Of cHistoryItem)
             Dim item As cHistoryItem = Nothing
-            Dim r As IDataReader = Me.GetReader("SELECT * FROM UpdateLog ORDER BY Date ASC, Version ASC")
-            While r.Read
-                Try
-                    item = New cHistoryItem(CStr(r("Version")), CStr(r("Remark")), CStr(r("Date")))
-                    lHistory.Add(item)
-                Catch ex As Exception
-                    ' Whoah! Unable to parse the date?!
-                End Try
-            End While
+            Using r As IDataReader = Me.GetReader("SELECT * FROM UpdateLog ORDER BY Date ASC, Version ASC")
+                While r.Read
+                    Try
+                        item = New cHistoryItem(CStr(r("Version")), CStr(r("Remark")), CStr(r("Date")))
+                        lHistory.Add(item)
+                    Catch ex As Exception
+                        ' Whoah! Unable to parse the date?!
+                    End Try
+                End While
+            End Using
             Return lHistory.ToArray
         End Function
 

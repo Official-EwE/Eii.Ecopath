@@ -39,7 +39,7 @@ Friend Class cDBUpdate6_50_00_11
 
         ' All updated models receive the former default of 0.1
         Dim bSuccess As Boolean = db.Execute("ALTER TABLE EcosimScenario ADD COLUMN ForagingTimeLowerLimit SINGLE")
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcosimScenario")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcosimScenario")
         Dim dt As DataTable = writer.GetDataTable()
         For Each row As DataRow In dt.Rows
             row.BeginEdit()

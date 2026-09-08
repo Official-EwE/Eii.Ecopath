@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports EwECore.Database
 
@@ -114,7 +114,7 @@ Friend Class cDBUpdate6_00_06_004
         Dim sfm As cScenarioFleetMap = Nothing
         Dim iPortID As Integer = 1
         Dim dtSFM As New Dictionary(Of Integer, cScenarioFleetMap)
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim bSucces As Boolean = True
 

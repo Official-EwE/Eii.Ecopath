@@ -117,5 +117,7 @@
         <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.10" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.10" />
         <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.10" />
+        <!-- The Newtonsoft.Json package is included for JSON serialization and deserialization tasks by cWebSocketHelper -->
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     </ItemGroup>
 </Project>

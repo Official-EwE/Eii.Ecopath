@@ -14,12 +14,12 @@ Namespace Database
 
     ''' =======================================================================
     ''' <summary>
-    ''' Database class specialized for storing and writing EwE data to Microsoft 
+    ''' Database class specialized for storing and writing EwE data to Microsoft
     ''' Access databases.
     ''' </summary>
     ''' <remarks>
     ''' This class wraps Microsoft Access specifics such as connection
-    ''' strings, deals with deficiencies in the SQL implementation of Bill's 
+    ''' strings, deals with deficiencies in the SQL implementation of Bill's
     ''' beast, and provides default field values from the Access DB schema.
     ''' </remarks>
     ''' =======================================================================
@@ -34,9 +34,9 @@ Namespace Database
         Private m_strConnectionMDB As String = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source={0};Mode=Share Exclusive;"
         ' Download from http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=13255.
         ' only works if office is 64 bit too. To detect
-        ' To determine if office 2010 is 32 bit or 64 bit, we could check a registry key named 
+        ' To determine if office 2010 is 32 bit or 64 bit, we could check a registry key named
         ' bitness. For more information, please refer to this article: http://technet.microsoft.com/en-us/library/ee681792.aspx.
-        ' Also here is a resource with a same question you could refer to: 
+        ' Also here is a resource with a same question you could refer to:
         ' Detect whether Office 2010 is 32bit or 64bit via the registry (http://stackoverflow.com/questions/2203980/detect-whether-office-2010-is-32bit-or-64bit-via-the-registry).
         ''' <summary>The connection string to connect to a ACCDB database.</summary>
         Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Mode=Share Exclusive;Data Source={0};"
@@ -62,7 +62,7 @@ Namespace Database
         ''' <param name="strAuthor">Name of the author to assign.</param>
         ''' <param name="strModelName">Name of the model to use.</param>
         ''' <param name="bOverwrite">States whether an existing database may be overwritten.</param>
-        ''' <param name="format">Database format type to use. If not set, the 
+        ''' <param name="format">Database format type to use. If not set, the
         ''' database type is deducted from the <paramref name="strDatabase">database</paramref>.</param>
         ''' <returns>A <see cref="eDatasourceAccessType">eDatasourceAccessType</see> value</returns>
         ''' <remarks>Note that this will NOT open the newly created database.</remarks>
@@ -133,7 +133,7 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Save a given Access database to a new destination, and open this 
+        ''' Save a given Access database to a new destination, and open this
         ''' new database.
         ''' </summary>
         ''' <param name="strDatabaseTo">Target database name.</param>
@@ -233,7 +233,7 @@ Namespace Database
                 Select Case databaseType
                     Case eDataSourceTypes.Access2003
                         Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionMDB, strDatabase)
-                    Case eDataSourceTypes.Access2007
+                    Case eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite
                         Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionACCDB, strDatabase)
                     Case eDataSourceTypes.NotSet
                         Me.m_conn.ConnectionString = ""
