@@ -37,7 +37,6 @@ Public Class gridAboutEwE
         Dim pm As cPluginManager = Nothing
         Dim aanCore As AssemblyName() = Nothing
         Dim aanRef As AssemblyName() = Nothing
-        Dim aanFramework As AssemblyName() = Nothing
         Dim aanPlugins As AssemblyName() = Nothing
         Dim iRow As Integer = 0
 
@@ -50,8 +49,7 @@ Public Class gridAboutEwE
             Me.Redim(aanCore.Length + 1 + aanPlugins.Length + 1, 2)
         Else
             aanRef = cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.Referenced)
-            aanFramework = cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.Framework)
-            Me.Redim(aanCore.Length + 1 + aanPlugins.Length + 1 + aanRef.Length + 1 + aanFramework.Length + 1, 2)
+            Me.Redim(aanCore.Length + 1 + aanPlugins.Length + 1 + aanRef.Length + 1, 2)
         End If
 
         ' -- Core section --
@@ -83,17 +81,6 @@ Public Class gridAboutEwE
             Me(iRow, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_VERSION)
             iRow += 1
             For Each an As AssemblyName In aanRef
-                Me(iRow, 0) = New cEwERowHeaderCell(an.Name)
-                Me(iRow, 1) = New cEwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                ' Next
-                iRow += 1
-            Next
-
-            ' -- Framework section --
-            Me(iRow, 0) = New cEwEColumnHeaderCell(SharedResources.HEADER_COMPONENTS_FRAMEWORK)
-            Me(iRow, 1) = New cEwEColumnHeaderCell(SharedResources.HEADER_VERSION)
-            iRow += 1
-            For Each an As AssemblyName In aanFramework
                 Me(iRow, 0) = New cEwERowHeaderCell(an.Name)
                 Me(iRow, 1) = New cEwECell(an.Version.ToString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 ' Next

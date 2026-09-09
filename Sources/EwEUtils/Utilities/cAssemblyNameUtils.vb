@@ -329,10 +329,8 @@ Namespace Utilities
             EwECore = 1
             ''' <summary>Assemblies built on EwE, but not part of <see cref="eSummaryFlags.EwECore"/>.</summary>
             EwEExtended = 2
-            ''' <summary>.NET Framework assemblies.</summary>
-            Framework = 4
             ''' <summary>Referenced assemblies.</summary>
-            Referenced = 8
+            Referenced = 4
             ''' <summary>All possible assemblies.</summary>
             All = 255
         End Enum
@@ -398,8 +396,7 @@ Namespace Utilities
             Dim bAddAssembly As Boolean = False
             Dim bIsEwECore As Boolean = IsEwECore(an)
             Dim bIsEwEExt As Boolean = IsEwEExternal(an)
-            Dim bIsFramework As Boolean = IsFramework(an)
-            Dim bIsReferenced As Boolean = (Not bIsEwECore) And (Not bIsEwEExt) And (Not bIsFramework)
+            Dim bIsReferenced As Boolean = (Not bIsEwECore) And (Not bIsEwEExt)
 
             If (flags And eSummaryFlags.EwECore) = eSummaryFlags.EwECore Then
                 bAddAssembly = bAddAssembly Or bIsEwECore
@@ -407,10 +404,6 @@ Namespace Utilities
 
             If (flags And eSummaryFlags.EwEExtended) = eSummaryFlags.EwEExtended Then
                 bAddAssembly = bAddAssembly Or bIsEwEExt
-            End If
-
-            If (flags And eSummaryFlags.Framework) = eSummaryFlags.Framework Then
-                bAddAssembly = bAddAssembly Or bIsFramework
             End If
 
             If (flags And eSummaryFlags.Referenced) = eSummaryFlags.Referenced Then
@@ -535,56 +528,18 @@ Namespace Utilities
                     ass = ExecutingAssembly
                 End If
 
-#If NETFRAMEWORK Then
-                 Return DetectBuildDateNet48(ass.Location)
-#Else
-                Dim dt As Nullable(Of DateTime) = DetectBuildDate(ass)
-                If dt.HasValue Then Return dt.Value
-
+                Try
+                    Dim dt As Nullable(Of DateTime) = DetectBuildDateCore(ass)
+                    If dt.HasValue Then Return dt.Value
+                    'Return DetectBuildDateNet48(ass.Location)
+                Catch ex As Exception
+                    ' Do not crash
+                    ' NOP
+                End Try
                 Return DateTime.MinValue
-#End If
+
             End Get
         End Property
-
-#If NETFRAMEWORK Then
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Retrieves the linker timestamp, as written in the assembly header file
-        ''' at a fixed position. This may fail one day in future .NET versions.
-        ''' Ideally, the link date and time would be stored in a universal time
-        ''' format in the code by the compiler.
-        ''' </summary>
-        ''' <param name="strAssemblyPath">Path of the assembly file to read the
-        ''' build time from.</param>
-        ''' <returns>The build date.</returns>
-        ''' <remarks>
-        ''' Taken from http://www.codinghorror.com/blog/2005/04/determining-build-date-the-hard-way.html
-        ''' </remarks>
-        ''' -----------------------------------------------------------------------
-        Private Shared Function DetectBuildDateNet48(strAssemblyPath As String) As System.DateTime
-
-            Const peHeaderOffset As Integer = 60
-            Const linkerTimestampOffset As Integer = 8
-            Dim b(2047) As Byte
-            Dim s As System.IO.FileStream = Nothing
-
-            Try
-                s = New System.IO.FileStream(strAssemblyPath, System.IO.FileMode.Open, System.IO.FileAccess.Read)
-                s.Read(b, 0, 2048)
-            Finally
-                If s IsNot Nothing Then
-                    s.Close()
-                End If
-            End Try
-            Dim dt As New System.DateTime(1970, 1, 1, 0, 0, 0)
-
-            dt = dt.AddSeconds(System.BitConverter.ToInt32(b, System.BitConverter.ToInt32(b, peHeaderOffset) + linkerTimestampOffset))
-            Return dt.AddHours(System.TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours)
-
-        End Function
-
-#Else
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -608,7 +563,41 @@ Namespace Utilities
             Return Nothing
         End Function
 
-#End If
+        '''' -----------------------------------------------------------------------
+        '''' <summary>
+        '''' Retrieves the linker timestamp, as written in the assembly header file
+        '''' at a fixed position. This may fail one day in future .NET versions.
+        '''' Ideally, the link date and time would be stored in a universal time
+        '''' format in the code by the compiler.
+        '''' </summary>
+        '''' <param name="strAssemblyPath">Path of the assembly file to read the
+        '''' build time from.</param>
+        '''' <returns>The build date.</returns>
+        '''' <remarks>
+        '''' Taken from http://www.codinghorror.com/blog/2005/04/determining-build-date-the-hard-way.html
+        '''' </remarks>
+        '''' -----------------------------------------------------------------------
+        'Private Shared Function DetectBuildDateNet48(strAssemblyPath As String) As System.DateTime
+
+        '    Const peHeaderOffset As Integer = 60
+        '    Const linkerTimestampOffset As Integer = 8
+        '    Dim b(2047) As Byte
+        '    Dim s As System.IO.FileStream = Nothing
+
+        '    Try
+        '        s = New System.IO.FileStream(strAssemblyPath, System.IO.FileMode.Open, System.IO.FileAccess.Read)
+        '        s.Read(b, 0, 2048)
+        '    Finally
+        '        If s IsNot Nothing Then
+        '            s.Close()
+        '        End If
+        '    End Try
+        '    Dim dt As New System.DateTime(1970, 1, 1, 0, 0, 0)
+
+        '    dt = dt.AddSeconds(System.BitConverter.ToInt32(b, System.BitConverter.ToInt32(b, peHeaderOffset) + linkerTimestampOffset))
+        '    Return dt.AddHours(System.TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours)
+
+        'End Function
 
 #End Region ' Detection internals
 
