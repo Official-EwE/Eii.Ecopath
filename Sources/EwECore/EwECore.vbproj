@@ -28,6 +28,12 @@
     <Company>EII</Company>
     <PackageIcon>EII_plain_128x128.png</PackageIcon>
   </PropertyGroup>
+	<PropertyGroup>
+		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
+	</PropertyGroup>
+	<ItemGroup>
+		<AssemblyMetadata Include="EwEBuildDateUtc" Value="$(EwEBuildDateUtc)" />
+	</ItemGroup>
   <ItemGroup>
     <None Include="README.md" Pack="True" PackagePath="\" />
     <None Include="..\..\EII_plain_128x128.png" Pack="True" PackagePath="\" />

@@ -58,7 +58,7 @@ Namespace MSE
 
         Public Qgrow() As Single 'Max catchability increase. Catchability increase over time due to improved fishing efficiency
         Public BioRiskValue(,) As Single 'Lower and Upper boundry for Biomass risk
-        Public CVbiomEst() As Single 'Biomass coefficient of variation
+        Public Property CVbiomEst() As Single() 'Biomass coefficient of variation
         Public CVFest() As Single 'Fishing effort coefficient of variation
         Public CVBiomT(,) As Single 'groups,years
         ''' <summary>fleets,years</summary>
@@ -145,7 +145,7 @@ Namespace MSE
         ''' Biomass estimated for the current year.
         ''' </summary>
         ''' <remarks>Calculated via the Stock Assessment model in <see cref="MSE.cMSE.DoAssessment">DoAssessment()</see></remarks>
-        Public Bestimate() As Single
+        Public Property Bestimate() As Single()
 
         ''' <summary>
         ''' Estimated biomass from the last year
@@ -220,35 +220,35 @@ Namespace MSE
         ''' <summary>
         ''' Biomass of group when fishing mortality is at Fopt(igroup)(max mortality) 
         ''' </summary>
-        Public Bbase() As Single
+        Public Property Bbase() As Single()
 
         ''' <summary>
         ''' Biomass of group when fishing mortality is at zero or Fmin(igroup)
         ''' </summary>
-        Public Blim() As Single
+        Public Property Blim() As Single()
 
         ''' <summary>
         ''' Max fishing mortality
         ''' </summary>
-        Public Fopt() As Single
+        Public Property Fopt() As Single()
 
         ''' <summary>
         ''' Fishing mortality when biomass(igroup) is at Blim(igroup) Minimum fishing mortality
         ''' </summary>
         ''' <remarks>This is only set to none zero from the batch manager for all other runs it is zero</remarks>
-        Public Fmin() As Single
+        Public Property Fmin() As Single()
 
-        Public FixedEscapement() As Single
+        Public Property FixedEscapement() As Single()
 
         ''' <summary>
         ''' Total allowable catch
         ''' </summary>
-        Public TAC() As Single
+        Public Property TAC() As Single()
 
         ''' <summary>
         ''' Fixed fishing mortality
         ''' </summary>
-        Public FixedF() As Single
+        Public Property FixedF() As Single()
 
         ''' <summary>Max Fishing Effort for Regulatory Reduction in fishing effort  (by gear)</summary>
         Public MaxEffort() As Single 'gear
@@ -264,19 +264,17 @@ Namespace MSE
 
         ''' <summary>Percentage of total catch by at fleet on a group (by fleet, group)</summary>
         ''' <remarks>Sums to one across all fleets for a group</remarks>
-        Public Quotashare(,) As Single
+        Public Property Quotashare() As Single(,)
 
         ''' <summary>
         ''' Quota for the current year by fleet/group updated at the start of a year by <see cref="MSE.cMSE.UpdateQuotas">cMSE.UpdateQuotas</see>
         ''' </summary>
         ''' <remarks>Used by <see cref="MSE.cMSE.DoRegulations">DoRegulations()</see> to do fisheries regulations based on user selected controls.</remarks>
-        Public QuotaTime(,) As Single
-
-        Public CatchYearGroup() As Single
+        Public Property QuotaTime() As Single(,)
 
         Public MSEMaxEffort As Single
 
-        Public FTarget() As Single
+        Public Property FTarget() As Single()
 
         Public UseLPSolution As Boolean
 
@@ -738,11 +736,9 @@ Namespace MSE
 
             Next iFlt
 
-            ReDim Me.CatchYearGroup(Me.nGroups)
             ReDim Me.CatchYear(Me.nFleets, Me.nGroups)
 
             For iGrp = 1 To Me.nGroups
-                Me.CatchYearGroup(iGrp) = Me.m_EPData.fCatch(iGrp)
                 'make sure Fmin did not get set to some strange value
                 If Me.Fmin(iGrp) < 0 Then Me.Fmin(iGrp) = 0
 
@@ -786,6 +782,12 @@ Namespace MSE
         Public ReadOnly Property nGroups() As Integer
             Get
                 Return Me.m_EPData.NumGroups
+            End Get
+        End Property
+
+        Public ReadOnly Property Fish1() As Single()
+            Get
+                Return Me.m_ESData.Fish1
             End Get
         End Property
 
