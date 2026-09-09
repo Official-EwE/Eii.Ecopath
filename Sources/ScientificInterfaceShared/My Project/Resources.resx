@@ -2460,9 +2460,6 @@
   <data name="PROMPT_SHOWTITLE_DESCR" xml:space="preserve">
     <value>Show or hide the title</value>
   </data>
-  <data name="HEADER_COMPONENTS_FRAMEWORK" xml:space="preserve">
-    <value>.NET components</value>
-  </data>
   <data name="HEADER_COMPONENTS_REFERENCED" xml:space="preserve">
     <value>Referenced components</value>
   </data>
