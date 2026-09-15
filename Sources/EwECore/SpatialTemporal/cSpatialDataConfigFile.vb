@@ -222,7 +222,6 @@ Namespace SpatialData
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Friend Function Save(core As cCore,
-                             man As cSpatialDataSetManager,
                              datasets As ISpatialDataSet(),
                              bExporting As Boolean) As Boolean
 
@@ -293,7 +292,9 @@ Namespace SpatialData
             ' Gather dataset config nodes, but do not add to the doc until all done
             For Each ds As ISpatialDataSet In datasets
 
-                If (bExporting) Then ds = ds.ExportTo(Path.GetDirectoryName(strFile))
+                If (bExporting) Then
+                    ds = ds.ExportTo(Path.GetDirectoryName(strFile))
+                End If
 
                 ' Exclude virtual datasets from ending up in a config file
                 If (ds IsNot Nothing) Then
