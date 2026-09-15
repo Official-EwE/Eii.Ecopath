@@ -238,7 +238,7 @@ Namespace SpatialData
                                                       cSystemUtils.GetHostName(),
                                                       strAuthor,
                                                       strContact)
-                bSuccess = cfg.Save(Me.m_core, Me, datasets, bExporting)
+                bSuccess = cfg.Save(Me.m_core, datasets, bExporting)
             Catch ex As Exception
                 ' NOP
                 Debug.Assert(False, ex.Message)
@@ -687,7 +687,7 @@ Namespace SpatialData
             If (n >= 0) Then Me.m_lConfigFiles.RemoveAt(n)
 
             cfg = New cSpatialDataConfigFile(strFile, strName, strDescription, cSystemUtils.GetHostName(), Me.DataAuthor, Me.DataContact)
-            cfg.Save(Me.m_core, Me, Nothing, False)
+            cfg.Save(Me.m_core, Nothing, False)
             Me.m_lConfigFiles.Add(cfg)
             Return cfg
 
