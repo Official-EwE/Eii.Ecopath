@@ -173,16 +173,29 @@ Namespace SpatialData
                             If (xa IsNot Nothing) Then
                                 Try
                                     Dim strTypeName As String = xa.InnerText
-                                    ' Type name mapping
+
+                                    ' == Resolve the dataset from a loaded plug-in ==
+
+                                    ' Legacy work-around: replace ancient AAAS type name with the correct type name for ASCII files
                                     strTypeName = strTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin")
-                                    ' Get plug-in
+
+                                    ' Try to resolve the dataset
                                     Dim t As Type = cTypeUtils.StringToType(strTypeName)
+                                    ' Type found?
                                     If (t Is Nothing) Then
+                                        ' #No: Try a possible alternate pathway. The STDF in .NET Core is heavily simplified and has
+                                        ' a different assembly name. Try to reroute the type name to the stripped-down STDF version
+                                        strTypeName = strTypeName.Replace("EwESpatialAssetsPlugin", "EwESpatialAssetsEnginePlugin")
+                                        t = cTypeUtils.StringToType(strTypeName)
+                                    End If
+
+                                    ' Type found?
+                                    If (t Is Nothing) Then
+                                        ' #No: assume that the STDF is not loaded. In that case, use a placeholder to retaina dataset assignment
                                         t = GetType(cSpatialDatasetPlaceholder)
                                     End If
 
                                     ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
-                                    ' If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(core)
 
                                     If (TypeOf ds Is cSpatialDatasetPlaceholder) Then
                                         DirectCast(ds, cSpatialDatasetPlaceholder).PreservedType = xa.InnerText
