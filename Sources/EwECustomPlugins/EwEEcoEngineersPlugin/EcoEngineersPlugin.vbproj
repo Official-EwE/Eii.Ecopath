@@ -49,6 +49,12 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
+	<PropertyGroup>
+		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
+	</PropertyGroup>
+	<ItemGroup>
+		<AssemblyMetadata Include="EwEBuildDateUtc" Value="$(EwEBuildDateUtc)" />
+	</ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web" />
     <Reference Include="System.Data.DataSetExtensions" />

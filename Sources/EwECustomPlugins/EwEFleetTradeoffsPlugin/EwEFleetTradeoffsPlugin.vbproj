@@ -45,6 +45,12 @@
     <DocumentationFile>EwEFleetTradeoffsPlugin.xml</DocumentationFile>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
+	<PropertyGroup>
+		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
+	</PropertyGroup>
+	<ItemGroup>
+		<AssemblyMetadata Include="EwEBuildDateUtc" Value="$(EwEBuildDateUtc)" />
+	</ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>

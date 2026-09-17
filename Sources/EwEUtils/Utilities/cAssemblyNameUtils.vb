@@ -3,11 +3,8 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Reflection
-Imports System
-Imports System.Collections.Generic
-Imports EwECore.Common
-Imports System.Security.Policy
 Imports System.Security.Permissions
+Imports System.Security.Policy
 
 Namespace Utilities
 
@@ -20,8 +17,6 @@ Namespace Utilities
 
 #Region " Internal helper classes "
 
-        ''' <summary>Microsoft assembly name prefixes (not complete but hey, it's a start).</summary>
-        Private Shared s_FrameworkPrefixes() As String = {"mscorlib", "system", "microsoft", "interop", "accessibility", "office", "stdole"}
         ''' <summary>EwE assembly name prefixes.</summary>
         Private Shared s_CoreNames As String() = New String() {"EwEUtils", "EwEPlugin", "EwECore", "ScientificInterfaceShared", "EwE6"}
         ''' <summary>For quick look-up</summary>
@@ -52,10 +47,52 @@ Namespace Utilities
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Class cAssemblyState
-            Public Property IsEwE As TriState = TriState.UseDefault
-            Public Property IsEwECore As TriState = TriState.UseDefault
-            Public Property IsEwEExt As TriState = TriState.UseDefault
-            Public Property IsFramework As TriState = TriState.UseDefault
+
+            Public ReadOnly Property AssemblyName As AssemblyName
+
+            Public ReadOnly Property IsEwE As Boolean
+            Public ReadOnly Property IsEwECore As Boolean
+            Public ReadOnly Property IsEwEExt As Boolean
+            Public ReadOnly Property IsDependency As Boolean
+
+            Public ReadOnly Property Version As Version
+            Public ReadOnly Property InformationalVersion As String
+
+            Public ReadOnly Property BuildDateUtc As Nullable(Of DateTime)
+            Public ReadOnly Property CommitHash As String
+
+            Public Sub New(an As AssemblyName)
+
+                Me.AssemblyName = an
+
+                Dim ass As Assembly = GetAssembly(an)
+
+                ' Cheap metadata
+                Me.Version = an.Version
+
+                ' Classification
+                Me.IsEwE = DetectEwE(an)
+                Me.IsEwECore = Me.IsEwE AndAlso Array.IndexOf(s_CoreNames, an.Name) >= 0
+                Me.IsEwEExt = Me.IsEwE AndAlso Not Me.IsEwECore
+                Me.IsDependency = Not Me.IsEwE
+
+                ' Runtime assembly metadata
+                If ass IsNot Nothing Then
+
+                    Me.InformationalVersion = DetectInformationalVersion(ass)
+                    Me.BuildDateUtc = DetectBuildDate(ass)
+                    Me.CommitHash = DetectCommitHash(ass)
+
+                Else
+
+                    Me.InformationalVersion = String.Empty
+                    Me.BuildDateUtc = Nothing
+                    Me.CommitHash = String.Empty
+
+                End If
+
+            End Sub
+
         End Class
 
         ''' -----------------------------------------------------------------------
@@ -73,7 +110,7 @@ Namespace Utilities
             Public Function Item(an As AssemblyName) As cAssemblyState
                 Dim strName As String = an.FullName
                 If Not Me.m_info.ContainsKey(strName) Then
-                    Me.m_info(strName) = New cAssemblyState()
+                    Me.m_info(strName) = New cAssemblyState(an)
                 End If
                 Return Me.m_info(strName)
             End Function
@@ -137,28 +174,103 @@ Namespace Utilities
             If (an Is Nothing) Then
                 an = ExecutingAssembly.GetName
             End If
-            Return an.Version
+            Return m_cache.Item(an).Version
+        End Function
+
+        Public Shared Function GetInformationalVersion(Optional an As AssemblyName = Nothing) As String
+            If (an Is Nothing) Then
+                an = ExecutingAssembly.GetName
+            End If
+            Return m_cache.Item(an).InformationalVersion
         End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Gets the compile date of the <see cref="ExecutingAssembly">currently 
-        ''' executing assembly</see>.
+        ''' Gets the compile date of an assembly name. If no assembly name is specified, 
+        ''' the compile date of the executing assembly is returned.
         ''' </summary>
         ''' <value>The compile date.</value>
         ''' -----------------------------------------------------------------------
-        Public Shared ReadOnly Property GetCompileDate(Optional ass As Assembly = Nothing) As System.DateTime
+        Public Shared ReadOnly Property GetCompileDate(Optional an As AssemblyName = Nothing) As DateTime
             Get
-
-                Dim strFile As String = ""
-                If (ass Is Nothing) Then
-                    ass = ExecutingAssembly
+                If (an Is Nothing) Then
+                    an = ExecutingAssembly.GetName
                 End If
-                Dim dt As DateTime = RetrieveLinkerTimestamp(ass.Location)
-                If (dt = Nothing) Then dt = New DateTime()
-                Return dt
+                Return m_cache.Item(an).BuildDateUtc
             End Get
         End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether an <see cref="AssemblyName"/> is not part of the EwE 
+        ''' code base.
+        ''' </summary>
+        ''' <param name="an">The <see cref="AssemblyName"/> to test.</param>
+        ''' <returns>True if the <see cref="AssemblyName"/> is not part of the EwE code base.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsDependency(an As AssemblyName) As Boolean
+            If (an Is Nothing) Then
+                an = ExecutingAssembly.GetName
+            End If
+            ' Get cached info
+            Dim info As cAssemblyState = m_cache.Item(an)
+            Return info.IsDependency
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Legacy call, returns whether an <see cref="AssemblyName"/> is not part 
+        ''' of the EwE code base. This code used to check for known .NET Microsoft 
+        ''' assembly names, but with the shift to packages and .NET core, these checks
+        ''' have become increasingly meaningless and problematic to keep current. 
+        ''' Use <see cref="IsDependency"/> instead.
+        ''' </summary>
+        ''' <param name="an">The <see cref="AssemblyName"/> to test.</param>
+        ''' <returns>True if the <see cref="AssemblyName"/> is not part of the EwE code base.</returns>
+        ''' -----------------------------------------------------------------------
+        <Obsolete("Use IsDependency instead")>
+        Public Shared Function IsFramework(an As AssemblyName) As Boolean
+
+            Return IsDependency(an)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return whether a given assembly name is built upon one of the EwE core assemblies.
+        ''' </summary>
+        ''' <param name="an">The assembly name to check.</param>
+        ''' <returns>True if the assembly is built upon the EwE assemblies, but is not a 
+        ''' part of the EwE core libraries.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IsEwEExternal(an As AssemblyName) As Boolean
+
+            If (an Is Nothing) Then
+                an = ExecutingAssembly.GetName
+            End If
+            ' Get cached info
+            Dim info As cAssemblyState = m_cache.Item(an)
+            Return info.IsEwEExt
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return whether a given assembly name is one of the EwE core assemblies.
+        ''' </summary>
+        ''' <param name="an">The assembly name to check.</param>
+        ''' <returns>True if the assembly is one of the EwE assemblies.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IsEwECore(an As AssemblyName) As Boolean
+
+            If (an Is Nothing) Then
+                an = ExecutingAssembly.GetName
+            End If
+            ' Get cached info
+            Dim info As cAssemblyState = m_cache.Item(an)
+            Return info.IsEwECore
+
+        End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -176,6 +288,37 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a StrongName that matches a specific assembly.
+        ''' </summary>
+        ''' <param name="an">Assembly name to create a StrongName for.</param>
+        ''' <returns>A StrongName that matches the given assembly, or Nothing
+        ''' if the assembly was not strongly named.</returns>
+        ''' <remarks>
+        ''' Adapted from http://blogs.msdn.com/b/shawnfa/archive/2005/08/08/449050.aspx
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetStrongName(an As AssemblyName) As StrongName
+
+            ' Test if assembly is present
+            If (an Is Nothing) Then Return Nothing
+
+            ' Get the public key blob
+            Dim publicKey As Byte() = an.GetPublicKey()
+
+            ' Test if assembly is strongly named
+            If (publicKey Is Nothing) Then Return Nothing
+            If (publicKey.Length = 0) Then Return Nothing
+
+            ' Create the StrongName
+            Dim keyBlob As New StrongNamePublicKeyBlob(publicKey)
+            Return New StrongName(keyBlob, an.Name, an.Version)
+
+        End Function
+
+#Region " Inventory "
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Bitwise flags for obtaining assembly information.
@@ -186,10 +329,8 @@ Namespace Utilities
             EwECore = 1
             ''' <summary>Assemblies built on EwE, but not part of <see cref="eSummaryFlags.EwECore"/>.</summary>
             EwEExtended = 2
-            ''' <summary>.NET Framework assemblies.</summary>
-            Framework = 4
             ''' <summary>Referenced assemblies.</summary>
-            Referenced = 8
+            Referenced = 4
             ''' <summary>All possible assemblies.</summary>
             All = 255
         End Enum
@@ -255,8 +396,7 @@ Namespace Utilities
             Dim bAddAssembly As Boolean = False
             Dim bIsEwECore As Boolean = IsEwECore(an)
             Dim bIsEwEExt As Boolean = IsEwEExternal(an)
-            Dim bIsFramework As Boolean = IsFramework(an)
-            Dim bIsReferenced As Boolean = (Not bIsEwECore) And (Not bIsEwEExt) And (Not bIsFramework)
+            Dim bIsReferenced As Boolean = (Not bIsEwECore) And (Not bIsEwEExt)
 
             If (flags And eSummaryFlags.EwECore) = eSummaryFlags.EwECore Then
                 bAddAssembly = bAddAssembly Or bIsEwECore
@@ -264,10 +404,6 @@ Namespace Utilities
 
             If (flags And eSummaryFlags.EwEExtended) = eSummaryFlags.EwEExtended Then
                 bAddAssembly = bAddAssembly Or bIsEwEExt
-            End If
-
-            If (flags And eSummaryFlags.Framework) = eSummaryFlags.Framework Then
-                bAddAssembly = bAddAssembly Or bIsFramework
             End If
 
             If (flags And eSummaryFlags.Referenced) = eSummaryFlags.Referenced Then
@@ -291,176 +427,9 @@ Namespace Utilities
 
         End Function
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns whether an <see cref="AssemblyName"/> is part of the .NET framework.
-        ''' </summary>
-        ''' <param name="an">The <see cref="AssemblyName"/> to test.</param>
-        ''' <returns>True if the <see cref="AssemblyName"/> is part of the .NET framework.</returns>
-        ''' <remarks>
-        ''' After http://stackoverflow.com/questions/2066041/any-way-to-check-if-an-assembly-is-a-framework-assembly-in-net-other-than-che
-        ''' </remarks>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function IsFramework(an As AssemblyName) As Boolean
+#End Region ' Inventory
 
-            If (an Is Nothing) Then Return False
-
-            ' Get cached info
-            Dim info As cAssemblyState = m_cache.Item(an)
-
-            ' Not determined yet?
-            If (info.IsFramework = TriState.UseDefault) Then
-                ' #Yes: assume the worst
-                info.IsFramework = TriState.False
-                ' Assess framework state
-                If an.FullName.Contains("PublicKeyToken=b77a5c561934e089") Then
-                    info.IsFramework = TriState.True
-                Else
-                    For Each strName As String In s_FrameworkPrefixes
-                        ' Does name begin with a blacklisted string?
-                        If (an.FullName.ToLower().IndexOf(strName) = 0) Then
-                            ' #Yes: got one
-                            info.IsFramework = TriState.True
-                        End If
-                    Next
-                End If
-            End If
-
-            Return (info.IsFramework = TriState.True)
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Return whether a given assembly name is built upon one of the EwE core assemblies.
-        ''' </summary>
-        ''' <param name="an">The assembly name to check.</param>
-        ''' <returns>True if the assembly is built upon the EwE assemblies, but is not a 
-        ''' part of the EwE core libraries.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function IsEwEExternal(an As AssemblyName) As Boolean
-
-            If (an Is Nothing) Then Return False
-
-            ' Get cached info
-            Dim info As cAssemblyState = m_cache.Item(an)
-
-            ' Not determined yet?
-            If (info.IsEwEExt = TriState.UseDefault) Then
-                ' #Yes: assume the worst
-                info.IsEwEExt = TriState.False
-                ' Is an EwE assembly?
-                If IsEwE(an) Then
-                    ' #Yes: is not a known name?
-                    If (Array.IndexOf(s_CoreNames, an.Name) < 0) Then
-                        ' Okidoki
-                        info.IsEwEExt = TriState.True
-                    End If
-                End If
-            End If
-
-            Return (info.IsEwEExt = TriState.True)
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Return whether a given assembly name is one of the EwE core assemblies.
-        ''' </summary>
-        ''' <param name="an">The assembly name to check.</param>
-        ''' <returns>True if the assembly is one of the EwE assemblies.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function IsEwECore(an As AssemblyName) As Boolean
-
-            If (an Is Nothing) Then Return False
-
-            ' Get cached info
-            Dim info As cAssemblyState = m_cache.Item(an)
-
-            ' Not determined yet?
-            If (info.IsEwECore = TriState.UseDefault) Then
-                ' #Yes: assume the worst
-                info.IsEwECore = TriState.False
-                ' Is an EwE assembly?
-                If IsEwE(an) Then
-                    ' #Yes: is not a known name?
-                    If (Array.IndexOf(s_CoreNames, an.Name) >= 0) Then
-                        ' Okidoki
-                        info.IsEwECore = TriState.True
-                    End If
-                End If
-            End If
-
-            Return (info.IsEwECore = TriState.True)
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Create a StrongName that matches a specific assembly.
-        ''' </summary>
-        ''' <param name="an">Assembly name to create a StrongName for.</param>
-        ''' <returns>A StrongName that matches the given assembly, or Nothing
-        ''' if the assembly was not strongly named.</returns>
-        ''' <remarks>
-        ''' Adapted from http://blogs.msdn.com/b/shawnfa/archive/2005/08/08/449050.aspx
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Shared Function GetStrongName(an As AssemblyName) As StrongName
-
-            ' Test if assembly is present
-            If (an Is Nothing) Then Return Nothing
-
-            ' Get the public key blob
-            Dim publicKey As Byte() = an.GetPublicKey()
-
-            ' Test if assembly is strongly named
-            If (publicKey Is Nothing) Then Return Nothing
-            If (publicKey.Length = 0) Then Return Nothing
-
-            ' Create the StrongName
-            Dim keyBlob As New StrongNamePublicKeyBlob(publicKey)
-            Return New StrongName(keyBlob, an.Name, an.Version)
-
-        End Function
-
-#Region " Internals "
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Retrieves the linker timestamp, as written in the assembly header file
-        ''' at a fixed position. This may fail one day in future .NET versions.
-        ''' Ideally, the link date and time would be stored in a universal time
-        ''' format in the code by the compiler.
-        ''' </summary>
-        ''' <param name="strAssemblyPath">Path of the assembly file to read the
-        ''' build time from.</param>
-        ''' <returns>The build date.</returns>
-        ''' <remarks>
-        ''' Taken from http://www.codinghorror.com/blog/2005/04/determining-build-date-the-hard-way.html
-        ''' </remarks>
-        ''' -----------------------------------------------------------------------
-        Private Shared Function RetrieveLinkerTimestamp(strAssemblyPath As String) As System.DateTime
-
-            Const peHeaderOffset As Integer = 60
-            Const linkerTimestampOffset As Integer = 8
-            Dim b(2047) As Byte
-            Dim s As System.IO.FileStream = Nothing
-
-            Try
-                s = New System.IO.FileStream(strAssemblyPath, System.IO.FileMode.Open, System.IO.FileAccess.Read)
-                s.Read(b, 0, 2048)
-            Finally
-                If s IsNot Nothing Then
-                    s.Close()
-                End If
-            End Try
-            Dim dt As New System.DateTime(1970, 1, 1, 0, 0, 0)
-
-            dt = dt.AddSeconds(System.BitConverter.ToInt32(b, System.BitConverter.ToInt32(b, peHeaderOffset) + linkerTimestampOffset))
-            Return dt.AddHours(System.TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours)
-
-        End Function
+#Region " Detection internals "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -471,47 +440,168 @@ Namespace Utilities
         ''' <returns>True if the given assembly is either an EwE core assembly, 
         ''' or references the EwEUtils core assembly.</returns>
         ''' -----------------------------------------------------------------------
-        Private Shared Function IsEwE(an As AssemblyName) As Boolean
+        Private Shared Function DetectEwE(an As AssemblyName) As Boolean
 
             If (an Is Nothing) Then Return False
 
-            ' Get cached info
-            Dim info As cAssemblyState = m_cache.Item(an)
+            ' Get EwEUtils assembly. All EwE assemblies refer to EwEUtils
+            Dim anEwEUtils As AssemblyName = GetType(cAssemblyUtils).Assembly().GetName
 
-            ' Not determined yet?
-            If (info.IsEwE = TriState.UseDefault) Then
+            ' Ok if this as = EwEUtils
+            If CompareNames(anEwEUtils, an) Then Return True
 
-                ' Assume the worst
-                info.IsEwE = TriState.False
-
-                ' Get EwEUtils assembly. All EwE assemblies refer to EwEUtils
-                Dim anEwEUtils As AssemblyName = GetType(cAssemblyUtils).Assembly().GetName
-
-                ' Ok if this as = EwEUtils
-                If CompareNames(anEwEUtils, an) Then
-                    info.IsEwE = TriState.True
-                    info.IsEwECore = TriState.True
-                Else
-                    ' Check if the assembly for 'an' refers to EwEUtils
-                    ' For this, we'll first need to find each assembly for the given assembly name. *sigh*
-                    For Each ass As Assembly In AppDomain.CurrentDomain.GetAssemblies
-                        ' Got one of ours?
-                        If CompareNames(ass.GetName, an) Then
-                            ' #Yes: now check if this 
-                            For Each anTest As AssemblyName In ass.GetReferencedAssemblies
-                                If CompareNames(anTest, anEwEUtils) Then
-                                    info.IsEwE = TriState.True
-                                    Exit For
-                                End If
-                            Next
+            ' Check if the assembly for 'an' refers to EwEUtils
+            ' For this, we'll first need to find each assembly for the given assembly name. *sigh*
+            For Each ass As Assembly In AppDomain.CurrentDomain.GetAssemblies
+                ' Got one of ours?
+                If CompareNames(ass.GetName, an) Then
+                    ' #Yes: now check if this 
+                    For Each anTest As AssemblyName In ass.GetReferencedAssemblies
+                        If CompareNames(anTest, anEwEUtils) Then
+                            Return True
                         End If
                     Next
                 End If
-            End If
-
-            Return (info.IsEwE = TriState.True)
+            Next
+            Return False
 
         End Function
+
+        ''' <summary>
+        ''' Returns the informational/product version of an assembly.
+        ''' This may contain semantic version information and, for modern SDK builds,
+        ''' source revision information.
+        ''' </summary>
+        Private Shared Function DetectInformationalVersion(ass As Assembly) As String
+            Debug.Assert(ass IsNot Nothing)
+            Dim attr As AssemblyInformationalVersionAttribute = ass.GetCustomAttribute(Of AssemblyInformationalVersionAttribute)()
+            If attr Is Nothing Then
+                Return ass.GetName().Version.ToString()
+            End If
+            Return attr.InformationalVersion
+        End Function
+
+        Private Shared Function DetectCommitHash(ass As Assembly) As String
+
+            ' Prefer explicit assembly metadata
+            For Each attr As AssemblyMetadataAttribute In ass.GetCustomAttributes(Of AssemblyMetadataAttribute)()
+
+                If String.Equals(attr.Key, "CommitHash", StringComparison.OrdinalIgnoreCase) Then
+                    Return attr.Value
+                End If
+
+                If String.Equals(attr.Key, "SourceRevisionId", StringComparison.OrdinalIgnoreCase) Then
+                    Return attr.Value
+                End If
+
+            Next
+
+            ' Fall back to informational version:
+            ' 6.7.0+0123456789abcdef...
+            Dim attrInfo = ass.GetCustomAttribute(Of AssemblyInformationalVersionAttribute)()
+
+            If attrInfo IsNot Nothing Then
+
+                Dim strVersion As String = attrInfo.InformationalVersion
+                Dim i As Integer = strVersion.LastIndexOf("+"c)
+
+                If i >= 0 AndAlso i < strVersion.Length - 1 Then
+                    Return strVersion.Substring(i + 1)
+                End If
+
+            End If
+
+            Return String.Empty
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Gets the compile date of the <see cref="ExecutingAssembly">currently 
+        ''' executing assembly</see>.
+        ''' </summary>
+        ''' <value>The compile date.</value>
+        ''' -----------------------------------------------------------------------
+        Public Shared ReadOnly Property DetectBuildDate(Optional ass As Assembly = Nothing) As DateTime
+            Get
+                If ass Is Nothing Then
+                    ass = ExecutingAssembly
+                End If
+
+                Try
+                    Dim dt As Nullable(Of DateTime) = DetectBuildDateCore(ass)
+                    If dt.HasValue Then Return dt.Value
+                    'Return DetectBuildDateNet48(ass.Location)
+                Catch ex As Exception
+                    ' Do not crash
+                    ' NOP
+                End Try
+                Return DateTime.MinValue
+
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the build date embedded in the assembly metadata.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Shared Function DetectBuildDateCore(Optional ass As Assembly = Nothing) As Nullable(Of DateTime)
+            If ass Is Nothing Then
+                ass = ExecutingAssembly
+            End If
+            For Each attr As AssemblyMetadataAttribute In ass.GetCustomAttributes(Of AssemblyMetadataAttribute)()
+
+                If String.Equals(attr.Key, "EwEBuildDateUtc", StringComparison.OrdinalIgnoreCase) Then
+
+                    Dim dt As DateTime
+                    If DateTime.TryParse(attr.Value, Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.AssumeUniversal Or Globalization.DateTimeStyles.AdjustToUniversal, dt) Then
+                        Return dt
+                    End If
+                End If
+            Next
+            Return Nothing
+        End Function
+
+        '''' -----------------------------------------------------------------------
+        '''' <summary>
+        '''' Retrieves the linker timestamp, as written in the assembly header file
+        '''' at a fixed position. This may fail one day in future .NET versions.
+        '''' Ideally, the link date and time would be stored in a universal time
+        '''' format in the code by the compiler.
+        '''' </summary>
+        '''' <param name="strAssemblyPath">Path of the assembly file to read the
+        '''' build time from.</param>
+        '''' <returns>The build date.</returns>
+        '''' <remarks>
+        '''' Taken from http://www.codinghorror.com/blog/2005/04/determining-build-date-the-hard-way.html
+        '''' </remarks>
+        '''' -----------------------------------------------------------------------
+        'Private Shared Function DetectBuildDateNet48(strAssemblyPath As String) As System.DateTime
+
+        '    Const peHeaderOffset As Integer = 60
+        '    Const linkerTimestampOffset As Integer = 8
+        '    Dim b(2047) As Byte
+        '    Dim s As System.IO.FileStream = Nothing
+
+        '    Try
+        '        s = New System.IO.FileStream(strAssemblyPath, System.IO.FileMode.Open, System.IO.FileAccess.Read)
+        '        s.Read(b, 0, 2048)
+        '    Finally
+        '        If s IsNot Nothing Then
+        '            s.Close()
+        '        End If
+        '    End Try
+        '    Dim dt As New System.DateTime(1970, 1, 1, 0, 0, 0)
+
+        '    dt = dt.AddSeconds(System.BitConverter.ToInt32(b, System.BitConverter.ToInt32(b, peHeaderOffset) + linkerTimestampOffset))
+        '    Return dt.AddHours(System.TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours)
+
+        'End Function
+
+#End Region ' Detection internals
+
+#Region " Internal helpers "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

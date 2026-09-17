@@ -7399,7 +7399,7 @@ Namespace DataSources
                     Try
                         mseDS.AssessMethod = DirectCast(Me.m_db.ReadSafe(reader, "AssessMethod", eAssessmentMethods.CatchEstmBio), eAssessmentMethods)
                         mseDS.AssessPower = CSng(Me.m_db.ReadSafe(reader, "AssessPower", 1))
-                        mseDS.NTrials = CInt(Me.m_db.ReadSafe(reader, "NTrials", 10))
+                        mseDS.nTrials = CInt(Me.m_db.ReadSafe(reader, "NTrials", 10))
                         mseDS.MSYStartTimeIndex = CInt(Me.m_db.ReadSafe(reader, "StartIndex", 2))
                         mseDS.MSEMaxEffort = CSng(Me.m_db.ReadSafe(reader, "MaxEffort", cMSEDataStructures.MSE_DEFAULT_MAXEFFORT))
                     Catch ex As Exception
@@ -7444,7 +7444,7 @@ Namespace DataSources
                 drow("AssessMethod") = mseDS.AssessMethod
                 drow("AssessPower") = mseDS.AssessPower
                 drow("MaxEffort") = mseDS.MSEMaxEffort
-                drow("Ntrials") = mseDS.NTrials
+                drow("Ntrials") = mseDS.nTrials
                 drow("StartIndex") = mseDS.MSYStartTimeIndex
 
                 writer.AddRow(drow)
@@ -7539,6 +7539,7 @@ Namespace DataSources
                 ecospaceDS.NoFishWeight = CSng(Me.m_db.ReadSafe(reader, "NoFishWeight", 0.3))
                 ecospaceDS.PenPow = CSng(Me.m_db.ReadSafe(reader, "PenaltyPower", 10))
                 ecospaceDS.FirstPenaltyMonth = CInt(Me.m_db.ReadSafe(reader, "FirstPenaltyMonth", 60))
+                ecospaceDS.EffortRelaxationWeight = CSng(Me.m_db.ReadSafe(reader, "EffortRelaxationWeight", 0.9!))
                 ecospaceDS.UseHabCapGradientCorrections = (CInt(Me.m_db.ReadSafe(reader, "UseHabCapGradientCorrections", 1)) <> 0)
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
@@ -7557,6 +7558,7 @@ Namespace DataSources
                 ecospaceDS.UseEffortDistThreshold = CInt(Me.m_db.ReadSafe(reader, "UseEffortDistrThreshold", 0)) = 1
                 ecospaceDS.EffortDistThreshold = CSng(Me.m_db.ReadSafe(reader, "EffortDistrThreshold", 10000))
                 ' ecospaceDS.FitResponseType = DirectCast(CInt(Me.m_db.ReadSafe(reader, "FitResponseType", eFitResponseType.None)), eFitResponseType)
+
 
                 stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
 
@@ -7761,6 +7763,7 @@ Namespace DataSources
                 drow("NoFishWeight") = ecospaceDS.NoFishWeight
                 drow("PenaltyPower") = ecospaceDS.PenPow
                 drow("FirstPenaltyMonth") = ecospaceDS.FirstPenaltyMonth
+                drow("EffortRelaxationWeight") = ecospaceDS.EffortRelaxationWeight
                 drow("UseHabCapGradientCorrections") = If(ecospaceDS.UseHabCapGradientCorrections, 1, 0)
 
                 drow("TotalTime") = ecospaceDS.TotalTime

@@ -55,6 +55,12 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>EwEPrebalPlugin.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+	<PropertyGroup>
+		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
+	</PropertyGroup>
+	<ItemGroup>
+		<AssemblyMetadata Include="EwEBuildDateUtc" Value="$(EwEBuildDateUtc)" />
+	</ItemGroup>
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking">

@@ -60,9 +60,11 @@ Namespace Database
                         Me.m_data = Ecobase.cEcobaseModelParameters.FromXML(reader.ReadToEnd())
                     End Using
                 Else
+#If NET48 Then
                     Dim wdsl As New cEcoBaseWDSL()
                     Dim strModel As String = wdsl.getModel("all_data", Integer.Parse(strSource))
                     Me.m_data = Ecobase.cEcobaseModelParameters.FromXML(strModel)
+#End If
                 End If
                 Me.m_bHasLoaded = (Me.m_data IsNot Nothing)
             Catch ex As Exception

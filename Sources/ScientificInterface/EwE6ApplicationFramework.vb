@@ -227,7 +227,7 @@ Module EwE6ApplicationFramework
                 End If
 
                 If bIncludeCompilationDate Then
-                    strVersion = cStringUtils.Localize(SharedResources.VERSION_EXT_COMPILED, strVersion, cAssemblyUtils.GetCompileDate(ass).ToShortDateString)
+                    strVersion = cStringUtils.Localize(SharedResources.VERSION_EXT_COMPILED, strVersion, cAssemblyUtils.GetCompileDate(an).ToShortDateString)
                 End If
 
                 If bIncludeBitness Then

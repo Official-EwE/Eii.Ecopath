@@ -47,6 +47,12 @@
     <DocumentationFile>EwENetworkAnalysisPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
   </PropertyGroup>
+	<PropertyGroup>
+		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
+	</PropertyGroup>
+	<ItemGroup>
+		<AssemblyMetadata Include="EwEBuildDateUtc" Value="$(EwEBuildDateUtc)" />
+	</ItemGroup>
   <ItemGroup>
     <Reference Include="SourceGrid2">
       <HintPath>..\..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>

@@ -898,11 +898,15 @@ Namespace Ecospace.Controls
             If (conn IsNot Nothing) Then
 
                 Dim startWithData As Boolean = conn.UseDefaultDateStart
+                dtStart = conn.Dataset.DateStart
+
                 Me.m_rbStartWithData.Checked = startWithData
                 Me.m_rbStartYear.Checked = Not startWithData
                 If (Not startWithData) Then dtStart = conn.CustomDateStart
 
                 Dim endWithData = conn.UseDefaultDateEnd
+                dtEnd = conn.Dataset.DateEnd
+
                 Me.m_rbEndWithData.Checked = endWithData
                 Me.m_rbEndYear.Checked = Not endWithData
                 If (Not endWithData) Then dtEnd = conn.CustomDateEnd
@@ -932,12 +936,16 @@ Namespace Ecospace.Controls
 
         Private Sub UpdateTimeRangePanelControls()
 
-            Dim core As cCore = Me.UIContext.Core
-            Dim dtStart As Date = Me.m_dtpStart.Value
-            Dim dtEnd As Date = Me.m_dtpEnd.Value
+            Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection
 
-            If (dtStart <= core.EcospaceTimestepToAbsoluteTime(1)) Then Me.m_rbStartWithData.Checked = True Else Me.m_rbStartYear.Checked = True
-            If (dtEnd >= core.EcospaceTimestepToAbsoluteTime(core.nEcospaceTimeSteps)) Then Me.m_rbEndWithData.Checked = True Else Me.m_rbEndYear.Checked = True
+            If (conn IsNot Nothing) Then
+
+                Dim dtStart As Date = Me.m_dtpStart.Value
+                Dim dtEnd As Date = Me.m_dtpEnd.Value
+
+                If (cDateUtils.DateEquals(dtStart, conn.Dataset.DateStart)) Then Me.m_rbStartWithData.Checked = True Else Me.m_rbStartYear.Checked = True
+                If (cDateUtils.DateEquals(dtEnd, conn.Dataset.DateEnd)) Then Me.m_rbEndWithData.Checked = True Else Me.m_rbEndYear.Checked = True
+            End If
 
         End Sub
 
