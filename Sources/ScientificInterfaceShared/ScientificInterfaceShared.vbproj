@@ -69,6 +69,12 @@
     <DocumentationFile>ScientificInterfaceShared.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
   </PropertyGroup>
+	<PropertyGroup>
+		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
+	</PropertyGroup>
+	<ItemGroup>
+		<AssemblyMetadata Include="EwEBuildDateUtc" Value="$(EwEBuildDateUtc)" />
+	</ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.GLEE, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f84f738e1fc245c, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
@@ -519,11 +525,14 @@
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
+    <None Update="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
   </ItemGroup>
   <!-- Use a local project reference when UseProjectReferences is true -->
   <ItemGroup Condition="'$(UseProjectReferences)' == 'true'">
     <ProjectReference Include="..\EwECore\EwECore.vbproj" />
-    <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj" />
   </ItemGroup>
   <!-- Otherwise use a package reference. (EwEUtils and EwEPlugin are referenced by EwEcore) -->
   <ItemGroup Condition="'$(UseProjectReferences)' != 'true'">
@@ -589,8 +598,8 @@
     <Folder Include="Controls\Map\Layers\Rendering\Vector\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EPPlus" Version="8.4.1" />
-    <PackageReference Include="System.Resources.Extensions" Version="10.0.2" />
+    <PackageReference Include="EPPlus" Version="8.5.4" />
+    <PackageReference Include="System.Resources.Extensions" Version="10.0.8" />
   </ItemGroup>
   <Target Name="BeforeBuild"></Target>
   <Target Name="AfterBuild">

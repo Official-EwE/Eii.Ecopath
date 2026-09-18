@@ -1,0 +1,379 @@
+# Workflow name shown in the Actions tab
+name: Create NuGet Packages for EwEUtils, EwECore and ScientificInterfaceShared
+
+# Trigger: run this workflow on pushes to the master branch
+on:
+  push:
+    branches:
+      - master
+
+# Required permissions for this workflow
+# contents: write   -> create releases and upload artifacts
+# packages: write   -> push NuGet packages to GitHub Packages
+permissions:
+  actions: read
+  contents: write
+  packages: write
+
+jobs:
+  # 1) VERSIONING
+  # This job determines the semantic version using GitVersion and exposes it as outputs.
+  version:
+    name: Determine version with GitVersion
+    runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    outputs:
+      semver: ${{ steps.out.outputs.semver }}         # example: 6.7.30
+      prerelease: ${{ steps.out.outputs.prerelease }} # example: alpha, beta, empty for stable
+      tag: ${{ steps.out.outputs.tag }}               # example: v6.7.30
+    steps:
+      # Checkout with full history so GitVersion can find tags
+      - name: Checkout code (full history for tags)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install GitVersion tool
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4
+        with:
+          versionSpec: '6.x'
+
+      # Execute GitVersion using trunk-based configuration and v tag prefix
+      - name: Run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v4
+        with:
+          overrideConfig: |
+            workflow=TrunkBased/preview1
+            mode=ContinuousDelivery
+            commit-message-incrementing=Enabled
+            tag-prefix=v
+            increment=Patch
+
+      # Expose values from GitVersion to downstream jobs via job outputs
+      - name: Expose version outputs
+        id: out
+        shell: pwsh
+        run: |
+          "semver=${{ steps.gitversion.outputs.MajorMinorPatch }}" >> $env:GITHUB_OUTPUT
+          "prerelease=" >> $env:GITHUB_OUTPUT
+          "tag=v${{ steps.gitversion.outputs.MajorMinorPatch }}" >> $env:GITHUB_OUTPUT
+
+      # Log the resolved version for visibility
+      - name: Show extracted version
+        run: echo "Version is ${{ steps.gitversion.outputs.SemVer }}"
+        shell: pwsh
+
+  # 2) PACK AND PUBLISH EwEUtils
+  # This job packs and publishes EwEUtils (no dependencies)
+  pack-publish-eweutils:
+    name: Pack and Publish EwEUtils
+    runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
+    needs: [version]  # requires version outputs from the version job
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install .NET SDK 10
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Install .NET Framework 4.8 dev pack (for building older projects that need targeting packs)
+      - name: Install .NET Framework targeting pack (4.8)
+        run: choco install netfx-4.8-devpack -y
+        shell: pwsh
+
+      # Configure GitHub Packages NuGet source
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
+
+      # Pack EwEUtils
+      - name: Pack EwEUtils
+        run: |
+          dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      # Publish EwEUtils
+      - name: Publish EwEUtils (skip duplicates)
+        run: |
+          Get-ChildItem -Path ./nuget -Filter Eii.Ecopath.EwEUtils*.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+          }
+        shell: pwsh
+
+  # 3) PACK AND PUBLISH EwECore
+  # This job packs and publishes EwECore (depends on EwEUtils being published)
+  pack-publish-ewecore:
+    name: Pack and Publish EwECore
+    runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
+    needs: [version, pack-publish-eweutils]
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install .NET SDK 10
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Install .NET Framework 4.8 dev pack
+      - name: Install .NET Framework targeting pack (4.8)
+        run: choco install netfx-4.8-devpack -y
+        shell: pwsh
+
+      # Configure GitHub Packages NuGet source
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
+
+      # Pack EwECore
+      - name: Pack EwECore
+        run: |
+          dotnet pack Sources/EwECore/EwECore.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      # Publish EwECore
+      - name: Publish EwECore (skip duplicates)
+        run: |
+          Get-ChildItem -Path ./nuget -Filter Eii.Ecopath.EwECore*.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+          }
+        shell: pwsh
+
+  # 4) PACK AND PUBLISH ScientificInterfaceShared
+  # This job packs and publishes ScientificInterfaceShared (depends on EwEUtils and EwECore being published)
+  pack-publish-scientificinterfaceshared:
+    name: Pack and Publish ScientificInterfaceShared
+    runs-on: windows-2025-vs2026
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
+    needs: [version, pack-publish-ewecore]
+    steps:
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Install .NET SDK 10
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      # Install .NET Framework 4.8 dev pack
+      - name: Install .NET Framework targeting pack (4.8)
+        run: choco install netfx-4.8-devpack -y
+        shell: pwsh
+
+      # Configure GitHub Packages NuGet source
+      - name: Setup Official-EwE NuGet source
+        uses: ./.github/actions/setup-nuget-source
+
+      # Pack ScientificInterfaceShared
+      - name: Pack ScientificInterfaceShared
+        run: |
+          dotnet pack Sources/ScientificInterfaceShared/ScientificInterfaceShared.vbproj `
+            --configuration Release `
+            --output ./nuget `
+            /p:PackageVersion=${{ needs.version.outputs.semver }} `
+            /p:UseProjectReferences=false
+        shell: pwsh
+
+      # Publish ScientificInterfaceShared
+      - name: Publish ScientificInterfaceShared (skip duplicates)
+        run: |
+          Get-ChildItem -Path ./nuget -Filter Eii.Ecopath.ScientificInterfaceShared*.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName --source "github-Official-EwE" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+          }
+        shell: pwsh
+
+  # 5) CREATE TAG
+  # Create a git tag so GitVersion can advance to the next patch version. 
+  # This is normally done by creating a release, but we are temporarilynot creating releases for every push to master to avoid storage costs.
+  create-tag:
+    name: Create Version Tag
+    runs-on: windows-2025-vs2026
+    needs: [version, pack-publish-scientificinterfaceshared]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create and push tag
+        shell: pwsh
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          $tag = "${{ needs.version.outputs.tag }}"
+
+          # Skip if tag already exists
+          if ((git tag -l $tag) -eq $tag) {
+            Write-Host "Tag $tag already exists"
+            exit 0
+          }
+
+          git tag $tag
+          git push origin $tag
+
+# Temporarily commented out the creation of the installer and a release.
+# Creating a release is a heavy impact on the "Actions and Packages storage" part of the Github billing. And it's not necessary on every push to master.
+# We should only create releases when it's necessary. But what event should we use.... idk.
+
+  # # 5) BUILD INSTALLERS
+  # # This job builds the solution for x86 and x64, compiles the Inno Setup installers, and uploads them.
+  # build-installers:
+  #   name: Build EwE6 (x86 and x64) and Inno Setup installers
+  #   runs-on: windows-2025-vs2026
+  #   env:
+  #     FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
+  #   needs: [version, pack-publish-scientificinterfaceshared]  # requires version outputs for stamping binaries and installers
+  #   steps:
+  #     # Checkout code
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+
+  #     # Install .NET SDK 10
+  #     - name: Setup .NET
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: '10.0.x'
+
+  #     # Install .NET Framework 4.8 targeting pack
+  #     - name: Install .NET Framework targeting pack (4.8)
+  #       run: choco install netfx-4.8-devpack -y
+  #       shell: pwsh
+
+  #     # Install Inno Setup to get ISCC.exe
+  #     - name: Install Inno Setup
+  #       run: choco install innosetup -y
+  #       shell: pwsh
+
+  #     # Configure NuGet source in this job before building
+  #     - name: Setup Official-EwE NuGet source
+  #       uses: ./.github/actions/setup-nuget-source
+
+  #     # Build x86 with version stamping
+  #     - name: Build Release x86 with version
+  #       run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x86 /p:UseProjectReferences=true
+  #       shell: pwsh
+
+  #     # Build x64 with version stamping
+  #     - name: Build Release x64 with version
+  #       run: dotnet build .\Sources\EwE6.sln -c Release /p:Version=${{ needs.version.outputs.semver }} /p:FileVersion=${{ needs.version.outputs.semver }} /p:Platform=x64 /p:UseProjectReferences=true
+  #       shell: pwsh
+
+  #     # Create a local artifacts folder for installers
+  #     - name: Create artifacts directory
+  #       run: New-Item -ItemType Directory -Force -Path artifacts | Out-Null
+  #       shell: pwsh
+
+  #     # Compile the x86 installer with Inno Setup (Compile64Bit=0)
+  #     - name: Build Inno Setup Installer (x86)
+  #       run: |
+  #         $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+  #         $outputDir = Join-Path $PWD "artifacts"
+  #         & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+  #       shell: pwsh
+
+  #     # Compile the x64 installer with Inno Setup (Compile64Bit=1)
+  #     - name: Build Inno Setup Installer (x64)
+  #       run: |
+  #         $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+  #         $outputDir = Join-Path $PWD "artifacts"
+  #         & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+  #       shell: pwsh
+
+  #     # List installer files for debugging
+  #     - name: List output dir
+  #       run: dir $outputDir
+  #       shell: pwsh
+
+  #     # List installer files for debugging
+  #     - name: List artifacts files
+  #       run: dir (Join-Path $PWD "artifacts")
+  #       shell: pwsh
+
+  #     # required for the artifact to be available on the GitHub server
+  #     - name: upload-unsigned-artifact
+  #       id: upload-unsigned-artifact
+  #       uses: actions/upload-artifact@v4
+  #       with: 
+  #         path: './artifacts/*-bit_setup.exe'
+
+  #     - id: optional_step_id
+  #       uses: signpath/github-action-submit-signing-request@v2
+  #       with:
+  #         api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+  #         organization-id: '6f2e61d1-dbf8-41da-9d92-80fb7fcf05a2'
+  #         project-slug: 'Ecopath'
+  #         signing-policy-slug: 'Production'
+  #         github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
+  #         wait-for-completion: true
+  #         output-artifact-directory: './artifacts-signed'
+
+
+  #     # Upload installers so the release job can use them.
+  #     - name: Upload installers artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: installers
+  #         path: artifacts-signed/*-bit_setup.exe
+
+  # # 6) CREATE RELEASE
+  # # This job creates or updates a GitHub Release with auto-generated notes and uploads installers.
+  # release:
+  #   name: Create or Update GitHub Release with auto notes
+  #   runs-on: windows-2025-vs2026
+  #   env:
+  #     FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true  # Add this
+  #   needs: [version, build-installers]  # requires version info and built installers
+  #   steps:
+  #     # Download the installer artifacts produced by build-installers
+  #     - name: Download installers artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: installers
+  #         path: installers
+
+  #     # Create a release with v-prefixed tag and GitHub auto notes
+  #     # generate_release_notes: true will add "What's Changed" and "Full Changelog" sections
+  #     - name: Create GitHub Release with auto notes
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: ${{ needs.version.outputs.tag }}   # example: v6.7.30
+  #         name: ${{ needs.version.outputs.tag }}       # example: v6.7.30
+  #         generate_release_notes: true
+  #         files: |
+  #           installers/*_32-bit_setup.exe
+  #           installers/*_64-bit_setup.exe
+  #         prerelease: ${{ needs.version.outputs.prerelease != '' }}
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

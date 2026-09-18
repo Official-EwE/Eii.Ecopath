@@ -41,9 +41,7 @@ Name: "{app}\Resources\"
 Name: "{app}\Tools\"
 Name: "{app}\UserGuide\"
 Name: "{app}\Plugins\"
-Name: "{app}\Includes\LPSolve\"
-Name: "{app}\Includes\LPSolve\win32\"
-Name: "{app}\Includes\LPSolve\win64\"
+Name: "{app}\Output\"
 
 [Files]
 Source: "gpl-2.0.txt"; DestDir: "{app}\Resources\"; Flags: ignoreversion
@@ -73,8 +71,6 @@ Source: "{#DefRoot}{#DefSrc}\EwEAquamapsEnvDataImporterPlugin.dll"; DestDir: "{a
 Source: "{#DefRoot}{#DefSrc}\EwEEcologicalIndicatorsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecolind
 Source: "{#DefRoot}{#DefSrc}\EwEEcoTroph.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\analysis\ecotroph
 Source: "{#DefRoot}{#DefSrc}\EwEModelFromEcosimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\modelfromsim
-Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win32\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win32\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win64\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win64\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\UserGuide\ChristensenValueChainMS.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\valuechain
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE model from time step.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE6_userguide.chm"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: userguide

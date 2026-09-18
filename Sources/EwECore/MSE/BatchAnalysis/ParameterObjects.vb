@@ -221,7 +221,7 @@ Namespace MSECommandFile
 
                 If (String.Compare(values(0), Me.Tag) = 0) Then
                     'Data
-                    Me.m_data = values(1)
+                    Me.m_data = values(1).Trim()
                     Return True
                 End If
 
@@ -394,7 +394,7 @@ Namespace MSECommandFile
 
         Public Overrides Sub Update()
 
-            Me.Manager.MSEData.NTrials = Integer.Parse(Me.m_data)
+            Me.Manager.MSEData.nTrials = Integer.Parse(Me.m_data)
 
         End Sub
 
