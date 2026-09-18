@@ -71,7 +71,7 @@
     {
       "identifier": "https://github.com/Official-EwE/Eii.Ecopath.git",
       "relation": "isSupplementTo",
-      "resource_type": "isSourceOf"
+      "resource_type": "software"
     }
   ]
 }
