@@ -185,7 +185,8 @@ Namespace SpatialData
                                     If (t Is Nothing) Then
                                         ' #No: Try a possible alternate pathway. The STDF in .NET Core is heavily simplified and has
                                         ' a different assembly name. Try to reroute the type name to the stripped-down STDF version
-                                        strTypeName = strTypeName.Replace("EwESpatialAssetsPlugin", "EwESpatialAssetsEnginePlugin")
+                                        ' == This code has gotten quite convoluted with the new .NET Core assembly names.
+                                        strTypeName = strTypeName.Replace("EwESpatialAssetsPlugin", "Eii.Ecopath.SpatialAssetsEnginePlugin")
                                         t = cTypeUtils.StringToType(strTypeName)
                                     End If
 
