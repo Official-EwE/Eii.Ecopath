@@ -104,4 +104,13 @@ For the 32-bit installer, type:
 For the 64-bit installer, type:
 - Type `iscc /DCompile64Bit=1 /DSemVersion="1.0.9" /O"ScientificInterface\bin\x64\publish" "..\Deployment\EwE6_relpath.iss"`
 - A `ScientificInterface\bin\x64\publish\ewe_1.0.9_64-bit_setup.exe` will be created.
- 
+
+## Zenodo integration
+This GitHub repository is linked with Zenodo. Every release will receive a Zenodo DOI, orchestrated via the .zenodo.json file in the root of this repo.
+The following command chain explains how this works:
+
+```
+GitHub development → source always available → internal decision that a release is worth packaging → installer build → GitHub Release → Zenodo archive/DOI → optional EwE community inclusion
+```
+
+Note that every release will become a Zenodo record, but will not automatically appear in the (Zenodo EwE community)[https://zenodo.org/communities/ewe/]. This is a manual action performed by community members.
