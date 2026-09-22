@@ -1,12 +1,10 @@
 
 <Project>
-	<!--<Import Project="Version.props" />
 	<PropertyGroup>
-		<Version>$(EweVersion)</Version>
-		<AssemblyVersion>$(EweVersion)</AssemblyVersion>
-		<FileVersion>$(EweVersion)</FileVersion>
-		<InformationalVersion>$(EweVersion)</InformationalVersion>
-	</PropertyGroup>-->
+		<!-- Stable strong-name binding version. Do NOT stamp this from CI; only Version/FileVersion/PackageVersion
+			 vary per build so that plugins compiled against 6.7.x packages keep binding to the local build. -->
+		<AssemblyVersion>6.7.0.0</AssemblyVersion>
+	</PropertyGroup>
 	<PropertyGroup>
 		<!-- Default for the repo; override in CI via /p -->
 		<UseProjectReferences>true</UseProjectReferences>
