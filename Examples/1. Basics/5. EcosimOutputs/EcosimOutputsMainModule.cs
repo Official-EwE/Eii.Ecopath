@@ -73,10 +73,10 @@ internal static partial class EcosimOutputsMainModule
     {
 
         // Write the timestep and some results out to the console window
-        Console.WriteLine("On Ecosim timestep = " + iTime.ToString());
+        Console.WriteLine("Biomasses for Ecosim timestep " + iTime + ":");
         for (int iGrp = 1, loopTo = data.nGroups; iGrp <= loopTo; iGrp++)
-            Console.Write(data.Biomass[iGrp] + ", ");
-        Console.WriteLine("--------------------------------------");
+            Console.WriteLine("  " + iGrp + ": " + data.Biomass[iGrp] + ", ");
+        Console.WriteLine();
 
     }
 
