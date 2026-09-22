@@ -70,6 +70,7 @@ Module EwE6ApplicationFramework
         m_main = New frmEwE6()
 
         AddHandler m_main.OnLoadCompleted, AddressOf OnLoadCompleted
+        m_logger.LogInformation($"EwE6ApplicationFramework.Main() - Starting application version {Version(True, True)}")
         Try
             Application.Run(m_main)
         Catch ex As Exception
