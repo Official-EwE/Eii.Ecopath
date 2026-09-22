@@ -209,8 +209,14 @@ Module EwE6ApplicationFramework
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the EwE6.exe assembly version, formatted as a string.
+    ''' Get the EwE6.exe release version, formatted as a string.
     ''' </summary>
+    ''' <remarks>
+    ''' The release version is taken from the informational version, which CI stamps
+    ''' with the GitVersion release number (e.g. "6.7.109") and which matches the file
+    ''' version. The assembly version is deliberately fixed for strong-name binding and
+    ''' is therefore not suitable for display.
+    ''' </remarks>
     ''' <param name="bIncludeBitness">Inlcude 32 or 64 bitness in version string.</param>
     ''' <param name="bIncludeCompilationDate">Inlcude compilation date in version string.</param>
     ''' -----------------------------------------------------------------------
@@ -219,12 +225,12 @@ Module EwE6ApplicationFramework
             Try
                 Dim ass As Assembly = Assembly.GetAssembly(GetType(EwE6ApplicationFramework))
                 Dim an As AssemblyName = ass.GetName()
-                Dim strVersion As String = cAssemblyUtils.GetVersion(an).ToString
+                Dim strVersion As String = cAssemblyUtils.GetInformationalVersion(an)
 
-                ' Remove the last period and everything after it, to get the Semantic version (3 digits; major, minor, patch)
-                Dim lastDotIndex As Integer = strVersion.LastIndexOf("."c)
-                If lastDotIndex > 0 Then
-                    strVersion = strVersion.Substring(0, lastDotIndex)
+                ' Strip source revision suffix appended by SDK builds ("6.7.109+abcdef")
+                Dim plusIndex As Integer = strVersion.IndexOf("+"c)
+                If plusIndex > 0 Then
+                    strVersion = strVersion.Substring(0, plusIndex)
                 End If
 
                 If bIncludeCompilationDate Then
