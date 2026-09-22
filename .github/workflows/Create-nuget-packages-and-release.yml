@@ -100,6 +100,7 @@ jobs:
           dotnet pack Sources/EwEUtils/EwEUtils.vbproj `
             --configuration Release `
             --output ./nuget `
+            /p:FileVersion=${{ needs.version.outputs.semver }} `
             /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -148,6 +149,7 @@ jobs:
           dotnet pack Sources/EwECore/EwECore.vbproj `
             --configuration Release `
             --output ./nuget `
+            /p:FileVersion=${{ needs.version.outputs.semver }} `
             /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -196,6 +198,7 @@ jobs:
           dotnet pack Sources/ScientificInterfaceShared/ScientificInterfaceShared.vbproj `
             --configuration Release `
             --output ./nuget `
+            /p:FileVersion=${{ needs.version.outputs.semver }} `
             /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
