@@ -1,11 +1,13 @@
 
 <Project>
-	<Import Project="Version.props" />
 	<PropertyGroup>
-		<Version>$(EweVersion)</Version>
-		<AssemblyVersion>$(EweVersion)</AssemblyVersion>
-		<FileVersion>$(EweVersion)</FileVersion>
-		<InformationalVersion>$(EweVersion)</InformationalVersion>
+		<!--
+		Stable strong-name identity for all EwE assemblies. Plug-ins built against the
+		Eii.Ecopath.* packages bind to this exact AssemblyVersion, so only bump it on a
+		breaking change. Build-specific numbers go into Version/FileVersion
+		(stamped by CI via /p:Version and /p:FileVersion), never into AssemblyVersion.
+		-->
+		<AssemblyVersion>6.7.0.0</AssemblyVersion>
 	</PropertyGroup>
 	<PropertyGroup>
 		<!-- Default for the repo; override in CI via /p -->

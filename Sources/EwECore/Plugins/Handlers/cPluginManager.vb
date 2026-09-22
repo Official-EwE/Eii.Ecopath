@@ -472,7 +472,7 @@ Public Class cPluginManager
 
         Try
             di = New DirectoryInfo(strPluginPath)
-            'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
+            'jb added "*.dll" toonly get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
             'rk added an even stricter filter to only get "*Plugin.dll" files (renamed all plugins accordingly). The reason is to avoid crashes to clutter the log files
             afi = di.GetFiles("*Plugin.dll", If(bAllDirectories, SearchOption.AllDirectories, SearchOption.TopDirectoryOnly))
 
@@ -548,8 +548,15 @@ Public Class cPluginManager
             ' Safe guard dynamic type loading, which may fail for missing dependencies
             Try
                 types = clsAssembly.GetTypes()
-            Catch ex As Exception
+            Catch ex As ReflectionTypeLoadException
                 Console.WriteLine("PluginManager: assembly '{0}' could not be examined for types, {1}", strFileName, ex.Message)
+                m_logger.LogError(ex, "cPluginManager.LoadPluginAssembly::GetTypes(" & strFileName & ")")
+                For Each exSub As Exception In ex.LoaderExceptions
+                    m_logger.LogError(exSub, "cPluginManager.LoadPluginAssembly::GetTypes(" & strFileName & ") detail")
+                Next
+                Return False
+            Catch ex As Exception
+                Console.WriteLine("PluginManager: assembly '{0}' could not be examined for types, {1} (other exceptions)", strFileName, ex.Message)
                 m_logger.LogError(ex, "cPluginManager.LoadPluginAssembly::GetTypes(" & strFileName & ")")
                 Return False
             End Try
@@ -1820,7 +1827,7 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public Function IsDataAvailable(strDataName As String, Optional runType As IRunType = Nothing) As Boolean
 
-        ' Invoke IDataProducerPlugin.IsDataAvailable(strDataName, runType)
+        ' Invokes IDataProducerPlugin.IsDataAvailable(strDataName, runType)
         Return Me.TryInvokeMethod(GetType(IDataProducerPlugin),
                                   "IsDataAvailable",
                                   New Object() {strDataName, runType},
@@ -1840,7 +1847,7 @@ Public Class cPluginManager
     ''' -----------------------------------------------------------------------
     Public Function IsDataAvailable(dataType As Type, Optional runType As IRunType = Nothing) As Boolean
 
-        ' Invoke IDataProducerPlugin.IsDataAvailable(dataType, runType)
+        ' Invokes IDataProducerPlugin.IsDataAvailable(dataType, runType)
         Return Me.TryInvokeMethod(GetType(IDataProducerPlugin),
                                   "IsDataAvailable",
                                   New Object() {dataType, runType},
@@ -2491,9 +2498,9 @@ Public Class cPluginManager
         ' Fix arguments
         If (aArgs Is Nothing) Then aArgs = New Object() {}
 
-        ' ---                                            --- '
+        ' ---                                            ---',
         ' Validate called prototype and number of parameters '
-        ' ---                                            --- '
+        ' ---                                            ---'
 #If 0 Then
 
         Try
@@ -2725,7 +2732,7 @@ Public Class cPluginManager
         For Each anExpected As AssemblyName In aanameExpected
 
             For Each asLoaded As Assembly In aassemLoaded
-                ' Get the assenmbly name (e.g. definition) for this loaded assembly
+                ' Get the assenbly name (e.g. definition) for this loaded assembly
                 anameLoaded = asLoaded.GetName()
                 ' Found a match?
                 If String.Compare(anExpected.Name, anameLoaded.Name, True) = 0 Then
