@@ -432,3 +432,5 @@ FodyWeavers.xsd
 
 # Installer output directory
 Deployment/Output/
+
+Sources/Version.props
