@@ -1,4 +1,6 @@
 <Project>
+	<!-- Chain to the shared repo-level props; MSBuild only imports the nearest Directory.Build.props -->
+	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 	<PropertyGroup>
 		<MSBuildProjectExtensionsPath>obj\$(MSBuildProjectName)\</MSBuildProjectExtensionsPath>
 	</PropertyGroup>

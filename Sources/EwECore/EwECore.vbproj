@@ -5,7 +5,6 @@
     <Platforms>x86;x64;AnyCPU</Platforms>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EwECore.snk</AssemblyOriginatorKeyFile>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
     <AssemblyName>EwECore</AssemblyName>
     <RootNamespace>EwECore</RootNamespace>
@@ -14,8 +13,11 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Eii.Ecopath.EwECore</PackageId>
-    <Title>Ecopath with Ecosim Core</Title>
-    <Description>A description of the EwECore package</Description>
+    <Title>EwECore</Title>
+    <Description>Ecopath with Ecosim computational core</Description>
+    <Product>EwECore</Product>
+    <Company>Ecopath International Initiative Research Association</Company>
+    <Copyright>Copyright © 1991</Copyright>
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.EwECore</PackageProjectUrl>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
@@ -25,9 +27,22 @@
     <IncludeSymbols>true</IncludeSymbols>
     <IncludeSource>true</IncludeSource>
     <IncludeReferencedProjects>True</IncludeReferencedProjects>
-    <Company>EII</Company>
     <PackageIcon>EII_plain_128x128.png</PackageIcon>
   </PropertyGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.CLSCompliantAttribute">
+      <_Parameter1>true</_Parameter1>
+      <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.InteropServices.ComVisibleAttribute">
+      <_Parameter1>false</_Parameter1>
+      <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
+    </AssemblyAttribute>
+    <!-- Typelib ID in case this assembly is exposed to COM -->
+    <AssemblyAttribute Include="System.Runtime.InteropServices.GuidAttribute">
+      <_Parameter1>61df149b-9be5-4923-aa40-d25cf630a273</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 	<PropertyGroup>
 		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
 	</PropertyGroup>
