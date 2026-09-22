@@ -103,6 +103,7 @@ jobs:
             --configuration Release `
             --output ./nuget `
             /p:Version=${{ needs.version.outputs.semver }} `
+            /p:FileVersion=${{ needs.version.outputs.semver }} `
             /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -152,6 +153,7 @@ jobs:
             --configuration Release `
             --output ./nuget `
             /p:Version=${{ needs.version.outputs.semver }} `
+            /p:FileVersion=${{ needs.version.outputs.semver }} `
             /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
@@ -201,6 +203,7 @@ jobs:
             --configuration Release `
             --output ./nuget `
             /p:Version=${{ needs.version.outputs.semver }} `
+            /p:FileVersion=${{ needs.version.outputs.semver }} `
             /p:PackageVersion=${{ needs.version.outputs.semver }} `
             /p:UseProjectReferences=false
         shell: pwsh
