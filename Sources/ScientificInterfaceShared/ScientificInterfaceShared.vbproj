@@ -21,7 +21,7 @@
     <Title>Ecopath with Ecosim ScientificInterfaceShared</Title>
     <Description>Foundation library with Ecopath with Ecosim Scientific User Interface elements</Description>
     <PackageProjectUrl>https://github.com/Official-EwE/Eii.Ecopath.ScientificInterfaceShared</PackageProjectUrl>
-    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageLicenseExpression>EUPL-1.2-or-later</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
