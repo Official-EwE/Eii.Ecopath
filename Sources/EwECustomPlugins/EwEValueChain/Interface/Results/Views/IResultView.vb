@@ -2,8 +2,7 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Imports System.Collections.Generic
-Imports ScientificInterfaceShared.Controls
+Imports ValueChain
 
 Public Interface IResultView
 
@@ -18,7 +17,7 @@ Public Interface IResultView
     ''' -----------------------------------------------------------------------
     Sub ShowResults(iFleet As Integer,
                     lUnits As cUnit(),
-                    result As cResults,
+                    result As cValueChainResults,
                     iYear As Integer)
 
 End Interface

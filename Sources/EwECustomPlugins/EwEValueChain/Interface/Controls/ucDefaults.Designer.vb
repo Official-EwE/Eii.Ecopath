@@ -128,7 +128,7 @@ Partial Class ucDefaults
         Me.m_lbProducer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbProducer.TabIndex = 0
         Me.m_lbProducer.UIContext = Nothing
-        Me.m_lbProducer.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Producer
+        Me.m_lbProducer.UnitType = ValueChain.cUnitFactory.eUnitType.Producer
         '
         'm_lbProcessing
         '
@@ -143,7 +143,7 @@ Partial Class ucDefaults
         Me.m_lbProcessing.Size = New System.Drawing.Size(100, 34)
         Me.m_lbProcessing.TabIndex = 0
         Me.m_lbProcessing.UIContext = Nothing
-        Me.m_lbProcessing.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Processing
+        Me.m_lbProcessing.UnitType = ValueChain.cUnitFactory.eUnitType.Processing
         '
         'm_lbWholesaler
         '
@@ -158,7 +158,7 @@ Partial Class ucDefaults
         Me.m_lbWholesaler.Size = New System.Drawing.Size(100, 34)
         Me.m_lbWholesaler.TabIndex = 0
         Me.m_lbWholesaler.UIContext = Nothing
-        Me.m_lbWholesaler.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Wholesaler
+        Me.m_lbWholesaler.UnitType = ValueChain.cUnitFactory.eUnitType.Wholesaler
         '
         'm_lbRetailer
         '
@@ -173,7 +173,7 @@ Partial Class ucDefaults
         Me.m_lbRetailer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbRetailer.TabIndex = 0
         Me.m_lbRetailer.UIContext = Nothing
-        Me.m_lbRetailer.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Retailer
+        Me.m_lbRetailer.UnitType = ValueChain.cUnitFactory.eUnitType.Retailer
         '
         'm_lbConsumer
         '
@@ -188,7 +188,7 @@ Partial Class ucDefaults
         Me.m_lbConsumer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbConsumer.TabIndex = 0
         Me.m_lbConsumer.UIContext = Nothing
-        Me.m_lbConsumer.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Consumer
+        Me.m_lbConsumer.UnitType = ValueChain.cUnitFactory.eUnitType.Consumer
         '
         'm_lnkProd2Proc
         '
@@ -251,7 +251,7 @@ Partial Class ucDefaults
         Me.m_lbDistribution.Size = New System.Drawing.Size(100, 34)
         Me.m_lbDistribution.TabIndex = 0
         Me.m_lbDistribution.UIContext = Nothing
-        Me.m_lbDistribution.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Distribution
+        Me.m_lbDistribution.UnitType = ValueChain.cUnitFactory.eUnitType.Distribution
         '
         'm_lnkDist2Whole
         '

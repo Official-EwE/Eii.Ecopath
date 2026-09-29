@@ -8,14 +8,13 @@ Imports System.Drawing.Drawing2D
 Imports System.Reflection
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwECore.Common
-Imports EwECore.Database
+Imports EwEUtils.Utilities
 Imports Microsoft.Glee
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
+Imports ValueChain
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Utilities
 
 ''' ===========================================================================
 ''' <summary>
@@ -34,7 +33,7 @@ Public Class plFlow
 #Region " Private variables "
 
     ''' <summary>The one reference to underlying data for manipulating objects.</summary>
-    Private m_data As cData = Nothing
+    Private m_data As cEwEValueChainData = Nothing
     ''' <summary>The one reference to underlying diagram data.</summary>
     Private m_diagram As cFlowDiagram = Nothing
     ''' <summary>Bitmap to test for click hits.</summary>
@@ -229,10 +228,7 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="fd">The <see cref="cFlowDiagram">data</see> to connect the flow to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Init(uic As cUIContext,
-                    data As cData,
-                    fd As cFlowDiagram,
-                    sel As ucSelector2)
+    Public Sub Init(uic As cUIContext, data As cEwEValueChainData, fd As cFlowDiagram, sel As ucSelector2)
 
         If (Not Me.m_data Is Nothing) Then
             ' Init only once!
@@ -719,28 +715,29 @@ Public Class plFlow
         ' For all Ecopath fleets:
 
         Dim lUnits As cUnit() = Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
-        Dim core As cCore = Me.m_data.Core
-        Dim fleet As cEcopathFleetInput = Nothing
+        Dim core As cCore = Me.m_uic.Core
         Dim pu As cProducerUnit = Nothing
         Dim bProducerExists As Boolean = False
 
         For iFleet As Integer = 1 To core.nFleets
+            Dim code As String = Me.m_data.EwEiFleetToID(iFleet)
+
             ' Find unit
             bProducerExists = False
-            fleet = core.EcopathFleetInputs(iFleet)
             For Each unit As cUnit In lUnits
                 pu = DirectCast(unit, cProducerUnit)
-                If (ReferenceEquals(fleet, pu.Fleet)) Then
+                If (pu.GearCode = code) Then
                     bProducerExists = True
                     Exit For
                 End If
-            Next unit
+            Next unit '
+
             ' Not found?
             If Not bProducerExists Then
                 ' #Yes: create it
                 pu = DirectCast(Me.CreateUnit(cUnitFactory.eUnitType.Producer), cProducerUnit)
                 pu.AllowEvents = False
-                pu.Fleet = fleet
+                pu.GearCode = code
                 pu.AllowEvents = True
             End If
         Next iFleet
@@ -1047,7 +1044,7 @@ Public Class plFlow
         End If
 
         Me.RemoveLink(link)
-        Me.m_data.DeleteLink(link)
+        Me.m_data.RemoveLink(link)
         Me.Invalidate(True)
         Return True
     End Function
@@ -1076,16 +1073,15 @@ Public Class plFlow
                     If TypeOf unitSelected Is cProducerUnit Then
                         ' Do not create link if there are no landings
                         Dim prodSelected As cProducerUnit = DirectCast(unitSelected, cProducerUnit)
-                        If (prodSelected.Fleet Is Nothing) Then
-                            Me.m_data.SendMessage(My.Resources.ERROR_LINK_NEEDFLEET)
+                        If (String.IsNullOrEmpty(prodSelected.GearCode)) Then
+                            'Me..SendMessage(My.Resources.ERROR_LINK_NEEDFLEET)
                             Return
                         End If
 
                         ' Create link for every group
-                        For iGroup As Integer = 1 To Me.m_data.Core.nGroups
+                        For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
                             If Not bError Then
-                                Dim group As cEcoPathGroupInput = Me.m_data.Core.EcopathGroupInputs(iGroup)
-                                Dim link As cLinkLandings = Me.m_data.CreateLandingsLink(DirectCast(unitSelected, cProducerUnit), uc.Unit, group, bError)
+                                Dim link As cLinkLandings = Me.m_data.CreateLandingsLink(DirectCast(unitSelected, cProducerUnit), uc.Unit, Me.m_data.EwEiGroupToID(iGroup), bError)
                                 If (link IsNot Nothing) Then
                                     Me.AddLink(link)
                                 End If
@@ -1323,7 +1319,7 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="obj">The item that changed.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnElementChanged(obj As cEwEDatabase.cOOPStorable)
+    Private Sub OnElementChanged(obj As cValueChainEntity)
         Me.Invalidate()
     End Sub
 

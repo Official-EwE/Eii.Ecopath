@@ -3,6 +3,7 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports ScientificInterfaceShared.Controls
+Imports ValueChain
 Imports ZedGraph
 
 ''' ===========================================================================
@@ -17,7 +18,7 @@ Public Class ucEquilibriumGraph
     Implements IGraphView
 
     Private m_zgh As cZedGraphHelper = Nothing
-    Private m_aVars() As cResults.eVariableType = Nothing
+    Private m_aVars() As cValueChainResults.eVariableType = Nothing
 
     Public Sub New(uic As cUIContext)
         Me.m_zgh = New cZedGraphHelper()
@@ -31,7 +32,7 @@ Public Class ucEquilibriumGraph
         MyBase.Finalize()
     End Sub
 
-    Public Sub ShowResults(iFleet As Integer, lUnits As cUnit(), result As cResults,
+    Public Sub ShowResults(iFleet As Integer, lUnits As cUnit(), result As cValueChainResults,
                            iTimeStep As Integer) _
         Implements IResultView.ShowResults
 
@@ -43,7 +44,7 @@ Public Class ucEquilibriumGraph
         Dim sMin As Single = 0.0!
         Dim sMax As Single = 1.0!
 
-        For Each var As cResults.eVariableType In Me.m_aVars
+        For Each var As cValueChainResults.eVariableType In Me.m_aVars
 
             line = New LineItem(var.ToString())
             line.Color = cr.NextColor()
@@ -73,7 +74,7 @@ Public Class ucEquilibriumGraph
     End Sub
 
     Public Sub SetData(strGraphTitle As String, strXAxisLabel As String,
-                       strYAxisLabel As String, aVars() As cResults.eVariableType) Implements IGraphView.SetData
+                       strYAxisLabel As String, aVars() As cValueChainResults.eVariableType) Implements IGraphView.SetData
 
         Me.m_zgh.ConfigurePane(strGraphTitle, strXAxisLabel, strYAxisLabel, True)
         Me.m_aVars = aVars

@@ -3,23 +3,23 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Windows.Forms
-Imports EwECore.Database
 Imports ScientificInterfaceShared.Controls
+Imports ValueChain
 
 Public Class ucSelector2
 
     Private m_uic As cUIContext = Nothing
-    Private m_data As cData = Nothing
+    Private m_data As cValueChainData = Nothing
     Private m_pg As PropertyGrid = Nothing
     Private m_pl As plFlow = Nothing
-    Private m_selection As cEwEDatabase.cOOPStorable() = Nothing
+    Private m_selection As cValueChainEntity() = Nothing
     Private m_iSel As Integer = -1
     Private m_bCanAddRemoveItems As Boolean = False
 
     Private m_unitSrc As cUnit = Nothing
     Private m_unitTgt As cUnit = Nothing
 
-    Public Sub Init(uic As cUIContext, data As cData, pl As plFlow, pg As PropertyGrid)
+    Public Sub Init(uic As cUIContext, data As cValueChainData, pl As plFlow, pg As PropertyGrid)
         Me.m_uic = uic
         Me.m_data = data
         Me.m_pl = pl
@@ -28,6 +28,7 @@ Public Class ucSelector2
 
     Public ReadOnly Property SelectedUnit As cUnit
         Get
+            If (Me.m_selection Is Nothing) Then Return Nothing
             If (Me.m_selection.Length = 0) Then Return Nothing
             If (TypeOf Me.m_selection(0) Is cUnit) Then Return DirectCast(Me.m_selection(0), cUnit)
             Return Nothing
@@ -41,13 +42,13 @@ Public Class ucSelector2
         Set(value As Object)
 
             If (Me.m_selection IsNot Nothing) Then
-                For Each obj As cEwEDatabase.cOOPStorable In Me.m_selection
+                For Each obj As cValueChainEntity In Me.m_selection
                     RemoveHandler obj.OnChanged, AddressOf Me.OnItemChanged
                 Next
             End If
 
             ' Gather selected objects
-            Dim lObj As New List(Of cEwEDatabase.cOOPStorable)
+            Dim lObj As New List(Of cValueChainEntity)
 
             ' Assume the worst
             Me.m_bCanAddRemoveItems = False
@@ -70,12 +71,12 @@ Public Class ucSelector2
                                 Me.m_unitTgt = DirectCast(obj, cLink).Target
 
                             End If
-                        ElseIf (TypeOf obj Is cEwEDatabase.cOOPStorable) Then
-                            lObj.Add(DirectCast(obj, cEwEDatabase.cOOPStorable))
+                        ElseIf (TypeOf obj Is cValueChainEntity) Then
+                            lObj.Add(DirectCast(obj, cValueChainEntity))
                         End If
                     Next
-                ElseIf (TypeOf value Is cEwEDatabase.cOOPStorable) Then
-                    lObj.Add(DirectCast(value, cEwEDatabase.cOOPStorable))
+                ElseIf (TypeOf value Is cValueChainEntity) Then
+                    lObj.Add(DirectCast(value, cValueChainEntity))
                 End If
 
                 Me.m_selection = lObj.ToArray
@@ -84,7 +85,7 @@ Public Class ucSelector2
             End If
 
             If (Me.m_selection IsNot Nothing) Then
-                For Each obj As cEwEDatabase.cOOPStorable In Me.m_selection
+                For Each obj As cValueChainEntity In Me.m_selection
                     AddHandler obj.OnChanged, AddressOf Me.OnItemChanged
                 Next
             End If
@@ -112,7 +113,7 @@ Public Class ucSelector2
             Try
                 If (Me.m_selection.Length > 0) Then
                     For i As Integer = 0 To Me.m_selection.Length - 1
-                        Dim itm As cEwEDatabase.cOOPStorable = Me.m_selection(i)
+                        Dim itm As cValueChainEntity = Me.m_selection(i)
                         Dim pos As Integer = Me.m_lbxBits.Items.Add(itm)
 
                         If (TypeOf itm Is cLink) Then
@@ -185,7 +186,7 @@ Public Class ucSelector2
         Handles m_btnRemove.Click
 
         Dim link As cLink = DirectCast(Me.m_lbxBits.SelectedItem, cLink)
-        Me.m_data.DeleteLink(link)
+        Me.m_data.RemoveLink(link)
         Me.m_pl.DeleteLink(link)
 
         ' Ugh, this is getting ugly
@@ -202,7 +203,7 @@ Public Class ucSelector2
         If Me.m_bInUpdate Then Return
         Try
             Me.m_bInUpdate = True
-            Dim item As cEwEDatabase.cOOPStorable = DirectCast(Me.m_lbxBits.Items(e.Index), cEwEDatabase.cOOPStorable)
+            Dim item As cValueChainEntity = DirectCast(Me.m_lbxBits.Items(e.Index), cValueChainEntity)
             If (e.NewValue = CheckState.Unchecked) And (TypeOf (item) Is cLink) Then
                 DirectCast(item, cLink).BiomassRatio = 0
             End If
@@ -221,7 +222,7 @@ Public Class ucSelector2
 
     End Sub
 
-    Private Sub OnItemChanged(obj As cEwEDatabase.cOOPStorable)
+    Private Sub OnItemChanged(obj As cValueChainEntity)
         Me.PopulateListbox()
     End Sub
 
