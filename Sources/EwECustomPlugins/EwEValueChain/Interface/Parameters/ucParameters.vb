@@ -3,12 +3,12 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
-Imports EwECore.Database.cEwEDatabase
 Imports EwEUtils.Logging
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports ValueChain
 Imports Debug = System.Diagnostics.Debug
 
 ''' ===========================================================================
@@ -43,7 +43,7 @@ Public Class ucParameters
     ''' <param name="data">The data to parameterize.</param>
     ''' <param name="uic">UI context of EwE GUI.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(data As cData, uic As cUIContext)
+    Public Sub New(data As cValueChainData, uic As cUIContext)
 
         Me.InitializeComponent()
 
@@ -277,7 +277,7 @@ Public Class ucParameters
         Next
     End Sub
 
-    Private Sub OnParametersChanged(obj As cOOPStorable)
+    Private Sub OnParametersChanged(obj As cValueChainEntity)
         Me.UpdateControlValues()
     End Sub
 

@@ -4,11 +4,12 @@
 
 Imports System.Drawing
 Imports System.Windows.Forms
-Imports EwECore.Database.cEwEDatabase
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.UserInterface
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Utilities
+Imports ValueChain
 
 ''' ===========================================================================
 ''' <summary>
@@ -54,11 +55,11 @@ Public Class plUnitControl
 
 #Region " Events "
 
-    Private Sub OnDataChanged(obj As cOOPStorable)
+    Private Sub OnDataChanged(obj As cValueChainEntity)
         Me.Invalidate()
     End Sub
 
-    Private Sub OnPositionChanged(obj As cOOPStorable)
+    Private Sub OnPositionChanged(obj As cValueChainEntity)
 
         If Me.m_bInUpdate Then Return
         Me.m_bInUpdate = True
@@ -158,9 +159,9 @@ Public Class plUnitControl
 
         Dim sg As cStyleGuide = Me.m_uic.StyleGuide
         Dim rc As Rectangle = Me.ClientRectangle
-        Dim clrBackground As Color = cValueChainStyleGuide.GetColor(cUnitFactory.eUnitType.All)
-        Dim clrBorder As Color = Color.Transparent
-        Dim clrText As Color = Color.Black
+        Dim clrBackground As VisualColor = cValueChainStyleGuide.GetColor(cUnitFactory.eUnitType.All)
+        Dim clrBorder As VisualColor = VisualColor.FromArgb(255, 0, 0, 0)
+        Dim clrText As VisualColor = VisualColor.FromArgb(0)
         Dim img As Image = Nothing
 
         ' Adjust rect
@@ -168,27 +169,30 @@ Public Class plUnitControl
         rc.Height -= 1
 
         ' Get style colors
-        sg.GetStyleColors(Me.Unit.Style, clrText, clrBorder)
+        ' TODO_JS: resolve from local style guide taht consults the EwE style guide. Yay.
+        'sg.GetStyleColors(sg, Me.Unit.Style, clrText, clrBorder)
 
         If My.Settings.ShowColors Then
             clrBackground = cValueChainStyleGuide.GetColor(Me.Unit.UnitType)
-            clrText = Color.White
+            clrText = VisualColor.FromArgb(255, 255, 255, 255)
         End If
 
         If Me.Selected Then
-            clrBorder = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            clrBorder = cValueChainStyleGuide.C2VC(sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT))
         ElseIf Not Me.Unit.CanCompute Then
-            clrBorder = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
+            clrBorder = cValueChainStyleGuide.C2VC(sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND))
 #If DEBUG Then
         Else
             If Me.Unit.IsRunError Then
-                clrBackground = Color.Red
+                clrBackground = VisualColor.FromArgb(255, 255, 0, 0)
             End If
 #End If
         End If
 
+        ' === Back to WinForms colors ===
+
         ' Clear background
-        Using br As New SolidBrush(clrBackground)
+        Using br As New SolidBrush(cValueChainStyleGuide.VC2C(clrBackground))
             e.Graphics.FillRectangle(br, rc)
         End Using
 
@@ -208,8 +212,8 @@ Public Class plUnitControl
         End If
 
         ' Color background with slight transparency to keep image visible
-        clrBackground = Color.FromArgb(200, clrBackground.R, clrBackground.G, clrBackground.B)
-        Using br As New SolidBrush(clrBackground)
+        clrBackground = VisualColor.FromArgb(200, clrBackground.R, clrBackground.G, clrBackground.B)
+        Using br As New SolidBrush(cValueChainStyleGuide.VC2C(clrBackground))
             e.Graphics.FillRectangle(br, rc)
         End Using
 
@@ -230,16 +234,16 @@ Public Class plUnitControl
             If My.Settings.ShowAltNames Then strName = Me.Unit.NameLocal
             If String.IsNullOrWhiteSpace(strName) Then strName = Me.Unit.Name
 
-            If cColorUtils.IsDark(clrText) And cColorUtils.IsDark(clrBackground) Then
-                clrText = cColorUtils.Inverse(clrText)
+            If cColorUtils.IsDark(cValueChainStyleGuide.VC2C(clrText)) And cColorUtils.IsDark(cValueChainStyleGuide.VC2C(clrBackground)) Then
+                clrText = VisualColor.FromArgb(CByte(255 - clrText.R), CByte(255 - clrText.G), CByte(255 - clrText.B))
             End If
 
-            Using br As New SolidBrush(clrText)
+            Using br As New SolidBrush(cValueChainStyleGuide.VC2C(clrText))
                 e.Graphics.DrawString(strName, ft, br, rc, fmt)
             End Using
         End Using
 
-        Using p As New Pen(clrBorder)
+        Using p As New Pen(cValueChainStyleGuide.VC2C(clrBorder))
             e.Graphics.DrawRectangle(p, rc)
         End Using
 
@@ -261,8 +265,8 @@ Public Class plUnitControl
     ''' -----------------------------------------------------------------------
     Private Sub tsmPaste_Click(sender As Object, e As System.EventArgs)
         Dim data As IDataObject = Clipboard.GetDataObject()
-        If data.GetDataPresent(GetType(cOOPStorable)) Then
-            Me.Unit.CopyFrom(DirectCast(data.GetData(GetType(cOOPStorable)), cOOPStorable))
+        If data.GetDataPresent(GetType(cValueChainEntity)) Then
+            Me.Unit.CopyFrom(DirectCast(data.GetData(GetType(cValueChainEntity)), cValueChainEntity))
         End If
     End Sub
 

@@ -5,6 +5,8 @@
 Imports System.Drawing
 Imports ScientificInterfaceShared.Style
 
+Imports ValueChain
+
 Public Class ucUnitDefault
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)

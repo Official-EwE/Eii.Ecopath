@@ -3,9 +3,9 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Drawing
-Imports EwECore.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports ValueChain
 
 ''' ===========================================================================
 ''' <summary>
@@ -50,7 +50,7 @@ Public Class ucLinkDefault
         End If
     End Sub
 
-    Private Sub m_link_OnChanged(obj As cOOPStorable) _
+    Private Sub m_link_OnChanged(obj As cValueChainEntity) _
         Handles m_linkDefault.OnChanged
         Me.Invalidate()
     End Sub

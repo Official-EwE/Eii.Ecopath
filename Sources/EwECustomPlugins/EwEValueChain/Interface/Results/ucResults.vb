@@ -4,16 +4,16 @@
 
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwECore.Common
+Imports EwECore.Style
+Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore.Style
-Imports EwEUtils.Utilities
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
+Imports ValueChain
 Imports Debug = System.Diagnostics.Debug
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Public Class ucResults
 
@@ -124,18 +124,18 @@ Public Class ucResults
     End Enum
 
     ''' <summary>Value chain data that provides, units, links etc.</summary>
-    Private m_data As cData = Nothing
+    Private m_data As cEwEValueChainData = Nothing
     ''' <summary>Instance of the Ecost model to poke and prod.</summary>
-    Private m_model As cModel = Nothing
+    Private m_model As cEwEValueChainModel = Nothing
     ''' <summary>Instance of model results to reflect.</summary>
-    Private m_result As cResults = Nothing
+    Private m_result As cEwEValueChainResults = Nothing
     ''' <summary>UI context to operate on.</summary>
     Private m_uic As cUIContext = Nothing
 
     ''' <summary>Viewmode dictates what type of result screen the user sees.</summary>
     Private m_viewMode As eViewModeType = eViewModeType.Graph
     ''' <summary>Graphmode dictates what data is viewed in result graphs.</summary>
-    Private m_graphmode As cResults.eGraphDataType = cResults.eGraphDataType.CostRevenue
+    Private m_graphmode As cValueChainResults.eGraphDataType = cValueChainResults.eGraphDataType.CostRevenue
     ''' <summary>Current view to update when triggers arrive.</summary>
     Private m_view As IResultView = Nothing
     ''' <summary>Update feedback prevention flaggibit.</summary>
@@ -154,9 +154,9 @@ Public Class ucResults
 #Region " Constructor "
 
     Public Sub New(uic As cUIContext,
-                   data As cData,
-                   model As cModel,
-                   result As cResults)
+                   data As cEwEValueChainData,
+                   model As cEwEValueChainModel,
+                   result As cEwEValueChainResults)
 
         Me.InitializeComponent()
 
@@ -229,7 +229,7 @@ Public Class ucResults
         Dim iSel As Integer = 0
 
         Me.m_tscmbGraphData.Items.Clear()
-        For Each gd As cResults.eGraphDataType In [Enum].GetValues(GetType(cResults.eGraphDataType))
+        For Each gd As cValueChainResults.eGraphDataType In [Enum].GetValues(GetType(cValueChainResults.eGraphDataType))
             Me.m_tscmbGraphData.Items.Add(gd)
         Next
         Me.m_tscmbGraphData.SelectedIndex = 0
@@ -247,9 +247,9 @@ Public Class ucResults
 
         ' Initialize view
         Select Case Me.m_result.RunType
-            Case cModel.eRunTypes.Ecopath : Me.SetViewMode(eViewModeType.Grid)
-            Case cModel.eRunTypes.Ecosim : Me.SetViewMode(eViewModeType.Graph)
-            Case cModel.eRunTypes.Equilibrium : Me.SetViewMode(eViewModeType.GraphEquilibrium)
+            Case cEwEValueChainModel.eRunTypes.Ecopath : Me.SetViewMode(eViewModeType.Grid)
+            Case cEwEValueChainModel.eRunTypes.Ecosim : Me.SetViewMode(eViewModeType.Graph)
+            Case cEwEValueChainModel.eRunTypes.Equilibrium : Me.SetViewMode(eViewModeType.GraphEquilibrium)
         End Select
 
         Me.UpdateYearCombo()
@@ -337,7 +337,7 @@ Public Class ucResults
 
     Private Sub OnGraphDataSelectionChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tscmbGraphData.SelectedIndexChanged
-        Me.SetGraphData(DirectCast(Me.m_tscmbGraphData.SelectedItem, cResults.eGraphDataType))
+        Me.SetGraphData(DirectCast(Me.m_tscmbGraphData.SelectedItem, cEwEValueChainResults.eGraphDataType))
         Me.UpdateResults()
     End Sub
 
@@ -379,11 +379,11 @@ Public Class ucResults
 
             ' Reset results and prepare for receiving Ecopath results
             '    In manual mode the calling process becomes responsible for resetting results
-            Me.m_result.Reset(cModel.eRunTypes.Ecopath)
+            Me.m_result.Reset(Me.m_uic.Core.nFleets, Me.m_uic.Core.nFleets, 1)
             ' Prepare to display Ecopath results
             Me.SetViewMode(eViewModeType.Grid)
             ' Run Ecopath
-            Me.m_data.Core.RunEcopath()
+            Me.m_uic.Core.RunEcopath()
 
         Catch ex As Exception
             m_logger.LogError(ex, "ValueChain::OnInvokeRunEcopath")
@@ -404,7 +404,7 @@ Public Class ucResults
     End Sub
 
     Private Sub OnUpdateRunEcopath(cmd As cCommand)
-        Dim csm As cCoreStateMonitor = Me.m_data.Core.StateMonitor
+        Dim csm As cCoreStateMonitor = Me.m_uic.Core.StateMonitor
         cmd.Enabled = csm.HasEcopathLoaded And (Not csm.IsEcopathRunning)
     End Sub
 
@@ -422,10 +422,10 @@ Public Class ucResults
 
             ' Reset cached results
             '    In manual mode the calling process becomes responsible for resetting results
-            Me.m_result.Reset(cModel.eRunTypes.Ecosim)
+            Me.m_result.Reset(Me.m_uic.Core.nFleets, Me.m_uic.Core.nFleets, Me.m_uic.Core.nEcosimTimeSteps)
             ' Prepare view
             Me.SetViewMode(eViewModeType.Graph)
-            Me.m_data.Core.RunEcosim()
+            Me.m_uic.Core.RunEcosim()
 
         Catch ex As Exception
             m_logger.LogError(ex, "ValueChain::OnInvokeRunEcosim")
@@ -446,7 +446,7 @@ Public Class ucResults
     End Sub
 
     Private Sub OnUpdateRunEcosim(cmd As cCommand)
-        Dim csm As cCoreStateMonitor = Me.m_data.Core.StateMonitor
+        Dim csm As cCoreStateMonitor = Me.m_uic.Core.StateMonitor
         cmd.Enabled = csm.HasEcosimLoaded And (Not csm.IsEcosimRunning)
     End Sub
 
@@ -459,7 +459,7 @@ Public Class ucResults
         Try
             ' Reset cached results
             '    In manual mode the calling process becomes responsible for resetting results
-            Me.m_result.Reset(cModel.eRunTypes.Equilibrium)
+            Me.m_result.Reset(Me.m_uic.Core.nFleets, Me.m_uic.Core.nFleets, Me.m_uic.Core.nEcosimTimeSteps)
             ' Prepare view
             Me.SetViewMode(eViewModeType.GraphEquilibrium)
             ' Run
@@ -481,7 +481,7 @@ Public Class ucResults
     End Sub
 
     Private Sub OnUpdateRunEquilibrium(cmd As cCommand)
-        Dim csm As cCoreStateMonitor = Me.m_data.Core.StateMonitor
+        Dim csm As cCoreStateMonitor = Me.m_uic.Core.StateMonitor
         cmd.Enabled = csm.HasEcosimLoaded And (Not csm.IsEcosimRunning)
     End Sub
 
@@ -542,8 +542,8 @@ Public Class ucResults
 
         Dim bHasSim As Boolean = False
         If Me.m_data IsNot Nothing Then
-            If Me.m_data.Core IsNot Nothing Then
-                bHasSim = Me.m_data.Core.StateMonitor.HasEcosimRan
+            If Me.m_uic.Core IsNot Nothing Then
+                bHasSim = Me.m_uic.Core.StateMonitor.HasEcosimRan
             End If
         End If
 
@@ -572,11 +572,11 @@ Public Class ucResults
     Private Sub UpdateYearCombo()
 
         ' Fill time step drop down
-        Dim iYearStart As Integer = Me.m_data.Core.EcosimFirstYear
-        Dim iStepsPerYear As Integer = CInt(Me.m_data.Core.nEcosimTimeSteps / Math.Max(1, Me.m_data.Core.nEcosimYears))
+        Dim iYearStart As Integer = Me.m_uic.Core.EcosimFirstYear
+        Dim iStepsPerYear As Integer = CInt(Me.m_uic.Core.nEcosimTimeSteps / Math.Max(1, Me.m_uic.Core.nEcosimYears))
 
         Me.m_tscbYear.Items.Clear()
-        For iYear As Integer = 1 To Me.m_data.Core.nEcosimYears
+        For iYear As Integer = 1 To Me.m_uic.Core.nEcosimYears
             Me.m_tscbYear.Items.Add(New cYearComboItem(iYear, CStr(iYearStart + iYear)))
         Next
         If (Me.m_tscbYear.Items.Count > 0) Then Me.m_tscbYear.SelectedIndex = 0
@@ -594,15 +594,15 @@ Public Class ucResults
 
             Case cParameters.eAggregationModeType.ByFleet
                 Me.m_tscmbItems.Items.Add(New cCoreComboItem(SharedResources.GENERIC_VALUE_ALLFLEETS))
-                For i As Integer = 1 To Me.m_data.Core.nFleets
-                    Me.m_tscmbItems.Items.Add(New cCoreComboItem(Me.m_data.Core.EcopathFleetInputs(i)))
+                For i As Integer = 1 To Me.m_uic.Core.nFleets
+                    Me.m_tscmbItems.Items.Add(New cCoreComboItem(Me.m_uic.Core.EcopathFleetInputs(i)))
                 Next
                 Me.m_tscmbItems.SelectedIndex = 0
 
             Case cParameters.eAggregationModeType.ByGroup
                 Me.m_tscmbItems.Items.Add(New cCoreComboItem(SharedResources.GENERIC_VALUE_ALLGROUPS))
-                For i As Integer = 1 To Me.m_data.Core.nGroups
-                    Dim grp As cEcoPathGroupInput = Me.m_data.Core.EcopathGroupInputs(i)
+                For i As Integer = 1 To Me.m_uic.Core.nGroups
+                    Dim grp As cEcoPathGroupInput = Me.m_uic.Core.EcopathGroupInputs(i)
                     If grp.IsFished Then
                         Me.m_tscmbItems.Items.Add(New cCoreComboItem(grp))
                     End If
@@ -665,7 +665,7 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub SetGraphData(graphmode As cResults.eGraphDataType)
+    Private Sub SetGraphData(graphmode As cValueChainResults.eGraphDataType)
 
         Me.m_graphmode = graphmode
         Me.UpdateControls()
@@ -678,51 +678,51 @@ Public Class ucResults
         ' ToDo: globalize this
         Dim strXAxisLabel As String = If(Me.m_viewMode = eViewModeType.GraphEquilibrium, "Effort", "Year")
         Dim strYAxisLabel As String = ""
-        Dim avars() As cResults.eVariableType = Nothing
+        Dim avars() As cValueChainResults.eVariableType = Nothing
 
         Select Case graphmode
 
-            Case cResults.eGraphDataType.CostRevenue
+            Case cValueChainResults.eGraphDataType.CostRevenue
                 strGraphTitle = My.Resources.HEADER_REV_COST
                 strYAxisLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.HEADER_REV_COST, cUnits.Monetary)
-                avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal,
-                                                      cResults.eVariableType.Cost,
-                                                      cResults.eVariableType.Profit}
+                avars = New cValueChainResults.eVariableType() {cValueChainResults.eVariableType.RevenueTotal,
+                                                      cValueChainResults.eVariableType.Cost,
+                                                      cValueChainResults.eVariableType.Profit}
 
-            Case cResults.eGraphDataType.Cost
+            Case cValueChainResults.eGraphDataType.Cost
                 strGraphTitle = My.Resources.HEADER_COST
                 strYAxisLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.HEADER_COST, cUnits.Monetary)
-                avars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture,
-                                                      cResults.eVariableType.CostInput,
-                                                      cResults.eVariableType.CostManagementRoyaltyCertification,
-                                                      cResults.eVariableType.CostManagementRoyaltyCertificationObservers,
-                                                      cResults.eVariableType.CostRawmaterial}
+                avars = New cValueChainResults.eVariableType() {cValueChainResults.eVariableType.CostAgriculture,
+                                                      cValueChainResults.eVariableType.CostInput,
+                                                      cValueChainResults.eVariableType.CostManagementRoyaltyCertification,
+                                                      cValueChainResults.eVariableType.CostManagementRoyaltyCertificationObservers,
+                                                      cValueChainResults.eVariableType.CostRawmaterial}
 
-            Case cResults.eGraphDataType.Revenue
+            Case cValueChainResults.eGraphDataType.Revenue
                 strGraphTitle = My.Resources.HEADER_REVENUE
                 strYAxisLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.HEADER_REVENUE, cUnits.Monetary)
-                avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets,
-                                                      cResults.eVariableType.RevenueSubsidies,
-                                                      cResults.eVariableType.RevenueProductsMain,
-                                                      cResults.eVariableType.RevenueProductsOther,
-                                                      cResults.eVariableType.RevenueAgriculture}
+                avars = New cValueChainResults.eVariableType() {cValueChainResults.eVariableType.RevenueTickets,
+                                                      cValueChainResults.eVariableType.RevenueSubsidies,
+                                                      cValueChainResults.eVariableType.RevenueProductsMain,
+                                                      cValueChainResults.eVariableType.RevenueProductsOther,
+                                                      cValueChainResults.eVariableType.RevenueAgriculture}
 
-            Case cResults.eGraphDataType.Jobs
+            Case cValueChainResults.eGraphDataType.Jobs
                 strGraphTitle = My.Resources.HEADER_JOBS
                 strYAxisLabel = My.Resources.HEADER_JOBS
-                avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal,
-                                                      cResults.eVariableType.NumberOfJobsMaleTotal,
-                                                      cResults.eVariableType.NumberOfJobsFemaleTotal}
-            Case cResults.eGraphDataType.Dependents
+                avars = New cValueChainResults.eVariableType() {cValueChainResults.eVariableType.NumberOfJobsTotal,
+                                                      cValueChainResults.eVariableType.NumberOfJobsMaleTotal,
+                                                      cValueChainResults.eVariableType.NumberOfJobsFemaleTotal}
+            Case cValueChainResults.eGraphDataType.Dependents
                 strGraphTitle = My.Resources.HEADER_DEPENDENTS
                 strYAxisLabel = My.Resources.HEADER_DEPENDENTS
-                avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal,
-                                                      cResults.eVariableType.NumberOfWorkerDependents,
-                                                      cResults.eVariableType.NumberOfWorkerFemales,
-                                                      cResults.eVariableType.NumberOfWorkerMales,
-                                                      cResults.eVariableType.NumberOfOwnerMales,
-                                                      cResults.eVariableType.NumberOfOwnerFemales,
-                                                      cResults.eVariableType.NumberOfOwnerDependents}
+                avars = New cValueChainResults.eVariableType() {cValueChainResults.eVariableType.NumberOfDependentsTotal,
+                                                      cValueChainResults.eVariableType.NumberOfWorkerDependents,
+                                                      cValueChainResults.eVariableType.NumberOfWorkerFemales,
+                                                      cValueChainResults.eVariableType.NumberOfWorkerMales,
+                                                      cValueChainResults.eVariableType.NumberOfOwnerMales,
+                                                      cValueChainResults.eVariableType.NumberOfOwnerFemales,
+                                                      cValueChainResults.eVariableType.NumberOfOwnerDependents}
 
             Case Else
                 Debug.Assert(False)

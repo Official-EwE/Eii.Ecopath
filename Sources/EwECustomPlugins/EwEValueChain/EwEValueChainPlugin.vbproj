@@ -47,7 +47,16 @@
   </PropertyGroup>
 	<PropertyGroup>
 		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Data\**" />
+	  <EmbeddedResource Remove="Data\**" />
+	  <None Remove="Data\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="EwE Encapsulation\cComputeLandingsProportions.vb" />
+	</ItemGroup>
 	<ItemGroup>
 		<AssemblyMetadata Include="EwEBuildDateUtc" Value="$(EwEBuildDateUtc)" />
 	</ItemGroup>
@@ -196,9 +205,10 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.ControlledVocabularies" Version="1.0.*" />
+    <PackageReference Include="Eii.ControlledVocabularies" Version="1.0.42" />
+    <PackageReference Include="Eii.ValueChain" Version="1.0.30" />
     <PackageReference Include="Eii.ValueChain.Storage">
-      <Version>1.0.*</Version>
+      <Version>1.0.67</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

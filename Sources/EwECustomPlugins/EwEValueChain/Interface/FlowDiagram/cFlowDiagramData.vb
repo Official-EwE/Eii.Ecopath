@@ -6,7 +6,7 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
+Imports ValueChain
 
 Public Class cFlowDiagramData
     Implements IFlowDiagramData
@@ -15,9 +15,9 @@ Public Class cFlowDiagramData
 #Region " Private vars "
 
     Private m_uic As cUIContext = Nothing
-    Private m_data As cData = Nothing
-    Private m_results As cResults = Nothing
-    Private m_model As cModel = Nothing
+    Private m_data As cValueChainData = Nothing
+    Private m_results As cValueChainResults = Nothing
+    Private m_model As cEwEValueChainModel = Nothing
 
     ' Units, to be accessed by iGroup
     Private m_units() As cUnit
@@ -34,12 +34,12 @@ Public Class cFlowDiagramData
     Private m_sLinkValueMax As Single
 
     Private m_bValid As Boolean = False
-    Private m_displayvalue As cResults.eGraphDataType = cResults.eGraphDataType.Cost
+    Private m_displayvalue As cValueChainResults.eGraphDataType = cValueChainResults.eGraphDataType.Cost
 
 #End Region ' Private vars
 
-    Public Sub New(uic As cUIContext, model As cModel,
-                   data As cData, results As cResults)
+    Public Sub New(uic As cUIContext, model As cEwEValueChainModel,
+                   data As cValueChainData, results As cValueChainResults)
 
         Me.m_uic = uic
         Me.m_model = model
@@ -65,15 +65,15 @@ Public Class cFlowDiagramData
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the <see cref="cResults.eGraphDataType">graph data type</see> 
+    ''' Get/set the <see cref="cValueChainResults.eGraphDataType">graph data type</see> 
     ''' to display.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property DisplayValue As cResults.eGraphDataType
+    Public Property DisplayValue As cValueChainResults.eGraphDataType
         Get
             Return Me.m_displayvalue
         End Get
-        Set(value As cResults.eGraphDataType)
+        Set(value As cValueChainResults.eGraphDataType)
             If (value <> Me.m_displayvalue) Then
                 Me.m_displayvalue = value
                 Dim fmt As New cGraphDataTypeFormatter()
@@ -251,7 +251,7 @@ Public Class cFlowDiagramData
 
     Private Sub Calculate()
 
-        Dim fn As cEcoFunctions = Me.m_data.Core.EcoFunction
+        Dim fn As cEcoFunctions = Me.UIContext.Core.EcoFunction
 
         ' Trophic level calculations require a temporary PP array
         Dim PP(Me.m_nGroups) As Single
@@ -279,7 +279,7 @@ Public Class cFlowDiagramData
             sw.Write(cStringUtils.ToCSVField(unitPrey.Name))
             For iPred As Integer = 1 To Me.m_nGroups
                 Dim unitPred As cUnit = Me.m_units(iPred)
-                sw.Write("," & cStringUtils.FormatNumber(Me.m_results.FlowsBiomass(unitPrey.Sequence, unitPred.Sequence)))
+                sw.Write("," & cStringUtils.FormatNumber(Me.m_results.get_FlowsBiomass(unitPrey.Sequence, unitPred.Sequence)))
             Next
             sw.WriteLine()
         Next
@@ -303,14 +303,14 @@ Public Class cFlowDiagramData
             For iPrey As Integer = 1 To Me.m_nGroups
                 Dim unitPrey As cUnit = Me.m_units(iPrey)
                 ' Results are ordered as (prey x pred)
-                total += Me.m_results.FlowsBiomass(unitPrey.Sequence, unitPred.Sequence)
+                total += Me.m_results.get_FlowsBiomass(unitPrey.Sequence, unitPred.Sequence)
             Next
 
             If total > 0 Then
                 For iPrey As Integer = 1 To Me.m_nGroups
                     Dim unitPrey As cUnit = Me.m_units(iPrey)
                     ' Convert to single for EwE compatibility. Is ok when normalized, huge precision is not needed then
-                    val = CSng(Me.m_results.FlowsBiomass(unitPrey.Sequence, unitPred.Sequence) / total)
+                    val = CSng(Me.m_results.get_FlowsBiomass(unitPrey.Sequence, unitPred.Sequence) / total)
                     Me.m_diets(iPred, iPrey) = val
                     ' Track max value
                     Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, val)
@@ -378,9 +378,9 @@ Public Class cFlowDiagramData
         Dim lUnits As New List(Of cUnit)
         lUnits.Add(unit)
 
-        Dim vars() As cResults.eVariableType = cResults.GetVariables(Me.m_displayvalue)
+        Dim vars() As cValueChainResults.eVariableType = cValueChainResults.GetVariables(Me.m_displayvalue)
         If (vars IsNot Nothing) Then
-            For Each v As cResults.eVariableType In vars
+            For Each v As cValueChainResults.eVariableType In vars
                 sTotal += Me.m_results.GetTotal(v, lUnits.ToArray)
             Next
         End If
