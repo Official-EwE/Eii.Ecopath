@@ -2,6 +2,7 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
+Imports System.IO
 Imports System.Text
 Imports System.Threading
 Imports Eii.BlobStore
@@ -293,10 +294,14 @@ Public Class cValueChainPlugin
         ' Sanity checks
         Debug.Assert(Me.m_data.IsChanged() = False)
 
-        Dim mig As New ValueChainMigrator.LegacyData.cValueChainMigrator(Me.m_core.DataSource)
-        mig.Migrate("ValueChain.sqlitedb")
+        Dim name As String = Path.ChangeExtension(Me.m_core.DataSource.ToString(), ".vc.sqlite")
 
-        If Me.m_data.Load(Me.m_core.DataSource.ToString) Then
+        If (Not File.Exists(name)) Then
+            Dim mig As New ValueChainMigrator.LegacyData.cValueChainMigrator(Me.m_core.DataSource)
+            mig.Migrate(name)
+        End If
+
+        If Me.m_data.Load(name) Then
             ' Manage incoming DB to weed out dead stuff
             Me.m_linkman.ManageLinks()
             Return True
