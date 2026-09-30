@@ -80,11 +80,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Install .NET SDK 8
+      # Install .NET SDK 10
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       # Install .NET Framework 4.8 dev pack
       - name: Install .NET Framework targeting pack (4.8)
@@ -117,7 +117,7 @@ jobs:
       - name: Pack EwECore
         run: |
           dotnet pack Sources/EwECore/EwECore.vbproj `
-            --configuration Debug `
+            --configuration Release `
             --output ./nuget `
             /p:PackageVersion=${{ steps.ewecore_version.outputs.version }} `
             /p:UseProjectReferences=false
