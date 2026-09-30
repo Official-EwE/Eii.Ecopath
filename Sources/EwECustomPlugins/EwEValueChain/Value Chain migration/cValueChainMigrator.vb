@@ -11,6 +11,8 @@ Imports Microsoft.Extensions.Logging
 
 Namespace ValueChainMigrator.LegacyData
 
+#Disable Warning BC40008
+
     ''' ===========================================================================
     ''' <summary>
     ''' Migrate the Value Chain data from the OOP database to the new SQLite database.
@@ -134,12 +136,8 @@ Namespace ValueChainMigrator.LegacyData
             Dim srcProps = src.GetType().GetProperties(Reflection.BindingFlags.Instance Or Reflection.BindingFlags.Public)
 
             Dim dstProps = GetType(TDest).GetProperties(Reflection.BindingFlags.Instance Or Reflection.BindingFlags.Public) _
-                .Where(Function(p) p.CanWrite AndAlso
-                                    p.SetMethod IsNot Nothing AndAlso
-                                    p.SetMethod.IsPublic AndAlso
-                                    p.GetIndexParameters().Length = 0) _
-                .ToDictionary(Function(p) p.Name,
-                              StringComparer.Ordinal)
+                .Where(Function(p) p.CanWrite AndAlso p.SetMethod IsNot Nothing AndAlso p.SetMethod.IsPublic AndAlso p.GetIndexParameters().Length = 0) _
+                .ToDictionary(Function(p) p.Name, StringComparer.Ordinal)
 
             For Each srcProp In srcProps
 
@@ -153,11 +151,16 @@ Namespace ValueChainMigrator.LegacyData
                     Continue For
                 End If
 
+                Dim objValue = srcProp.GetValue(src)
+
                 If dstProp.PropertyType IsNot srcProp.PropertyType Then
-                    Continue For
+                    If (TypeOf objValue IsNot ValueChainMigrator.LegacyData.cOOPStorable) Then
+                        Continue For
+                    End If
+                    objValue = DirectCast(objValue, ValueChainMigrator.LegacyData.cOOPStorable).DBID
                 End If
 
-                dstProp.SetValue(dst, srcProp.GetValue(src))
+                dstProp.SetValue(dst, objValue)
 
             Next
 
@@ -166,5 +169,7 @@ Namespace ValueChainMigrator.LegacyData
         End Function
 
     End Class
+
+#Enable Warning BC40008
 
 End Namespace
