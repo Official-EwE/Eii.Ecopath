@@ -1,26 +1,3 @@
-﻿<!--
-  ============================================================
-  DEBUG SYMBOLS / STEP-THROUGH DEBUGGING — NOTES
-  ============================================================
-  Current setup (Debug vs Release split):
-
-    Release: DebugType=embedded, EmbedAllSources=NOT set
-      - PDB is embedded in the DLL (stack traces, line numbers work).
-      - No source text baked in. Repo is private, we don't want
-        source riding along in every published package.
-
-    Debug: DebugType=embedded, EmbedAllSources=true
-      - Full step-through debugging, source embedded in the DLL.
-      - Used for the separate "debug" NuGet package published
-        alongside the normal Release package (see release workflow).
-
-  NOT using Source Link yet. Considered and deferred — see full
-  writeup, trade-offs, and reasoning in SYMBOLS.md at repo root.
-  Revisit only if package size or SHA-accuracy becomes a real problem;
-  until then embedded source is simpler and avoids the private-repo
-  auth story entirely.
-  ============================================================
--->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -46,7 +23,8 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Official-EwE/Eii.Ecopath</RepositoryUrl>
     <PackageReleaseNotes>Fixed minor bugs and improved performance.</PackageReleaseNotes>
-	<DebugType>embedded</DebugType>
+	<DebugType>portable</DebugType>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <IncludeReferencedProjects>True</IncludeReferencedProjects>
     <Company>EII</Company>
     <PackageIcon>EII_plain_128x128.png</PackageIcon>
@@ -74,10 +52,6 @@
 		<Import Include="EwEUtils" />
 		<Import Include="EwEUtils.Logging" />
 	</ItemGroup>
-  <!-- Debug config only: embed actual source for local step-through debugging -->
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <EmbedAllSources>true</EmbedAllSources>
-  </PropertyGroup>  
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 	<PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>EwECore.xml</DocumentationFile>
@@ -198,12 +172,12 @@
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.10" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.12" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.12" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.20" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="SkiaSharp" Version="3.119.4" />
+    <PackageReference Include="SkiaSharp" Version="4.153.1" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <PackageReference Include="Eii.Ecopath.Licence" Version="1.0.3" />
@@ -221,17 +195,17 @@
     <Compile Remove="EcoBase\cEcoBaseWDSL.vb" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9">
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12">
           <PrivateAssets>none</PrivateAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9">
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12">
           <PrivateAssets>none</PrivateAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.9">
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.12">
           <PrivateAssets>none</PrivateAssets>
       </PackageReference>
   </ItemGroup>
@@ -246,7 +220,7 @@
     <PackageReference Include="System.ServiceModel.Primitives">
       <Version>10.0.652802</Version>
     </PackageReference>
-    <PackageReference Include="System.Text.Json" Version="10.0.9" />
+    <PackageReference Include="System.Text.Json" Version="10.0.12" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
   <!-- Use a local project reference when UseProjectReferences is true -->
