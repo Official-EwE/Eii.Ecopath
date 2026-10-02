@@ -24,8 +24,17 @@ Namespace Ecosim
 #Region " Privates "
 
         Private Class cMSYRunResults
+
+            Private m_iSel As Integer = 0
             Public SelMode As eMSYFSelectionModeType = eMSYFSelectionModeType.Groups
-            Public Selection As Integer = 0
+            Public Property Selection As Integer
+                Get
+                    Return Math.Max(Me.m_iSel, 1)
+                End Get
+                Set(value As Integer)
+                    Me.m_iSel = value
+                End Set
+            End Property
             Public ResultsBase As cMSYFResult = Nothing
             Public ResultsFull As New List(Of cMSYFResult)
             Public OptFull As cMSYOptimum = Nothing
@@ -201,7 +210,10 @@ Namespace Ecosim
             Me.Core.Autosave(eAutosaveTypes.MSY) = Me.m_tsbnSaveOutput.Checked
 
             ' If pressed, save results
-            If (Me.m_tsbnSaveOutput.Checked) Then Me.m_manager.SaveMSYOutput()
+            If (Me.m_tsbnSaveOutput.Checked) Then
+                Me.m_manager.SaveMSYOutput()
+                Me.m_manager.SaveTrials()
+            End If
 
         End Sub
 

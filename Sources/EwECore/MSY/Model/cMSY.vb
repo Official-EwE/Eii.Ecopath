@@ -610,7 +610,8 @@ Namespace MSY
                     Me.GetOptimumResults()
                 End If
 
-#If DEBUG Then
+#If 0 Then
+                ' ## THIS LOGIC HAS MOVED TO cMSYResultWriterFMSY
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 System.Console.WriteLine("MSY Group, F, Total Value, B, Catch")
                 Dim igrp As Integer = Me.m_msyData.iSelGroupFleet
@@ -623,8 +624,8 @@ Namespace MSY
 #End If
 
             Catch ex As Exception
-                m_logger.LogError(ex, "runSingleSpecies() Exception: " & ex.Message)
-                System.Console.WriteLine(Me.ToString & ".runSingleSpecies() Exception: " & ex.Message)
+                m_logger.LogError(ex, "runSingleSpeciesFixedF() Exception: " & ex.Message)
+                System.Console.WriteLine(Me.ToString & ".runSingleSpeciesFixedF() Exception: " & ex.Message)
                 bReturn = False
             End Try
 
@@ -733,8 +734,8 @@ Namespace MSY
 #End If
 
             Catch ex As Exception
-                m_logger.LogError(ex, "runSingleSpecies() Exception: " & ex.Message)
-                System.Console.WriteLine(Me.ToString & ".runSingleSpecies() Exception: " & ex.Message)
+                m_logger.LogError(ex, "runSingleSpeciesToDepletion() Exception: " & ex.Message)
+                System.Console.WriteLine(Me.ToString & ".runSingleSpeciesToDepletion() Exception: " & ex.Message)
                 Return False
             End Try
 

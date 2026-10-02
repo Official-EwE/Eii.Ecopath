@@ -227,7 +227,8 @@ Namespace MSY
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' MSY Results 
+    ''' MSY Result. Not to be confused with <see cref="cFMSYResults"/>, which 
+    ''' isn't even a collection of <see cref="cMSYFResult"/> objects. Good lord.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cMSYFResult
