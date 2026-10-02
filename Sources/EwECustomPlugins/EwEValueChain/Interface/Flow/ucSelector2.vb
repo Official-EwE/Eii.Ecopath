@@ -28,6 +28,7 @@ Public Class ucSelector2
 
     Public ReadOnly Property SelectedUnit As cUnit
         Get
+            If (m_selection Is Nothing) Then Return Nothing
             If (Me.m_selection.Length = 0) Then Return Nothing
             If (TypeOf Me.m_selection(0) Is cUnit) Then Return DirectCast(Me.m_selection(0), cUnit)
             Return Nothing

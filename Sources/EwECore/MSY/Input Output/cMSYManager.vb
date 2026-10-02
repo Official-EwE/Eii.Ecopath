@@ -168,14 +168,20 @@ Namespace MSY
 
                 Me.m_parameters.Assessment = eMSYAssessmentTypes.FullCompensation
                 If Me.m_MSY.RunMSY() Then
-                    If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                    If Me.IsAutoSaveOutput Then
+                        Me.SaveMSYOutput()
+                        Me.SaveTrials()
+                    End If
                 End If
 
                 ' Process may have been stopped in the interim. Do not continue; RunMSY will ignore and reset the stop flag
                 If Not Me.m_msyData.bStopRun Then
                     Me.m_parameters.Assessment = eMSYAssessmentTypes.StationarySystem
                     If Me.m_MSY.RunMSY() Then
-                        If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                        If Me.IsAutoSaveOutput Then
+                            Me.SaveMSYOutput()
+                            Me.SaveTrials()
+                        End If
                     End If
                 End If
 
@@ -244,11 +250,9 @@ Namespace MSY
                         Next
                         Me.m_fmsyresults = results
 
-                        ' JS 04Nov12: Always save FMSY results until FMSY has a user interface.
-                        ' ToDo_JS: Use Autosave settings for FMSY when there is a user interface.
-                        'If Me.IsAutoSaveOutput Then
-                        Me.SaveFMSYOutput()
-                        'End If
+                        If Me.m_Core.Autosave(eAutosaveTypes.MSY) Then
+                            Me.SaveFMSYOutput()
+                        End If
                     End If
                 Next
 
@@ -335,6 +339,22 @@ Namespace MSY
             End Try
 
         End Sub
+
+        Public Function SaveTrials() As Boolean
+            Try
+                Dim w As New cMSYResultWriterFMSY(Me.m_Core)
+                Return w.WriteCSV(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY),
+                                  Me.m_parameters.Assessment,
+                                  Me.m_msyData.iSelGroupFleet,
+                                  Me.m_msyData.lstResults.ToArray)
+
+            Catch ex As Exception
+                m_logger.LogError(ex, "cMSYManager.SaveTrials")
+                Debug.Assert(False, ex.Message)
+            End Try
+            Return False
+
+        End Function
 
         Public Function SaveFMSYOutput() As Boolean
 
