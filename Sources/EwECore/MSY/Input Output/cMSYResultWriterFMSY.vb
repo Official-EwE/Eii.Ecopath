@@ -87,6 +87,71 @@ Namespace MSY
 
         End Function
 
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Write trial data to a CSV file.
+        ''' </summary>
+        ''' <param name="strPath"></param>
+        ''' <param name="ass"></param>
+        ''' <param name="igrp"></param>
+        ''' <param name="results"></param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function WriteCSV(strPath As String,
+                                 ass As eMSYAssessmentTypes,
+                                 igrp As Integer,
+                                 results() As cMSYFResult) As Boolean
+
+            Dim strFile As String = ""
+            Dim sw As StreamWriter = Nothing
+            Dim bSuccess As Boolean = True
+
+            strFile = Path.Combine(strPath, "FMSY_trials_" & ass.ToString & ".csv")
+            sw = Me.OpenWriter(strFile)
+
+            If (sw IsNot Nothing) Then
+
+                ' Write file header
+                Me.WriteHeader(sw, ass, "Fmsy")
+                sw.WriteLine()
+                ' Write data header
+                sw.WriteLine("MSY Group, F, Total Value, B, Catch")                ' Write data
+
+                For Each result As cMSYFResult In results
+
+                    sw.WriteLine("{0}, {1}, {2}, {3}, {4}",
+                                 cStringUtils.ToCSVField(igrp),
+                                 cStringUtils.FormatSingle(result.FCur),
+                                 cStringUtils.FormatSingle(result.TotalValue),
+                                 cStringUtils.FormatSingle(result.B(igrp)),
+                                 cStringUtils.FormatSingle(result.[Catch](igrp))
+                               )
+
+                    'System.Console.WriteLine(igrp.ToString + ", " + result.FCur.ToString + ",  " + result.TotalValue.ToString +
+                    '                         "," + result.B(igrp).ToString + ", " + result.[Catch](igrp).ToString)
+                Next
+
+
+#If 0 Then
+
+                If Check1.value > 0 And UBound(CmsyWS, 2) > 0 Then
+                    For i = 1 To NumGroups
+                        For j = 1 To NumGroups - 1
+                    Print #Ifileno, CmsyWS(i, j); ",";
+                        Next
+                Print #Ifileno, CmsyWS(i, NumGroups)
+                    Next
+                End If
+            End If
+#End If
+                bSuccess = bSuccess And Me.CloseWriter(sw, strFile)
+            End If
+
+            Return bSuccess
+
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cMSYResultWriterBase.ErrorMessage"/>
         ''' -------------------------------------------------------------------
