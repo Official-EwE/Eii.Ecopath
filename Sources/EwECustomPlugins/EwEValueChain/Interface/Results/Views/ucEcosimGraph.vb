@@ -4,6 +4,7 @@
 
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
+Imports ValueChain
 Imports ZedGraph
 
 ''' ===========================================================================
@@ -17,11 +18,12 @@ Public Class ucEcosimGraph
     Implements IResultView
     Implements IGraphView
 
+    Private m_uic As cUIContext = Nothing
     Private m_zgh As cZedGraphHelper = Nothing
-    Private m_data As cData = Nothing
-    Private m_aVars() As cResults.eVariableType = Nothing
+    Private m_data As cValueChainData = Nothing
+    Private m_aVars() As cValueChainResults.eVariableType = Nothing
 
-    Public Sub New(data As cData, uic As cUIContext)
+    Public Sub New(data As cValueChainData, uic As cUIContext)
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(uic, Me)
         Me.m_zgh.ShowPointValue = True
@@ -35,7 +37,7 @@ Public Class ucEcosimGraph
         MyBase.Finalize()
     End Sub
 
-    Public Sub ShowResults(iFleet As Integer, lUnits As cUnit(), result As cResults,
+    Public Sub ShowResults(iFleet As Integer, lUnits As cUnit(), result As cValueChainResults,
                            iTimeStep As Integer) _
              Implements IResultView.ShowResults
 
@@ -44,9 +46,9 @@ Public Class ucEcosimGraph
         Dim line As LineItem = Nothing
         Dim iBaseYear As Integer = 0
 
-        iBaseYear = Me.m_data.Core.EcosimFirstYear
+        iBaseYear = Me.m_uic.Core.EcosimFirstYear
 
-        For Each vn As cResults.eVariableType In Me.m_aVars
+        For Each vn As cValueChainResults.eVariableType In Me.m_aVars
 
             line = New LineItem(vn.ToString())
             line.Color = cr.NextColor()
@@ -54,7 +56,7 @@ Public Class ucEcosimGraph
 
             For iTimeStep = 1 To result.NumTimeSteps
                 line.AddPoint(CDbl(iBaseYear + ((iTimeStep - 1) / cCore.N_MONTHS)),
-                              result.GetTimeStepTotal(vn, iTimeStep, lUnits, iFleet, cResults.GetVariableContributionType(vn)))
+                              result.GetTimeStepTotal(vn, iTimeStep, lUnits, iFleet, cValueChainResults.GetVariableContributionType(vn)))
             Next iTimeStep
 
             lLines.Add(line)
@@ -76,7 +78,7 @@ Public Class ucEcosimGraph
     Public Sub SetData(strGraphTitle As String,
                        strXAxisLabel As String,
                        strYAxisLabel As String,
-                       aVars() As cResults.eVariableType) Implements IGraphView.SetData
+                       aVars() As cValueChainResults.eVariableType) Implements IGraphView.SetData
 
         Me.m_zgh.ConfigurePane(strGraphTitle, strXAxisLabel, strYAxisLabel, True)
         Me.m_aVars = aVars

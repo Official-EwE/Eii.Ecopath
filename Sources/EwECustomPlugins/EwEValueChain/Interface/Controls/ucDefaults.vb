@@ -2,8 +2,8 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Imports EwECore.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
+Imports ValueChain
 
 Public Class ucDefaults
 
@@ -11,15 +11,15 @@ Public Class ucDefaults
 
     Private Class cOOPStorableComboItem
 
-        Private m_obj As cOOPStorable = Nothing
+        Private m_obj As cValueChainEntity = Nothing
         Private m_strTitle As String = ""
 
-        Public Sub New(obj As cOOPStorable, strTitle As String)
+        Public Sub New(obj As cValueChainEntity, strTitle As String)
             Me.m_obj = obj
             Me.m_strTitle = strTitle
         End Sub
 
-        Public Function ObjDefault() As cOOPStorable
+        Public Function ObjDefault() As cValueChainEntity
             Return Me.m_obj
         End Function
 
@@ -33,15 +33,15 @@ Public Class ucDefaults
 
 #Region " Private vars "
 
-    Private m_data As cData = Nothing
-    Private m_dtDefaults As New Dictionary(Of cOOPStorable, ucDefault)
+    Private m_data As cValueChainData = Nothing
+    Private m_dtDefaults As New Dictionary(Of cValueChainEntity, ucDefault)
     Private m_bInUpdate As Boolean = False
-    Private m_objSelected As cOOPStorable = Nothing
+    Private m_objSelected As cValueChainEntity = Nothing
     Private m_uic As cUIContext = Nothing
 
 #End Region ' Private vars
 
-    Public Sub New(uic As cUIContext, data As cData)
+    Public Sub New(uic As cUIContext, data As cValueChainData)
         Me.InitializeComponent()
 
         Me.m_uic = uic
@@ -101,7 +101,7 @@ Public Class ucDefaults
 
 #Region " Internals "
 
-    Private Sub AddControl(c As ucDefault, obj As cOOPStorable, strTitle As String)
+    Private Sub AddControl(c As ucDefault, obj As cValueChainEntity, strTitle As String)
         Me.m_dtDefaults.Add(obj, c)
         c.ObjDefault = obj
         c.Text = strTitle
@@ -119,7 +119,7 @@ Public Class ucDefaults
         Me.m_cbDefault.Items.RemoveAt(Me.FindComboItem(c.ObjDefault))
     End Sub
 
-    Private Function FindComboItem(obj As cOOPStorable) As Integer
+    Private Function FindComboItem(obj As cValueChainEntity) As Integer
         Dim item As cOOPStorableComboItem = Nothing
         For iItem As Integer = 0 To Me.m_cbDefault.Items.Count - 1
             If TypeOf Me.m_cbDefault.Items(iItem) Is cOOPStorableComboItem Then
@@ -132,7 +132,7 @@ Public Class ucDefaults
         Return -1
     End Function
 
-    Private Function SelectedComboItem() As cOOPStorable
+    Private Function SelectedComboItem() As cValueChainEntity
         Dim obj As Object = Me.m_cbDefault.SelectedItem
         If TypeOf obj Is cOOPStorableComboItem Then
             Return DirectCast(obj, cOOPStorableComboItem).ObjDefault
@@ -140,11 +140,11 @@ Public Class ucDefaults
         Return Nothing
     End Function
 
-    Private Property SelectedObject() As cOOPStorable
+    Private Property SelectedObject() As cValueChainEntity
         Get
             Return Me.m_objSelected
         End Get
-        Set(objSelNew As cOOPStorable)
+        Set(objSelNew As cValueChainEntity)
             ' Optimization
             If Not ReferenceEquals(objSelNew, Me.m_objSelected) Then
 

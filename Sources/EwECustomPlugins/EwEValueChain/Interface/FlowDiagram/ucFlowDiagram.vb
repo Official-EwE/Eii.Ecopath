@@ -7,16 +7,15 @@ Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwECore.Common
+Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports ValueChain
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Logging
-Imports Microsoft.Extensions.Logging
-Imports Debug = System.Diagnostics.Debug
 
 Public Class ucFlowDiagram
     Inherits UserControl
@@ -25,9 +24,9 @@ Public Class ucFlowDiagram
 #Region " Private bits "
 
     ''' <summary>Instance of the Ecost model to poke and prod.</summary>
-    Private m_model As cModel = Nothing
+    Private m_model As cEwEValueChainModel = Nothing
     ''' <summary>Instance of model results to reflect.</summary>
-    Private m_result As cResults = Nothing
+    Private m_result As cValueChainResults = Nothing
     ''' <summary>UI context to operate on.</summary>
     Private m_uic As cUIContext = Nothing
     Private m_data As cFlowDiagramData = Nothing
@@ -43,11 +42,11 @@ Public Class ucFlowDiagram
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucFlowDiagram)()
 
     Private Class cGraphDataItem
-        Private m_gdt As cResults.eGraphDataType
-        Public Sub New(gdt As cResults.eGraphDataType)
+        Private m_gdt As cValueChainResults.eGraphDataType
+        Public Sub New(gdt As cValueChainResults.eGraphDataType)
             Me.m_gdt = gdt
         End Sub
-        Public ReadOnly Property GraphDataType As cResults.eGraphDataType
+        Public ReadOnly Property GraphDataType As cValueChainResults.eGraphDataType
             Get
                 Return Me.m_gdt
             End Get
@@ -61,9 +60,9 @@ Public Class ucFlowDiagram
 #End Region ' Private bits
 
     Public Sub New(uic As cUIContext,
-                   data As cData,
-                   model As cModel,
-                   result As cResults)
+                   data As cValueChainData,
+                   model As cEwEValueChainModel,
+                   result As cValueChainResults)
 
         Me.InitializeComponent()
 
@@ -92,7 +91,7 @@ Public Class ucFlowDiagram
         MyBase.OnLoad(e)
 
         Me.m_tscbmValue.Items.Clear()
-        For Each gd As cResults.eGraphDataType In [Enum].GetValues(GetType(cResults.eGraphDataType))
+        For Each gd As cValueChainResults.eGraphDataType In [Enum].GetValues(GetType(cValueChainResults.eGraphDataType))
             Me.m_tscbmValue.Items.Add(New cGraphDataItem(gd))
         Next
         Me.m_tscbmValue.SelectedIndex = 0

@@ -2,6 +2,7 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
+Imports System.IO
 Imports System.Text
 Imports System.Threading
 Imports Eii.BlobStore
@@ -22,6 +23,7 @@ Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.DependencyInjection
 Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls
+Imports ValueChain
 Imports Debug = System.Diagnostics.Debug
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -46,10 +48,10 @@ Public Class cValueChainPlugin
     Private m_core As EwECore.cCore = Nothing
     Private m_bInitOK As Boolean = False
     Private m_form As frmMain = Nothing
-    Private m_data As cData = Nothing
+    Private m_data As cEwEValueChainData = Nothing
     Private m_bIsEnabled As Boolean = True
-    Private m_model As cModel = Nothing
-    Private m_result As cResults = Nothing
+    Private m_model As cEwEValueChainModel = Nothing
+    Private m_result As cEwEValueChainResults = Nothing
     Private m_mhEcopath As cMessageHandler = Nothing
     Private m_linkman As cLandingsLinkManager = Nothing
     Private m_syncobj As SynchronizationContext = Nothing
@@ -182,10 +184,10 @@ Public Class cValueChainPlugin
 
                 Me.m_core = DirectCast(core, EwECore.cCore)
                 Me.m_ddx = New cPluginData(cTypeUtils.TypeToString(Me.GetType()))
-                Me.m_data = New cData(Me.m_core, m_serviceProvider)
-                Me.m_model = New cModel()
-                Me.m_result = New cResults(Me.m_data)
-                Me.m_linkman = New cLandingsLinkManager(Me.m_data, Me.m_core)
+                Me.m_data = New cEwEValueChainData(Me.m_core)
+                Me.m_model = New cEwEValueChainModel(Me.m_core)
+                Me.m_result = New cEwEValueChainResults(Me.m_data)
+                Me.m_linkman = New cLandingsLinkManager(Me.m_data)
                 Me.m_syncobj = SynchronizationContext.Current
 
                 If (Me.m_syncobj Is Nothing) Then
@@ -292,7 +294,14 @@ Public Class cValueChainPlugin
         ' Sanity checks
         Debug.Assert(Me.m_data.IsChanged() = False)
 
-        If Me.m_data.Load(Me.m_core.DataSource.ToString) Then
+        Dim name As String = Path.ChangeExtension(Me.m_core.DataSource.ToString(), ".vc.sqlite")
+
+        If (Not File.Exists(name)) Then
+            Dim mig As New ValueChainMigrator.LegacyData.cValueChainMigrator(Me.m_core.DataSource)
+            mig.Migrate(name)
+        End If
+
+        If Me.m_data.Load(name) Then
             ' Manage incoming DB to weed out dead stuff
             Me.m_linkman.ManageLinks()
             Return True
@@ -346,7 +355,7 @@ Public Class cValueChainPlugin
         ' Running in auto mode?
         If (Me.m_model.IsManualRunMode = False) Then
             ' #Yes: prepare results for receiving Ecopath results
-            Me.m_result.Reset(cModel.eRunTypes.Ecopath)
+            Me.m_result.Reset(Me.m_core.nFleets, Me.m_core.nGroups, 1)
         End If
 
         ' Prepare data
@@ -389,7 +398,7 @@ Public Class cValueChainPlugin
         ' Running in auto mode?
         If (Me.m_model.IsManualRunMode = False) Then
             ' #Yes: prepare results for receiving Ecosim results
-            Me.m_result.Reset(cModel.eRunTypes.Ecosim)
+            Me.m_result.Reset(Me.m_core.nFleets, Me.m_core.nGroups, Me.m_core.nEcosimTimeSteps)
         End If
 
         ' Prepare data
@@ -415,7 +424,7 @@ Public Class cValueChainPlugin
         ' Abort if not allowed to run with Ecosim
         If (parms.RunWithEcosim = False) Then Return
         '' Do not run with searches if disabled
-        If (Me.m_data.Core.StateMonitor.IsSearching <> parms.RunWithSearches) Then Return
+        If (Me.m_core.StateMonitor.IsSearching <> parms.RunWithSearches) Then Return
 
         ' Run VC model
         Me.m_model.RunTimeStep(Me.m_data, Me.m_result, iTimeStep, DirectCast(ecosimresults, cEcoSimResults), DirectCast(EcosimDatastructures, cEcosimDatastructures))
@@ -459,17 +468,17 @@ Public Class cValueChainPlugin
 
             ' Fill exchange data based on the type of computed results
             Select Case Me.m_result.RunType
-                Case cModel.eRunTypes.Ecopath
+                Case cEwEValueChainModel.eRunTypes.Ecopath
                     Me.m_ddx.m_runType = New cEcopathRunType()
-                Case cModel.eRunTypes.Ecosim
+                Case cEwEValueChainModel.eRunTypes.Ecosim
                     Me.m_ddx.m_runType = New cEcosimRunType()
             End Select
 
-            Me.m_ddx.Resize(Me.m_data.Core.nFleets)
+            Me.m_ddx.Resize(Me.m_core.nFleets)
             Me.m_ddx.m_iTimeStep = iTimeStep
 
             Me.Populate(DirectCast(Me.m_ddx.Total, cPluginData.cVCEconomicData), iTimeStep, 0)
-            For iFleet As Integer = 1 To Me.m_data.Core.nFleets - 1
+            For iFleet As Integer = 1 To Me.m_core.nFleets - 1
                 Me.Populate(DirectCast(Me.m_ddx.Subtotal(iFleet), cPluginData.cVCEconomicData), iTimeStep, iFleet)
             Next iFleet
 
@@ -480,31 +489,31 @@ Public Class cValueChainPlugin
 
     Private Sub Populate(data As cPluginData.cVCEconomicData, iTimeStep As Integer, iFleet As Integer)
 
-        data.m_sCost = Me.GetValue(cResults.eVariableType.Cost, iTimeStep, iFleet)
-        data.m_sCostInput = Me.GetValue(cResults.eVariableType.CostRawmaterial, iTimeStep, iFleet)
-        data.m_sCostLicenseObservers = Me.GetValue(cResults.eVariableType.CostManagementRoyaltyCertificationObservers, iTimeStep, iFleet)
-        data.m_sCostSalariesShares = Me.GetValue(cResults.eVariableType.CostSalariesShares, iTimeStep, iFleet)
-        data.m_sCostTaxes = Me.GetValue(cResults.eVariableType.CostTaxes, iTimeStep, iFleet)
-        data.m_sCostTotalInputOther = Me.GetValue(cResults.eVariableType.CostTotalInputOther, iTimeStep, iFleet)
-        data.m_sNumberOfDependentsTotal = Me.GetValue(cResults.eVariableType.NumberOfDependentsTotal, iTimeStep, iFleet)
-        data.m_sNumberOfJobsFemaleTotal = Me.GetValue(cResults.eVariableType.NumberOfJobsFemaleTotal, iTimeStep, iFleet)
-        data.m_sNumberOfJobsMaleTotal = Me.GetValue(cResults.eVariableType.NumberOfJobsMaleTotal, iTimeStep, iFleet)
-        data.m_sNumberOfJobsTotal = Me.GetValue(cResults.eVariableType.NumberOfJobsTotal, iTimeStep, iFleet)
-        data.m_sNumberOfOwnerDependents = Me.GetValue(cResults.eVariableType.NumberOfOwnerDependents, iTimeStep, iFleet)
-        data.m_sNumberOfWorkerDependents = Me.GetValue(cResults.eVariableType.NumberOfWorkerDependents, iTimeStep, iFleet)
-        data.m_sProduction = Me.GetValue(cResults.eVariableType.Production, iTimeStep, iFleet)
-        data.m_sProductionLive = Me.GetValue(cResults.eVariableType.ProductionLive, iTimeStep, iFleet)
-        data.m_sProfit = Me.GetValue(cResults.eVariableType.Profit, iTimeStep, iFleet)
-        data.m_sRevenueProductsMain = Me.GetValue(cResults.eVariableType.RevenueProductsMain, iTimeStep, iFleet)
-        data.m_sRevenueProductsOther = Me.GetValue(cResults.eVariableType.RevenueProductsOther, iTimeStep, iFleet)
-        data.m_sRevenueSubsidies = Me.GetValue(cResults.eVariableType.RevenueSubsidies, iTimeStep, iFleet)
-        data.m_sRevenueTotal = Me.GetValue(cResults.eVariableType.RevenueTotal, iTimeStep, iFleet)
-        data.m_sThroughput = Me.GetValue(cResults.eVariableType.TotalUtility, iTimeStep, iFleet)
+        data.m_sCost = Me.GetValue(cValueChainResults.eVariableType.Cost, iTimeStep, iFleet)
+        data.m_sCostInput = Me.GetValue(cValueChainResults.eVariableType.CostRawmaterial, iTimeStep, iFleet)
+        data.m_sCostLicenseObservers = Me.GetValue(cValueChainResults.eVariableType.CostManagementRoyaltyCertificationObservers, iTimeStep, iFleet)
+        data.m_sCostSalariesShares = Me.GetValue(cValueChainResults.eVariableType.CostSalariesShares, iTimeStep, iFleet)
+        data.m_sCostTaxes = Me.GetValue(cValueChainResults.eVariableType.CostTaxes, iTimeStep, iFleet)
+        data.m_sCostTotalInputOther = Me.GetValue(cValueChainResults.eVariableType.CostTotalInputOther, iTimeStep, iFleet)
+        data.m_sNumberOfDependentsTotal = Me.GetValue(cValueChainResults.eVariableType.NumberOfDependentsTotal, iTimeStep, iFleet)
+        data.m_sNumberOfJobsFemaleTotal = Me.GetValue(cValueChainResults.eVariableType.NumberOfJobsFemaleTotal, iTimeStep, iFleet)
+        data.m_sNumberOfJobsMaleTotal = Me.GetValue(cValueChainResults.eVariableType.NumberOfJobsMaleTotal, iTimeStep, iFleet)
+        data.m_sNumberOfJobsTotal = Me.GetValue(cValueChainResults.eVariableType.NumberOfJobsTotal, iTimeStep, iFleet)
+        data.m_sNumberOfOwnerDependents = Me.GetValue(cValueChainResults.eVariableType.NumberOfOwnerDependents, iTimeStep, iFleet)
+        data.m_sNumberOfWorkerDependents = Me.GetValue(cValueChainResults.eVariableType.NumberOfWorkerDependents, iTimeStep, iFleet)
+        data.m_sProduction = Me.GetValue(cValueChainResults.eVariableType.Production, iTimeStep, iFleet)
+        data.m_sProductionLive = Me.GetValue(cValueChainResults.eVariableType.ProductionLive, iTimeStep, iFleet)
+        data.m_sProfit = Me.GetValue(cValueChainResults.eVariableType.Profit, iTimeStep, iFleet)
+        data.m_sRevenueProductsMain = Me.GetValue(cValueChainResults.eVariableType.RevenueProductsMain, iTimeStep, iFleet)
+        data.m_sRevenueProductsOther = Me.GetValue(cValueChainResults.eVariableType.RevenueProductsOther, iTimeStep, iFleet)
+        data.m_sRevenueSubsidies = Me.GetValue(cValueChainResults.eVariableType.RevenueSubsidies, iTimeStep, iFleet)
+        data.m_sRevenueTotal = Me.GetValue(cValueChainResults.eVariableType.RevenueTotal, iTimeStep, iFleet)
+        data.m_sThroughput = Me.GetValue(cValueChainResults.eVariableType.TotalUtility, iTimeStep, iFleet)
 
     End Sub
 
-    Private Function GetValue(vn As cResults.eVariableType, iTimeStep As Integer, iFleet As Integer) As Single
-        Return Me.m_result.GetTimeStepTotal(vn, iTimeStep, Nothing, iFleet, cResults.GetVariableContributionType(vn))
+    Private Function GetValue(vn As cValueChainResults.eVariableType, iTimeStep As Integer, iFleet As Integer) As Single
+        Return Me.m_result.GetTimeStepTotal(vn, iTimeStep, Nothing, iFleet, cValueChainResults.GetVariableContributionType(vn))
     End Function
 
     Public Sub Broadcaster(broadcaster As IDataBroadcaster) _
@@ -650,7 +659,7 @@ Public Class cValueChainPlugin
         Me.m_bInSearch = True
         Me.m_data.InitRun()
 
-        Me.m_result.Reset(cModel.eRunTypes.Ecosim)
+        Me.m_result.Reset(Me.m_core.nFleets, Me.m_core.nGroups, Me.m_core.nTimeSeries)
 
         ' JS 11 Apr 25: tracking down why repeated FPS + VC runs differ
 
@@ -675,17 +684,17 @@ Public Class cValueChainPlugin
 
             Debug.Assert(Me.m_searchds IsNot Nothing)
 
-            Dim profit = Me.m_result.GetTotal(cResults.eVariableType.Profit)
-            Dim employ = Me.m_result.GetTotal(cResults.eVariableType.NumberOfJobsTotal)
+            Dim profit = Me.m_result.GetTotal(cValueChainResults.eVariableType.Profit)
+            Dim employ = Me.m_result.GetTotal(cValueChainResults.eVariableType.NumberOfJobsTotal)
 
             Console.WriteLine("VC out ? search: Profit {0}, Employ {1}", profit, employ)
 
             ' Overwrite values in the search datastructures with desired value chain output
             Me.m_searchds.Profit = profit
-            'ds.totval = Me.Results.GetTotal(cResults.eVariableType.RevenueTotal)      'VC 2025040Z
+            'ds.totval = Me.Results.GetTotal(cValueChainResults.eVariableType.RevenueTotal)      'VC 2025040Z
             Me.m_searchds.Employ = employ
 
-            Me.m_result.Reset(cModel.eRunTypes.Ecosim)
+            Me.m_result.Reset(Me.m_core.nFleets, Me.m_core.nGroups, Me.m_core.nTimeSeries)
 
         End If
 
@@ -708,19 +717,19 @@ Public Class cValueChainPlugin
 
 #Region " Exhibitionism "
 
-    Public ReadOnly Property Data As cData
+    Public ReadOnly Property Data As cEwEValueChainData
         Get
             Return Me.m_data
         End Get
     End Property
 
-    Public ReadOnly Property Model As cModel
+    Public ReadOnly Property Model As cEwEValueChainModel
         Get
             Return Me.m_model
         End Get
     End Property
 
-    Public ReadOnly Property Results As cResults
+    Public ReadOnly Property Results As cEwEValueChainResults
         Get
             Return Me.m_result
         End Get
