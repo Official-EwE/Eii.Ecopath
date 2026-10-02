@@ -24,8 +24,9 @@ Public Class ucEcosimGraph
     Private m_aVars() As cValueChainResults.eVariableType = Nothing
 
     Public Sub New(data As cValueChainData, uic As cUIContext)
+        Me.m_uic = uic
         Me.m_zgh = New cZedGraphHelper()
-        Me.m_zgh.Attach(uic, Me)
+        Me.m_zgh.Attach(m_uic, Me)
         Me.m_zgh.ShowPointValue = True
         Me.m_data = data
         Me.PrepareGraph()
