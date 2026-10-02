@@ -57,7 +57,7 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Friend Sub Add(c As cCommand)
             Try
-                Me.m_dictCommands.Add(c.Name.ToLower(), c)
+                Me.m_dictCommands(c.Name.ToLower()) = c
             Catch ex As Exception
                 ' Kaboom
                 Debug.Assert(False, "Unable to add command")
