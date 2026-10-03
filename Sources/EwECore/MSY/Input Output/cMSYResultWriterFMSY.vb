@@ -32,7 +32,7 @@ Namespace MSY
         ''' -------------------------------------------------------------------
         Public Function WriteCSV(strPath As String,
                                  ass As eMSYAssessmentTypes,
-                                 result As cFMSYResults As Boolean
+                                 result As cFMSYResults) As Boolean
 
             If (result Is Nothing) Then Return False
 
