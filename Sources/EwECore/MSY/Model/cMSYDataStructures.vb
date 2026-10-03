@@ -40,7 +40,7 @@ Namespace MSY
 
         'Public bb() As Single
 
-        Public lstResults As List(Of cMSYFResult)
+        Public Results As List(Of cMSYFResult)
         Public BaseLineResult As cMSYFResult = Nothing
         Public Optimum As cMSYOptimum = Nothing
 
@@ -59,6 +59,7 @@ Namespace MSY
         Public Sub New(EcopathData As cEcopathDataStructures, EcosimData As cEcosimDatastructures)
             Me.m_epData = EcopathData
             Me.m_simData = EcosimData
+            Me.Results = New List(Of cMSYFResult)
         End Sub
 
         Public Sub RedimVars()
@@ -72,9 +73,7 @@ Namespace MSY
 
                 ReDim Me.ForceGroupB(Me.nGroups)
 
-                Me.lstResults = New List(Of cMSYFResult)
                 Me.SetDefaultParameters()
-
             Catch ex As Exception
 
             End Try
