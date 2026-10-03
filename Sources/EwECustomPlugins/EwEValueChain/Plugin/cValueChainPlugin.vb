@@ -12,6 +12,7 @@ Imports Eii.ControlledVocabularies.Vocabularies.Species
 Imports EwECore
 Imports EwECore.Common
 Imports EwECore.Plugins
+Imports EwECore.Plugins.Core
 Imports EwECore.Plugins.Data
 Imports EwECore.Plugins.Database
 Imports EwECore.Plugins.Ecopath
@@ -41,6 +42,7 @@ Public Class cValueChainPlugin
     Implements IDisposedPlugin
     Implements IAutoSavePlugin
     Implements IAutoRunPlugin
+    Implements ISaveFilterPlugin
 
 #Region " Privates "
 
@@ -148,6 +150,10 @@ Public Class cValueChainPlugin
         End Get
     End Property
 
+    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements ICorePlugin.CoreInitialized
+        ' NOP
+    End Sub
+
     ''' <summary>
     ''' Initialize the Plugin. This is called when the core loads the Plugin. It will only be called once.
     ''' </summary>
@@ -202,6 +208,8 @@ Public Class cValueChainPlugin
 #End If
                 Me.m_core.Messages.AddMessageHandler(Me.m_mhEcopath)
 
+                AddHandler Me.m_data.DataChanged, AddressOf Me.OnDataChanged
+
                 ' Done initializing
                 Me.m_bInitOK = True
 
@@ -217,6 +225,12 @@ Public Class cValueChainPlugin
 
         End Try
 
+    End Sub
+
+    Private Sub OnDataChanged(sender As Object, e As EventArgs)
+        If (Me.m_core IsNot Nothing) Then
+            Me.m_core.onChanged(New cValueChainChangeNugget(), eMessageType.DataAddedOrRemoved)
+        End If
     End Sub
 
     Public Sub Dispose() _
@@ -840,5 +854,20 @@ Public Class cValueChainPlugin
     End Function
 
 #End Region ' AutoRun
+
+#Region " ISaveFilterPlugin implementation "
+
+    Public Function SaveChanges(ByRef bCancel As Boolean) As Boolean Implements ISaveFilterPlugin.SaveChanges
+        If Me.m_data.IsChanged() Then
+            Me.m_data.Save()
+        End If
+    End Function
+
+    Public Function DiscardChanges(ByRef bCancel As Boolean) As Boolean Implements ISaveFilterPlugin.DiscardChanges
+        Me.Data.Clear()
+    End Function
+
+#End Region ' ISaveFilterPlugin implementation
+
 
 End Class

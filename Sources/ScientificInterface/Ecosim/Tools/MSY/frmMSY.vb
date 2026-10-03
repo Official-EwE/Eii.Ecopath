@@ -212,7 +212,6 @@ Namespace Ecosim
             ' If pressed, save results
             If (Me.m_tsbnSaveOutput.Checked) Then
                 Me.m_manager.SaveMSYOutput()
-                Me.m_manager.SaveTrials()
             End If
 
         End Sub
