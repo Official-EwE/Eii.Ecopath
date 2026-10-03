@@ -170,7 +170,6 @@ Namespace MSY
                 If Me.m_MSY.RunMSY() Then
                     If Me.IsAutoSaveOutput Then
                         Me.SaveMSYOutput()
-                        Me.SaveTrials()
                     End If
                 End If
 
@@ -180,7 +179,6 @@ Namespace MSY
                     If Me.m_MSY.RunMSY() Then
                         If Me.IsAutoSaveOutput Then
                             Me.SaveMSYOutput()
-                            Me.SaveTrials()
                         End If
                     End If
                 End If
@@ -340,22 +338,6 @@ Namespace MSY
 
         End Sub
 
-        Public Function SaveTrials() As Boolean
-            Try
-                Dim w As New cMSYResultWriterFMSY(Me.m_Core)
-                Return w.WriteCSV(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY),
-                                  Me.m_parameters.Assessment,
-                                  Me.m_msyData.iSelGroupFleet,
-                                  Me.m_msyData.lstResults.ToArray)
-
-            Catch ex As Exception
-                m_logger.LogError(ex, "cMSYManager.SaveTrials")
-                Debug.Assert(False, ex.Message)
-            End Try
-            Return False
-
-        End Function
-
         Public Function SaveFMSYOutput() As Boolean
 
             Try
@@ -387,7 +369,7 @@ Namespace MSY
         ''' Returns the <see cref="cMSYFResult">results list</see>, sorted by F.
         ''' </summary>
         Public Function MSYResults() As cMSYFResult()
-            Return Me.m_msyData.lstResults.ToArray
+            Return Me.m_msyData.Results.ToArray
         End Function
 
         ''' <summary>
