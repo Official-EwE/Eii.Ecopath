@@ -67,12 +67,26 @@ For example, to create and push the ScientificInterfaceShared package, follow th
 - Type `.\CreateAndPushNugetPackage.ps1 -ProjectPath ScientificInterfaceShared\ScientificInterfaceShared.vbproj -ApiKey <ApiKey>`
 
 ## Creating an EwE6 installer
+
+### Creating the installer in Github
+The easy way is to create the installer by running the Github action. After running this action everything will be automatic. A new version number is created and a tag is set. Building a new release typically takes 10 minutes and after that its ready for download at https://github.com/Official-EwE/Eii.Ecopath/releases.
+
+* Go to https://github.com/Official-EwE/Eii.Ecopath/actions
+* Click on "Manually create all NuGetPackages and a Release"
+* Click on "Run workflow"
+* Click on the "Run workflow" button
+
+<img alt="image" src="Manually Create a Release.png" alt="Create release on Github" width="600"/>
+
+You can monitor the progress of the workflow by clicking on the workflow run you just created.
+
+When its finished, you can download the newly created release from https://github.com/Official-EwE/Eii.Ecopath/releases
+
+
+
+### Creating the installer on your desktop
 The installer is created using Inno Setup. The script is located in the `Deployment` folder of the repository.
 
-### Creating the installer automatically after merging to master
-The easy way is to let the CI/CD pipeline create the installer automatically after merging a PR into master.
-
-### Creating the installer manually
 To be able to use the Inno Setup compiler, you have to install it. It is recommended to install Inno Setup as a CLI tool.
 This is the way the tool is used in the build check and CI/CD pipelines.
 
