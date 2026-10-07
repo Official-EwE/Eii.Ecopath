@@ -3,6 +3,7 @@
 // Copyright © 1991– Ecopath International Initiative (EII)
 
 using EwECore;
+using EwECore.DataSources;
 
 namespace EwECore.Tests.Fixtures;
 
@@ -10,21 +11,27 @@ namespace EwECore.Tests.Fixtures;
 /// xUnit shared fixture that loads the Anchovy Bay Spatial model once per test
 /// collection, runs Ecopath and Ecosim to put the core in a state ready for MSE
 /// tests, then disposes the core when the collection is torn down.
+/// The model is stored as EwE XML (.eiixml) so no OLE DB / Access driver is needed.
 /// </summary>
 public sealed class ModelFixture : IAsyncLifetime
 {
-    private const string ModelFileName = "Anchovy Bay Spatial.ewemdb";
+    private const string ModelFileName = "Anchovy Bay Spatial.eiixml";
 
     public cCore Core { get; private set; } = null!;
 
     public async Task InitializeAsync()
     {
         string modelPath = Path.Combine(AppContext.BaseDirectory, "TestData", ModelFileName);
+        if (!File.Exists(modelPath))
+            throw new FileNotFoundException("Test model not found.", modelPath);
+
+        eDatasourceAccessType access = eDatasourceAccessType.Failed_Unknown;
+        cDataSourceFactory.GetCompatibility(modelPath, ref access);
 
         Core = new cCore() { PluginManager = new cPluginManager() };
         bool loaded = Core.LoadModel(modelPath);
         if (!loaded)
-            throw new InvalidOperationException($"Failed to load model: {modelPath}");
+            throw new InvalidOperationException($"Failed to load model: {modelPath} (access: {access})");
 
         bool ecopathOk = Core.RunEcopath();
         if (!ecopathOk)
