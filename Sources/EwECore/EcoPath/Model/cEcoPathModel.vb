@@ -3076,7 +3076,7 @@ nextJ:
                 Dim strm As New System.IO.StreamWriter("EcopathPars.csv", True)
                 strm.WriteLine("iter")
                 For igrp As Integer = 1 To Me.m_Data.NumGroups
-                    strm.WriteLine(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.m_Data.GroupName(igrp)) + "," + Me.m_Data.B(igrp).ToString + "," + Me.m_Data.PB(igrp).ToString + "," + Me.m_Data.QB(igrp).ToString + "," + Me.m_Data.EE(igrp).ToString)
+                    strm.WriteLine(cStringUtils.ToCSVField(Me.m_Data.GroupName(igrp)) + "," + Me.m_Data.B(igrp).ToString + "," + Me.m_Data.PB(igrp).ToString + "," + Me.m_Data.QB(igrp).ToString + "," + Me.m_Data.EE(igrp).ToString)
                 Next
 
                 strm.Close()

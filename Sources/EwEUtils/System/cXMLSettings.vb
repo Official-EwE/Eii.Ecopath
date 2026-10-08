@@ -6,6 +6,7 @@ Imports System
 Imports System.Diagnostics
 Imports System.IO
 Imports System.Xml
+Imports EwEUtils.Utilities
 
 Namespace SystemUtilities
 
@@ -81,7 +82,7 @@ Namespace SystemUtilities
             Try
                 Dim xn As XmlNode = Nothing
                 Me.EnsureHasDoc()
-                Me.m_doc = EwEUtils.Utilities.cXMLUtils.NewDoc("sections", xn)
+                Me.m_doc = cXMLUtils.NewDoc("sections", xn)
                 xn.InnerXml = strXML
             Catch ex As Exception
 
@@ -224,7 +225,7 @@ Namespace SystemUtilities
 
         Private Sub EnsureHasDoc()
             If (Me.m_doc Is Nothing) Then
-                Me.m_doc = EwEUtils.Utilities.cXMLUtils.NewDoc("sections")
+                Me.m_doc = cXMLUtils.NewDoc("sections")
             End If
         End Sub
 

@@ -194,7 +194,7 @@ Namespace Database
 
                     buff = eiiStrm.ReadLine()
                     'delimiter is 2 spaces "  " yeah....
-                    recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+                    recs = cStringUtils.SplitQualified(buff, "  ")
                     iNextIndex = 0
 
                     'Debug.Assert(data.Length = 10, "EII DataSource wrong number of recs in group section.")
@@ -224,7 +224,7 @@ Namespace Database
                 ReDim ecopathDS.DietChanged(1, 0)
                 For K = 1 To ecopathDS.NumGroups
                     buff = eiiStrm.ReadLine()
-                    recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+                    recs = cStringUtils.SplitQualified(buff, "  ")
                     iNextIndex = 0
                     For j = 1 To ecopathDS.NumGroups
 
@@ -253,7 +253,7 @@ Namespace Database
                 buff = eiiStrm.ReadLine()
                 Dim seperators() As String = {" ", "  "}
                 recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
-                'recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+                'recs = cStringUtils.SplitQualified(buff, "  ")
                 Dim iRec As Integer = 1
                 For j = 1 To ecopathDS.NumGroups
 
@@ -268,7 +268,7 @@ Namespace Database
                 'Input(fnum, jnk)
 
                 buff = eiiStrm.ReadLine()
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+                recs = cStringUtils.SplitQualified(buff, "  ")
 
                 ''the time unit name
                 ecopathDS.TimeUnitName = recs(0)

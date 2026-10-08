@@ -8,6 +8,7 @@ Imports EwECore.Plugins
 Imports EwECore.Plugins.Core
 Imports EwECore.Plugins.Ecospace
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 
 Public Class cEwEIBMAgeStructureResultsWriterPlugin
@@ -208,7 +209,7 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
                     For iage As Integer = 0 To Me.m_StanzaData.MaxAgeSpecies(isp)
                         Dim iEco As Integer = Me.m_StanzaData.EcopathCode(isp, Me.m_StanzaData.StanzaNo(isp, iage))
-                        sbAges.Append("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.EcopathData.GroupName(iEco)) + "_" + CStr(iage))
+                        sbAges.Append("," + cStringUtils.ToCSVField(Me.EcopathData.GroupName(iEco)) + "_" + CStr(iage))
                     Next iage
                     Dim header As String = "Timestep, Region" + sbAges.ToString
 
@@ -405,7 +406,7 @@ Public Class cEwEIBMAgeStructureResultsWriterPlugin
 
             For iage As Integer = 1 To Me.m_StanzaData.MaxAgeSpecies(isp) - 1
                 Dim iEco As Integer = Me.m_StanzaData.EcopathCode(isp, Me.m_StanzaData.StanzaNo(isp, iage))
-                sbAges.Append("," + EwEUtils.Utilities.cStringUtils.ToCSVField(Me.EcopathData.GroupName(iEco)) + "_" + CStr(iage))
+                sbAges.Append("," + cStringUtils.ToCSVField(Me.EcopathData.GroupName(iEco)) + "_" + CStr(iage))
             Next iage
             Dim header As String = "Stanza_Index, Multi_Name, Column, Row" + sbAges.ToString
 

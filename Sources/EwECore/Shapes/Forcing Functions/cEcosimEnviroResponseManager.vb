@@ -2,6 +2,8 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
+Imports EwEUtils.Utilities
+
 ''' <summary>
 ''' Manager class to handle Ecosim Environmental Response functions
 ''' </summary>
@@ -144,7 +146,7 @@ Public Class cEcosimEnviroResponseManager
 
         If Me.m_simData.QBoutside(iGrp) <> 0 Then
             Dim break As String = String.Empty
-            If msg.Length > 0 Then break = EwEUtils.Utilities.cStringUtils.vbCrLf
+            If msg.Length > 0 Then break = cStringUtils.vbCrLf
             msg.Append(break & My.Resources.CoreMessages.ECOSIM_RESPONSE_DIET)
         End If
 

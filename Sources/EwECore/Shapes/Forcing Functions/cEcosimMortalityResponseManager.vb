@@ -143,7 +143,7 @@ Public Class cEcosimMortalityResponseManager
 
         'If Me.m_simData.QBoutside(iGrp) <> 0 Then
         '    Dim break As String = String.Empty
-        '    If msg.Length > 0 Then break = EwEUtils.Utilities.cStringUtils.vbCrLf
+        '    If msg.Length > 0 Then break = cStringUtils.vbCrLf
         '    msg.Append(break & My.Resources.CoreMessages.ECOSIM_RESPONSE_DIET)
         'End If
 

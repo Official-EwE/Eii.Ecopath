@@ -5,6 +5,7 @@
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
@@ -47,7 +48,7 @@ Public Class cTransectVectorEditor
             For Each t As cTransect In data.Transects
                 lNames.Add(t.Name)
             Next
-            Dim n As Integer = EwEUtils.Utilities.cStringUtils.GetNextNumber(lNames.ToArray, strMask)
+            Dim n As Integer = cStringUtils.GetNextNumber(lNames.ToArray, strMask)
 
             ' Start new transect at this location
             Me.m_transectEdit = New cTransect(String.Format(strMask, n)) With {

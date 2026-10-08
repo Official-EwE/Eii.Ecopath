@@ -1,9 +1,9 @@
+Option Explicit On
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Option Explicit On
-
+Imports EwEUtils.Utilities
 
 Namespace Ecosim
 
@@ -60,7 +60,7 @@ Namespace Ecosim
 
             Me.m_cmbFleets.Items.Clear()
             For i As Integer = 0 To Me.Core.nFleets 'includes the 'combined fleets' object
-                Me.m_cmbFleets.Items.Add(fmt.ToString(Me.Core.EcosimFleetOutput(i), EwEUtils.Utilities.eDescriptorTypes.Name))
+                Me.m_cmbFleets.Items.Add(fmt.ToString(Me.Core.EcosimFleetOutput(i), eDescriptorTypes.Name))
             Next
             Me.m_cmbFleets.SelectedIndex = 0
 

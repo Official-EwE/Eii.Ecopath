@@ -409,8 +409,8 @@ Namespace Ecosim
 
             strFileName = strFileName & "_" & If(bSaveAnnual, "annual", "monthly")
 
-            Dim strFullPath As String = Path.Combine(strPath, (cFileUtils.ToValidFileName(strFileName, False) & strExt).ToLower())
-            If Not EwEUtils.Utilities.cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
+            Dim strFullPath As String = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
             Return strFullPath
 
         End Function

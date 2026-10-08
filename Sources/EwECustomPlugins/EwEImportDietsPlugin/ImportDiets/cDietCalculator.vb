@@ -3,6 +3,7 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports EwECore
+Imports EwEUtils.Utilities
 
 ''' <summary>
 ''' Calculate new diet matrix from preferences
@@ -203,10 +204,10 @@ Public Class cDietCalculator
 
         If bNeedsBalancing Then
             '"Diets have been imported but not saved. You will need to make sure your model is balanced and save the new values." _
-            '                                                    + EwEUtils.Utilities.cStringUtils.vbCrLf + "To revert the imported diets close the model without saving.",
+            '                                                    + cStringUtils.vbCrLf + "To revert the imported diets close the model without saving.",
             'Message that the model needs to balancing
-            Me.m_Core.Messages.SendMessage(New EwECore.cMessage("Diets have been imported but not saved." + EwEUtils.Utilities.cStringUtils.vbCrLf + "To used the imported diets you will need to make sure your model is balanced then save the new values." _
-                                                                + EwEUtils.Utilities.cStringUtils.vbCrLf + "To revert the imported diets close the model without saving.",
+            Me.m_Core.Messages.SendMessage(New EwECore.cMessage("Diets have been imported but not saved." + cStringUtils.vbCrLf + "To used the imported diets you will need to make sure your model is balanced then save the new values." _
+                                                                + cStringUtils.vbCrLf + "To revert the imported diets close the model without saving.",
                                                                 eMessageType.DataImport, eCoreComponentType.Plugin, eMessageImportance.Critical))
         End If
 

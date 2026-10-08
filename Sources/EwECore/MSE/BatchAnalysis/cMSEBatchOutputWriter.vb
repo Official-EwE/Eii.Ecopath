@@ -145,7 +145,7 @@ Namespace MSEBatchManager
         End Sub
 
         Public Function getOutputFileName(DataType As String, ModelName As String) As String
-            Return Path.Combine(Me.DataDir, EwEUtils.Utilities.cFileUtils.ToValidFileName(DataType & "_" & Me.m_BatchData.RunType.ToString & "_" & ModelName & ".csv", False))
+            Return Path.Combine(Me.DataDir, cFileUtils.ToValidFileName(DataType & "_" & Me.m_BatchData.RunType.ToString & "_" & ModelName & ".csv", False))
         End Function
 
         Public Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
@@ -515,7 +515,7 @@ Namespace MSEBatchManager
         End Sub
 
         Public Function getOutputFileName(DataType As String, GroupName As String, ModelName As String) As String
-            Return Path.Combine(Me.DataDir, EwEUtils.Utilities.cFileUtils.ToValidFileName(DataType & "_" & GroupName & "_" & Me.m_BatchData.RunType.ToString & "_" & ModelName & ".csv", False))
+            Return Path.Combine(Me.DataDir, cFileUtils.ToValidFileName(DataType & "_" & GroupName & "_" & Me.m_BatchData.RunType.ToString & "_" & ModelName & ".csv", False))
         End Function
 
         Public Sub saveIteration(ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
