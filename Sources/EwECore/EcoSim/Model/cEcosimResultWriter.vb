@@ -227,7 +227,7 @@ Namespace Ecosim
 
                     Next
                     strDataDetails = "Data," & resulttype.ToString
-                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype),
+                    bSuccess = Me.SaveDataToFile(GetOutputFileName(strPath, bSaveAnnual, resulttype),
                                                  bSaveAnnual, data,
                                                  strModelDetails, strDataDetails, astrGroupNames)
 
@@ -263,7 +263,7 @@ Namespace Ecosim
                             Next
                             strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & group.Name)
 
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, group.Name),
+                            bSuccess = bSuccess And Me.SaveDataToFile(GetOutputFileName(strPath, bSaveAnnual, resulttype, group.Name),
                                                                       bSaveAnnual, predData,
                                                                       strModelDetails, strDataDetails, predNames.ToString)
                         End If
@@ -302,7 +302,7 @@ Namespace Ecosim
                             Next
 
                             strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & group.Name)
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, group.Name),
+                            bSuccess = bSuccess And Me.SaveDataToFile(GetOutputFileName(strPath, bSaveAnnual, resulttype, group.Name),
                                                   bSaveAnnual, preyData,
                                                   strModelDetails, strDataDetails, preyNames.ToString)
                         End If
@@ -331,7 +331,7 @@ Namespace Ecosim
                     Next i
 
                     strDataDetails = "Data," & resulttype.ToString
-                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype),
+                    bSuccess = Me.SaveDataToFile(GetOutputFileName(strPath, bSaveAnnual, resulttype),
                                                  bSaveAnnual, data,
                                                  strModelDetails, strDataDetails)
 
@@ -368,7 +368,7 @@ Namespace Ecosim
                     End Select
 
                     strDataDetails = "Data," & resulttype.ToString
-                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype),
+                    bSuccess = Me.SaveDataToFile(GetOutputFileName(strPath, bSaveAnnual, resulttype),
                                                  bSaveAnnual, data,
                                                  strModelDetails, strDataDetails)
 
@@ -378,10 +378,13 @@ Namespace Ecosim
 
         End Function
 
-        Private Function GetOutputFileName(strPath As String,
-                                           bSaveAnnual As Boolean,
-                                           outputtype As eResultTypes,
-                                           Optional strGroupName As String = "") As String
+        ''' <summary>
+        ''' Builds the full output file name for a given result type.
+        ''' </summary>
+        Public Shared Function GetOutputFileName(strPath As String,
+                                                 bSaveAnnual As Boolean,
+                                                 outputtype As eResultTypes,
+                                                 Optional strGroupName As String = "") As String
 
             Dim strFileName As String = ""
             Dim strExt As String = ".csv"
@@ -409,8 +412,8 @@ Namespace Ecosim
 
             strFileName = strFileName & "_" & If(bSaveAnnual, "annual", "monthly")
 
-            Dim strFullPath As String = Path.Combine(strPath, (cFileUtils.ToValidFileName(strFileName, False) & strExt).ToLower())
-            If Not EwEUtils.Utilities.cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
+            Dim strFullPath As String = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
             Return strFullPath
 
         End Function

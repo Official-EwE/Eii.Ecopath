@@ -195,11 +195,11 @@ Public MustInherit Class cEcospaceBaseResultsWriter
                 strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
             End If
 
-            fn = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
+            fn = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
                                                                     cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
         End If
 
-        Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
+        Return Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
 
     End Function
 
@@ -267,11 +267,11 @@ Public MustInherit Class cEcospaceBaseResultsWriter
                 strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
             End If
 
-            Filename = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
+            Filename = cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
                                                                      cin.GetVarName(varname), fltName, strTimestep, strExt.Replace(".", "")), False)
         End If
 
-        Return System.IO.Path.Combine(Me.OutputDirectory, Filename.Replace("..", "."))
+        Return Path.Combine(Me.OutputDirectory, Filename.Replace("..", "."))
 
     End Function
 

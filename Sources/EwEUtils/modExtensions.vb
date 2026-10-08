@@ -6,6 +6,7 @@ Imports System
 Imports System.Collections.Generic
 Imports System.Reflection
 Imports System.Runtime.CompilerServices
+Imports EwEUtils.Utilities
 Imports Microsoft.VisualBasic
 
 <HideModuleNameAttribute()>
@@ -163,12 +164,12 @@ Public Module Extensions
 
     <Extension()>
     Public Function Approximates(s1 As Single, s2 As Single, Optional sThreshold As Single = 0.00001) As Boolean
-        Return EwEUtils.Utilities.cNumberUtils.Approximates(s1, s2, sThreshold)
+        Return cNumberUtils.Approximates(s1, s2, sThreshold)
     End Function
 
     <Extension()>
     Public Function Approximates(s1 As Double, s2 As Double, Optional sThreshold As Single = 0.00001) As Boolean
-        Return EwEUtils.Utilities.cNumberUtils.Approximates(s1, s2, sThreshold)
+        Return cNumberUtils.Approximates(s1, s2, sThreshold)
     End Function
 
 End Module

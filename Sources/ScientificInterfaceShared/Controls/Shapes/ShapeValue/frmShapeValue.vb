@@ -417,7 +417,7 @@ Public Class frmShapeValue
         For i As Integer = 1 To Me.Core.nTimeSeries
             lstrTSNames.Add(Me.Core.EcosimTimeSeries(i).Name)
         Next
-        iNextTS = EwEUtils.Utilities.cStringUtils.GetNextNumber(lstrTSNames.ToArray(), My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES)
+        iNextTS = cStringUtils.GetNextNumber(lstrTSNames.ToArray(), My.Resources.ECOSIM_DEFAULT_NEWTIMESERIES)
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_ADD
