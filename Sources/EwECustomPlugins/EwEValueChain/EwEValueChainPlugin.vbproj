@@ -205,10 +205,10 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.ControlledVocabularies" Version="1.0.42" />
-    <PackageReference Include="Eii.ValueChain" Version="1.0.30" />
+    <PackageReference Include="Eii.ControlledVocabularies" Version="1.0.*" />
+    <PackageReference Include="Eii.ValueChain" Version="1.0.*" />
     <PackageReference Include="Eii.ValueChain.Storage">
-      <Version>1.0.67</Version>
+      <Version>1.0.69</Version>
     </PackageReference>
   </ItemGroup>
 </Project>
