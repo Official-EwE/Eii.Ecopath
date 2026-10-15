@@ -780,7 +780,7 @@ Public Class plFlow
         ' Has a mask?
         If Not String.IsNullOrEmpty(strMask) Then
             ' #Yes: concoct a name with an autonumber
-            strName = cStringUtils.Localize(strMask, EwEUtils.Utilities.cStringUtils.GetNextNumber(lstrNames.ToArray, strMask))
+            strName = cStringUtils.Localize(strMask, cStringUtils.GetNextNumber(lstrNames.ToArray, strMask))
         End If
 
         ' (try to) create unit

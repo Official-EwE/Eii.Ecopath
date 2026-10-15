@@ -2,10 +2,12 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
+Imports System.IO
 Imports System.Threading
 Imports EwECore.Common
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
@@ -1378,10 +1380,10 @@ Public Class cEcosimMonteCarlo
 
     Private Sub dumpEcopathPars()
         Try
-            Dim strm As New System.IO.StreamWriter("EcopathPars.csv", True)
+            Dim strm As New StreamWriter("EcopathPars.csv", True)
             strm.WriteLine("iter")
             For igrp As Integer = 1 To Me.m_epdata.NumGroups
-                strm.WriteLine(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.m_epdata.GroupName(igrp)) + "," + Me.m_epdata.B(igrp).ToString + "," + Me.m_epdata.PB(igrp).ToString + "," + Me.m_epdata.QB(igrp).ToString + "," + Me.m_epdata.EE(igrp).ToString)
+                strm.WriteLine(cStringUtils.ToCSVField(Me.m_epdata.GroupName(igrp)) + "," + Me.m_epdata.B(igrp).ToString + "," + Me.m_epdata.PB(igrp).ToString + "," + Me.m_epdata.QB(igrp).ToString + "," + Me.m_epdata.EE(igrp).ToString)
             Next
             strm.Close()
         Catch ex As Exception

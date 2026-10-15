@@ -3914,3 +3914,11 @@ Public Enum eReleaseMode
 End Enum
 
 #End Region ' Release modes
+
+<Flags()>
+Public Enum eAutosaveFrequency As Integer
+    NotSet = 0
+    Monthly = 1
+    Annually = 2
+    All = 3
+End Enum
