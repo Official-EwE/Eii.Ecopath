@@ -11,7 +11,9 @@ Imports Eii.ControlledVocabularies.Core
 Imports Eii.ControlledVocabularies.Descriptors
 Imports Eii.ControlledVocabularies.Utils
 Imports Eii.ControlledVocabularies.Vocabularies
-Imports Eii.SemanticRegistry
+Imports Eii.SemanticRegistry.Core
+Imports Eii.SemanticRegistry.DTO
+Imports Eii.SemanticRegistry.Serialization
 Imports EwECore
 Imports EwECore.cCore
 Imports ScientificInterfaceShared.Controls
@@ -210,7 +212,7 @@ Public Class dlgConfigSemantics
 
                 Dim codeSpecies As String = ""
                 Dim codeLifeStage As String = ""
-                Dim mlk As MultiLevelKey = Nothing
+                Dim mlk As IMultiLevelKey = Nothing
                 Dim bSkip As Boolean = False
 
                 If (String.Compare(tax.Source, Source, True) = 0) Then
@@ -304,8 +306,8 @@ Public Class dlgConfigSemantics
         Me.m_semreg.Clear()
         If (File.Exists(fn)) Then
             Try
-                Dim dto As SemanticRegistryDto = JsonSerializer.Deserialize(Of SemanticRegistryDto)(File.ReadAllText(fn))
-                Return SemanticRegistrySerializer.FromDto(m_semreg, dto)
+                Dim dto As SemanticRegistryDTO = JsonSerializer.Deserialize(Of SemanticRegistryDTO)(File.ReadAllText(fn))
+                Return SemanticRegistrySerializer.FromDTO(m_semreg, dto)
             Catch ex As Exception
                 Return False
             End Try
@@ -316,9 +318,9 @@ Public Class dlgConfigSemantics
     Public Function SaveManifest() As Boolean
         Try
             Dim fn As String = Me.ManifestFileName()
-            Dim dto As New SemanticRegistryDto()
-            If (SemanticRegistrySerializer.ToDto(m_semreg, dto)) Then
-                File.WriteAllText(fn, JsonSerializer.Serialize(Of SemanticRegistryDto)(dto))
+            Dim dto As New SemanticRegistryDTO()
+            If (SemanticRegistrySerializer.ToDTO(m_semreg, dto)) Then
+                File.WriteAllText(fn, JsonSerializer.Serialize(Of SemanticRegistryDTO)(dto))
                 Return True
             End If
         Catch ex As Exception
