@@ -36,6 +36,18 @@ Public Class cSailCostCalculator
         Dim pq As New cSailCostCalculatorPriorityQueue(Me.m_ds.InRow, Me.m_ds.InCol)
         Dim n As Integer = Me.m_dcol.Count
 
+        ' Initialize distances and enqueue all ports with zero distance
+        For row As Integer = 1 To Me.m_ds.InRow
+            For col As Integer = 1 To Me.m_ds.InCol
+                If seeds(row, col) Then
+                    pq.Enqueue(0.0, row, col)
+                    distance(row, col) = 0.0
+                Else
+                    distance(row, col) = Double.MaxValue
+                End If
+            Next
+        Next
+
         ' Priority Queue Dijkstra-style traversal
         While pq.Count() > 0
             Dim row, col As Integer
@@ -108,7 +120,6 @@ Public Class cSailCostCalculator
             Next
 
             Dim distance(,) As Double = CalculateDistance(seeds)
-
 
             ' Apply to core arrays
             For row As Integer = 1 To Me.m_ds.InRow
