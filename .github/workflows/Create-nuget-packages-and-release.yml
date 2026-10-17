@@ -234,7 +234,18 @@ jobs:
 
       # Install .NET Framework 4.8 targeting pack
       - name: Install .NET Framework targeting pack (4.8)
-        run: choco install netfx-4.8-devpack -y
+        run: |
+          $maxAttempts = 5
+          for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+            choco install netfx-4.8-devpack -y --limit-output
+            if ($LASTEXITCODE -eq 0) {
+              break
+            }
+            if ($attempt -eq $maxAttempts) {
+              throw "Failed to install netfx-4.8-devpack after $maxAttempts attempts."
+            }
+            Start-Sleep -Seconds 15
+          }
         shell: pwsh
 
       # Install Inno Setup to get ISCC.exe
