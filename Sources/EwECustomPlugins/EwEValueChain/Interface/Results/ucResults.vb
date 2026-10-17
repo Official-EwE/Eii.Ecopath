@@ -379,7 +379,7 @@ Public Class ucResults
 
             ' Reset results and prepare for receiving Ecopath results
             '    In manual mode the calling process becomes responsible for resetting results
-            Me.m_result.Reset(Me.m_uic.Core.nFleets, Me.m_uic.Core.nFleets, 1)
+            Me.m_result.Reset(Me.m_uic.Core.nFleets, Me.m_uic.Core.nFleets, 1, cEwEValueChainModel.eRunTypes.Ecopath)
             ' Prepare to display Ecopath results
             Me.SetViewMode(eViewModeType.Grid)
             ' Run Ecopath
@@ -459,7 +459,8 @@ Public Class ucResults
         Try
             ' Reset cached results
             '    In manual mode the calling process becomes responsible for resetting results
-            Me.m_result.Reset(Me.m_uic.Core.nFleets, Me.m_uic.Core.nFleets, Me.m_uic.Core.nEcosimTimeSteps)
+            Me.m_result.Reset(Me.m_uic.Core.nFleets, Me.m_uic.Core.nFleets, Me.m_uic.Core.nEcosimTimeSteps, cEwEValueChainModel.eRunTypes.Equilibrium)
+
             ' Prepare view
             Me.SetViewMode(eViewModeType.GraphEquilibrium)
             ' Run
