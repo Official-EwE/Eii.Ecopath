@@ -36,7 +36,7 @@ Public Class cSailCostCalculator
         Dim pq As New cSailCostCalculatorPriorityQueue(Me.m_ds.InRow, Me.m_ds.InCol)
         Dim n As Integer = Me.m_dcol.Count
 
-        ' Initialize distances and enqueue all ports with zero distance
+        ' seed at zero distance, eat up all Max distance values
         For row As Integer = 1 To Me.m_ds.InRow
             For col As Integer = 1 To Me.m_ds.InCol
                 If seeds(row, col) Then
