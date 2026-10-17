@@ -369,7 +369,7 @@ Public Class cValueChainPlugin
         ' Running in auto mode?
         If (Me.m_model.IsManualRunMode = False) Then
             ' #Yes: prepare results for receiving Ecopath results
-            Me.m_result.Reset(Me.m_core.nFleets, Me.m_core.nGroups, 1)
+            Me.m_result.Reset(Me.m_core.nFleets, Me.m_core.nGroups, 1, cEwEValueChainModel.eRunTypes.Ecopath)
         End If
 
         ' Prepare data
@@ -412,7 +412,7 @@ Public Class cValueChainPlugin
         ' Running in auto mode?
         If (Me.m_model.IsManualRunMode = False) Then
             ' #Yes: prepare results for receiving Ecosim results
-            Me.m_result.Reset(Me.m_core.nFleets, Me.m_core.nGroups, Me.m_core.nEcosimTimeSteps)
+            Me.m_result.Reset(Me.m_core.nFleets, Me.m_core.nGroups, Me.m_core.nEcosimTimeSteps, cEwEValueChainModel.eRunTypes.Ecosim)
         End If
 
         ' Prepare data

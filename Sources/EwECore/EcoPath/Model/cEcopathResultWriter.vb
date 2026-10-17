@@ -51,8 +51,8 @@ Public Class cEcopathResultWriter
 
         ' Try to make sure that the output path is there
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING),
-                               eMessageType.DataExport, eCoreComponentType.Ecosim, eMessageImportance.Information)
+            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING),
+                               eMessageType.DataExport, eCoreComponentType.Ecopath, eMessageImportance.Information)
             If (Not bQuiet) Then
                 Me.m_core.Messages.SendMessage(msg)
             Else
