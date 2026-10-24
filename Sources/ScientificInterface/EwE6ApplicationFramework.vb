@@ -4,6 +4,7 @@
 
 Imports System.IO
 Imports System.Reflection
+Imports EwECore.Database
 Imports EwELicense
 Imports EwEUtils.Logging
 Imports EwEUtils.SystemUtilities
@@ -49,6 +50,15 @@ Module EwE6ApplicationFramework
         m_logger = LoggingContext.LoggerFactory.CreateLogger("EwE6ApplicationFramework")
 
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf OnResolveAssembly
+
+        ' Opt in to EwECore's local-working-copy staging (OneDrive/cloud-
+        ' sync save-safety) for THIS interactive application specifically.
+        ' Off by default in EwECore.dll itself, since it's also used by
+        ' non-interactive consumers (e.g. EwERunConsole, via cCoreService)
+        ' that never call Save() and would only pay staging's cost for no
+        ' possible benefit. See cEwEDatabase.EnableLocalStaging's own doc
+        ' comment and USER_STORY_DIFFERENCES.md.
+        cEwEDatabase.EnableLocalStaging = True
 
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
@@ -226,7 +236,7 @@ Module EwE6ApplicationFramework
                 End If
 
                 If bIncludeCompilationDate Then
-                    strVersion = cStringUtils.Localize(SharedResources.VERSION_EXT_COMPILED, strVersion, cAssemblyUtils.GetCompileDate(an).ToShortDateString)
+                    strVersion = cStringUtils.Localize(SharedResources.VERSION_EXT_COMPILED, strVersion, cAssemblyUtils.GetCompileDate(ass).ToShortDateString)
                 End If
 
                 If bIncludeBitness Then

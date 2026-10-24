@@ -19,7 +19,7 @@ Namespace Database
     ''' <para>This deliberately does NOT use SQLite's own file locking
     ''' (<c>PRAGMA locking_mode</c>). Guarding against genuinely external
     ''' tools (e.g. DB Browser for SQLite) opening the file concurrently is
-    ''' out of scope for this class - see FILE_LOCK_HANDOFF.md. This class
+    ''' out of scope for this class. This class
     ''' only arbitrates between multiple EwECore-based sessions.</para>
     ''' <para>Recovery from a crashed holder is automatic: the OS releases
     ''' the file handle the instant the holding process dies, so the next
@@ -27,7 +27,7 @@ Namespace Database
     ''' PID/heartbeat bookkeeping is needed.</para>
     ''' </remarks>
     ''' =======================================================================
-    Friend Class cEwEExclusivityLock
+    Public Class cEwEExclusivityLock
         Implements IDisposable
 
         Private m_lockStream As FileStream = Nothing

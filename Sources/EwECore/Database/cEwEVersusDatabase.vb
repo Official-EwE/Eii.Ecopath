@@ -20,10 +20,9 @@ Namespace Database
         ''' Closes both wrapped databases. The base cEwEDatabase.Close() only
         ''' resets a version field and has no knowledge of dbAccessDatabase/
         ''' dbEfDatabase - without this override, closing a versus-database
-        ''' left both connections (in particular the Access/OleDb one, with
-        ''' its exclusive file lock) open indefinitely, causing a spurious
-        ''' "already open" error the next time the same Access file was
-        ''' opened again.
+        ''' left both connections open indefinitely, leaking file handles
+        ''' and any staged local working copies neither wrapped database
+        ''' would otherwise know to clean up.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overrides Sub Close()
@@ -77,6 +76,36 @@ Namespace Database
             ' Replace extension with .ewesqlite for EF database
             Dim efDatabasePath As String = System.IO.Path.ChangeExtension(strDatabase, ".ewesqlite")
             Return atResult And dbEfDatabase.Open(efDatabasePath, eDataSourceTypes.Sqlite, bReadOnly)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Publishes BOTH wrapped databases' local working copies back to
+        ''' their real locations. Needed because cEwEVersusDatabase never
+        ''' stages a working copy itself - it delegates Open()/Close()
+        ''' straight to dbAccessDatabase/dbEfDatabase, each of which manages
+        ''' its own staging independently - so the inherited
+        ''' cEwEDatabase.PublishLocalCopyToSource() would otherwise be a
+        ''' silent no-op here (its own m_strLocalWorkingCopyPath is always
+        ''' empty), and neither side's save would ever actually reach disk.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overrides Function PublishLocalCopyToSource() As Boolean
+            Dim bAccessOK As Boolean = True
+            Dim bEfOK As Boolean = True
+            Try
+                If dbAccessDatabase IsNot Nothing Then bAccessOK = dbAccessDatabase.PublishLocalCopyToSource()
+            Catch ex As Exception
+                m_logger.LogError(ex, "cEwEVersusDatabase.PublishLocalCopyToSource(): failed to publish the Access database")
+                bAccessOK = False
+            End Try
+            Try
+                If dbEfDatabase IsNot Nothing Then bEfOK = dbEfDatabase.PublishLocalCopyToSource()
+            Catch ex As Exception
+                m_logger.LogError(ex, "cEwEVersusDatabase.PublishLocalCopyToSource(): failed to publish the EF/SQLite database")
+                bEfOK = False
+            End Try
+            Return bAccessOK AndAlso bEfOK
         End Function
 
         Public Overrides ReadOnly Property Name As String

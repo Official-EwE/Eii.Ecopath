@@ -27,11 +27,24 @@ Namespace Database
         ''' commented-out hidden/captured-output path below if that changes.
         ''' </summary>
         ''' <param name="strMdbFilename">Full path to the .mdb/.accdb file to convert.</param>
+        ''' <param name="strSqliteOutputPath">
+        ''' Where to write the resulting .ewesqlite file. Optional - if not
+        ''' given, defaults to the conventional sibling path
+        ''' (Path.ChangeExtension(strMdbFilename, ".ewesqlite")), exactly as
+        ''' before this parameter existed.
+        ''' Pass this explicitly whenever strMdbFilename is NOT the model's
+        ''' real, final location (e.g. a local staged copy used to keep the
+        ''' legacy update chain off a possibly cloud-synced original - see
+        ''' frmEwE6.LoadEcopathModelHandlingConversion) - otherwise both the tool's own default
+        ''' output path AND the SeedBaseline call below would derive from
+        ''' the staged copy's path instead of the real target, silently
+        ''' writing the result to the wrong location.
+        ''' </param>
         ''' <exception cref="FileNotFoundException">The source file or mdb2sqlite.exe itself could not be found.</exception>
         ''' <exception cref="cMdb2SqliteNetworkException">mdb2sqlite.exe could not download mdbtools-win due to a network failure (first-time setup on this machine only).</exception>
         ''' <exception cref="cMdb2SqliteConversionException">mdb2sqlite.exe exited with any other non-zero code, or could not be started.</exception>
         ''' -------------------------------------------------------------------
-        Public Shared Sub ConvertMdbToSqlite(strMdbFilename As String)
+        Public Shared Sub ConvertMdbToSqlite(strMdbFilename As String, Optional strSqliteOutputPath As String = Nothing)
 
             If Not File.Exists(strMdbFilename) Then
                 Throw New FileNotFoundException($"File not found: {strMdbFilename}", strMdbFilename)
@@ -44,15 +57,21 @@ Namespace Database
                 Throw New FileNotFoundException($"mdb2sqlite.exe not found at: {strToolPath}", strToolPath)
             End If
 
+            ' Defaults to the exact same value the tool would otherwise
+            ' compute internally for -outDatabase, so passing it explicitly
+            ' below changes nothing for any existing single-argument caller.
+            Dim strEffectiveOutputPath As String = If(String.IsNullOrEmpty(strSqliteOutputPath), Path.ChangeExtension(strMdbFilename, ".ewesqlite"), strSqliteOutputPath)
+
             ' mdb2sqlite.exe was compiled from a .ps1 via ps2exe, which hosts the
             ' PowerShell engine internally - it runs as a normal standalone
             ' executable and does not need to be launched through a separate
             ' powershell.exe process.
             Dim strMdbPathEscaped As String = strMdbFilename.Replace("""", "\""")
+            Dim strOutPathEscaped As String = strEffectiveOutputPath.Replace("""", "\""")
 
             Dim psi As New ProcessStartInfo() With {
                 .FileName = strToolPath,
-                .Arguments = $"-inDatabase ""{strMdbPathEscaped}""",
+                .Arguments = $"-inDatabase ""{strMdbPathEscaped}"" -outDatabase ""{strOutPathEscaped}""",
                 .UseShellExecute = False,
                 .RedirectStandardOutput = False,
                 .RedirectStandardError = False,
@@ -86,8 +105,7 @@ Namespace Database
             ' no __EFMigrationsHistory at all. Seed it as fully baselined
             ' here, automatically, so every caller gets an immediately
             ' Migrate()-ready file with no separate step to remember.
-            Dim strSqlitePath As String = Path.ChangeExtension(strMdbFilename, ".ewesqlite")
-            cSqliteMigrator.SeedBaseline(strSqlitePath)
+            cSqliteMigrator.SeedBaseline(strEffectiveOutputPath)
 
             ' --- Hidden + captured-output alternative (kept for later use) ---
             ' If we later want to run hidden and feed the tool's output into the
@@ -100,7 +118,7 @@ Namespace Database
             ' Dim sbError As New StringBuilder()
             ' Dim psiHidden As New ProcessStartInfo() With {
             '     .FileName = strToolPath,
-            '     .Arguments = $"-inDatabase ""{strMdbPathEscaped}""",
+            '     .Arguments = $"-inDatabase ""{strMdbPathEscaped}"" -outDatabase ""{strOutPathEscaped}""",
             '     .UseShellExecute = False,
             '     .RedirectStandardOutput = True,
             '     .RedirectStandardError = True,

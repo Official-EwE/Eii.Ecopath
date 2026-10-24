@@ -30,21 +30,26 @@ Namespace Database
 
         ''' <summary>A connection to an OleDb database, if any.</summary>
         Public m_conn As OleDbConnection = Nothing
-        ''' <summary>The connection string to connect to a MDB database.</summary>
-        Private m_strConnectionMDB As String = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source={0};Mode=Share Exclusive;"
+        ''' <summary>
+        ''' The connection string to connect to a MDB database. No longer
+        ''' opened in exclusive mode - multi-user/multi-session protection
+        ''' was removed entirely as a deliberate product decision (a
+        ''' concurrent open by another session is now the user's own
+        ''' responsibility to avoid).
+        ''' </summary>
+        Private m_strConnectionMDB As String = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source={0};"
         ' Download from http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=13255.
         ' only works if office is 64 bit too. To detect
         ' To determine if office 2010 is 32 bit or 64 bit, we could check a registry key named
         ' bitness. For more information, please refer to this article: http://technet.microsoft.com/en-us/library/ee681792.aspx.
         ' Also here is a resource with a same question you could refer to:
         ' Detect whether Office 2010 is 32bit or 64bit via the registry (http://stackoverflow.com/questions/2203980/detect-whether-office-2010-is-32bit-or-64bit-via-the-registry).
-        ''' <summary>The connection string to connect to a ACCDB database.</summary>
-        Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Mode=Share Exclusive;Data Source={0};"
-
-        '17-Jul-2025 Connection string without Exclusive opening mode
-        'This is needed for running the console on multiple instances of the same model with different data.
-        'Right now it has to be switched on in code(obviously).
-        'Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};"
+        ''' <summary>
+        ''' The connection string to connect to a ACCDB database. No longer
+        ''' opened in exclusive mode - see m_strConnectionMDB's own doc
+        ''' comment above.
+        ''' </summary>
+        Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};"
 
         ''' <summary>File name to access database.</summary>
         Private m_strFileName As String = ""
@@ -160,6 +165,18 @@ Namespace Database
                 Return eDatasourceAccessType.Failed_TransferTypes
             End If
 
+            ' This session's actual, up-to-date data lives in the local
+            ' working copy (if any was staged - a write-intent open always
+            ' has one); strDatabaseFrom is stale, frozen at whatever it was
+            ' when the working copy was staged. Close() below deletes the
+            ' working copy via CleanUpLocalWorkingCopy(), so detach it from
+            ' Me first - this leaves the file in place on disk for the copy
+            ' further down, instead of losing this session's only
+            ' up-to-date copy of the data before we can use it.
+            Dim strDataToCarryOver As String = If(String.IsNullOrEmpty(Me.m_strLocalWorkingCopyPath), strDatabaseFrom, Me.m_strLocalWorkingCopyPath)
+            Dim strLeftoverWorkingCopy As String = Me.m_strLocalWorkingCopyPath
+            Me.m_strLocalWorkingCopyPath = ""
+
             Me.Close()
 
             ' Test if we can create a new DB at the intended location
@@ -171,7 +188,7 @@ Namespace Database
                 ' #Yes: this is painful... File Copy the current DB on top of the newly created DB
                 Try
                     ' Can copy database from old to new MDB?
-                    System.IO.File.Copy(strDatabaseFrom, strDatabaseTo, True)
+                    System.IO.File.Copy(strDataToCarryOver, strDatabaseTo, True)
                 Catch ex As Exception
                     ' #Failure
                     datResult = eDatasourceAccessType.Failed_CannotSave
@@ -187,6 +204,15 @@ Namespace Database
                     Me.Open(strDatabaseFrom)
                 End If
             End If
+
+            ' Now safe to remove the detached working copy, if there was one.
+            If Not String.IsNullOrEmpty(strLeftoverWorkingCopy) Then
+                Try
+                    If File.Exists(strLeftoverWorkingCopy) Then File.Delete(strLeftoverWorkingCopy)
+                Catch
+                End Try
+            End If
+
             Return datResult
 
         End Function
@@ -220,6 +246,30 @@ Namespace Database
                 ' Return eDatasourceAccessType.Failed_ReadOnly
             End If
 
+            Dim strEffectivePath As String = strDatabase
+
+            If Not bReadOnly AndAlso cEwEDatabase.EnableLocalStaging Then
+                ' Write-intent open, with staging enabled: stages a local
+                ' working copy to protect the eventual Save from cloud-sync
+                ' interference. There is no lock of any kind here -
+                ' multi-user/multi-session protection was removed entirely
+                ' as a deliberate product decision;
+                '
+                ' A caller-requested read-only open (the older/incompatible
+                ' DB version case - the only remaining use of bReadOnly),
+                ' OR any caller that hasn't opted into EnableLocalStaging
+                ' at all (e.g. EwERunConsole - see EnableLocalStaging's own
+                ' doc comment), needs none of this: connects directly to
+                ' the real file below, exactly as before this whole
+                ' feature existed.
+                Try
+                    strEffectivePath = Me.StageLocalWorkingCopy(strDatabase)
+                Catch ex As Exception
+                    m_logger.LogError(ex, "cEwEAccessDatabase.Open('{0}') failed to stage a local working copy: {1}", strDatabase, ex.Message)
+                    Return eDatasourceAccessType.Failed_Unknown
+                End Try
+            End If
+
             ' Need to auto-detect database type?
             If databaseType = eDataSourceTypes.NotSet Then
                 ' #Yes: auto-detect
@@ -229,12 +279,14 @@ Namespace Database
             Me.m_conn = New OleDbConnection()
 
             Do
-                ' Assemble connection string
+                ' Assemble connection string - against the local working
+                ' copy for a write-intent open, or the real file directly
+                ' for a read-only open (see above).
                 Select Case databaseType
                     Case eDataSourceTypes.Access2003
-                        Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionMDB, strDatabase)
+                        Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionMDB, strEffectivePath)
                     Case eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite
-                        Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionACCDB, strDatabase)
+                        Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionACCDB, strEffectivePath)
                     Case eDataSourceTypes.NotSet
                         Me.m_conn.ConnectionString = ""
                         datResult = eDatasourceAccessType.Failed_UnknownType
@@ -253,7 +305,7 @@ Namespace Database
                         Me.m_conn.Open()
                         ' Set status
                         datResult = eDatasourceAccessType.Opened
-                        ' All well: store file name
+                        ' All well: store file name - the REAL path, not the working copy
                         Me.m_strFileName = strDatabase
 
                     Catch ex As OleDbException
@@ -286,6 +338,10 @@ Namespace Database
 
             Loop Until bTryAgain = False
 
+            If datResult <> eDatasourceAccessType.Opened Then
+                Me.CleanUpLocalWorkingCopy()
+            End If
+
             Return datResult
 
         End Function
@@ -312,6 +368,8 @@ Namespace Database
                 Me.m_conn.Dispose()
                 Me.m_conn = Nothing
             End If
+
+            Me.CleanUpLocalWorkingCopy() ' no-op if this session never staged one (a genuine read-only open)
 
             ' Clear file name
             Me.m_strFileName = ""

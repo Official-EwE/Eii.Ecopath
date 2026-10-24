@@ -9,9 +9,10 @@
     Path to the output .ewesqlite file.
 .PARAMETER CleanCache
     If specified, removes the .Cache folder (downloaded/installed mdbtools,
-    and any leftover conversion.sql/sqlite_error.txt temp files) and exits,
-    without performing a conversion. Use this to force a fresh mdbtools
-    download/install on the next run, or to clean up after troubleshooting.
+    and any leftover conversion_*.sql/sqlite_error_*.txt temp files, one
+    pair per conversion run) and exits, without performing a conversion.
+    Use this to force a fresh mdbtools download/install on the next run,
+    or to clean up after troubleshooting.
 .EXAMPLE
     .\mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
     On Linux: ./run-ps1.sh mdb2sqlite.ps1 -inDatabase "C:\path\to\input.eweaccdb"
@@ -200,7 +201,15 @@ function Convert-MdbToSqlite {
     $sqliteExe = Install-Sqlite -scriptDir $scriptDir
 
     $cacheFolder = Join-Path $scriptDir '.Cache'
-    $conversionSql = Join-Path $cacheFolder 'conversion.sql'
+    # Unique per invocation - two conversions running at the same time
+    # (even for completely unrelated input files) would otherwise both
+    # write to the same fixed 'conversion.sql', corrupting each other's
+    # intermediate SQL script before it ever reaches sqlite3.exe. Kept
+    # inside .Cache (not the system temp folder) so -CleanCache's existing
+    # "Remove-Item -Recurse -Force $cacheFolder" still cleans these up,
+    # and so a leftover file remains easy to find for debugging.
+    $conversionId = [guid]::NewGuid().ToString('N')
+    $conversionSql = Join-Path $cacheFolder "conversion_$conversionId.sql"
 
     # Use executables from PATH, no .exe extension
     $schemaExe = "mdb-schema"
@@ -255,7 +264,8 @@ function Convert-MdbToSqlite {
 	Move-Item $tempFile $conversionSql -Force
 
     Write-Host "Creating SQLite database and importing data..."
-    $errorFile = Join-Path $cacheFolder 'sqlite_error.txt'
+    # Unique per invocation, same reasoning as $conversionSql above.
+    $errorFile = Join-Path $cacheFolder "sqlite_error_$conversionId.txt"
 
     # Invoke sqlite3 directly via .NET's Process class, with the SQL file's
     # raw bytes piped straight into its stdin. Deliberately NOT built as a

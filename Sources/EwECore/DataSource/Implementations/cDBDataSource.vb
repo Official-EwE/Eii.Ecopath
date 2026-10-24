@@ -301,19 +301,11 @@ Namespace DataSources
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="IEwEDataSource.IsLockedByAnotherSession" />
+        ''' <inheritdoc cref="IEwEDataSource.PublishToSource" />
         ''' -------------------------------------------------------------------
-        Public Function IsLockedByAnotherSession() As Boolean _
-            Implements IEwEDataSource.IsLockedByAnotherSession
-            Return Me.m_db.IsLockedByAnotherSession
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="IEwEDataSource.LocalReadOnlyCopyPath" />
-        ''' -------------------------------------------------------------------
-        Public Function LocalReadOnlyCopyPath() As String _
-            Implements IEwEDataSource.LocalReadOnlyCopyPath
-            Return Me.m_db.LocalReadOnlyCopyPath
+        Public Function PublishToSource() As Boolean _
+            Implements IEwEDataSource.PublishToSource
+            Return Me.m_db.PublishLocalCopyToSource()
         End Function
 
 #Region " Helper methods "

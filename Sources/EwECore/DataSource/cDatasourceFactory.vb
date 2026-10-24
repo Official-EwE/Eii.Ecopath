@@ -148,8 +148,6 @@ Namespace DataSources
                     If (access = eDatasourceAccessType.Opened) Then
                         comp = db.Compatibility
                         db.Close()
-                    Else
-                        access = eDatasourceAccessType.Failed_FileNotFound
                     End If
 
                 Case eDataSourceTypes.NotSet

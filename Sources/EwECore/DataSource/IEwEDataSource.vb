@@ -35,22 +35,24 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether this data source is read-only specifically because
-        ''' another session already holds a write lock on it, as opposed to
-        ''' being read-only for any other reason.
+        ''' Publishes this session's local working copy back to its real,
+        ''' possibly cloud-synced (OneDrive etc.) location, unconditionally
+        ''' overwriting it - no fingerprint check, no conflict prompt. Call
+        ''' once per explicit user Save action (see cCore.Save()), after
+        ''' confirming the save actually succeeded - never per internal
+        ''' transaction. A no-op (always returns True) for data sources with
+        ''' no local-working-copy concept (e.g. the always-read-only legacy
+        ''' EII formats).
         ''' </summary>
+        ''' <returns>
+        ''' True on success (or if there was nothing to publish). False if
+        ''' the real file could not be written to - e.g. still locked by a
+        ''' cloud-sync client after retrying internally. See
+        ''' cEwEDatabase.PublishLocalCopyToSource's own doc comment for the
+        ''' retry behavior this wraps.
+        ''' </returns>
         ''' -------------------------------------------------------------------
-        Function IsLockedByAnotherSession() As Boolean
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Path of the local, disposable read-only copy this session is
-        ''' actually connected to, if any. Empty when this session is not
-        ''' operating on a local copy (e.g. it holds the write lock, or this
-        ''' data source type has no such concept).
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Function LocalReadOnlyCopyPath() As String
+        Function PublishToSource() As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

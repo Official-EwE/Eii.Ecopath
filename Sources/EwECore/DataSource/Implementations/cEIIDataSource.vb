@@ -827,18 +827,11 @@ Public Class cEIIDataSource
     End Function
 
     ''' <summary>
-    ''' Always False - this format is permanently read-only (see IsReadOnly),
-    ''' never because of another session's lock.
+    ''' No-op - this format is always read-only, with no local-working-copy
+    ''' concept and nothing to publish back.
     ''' </summary>
-    Public Function IsLockedByAnotherSession() As Boolean Implements DataSources.IEwEDataSource.IsLockedByAnotherSession
-        Return False
-    End Function
-
-    ''' <summary>
-    ''' Always empty - this format has no local-copy concept.
-    ''' </summary>
-    Public Function LocalReadOnlyCopyPath() As String Implements DataSources.IEwEDataSource.LocalReadOnlyCopyPath
-        Return ""
+    Public Function PublishToSource() As Boolean Implements DataSources.IEwEDataSource.PublishToSource
+        Return True
     End Function
 
     Public Sub Dispose() Implements IDisposable.Dispose
