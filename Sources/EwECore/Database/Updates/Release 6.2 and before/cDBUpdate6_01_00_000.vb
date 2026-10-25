@@ -55,7 +55,7 @@ Friend Class cDBUpdate6_01_00_000
     Private Function AddSimFleetID(db As cEwEDatabase) As Boolean
 
         Dim iNextFleetID As Integer = 1
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim alFleets As New List(Of Integer)
         Dim drow As DataRow = Nothing

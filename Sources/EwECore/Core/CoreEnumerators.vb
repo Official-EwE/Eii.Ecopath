@@ -169,13 +169,13 @@ End Enum
 ''' ---------------------------------------------------------------------------
 Public Enum eEstimateParameterFor
     ''' <summary>
-    ''' Indicates that parameters are being estimated for the 
+    ''' Indicates that parameters are being estimated for the
     ''' main parameter estimation routine.
     ''' </summary>
     ParameterEstimation
 
     ''' <summary>
-    ''' Indicates that parameters are being estimated for the 
+    ''' Indicates that parameters are being estimated for the
     ''' sensitivity loop.
     ''' </summary>
     Sensitivity
@@ -238,8 +238,8 @@ End Enum
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Enumerator for CostPct(nFleets, 3) array, 
-''' i.e. fleet.FixedCost = CostPct(1, eCostIndex.Fixed) is the fixed cost for 
+''' Enumerator for CostPct(nFleets, 3) array,
+''' i.e. fleet.FixedCost = CostPct(1, eCostIndex.Fixed) is the fixed cost for
 ''' variable 'fleet' at index 1.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
@@ -360,8 +360,8 @@ End Enum
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
-''' Enumerated type stating whether a time series is 
-''' <see cref="cGroupTimeSeries">group-related</see>,  
+''' Enumerated type stating whether a time series is
+''' <see cref="cGroupTimeSeries">group-related</see>,
 ''' <see cref="cFleetTimeSeries">fleet-related</see> or is a
 ''' <see cref="cForcingFunction">forcing function</see>.
 ''' </summary>
@@ -795,8 +795,8 @@ Public Enum eVarNameFlags As Integer
     ''' the foraging time adjustment was allowed to drop lower.
     '''</summary>
     ''' <comment>
-    ''' VC: Arrow lake model, big increase in prey, top predator foraging 
-    ''' time can't go below 0.1, so changed bount to 0.01 
+    ''' VC: Arrow lake model, big increase in prey, top predator foraging
+    ''' time can't go below 0.1, so changed bount to 0.01
     ''' </comment>
     ForagingTimeLowerLimit
     ''' <summary>Contaminant tracing on/off for Ecosim</summary>
@@ -885,11 +885,11 @@ Public Enum eVarNameFlags As Integer
     FixedFecundity
     ''' <summary>To document</summary>
     EggAtSpawn
-    ''' <summary>Stanza parameter; used to indicate the group that leads 
+    ''' <summary>Stanza parameter; used to indicate the group that leads
     ''' <see cref="eVarNameFlags.Biomass">biomass</see> in a multi-stanza
     ''' configuration</summary>
     LeadingBiomass
-    ''' <summary>Stanza parameter; used to indicate the group that leads 
+    ''' <summary>Stanza parameter; used to indicate the group that leads
     ''' <see cref="eVarNameFlags.QBInput">QB</see> in a multi-stanza
     ''' configuration</summary>
     LeadingCB
@@ -1188,13 +1188,13 @@ Public Enum eVarNameFlags As Integer
 
     ''' <summary>Can Ecospace use Ecosim biomass forcing time series</summary>
     EcospaceUseEcosimBiomassForcing
-    ''' <summary>Maintenance flag, used by Ecospace, to tell if there is Ecosim biomass forcing time series loaded. 
+    ''' <summary>Maintenance flag, used by Ecospace, to tell if there is Ecosim biomass forcing time series loaded.
     ''' This does not tell Ecospace to use the time series just that it is available to be used.</summary>
     EcospaceIsEcosimBiomassForcingLoaded
 
     ''' <summary>Can Ecospace use Ecosim discards forcing time series</summary>
     EcospaceUseEcosimDiscardForcing
-    ''' <summary>Maintenance flag, used by Ecospace, to tell if there is Ecosim biomass forcing time series loaded. 
+    ''' <summary>Maintenance flag, used by Ecospace, to tell if there is Ecosim biomass forcing time series loaded.
     ''' This does not tell Ecospace to use the time series just that it is available to be used.</summary>
     EcospaceIsEcosimDiscardForcingLoaded
 
@@ -2003,12 +2003,12 @@ Public Enum eVarNameFlags As Integer
     ''' <summary>To document</summary>
     MSEBatchGroupRunType
     ''' <summary>
-    ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 
+    ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value
     ''' Boolean is this group managed using the TFM
     '''</summary>
     MSEBatchTFMManaged
     ''' <summary>
-    ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 
+    ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value
     '''</summary>
     MSEBatchIterCalcType
 
@@ -2202,7 +2202,7 @@ Public Enum eVarNameFlags As Integer
 
     ''' <summary>Group or fleet index targeted by MSY</summary>
     MSYFSelection
-    ''' <summary><see cref="eVarNameFlags.MSYFSelection"/> interpretation flag, 
+    ''' <summary><see cref="eVarNameFlags.MSYFSelection"/> interpretation flag,
     ''' should be one of <see cref="eMSYFSelectionModeType">values</see></summary>
     MSYFSelectionMode
     ''' <summary>MSY assessment type</summary>
@@ -2259,7 +2259,7 @@ End Enum
 ''' Enumerated type that indicates a class of data in the EwE core.
 '''</summary>
 ''' <remarks>
-''' These enums have fixed values since values may be used to identify 
+''' These enums have fixed values since values may be used to identify
 ''' items in the EwE6 database system.
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
@@ -2277,7 +2277,7 @@ Public Enum eDataTypes
 
     ''' <summary>
     ''' Data belongs to the Ecopath group inputs,
-    ''' which are provided to perform a parameter estimation run. 
+    ''' which are provided to perform a parameter estimation run.
     '''</summary>
     EcoPathGroupInput = 2
 
@@ -2480,7 +2480,7 @@ Public Enum eDataTypes
     ''' Data belongs to a search objectives manager.
     '''</summary>
     ''' <remarks>
-    ''' Search Objectives form the base for the shared search interface 
+    ''' Search Objectives form the base for the shared search interface
     ''' ISearchObjective used by Fishing Policy, Ecoseed, MSE and possibly
     ''' other searches. This system is flexible and be extended.
     ''' </remarks>
@@ -2572,12 +2572,12 @@ Public Enum eDataTypes
 
     ''' <summary>
     ''' Data belongs to the EwE game engine data.
-    '''</summary>    
+    '''</summary>
     GameData = 58
 
     '''' <summary>
     '''' Data belongs to the Ecosim fisheries regulation engine.
-    ''''</summary>    
+    ''''</summary>
     'EcosimFisheriesRegulation = 59
 
     ''' <summary>
@@ -2968,7 +2968,7 @@ End Enum
 ''' </summary>
 ''' <remarks>
 ''' <para>Can be used in combination with eVarNameFlags to tell the status of a parameter</para>
-''' <para>Mulitple eStatusFlags can be joined together using the bitwise OR operator to signify 
+''' <para>Mulitple eStatusFlags can be joined together using the bitwise OR operator to signify
 ''' multiple statuses for a variable.</para>
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
@@ -3006,7 +3006,7 @@ Public Enum eStatusFlags
     ''' <summary>
     ''' Unknown error encountered.
     ''' </summary>
-    ''' 
+    '''
     ErrorEncountered = 32
 
     ''' <summary>
@@ -3120,7 +3120,7 @@ End Enum
 
 #Region " Quota types "
 
-'enum values are hard coded so that they can be stored in the database 
+'enum values are hard coded so that they can be stored in the database
 Public Enum eQuotaTypes
     ''' <summary>No Quota controls are used</summary>
     NoControls
@@ -3158,7 +3158,9 @@ Public Enum eDataSourceTypes
     ''' <summary>Datasource capable of handling EIIXML formatted data.</summary>
     EIIXML = 5
     ''' <summary>Data importable from EcoBase.</summary>
-    EcoBase
+    EcoBase = 6
+    Sqlite = 7
+    AccessVsSqlite = 8
 End Enum
 
 ''' -------------------------------------------------------------------

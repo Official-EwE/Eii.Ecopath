@@ -56,7 +56,7 @@ Friend Class cDBUpdate6_01_00_006
     Private Function AddPedigreeName(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
         Dim lstrDescriptions As New List(Of String)

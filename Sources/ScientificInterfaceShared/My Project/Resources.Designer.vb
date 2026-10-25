@@ -2011,6 +2011,15 @@ Namespace My.Resources
                 Return ResourceManager.GetString("FILEFILTER_SAVE_ACCDB", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE database (Access 2007 format)|*.eweaccdb.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_SAVE_SQLITE() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_SAVE_SQLITE", resourceCulture)
+            End Get
+        End Property        
 
         '''<summary>
         '''  Looks up a localized string similar to EwE database (Access 2003 format)|*.ewemdb.

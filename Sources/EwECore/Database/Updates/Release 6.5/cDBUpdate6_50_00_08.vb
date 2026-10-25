@@ -38,7 +38,7 @@ Friend Class cDBUpdate6_50_00_08
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = db.GetReader("SELECT * FROM EcospaceScenario")
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
         Dim lID As New List(Of Integer)

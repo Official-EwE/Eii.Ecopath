@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports EwECore.Database
 
@@ -72,7 +72,7 @@ Friend Class cDBUpdate6_00_06_003
         Dim liFleets As New List(Of Integer)
         Dim liScenarios As New List(Of Integer)
         Dim aiNumFleets(,) As Integer
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
 
         ' 1) get list of all Ecopath fleets
@@ -162,7 +162,7 @@ Friend Class cDBUpdate6_00_06_003
     ''' -----------------------------------------------------------------------
     Private Function FixMultipleLinkedEffortShapes(db As cEwEDatabase) As Boolean
 
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
         Dim liShapes As New List(Of Integer)

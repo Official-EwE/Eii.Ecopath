@@ -3612,6 +3612,57 @@ Public Class cCore
             bSucces = Me.SaveChanges(True)
         End If
 
+        ' Publish the local working copy back to its real, possibly
+        ' cloud-synced (OneDrive etc.) location.
+        ' Must happen exactly once here, per explicit user Save action, only
+        ' once SaveChanges() has actually finished writing everything to
+        ' the local working copy, and only on a confirmed successful save -
+        ' never per internal transaction, and never on a failed save (which
+        ' could publish incomplete/inconsistent data).
+        '
+        ' PublishToSource() already retries internally, briefly, for a
+        ' transient sharing violation (see cEwEDatabase.
+        ' PublishLocalCopyToSource). If it still fails after that -
+        ' typically a longer-lived lock, e.g. a cloud-sync client mid-sync
+        ' - ask the user whether to try again or give up, looping for as
+        ' long as they keep choosing to retry. Auto-affirms to CANCEL if no
+        ' message handler responds (e.g. a headless/EwERunConsole-style
+        ' caller with no UI attached), so an unattended process fails
+        ' cleanly rather than hanging indefinitely.
+        If bSucces Then
+            Do
+                If Me.DataSource.PublishToSource() Then Exit Do
+
+                ' cRestartManagerLookup is purely cosmetic here - a better
+                ' worded message, nothing more. An empty result (detection
+                ' found nothing, or failed for any reason) falls back to
+                ' generic phrasing; either way the retry/cancel behavior
+                ' above is unaffected.
+                ' IEwEDataSource.FileName() is just the base name, no
+                ' directory or extension (by design - see Directory()/
+                ' Extension() alongside it) - fine for the dialog message
+                ' text below, but GetLockingAppName needs an actual,
+                ' openable path, so reconstruct the full one here.
+                Dim strLockingPath As String = Path.Combine(Me.DataSource.Directory(), Me.DataSource.FileName() & Me.DataSource.Extension())
+                Dim strLockingApp As String = cRestartManagerLookup.GetLockingAppName(strLockingPath)
+                If String.IsNullOrEmpty(strLockingApp) Then strLockingApp = "another application" ' Todo: localize
+
+                ' Todo: localize the message
+                Dim fmPublish As New cFeedbackMessage(
+                    cStringUtils.Localize("Cannot write changes to '{0}' - it is currently locked by {1}. Please close it, then click OK to retry, or click Cancel to stop.", Me.DataSource.FileName(), strLockingApp),
+                    eCoreComponentType.Core, eMessageType.Any,
+                    eMessageImportance.Warning, eMessageReplyStyle.OK_CANCEL)
+                fmPublish.Reply = eMessageReply.CANCEL
+                Me.m_publisher.SendMessage(fmPublish)
+
+                If fmPublish.Reply = eMessageReply.CANCEL Then
+                    bSucces = False
+                    Exit Do
+                End If
+                ' Reply = OK: loop back and retry
+            Loop
+        End If
+
         ' Force an update since datasources have been switched
         Me.m_StateMonitor.UpdateDataState(DataSource, TriState.True)
 

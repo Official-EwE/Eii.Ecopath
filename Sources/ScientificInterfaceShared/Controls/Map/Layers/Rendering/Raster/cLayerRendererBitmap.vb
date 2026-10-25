@@ -26,7 +26,11 @@ Namespace Controls.Map.Layers
                                             rc As RectangleF,
                                             Optional iSymbol As Integer = 0)
             If (Me.IsStyleValid) Then
-                Me.DrawImageAlpha(g, rc, Me.VisualStyle.Image, 1.0!)
+                Dim img As Image = ConvertFromImageString(Me.VisualStyle.ImageString)
+                If img IsNot Nothing Then
+                    Me.DrawImageAlpha(g, rc, img, 1.0!)
+                    img.Dispose()
+                End If
             Else
                 Me.RenderError(g, rc)
             End If
@@ -38,14 +42,18 @@ Namespace Controls.Map.Layers
                                         value As Object,
                                         style As cStyleGuide.eStyleFlags)
             If (Me.IsStyleValid) Then
-                Me.DrawImageAlpha(g, rc, Me.VisualStyle.Image, Math.Min(1, Math.Max(0, CSng(value))))
+                Dim img As Image = ConvertFromImageString(Me.VisualStyle.ImageString)
+                If img IsNot Nothing Then
+                    Me.DrawImageAlpha(g, rc, img, Math.Min(1, Math.Max(0, CSng(value))))
+                    img.Dispose()
+                End If
             Else
                 Me.RenderError(g, rc)
             End If
         End Sub
 
         Protected Overrides Function IsStyleValid() As Boolean
-            Return (Me.VisualStyle.Image IsNot Nothing)
+            Return Not String.IsNullOrEmpty(Me.VisualStyle.ImageString)
         End Function
 
         Public Overrides Function Clone() As cRasterLayerRenderer
@@ -86,6 +94,23 @@ Namespace Controls.Map.Layers
 
         Public Overrides Function GetDisplayText(value As Object) As String
             Return Convert.ToString(value)
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert Base64 PNG string to System.Drawing.Image.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Shared Function ConvertFromImageString(base64Png As String) As Image
+            If String.IsNullOrEmpty(base64Png) Then Return Nothing
+            Try
+                Dim imageBytes As Byte() = Convert.FromBase64String(base64Png)
+                Using ms As New System.IO.MemoryStream(imageBytes)
+                    Return New Bitmap(ms)
+                End Using
+            Catch
+                Return Nothing
+            End Try
         End Function
 
     End Class
