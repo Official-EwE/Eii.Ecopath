@@ -4,11 +4,10 @@
 
 Imports System.ComponentModel
 Imports System.Reflection
-Imports System.Windows.Forms
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SourceGrid2
+Imports ValueChain
 
 ''' ===========================================================================
 ''' <summary>
@@ -29,7 +28,7 @@ Public Class ucUnitGrid
 
     End Class
 
-    Private m_data As cData = Nothing
+    Private m_data As cValueChainData = Nothing
     Private m_unitType As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Producer
     Private m_lUnits As List(Of cUnit) = Nothing
 
@@ -48,7 +47,7 @@ Public Class ucUnitGrid
     ''' <param name="data"></param>
     ''' <param name="unitType"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(uic As cUIContext, data As cData, unitType As cUnitFactory.eUnitType)
+    Public Sub New(uic As cUIContext, data As cValueChainData, unitType As cUnitFactory.eUnitType)
 
         Me.m_data = data
         Me.m_unitType = unitType
@@ -122,7 +121,7 @@ Public Class ucUnitGrid
                 strHeader = pi.Name
                 ' Try to fing 'DisplayName' if available. This field is available through
                 ' underlying PropertyDescriptor *sigh*
-                pd = cPropertyConverter.FindOrigPropertyDescriptor(pi)
+                pd = ValueChain.cPropertyConverter.FindOrigPropertyDescriptor(pi)
                 ' Does pd exist?
                 If pd IsNot Nothing Then
                     ' #Yes: has DisplayName?

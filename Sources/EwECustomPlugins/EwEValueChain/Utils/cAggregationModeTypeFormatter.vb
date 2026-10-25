@@ -2,8 +2,8 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
+Imports ValueChain
 
 ''' <summary>
 ''' 

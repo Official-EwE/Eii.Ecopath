@@ -1,8 +1,12 @@
 
 <Project>
 	<PropertyGroup>
-		<!-- Stable strong-name binding version. Do NOT stamp this from CI; only Version/FileVersion/PackageVersion
-			 vary per build so that plugins compiled against 6.7.x packages keep binding to the local build. -->
+		<!--
+		Stable strong-name identity for all EwE assemblies. Plug-ins built against the
+		Eii.Ecopath.* packages bind to this exact AssemblyVersion, so only bump it on a
+		breaking change. Build-specific numbers go into Version/FileVersion
+		(stamped by CI via /p:Version and /p:FileVersion), never into AssemblyVersion.
+		-->
 		<AssemblyVersion>6.7.0.0</AssemblyVersion>
 	</PropertyGroup>
 	<PropertyGroup>

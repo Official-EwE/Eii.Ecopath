@@ -1,25 +1,8 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
+﻿' SPDX-License-Identifier: EUPL-1.2
+' This file is part of Ecopath with Ecosim (EwE).
+' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Utilities
 
@@ -38,7 +21,7 @@ Module EcopathDetails
     ''' -----------------------------------------------------------------------
     Sub Main()
 
-        Dim modelFile As String = BrowseToModel()
+        Dim modelFile As String = "tampa_bay.eiixml"
 
         ' Use EwE File utilities to generate a temporary text file
         ' The Ecopath model details will be written to this file
@@ -70,8 +53,12 @@ Module EcopathDetails
 
                 Console.WriteLine("Output file written to " & outputFile)
 
-                ' Launch the file via Windows
-                Process.Start(outputFile)
+                ' Open the file in whichever program is associated with the .txt extension
+                Dim info As New ProcessStartInfo With {
+                    .FileName = outputFile,
+                    .UseShellExecute = True
+                }
+                Process.Start(info)
 
             Else
                 Console.WriteLine("Model did not load")
@@ -126,7 +113,7 @@ Module EcopathDetails
         writer.WriteLine("# groups: " & core.nGroups)
         For iGroup As Integer = 1 To core.nGroups
 
-            Dim group As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
+            Dim group As cEcoPathGroupInput = core.EcopathGroupInputs(iGroup)
             writer.Write("   " & iGroup & ": " & group.Name & " (")
             If group.IsDetritus Then
                 writer.Write("detritus")
@@ -164,7 +151,7 @@ Module EcopathDetails
 
                 ' Get the index of the group that this life stage represents
                 Dim iGroup As Integer = stanza.iGroups(iLifeStage)
-                Dim group As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
+                Dim group As cEcoPathGroupInput = core.EcopathGroupInputs(iGroup)
 
                 writer.Write("      " & iGroup & ": " & group.Name & ", start age: " & stanza.StartAge(iLifeStage))
                 If stanza.LeadingB = (iLifeStage - 1) Then
@@ -193,14 +180,14 @@ Module EcopathDetails
         writer.WriteLine("Diet")
         For iPredator As Integer = 1 To core.nLivingGroups
 
-            Dim predator As cEcoPathGroupInput = core.EcoPathGroupInputs(iPredator)
+            Dim predator As cEcoPathGroupInput = core.EcopathGroupInputs(iPredator)
             If (predator.IsConsumer) Then
 
                 writer.WriteLine("  Predator: " & predator.Name)
 
                 For iPrey As Integer = 1 To core.nGroups
 
-                    Dim prey As cEcoPathGroupInput = core.EcoPathGroupInputs(iPrey)
+                    Dim prey As cEcoPathGroupInput = core.EcopathGroupInputs(iPrey)
                     Dim diet As Single = predator.DietComp(iPrey)
 
                     ' Does predator eat this prey?
@@ -232,12 +219,12 @@ Module EcopathDetails
 
             For iGroup As Integer = 1 To core.nGroups
                 If fleet.Landings(iGroup) > 0 Then
-                    Dim group As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
+                    Dim group As cEcoPathGroupInput = core.EcopathGroupInputs(iGroup)
                     writer.WriteLine("      Lands " & group.Name)
                 End If
 
                 If fleet.Discards(iGroup) > 0 Then
-                    Dim group As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
+                    Dim group As cEcoPathGroupInput = core.EcopathGroupInputs(iGroup)
                     writer.WriteLine("      Discards " & group.Name)
                 End If
             Next
@@ -262,7 +249,7 @@ Module EcopathDetails
             Dim taxon As cTaxon = core.Taxon(iTaxon)
             writer.Write("   " & iTaxon & ": " & taxon.Common & " (" & taxon.Genus & " " & taxon.Species & ")")
             If (taxon.iGroup > 0) Then
-                Dim group As cEcoPathGroupInput = core.EcoPathGroupInputs(taxon.iGroup)
+                Dim group As cEcoPathGroupInput = core.EcopathGroupInputs(taxon.iGroup)
                 writer.WriteLine(", group: " & group.Name & ", prop. B: " & taxon.PropB & ", prop. catch: " & taxon.PropC)
             ElseIf ((taxon.iStanza) >= 0) Then
                 Dim stanza As cStanzaGroup = core.StanzaGroups(taxon.iStanza - 1)
@@ -395,29 +382,5 @@ Module EcopathDetails
         writer.WriteLine()
 
     End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Show the 'open file' windows dialog to the user, and return the model that
-    ''' the user selected. Note that the user may abort the dialog. In that case
-    ''' no model name will be returned.
-    ''' </summary>
-    ''' <returns>A model name, or an empty string if the user did not pick a model </returns>
-    ''' -----------------------------------------------------------------------
-    Private Function BrowseToModel() As String
-
-        Dim dialog As New OpenFileDialog()
-
-        dialog.Title = "Select the model file to open"
-        dialog.Filter = "EwE models|*.mdb;*.ewemdb;*.accdb;*.eweaccdb"
-        dialog.CheckFileExists = True
-
-        If (dialog.ShowDialog = DialogResult.OK) Then
-            Return dialog.FileName
-        End If
-
-        Return String.Empty
-
-    End Function
 
 End Module

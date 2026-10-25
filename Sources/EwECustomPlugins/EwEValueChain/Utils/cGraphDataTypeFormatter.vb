@@ -2,7 +2,6 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
 
 ''' <summary>
@@ -13,7 +12,7 @@ Public Class cGraphDataTypeFormatter
 
     Public Function GetDescribedType() As System.Type _
         Implements ITypeFormatter.GetDescribedType
-        Return GetType(cResults.eGraphDataType)
+        Return GetType(cEwEValueChainResults.eGraphDataType)
     End Function
 
     Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements _

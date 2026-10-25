@@ -3,16 +3,16 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Windows.Forms
-Imports EwECore.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports ValueChain
 
 Public Class ucDefault
     Inherits UserControl
     Implements IUIElement
 
     Private m_bSelected As Boolean = False
-    Private m_obj As cOOPStorable = Nothing
+    Private m_obj As cValueChainEntity = Nothing
     Private m_uic As cUIContext = Nothing
 
     Public Property Selected() As Boolean
@@ -25,11 +25,11 @@ Public Class ucDefault
         End Set
     End Property
 
-    Public Property ObjDefault() As cOOPStorable
+    Public Property ObjDefault() As cValueChainEntity
         Get
             Return Me.m_obj
         End Get
-        Set(value As cOOPStorable)
+        Set(value As cValueChainEntity)
             Me.m_obj = value
             Me.Invalidate()
         End Set

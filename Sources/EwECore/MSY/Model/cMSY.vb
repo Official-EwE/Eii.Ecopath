@@ -379,7 +379,7 @@ Namespace MSY
             Try
                 'other initializtion here???
                 Me.m_msyData.bStopRun = False
-                Me.m_msyData.lstResults.Clear()
+                Me.m_msyData.Results.Clear()
                 Me.m_msyData.MSYRunType = eMSYRunTypes.SingleRunMSY
 
                 Return Me.InitForRun()
@@ -610,7 +610,8 @@ Namespace MSY
                     Me.GetOptimumResults()
                 End If
 
-#If DEBUG Then
+#If 0 Then
+                ' ## THIS LOGIC HAS MOVED TO cMSYResultWriterFMSY
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 System.Console.WriteLine("MSY Group, F, Total Value, B, Catch")
                 Dim igrp As Integer = Me.m_msyData.iSelGroupFleet
@@ -623,8 +624,8 @@ Namespace MSY
 #End If
 
             Catch ex As Exception
-                m_logger.LogError(ex, "runSingleSpecies() Exception: " & ex.Message)
-                System.Console.WriteLine(Me.ToString & ".runSingleSpecies() Exception: " & ex.Message)
+                m_logger.LogError(ex, "runSingleSpeciesFixedF() Exception: " & ex.Message)
+                System.Console.WriteLine(Me.ToString & ".runSingleSpeciesFixedF() Exception: " & ex.Message)
                 bReturn = False
             End Try
 
@@ -725,7 +726,7 @@ Namespace MSY
                 System.Console.WriteLine("MSY Group, F, Total Value, B, Catch")
                 Dim igrp As Integer = Me.m_msyData.iSelGroupFleet
 
-                For Each result As cMSYFResult In Me.m_msyData.lstResults
+                For Each result As cMSYFResult In Me.m_msyData.Results
                     System.Console.WriteLine(igrp.ToString & ", " & result.FCur.ToString & ",  " & result.TotalValue.ToString &
                                              "," & result.B(igrp).ToString & ", " & result.[Catch](igrp).ToString)
                 Next
@@ -733,8 +734,8 @@ Namespace MSY
 #End If
 
             Catch ex As Exception
-                m_logger.LogError(ex, "runSingleSpecies() Exception: " & ex.Message)
-                System.Console.WriteLine(Me.ToString & ".runSingleSpecies() Exception: " & ex.Message)
+                m_logger.LogError(ex, "runSingleSpeciesToDepletion() Exception: " & ex.Message)
+                System.Console.WriteLine(Me.ToString & ".runSingleSpeciesToDepletion() Exception: " & ex.Message)
                 Return False
             End Try
 
@@ -934,11 +935,11 @@ Namespace MSY
                 If Me.m_msyData.MSYRunType = eMSYRunTypes.SingleRunMSY Then
                     'Single Run 
                     'Populate the cMSYFResults object for this F step 
-                    'and store it in the list of results lstResults
+                    'and store it in the list of results Results
                     If bIncrementing Then
-                        Me.m_msyData.lstResults.Add(Me.EcosimResultFactory(F))
+                        Me.m_msyData.Results.Add(Me.EcosimResultFactory(F))
                     Else
-                        Me.m_msyData.lstResults.Insert(0, Me.EcosimResultFactory(F))
+                        Me.m_msyData.Results.Insert(0, Me.EcosimResultFactory(F))
                     End If
 
                 ElseIf Me.m_msyData.MSYRunType = eMSYRunTypes.FMSY Then

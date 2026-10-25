@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="TestData\Anchovy Bay Spatial.ewemdb">
+    <Content Include="TestData\Anchovy Bay Spatial.eiixml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Regression\Baselines\mse_baseline.json" Condition="Exists('Regression\Baselines\mse_baseline.json')">

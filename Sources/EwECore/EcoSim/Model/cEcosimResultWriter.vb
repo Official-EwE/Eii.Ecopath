@@ -44,6 +44,7 @@ Namespace Ecosim
             DiscardSurvivalFleetGroup
             Landings
         End Enum
+
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEcosimResultWriter)()
 
 #End Region ' Private vars
@@ -61,24 +62,18 @@ Namespace Ecosim
         ''' <param name="strPath">The path to write to. If not specified, output is
         ''' written to <see cref="cCore.OutputPath">the core output path</see>.</param>
         ''' <param name="results">The results to write, or nothing to write all results.</param>
-        ''' <param name="tsMonthly">Flag stating how values are aggragated. Possible
-        ''' values are:
-        ''' <list type="bullet">
-        ''' <item><term><see cref="TriState.[True]"/></term><description>Values are only written as monthly values.</description></item>
-        ''' <item><term><see cref="TriState.[False]"/></term><description>Values are only written as annual values.</description></item>
-        ''' <item><term><see cref="TriState.UseDefault"/></term><description>Values are written as both annual and monthly values.</description></item>
-        ''' </list>
+        ''' <param name="saveFrequency">Flag stating how values are aggragated.
         ''' </param>
         ''' <param name="bQuiet">Flag stating if messages must be suppressed.</param>
         ''' <returns>True if saved successfully.</returns>
         ''' -----------------------------------------------------------------------
         Public Function WriteResults(Optional strPath As String = "",
                                      Optional results As eResultTypes() = Nothing,
-                                     Optional tsMonthly As TriState = TriState.UseDefault,
+                                     Optional saveFrequency As eAutosaveFrequency = eAutosaveFrequency.All,
                                      Optional bQuiet As Boolean = False) As Boolean
 
             If (Not Me.m_core.StateMonitor.HasEcosimRan) Then Return False
-            Return Me.WriteResultsDirect(strPath, results, tsMonthly, bQuiet)
+            Return Me.WriteResultsDirect(strPath, results, saveFrequency, bQuiet)
 
         End Function
 
@@ -90,20 +85,13 @@ Namespace Ecosim
         ''' <param name="strPath">The path to write to. If not specified, output is
         ''' written to <see cref="cCore.OutputPath">the core output path</see>.</param>
         ''' <param name="results">The results to write, or nothing to write all results.</param>
-        ''' <param name="tsMonthly">Flag stating how values are aggragated. Possible
-        ''' values are:
-        ''' <list type="bullet">
-        ''' <item><term><see cref="TriState.[True]"/></term><description>Values are only written as monthly values.</description></item>
-        ''' <item><term><see cref="TriState.[False]"/></term><description>Values are only written as annual values.</description></item>
-        ''' <item><term><see cref="TriState.UseDefault"/></term><description>Values are written as both annual and monthly values.</description></item>
-        ''' </list>
-        ''' </param>
+        ''' <param name="saveFrequency">Flag stating how values are aggragated.</param>
         ''' <param name="bQuiet">Flag stating if messages must be suppressed.</param>
-        ''' <returns>True if saved successfully.</returns>
+        ''' <returns>True if saved successfully.</returns>  
         ''' -----------------------------------------------------------------------
         Friend Function WriteResultsDirect(strPath As String,
                                            results As eResultTypes(),
-                                           tsMonthly As TriState,
+                                           saveFrequency As eAutosaveFrequency,
                                            bQuiet As Boolean) As Boolean
 
             Dim msg As cMessage = Nothing
@@ -128,8 +116,8 @@ Namespace Ecosim
             For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(eResultTypes))
                 If Me.ShouldWriteResult(results, outputtype) Then
                     Try
-                        If (tsMonthly <> TriState.False) Then bSucces = bSucces And Me.WriteResults(strPath, outputtype, True)
-                        If (tsMonthly <> TriState.True) Then bSucces = bSucces And Me.WriteResults(strPath, outputtype, False)
+                        If (saveFrequency & eAutosaveFrequency.Annually) Then bSucces = bSucces And Me.WriteResults(strPath, outputtype, True)
+                        If (saveFrequency & eAutosaveFrequency.Monthly) Then bSucces = bSucces And Me.WriteResults(strPath, outputtype, False)
 
                         If Not bSucces Then
                             msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString),
@@ -227,7 +215,7 @@ Namespace Ecosim
 
                     Next
                     strDataDetails = "Data," & resulttype.ToString
-                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype),
+                    bSuccess = Me.SaveDataToFile(GetOutputFileName(strPath, bSaveAnnual, resulttype),
                                                  bSaveAnnual, data,
                                                  strModelDetails, strDataDetails, astrGroupNames)
 
@@ -263,7 +251,7 @@ Namespace Ecosim
                             Next
                             strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & group.Name)
 
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, group.Name),
+                            bSuccess = bSuccess And Me.SaveDataToFile(GetOutputFileName(strPath, bSaveAnnual, resulttype, group.Name),
                                                                       bSaveAnnual, predData,
                                                                       strModelDetails, strDataDetails, predNames.ToString)
                         End If
@@ -302,7 +290,7 @@ Namespace Ecosim
                             Next
 
                             strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & group.Name)
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, group.Name),
+                            bSuccess = bSuccess And Me.SaveDataToFile(GetOutputFileName(strPath, bSaveAnnual, resulttype, group.Name),
                                                   bSaveAnnual, preyData,
                                                   strModelDetails, strDataDetails, preyNames.ToString)
                         End If
@@ -331,7 +319,7 @@ Namespace Ecosim
                     Next i
 
                     strDataDetails = "Data," & resulttype.ToString
-                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype),
+                    bSuccess = Me.SaveDataToFile(GetOutputFileName(strPath, bSaveAnnual, resulttype),
                                                  bSaveAnnual, data,
                                                  strModelDetails, strDataDetails)
 
@@ -368,7 +356,7 @@ Namespace Ecosim
                     End Select
 
                     strDataDetails = "Data," & resulttype.ToString
-                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype),
+                    bSuccess = Me.SaveDataToFile(GetOutputFileName(strPath, bSaveAnnual, resulttype),
                                                  bSaveAnnual, data,
                                                  strModelDetails, strDataDetails)
 
@@ -378,10 +366,13 @@ Namespace Ecosim
 
         End Function
 
-        Private Function GetOutputFileName(strPath As String,
-                                           bSaveAnnual As Boolean,
-                                           outputtype As eResultTypes,
-                                           Optional strGroupName As String = "") As String
+        ''' <summary>
+        ''' Builds the full output file name for a given result type.
+        ''' </summary>
+        Public Shared Function GetOutputFileName(strPath As String,
+                                                 bSaveAnnual As Boolean,
+                                                 outputtype As eResultTypes,
+                                                 Optional strGroupName As String = "") As String
 
             Dim strFileName As String = ""
             Dim strExt As String = ".csv"
@@ -409,8 +400,8 @@ Namespace Ecosim
 
             strFileName = strFileName & "_" & If(bSaveAnnual, "annual", "monthly")
 
-            Dim strFullPath As String = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt).ToLower()
-            If Not EwEUtils.Utilities.cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
+            Dim strFullPath As String = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
             Return strFullPath
 
         End Function

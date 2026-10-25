@@ -388,7 +388,7 @@ Namespace MSECommandFile
                 'Target Fishing Mortality
                 lst = Me.getTagData(TFM_DATA_TAG)
                 If lst.Count > 0 Then
-                    Me.m_BatchData.redimTFM(lst.Count, Me.m_MSEdata.NGroups)
+                    Me.m_BatchData.redimTFM(lst.Count, Me.m_MSEdata.nGroups)
                     For Each par As IMSEParameter In lst
                         par.Update()
                     Next
@@ -397,7 +397,7 @@ Namespace MSECommandFile
                 'Fixed Fishing Mort
                 lst = Me.getTagData(F_DATA_TAG)
                 If lst.Count > 0 Then
-                    Me.m_BatchData.redimFixedF(lst.Count, Me.m_MSEdata.NGroups)
+                    Me.m_BatchData.redimFixedF(lst.Count, Me.m_MSEdata.nGroups)
                     For Each par As IMSEParameter In lst
                         par.Update()
                     Next
@@ -406,7 +406,7 @@ Namespace MSECommandFile
                 'Total Allowable Catch
                 lst = Me.getTagData(Y_DATA_TAG)
                 If lst.Count > 0 Then
-                    Me.m_BatchData.redimTAC(lst.Count, Me.m_MSEdata.NGroups)
+                    Me.m_BatchData.redimTAC(lst.Count, Me.m_MSEdata.nGroups)
                     For Each par As IMSEParameter In lst
                         par.Update()
                     Next
@@ -558,7 +558,7 @@ Namespace MSECommandFile
 
         Friend ReadOnly Property nGroups() As Integer
             Get
-                Return Me.m_MSEdata.NGroups
+                Return Me.m_MSEdata.nGroups
             End Get
         End Property
 

@@ -3,6 +3,7 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Windows.Forms
+Imports ValueChain
 
 ''' ===========================================================================
 ''' <summary>
@@ -43,7 +44,7 @@ Public Class dlgAddUnits
 #Region " Privates "
 
     ''' <summary>Main data.</summary>
-    Private m_data As cData = Nothing
+    Private m_data As cValueChainData = Nothing
     ''' <summary>The diagram to add units to.</summary>
     Private m_diagram As cFlowDiagram = Nothing
 
@@ -51,7 +52,7 @@ Public Class dlgAddUnits
 
 #Region " Construction / destruction "
 
-    Public Sub New(data As cData, diagram As cFlowDiagram)
+    Public Sub New(data As cValueChainData, diagram As cFlowDiagram)
         Me.InitializeComponent()
         Me.m_data = data
         Me.m_diagram = diagram

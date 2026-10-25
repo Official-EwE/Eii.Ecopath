@@ -100,9 +100,7 @@ VersionInfoCopyright=(c) {#MyAppPublisher}
 OutputBaseFilename=ewe_{#MyAppVersion}_setup
 
 [Dirs]
-Name: "{app}\Includes\LPSolve\"
-Name: "{app}\Includes\LPSolve\win32\"
-Name: "{app}\Includes\LPSolve\win64\"
+Name: "{app}\Output\"
 Name: "{app}\Resources\"
 Name: "{app}\Tools\"
 Name: "{app}\UserGuide\"
@@ -112,17 +110,12 @@ Name: "{app}\Includes\GDAL\win32\"
 Name: "{app}\Includes\GDAL\win32\gdalplugins\"
 Name: "{app}\Includes\GDAL\win64\"
 Name: "{app}\Includes\GDAL\win64\gdalplugins\"
-Name: "{app}\Includes\LPSolve\"
-Name: "{app}\Includes\LPSolve\win32\"
-Name: "{app}\Includes\LPSolve\win64\"
 
 [Files]
 Source: "..\LICENSE.txt"; DestDir: "{app}\Resources\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe.config"; DestDir: "{app}"; DestName: "{#MyAppExeName}.config"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win32\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win32\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\Includes\LPSolve\win64\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win64\"; Flags: ignoreversion
 
 ; - Strange For some reason the Json library is not included with the .net version
 ; - Put it in the app directory

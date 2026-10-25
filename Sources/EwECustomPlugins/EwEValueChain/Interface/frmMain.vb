@@ -2,12 +2,9 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Imports EwECore
-Imports EwECore.Database
-Imports System.Drawing
 Imports System.Windows.Forms
-Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
+Imports ValueChain
 
 Public Class frmMain
 

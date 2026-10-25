@@ -4,10 +4,10 @@
 
 Imports System.Reflection
 Imports EwECore
-Imports EwECore.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SourceGrid2
+Imports ValueChain
 
 ''' ===========================================================================
 ''' <summary>
@@ -33,7 +33,7 @@ Public Class ucLinkGrid
 
     End Class
 
-    Private m_data As cData = Nothing
+    Private m_data As cValueChainData = Nothing
     Private m_api As PropertyInfo() = Nothing
     Private m_links As cLink() = Nothing
     Private m_group As cCoreInputOutputBase = Nothing
@@ -46,7 +46,7 @@ Public Class ucLinkGrid
     ''' </summary>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(uic As cUIContext, data As cData, t As Type)
+    Public Sub New(uic As cUIContext, data As cValueChainData, t As Type)
 
         'Sanity check
         Debug.Assert(GetType(cLink).IsAssignableFrom(t))
@@ -183,8 +183,8 @@ Public Class ucLinkGrid
             Try
 
                 Dim pi As PropertyInfo = Me.m_api(iCol - 1)
-                If GetType(cOOPStorable).IsAssignableFrom(pi.PropertyType) Then
-                    Dim obj As cOOPStorable = DirectCast(pi.GetValue(link, Nothing), cOOPStorable)
+                If GetType(cValueChainEntity).IsAssignableFrom(pi.PropertyType) Then
+                    Dim obj As cValueChainEntity = DirectCast(pi.GetValue(link, Nothing), cValueChainEntity)
                     Dim strLabel As String = ""
                     If (obj IsNot Nothing) Then strLabel = obj.ToString
                     cell = New cEwECell(strLabel, GetType(String), ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable)
@@ -210,12 +210,15 @@ Public Class ucLinkGrid
 
             If (TypeOf l Is cLinkLandings) Then
                 Dim ll As cLinkLandings = DirectCast(l, cLinkLandings)
-                If (Me.m_group IsNot Nothing) Then
-                    bUse = bUse And (Object.Equals(ll.Group, Me.m_group))
-                End If
-                If (Me.m_fleet IsNot Nothing) Then
-                    bUse = bUse And (Object.Equals(DirectCast(ll.Source, cProducerUnit).Fleet, Me.m_fleet))
-                End If
+
+                ' TODO_JS: LINK UP AGAIN
+
+                'If (Me.m_group IsNot Nothing) Then
+                '    bUse = bUse And (Object.Equals(ll.Group, Me.m_group))
+                'End If
+                'If (Me.m_fleet IsNot Nothing) Then
+                '    bUse = bUse And (Object.Equals(DirectCast(ll.Source, cProducerUnit).Fleet, Me.m_fleet))
+                'End If
             End If
 
             If (bUse) Then

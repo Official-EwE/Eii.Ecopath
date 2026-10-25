@@ -4,16 +4,16 @@
 
 Option Explicit On
 Imports EwECore
-Imports EwECore.Common
+Imports ValueChain
 
 Public Class cLandingsLinkManager
 
-    Private m_data As cData = Nothing
-    Private m_core As cCore = Nothing
+    Private m_data As cEwEValueChainData = Nothing
+    Private ReadOnly Property m_core As cCore = Nothing
 
-    Public Sub New(data As cData, core As cCore)
+    Public Sub New(data As cEwEValueChainData)
         Me.m_data = data
-        Me.m_core = core
+        Me.m_core = data.Core
     End Sub
 
     Public Sub OnEcopathMessage(msg As cMessage)
@@ -30,7 +30,6 @@ Public Class cLandingsLinkManager
 
         Dim aLinks As cLink() = Nothing
         Dim link As cLinkLandings = Nothing
-        Dim fleet As cEcopathFleetInput = Nothing
         Dim group As cEcoPathGroupInput = Nothing
         Dim dtTarget As New Dictionary(Of cUnit, List(Of Integer))
         Dim landings As List(Of Integer) = Nothing
@@ -42,51 +41,46 @@ Public Class cLandingsLinkManager
             If (Not link.IsVisible) Then
                 ' Delete link
                 Console.WriteLine("> VC: Link {0} no longer has landings, delete", link)
-                Me.m_data.DeleteLink(link)
+                Me.m_data.RemoveLink(link)
             End If
         Next link
 
-        ' Add for missing links to producers
-        For Each prod As cProducerUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
+        '' Add missing links to producers
+        'For Each prod As cProducerUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
 
-            ' Get fleet
-            fleet = prod.Fleet
+        '    ' Count all existing links by target
+        '    For iLink As Integer = 0 To prod.LinkOutCount - 1
+        '        ' Get link
+        '        link = DirectCast(prod.LinkOut(iLink), cLinkLandings)
+        '        ' Only handle relevant links
+        '        If (link.IsVisible) Then
+        '            ' Update admin
+        '            If Not dtTarget.ContainsKey(link.Target) Then
+        '                dtTarget(link.Target) = New List(Of Integer)
+        '            End If
+        '            dtTarget(link.Target).Add(link.Group.Index)
+        '        End If
+        '    Next
 
-            ' Count all existing links by target
-            For iLink As Integer = 0 To prod.LinkOutCount - 1
-                ' Get link
-                link = DirectCast(prod.LinkOut(iLink), cLinkLandings)
-                ' Only handle relevant links
-                If (link.IsVisible) Then
-                    ' Update admin
-                    If Not dtTarget.ContainsKey(link.Target) Then
-                        dtTarget(link.Target) = New List(Of Integer)
-                    End If
-                    dtTarget(link.Target).Add(link.Group.Index)
-                End If
-            Next
+        '    ' Check if has all landings exist for targets
+        '    For Each unit As cUnit In dtTarget.Keys
+        '        ' Get links
+        '        landings = dtTarget(unit)
+        '        ' Check if every landing is represented
+        '        For iGroup As Integer = 1 To Me.m_core.nGroups
+        '            ' Is Ecopath landing missing a link?
+        '            If (fleet.Landings(iGroup) > 0) And (landings.IndexOf(iGroup) = -1) Then
+        '                ' Create link
+        '                Console.WriteLine("> VC: Fleet {0}, group {1} missing landings link, added", fleet.Name, group.Name)
+        '                Me.m_data.CreateLandingsLink(prod, unit, Me.m_data.EwEiGroupToID(iGroup), bDummy)
+        '            End If
+        '        Next
+        '    Next
 
-            ' Check if has all landings exist for targets
-            For Each unit As cUnit In dtTarget.Keys
-                ' Get links
-                landings = dtTarget(unit)
-                ' Check if every landing is represented
-                For iGroup As Integer = 1 To Me.m_core.nGroups
-                    ' Is Ecopath landing missing a link?
-                    If (fleet.Landings(iGroup) > 0) And (landings.IndexOf(iGroup) = -1) Then
-                        ' Get group
-                        group = Me.m_core.EcopathGroupInputs(iGroup)
-                        ' Create link
-                        Console.WriteLine("> VC: Fleet {0}, group {1} missing landings link, added", fleet.Name, group.Name)
-                        Me.m_data.CreateLandingsLink(prod, unit, group, bDummy)
-                    End If
-                Next
-            Next
+        '    ' Reset admin
+        '    dtTarget.Clear()
 
-            ' Reset admin
-            dtTarget.Clear()
-
-        Next prod
+        'Next prod
 
     End Sub
 

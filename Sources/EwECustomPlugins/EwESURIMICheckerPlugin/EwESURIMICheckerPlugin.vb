@@ -10,6 +10,7 @@ Imports Eii.ControlledVocabularies.Vocabularies
 Imports Eii.ControlledVocabularies.Vocabularies.LifeStage
 Imports Eii.ControlledVocabularies.Vocabularies.Species
 Imports Eii.SemanticRegistry
+Imports Eii.SemanticRegistry.Core
 Imports EwECore
 Imports EwECore.Plugins
 Imports EwECore.Plugins.UI

@@ -3,9 +3,7 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Drawing
-Imports System.Windows.Forms
-Imports System.ComponentModel
-Imports ScientificInterfaceShared.Style
+Imports ValueChain
 
 ''' ===========================================================================
 ''' <summary>
@@ -84,15 +82,15 @@ Public Class LinkWrapper
         End Get
     End Property
 
-    Public ReadOnly Property Style() As cStyleGuide.eStyleFlags
-        Get
-            Dim s As cStyleGuide.eStyleFlags = 0
-            For Each l As cLink In Me.m_lLinks
-                s = s Or l.Style
-            Next
-            Return s
-        End Get
-    End Property
+    'Public ReadOnly Property Style() As cStyleGuide.eStyleFlags
+    '    Get
+    '        Dim s As cStyleGuide.eStyleFlags = 0
+    '        For Each l As cLink In Me.m_lLinks
+    '            s = s Or l.Style()
+    '        Next
+    '        Return s
+    '    End Get
+    'End Property
 
     Public ReadOnly Property External() As Boolean
         Get

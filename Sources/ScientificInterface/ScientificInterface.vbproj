@@ -64,6 +64,17 @@
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
+	<PropertyGroup>
+		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
+	</PropertyGroup>
+	<ItemGroup>
+		<AssemblyMetadata Include="EwEBuildDateUtc" Value="$(EwEBuildDateUtc)" />
+	</ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Other\Update\**" />
+    <EmbeddedResource Remove="Other\Update\**" />
+    <None Remove="Other\Update\**" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
@@ -1082,7 +1093,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEStepwiseFittingPlugin\EwEStepwiseFittingPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwESURIMICheckerPlugin\EwESURIMICheckerPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwETransectExtractionPlugin\EwETransectExtractionPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj" />
     <ProjectReference Include="..\EwECustomPlugins\EwEWindowsIntegrationPlugin\EwEWindowsIntegrationPlugin.vbproj" />
@@ -1094,9 +1104,6 @@
     <None Update="Resources\Ecopath1_doc.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Other\Update\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
@@ -1112,10 +1119,10 @@
       <Version>0.0.*</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging">
-      <Version>10.0.12</Version>
+      <Version>10.0.13</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug">
-      <Version>10.0.12</Version>
+      <Version>10.0.13</Version>
     </PackageReference>
     <PackageReference Include="Serilog">
       <Version>4.4.0</Version>
@@ -1128,6 +1135,13 @@
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.File">
       <Version>7.0.0</Version>
+    </PackageReference>
+    <!-- LpSolveDotNet (transitive via EwECore) is not strong-named. EwECore is built with
+         StrongNamer, which patches its LpSolveDotNet reference to StrongNamer's shared key.
+         Adding StrongNamer here signs the LpSolveDotNet.dll copied into this app's output
+         with that same key, so the runtime binding matches. -->
+    <PackageReference Include="StrongNamer">
+      <Version>0.2.5</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

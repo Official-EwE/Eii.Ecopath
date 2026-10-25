@@ -2,11 +2,10 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-#Region " Options "
-
 Imports System.Drawing
-
-#End Region ' Options
+Imports EwEUtils.UserInterface
+Imports ScientificInterfaceShared.Style
+Imports ValueChain
 
 Public Class cValueChainStyleGuide
 
@@ -29,22 +28,35 @@ Public Class cValueChainStyleGuide
         Return Nothing
     End Function
 
-    Public Shared Function GetColor(unittype As cUnitFactory.eUnitType) As Color
+    Public Shared Function GetColor(unittype As cUnitFactory.eUnitType) As VisualColor
         Select Case unittype
             Case cUnitFactory.eUnitType.Producer
-                Return Color.FromArgb(255, 0, 162, 255)
+                Return VisualColor.FromArgb(255, 0, 162, 255)
             Case cUnitFactory.eUnitType.Processing
-                Return Color.FromArgb(255, 0, 168, 157)
+                Return VisualColor.FromArgb(255, 0, 168, 157)
             Case cUnitFactory.eUnitType.Distribution
-                Return Color.FromArgb(255, 255, 100, 78)
+                Return VisualColor.FromArgb(255, 255, 100, 78)
             Case cUnitFactory.eUnitType.Wholesaler
-                Return Color.FromArgb(255, 0, 118, 168)
+                Return VisualColor.FromArgb(255, 0, 118, 168)
             Case cUnitFactory.eUnitType.Retailer
-                Return Color.FromArgb(255, 248, 186, 0)
+                Return VisualColor.FromArgb(255, 248, 186, 0)
             Case cUnitFactory.eUnitType.Consumer
-                Return Color.FromArgb(255, 146, 146, 146)
+                Return VisualColor.FromArgb(255, 146, 146, 146)
         End Select
-        Return Color.FromArgb(255, 224, 224, 224)
+        Return VisualColor.FromArgb(255, 224, 224, 224)
+    End Function
+
+    Public Shared Function GetColor(sg As cStyleGuide, style As Integer, ByRef clrFill As VisualColor, ByRef clrBorder As VisualColor) As Boolean
+        ' TODO_JS. Needs new 
+        Return True
+    End Function
+
+    Public Shared Function VC2C(clr As VisualColor) As Color
+        Return Color.FromArgb(clr.A, clr.R, clr.G, clr.B)
+    End Function
+
+    Public Shared Function C2VC(clr As Color) As VisualColor
+        Return VisualColor.FromArgb(clr.A, clr.R, clr.G, clr.B)
     End Function
 
 End Class

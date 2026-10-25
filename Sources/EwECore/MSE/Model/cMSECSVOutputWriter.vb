@@ -50,7 +50,7 @@ Friend Class cMSECSVOutputWriter
             'We could set this up so each type had a seperate flag for dumping
 
             'Biomass
-            For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+            For igrp As Integer = 1 To Me.m_MSEdata.nGroups
                 Try
                     strFile = Me.getOutputFileName(cMSE.BIOMASS_DATA, epData.GroupName(igrp))
                     buff.Length = 0
@@ -70,7 +70,7 @@ Friend Class cMSECSVOutputWriter
             Next
 
             'Catch by group
-            For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+            For igrp As Integer = 1 To Me.m_MSEdata.nGroups
                 Try
                     If epData.fCatch(igrp) > 0 Then
                         strFile = Me.getOutputFileName(cMSE.CATCH_DATA, epData.GroupName(igrp))
@@ -92,7 +92,7 @@ Friend Class cMSECSVOutputWriter
             Next
 
             'Quota by group
-            For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+            For igrp As Integer = 1 To Me.m_MSEdata.nGroups
                 Try
                     Dim data(,) As Single = ListOfData.Item(cMSE.eResultsData.GroupQuota)
                     If epData.fCatch(igrp) > 0 Then
@@ -207,7 +207,7 @@ Friend Class cMSECSVOutputWriter
             If Not cFileUtils.IsDirectoryAvailable(Me.DataDir, True) Then Exit Sub
 
             'clear out any existing data files
-            For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+            For igrp As Integer = 1 To Me.m_MSEdata.nGroups
                 Try
                     File.Delete(Me.getOutputFileName(cMSE.BIOMASS_DATA, epData.GroupName(igrp)))
                     File.Delete(Me.getOutputFileName(cMSE.CATCH_DATA, epData.GroupName(igrp)))
@@ -228,7 +228,7 @@ Friend Class cMSECSVOutputWriter
 
             'Write output file headers
 
-            For igrp As Integer = 1 To Me.m_MSEdata.NGroups
+            For igrp As Integer = 1 To Me.m_MSEdata.nGroups
                 Me.WriteOutputHeader("Biomass", epData.GroupName(igrp), cMSE.BIOMASS_DATA)
                 If epData.fCatch(igrp) > 0 Then
                     Me.WriteOutputHeader("Catch by Group", epData.GroupName(igrp), cMSE.CATCH_DATA)

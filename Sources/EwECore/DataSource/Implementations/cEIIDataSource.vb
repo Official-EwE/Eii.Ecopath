@@ -7,6 +7,7 @@ Imports EwECore.Common
 Imports EwECore.DataSources
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
+Imports EwEUtils.Utilities
 '
 
 ''' ===========================================================================
@@ -281,7 +282,7 @@ Public Class cEIIDataSource
 
                 ' Replace double spaces with single space
                 buff = eiiStrm.ReadLine().Replace("  ", " ")
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+                recs = cStringUtils.SplitQualified(buff, " ")
                 iNextIndex = 0
 
                 'Debug.Assert(data.Length = 10, "EII DataSource wrong number of recs in group section.")
@@ -311,7 +312,7 @@ Public Class cEIIDataSource
             For K = 1 To ecopathDS.NumGroups
                 ' Replace double spaces with single space
                 buff = eiiStrm.ReadLine().Replace("  ", " ")
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+                recs = cStringUtils.SplitQualified(buff, " ")
                 iNextIndex = 0
                 For j = 1 To ecopathDS.NumGroups
 
@@ -338,7 +339,7 @@ Public Class cEIIDataSource
             'Data looks like this
             '-91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  0  -92  0 
             buff = eiiStrm.ReadLine().Replace("  ", " ")
-            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+            recs = cStringUtils.SplitQualified(buff, " ")
             Dim iRec As Integer = 1
             For j = 1 To ecopathDS.NumGroups
 
@@ -353,7 +354,7 @@ Public Class cEIIDataSource
             'Input(fnum, jnk)
 
             buff = eiiStrm.ReadLine().Replace("  ", " ")
-            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+            recs = cStringUtils.SplitQualified(buff, " ")
 
             ''the time unit name
             ecopathDS.TimeUnitName = recs(0)
@@ -370,7 +371,7 @@ Public Class cEIIDataSource
             'parms.Bomass accumulation added March 95/VC
             '-91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  0  -92  0 
             buff = eiiStrm.ReadLine().Replace("  ", " ")
-            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+            recs = cStringUtils.SplitQualified(buff, " ")
             For i = 1 To ecopathDS.NumGroups
                 Single.TryParse(recs(i - 1), ecopathDS.BAInput(i))
             Next i
@@ -380,7 +381,7 @@ Public Class cEIIDataSource
             'More than 1 detritusbox Any reason for this??
             For i = 1 To ecopathDS.NumGroups
                 buff = eiiStrm.ReadLine().Replace("  ", " ")
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+                recs = cStringUtils.SplitQualified(buff, " ")
                 For j = ecopathDS.NumLiving + 1 To ecopathDS.NumGroups
                     Single.TryParse(recs(j - ecopathDS.NumLiving - 1), ecopathDS.DF(i, j - ecopathDS.NumLiving))
                     ' Input(fnum, ecopathDS.DF(i, j - ecopathDS.NumLiving))    
@@ -391,7 +392,7 @@ Public Class cEIIDataSource
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("Emigration"), "EII datasource file format may be wrong!")
             buff = eiiStrm.ReadLine().Replace("  ", " ")
-            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+            recs = cStringUtils.SplitQualified(buff, " ")
             'Input(fnum, jnk) ' 
             For i = 1 To ecopathDS.NumGroups
                 Single.TryParse(recs(i - 1), ecopathDS.Emigration(i))
@@ -402,7 +403,7 @@ Public Class cEIIDataSource
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("Immig"), "EII datasource file format may be wrong!")
             buff = eiiStrm.ReadLine().Replace("  ", " ")
-            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+            recs = cStringUtils.SplitQualified(buff, " ")
             For i = 1 To ecopathDS.NumGroups
                 Single.TryParse(recs(i - 1), ecopathDS.Immig(i))
                 ' Input(fnum, ecopathDS.Immig(i))
@@ -432,7 +433,7 @@ Public Class cEIIDataSource
             For i = 1 To ecopathDS.NumFleet
                 'First is fixed cost, second is cost per unit effort' Added Dec 98/VC
                 buff = eiiStrm.ReadLine().Replace("  ", " ")
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+                recs = cStringUtils.SplitQualified(buff, " ")
                 Single.TryParse(recs(0), ecopathDS.CostPct(i, eCostIndex.Fixed))
                 Single.TryParse(recs(1), ecopathDS.CostPct(i, eCostIndex.CUPE))
                 Single.TryParse(recs(2), ecopathDS.CostPct(i, eCostIndex.Sail))
@@ -444,7 +445,7 @@ Public Class cEIIDataSource
             'Input(fnum, jnk)  
             For i = 1 To ecopathDS.NumFleet
                 buff = eiiStrm.ReadLine().Replace("  ", " ")
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+                recs = cStringUtils.SplitQualified(buff, " ")
                 For j = 1 To ecopathDS.NumGroups
                     Single.TryParse(recs(j - 1), ecopathDS.Landing(i, j))
                     '  Input(fnum, ecopathDS.Landing(i, j))    ' Landing added Dec 98/VC
@@ -457,7 +458,7 @@ Public Class cEIIDataSource
             'Input(fnum, jnk)  
             For i = 1 To ecopathDS.NumFleet
                 buff = eiiStrm.ReadLine().Replace("  ", " ")
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+                recs = cStringUtils.SplitQualified(buff, " ")
                 For j = 1 To ecopathDS.NumGroups
                     Single.TryParse(recs(j - 1), ecopathDS.Discard(i, j))
                     '  Input(fnum, ecopathDS.Landing(i, j))    ' Landing added Dec 98/VC
@@ -469,7 +470,7 @@ Public Class cEIIDataSource
             Debug.Assert(buff.Contains("DiscardFate"), "EII datasource file format may be wrong!")
             For i = 1 To ecopathDS.NumFleet
                 buff = eiiStrm.ReadLine().Replace("  ", " ")
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+                recs = cStringUtils.SplitQualified(buff, " ")
                 For j = 1 To ecopathDS.NumGroups - ecopathDS.NumLiving
                     Single.TryParse(recs(j - 1), ecopathDS.DiscardFate(i, j))
                     ' Input(fnum, ecopathDS.DiscardFate(i, j))   ' Added Dec 98/VC
@@ -482,7 +483,7 @@ Public Class cEIIDataSource
             'Input(fnum, jnk)  
             For i = 1 To ecopathDS.NumFleet
                 buff = eiiStrm.ReadLine().Replace("  ", " ")
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+                recs = cStringUtils.SplitQualified(buff, " ")
                 For j = 1 To ecopathDS.NumGroups
                     Single.TryParse(recs(j - 1), ecopathDS.Market(i, j))
                     '  Input(fnum, ecopathDS.Landing(i, j))    ' Landing added Dec 98/VC
@@ -496,7 +497,7 @@ Public Class cEIIDataSource
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("Shadow"), "EII datasource file format may be wrong!")
             buff = eiiStrm.ReadLine().Replace("  ", " ")
-            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+            recs = cStringUtils.SplitQualified(buff, " ")
             For i = 1 To ecopathDS.NumGroups             ' Added Dec 98/VC
                 Single.TryParse(recs(i - 1), ecopathDS.Shadow(i))
                 '  Input(fnum, ecopathDS.Shadow(i))
@@ -506,7 +507,7 @@ Public Class cEIIDataSource
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("Area&HabitatBiomass(BH)"), "EII datasource file format may be wrong!")
             buff = eiiStrm.ReadLine().Replace("  ", " ")
-            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
+            recs = cStringUtils.SplitQualified(buff, " ")
             iRec = 0
             For i = 1 To ecopathDS.NumGroups
                 Single.TryParse(recs(iRec), ecopathDS.Area(i))

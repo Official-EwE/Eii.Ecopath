@@ -48,7 +48,7 @@ Namespace MSY
 
                 ' Write file header
                 Me.WriteHeader(sw, ass, "Fmsy")
-                sw.WriteLine()
+
                 ' Write data header
                 sw.WriteLine("Group, TL, Fbase, Cbase, Vbase, FmsyFound, Fmsy, Cmsy, Vmsy, CmsyAll, VmsyAll")
                 ' Write data
@@ -68,24 +68,16 @@ Namespace MSY
                                  cStringUtils.FormatSingle(result.ValueAtFMSY(i)))
                 Next i
 
-#If 0 Then
-
-                If Check1.value > 0 And UBound(CmsyWS, 2) > 0 Then
-                    For i = 1 To NumGroups
-                        For j = 1 To NumGroups - 1
-                    Print #Ifileno, CmsyWS(i, j); ",";
-                        Next
-                Print #Ifileno, CmsyWS(i, NumGroups)
-                    Next
-                End If
-            End If
-#End If
                 bSuccess = bSuccess And Me.CloseWriter(sw, strFile)
             End If
+
+            strFile = Path.Combine(strPath, "FMSY_" & ass.ToString & "trials.csv")
+            'Me.WriteTrialsCSV(strFile, trials)
 
             Return bSuccess
 
         End Function
+
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cMSYResultWriterBase.ErrorMessage"/>
@@ -103,6 +95,41 @@ Namespace MSY
                                                eMessageType.DataExport, eCoreComponentType.MSY, eMessageImportance.Information)
             msg.Hyperlink = Path.GetDirectoryName(strPath)
             Return msg
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Write trial data to a CSV file.
+        ''' </summary>
+        ''' <param name="trials"></param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function WriteTrialsCSV(strFile As String,
+                                       trials() As cMSYFResult) As Boolean
+
+            Dim sw As StreamWriter = Nothing
+            Dim bSuccess As Boolean = True
+            Dim igrp As Integer = 1
+            sw = Me.OpenWriter(strFile)
+
+            If (sw IsNot Nothing) Then
+                ' Write data header
+                sw.WriteLine("MSY Group, F, Total Value, B, Catch")                ' Write data
+
+                For Each result As cMSYFResult In trials
+                    sw.WriteLine("{0}, {1}, {2}, {3}, {4}",
+                                 cStringUtils.ToCSVField(igrp),
+                                 cStringUtils.FormatSingle(result.FCur),
+                                 cStringUtils.FormatSingle(result.TotalValue),
+                                 cStringUtils.FormatSingle(result.B(igrp)),
+                                 cStringUtils.FormatSingle(result.[Catch](igrp))
+                               )
+                Next
+                bSuccess = bSuccess And Me.CloseWriter(sw, strFile)
+            End If
+
+            Return bSuccess
+
         End Function
 
     End Class

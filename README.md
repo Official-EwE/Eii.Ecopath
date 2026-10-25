@@ -1,9 +1,14 @@
 # Ecopath with Ecosim (EwE) - Source Code
 This repository contains the **source code** for Ecopath with Ecosim (EwE), an ecosystem modeling software suite developed by the Ecopath International Initiative (EII).
 
+## 2026 migration from SVN to GitHub
+Our old and beloved EwE soruces server is no more. We transferred to a much more mature development backend, GitHub. The EwE source code is now really open source, and you can extract the source code without any user account. However, if you want to contrite to EwE, contact us and we'll allow your GitHub account into the EwE repo.
+
+## GitHub code layout
+
 The master branch contains the latest stable release of EwE. 
 - **You can not commit directly to the master branch!!**
-- **A Build Check will be performed before you can merge a PR into master**
+- **A Build Check will be performed before you can merge a PR into master!!**
 
 [More information about working with Git](https://github.com/Official-EwE/Ecopath-project/wiki/Git-how-to)
 
@@ -62,12 +67,26 @@ For example, to create and push the ScientificInterfaceShared package, follow th
 - Type `.\CreateAndPushNugetPackage.ps1 -ProjectPath ScientificInterfaceShared\ScientificInterfaceShared.vbproj -ApiKey <ApiKey>`
 
 ## Creating an EwE6 installer
+
+### Creating the installer in Github
+The easy way is to create the installer by running the Github action. After running this action everything will be automatic. A new version number is created and a tag is set. Building a new release typically takes 10 minutes and after that its ready for download at https://github.com/Official-EwE/Eii.Ecopath/releases.
+
+* Go to https://github.com/Official-EwE/Eii.Ecopath/actions
+* Click on "Manually create all NuGetPackages and a Release"
+* Click on "Run workflow"
+* Click on the "Run workflow" button
+
+<img alt="image" src="Manually Create a Release.png" alt="Create release on Github" width="600"/>
+
+You can monitor the progress of the workflow by clicking on the workflow run you just created.
+
+When its finished, you can download the newly created release from https://github.com/Official-EwE/Eii.Ecopath/releases
+
+
+
+### Creating the installer on your desktop
 The installer is created using Inno Setup. The script is located in the `Deployment` folder of the repository.
 
-### Creating the installer automatically after merging to master
-The easy way is to let the CI/CD pipeline create the installer automatically after merging a PR into master.
-
-### Creating the installer manually
 To be able to use the Inno Setup compiler, you have to install it. It is recommended to install Inno Setup as a CLI tool.
 This is the way the tool is used in the build check and CI/CD pipelines.
 
@@ -95,7 +114,17 @@ For the 32-bit installer, type:
 - Type `iscc /DCompile64Bit=0 /DSemVersion="1.0.9" /O"ScientificInterface\bin\x86\publish" "..\Deployment\EwE6_relpath.iss"`
 - A `ScientificInterface\bin\x86\publish\ewe_1.0.9_32-bit_setup.exe` will be created.
 
+
 For the 64-bit installer, type:
 - Type `iscc /DCompile64Bit=1 /DSemVersion="1.0.9" /O"ScientificInterface\bin\x64\publish" "..\Deployment\EwE6_relpath.iss"`
 - A `ScientificInterface\bin\x64\publish\ewe_1.0.9_64-bit_setup.exe` will be created.
- 
+
+## Zenodo integration
+This GitHub repository is linked with Zenodo. Every release will receive a Zenodo DOI, orchestrated via the .zenodo.json file in the root of this repo.
+The following command chain explains how this works:
+
+```
+GitHub development → source always available → internal decision that a release is worth packaging → installer build → GitHub Release → Zenodo archive/DOI → optional EwE community inclusion
+```
+
+Note that every release will become a Zenodo record, but will not automatically appear in the (Zenodo EwE community)[https://zenodo.org/communities/ewe/]. This is a manual action performed by community members.

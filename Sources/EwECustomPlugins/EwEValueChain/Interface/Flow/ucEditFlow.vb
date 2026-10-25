@@ -5,11 +5,11 @@
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwECore.Common
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Logging
+Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
+Imports ScientificInterfaceShared.Controls
+Imports ValueChain
 Imports Debug = System.Diagnostics.Debug
 
 ''' ===========================================================================
@@ -20,12 +20,11 @@ Imports Debug = System.Diagnostics.Debug
 Public Class ucEditFlow
 
     Private m_uic As cUIContext = Nothing
-    Private m_data As cData = Nothing
     Private m_diagram As cFlowDiagram = Nothing
     Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of ucEditFlow)()
 
     Public Sub New(uic As cUIContext,
-                   data As cData,
+                   data As cEwEValueChainData,
                    diagram As cFlowDiagram)
 
         Me.InitializeComponent()
@@ -67,7 +66,7 @@ Public Class ucEditFlow
 
             My.Settings.ShowGrid = Me.m_plFlow.ShowGrid
             Me.m_diagram = Nothing
-            Me.m_data = Nothing
+            Me.Data = Nothing
             Me.m_uic = Nothing
 
             ' Disconnect
@@ -91,7 +90,7 @@ Public Class ucEditFlow
     Private Sub m_tsmiSave_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_tsmiSave.Click, m_tsbSave.ButtonClick
 
-        Me.m_data.Save()
+        Me.Data.Save()
 
     End Sub
 
@@ -286,8 +285,8 @@ Public Class ucEditFlow
         '' Update list of avialable diagrams
         'With Me.m_tsddDiagram.DropDownItems
         '    .Clear()
-        '    For i As Integer = 0 To Math.Max(0, Me.m_data.FlowDiagramCount - 1)
-        '        fd = Me.m_data.FlowDiagram(i)
+        '    For i As Integer = 0 To Math.Max(0, Me.Data.FlowDiagramCount - 1)
+        '        fd = Me.Data.FlowDiagram(i)
         '        tsi = New ToolStripMenuItem()
         '        tsi.Tag = fd
         '        tsi.Text = fd.Name
@@ -335,20 +334,13 @@ Public Class ucEditFlow
             Me.m_diagram = value
 
             If (Me.m_diagram IsNot Nothing) Then
-                Me.m_selector.Init(Me.m_uic, Me.m_data, Me.m_plFlow, Me.m_pgDetails)
-                Me.m_plFlow.Init(Me.m_uic, Me.m_data, Me.m_diagram, Me.m_selector)
+                Me.m_selector.Init(Me.m_uic, Me.Data, Me.m_plFlow, Me.m_pgDetails)
+                Me.m_plFlow.Init(Me.m_uic, Me.Data, Me.m_diagram, Me.m_selector)
             End If
         End Set
     End Property
 
-    Public Property Data() As cData
-        Get
-            Return Me.m_data
-        End Get
-        Set(value As cData)
-            Me.m_data = value
-        End Set
-    End Property
+    Public Property Data() As cEwEValueChainData
 
 #End Region ' Internals
 

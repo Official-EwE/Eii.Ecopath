@@ -30,11 +30,11 @@ Namespace MSY
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Open a CSV file writer.
+        ''' Open a CSV file sw.
         ''' </summary>
-        ''' <param name="strFile">File name to open the writer for.</param>
-        ''' <returns>The writer, or nothing if an error occurred.</returns>
-        ''' <remarks>Close the writer with <see cref="CloseWriter"/>.</remarks>
+        ''' <param name="strFile">File name to open the sw for.</param>
+        ''' <returns>The sw, or nothing if an error occurred.</returns>
+        ''' <remarks>Close the sw with <see cref="CloseWriter"/>.</remarks>
         ''' -------------------------------------------------------------------
         Protected Function OpenWriter(strFile As String) As StreamWriter
 
@@ -62,10 +62,10 @@ Namespace MSY
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Close a CSV file writer.
+        ''' Close a CSV file sw.
         ''' </summary>
-        ''' <param name="sw">The writer to close.</param>
-        ''' <param name="strPath ">The path to the file of the writer.</param>
+        ''' <param name="sw">The sw to close.</param>
+        ''' <param name="strPath ">The path to the file of the sw.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Protected Function CloseWriter(sw As StreamWriter, strPath As String) As Boolean
@@ -92,31 +92,29 @@ Namespace MSY
         ''' <summary>
         ''' Write CSV header information.
         ''' </summary>
-        ''' <param name="writer">Writer to write to. Yippee.</param>
+        ''' <param name="sw">Writer to write to. Yippee.</param>
         ''' <param name="ass">Type of MSY <see cref="eMSYAssessmentTypes"/>.</param>
         ''' <param name="strRun">Name of the run</param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub WriteHeader(writer As StreamWriter,
+        Protected Overridable Sub WriteHeader(sw As StreamWriter,
                                               ass As eMSYAssessmentTypes,
                                               strRun As String)
 
-            If (writer Is Nothing) Then Return
+            If (Not Me.m_core.SaveWithFileHeader) Then Return
+            If (sw Is Nothing) Then Return
 
-            ' File
-            If Me.m_core.SaveWithFileHeader Then
-                writer.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MSY))
-                writer.WriteLine()
-                writer.WriteLine("MSY run," & cStringUtils.ToCSVField(strRun))
-                writer.Write("Assessment,")
-                Select Case ass
-                    Case eMSYAssessmentTypes.StationarySystem
-                        writer.WriteLine("stationary_stock")
-                    Case eMSYAssessmentTypes.FullCompensation
-                        writer.WriteLine("full_compensation")
-                    Case Else
-                        Debug.Assert(False)
-                End Select
-            End If
+            sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MSY))
+            sw.WriteLine("MSY run," & cStringUtils.ToCSVField(strRun))
+            sw.Write("Assessment,")
+            Select Case ass
+                Case eMSYAssessmentTypes.StationarySystem
+                    sw.WriteLine("stationary_stock")
+                Case eMSYAssessmentTypes.FullCompensation
+                    sw.WriteLine("full_compensation")
+                Case Else
+                    Debug.Assert(False)
+            End Select
+            sw.WriteLine()
 
         End Sub
 

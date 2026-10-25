@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="D:\Scratch\Packages\eii.ecopath.ewecore\6.7.112\contentFiles\any\net10.0\Includes\Interop.JRO.dll" />
+    <Content Remove="D:\Scratch\Packages\eii.ecopath.ewecore\6.7.112\contentFiles\any\net10.0\Includes\Microsoft.Office.interop.access.dao.dll" />
+    <Content Remove="D:\Scratch\Packages\eii.ecopath.ewecore\6.7.112\contentFiles\any\net10.0\Resources\LICENSE.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Eii.Ecopath.EwECore" Version="6.7.112" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Tampa_Bay.eiixml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

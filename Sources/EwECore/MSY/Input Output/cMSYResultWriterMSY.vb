@@ -55,7 +55,6 @@ Namespace MSY
 
                 If (sw IsNot Nothing) Then
                     Me.WriteGroupHeader(sw, ass, target, FBase, optimum)
-                    sw.WriteLine()
 
                     ' Data header
                     sw.Write("F")
@@ -79,6 +78,10 @@ Namespace MSY
                     bSuccess = False
                 End If
             Next
+
+            strFile = Path.Combine(strPath, Me.CSVFileName(target, "trials", ass))
+            Me.WriteTrialsCSV(strFile, iGroup, results)
+
             Return bSuccess And Me.WriteGroupValueResults(strPath, iGroup, ass, FBase, results, optimum)
 
         End Function
@@ -139,13 +142,13 @@ Namespace MSY
         ''' </summary>
         ''' <param name="strPath">Output file location.</param>
         ''' <param name="iFleet">Fleet that MSY was ran for.</param>
-        ''' <param name="assessment"><see cref="eMSYAssessmentTypes"/>.</param>
+        ''' <param name="ass"><see cref="eMSYAssessmentTypes"/>.</param>
         ''' <param name="results">MSY results.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function WriteFleetResults(strPath As String,
                                           iFleet As Integer,
-                                          assessment As eMSYAssessmentTypes,
+                                          ass As eMSYAssessmentTypes,
                                           results As cMSYFResult(),
                                           optimum As cMSYOptimum) As Boolean
 
@@ -158,11 +161,11 @@ Namespace MSY
             ' 2 variables
             For k As Integer = 0 To 1
 
-                strFile = Path.Combine(strPath, Me.CSVFileName(flt, If(k = 0, "B", "Catch"), assessment))
+                strFile = Path.Combine(strPath, Me.CSVFileName(flt, If(k = 0, "B", "Catch"), ass))
                 sw = Me.OpenWriter(strFile)
                 If (sw IsNot Nothing) Then
 
-                    Me.WriteFleetHeader(sw, assessment, flt, optimum)
+                    Me.WriteFleetHeader(sw, ass, flt, optimum)
                     sw.WriteLine()
 
                     ' Data header
@@ -189,7 +192,10 @@ Namespace MSY
                 End If
             Next
 
-            Return bSuccess And Me.WriteFleetValueResults(strPath, iFleet, assessment, results, optimum)
+            strFile = Path.Combine(strPath, Me.CSVFileName(flt, "trials", ass))
+            Me.WriteTrialsCSV(strFile, iFleet, results)
+
+            Return bSuccess And Me.WriteFleetValueResults(strPath, iFleet, ass, results, optimum)
 
         End Function
 
@@ -246,15 +252,22 @@ Namespace MSY
 
 #Region " Internals "
 
-        Protected Sub WriteGroupHeader(sw As StreamWriter, ass As eMSYAssessmentTypes,
+        Protected Sub WriteGroupHeader(sw As StreamWriter,
+                                       ass As eMSYAssessmentTypes,
                                        target As cEcoPathGroupInput,
                                        fBase As Single, optimum As cMSYOptimum)
+
+            If (sw Is Nothing) Then Return
+            If (Not Me.m_core.SaveWithFileHeader) Then Return
+
             MyBase.WriteHeader(sw, ass, "MSY")
             sw.WriteLine("Group,{0}", cStringUtils.ToCSVField(target.Name))
             sw.WriteLine("Fbase,{0}", cStringUtils.FormatSingle(fBase))
             sw.WriteLine("Fmsy,{0}", If(optimum.IsFopt(target.Index),
                                                        cStringUtils.FormatSingle(optimum.FOpt(target.Index)),
                                                        cStringUtils.ToCSVField(My.Resources.CoreMessages.FMSY_STATUS_NOTFOUND)))
+            sw.WriteLine()
+
         End Sub
 
         Protected Sub WriteFleetHeader(sw As StreamWriter, ass As eMSYAssessmentTypes,
@@ -306,6 +319,43 @@ Namespace MSY
                                                eMessageType.DataExport, eCoreComponentType.MSY, eMessageImportance.Information)
             msg.Hyperlink = Path.GetDirectoryName(strPath)
             Return msg
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Write trial data to a CSV file.
+        ''' </summary>
+        ''' <param name="igrp"></param>
+        ''' <param name="results"></param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function WriteTrialsCSV(strFile As String,
+                                       igrp As Integer,
+                                       results() As cMSYFResult) As Boolean
+
+            Dim sw As StreamWriter = Nothing
+            Dim bSuccess As Boolean = True
+
+            sw = Me.OpenWriter(strFile)
+
+            If (sw IsNot Nothing) Then
+                ' Write data header
+                sw.WriteLine("MSY Group, F, Total Value, B, Catch")                ' Write data
+
+                For Each result As cMSYFResult In results
+                    sw.WriteLine("{0}, {1}, {2}, {3}, {4}",
+                                 cStringUtils.ToCSVField(igrp),
+                                 cStringUtils.FormatSingle(result.FCur),
+                                 cStringUtils.FormatSingle(result.TotalValue),
+                                 cStringUtils.FormatSingle(result.B(igrp)),
+                                 cStringUtils.FormatSingle(result.[Catch](igrp))
+                               )
+                Next
+                bSuccess = bSuccess And Me.CloseWriter(sw, strFile)
+            End If
+
+            Return bSuccess
+
         End Function
 
 #End Region ' Internals

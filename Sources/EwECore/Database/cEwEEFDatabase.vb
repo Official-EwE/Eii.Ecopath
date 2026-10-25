@@ -487,7 +487,7 @@ Namespace Database
             Return cmd
         End Function
 
-        Protected Overrides Function HasTable(strTableName As String) As Boolean
+        Public Overrides Function HasTable(strTableName As String) As Boolean
             If m_dbContext Is Nothing Then Return False
             Return m_dbContext.GetEntityTypeByTableName(strTableName) IsNot Nothing
         End Function

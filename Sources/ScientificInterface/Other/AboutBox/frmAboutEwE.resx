@@ -202,7 +202,7 @@
     <value>5</value>
   </data>
   <data name="m_rtbDistribution.Text" xml:space="preserve">
-    <value>The Ecopath software, copyright (C) Ecopath International Initiative, Barcelona, Spain, is free software under the terms of the GNU General Public License version 3. Distribution is free-of-charge, but please inform us of new users (ewedevteam@gmail.com). User support and collaborative development opportunities are available through http://www.ecopath.org/support.</value>
+    <value>The Ecopath software, copyright (C) Ecopath International Initiative, Barcelona, Spain, is free software under the terms of the EUPL version 1.2. Distribution is free-of-charge, but please inform us of new users (ewedevteam@gmail.com). User support and collaborative development opportunities are available through http://www.ecopath.org/support.</value>
   </data>
   <data name="m_lbVersion.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -304,10 +304,10 @@
     <value>425, 13</value>
   </data>
   <data name="m_lbLicense.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>7</value>    
   </data>
   <data name="m_lbLicense.Text" xml:space="preserve">
-    <value>GNU Public License version 2</value>
+    <value>European Union Public License version 1.2</value>
   </data>
   <data name="_m_hdrDisclaimer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>

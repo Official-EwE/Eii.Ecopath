@@ -5,8 +5,8 @@
 Imports System.IO
 Imports System.Text
 Imports EwECore
-Imports EwECore.Common
 Imports EwEUtils.Utilities
+Imports ValueChain
 
 ''' <summary>
 ''' CSV writer for Value Chain results.
@@ -15,8 +15,8 @@ Public Class cResultWriter
 
 #Region " Variables "
 
-    Private m_data As cData = Nothing
-    Private m_results As cResults = Nothing
+    Private m_data As cEwEValueChainData = Nothing
+    Private m_results As cEwEValueChainResults = Nothing
     Private m_msg As cMessage = Nothing
 
 #End Region ' Variables
@@ -25,10 +25,10 @@ Public Class cResultWriter
     ''' <summary>
     ''' Shazaam!
     ''' </summary>
-    ''' <param name="data"><see cref="cData">Value chain data</see> to plunder.</param>
-    ''' <param name="results"><see cref="cResults">Value chain results</see> to write.</param>
+    ''' <param name="data"><see cref="cEwEValueChainData">Value chain data</see> to plunder.</param>
+    ''' <param name="results"><see cref="cEwEValueChainResults">Value chain results</see> to write.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(data As cData, results As cResults)
+    Public Sub New(data As cEwEValueChainData, results As cEwEValueChainResults)
         Me.m_data = data
         Me.m_results = results
     End Sub
@@ -56,16 +56,16 @@ Public Class cResultWriter
     Public Function WriteResults(agg As cParameters.eAggregationModeType, iItem As Integer, strItem As String) As Boolean
 
         Dim vs As cVariableStatus = Nothing
-        Dim iTimeStart As Integer = If(Me.m_results.RunType = cModel.eRunTypes.Ecopath, 0, 1)
-        Dim iTimeEnd As Integer = If(Me.m_results.RunType = cModel.eRunTypes.Ecopath, 0, Me.m_results.NumTimeSteps)
+        Dim iTimeStart As Integer = If(Me.m_results.RunType = cEwEValueChainModel.eRunTypes.Ecopath, 0, 1)
+        Dim iTimeEnd As Integer = If(Me.m_results.RunType = cEwEValueChainModel.eRunTypes.Ecopath, 0, Me.m_results.NumTimeSteps)
 
         Dim pout As String = ""
         Select Case Me.m_results.RunType
-            Case cModel.eRunTypes.Ecopath
+            Case cEwEValueChainModel.eRunTypes.Ecopath
                 pout = Path.Combine(Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecopath), "ValueChain")
-            Case cModel.eRunTypes.Ecosim
+            Case cEwEValueChainModel.eRunTypes.Ecosim
                 pout = Path.Combine(Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), "ValueChain")
-            Case cModel.eRunTypes.Equilibrium
+            Case cEwEValueChainModel.eRunTypes.Equilibrium
                 Return False
         End Select
         If Not cFileUtils.IsDirectoryAvailable(pout, True) Then Return False
@@ -96,15 +96,15 @@ Public Class cResultWriter
                     sw.WriteLine("")
 
                     ' Write data
-                    For Each v As cResults.eVariableType In [Enum].GetValues(GetType(cResults.eVariableType))
+                    For Each v As cValueChainResults.eVariableType In [Enum].GetValues(GetType(cValueChainResults.eVariableType))
                         sw.Write(cStringUtils.ToCSVField(v.ToString))
                         For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
                             sw.Write(",")
                             Dim result As Single = 0
-                            If (Me.m_results.RunType = cModel.eRunTypes.Ecopath) Then
-                                result = Me.m_results.GetTotal(v, New cUnit() {u}, iItem, cResults.GetVariableContributionType(v))
+                            If (Me.m_results.RunType = cEwEValueChainModel.eRunTypes.Ecopath) Then
+                                result = Me.m_results.GetTotal(v, New cUnit() {u}, iItem, cValueChainResults.GetVariableContributionType(v))
                             Else
-                                result = Me.m_results.GetTimeStepTotal(v, iStep, New cUnit() {u}, iItem, cResults.GetVariableContributionType(v))
+                                result = Me.m_results.GetTimeStepTotal(v, iStep, New cUnit() {u}, iItem, cValueChainResults.GetVariableContributionType(v))
                             End If
                             sw.Write(cStringUtils.FormatNumber(result))
                         Next
@@ -191,7 +191,7 @@ Public Class cResultWriter
         dtFields("RunType") = (Me.m_results.RunType.ToString())
 
         ' Append header
-        If (Me.m_results.RunType = cModel.eRunTypes.Ecopath) Then
+        If (Me.m_results.RunType = cEwEValueChainModel.eRunTypes.Ecopath) Then
             sb.AppendLine(core.DefaultFileHeader(eAutosaveTypes.Ecopath, extraFields:=dtFields))
         Else
             sb.AppendLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim, extraFields:=dtFields))

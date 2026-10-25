@@ -16,3 +16,4 @@ jobs:
         uses: Official-EwE/Eii.GithubActions/BuildCheckWindows@master
         with:
           solution-file: ./Sources/EwE6.sln
+          run-tests: true

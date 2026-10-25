@@ -719,7 +719,7 @@ Public Class cCore
                 Dim strVersion As String = cAssemblyUtils.GetVersion(an).ToString
 
                 If bIncludeCompilationDate Then
-                    strVersion = cStringUtils.Localize(My.Resources.CoreDefaults.VERSION_EXT_COMPILED, strVersion, cAssemblyUtils.GetCompileDate(ass).ToShortDateString)
+                    strVersion = cStringUtils.Localize(My.Resources.CoreDefaults.VERSION_EXT_COMPILED, strVersion, cAssemblyUtils.GetCompileDate(an).ToShortDateString)
                 End If
 
                 If bIncludeBitness Then

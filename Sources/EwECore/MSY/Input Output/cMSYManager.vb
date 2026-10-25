@@ -168,14 +168,18 @@ Namespace MSY
 
                 Me.m_parameters.Assessment = eMSYAssessmentTypes.FullCompensation
                 If Me.m_MSY.RunMSY() Then
-                    If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                    If Me.IsAutoSaveOutput Then
+                        Me.SaveMSYOutput()
+                    End If
                 End If
 
                 ' Process may have been stopped in the interim. Do not continue; RunMSY will ignore and reset the stop flag
                 If Not Me.m_msyData.bStopRun Then
                     Me.m_parameters.Assessment = eMSYAssessmentTypes.StationarySystem
                     If Me.m_MSY.RunMSY() Then
-                        If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                        If Me.IsAutoSaveOutput Then
+                            Me.SaveMSYOutput()
+                        End If
                     End If
                 End If
 
@@ -244,11 +248,9 @@ Namespace MSY
                         Next
                         Me.m_fmsyresults = results
 
-                        ' JS 04Nov12: Always save FMSY results until FMSY has a user interface.
-                        ' ToDo_JS: Use Autosave settings for FMSY when there is a user interface.
-                        'If Me.IsAutoSaveOutput Then
-                        Me.SaveFMSYOutput()
-                        'End If
+                        If Me.m_Core.Autosave(eAutosaveTypes.MSY) Then
+                            Me.SaveFMSYOutput()
+                        End If
                     End If
                 Next
 
@@ -367,7 +369,7 @@ Namespace MSY
         ''' Returns the <see cref="cMSYFResult">results list</see>, sorted by F.
         ''' </summary>
         Public Function MSYResults() As cMSYFResult()
-            Return Me.m_msyData.lstResults.ToArray
+            Return Me.m_msyData.Results.ToArray
         End Function
 
         ''' <summary>

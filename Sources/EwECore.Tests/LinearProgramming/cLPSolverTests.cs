@@ -17,7 +17,7 @@ namespace EwECore.Tests.LinearProgramming;
 /// package, every test still compiles and the results must match.
 ///
 /// Each test guards with <see cref="IsSolverAvailable"/> and returns early
-/// (without failing) when the native lpsolve55.dll is absent, e.g. on Linux CI.
+/// (without failing) when the native LpSolveDotNet is absent.
 /// </summary>
 public sealed class cLPSolverTests
 {
@@ -25,7 +25,7 @@ public sealed class cLPSolverTests
     // Helpers
     // ------------------------------------------------------------------
 
-    /// <summary>True when the native lpsolve55.dll can be loaded.</summary>
+    /// <summary>True when the native LpSolveDotNet can be loaded.</summary>
     private static bool IsSolverAvailable => new cLPSolver().IsSupported();
 
     private static cLPSolver CreateSolver() => new cLPSolver();
@@ -48,7 +48,7 @@ public sealed class cLPSolverTests
         bool result = solver.IsSupported();
 
         // Assert
-        result.Should().BeTrue("lpsolve55.dll should be loadable on Windows");
+        result.Should().BeTrue("LpSolveDotNet should be loadable on Windows");
     }
 
     // ------------------------------------------------------------------

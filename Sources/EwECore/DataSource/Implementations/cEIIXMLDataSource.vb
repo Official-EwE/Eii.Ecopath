@@ -2400,7 +2400,7 @@ Public Class cEIIXMLDataSource
             Try
                 mseDS.AssessMethod = Me.ReadSafe(drow, "AssessMethod", eAssessmentMethods.CatchEstmBio)
                 mseDS.AssessPower = Me.ReadSafe(drow, "AssessPower", 1.0!)
-                mseDS.NTrials = Me.ReadSafe(drow, "NTrials", 10)
+                mseDS.nTrials = Me.ReadSafe(drow, "NTrials", 10)
                 mseDS.MSYStartTimeIndex = Me.ReadSafe(drow, "StartIndex", 2)
                 mseDS.MSEMaxEffort = Me.ReadSafe(drow, "MaxEffort", cMSEDataStructures.MSE_DEFAULT_MAXEFFORT)
             Catch ex As Exception

@@ -54,6 +54,12 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>EwEShapeGridPlugin.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+	<PropertyGroup>
+		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
+	</PropertyGroup>
+	<ItemGroup>
+		<AssemblyMetadata Include="EwEBuildDateUtc" Value="$(EwEBuildDateUtc)" />
+	</ItemGroup>
   <ItemGroup>
     <Reference Include="SourceGrid2">
       <HintPath>..\..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
