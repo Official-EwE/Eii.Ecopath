@@ -40,25 +40,32 @@ Namespace Ecopath
             '
             'm_graph
             '
-            resources.ApplyResources(Me.m_graph, "m_graph")
+            Me.m_graph.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_graph.Location = New System.Drawing.Point(0, 0)
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0.0R
-            Me.m_graph.ScrollMaxX = 0.0R
-            Me.m_graph.ScrollMaxY = 0.0R
-            Me.m_graph.ScrollMaxY2 = 0.0R
-            Me.m_graph.ScrollMinX = 0.0R
-            Me.m_graph.ScrollMinY = 0.0R
-            Me.m_graph.ScrollMinY2 = 0.0R
+            Me.m_graph.ScrollGrace = 0R
+            Me.m_graph.ScrollMaxX = 0R
+            Me.m_graph.ScrollMaxY = 0R
+            Me.m_graph.ScrollMaxY2 = 0R
+            Me.m_graph.ScrollMinX = 0R
+            Me.m_graph.ScrollMinY = 0R
+            Me.m_graph.ScrollMinY2 = 0R
+            Me.m_graph.Size = New System.Drawing.Size(516, 391)
+            Me.m_graph.TabIndex = 2
             '
             'frmPrebal
             '
-            resources.ApplyResources(Me, "$this")
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+            Me.ClientSize = New System.Drawing.Size(516, 391)
             Me.Controls.Add(Me.m_graph)
+            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
             Me.Name = "frmPrebal"
             Me.ShowInTaskbar = False
             Me.TabText = ""
+            Me.Text = "Pre-bal"
             Me.ResumeLayout(False)
 
         End Sub
