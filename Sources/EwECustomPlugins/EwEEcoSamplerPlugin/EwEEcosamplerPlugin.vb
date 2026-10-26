@@ -5,6 +5,7 @@
 Imports EwECore
 Imports EwECore.Plugins
 Imports EwECore.Plugins.Core
+Imports EwECore.Plugins.Ecopath
 Imports EwECore.Plugins.Ecosim
 Imports EwECore.Plugins.MonteCarlo
 Imports EwECore.Plugins.Search
@@ -17,6 +18,7 @@ Imports Microsoft.Extensions.Logging
 Imports ScientificInterfaceShared.Controls
 
 Public Class EwEEcosamplerPlugin
+    Implements IEcopathPlugin
     Implements IMonteCarloPlugin
     Implements IEcosimInitializedPlugin
     Implements IUIContextPlugin
@@ -175,6 +177,29 @@ Public Class EwEEcosamplerPlugin
     End Property
 
 #End Region ' Menu plugin
+
+#Region " Ecopath plugin"
+
+    Public Function LoadModel(dataSource As Object) As Boolean Implements IEcopathPlugin.LoadModel
+        Try
+            If (Me.HasUI) Then
+                Me.GetUI().LoadSamples()
+            End If
+        Catch ex As Exception
+            ' Swallow
+        End Try
+        Return True
+    End Function
+
+    Public Function SaveModel(dataSource As Object) As Boolean Implements IEcopathPlugin.SaveModel
+        Return True
+    End Function
+
+    Public Function CloseModel() As Boolean Implements IEcopathPlugin.CloseModel
+        Return True
+    End Function
+
+#End Region ' Ecopath plugin
 
 #Region " Ecosim plugin "
 
@@ -371,7 +396,7 @@ Public Class EwEEcosamplerPlugin
         Return Not Me.m_ui.IsDisposed
     End Function
 
-    Private Function GetUI() As System.Windows.Forms.Form
+    Private Function GetUI() As frmSamples
         If Not Me.HasUI() Then
             Me.m_ui = New frmSamples(Me.m_uic, Me)
         End If
