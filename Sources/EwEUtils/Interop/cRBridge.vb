@@ -6,6 +6,8 @@ Imports System
 Imports System.Collections.Generic
 Imports System.Diagnostics
 Imports System.IO
+Imports System.Runtime.InteropServices
+Imports EwEUtils.Configuration
 Imports EwEUtils.Utilities
 Imports Microsoft.Win32
 
@@ -85,35 +87,69 @@ Namespace Interop
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the R installation locations reported in the registry.
-        ''' </summary>
-        ''' <returns>An array with R installation locations obtained from the
-        ''' registry. This method is MONO-compliant, but may not yield usable
-        ''' results on Linux.</returns>
+        ''' <summary>Find installed R executables using portable sources first.</summary>
+        ''' <returns>Valid executable paths, ordered by discovery source.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function InstallLocations() As String()
-            Dim rk As RegistryKey = Registry.LocalMachine.OpenSubKey("Software\R-core")
-            Dim lstrPaths As New List(Of String)
-            If (rk IsNot Nothing) Then
-                For Each strName As String In rk.GetSubKeyNames
-                    Dim rkRSub As RegistryKey = rk.OpenSubKey(strName)
-                    If (rkRSub IsNot Nothing) Then
-                        Dim objVal As Object = rkRSub.GetValue("InstallPath")
-                        If (objVal IsNot Nothing) Then
-                            Dim strVal As String = CStr(objVal)
-                            If (Directory.Exists(strVal)) Then
-                                strVal = Path.Combine(strVal, "bin\R.exe")
-                                If (File.Exists(strVal) And Not lstrPaths.Contains(strVal)) Then
-                                    lstrPaths.Add(strVal)
-                                End If
-                            End If
-                        End If
-                    End If
+            Dim paths As New List(Of String)
+            Dim configuredPath As String = Nothing
+            Dim settings As New cJsonAppSettingsStore()
+            If settings.TryGetString("r.executable", configuredPath) Then AddRExecutable(paths, configuredPath)
+
+            AddRExecutable(paths, Environment.GetEnvironmentVariable("R_BIN"))
+
+            Dim rHome As String = Environment.GetEnvironmentVariable("R_HOME")
+            If Not String.IsNullOrWhiteSpace(rHome) Then AddRExecutable(paths, Path.Combine(rHome, "bin"))
+
+            Dim environmentPath As String = Environment.GetEnvironmentVariable("PATH")
+            If Not String.IsNullOrEmpty(environmentPath) Then
+                For Each directory As String In environmentPath.Split(New Char() {Path.PathSeparator}, StringSplitOptions.RemoveEmptyEntries)
+                    AddRExecutable(paths, directory)
                 Next
             End If
-            Return lstrPaths.ToArray
+
+            If RuntimeInformation.IsOSPlatform(OSPlatform.Windows) Then AddWindowsRegistryLocations(paths)
+            Return paths.ToArray()
         End Function
+
+        Private Shared Sub AddRExecutable(paths As List(Of String), candidate As String)
+            If String.IsNullOrWhiteSpace(candidate) Then Return
+
+            Dim executableNames As String() = If(RuntimeInformation.IsOSPlatform(OSPlatform.Windows), New String() {"R.exe", "R"}, New String() {"R"})
+            If Directory.Exists(candidate) Then
+                For Each executableName As String In executableNames
+                    AddRExecutableIfPresent(paths, Path.Combine(candidate, executableName))
+                    AddRExecutableIfPresent(paths, Path.Combine(candidate, "bin", executableName))
+                Next
+            Else
+                AddRExecutableIfPresent(paths, candidate)
+            End If
+        End Sub
+
+        Private Shared Sub AddRExecutableIfPresent(paths As List(Of String), executablePath As String)
+            If Not File.Exists(executablePath) Then Return
+
+            Dim comparison As StringComparison = If(RuntimeInformation.IsOSPlatform(OSPlatform.Windows), StringComparison.OrdinalIgnoreCase, StringComparison.Ordinal)
+            For Each existingPath As String In paths
+                If String.Equals(existingPath, executablePath, comparison) Then Return
+            Next
+            paths.Add(executablePath)
+        End Sub
+
+        Private Shared Sub AddWindowsRegistryLocations(paths As List(Of String))
+            Using rootKey As RegistryKey = Registry.LocalMachine.OpenSubKey("Software\R-core")
+                If rootKey Is Nothing Then Return
+
+                For Each name As String In rootKey.GetSubKeyNames()
+                    Using rKey As RegistryKey = rootKey.OpenSubKey(name)
+                        If rKey IsNot Nothing Then
+                            Dim installPath As String = TryCast(rKey.GetValue("InstallPath"), String)
+                            If Not String.IsNullOrWhiteSpace(installPath) Then AddRExecutable(paths, Path.Combine(installPath, "bin"))
+                        End If
+                    End Using
+                Next
+            End Using
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>

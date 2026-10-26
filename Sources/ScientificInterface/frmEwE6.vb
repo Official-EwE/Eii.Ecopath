@@ -3114,6 +3114,12 @@ Public Class frmEwE6
         Dim result As eDatasourceAccessType = eDatasourceAccessType.Success
         Dim strMessage As String = ""
         Dim bSuccess As Boolean = True
+        Dim dataSource As IEwEDataSource = Me.Core.DataSource
+
+        If dataSource Is Nothing OrElse Not dataSource.CanCompact(strFilename) Then
+            Me.SendMessage(My.Resources.STATUS_MODEL_COMPACTING_OS, eMessageImportance.Warning, eCoreComponentType.DataSource)
+            Return
+        End If
 
         If (Me.AskFeedback(My.Resources.PROMPT_MODEL_COMPACT) <> eMessageReply.YES) Then Return
         If Me.CloseEcopathModel() = False Then Return
@@ -3159,7 +3165,9 @@ Public Class frmEwE6
         If (ds Is Nothing) Then
             cmd.Enabled = False
         Else
-            cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded) And ds.CanCompact(Me.SelectedFileName)
+            Dim dataSourceType As eDataSourceTypes = cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
+            Dim isAccessDatabase As Boolean = dataSourceType = eDataSourceTypes.Access2003 OrElse dataSourceType = eDataSourceTypes.Access2007
+            cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded AndAlso (ds.CanCompact(Me.SelectedFileName) OrElse isAccessDatabase)
         End If
     End Sub
 
