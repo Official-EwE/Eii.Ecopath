@@ -171,7 +171,7 @@ Namespace Style
                 dRatio = 1.0
             End If
 
-            Return New VisualColor(Me.Interpolate(c1.R, c2.R, dRatio), Me.Interpolate(c1.G, c2.G, dRatio), Me.Interpolate(c1.B, c2.B, dRatio), Me.Interpolate(c1.A, c2.A, dRatio))
+            Return New VisualColor(Me.Interpolate(c1.A, c2.A, dRatio), Me.Interpolate(c1.R, c2.R, dRatio), Me.Interpolate(c1.G, c2.G, dRatio), Me.Interpolate(c1.B, c2.B, dRatio))
 
         End Function
 
