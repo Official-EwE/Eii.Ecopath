@@ -3,8 +3,6 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
-Imports System.Runtime.InteropServices
-Imports Microsoft.Win32
 
 Namespace Interop
 
@@ -79,45 +77,6 @@ Namespace Interop
             Me.m_RInput.Clear()
             Me.m_RErrors.Clear()
             Me.m_ROutput.Clear()
-        End Sub
-
-        Private Shared Sub AddRExecutable(paths As List(Of String), candidate As String)
-            If String.IsNullOrWhiteSpace(candidate) Then Return
-
-            Dim executableNames As String() = If(RuntimeInformation.IsOSPlatform(OSPlatform.Windows), New String() {"R.exe", "R"}, New String() {"R"})
-            If Directory.Exists(candidate) Then
-                For Each executableName As String In executableNames
-                    AddRExecutableIfPresent(paths, Path.Combine(candidate, executableName))
-                    AddRExecutableIfPresent(paths, Path.Combine(candidate, "bin", executableName))
-                Next
-            Else
-                AddRExecutableIfPresent(paths, candidate)
-            End If
-        End Sub
-
-        Private Shared Sub AddRExecutableIfPresent(paths As List(Of String), executablePath As String)
-            If Not File.Exists(executablePath) Then Return
-
-            Dim comparison As StringComparison = If(RuntimeInformation.IsOSPlatform(OSPlatform.Windows), StringComparison.OrdinalIgnoreCase, StringComparison.Ordinal)
-            For Each existingPath As String In paths
-                If String.Equals(existingPath, executablePath, comparison) Then Return
-            Next
-            paths.Add(executablePath)
-        End Sub
-
-        Private Shared Sub AddWindowsRegistryLocations(paths As List(Of String))
-            Using rootKey As RegistryKey = Registry.LocalMachine.OpenSubKey("Software\R-core")
-                If rootKey Is Nothing Then Return
-
-                For Each name As String In rootKey.GetSubKeyNames()
-                    Using rKey As RegistryKey = rootKey.OpenSubKey(name)
-                        If rKey IsNot Nothing Then
-                            Dim installPath As String = TryCast(rKey.GetValue("InstallPath"), String)
-                            If Not String.IsNullOrWhiteSpace(installPath) Then AddRExecutable(paths, Path.Combine(installPath, "bin"))
-                        End If
-                    End Using
-                Next
-            End Using
         End Sub
 
         ''' -------------------------------------------------------------------
