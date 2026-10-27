@@ -2807,8 +2807,8 @@ Public Class frmEwE6
 
         ' Check if core can be brought up to par
         If Me.CoreController.LoadState(iNavCoreState) Then
-            ' Is form already loaded?
-            If Not Me.ActivateForm(strNavPageName) Then
+            ' Folder nodes have no form type; only activate or create forms for page nodes.
+            If tNavClassType IsNot Nothing AndAlso Not Me.ActivateForm(strNavPageName) Then
 
                 'cApplicationStatusNotifier.StartProgress(Me.Core)
 
@@ -2831,7 +2831,10 @@ Public Class frmEwE6
                         ' Switch help
                         Me.Help.HelpTopic(frm) = strNavHelpURL
                     Else
-                        m_logger.LogError("frmEwE6 cmdNavigate OnInvoke")
+                        Dim strClassType As String = If(tNavClassType Is Nothing, "<null>", tNavClassType.FullName)
+                        m_logger.LogError("frmEwE6 cmdNavigate OnInvoke: no form created for page ID '" & strNavPageID &
+                                          "' (" & strNavPageName & "), class type '" & strClassType &
+                                          "', core state '" & iNavCoreState.ToString() & "'.")
                     End If
                 Catch ex As Exception
                     ' Whoah!
