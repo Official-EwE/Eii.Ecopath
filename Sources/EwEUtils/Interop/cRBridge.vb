@@ -2,13 +2,8 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Imports System
-Imports System.Collections.Generic
-Imports System.Diagnostics
 Imports System.IO
 Imports System.Runtime.InteropServices
-Imports EwEUtils.Configuration
-Imports EwEUtils.Utilities
 Imports Microsoft.Win32
 
 Namespace Interop
@@ -85,32 +80,6 @@ Namespace Interop
             Me.m_RErrors.Clear()
             Me.m_ROutput.Clear()
         End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>Find installed R executables using portable sources first.</summary>
-        ''' <returns>Valid executable paths, ordered by discovery source.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function InstallLocations() As String()
-            Dim paths As New List(Of String)
-            Dim configuredPath As String = Nothing
-            Dim settings As New cJsonAppSettingsStore()
-            If settings.TryGetString("r.executable", configuredPath) Then AddRExecutable(paths, configuredPath)
-
-            AddRExecutable(paths, Environment.GetEnvironmentVariable("R_BIN"))
-
-            Dim rHome As String = Environment.GetEnvironmentVariable("R_HOME")
-            If Not String.IsNullOrWhiteSpace(rHome) Then AddRExecutable(paths, Path.Combine(rHome, "bin"))
-
-            Dim environmentPath As String = Environment.GetEnvironmentVariable("PATH")
-            If Not String.IsNullOrEmpty(environmentPath) Then
-                For Each directory As String In environmentPath.Split(New Char() {Path.PathSeparator}, StringSplitOptions.RemoveEmptyEntries)
-                    AddRExecutable(paths, directory)
-                Next
-            End If
-
-            If RuntimeInformation.IsOSPlatform(OSPlatform.Windows) Then AddWindowsRegistryLocations(paths)
-            Return paths.ToArray()
-        End Function
 
         Private Shared Sub AddRExecutable(paths As List(Of String), candidate As String)
             If String.IsNullOrWhiteSpace(candidate) Then Return
