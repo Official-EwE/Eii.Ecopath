@@ -36,6 +36,14 @@
 - Not every extension is built from source in the main solution. `ScientificInterface.vbproj` also consumes packaged plugins such as `Eii.Ecopath.EcospaceSpinup-net48-Plugin` and `Eii.Ecopath.SpatialTemporalFramework-net48-Plugin`.
 - Localisation is managed outside the main source tree as well: `Localization\source\<assembly>\AssemblySettings.json` contains assembly-level localisation metadata, while individual projects still carry their own `.resx` resources.
 
+## Cross-platform and Avalonia migration
+
+- This system is being migrated toward a multi-platform application, including an Avalonia-based UI. Treat platform portability as a requirement when making changes, even while the current WinForms application and CI remain Windows-first.
+- Keep domain logic and reusable services independent of Windows UI and OS APIs. Put unavoidable platform-specific behavior behind a clear abstraction or capability check, and provide a deliberate unsupported-platform result/message rather than allowing platform API failures or silently doing nothing.
+- Do not assume Windows paths, registry, COM, P/Invoke, Windows Forms, or Windows-only filesystem locations in shared/core code. Use platform-neutral .NET APIs where possible; isolate Windows-specific integrations and retain them only where they are intentional compatibility behavior.
+- Use OS-appropriate per-user configuration/data locations and portable serialization for new settings. Preserve existing user data and define migration when changing a persisted settings format or location.
+- Consider all supported target frameworks and operating systems when adding dependencies or APIs. Add tests for platform-independent behavior and capability/fallback paths; call out when a behavior can only be validated on Windows or another specific OS.
+
 ## Unit test conventions
 
 - Every test method body must use the **Arrange-Act-Assert (AAA)** pattern with explicit inline comments:
