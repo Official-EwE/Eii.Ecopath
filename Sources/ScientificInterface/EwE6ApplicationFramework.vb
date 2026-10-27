@@ -10,6 +10,7 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Serilog
+Imports Serilog.Sinks.Grafana.Loki
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 
@@ -33,12 +34,28 @@ Module EwE6ApplicationFramework
 
         Dim logPath = Path.GetDirectoryName(LoggingContext.LogFile)
 
+        ' Show sink errors in the Visual Studio Output window  
+        ' Serilog.Debugging.SelfLog.Enable(Sub(msg) System.Diagnostics.Debug.WriteLine(msg))
+
         ' Configure Serilog
         Log.Logger = New LoggerConfiguration() _
             .MinimumLevel.Debug() _
             .Enrich.WithThreadId() _
             .Enrich.WithThreadName() _
             .WriteTo.File($"{logPath}\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
+            .WriteTo.GrafanaLoki(
+                "https://logs-prod-012.grafana.net",
+                credentials:=New LokiCredentials With {
+                    .Login = "1852914",
+                    .Password = "<grafanatoken>"
+                },
+                labels:=New LokiLabel() {
+                    New LokiLabel With {.Key = "app", .Value = "EwE"},
+                    New LokiLabel With {.Key = "env", .Value = "test"},
+                    New LokiLabel With {.Key = "version", .Value = Version(False, False)},
+                    New LokiLabel With {.Key = "bit", .Value = If(cSystemUtils.Is64BitProcess, SharedResources.BITNESS_64, SharedResources.BITNESS_32)}
+                },
+                restrictedToMinimumLevel:=Serilog.Events.LogEventLevel.Information) _
             .CreateLogger()
 
         ' Initialize LoggerFactory

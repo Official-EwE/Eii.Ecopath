@@ -66,6 +66,10 @@ For example, to create and push the ScientificInterfaceShared package, follow th
 - Navigate to the `Sources` directory of the repository
 - Type `.\CreateAndPushNugetPackage.ps1 -ProjectPath ScientificInterfaceShared\ScientificInterfaceShared.vbproj -ApiKey <ApiKey>`
 
+## Checking for updates
+
+In EwE6, select **Help > Check for Updates**, directly below the log-file entry. EwE checks the latest GitHub release and shows whether an update is available, the installed version is current, or a newer development version is installed. Release versions are displayed without the tag's `v` prefix. If the check fails, the message shows the installed version and explains that the latest version could not be checked. When an update is available, click the releases hyperlink in the message to download it from https://github.com/Official-EwE/Eii.Ecopath/releases/.
+
 ## Creating an EwE6 installer
 
 ### Creating the installer in Github

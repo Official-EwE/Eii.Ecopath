@@ -3655,6 +3655,36 @@ Public Class frmEwE6
         Me.m_cmdBrowseURI.Invoke(LoggingContext.LogFile)
     End Sub
 
+    Private Async Sub OnCheckForUpdates(sender As Object, e As EventArgs) Handles m_tsmiCheckForUpdates.Click
+        Me.m_tsmiCheckForUpdates.Enabled = False
+        Dim resources As New ComponentResourceManager(GetType(frmEwE6))
+        Dim currentVersion As String = EwE6ApplicationFramework.Version()
+        Dim message As String = cStringUtils.Localize(resources.GetString("UpdateCheckFailed"), currentVersion)
+        Dim icon As MessageBoxIcon = MessageBoxIcon.Warning
+
+        Try
+            Dim latestTag As String = Await cReleaseUpdateChecker.GetLatestTagAsync()
+            Dim comparison As Integer = cReleaseUpdateChecker.ParseVersion(currentVersion).CompareTo(cReleaseUpdateChecker.ParseVersion(latestTag))
+            Dim resourceName As String = If(comparison < 0, "UpdateCheckAvailable", If(comparison = 0, "UpdateCheckLatest", "UpdateCheckNewer"))
+            message = cStringUtils.Localize(resources.GetString(resourceName), currentVersion, latestTag.TrimStart("v"c))
+            icon = MessageBoxIcon.Information
+        Catch ex As Net.Http.HttpRequestException
+            Me.m_logger.LogWarning(ex, "Unable to check for EwE updates.")
+        Catch ex As System.Threading.Tasks.TaskCanceledException
+            Me.m_logger.LogWarning(ex, "The EwE update check timed out.")
+        Catch ex As System.Runtime.Serialization.SerializationException
+            Me.m_logger.LogWarning(ex, "The GitHub release response is invalid.")
+        Catch ex As FormatException
+            Me.m_logger.LogWarning(ex, "Unable to compare EwE release versions.")
+        Finally
+            If Not Me.IsDisposed Then Me.m_tsmiCheckForUpdates.Enabled = True
+        End Try
+
+        If Not Me.IsDisposed AndAlso Not Me.Disposing Then
+            cCustomMessageBox.Show(Me.UIContext, message, resources.GetString("m_tsmiCheckForUpdates.Text"), MessageBoxButtons.OK, icon, Nothing)
+        End If
+    End Sub
+
 #End Region ' Main Menu - Help
 
 #Region " Ecopath commands "
