@@ -82,12 +82,20 @@ The label is omitted when no ID is available. Disabling diagnostics prevents sen
 
 ### Grafana credentials
 
-Set `EWE_GRAFANA_LOKI_TOKEN` in the environment of the running application using your secret-management tooling.
+Create an **Actions organization secret** named `EWE_GRAFANA_LOKI_TOKEN` in GitHub organization settings and grant `Official-EwE/Eii.Ecopath` access.
+Use a dedicated token restricted to log ingestion (write-only), with no read or administrative permissions.
+The manual release workflow requires this secret and bundles it into both installers as `grafana-loki.token` beside the executable.
+It passes a temporary filename to Inno Setup, not the token on the command line, and removes the temporary file afterward.
+The token is not committed to source or included in NuGet packages. **Anyone with the installer or installed files can extract it**;
+GitHub secret masking does not protect distributed installers. Restrict its scope, monitor abuse, and rotate it regularly.
+
+At runtime, `EWE_GRAFANA_LOKI_TOKEN` in the process environment overrides the installed token file.
 IDE runs inherit Visual Studio's environment; restart Visual Studio after changing a user environment variable.
-Do not put the token in source code, publish profiles, or installer files. A user environment variable is not an encrypted secret store.
-If the variable is missing or blank, remote diagnostics are disabled and a warning is written to the local log.
-Diagnostic consent is still required when a token is configured. GitHub Actions secrets are available only to workflows, not installed desktop apps.
-Revoke and replace any token previously committed to Git, even after removing it from branch history.
+A user environment variable is not an encrypted secret store. If neither source provides a token, remote diagnostics are disabled with a local warning.
+Diagnostic consent is still required when a token is configured. The installer does not set a global environment variable.
+For local installer builds, supply `/DGrafanaTokenFile="C:\path\to\token-file"`; omit it to build without bundled credentials.
+If your binaries are in the non-platform output folder, also pass `/DDefSrc="Sources\ScientificInterface\bin\Release\net48"`.
+Never commit a real token file. Revoke and replace any token previously committed to Git, even after removing it from branch history.
 
 ## Creating an EwE6 installer
 

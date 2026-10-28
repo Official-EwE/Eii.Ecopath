@@ -24,10 +24,14 @@
 
 #if Compile64Bit == "0"
   #define MyAppVersion SemVersion + "_32-bit"
-  #define DefSrc "Sources\ScientificInterface\bin\x86\Release\net48"
+  #ifndef DefSrc
+    #define DefSrc "Sources\ScientificInterface\bin\x86\Release\net48"
+  #endif
 #else
   #define MyAppVersion SemVersion + "_64-bit"
-  #define DefSrc "Sources\ScientificInterface\bin\x64\Release\net48"
+  #ifndef DefSrc
+    #define DefSrc "Sources\ScientificInterface\bin\x64\Release\net48"
+  #endif
 #endif
 
 ; Standard stuff
@@ -116,6 +120,9 @@ Source: "..\LICENSE.txt"; DestDir: "{app}\Resources\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe.config"; DestDir: "{app}"; DestName: "{#MyAppExeName}.config"; Flags: ignoreversion
+#ifdef GrafanaTokenFile
+Source: "{#GrafanaTokenFile}"; DestDir: "{app}"; DestName: "grafana-loki.token"; Flags: ignoreversion
+#endif
 
 ; - Strange For some reason the Json library is not included with the .net version
 ; - Put it in the app directory

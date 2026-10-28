@@ -66,6 +66,7 @@
   </PropertyGroup>
 	<PropertyGroup>
 		<EwEBuildDateUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-dd"))</EwEBuildDateUtc>
+		<UserSecretsId>130b0c42-afef-4474-91e5-21d5fed00a9d</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
 		<AssemblyMetadata Include="EwEBuildDateUtc" Value="$(EwEBuildDateUtc)" />

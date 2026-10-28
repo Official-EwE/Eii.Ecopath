@@ -272,21 +272,45 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path artifacts | Out-Null
         shell: pwsh
 
+      - name: Prepare installer Grafana token
+        env:
+          EWE_GRAFANA_LOKI_TOKEN: ${{ secrets.EWE_GRAFANA_LOKI_TOKEN }}
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:EWE_GRAFANA_LOKI_TOKEN)) {
+            throw "Organization secret EWE_GRAFANA_LOKI_TOKEN is required for release installers. Grant this repository access to it."
+          }
+          $tokenFile = Join-Path $env:RUNNER_TEMP "ewe-grafana-loki.token"
+          [System.IO.File]::WriteAllText($tokenFile, $env:EWE_GRAFANA_LOKI_TOKEN.Trim(), [System.Text.UTF8Encoding]::new($false))
+
       # Compile the x86 installer with Inno Setup (Compile64Bit=0)
       - name: Build Inno Setup Installer (x86)
         run: |
           $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
           $outputDir = Join-Path $PWD "artifacts"
-          & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="0" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+          $tokenFile = Join-Path $env:RUNNER_TEMP "ewe-grafana-loki.token"
+          & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="0" "/DGrafanaTokenFile=$tokenFile" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+          if ($LASTEXITCODE -ne 0) { throw "x86 installer compilation failed." }
         shell: pwsh
 
-      # Compile the x64 installer with Inno Setup (Compile64Bit=1)
+      # Compile the x64 installer
       - name: Build Inno Setup Installer (x64)
         run: |
           $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
           $outputDir = Join-Path $PWD "artifacts"
-          & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="1" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+          $tokenFile = Join-Path $env:RUNNER_TEMP "ewe-grafana-loki.token"
+          & $isccPath /DSemVersion="${{ needs.version.outputs.semver }}" /DCompile64Bit="1" "/DGrafanaTokenFile=$tokenFile" /O"$outputDir" "Deployment\EwE6_relpath.iss"
+          if ($LASTEXITCODE -ne 0) { throw "x64 installer compilation failed." }
         shell: pwsh
+
+      - name: Remove temporary Grafana token
+        if: always()
+        shell: pwsh
+        run: |
+          $tokenFile = Join-Path $env:RUNNER_TEMP "ewe-grafana-loki.token"
+          if (Test-Path -LiteralPath $tokenFile) {
+            Remove-Item -LiteralPath $tokenFile -Force
+          }
 
       # List installer files for debugging
       - name: List output dir

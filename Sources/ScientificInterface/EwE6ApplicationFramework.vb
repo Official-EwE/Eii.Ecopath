@@ -55,6 +55,10 @@ Module EwE6ApplicationFramework
         ' Serilog.Debugging.SelfLog.Enable(Sub(msg) System.Diagnostics.Debug.WriteLine(msg))
 
         Dim grafanaToken As String = Environment.GetEnvironmentVariable("EWE_GRAFANA_LOKI_TOKEN")
+        Dim grafanaTokenFile As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "grafana-loki.token")
+        If String.IsNullOrWhiteSpace(grafanaToken) AndAlso File.Exists(grafanaTokenFile) Then
+            grafanaToken = File.ReadAllText(grafanaTokenFile).Trim()
+        End If
 
         ' Configure Serilog
         Dim loggerConfiguration As LoggerConfiguration = New LoggerConfiguration() _
@@ -76,7 +80,7 @@ Module EwE6ApplicationFramework
         End If
         Log.Logger = loggerConfiguration.CreateLogger()
         If String.IsNullOrWhiteSpace(grafanaToken) Then
-            Log.Warning("Remote diagnostics are unavailable because EWE_GRAFANA_LOKI_TOKEN is not configured. Local logging remains enabled.")
+            Log.Warning("Remote diagnostics are unavailable because neither EWE_GRAFANA_LOKI_TOKEN nor an installed Grafana token is configured. Local logging remains enabled.")
         End If
 
         ' Initialize LoggerFactory
