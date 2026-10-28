@@ -70,6 +70,16 @@ For example, to create and push the ScientificInterfaceShared package, follow th
 
 In EwE6, select **Help > Check for Updates**, directly below the log-file entry. EwE checks the latest GitHub release and shows whether an update is available, the installed version is current, or a newer development version is installed. Release versions are displayed without the tag's `v` prefix. If the check fails, the message shows the installed version and explains that the latest version could not be checked. When an update is available, click the releases hyperlink in the message to download it from https://github.com/Official-EwE/Eii.Ecopath/releases/.
 
+## Privacy and installation ID
+
+The installer generates a random GUID named `InstallationId`, including during silent installation. It is stored in
+`%APPDATA%\Ecopath with Ecosim\ScientificInterface.settings` and retained across upgrades and reinstalls while that settings file exists.
+It is shared by installed EwE versions using that user profile. Only the installer creates an ID; the application never generates one.
+IDE, debug, and installed runs all read the ID from the same user settings file. If no ID is stored, the value is null.
+View or copy the ID in **Options > Privacy**; it cannot be edited or reset there. The field is blank when no ID is available.
+When anonymous diagnostics are enabled and an ID is available, it is included as the `InstallationId` Grafana Loki label.
+The label is omitted when no ID is available. Disabling diagnostics prevents sending it.
+
 ## Creating an EwE6 installer
 
 ### Creating the installer in Github
@@ -90,6 +100,9 @@ When its finished, you can download the newly created release from https://githu
 
 ### Creating the installer on your desktop
 The installer is created using Inno Setup. The script is located in the `Deployment` folder of the repository.
+
+When publishing `ScientificInterface`, the project retains StrongNamer's signed dependency DLLs instead of their unsigned NuGet originals.
+Keep this publish target enabled: the signed DLLs are required for .NET Framework assembly binding. Duplicate-output validation remains enabled.
 
 To be able to use the Inno Setup compiler, you have to install it. It is recommended to install Inno Setup as a CLI tool.
 This is the way the tool is used in the build check and CI/CD pipelines.

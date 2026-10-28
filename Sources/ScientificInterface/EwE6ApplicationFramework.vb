@@ -27,14 +27,31 @@ Module EwE6ApplicationFramework
 
     Private m_bExpirationChecked As Boolean = False
     Private m_logger As Microsoft.Extensions.Logging.ILogger = Nothing
+    Private ReadOnly m_installationId As New Lazy(Of Guid?)(Function() My.Settings.GetInstallationId())
 
 #End Region ' Private vars 
 
+    Public ReadOnly Property InstallationId As Guid?
+        Get
+            Return m_installationId.Value
+        End Get
+    End Property
+
     Public Sub Main()
 
+        Dim installationId As Guid? = EwE6ApplicationFramework.InstallationId
+        Dim labels As New List(Of LokiLabel) From {
+            New LokiLabel With {.Key = "app", .Value = "EwE"},
+            New LokiLabel With {.Key = "env", .Value = "test"},
+            New LokiLabel With {.Key = "version", .Value = Version(False, False)},
+            New LokiLabel With {.Key = "bit", .Value = If(cSystemUtils.Is64BitProcess, SharedResources.BITNESS_64, SharedResources.BITNESS_32)}
+        }
+        If installationId.HasValue Then
+            labels.Add(New LokiLabel With {.Key = "InstallationId", .Value = installationId.Value.ToString("D")})
+        End If
         Dim logPath = Path.GetDirectoryName(LoggingContext.LogFile)
 
-        ' Show sink errors in the Visual Studio Output window  
+        ' Show sink errors in the Visual Studio Output window
         ' Serilog.Debugging.SelfLog.Enable(Sub(msg) System.Diagnostics.Debug.WriteLine(msg))
 
         ' Configure Serilog
@@ -43,7 +60,8 @@ Module EwE6ApplicationFramework
             .Enrich.WithThreadId() _
             .Enrich.WithThreadName() _
             .WriteTo.File($"{logPath}\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
-            .WriteTo.GrafanaLoki(
+            .WriteTo.Conditional(Function(logEvent) My.Settings.SendAnonymousDiagnostics,
+                Sub(sink) sink.GrafanaLoki(
                 "https://logs-prod-012.grafana.net",
                 credentials:=New LokiCredentials With {
                     .Login = "1852914",
@@ -53,9 +71,10 @@ Module EwE6ApplicationFramework
                     New LokiLabel With {.Key = "app", .Value = "EwE"},
                     New LokiLabel With {.Key = "env", .Value = "test"},
                     New LokiLabel With {.Key = "version", .Value = Version(False, False)},
-                    New LokiLabel With {.Key = "bit", .Value = If(cSystemUtils.Is64BitProcess, SharedResources.BITNESS_64, SharedResources.BITNESS_32)}
+                    New LokiLabel With {.Key = "bit", .Value = If(cSystemUtils.Is64BitProcess, SharedResources.BITNESS_64, SharedResources.BITNESS_32)},
+                    New LokiLabel With {.Key = "installationid", .Value = If(installationId.HasValue, installationId.Value.ToString("D"), "")}
                 },
-                restrictedToMinimumLevel:=Serilog.Events.LogEventLevel.Information) _
+                restrictedToMinimumLevel:=Serilog.Events.LogEventLevel.Information)) _
             .CreateLogger()
 
         ' Initialize LoggerFactory

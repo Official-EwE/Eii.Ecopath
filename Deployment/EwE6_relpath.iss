@@ -240,6 +240,32 @@ Filename: "{app}\{#MyAppExeName}"; Flags: postinstall skipifsilent; Description:
 [Code]
 // https://stackoverflow.com/questions/4104011/inno-setup-verify-that-net-4-0-is-installed
 // https://blogs.msdn.microsoft.com/davidrickard/2015/07/17/installing-net-framework-4-5-automatically-with-inno-setup/
+type
+    TInstallationGuid = record
+        Data1: LongWord;
+        Data2: Word;
+        Data3: Word;
+        Data4: array[0..7] of Byte;
+    end;
+
+var
+    DiagnosticsPage: TWizardPage;
+    DiagnosticsCheckBox: TNewCheckBox;
+
+function CoCreateGuid(var Guid: TInstallationGuid): Integer;
+    external 'CoCreateGuid@ole32.dll stdcall';
+
+function NewInstallationId: string;
+var
+    Guid: TInstallationGuid;
+begin
+    if CoCreateGuid(Guid) <> 0 then
+        RaiseException('Could not generate the EwE installation ID.');
+    Result := Lowercase(Format('%.8x-%.4x-%.4x-%.2x%.2x-%.2x%.2x%.2x%.2x%.2x%.2x', [
+        Guid.Data1, Guid.Data2, Guid.Data3, Guid.Data4[0], Guid.Data4[1],
+        Guid.Data4[2], Guid.Data4[3], Guid.Data4[4], Guid.Data4[5], Guid.Data4[6], Guid.Data4[7]]));
+end;
+
 function IsDotNetDetected(version: string; service: cardinal): boolean;
 // Indicates whether the specified version and service pack of the .NET Framework is installed.
 //
@@ -317,7 +343,35 @@ begin
 end;
 
 procedure InitializeWizard();
+var
+    InfoLabel, PrivacyLabel: TNewStaticText;
 begin
+    DiagnosticsPage := CreateCustomPage(wpSelectTasks,
+        'Help improve Ecopath with Ecosim',
+        'Help us improve the software by automatically sending anonymous diagnostic information when errors occur. This data helps us identify bugs, improve stability, and prioritize fixes.');
+
+    InfoLabel := TNewStaticText.Create(DiagnosticsPage);
+    InfoLabel.Parent := DiagnosticsPage.Surface;
+    InfoLabel.SetBounds(0, 0, DiagnosticsPage.SurfaceWidth, ScaleY(118));
+    InfoLabel.WordWrap := True;
+    InfoLabel.Caption := 'Diagnostic information may include:' + #13#10 +
+        '- Error messages and stack traces' + #13#10 +
+        '- Application version information' + #13#10 +
+        '- Operating system details' + #13#10 +
+        '- A randomly generated installation ID' + #13#10#13#10 +
+        'No model data, personal files, or sensitive information are transmitted.';
+
+    DiagnosticsCheckBox := TNewCheckBox.Create(DiagnosticsPage);
+    DiagnosticsCheckBox.Parent := DiagnosticsPage.Surface;
+    DiagnosticsCheckBox.SetBounds(0, ScaleY(132), DiagnosticsPage.SurfaceWidth, ScaleY(24));
+    DiagnosticsCheckBox.Caption := 'Send anonymous diagnostic information to the EwE development team';
+    DiagnosticsCheckBox.Checked := False;
+
+    PrivacyLabel := TNewStaticText.Create(DiagnosticsPage);
+    PrivacyLabel.Parent := DiagnosticsPage.Surface;
+    PrivacyLabel.SetBounds(0, ScaleY(166), DiagnosticsPage.SurfaceWidth, ScaleY(24));
+    PrivacyLabel.Caption := 'You can change this setting later in Options → Privacy.';
+
     if not IsDotNetDetected('v4.7', 0) then 
     begin
         // 4.0 full: https://go.microsoft.com/fwlink/?LinkId=181013
@@ -325,6 +379,62 @@ begin
         // idpAddFile('http://go.microsoft.com/fwlink/?LinkId=863262', ExpandConstant('{tmp}\NetFrameworkInstaller.exe'));
         // idpDownloadAfter(wpReady);
      end
+end;
+
+procedure SaveDiagnosticsSetting;
+var
+    SettingsPath, SettingsFile, InstallationIdValue: string;
+    XmlDoc, SettingsRoot, SettingNode: Variant;
+begin
+    SettingsPath := ExpandConstant('{userappdata}\Ecopath with Ecosim');
+    SettingsFile := SettingsPath + '\ScientificInterface.settings';
+    if not ForceDirectories(SettingsPath) then
+        RaiseException('Could not create the EwE settings directory.');
+
+    XmlDoc := CreateOleObject('Msxml2.DOMDocument.6.0');
+    XmlDoc.async := False;
+    XmlDoc.preserveWhiteSpace := True;
+    if FileExists(SettingsFile) then
+    begin
+        if not XmlDoc.load(SettingsFile) then
+            RaiseException('Could not read the EwE settings file: ' + XmlDoc.parseError.reason);
+        if XmlDoc.selectNodes('/Settings').length <> 1 then
+            RaiseException('The EwE settings file has an invalid format.');
+        SettingsRoot := XmlDoc.documentElement;
+    end
+    else
+    begin
+        XmlDoc.appendChild(XmlDoc.createProcessingInstruction('xml', 'version="1.0" encoding="utf-8"'));
+        SettingsRoot := XmlDoc.createElement('Settings');
+        SettingsRoot := XmlDoc.appendChild(SettingsRoot);
+    end;
+
+    if SettingsRoot.selectNodes('InstallationId').length = 0 then
+    begin
+        SettingNode := XmlDoc.createElement('InstallationId');
+        SettingNode := SettingsRoot.appendChild(SettingNode);
+    end
+    else
+        SettingNode := SettingsRoot.selectSingleNode('InstallationId');
+    InstallationIdValue := SettingNode.text;
+    if Trim(InstallationIdValue) = '' then
+        SettingNode.text := NewInstallationId();
+
+    if not WizardSilent then
+    begin
+        if SettingsRoot.selectNodes('SendAnonymousDiagnostics').length = 0 then
+        begin
+            SettingNode := XmlDoc.createElement('SendAnonymousDiagnostics');
+            SettingNode := SettingsRoot.appendChild(SettingNode);
+        end
+        else
+            SettingNode := SettingsRoot.selectSingleNode('SendAnonymousDiagnostics');
+        if DiagnosticsCheckBox.Checked then
+            SettingNode.text := 'True'
+        else
+            SettingNode.text := 'False';
+    end;
+    XmlDoc.save(SettingsFile);
 end;
 
 procedure InstallFramework;
@@ -384,11 +494,12 @@ begin
     case CurStep of
         ssPostInstall:
         begin
+            SaveDiagnosticsSetting();
             if not IsDotNetDetected('v4.', 0) then
             begin
                 InstallFramework();
             end;
- 
+
         end;
     end;
 end;
