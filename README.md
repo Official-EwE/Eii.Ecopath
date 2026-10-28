@@ -80,6 +80,15 @@ View or copy the ID in **Options > Privacy**; it cannot be edited or reset there
 When anonymous diagnostics are enabled and an ID is available, it is included as the `InstallationId` Grafana Loki label.
 The label is omitted when no ID is available. Disabling diagnostics prevents sending it.
 
+### Grafana credentials
+
+Set `EWE_GRAFANA_LOKI_TOKEN` in the environment of the running application using your secret-management tooling.
+IDE runs inherit Visual Studio's environment; restart Visual Studio after changing a user environment variable.
+Do not put the token in source code, publish profiles, or installer files. A user environment variable is not an encrypted secret store.
+If the variable is missing or blank, remote diagnostics are disabled and a warning is written to the local log.
+Diagnostic consent is still required when a token is configured. GitHub Actions secrets are available only to workflows, not installed desktop apps.
+Revoke and replace any token previously committed to Git, even after removing it from branch history.
+
 ## Creating an EwE6 installer
 
 ### Creating the installer in Github
