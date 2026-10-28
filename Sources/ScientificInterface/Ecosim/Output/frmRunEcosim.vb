@@ -408,7 +408,7 @@ Namespace Ecosim
                     If Not Me.m_zgp.ShowMultipleRuns Then
                         Me.m_zgp.Clear()
                     End If
-                    Me.m_zgp.CreateRun(cStringUtils.Localize(SharedResources.GENERIC_VAUE_RUN_X, (Me.m_zgp.NumRuns + 1)))
+                    Me.m_zgp.CreateRun(cStringUtils.Localize(SharedResources.GENERIC_VAUE_RUN_X, (Me.m_zgp.NumRuns + 1), Me.Core.EcosimStats.SS))
                     Me.PopulateRunsBox()
                     Me.PopulateGroupBox()
                 End If
