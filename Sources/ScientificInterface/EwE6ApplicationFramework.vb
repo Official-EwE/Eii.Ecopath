@@ -39,26 +39,10 @@ Module EwE6ApplicationFramework
 
     Public Sub Main()
 
-        Dim installationId As Guid? = EwE6ApplicationFramework.InstallationId
-        Dim labels As New List(Of LokiLabel) From {
-            New LokiLabel With {.Key = "app", .Value = "EwE"},
-            New LokiLabel With {.Key = "env", .Value = "test"},
-            New LokiLabel With {.Key = "version", .Value = Version(False, False)},
-            New LokiLabel With {.Key = "bit", .Value = If(cSystemUtils.Is64BitProcess, SharedResources.BITNESS_64, SharedResources.BITNESS_32)}
-        }
-        If installationId.HasValue Then
-            labels.Add(New LokiLabel With {.Key = "InstallationId", .Value = installationId.Value.ToString("D")})
-        End If
         Dim logPath = Path.GetDirectoryName(LoggingContext.LogFile)
 
         ' Show sink errors in the Visual Studio Output window
         ' Serilog.Debugging.SelfLog.Enable(Sub(msg) System.Diagnostics.Debug.WriteLine(msg))
-
-        Dim grafanaToken As String = Environment.GetEnvironmentVariable("EWE_GRAFANA_LOKI_TOKEN")
-        Dim grafanaTokenFile As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "grafana-loki.token")
-        If String.IsNullOrWhiteSpace(grafanaToken) AndAlso File.Exists(grafanaTokenFile) Then
-            grafanaToken = File.ReadAllText(grafanaTokenFile).Trim()
-        End If
 
         ' Configure Serilog
         Dim loggerConfiguration As LoggerConfiguration = New LoggerConfiguration() _
@@ -67,21 +51,24 @@ Module EwE6ApplicationFramework
             .Enrich.WithThreadName() _
             .WriteTo.File($"{logPath}\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day)
 
-        If Not String.IsNullOrWhiteSpace(grafanaToken) Then
+        If Not String.IsNullOrWhiteSpace(My.Settings.GrafanaLokiToken) Then
             loggerConfiguration.WriteTo.Conditional(Function(logEvent) My.Settings.SendAnonymousDiagnostics,
                 Sub(sink) sink.GrafanaLoki(
                 "https://logs-prod-012.grafana.net",
                 credentials:=New LokiCredentials With {
                     .Login = "1852914",
-                    .Password = grafanaToken
+                    .Password = My.Settings.GrafanaLokiToken
                 },
-                labels:=labels,
+                labels:=New LokiLabel() {
+                    New LokiLabel With {.Key = "app", .Value = "EwE"},
+                    New LokiLabel With {.Key = "env", .Value = "test"},
+                    New LokiLabel With {.Key = "version", .Value = Version(False, False)},
+                    New LokiLabel With {.Key = "bit", .Value = If(cSystemUtils.Is64BitProcess, SharedResources.BITNESS_64, SharedResources.BITNESS_32)},
+                    New LokiLabel With {.Key = "InstallationId", .Value = If(EwE6ApplicationFramework.InstallationId.HasValue, EwE6ApplicationFramework.InstallationId.Value.ToString("D"), "")}
+                },
                 restrictedToMinimumLevel:=Serilog.Events.LogEventLevel.Information))
         End If
         Log.Logger = loggerConfiguration.CreateLogger()
-        If String.IsNullOrWhiteSpace(grafanaToken) Then
-            Log.Warning("Remote diagnostics are unavailable because neither EWE_GRAFANA_LOKI_TOKEN nor an installed Grafana token is configured. Local logging remains enabled.")
-        End If
 
         ' Initialize LoggerFactory
         LoggingContext.LoggerFactory = LoggerFactory.Create(Sub(builder)

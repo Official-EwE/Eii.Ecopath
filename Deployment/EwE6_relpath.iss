@@ -121,7 +121,7 @@ Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion recu
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe.config"; DestDir: "{app}"; DestName: "{#MyAppExeName}.config"; Flags: ignoreversion
 #ifdef GrafanaTokenFile
-Source: "{#GrafanaTokenFile}"; DestDir: "{app}"; DestName: "grafana-loki.token"; Flags: ignoreversion
+Source: "{#GrafanaTokenFile}"; DestName: "grafana-loki.token"; Flags: dontcopy
 #endif
 
 ; - Strange For some reason the Json library is not included with the .net version
@@ -392,6 +392,10 @@ procedure SaveDiagnosticsSetting;
 var
     SettingsPath, SettingsFile, InstallationIdValue: string;
     XmlDoc, SettingsRoot, SettingNode: Variant;
+#ifdef GrafanaTokenFile
+    TokenContents: AnsiString;
+    TokenValue: string;
+#endif
 begin
     SettingsPath := ExpandConstant('{userappdata}\Ecopath with Ecosim');
     SettingsFile := SettingsPath + '\ScientificInterface.settings';
@@ -426,6 +430,24 @@ begin
     InstallationIdValue := SettingNode.text;
     if Trim(InstallationIdValue) = '' then
         SettingNode.text := NewInstallationId();
+
+#ifdef GrafanaTokenFile
+    ExtractTemporaryFile('grafana-loki.token');
+    if not LoadStringFromFile(ExpandConstant('{tmp}\grafana-loki.token'), TokenContents) then
+        RaiseException('Could not read the bundled Grafana token.');
+    TokenValue := TokenContents;
+    TokenValue := Trim(TokenValue);
+    if TokenValue = '' then
+        RaiseException('The bundled Grafana token is blank.');
+    if SettingsRoot.selectNodes('GrafanaLokiToken').length = 0 then
+    begin
+        SettingNode := XmlDoc.createElement('GrafanaLokiToken');
+        SettingNode := SettingsRoot.appendChild(SettingNode);
+    end
+    else
+        SettingNode := SettingsRoot.selectSingleNode('GrafanaLokiToken');
+    SettingNode.text := TokenValue;
+#endif
 
     if not WizardSilent then
     begin

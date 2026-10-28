@@ -1211,6 +1211,18 @@ Partial Friend NotInheritable Class Settings
             Me("InstallationId") = Value
         End Set
     End Property
+
+    <Global.System.Configuration.UserScopedSettingAttribute(),
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+     Global.System.Configuration.DefaultSettingValueAttribute("")>
+    Public Property GrafanaLokiToken() As String
+        Get
+            Return CType(Me("GrafanaLokiToken"), String)
+        End Get
+        Set
+            Me("GrafanaLokiToken") = Value
+        End Set
+    End Property
 End Class
 
 Namespace My
