@@ -278,7 +278,7 @@ jobs:
         shell: pwsh
         run: |
           if ([string]::IsNullOrWhiteSpace($env:EWE_GRAFANA_LOKI_TOKEN)) {
-            throw "Organization secret EWE_GRAFANA_LOKI_TOKEN is required for release installers. Grant this repository access to it."
+            throw "Repository secret EWE_GRAFANA_LOKI_TOKEN is required for release installers. Add it under Settings > Secrets and variables > Actions in Official-EwE/Eii.Ecopath."
           }
           $tokenFile = Join-Path $env:RUNNER_TEMP "ewe-grafana-loki.token"
           [System.IO.File]::WriteAllText($tokenFile, $env:EWE_GRAFANA_LOKI_TOKEN.Trim(), [System.Text.UTF8Encoding]::new($false))

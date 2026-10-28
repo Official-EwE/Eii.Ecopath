@@ -82,9 +82,10 @@ The label is omitted when no ID is available. Disabling diagnostics prevents sen
 
 ### Grafana credentials
 
-Create an **Actions organization secret** named `EWE_GRAFANA_LOKI_TOKEN` in GitHub organization settings and grant `Official-EwE/Eii.Ecopath` access.
+In the `Official-EwE/Eii.Ecopath` repository, open **Settings > Secrets and variables > Actions > New repository secret**
+and create `EWE_GRAFANA_LOKI_TOKEN`. No organization secret is required.
 Use a dedicated token restricted to log ingestion (write-only), with no read or administrative permissions.
-The manual release workflow requires this secret and bundles it into both installers for temporary extraction.
+The manual release workflow reads this repository secret through `${{ secrets.EWE_GRAFANA_LOKI_TOKEN }}` and bundles it into both installers for temporary extraction.
 The installer writes it as the plain-text `GrafanaLokiToken` setting in `%APPDATA%\Ecopath with Ecosim\ScientificInterface.settings`.
 It updates the token on reinstall, including silent installs. Builds without bundled credentials leave any existing token unchanged.
 The workflow passes a temporary filename to Inno Setup, not the token on the command line, and removes the temporary file afterward.
@@ -141,7 +142,7 @@ And to do that, you probably have to install `chocolatey` first.
 
 ### Prepare the local Grafana token (optional)
 
-Local Inno Setup builds do not download GitHub organization secrets. To include a token, create a file **outside the repository**, for example:
+Local Inno Setup builds do not download GitHub repository secrets. To include a token, create a file **outside the repository**, for example:
 
 ```text
 C:\Users\Rik\Secrets\grafana-loki.token

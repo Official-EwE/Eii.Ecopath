@@ -66,7 +66,7 @@ Module EwE6ApplicationFramework
                     New LokiLabel With {.Key = "bit", .Value = If(cSystemUtils.Is64BitProcess, SharedResources.BITNESS_64, SharedResources.BITNESS_32)},
                     New LokiLabel With {.Key = "InstallationId", .Value = If(EwE6ApplicationFramework.InstallationId.HasValue, EwE6ApplicationFramework.InstallationId.Value.ToString("D"), "")}
                 },
-                restrictedToMinimumLevel:=Serilog.Events.LogEventLevel.Information))
+                restrictedToMinimumLevel:=Serilog.Events.LogEventLevel.Error))
         End If
         Log.Logger = loggerConfiguration.CreateLogger()
 
