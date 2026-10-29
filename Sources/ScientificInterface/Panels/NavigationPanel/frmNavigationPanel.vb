@@ -279,7 +279,7 @@ Public Class frmNavigationPanel
 
         Me.m_nodecontroller.Add("Computed foraging capacity", "ndHabCapComputed", eCoreExecutionState.EcospaceLoaded, GetType(Basemap.frmEcospaceComputedCapacity), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_DISPERSAL, "ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceDispersal), eNodeImages.Input, nodeInput, "Dispersal.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_MOVEMENT, "ndMovement", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceMovement), eNodeImages.Input, nodeInput, "Dispersal.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_ADVECTION, "ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Advection.frmAdvection), eNodeImages.Input, nodeInput)
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_FISHERY, "ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, Nothing, eNodeImages.Input, nodeInput)

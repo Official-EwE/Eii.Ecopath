@@ -407,8 +407,8 @@ Description: {1}</value>
   <data name="STATUSSTRIP_ECOSPACE_ECOSIMBIOMASSFORCING" xml:space="preserve">
     <value> Ecosim biomass</value>
   </data>
-  <data name="LABEL_NAV_ECOSPACE_INPUT_DISPERSAL" xml:space="preserve">
-    <value>Dispersal</value>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_MOVEMENT" xml:space="preserve">
+    <value>Movement</value>
   </data>
   <data name="STATUS_MODEL_ACCESS_FAILED" xml:space="preserve">
     <value>An error occurred while attempting to access model '{0}'.</value>
