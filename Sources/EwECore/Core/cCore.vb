@@ -1001,7 +1001,7 @@ Public Class cCore
         Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
         If iGroup < 1 And iGroup <> NULL_VALUE Then iGroup = 1 'less than 1 insert the new group as one
@@ -1053,7 +1053,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges(True)) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -1096,7 +1096,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -1149,7 +1149,7 @@ Public Class cCore
         Dim bSucces As Boolean = True
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcosimDatasource) Then Return False
 
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
@@ -1183,7 +1183,7 @@ Public Class cCore
         Dim ds As IEcosimDatasource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcosimDatasource) Then Return False
 
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
@@ -1221,7 +1221,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Function TrimUnusedShapeData() As Boolean
 
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not Me.StateMonitor.HasEcosimLoaded) Then Return False
 
         Try
@@ -2185,7 +2185,7 @@ Public Class cCore
         Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf DataSource Is IEcosimDatasource) Then Return False
 
         ' Set bach lock for adding and removing items
@@ -2278,7 +2278,7 @@ Public Class cCore
         Dim iDatasetID As Integer = 0
 
         ' Safety check
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf DataSource Is IEcosimDatasource) Then Return False
 
         If Me.m_StateMonitor.HasEcosimLoaded() = False Then
@@ -2371,6 +2371,8 @@ Public Class cCore
     ''' -------------------------------------------------------------------------
     Public Function SaveChanges(Optional bQuiet As Boolean = False,
                                 Optional savelevel As eBatchChangeLevelFlags = eBatchChangeLevelFlags.Ecopath) As Boolean
+
+        If (Not Me.CanSave(bQuiet)) Then Return True
 
         Dim fm As cFeedbackMessage = Nothing
         Dim msg As cMessage = Nothing
@@ -3596,7 +3598,7 @@ Public Class cCore
     Public Function Save(Optional strFileName As String = "") As Boolean
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcopathDataSource) Then Return False
 
         Dim bSucces As Boolean = True
@@ -4577,7 +4579,7 @@ Public Class cCore
         End If
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -4609,7 +4611,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -4848,7 +4850,7 @@ Public Class cCore
         Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -4881,7 +4883,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -4912,7 +4914,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -6911,7 +6913,7 @@ Public Class cCore
         Dim iScenario As Integer = 0
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcosimDatasource) Then Return False
 
         If Me.m_StateMonitor.HasEcopathLoaded() = False Then
@@ -7184,7 +7186,7 @@ Public Class cCore
         Dim ds As IEcosimDatasource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcosimDatasource) Then Return False
 
         ' Overwrite scenario?
@@ -7241,7 +7243,7 @@ Public Class cCore
         Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcosimDatasource) Then Return bSucces
         If (Me.ActiveEcosimScenarioIndex <= 0) Then Return bSucces
 
@@ -7320,7 +7322,7 @@ Public Class cCore
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcosimDatasource) Then Return False
 
         ' Remember scenario ID to restore
@@ -10183,7 +10185,7 @@ Public Class cCore
         Dim iScenario As Integer = 0
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
         If Me.m_StateMonitor.HasEcopathLoaded() = False Then
@@ -10450,7 +10452,7 @@ Public Class cCore
         Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
         ' Overwrite scenario?
@@ -10507,7 +10509,7 @@ Public Class cCore
         Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcospaceDatasource) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
 
@@ -10588,7 +10590,7 @@ Public Class cCore
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecospace) Then Return False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcospaceDatasource) Then Return False
 
         ' Remember scenario ID to restore
@@ -10846,7 +10848,7 @@ Public Class cCore
         Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
@@ -11435,7 +11437,7 @@ Public Class cCore
         Dim bSucces As Boolean = True
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
@@ -11472,7 +11474,7 @@ Public Class cCore
         Dim ds As IEcospaceDatasource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
@@ -11503,7 +11505,7 @@ Public Class cCore
         Dim ds As IEcospaceDatasource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
@@ -11630,7 +11632,7 @@ Public Class cCore
         Dim bSucces As Boolean = True
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
@@ -11664,7 +11666,7 @@ Public Class cCore
         Dim ds As IEcospaceDatasource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
@@ -11692,7 +11694,7 @@ Public Class cCore
         Dim ds As IEcospaceDatasource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges(True)) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
@@ -11842,7 +11844,7 @@ Public Class cCore
         Dim bSucces As Boolean = True
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges(True)) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
@@ -11878,7 +11880,7 @@ Public Class cCore
         Dim ds As IEcospaceDatasource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
@@ -11920,7 +11922,7 @@ Public Class cCore
         Dim bSucces As Boolean = True
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
@@ -11956,7 +11958,7 @@ Public Class cCore
         Dim ds As IEcospaceDatasource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
@@ -11995,7 +11997,7 @@ Public Class cCore
         Dim ds As IEcospaceDatasource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcospaceDatasource) Then Return False
 
         ' Increase batch count
@@ -12414,7 +12416,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -12446,7 +12448,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -12481,7 +12483,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -12510,7 +12512,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
@@ -12628,7 +12630,7 @@ Public Class cCore
         Dim iScenario As Integer = 0
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcotracerDatasource) Then Return False
 
         If Me.m_StateMonitor.HasEcopathLoaded() = False Then
@@ -12765,7 +12767,7 @@ Public Class cCore
         Dim ds As IEcotracerDatasource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (DataSource) Is IEcotracerDatasource) Then Return False
 
         ' Overwrite scenario?
@@ -12822,7 +12824,7 @@ Public Class cCore
         Dim bSucces As Boolean = False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcotracerDatasource) Then Return False
         If (Me.m_EcopathData.ActiveEcotracerScenario <= 0) Then Return False
 
@@ -12908,7 +12910,7 @@ Public Class cCore
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecotracer) Then Return False
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcotracerDatasource) Then Return False
 
         ' Remember scenario ID to restore
@@ -15318,7 +15320,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecopath) Then Return False
@@ -15344,7 +15346,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecopath) Then Return False
@@ -15368,7 +15370,7 @@ Public Class cCore
         Dim ds As IEcopathDataSource = Nothing
 
         ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.SaveChanges()) Then Return False
         If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
 
         ' Increase batch count
