@@ -2807,8 +2807,8 @@ Public Class frmEwE6
 
         ' Check if core can be brought up to par
         If Me.CoreController.LoadState(iNavCoreState) Then
-            ' Is form already loaded?
-            If Not Me.ActivateForm(strNavPageName) Then
+            ' Folder nodes have no form type; only activate or create forms for page nodes.
+            If tNavClassType IsNot Nothing AndAlso Not Me.ActivateForm(strNavPageName) Then
 
                 'cApplicationStatusNotifier.StartProgress(Me.Core)
 
@@ -2831,7 +2831,10 @@ Public Class frmEwE6
                         ' Switch help
                         Me.Help.HelpTopic(frm) = strNavHelpURL
                     Else
-                        m_logger.LogError("frmEwE6 cmdNavigate OnInvoke")
+                        Dim strClassType As String = If(tNavClassType Is Nothing, "<null>", tNavClassType.FullName)
+                        m_logger.LogError("frmEwE6 cmdNavigate OnInvoke: no form created for page ID '" & strNavPageID &
+                                          "' (" & strNavPageName & "), class type '" & strClassType &
+                                          "', core state '" & iNavCoreState.ToString() & "'.")
                     End If
                 Catch ex As Exception
                     ' Whoah!
@@ -3114,6 +3117,12 @@ Public Class frmEwE6
         Dim result As eDatasourceAccessType = eDatasourceAccessType.Success
         Dim strMessage As String = ""
         Dim bSuccess As Boolean = True
+        Dim dataSource As IEwEDataSource = Me.Core.DataSource
+
+        If dataSource Is Nothing OrElse Not dataSource.CanCompact(strFilename) Then
+            Me.SendMessage(My.Resources.STATUS_MODEL_COMPACTING_OS, eMessageImportance.Warning, eCoreComponentType.DataSource)
+            Return
+        End If
 
         If (Me.AskFeedback(My.Resources.PROMPT_MODEL_COMPACT) <> eMessageReply.YES) Then Return
         If Me.CloseEcopathModel() = False Then Return
@@ -3159,7 +3168,9 @@ Public Class frmEwE6
         If (ds Is Nothing) Then
             cmd.Enabled = False
         Else
-            cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded) And ds.CanCompact(Me.SelectedFileName)
+            Dim dataSourceType As eDataSourceTypes = cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
+            Dim isAccessDatabase As Boolean = dataSourceType = eDataSourceTypes.Access2003 OrElse dataSourceType = eDataSourceTypes.Access2007
+            cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded AndAlso (ds.CanCompact(Me.SelectedFileName) OrElse isAccessDatabase)
         End If
     End Sub
 

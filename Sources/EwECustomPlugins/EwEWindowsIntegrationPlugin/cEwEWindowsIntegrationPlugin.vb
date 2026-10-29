@@ -84,6 +84,12 @@ Public Class cEwEKeepSystemAwakePlugin
         End Get
     End Property
 
+    Public ReadOnly Property IsSupportedPlatform As Boolean
+        Get
+            Return cNativeMethods.IsSupportedPlatform
+        End Get
+    End Property
+
     Public Function IsConfigured() As Boolean Implements IConfigurable.IsConfigured
         Return True
     End Function
