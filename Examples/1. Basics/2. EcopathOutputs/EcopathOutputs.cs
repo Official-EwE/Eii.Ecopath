@@ -44,7 +44,7 @@ internal static partial class EcopathOutputs
             {
 
                 // Obtain Ecopath output information for a single group from the core
-                cEcopathGroupOutput @group = core.get_EcopathGroupOutputs(i);
+                cEcopathGroupOutput group = core.get_EcopathGroupOutputs(i);
                 Console.WriteLine("Group " + i + ": B = " + group.Biomass + ", EE = " + group.EEOutput);
 
                 // Note that .NET provides many ways to make outputs look pretty. 

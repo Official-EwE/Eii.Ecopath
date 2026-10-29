@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.EwECore" Version="6.7.110" />
+    <PackageReference Include="Eii.Ecopath.EwECore" Version="6.7.*" />
   </ItemGroup>
 
   <ItemGroup>
