@@ -581,7 +581,7 @@
     <value>Check for Updates</value>
   </data>
   <data name="UpdateCheckAvailable" xml:space="preserve">
-    <value>The current version ({0}) can be updated to version ({1}). Please go to &lt;a href="https://github.com/Official-EwE/Eii.Ecopath/releases/"&gt;https://github.com/Official-EwE/Eii.Ecopath/releases/&lt;/a&gt; to download the latest release.</value>
+    <value>The current version ({0}) can be updated to version ({1}). Please go to &lt;a href="https://github.com/Official-EwE/Eii.Ecopath/releases/latest/"&gt;https://github.com/Official-EwE/Eii.Ecopath/releases/latest/&lt;/a&gt; to download the latest release.</value>
   </data>
   <data name="UpdateCheckLatest" xml:space="preserve">
     <value>The current version ({0}) is the latest version.</value>
