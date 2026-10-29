@@ -10,6 +10,7 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
 Imports Serilog
+Imports Serilog.Sinks.Grafana.Loki
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 
@@ -26,20 +27,48 @@ Module EwE6ApplicationFramework
 
     Private m_bExpirationChecked As Boolean = False
     Private m_logger As Microsoft.Extensions.Logging.ILogger = Nothing
+    Private ReadOnly m_installationId As New Lazy(Of Guid?)(Function() My.Settings.GetInstallationId())
 
 #End Region ' Private vars 
+
+    Public ReadOnly Property InstallationId As Guid?
+        Get
+            Return m_installationId.Value
+        End Get
+    End Property
 
     Public Sub Main()
 
         Dim logPath = Path.GetDirectoryName(LoggingContext.LogFile)
 
+        ' Show sink errors in the Visual Studio Output window
+        ' Serilog.Debugging.SelfLog.Enable(Sub(msg) System.Diagnostics.Debug.WriteLine(msg))
+
         ' Configure Serilog
-        Log.Logger = New LoggerConfiguration() _
+        Dim loggerConfiguration As LoggerConfiguration = New LoggerConfiguration() _
             .MinimumLevel.Debug() _
             .Enrich.WithThreadId() _
             .Enrich.WithThreadName() _
-            .WriteTo.File($"{logPath}\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day) _
-            .CreateLogger()
+            .WriteTo.File($"{logPath}\log-.txt", outputTemplate:="[{Timestamp:HH:mm:ss} {Level:u3} Tid:{ThreadId}]({ThreadName}) {Message:lj}{NewLine}{Exception}", rollingInterval:=RollingInterval.Day)
+
+        If Not String.IsNullOrWhiteSpace(My.Settings.GrafanaLokiToken) Then
+            loggerConfiguration.WriteTo.Conditional(Function(logEvent) My.Settings.SendAnonymousDiagnostics,
+                Sub(sink) sink.GrafanaLoki(
+                "https://logs-prod-012.grafana.net",
+                credentials:=New LokiCredentials With {
+                    .Login = "1852914",
+                    .Password = My.Settings.GrafanaLokiToken
+                },
+                labels:=New LokiLabel() {
+                    New LokiLabel With {.Key = "app", .Value = "EwE"},
+                    New LokiLabel With {.Key = "env", .Value = "test"},
+                    New LokiLabel With {.Key = "version", .Value = Version(False, False)},
+                    New LokiLabel With {.Key = "bit", .Value = If(cSystemUtils.Is64BitProcess, SharedResources.BITNESS_64, SharedResources.BITNESS_32)},
+                    New LokiLabel With {.Key = "InstallationId", .Value = If(EwE6ApplicationFramework.InstallationId.HasValue, EwE6ApplicationFramework.InstallationId.Value.ToString("D"), "")}
+                },
+                restrictedToMinimumLevel:=Serilog.Events.LogEventLevel.Error))
+        End If
+        Log.Logger = loggerConfiguration.CreateLogger()
 
         ' Initialize LoggerFactory
         LoggingContext.LoggerFactory = LoggerFactory.Create(Sub(builder)

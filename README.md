@@ -66,6 +66,39 @@ For example, to create and push the ScientificInterfaceShared package, follow th
 - Navigate to the `Sources` directory of the repository
 - Type `.\CreateAndPushNugetPackage.ps1 -ProjectPath ScientificInterfaceShared\ScientificInterfaceShared.vbproj -ApiKey <ApiKey>`
 
+## Checking for updates
+
+In EwE6, select **Help > Check for Updates**, directly below the log-file entry. EwE checks the latest GitHub release and shows whether an update is available, the installed version is current, or a newer development version is installed. Release versions are displayed without the tag's `v` prefix. If the check fails, the message shows the installed version and explains that the latest version could not be checked. When an update is available, click the releases hyperlink in the message to download it from https://github.com/Official-EwE/Eii.Ecopath/releases/.
+
+## Privacy and installation ID
+
+The installer generates a random GUID named `InstallationId`, including during silent installation. It is stored in
+`%APPDATA%\Ecopath with Ecosim\ScientificInterface.settings` and retained across upgrades and reinstalls while that settings file exists.
+It is shared by installed EwE versions using that user profile. Only the installer creates an ID; the application never generates one.
+IDE, debug, and installed runs all read the ID from the same user settings file. If no ID is stored, the value is null.
+View or copy the ID in **Options > Privacy**; it cannot be edited or reset there. The field is blank when no ID is available.
+When anonymous diagnostics are enabled and an ID is available, it is included as the `InstallationId` Grafana Loki label.
+The label is omitted when no ID is available. Disabling diagnostics prevents sending it.
+
+### Grafana credentials
+
+In the `Official-EwE/Eii.Ecopath` repository, open **Settings > Secrets and variables > Actions > New repository secret**
+and create `EWE_GRAFANA_LOKI_TOKEN`. No organization secret is required.
+Use a dedicated token restricted to log ingestion (write-only), with no read or administrative permissions.
+The manual release workflow reads this repository secret through `${{ secrets.EWE_GRAFANA_LOKI_TOKEN }}` and bundles it into both installers for temporary extraction.
+The installer writes it as the plain-text `GrafanaLokiToken` setting in `%APPDATA%\Ecopath with Ecosim\ScientificInterface.settings`.
+It updates the token on reinstall, including silent installs. Builds without bundled credentials leave any existing token unchanged.
+The workflow passes a temporary filename to Inno Setup, not the token on the command line, and removes the temporary file afterward.
+No separate token file is installed beside the executable. The token is not committed to source or included in NuGet packages.
+**Anyone with the installer or access to the settings file can read the token**; it is not encrypted.
+GitHub secret masking does not protect distributed installers. Restrict its scope, monitor abuse, and rotate it regularly.
+
+At runtime, EwE reads credentials only through `My.Settings.GrafanaLokiToken`, including when running from the IDE.
+If the setting is missing or blank, remote diagnostics are disabled with a local warning. Diagnostic consent is still required when a token is configured.
+For local installer builds, supply `/DGrafanaTokenFile="C:\path\to\token-file"`; omit it to build without bundled credentials.
+If your binaries are in the non-platform output folder, also pass `/DDefSrc="Sources\ScientificInterface\bin\Release\net48"`.
+Never commit a real token file. Revoke and replace any token previously committed to Git, even after removing it from branch history.
+
 ## Creating an EwE6 installer
 
 ### Creating the installer in Github
@@ -87,6 +120,9 @@ When its finished, you can download the newly created release from https://githu
 ### Creating the installer on your desktop
 The installer is created using Inno Setup. The script is located in the `Deployment` folder of the repository.
 
+When publishing `ScientificInterface`, the project retains StrongNamer's signed dependency DLLs instead of their unsigned NuGet originals.
+Keep this publish target enabled: the signed DLLs are required for .NET Framework assembly binding. Duplicate-output validation remains enabled.
+
 To be able to use the Inno Setup compiler, you have to install it. It is recommended to install Inno Setup as a CLI tool.
 This is the way the tool is used in the build check and CI/CD pipelines.
 
@@ -104,20 +140,83 @@ And to do that, you probably have to install `chocolatey` first.
   choco install innosetup -y
   ```
 
+### Prepare the local Grafana token (optional)
+
+Local Inno Setup builds do not download GitHub repository secrets. To include a token, create a file **outside the repository**, for example:
+
+```text
+C:\Users\Rik\Secrets\grafana-loki.token
+```
+
+Create the directory if needed and put only the restricted, write-only Grafana token in the file, with no quotes or setting name.
+Pass its path using `/DGrafanaTokenFile`, never the token itself. Do not commit the file or print its contents in build logs.
+The installer bundles the token and writes it as plain-text `GrafanaLokiToken` in the user's
+`%APPDATA%\Ecopath with Ecosim\ScientificInterface.settings`; no separate token file is installed beside the executable.
+Both installed and IDE runs read this setting. Diagnostic consent remains required.
+
+To build without bundled credentials, omit `/DGrafanaTokenFile` from the commands below.
+Such an installer leaves any existing token in user settings unchanged; new users will have no remote diagnostics until a token is configured.
+Bundling a token does not keep it secret from installer recipients. See [Grafana credentials](#grafana-credentials) for permissions and exposure.
+
+### Build the application binaries
+
+Open Developer PowerShell in Visual Studio and navigate to the **repository root** (the folder containing `Sources` and `Deployment`).
+The examples below use release number `6.7.100`. Configure GitHub Packages credentials as described above before building.
+
+For 32-bit binaries:
+
+```powershell
+dotnet build .\Sources\EwE6.sln -c Release /p:Platform=x86 /p:UseProjectReferences=true /p:Version=6.7.100 /p:FileVersion=6.7.100
+```
+
+For 64-bit binaries:
+
+```powershell
+dotnet build .\Sources\EwE6.sln -c Release /p:Platform=x64 /p:UseProjectReferences=true /p:Version=6.7.100 /p:FileVersion=6.7.100
+```
+
+The installer requires the complete build output, including DLLs, configuration, tools, user guides, and the matching GDAL native libraries.
+Build the architecture you intend to package; `/DCompile64Bit` selects installer behavior but does not convert the binaries.
+
 ### Compile the installer
-To compile the installer, you can use the `iscc` command from Inno Setup.
-First, decide on the version number you want to use for the installer, e.g. `1.0.9`.
 
-In the Visual Studio open the `Developer PowerShell` window and navigate to the `Sources` folder of the repository.
+Run these commands from the **repository root**. Replace the token-file path and version as appropriate.
+If `iscc` is not on your PATH, use `& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"` instead.
 
-For the 32-bit installer, type:
-- Type `iscc /DCompile64Bit=0 /DSemVersion="1.0.9" /O"ScientificInterface\bin\x86\publish" "..\Deployment\EwE6_relpath.iss"`
-- A `ScientificInterface\bin\x86\publish\ewe_1.0.9_32-bit_setup.exe` will be created.
+For the 32-bit installer (reads `Sources\ScientificInterface\bin\x86\Release\net48`):
 
+```powershell
+iscc /DCompile64Bit=0 /DSemVersion=6.7.100 `
+  /DGrafanaTokenFile="C:\Users\Rik\Secrets\grafana-loki.token" `
+  ".\Deployment\EwE6_relpath.iss"
+```
 
-For the 64-bit installer, type:
-- Type `iscc /DCompile64Bit=1 /DSemVersion="1.0.9" /O"ScientificInterface\bin\x64\publish" "..\Deployment\EwE6_relpath.iss"`
-- A `ScientificInterface\bin\x64\publish\ewe_1.0.9_64-bit_setup.exe` will be created.
+Output: `Deployment\Output\ewe_6.7.100_32-bit_setup.exe`.
+
+For the 64-bit installer (reads `Sources\ScientificInterface\bin\x64\Release\net48`):
+
+```powershell
+iscc /DCompile64Bit=1 /DSemVersion=6.7.100 `
+  /DGrafanaTokenFile="C:\Users\Rik\Secrets\grafana-loki.token" `
+  ".\Deployment\EwE6_relpath.iss"
+```
+
+Output: `Deployment\Output\ewe_6.7.100_64-bit_setup.exe`.
+
+#### Using binaries from the non-platform output folder
+
+If your existing **32-bit** binaries are in `Sources\ScientificInterface\bin\Release\net48`, override the source folder:
+
+```powershell
+iscc /DCompile64Bit=0 /DSemVersion=6.7.100 `
+  /DDefSrc="Sources\ScientificInterface\bin\Release\net48" `
+  /DGrafanaTokenFile="C:\Users\Rik\Secrets\grafana-loki.token" `
+  ".\Deployment\EwE6_relpath.iss"
+```
+
+`DefSrc` is relative to the repository root. Only use `/DCompile64Bit=1` with this override if those binaries and their native dependencies are actually 64-bit.
+Use `/O"C:\path\to\output"` to choose a different installer output directory.
+These local commands do not run the GitHub workflow's SignPath signing step; installers are unsigned with the script's default `CodeSigning=0`.
 
 ## Zenodo integration
 This GitHub repository is linked with Zenodo. Every release will receive a Zenodo DOI, orchestrated via the .zenodo.json file in the root of this repo.
