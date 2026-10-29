@@ -566,7 +566,7 @@
     <Compile Update="Ecospace\Input\gridDefineMPAs.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="Ecospace\Input\gridEcospaceDispersal.vb">
+    <Compile Update="Ecospace\Input\gridEcospaceMovement.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="Ecospace\Input\dlgDefineHabitats.Designer.vb">
