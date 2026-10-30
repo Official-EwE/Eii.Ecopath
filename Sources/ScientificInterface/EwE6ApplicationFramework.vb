@@ -70,6 +70,33 @@ Module EwE6ApplicationFramework
         End If
         Log.Logger = loggerConfiguration.CreateLogger()
 
+        AddHandler AppDomain.CurrentDomain.UnhandledException, AddressOf OnUnhandledException
+        Try
+            ' Apply to all UI threads, including the splash screen thread.
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException, False)
+            RunApplication()
+        Catch ex As Exception
+            Log.Fatal(ex, "An unhandled exception caused the application to terminate.")
+            Throw
+        Finally
+            RemoveHandler AppDomain.CurrentDomain.UnhandledException, AddressOf OnUnhandledException
+            Log.CloseAndFlush()
+        End Try
+
+    End Sub
+
+    Private Sub OnUnhandledException(sender As Object, args As UnhandledExceptionEventArgs)
+        Try
+            Log.Fatal(TryCast(args.ExceptionObject, Exception),
+                "An unhandled exception occurred. IsTerminating: {IsTerminating}. ExceptionObject: {ExceptionObject}",
+                args.IsTerminating, args.ExceptionObject)
+        Finally
+            Log.CloseAndFlush()
+        End Try
+    End Sub
+
+    Private Sub RunApplication()
+
         ' Initialize LoggerFactory
         LoggingContext.LoggerFactory = LoggerFactory.Create(Sub(builder)
                                                                 builder.AddSerilog()
@@ -100,11 +127,7 @@ Module EwE6ApplicationFramework
 
         AddHandler m_main.OnLoadCompleted, AddressOf OnLoadCompleted
         m_logger.LogInformation($"EwE6ApplicationFramework.Main() - Starting application version {Version(True, True)}")
-        Try
-            Application.Run(m_main)
-        Catch ex As Exception
-            m_logger.LogError(ex, "EwE6ApplicationFramework.Main()")
-        End Try
+        Application.Run(m_main)
         RemoveHandler m_main.OnLoadCompleted, AddressOf OnLoadCompleted
         RemoveHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf OnResolveAssembly
 
