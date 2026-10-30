@@ -70,6 +70,13 @@ For example, to create and push the ScientificInterfaceShared package, follow th
 
 In EwE6, select **Help > Check for Updates**, directly below the log-file entry. EwE checks the latest GitHub release and shows whether an update is available, the installed version is current, or a newer development version is installed. Release versions are displayed without the tag's `v` prefix. If the check fails, the message shows the installed version and explains that the latest version could not be checked. When an update is available, click the releases hyperlink in the message to download it from https://github.com/Official-EwE/Eii.Ecopath/releases/.
 
+## Crash logging
+
+After logging is initialized, unhandled managed exceptions during startup, on UI threads (including the splash screen), or on background threads are logged at **Fatal** level with exception details before termination. UI exceptions terminate the application instead of showing the WinForms continue dialog.
+Logs are flushed on normal shutdown and on these crash paths. Local logs are stored in `%LOCALAPPDATA%\Ecopath with Ecosim\Logs\log-yyyyMMdd.txt`.
+Errors and fatal events also use the existing Grafana Loki sink when credentials and anonymous diagnostics consent are configured; remote delivery is best-effort.
+Forced process termination, `Environment.FailFast`, stack overflows, and some native/runtime failures cannot be reliably caught or logged in-process. Failures before logging initialization are not covered.
+
 ## Privacy and installation ID
 
 The installer generates a random GUID named `InstallationId`, including during silent installation. It is stored in
