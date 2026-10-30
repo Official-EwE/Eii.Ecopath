@@ -3,10 +3,13 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Text
+Imports System.Timers
 Imports EwELicense
 Imports EwEUtils.Utilities
 
 Friend Class frmSplash
+
+    Private m_timer As Timer
 
     Public Sub New()
 
@@ -94,10 +97,25 @@ Friend Class frmSplash
 
         MyBase.OnLoad(e)
 
+        Me.m_timer = New Timer()
+        Me.m_timer.Interval = 5000 ' 5 seconds visible max
+        Me.m_timer.Start()
+        AddHandler Me.m_timer.Elapsed, AddressOf OnCloseTimer
+
+    End Sub
+
+    Private Sub OnCloseTimer(sender As Object, e As ElapsedEventArgs)
+        Try
+            Me.Invoke(New MethodInvoker(AddressOf Me.Close))
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
         Me.m_pbIcon.BackgroundImage.Dispose()
+        RemoveHandler Me.m_timer.Elapsed, AddressOf OnCloseTimer
+        Me.m_timer.Stop()
         MyBase.OnFormClosed(e)
     End Sub
 
