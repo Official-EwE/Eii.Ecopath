@@ -574,6 +574,24 @@
   <data name="m_tsmiViewLog.Text" xml:space="preserve">
     <value>View EwE6 &amp;Log File...</value>
   </data>
+  <data name="m_tsmiCheckForUpdates.Size" type="System.Drawing.Size, System.Drawing">
+    <value>242, 26</value>
+  </data>
+  <data name="m_tsmiCheckForUpdates.Text" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="UpdateCheckAvailable" xml:space="preserve">
+    <value>The current version ({0}) can be updated to version ({1}). Please go to &lt;a href="https://github.com/Official-EwE/Eii.Ecopath/releases/latest/"&gt;https://github.com/Official-EwE/Eii.Ecopath/releases/latest/&lt;/a&gt; to download the latest release.</value>
+  </data>
+  <data name="UpdateCheckLatest" xml:space="preserve">
+    <value>The current version ({0}) is the latest version.</value>
+  </data>
+  <data name="UpdateCheckNewer" xml:space="preserve">
+    <value>The current version ({0}) is newer than the latest release ({1}).</value>
+  </data>
+  <data name="UpdateCheckFailed" xml:space="preserve">
+    <value>The current version is ({0}). Unable to check if this is the latest version.</value>
+  </data>
   <data name="m_tsmiHelpViewReports.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL

@@ -32,6 +32,19 @@ Partial Friend NotInheritable Class Settings
 
     End Sub
 
+    ''' <summary>Read the installer-generated ID from user settings, or Nothing when no ID is stored.</summary>
+    Public Function GetInstallationId() As Guid?
+        If String.IsNullOrWhiteSpace(Me.InstallationId) Then
+            Return Nothing
+        End If
+
+        Dim id As Guid = Guid.Parse(Me.InstallationId)
+        If id = Guid.Empty Then
+            Throw New InvalidDataException("The EwE installation ID must not be an empty GUID.")
+        End If
+        Return id
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the default value for a given settings property name.

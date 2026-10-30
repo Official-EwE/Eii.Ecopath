@@ -75,6 +75,7 @@ Partial Public Class frmEwE6
         Me.m_tsmiHelpViewFacebook = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewEcobase = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewLog = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiCheckForUpdates = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewReports = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpReportIssue = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpRequestSourceCodeAccess = New System.Windows.Forms.ToolStripMenuItem()
@@ -382,7 +383,7 @@ Partial Public Class frmEwE6
         '
         'MenuHelp
         '
-        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpTextBook, Me.m_tsmiHelpUserGuide, Me.m_tsmiHelpOutdated, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, Me.m_tsmiHelpViewEcobase, m_tssHelp3, Me.m_tsmiViewLog, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiHelpRequestSourceCodeAccess, Me.m_tsmiHelpFeedback, m_tssHelp2, Me.m_tsmiHelpRegister, Me.m_tsmiHelpAbout})
+        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpTextBook, Me.m_tsmiHelpUserGuide, Me.m_tsmiHelpOutdated, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, Me.m_tsmiHelpViewEcobase, m_tssHelp3, Me.m_tsmiViewLog, Me.m_tsmiCheckForUpdates, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiHelpRequestSourceCodeAccess, Me.m_tsmiHelpFeedback, m_tssHelp2, Me.m_tsmiHelpRegister, Me.m_tsmiHelpAbout})
         Me.MenuHelp.Name = "MenuHelp"
         resources.ApplyResources(Me.MenuHelp, "MenuHelp")
         '
@@ -436,6 +437,11 @@ Partial Public Class frmEwE6
         '
         Me.m_tsmiViewLog.Name = "m_tsmiViewLog"
         resources.ApplyResources(Me.m_tsmiViewLog, "m_tsmiViewLog")
+        '
+        'm_tsmiCheckForUpdates
+        '
+        Me.m_tsmiCheckForUpdates.Name = "m_tsmiCheckForUpdates"
+        resources.ApplyResources(Me.m_tsmiCheckForUpdates, "m_tsmiCheckForUpdates")
         '
         'm_tsmiHelpViewReports
         '
@@ -985,6 +991,7 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiOpenOutput As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbnPreview As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsmiViewLog As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiCheckForUpdates As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiHelpViewReports As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiHelpViewFacebook As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiHelpViewMainSite As System.Windows.Forms.ToolStripMenuItem
