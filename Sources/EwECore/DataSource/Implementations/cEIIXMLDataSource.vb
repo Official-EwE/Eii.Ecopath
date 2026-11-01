@@ -3879,6 +3879,14 @@ Public Class cEIIXMLDataSource
         Return True
     End Function
 
+    ''' <summary>
+    ''' No-op - this format is always read-only, with no local-working-copy
+    ''' concept and nothing to publish back.
+    ''' </summary>
+    Public Function PublishToSource() As Boolean Implements DataSources.IEwEDataSource.PublishToSource
+        Return True
+    End Function
+
     Public Sub Dispose() Implements IDisposable.Dispose
         GC.SuppressFinalize(Me)
     End Sub
