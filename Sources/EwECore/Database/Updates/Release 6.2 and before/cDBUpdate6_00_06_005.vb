@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports EwECore.Database
 
@@ -71,7 +71,7 @@ Friend Class cDBUpdate6_00_06_005
         Dim iScenarioID As Integer
 
         Dim reader As IDataReader = Nothing
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing
         Dim objKeys() As Object = {Nothing, Nothing}

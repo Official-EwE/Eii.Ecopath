@@ -39,7 +39,7 @@ Friend Class cDBUpdate6_50_00_04
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim reader As IDataReader = Nothing
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim bSucces As Boolean = db.Execute("CREATE TABLE EcospaceScenarioDataConnection (ScenarioID LONG, VarName TEXT(50), LayerID LONG, Sequence INTEGER, DatasetGUID TEXT(140), DatasetTypeName TEXT(255), DatasetCfg MEMO, ConverterTypeName TEXT(255), ConverterCfg MEMO, Scale SINGLE, ScaleType BYTE)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioDataConnection ADD PRIMARY KEY (ScenarioID, VarName, LayerID, Sequence)")
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioDataConnection ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")

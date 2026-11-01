@@ -44,7 +44,7 @@ Friend Class cDBUpdate6_50_10_02
         If Not bSucces Then Return False
 
         ' Duplicate advection data to month fields
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcospaceScenarioMonth")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcospaceScenarioMonth")
         Dim dt As DataTable = writer.GetDataTable()
         Dim drow As DataRow = Nothing
         Dim keys() As Object = New Object() {0, 0}

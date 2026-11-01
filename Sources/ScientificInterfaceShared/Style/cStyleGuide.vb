@@ -2529,7 +2529,19 @@ Namespace Style
                 vs = New cVisualStyle()
                 vs.ForeColour = VisualColor.FromArgb(&HFFD0D0D0)
                 vs.BackColour = VisualColor.FromArgb(&H0)
-                vs.Image = images(iGlyphIndex)
+
+                ' Convert System.Drawing.Image to Base64 PNG string
+                Dim gdiImage As Image = images(iGlyphIndex)
+                If gdiImage IsNot Nothing Then
+                    Try
+                        Using ms As New System.IO.MemoryStream()
+                            gdiImage.Save(ms, ImageFormat.Png)
+                            vs.ImageString = Convert.ToBase64String(ms.ToArray())
+                        End Using
+                    Catch ex As Exception
+                        ' Failed to convert, leave as Nothing
+                    End Try
+                End If
 
                 avs(i) = vs
 

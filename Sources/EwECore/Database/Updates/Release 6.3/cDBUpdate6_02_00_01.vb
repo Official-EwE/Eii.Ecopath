@@ -123,7 +123,7 @@ Friend Class cDBUpdate6_02_00_01
                                      InRow As Integer, InCol As Integer) As Boolean
 
         Dim reader As IDataReader = Nothing
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
 
         Dim dt As DataTable = Nothing
         Dim drow As DataRow = Nothing

@@ -30,7 +30,7 @@ Namespace Database
                 Case eDataSourceTypes.Access2003
                     ' MDB databases compacted via JRO
                     Return New cCompactJRO()
-                Case eDataSourceTypes.Access2007
+                Case eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite
                     ' ACCDB databases compacted via DAO
                     Return New cCompactDAO()
 #End If

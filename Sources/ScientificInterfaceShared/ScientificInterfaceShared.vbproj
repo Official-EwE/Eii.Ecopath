@@ -598,8 +598,8 @@
     <Folder Include="Controls\Map\Layers\Rendering\Vector\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EPPlus" Version="8.5.4" />
-    <PackageReference Include="System.Resources.Extensions" Version="10.0.8" />
+    <PackageReference Include="EPPlus" Version="8.7.1" />
+    <PackageReference Include="System.Resources.Extensions" Version="10.0.13" />
   </ItemGroup>
   <Target Name="BeforeBuild"></Target>
   <Target Name="AfterBuild">

@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Eii.Ecopath.Storage.Migrator</RootNamespace>
+    <AssemblyName>Eii.Ecopath.Storage.Migrator</AssemblyName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!--
+      Self-contained + single-file so this runs on machines that only have
+      net48 installed (e.g. a ScientificInterface-only install) - the
+      net10.0 runtime cannot be assumed to be present.
+
+      No RuntimeIdentifier is set here - both win-x64 and win-x86 are
+      published separately via "dotnet publish -r <rid> ...", matching
+      whichever platform ScientificInterface itself is built for.
+
+      PublishAot is commented out rather than enabled by default: EF Core's
+      Sqlite provider has improved AOT support in recent versions, but this
+      should be verified working (correct query results, no reflection-
+      related runtime failures) before switching to it - self-contained/
+      single-file is the safer default until that's confirmed.
+    -->
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <!-- <PublishAot>true</PublishAot> -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      IMPORTANT: keep this version identical to whatever ScientificInterface
+      itself references. This tool exists specifically to apply migrations
+      on ScientificInterface's behalf - if the versions drift, it could be
+      unaware of the very migration ScientificInterface needs applied, or
+      apply a newer one ScientificInterface's own EF6 side isn't expecting.
+    -->
+    <PackageReference Include="Eii.Ecopath.Storage" Version="0.0.20" />
+  </ItemGroup>
+
+</Project>

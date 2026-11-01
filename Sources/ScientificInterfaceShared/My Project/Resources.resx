@@ -455,10 +455,10 @@
     <value>Comma-separated text files|*.csv|ESRI ascii file|*.asc|Spatial raster files|*.asc;*.csv;*.txt</value>
   </data>
   <data name="FILEFILTER_MODEL_OPEN" xml:space="preserve">
-    <value>Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb;*.eii;*.eiixml</value>
+    <value>Ecopath model databases|*.sqlite;*.ewesqlite;*.eii;*.eiixml;*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb</value>
   </data>
   <data name="FILEFILTER_MODEL_SAVE" xml:space="preserve">
-    <value>EwE database (Access 2003 format)|*.EwEmdb|EwE database (Access 2007 format)|*.EwEaccdb</value>
+    <value>EwE database (SQLite format)|*.ewesqlite;*.sqlite</value>
   </data>
   <data name="FILEFILTER_SAVE_ACCDB" xml:space="preserve">
     <value>EwE database (Access 2007 format)|*.eweaccdb</value>
@@ -466,6 +466,9 @@
   <data name="FILEFILTER_SAVE_MDB" xml:space="preserve">
     <value>EwE database (Access 2003 format)|*.ewemdb</value>
   </data>
+  <data name="FILEFILTER_SAVE_SQLITE" xml:space="preserve">
+    <value>EwE database (SQLite format)|*.ewesqlite;*.sqlite</value>
+  </data>  
   <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
     <value>Comma-separated text files|*.csv|ESRI Asc files|Spatial raster files|*.asc;*.csv</value>
   </data>
