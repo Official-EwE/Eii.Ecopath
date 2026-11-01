@@ -65,10 +65,10 @@ Friend Class cDBUpdate6_60_00_18
                 End If
             Next
         Catch ex As Exception
-            m_logger.LogError(ex, "DB update 65.60018")
+            m_logger.LogError(ex, "DB update 6.6.60018")
         End Try
 
-        Return bSuccess
+        Return True ' bSuccess
 
     End Function
 

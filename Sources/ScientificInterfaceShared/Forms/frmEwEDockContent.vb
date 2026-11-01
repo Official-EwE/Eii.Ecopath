@@ -43,8 +43,10 @@ Namespace Forms
 
         Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
             Try
+                ' Do not dispose the shared icon instance here. Several EwE forms reuse a
+                ' cached icon resource, and disposing it from one form invalidates the icon
+                ' for later dialogs as well, leading to ObjectDisposedException in WinForms.
                 If (Me.Icon IsNot Nothing) Then
-                    Me.Icon.Dispose()
                     Me.Icon = Nothing
                 End If
                 MyBase.OnFormClosed(e)

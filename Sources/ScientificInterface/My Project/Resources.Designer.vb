@@ -3061,9 +3061,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Dispersal.
         '''</summary>
-        Public ReadOnly Property LABEL_NAV_ECOSPACE_INPUT_DISPERSAL() As String
+        Public ReadOnly Property LABEL_NAV_ECOSPACE_INPUT_MOVEMENT() As String
             Get
-                Return ResourceManager.GetString("LABEL_NAV_ECOSPACE_INPUT_DISPERSAL", resourceCulture)
+                Return ResourceManager.GetString("LABEL_NAV_ECOSPACE_INPUT_MOVEMENT", resourceCulture)
             End Get
         End Property
 

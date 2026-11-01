@@ -1809,13 +1809,15 @@ Namespace Database
         ''' <returns>
         ''' A Single value with the version latest version number of the connected database.
         ''' </returns>
+        ''' <remarks>Because of a historical bug, versions above 10 are read with the decimal point restored after the first digit; stored values are unchanged.</remarks>
         ''' -------------------------------------------------------------------
         Public Function GetVersion() As Single
 
             If Me.m_sVersion = 0.0 Then
                 Try
                     ' Try EwE6 version first
-                    Me.m_sVersion = CSng(Me.GetValue("Select Max(Version) FROM [UpdateLog]"))
+                    ' Because of a historical bug, versions above 10 are read with the decimal point restored after the first digit; stored values are unchanged.
+                    Me.m_sVersion = CSng(Me.GetValue("SELECT MAX(IIf([Version]>10,[Version]/(10^(Len(CStr([Version]))-1)),[Version])) FROM [UpdateLog]"))
                     If (Me.m_sVersion = 0.0) Then
                         ' Try EwE5 version
                         Me.m_sVersion = CSng(Me.GetValue("Select Max(Version) FROM [Database specifications]"))

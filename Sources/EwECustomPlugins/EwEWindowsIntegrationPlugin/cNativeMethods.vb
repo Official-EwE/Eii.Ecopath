@@ -16,13 +16,21 @@ Friend Class cNativeMethods
     Private Shared s_bSetActiveHoursSuccess As Boolean = True
     Private Shared s_synclock As New Object()
 
+    Public Shared ReadOnly Property IsSupportedPlatform As Boolean
+        Get
+            Return RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+        End Get
+    End Property
+
     Public Shared Sub PreventSleep(bMonitor As Boolean)
+        If Not IsSupportedPlatform Then Return
         Dim flags As eExecutionState = eExecutionState.ES_CONTINUOUS Or eExecutionState.ES_SYSTEM_REQUIRED
         If bMonitor Then flags = flags Or eExecutionState.ES_DISPLAY_REQUIRED
         SetThreadExecutionState(flags)
     End Sub
 
     Public Shared Sub AllowSleep()
+        If Not IsSupportedPlatform Then Return
         SetThreadExecutionState(eExecutionState.ES_CONTINUOUS)
     End Sub
 
@@ -39,6 +47,7 @@ Friend Class cNativeMethods
 
     Public Shared Function ShiftActiveHours() As Boolean
 
+        If Not IsSupportedPlatform Then Return False
         If Not s_bSetActiveHoursSuccess Then Return False
         Dim bSuccess As Boolean = True
 

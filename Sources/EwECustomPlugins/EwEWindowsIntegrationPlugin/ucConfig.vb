@@ -68,8 +68,18 @@ Public Class ucConfig
         Me.m_cbKeepOSAwake.Checked = My.Settings.KeepOSAwake
         Me.m_cbKeepMonitorOn.Checked = My.Settings.KeepMonitorOn
         Me.m_cbNoRestart.Checked = My.Settings.NoRestart
-        Me.m_cbNoRestart.Enabled = Me.m_plugin.HasRightsToMessWithActiveHours
-        Me.m_lblError.Visible = Not Me.m_plugin.HasRightsToMessWithActiveHours
+
+        Dim isSupportedPlatform As Boolean = Me.m_plugin.IsSupportedPlatform
+        Dim hasActiveHoursRights As Boolean = Me.m_plugin.HasRightsToMessWithActiveHours
+        Me.m_cbEnabled.Enabled = isSupportedPlatform
+        Me.m_cbKeepOSAwake.Enabled = isSupportedPlatform
+        Me.m_cbKeepMonitorOn.Enabled = isSupportedPlatform
+        Me.m_cbNoRestart.Enabled = isSupportedPlatform AndAlso hasActiveHoursRights
+        Me.m_lblError.Visible = Not isSupportedPlatform OrElse Not hasActiveHoursRights
+        If Not isSupportedPlatform Then
+            Dim resources As New System.ComponentModel.ComponentResourceManager(GetType(ucConfig))
+            Me.m_lblError.Text = resources.GetString("UnsupportedPlatform")
+        End If
     End Sub
 
     Private Sub Persist()
