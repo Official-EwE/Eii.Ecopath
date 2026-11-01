@@ -47,6 +47,19 @@ In AppData\Roaming\NuGet\NuGet.config, your GitHub access token is shown as an e
 	    </github>
     </packageSourceCredentials>
 
+## Plugin build outputs
+
+Library projects under `Sources\EwECustomPlugins` build into `bin\<Configuration>\<TargetFramework>\Plugins\<PluginDirectory>`.
+Each plugin project owns its output settings; they do not depend on a repository-level build hook and travel with the project when extracted.
+Project references remain in place for now. NuGet packaging and package-reference deployment will be configured when the plugins move into separate repositories.
+Platform-specific builds retain the `x86` or `x64` folder between `bin` and the configuration.
+The plugin directory is the folder containing the project, not necessarily the project or assembly name.
+For example, `EwEEcoEngineersPlugin\EcoEngineersPlugin.vbproj` builds into `bin\Debug\net48\Plugins\EwEEcoEngineersPlugin`.
+ScientificInterface copies referenced plugin DLLs, symbols, XML documentation and satellite assemblies into the same `Plugins\<PluginDirectory>` layout in its output.
+Shared dependencies and copied content such as user guides retain their existing application-output locations.
+StrongNamer's signed plugin copies use the same layout. Builds remove previous flat copies of relocated references to prevent stale plugin discovery.
+The application discovers plugin assemblies recursively under `Plugins`; no registration change is needed.
+
 ## Creating and pushing NuGet packages to GitHub
 
 This solution contains 3 NuGet packages:
