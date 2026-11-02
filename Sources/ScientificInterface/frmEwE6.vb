@@ -1442,8 +1442,14 @@ Public Class frmEwE6
         ' Get compatibility
         comp = cDataSourceFactory.GetCompatibility(strFileName, access)
 
-        ' Has access problems?
-        If (access <> eDatasourceAccessType.Opened) Then
+        ' Has access problems? TooOld is excluded here: a genuine legacy
+        ' Jet3 file can be - and, per GetCompatibility, already has been -
+        ' confidently identified as TooOld directly from its own file
+        ' header, without ever needing to open it. Reporting a generic
+        ' access-failure message for that case instead, just because
+        ' access never reached Opened, would mask the real, more useful
+        ' TooOld message the Select Case below already shows correctly.
+        If (access <> eDatasourceAccessType.Opened) AndAlso (comp <> cEwEDatabase.eCompatibilityTypes.TooOld) Then
             ' #Yes: report access error
             Me.ReportFileAccessError(access, strFileName)
             Return cEwEDatabase.eCompatibilityTypes.Unknown

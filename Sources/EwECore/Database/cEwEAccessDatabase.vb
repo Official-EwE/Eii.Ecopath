@@ -219,6 +219,53 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Reads the Jet engine version byte directly from the MDB file
+        ''' header (a single byte at a fixed offset near the start of the
+        ''' file - the same byte Jet/ACE itself reads internally to decide
+        ''' how to parse the file) and reports whether it indicates a
+        ''' genuinely too-old (legacy Jet3, pre-Access-2000) format.
+        ''' </summary>
+        ''' <remarks>
+        ''' Used by cDataSourceFactory.GetCompatibility to identify a
+        ''' pre-EwE6, pre-Access-2000 Ecopath 5 database (as TooOld) even
+        ''' when it cannot actually be opened: on a 64-bit process there is
+        ''' no 64-bit build of the classic Microsoft.Jet.OLEDB.4.0 provider
+        ''' at all, so a genuine Jet3 file - which only the classic
+        ''' provider can reliably open - gets routed through ACE instead
+        ''' (see cDataSourceFactory.GetSupportedType), and ACE cannot open
+        ''' it. On 32-bit, the classic provider opens it fine, and
+        ''' cEwEDatabase.Compatibility (which does need a working
+        ''' connection) reaches the same TooOld conclusion by reading the
+        ''' actual Ecopath 5 version number stored inside the file.
+        ''' Byte-value mapping confirmed directly against mdbtools' own
+        ''' source (include/mdbtools.h.in, MDB_VER_* constants): 0 =
+        ''' MDB_VER_JET3 (genuinely too old - the only case this reports
+        ''' True for), 1 = MDB_VER_JET4 (Access 2000-2003 - ACE opens this
+        ''' fine), 2/3 = ACCDB 2007/2010+.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IsLegacyJetFormat(strPath As String) As Boolean
+            Const iVersionByteOffset As Integer = &H14 ' 20 decimal
+            Const bJet3VersionByte As Byte = 0 ' MDB_VER_JET3 - see remarks above
+
+            Try
+                Using fs As New FileStream(strPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                    If fs.Length <= iVersionByteOffset Then Return False ' not a real/parseable Jet file at all - let the normal Open() path report that
+                    fs.Seek(iVersionByteOffset, SeekOrigin.Begin)
+                    Return fs.ReadByte() = bJet3VersionByte
+                End Using
+
+            Catch ex As Exception
+                ' Purely a pre-check - if this itself fails for any reason
+                ' (permissions, a genuinely unreadable file, etc.), fall
+                ' through to the normal Open() path and let IT report the
+                ' real error, rather than this diagnostic masking it.
+                Return False
+            End Try
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Open a connection to a M$ Access database.
         ''' </summary>
         ''' <param name="strDatabase">The database to open.</param>

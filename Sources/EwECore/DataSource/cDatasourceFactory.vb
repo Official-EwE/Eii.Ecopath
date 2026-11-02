@@ -100,11 +100,32 @@ Namespace DataSources
                 Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003
 
                     If File.Exists(strDatabase) Then
-                        Dim db As New cEwEAccessDatabase()
-                        access = db.Open(strDatabase)
-                        If (access = eDatasourceAccessType.Opened) Then
-                            comp = db.Compatibility
-                            db.Close()
+
+                        ' A genuine legacy Jet3 (pre-Access-2000) file can be
+                        ' identified directly from its own file header, with
+                        ' no connection attempt at all - which matters on a
+                        ' 64-bit process, where ACE is the only available
+                        ' OLEDB provider (there is no 64-bit build of the
+                        ' classic Jet provider) and cannot reliably open a
+                        ' true Jet3 file. Without this pre-check, db.Open()
+                        ' below would fail before db.Compatibility ever got
+                        ' a chance to run, masking a real pre-EwE6 Ecopath 5
+                        ' database behind a generic access-failure message
+                        ' instead of correctly reporting TooOld - exactly
+                        ' what already happens correctly on 32-bit, where
+                        ' the classic provider opens the file fine and
+                        ' db.Compatibility reaches TooOld by reading the
+                        ' actual Ecopath 5 version stored inside it.
+                        If cEwEAccessDatabase.IsLegacyJetFormat(strDatabase) Then
+                            comp = cEwEDatabase.eCompatibilityTypes.TooOld
+                            access = eDatasourceAccessType.Failed_UnknownType
+                        Else
+                            Dim db As New cEwEAccessDatabase()
+                            access = db.Open(strDatabase)
+                            If (access = eDatasourceAccessType.Opened) Then
+                                comp = db.Compatibility
+                                db.Close()
+                            End If
                         End If
                     Else
                         access = eDatasourceAccessType.Failed_FileNotFound
