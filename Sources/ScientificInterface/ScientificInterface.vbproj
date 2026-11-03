@@ -1075,36 +1075,36 @@
     <EmbeddedResource Include="Resources\EwELogo_caption.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEBiomassEmitterPlugin\EwEBiomassEmitterPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEDietMatrixToNetworkD3RPlugin\EwEDietMatrixToNetworkD3RPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEEcoEngineersPlugin\EcoEngineersPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEEcologicalIndicators\EwEEcologicalIndicatorsPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEEcoSamplerPlugin\EwEEcoSamplerPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEEcotracerEnvDriverPlugin\EwEEcotracerEnvDriverPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEenaRPlugin\EwEenaRPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEFleetTradeoffsPlugin\EwEFleetTradeoffsPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEIBMAgeStructureResultsWriter\EwEIBMAgeStructureResultsWriterPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEImportDietsPlugin\EwEImportDietsPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcoTrophPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEModelFromEcosimPlugin\EwEModelFromEcosimPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEMSEPlugin\EwEMSEPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEMSPChallengeIntegration\EwEMSPPlugin\EwEMSPPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEMultiSimPlugin\EwEMultiSimPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEPrebalPlugin\EwEPrebalPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwERemarksPlugin\EwERemarksPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEStepwiseFittingPlugin\EwEStepwiseFittingPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwETransectExtractionPlugin\EwETransectExtractionPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEWindowsIntegrationPlugin\EwEWindowsIntegrationPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj" />
-    <ProjectReference Include="..\EwECustomPlugins\EwEZonalEffortPlugin\EwEZonalEffortPlugin.vbproj" />
+    <PackageReference Include="Eii.Ecopath.AquamapsEnvDataImporterPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.BiomassEmitterPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.DietMatrixToNetworkD3RPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EcoEngineersPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EcologicalIndicatorsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EcoSamplerPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EcotracerEnvDriverPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EnaRPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.FleetTradeoffsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.IBMAgeStructureResultsWriterPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ImportDietsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ImportExportLayerDefinitionsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.MergeSplitGroupsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ModelFromEcosimPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.MPADynamicsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EcotrophPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.MSEPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.MSPPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.MultiSimPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.NetworkAnalysisPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.PrebalPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.RemarksPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ResultsExtractorPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ShapeGridPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.StepwiseFittingPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.TransectExtractionPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ValueChainPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.WindowsIntegrationPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.WoRMSPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ZonalEffortPlugin" Version="1.0.*" />
     <ProjectReference Include="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
   </ItemGroup>
   <ItemGroup>

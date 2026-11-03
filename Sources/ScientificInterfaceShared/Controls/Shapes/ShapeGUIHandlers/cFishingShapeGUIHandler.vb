@@ -16,6 +16,7 @@ Namespace Controls
     Public MustInherit Class cFishingBaseShapeGUIHandler
         Inherits cForcingShapeGUIHandler
 
+        <CLSCompliant(False)>
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)
         End Sub
@@ -149,6 +150,7 @@ Namespace Controls
             Me.Core.FishMortShapeManager.ResetToDefaults()
         End Sub
 
+        <CLSCompliant(False)>
         Protected MustOverride Function ScaleMode() As eAxisTickmarkDisplayModeTypes
 
         ''' -------------------------------------------------------------------

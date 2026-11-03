@@ -60,8 +60,10 @@ Namespace Controls
         ''' <summary></summary>
         Protected m_bShowAxis As Boolean = True
         ''' <summary></summary>
+        <CLSCompliant(False)>
         Protected m_sketchDrawMode As eSketchDrawModeTypes = eSketchDrawModeTypes.Fill
         ''' <summary></summary>
+        <CLSCompliant(False)>
         Protected m_shapeType As eShapeCategoryTypes = eShapeCategoryTypes.NotSet
 
         ''' <summary></summary>
@@ -197,6 +199,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         <Category("Sketchpad"),
          Description("The line style used to render the graph")>
+        <CLSCompliant(False)>
         Public Property SketchDrawMode() As eSketchDrawModeTypes
 
             Get
@@ -238,6 +241,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         <Category("Sketchpad"),
          Description("State whether the sketch pad should automatically scale the Y axis to the range of data in the current shape.")>
+        <CLSCompliant(False)>
         Public Property YAxisAutoScaleMode() As eAxisAutoScaleModeTypes
 
             Get
@@ -467,7 +471,7 @@ Namespace Controls
         ''' Get the <see cref="eShapeCategoryTypes">category</see> of the shape.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)>
+        <Browsable(False), CLSCompliant(False)>
         Public ReadOnly Property ShapeCategory() As eShapeCategoryTypes
 
             Get
@@ -583,6 +587,7 @@ Namespace Controls
         ''' <param name="bDrawLabels">The max X value to draw.</param>
         ''' <param name="sYMax">The max Y value to scale the shape to.</param>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Protected Overridable Sub DrawShape(shape As cShapeData,
                                 rcImage As Rectangle,
                                 g As Graphics,
@@ -627,7 +632,7 @@ Namespace Controls
 
 #Region " IUIElement implementation "
 
-        <Browsable(False)>
+        <Browsable(False), CLSCompliant(False)>
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
