@@ -247,3 +247,4 @@ GitHub development → source always available → internal decision that a rele
 ```
 
 Note that every release will become a Zenodo record, but will not automatically appear in the (Zenodo EwE community)[https://zenodo.org/communities/ewe/]. This is a manual action performed by community members.
+ 
