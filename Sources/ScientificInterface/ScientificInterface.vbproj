@@ -1085,10 +1085,12 @@
     <PackageReference Include="Eii.Ecopath.EnaRPlugin" Version="1.0.*" />
     <PackageReference Include="Eii.Ecopath.FleetTradeoffsPlugin" Version="1.0.*" />
     <PackageReference Include="Eii.Ecopath.IBMAgeStructureResultsWriterPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ImportDietsPlugin" Version="1.0.*" />
     <PackageReference Include="Eii.Ecopath.ImportExportLayerDefinitionsPlugin" Version="1.0.*" />
     <PackageReference Include="Eii.Ecopath.MergeSplitGroupsPlugin" Version="1.0.*" />
     <PackageReference Include="Eii.Ecopath.ModelFromEcosimPlugin" Version="1.0.*" />
     <PackageReference Include="Eii.Ecopath.MPADynamicsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EcotrophPlugin" Version="1.0.*" />
     <PackageReference Include="Eii.Ecopath.MSEPlugin" Version="1.0.*" />
     <PackageReference Include="Eii.Ecopath.MSPPlugin" Version="1.0.*" />
     <PackageReference Include="Eii.Ecopath.MultiSimPlugin" Version="1.0.*" />
