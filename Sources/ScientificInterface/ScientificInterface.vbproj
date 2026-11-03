@@ -1075,34 +1075,34 @@
     <EmbeddedResource Include="Resources\EwELogo_caption.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Eii.Ecopath.AquamapsEnvDataImporterPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.BiomassEmitterPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.DietMatrixToNetworkD3RPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.EcoEngineersPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.EcologicalIndicatorsPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.EcoSamplerPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.EcotracerEnvDriverPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.EnaRPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.FleetTradeoffsPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.IBMAgeStructureResultsWriterPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.ImportExportLayerDefinitionsPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.MergeSplitGroupsPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.ModelFromEcosimPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.MPADynamicsPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.MSEPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.MSPPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.MultiSimPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.NetworkAnalysisPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.PrebalPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.RemarksPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.ResultsExtractorPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.ShapeGridPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.StepwiseFittingPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.TransectExtractionPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.ValueChainPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.WindowsIntegrationPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.WoRMSPlugin" Version="1.0.0" />
-    <PackageReference Include="Eii.Ecopath.ZonalEffortPlugin" Version="1.0.0" />
+    <PackageReference Include="Eii.Ecopath.AquamapsEnvDataImporterPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.BiomassEmitterPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.DietMatrixToNetworkD3RPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EcoEngineersPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EcologicalIndicatorsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EcoSamplerPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EcotracerEnvDriverPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.EnaRPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.FleetTradeoffsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.IBMAgeStructureResultsWriterPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ImportExportLayerDefinitionsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.MergeSplitGroupsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ModelFromEcosimPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.MPADynamicsPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.MSEPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.MSPPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.MultiSimPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.NetworkAnalysisPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.PrebalPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.RemarksPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ResultsExtractorPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ShapeGridPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.StepwiseFittingPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.TransectExtractionPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ValueChainPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.WindowsIntegrationPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.WoRMSPlugin" Version="1.0.*" />
+    <PackageReference Include="Eii.Ecopath.ZonalEffortPlugin" Version="1.0.*" />
     <ProjectReference Include="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" />
   </ItemGroup>
   <ItemGroup>
