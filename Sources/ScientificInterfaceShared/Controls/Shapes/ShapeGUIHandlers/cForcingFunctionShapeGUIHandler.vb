@@ -27,6 +27,7 @@ Namespace Controls
 
         Private m_bShowAll As Boolean = False
 
+        <CLSCompliant(False)>
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)
         End Sub
@@ -40,6 +41,7 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Overrides Sub Attach(stb As ucShapeToolbox,
                                     stbtb As ucShapeToolboxToolbar,
                                     sp As ucSketchPad,
@@ -446,6 +448,7 @@ Namespace Controls
         ''' <param name="shape"></param>
         ''' <returns>The default sketch mode for forcing functions.</returns>
         ''' -----------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Overrides Function SketchDrawMode(shape As cShapeData) As eSketchDrawModeTypes
             Return eSketchDrawModeTypes.Fill
         End Function

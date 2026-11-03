@@ -69,6 +69,7 @@ Namespace Controls
 
 #End Region ' Filter
 
+        <CLSCompliant(False)>
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)
         End Sub
@@ -84,6 +85,7 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Overloads Sub Attach(stb As ucShapeToolbox,
                                     stbtb As ucShapeToolboxToolbar,
                                     sp As ucSketchPad,
@@ -339,6 +341,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>The default sketch mode for Time Series shapes.</returns>
         ''' -----------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Overrides Function SketchDrawMode(shape As cShapeData) As eSketchDrawModeTypes
             If (shape Is Nothing) Then Return eSketchDrawModeTypes.TimeSeriesDriver
             Debug.Assert(TypeOf shape Is cTimeSeries)
