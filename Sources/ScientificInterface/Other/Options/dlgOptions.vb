@@ -56,6 +56,7 @@ Namespace Other
             Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_GENERAL, eApplicationOptionTypes.General, GetType(ucOptionsGeneral)))
             Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_FILEMANAGEMENT, eApplicationOptionTypes.Autosave, GetType(ucOptionsFileManagement)))
             Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_SPATTEMP, eApplicationOptionTypes.SpatialTemporal, GetType(ucOptionsSpatialTemporal)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Privacy", "Privacy", GetType(ucOptionsPrivacy)))
 
             Dim tnAppearance As New TreeNode(My.Resources.OPTIONS_PAGE_APPEARANCE)
             tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_WINDOW, eApplicationOptionTypes.Window, GetType(ucOptionsPresentation)))
