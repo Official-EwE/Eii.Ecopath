@@ -7982,7 +7982,7 @@ exitline:
         End If
 
         ' JS 04 March 2025: added a lightning fast alternative with the help of ChatGPT
-        Dim calc As New cSailCostCalculator(Me.EcoSpaceData)
+        Dim calc As New cDistanceCalculator(Me.EcoSpaceData)
         calc.CalculateCostOfSailing()
 
     End Sub
