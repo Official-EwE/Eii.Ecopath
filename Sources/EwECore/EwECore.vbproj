@@ -96,7 +96,10 @@
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42030,42032,42036,42104,42108,42109,42353,42354,42355</NoWarn>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <Reference Include="Interop.JRO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=1d875393b3ebcad0, processorArchitecture=MSIL" />
+    <Reference Include="Interop.JRO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=1d875393b3ebcad0, processorArchitecture=MSIL">
+      <HintPath>Includes\Interop.JRO.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
     <Reference Include="Microsoft.Office.interop.access.dao, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
     <Reference Update="System">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7\System.dll</HintPath>
@@ -168,7 +171,10 @@
     <EmbeddedResource Include="Resources\EwE6.mdb"></EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Includes\Interop.JRO.dll" />
+    <Content Include="Includes\Interop.JRO.dll">
+      <CopyToOutputDirectory Condition="'$(TargetFramework)' == 'net48'">PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Interop.JRO.dll</TargetPath>
+    </Content>
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>

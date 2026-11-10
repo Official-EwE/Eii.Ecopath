@@ -1310,8 +1310,8 @@
     <value>(all runs)</value>
   </data>
   <data name="GENERIC_VAUE_RUN_X" xml:space="preserve">
-    <value>Run {0}</value>
-    <comment>{0}=run number or name</comment>
+    <value>Run {0}, SS {1}</value>
+    <comment>{0}=run number or name, {1}=SS</comment>
   </data>
   <data name="HEADER_FIELD" xml:space="preserve">
     <value>Field</value>

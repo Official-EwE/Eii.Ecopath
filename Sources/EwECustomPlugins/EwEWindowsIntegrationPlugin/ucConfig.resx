@@ -237,6 +237,9 @@
   <data name="m_lblError.Text" xml:space="preserve">
     <value>EwE is not allowed to modify the registry and cannot protect against automatic Windows restarts. Running EwE with administrator rights may help</value>
   </data>
+  <data name="UnsupportedPlatform" xml:space="preserve">
+    <value>This feature is not supported on this platform.</value>
+  </data>
   <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>

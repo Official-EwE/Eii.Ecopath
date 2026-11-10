@@ -466,7 +466,7 @@ Public Class cPluginManager
         End If
 
         If Not Directory.Exists(strPluginPath) Then
-            m_logger.LogInformation("Plugin directory {PluginPath} does not exist: " & strPluginPath)
+            m_logger.LogInformation("Plugin directory does not exist: {Path}", strPluginPath)
             Return nLoaded
         End If
 

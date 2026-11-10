@@ -271,7 +271,7 @@ Public Class frmSamples
 
 #Region " Internals "
 
-    Private Sub LoadSamples()
+    Friend Sub LoadSamples()
 
         If (Me.IsDisposed) Then Return
 
