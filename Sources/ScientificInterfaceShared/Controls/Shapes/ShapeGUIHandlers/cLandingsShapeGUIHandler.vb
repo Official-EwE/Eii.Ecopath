@@ -13,10 +13,11 @@ Namespace Controls
     ''' handling fishing mortality <see cref="cForcingFunction">forcing shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(True)>
+    <CLSCompliant(False)>
     Public Class cLandingsShapeGUIHandler
         Inherits cMediationShapeGUIHandler
 
+        <CLSCompliant(False)>
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)
         End Sub
