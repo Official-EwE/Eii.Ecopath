@@ -14,6 +14,7 @@ Namespace Controls
     Public Class cEggProductionShapeGUIHandler
         Inherits cForcingShapeGUIHandler
 
+        <CLSCompliant(False)>
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)
         End Sub

@@ -108,6 +108,7 @@ Namespace Controls
 
 #Region " Constructor and destructor "
 
+        <CLSCompliant(False)>
         Public Sub New(uic As cUIContext)
             Me.UIContext = uic
         End Sub
@@ -116,6 +117,7 @@ Namespace Controls
 
 #Region " Attach / detach "
 
+        <CLSCompliant(False)>
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
 
@@ -128,6 +130,7 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Overridable Sub Attach(stb As ucShapeToolbox, stbtb As ucShapeToolboxToolbar, sp As ucSketchPad, sptb As ucSketchPadToolbar)
 
             Me.ShapeToolBox = stb
@@ -302,6 +305,7 @@ Namespace Controls
         ''' <returns>The <see cref="eSketchDrawModeTypes">Sketch draw mode</see>
         ''' that should be used to render the indicated shape.</returns>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public MustOverride Function SketchDrawMode(shape As cShapeData) As eSketchDrawModeTypes
 
         ''' -------------------------------------------------------------------
@@ -575,6 +579,7 @@ Namespace Controls
             End Get
         End Property
 
+        <CLSCompliant(False)>
         Public ReadOnly Property StyleGuide() As cStyleGuide
             Get
                 Debug.Assert(Me.UIContext IsNot Nothing)
@@ -649,6 +654,7 @@ Namespace Controls
         ''' Get/set the <see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control</see> to manage.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Overridable Property ShapeToolBoxToolbar() As ucShapeToolboxToolbar
             Get
                 Return Me.m_shapeToolBoxToolbar
@@ -746,6 +752,7 @@ Namespace Controls
         ''' <returns>A shape gui handler, or nothing if the data type did not 
         ''' denote a shape type.</returns>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Shared Function GetShapeUIHandler(dt As eDataTypes, uic As cUIContext) As cShapeGUIHandler
             Select Case dt
                 Case eDataTypes.Forcing : Return New cForcingShapeGUIHandler(uic)
@@ -769,6 +776,7 @@ Namespace Controls
         ''' <returns>A shape gui handler, or nothing if the shape is of a new type
         ''' that is not yet supported.</returns>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Shared Function GetShapeUIHandler(shape As cShapeData, uic As cUIContext) As cShapeGUIHandler
             If (shape Is Nothing) Then Return Nothing
             Dim handler As cShapeGUIHandler = cShapeGUIHandler.GetShapeUIHandler(shape.DataType, uic)
