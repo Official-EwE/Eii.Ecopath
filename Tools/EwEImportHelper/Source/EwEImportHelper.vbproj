@@ -20,7 +20,8 @@
   </PropertyGroup>
   <!-- Lives under Tools\ (alongside mdb2sqlite and Eii.Ecopath.Storage.Migrator), not part of the
        main solution's build graph - ScientificInterface.vbproj has no ProjectReference to it. Built
-       standalone and published into Tools\EwEImportHelper\Publish\win-x86\ - see README.md for the
+       standalone and published into Tools\EwEImportHelper\Publish\win-x86\ - see
+       Documentation\CODE_COMMENTS.md for the
        build-and-publish steps.
        ProjectReference, unconditional (not gated by UseProjectReferences/PackageReference): this exe
        is never consumed outside this repo, so it should always build against this checkout's own
