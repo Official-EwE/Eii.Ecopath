@@ -9,6 +9,7 @@
 ''' </summary>
 ''' <remarks>Operators are use for variable validation </remarks>
 Public Class cOperatorManager
+    Private Shared ReadOnly s_initLock As New Object()
     Private Shared m_operators As Dictionary(Of eOperators, cOperatorBase)
 
     ''' <summary>
@@ -20,11 +21,7 @@ Public Class cOperatorManager
     ''' Calls to getOperator(eOperators) of the same type will return the same cOperatorBase reference.</remarks>
     Public Shared Function getOperator(OperatorType As eOperators) As cOperatorBase
         Try
-            'on the first call populate the dictionary with all the operators
-            If m_operators Is Nothing Then
-                init()
-            End If
-            Return m_operators.Item(OperatorType)
+            Return GetOperators().Item(OperatorType)
 
         Catch ex As Exception
             Debug.Assert(False, "cComparisonOperators.getOperator( " & OperatorType.ToString & ") Error: " & ex.Message)
@@ -32,19 +29,27 @@ Public Class cOperatorManager
         End Try
     End Function
 
-    Private Shared Sub init()
+    ''' <summary>Returns the operator dictionary, populating it once on first use. Thread safe.</summary>
+    Private Shared Function GetOperators() As Dictionary(Of eOperators, cOperatorBase)
 
-        If (m_operators Is Nothing) Then
-            m_operators = New Dictionary(Of eOperators, cOperatorBase) From {
-                {eOperators.LessThan, New cLessThan},
-                {eOperators.GreaterThan, New cGreaterThan},
-                {eOperators.EqualTo, New cEqualTo},
-                {eOperators.LessThanOrEqualTo, New cLessThanOrEqualTo},
-                {eOperators.GreaterThanOrEqualTo, New cGreaterThanOrEqualTo}
-            }
-        End If
+        Dim ops As Dictionary(Of eOperators, cOperatorBase) = System.Threading.Volatile.Read(m_operators)
+        If (ops IsNot Nothing) Then Return ops
 
-    End Sub
+        SyncLock s_initLock
+            ' Only publish the dictionary once it is completely populated
+            If (m_operators Is Nothing) Then
+                System.Threading.Volatile.Write(m_operators, New Dictionary(Of eOperators, cOperatorBase) From {
+                    {eOperators.LessThan, New cLessThan},
+                    {eOperators.GreaterThan, New cGreaterThan},
+                    {eOperators.EqualTo, New cEqualTo},
+                    {eOperators.LessThanOrEqualTo, New cLessThanOrEqualTo},
+                    {eOperators.GreaterThanOrEqualTo, New cGreaterThanOrEqualTo}
+                })
+            End If
+            Return m_operators
+        End SyncLock
+
+    End Function
 
 End Class
 
