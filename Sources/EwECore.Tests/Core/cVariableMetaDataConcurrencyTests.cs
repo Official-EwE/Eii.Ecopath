@@ -9,16 +9,16 @@ using FluentAssertions;
 namespace EwECore.Tests.Core;
 
 [CollectionDefinition(Name, DisableParallelization = true)]
-public sealed class VariableMetaDataRegistryCollection
+public sealed class ColdStartStateCollection
 {
-    public const string Name = "VariableMetaData registry (process-wide state)";
+    public const string Name = "Process-wide lazily initialized state";
 }
 
 /// <summary>
 /// The metadata registry is a lazily initialized process-wide singleton. These tests reset it to its
 /// cold-start state so that concurrent first access, as happens when several cores are constructed at once, can be observed.
 /// </summary>
-[Collection(VariableMetaDataRegistryCollection.Name)]
+[Collection(ColdStartStateCollection.Name)]
 public sealed class cVariableMetaDataConcurrencyTests
 {
     private const int Attempts = 25;
