@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EwECore.Tests.EcoSpace;
 
+[Collection("Ecospace worker batches")]
 public sealed class cEcoSpaceWorkerBatchTests
 {
     private static readonly TimeSpan TestTimeout = TimeSpan.FromSeconds(15);

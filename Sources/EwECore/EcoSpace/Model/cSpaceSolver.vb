@@ -10,16 +10,6 @@ Imports Debug = System.Diagnostics.Debug
 
 Public Class cSpaceSolver
 
-    ''' <summary>
-    ''' Wait handle 
-    ''' </summary>
-    ''' <remarks>
-    ''' When the Solve() thread is running (SignalState in a non-signaled state SignalState.Reset()) 
-    ''' calls to SignalState.WaitOne() will block until Solve() has completed (SignalState in a signaled state SignalState.Set())
-    ''' </remarks>
-    Public WaitHandle As ManualResetEvent
-    Public Shared ThreadIncrementer As Integer
-
     Public RunTimeSeconds As Double
     Public CatchCPUTimeSec As Double
     Public lstCellCompTimes As New List(Of Double)
@@ -346,8 +336,8 @@ Public Class cSpaceSolver
             Me.TotFisheriesDiscards = 0
 
         Catch ex As Exception
-            Debug.Assert(False, ex.Message)
             m_logger.LogError(ex, "cSpaceSolver.InitForTimestep Exception")
+            Throw
         End Try
 
     End Sub
@@ -389,17 +379,11 @@ Public Class cSpaceSolver
 
         Catch ex As Exception
             m_logger.LogError(ex, "cSpaceSolver.Solve Exception")
-            Debug.Assert(False, ex.Message)
+            Throw
+        Finally
+            Me.m_stpWatch.Stop()
+            Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
         End Try
-
-        'set signal state to 'signaled' 
-        'the processing has finished SignalState.WaitOne() will return immediately
-        If Interlocked.Decrement(cSpaceSolver.ThreadIncrementer) = 0 Then
-            Me.WaitHandle.Set()
-        End If
-
-        Me.m_stpWatch.Stop()
-        Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
         ' Console.WriteLine("SpaceSolver.Solve() ID " & Me.ThreadID.ToString & " Run time(sec)" & (Me.m_stpWatch.Elapsed.TotalSeconds).ToString)
 
     End Sub
@@ -434,17 +418,11 @@ Public Class cSpaceSolver
 
         Catch ex As Exception
             m_logger.LogError(ex, "cSpaceSolver.SolveC Exception")
-            Debug.Assert(False, ex.Message)
+            Throw
+        Finally
+            Me.m_stpWatch.Stop()
+            Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
         End Try
-
-        'set signal state to 'signaled' 
-        'the processing has finished SignalState.WaitOne() will return immediately
-        If Interlocked.Decrement(cSpaceSolver.ThreadIncrementer) = 0 Then
-            Me.WaitHandle.Set()
-        End If
-
-        Me.m_stpWatch.Stop()
-        Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
         ' Console.WriteLine("SpaceSolver.Solve() ID " & Me.ThreadID.ToString & " Run time(sec)" & (Me.m_stpWatch.Elapsed.TotalSeconds).ToString)
 
     End Sub

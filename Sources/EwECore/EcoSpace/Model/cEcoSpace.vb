@@ -1712,58 +1712,20 @@ Partial Public Class cEcoSpace
     End Sub
 
     Private Sub runGridSolverThreads()
-        Dim solver As cGridSolver
-        Dim iFstGrp As Integer
-        Dim iLstgrp As Integer
-        Dim nRunning As Integer
-
-        iFstGrp = 1
-        iLstgrp = 0
-
-        'debugDumpAverageB(44, "Before Grid")
         Try
+            'Completion belongs to this invocation, independently of other cores' grid solvers.
+            Using batch As New cWorkerBatch(Me)
+                For Each solver As cGridSolver In Me.m_gridSolvers
+                    solver.FirstLastGroups(1, Me.nGroupsInThread(solver.ThreadID))
+                    batch.Queue(AddressOf solver.Solve, Nothing)
+                Next
 
-            'Create one WaitHandle and pass it to all the threads
-            'Once the cSpaceSolver.ThreadIncrementer hits zero the thread(cSpaceSolver) object will call ManualResetEvent.Set()  
-            'this allows any waiting threads to continue
-            Dim WaitOb As ManualResetEvent = New ManualResetEvent(False)
-
-            Dim stpTotRun As Stopwatch = Stopwatch.StartNew
-
-            'set the shared thread increment counter to the number of threads
-            cGridSolver.ThreadIncrementer = Me.m_gridSolvers.Count
-
-            For Each solver In Me.m_gridSolvers
-                nRunning += 1
-                'same wait object for all the threads
-                'Once the thread counter has been Decrement to Zero
-                'the Wait object will be released by the solver
-                solver.WaitHandle = WaitOb
-
-                solver.FirstLastGroups(1, Me.nGroupsInThread(solver.ThreadID))
-
-                'Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                'worker.Start()
-                ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
-
-            Next solver
-
-            'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
-            If Not WaitOb.WaitOne() Then
-                Debug.Assert(False, "runGridSolverThreads() Timed out!")
-                m_logger.LogError(".runSpaceSolverThreads() Timed out.")
-            End If
-
-            stpTotRun.Stop()
-            'debugDumpAverageB(44, "After Grid")
-            'System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
-
+                batch.WaitForCompletion(Timeout.Infinite, Me.ToString & ".runGridSolverThreads()")
+            End Using
         Catch ex As Exception
             m_logger.LogError(ex, "cEcoSpace.runGridSolverThreads() Exception")
-            Debug.Assert(False, ex.Message)
             Throw New ApplicationException("Error in runSolverThreads()", ex)
         End Try
-
     End Sub
 
     Private Sub debugDumpAverageB(GrpIndex As Integer, msg As String)
@@ -1789,11 +1751,6 @@ Partial Public Class cEcoSpace
 
     End Sub
     Private Sub runSpaceSolverThreads()
-        Dim solver As cSpaceSolver
-        Dim iFrstCell As Integer
-        Dim iLstCell As Integer
-        Dim etRunTime As Double
-
         Array.Clear(Me.Btime, 0, Me.Btime.Length)
         Array.Clear(Me.TotLoss, 0, Me.TotLoss.Length)
         Array.Clear(Me.TotEatenBy, 0, Me.TotEatenBy.Length)
@@ -1801,191 +1758,66 @@ Partial Public Class cEcoSpace
         Array.Clear(Me.TotPred, 0, Me.TotPred.Length)
         Array.Clear(Me.TotIFDweight, 0, Me.TotIFDweight.Length)
 
-        iFrstCell = 1
-        iLstCell = 0
-
-        ' Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
-        ' Console.WriteLine("Ecospace ThreadID = " & thrdID.ToString)
-
-        'Create one WaitHandle and pass it to all the threads
-        'Once the cSpaceSolver.ThreadIncrementer hits zero the thread(cSpaceSolver) object will call ManualResetEvent.Set()  
-        'this allows any waiting threads to continue
-        Dim WaitOb As ManualResetEvent = New ManualResetEvent(False)
-        Dim stpTotRun As Stopwatch = Stopwatch.StartNew
-
         Try
-
-            'set the shared thread increment counter to the number of threads
-            cSpaceSolver.ThreadIncrementer = Me.m_spaceSolvers.Count
-
-            'Number of cells to compute for the current thread
-            Dim nCells As Integer
-            'Total number of cells that have been computed
+            Dim iFirstCell As Integer = 1
             Dim nCellsCompleted As Integer
-            'Loop counter
             Dim iSolve As Integer
 
-            'loop through each solver, create a thread for it, and run it
-            For Each solver In Me.m_spaceSolvers
-                iSolve += 1
-                'Compute the work load for each thread on the fly
-                'this prevents any rounding weirdness that could cause cSpaceSolver.ThreadIncrementer to not hit Zero
-                'Causing a deadlock on WaitOb.WaitOne()
-                nCells = Me.computeThreadLoad(Me.EcoSpaceData.iTotalWaterCells, nCellsCompleted, Me.m_spaceSolvers.Count, iSolve)
+            'Do not consume results or reuse solver arrays until every worker in this batch has succeeded.
+            Using batch As New cWorkerBatch(Me)
+                For Each solver As cSpaceSolver In Me.m_spaceSolvers
+                    iSolve += 1
+                    Dim nCells As Integer = Me.computeThreadLoad(Me.EcoSpaceData.iTotalWaterCells, nCellsCompleted, Me.m_spaceSolvers.Count, iSolve)
+                    nCellsCompleted += nCells
+                    Dim iLastCell As Integer = Math.Min(iFirstCell + nCells - 1, Me.EcoSpaceData.iTotalWaterCells)
 
-                nCellsCompleted += nCells
+                    solver.FirstLastCells(iFirstCell, iLastCell)
+                    batch.Queue(AddressOf solver.Solve, Nothing)
+                    iFirstCell += nCells
+                Next
 
-                iLstCell = iFrstCell + nCells - 1
-                If iLstCell > Me.EcoSpaceData.iTotalWaterCells Then
-                    iLstCell = Me.EcoSpaceData.iTotalWaterCells 'iTotalCells Then iLstCell = iTotalCells
-                End If
-
-                solver.FirstLastCells(iFrstCell, iLstCell)
-                'same wait object for all the threads
-                'Once the thread counter has been Decrement to Zero
-                'the Wait object will be released by the solver
-                solver.WaitHandle = WaitOb
-
-                ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
-
-                iFrstCell += nCells
-
-            Next solver
-
-            Debug.Assert((iSolve = Me.EcoSpaceData.nSpaceSolverThreads) And (Me.m_spaceSolvers.Count = Me.EcoSpaceData.nSpaceSolverThreads), "Ecospace.runSpaceSolverThreads() Thread counters are incorrect.")
-            Debug.Assert(nCellsCompleted = Me.EcoSpaceData.iTotalWaterCells, "Ecospace.runSpaceSolverThreads() may have computed the wrong number of cells. You need to check this.")
-            ' System.Console.WriteLine("Solver init threads time, " & stpTotRun.Elapsed.TotalSeconds.ToString)
-
-            'Not implemented on MONO
-            ' Me.dumpRunningThreadInfo("Before")
-
-            'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
-            If Not WaitOb.WaitOne() Then
-                Debug.Assert(False, "Timed out!")
-                m_logger.LogError(Me.ToString & ".runSpaceSolverThreads() Timed out.")
-            End If
-
-            etRunTime = stpTotRun.Elapsed.TotalSeconds
+                Debug.Assert((iSolve = Me.EcoSpaceData.nSpaceSolverThreads) And (Me.m_spaceSolvers.Count = Me.EcoSpaceData.nSpaceSolverThreads), "Ecospace.runSpaceSolverThreads() Thread counters are incorrect.")
+                Debug.Assert(nCellsCompleted = Me.EcoSpaceData.iTotalWaterCells, "Ecospace.runSpaceSolverThreads() may have computed the wrong number of cells. You need to check this.")
+                batch.WaitForCompletion(Timeout.Infinite, Me.ToString & ".runSpaceSolverThreads()")
+            End Using
 
             Me.UpdateThreadedResults()
-
-            stpTotRun.Stop()
-            'System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
-            'System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
-            'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
-            'System.Console.WriteLine("Solver Catch CPU time (sec), " & cpuTimeCatch.ToString)
-
-            'Me.dumpCellComputeTimes()
-
-            WaitOb.Dispose()
-
         Catch ex As Exception
             m_logger.LogError(ex, "cEcoSpace.runSpaceSolverThreads() Exception")
-            Debug.Assert(False, ex.Message)
             Throw New ApplicationException("Error in runSpaceSolverThreads() " & ex.Message, ex)
         End Try
-
-        ' GC.Collect()
-
     End Sub
 
     Private Sub runSpaceCSolverThreads(ByVal timefactor As Single)
-        Dim solver As cSpaceSolver
-        Dim iFrstCell As Integer
-        Dim iLstCell As Integer
-        Dim etRunTime As Double
-
-        iFrstCell = 1
-        iLstCell = 0
-
-        ' Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
-        ' Console.WriteLine("Ecospace ThreadID = " & thrdID.ToString)
-
-        'Create one WaitHandle and pass it to all the threads
-        'Once the cSpaceSolver.ThreadIncrementer hits zero the thread(cSpaceSolver) object will call ManualResetEvent.Set()  
-        'this allows any waiting threads to continue
-        Dim WaitOb As ManualResetEvent = New ManualResetEvent(False)
-        Dim stpTotRun As Stopwatch = Stopwatch.StartNew
-
         Try
-
-            'Me.EcoSpaceData.debugDumpContaminantMap(11)
-
-            'set the shared thread increment counter to the number of threads
-            cSpaceSolver.ThreadIncrementer = Me.m_spaceSolvers.Count
-
-            'Number of cells to compute for the current thread
-            Dim nCells As Integer
-            'Total number of cells that have been computed
+            Dim iFirstCell As Integer = 1
             Dim nCellsCompleted As Integer
-            'Loop counter
             Dim iSolve As Integer
 
-            'loop through each solver, create a thread for it, and run it
-            For Each solver In Me.m_spaceSolvers
-                iSolve += 1
-                'Compute the work load for each thread on the fly
-                'this prevents any rounding weirdness that could cause cSpaceSolver.ThreadIncrementer to not hit Zero
-                'Causing a deadlock on WaitOb.WaitOne()
-                nCells = Me.computeThreadLoad(Me.EcoSpaceData.iTotalWaterCells, nCellsCompleted, Me.m_spaceSolvers.Count, iSolve)
+            'Contaminant workers need their own batch, separate from normal space solvers and other cores.
+            Using batch As New cWorkerBatch(Me)
+                For Each solver As cSpaceSolver In Me.m_spaceSolvers
+                    iSolve += 1
+                    Dim nCells As Integer = Me.computeThreadLoad(Me.EcoSpaceData.iTotalWaterCells, nCellsCompleted, Me.m_spaceSolvers.Count, iSolve)
+                    nCellsCompleted += nCells
+                    Dim iLastCell As Integer = Math.Min(iFirstCell + nCells - 1, Me.EcoSpaceData.iTotalWaterCells)
 
-                nCellsCompleted += nCells
+                    solver.FirstLastCells(iFirstCell, iLastCell)
+                    solver.SetTimeStepC(Me.EcoSpaceData.TimeStep / timefactor)
+                    batch.Queue(AddressOf solver.SolveC, Nothing)
+                    iFirstCell += nCells
+                Next
 
-                iLstCell = iFrstCell + nCells - 1
-                If iLstCell > Me.EcoSpaceData.iTotalWaterCells Then
-                    iLstCell = Me.EcoSpaceData.iTotalWaterCells 'iTotalCells Then iLstCell = iTotalCells
-                End If
-
-                solver.FirstLastCells(iFrstCell, iLstCell)
-                solver.SetTimeStepC(Me.EcoSpaceData.TimeStep / timefactor)
-                'same wait object for all the threads
-                'Once the thread counter has been Decrement to Zero
-                'the Wait object will be released by the solver
-                solver.WaitHandle = WaitOb
-
-                ThreadPool.QueueUserWorkItem(AddressOf solver.SolveC)
-
-                iFrstCell += nCells
-
-            Next solver
-
-            Debug.Assert((iSolve = Me.EcoSpaceData.nSpaceSolverThreads) And (Me.m_spaceSolvers.Count = Me.EcoSpaceData.nSpaceSolverThreads), "Ecospace.runSpaceSolverThreads() Thread counters are incorrect.")
-            Debug.Assert(nCellsCompleted = Me.EcoSpaceData.iTotalWaterCells, "Ecospace.runSpaceSolverThreads() may have computed the wrong number of cells. You need to check this.")
-            ' System.Console.WriteLine("Solver init threads time, " & stpTotRun.Elapsed.TotalSeconds.ToString)
-
-            'Not implemented on MONO
-            ' Me.dumpRunningThreadInfo("Before")
-
-            'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
-            If Not WaitOb.WaitOne() Then
-                Debug.Assert(False, "Timed out!")
-                m_logger.LogError(".runSpaceSolverThreads() Timed out.")
-            End If
-
-            etRunTime = stpTotRun.Elapsed.TotalSeconds
-
-            'Me.EcoSpaceData.debugDumpContaminantMap(11)
+                Debug.Assert((iSolve = Me.EcoSpaceData.nSpaceSolverThreads) And (Me.m_spaceSolvers.Count = Me.EcoSpaceData.nSpaceSolverThreads), "Ecospace.runSpaceCSolverThreads() Thread counters are incorrect.")
+                Debug.Assert(nCellsCompleted = Me.EcoSpaceData.iTotalWaterCells, "Ecospace.runSpaceCSolverThreads() may have computed the wrong number of cells. You need to check this.")
+                batch.WaitForCompletion(Timeout.Infinite, Me.ToString & ".runSpaceCSolverThreads()")
+            End Using
 
             Me.UpdateThreadedResults()
-
-            stpTotRun.Stop()
-            'System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
-            'System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
-            'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
-            'System.Console.WriteLine("Solver Catch CPU time (sec), " & cpuTimeCatch.ToString)
-
-            'Me.dumpCellComputeTimes()
-
-            WaitOb.Dispose()
-
         Catch ex As Exception
-            m_logger.LogError(ex, "cEcoSpace.runSpaceSolverThreads() Exception")
-            Debug.Assert(False, ex.Message)
-            Throw New ApplicationException("Error in runSpaceSolverThreads() " & ex.Message, ex)
+            m_logger.LogError(ex, "cEcoSpace.runSpaceCSolverThreads() Exception")
+            Throw New ApplicationException("Error in runSpaceCSolverThreads() " & ex.Message, ex)
         End Try
-
-        ' GC.Collect()
-
     End Sub
 
     Private Sub summarizeContaminantTracer()
