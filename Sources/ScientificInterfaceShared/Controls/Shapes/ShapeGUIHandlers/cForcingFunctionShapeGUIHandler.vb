@@ -27,6 +27,7 @@ Namespace Controls
 
         Private m_bShowAll As Boolean = False
 
+        <CLSCompliant(False)>
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)
         End Sub
@@ -40,6 +41,7 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Overrides Sub Attach(stb As ucShapeToolbox,
                                     stbtb As ucShapeToolboxToolbar,
                                     sp As ucSketchPad,
@@ -203,6 +205,8 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.ShowAsDetails, eShapeCommandTypes.ShowAsThumbnails
                     Return Me.AllowDetailView
+                Case eShapeCommandTypes.Import
+                    Return True ' New in 6.7: invoke TS import dialog
                 Case Else
                     Return False
             End Select
@@ -237,7 +241,8 @@ Namespace Controls
                     Return Me.AllowDetailView
 
                 Case eShapeCommandTypes.Add,
-                     eShapeCommandTypes.ResetAll
+                     eShapeCommandTypes.ResetAll,
+                     eShapeCommandTypes.Import
                     Return True
 
                 Case eShapeCommandTypes.Duplicate,
@@ -280,7 +285,8 @@ Namespace Controls
         Public Overrides Sub ExecuteCommand(cmd As eShapeCommandTypes,
                  Optional ashapes As EwECore.cShapeData() = Nothing, Optional data As Object = Nothing)
 
-            Dim cmdX As cCommand = Me.UIContext.CommandHandler.GetCommand("TrimUnusedShapeData")
+            Dim cmdTrim As cCommand = Me.UIContext.CommandHandler.GetCommand("TrimUnusedShapeData")
+            Dim cmdImport As cCommand = Me.UIContext.CommandHandler.GetCommand("ImportTimeSeries")
 
             If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
 
@@ -326,7 +332,7 @@ Namespace Controls
 
                 Case eShapeCommandTypes.DiscardExtraData
                     Try
-                        If (cmdX IsNot Nothing) Then cmdX.Invoke()
+                        If (cmdTrim IsNot Nothing) Then cmdTrim.Invoke()
                     Catch ex As Exception
                         ' Whoah
                     End Try
@@ -336,6 +342,13 @@ Namespace Controls
 
                 Case eShapeCommandTypes.ShowAsThumbnails
                     Me.ShapeToolBox.ViewMode = ucShapeToolbox.eViewModes.Thumbnails
+
+                Case eShapeCommandTypes.Import
+                    Try
+                        If (cmdImport IsNot Nothing) Then cmdImport.Invoke()
+                    Catch ex As Exception
+                        ' Whoah
+                    End Try
 
                 Case Else
                     'Debug.Assert(False, cStringUtils.Localize("Command {0} not supported", cmd))
@@ -446,6 +459,7 @@ Namespace Controls
         ''' <param name="shape"></param>
         ''' <returns>The default sketch mode for forcing functions.</returns>
         ''' -----------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Overrides Function SketchDrawMode(shape As cShapeData) As eSketchDrawModeTypes
             Return eSketchDrawModeTypes.Fill
         End Function
