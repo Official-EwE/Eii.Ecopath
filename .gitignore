@@ -3,6 +3,19 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Click-Once directory
+publish/
+# EwE: Tools/*/Publish/ holds committed, out-of-band-built tool binaries (e.g. EwEImportHelper.exe,
+# Eii.Ecopath.Storage.Migrator's own published output) - see each tool's own README for the
+# build/publish workflow. Re-included here despite the "publish/" rule just above (that one is for
+# ASP.NET Click-Once output, an unrelated, unfortunate name collision with this convention).
+!Tools/*/Publish/
+!Tools/*/Publish/**
+# ...but *.pdb and *.xml (XML doc-comment files, dev-time-only like pdb - no runtime significance)
+# stay ignored here too - these lines come after the negation above and so take precedence over it.
+Tools/*/Publish/**/*.pdb
+Tools/*/Publish/**/*.xml
+
 # User-specific files
 *.rsuser
 *.suo
@@ -204,9 +217,6 @@ DocProject/Help/*.hhk
 DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
-
-# Click-Once directory
-publish/
 
 # Publish Web Output
 *.[Pp]ublish.xml

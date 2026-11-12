@@ -1013,18 +1013,42 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Maps a raw Ecopath database version number to a compatibility
+        ''' verdict, using the exact same thresholds Compatibility() itself
+        ''' uses.
+        ''' </summary>
+        ''' <param name="sVersion">The raw version number (0.0 for "could
+        ''' not be determined").</param>
+        ''' <param name="sMaxDBVersion">The caller's own MaxDBVersion() -
+        ''' passed in rather than read directly, so this needs no live
+        ''' instance of its own.</param>
+        ''' <remarks>
+        ''' Extracted out of Compatibility() specifically so a version
+        ''' number obtained through a DIFFERENT route than a normal,
+        ''' connected read - e.g. from the x86 EwEImportHelper process, for
+        ''' a legacy Jet3 file ACE itself cannot open at all on a 64-bit
+        ''' process - still reaches the exact same verdict, from the exact
+        ''' same thresholds, rather than a second, separately-maintained
+        ''' copy of this comparison.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function CompatibilityFromVersion(sVersion As Single, sMaxDBVersion As Single) As eCompatibilityTypes
+            If (sVersion = 0.0!) Then Return eCompatibilityTypes.Unknown
+            If (sVersion < cDBVERSION_EWE5_MIN) Then Return eCompatibilityTypes.TooOld
+            If (sVersion <= cDBVERSION_EWE5_MAX) Then Return eCompatibilityTypes.Importable
+            If (sVersion <= sMaxDBVersion) Then Return eCompatibilityTypes.EwE6
+            Return eCompatibilityTypes.Future
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' States the level of compatibility with the EwE code.
         ''' </summary>
         ''' <returns>A <see cref="eCompatibilityTypes">database compatibility</see>
         ''' indicator.</returns>
         ''' -------------------------------------------------------------------
         Public Function Compatibility() As eCompatibilityTypes
-            Dim sVersion As Single = Me.GetVersion()
-            If (sVersion = 0.0!) Then Return eCompatibilityTypes.Unknown
-            If (sVersion < cDBVERSION_EWE5_MIN) Then Return eCompatibilityTypes.TooOld
-            If (sVersion <= cDBVERSION_EWE5_MAX) Then Return eCompatibilityTypes.Importable
-            If (sVersion <= Me.MaxDBVersion) Then Return eCompatibilityTypes.EwE6
-            Return eCompatibilityTypes.Future
+            Return cEwEDatabase.CompatibilityFromVersion(Me.GetVersion(), Me.MaxDBVersion())
         End Function
 
         Public MustOverride Function MaxDBVersion() As Single

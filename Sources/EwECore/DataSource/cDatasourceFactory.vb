@@ -116,10 +116,44 @@ Namespace DataSources
                         ' the classic provider opens the file fine and
                         ' db.Compatibility reaches TooOld by reading the
                         ' actual Ecopath 5 version stored inside it.
-                        If cEwEAccessDatabase.IsLegacyJetFormat(strDatabase) Then
-                            comp = cEwEDatabase.eCompatibilityTypes.TooOld
+                        If cEwEAccessDatabase.IsLegacyJetFormat(strDatabase) AndAlso cSystemUtils.Is64BitProcess() Then
+
+                            ' Confirmed Jet3, on a 64-bit process - ACE
+                            ' cannot open this at all. A genuinely 32-bit
+                            ' process never reaches this branch (see the
+                            ' AndAlso above): on 32-bit the classic Jet
+                            ' provider opens a Jet3 file directly, so the
+                            ' Else branch below already handles it
+                            ' correctly, the same way it always has.
+                            '
+                            ' Jet3 alone doesn't mean TooOld specifically -
+                            ' it could equally be Importable (an
+                            ' old-but-still-convertible Ecopath 5 file).
+                            ' Get the REAL version number from a spawned
+                            ' x86 helper process (EwEImportHelper.exe),
+                            ' which uses the classic Jet provider directly
+                            ' - the one data-access layer proven, in this
+                            ' project, to actually open a Jet3 file.
+                            Dim sVersion As Single = 0.0!
+                            If cEwEAccessDatabase.TryGetLegacyVersionViaX86Helper(strDatabase, sVersion) Then
+                                comp = cEwEDatabase.CompatibilityFromVersion(sVersion, New cEwEAccessDatabase().MaxDBVersion())
+                            Else
+                                ' Helper missing, timed out, or failed for
+                                ' some other reason - no real version
+                                ' number to go on, so fall back to the
+                                ' conservative default: block rather than
+                                ' risk silently misclassifying a file we
+                                ' genuinely can't verify as safe.
+                                comp = cEwEDatabase.eCompatibilityTypes.TooOld
+                            End If
                             access = eDatasourceAccessType.Failed_UnknownType
+
                         Else
+                            ' Covers both "not Jet3 at all" and "Jet3, but
+                            ' on a genuinely 32-bit process" - the classic
+                            ' Jet provider opens a true Jet3 file directly
+                            ' there, no helper needed, same as it always
+                            ' has.
                             Dim db As New cEwEAccessDatabase()
                             access = db.Open(strDatabase)
                             If (access = eDatasourceAccessType.Opened) Then

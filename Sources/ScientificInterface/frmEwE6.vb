@@ -1442,14 +1442,16 @@ Public Class frmEwE6
         ' Get compatibility
         comp = cDataSourceFactory.GetCompatibility(strFileName, access)
 
-        ' Has access problems? TooOld is excluded here: a genuine legacy
-        ' Jet3 file can be - and, per GetCompatibility, already has been -
-        ' confidently identified as TooOld directly from its own file
-        ' header, without ever needing to open it. Reporting a generic
-        ' access-failure message for that case instead, just because
-        ' access never reached Opened, would mask the real, more useful
-        ' TooOld message the Select Case below already shows correctly.
-        If (access <> eDatasourceAccessType.Opened) AndAlso (comp <> cEwEDatabase.eCompatibilityTypes.TooOld) Then
+        ' A confirmed legacy Jet3 file on 64-bit never reaches access = Opened (ACE cannot open it;
+        ' GetCompatibility reads the real version via the x86 helper instead) - exempt TooOld/Importable
+        ' from the generic access-error check below for that specific case only, so the real message/
+        ' import path isn't masked. An ordinary non-Jet3 Importable file that genuinely failed to open
+        ' still reports as an access error.
+        Dim bLegacyJet3On64Bit As Boolean = cEwEAccessDatabase.IsLegacyJetFormat(strFileName) AndAlso cSystemUtils.Is64BitProcess()
+        Dim bExemptFromAccessCheck As Boolean =
+            (comp = cEwEDatabase.eCompatibilityTypes.TooOld) OrElse
+            (comp = cEwEDatabase.eCompatibilityTypes.Importable AndAlso bLegacyJet3On64Bit)
+        If (access <> eDatasourceAccessType.Opened) AndAlso Not bExemptFromAccessCheck Then
             ' #Yes: report access error
             Me.ReportFileAccessError(access, strFileName)
             Return cEwEDatabase.eCompatibilityTypes.Unknown
@@ -1468,11 +1470,42 @@ Public Class frmEwE6
                     Me.AddModelMRU(strFileName)
                 End If
 
-                Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
-                If dlg.ShowDialog(Me) = DialogResult.OK Then
-                    ' Update file name
-                    strFileName = dlg.ImportedFileName
-                    comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                ' A confirmed legacy Jet3 file on 64-bit cannot be opened by Import.dlgImportDatabase/
+                ' cImportWizard (same ACE mechanism this already worked around above) - route to the
+                ' x86 helper instead, which creates the target and performs the whole import itself.
+                If bLegacyJet3On64Bit Then
+
+                    Dim strImportedFileName As String = ""
+                    Dim strImportError As String = ""
+                    If Import.cLegacyImportLauncher.TryRunFullImport(strFileName, strImportedFileName, strImportError) Then
+                        strFileName = strImportedFileName
+                        comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                    Else
+                        Dim strHyperlink As String = ""
+                        If strImportError.IndexOf("ACE.OLEDB", StringComparison.OrdinalIgnoreCase) >= 0 Then
+                            ' Missing 32-bit Access Database Engine - see EwEImportHelper's Program.vb.
+                            ' URL may need refreshing if Microsoft retires this download ID.
+                            strHyperlink = "https://www.microsoft.com/en-us/download/details.aspx?id=54920"
+                        End If
+                        Me.SendMessage(strImportError, eMessageImportance.Critical, eCoreComponentType.DataSource, strHyperlink:=strHyperlink)
+
+                        ' A partially converted target may still exist despite the overall failure -
+                        ' see TryRunFullImport's own doc comment for when strImportedFileName is set.
+                        If Not String.IsNullOrWhiteSpace(strImportedFileName) AndAlso File.Exists(strImportedFileName) Then
+                            strFileName = strImportedFileName
+                            comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                        End If
+                    End If
+
+                Else
+
+                    Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
+                    If dlg.ShowDialog(Me) = DialogResult.OK Then
+                        ' Update file name
+                        strFileName = dlg.ImportedFileName
+                        comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                    End If
+
                 End If
 
             Case cEwEDatabase.eCompatibilityTypes.EwE6

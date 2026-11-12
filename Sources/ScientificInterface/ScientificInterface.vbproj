@@ -1112,6 +1112,25 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <!--
+    Copies the prebuilt EwEImportHelper tool (built as x86, published via
+    "dotnet build Tools\EwEImportHelper\Source\EwEImportHelper.vbproj -p:Platform=x86" -
+    see Tools\EwEImportHelper\README.md) into the EwEImportHelper\ output subfolder, same
+    pattern as mdb2sqlite\ and migrator\ below. Used by cDataSourceFactory.GetCompatibility
+    and Import.cLegacyImportLauncher for a confirmed legacy Jet3 Ecopath 5 file on 64-bit,
+    since the classic Jet OLEDB provider EwEImportHelper depends on has no 64-bit build.
+    Not a ProjectReference: EwECore builds only in whichever platform this solution's
+    active configuration targets, never also as x86 alongside it - a referenced
+    EwEImportHelper.vbproj would resolve to that wrong-platform EwECore.dll and fail to
+    load (BadImageFormatException). Always copied from win-x86 regardless of this
+    project's own platform, since EwEImportHelper must always run as x86.
+  -->
+  <ItemGroup>
+    <None Include="..\..\Tools\EwEImportHelper\Publish\win-x86\*.*" Exclude="..\..\Tools\EwEImportHelper\Publish\win-x86\*.pdb">
+      <Link>EwEImportHelper\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

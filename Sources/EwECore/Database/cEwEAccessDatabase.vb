@@ -3,6 +3,7 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Data.OleDb
+Imports System.Globalization
 Imports System.IO
 Imports System.Reflection
 Imports EwECore.DataSources
@@ -54,6 +55,45 @@ Namespace Database
         ''' <summary>File name to access database.</summary>
         Private m_strFileName As String = ""
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEAccessDatabase)()
+
+        ''' <summary>
+        ''' Accumulates messages logged by Open()/Create() on a failure path - Shared (process-wide),
+        ''' so a caller like Create() below, which opens its own internal cEwEAccessDatabase instance,
+        ''' can still have the real reason read back by someone who never held that instance (e.g.
+        ''' EwEImportHelper's Program.vb, which only has its own dbTarget).
+        ''' </summary>
+        ''' <remarks>
+        ''' Appends, never overwrites - a failed Create() call can log more than one message before
+        ''' giving up, and only the full sequence is reliably useful. Does not auto-clear on every
+        ''' Open() call (called constantly, for unrelated reasons) - a caller wanting a clean trace for
+        ''' one operation calls ClearOpenFailureLog() before it and GetOpenFailureLog() after.
+        ''' Not safe for concurrent capture from multiple threads at once (each would see a mix of the
+        ''' other's messages) - fine for EwEImportHelper's single-threaded usage.
+        ''' </remarks>
+        Private Shared ReadOnly s_openFailureLog As New List(Of String)
+        Private Shared ReadOnly s_openFailureLogLock As New Object()
+
+        ''' <summary>Clears the accumulated failure log - call before the operation to capture.</summary>
+        Public Shared Sub ClearOpenFailureLog()
+            SyncLock s_openFailureLogLock
+                s_openFailureLog.Clear()
+            End SyncLock
+        End Sub
+
+        ''' <summary>Appends one message; blank/whitespace-only messages are ignored.</summary>
+        Public Shared Sub AppendOpenFailureLog(strMessage As String)
+            If String.IsNullOrWhiteSpace(strMessage) Then Return
+            SyncLock s_openFailureLogLock
+                s_openFailureLog.Add(strMessage)
+            End SyncLock
+        End Sub
+
+        ''' <summary>Everything accumulated since the last ClearOpenFailureLog(), one message per line.</summary>
+        Public Shared Function GetOpenFailureLog() As String
+            SyncLock s_openFailureLogLock
+                Return String.Join(Environment.NewLine, s_openFailureLog)
+            End SyncLock
+        End Function
 
 #End Region ' Private vars
 
@@ -119,15 +159,18 @@ Namespace Database
                             End Try
                             db.Close()
                         Else
+                            cEwEAccessDatabase.AppendOpenFailureLog("Create DB: Unable to open DB using required drivers, check driver installation.")
                             m_logger.LogError("Create DB: Unable to open DB using required drivers, check driver installation.")
                         End If
                         db = Nothing
                     Catch ex As Exception
+                        cEwEAccessDatabase.AppendOpenFailureLog(ex.Message)
                         m_logger.LogError(ex, "Create DB: Exception when updating model name: " & ex.Message)
                         datResult = eDatasourceAccessType.Failed_Unknown
                     End Try
                 Else
                     'Unable to write to target location
+                    cEwEAccessDatabase.AppendOpenFailureLog("Create DB: Unable to save to target location " & strDatabase)
                     m_logger.LogError("Create DB: Unable to save to target location " & strDatabase)
                     datResult = eDatasourceAccessType.Failed_CannotSave
                 End If
@@ -264,6 +307,115 @@ Namespace Database
             End Try
         End Function
 
+        ''' <summary>
+        ''' Quotes a single argument for a ProcessStartInfo.Arguments string, per CommandLineToArgvW.
+        ''' </summary>
+        ''' <remarks>
+        ''' ProcessStartInfo.ArgumentList would avoid manual quoting entirely but needs .NET Core
+        ''' 2.0+/.NET 5+; this file targets net48 (one of EwECore's two TargetFrameworks) too.
+        ''' </remarks>
+        Private Shared Function QuoteArgument(strArg As String) As String
+            Dim sb As New Text.StringBuilder()
+            Dim chQuote As Char = Convert.ToChar(34)
+            Dim chBackslash As Char = "\"c
+            sb.Append(chQuote)
+            Dim i As Integer = 0
+            While i < strArg.Length
+                Dim nBackslashes As Integer = 0
+                While i < strArg.Length AndAlso strArg(i) = chBackslash
+                    nBackslashes += 1
+                    i += 1
+                End While
+                If i = strArg.Length Then
+                    ' Trailing backslashes, right before the closing
+                    ' quote: double them so they stay literal.
+                    sb.Append(New String(chBackslash, nBackslashes * 2))
+                ElseIf strArg(i) = chQuote Then
+                    ' Backslashes immediately followed by a literal
+                    ' quote: double them, then escape the quote itself.
+                    sb.Append(New String(chBackslash, nBackslashes * 2 + 1))
+                    sb.Append(chQuote)
+                    i += 1
+                Else
+                    ' Backslashes followed by anything else: literal,
+                    ' no doubling needed.
+                    sb.Append(New String(chBackslash, nBackslashes))
+                    sb.Append(strArg(i))
+                    i += 1
+                End If
+            End While
+            sb.Append(chQuote)
+            Return sb.ToString()
+        End Function
+
+        ''' <summary>
+        ''' Reads a legacy Jet3 file's real Ecopath version number by spawning EwEImportHelper.exe, a
+        ''' separate x86 process - the classic Microsoft.Jet.OLEDB.4.0 provider it uses has no 64-bit
+        ''' build, so this is the one way to read this value for a file ACE cannot open.
+        ''' </summary>
+        ''' <param name="strPath">The database file to read.</param>
+        ''' <param name="sVersion">Set to the version number found, if this returns True.</param>
+        ''' <returns>True only if the helper ran, exited 0, and printed a parseable number - any other
+        ''' outcome (missing, timeout, non-zero exit, bad output) returns False; callers fall back to
+        ''' their own conservative default either way.</returns>
+        ''' <remarks>
+        ''' Looks for EwEImportHelper.exe in an "EwEImportHelper" subfolder of the current process's own
+        ''' base directory - built and published out of band from Tools\EwEImportHelper (same pattern as
+        ''' Tools\mdb2sqlite and Tools\Eii.Ecopath.Storage.Migrator); the host app copies its published
+        ''' output there via a None/Link item in its own .vbproj.
+        ''' Only called on 64-bit (see cDataSourceFactory.GetCompatibility) - on 32-bit the classic
+        ''' provider already opens Jet3 files directly.
+        ''' </remarks>
+        Public Shared Function TryGetLegacyVersionViaX86Helper(strPath As String, ByRef sVersion As Single) As Boolean
+
+            Const iTimeoutMs As Integer = 15000
+
+            Dim strHelperPath As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EwEImportHelper", "EwEImportHelper.exe")
+            If Not File.Exists(strHelperPath) Then Return False
+
+            Try
+                Dim psi As New Diagnostics.ProcessStartInfo() With {
+                    .FileName = strHelperPath,
+                    .UseShellExecute = False,
+                    .CreateNoWindow = True,
+                    .RedirectStandardOutput = True,
+                    .RedirectStandardError = True
+                }
+                psi.Arguments = QuoteArgument("version") & " " & QuoteArgument(strPath)
+
+                Using proc As Diagnostics.Process = Diagnostics.Process.Start(psi)
+                    ' WaitForExit before reading output: output here is guaranteed tiny (a single short
+                    ' number), so no deadlock risk - reading first would block on ReadToEnd() (only
+                    ' returns at EOF) before this timeout ever applied, defeating its purpose.
+                    If Not proc.WaitForExit(iTimeoutMs) Then
+                        Try
+                            proc.Kill()
+                        Catch
+                        End Try
+                        Return False
+                    End If
+
+                    If proc.ExitCode <> 0 Then
+                        ' Debug.WriteLine, not m_logger: this is an expected-to-sometimes-fail path
+                        ' (caller already falls back to its own default), not worth the app's log file.
+                        Dim strError As String = proc.StandardError.ReadToEnd()
+                        System.Diagnostics.Debug.WriteLine($"TryGetLegacyVersionViaX86Helper: helper exited with code {proc.ExitCode} for '{strPath}': {strError.Trim()}")
+                        Return False
+                    End If
+
+                    Dim strOutput As String = proc.StandardOutput.ReadToEnd()
+                    Return Single.TryParse(strOutput.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, sVersion)
+                End Using
+
+            Catch ex As Exception
+                ' Helper could not be started, or anything else went wrong -
+                ' either way, no real version number to go on.
+                System.Diagnostics.Debug.WriteLine($"TryGetLegacyVersionViaX86Helper: exception for '{strPath}': {ex.Message}")
+                Return False
+            End Try
+
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Open a connection to a M$ Access database.
@@ -362,14 +514,17 @@ Namespace Database
                             datResult = eDatasourceAccessType.Failed_Unknown
                         End If
                         ' OleDb got into trouble
+                        cEwEAccessDatabase.AppendOpenFailureLog(ex.Message)
                         m_logger.LogError(ex, cStringUtils.Localize("Open DB: OleDbException {0}, {1} when opening '{2}'", ex.Message, ex.ErrorCode, Me.m_conn.ConnectionString))
 
                     Catch ex As InvalidOperationException
                         datResult = eDatasourceAccessType.Failed_OSUnsupported
+                        cEwEAccessDatabase.AppendOpenFailureLog(ex.Message)
                         m_logger.LogError(ex, cStringUtils.Localize("Open DB: InvalidOperationException {0} when opening {1}", ex.Message, strDatabase))
 
                     Catch ex As Exception
                         datResult = eDatasourceAccessType.Failed_Unknown
+                        cEwEAccessDatabase.AppendOpenFailureLog(ex.Message)
                         m_logger.LogError(ex, cStringUtils.Localize("Open DB: Exception {0} when opening {1}", ex.Message, strDatabase))
 
                     End Try

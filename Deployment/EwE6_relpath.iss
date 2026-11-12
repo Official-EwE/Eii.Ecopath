@@ -120,6 +120,14 @@ Source: "..\LICENSE.txt"; DestDir: "{app}\Resources\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe.config"; DestDir: "{app}"; DestName: "{#MyAppExeName}.config"; Flags: ignoreversion
+
+; - Legacy Jet3 (Ecopath 5) import helper (x86-only, used when opening a genuine pre-Access-2000 Jet3
+;   database on 64-bit, since no 64-bit OLEDB provider can open that format at all). Its own dependency
+;   DLLs (EwECore.dll, EwEUtils.dll etc.) are already picked up by the *.dll recursesubdirs rule above,
+;   which preserves this EwEImportHelper\ subfolder - only the .exe and its .config need their own rule
+;   here, since neither matches *.dll.
+Source: "{#DefRoot}{#DefSrc}\EwEImportHelper\EwEImportHelper.exe"; DestDir: "{app}\EwEImportHelper\"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EwEImportHelper\EwEImportHelper.exe.config"; DestDir: "{app}\EwEImportHelper\"; Flags: ignoreversion
 #ifdef GrafanaTokenFile
 Source: "{#GrafanaTokenFile}"; DestName: "grafana-loki.token"; Flags: dontcopy
 #endif

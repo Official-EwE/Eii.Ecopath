@@ -29,7 +29,7 @@ mid-session with the app still open.
 
 ## 1. Opening - staging creation
 
-- [ ] **1.1.** Confirm a `Temp<name>.<GUID>.eweaccdb` working copy (never
+- [x] **1.1.** Confirm a `Temp<name>.<GUID>.eweaccdb` working copy (never
   `.tmp` as the extension - `cDataSourceFactory.GetSupportedType`
   determines type purely from `Path.GetExtension`, so a `.tmp`-suffixed
   copy would be invisible to it) appears under `%LocalAppData%\Ecopath

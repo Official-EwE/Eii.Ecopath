@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- net48/x86: this helper runs as a genuine x86 process so System.Data.OleDb routes through
+         the classic, 32-bit-only Microsoft.Jet.OLEDB.4.0 provider (no 64-bit build exists). -->
+    <TargetFramework>net48</TargetFramework>
+    <Platforms>x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>EwEImportHelper</AssemblyName>
+    <RootNamespace>EwEImportHelper</RootNamespace>
+    <OptionStrict>On</OptionStrict>
+    <!-- Suppresses satellite resource DLLs (cs/de/es/fr/.../zh-Hant subfolders, e.g. from
+         System.Web.Services.Description - pulled in transitively via EwECore's EcoBase\cEcoBaseWDSL.vb,
+         unused by this tool's Jet3-conversion code path) from being copied to output at all. -->
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <Company>Ecopath International Initiative Research Association</Company>
+    <Product>Ecopath with Ecosim</Product>
+    <Copyright>Copyright © 1991</Copyright>
+    <Description>x86 helper process: reads a legacy (pre-Access-2000, Jet3) Ecopath 5 database's real version number via the classic Jet OLEDB provider, which has no 64-bit build. Invoked by EwECore.DataSources.cDataSourceFactory.GetCompatibility only when the current process is 64-bit and the target file has already been confirmed, via its own file header, to be genuine Jet3.</Description>
+  </PropertyGroup>
+  <!-- Lives under Tools\ (alongside mdb2sqlite and Eii.Ecopath.Storage.Migrator), not part of the
+       main solution's build graph - ScientificInterface.vbproj has no ProjectReference to it. Built
+       standalone and published into Tools\EwEImportHelper\Publish\win-x86\ - see README.md for the
+       build-and-publish steps.
+       ProjectReference, unconditional (not gated by UseProjectReferences/PackageReference): this exe
+       is never consumed outside this repo, so it should always build against this checkout's own
+       EwECore source, not a separately-versioned published package. Kept as a normal ProjectReference,
+       not a HintPath-only <Reference>, so it carries EwECore's own transitive references/NuGet
+       dependencies along with it. -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj" />
+  </ItemGroup>
+</Project>

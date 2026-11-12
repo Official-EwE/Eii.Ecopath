@@ -171,10 +171,6 @@
     <EmbeddedResource Include="Resources\EwE6.mdb"></EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Includes\Interop.JRO.dll">
-      <CopyToOutputDirectory Condition="'$(TargetFramework)' == 'net48'">PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>Interop.JRO.dll</TargetPath>
-    </Content>
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Resources\LICENSE.txt" />
   </ItemGroup>
