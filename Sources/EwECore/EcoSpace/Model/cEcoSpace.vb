@@ -20,12 +20,11 @@ Public Delegate Sub EcoSpaceTimeStepDelegate(ByVal iTime As Integer)
 
 Public Delegate Sub EcoSpaceRunCompletedDelegate(ByVal Succeeded As Boolean)
 
-Public Class cEcoSpace
+Partial Public Class cEcoSpace
     Inherits cThreadWaitBase
 
 #Region "Helper Class Arguments for PredictEffortDistributionThreaded(cEffortDistArgs)"
 
-    Private Shared m_ThreadIncrementCount As Integer
     Private Const THREAD_TIMEOUT As Integer = 5 * 60 * 1000 '5 minutes
 
     Public Const W_RELAX_FITNESS As Single = 0.5F
@@ -36,15 +35,15 @@ Public Class cEcoSpace
     ''' </summary>
     ''' <remarks></remarks>
     Private Class cThreadedCallArgs
-        Public WaitHandle As AutoResetEvent
+        Public ReadOnly Batch As cWorkerBatch
         Public iFirst As Integer
         Public iLast As Integer
         Public iCumMonth As Integer
         Public iMonth As Integer
         Public iYear As Integer
 
-        Public Sub New(ByRef theWaitHandle As AutoResetEvent, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer, ByVal iMonthOfyear As Integer, ByVal iCumMonthIndex As Integer, ByVal iYear As Integer)
-            Me.WaitHandle = theWaitHandle
+        Public Sub New(batch As cWorkerBatch, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer, ByVal iMonthOfyear As Integer, ByVal iCumMonthIndex As Integer, ByVal iYear As Integer)
+            Me.Batch = batch
             Me.iFirst = iFirstIndex
             Me.iLast = iLastIndex
             Me.iCumMonth = iCumMonthIndex
@@ -52,8 +51,8 @@ Public Class cEcoSpace
             Me.iYear = iYear
         End Sub
 
-        Public Sub New(ByRef theWaitHandle As AutoResetEvent, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer)
-            Me.WaitHandle = theWaitHandle
+        Public Sub New(batch As cWorkerBatch, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer)
+            Me.Batch = batch
             Me.iFirst = iFirstIndex
             Me.iLast = iLastIndex
             Me.iCumMonth = cCore.NULL_VALUE
@@ -251,13 +250,9 @@ Public Class cEcoSpace
 
     Private CopySyncLock As New Object
 
-    Private Shared FleetSyncLock As New Object
-    Private Shared FleetCounter As Integer
-    Private Shared nFleets As Integer
-
     Private bEffortAdjusted As Boolean
 
-    ''' <summary>Number of timesteps in the total Spin-Up period</summary>   
+    ''' <summary>Number of timesteps in the total Spin-Up period</summary>
     Friend nSpinUp As Integer
 
     ''' <summary>Number of timesteps in one year used by Spin-Up.</summary>   
@@ -487,8 +482,6 @@ Public Class cEcoSpace
     Public Function Run() As Boolean
         Dim bsuccess As Boolean = True
         Try
-
-            cEcoSpace.nFleets = Me.EcoSpaceData.nFleets
 
             'redim all 
             If Me.redimForRun() Then
@@ -4465,21 +4458,12 @@ exitline:
 
                 Next iFlt
 
-            Else ' If arguments.iFirst <= Me.m_Data.nFleets Then
-                'First Fleet Index > Number of Fleets
-                'We still need to Decrement the Interlock counter
-                System.Console.WriteLine("Effort Dist No fleets to process = " & cEcoSpace.m_ThreadIncrementCount.ToString)
             End If
 
         Catch ex As Exception
-            Debug.Assert(False, ex.Message)
+            m_logger.LogError(ex, "Ecospace.PredictEffortDistributionThreaded() failed.")
+            Throw
         End Try
-
-        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
-            arguments.WaitHandle.Set()
-        End If
-
-        'System.Console.WriteLine("Effort Dist Increment Lock = " & cEcoSpace.m_ThreadIncrementCount.ToString)
 
     End Sub
 
@@ -4590,21 +4574,11 @@ exitline:
     '                    Next i
     '                Next iFlt
 
-    '            Else ' If arguments.iFirst <= Me.m_Data.nFleets Then
-    '            'First Fleet Index > Number of Fleets
-    '            'We still need to Decrement the Interlock counter
-    '            System.Console.WriteLine("Effort Dist No fleets To process = " & cEcoSpace.m_ThreadIncrementCount.ToString)
     '            End If
 
     '        Catch ex As Exception
     '            Debug.Assert(False, ex.Message)
     '        End Try
-
-    '        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
-    '            arguments.WaitHandle.Set()
-    '        End If
-
-    '        'System.Console.WriteLine("Effort Dist Increment Lock = " & cEcoSpace.m_ThreadIncrementCount.ToString)
 
     '    End Sub
 
@@ -4667,11 +4641,11 @@ exitline:
 
             ReDim Attract(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
 
-            Do While cEcoSpace.getNextFleet(iFlt)
+            Do While arguments.Batch.GetNextFleet(Me.EcoSpaceData.nFleets, iFlt)
                 'System.Console.WriteLine("Effort Distribution Fleet " + iFlt.ToString)
 
                 'check the bounds
-                Debug.Assert(iFlt > 0 And iFlt <= Me.EcoSpaceData.nFleets, "cEcoSpace.getNextFleet(fleetIndex) Returned an invalid fleet index.")
+                Debug.Assert(iFlt > 0 And iFlt <= Me.EcoSpaceData.nFleets, "cWorkerBatch.GetNextFleet(fleetIndex) Returned an invalid fleet index.")
                 If (iFlt < 1) Or (iFlt > Me.EcoSpaceData.nFleets) Then Exit Do
 
                 TotE = Me.EcoSpaceData.TotEffort(iFlt) * Me.EcoSpaceData.SEmult(iFlt)
@@ -4777,14 +4751,9 @@ exitline:
             'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
             'Console.WriteLine("Effort Distribution Loadshared , ThreadID = " + thrdID.ToString & ",  RunTime(sec) = " + stpwtch.Elapsed.TotalSeconds.ToString + ", N Cells = " + ncells.ToString)
         Catch ex As Exception
-            Debug.Assert(False, ex.Message)
+            m_logger.LogError(ex, "Ecospace.PredictEffortDistributionThreadedLoadShared() failed.")
+            Throw
         End Try
-
-        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
-            arguments.WaitHandle.Set()
-        End If
-
-        'System.Console.WriteLine("Effort Dist Increment Lock = " & cEcoSpace.m_ThreadIncrementCount.ToString)
 
     End Sub
 
@@ -4795,117 +4764,31 @@ exitline:
     ''' <param name="iCumMonth"></param>
     ''' <remarks></remarks>
     Private Sub runEffortDistributionNoLoadShare(ByVal iMonth As Integer, ByVal iCumMonth As Integer, ByVal iYear As Integer)
-        Dim stpwTotRunTime As Stopwatch
-        ' Dim stpwF As Stopwatch
-        Dim nThrds As Integer
-        Dim nFltsPerThread As Integer
+        Dim nThrds As Integer = Math.Min(Me.EcoSpaceData.nEffortDistThreads, Me.EcoSpaceData.nFleets)
         Dim iFirstFleet As Integer = 1
-        Dim iLastFleet As Integer
         Dim nCompFleets As Integer
 
         Debug.Assert(Me.EcoSpaceData.UseEffortDistThreshold = False, Me.ToString + ".runEffortDistributionNoLoadShare() Called With bUseEffortDistThreshold = True.")
 
-        'GC.Collect()
-
         Array.Clear(Me.EcoSpaceData.Ftot, 0, Me.EcoSpaceData.Ftot.Length)
-        'Array.Clear(Me.EcoSpaceData.EffortSpace, 0, Me.EcoSpaceData.EffortSpace.Length)
+        If nThrds = 0 Then Return
 
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'First run the Effort Distrubution threads by Fleet
-        'This Computes the Effort by Fleet into EffortSpace(iFlt, iRow, iCol)
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        nThrds = Me.EcoSpaceData.nEffortDistThreads
-        'Constrain the number of fleet threads to the number of fleets
-        If nThrds > Me.EcoSpaceData.nFleets Then nThrds = Me.EcoSpaceData.nFleets
-        'Set the thread increment counter
-        cEcoSpace.m_ThreadIncrementCount = nThrds
+        'Keep completion local to this invocation; mortality must not start until all effort workers succeed.
+        Using batch As New cWorkerBatch(Me)
+            For ithrd As Integer = 1 To nThrds
+                Dim nFltsPerThread As Integer = Me.computeThreadLoad(Me.EcoSpaceData.nFleets, nCompFleets, nThrds, ithrd)
+                nCompFleets += nFltsPerThread
+                Dim iLastFleet As Integer = Math.Min(iFirstFleet + nFltsPerThread - 1, Me.EcoSpaceData.nFleets)
 
-        ' JS 14dec22: abort when there are no fleets. This rare circumstance would call the WaitOne calls to block forever
-        If (nThrds = 0) Then Return
+                batch.Queue(AddressOf Me.PredictEffortDistributionThreaded, New cThreadedCallArgs(batch, iFirstFleet, iLastFleet, iMonth, iCumMonth, iYear))
+                iFirstFleet += nFltsPerThread
+            Next ithrd
 
-        Dim waitOb As WaitHandle = New AutoResetEvent(False)
+            Debug.Assert(nCompFleets = Me.EcoSpaceData.nFleets)
+            batch.WaitForCompletion(Timeout.Infinite, Me.ToString & ".PredictEffortDistributionThreaded()")
+        End Using
 
-        stpwTotRunTime = Stopwatch.StartNew
-        For ithrd As Integer = 1 To nThrds
-
-            nFltsPerThread = Me.computeThreadLoad(Me.EcoSpaceData.nFleets, nCompFleets, nThrds, ithrd)
-            nCompFleets += nFltsPerThread
-
-            iLastFleet = iFirstFleet + nFltsPerThread - 1
-            If iLastFleet > Me.EcoSpaceData.nFleets Then iLastFleet = Me.EcoSpaceData.nFleets
-
-            'Distribute fishing effort across the map for the fleet indexes iFirstFleet to ilastfleet
-            'ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreaded, New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
-            ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreaded, New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth, iYear))
-            iFirstFleet += nFltsPerThread
-        Next ithrd
-
-        Debug.Assert(nCompFleets = Me.EcoSpaceData.nFleets)
-
-        'waitOb will AutoReset so the next call to WaitOne will block until Set() is called
-        If Not waitOb.WaitOne() Then
-            System.Console.WriteLine("EffortDistribution PredictEffortDistributionThreaded() Timed Out WTF!")
-            'Ok something has to happen here
-            'Maybe pitch an error
-            m_logger.LogError(Me.ToString & ".runPredictEffortDistributionThreads() PredictEffortDistributionThreaded timed out.")
-        End If
-
-        waitOb.Dispose()
-        waitOb = Nothing
-
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'Next update the Fishing Mortality base on the effort computed above
-        'Popultes Ftot(igrp, irow, jcol) base on distributed effort in  EffortSpace(iFlt, iRow, iCol)
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'Figure out the number of threads
-        Dim nMortThrds As Integer = Me.EcoSpaceData.nEffortDistThreads
-        If nMortThrds > Me.EcoSpaceData.iTotalWaterCells Then nMortThrds = Me.EcoSpaceData.iTotalWaterCells
-        cEcoSpace.m_ThreadIncrementCount = nMortThrds
-
-        waitOb = New AutoResetEvent(False)
-        Dim iFirstCell As Integer = 1
-        Dim iLastcell As Integer
-
-        'Number of cells to compute for the current thread
-        'Computed on the fly in the loop
-        Dim nCells As Integer
-
-        'Total number of cells that have been computed
-        Dim nCellCompleted As Integer
-
-        For iThrd As Integer = 1 To nMortThrds
-            'Compute the work load for each thread on the fly
-            'this prevents any rounding weirdness that could cause m_ThreadIncrementCount to not hit Zero
-            'Causing a deadlock on WaitOb.WaitOne()
-            nCells = Me.computeThreadLoad(Me.EcoSpaceData.iTotalWaterCells, nCellCompleted, nMortThrds, iThrd)
-            nCellCompleted += nCells
-
-            iLastcell = iFirstCell + nCells - 1
-            If iLastcell > Me.EcoSpaceData.iTotalWaterCells Then iLastcell = Me.EcoSpaceData.iTotalWaterCells
-
-            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.setFishMortFromEffort), New cThreadedCallArgs(waitOb, iFirstCell, iLastcell))
-
-            iFirstCell += nCells
-
-        Next
-
-        Debug.Assert(nCellCompleted = Me.EcoSpaceData.iTotalWaterCells)
-
-        'Wait for the setFishMortFromEffort() threads to complete
-        If Not waitOb.WaitOne() Then
-            System.Console.WriteLine("EffortDistribution setFishMortFromEffort() Timed Out WTF!")
-            'Ok something has to happen here
-            'Maybe pitch an error
-            m_logger.LogError(Me.ToString & ".runPredictEffortDistributionThreads() setFishMortFromEffort timed out.")
-        End If
-        waitOb.Dispose()
-        waitOb = Nothing
-
-        stpwTotRunTime.Stop()
-        'System.Console.WriteLine("EffortDistribution wall time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
-
-        'GC.Collect()
-
+        Me.runFishMortFromEffortThreads()
     End Sub
 
     ''' <summary>
@@ -4918,125 +4801,48 @@ exitline:
     ''' Once all the fleets have been completed all the threads will exit.  
     ''' </remarks>
     Private Sub runEffortDistributionLoadShared(ByVal iMonth As Integer, ByVal iCumMonth As Integer, ByVal iYear As Integer)
-        Dim stpwTotRunTime As Stopwatch
-        ' Dim stpwF As Stopwatch
-        Dim nThrds As Integer
-        Dim distET As Double
+        Dim nThrds As Integer = Math.Min(Me.EcoSpaceData.nEffortDistThreads, Me.EcoSpaceData.nFleets)
 
-        Debug.Assert(Me.EcoSpaceData.UseEffortDistThreshold, Me.ToString + ".runEffortDistributionNoLoadShare() Called With bUseEffortDistThreshold = True.")
+        Debug.Assert(Me.EcoSpaceData.UseEffortDistThreshold, Me.ToString + ".runEffortDistributionLoadShared() Called With bUseEffortDistThreshold = False.")
 
-        'GC.Collect()
         Array.Clear(Me.EcoSpaceData.Ftot, 0, Me.EcoSpaceData.Ftot.Length)
         Array.Clear(Me.EcoSpaceData.EffortSpace, 0, Me.EcoSpaceData.EffortSpace.Length)
+        If nThrds = 0 Then Return
 
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'First run the Effort Distrubution threads by Fleet
-        'This Computes the Effort by Fleet into EffortSpace(iFlt, iRow, iCol)
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        nThrds = Me.EcoSpaceData.nEffortDistThreads
-        'Constrain the number of fleet threads to the number of fleets
-        If nThrds > Me.EcoSpaceData.nFleets Then nThrds = Me.EcoSpaceData.nFleets
-        'Set the thread increment counter
-        cEcoSpace.m_ThreadIncrementCount = nThrds
+        'Workers claim fleets from this batch only, independently of other cores, before mortality can begin.
+        Using batch As New cWorkerBatch(Me)
+            For ithrd As Integer = 1 To nThrds
+                batch.Queue(AddressOf Me.PredictEffortDistributionThreadedLoadShared, New cThreadedCallArgs(batch, cCore.NULL_VALUE, cCore.NULL_VALUE, iMonth, iCumMonth, iYear))
+            Next ithrd
+            batch.WaitForCompletion(Timeout.Infinite, Me.ToString & ".PredictEffortDistributionThreadedLoadShared()")
+        End Using
 
-        'Set the shared fleet counter this is used by GetNextFleet(ifleet) to get the next fleet index to compute
-        cEcoSpace.FleetCounter = 0
-
-        ' JS 14dec22: abort when there are no fleets. This rare circumstance would call the WaitOne calls to block forever
-        If (nThrds = 0) Then Return
-
-        Dim waitOb As WaitHandle = New AutoResetEvent(False)
-
-        stpwTotRunTime = Stopwatch.StartNew
-        'Fire up all the effort distribution threads
-        'Each thread will spin in a loop reguesting fleets
-        'Once all the fleets have been computed waitOb.Set() will be called releasing the waithandle
-        For ithrd As Integer = 1 To nThrds
-            ThreadPool.QueueUserWorkItem(AddressOf Me.PredictEffortDistributionThreadedLoadShared, New cThreadedCallArgs(waitOb, cCore.NULL_VALUE, cCore.NULL_VALUE, iMonth, iCumMonth, iYear))
-        Next ithrd
-
-        'The Effort Distribtion threads will count down cEcoSpace.m_ThreadIncrementCount
-        'Once one of the threads reaches zero it will call WaitOb.Set() releasing the wait handle
-        If Not waitOb.WaitOne() Then
-            System.Console.WriteLine("EffortDistribution PredictEffortDistributionThreaded() Timed Out WTF!")
-            'Ok something has to happen here
-            'Maybe pitch an error
-            m_logger.LogError(Me.ToString & ".runPredictEffortDistributionThreads() PredictEffortDistributionThreaded timed out.")
-        End If
-
-        distET = stpwTotRunTime.Elapsed.TotalSeconds
-
-        waitOb.Dispose()
-        waitOb = Nothing
-
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'Next update the Fishing Mortality base on the effort computed above
-        'Populates Ftot(igrp, irow, jcol) base on distributed effort in  EffortSpace(iFlt, iRow, iCol)
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'Figure out the number of threads
-        Dim nMortThrds As Integer = Me.EcoSpaceData.nEffortDistThreads
-        If nMortThrds > Me.EcoSpaceData.iTotalWaterCells Then nMortThrds = Me.EcoSpaceData.iTotalWaterCells
-        cEcoSpace.m_ThreadIncrementCount = nMortThrds
-
-        waitOb = New AutoResetEvent(False)
-        Dim iFirstCell As Integer = 1
-        Dim iLastcell As Integer
-
-        'Number of cells to compute for the current thread
-        'Computed on the fly in the loop
-        Dim nCells As Integer
-
-        'Total number of cells that have been computed
-        Dim nCellCompleted As Integer
-
-        For iThrd As Integer = 1 To nMortThrds
-            'Compute the work load for each thread on the fly
-            'this prevents any rounding weirdness that could cause m_ThreadIncrementCount to not hit Zero
-            'Causing a deadlock on WaitOb.WaitOne()
-            nCells = Me.computeThreadLoad(Me.EcoSpaceData.iTotalWaterCells, nCellCompleted, nMortThrds, iThrd)
-            nCellCompleted += nCells
-
-            iLastcell = iFirstCell + nCells - 1
-            If iLastcell > Me.EcoSpaceData.iTotalWaterCells Then iLastcell = Me.EcoSpaceData.iTotalWaterCells
-
-            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.setFishMortFromEffort), New cThreadedCallArgs(waitOb, iFirstCell, iLastcell))
-
-            iFirstCell += nCells
-
-        Next
-
-        Debug.Assert(nCellCompleted = Me.EcoSpaceData.iTotalWaterCells)
-
-        ' System.Console.WriteLine("EffortDistribution Waiting For setFishMortFromEffort()")
-        If Not waitOb.WaitOne() Then
-            System.Console.WriteLine("EffortDistribution setFishMortFromEffort() Timed Out WTF!")
-            'Ok something has to happen here
-            'Maybe pitch an error
-            m_logger.LogError(Me.ToString & ".runPredictEffortDistributionThreads() setFishMortFromEffort timed out.")
-        End If
-        waitOb.Dispose()
-        waitOb = Nothing
-
-        stpwTotRunTime.Stop()
-        ' System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
-
-        'GC.Collect()
-
+        Me.runFishMortFromEffortThreads()
     End Sub
 
-    Private Shared Function getNextFleet(ByRef FleetIndex As Integer) As Boolean
-        SyncLock cEcoSpace.FleetSyncLock
-            'cEcoSpace.FleetCounter  Must be set to zero before this is used
-            cEcoSpace.FleetCounter += 1
-            If cEcoSpace.FleetCounter <= cEcoSpace.nFleets Then
-                FleetIndex = cEcoSpace.FleetCounter
-                Return True
-            End If
-            FleetIndex = cCore.NULL_VALUE
-            'No more fleets left to process
-            Return False
-        End SyncLock
-    End Function
+    ''' <summary>
+    ''' Updates fishing mortality from completed effort calculations for either effort-distribution path.
+    ''' </summary>
+    ''' <remarks>Each worker owns a separate water-cell range; the batch drains all workers before returning or propagating failures.</remarks>
+    Private Sub runFishMortFromEffortThreads()
+        Dim nMortThrds As Integer = Math.Min(Me.EcoSpaceData.nEffortDistThreads, Me.EcoSpaceData.iTotalWaterCells)
+        Dim iFirstCell As Integer = 1
+        Dim nCellCompleted As Integer
+
+        Using batch As New cWorkerBatch(Me)
+            For iThrd As Integer = 1 To nMortThrds
+                Dim nCells As Integer = Me.computeThreadLoad(Me.EcoSpaceData.iTotalWaterCells, nCellCompleted, nMortThrds, iThrd)
+                nCellCompleted += nCells
+                Dim iLastCell As Integer = Math.Min(iFirstCell + nCells - 1, Me.EcoSpaceData.iTotalWaterCells)
+
+                batch.Queue(AddressOf Me.setFishMortFromEffort, New cThreadedCallArgs(batch, iFirstCell, iLastCell))
+                iFirstCell += nCells
+            Next
+
+            Debug.Assert(nCellCompleted = Me.EcoSpaceData.iTotalWaterCells)
+            batch.WaitForCompletion(Timeout.Infinite, Me.ToString & ".setFishMortFromEffort()")
+        End Using
+    End Sub
 
     'Private Function getPredictEffortFunction(ByVal bByCell As Boolean) As WaitCallback
     '    If bByCell Then
@@ -5083,12 +4889,8 @@ exitline:
 
         Catch ex As Exception
             m_logger.LogError(ex, " Error computing Fishing Mortality")
-            System.Console.WriteLine("Ecospace.setFishMortFromEffort() Exception: " & ex.Message)
+            Throw
         End Try
-
-        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
-            args.WaitHandle.Set()
-        End If
 
     End Sub
 
@@ -8194,48 +7996,23 @@ exitline:
     ''' <remarks></remarks>
     Private Sub runAjustLowHabCapsThreaded()
         Dim iFirstGrp As Integer = 1
-        Dim ilastGrp As Integer
-        Dim nGrpsPerThread As Integer
         Dim nCompleted As Integer
-        Dim nRun As Integer
+        Dim nThreads As Integer = Math.Min(Me.EcoSpaceData.nGridSolverThreads, Me.EcoSpaceData.NGroups)
 
-        Dim waitOb As AutoResetEvent = New AutoResetEvent(False)
-        Dim nThreads As Integer = Me.EcoSpaceData.nGridSolverThreads
-        If nThreads > Me.EcoSpaceData.NGroups Then nThreads = Me.EcoSpaceData.NGroups
+        Using batch As New cWorkerBatch(Me)
+            For ithrd As Integer = 1 To nThreads
+                Dim nGrpsPerThread As Integer = Me.computeThreadLoad(Me.EcoSpaceData.NGroups, nCompleted, nThreads, ithrd)
+                nCompleted += nGrpsPerThread
+                Dim iLastGrp As Integer = Math.Min(iFirstGrp + nGrpsPerThread - 1, Me.EcoSpaceData.NGroups)
 
-        cEcoSpace.m_ThreadIncrementCount = nThreads
+                batch.Queue(AddressOf Me.AdjustLowHabCapsThreaded, New cThreadedCallArgs(batch, iFirstGrp, iLastGrp), dedicatedThread:=True)
+                iFirstGrp += nGrpsPerThread
+            Next ithrd
 
-        For ithrd As Integer = 1 To nThreads
-
-            'Amount of work remaining / resourses remaining
-            nGrpsPerThread = Me.computeThreadLoad(Me.EcoSpaceData.NGroups, nCompleted, nThreads, ithrd)
-
-            nCompleted += nGrpsPerThread
-            nRun += 1
-
-            ilastGrp = iFirstGrp + nGrpsPerThread - 1
-
-            'bound the group index
-            If ilastGrp > Me.EcoSpaceData.NGroups Then
-                ilastGrp = Me.EcoSpaceData.NGroups + 1
-            End If
-
-            'ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.AdjustLowHabCapsThreaded), New cThreadedCallArgs(waitOb, iFirstGrp, ilastGrp))
-
-            Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstGrp, ilastGrp)
-            Dim worker As Thread = New Thread(Sub() Me.AdjustLowHabCapsThreaded(arg))
-            worker.Start()
-
-            iFirstGrp += nGrpsPerThread
-
-        Next ithrd
-
-        Debug.Assert(nCompleted = Me.EcoSpaceData.NGroups)
-        If Not waitOb.WaitOne(THREAD_TIMEOUT) Then
-            m_logger.LogError(Me.ToString & ".runAjustLowHabCapsThreaded() AdjustLowHabCapsThreaded timed out.")
-            Debug.Assert(False, Me.ToString & ".runAjustLowHabCapsThreaded() AdjustLowHabCapsThreaded timed out.")
-        End If
-
+            Debug.Assert(nCompleted = Me.EcoSpaceData.NGroups)
+            'A timeout is logged, but workers must finish before callers can reuse habitat arrays or dispose the batch.
+            batch.WaitForCompletion(THREAD_TIMEOUT, Me.ToString & ".runAjustLowHabCapsThreaded() AdjustLowHabCapsThreaded")
+        End Using
     End Sub
 
     ''' <summary>
@@ -8362,17 +8139,8 @@ exitline:
             Next k
 
         Catch ex As Exception
-            System.Console.WriteLine("Ecospace.AdjustLowHabCapsThreaded Exception: " & ex.Message)
-        End Try
-
-        Try
-
-            If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
-                grpArgs.WaitHandle.Set()
-            End If
-
-        Catch ex As Exception
-            System.Console.WriteLine("Ecospace.AdjustLowHabCapsThreaded Exception: " & ex.Message)
+            m_logger.LogError(ex, "Ecospace.AdjustLowHabCapsThreaded() failed.")
+            Throw
         End Try
 
     End Sub
@@ -9296,21 +9064,12 @@ exitline:
 
                 Next iFlt
 
-            Else ' If arguments.iFirst <= Me.m_Data.nFleets Then
-                'First Fleet Index > Number of Fleets
-                'We still need to Decrement the Interlock counter
-                System.Console.WriteLine("Effort Dist No fleets to process = " & cEcoSpace.m_ThreadIncrementCount.ToString)
             End If
 
         Catch ex As Exception
-            Debug.Assert(False, ex.Message)
+            m_logger.LogError(ex, "Ecospace.PredictEffortDistributionThreaded_NoZones() failed.")
+            Throw
         End Try
-
-        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
-            arguments.WaitHandle.Set()
-        End If
-
-        'System.Console.WriteLine("Effort Dist Increment Lock = " & cEcoSpace.m_ThreadIncrementCount.ToString)
 
     End Sub
 
