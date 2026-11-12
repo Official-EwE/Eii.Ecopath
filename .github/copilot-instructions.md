@@ -42,7 +42,14 @@
 - Keep domain logic and reusable services independent of Windows UI and OS APIs. Put unavoidable platform-specific behavior behind a clear abstraction or capability check, and provide a deliberate unsupported-platform result/message rather than allowing platform API failures or silently doing nothing.
 - Do not assume Windows paths, registry, COM, P/Invoke, Windows Forms, or Windows-only filesystem locations in shared/core code. Use platform-neutral .NET APIs where possible; isolate Windows-specific integrations and retain them only where they are intentional compatibility behavior.
 - Use OS-appropriate per-user configuration/data locations and portable serialization for new settings. Preserve existing user data and define migration when changing a persisted settings format or location.
-- Consider all supported target frameworks and operating systems when adding dependencies or APIs. Add tests for platform-independent behavior and capability/fallback paths; call out when a behavior can only be validated on Windows or another specific OS.
+call out when a behavior can only be validated on Windows or another specific OS.
+
+## Multiple cCore instances and parallel simulations
+
+- With every change, keep in mind that `cCore` must be instantiable multiple times, including concurrently, so that multiple simulations can run in parallel, each in its own `cCore`.
+- Do not introduce mutable static (shared) state in `EwECore` or `EwEUtils` that is tied to a single core or simulation. Keep model, run, and session state on the `cCore` instance or objects it owns.
+- Static state that is unavoidable (registries, caches, singletons, lazily initialized lookups, instance counters) must be initialized thread-safely once (for example with a lock plus volatile publication, a static initializer, or `Interlocked`) and must not expose partially initialized state. Prefer immutable data after initialization.
+- Add tests that exercise concurrent first access (cold start) for new lazily initialized shared state, following the patterns in `EwECore.Tests\Core\ColdStartRace.cs` and the `*ConcurrencyTests` classes.
 
 ## Unit test conventions
 
