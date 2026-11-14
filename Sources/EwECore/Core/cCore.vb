@@ -3632,6 +3632,23 @@ Public Class cCore
         ' caller with no UI attached), so an unattended process fails
         ' cleanly rather than hanging indefinitely.
         If bSucces Then
+#If DEBUG Then
+            ' Test hook for the local-staging-copy test plan (§2.1, "kill mid-save"): lets an external
+            ' script pause execution right here - save just completed, publish-back not yet started -
+            ' deterministically, instead of relying on a manual breakpoint. See
+            ' Documentation/CODE_COMMENTS.md. DEBUG-only: no cost or behavior change in a Release build.
+            Dim strTestWaitFlag As String = Path.Combine(Path.GetTempPath(), "EwE_TestWaitBeforePublish.flag")
+            If File.Exists(strTestWaitFlag) Then
+                Dim dtWaitStart As DateTime = DateTime.UtcNow
+                While File.Exists(strTestWaitFlag)
+                    Threading.Thread.Sleep(100)
+                    If (DateTime.UtcNow - dtWaitStart).TotalMinutes > 5 Then
+                        Debug.WriteLine("EwE_TestWaitBeforePublish.flag still present after 5 minutes - proceeding anyway (stale flag left over from a crashed/forgotten test script?).")
+                        Exit While
+                    End If
+                End While
+            End If
+#End If
             Do
                 If Me.DataSource.PublishToSource() Then Exit Do
 

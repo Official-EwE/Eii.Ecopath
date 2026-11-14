@@ -444,3 +444,6 @@ FodyWeavers.xsd
 Deployment/Output/
 
 Sources/Version.props
+
+# cVariableMetadata's own debug/diagnostic log - written at the repo root during a dev run.
+cVariableMetadata_log.txt
