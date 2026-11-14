@@ -7,33 +7,21 @@
 .PARAMETER Platform
     "x64" or "x86" - which build every instance in this run launches as. Default "x64".
 
+.PARAMETER Only
+    Run just the one test whose name contains this substring (case-insensitive), skipping the rest.
+
 .EXAMPLE
     .\Run-MultiInstanceTests.ps1 -Platform x86
 #>
 param(
     [ValidateSet("x64", "x86")]
-    [string]$Platform = "x64"
+    [string]$Platform = "x64",
+    [string]$Only
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+$script:TestNameFilter = $Only
 $startInstanceScript = Join-Path $PSScriptRoot "Start-TestInstance.ps1"
-
-# Launches a second instance on an ALREADY-copied model path, skipping Start-TestInstance.ps1's own
-# build+copy steps (which would otherwise produce a different file each time, not the same one).
-function Start-InstanceOnExistingModel {
-    param(
-        [Parameter(Mandatory = $true)][string]$RepoRoot,
-        [Parameter(Mandatory = $true)][string]$ModelPath,
-        [string]$Platform = "x64",
-        [string]$Configuration = "Debug"
-    )
-    $exePath = Join-Path $RepoRoot "Sources\ScientificInterface\bin\$Platform\$Configuration\net48\ScientificInterface.exe"
-    if (-not (Test-Path $exePath)) { throw "Built exe not found: $exePath" }
-    $proc = Start-Process -FilePath $exePath -ArgumentList "`"$ModelPath`"" -PassThru
-    Wait-ForMainWindow -Proc $proc -TimeoutSeconds 30
-    $proc
-}
-
 $repoRoot = Split-Path -Parent $PSScriptRoot
 
 Invoke-Test "1.2/3.2 - Two instances can open the same file simultaneously, no degrade" {

@@ -30,7 +30,9 @@
 .EXAMPLE
     $instance = .\Start-TestInstance.ps1
     $proc = $instance.Process
-    $instance.ModelPath   # the REAL file passed to the app - not the staged working copy
+    $instance.ModelPath              # the REAL file passed to the app - not the staged working copy
+    $instance.InitialModelTimestamp  # that file's LastWriteTime at the moment it was copied, before
+                                      # the app ever opened it - for confirming nothing later wrote to it
 #>
 param(
     [string]$RepoRoot = (Split-Path -Parent $PSScriptRoot),
@@ -58,6 +60,9 @@ $modelFileName = Split-Path -Leaf $SourceModelPath
 Copy-Item $SourceModelPath (Join-Path $originalFolder $modelFileName) -Force
 $workingModelPath = Join-Path $WorkFolder $modelFileName
 Copy-Item $SourceModelPath $workingModelPath -Force
+# Captured HERE, before the app ever opens it - the one point this timestamp is guaranteed to
+# reflect nothing but the copy itself, for §7.1 (legacy update chain must never touch this file).
+$initialModelTimestamp = (Get-Item $workingModelPath).LastWriteTime
 Write-Host "Model copied to: $workingModelPath (untouched copy also kept in .\original\)"
 
 $vbproj = Join-Path $RepoRoot "Sources\ScientificInterface\ScientificInterface.vbproj"
@@ -98,6 +103,7 @@ Wait-ForMainWindow -Proc $proc -TimeoutSeconds 30
 
 Write-Host "Ready - PID $($proc.Id), model folder: $WorkFolder" -ForegroundColor Green
 return [PSCustomObject]@{
-    Process   = $proc
-    ModelPath = $workingModelPath
+    Process                = $proc
+    ModelPath              = $workingModelPath
+    InitialModelTimestamp  = $initialModelTimestamp
 }

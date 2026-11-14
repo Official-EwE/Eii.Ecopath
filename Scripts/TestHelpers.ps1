@@ -75,6 +75,13 @@ function Invoke-Test {
         [Parameter(Mandatory = $true)][string]$Name,
         [Parameter(Mandatory = $true)][scriptblock]$Test
     )
+    # Set by a runner's own -Only parameter, if given - a substring match (case-insensitive) against
+    # the test name, letting a single test run in isolation (e.g. to tell apart a genuine bug from
+    # an artifact of running several similar tests back-to-back in one session). Silently skipped,
+    # not even recorded, so an -Only run's summary only ever shows what was actually asked for.
+    if ($script:TestNameFilter -and $Name -notlike "*$script:TestNameFilter*") {
+        return
+    }
     $displayName = if ($script:CurrentPlatformLabel) { "[$script:CurrentPlatformLabel] $Name" } else { $Name }
     Write-Host "`n=== $displayName ===" -ForegroundColor Cyan
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
@@ -96,6 +103,9 @@ function Invoke-ManualTest {
         [Parameter(Mandatory = $true)][string]$Name,
         [Parameter(Mandatory = $true)][string]$Instructions
     )
+    if ($script:TestNameFilter -and $Name -notlike "*$script:TestNameFilter*") {
+        return
+    }
     $displayName = if ($script:CurrentPlatformLabel) { "[$script:CurrentPlatformLabel] $Name" } else { $Name }
     Write-Host "`n=== $displayName (MANUAL) ===" -ForegroundColor Yellow
     Write-Host $Instructions
@@ -291,8 +301,16 @@ function Wait-ForMainWindow {
             } else {
                 Write-Host "." -NoNewline
             }
-            $yesButton = $upgradeDialog.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $yesCondition)
-            if ($null -ne $yesButton) { Invoke-ElementClick -Element $yesButton }
+            # A benign, expected race: the dialog can genuinely disappear (because a PRIOR
+            # iteration's own click already succeeded) in the narrow window between being found
+            # here and being searched/clicked below - confirmed via RPC_E_SERVER_DIED_DNE, the COM
+            # error for exactly that. Treated the same as simply not finding the Yes button this
+            # iteration, rather than letting a raw COM exception surface for something expected.
+            try {
+                $yesButton = $upgradeDialog.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $yesCondition)
+                if ($null -ne $yesButton) { Invoke-ElementClick -Element $yesButton }
+            } catch {
+            }
         } elseif ($upgradeDialogSeen) {
             Write-Host " done." -ForegroundColor Green
             $upgradeDialogSeen = $false
@@ -355,6 +373,23 @@ function Set-TwoInstancesSideBySide {
         [Win32TestRunner]::MoveWindow($ProcB.MainWindowHandle, $workArea.X + $workArea.Width - $width, $workArea.Y + $workArea.Height - $height, $width, $height, $true) | Out-Null
         Write-Host "Neither stacked nor side-by-side fits - positioned instances diagonally (top-left / bottom-right)." -ForegroundColor DarkGray
     }
+}
+
+# Launches a second instance on an ALREADY-copied model path, skipping Start-TestInstance.ps1's own
+# build+copy steps (which would otherwise produce a different file each time, not the same one).
+# Shared by Run-MultiInstanceTests.ps1 and §2.1's reopen-after-kill step, after both needed it.
+function Start-InstanceOnExistingModel {
+    param(
+        [Parameter(Mandatory = $true)][string]$RepoRoot,
+        [Parameter(Mandatory = $true)][string]$ModelPath,
+        [string]$Platform = "x64",
+        [string]$Configuration = "Debug"
+    )
+    $exePath = Join-Path $RepoRoot "Sources\ScientificInterface\bin\$Platform\$Configuration\net48\ScientificInterface.exe"
+    if (-not (Test-Path $exePath)) { throw "Built exe not found: $exePath" }
+    $proc = Start-Process -FilePath $exePath -ArgumentList "`"$ModelPath`"" -PassThru
+    Wait-ForMainWindow -Proc $proc -TimeoutSeconds 30
+    $proc
 }
 
 function Wait-ForStagedCopy {

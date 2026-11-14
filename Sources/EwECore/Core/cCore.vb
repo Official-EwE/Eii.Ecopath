@@ -3639,6 +3639,15 @@ Public Class cCore
             ' Documentation/CODE_COMMENTS.md. DEBUG-only: no cost or behavior change in a Release build.
             Dim strTestWaitFlag As String = Path.Combine(Path.GetTempPath(), "EwE_TestWaitBeforePublish.flag")
             If File.Exists(strTestWaitFlag) Then
+                ' Acknowledges that execution has genuinely reached this point and is now waiting -
+                ' lets an external script know it's safe to act (e.g. kill this process) rather than
+                ' guessing a delay, the same deterministic-signal approach as everywhere else this
+                ' flag is used from.
+                Dim strTestWaitAck As String = Path.Combine(Path.GetTempPath(), "EwE_TestWaitBeforePublish.ack")
+                Try
+                    File.WriteAllText(strTestWaitAck, "")
+                Catch
+                End Try
                 Dim dtWaitStart As DateTime = DateTime.UtcNow
                 While File.Exists(strTestWaitFlag)
                     Threading.Thread.Sleep(100)
@@ -3647,6 +3656,10 @@ Public Class cCore
                         Exit While
                     End If
                 End While
+                Try
+                    File.Delete(strTestWaitAck)
+                Catch
+                End Try
             End If
 #End If
             Do
@@ -3676,6 +3689,18 @@ Public Class cCore
 
                 If fmPublish.Reply = eMessageReply.CANCEL Then
                     bSucces = False
+                    ' Re-mark the data source as modified: SaveChanges() above already cleared this,
+                    ' correctly, from its own perspective - SaveModel() DID genuinely persist
+                    ' everything to the local staged copy. But the REAL external file was never
+                    ' actually updated, since this publish-back step was just cancelled - without
+                    ' this, the Save button stays disabled as if nothing were wrong, even though the
+                    ' user's changes have not reached the real file. eCoreComponentType.DataSource is
+                    ' a member of cDBDataSource's own s_EcopathComponents, so this correctly restores
+                    ' both the base IsModified() check and IsEcopathModified() - the unconditional
+                    ' UpdateDataState call below picks this up and broadcasts it as usual.
+                    ' Confirmed as a real, reproducible bug via an automated test (§8.1 in the
+                    ' local-staging-copy test plan).
+                    Me.DataSource.SetChanged(eCoreComponentType.DataSource)
                     Exit Do
                 End If
                 ' Reply = OK: loop back and retry

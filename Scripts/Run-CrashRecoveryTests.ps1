@@ -7,16 +7,96 @@
 .PARAMETER Platform
     "x64" or "x86" - which build each disposable instance launches as. Default "x64".
 
+.PARAMETER Only
+    Run just the one test whose name contains this substring (case-insensitive), skipping the rest.
+
 .EXAMPLE
     .\Run-CrashRecoveryTests.ps1 -Platform x86
 #>
 param(
     [ValidateSet("x64", "x86")]
-    [string]$Platform = "x64"
+    [string]$Platform = "x64",
+    [string]$Only
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+$script:TestNameFilter = $Only
 $startInstanceScript = Join-Path $PSScriptRoot "Start-TestInstance.ps1"
+$repoRoot = Split-Path -Parent $PSScriptRoot
+
+Invoke-Test "2.1 - Kill mid-save (after save, before publish-back): original file untouched" {
+    $instance = & $startInstanceScript -Platform $Platform
+    Write-InstanceStarted -ProcessId $instance.Process.Id -Label "2.1 - instance"
+    $killed = $false
+    try {
+        $originalHash = (Get-FileHash -Path $instance.ModelPath -Algorithm SHA256).Hash
+
+        Set-SafeRestorableEdit -Proc $instance.Process
+        Assert-True (Test-SaveButtonEnabled -Proc $instance.Process) "Save is not enabled after making a change."
+
+        # The cCore.vb test hook (DEBUG-only - see its own comment there) blocks execution right
+        # after save, before publish-back, for as long as this flag file exists - and now also
+        # signals via a second .ack file the MOMENT it actually reaches that point, so this can wait
+        # for a real confirmation instead of guessing a delay before killing the process.
+        $waitFlag = Join-Path $env:TEMP "EwE_TestWaitBeforePublish.flag"
+        $ackFlag = Join-Path $env:TEMP "EwE_TestWaitBeforePublish.ack"
+        Remove-Item $waitFlag, $ackFlag -Force -ErrorAction SilentlyContinue
+        New-Item -ItemType File -Path $waitFlag -Force | Out-Null
+
+        try {
+            Invoke-SaveChanges -Proc $instance.Process
+
+            $ackDeadline = (Get-Date).AddSeconds(10)
+            $acked = $false
+            while ((Get-Date) -lt $ackDeadline) {
+                if (Test-Path $ackFlag) { $acked = $true; break }
+                Start-Sleep -Milliseconds 100
+            }
+            Assert-True $acked "App never signaled it reached the pre-publish wait point within 10 seconds - confirm this is a DEBUG build (the hook is wrapped in #If DEBUG in cCore.vb)."
+
+            Stop-TestInstance -ProcessId $instance.Process.Id -Label "2.1 - instance (killed mid-save)"
+            $killed = $true
+
+            $hashAfterKill = (Get-FileHash -Path $instance.ModelPath -Algorithm SHA256).Hash
+            Assert-True ($hashAfterKill -eq $originalHash) "Original file changed even though the process was killed BEFORE publish-back started - expected it completely untouched."
+        } finally {
+            Remove-Item $waitFlag, $ackFlag -Force -ErrorAction SilentlyContinue
+        }
+
+        # Reopening the SAME (untouched) file afterward should still produce a correct, fresh
+        # working copy - confirms the interrupted save left nothing in a broken state.
+        $reopenProc = Start-InstanceOnExistingModel -RepoRoot $repoRoot -ModelPath $instance.ModelPath -Platform $Platform
+        Write-InstanceStarted -ProcessId $reopenProc.Id -Label "2.1 - reopened instance"
+        try {
+            $copies = Wait-ForStagedCopy -TimeoutSeconds 30
+            Assert-True ($copies.Count -gt 0) "Reopening the file after the interrupted save did not produce a working copy."
+        } finally {
+            Stop-TestInstance -ProcessId $reopenProc.Id -Label "2.1 - reopened instance"
+        }
+    } finally {
+        if (-not $killed -and -not $instance.Process.HasExited) {
+            Stop-TestInstance -ProcessId $instance.Process.Id -Label "2.1 - instance (cleanup after an earlier failure)"
+        }
+    }
+}
+
+Invoke-Test "O.3 - Paths with spaces and non-ASCII characters work correctly" {
+    $trickyNamedSource = Join-Path $env:TEMP "Tëst Mödél with spaces André.ewemdb"
+    Copy-Item (Join-Path $repoRoot "Database\Anchovy Bay Spatial.ewemdb") $trickyNamedSource -Force
+    try {
+        $trickyWorkFolder = Join-Path $env:TEMP "EwE Tëst Rün häs spaces $(Get-Random)"
+        $instance = & $startInstanceScript -Platform $Platform -SourceModelPath $trickyNamedSource -WorkFolder $trickyWorkFolder
+        Write-InstanceStarted -ProcessId $instance.Process.Id -Label "O.3 - instance"
+        try {
+            $copies = Wait-ForStagedCopy -TimeoutSeconds 30
+            Assert-True ($copies.Count -gt 0) "No working copy staged for a source/destination path containing spaces and non-ASCII characters."
+        } finally {
+            Stop-TestInstance -ProcessId $instance.Process.Id -Label "O.3 - instance"
+        }
+    } finally {
+        Remove-Item $trickyNamedSource -Force -ErrorAction SilentlyContinue
+    }
+}
 
 Invoke-Test "4.1 - Orphaned working copy is swept on the next write-intent open" {
     $instanceA = & $startInstanceScript -Platform $Platform

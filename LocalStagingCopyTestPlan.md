@@ -7,6 +7,13 @@ SQLite/EF. Every scenario here, except where noted, applies identically on
 the `cEwEEFDatabase` branch, since this mechanism lives in `cEwEDatabase.vb`
 itself and never was format-specific.
 
+**AUTOMATED** marks an item covered by the PowerShell test suite in
+`Scripts\` (`Run-StagingTests.ps1`, `Run-CrashRecoveryTests.ps1`,
+`Run-MultiInstanceTests.ps1`, or `Run-AllTests.ps1` to run everything).
+Where only part of an item is covered, it's marked **PARTIALLY AUTOMATED**
+with a note on exactly what is and isn't checked, and the checkbox stays
+unticked - only a genuinely complete item gets `[x]`.
+
 **This is not a locking mechanism.** There is no lock of any kind
 protecting the original file, and no multi-user/multi-session detection
 anywhere. Avoiding concurrent edits to the same file is entirely the
@@ -31,14 +38,16 @@ mid-session with the app still open.
 
 ### 1. Opening - staging creation
 
-- [x] **1.1.** Confirm a `Temp<name>.<GUID>.eweaccdb` working copy (never
-  `.tmp` as the extension - `cDataSourceFactory.GetSupportedType`
-  determines type purely from `Path.GetExtension`, so a `.tmp`-suffixed
-  copy would be invisible to it) appears under `%LocalAppData%\Ecopath
-  with Ecosim\DBs\` on opening a database for read-write
-  (`EnableLocalStaging = True` in `ScientificInterface`). This confirms a
-  copy gets *created*, not that the live session is actually *using* it -
-  pair with the check below.
+- [ ] **1.1. (PARTIALLY AUTOMATED - Run-StagingTests.ps1)** Confirm a
+  `Temp<name>.<GUID>.eweaccdb` working copy (never `.tmp` as the extension
+  - `cDataSourceFactory.GetSupportedType` determines type purely from
+  `Path.GetExtension`, so a `.tmp`-suffixed copy would be invisible to it)
+  appears under `%LocalAppData%\Ecopath with Ecosim\DBs\` on opening a
+  database for read-write (`EnableLocalStaging = True` in
+  `ScientificInterface`). This confirms a copy gets *created*, not that
+  the live session is actually *using* it - pair with the check below.
+  - *Automated: the copy-appears check.*
+  - *Not automated: the rename-while-open check below.*
   - **Rename the original while the model is open, before saving.** If
     staging is genuinely in effect, this has **zero effect** on the open
     session - the live connection never touches the original at all
@@ -47,12 +56,14 @@ mid-session with the app still open.
     the file was gone, not its parent folder. If the connection were
     (incorrectly) against the original, this causes an immediate, obvious
     error instead.
-- [ ] **1.2.** Three scenarios in one pass - open the same file from a
-  second instance while the first is still open, then check all three:
+- [ ] **1.2. (PARTIALLY AUTOMATED - Run-MultiInstanceTests.ps1)** Three
+  scenarios in one pass - open the same file from a second instance while
+  the first is still open, then check all three:
   - **Old/incompatible-version file:** confirm **no** working copy is
     created (staging is write-intent-only) and that the title bar
     *correctly does* show read-only - the one legitimate remaining case
-    for it.
+    for it. *Not automated - no old/incompatible-version fixture file
+    available.*
   - **Normal, current-version file, opened from a second instance while
     the first already has it open:** confirm the app **never** enters
     read-only mode or shows it in the title bar - the behavior the old,
@@ -60,10 +71,7 @@ mid-session with the app still open.
     instance should simply get its own independent working copy, with no
     error, dialog, or degrade of any kind (this also covers what used to
     be a separate "§3.2" multi-instance item - it's the same scenario).
-  - *In passing:* confirm `%TEMP%\EwEReadOnlyCopies\` (the old
-    mechanism's folder, before the pivot to `%LocalAppData%\Ecopath with
-    Ecosim\DBs\`) is empty, stale, or doesn't exist - a one-time sanity
-    check, not something to re-check every pass.
+    *Automated - the "1.2/3.2" test.*
 - [ ] **1.3.** **Any caller that never sets `EnableLocalStaging`** (e.g.
   `EwERunConsole`): confirm opening a database creates no working copy
   at all, and connects directly to the real file - staging is strictly
@@ -71,29 +79,25 @@ mid-session with the app still open.
 
 ### 2. Saving - publish-to-source
 
-- [ ] **2.1.** **Kill the app (or pull power) mid-save, before the
-  publish-back step** (i.e. the write to the local working copy is still
-  in progress). Confirm the *original* file is untouched (it hasn't been
-  touched yet at this point) and reopening produces a fresh, correct
-  working copy.
-  - **Use a breakpoint, not timing/guesswork** - this is deterministic,
-    not reaction-speed-dependent. In `cCore.Save()`, set a breakpoint on
-    `If bSucces Then` (the line immediately after the save call(s),
-    right before the publish block begins). When it hits, the save has
-    definitely fully returned and `PublishToSource()` definitely hasn't
-    started yet. From a separate terminal, kill the process while
-    stopped there: `Stop-Process -Name "ScientificInterface" -Force`
-    (or `-Id <pid>` if more than one instance is running).
+- [x] **2.1. (AUTOMATED - Run-CrashRecoveryTests.ps1)** **Kill the app (or
+  pull power) mid-save, before the publish-back step** (i.e. the write to
+  the local working copy is still in progress). Confirm the *original*
+  file is untouched (it hasn't been touched yet at this point) and
+  reopening produces a fresh, correct working copy.
+  - Automated via the `EwE_TestWaitBeforePublish` DEBUG-only test hook in
+    `cCore.Save()` (with its own `.ack` signal file, so the kill happens
+    deterministically rather than via a guessed delay) rather than a
+    manual breakpoint - same deterministic principle, no human needed.
 - [ ] **2.2.** Save, then confirm the original file's bytes now match the
   working copy's, with no fingerprint check or conflict prompt of any
   kind - a blind overwrite is the intended behavior, not a bug to fix.
-  Together with 2.1 above, this gives end-to-end confidence in the
-  publish sequence without needing to step through its three internal
-  lines (copy sidecar / delete / rename) individually - that level of
-  detail is covered under "Optional / exotic" below if you want it.
-- [ ] **2.3.** **Hold the original file open elsewhere, at two different
-  durations**, using the same script both times (just change
-  `-Seconds`):
+  *Not automated as a direct byte comparison* - the 2.x test (below)
+  confirms an ordinary save completes and the Save button disables
+  correctly, but doesn't itself hash-compare the original against the
+  working copy afterward.
+- [ ] **2.3. (PARTIALLY AUTOMATED - Run-StagingTests.ps1)** **Hold the
+  original file open elsewhere, at two different durations**, using the
+  same script both times (just change `-Seconds`):
   ```powershell
   $path = "D:\path\to\your\model.eweaccdb"  # the REAL path, not the staged copy
   $fs = [System.IO.File]::Open($path, 'Open', 'ReadWrite', 'None')
@@ -107,7 +111,7 @@ mid-session with the app still open.
   - **Short hold (~1.5s, inside the ~3-second retry window):** confirm
     the internal retry (`cEwEDatabase.PublishLocalCopyToSource`, ~6
     attempts, 500ms apart) resolves silently - no dialog, no noticeable
-    UI block.
+    UI block. *Automated - the "2.3-short" test.*
   - **Long hold (~5s+, past the window):** confirm the "cannot write
     changes, locked by X" dialog appears, with Retry and Cancel -
     release the lock and click **Retry** (confirm the save completes and
@@ -119,6 +123,11 @@ mid-session with the app still open.
     `powershell.exe` holder) or falls back to generic "another
     application" phrasing - neither outcome should throw or block
     Retry/Cancel.
+    *Automated: the dialog appearing, naming/logging its message text,
+    and the Cancel path (also exercised more thoroughly by §8.1 below,
+    which found and led to fixing a real bug in this exact path).*
+    *Not automated: clicking Retry/OK and confirming the save then
+    completes successfully.*
 
 ### 3. No multi-user coordination (by design)
 
@@ -126,92 +135,131 @@ mid-session with the app still open.
   decision (avoiding concurrent edits to the same file is entirely the
   user's own responsibility; last save wins with no detection or
   warning).
-- [ ] **3.2.** Edit and save from **both** instances already open from
-  §1.2 above - confirm whichever saves last silently overwrites the
-  other's changes (no fingerprint check, no conflict warning) - this is
-  the intended, accepted behavior, not a bug to chase.
+- [x] **3.2. (AUTOMATED - Run-MultiInstanceTests.ps1)** Edit and save from
+  **both** instances already open from §1.2 above - confirm whichever
+  saves last silently overwrites the other's changes (no fingerprint
+  check, no conflict warning) - this is the intended, accepted behavior,
+  not a bug to chase.
+  - Automated as the "3.3" test - confirms this by actually reading the
+    value back afterward, not just checking that both saves completed.
 
 ### 4. Crash recovery
 
 (Process killed, not a normal close - see §5 below for the graceful-close
 path.)
 
-- [ ] **4.1.** Kill a session's process directly (Task Manager /
-  `taskkill`, not a normal close), then open **any** database (not
-  necessarily the same one) on that machine afterward - confirm the
-  orphaned working copy is swept away on that next write-intent open,
-  not left behind indefinitely.
-- [ ] **4.2.** Leave several crashed sessions' worth of orphaned copies in
+- [x] **4.1. (AUTOMATED - Run-CrashRecoveryTests.ps1)** Kill a session's
+  process directly (Task Manager / `taskkill`, not a normal close), then
+  open **any** database (not necessarily the same one) on that machine
+  afterward - confirm the orphaned working copy is swept away on that
+  next write-intent open, not left behind indefinitely.
+- [x] **4.2. (AUTOMATED - Run-CrashRecoveryTests.ps1, as "4.3")** Leave
+  several crashed sessions' worth of orphaned copies in
   `%LocalAppData%\Ecopath with Ecosim\DBs\`, then open one more
   write-intent session - confirm the sweep clears all of them in that
   single pass, not just the most recent one.
+  - The script's own test is named "4.3" internally (a numbering
+    mismatch from when it was written) - it's this item, not a separate
+    one; §O.2 immediately below it in that script is the actual "4.2" by
+    this plan's own numbering (deliberately not automated - see below).
 
 ### 5. Exit-time cleanup
 
 (Normal, graceful app close - a different mechanism from crash recovery
 above.)
 
-- [ ] **5.1.** Open and close **several** read-write sessions in one app
-  run (so each potentially leaves its own marker-less copy behind, per
-  the known limitation at the top of this document), then close the app
-  normally - confirm every one of those copies is gone from
-  `%LocalAppData%\Ecopath with Ecosim\DBs\` shortly after the app fully
-  exits, in a single pass.
-- [ ] **5.2.** **Regression test for a real bug found and fixed during
-  development**: close a model, then close the whole application -
-  confirm the app closes promptly, with no perceptible hang or delay.
-  An earlier draft of this mechanism used a synchronous, sleep-based
-  retry on `Close()` that measurably delayed application shutdown; that
-  was removed specifically because of this.
+- [ ] **5.1. (PARTIALLY AUTOMATED - Run-CrashRecoveryTests.ps1)** Open and
+  close **several** read-write sessions in one app run (so each
+  potentially leaves its own marker-less copy behind, per the known
+  limitation at the top of this document), then close the app normally -
+  confirm every one of those copies is gone from `%LocalAppData%\Ecopath
+  with Ecosim\DBs\` shortly after the app fully exits, in a single pass.
+  - *Automated: the single-session version* (open one session, close
+    gracefully, confirm its copy is cleaned up) - *not automated: opening
+    and closing several sessions within one continuous app run* before
+    the final close.
+- [x] **5.2. (AUTOMATED - Run-CrashRecoveryTests.ps1)** **Regression test
+  for a real bug found and fixed during development**: close a model,
+  then close the whole application - confirm the app closes promptly,
+  with no perceptible hang or delay. An earlier draft of this mechanism
+  used a synchronous, sleep-based retry on `Close()` that measurably
+  delayed application shutdown; that was removed specifically because of
+  this.
+  - Automated with an actual stopwatch, asserting under 5 seconds - not
+    just "did it eventually close."
 - [ ] **5.3.** Open the app with `EnableLocalStaging` off (or never open
   any database), then close it - confirm no cleanup script or process
   appears at all. The exit-time hook only registers the first time a
   session actually stages a working copy.
-- [ ] **5.4.** Kill the app (not a normal close) after leaving a working
-  copy behind - confirm the exit-time sweep does **not** run
-  (`AppDomain.ProcessExit` isn't reliably raised on a hard kill) - the
-  file should instead sit until the orphan sweep catches it on the next
-  write-intent `Open()`, per §4 above.
+- [x] **5.4. (AUTOMATED - Run-CrashRecoveryTests.ps1)** Kill the app (not
+  a normal close) after leaving a working copy behind - confirm the
+  exit-time sweep does **not** run (`AppDomain.ProcessExit` isn't
+  reliably raised on a hard kill) - the file should instead sit until the
+  orphan sweep catches it on the next write-intent `Open()`, per §4
+  above.
 
 ### 6. SaveAs re-staging
 
-- [ ] **6.1.** From a session, use Save As to a new path - confirm the old
-  working copy is cleaned up and a fresh one is staged for the new
-  target, and that a second instance can open the *original* file
-  afterward with no restriction of any kind. While here, also try Save
-  As to a path another session already has open as its own target -
-  expect the same no-degrade behavior as §1.2/§3.2, just reached via
-  Save As instead of Open.
+- [ ] **6.1. (PARTIALLY AUTOMATED - Run-StagingTests.ps1 and
+  Run-MultiInstanceTests.ps1)** From a session, use Save As to a new path
+  - confirm the old working copy is cleaned up and a fresh one is staged
+  for the new target, and that a second instance can open the *original*
+  file afterward with no restriction of any kind. While here, also try
+  Save As to a path another session already has open as its own target -
+  expect the same no-degrade behavior as §1.2/§3.2, just reached via Save
+  As instead of Open.
+  - *Automated: the new target file gets created successfully ("6.1"),
+    and Save As onto a path another instance already has open completes
+    with no degrade ("6.2").*
+  - *Not automated: confirming the OLD working copy is actually cleaned
+    up after Save As, and that the original file remains openable by a
+    second instance afterward.*
 
 ### 7. Legacy database update chain safety
 
-- [ ] **7.1.** **Confirm the original Access file's last-write time never
-  changes while opening an old database that needs its legacy update
-  chain (`RunAllUpdates`) to run.** With staging active, the update
-  chain runs against the staged working copy - the original is read
-  once (to make the copy) and never written to. Note the file's
-  timestamp before opening, confirm it's unchanged after the updates
-  have completed and the model is fully loaded.
+- [x] **7.1. (AUTOMATED - Run-StagingTests.ps1)** **Confirm the original
+  Access file's last-write time never changes while opening an old
+  database that needs its legacy update chain (`RunAllUpdates`) to run.**
+  With staging active, the update chain runs against the staged working
+  copy - the original is read once (to make the copy) and never written
+  to. Note the file's timestamp before opening, confirm it's unchanged
+  after the updates have completed and the model is fully loaded.
+  - The sample fixture used by the test suite (`Anchovy Bay
+    Spatial.ewemdb`) already triggers this update chain on every run, so
+    no separate old-format fixture was needed.
 
 ### 8. Regression checks (unrelated fixes found during this work)
 
 These touch core code paths unrelated to staging specifically, found and
 fixed while chasing the connection-release investigation that led to the
 exit-time cleanup mechanism above - included here because they landed in
-the same files this backport touches. One ordinary usage session covers
-all three:
+the same files this backport touches.
 
-- [ ] **8.1.** Open a model with Ecopath sample data (ratings, group
-  samples, diet composition samples, catch samples) and confirm it all
-  loads correctly (`LoadEcopathSamples`/`LoadGroupSamples`/
-  `LoadDietSamples`/`LoadGroupCatchSamples` were all changed to properly
-  close their reader); perform a few ordinary saves and confirm each
-  commits correctly (`CommitTransaction`/`RollbackTransaction` now
-  dispose the transaction object, and `cDBDataSource`'s `SaveXXX()`
-  methods now correctly fold `ReleaseWriter`'s return value into the
-  overall success flag); then deliberately trigger a failed save and
-  confirm it actually rolls back and reports failure, rather than
-  silently appearing to succeed.
+- [x] **8.1. (AUTOMATED - Run-StagingTests.ps1)** **Deliberately trigger a
+  failed save** (hold the real file locked past the retry window - same
+  mechanism as §2.3's long hold - then click Cancel instead of Retry) and
+  confirm it's actually reported as a failure: Save stays enabled
+  afterward (the in-memory change is still pending, not silently
+  discarded) and the real file is byte-for-byte unchanged. This is the
+  one that actually matters - `cDBDataSource`'s `SaveXXX()` methods once
+  discarded `ReleaseWriter`'s own return value, meaning a save could
+  report success even when the underlying write genuinely failed. (The
+  other two fixes from this same investigation -
+  `LoadEcopathSamples`/`LoadGroupSamples`/`LoadDietSamples`/
+  `LoadGroupCatchSamples` now properly closing their reader, and
+  `CommitTransaction`/`RollbackTransaction` now disposing the
+  transaction object - are leak fixes with no simple pass/fail signal
+  from outside the process; normal day-to-day use of the app is the
+  practical check for those, not a dedicated test here.)
+  - **This test found a real, previously-unknown bug**, since fixed:
+    cancelling the publish-back dialog correctly set `bSucces = False`
+    in `cCore.Save()`, but nothing downstream told the data source it
+    was still modified - `SaveChanges()` had already (correctly, from
+    its own narrow perspective) cleared the dirty flag after persisting
+    to the local staged copy, before the publish-back step even began.
+    Fixed by calling `Me.DataSource.SetChanged(eCoreComponentType.
+    DataSource)` in the Cancel branch, using the data source's own
+    existing public API - no new methods needed.
 
 ## Optional / exotic (best-effort, skip if time or environment is short)
 
@@ -222,26 +270,33 @@ all three:
   delete; correctly updated after the rename). `File.Move`'s atomicity
   on the same volume is documented platform behavior, not something this
   code's own logic could get wrong - §2.1/§2.2 above already give solid
-  end-to-end confidence without this.
+  end-to-end confidence without this. Not automatable by nature
+  (debugger step-through).
 - [ ] **O.2.** If reproducible: kill a session's process **mid-copy**
   (e.g. trigger open on a large file and kill the process within the
   first second) - confirms the marker-before-copy ordering actually
   prevents a concurrent sweep from deleting a copy that's still being
-  written.
-- [ ] **O.3.** File path containing spaces and non-ASCII characters, for
-  both the real file and the resulting working-copy path.
-- [ ] **O.4.** A **large** Access file (if any real-world models approach
-  this) - confirm the copy-on-open time is acceptable and the UI doesn't
-  appear to hang with no feedback during the copy.
+  written. Deliberately not automated: inherently racy (needs killing a
+  process within roughly the first second of a copy starting) - a flaky
+  test that fails unpredictably regardless of real behavior is worse
+  than no test here.
+- [x] **O.3. (AUTOMATED - Run-CrashRecoveryTests.ps1)** File path
+  containing spaces and non-ASCII characters, for both the real file and
+  the resulting working-copy path.
 - [ ] **O.5.** Run the multi-instance test (§1.2/§3.2) on a locked-down,
-  IT-managed machine with active antivirus/on-access scanning - confirms
-  the rapid create/delete file patterns involved aren't disrupted by AV
-  interference in a way a dev machine wouldn't reveal. Skip if no such
-  machine is readily available.
+  IT-managed machine with active antivirus/on-access scanning -
+  confirms the rapid create/delete file patterns involved aren't
+  disrupted by AV interference in a way a dev machine wouldn't reveal.
+  Skip if no such machine is readily available. Not automatable from
+  here - needs a genuinely different, IT-managed machine.
 - [ ] **O.6.** Confirm behavior when `%LocalAppData%` itself is unusually
   restricted or redirected (e.g. roaming profile, group policy) - the
   working-copy folder should still resolve somewhere writable and local.
-  Skip if no such environment is readily available.
+  Skip if no such environment is readily available. Not automatable from
+  here - needs a genuinely different environment.
+
+(Large-file copy-on-open timing was dropped from this list - acceptable
+unless/until stakeholders raise it as an actual concern.)
 
 ## Appendix: Useful test commands
 

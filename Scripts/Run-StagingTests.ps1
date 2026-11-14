@@ -13,28 +13,53 @@
 .PARAMETER Platform
     "x64" or "x86" - which build to launch when -Proc is omitted. Default "x64".
 
+.PARAMETER Only
+    Run just the one test whose name contains this substring (case-insensitive), skipping the rest
+    entirely - e.g. to isolate whether a failure is a genuine bug or an artifact of running several
+    similar tests back-to-back in the same session.
+
 .EXAMPLE
     .\Run-StagingTests.ps1 -Platform x86
+
+.EXAMPLE
+    .\Run-StagingTests.ps1 -Only "8.1"
 #>
 param(
     [System.Diagnostics.Process]$Proc,
     [string]$ModelPath,
+    [Nullable[DateTime]]$InitialModelTimestamp,
     [ValidateSet("x64", "x86")]
-    [string]$Platform = "x64"
+    [string]$Platform = "x64",
+    [string]$Only
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+$script:TestNameFilter = $Only
 
 if (-not $Proc) {
     Write-Host "No -Proc given - building and launching a fresh instance ($Platform)..." -ForegroundColor Cyan
     $instance = & (Join-Path $PSScriptRoot "Start-TestInstance.ps1") -Platform $Platform
     $Proc = $instance.Process
     $ModelPath = $instance.ModelPath
+    $InitialModelTimestamp = $instance.InitialModelTimestamp
 }
 
 Invoke-Test "1.1 - A staged working copy is created on open" {
     $copies = Wait-ForStagedCopy -TimeoutSeconds 30
     Assert-True ($copies.Count -gt 0) "No Temp* working copy found after ~30 seconds."
+}
+
+Invoke-Test "7.1 - Opening a file needing legacy updates never touches its own timestamp" {
+    if ($null -eq $InitialModelTimestamp) {
+        throw "No -InitialModelTimestamp known (likely because -Proc was supplied directly without it)."
+    }
+    # The legacy update chain (if this model needed one - our sample fixture does, confirmed by the
+    # "database will be updated" prompt Start-TestInstance.ps1 handles) already ran during this
+    # instance's own startup, entirely before this test ever runs. This just confirms it left the
+    # real file alone throughout - the comparison is only meaningful because InitialModelTimestamp
+    # was captured BEFORE the app ever opened the file at all, in Start-TestInstance.ps1 itself.
+    $currentTimestamp = (Get-Item $ModelPath).LastWriteTime
+    Assert-True ($currentTimestamp -eq $InitialModelTimestamp) "Timestamp changed since the file was first copied: was $InitialModelTimestamp, now $currentTimestamp - the original should only ever be read, never written to."
 }
 
 Invoke-Test "2.x - Edit and Save completes, Save becomes disabled afterward" {
@@ -48,7 +73,7 @@ Invoke-Test "2.x - Edit and Save completes, Save becomes disabled afterward" {
 # 2.3 runs BEFORE 6.1, deliberately: CONFIRMED that once Save As switches the app to a new file, the
 # ORIGINAL $ModelPath becomes stale - a later Save writes to the Save As target, not the original,
 # making this test's own lock a no-op if it ran after 6.1.
-if ($ModelPath) {
+if ($ModelPath -and (-not $script:TestNameFilter -or "2.3 - Lock-contention dialog" -like "*$script:TestNameFilter*")) {
     Write-Host "`n=== 2.3 - Lock-contention dialog (long hold) shows OK/Cancel ===" -ForegroundColor Yellow
     Write-Host "Automating setup: edit, lock the real file ($ModelPath) for ~6s in the background, trigger Save."
 
@@ -96,6 +121,21 @@ if ($ModelPath) {
         }
 
         if ($null -ne $dialog) {
+            # Soft check, not a hard assertion: the test plan only requires the dialog to name the
+            # actual locking process OR fall back to generic phrasing - either is acceptable, so this
+            # just logs what it actually says rather than failing the test over exact wording.
+            $textElement = $dialog.FindFirst(
+                [System.Windows.Automation.TreeScope]::Descendants,
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Text))
+            )
+            if ($null -ne $textElement) {
+                $messageText = $textElement.Current.Name
+                Write-Host "  Dialog message: $messageText"
+                if ($messageText -notmatch "locked by") {
+                    Write-Host "  NOTE: message doesn't mention 'locked by' - worth a look if this ever seems wrong." -ForegroundColor Yellow
+                }
+            }
+
             # Name only, NOT ControlType=Button: CONFIRMED via Accessibility Insights that this
             # button reports ControlType.Pane here (likely a focus-state-dependent quirk of the
             # legacy accessibility proxy - a DIFFERENT live check of this same button, at a
@@ -142,6 +182,120 @@ if ($ModelPath) {
 } else {
     Invoke-ManualTest "2.3 - Lock-contention dialog (long hold) shows OK/Cancel" `
         "No -ModelPath known - hold the open model's REAL file exclusively yourself (see the test plan's appendix script, ~5+ seconds), then trigger Save. Confirm the dialog appears."
+}
+
+if ($ModelPath) {
+    Invoke-Test "2.3-short - A short lock hold resolves silently via internal retry" {
+        Set-SafeRestorableEdit -Proc $Proc
+        Assert-True (Test-SaveButtonEnabled -Proc $Proc) "Save is not enabled after making a change."
+
+        # Same lock-job mechanism as the long-hold test above, just a shorter hold (comfortably
+        # inside the ~3-second internal retry window) and the opposite expectation: no dialog, Save
+        # just quietly succeeds.
+        $readyFlag = Join-Path $env:TEMP "EwE-LockJob-Ready-$(Get-Random).flag"
+        if (Test-Path $readyFlag) { Remove-Item $readyFlag -Force }
+        $lockJob = Start-Job -ScriptBlock {
+            param($path, $holdSeconds, $readyFlagPath)
+            $fs = [System.IO.File]::Open($path, 'Open', 'ReadWrite', 'None')
+            New-Item -ItemType File -Path $readyFlagPath -Force | Out-Null
+            Start-Sleep -Seconds $holdSeconds
+            $fs.Close()
+            Remove-Item $readyFlagPath -Force -ErrorAction SilentlyContinue
+        } -ArgumentList $ModelPath, 1.5, $readyFlag
+
+        try {
+            $lockDeadline = (Get-Date).AddSeconds(10)
+            while (-not (Test-Path $readyFlag) -and (Get-Date) -lt $lockDeadline) { Start-Sleep -Milliseconds 100 }
+            if (-not (Test-Path $readyFlag)) { throw "Lock-holding job never signaled it had acquired the lock within 10 seconds." }
+
+            Invoke-SaveChanges -Proc $Proc
+            Start-Sleep -Milliseconds 4000   # ~3s internal retry window plus the lock's own 1.5s hold
+
+            Assert-True (-not (Test-SaveButtonEnabled -Proc $Proc)) "Save button is still enabled - the internal retry may not have succeeded silently."
+
+            $window = Get-AppWindow -Proc $Proc
+            $dialogCondition = New-Object System.Windows.Automation.AndCondition(
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Ecopath with Ecosim")),
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
+            )
+            $dialog = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $dialogCondition)
+            Assert-True ($null -eq $dialog) "A dialog appeared even for a short lock hold - expected the internal retry to resolve this silently, with no dialog at all."
+        } finally {
+            Wait-Job $lockJob -Timeout 10 | Out-Null
+            Remove-Job $lockJob -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+
+if ($ModelPath) {
+    Invoke-Test "8.1 - A cancelled lock-contention save correctly reports failure, not silent success" {
+        # Replaces an earlier version of "8.1" that only checked a data page loaded without
+        # crashing - it never actually verified anything about the bug it was meant to cover.
+        # This one directly exercises the real concern: cDBDataSource's SaveXXX() methods once
+        # discarded ReleaseWriter()'s own return value, meaning a save could report success even
+        # when the underlying write genuinely failed. Forcing a real failure (lock held past the
+        # retry window, Cancel clicked) and checking it's reported as one, not silently accepted.
+        Set-SafeRestorableEdit -Proc $Proc
+        Assert-True (Test-SaveButtonEnabled -Proc $Proc) "Save is not enabled after making a change."
+        $hashBeforeAttempt = (Get-FileHash -Path $ModelPath -Algorithm SHA256).Hash
+
+        $readyFlag = Join-Path $env:TEMP "EwE-LockJob-Ready-$(Get-Random).flag"
+        if (Test-Path $readyFlag) { Remove-Item $readyFlag -Force }
+        $lockJob = Start-Job -ScriptBlock {
+            param($path, $holdSeconds, $readyFlagPath)
+            $fs = [System.IO.File]::Open($path, 'Open', 'ReadWrite', 'None')
+            New-Item -ItemType File -Path $readyFlagPath -Force | Out-Null
+            Start-Sleep -Seconds $holdSeconds
+            $fs.Close()
+            Remove-Item $readyFlagPath -Force -ErrorAction SilentlyContinue
+        } -ArgumentList $ModelPath, 6, $readyFlag
+
+        try {
+            $lockDeadline = (Get-Date).AddSeconds(10)
+            while (-not (Test-Path $readyFlag) -and (Get-Date) -lt $lockDeadline) { Start-Sleep -Milliseconds 100 }
+            if (-not (Test-Path $readyFlag)) { throw "Lock-holding job never signaled it had acquired the lock within 10 seconds." }
+
+            Invoke-SaveChanges -Proc $Proc
+
+            $window = Get-AppWindow -Proc $Proc
+            $dialogCondition = New-Object System.Windows.Automation.AndCondition(
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Ecopath with Ecosim")),
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
+            )
+            $dialog = $null
+            $dialogDeadline = (Get-Date).AddSeconds(5)
+            while ($null -eq $dialog -and (Get-Date) -lt $dialogDeadline) {
+                $dialog = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $dialogCondition)
+                if ($null -eq $dialog) { Start-Sleep -Milliseconds 200 }
+            }
+            Assert-True ($null -ne $dialog) "Lock-contention dialog did not appear."
+
+            $cancelCondition = New-Object System.Windows.Automation.PropertyCondition(
+                [System.Windows.Automation.AutomationElement]::NameProperty, "Cancel")
+            $cancelButton = $null
+            $buttonDeadline = (Get-Date).AddSeconds(3)
+            while ($null -eq $cancelButton -and (Get-Date) -lt $buttonDeadline) {
+                $cancelButton = $dialog.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $cancelCondition)
+                if ($null -eq $cancelButton) { Start-Sleep -Milliseconds 150 }
+            }
+            Assert-True ($null -ne $cancelButton) "Could not find the Cancel button."
+            Invoke-ElementClick -Element $cancelButton
+            Start-Sleep -Milliseconds 500
+
+            Assert-True (Test-SaveButtonEnabled -Proc $Proc) "Save button is DISABLED after a cancelled save - the app may be treating a failed save as if it had succeeded."
+
+            # Our OWN lock-job holds for a full 6 seconds from the moment it's acquired - the dialog
+            # detect + Cancel click + 500ms sleep above easily finishes well under that, so without
+            # this wait, the Get-FileHash below could fire while THIS test's own background job is
+            # still actively holding the file open (confirmed: that's exactly what happened once).
+            Wait-Job $lockJob -Timeout 10 | Out-Null
+            $hashAfterCancel = (Get-FileHash -Path $ModelPath -Algorithm SHA256).Hash
+            Assert-True ($hashAfterCancel -eq $hashBeforeAttempt) "The real file changed even though Save was cancelled - expected no write to have happened at all."
+        } finally {
+            Wait-Job $lockJob -Timeout 10 | Out-Null
+            Remove-Job $lockJob -Force -ErrorAction SilentlyContinue
+        }
+    }
 }
 
 # Runs LAST, deliberately - see the comment above the 2.3 block for why.
@@ -193,8 +347,5 @@ Invoke-Test "6.1 - Save As creates a new file at the target path" {
     Assert-True (Test-Path $targetPath) "Expected file was not created: $targetPath"
     Remove-Item $targetPath -Force -ErrorAction SilentlyContinue
 }
-
-Invoke-ManualTest "8.1 - Sample data (ratings, diet composition, catch samples) loads correctly" `
-    "Navigate to a data page with sample data (e.g. Diet composition) via the Navigator tree and confirm it loads without error."
 
 Show-TestSummary
