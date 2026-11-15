@@ -18,11 +18,18 @@
     entirely - e.g. to isolate whether a failure is a genuine bug or an artifact of running several
     similar tests back-to-back in the same session.
 
+.PARAMETER MainWindowTimeoutSeconds
+    How long to wait for the app's main window to appear when auto-launching. Default 90 - raise
+    this on a slower machine if launches are timing out before the window ever appears.
+
 .EXAMPLE
     .\Run-StagingTests.ps1 -Platform x86
 
 .EXAMPLE
     .\Run-StagingTests.ps1 -Only "8.1"
+
+.EXAMPLE
+    .\Run-StagingTests.ps1 -MainWindowTimeoutSeconds 180
 #>
 param(
     [System.Diagnostics.Process]$Proc,
@@ -30,7 +37,8 @@ param(
     [Nullable[DateTime]]$InitialModelTimestamp,
     [ValidateSet("x64", "x86")]
     [string]$Platform = "x64",
-    [string]$Only
+    [string]$Only,
+    [int]$MainWindowTimeoutSeconds = 90
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
@@ -38,7 +46,7 @@ $script:TestNameFilter = $Only
 
 if (-not $Proc) {
     Write-Host "No -Proc given - building and launching a fresh instance ($Platform)..." -ForegroundColor Cyan
-    $instance = & (Join-Path $PSScriptRoot "Start-TestInstance.ps1") -Platform $Platform
+    $instance = & (Join-Path $PSScriptRoot "Start-TestInstance.ps1") -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     $Proc = $instance.Process
     $ModelPath = $instance.ModelPath
     $InitialModelTimestamp = $instance.InitialModelTimestamp
@@ -300,7 +308,26 @@ if ($ModelPath) {
 
 # Runs LAST, deliberately - see the comment above the 2.3 block for why.
 Invoke-Test "6.1 - Save As creates a new file at the target path" {
-    $targetPath = Join-Path $env:TEMP "EwE-AutoTest-SaveAs-$(Get-Random).eweaccdb"
+    # No extension typed into the dialog, and none hardcoded here: CONFIRMED (reproducible on both
+    # platforms) that "Save Model As..." only allows saving in the SAME format the model was
+    # originally loaded in - typing a different extension doesn't produce a file at that exact path,
+    # the dialog applies the correct one regardless of what's typed.
+    #
+    # That "same format" is NOT simply the source file's own extension, though - confirmed directly
+    # from cDataSourceFactory.vb's own source: GetSupportedType() checks cSystemUtils.Is64BitProcess()
+    # specifically inside the ".mdb"/".ewemdb" case, resolving to Access2007 (-> .eweaccdb, via
+    # GetDefaultExtension) on a 64-bit process, but Access2003 (-> .ewemdb) on a 32-bit one. An
+    # .accdb/.eweaccdb source has no such branch - always Access2007 (-> .eweaccdb). This mirrors
+    # that exact logic rather than assuming the source extension carries straight through, which is
+    # what an earlier version of this test got wrong for x64.
+    $sourceExtension = [IO.Path]::GetExtension($ModelPath).ToLower()
+    $targetExtension = switch ($sourceExtension) {
+        { $_ -in ".mdb", ".ewemdb" } { if ($Platform -eq "x64") { ".eweaccdb" } else { ".ewemdb" } }
+        { $_ -in ".accdb", ".eweaccdb" } { ".eweaccdb" }
+        default { throw "Don't know what Save As would target for source extension '$sourceExtension' - update this test's mirror of cDataSourceFactory's own logic." }
+    }
+    $targetPathNoExt = Join-Path $env:TEMP "EwE-AutoTest-SaveAs-$(Get-Random)"
+    $targetPath = "$targetPathNoExt$targetExtension"
     if (Test-Path $targetPath) { Remove-Item $targetPath -Force }
 
     Set-AppForeground -Proc $Proc
@@ -339,12 +366,15 @@ Invoke-Test "6.1 - Save As creates a new file at the target path" {
 
     [System.Windows.Forms.SendKeys]::SendWait("^a")
     Start-Sleep -Milliseconds 100
-    [System.Windows.Forms.SendKeys]::SendWait((ConvertTo-SendKeysLiteral $targetPath))
+    [System.Windows.Forms.SendKeys]::SendWait((ConvertTo-SendKeysLiteral $targetPathNoExt))
     Start-Sleep -Milliseconds 100
     [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-    Start-Sleep -Milliseconds 1000
-
-    Assert-True (Test-Path $targetPath) "Expected file was not created: $targetPath"
+    # Polling, not a single fixed-delay check: the x86 build has shown this needing more time than
+    # x64 did in the same spot - rather than just guessing a bigger fixed number (which could still
+    # be wrong on some other machine), poll for up to 10 seconds.
+    $targetDeadline = (Get-Date).AddSeconds(10)
+    while (-not (Test-Path $targetPath) -and (Get-Date) -lt $targetDeadline) { Start-Sleep -Milliseconds 300 }
+    Assert-True (Test-Path $targetPath) "Expected file was not created after ~10 seconds: $targetPath"
     Remove-Item $targetPath -Force -ErrorAction SilentlyContinue
 }
 

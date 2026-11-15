@@ -71,7 +71,7 @@ mid-session with the app still open.
     instance should simply get its own independent working copy, with no
     error, dialog, or degrade of any kind (this also covers what used to
     be a separate "§3.2" multi-instance item - it's the same scenario).
-    *Automated - the "1.2/3.2" test.*
+    *Automated - the "1.2" test.*
 - [ ] **1.3.** **Any caller that never sets `EnableLocalStaging`** (e.g.
   `EwERunConsole`): confirm opening a database creates no working copy
   at all, and connects directly to the real file - staging is strictly
@@ -135,13 +135,18 @@ mid-session with the app still open.
   decision (avoiding concurrent edits to the same file is entirely the
   user's own responsibility; last save wins with no detection or
   warning).
-- [x] **3.2. (AUTOMATED - Run-MultiInstanceTests.ps1)** Edit and save from
-  **both** instances already open from §1.2 above - confirm whichever
-  saves last silently overwrites the other's changes (no fingerprint
-  check, no conflict warning) - this is the intended, accepted behavior,
-  not a bug to chase.
-  - Automated as the "3.3" test - confirms this by actually reading the
-    value back afterward, not just checking that both saves completed.
+
+(A former "3.2" - edit and save from both instances, confirm whichever
+saves last wins - was removed entirely, not automated or left as a
+manual item: the stakeholders have explicitly said multi-user conflict
+resolution is out of scope, so there's nothing left to actually prove
+here beyond what §1.2 already covers - that two instances coexist
+without interfering with each other. The only way to *make* "last save
+wins" an unambiguous claim would be reading the result back through a
+fresh instance rather than one of the two that just saved, since an
+already-open instance's own in-memory state has no reason to reflect a
+different instance's later write to the same file - not worth the extra
+complexity for a claim nobody's asking to have proven.)
 
 ### 4. Crash recovery
 
@@ -206,7 +211,7 @@ above.)
   for the new target, and that a second instance can open the *original*
   file afterward with no restriction of any kind. While here, also try
   Save As to a path another session already has open as its own target -
-  expect the same no-degrade behavior as §1.2/§3.2, just reached via Save
+  expect the same no-degrade behavior as §1.2, just reached via Save
   As instead of Open.
   - *Automated: the new target file gets created successfully ("6.1"),
     and Save As onto a path another instance already has open completes
@@ -214,6 +219,25 @@ above.)
   - *Not automated: confirming the OLD working copy is actually cleaned
     up after Save As, and that the original file remains openable by a
     second instance afterward.*
+  - **TO BE REVIEWED:** confirmed directly from `cDataSourceFactory.vb`'s
+    source - `GetSupportedType()` checks `cSystemUtils.Is64BitProcess()`
+    *inside* its `.mdb`/`.ewemdb` case specifically, resolving to
+    `Access2007` (default extension `.eweaccdb`) on a 64-bit process, but
+    `Access2003` (`.ewemdb`) on a 32-bit one - for the exact same source
+    file. Combined with `frmEwE6.vb`'s own `OnSaveModelAs` comment
+    (`JS 27Jul08: Only able to save in current file format`), this means
+    **the same `.ewemdb` model's "Save Model As..." targets a different
+    file format depending on which bitness of the app opened it** - x64
+    offers/produces `.eweaccdb`, x86 offers/produces `.ewemdb`. Not
+    clearly a bug (the `Is64BitProcess()` check appears to exist for an
+    unrelated reason - routing legacy Jet3 files through ACE on 64-bit,
+    since no 64-bit Jet provider exists at all - and may be having this
+    side effect only incidentally here), but worth a deliberate decision
+    from whoever owns this behavior rather than leaving it as an
+    unexamined side effect: is a 32-bit user being silently kept on the
+    older Access 2003 format when saving as a *new* file name actually
+    intended, or should Save As resolve the target format some other
+    way, independent of process bitness?
 
 ### 7. Legacy database update chain safety
 
@@ -283,7 +307,7 @@ the same files this backport touches.
 - [x] **O.3. (AUTOMATED - Run-CrashRecoveryTests.ps1)** File path
   containing spaces and non-ASCII characters, for both the real file and
   the resulting working-copy path.
-- [ ] **O.5.** Run the multi-instance test (§1.2/§3.2) on a locked-down,
+- [ ] **O.5.** Run the multi-instance test (§1.2) on a locked-down,
   IT-managed machine with active antivirus/on-access scanning -
   confirms the rapid create/delete file patterns involved aren't
   disrupted by AV interference in a way a dev machine wouldn't reveal.

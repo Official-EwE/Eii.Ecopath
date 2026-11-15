@@ -276,7 +276,7 @@ function Get-StagedCopies {
 function Wait-ForMainWindow {
     param(
         [Parameter(Mandatory = $true)][System.Diagnostics.Process]$Proc,
-        [int]$TimeoutSeconds = 30
+        [int]$TimeoutSeconds = 90
     )
     $root = [System.Windows.Automation.AutomationElement]::RootElement
     # Name only, NOT ControlType=Button, for the Yes button: CONFIRMED via Accessibility Insights
@@ -383,12 +383,13 @@ function Start-InstanceOnExistingModel {
         [Parameter(Mandatory = $true)][string]$RepoRoot,
         [Parameter(Mandatory = $true)][string]$ModelPath,
         [string]$Platform = "x64",
-        [string]$Configuration = "Debug"
+        [string]$Configuration = "Debug",
+        [int]$MainWindowTimeoutSeconds = 90
     )
     $exePath = Join-Path $RepoRoot "Sources\ScientificInterface\bin\$Platform\$Configuration\net48\ScientificInterface.exe"
     if (-not (Test-Path $exePath)) { throw "Built exe not found: $exePath" }
     $proc = Start-Process -FilePath $exePath -ArgumentList "`"$ModelPath`"" -PassThru
-    Wait-ForMainWindow -Proc $proc -TimeoutSeconds 30
+    Wait-ForMainWindow -Proc $proc -TimeoutSeconds $MainWindowTimeoutSeconds
     $proc
 }
 

@@ -10,13 +10,18 @@
 .PARAMETER Only
     Run just the one test whose name contains this substring (case-insensitive), skipping the rest.
 
+.PARAMETER MainWindowTimeoutSeconds
+    How long each disposable instance waits for its main window before giving up. Default 90 -
+    raise this on a slower machine if launches are timing out before the window ever appears.
+
 .EXAMPLE
     .\Run-CrashRecoveryTests.ps1 -Platform x86
 #>
 param(
     [ValidateSet("x64", "x86")]
     [string]$Platform = "x64",
-    [string]$Only
+    [string]$Only,
+    [int]$MainWindowTimeoutSeconds = 90
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
@@ -25,7 +30,7 @@ $startInstanceScript = Join-Path $PSScriptRoot "Start-TestInstance.ps1"
 $repoRoot = Split-Path -Parent $PSScriptRoot
 
 Invoke-Test "2.1 - Kill mid-save (after save, before publish-back): original file untouched" {
-    $instance = & $startInstanceScript -Platform $Platform
+    $instance = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $instance.Process.Id -Label "2.1 - instance"
     $killed = $false
     try {
@@ -85,7 +90,7 @@ Invoke-Test "O.3 - Paths with spaces and non-ASCII characters work correctly" {
     Copy-Item (Join-Path $repoRoot "Database\Anchovy Bay Spatial.ewemdb") $trickyNamedSource -Force
     try {
         $trickyWorkFolder = Join-Path $env:TEMP "EwE Tëst Rün häs spaces $(Get-Random)"
-        $instance = & $startInstanceScript -Platform $Platform -SourceModelPath $trickyNamedSource -WorkFolder $trickyWorkFolder
+        $instance = & $startInstanceScript -Platform $Platform -SourceModelPath $trickyNamedSource -WorkFolder $trickyWorkFolder -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
         Write-InstanceStarted -ProcessId $instance.Process.Id -Label "O.3 - instance"
         try {
             $copies = Wait-ForStagedCopy -TimeoutSeconds 30
@@ -99,7 +104,7 @@ Invoke-Test "O.3 - Paths with spaces and non-ASCII characters work correctly" {
 }
 
 Invoke-Test "4.1 - Orphaned working copy is swept on the next write-intent open" {
-    $instanceA = & $startInstanceScript -Platform $Platform
+    $instanceA = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $instanceA.Process.Id -Label "4.1 - instanceA"
     $copiesBefore = Wait-ForStagedCopy -TimeoutSeconds 30
     Assert-True ($copiesBefore.Count -gt 0) "Instance A never staged a working copy."
@@ -110,7 +115,7 @@ Invoke-Test "4.1 - Orphaned working copy is swept on the next write-intent open"
     Assert-True (Test-Path $orphanPath) "Orphaned file disappeared immediately on kill - expected it to persist until the NEXT write-intent open (this is 5.4's own distinction, worth it failing loudly here if it ever changes)."
 
     # Opening ANY database elsewhere should trigger the orphan sweep - doesn't need to be the same file.
-    $instanceB = & $startInstanceScript -Platform $Platform
+    $instanceB = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $instanceB.Process.Id -Label "4.1 - instanceB"
     try {
         Wait-ForStagedCopy -TimeoutSeconds 30 | Out-Null
@@ -127,7 +132,7 @@ Invoke-Test "4.1 - Orphaned working copy is swept on the next write-intent open"
 Invoke-Test "4.3 - Several orphaned copies are all cleared in one sweep pass" {
     $orphanPaths = @()
     foreach ($i in 1..3) {
-        $instance = & $startInstanceScript -Platform $Platform
+        $instance = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
         Write-InstanceStarted -ProcessId $instance.Process.Id -Label "4.3 - instance $i"
         $copies = Wait-ForStagedCopy -TimeoutSeconds 30
         Assert-True ($copies.Count -gt 0) "Instance $i never staged a working copy."
@@ -136,7 +141,7 @@ Invoke-Test "4.3 - Several orphaned copies are all cleared in one sweep pass" {
         Start-Sleep -Milliseconds 300
     }
 
-    $cleanupInstance = & $startInstanceScript -Platform $Platform
+    $cleanupInstance = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $cleanupInstance.Process.Id -Label "4.3 - cleanup-trigger instance"
     try {
         Wait-ForStagedCopy -TimeoutSeconds 30 | Out-Null
@@ -149,7 +154,7 @@ Invoke-Test "4.3 - Several orphaned copies are all cleared in one sweep pass" {
 }
 
 Invoke-Test "5.1/5.2 - Graceful close removes the staged copy promptly, with no hang" {
-    $instance = & $startInstanceScript -Platform $Platform
+    $instance = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $instance.Process.Id -Label "5.1/5.2 - instance"
     $copies = Wait-ForStagedCopy -TimeoutSeconds 30
     Assert-True ($copies.Count -gt 0) "Working copy was never staged."
@@ -183,7 +188,7 @@ Invoke-Test "5.4 - A hard-killed process's own copy is NOT cleaned up by exit-ti
     # instance's own open. This test confirms the DIFFERENT mechanism (exit-time cleanup, via
     # AppDomain.ProcessExit) does NOT fire on a hard kill, since that event isn't reliably raised
     # on one - the file should still be sitting there immediately after, not vanish on its own.
-    $instance = & $startInstanceScript -Platform $Platform
+    $instance = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $instance.Process.Id -Label "5.4 - instance"
     $copies = Wait-ForStagedCopy -TimeoutSeconds 30
     Assert-True ($copies.Count -gt 0) "Working copy was never staged."

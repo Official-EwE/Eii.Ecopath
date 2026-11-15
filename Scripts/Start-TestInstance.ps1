@@ -27,6 +27,10 @@
     diffing/restoring against later if ever needed - the one actually passed to the app is a
     separate copy one level up, since tests are expected to modify it.
 
+.PARAMETER MainWindowTimeoutSeconds
+    How long to wait for the main window to appear before giving up. Default 90 - raise this if a
+    slower machine needs more time (confirmed to matter in practice: 30s wasn't always enough).
+
 .EXAMPLE
     $instance = .\Start-TestInstance.ps1
     $proc = $instance.Process
@@ -40,7 +44,8 @@ param(
     [string]$Platform = "x64",
     [string]$Configuration = "Debug",
     [string]$SourceModelPath,
-    [string]$WorkFolder
+    [string]$WorkFolder,
+    [int]$MainWindowTimeoutSeconds = 90
 )
 
 if (-not $SourceModelPath) {
@@ -99,7 +104,7 @@ $proc = Start-Process -FilePath $exePath -ArgumentList "`"$workingModelPath`"" -
 # watched for here since the usual FromHandle(MainWindowHandle) approach isn't available yet -
 # searching the whole desktop, scoped to this process's own PID, instead.
 Write-Host "Waiting for the main window to appear (watching for a database-upgrade prompt too)..."
-Wait-ForMainWindow -Proc $proc -TimeoutSeconds 30
+Wait-ForMainWindow -Proc $proc -TimeoutSeconds $MainWindowTimeoutSeconds
 
 Write-Host "Ready - PID $($proc.Id), model folder: $WorkFolder" -ForegroundColor Green
 return [PSCustomObject]@{
