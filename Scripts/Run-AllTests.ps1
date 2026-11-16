@@ -20,6 +20,10 @@ param(
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+# Named distinctly from $runStopwatch, which every dot-sourced runner below declares for itself -
+# since dot-sourcing shares scope, reusing that same name here would get clobbered the moment the
+# next runner starts.
+$overallStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
 $runners = @(
     "Run-StagingTests.ps1",
@@ -30,18 +34,23 @@ $runners = @(
 
 foreach ($platform in $Platforms) {
     $script:CurrentPlatformLabel = $platform
+    $platformStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     foreach ($runner in $runners) {
         Write-Host "`n`n################ $runner ($platform) ################" -ForegroundColor Magenta
         # Dot-sourced, not called via & - needed so each runner's results land in THIS script's own
         # $script:TestResults list instead of a separate, discarded child scope, which is what would
         # happen with a normal call. Each runner still prints its own (progressively more complete)
-        # summary at its own end too, same as running it standalone - a little redundant by the time
-        # this script's own final summary prints the same accumulated list once more, but harmless.
+        # summary and own duration at its own end too, same as running it standalone - a little
+        # redundant by the time this script's own final summary covers the same ground, but harmless.
         . (Join-Path $PSScriptRoot $runner) -Platform $platform
     }
+    $platformStopwatch.Stop()
+    Write-Host "`n################ $platform total: $(Format-Duration $platformStopwatch.Elapsed) ################" -ForegroundColor Magenta
 }
 
 $script:CurrentPlatformLabel = $null
 Write-Host "`n`n################ COMBINED RESULTS - ALL PLATFORMS ################" -ForegroundColor Magenta
 Show-TestSummary
+$overallStopwatch.Stop()
+Write-Host "`nGrand total (all platforms): $(Format-Duration $overallStopwatch.Elapsed)" -ForegroundColor Cyan
 Clear-TestArtifacts

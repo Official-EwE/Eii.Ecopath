@@ -117,9 +117,35 @@ function Invoke-ManualTest {
     }
 }
 
+# Prints "  <description>..." with no newline, runs Action, then " done" on success. An exception
+# from Action propagates normally (so the test's own Assert-True/throw-based failure handling in
+# Invoke-Test still works) - on failure, the description line is left exactly as printed, with no
+# "done" after it, which is itself useful: the output shows precisely which step a test got to
+# before it failed. Returns whatever Action itself returns, so a step that finds/computes something
+# a later step needs can still be used normally.
+function Write-Step {
+    param(
+        [Parameter(Mandatory = $true)][string]$Description,
+        [Parameter(Mandatory = $true)][scriptblock]$Action
+    )
+    Write-Host "  $Description..." -NoNewline
+    $result = & $Action
+    Write-Host " done" -ForegroundColor Green
+    $result
+}
+
 function Assert-True {
     param([bool]$Condition, [string]$Message)
     if (-not $Condition) { throw $Message }
+}
+
+function Format-Duration {
+    param([Parameter(Mandatory = $true)][TimeSpan]$TimeSpan)
+    if ($TimeSpan.TotalMinutes -ge 1) {
+        "{0}m {1}s" -f [int]$TimeSpan.TotalMinutes, $TimeSpan.Seconds
+    } else {
+        "{0:N1}s" -f $TimeSpan.TotalSeconds
+    }
 }
 
 function Show-TestSummary {
@@ -189,8 +215,16 @@ function Select-GridFirstCell {
     param([Parameter(Mandatory = $true)][System.Diagnostics.Process]$Proc)
     Set-AppForeground -Proc $Proc
     $window = Get-AppWindow -Proc $Proc
-    $basicInputWindow = Find-ByNameAndType -Root $window -Name "Basic input" -ControlType ([System.Windows.Automation.ControlType]::Window)
-    if ($null -eq $basicInputWindow) { throw "Could not find the 'Basic input' window." }
+    # Polling, not a single immediate check: the main window appearing doesn't guarantee the
+    # 'Basic input' sub-window has finished initializing yet - confirmed to matter when this runs
+    # right after a fresh restart mid-session (e.g. immediately following "2.x"'s own restart step).
+    $basicInputWindow = $null
+    $basicInputDeadline = (Get-Date).AddSeconds(15)
+    while ($null -eq $basicInputWindow -and (Get-Date) -lt $basicInputDeadline) {
+        $basicInputWindow = Find-ByNameAndType -Root $window -Name "Basic input" -ControlType ([System.Windows.Automation.ControlType]::Window)
+        if ($null -eq $basicInputWindow) { Start-Sleep -Milliseconds 300 }
+    }
+    if ($null -eq $basicInputWindow) { throw "Could not find the 'Basic input' window after ~15 seconds." }
 
     $paneCondition = New-Object System.Windows.Automation.PropertyCondition(
         [System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Pane)
@@ -504,6 +538,84 @@ function Open-ModelViaUI {
         } else {
             Write-Host "Dialog detected but its 'Yes' button wasn't found." -ForegroundColor Yellow
         }
+    }
+}
+
+# EXPERIMENTAL - first attempt at UI Automation's real event model (WindowOpenedEvent), as an
+# alternative to the repeated FindFirst polling every dialog-detection spot in this toolkit
+# currently uses. Scoped to AutomationElement.RootElement (the whole desktop), filtering by
+# ProcessId inside the callback itself - this is what lets it also catch a dialog that appears
+# BEFORE MainWindowHandle exists (the startup upgrade prompt), since there's no "this process's own
+# window" root to scope to yet at that point.
+function Start-WindowEventWatch {
+    param([Parameter(Mandatory = $true)][int]$ProcessId)
+
+    $queue = [System.Collections.Concurrent.ConcurrentQueue[object]]::new()
+
+    # .GetNewClosure() captures $queue/$ProcessId AT DEFINITION TIME: the callback runs on a
+    # UI-Automation-owned thread, not this script's own, so it can't rely on resolving these against
+    # whatever scope happens to be active when it actually fires.
+    $handler = {
+        param($sender, $e)
+        try {
+            if ($sender.Current.ProcessId -eq $ProcessId) {
+                # Only simple, already-cached properties read here, and only a plain data object
+                # enqueued - NOT the raw $sender element itself, to avoid any risk of touching a UI
+                # Automation COM object from the wrong thread later. A caller that needs to actually
+                # interact with the dialog does a normal FindFirst afterward to get a real reference.
+                $queue.Enqueue([PSCustomObject]@{
+                    Name        = $sender.Current.Name
+                    ControlType = $sender.Current.ControlType.ProgrammaticName
+                })
+            }
+        } catch {
+            # Deliberately minimal and defensive - anything beyond reading a couple of basic
+            # properties is avoided entirely in a cross-thread callback like this.
+        }
+    }.GetNewClosure()
+
+    $delegate = [System.Windows.Automation.AutomationEventHandler]$handler
+    [System.Windows.Automation.Automation]::AddAutomationEventHandler(
+        [System.Windows.Automation.WindowPattern]::WindowOpenedEvent,
+        [System.Windows.Automation.AutomationElement]::RootElement,
+        [System.Windows.Automation.TreeScope]::Subtree,
+        $delegate
+    )
+
+    [PSCustomObject]@{
+        Queue     = $queue
+        Delegate  = $delegate
+        ProcessId = $ProcessId
+    }
+}
+
+# Pops one event from the queue, waiting up to TimeoutSeconds if it's empty (0 = check once, don't
+# wait at all). Returns $null if nothing showed up in time.
+function Get-WatchedWindowEvent {
+    param(
+        [Parameter(Mandatory = $true)]$Watch,
+        [int]$TimeoutSeconds = 0
+    )
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    $result = $null
+    do {
+        if ($Watch.Queue.TryDequeue([ref]$result)) { return $result }
+        if ($TimeoutSeconds -gt 0) { Start-Sleep -Milliseconds 200 }
+    } while ($TimeoutSeconds -gt 0 -and (Get-Date) -lt $deadline)
+    $null
+}
+
+function Stop-WindowEventWatch {
+    param([Parameter(Mandatory = $true)]$Watch)
+    try {
+        [System.Windows.Automation.Automation]::RemoveAutomationEventHandler(
+            [System.Windows.Automation.WindowPattern]::WindowOpenedEvent,
+            [System.Windows.Automation.AutomationElement]::RootElement,
+            $Watch.Delegate
+        )
+    } catch {
+        # Best-effort - if this fails, the handler may linger for the rest of the PowerShell
+        # session, same class of risk as other "did this really clean up" concerns elsewhere here.
     }
 }
 

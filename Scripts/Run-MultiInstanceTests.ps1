@@ -25,26 +25,36 @@ param(
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+$runStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $script:TestNameFilter = $Only
 $startInstanceScript = Join-Path $PSScriptRoot "Start-TestInstance.ps1"
 $repoRoot = Split-Path -Parent $PSScriptRoot
 
+# Instance launches below are NOT wrapped in Write-Step anywhere in this file: Start-TestInstance.ps1
+# and Start-InstanceOnExistingModel each print their own multi-line progress (build output, launch,
+# upgrade-dialog dots), which reads badly interleaved with Write-Step's own "...done" framing - a
+# plain Write-Host header line is used before each one instead.
+
 Invoke-Test "1.2 - Two instances can open the same file simultaneously, no degrade" {
+    Write-Host "  Starting instance A:"
     $instanceA = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $instanceA.Process.Id -Label "1.2 - instanceA"
     try {
+        Write-Host "  Starting instance B on the same file:"
         $instanceB = Start-InstanceOnExistingModel -RepoRoot $repoRoot -ModelPath $instanceA.ModelPath -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
         Write-InstanceStarted -ProcessId $instanceB.Id -Label "1.2 - instanceB"
-        Set-TwoInstancesSideBySide -ProcA $instanceA.Process -ProcB $instanceB
+        Write-Step "Positioning both windows side by side" { Set-TwoInstancesSideBySide -ProcA $instanceA.Process -ProcB $instanceB }
 
         # Neither window title should show any read-only indicator - exact wording isn't confirmed
         # from this session, so checking for the word "read-only" case-insensitively as a reasonable
         # catch-all rather than an exact string match.
-        Assert-True ($instanceA.Process.MainWindowTitle -notmatch "read.?only") "Instance A's title suggests read-only: $($instanceA.Process.MainWindowTitle)"
-        Assert-True ($instanceB.MainWindowTitle -notmatch "read.?only") "Instance B's title suggests read-only: $($instanceB.MainWindowTitle)"
+        Write-Step "Confirming neither window shows read-only" {
+            Assert-True ($instanceA.Process.MainWindowTitle -notmatch "read.?only") "Instance A's title suggests read-only: $($instanceA.Process.MainWindowTitle)"
+            Assert-True ($instanceB.MainWindowTitle -notmatch "read.?only") "Instance B's title suggests read-only: $($instanceB.MainWindowTitle)"
+        }
 
         # Each should get its OWN independent staged copy, not share one.
-        $copies = Wait-ForStagedCopy -TimeoutSeconds 30
+        $copies = Write-Step "Confirming each instance has its own staged copy" { Wait-ForStagedCopy -TimeoutSeconds 30 }
         Assert-True ($copies.Count -ge 2) "Expected at least 2 distinct staged copies (one per instance), found $($copies.Count)."
     } finally {
         if ($instanceB) { Stop-TestInstance -ProcessId $instanceB.Id -Label "1.2 - instanceB" }
@@ -63,57 +73,75 @@ Invoke-Test "1.2 - Two instances can open the same file simultaneously, no degra
 # test above; this isn't a gap left behind, it's removing a test that was testing the wrong thing.
 
 Invoke-Test "6.2 - Save As to a path another instance already has open as its own target" {
-    $instanceB = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds   # B's own target - the path A will Save As into
+    Write-Host "  Starting instance B (the Save As target owner):"
+    $instanceB = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $instanceB.Process.Id -Label "6.2 - instanceB"
     $instanceA = $null
     try {
-        $instanceA = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds   # A starts on a DIFFERENT model entirely
+        Write-Host "  Starting instance A on a different model:"
+        $instanceA = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
         Write-InstanceStarted -ProcessId $instanceA.Process.Id -Label "6.2 - instanceA"
-        Set-TwoInstancesSideBySide -ProcA $instanceB.Process -ProcB $instanceA.Process
+        Write-Step "Positioning both windows side by side" { Set-TwoInstancesSideBySide -ProcA $instanceB.Process -ProcB $instanceA.Process }
 
-        Set-AppForeground -Proc $instanceA.Process
-        $window = Get-AppWindow -Proc $instanceA.Process
-        $fileMenu = Find-ByNameAndType -Root $window -Name "File" -ControlType ([System.Windows.Automation.ControlType]::MenuItem)
+        $fileMenu = Write-Step "Opening the File menu on instance A" {
+            Set-AppForeground -Proc $instanceA.Process
+            $script:window = Get-AppWindow -Proc $instanceA.Process
+            $menu = Find-ByNameAndType -Root $script:window -Name "File" -ControlType ([System.Windows.Automation.ControlType]::MenuItem)
+            if ($null -ne $menu) {
+                $menu.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Expand()
+                Start-Sleep -Milliseconds 400
+            }
+            $menu
+        }
+        $window = $script:window
         Assert-True ($null -ne $fileMenu) "Could not find the File menu on instance A."
-        $fileMenu.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Expand()
-        Start-Sleep -Milliseconds 400
 
-        $saveAsItem = Find-ByNameAndType -Root $window -Name "Save Model As..." -ControlType ([System.Windows.Automation.ControlType]::MenuItem)
+        $saveAsItem = Write-Step "Clicking Save Model As... on instance A" {
+            $item = Find-ByNameAndType -Root $window -Name "Save Model As..." -ControlType ([System.Windows.Automation.ControlType]::MenuItem)
+            if ($null -ne $item) { Invoke-ElementClick -Element $item }
+            $item
+        }
         Assert-True ($null -ne $saveAsItem) "Could not find 'Save Model As...' on instance A."
-        Invoke-ElementClick -Element $saveAsItem
 
-        $dialogCondition = New-Object System.Windows.Automation.AndCondition(
-            (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Save As")),
-            (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
-        )
-        $dialog = $null
-        for ($i = 0; $i -lt 30; $i++) {
-            $dialog = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $dialogCondition)
-            if ($null -ne $dialog) { break }
-            Start-Sleep -Milliseconds 200
+        $dialog = Write-Step "Waiting for the Save As dialog" {
+            $dialogCondition = New-Object System.Windows.Automation.AndCondition(
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Save As")),
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
+            )
+            $foundDialog = $null
+            for ($i = 0; $i -lt 30; $i++) {
+                $foundDialog = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $dialogCondition)
+                if ($null -ne $foundDialog) { break }
+                Start-Sleep -Milliseconds 200
+            }
+            $foundDialog
         }
         Assert-True ($null -ne $dialog) "'Save As' dialog did not appear on instance A."
 
-        $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
-        Assert-True ($null -ne $label) "Could not find the 'File name:' label."
-        $labelRect = $label.Current.BoundingRectangle
-        [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($labelRect.X + $labelRect.Width + 10), [int]($labelRect.Y + $labelRect.Height / 2))
-        Start-Sleep -Milliseconds 150
-        [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
-        [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
-        Start-Sleep -Milliseconds 150
+        Write-Step "Typing instance B's own path into the File name field" {
+            $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
+            Assert-True ($null -ne $label) "Could not find the 'File name:' label."
+            $labelRect = $label.Current.BoundingRectangle
+            [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($labelRect.X + $labelRect.Width + 10), [int]($labelRect.Y + $labelRect.Height / 2))
+            Start-Sleep -Milliseconds 150
+            [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
+            [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
+            Start-Sleep -Milliseconds 150
 
-        [System.Windows.Forms.SendKeys]::SendWait("^a")
-        Start-Sleep -Milliseconds 100
-        # The exact path B already has open - the whole point of this test.
-        [System.Windows.Forms.SendKeys]::SendWait((ConvertTo-SendKeysLiteral $instanceB.ModelPath))
-        Start-Sleep -Milliseconds 100
-        [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-        Start-Sleep -Milliseconds 2000
+            [System.Windows.Forms.SendKeys]::SendWait("^a")
+            Start-Sleep -Milliseconds 100
+            # The exact path B already has open - the whole point of this test.
+            [System.Windows.Forms.SendKeys]::SendWait((ConvertTo-SendKeysLiteral $instanceB.ModelPath))
+            Start-Sleep -Milliseconds 100
+            [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+            Start-Sleep -Milliseconds 2000
+        }
 
         # Succeeding with no degrade is the actual thing under test - not any particular resulting
-        # file state, which §3.3 above already covers more directly.
-        Assert-True (Test-Path $instanceB.ModelPath) "Target file is missing after Save As - expected it to still exist, successfully overwritten."
+        # file state.
+        Write-Step "Confirming the target file still exists, successfully overwritten" {
+            Assert-True (Test-Path $instanceB.ModelPath) "Target file is missing after Save As - expected it to still exist, successfully overwritten."
+        }
     } finally {
         if ($instanceA) { Stop-TestInstance -ProcessId $instanceA.Process.Id -Label "6.2 - instanceA" }
         if ($instanceB) { Stop-TestInstance -ProcessId $instanceB.Process.Id -Label "6.2 - instanceB" }
@@ -121,4 +149,6 @@ Invoke-Test "6.2 - Save As to a path another instance already has open as its ow
 }
 
 Show-TestSummary
+$runStopwatch.Stop()
+Write-Host "`nTotal duration: $(Format-Duration $runStopwatch.Elapsed)" -ForegroundColor Cyan
 Clear-TestArtifacts

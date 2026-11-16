@@ -41,6 +41,7 @@ param(
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+$runStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $script:TestNameFilter = $Only
 
 if (-not $SourceModelPath) {
@@ -55,17 +56,21 @@ $coreDllPath = Join-Path $binFolder "EwECore.dll"
 
 Invoke-Test "1.3 - A caller that never sets EnableLocalStaging creates no working copy" {
     if (-not (Test-Path $coreDllPath)) {
-        Write-Host "EwECore.dll not found - building it ($Configuration|$Platform)..."
-        $vbproj = Join-Path $RepoRoot "Sources\EwECore\EwECore.vbproj"
-        dotnet build $vbproj -c $Configuration -p:Platform=$Platform | ForEach-Object { Write-Host $_ }
-        if ($LASTEXITCODE -ne 0) { throw "Build failed (dotnet build exit code $LASTEXITCODE)." }
+        Write-Step "Building EwECore.dll ($Configuration|$Platform)" {
+            $vbproj = Join-Path $RepoRoot "Sources\EwECore\EwECore.vbproj"
+            dotnet build $vbproj -c $Configuration -p:Platform=$Platform | ForEach-Object { Write-Host $_ }
+            if ($LASTEXITCODE -ne 0) { throw "Build failed (dotnet build exit code $LASTEXITCODE)." }
+        }
     }
     Assert-True (Test-Path $coreDllPath) "EwECore.dll still not found at: $coreDllPath"
 
     $workFolder = Join-Path $env:TEMP "EwE-TestRun\NoStaging-$(Get-Random)"
-    New-Item -ItemType Directory -Path $workFolder -Force | Out-Null
-    $workingModelPath = Join-Path $workFolder (Split-Path -Leaf $SourceModelPath)
-    Copy-Item $SourceModelPath $workingModelPath -Force
+    $workingModelPath = Write-Step "Preparing a working copy of the sample model" {
+        New-Item -ItemType Directory -Path $workFolder -Force | Out-Null
+        $modelPath = Join-Path $workFolder (Split-Path -Leaf $SourceModelPath)
+        Copy-Item $SourceModelPath $modelPath -Force
+        $modelPath
+    }
 
     # Loaded from a byte array, NOT via Add-Type -Path / Assembly.LoadFrom: those lock the DLL file
     # on disk for the rest of this PowerShell process's lifetime, which would break a later
@@ -77,11 +82,13 @@ Invoke-Test "1.3 - A caller that never sets EnableLocalStaging creates no workin
     # AssemblyResolve at all (that event only fires for the CLR's own internal reference resolution,
     # e.g. EwECore.dll's code referencing a type from another assembly) - it only searches whatever
     # is ALREADY loaded into the AppDomain. Loading everything up front sidesteps that gap entirely.
-    Get-ChildItem -Path $binFolder -Filter "*.dll" | ForEach-Object {
-        try {
-            [Reflection.Assembly]::Load([IO.File]::ReadAllBytes($_.FullName)) | Out-Null
-        } catch {
-            # Not every DLL in this folder is necessarily a loadable managed assembly - skip quietly.
+    Write-Step "Loading every DLL in the output folder (byte-array, no file locks)" {
+        Get-ChildItem -Path $binFolder -Filter "*.dll" | ForEach-Object {
+            try {
+                [Reflection.Assembly]::Load([IO.File]::ReadAllBytes($_.FullName)) | Out-Null
+            } catch {
+                # Not every DLL in this folder is necessarily a loadable managed assembly - skip quietly.
+            }
         }
     }
 
@@ -92,7 +99,7 @@ Invoke-Test "1.3 - A caller that never sets EnableLocalStaging creates no workin
         # real plugin functionality for its own broader purpose, but this test only cares whether
         # staging activates, which has nothing to do with plugins. Simpler than chasing down which
         # assembly cPluginManager actually lives in (not EwECore's own output folder, confirmed).
-        $core = New-Object EwECore.cCore
+        $core = Write-Step "Creating a cCore instance" { New-Object EwECore.cCore }
 
         # Snapshotted BEFORE LoadModel, not just checked after: Get-StagedCopies has no notion of
         # "new" at all - it just lists everything currently in the folder. Given how many UI
@@ -100,25 +107,31 @@ Invoke-Test "1.3 - A caller that never sets EnableLocalStaging creates no workin
         # from an earlier, unrelated run would share the identical "TempAnchovy Bay Spatial.<GUID>"
         # naming pattern and could easily be mistaken for something THIS call just created - only
         # comparing before/after makes that unambiguous.
-        $copiesBefore = Get-StagedCopies | ForEach-Object { $_.FullName }
+        $copiesBefore = Write-Step "Snapshotting the staging folder before loading" { Get-StagedCopies | ForEach-Object { $_.FullName } }
 
-        $loaded = $core.LoadModel($workingModelPath)
+        $loaded = Write-Step "Loading the model directly via EwECore.dll" { $core.LoadModel($workingModelPath) }
         Assert-True $loaded "LoadModel() returned False - couldn't open the sample model directly via EwECore.dll."
 
         # The actual point of this test: EnableLocalStaging was never set anywhere above (unlike
         # ScientificInterface's own explicit startup opt-in) - staging must not have activated.
-        $newCopies = Get-StagedCopies | Where-Object { $_.FullName -notin $copiesBefore }
-        if ($newCopies.Count -gt 0) {
-            $copyPaths = ($newCopies | ForEach-Object { $_.FullName }) -join "; "
-            Assert-True $false "A NEW staged working copy appeared after LoadModel(), even though EnableLocalStaging was never set: $copyPaths - expected staging to be strictly opt-in, not on by default for every EwECore.dll consumer."
+        Write-Step "Confirming no NEW staged copy appeared" {
+            $newCopies = Get-StagedCopies | Where-Object { $_.FullName -notin $copiesBefore }
+            if ($newCopies.Count -gt 0) {
+                $copyPaths = ($newCopies | ForEach-Object { $_.FullName }) -join "; "
+                Assert-True $false "A NEW staged working copy appeared after LoadModel(), even though EnableLocalStaging was never set: $copyPaths - expected staging to be strictly opt-in, not on by default for every EwECore.dll consumer."
+            }
         }
 
-        $core.CloseModel()
-        $core.Dispose()
+        Write-Step "Closing the model" {
+            $core.CloseModel()
+            $core.Dispose()
+        }
     } finally {
         Remove-Item $workFolder -Recurse -Force -ErrorAction SilentlyContinue
     }
 }
 
 Show-TestSummary
+$runStopwatch.Stop()
+Write-Host "`nTotal duration: $(Format-Duration $runStopwatch.Elapsed)" -ForegroundColor Cyan
 Clear-TestArtifacts
