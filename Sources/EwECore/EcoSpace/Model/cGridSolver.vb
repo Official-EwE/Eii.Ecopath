@@ -2,24 +2,12 @@
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
-Imports System.Threading
 Imports Microsoft.Extensions.Logging
 Imports Debug = System.Diagnostics.Debug
 
 Public Class cGridSolver
 
 #Region "Public data"
-
-    ''' <summary>
-    ''' Signal mechanism used by the calling thread for thread Synchronization
-    ''' </summary>
-    ''' <remarks>
-    ''' When the Solve() thread is running (SignalState in a non-signaled state WaitHandle.Reset()) 
-    ''' calls to WaitHandle.WaitOne() will block until Solve() has completed (SignalState in a signaled state WaitHandle.Set())
-    ''' </remarks>
-    Public WaitHandle As New ManualResetEvent(True)
-
-    Public Shared ThreadIncrementer As Integer
 
     Public iterThread As Integer 'total iterations 
 
@@ -190,8 +178,6 @@ Public Class cGridSolver
         Me.m_stpwCopy = New Stopwatch
         Try
 
-            'set signal state to 'non-signaled' SignalState.WaitOne() will block
-            Me.WaitHandle.Reset()
             Me.alternateRowCol = True
 
             Me.CopyStartEndRowCol()
@@ -225,20 +211,14 @@ Public Class cGridSolver
 
         Catch ex As Exception
             m_logger.LogError(ex, "cGridSolver.Solve() ThreadID={ThreadID}", Me.ThreadID)
-            Debug.Assert(False, ex.Message)
+            Throw
+        Finally
+            Me.CPUTime = CSng(stpw.Elapsed.TotalSeconds)
         End Try
-
-        'set signal state to 'signaled' 
-        'the processing has finished SignalState.WaitOne() will return immediately
-        If Interlocked.Decrement(cGridSolver.ThreadIncrementer) = 0 Then
-            Me.WaitHandle.Set()
-        End If
 
         If Me.bUseLocalMemory Then
             '  System.Console.WriteLine("Grid copy CPU time (sec), " + Me.m_stpwCopy.Elapsed.TotalSeconds.ToString)
         End If
-
-        Me.CPUTime = CSng(stpw.Elapsed.TotalSeconds)
 
     End Sub
 
@@ -280,8 +260,8 @@ Public Class cGridSolver
             'refill the Bcell array with the values in the vector x
             Me.refillX(Me.X, b, ip, Me.M, Me.NomCols)
 
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
+        Catch
+            Throw
         End Try
     End Sub
 
@@ -498,8 +478,8 @@ exitline:
                 iter = iter * 2
             End If
 
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
+        Catch
+            Throw
         End Try
     End Sub
 
@@ -820,8 +800,8 @@ exitline:
                 iter = iter * 2
             End If
 
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
+        Catch
+            Throw
         End Try
 
         Me.UpdateCoreData(ip)
@@ -1072,8 +1052,8 @@ exitline:
                     'displaymatrix(a, N, N)
                 Next
             Next
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
+        Catch
+            Throw
         End Try
     End Sub
 
