@@ -102,6 +102,7 @@ Namespace Utilities
         ''' -----------------------------------------------------------------------
         Private Class cAssemblyStateCache
             Private m_info As Dictionary(Of String, cAssemblyState) = Nothing
+            Private ReadOnly m_lock As New Object()
 
             Public Sub New()
                 Me.m_info = New Dictionary(Of String, cAssemblyState)
@@ -109,14 +110,20 @@ Namespace Utilities
 
             Public Function Item(an As AssemblyName) As cAssemblyState
                 Dim strName As String = an.FullName
-                If Not Me.m_info.ContainsKey(strName) Then
-                    Me.m_info(strName) = New cAssemblyState(an)
-                End If
-                Return Me.m_info(strName)
+                SyncLock Me.m_lock
+                    Dim state As cAssemblyState = Nothing
+                    If Not Me.m_info.TryGetValue(strName, state) Then
+                        state = New cAssemblyState(an)
+                        Me.m_info(strName) = state
+                    End If
+                    Return state
+                End SyncLock
             End Function
 
             Public Function IsCached(an As AssemblyName) As Boolean
-                Return Me.m_info.ContainsKey(an.FullName)
+                SyncLock Me.m_lock
+                    Return Me.m_info.ContainsKey(an.FullName)
+                End SyncLock
             End Function
 
         End Class
