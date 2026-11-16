@@ -35,6 +35,7 @@ param(
     [System.Diagnostics.Process]$Proc,
     [string]$ModelPath,
     [Nullable[DateTime]]$InitialModelTimestamp,
+    [string]$StagedCopyPath,
     [ValidateSet("x64", "x86")]
     [string]$Platform = "x64",
     [string]$Only,
@@ -43,6 +44,7 @@ param(
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
 $script:TestNameFilter = $Only
+$repoRoot = Split-Path -Parent $PSScriptRoot
 
 if (-not $Proc) {
     Write-Host "No -Proc given - building and launching a fresh instance ($Platform)..." -ForegroundColor Cyan
@@ -50,6 +52,7 @@ if (-not $Proc) {
     $Proc = $instance.Process
     $ModelPath = $instance.ModelPath
     $InitialModelTimestamp = $instance.InitialModelTimestamp
+    $StagedCopyPath = $instance.StagedCopyPath
 }
 
 Invoke-Test "1.1 - A staged working copy is created on open" {
@@ -70,12 +73,80 @@ Invoke-Test "7.1 - Opening a file needing legacy updates never touches its own t
     Assert-True ($currentTimestamp -eq $InitialModelTimestamp) "Timestamp changed since the file was first copied: was $InitialModelTimestamp, now $currentTimestamp - the original should only ever be read, never written to."
 }
 
+# Runs AFTER 7.1, deliberately: this test causes a real Save, which rewrites the file and changes
+# its timestamp - running it before 7.1 would break that test's own untouched-timestamp assertion.
+Invoke-Test "1.1 (rename-while-open) - Renaming the original while open has zero effect until Save" {
+    $renamedPath = "$ModelPath.renamed-while-open"
+    if (Test-Path $renamedPath) { Remove-Item $renamedPath -Force }
+    Rename-Item -Path $ModelPath -NewName (Split-Path -Leaf $renamedPath) -Force
+
+    try {
+        # Confirm no immediate effect - no error dialog of any kind pops up just from the rename
+        # itself, before anything even tries to use the file again.
+        Start-Sleep -Milliseconds 500
+        $window = Get-AppWindow -Proc $Proc
+        $dialogCondition = New-Object System.Windows.Automation.AndCondition(
+            (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Ecopath with Ecosim")),
+            (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
+        )
+        $unexpectedDialog = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $dialogCondition)
+        Assert-True ($null -eq $unexpectedDialog) "A dialog appeared just from renaming the original away - expected zero effect on the open session until Save."
+
+        # The open session should be completely unaffected beyond that - prove it by making and
+        # saving a real edit, exactly as any other normal session would, with the original simply
+        # absent in the meantime.
+        Set-SafeRestorableEdit -Proc $Proc
+        Assert-True (Test-SaveButtonEnabled -Proc $Proc) "Save is not enabled after making a change - the renamed-away original may have disrupted the open session."
+        Invoke-SaveChanges -Proc $Proc
+        Start-Sleep -Milliseconds 1000
+        Assert-True (-not (Test-SaveButtonEnabled -Proc $Proc)) "Save button is still enabled after Save - did the publish step fail because the original was renamed away?"
+
+        # File.Copy(..., overwrite:=True) should have happily recreated the file at its original
+        # path - only the file itself was gone, not its parent folder.
+        Assert-True (Test-Path $ModelPath) "No file exists at the original path after Save - expected Save to recreate it there."
+    } finally {
+        Remove-Item $renamedPath -Force -ErrorAction SilentlyContinue
+    }
+}
+
 Invoke-Test "2.x - Edit and Save completes, Save becomes disabled afterward" {
     Set-SafeRestorableEdit -Proc $Proc
     Assert-True (Test-SaveButtonEnabled -Proc $Proc) "Save button is not enabled after making a change."
     Invoke-SaveChanges -Proc $Proc
     Start-Sleep -Milliseconds 500
     Assert-True (-not (Test-SaveButtonEnabled -Proc $Proc)) "Save button is still enabled after clicking Save."
+
+    # §2.2 folded in here: confirm the real file's bytes genuinely match the staged working copy's
+    # after an ordinary save - a blind overwrite, with no fingerprint check or conflict prompt of
+    # any kind, is the intended behavior, not a bug to fix.
+    #
+    # CONFIRMED: the staged copy can't be read from outside AT ALL while the model remains open -
+    # Get-FileHash itself failed with "being used by another process", meaning the app's own
+    # database connection to it uses a sharing mode that denies even read access from a separate
+    # process. There's no API-level workaround for this (file sharing is the intersection of both
+    # openers' requested modes - if the first opener requested none, nothing else can get in
+    # regardless of what it asks for). The only way to get a genuine byte comparison is to close
+    # that connection first.
+    # Uses the StagedCopyPath confirmed once at launch time, NOT a fresh name-based lookup here:
+    # CONFIRMED that re-matching by name later is unreliable - the exact same GUID reappeared
+    # across two separate runs, meaning a stale, unrelated leftover with the same fixture name
+    # (held open by some other, never-cleaned-up process) was being silently picked instead of
+    # this instance's own copy.
+    Assert-True ($null -ne $StagedCopyPath) "No confirmed staged copy path for this instance - it may not have been found within 30 seconds at launch time."
+    $stagedCopyPath = $StagedCopyPath
+
+    Stop-Process -Id $Proc.Id -Force -ErrorAction SilentlyContinue
+    Start-Sleep -Milliseconds 500
+    Assert-True (Test-Path $stagedCopyPath) "Staged copy disappeared after closing the app - can't compare."
+
+    $stagedHash = (Get-FileHash -Path $stagedCopyPath -Algorithm SHA256).Hash
+    $realFileHash = (Get-FileHash -Path $ModelPath -Algorithm SHA256).Hash
+    Assert-True ($realFileHash -eq $stagedHash) "The real file's bytes don't match the staged working copy's after Save - expected a blind, exact overwrite."
+
+    # Fresh instance on the SAME file, for every test after this one in the same run - propagated to
+    # script scope (unlike 6.1's own restart further down, which doesn't need to since it's last).
+    $script:Proc = Start-InstanceOnExistingModel -RepoRoot $repoRoot -ModelPath $ModelPath -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
+    $Proc = $script:Proc
 }
 
 # 2.3 runs BEFORE 6.1, deliberately: CONFIRMED that once Save As switches the app to a new file, the
@@ -94,7 +165,7 @@ if ($ModelPath -and (-not $script:TestNameFilter -or "2.3 - Lock-contention dial
         # investigation apply. A signal FILE, not a fixed sleep, confirms the lock is actually held
         # before Save is triggered - Start-Job's own process-startup overhead can easily exceed a
         # short fixed delay (confirmed: Save succeeded normally once, racing ahead of the lock).
-        $readyFlag = Join-Path $env:TEMP "EwE-LockJob-Ready-$(Get-Random).flag"
+        $readyFlag = Join-Path $env:TEMP "EwE-TestRun\LockJob-$(Get-Random).flag"
         if (Test-Path $readyFlag) { Remove-Item $readyFlag -Force }
         $lockJob = Start-Job -ScriptBlock {
             param($path, $holdSeconds, $readyFlagPath)
@@ -200,7 +271,7 @@ if ($ModelPath) {
         # Same lock-job mechanism as the long-hold test above, just a shorter hold (comfortably
         # inside the ~3-second internal retry window) and the opposite expectation: no dialog, Save
         # just quietly succeeds.
-        $readyFlag = Join-Path $env:TEMP "EwE-LockJob-Ready-$(Get-Random).flag"
+        $readyFlag = Join-Path $env:TEMP "EwE-TestRun\LockJob-$(Get-Random).flag"
         if (Test-Path $readyFlag) { Remove-Item $readyFlag -Force }
         $lockJob = Start-Job -ScriptBlock {
             param($path, $holdSeconds, $readyFlagPath)
@@ -247,7 +318,7 @@ if ($ModelPath) {
         Assert-True (Test-SaveButtonEnabled -Proc $Proc) "Save is not enabled after making a change."
         $hashBeforeAttempt = (Get-FileHash -Path $ModelPath -Algorithm SHA256).Hash
 
-        $readyFlag = Join-Path $env:TEMP "EwE-LockJob-Ready-$(Get-Random).flag"
+        $readyFlag = Join-Path $env:TEMP "EwE-TestRun\LockJob-$(Get-Random).flag"
         if (Test-Path $readyFlag) { Remove-Item $readyFlag -Force }
         $lockJob = Start-Job -ScriptBlock {
             param($path, $holdSeconds, $readyFlagPath)
@@ -308,6 +379,20 @@ if ($ModelPath) {
 
 # Runs LAST, deliberately - see the comment above the 2.3 block for why.
 Invoke-Test "6.1 - Save As creates a new file at the target path" {
+    # Starts with a completely FRESH app instance, rather than reusing the one every test above
+    # shares: CONFIRMED that running this right after 8.1 (a cancelled save) can throw a real,
+    # unhandled exception ("Cannot find existing row for group 2" in SaveEcopathGroups(), surfaced
+    # as a WinForms assertion dialog) - a longer wait after 8.1 did NOT fix it, ruling out pure
+    # timing. Closing and restarting sidesteps whatever residual state a cancelled save leaves
+    # behind, without yet knowing the exact root cause - worth its own dedicated investigation
+    # later, not something this suite should block on right now. $Proc/$ModelPath are reassigned
+    # here only within this scriptblock's own scope, which is fine since this is the LAST test in
+    # the file - nothing downstream needs the change to propagate further.
+    Stop-Process -Id $Proc.Id -Force -ErrorAction SilentlyContinue
+    $freshInstance = & (Join-Path $PSScriptRoot "Start-TestInstance.ps1") -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
+    $Proc = $freshInstance.Process
+    $ModelPath = $freshInstance.ModelPath
+
     # No extension typed into the dialog, and none hardcoded here: CONFIRMED (reproducible on both
     # platforms) that "Save Model As..." only allows saving in the SAME format the model was
     # originally loaded in - typing a different extension doesn't produce a file at that exact path,
@@ -326,7 +411,7 @@ Invoke-Test "6.1 - Save As creates a new file at the target path" {
         { $_ -in ".accdb", ".eweaccdb" } { ".eweaccdb" }
         default { throw "Don't know what Save As would target for source extension '$sourceExtension' - update this test's mirror of cDataSourceFactory's own logic." }
     }
-    $targetPathNoExt = Join-Path $env:TEMP "EwE-AutoTest-SaveAs-$(Get-Random)"
+    $targetPathNoExt = Join-Path $env:TEMP "EwE-TestRun\SaveAs-$(Get-Random)"
     $targetPath = "$targetPathNoExt$targetExtension"
     if (Test-Path $targetPath) { Remove-Item $targetPath -Force }
 
@@ -379,3 +464,4 @@ Invoke-Test "6.1 - Save As creates a new file at the target path" {
 }
 
 Show-TestSummary
+Clear-TestArtifacts

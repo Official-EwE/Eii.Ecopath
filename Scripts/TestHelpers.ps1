@@ -393,6 +393,120 @@ function Start-InstanceOnExistingModel {
     $proc
 }
 
+# Removes the one shared %TEMP%\EwE-TestRun\ parent folder this toolkit's own scripts write
+# everything under (each run gets its own subfolder/file there - test-run folders, Save As targets,
+# lock-job ready flags) - meant to be called once at the end of each runner. One shared parent,
+# deleted whole, rather than a wildcard match against several separately-named top-level items - any
+# artifact this toolkit creates lives under this one root, so nothing else needs listing here. The
+# one exception is EwE_TestWaitBeforePublish.flag/.ack, which is hardcoded into cCore.vb's own DEBUG
+# hook (production code, not ours to rename or relocate for a cleanup convention) - its own test
+# already deletes it explicitly in a finally block, so it was never relying on this cleanup anyway.
+# Deliberately does NOT touch %LocalAppData%\Ecopath with Ecosim\DBs\ - that's the real app's own
+# shared staging folder, not scratch space these tests own, and a genuinely active session elsewhere
+# on the machine could have a legitimate file there. -ErrorAction SilentlyContinue: a folder still
+# locked by a lingering process is skipped quietly, not an error.
+function Clear-TestArtifacts {
+    $root = Join-Path $env:TEMP "EwE-TestRun"
+    if (Test-Path $root) {
+        Remove-Item $root -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+
+# Closes the currently-open model via File > Close Model. "Close Model" is an UNCONFIRMED menu
+# item name - a reasonable first guess matching the "Save Model As..." naming pattern already
+# confirmed this session, but genuinely untested. If it doesn't match, the real name needs
+# confirming via Accessibility Insights, same as every other first-attempt UI target here.
+function Close-CurrentModel {
+    param([Parameter(Mandatory = $true)][System.Diagnostics.Process]$Proc)
+    Set-AppForeground -Proc $Proc
+    $window = Get-AppWindow -Proc $Proc
+    $fileMenu = Find-ByNameAndType -Root $window -Name "File" -ControlType ([System.Windows.Automation.ControlType]::MenuItem)
+    if ($null -eq $fileMenu) { throw "Could not find the File menu." }
+    $fileMenu.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Expand()
+    Start-Sleep -Milliseconds 400
+    $closeItem = Find-ByNameAndType -Root $window -Name "Close Model" -ControlType ([System.Windows.Automation.ControlType]::MenuItem)
+    if ($null -eq $closeItem) { throw "Could not find 'Close Model' - the real menu item name may differ; confirm via Accessibility Insights." }
+    Invoke-ElementClick -Element $closeItem
+    Start-Sleep -Milliseconds 1000
+}
+
+# Opens a model via File > Open Model..., handling the resulting common Open dialog the same way
+# Save As's own dialog is handled (same structure, confirmed this session - the actual filename
+# input isn't reachable via tree-walking either, so this anchors on the "File name:" label instead,
+# same as Save As). "Open Model..." and the dialog's own Name="Open" are both UNCONFIRMED guesses.
+function Open-ModelViaUI {
+    param(
+        [Parameter(Mandatory = $true)][System.Diagnostics.Process]$Proc,
+        [Parameter(Mandatory = $true)][string]$Path
+    )
+    Set-AppForeground -Proc $Proc
+    $window = Get-AppWindow -Proc $Proc
+    $fileMenu = Find-ByNameAndType -Root $window -Name "File" -ControlType ([System.Windows.Automation.ControlType]::MenuItem)
+    if ($null -eq $fileMenu) { throw "Could not find the File menu." }
+    $fileMenu.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Expand()
+    Start-Sleep -Milliseconds 400
+    $openItem = Find-ByNameAndType -Root $window -Name "Open Model..." -ControlType ([System.Windows.Automation.ControlType]::MenuItem)
+    if ($null -eq $openItem) { throw "Could not find 'Open Model...' - the real menu item name may differ; confirm via Accessibility Insights." }
+    Invoke-ElementClick -Element $openItem
+
+    $dialogCondition = New-Object System.Windows.Automation.AndCondition(
+        (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Open")),
+        (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
+    )
+    $dialog = $null
+    for ($i = 0; $i -lt 30; $i++) {
+        $dialog = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $dialogCondition)
+        if ($null -ne $dialog) { break }
+        Start-Sleep -Milliseconds 200
+    }
+    if ($null -eq $dialog) { throw "'Open' dialog did not appear - its real Name may differ from the assumed 'Open'." }
+
+    $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
+    if ($null -eq $label) { throw "Could not find the 'File name:' label in the Open dialog." }
+    $labelRect = $label.Current.BoundingRectangle
+    [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($labelRect.X + $labelRect.Width + 10), [int]($labelRect.Y + $labelRect.Height / 2))
+    Start-Sleep -Milliseconds 150
+    [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
+    [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
+    Start-Sleep -Milliseconds 150
+
+    [System.Windows.Forms.SendKeys]::SendWait("^a")
+    Start-Sleep -Milliseconds 100
+    [System.Windows.Forms.SendKeys]::SendWait((ConvertTo-SendKeysLiteral $Path))
+    Start-Sleep -Milliseconds 100
+    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+    Start-Sleep -Milliseconds 500
+
+    # Opening a model via the UI (not just at initial process launch) can ALSO trigger the
+    # "database will be updated to a newer version" confirmation - same generic dialog as
+    # Wait-ForMainWindow handles at launch, but scoped to the already-known main window here rather
+    # than a whole-desktop search, since MainWindowHandle already exists by this point (unlike at
+    # initial launch, which is the only reason that search was needed there). Same Name-only match
+    # for the Yes button too (ControlType.Pane, not Button - confirmed earlier this session).
+    $upgradeDialogCondition = New-Object System.Windows.Automation.AndCondition(
+        (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Ecopath with Ecosim")),
+        (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
+    )
+    $yesCondition = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::NameProperty, "Yes")
+    $upgradeDeadline = (Get-Date).AddSeconds(5)
+    $upgradeDialog = $null
+    while ($null -eq $upgradeDialog -and (Get-Date) -lt $upgradeDeadline) {
+        $upgradeDialog = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $upgradeDialogCondition)
+        if ($null -eq $upgradeDialog) { Start-Sleep -Milliseconds 200 }
+    }
+    if ($null -ne $upgradeDialog) {
+        Write-Host "Database-upgrade prompt detected after Open - clicking Yes..."
+        $yesButton = $upgradeDialog.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $yesCondition)
+        if ($null -ne $yesButton) {
+            Invoke-ElementClick -Element $yesButton
+            Start-Sleep -Milliseconds 500
+        } else {
+            Write-Host "Dialog detected but its 'Yes' button wasn't found." -ForegroundColor Yellow
+        }
+    }
+}
+
 function Wait-ForStagedCopy {
     param([int]$TimeoutSeconds = 30)
     $deadline = (Get-Date).AddSeconds($TimeoutSeconds)

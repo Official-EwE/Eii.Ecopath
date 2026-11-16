@@ -24,7 +24,8 @@ param(
 $runners = @(
     "Run-StagingTests.ps1",
     "Run-CrashRecoveryTests.ps1",
-    "Run-MultiInstanceTests.ps1"
+    "Run-MultiInstanceTests.ps1",
+    "Run-NoStagingCallerTests.ps1"
 )
 
 foreach ($platform in $Platforms) {
@@ -43,3 +44,4 @@ foreach ($platform in $Platforms) {
 $script:CurrentPlatformLabel = $null
 Write-Host "`n`n################ COMBINED RESULTS - ALL PLATFORMS ################" -ForegroundColor Magenta
 Show-TestSummary
+Clear-TestArtifacts

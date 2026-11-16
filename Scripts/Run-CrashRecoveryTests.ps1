@@ -89,7 +89,7 @@ Invoke-Test "O.3 - Paths with spaces and non-ASCII characters work correctly" {
     $trickyNamedSource = Join-Path $env:TEMP "Tëst Mödél with spaces André.ewemdb"
     Copy-Item (Join-Path $repoRoot "Database\Anchovy Bay Spatial.ewemdb") $trickyNamedSource -Force
     try {
-        $trickyWorkFolder = Join-Path $env:TEMP "EwE Tëst Rün häs spaces $(Get-Random)"
+        $trickyWorkFolder = Join-Path $env:TEMP "EwE-TestRun\Tëst Rün häs spaces $(Get-Random)"
         $instance = & $startInstanceScript -Platform $Platform -SourceModelPath $trickyNamedSource -WorkFolder $trickyWorkFolder -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
         Write-InstanceStarted -ProcessId $instance.Process.Id -Label "O.3 - instance"
         try {
@@ -153,12 +153,31 @@ Invoke-Test "4.3 - Several orphaned copies are all cleared in one sweep pass" {
     }
 }
 
-Invoke-Test "5.1/5.2 - Graceful close removes the staged copy promptly, with no hang" {
+Invoke-Test "5.1/5.2 - Several sessions in one app run, all cleaned up on final graceful close" {
     $instance = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $instance.Process.Id -Label "5.1/5.2 - instance"
-    $copies = Wait-ForStagedCopy -TimeoutSeconds 30
-    Assert-True ($copies.Count -gt 0) "Working copy was never staged."
-    $stagedPath = $copies[0].FullName
+    Assert-True ($null -ne $instance.StagedCopyPath) "No staged copy confirmed for the initial open."
+
+    # §5.1's own "several sessions in one continuous app run" requirement: close and reopen the
+    # SAME model a couple of times within this one process, before the eventual final close - each
+    # cycle should leave its own marker-less copy behind (per the known limitation at the top of
+    # the test plan), and ALL of them, not just the last, need to be gone after the final close.
+    $allStagedPaths = [System.Collections.Generic.List[string]]::new()
+    $allStagedPaths.Add($instance.StagedCopyPath)
+
+    for ($i = 1; $i -le 2; $i++) {
+        Close-CurrentModel -Proc $instance.Process
+        Open-ModelViaUI -Proc $instance.Process -Path $instance.ModelPath
+        $copiesBefore = $allStagedPaths.ToArray()
+        $newCopy = $null
+        $cycleDeadline = (Get-Date).AddSeconds(30)
+        while ($null -eq $newCopy -and (Get-Date) -lt $cycleDeadline) {
+            $match = Get-StagedCopies | Where-Object { $_.FullName -notin $copiesBefore } | Select-Object -First 1
+            if ($match) { $newCopy = $match.FullName } else { Start-Sleep -Milliseconds 300 }
+        }
+        Assert-True ($null -ne $newCopy) "Cycle $i - no NEW staged copy appeared after closing and reopening the model."
+        $allStagedPaths.Add($newCopy)
+    }
 
     # 5.2 is a real regression test from this backport's own development: an earlier draft used a
     # synchronous, sleep-based retry on Close() that measurably delayed shutdown. Timed here, not
@@ -172,15 +191,17 @@ Invoke-Test "5.1/5.2 - Graceful close removes the staged copy promptly, with no 
     Assert-True $exited "App did not exit within 15 seconds of a graceful close request."
     Assert-True ($sw.ElapsedMilliseconds -lt 5000) "Graceful close took $($sw.ElapsedMilliseconds) ms - expected under 5000ms (regression: an earlier draft's sleep-based retry measurably delayed shutdown)."
 
-    # Exit-time cleanup is a separate mechanism from the orphan sweep (§4) - it should remove the
-    # copy shortly after the process has actually exited, without needing another instance to open.
+    # Exit-time cleanup is a separate mechanism from the orphan sweep (§4) - it should remove EVERY
+    # one of this run's copies shortly after the process has actually exited, in a single pass, not
+    # just the most recently-opened one.
     $cleanupDeadline = (Get-Date).AddSeconds(10)
-    $stillThere = $true
+    $remaining = $allStagedPaths
     while ((Get-Date) -lt $cleanupDeadline) {
-        if (-not (Test-Path $stagedPath)) { $stillThere = $false; break }
+        $remaining = $allStagedPaths | Where-Object { Test-Path $_ }
+        if ($remaining.Count -eq 0) { break }
         Start-Sleep -Milliseconds 300
     }
-    Assert-True (-not $stillThere) "Staged copy was not removed by exit-time cleanup within ~10 seconds of a graceful close."
+    Assert-True ($remaining.Count -eq 0) "Staged copies still present ~10 seconds after a graceful close: $($remaining -join '; ')"
 }
 
 Invoke-Test "5.4 - A hard-killed process's own copy is NOT cleaned up by exit-time cleanup" {
@@ -203,3 +224,4 @@ Invoke-Test "5.4 - A hard-killed process's own copy is NOT cleaned up by exit-ti
 }
 
 Show-TestSummary
+Clear-TestArtifacts

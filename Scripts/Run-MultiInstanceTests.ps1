@@ -121,3 +121,4 @@ Invoke-Test "6.2 - Save As to a path another instance already has open as its ow
 }
 
 Show-TestSummary
+Clear-TestArtifacts

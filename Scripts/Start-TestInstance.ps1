@@ -37,6 +37,8 @@
     $instance.ModelPath              # the REAL file passed to the app - not the staged working copy
     $instance.InitialModelTimestamp  # that file's LastWriteTime at the moment it was copied, before
                                       # the app ever opened it - for confirming nothing later wrote to it
+    $instance.StagedCopyPath         # the staged working copy THIS instance created, confirmed new at
+                                      # launch time - not something to re-derive later by name-matching
 #>
 param(
     [string]$RepoRoot = (Split-Path -Parent $PSScriptRoot),
@@ -56,7 +58,7 @@ if (-not (Test-Path $SourceModelPath)) {
 }
 
 if (-not $WorkFolder) {
-    $WorkFolder = Join-Path $env:TEMP "EwE-TestRun-$(Get-Random)"
+    $WorkFolder = Join-Path $env:TEMP "EwE-TestRun\$(Get-Random)"
 }
 $originalFolder = Join-Path $WorkFolder "original"
 New-Item -ItemType Directory -Path $originalFolder -Force | Out-Null
@@ -94,6 +96,13 @@ if (-not (Test-Path $exePath)) {
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
 
+# Snapshotted BEFORE the process even starts, not after Wait-ForMainWindow returns: staging happens
+# DURING that same startup sequence (as part of opening the model), so a baseline taken afterward
+# could already include this instance's own staged copy - making it invisible to a later "what's
+# new since baseline" check. Confirmed this exact ordering bug once already.
+$baseName = [IO.Path]::GetFileNameWithoutExtension($workingModelPath)
+$copiesBefore = Get-StagedCopies | ForEach-Object { $_.FullName }
+
 Write-Host "Starting: $exePath `"$workingModelPath`""
 $proc = Start-Process -FilePath $exePath -ArgumentList "`"$workingModelPath`"" -PassThru
 
@@ -107,8 +116,27 @@ Write-Host "Waiting for the main window to appear (watching for a database-upgra
 Wait-ForMainWindow -Proc $proc -TimeoutSeconds $MainWindowTimeoutSeconds
 
 Write-Host "Ready - PID $($proc.Id), model folder: $WorkFolder" -ForegroundColor Green
+
+# Confirmed NEW since the baseline taken before launch - not re-derived later by matching
+# Get-StagedCopies against a filename pattern. CONFIRMED that re-matching by name later is
+# unreliable: if an old, unrelated staged copy with the same fixture name is still sitting in the
+# folder (e.g. a leftover from an earlier run whose own process was never fully cleaned up), a
+# later name-based lookup can silently pick THAT one instead of this instance's own - the exact
+# same GUID reappeared across two separate runs, which is what exposed this.
+$stagedCopyPath = $null
+$stagedDeadline = (Get-Date).AddSeconds(30)
+while ($null -eq $stagedCopyPath -and (Get-Date) -lt $stagedDeadline) {
+    $newMatch = Get-StagedCopies | Where-Object { $_.Name -like "Temp$baseName*" -and $_.FullName -notin $copiesBefore } | Select-Object -First 1
+    if ($newMatch) { $stagedCopyPath = $newMatch.FullName }
+    else { Start-Sleep -Milliseconds 300 }
+}
+if (-not $stagedCopyPath) {
+    Write-Host "Could not confirm a NEW staged copy for '$baseName' within 30 seconds - StagedCopyPath will be `$null." -ForegroundColor Yellow
+}
+
 return [PSCustomObject]@{
     Process                = $proc
     ModelPath              = $workingModelPath
     InitialModelTimestamp  = $initialModelTimestamp
+    StagedCopyPath         = $stagedCopyPath
 }

@@ -38,7 +38,7 @@ mid-session with the app still open.
 
 ### 1. Opening - staging creation
 
-- [ ] **1.1. (PARTIALLY AUTOMATED - Run-StagingTests.ps1)** Confirm a
+- [x] **1.1. (AUTOMATED - Run-StagingTests.ps1)** Confirm a
   `Temp<name>.<GUID>.eweaccdb` working copy (never `.tmp` as the extension
   - `cDataSourceFactory.GetSupportedType` determines type purely from
   `Path.GetExtension`, so a `.tmp`-suffixed copy would be invisible to it)
@@ -46,8 +46,6 @@ mid-session with the app still open.
   database for read-write (`EnableLocalStaging = True` in
   `ScientificInterface`). This confirms a copy gets *created*, not that
   the live session is actually *using* it - pair with the check below.
-  - *Automated: the copy-appears check.*
-  - *Not automated: the rename-while-open check below.*
   - **Rename the original while the model is open, before saving.** If
     staging is genuinely in effect, this has **zero effect** on the open
     session - the live connection never touches the original at all
@@ -55,7 +53,11 @@ mid-session with the app still open.
     recreate the file at that path when Save eventually runs, since only
     the file was gone, not its parent folder. If the connection were
     (incorrectly) against the original, this causes an immediate, obvious
-    error instead.
+    error instead. *Automated as a separate test, run after §7.1 (since it
+    causes a real Save, which would otherwise break that test's own
+    untouched-timestamp assertion if run first) - confirms no dialog
+    appears immediately from the rename, then that a normal edit+Save
+    still completes cleanly and recreates a file at the original path.*
 - [ ] **1.2. (PARTIALLY AUTOMATED - Run-MultiInstanceTests.ps1)** Three
   scenarios in one pass - open the same file from a second instance while
   the first is still open, then check all three:
@@ -72,10 +74,18 @@ mid-session with the app still open.
     error, dialog, or degrade of any kind (this also covers what used to
     be a separate "§3.2" multi-instance item - it's the same scenario).
     *Automated - the "1.2" test.*
-- [ ] **1.3.** **Any caller that never sets `EnableLocalStaging`** (e.g.
-  `EwERunConsole`): confirm opening a database creates no working copy
-  at all, and connects directly to the real file - staging is strictly
-  opt-in, not on by default for every `EwECore.dll` consumer.
+- [x] **1.3. (AUTOMATED - Run-NoStagingCallerTests.ps1)** **Any caller
+  that never sets `EnableLocalStaging`** (e.g. `EwERunConsole`): confirm
+  opening a database creates no working copy at all, and connects
+  directly to the real file - staging is strictly opt-in, not on by
+  default for every `EwECore.dll` consumer.
+  - Automated with no running app and no UI Automation at all, unlike
+    every other test here - loads `EwECore.dll` directly and calls into
+    `cCore` the same minimal way a real non-UI consumer does (confirmed
+    via `Eii.Ecopath.Runner.Services`' own `CoreService.cs`: `new
+    cCore()` + `.PluginManager = new cPluginManager()` +
+    `.LoadModel(path)`, with `EnableLocalStaging` never touched
+    anywhere in that sequence).
 
 ### 2. Saving - publish-to-source
 
@@ -88,13 +98,13 @@ mid-session with the app still open.
     `cCore.Save()` (with its own `.ack` signal file, so the kill happens
     deterministically rather than via a guessed delay) rather than a
     manual breakpoint - same deterministic principle, no human needed.
-- [ ] **2.2.** Save, then confirm the original file's bytes now match the
-  working copy's, with no fingerprint check or conflict prompt of any
-  kind - a blind overwrite is the intended behavior, not a bug to fix.
-  *Not automated as a direct byte comparison* - the 2.x test (below)
-  confirms an ordinary save completes and the Save button disables
-  correctly, but doesn't itself hash-compare the original against the
-  working copy afterward.
+- [x] **2.2. (AUTOMATED - Run-StagingTests.ps1)** Save, then confirm the
+  original file's bytes now match the working copy's, with no
+  fingerprint check or conflict prompt of any kind - a blind overwrite
+  is the intended behavior, not a bug to fix.
+  - Folded into the "2.x" test (below) as a SHA256 hash comparison
+    between the real file and the staged working copy, taken right
+    after Save completes.
 - [ ] **2.3. (PARTIALLY AUTOMATED - Run-StagingTests.ps1)** **Hold the
   original file open elsewhere, at two different durations**, using the
   same script both times (just change `-Seconds`):
@@ -173,16 +183,18 @@ path.)
 (Normal, graceful app close - a different mechanism from crash recovery
 above.)
 
-- [ ] **5.1. (PARTIALLY AUTOMATED - Run-CrashRecoveryTests.ps1)** Open and
-  close **several** read-write sessions in one app run (so each
-  potentially leaves its own marker-less copy behind, per the known
-  limitation at the top of this document), then close the app normally -
-  confirm every one of those copies is gone from `%LocalAppData%\Ecopath
-  with Ecosim\DBs\` shortly after the app fully exits, in a single pass.
-  - *Automated: the single-session version* (open one session, close
-    gracefully, confirm its copy is cleaned up) - *not automated: opening
-    and closing several sessions within one continuous app run* before
-    the final close.
+- [x] **5.1. (AUTOMATED - Run-CrashRecoveryTests.ps1)** Open and close
+  **several** read-write sessions in one app run (so each potentially
+  leaves its own marker-less copy behind, per the known limitation at
+  the top of this document), then close the app normally - confirm
+  every one of those copies is gone from `%LocalAppData%\Ecopath with
+  Ecosim\DBs\` shortly after the app fully exits, in a single pass.
+  - Closes and reopens the same model twice within one continuous run
+    (via `Close-CurrentModel`/`Open-ModelViaUI` in `TestHelpers.ps1`,
+    confirmed working, including handling the database-upgrade prompt
+    that can also appear on a UI-driven Open, not just at initial
+    launch), tracking every cycle's own staged copy and confirming all
+    of them - not just the last - are gone after the final close.
 - [x] **5.2. (AUTOMATED - Run-CrashRecoveryTests.ps1)** **Regression test
   for a real bug found and fixed during development**: close a model,
   then close the whole application - confirm the app closes promptly,
