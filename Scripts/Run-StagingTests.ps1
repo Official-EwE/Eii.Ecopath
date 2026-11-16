@@ -67,11 +67,13 @@ if (-not $Proc) {
 $script:CurrentProc = $Proc
 
 Invoke-Test "1.1 - A staged working copy is created on open" {
+    Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
     $copies = Write-Step "Waiting for a staged working copy to appear" { Wait-ForStagedCopy -TimeoutSeconds 30 }
     Assert-True ($copies.Count -gt 0) "No Temp* working copy found after ~30 seconds."
 }
 
 Invoke-Test "7.1 - Opening a file needing legacy updates never touches its own timestamp" {
+    Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
     Write-Step "Confirming an initial timestamp was captured at launch" {
         if ($null -eq $InitialModelTimestamp) {
             throw "No -InitialModelTimestamp known (likely because -Proc was supplied directly without it)."
@@ -89,6 +91,7 @@ Invoke-Test "7.1 - Opening a file needing legacy updates never touches its own t
 # Runs AFTER 7.1, deliberately: this test causes a real Save, which rewrites the file and changes
 # its timestamp - running it before 7.1 would break that test's own untouched-timestamp assertion.
 Invoke-Test "1.1 (rename-while-open) - Renaming the original while open has zero effect until Save" {
+    Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
     $renamedPath = "$ModelPath.renamed-while-open"
     if (Test-Path $renamedPath) { Remove-Item $renamedPath -Force }
     Write-Step "Renaming the real file away while the model is still open" {
@@ -131,6 +134,7 @@ Invoke-Test "1.1 (rename-while-open) - Renaming the original while open has zero
 }
 
 Invoke-Test "2.x - Edit and Save completes, Save becomes disabled afterward" {
+    Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
     Write-Step "Enforcing a change in Basic Input" { Set-SafeRestorableEdit -Proc $Proc }
     Write-Step "Checking if saving is enabled" { Assert-True (Test-SaveButtonEnabled -Proc $Proc) "Save button is not enabled after making a change." }
     Write-Step "Saving" {
@@ -178,8 +182,16 @@ Invoke-Test "2.x - Edit and Save completes, Save becomes disabled afterward" {
     $script:Proc = Start-InstanceOnExistingModel -RepoRoot $repoRoot -ModelPath $ModelPath -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     $Proc = $script:Proc
     $script:CurrentProc = $Proc
+    # A second registration for the restarted instance - the first one above now points at a process
+    # that's already been deliberately killed, which Invoke-Test's own check skips harmlessly.
+    Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
 }
 
+# This test doesn't use Register-DialogCheck/Assert-NoNewDialogs, deliberately: it's hand-rolled
+# (doesn't go through Invoke-Test at all) with its own complex branching/fallback logic for the
+# dialog it already expects and handles - adding the same automatic check here risked destabilizing
+# that, for a test whose whole subject IS a dialog appearing and being dismissed correctly, which
+# its own existing logic already verifies directly.
 # 2.3 runs BEFORE 6.1, deliberately: CONFIRMED that once Save As switches the app to a new file, the
 # ORIGINAL $ModelPath becomes stale - a later Save writes to the Save As target, not the original,
 # making this test's own lock a no-op if it ran after 6.1.
@@ -311,6 +323,7 @@ if ($ModelPath -and (-not $script:TestNameFilter -or "2.3 - Lock-contention dial
 
 if ($ModelPath) {
     Invoke-Test "2.3-short - A short lock hold resolves silently via internal retry" {
+        Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
         Write-Step "Enforcing a change in Basic Input" { Set-SafeRestorableEdit -Proc $Proc }
         Assert-True (Test-SaveButtonEnabled -Proc $Proc) "Save is not enabled after making a change."
 
@@ -362,6 +375,10 @@ if ($ModelPath) {
 
 if ($ModelPath) {
     Invoke-Test "8.1 - A cancelled lock-contention save correctly reports failure, not silent success" {
+        # Registered BEFORE the lock-contention dialog is even triggered below, deliberately - this
+        # test's own flow opens a real dialog partway through and closes it again, so the baseline
+        # taken here confirms it's genuinely gone by the end, not just that nothing NEW is open.
+        Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
         # Replaces an earlier version of "8.1" that only checked a data page loaded without
         # crashing - it never actually verified anything about the bug it was meant to cover.
         # This one directly exercises the real concern: cDBDataSource's SaveXXX() methods once
@@ -463,6 +480,10 @@ Invoke-Test "6.1 - Save As creates a new file at the target path" {
     $Proc = $script:freshInstance.Process
     $ModelPath = $script:freshInstance.ModelPath
     $script:CurrentProc = $Proc
+
+    # Registered here, with the app freshly launched and known idle - Invoke-Test automatically
+    # checks for any new dialog once this test body finishes, no explicit call needed at the end.
+    Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
 
     # No extension typed into the dialog, and none hardcoded here: CONFIRMED (reproducible on both
     # platforms) that "Save Model As..." only allows saving in the SAME format the model was

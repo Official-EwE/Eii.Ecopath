@@ -70,6 +70,21 @@ function Add-TestResult {
     $script:TestResults.Add([PSCustomObject]@{ Name = $displayName; Result = $Result; DurationMs = $DurationMs; Reason = $Reason })
 }
 
+# Called from WITHIN a test body, right after an app instance becomes idle/ready, to have
+# Invoke-Test automatically verify no new dialog appeared by the time the test body finishes - the
+# test itself only needs to say WHICH process and WHAT baseline, not perform the check itself. Can
+# be called more than once per test (e.g. after a mid-test restart) - each registration is checked
+# independently, and one whose process has since exited/been replaced is skipped harmlessly rather
+# than treated as an error, since a deliberate restart is not a "leftover" in the sense this cares
+# about.
+function Register-DialogCheck {
+    param(
+        [Parameter(Mandatory = $true)][int]$ProcessId,
+        [Parameter(Mandatory = $true)][long[]]$Baseline
+    )
+    $script:PendingDialogChecks.Add([PSCustomObject]@{ ProcessId = $ProcessId; Baseline = $Baseline })
+}
+
 function Invoke-Test {
     param(
         [Parameter(Mandatory = $true)][string]$Name,
@@ -84,9 +99,20 @@ function Invoke-Test {
     }
     $displayName = if ($script:CurrentPlatformLabel) { "[$script:CurrentPlatformLabel] $Name" } else { $Name }
     Write-Host "`n=== $displayName ===" -ForegroundColor Cyan
+    $script:PendingDialogChecks = [System.Collections.Generic.List[object]]::new()
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
     try {
         & $Test
+
+        # Only run once the test body itself has already succeeded - if it already failed, that
+        # failure is reported as-is, rather than risking this check's own result masking it.
+        foreach ($check in $script:PendingDialogChecks) {
+            $checkedProc = Get-Process -Id $check.ProcessId -ErrorAction SilentlyContinue
+            if ($checkedProc -and -not $checkedProc.HasExited) {
+                Assert-NoNewDialogs -ProcessId $check.ProcessId -Baseline $check.Baseline
+            }
+        }
+
         $sw.Stop()
         Add-TestResult -Name $Name -Result "PASS" -DurationMs $sw.ElapsedMilliseconds
         Write-Host "PASS ($($sw.ElapsedMilliseconds) ms)" -ForegroundColor Green
@@ -152,9 +178,12 @@ function Show-TestSummary {
     Write-Host "`n`n========== TEST SUMMARY ==========" -ForegroundColor Cyan
     $script:TestResults | Format-Table Name, Result, DurationMs, Reason -AutoSize | Out-Host
 
-    $passed = ($script:TestResults | Where-Object { $_.Result -eq "PASS" }).Count
-    $failed = ($script:TestResults | Where-Object { $_.Result -eq "FAIL" }).Count
-    $skipped = ($script:TestResults | Where-Object { $_.Result -eq "SKIP" }).Count
+    # @(...) forces an array even when exactly one result matches - see Assert-NoNewDialogs's own
+    # comment on this same PowerShell gotcha. Without it, a run with exactly one pass/fail/skip (an
+    # -Only run, most likely) would silently show 0 for that count instead of 1.
+    $passed = @($script:TestResults | Where-Object { $_.Result -eq "PASS" }).Count
+    $failed = @($script:TestResults | Where-Object { $_.Result -eq "FAIL" }).Count
+    $skipped = @($script:TestResults | Where-Object { $_.Result -eq "SKIP" }).Count
     $total = $script:TestResults.Count
 
     $color = if ($failed -gt 0) { "Red" } else { "Green" }
@@ -543,31 +572,32 @@ function Open-ModelViaUI {
 
 # EXPERIMENTAL - first attempt at UI Automation's real event model (WindowOpenedEvent), as an
 # alternative to the repeated FindFirst polling every dialog-detection spot in this toolkit
-# currently uses. Scoped to AutomationElement.RootElement (the whole desktop), filtering by
-# ProcessId inside the callback itself - this is what lets it also catch a dialog that appears
-# BEFORE MainWindowHandle exists (the startup upgrade prompt), since there's no "this process's own
-# window" root to scope to yet at that point.
+# currently uses. Scoped to AutomationElement.RootElement (the whole desktop) - not filtered by
+# ProcessId at registration time at all (CONFIRMED this matters: the caller doesn't know the target
+# process's PID until AFTER Start-Process returns, and the dialog this is meant to catch can appear
+# very early in startup - filtering at registration would mean either registering after the process
+# already started, which can race the dialog's own appearance and silently miss it since a handler
+# never catches an event retroactively, or needing the PID before it exists at all). Every
+# window-opened event, from any process, is enqueued with its own ProcessId attached; the caller
+# filters by PID when READING from the queue instead, by which point it's known.
 function Start-WindowEventWatch {
-    param([Parameter(Mandatory = $true)][int]$ProcessId)
-
     $queue = [System.Collections.Concurrent.ConcurrentQueue[object]]::new()
 
-    # .GetNewClosure() captures $queue/$ProcessId AT DEFINITION TIME: the callback runs on a
-    # UI-Automation-owned thread, not this script's own, so it can't rely on resolving these against
-    # whatever scope happens to be active when it actually fires.
+    # .GetNewClosure() captures $queue AT DEFINITION TIME: the callback runs on a UI-Automation-owned
+    # thread, not this script's own, so it can't rely on resolving it against whatever scope happens
+    # to be active when it actually fires.
     $handler = {
         param($sender, $e)
         try {
-            if ($sender.Current.ProcessId -eq $ProcessId) {
-                # Only simple, already-cached properties read here, and only a plain data object
-                # enqueued - NOT the raw $sender element itself, to avoid any risk of touching a UI
-                # Automation COM object from the wrong thread later. A caller that needs to actually
-                # interact with the dialog does a normal FindFirst afterward to get a real reference.
-                $queue.Enqueue([PSCustomObject]@{
-                    Name        = $sender.Current.Name
-                    ControlType = $sender.Current.ControlType.ProgrammaticName
-                })
-            }
+            # Only simple, already-cached properties read here, and only a plain data object
+            # enqueued - NOT the raw $sender element itself, to avoid any risk of touching a UI
+            # Automation COM object from the wrong thread later. A caller that needs to actually
+            # interact with the dialog does a normal FindFirst afterward to get a real reference.
+            $queue.Enqueue([PSCustomObject]@{
+                Name        = $sender.Current.Name
+                ControlType = $sender.Current.ControlType.ProgrammaticName
+                ProcessId   = $sender.Current.ProcessId
+            })
         } catch {
             # Deliberately minimal and defensive - anything beyond reading a couple of basic
             # properties is avoided entirely in a cross-thread callback like this.
@@ -575,32 +605,52 @@ function Start-WindowEventWatch {
     }.GetNewClosure()
 
     $delegate = [System.Windows.Automation.AutomationEventHandler]$handler
-    [System.Windows.Automation.Automation]::AddAutomationEventHandler(
-        [System.Windows.Automation.WindowPattern]::WindowOpenedEvent,
-        [System.Windows.Automation.AutomationElement]::RootElement,
-        [System.Windows.Automation.TreeScope]::Subtree,
-        $delegate
-    )
+    try {
+        [System.Windows.Automation.Automation]::AddAutomationEventHandler(
+            [System.Windows.Automation.WindowPattern]::WindowOpenedEvent,
+            [System.Windows.Automation.AutomationElement]::RootElement,
+            [System.Windows.Automation.TreeScope]::Subtree,
+            $delegate
+        )
+        Write-Host "  (AddAutomationEventHandler registered without throwing.)" -ForegroundColor DarkGray
+    } catch {
+        Write-Host "  (AddAutomationEventHandler THREW: $($_.Exception.Message))" -ForegroundColor Red
+        throw
+    }
 
     [PSCustomObject]@{
-        Queue     = $queue
-        Delegate  = $delegate
-        ProcessId = $ProcessId
+        Queue    = $queue
+        Delegate = $delegate
     }
 }
 
-# Pops one event from the queue, waiting up to TimeoutSeconds if it's empty (0 = check once, don't
-# wait at all). Returns $null if nothing showed up in time.
+# Pops one event from the queue matching ProcessId (if given - omit to accept any process's event),
+# waiting up to TimeoutSeconds if nothing matches yet (0 = check once, don't wait at all). Discards
+# non-matching events permanently rather than re-queuing them - fine for a single watch dedicated to
+# one process for its whole lifetime, which is the only way this is used so far. Returns $null if
+# nothing matched in time.
 function Get-WatchedWindowEvent {
     param(
         [Parameter(Mandatory = $true)]$Watch,
-        [int]$TimeoutSeconds = 0
+        [int]$TimeoutSeconds = 0,
+        [Nullable[int]]$ProcessId = $null
     )
     $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
-    $result = $null
     do {
-        if ($Watch.Queue.TryDequeue([ref]$result)) { return $result }
-        if ($TimeoutSeconds -gt 0) { Start-Sleep -Milliseconds 200 }
+        $result = $null
+        while ($Watch.Queue.TryDequeue([ref]$result)) {
+            if ($null -eq $ProcessId -or $result.ProcessId -eq $ProcessId) { return $result }
+        }
+        if ($TimeoutSeconds -gt 0) {
+            # UNCONFIRMED HYPOTHESIS being tested here: UI Automation's event delivery relies on COM
+            # callbacks being pumped through an active Windows message loop - a plain console script
+            # has none running at all, which could mean events are genuinely being raised but never
+            # actually delivered to our callback. DoEvents() explicitly pumps pending messages each
+            # iteration, which a normal WinForms/WPF app gets for free just by having its own loop
+            # running, but a bare PowerShell script does not.
+            [System.Windows.Forms.Application]::DoEvents()
+            Start-Sleep -Milliseconds 200
+        }
     } while ($TimeoutSeconds -gt 0 -and (Get-Date) -lt $deadline)
     $null
 }
@@ -616,6 +666,127 @@ function Stop-WindowEventWatch {
     } catch {
         # Best-effort - if this fails, the handler may linger for the rest of the PowerShell
         # session, same class of risk as other "did this really clean up" concerns elsewhere here.
+    }
+}
+
+# Finds/builds Tools\DialogChecker\DialogChecker.exe - rebuilds whenever Program.cs is newer than
+# the existing exe (or the exe is missing entirely), not just once per session via a cached path.
+# CONFIRMED this matters: an existence-only check happily kept reusing a stale build from an earlier
+# session after Program.cs changed (still showing the exe's OLD usage message, from before a new
+# command-line argument was added) - a cheap timestamp comparison catches that every time, at
+# negligible cost given this project builds in ~2 seconds.
+function Get-DialogCheckerExe {
+    $toolRoot = Join-Path (Split-Path -Parent $PSScriptRoot) "Tools\DialogChecker"
+    $exePath = Join-Path $toolRoot "bin\Debug\net48\DialogChecker.exe"
+    $sourcePath = Join-Path $toolRoot "Program.cs"
+
+    $needsBuild = (-not (Test-Path $exePath)) -or
+                  ((Get-Item $sourcePath).LastWriteTime -gt (Get-Item $exePath).LastWriteTime)
+
+    if ($needsBuild) {
+        Write-Host "  Building DialogChecker.exe (missing, or Program.cs changed since the last build)..." -ForegroundColor DarkGray
+        $csproj = Join-Path $toolRoot "DialogChecker.csproj"
+        dotnet build $csproj -c Debug | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+        if ($LASTEXITCODE -ne 0) { throw "Failed to build DialogChecker.exe (dotnet build exit code $LASTEXITCODE)." }
+    }
+    if (-not (Test-Path $exePath)) { throw "DialogChecker.exe still not found at: $exePath" }
+    $exePath
+}
+
+# Returns every TOP-LEVEL window currently open for a given process, via the small standalone
+# DialogChecker.exe tool rather than PowerShell's own UI Automation interop - a plain, synchronous
+# call-and-respond check, deliberately not an event watcher (see DialogChecker's own Program.cs
+# comment for why that approach didn't pan out).
+function Get-OpenWindows {
+    param([Parameter(Mandatory = $true)][int]$ProcessId)
+    $exePath = Get-DialogCheckerExe
+    # stderr captured (NOT 2>$null) and included in the thrown message on failure - CONFIRMED a
+    # swallowed stderr once gave a completely uninformative "exit code 2" with no way to tell what
+    # had actually gone wrong inside the tool.
+    $stderrFile = [System.IO.Path]::GetTempFileName()
+    try {
+        $output = & $exePath $ProcessId 2>$stderrFile
+        if ($LASTEXITCODE -ne 0) {
+            $stderrText = Get-Content $stderrFile -Raw -ErrorAction SilentlyContinue
+            throw "DialogChecker.exe failed (exit code $LASTEXITCODE): $stderrText"
+        }
+    } finally {
+        Remove-Item $stderrFile -Force -ErrorAction SilentlyContinue
+    }
+    $output | Where-Object { $_ } | ForEach-Object {
+        $parts = $_ -split "`t"
+        [PSCustomObject]@{
+            Name               = $parts[0]
+            ControlType        = $parts[1]
+            NativeWindowHandle = [int64]$parts[2]
+            X                  = [double]$parts[3]
+            Y                  = [double]$parts[4]
+            Width              = [double]$parts[5]
+            Height             = [double]$parts[6]
+            IsOffscreen        = [bool]::Parse($parts[7])
+            TextContent        = if ($parts.Count -gt 8) { $parts[8] } else { "" }
+        }
+    }
+}
+
+# Snapshots every window handle currently open for a process - meant to be called once, right after
+# the app is confirmed idle (freshly launched, or between tests), as the baseline Assert-NoNewDialogs
+# later compares against.
+#
+# Polls for the window set to actually SETTLE (two consecutive snapshots matching), rather than
+# trusting a single snapshot taken immediately after launch/restart: CONFIRMED that
+# Start-InstanceOnExistingModel/Start-TestInstance.ps1 only wait for the MAIN window to appear, not
+# for every normal sub-panel (like "Basic input") to finish initializing as its own separate window a
+# moment later - a single-snapshot baseline taken right then can miss completely ordinary app chrome
+# that simply hadn't registered yet, which then gets wrongly flagged as "new" later.
+function Get-WindowBaseline {
+    param(
+        [Parameter(Mandatory = $true)][int]$ProcessId,
+        [int]$TimeoutSeconds = 5
+    )
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    $previous = $null
+    while ((Get-Date) -lt $deadline) {
+        $current = @(Get-OpenWindows -ProcessId $ProcessId | ForEach-Object { $_.NativeWindowHandle } | Sort-Object)
+        if ($null -ne $previous -and @(Compare-Object $previous $current).Count -eq 0) {
+            return $current
+        }
+        $previous = $current
+        Start-Sleep -Milliseconds 400
+    }
+    # Didn't settle within the timeout - return the last snapshot anyway rather than failing outright;
+    # a baseline that's still slightly stale is better than none, and a genuinely unstable app would
+    # show up as repeated Assert-NoNewDialogs failures elsewhere, not a hidden failure here.
+    $previous
+}
+
+# Fails loudly if any window NEW since a baseline (from Get-WindowBaseline) is currently open - meant
+# to run right before moving on from a test/step, to catch a leftover dialog that would otherwise
+# silently carry over and potentially confuse whatever runs next.
+#
+# Deliberately NOT "anything besides the main window": CONFIRMED this app's own normal UI already
+# contains many elements with their own distinct native window handles that are NOT dialogs at all -
+# "Basic input" (itself ControlType.Window), "Navigator", toolbars, and multiple anonymous panes are
+# all ordinary, always-present parts of the main window, not unexpected popups. Comparing against a
+# baseline taken while the app was known to be idle avoids flagging any of this normal chrome, while
+# still catching anything genuinely new.
+function Assert-NoNewDialogs {
+    param(
+        [Parameter(Mandatory = $true)][int]$ProcessId,
+        [Parameter(Mandatory = $true)][long[]]$Baseline
+    )
+    $windows = Get-OpenWindows -ProcessId $ProcessId
+    # @(...) forces an array even when exactly one item matches - CONFIRMED PowerShell otherwise
+    # unwraps a single-match Where-Object result into a bare scalar, which has no .Count property at
+    # all (silently $null, not an error), making ".Count -gt 0" false even with a real match - this
+    # exact gap was why a single genuinely-unexpected window (nothing else) went undetected.
+    $unexpected = @($windows | Where-Object { $_.NativeWindowHandle -notin $Baseline })
+    if ($unexpected.Count -gt 0) {
+        $details = ($unexpected | ForEach-Object {
+            $contentPart = if ($_.TextContent) { " - '$($_.TextContent)'" } else { "" }
+            "'$($_.Name)' ($($_.ControlType))$contentPart"
+        }) -join "; "
+        throw "Unexpected NEW window(s) appeared since the baseline: $details"
     }
 }
 

@@ -43,6 +43,8 @@ Invoke-Test "1.2 - Two instances can open the same file simultaneously, no degra
         Write-Host "  Starting instance B on the same file:"
         $instanceB = Start-InstanceOnExistingModel -RepoRoot $repoRoot -ModelPath $instanceA.ModelPath -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
         Write-InstanceStarted -ProcessId $instanceB.Id -Label "1.2 - instanceB"
+        $baselineA = Get-WindowBaseline -ProcessId $instanceA.Process.Id
+        $baselineB = Get-WindowBaseline -ProcessId $instanceB.Id
         Write-Step "Positioning both windows side by side" { Set-TwoInstancesSideBySide -ProcA $instanceA.Process -ProcB $instanceB }
 
         # Neither window title should show any read-only indicator - exact wording isn't confirmed
@@ -56,6 +58,11 @@ Invoke-Test "1.2 - Two instances can open the same file simultaneously, no degra
         # Each should get its OWN independent staged copy, not share one.
         $copies = Write-Step "Confirming each instance has its own staged copy" { Wait-ForStagedCopy -TimeoutSeconds 30 }
         Assert-True ($copies.Count -ge 2) "Expected at least 2 distinct staged copies (one per instance), found $($copies.Count)."
+
+        Write-Step "Confirming neither instance has a leftover dialog open" {
+            Assert-NoNewDialogs -ProcessId $instanceA.Process.Id -Baseline $baselineA
+            Assert-NoNewDialogs -ProcessId $instanceB.Id -Baseline $baselineB
+        }
     } finally {
         if ($instanceB) { Stop-TestInstance -ProcessId $instanceB.Id -Label "1.2 - instanceB" }
         if ($instanceA) { Stop-TestInstance -ProcessId $instanceA.Process.Id -Label "1.2 - instanceA" }
@@ -81,6 +88,8 @@ Invoke-Test "6.2 - Save As to a path another instance already has open as its ow
         Write-Host "  Starting instance A on a different model:"
         $instanceA = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
         Write-InstanceStarted -ProcessId $instanceA.Process.Id -Label "6.2 - instanceA"
+        $baselineA = Get-WindowBaseline -ProcessId $instanceA.Process.Id
+        $baselineB = Get-WindowBaseline -ProcessId $instanceB.Process.Id
         Write-Step "Positioning both windows side by side" { Set-TwoInstancesSideBySide -ProcA $instanceB.Process -ProcB $instanceA.Process }
 
         $fileMenu = Write-Step "Opening the File menu on instance A" {
@@ -134,13 +143,45 @@ Invoke-Test "6.2 - Save As to a path another instance already has open as its ow
             [System.Windows.Forms.SendKeys]::SendWait((ConvertTo-SendKeysLiteral $instanceB.ModelPath))
             Start-Sleep -Milliseconds 100
             [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
-            Start-Sleep -Milliseconds 2000
+            Start-Sleep -Milliseconds 1000
+        }
+
+        # CONFIRMED (caught by the new dialog check below, before this was added): typing an
+        # ALREADY-EXISTING path triggers Windows' own standard overwrite-confirmation prompt
+        # ("... already exists. Do you want to replace it?") - expected here, since that path is
+        # deliberately instance B's own currently-open file, the whole point of this test. A real
+        # user would click Yes; without handling it, the whole Save As flow sits stuck waiting on it
+        # indefinitely, which also explains why the Save As dialog itself never closed either.
+        Write-Step "Confirming the overwrite prompt, as a real user would" {
+            $confirmCondition = New-Object System.Windows.Automation.AndCondition(
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Confirm Save As")),
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
+            )
+            $confirmDialog = $null
+            for ($i = 0; $i -lt 15; $i++) {
+                $confirmDialog = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $confirmCondition)
+                if ($null -ne $confirmDialog) { break }
+                Start-Sleep -Milliseconds 200
+            }
+            if ($null -ne $confirmDialog) {
+                $yesButton = Find-ByNameAndType -Root $confirmDialog -Name "Yes" -ControlType ([System.Windows.Automation.ControlType]::Button)
+                Assert-True ($null -ne $yesButton) "Found the overwrite-confirmation dialog but not its Yes button."
+                Invoke-ElementClick -Element $yesButton
+                Start-Sleep -Milliseconds 1500
+            }
         }
 
         # Succeeding with no degrade is the actual thing under test - not any particular resulting
         # file state.
         Write-Step "Confirming the target file still exists, successfully overwritten" {
             Assert-True (Test-Path $instanceB.ModelPath) "Target file is missing after Save As - expected it to still exist, successfully overwritten."
+        }
+
+        # Confirms the Save As dialog on instance A actually closed after submitting, and nothing
+        # unexpected lingers on either instance.
+        Write-Step "Confirming no dialog was left open on either instance" {
+            Assert-NoNewDialogs -ProcessId $instanceA.Process.Id -Baseline $baselineA
+            Assert-NoNewDialogs -ProcessId $instanceB.Process.Id -Baseline $baselineB
         }
     } finally {
         if ($instanceA) { Stop-TestInstance -ProcessId $instanceA.Process.Id -Label "6.2 - instanceA" }

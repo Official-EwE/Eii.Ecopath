@@ -86,9 +86,11 @@ Invoke-Test "2.1 - Kill mid-save (after save, before publish-back): original fil
         Write-Host "  Reopening the same file in a fresh instance:"
         $reopenProc = Start-InstanceOnExistingModel -RepoRoot $repoRoot -ModelPath $instance.ModelPath -Platform $Platform
         Write-InstanceStarted -ProcessId $reopenProc.Id -Label "2.1 - reopened instance"
+        $reopenBaseline = Get-WindowBaseline -ProcessId $reopenProc.Id
         try {
             $copies = Write-Step "Waiting for a fresh working copy to be staged" { Wait-ForStagedCopy -TimeoutSeconds 30 }
             Assert-True ($copies.Count -gt 0) "Reopening the file after the interrupted save did not produce a working copy."
+            Write-Step "Confirming no dialog was left open" { Assert-NoNewDialogs -ProcessId $reopenProc.Id -Baseline $reopenBaseline }
         } finally {
             Stop-TestInstance -ProcessId $reopenProc.Id -Label "2.1 - reopened instance"
         }
@@ -109,9 +111,11 @@ Invoke-Test "O.3 - Paths with spaces and non-ASCII characters work correctly" {
         Write-Host "  Starting an instance with a tricky source/destination path:"
         $instance = & $startInstanceScript -Platform $Platform -SourceModelPath $trickyNamedSource -WorkFolder $trickyWorkFolder -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
         Write-InstanceStarted -ProcessId $instance.Process.Id -Label "O.3 - instance"
+        $baseline = Get-WindowBaseline -ProcessId $instance.Process.Id
         try {
             $copies = Write-Step "Waiting for a staged working copy to appear" { Wait-ForStagedCopy -TimeoutSeconds 30 }
             Assert-True ($copies.Count -gt 0) "No working copy staged for a source/destination path containing spaces and non-ASCII characters."
+            Write-Step "Confirming no dialog was left open" { Assert-NoNewDialogs -ProcessId $instance.Process.Id -Baseline $baseline }
         } finally {
             Stop-TestInstance -ProcessId $instance.Process.Id -Label "O.3 - instance"
         }
@@ -138,11 +142,13 @@ Invoke-Test "4.1 - Orphaned working copy is swept on the next write-intent open"
     Write-Host "  Starting instance B (any database triggers the sweep):"
     $instanceB = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $instanceB.Process.Id -Label "4.1 - instanceB"
+    $baselineB = Get-WindowBaseline -ProcessId $instanceB.Process.Id
     try {
         Write-Step "Waiting for instance B's own working copy" { Wait-ForStagedCopy -TimeoutSeconds 30 | Out-Null }
         Write-Step "Confirming the orphan was swept away" {
             Assert-True (-not (Test-Path $orphanPath)) "Orphaned file from the killed instance A was NOT swept away by instance B's own write-intent open."
         }
+        Write-Step "Confirming no dialog was left open" { Assert-NoNewDialogs -ProcessId $instanceB.Process.Id -Baseline $baselineB }
     } finally {
         Stop-TestInstance -ProcessId $instanceB.Process.Id -Label "4.1 - instanceB"
     }
@@ -170,6 +176,7 @@ Invoke-Test "4.3 - Several orphaned copies are all cleared in one sweep pass" {
     Write-Host "  Starting a cleanup-trigger instance:"
     $cleanupInstance = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $cleanupInstance.Process.Id -Label "4.3 - cleanup-trigger instance"
+    $cleanupBaseline = Get-WindowBaseline -ProcessId $cleanupInstance.Process.Id
     try {
         Write-Step "Waiting for the cleanup-trigger instance's own working copy" { Wait-ForStagedCopy -TimeoutSeconds 30 | Out-Null }
         Write-Step "Confirming all 3 orphans were cleared" {
@@ -177,6 +184,7 @@ Invoke-Test "4.3 - Several orphaned copies are all cleared in one sweep pass" {
                 Assert-True (-not (Test-Path $path)) "Orphaned file $path was not cleared by the sweep."
             }
         }
+        Write-Step "Confirming no dialog was left open" { Assert-NoNewDialogs -ProcessId $cleanupInstance.Process.Id -Baseline $cleanupBaseline }
     } finally {
         Stop-TestInstance -ProcessId $cleanupInstance.Process.Id -Label "4.3 - cleanup-trigger instance"
     }
@@ -187,6 +195,7 @@ Invoke-Test "5.1/5.2 - Several sessions in one app run, all cleaned up on final 
     $instance = & $startInstanceScript -Platform $Platform -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds
     Write-InstanceStarted -ProcessId $instance.Process.Id -Label "5.1/5.2 - instance"
     Assert-True ($null -ne $instance.StagedCopyPath) "No staged copy confirmed for the initial open."
+    $initialBaseline = Get-WindowBaseline -ProcessId $instance.Process.Id
 
     # §5.1's own "several sessions in one continuous app run" requirement: close and reopen the
     # SAME model a couple of times within this one process, before the eventual final close - each
@@ -212,6 +221,21 @@ Invoke-Test "5.1/5.2 - Several sessions in one app run, all cleaned up on final 
         }
         Assert-True ($null -ne $newCopy) "Cycle $i - no NEW staged copy appeared after closing and reopening the model."
         $allStagedPaths.Add($newCopy)
+
+        # Re-captured after EVERY cycle, not just once at the very start: CONFIRMED that closing and
+        # reopening the model tears down and recreates its entire sub-window tree from scratch - the
+        # reopened "Basic input" panel, toolbars, etc. are all genuinely NEW windows with new native
+        # handles, even though they're logically the same kind of panel as before. A baseline from
+        # before any of this would flag every single one of them as new, even though none of this is
+        # actually unexpected - it's just the app's own normal reopen behavior.
+        $initialBaseline = Get-WindowBaseline -ProcessId $instance.Process.Id
+    }
+
+    # Checked here, right before the graceful close below, against the baseline captured right at
+    # the start (before any of the close/reopen cycles above) - confirms none of those cycles left a
+    # dialog open, while the process is still around to check at all.
+    Write-Step "Confirming no dialog was left open after the close/reopen cycles" {
+        Assert-NoNewDialogs -ProcessId $instance.Process.Id -Baseline $initialBaseline
     }
 
     # 5.2 is a real regression test from this backport's own development: an earlier draft used a
