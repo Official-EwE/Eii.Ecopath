@@ -142,7 +142,7 @@ Public Class dlgDefineTaxonomy
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_tds = cTaxonDataSource.GetInstance()
+        Me.m_tds = cTaxonDataSource.GetInstance(Me.m_uic.Core)
 
         Me.PopulateTaxonDataProducerControls()
 

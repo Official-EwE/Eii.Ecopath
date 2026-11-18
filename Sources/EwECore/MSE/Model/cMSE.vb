@@ -241,7 +241,7 @@ Namespace MSE
             Me.m_stockRecruitment = New cMSEStockRecruitment() With {.Data = MSEQuotaCalculatorData}
             Me.m_quotaCalculator = New cMSEQuotaCalculator(Me.m_stockRecruitment, Me.m_randomService) With {.Data = MSEQuotaCalculatorData}
 
-            Me.m_EconomicData = cEconomicDataSource.getInstance()
+            Me.m_EconomicData = cEconomicDataSource.getInstance(Me.m_core)
             Me.m_data.InitForRun()
 
             'VC added a boolean to ex/include fleets from MSY runs
@@ -334,7 +334,7 @@ Namespace MSE
                 'the seed will decide if the sequence is unique or not
                 Me.m_randomService = New cRandomService(rndSeed)
 
-                Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
+                Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance(Me.m_core)
                 If (ds IsNot Nothing) Then
                     Me.m_orgUsePlugin = ds.EnableData(New cEcosimRunType)
                     ds.EnableData(New cEcosimRunType) = Me.UsePlugin
@@ -421,7 +421,7 @@ Namespace MSE
                 'set the ecosim predict effort flag back to its original value
                 Me.m_esData.PredictSimEffort = Me.m_orgPredictEffort
 
-                Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
+                Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance(Me.m_core)
                 If (ds IsNot Nothing) Then
                     ds.EnableData(New cEcosimRunType) = Me.m_orgUsePlugin
                 End If
