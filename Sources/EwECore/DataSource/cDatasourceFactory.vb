@@ -1,4 +1,4 @@
-﻿' SPDX-License-Identifier: EUPL-1.2
+' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
@@ -86,13 +86,24 @@ Namespace DataSources
         ''' </summary>
         ''' <param name="strDatabase"></param>
         ''' <param name="access">Flag that must state whether the database can be accessed.</param>
+        ''' <param name="strDetectionPath">Receives a short, stable tag identifying which
+        ''' INTERNAL route this call took to reach its verdict - not just the verdict
+        ''' itself. Added specifically because "TooOld" (for instance) can be reached
+        ''' three genuinely different ways here (the x86 helper's version-check
+        ''' succeeding, that same helper failing and falling back to a conservative
+        ''' block, or a normal direct Open()/Compatibility() call finding a real
+        ''' too-old version) - each exercises different code and is worth testing
+        ''' separately, even though they're indistinguishable from the caller's own
+        ''' "comp" value alone. One of: "Jet3x64-confirmed", "Jet3x64-unconfirmed",
+        ''' "DirectOpen", "EII", "EIIXML", "EcoBase", "NotSet".</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetCompatibility(strDatabase As String, ByRef access As eDatasourceAccessType) As cEwEDatabase.eCompatibilityTypes
+        Public Shared Function GetCompatibility(strDatabase As String, ByRef access As eDatasourceAccessType, Optional ByRef strDetectionPath As String = "") As cEwEDatabase.eCompatibilityTypes
 
             Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
             Dim dst As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strDatabase)
+            strDetectionPath = ""
 
             ' Detect file type
             Select Case dst
@@ -137,6 +148,7 @@ Namespace DataSources
                             Dim sVersion As Single = 0.0!
                             If cEwEAccessDatabase.TryGetLegacyVersionViaX86Helper(strDatabase, sVersion) Then
                                 comp = cEwEDatabase.CompatibilityFromVersion(sVersion, New cEwEAccessDatabase().MaxDBVersion())
+                                strDetectionPath = "Jet3x64-confirmed"
                             Else
                                 ' Helper missing, timed out, or failed for
                                 ' some other reason - no real version
@@ -145,6 +157,7 @@ Namespace DataSources
                                 ' risk silently misclassifying a file we
                                 ' genuinely can't verify as safe.
                                 comp = cEwEDatabase.eCompatibilityTypes.TooOld
+                                strDetectionPath = "Jet3x64-unconfirmed"
                             End If
                             access = eDatasourceAccessType.Failed_UnknownType
 
@@ -160,6 +173,7 @@ Namespace DataSources
                                 comp = db.Compatibility
                                 db.Close()
                             End If
+                            strDetectionPath = "DirectOpen"
                         End If
                     Else
                         access = eDatasourceAccessType.Failed_FileNotFound
@@ -173,6 +187,7 @@ Namespace DataSources
                     Else
                         access = eDatasourceAccessType.Failed_FileNotFound
                     End If
+                    strDetectionPath = dst.ToString()
 
                 Case eDataSourceTypes.EcoBase
 
@@ -183,11 +198,13 @@ Namespace DataSources
                         ' ToDo: create explicit enum value Failed_NoInternet
                         access = eDatasourceAccessType.Failed_FileNotFound
                     End If
+                    strDetectionPath = "EcoBase"
 
                 Case eDataSourceTypes.NotSet
 
                     comp = cEwEDatabase.eCompatibilityTypes.Unknown
                     access = eDatasourceAccessType.Failed_Unknown
+                    strDetectionPath = "NotSet"
 
             End Select
 
