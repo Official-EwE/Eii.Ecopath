@@ -24,7 +24,7 @@ Namespace ExternalData
 
 #Region " Private vars "
 
-        Private Shared s_core As cCore = Nothing
+        Private m_core As cCore = Nothing
         Private m_strProviderName As String = ""
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cTaxonDataSource)()
 
@@ -56,21 +56,22 @@ Namespace ExternalData
         ''' <summary>
         ''' Return the instance of this class created by the PluginManager
         ''' </summary>
-        ''' <returns>The only instance of cTaxonDataSource. Otherwise nothing</returns>
-        ''' <remarks>An instance of this class is loaded from the Core via the Plugin 
-        ''' manager. This allows classes other objects to retrieve an instance of 
-        ''' cTaxonDataSource for receiving taxonomy data notifications.</remarks>
+        ''' <param name="core">The core whose plugin manager owns the data source.</param>
+        ''' <returns>The instance of cTaxonDataSource loaded for the core, otherwise nothing.</returns>
+        ''' <remarks>An instance of this class is loaded from the core via its plugin 
+        ''' manager. Every core has its own instance.</remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetInstance() As cTaxonDataSource
+        Public Shared Function GetInstance(core As cCore) As cTaxonDataSource
 
             Dim dataSource As cTaxonDataSource = Nothing
 
-            ' JS 12Dec10: Plug-in may not be initialized (yet) on purpose
-            If (cTaxonDataSource.s_core Is Nothing) Then Return Nothing
+            ' Plug-in may not be initialized (yet) on purpose
+            If (core Is Nothing) Then Return Nothing
+            If (core.PluginManager Is Nothing) Then Return Nothing
 
             Try
 
-                Dim plugins As ICollection(Of IPlugin) = s_core.PluginManager.GetPlugins(cTaxonDataSource.InternalName)
+                Dim plugins As ICollection(Of IPlugin) = core.PluginManager.GetPlugins(cTaxonDataSource.InternalName)
                 For Each plugin As IPlugin In plugins
                     If TypeOf plugin Is cTaxonDataSource Then
                         dataSource = DirectCast(plugin, cTaxonDataSource)
@@ -89,7 +90,7 @@ Namespace ExternalData
 
         End Function
 
-#End Region ' Singleton 'Shared' interface
+        #End Region
 
 #Region " Public interfaces "
 
@@ -103,10 +104,12 @@ Namespace ExternalData
         Public Property EnableData(runtype As IRunType) As Boolean _
             Implements IExternalDataSource.EnableData
             Get
-                Return s_core.PluginManager.EnableData(GetType(ITaxonSearchData), runtype)
+                If (Me.m_core?.PluginManager Is Nothing) Then Return False
+                Return Me.m_core.PluginManager.EnableData(GetType(ITaxonSearchData), runtype)
             End Get
             Set(value As Boolean)
-                s_core.PluginManager.EnableData(GetType(ITaxonSearchData), runtype) = value
+                If (Me.m_core?.PluginManager Is Nothing) Then Return
+                Me.m_core.PluginManager.EnableData(GetType(ITaxonSearchData), runtype) = value
             End Set
         End Property
 
@@ -119,7 +122,8 @@ Namespace ExternalData
         ''' -----------------------------------------------------------------------
         Public Function IsDataAvailable(runtype As IRunType) As Boolean _
               Implements IExternalDataSource.IsDataAvailable
-            Return s_core.PluginManager.IsDataAvailable(GetType(ITaxonSearchData), runtype)
+            If (Me.m_core?.PluginManager Is Nothing) Then Return False
+            Return Me.m_core.PluginManager.IsDataAvailable(GetType(ITaxonSearchData), runtype)
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -130,7 +134,8 @@ Namespace ExternalData
         ''' -----------------------------------------------------------------------
         Public Function ProducerNames() As String()
             Dim lstrNames As New List(Of String)
-            For Each dp As IDataProducerPlugin In s_core.PluginManager.DataProducers(GetType(ITaxonSearchData))
+            If (Me.m_core?.PluginManager Is Nothing) Then Return lstrNames.ToArray
+            For Each dp As IDataProducerPlugin In Me.m_core.PluginManager.DataProducers(GetType(ITaxonSearchData))
                 lstrNames.Add(dp.DisplayName)
             Next
             Return lstrNames.ToArray
@@ -148,7 +153,8 @@ Namespace ExternalData
             Set(value As String)
                 If String.Compare(value, Me.m_strProviderName, True) = 0 Then Return
                 Me.m_strProviderName = value
-                For Each dp As IDataProducerPlugin In s_core.PluginManager.DataProducers(GetType(ITaxonSearchData))
+                If (Me.m_core?.PluginManager Is Nothing) Then Return
+                For Each dp As IDataProducerPlugin In Me.m_core.PluginManager.DataProducers(GetType(ITaxonSearchData))
                     dp.SetEnabled(String.Compare(dp.DisplayName, Me.m_strProviderName, True) = 0)
                 Next
             End Set
@@ -238,7 +244,7 @@ Namespace ExternalData
 
         Public Sub Initialize(core As Object) _
             Implements IPlugin.Initialize
-            s_core = DirectCast(core, cCore)
+            Me.m_core = DirectCast(core, cCore)
         End Sub
 
         Public ReadOnly Property Name() As String _
